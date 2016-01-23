@@ -1,0 +1,612 @@
+{% extends "admin/base.html" %}
+
+{% load i18n admin_static %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu') }}
+{% endblock %}
+
+
+{% block extrajs %}
+	{{ block.super }}
+    {% block extrajs_site %}
+    	<!-- ============================================
+        ============== Custom JavaScripts ===============
+        ============================================= -->
+        <script src="{% static "scripts/js/main.js" %}"></script>
+        <!--/ custom javascripts -->
+    {% endblock %}
+{% endblock %}
+
+
+{% block header_content %}
+	<!-- ===============================================
+    ================= HEADER Content ===================
+    ================================================ -->
+    <section id="header">
+        <header class="clearfix">
+            <!-- Branding -->
+            <div class="branding">
+                {% block branding %}
+                	<a class="brand" href="{% url 'admin:index' %}">
+				        <span><strong>SIM</strong>PDU</span>
+				    </a>
+				    <a href="{% url 'admin:index' %}" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
+                {% endblock %}
+            </div>
+            <!-- Branding end -->
+            <!-- Left-side navigation -->
+            <ul class="nav-left pull-left list-unstyled list-inline">
+                <li class="sidebar-collapse divided-right">
+                    <a href="#" class="collapse-sidebar">
+                        <i class="fa fa-outdent"></i>
+                    </a>
+                </li>
+                <li class="dropdown divided-right settings">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <ul class="dropdown-menu with-arrow animated littleFadeInUp" role="menu">
+                        <li>
+
+                            <ul class="color-schemes list-inline">
+                                <li class="title">Header Color:</li>
+                                <li><a href="#" class="scheme-drank header-scheme" data-scheme="scheme-default"></a></li>
+                                <li><a href="#" class="scheme-black header-scheme" data-scheme="scheme-black"></a></li>
+                                <li><a href="#" class="scheme-greensea header-scheme" data-scheme="scheme-greensea"></a></li>
+                                <li><a href="#" class="scheme-cyan header-scheme" data-scheme="scheme-cyan"></a></li>
+                                <li><a href="#" class="scheme-lightred header-scheme" data-scheme="scheme-lightred"></a></li>
+                                <li><a href="#" class="scheme-light header-scheme" data-scheme="scheme-light"></a></li>
+                                <li class="title">Branding Color:</li>
+                                <li><a href="#" class="scheme-drank branding-scheme" data-scheme="scheme-default"></a></li>
+                                <li><a href="#" class="scheme-black branding-scheme" data-scheme="scheme-black"></a></li>
+                                <li><a href="#" class="scheme-greensea branding-scheme" data-scheme="scheme-greensea"></a></li>
+                                <li><a href="#" class="scheme-cyan branding-scheme" data-scheme="scheme-cyan"></a></li>
+                                <li><a href="#" class="scheme-lightred branding-scheme" data-scheme="scheme-lightred"></a></li>
+                                <li><a href="#" class="scheme-light branding-scheme" data-scheme="scheme-light"></a></li>
+                                <li class="title">Sidebar Color:</li>
+                                <li><a href="#" class="scheme-drank sidebar-scheme" data-scheme="scheme-default"></a></li>
+                                <li><a href="#" class="scheme-black sidebar-scheme" data-scheme="scheme-black"></a></li>
+                                <li><a href="#" class="scheme-greensea sidebar-scheme" data-scheme="scheme-greensea"></a></li>
+                                <li><a href="#" class="scheme-cyan sidebar-scheme" data-scheme="scheme-cyan"></a></li>
+                                <li><a href="#" class="scheme-lightred sidebar-scheme" data-scheme="scheme-lightred"></a></li>
+                                <li><a href="#" class="scheme-light sidebar-scheme" data-scheme="scheme-light"></a></li>
+                                <li class="title">Active Color:</li>
+                                <li><a href="#" class="scheme-drank color-scheme" data-scheme="drank-scheme-color"></a></li>
+                                <li><a href="#" class="scheme-black color-scheme" data-scheme="black-scheme-color"></a></li>
+                                <li><a href="#" class="scheme-greensea color-scheme" data-scheme="greensea-scheme-color"></a></li>
+                                <li><a href="#" class="scheme-cyan color-scheme" data-scheme="cyan-scheme-color"></a></li>
+                                <li><a href="#" class="scheme-lightred color-scheme" data-scheme="lightred-scheme-color"></a></li>
+                                <li><a href="#" class="scheme-light color-scheme" data-scheme="light-scheme-color"></a></li>
+                            </ul>
+
+                        </li>
+
+                        <li>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-xs-8 control-label">Fixed header</label>
+                                    <div class="col-xs-4 control-label">
+                                        <div class="onoffswitch lightred small">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="fixed-header" checked="">
+                                            <label class="onoffswitch-label" for="fixed-header">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-xs-8 control-label">Fixed aside</label>
+                                    <div class="col-xs-4 control-label">
+                                        <div class="onoffswitch lightred small">
+                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="fixed-aside" checked="">
+                                            <label class="onoffswitch-label" for="fixed-aside">
+                                                <span class="onoffswitch-inner"></span>
+                                                <span class="onoffswitch-switch"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Left-side navigation end -->
+            <!-- Search -->
+            <div class="search" id="main-search">
+                <input type="text" class="form-control underline-input" placeholder="Search...">
+            </div>
+            <!-- Search end -->
+            <!-- Right-side navigation -->
+            {% block usertools %}
+            <ul class="nav-right pull-right list-inline">
+                {% if has_permission %}
+
+                <li class="dropdown nav-profile">
+                    <a href class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{% static "images/no-avatar.jpg" %}" alt="" class="img-circle size-30x30">
+                        <span>{% block welcome-msg %}{% firstof user.get_short_name user.get_username %}{% endblock %}<i class="fa fa-angle-down"></i></span>
+                    </a>
+                    {% block userlinks %}
+                    <ul class="dropdown-menu animated littleFadeInRight" role="menu">
+                        {% if site_url %}
+                        <li>
+                            <a href="{{ site_url }}">
+                                <span class="badge bg-greensea pull-right">99%</span>
+                                <i class="fa fa-user"></i>{% trans 'View site' %}
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if user.is_active and user.is_admin %}
+                            {% url 'django-admindocs-docroot' as docsroot %}
+                            {% if docsroot %}
+                            <li>
+                                <a href="{{ docsroot }}">
+                                    <span class="badge bg-greensea pull-right">99%</span>
+                                    <i class="fa fa-user"></i>{% trans 'Documentation' %}
+                                </a>
+                            </li>
+                            {% endif %}
+                        {% endif %}
+                        <li>
+                            <a href="#">
+                                <span class="badge bg-greensea pull-right">86%</span>
+                                <i class="fa fa-user"></i>Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="label bg-lightred pull-right">new</span>
+                                <i class="fa fa-check"></i>Tasks
+                            </a>
+                        </li>
+                        {% if user.has_usable_password %}
+                        <li>
+                            <a href="{% url 'admin:password_change' %}">
+                                <i class="fa fa-cog"></i>{% trans 'Change password' %}
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-lock"></i>Lock
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout_cas' %}?next={% url 'useradmin:index' %}">
+                                <i class="fa fa-sign-out"></i>{% trans 'Log out' %}
+                            </a>
+                        </li>
+                    </ul>
+                    {% endblock %}
+                </li>
+
+                <li class="toggle-right-sidebar">
+                    <a href="#">
+                        <i class="fa fa-comments"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <!-- Right-side navigation end -->
+            {% endblock %}
+            {% block nav-global %}{% endblock %}
+        </header>
+    </section>
+{% endblock %}
+
+{% block control_content %}
+	<!-- =================================================
+    ================= CONTROLS Content ===================
+    ================================================== -->
+    <div id="controls">
+	    {% block sidebar_content %}
+	        <!-- ================================================
+	        ================= SIDEBAR Content ===================
+	        ================================================= -->
+	        <aside id="sidebar">
+	            <div id="sidebar-wrap">
+	                <div class="panel-group slim-scroll" role="tablist">
+	                    <div class="panel panel-default">
+	                        <div class="panel-heading" role="tab">
+	                            <h4 class="panel-title">
+	                                <a data-toggle="collapse" href="#sidebarNav">
+	                                    Menu Navigasi <i class="fa fa-angle-up"></i>
+	                                </a>
+	                            </h4>
+	                        </div>
+	                        <div id="sidebarNav" class="panel-collapse collapse in" role="tabpanel">
+	                            <div class="panel-body">
+	                                <!-- ===================================================
+	                                ================= NAVIGATION Content ===================
+	                                ==================================================== -->
+	                                <ul id="navigation">
+	                                    <li><a href="index.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
+	                                    <li>
+	                                        <a href="#"><i class="fa fa-envelope-o"></i> <span>Mail</span> <span class="badge bg-lightred">6</span></a>
+	                                        <ul>
+	                                            <li><a href="mail-inbox.html"><i class="fa fa-caret-right"></i> Inbox</a></li>
+	                                            <li><a href="mail-compose.html"><i class="fa fa-caret-right"></i> Compose Mail</a></li>
+	                                            <li><a href="mail-single.html"><i class="fa fa-caret-right"></i> Single Mail</a></li>
+	                                        </ul>
+	                                    </li>
+	                                    <li>
+	                                        <a href="#"><i class="fa fa-map-marker"></i> <span>Maps</span></a>
+	                                        <ul>
+	                                            <li><a href="maps-vector.html"><i class="fa fa-caret-right"></i> Vector Maps</a></li>
+	                                            <li><a href="maps-google.html"><i class="fa fa-caret-right"></i> Google Maps</a></li>
+	                                        </ul>
+	                                    </li>
+
+	                                    <li>
+	                                        <a href="#"><i class="fa fa-magic"></i> <span>Menu Levels</span></a>
+	                                        <ul>
+	                                            <li>
+	                                                <a href="#"><i class="fa fa-caret-right"></i> Menu Level 1.1</a>
+	                                                <ul>
+	                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.1</a></li>
+	                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.2</a></li>
+	                                                    <li>
+	                                                        <a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.3</a>
+	                                                        <ul>
+	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.1</a></li>
+	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.2</a></li>
+	                                                        </ul>
+	                                                    </li>
+	                                                </ul>
+	                                            </li>
+	                                            <li>
+	                                                <a href="#"><i class="fa fa-caret-right"></i> Menu Level 1.2</a>
+	                                                <ul>
+	                                                    <li>
+	                                                        <a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.1</a>
+	                                                        <ul>
+	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.1</a></li>
+	                                                            <li>
+	                                                                <a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.2</a>
+	                                                                <ul>
+	                                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 4.1</a></li>
+	                                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 4.2</a></li>
+	                                                                </ul>
+	                                                            </li>
+	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.3</a></li>
+	                                                        </ul>
+	                                                    </li>
+	                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.2</a></li>
+	                                                </ul>
+	                                            </li>
+	                                        </ul>
+	                                    </li>
+	                                </ul>
+	                                <!--/ NAVIGATION Content -->
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div class="panel charts panel-default">
+	                        <div class="panel-heading" role="tab">
+	                            <h4 class="panel-title">
+	                                <a data-toggle="collapse" href="#sidebarCharts">
+	                                    Ringkasan <i class="fa fa-angle-up"></i>
+	                                </a>
+	                            </h4>
+	                        </div>
+	                        <div id="sidebarCharts" class="panel-collapse collapse in" role="tabpanel">
+	                            <div class="panel-body">
+	                                <div class="summary">
+
+	                                    <div class="media">
+	                                        <a class="pull-right" href="#">
+	                                            <span class="sparklineChart"
+	                                                  values="5, 8, 3, 4, 6, 2, 1, 9, 7"
+	                                                  sparkType="bar"
+	                                                  sparkBarColor="#92424e"
+	                                                  sparkBarWidth="6px"
+	                                                  sparkHeight="36px">
+	                                            Loading...</span>
+	                                        </a>
+	                                        <div class="media-body">
+	                                            This week sales
+	                                            <h4 class="media-heading">26, 149</h4>
+	                                        </div>
+	                                    </div>
+
+	                                    <div class="media">
+	                                        <a class="pull-right" href="#">
+	                                            <span class="sparklineChart"
+	                                                  values="2, 4, 5, 3, 8, 9, 7, 3, 5"
+	                                                  sparkType="bar"
+	                                                  sparkBarColor="#397193"
+	                                                  sparkBarWidth="6px"
+	                                                  sparkHeight="36px">
+	                                            Loading...</span>
+	                                        </a>
+	                                        <div class="media-body">
+	                                            This week balance
+	                                            <h4 class="media-heading">318, 651</h4>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </aside>
+	        <!--/ SIDEBAR Content -->
+        {% endblock %}
+
+        {% block rightbar_content %}
+	        <!-- =================================================
+	        ================= RIGHTBAR Content ===================
+	        ================================================== -->
+	        <aside id="rightbar">
+	            <div role="tabpanel">
+	                <!-- Nav tabs -->
+	                <ul class="nav nav-tabs" role="tablist">
+	                    <li role="presentation" class="active"><a href="#users" aria-controls="users" role="tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
+	                    <li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab"><i class="fa fa-clock-o"></i></a></li>
+	                    <li role="presentation"><a href="#friends" aria-controls="friends" role="tab" data-toggle="tab"><i class="fa fa-heart"></i></a></li>
+	                    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><i class="fa fa-cog"></i></a></li>
+	                </ul>
+	                <!-- Tab panes -->
+	                <div class="tab-content">
+	                    <div role="tabpanel" class="tab-pane active" id="users">
+	                        <h6><strong>Online</strong> Users</h6>
+	                        <ul>
+	                            <li class="online">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Ing. Imrich <strong>Kamarel</strong></span>
+	                                        <small><i class="fa fa-map-marker"></i> Ulaanbaatar, Mongolia</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                            <li class="busy">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Lucius <strong>Cashmere</strong></span>
+	                                        <small><i class="fa fa-map-marker"></i> Wien, Austria</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                        </ul>
+
+	                        <h6><strong>Offline</strong> Users</h6>
+
+	                        <ul>
+	                            <li class="offline">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Dell <strong>MacApple</strong></span>
+	                                        <small><i class="fa fa-map-marker"></i> Paris, France</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+
+	                    <div role="tabpanel" class="tab-pane" id="history">
+	                        <h6><strong>Chat</strong> History</h6>
+
+	                        <ul>
+	                            <li class="online">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Ing. Imrich <strong>Kamarel</strong></span>
+	                                        <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                            <li class="busy">
+	                                <div class="media">
+
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <span class="badge bg-lightred unread">3</span>
+
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Arnold <strong>Karlsberg</strong></span>
+	                                        <small>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                            <li class="offline">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Peter <strong>Kay</strong></span>
+	                                        <small>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit </small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+	                        </ul>
+	                    </div>
+
+	                    <div role="tabpanel" class="tab-pane" id="friends">
+	                        <h6><strong>Friends</strong> List</h6>
+	                        <ul>
+	                            <li class="online">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <span class="badge bg-lightred unread">3</span>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Arnold <strong>Karlsberg</strong></span>
+	                                        <small><i class="fa fa-map-marker"></i> Bratislava, Slovakia</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                            <li class="offline">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Anna <strong>Opichia</strong></span>
+	                                        <small><i class="fa fa-map-marker"></i> Budapest, Hungary</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                            <li class="busy">
+	                                <div class="media">
+	                                    <a class="pull-left thumb thumb-sm" href="#">
+	                                        <img class="media-object img-circle" src="{% static "images/no-avatar.jpg" %}" alt>
+	                                    </a>
+	                                    <div class="media-body">
+	                                        <span class="media-heading">Lucius <strong>Cashmere</strong></span>
+	                                        <small><i class="fa fa-map-marker"></i> Wien, Austria</small>
+	                                        <span class="badge badge-outline status"></span>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                        </ul>
+	                    </div>
+
+	                    <div role="tabpanel" class="tab-pane" id="settings">
+	                        <h6><strong>Chat</strong> Settings</h6>
+
+	                        <ul class="settings">
+	                            <li>
+	                                <div class="form-group">
+	                                    <label class="col-xs-8 control-label">Show Offline Users</label>
+	                                    <div class="col-xs-4 control-label">
+	                                        <div class="onoffswitch greensea">
+	                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="show-offline" checked="">
+	                                            <label class="onoffswitch-label" for="show-offline">
+	                                                <span class="onoffswitch-inner"></span>
+	                                                <span class="onoffswitch-switch"></span>
+	                                            </label>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                            <li>
+	                                <div class="form-group">
+	                                    <label class="col-xs-8 control-label">Show Fullname</label>
+	                                    <div class="col-xs-4 control-label">
+	                                        <div class="onoffswitch greensea">
+	                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="show-fullname">
+	                                            <label class="onoffswitch-label" for="show-fullname">
+	                                                <span class="onoffswitch-inner"></span>
+	                                                <span class="onoffswitch-switch"></span>
+	                                            </label>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </li>
+	               
+	                            <li>
+	                                <div class="form-group">
+	                                    <label class="col-xs-8 control-label">Show Undread Count</label>
+	                                    <div class="col-xs-4 control-label">
+	                                        <div class="onoffswitch greensea">
+	                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="show-unread" checked="">
+	                                            <label class="onoffswitch-label" for="show-unread">
+	                                                <span class="onoffswitch-inner"></span>
+	                                                <span class="onoffswitch-switch"></span>
+	                                            </label>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </li>
+
+	                        </ul>
+	                    </div>
+	                </div>
+	            </div>
+	        </aside>
+	        <!--/ RIGHTBAR Content -->
+        {% endblock %}
+    </div>
+    <!--/ CONTROLS Content -->
+{% endblock %}
+
+{% block page_content %}
+	<!-- ====================================================
+    ================= CONTENT ===============================
+    ===================================================== -->
+    <section id="content">
+        <div class="page page-fullwidth-layout">
+            <div class="pageheader">
+                <h2>{% block content_title %}{% if title %}{{ title }}{% endif %}{% endblock %} <span>{% block pretitle %}{% endblock %}</span></h2>
+
+                {% block breadcrumbs %}
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <a href="{% url 'admin:index' %}"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+                        </li>
+                        <li>
+                            {% if title %}{{ title }}{% endif %}
+                        </li>
+                    </ul>
+                </div>
+                {% endblock %}
+            </div>
+            <p class="lead">
+                <!-- MESSAGE -->
+                {% block messages %}
+                    {% if messages %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% for message in messages %}                    
+                            <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'warning' %}alert-warning{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissable">
+                                <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endblock messages %}
+                <!-- END MESSAGE -->
+            </p>
+            {% block content %}
+            {% block object-tools %}{% endblock %}
+            {{ content }}
+            {% endblock %}
+            {% block sidebar %}{% endblock %}
+        </div>
+    </section>
+    <!--/ CONTENT -->
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "admin/base.html" %}
+
+{% load i18n admin_static widgets %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu') }}
+{% endblock %}
+
+{% block extrastyle %}
+    <style type="text/css">
+        .btn-siabjo {
+            background-color: #e34724;
+            border-color: #e34724;
+            color: #fff;
+        }
+        .fa-siabjo-f::before, .fa-siabjo::before {
+            content: "S";
+        }
+        .has-error .input-group-addon {
+            border-color: #b64645 !important;
+        }
+       .has-error .form-control {
+            border-color: #b64645 #b64645 #b64645 #D5D5D5 !important;
+        }
+        .has-error .fa {
+            color: red !important;
+        }
+    </style>
+{% endblock %}
+
+{% block extrajs %}
+	{{ block.super }}
+	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+	<!-- ============================================
+    ============== Custom JavaScripts ===============
+    ============================================= -->
+    <script src="{% static "scripts/js/main.js" %}"></script>
+    <!--/ custom javascripts -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $('#id_username').attr('autocapitalize', 'off').focus();
+          {% with error_username=form.username.errors|length %}
+          $("#id_username").attr('placeholder', '{{form.username.label}}{% if not form.this_is_the_login_form.errors and error_username > 0 %} - {{ form.username.errors|striptags }}{% endif %}');
+          {% endwith %}
+          {% with error_password=form.password.errors|length %}
+          $("#id_password").attr('placeholder', '{{form.password.label}}{% if not form.this_is_the_login_form.errors and error_password > 0 %} - {{ form.password.errors|striptags }}{% endif %}');
+          {% endwith %}
+        })
+    </script>
+{% endblock %}
+
+{% block page_content %}	
+    <div class="page page-core page-login">
+        <div class="text-center"><h3 class="text-light text-white"><span class="text-lightred">S</span>IMPDU</h3></div>
+
+        {% if form.errors and not form.non_field_errors %}
+	        <div class="text-center">
+	        	<div class="alert alert-warning alert-dismissable">
+					<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+					<strong>Warning!</strong>
+					<p class="errornote">{% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}</p>
+				</div>
+	        </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+	        <div class="text-center">
+	        	<div class="alert alert-warning alert-dismissable">
+					<button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>
+					<strong>Warning!</strong>
+					{% for error in form.non_field_errors %}
+						<p class="errornote">{{ error }}</p>
+					{% endfor %}
+				</div>
+	        </div>
+        {% endif %}
+
+        <div class="container w-420 p-15 bg-white mt-40 text-center">
+            <h2 class="text-light text-greensea">Log In</h2>
+            <form name="form" class="form-validation mt-20" id="login-form" method="post" action="{{ app_path }}">
+            	{% csrf_token %}
+                <div class="form-group {% if not form.this_is_the_login_form.errors and form.username.errors %} has-error{% endif %}">
+                    <div class="">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="fa fa-user"></span>
+                            </div>
+                            {{form.username|addcls:"form-control"}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group {% if not form.this_is_the_login_form.errors and form.password.errors %} has-error{% endif %}">
+                    <div class="">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <span class="fa fa-lock"></span>
+                            </div>
+                            {{ form.password|addcls:"form-control" }}
+                        </div>
+                    </div>                    
+                </div>
+                <div class="form-group text-left mt-20">
+                    <button class="btn btn-greensea b-0 br-2 mr-5">{% trans 'Log in' %}</button>
+                    <label class="checkbox checkbox-custom-alt checkbox-custom-sm inline-block">
+                        <input type="checkbox"><i></i> Remember me
+                    </label>
+                    <a href="#" class="pull-right mt-10">Lupa Password?</a>
+                </div>
+            </form>
+
+            <hr class="b-3x">
+            <div class="social-login text-left">
+                <ul class="pull-right list-unstyled list-inline">
+                    <li class="p-0">
+                        <a title="Siabjo" class="btn btn-sm btn-siabjo b-0 btn-rounded-20" href="{% url 'login_cas' %}"><i class="fa fa-siabjo"></i></a>
+                    </li>
+                </ul>
+                <h5>Or login with</h5>
+            </div>
+            <div class="bg-slategray lt wrap-reset mt-40">
+                <p class="m-0">
+                    <a href="#" class="text-uppercase">Daftar Akun</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

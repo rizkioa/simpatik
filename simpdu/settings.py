@@ -25,18 +25,25 @@ SECRET_KEY = 'c^-$x(edvg3!dfpx^t0pf$*9n#v!#252dxgta-k+n)f*yf4&cd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = (
+    'suit',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'cas',
+    'loginas',
+    'master',
+    'accounts',
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,11 +62,17 @@ ROOT_URLCONF = 'simpdu.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.tz',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -70,14 +83,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'simpdu.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'simpdu',
+        'USER': 'simpdu',
+        'PASSWORD': '!QAZ@WSX',
+        'HOST': '127.0.0.1',
+        'PORT': '3306'
     }
 }
 
@@ -85,9 +101,9 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'id'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
@@ -95,8 +111,39 @@ USE_L10N = True
 
 USE_TZ = True
 
+# configuraton CAS
+CAS_SERVER_URL = "http://siabjo.kedirikab.go.id/cas/"
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'cas.backends.CASBackend',
+)
+
+CAS_LOGOUT_COMPLETELY = False
+CAS_PROVIDE_URL_TO_LOGOUT = True
+CAS_GATEWAY = True
+
+USE_X_FORWARDED_HOST = True
+
+# Djago Loginas
+CAN_LOGIN_AS = 'accounts.views.login_as'
+# End Django Loginas
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'files/static-collected/')
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files/media/')
+
+LOGIN_URL = '/admin/login/'
+
+AUTH_USER_MODEL = 'accounts.Account'

@@ -1,0 +1,128 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n %}
+
+{% block title %}Sinkronisasi Profil Data{% endblock %}
+{% block pretitle %}<span class="fa fa-cogs"></span>{% endblock %}
+{% block content_title %}
+	{% trans 'Sinkron Profil' %}
+{% endblock %}
+
+{% block breadcrumbs %}
+	<ul class="breadcrumb">
+		<li>
+			{% if user.is_staff %}
+				<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a> 
+			{% else %}
+				<a href="{% url 'useradmin:index' %}">{% trans 'Home' %}</a>
+			{% endif %}
+			<span class="divider">&raquo;</span>
+		</li>
+		<li class="active">{% trans 'Sinkronisasi Profil' %}</li>
+	</ul>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-5 col-sm-4 col-xs-5">
+			<form action="#" class="form-horizontal">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h3><span class="fa fa-user"></span> &nbsp; {{data.nama_lengkap}}</h3>
+						<p></p>
+						<div class="text-center" id="user_image">
+							<img src="{{ foto }}" class="img-thumbnail"/>
+						</div> 
+					</div>
+					<div class="panel-body form-group-separated">
+						<div class="form-group">
+							<label class="col-md-3 col-xs-5 control-label">{{ data.jenis_identitas }}</label>
+							<div class="col-md-9 col-xs-7">
+								<input type="text" value="{{ data.nomor_identitas }}" class="form-control" disabled/>
+							</div>
+						</div>
+						<div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">Pegawai</label>
+                            <div class="col-md-9 col-xs-7">
+                                <input type="text" value="{{ data.kategori_pegawai }}" class="form-control" disabled/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-xs-5 control-label">SKPD</label>
+                            <div class="col-md-9 col-xs-7">
+                                <input type="text" value="{{ data.nama_skpd }}" class="form-control" disabled/>
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-7 col-sm-8 col-xs-7">                
+            <form action="" class="form-horizontal" method="POST">
+                {% csrf_token %}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3><span class="fa fa-pencil"></span> Profil</h3>
+                    <p></p>
+                </div>
+                <div class="panel-body form-group-separated">
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Nama</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.nama_lengkap }}" class="form-control"disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Tempat Lahir</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.tempat_lahir }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Tanggal Lahir</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.tanggal_lahir }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Gelar Depan</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.gelar_depan }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Gelar Belakang</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.gelar_belakang }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Telepon</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.telephone }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">E-mail</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.email }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-xs-5 control-label">Alamat</label>
+                        <div class="col-md-9 col-xs-7">
+                            <input type="text" value="{{ data.alamat }}" class="form-control" disabled/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-xs-5">
+                            <input type='submit' class="btn btn-primary btn-rounded pull-right" value='{% trans "Save" %}'/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+            
+        </div>
+	</div>
+{% endblock %}
