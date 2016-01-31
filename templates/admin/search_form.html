@@ -20,13 +20,13 @@
                     	&nbsp;
 					    <span class="small quiet pull-right" style="padding-top: 5px;">
 						    {% blocktrans count counter=cl.result_count %}
-						    	<span class="badge bg-red">{{ counter }}</span> <span class="label bg-hotpink">result</span>{% plural %}span class="badge bg-red">{{ counter }}</span> <span class="label bg-hotpink">results</span>
+						    	<span class="badge bg-greensea">{{ counter }} result</span>{% plural %}<span class="badge bg-greensea">{{ counter }} results</span>
 						    {% endblocktrans %} 
-						    <span class="label bg-dutch">from</span>
+						    {% trans "from" %}
 						    <a href="?{% if cl.is_popup %}_popup=1{% endif %}">
 						    	{% if cl.show_full_result_count %}
 					    			{% blocktrans with full_result_count=cl.full_result_count %}
-					    				<span class="badge bg-red">{{ full_result_count }}</span> <span class="label bg-hotpink">total</span>
+					    				<span class="badge bg-greensea">{{ full_result_count }} total</span>
 					    			{% endblocktrans %}
 					    		{% else %}
 					    			{% trans "Show all" %}

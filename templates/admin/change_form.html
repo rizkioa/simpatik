@@ -1,0 +1,231 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls admin_static admin_modify %}
+
+{% block title %}{{ opts.verbose_name }}{% endblock %}
+{% block icotitle %}<i class="fa fa-pencil"></i>{% endblock %}
+{% block content_title %}
+    {% if add %} {% trans 'Add' %} {% else %} {% trans 'Edit' %} {% endif %} {{ opts.verbose_name }}    
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block extrascript %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    {{ media }}
+{% endblock %}
+
+{% block breadcrumbs %}
+	<div class="page-bar">
+	    <ul class="page-breadcrumb">
+	        <li>
+	            <a href="{% url 'admin:index' %}"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+	        </li>
+	        <li>
+	            <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+	        </li>
+	        <li>
+	            {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+	        </li>
+	        <li>
+	        	<a href="#">
+	            {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+	            </a>
+	        </li>
+	    </ul>
+	</div>
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">
+		.required label, label.required {
+		    font-weight: 600 !important;
+		}
+
+		div.form-row div.field-box{
+		    display: inline-block;
+		}
+		.clickable {
+		    display: inline-block;
+		    border-radius: 4px;
+		    cursor: pointer;
+		}
+	</style>
+{% endblock %}
+{% block bodyclass %}
+    {{ block.super }} {{ opts.app_label }}-{{ opts.object_name.lower }} change-form
+{% endblock %}
+
+{# block extrastyle #}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload.css" %}">
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css" %}">
+	<noscript><link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css" %}"></noscript>
+	<noscript><link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css" %}"></noscript>
+{# endblock #}
+
+{% block extrajs %}
+	{{ block.super }}
+	<script type="text/javascript">
+		var Suit = { $: $.noConflict() }; if (!$) $ = Suit.$; 
+
+		$(function(){
+			$('.clickable').on('click',function(){
+			    var effect = $(this).data('effect');
+			        $(this).closest('.panel')[effect]();
+				})
+		})
+	</script>
+	<script src="{% static 'suit/js/suit.js' %}"></script>
+{% endblock %}
+
+{% block extrajs_site %}
+	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+	<!-- ============================================
+    ============== Custom JavaScripts ===============
+    ============================================= -->
+    <script src="{% static "scripts/js/main.js" %}"></script>
+    <!--/ custom javascripts -->
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+	<div class="row">
+        <div class="col-md-12">
+        	<div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                    	&nbsp;
+                    	<span class="pull-right clickable" data-effect="fadeOut"><i class="fa fa-times"></i></span>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                	{% block form_top %}{% endblock %}
+                    {% if not has_delete_permission and not has_change_permission and add %}
+		                <div class="alert alert-danger">
+		                    Pastikan yang Anda inputkan benar, karena Anda <strong>HANYA</strong> dapat menambahkan data ini dan <strong>TIDAK</strong> dapat mengubah ataupun menghapus data yang telah Anda tambahkan. 
+		                </div>  
+		            {% elif not has_delete_permission and has_add_permission and add %}
+		                <div class="alert alert-danger">                    
+		                    Pastikan yang Anda inputkan benar, karena <strong>TIDAK</strong> dapat menghapus data ini. 
+		                </div>
+		            {% endif %}
+		            {% if errors %}
+		                <div class="alert alert-danger">
+		                    {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+		                    {{ adminform.form.non_field_errors }}
+		                </div>
+		            {% endif %} 
+		            <blockquote class="blockquote-success" style="margin-bottom: 0px;">
+                        <p>{% blocktrans %}Inputan dengan label yang memakai huruf <strong>tebal</strong> wajib diisi. {% endblocktrans %}</p>
+                        <p>Tekan tanda <img width="10" height="10" src="{% static "admin/img/icon_addlink.gif" %}" alt="Tambah Kegiatan Lainnya"> untuk menambahkan pilihan lainnya yg tidak tersedia dalam list pilihan.</p>
+                    </blockquote>			            
+                </div>                           
+            </div>
+
+            <section class="tile">
+            	<form class="form-horizontal" {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}
+            	<div class="tile-header dvd dvd-btm">
+                    <h1 class="custom-font">
+                    	{% if add %} <strong>{% trans 'Add' %}</strong> {{ opts.verbose_name }}{% else %} <strong>{% trans 'Edit' %}</strong> {{ original|truncatewords:"18" }}{% endif %}</h1>
+                    <ul class="controls">
+                    	{% block object-tools %}
+	                    	{% if change %}{% if not is_popup %}
+	                    	<li class="dropdown">
+	                    		<a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+	                                <i class="fa fa-list"></i>
+	                                <i class="fa fa-spinner fa-spin"></i>
+	                            </a>
+					            {% block object-tools-items %}
+			                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+			                    	{% if user.is_superuser %}
+				                        <li>
+					                        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+					                        <a href="{% add_preserved_filters history_url %}" class="historylink">{% trans "History" %}</a>
+				                        </li>
+				                    {% endif %}
+			                        {% if has_absolute_url %}<li><a href="{% url 'admin:view_on_site' content_type_id original.pk %}" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif%}
+			                        {% block extra-object-tools-items %}{% endblock %}
+			                    </ul>
+			                    {% endblock %}
+					        </li>
+					        {% endif %}{% endif %}
+			            {% endblock %}
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                <i class="fa fa-cog"></i>
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                <li>
+                                    <a class="tile-toggle" tabindex="0" role="button">
+                                        <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                        <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="tile-refresh" tabindex="0" role="button">
+                                        <i class="fa fa-refresh"></i> Refresh
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="tile-fullscreen" tabindex="0" role="button">
+                                        <i class="fa fa-expand"></i> Fullscreen
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tile-body">		    		
+		    			{% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1" />{% endif %}
+						{% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}" />{% endif %}
+
+						{% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+						              			
+			            {% block field_sets %}
+			                {% for fieldset in adminform %}
+			                    {% include "admin/includes/fieldset.html" %}
+			                {% endfor %}
+			                <br />
+			            {% endblock %}
+			            {% block after_field_sets %}{% endblock %}
+			            {% block inline_field_sets %}
+			            {% for inline_admin_formset in inline_admin_formsets %}
+			                {% include inline_admin_formset.opts.template %}
+			            {% endfor %}
+			            {% endblock %}
+			            {% block after_related_objects %}{% endblock %}
+			            <br />
+			            <br />
+			            {% block admin_change_form_document_ready %}
+						    <script type="text/javascript">
+						        (function($) {
+						            $(document).ready(function() {
+						                $('.add-another').click(function(e) {
+						                    e.preventDefault();
+						                    showAddAnotherPopup(this);
+						                });
+						                $('.related-lookup').click(function(e) {
+						                    e.preventDefault();
+						                    showRelatedObjectLookupPopup(this);
+						                });
+						            {% if adminform and add %}
+						                $('form#{{ opts.model_name }}_form :input:visible:enabled:first').focus()
+						            {% endif %}
+						            });
+						        })(django.jQuery);
+						    </script>
+						{% endblock %}
+			            {# JavaScript for prepopulated fields #}
+			            {% prepopulated_fields_js %}
+				</div>
+				<div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
+					{% block submit_buttons_bottom %}{% submit_row %}{% endblock %}
+				</div>
+				</form>
+			</section>
+		</div>
+	</div>
+</div>
+{% endblock %}

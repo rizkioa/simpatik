@@ -24,8 +24,8 @@ class AccountAdmin(UserAdmin):
 
 	fieldsets = (
 		(None, {'fields': ('nama_lengkap', 'username', 'password')}),
-		('Personal info', {'fields': ('tempat_lahir', 'tanggal_lahir','telephone', 'email','alamat','lintang','bujur', 'kewarganegaraan','foto',)}),
-		('Hak Akses', {'fields': ('groups', 'user_permissions', 'status', 'is_active','is_superuser','last_login', 'created_at', 'updated_at')}),
+		('Personal info', {'fields': ('tempat_lahir', 'tanggal_lahir','telephone', 'email','alamat', ('lintang','bujur'), 'kewarganegaraan','foto',)}),
+		('Hak Akses', {'fields': ('groups', 'user_permissions', 'status', 'is_active','is_admin','is_superuser','last_login', 'created_at', 'updated_at')}),
 	)
 	add_fieldsets = (
 		(None, {

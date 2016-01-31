@@ -1,6 +1,12 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_urls admin_static admin_list %}
 
+{% block title %}{{ cl.opts.verbose_name_plural|capfirst }}{% endblock %}
+{% block icotitle %}<i class="fa fa-list-alt"></i>{% endblock %}
+{% block content_title %}
+    Daftar {{ cl.opts.verbose_name_plural|capfirst }}
+{% endblock %}
+
 {% block extrastyle %}
 	{{ block.super }}
 	<link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
@@ -114,7 +120,7 @@
 	            <a href="{% url 'admin:index' %}"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
 	        </li>
 	        <li>
-	            <a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}"><i class="fa fa-list-alt"></i> {{ cl.opts.app_config.verbose_name }}</a>
+	            <a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}">{{ cl.opts.app_config.verbose_name }}</a>
 	        </li>
 	        <li>
 	            {{ cl.opts.verbose_name_plural|capfirst }}
@@ -123,6 +129,8 @@
 	</div>
 	{% endif %}
 {% endblock %}
+
+{% block bodyclass %}{{ block.super }} {{ cl.opts.app_label }} {{ cl.opts.app_label }}-{{ cl.opts.model_name }} change-list{% endblock %}
 
 {% block content %}
 <div id="content-main">
@@ -219,10 +227,7 @@
 		                                    {% block custom_result_list %}
 		                                        {% result_list cl %}
 		                                    {% endblock %}
-		                                {% endblock %}
-		                                <div class="text-center">
-		                                    {% block pagination %}{% pagination cl %}{% endblock %}
-		                                </div>
+		                                {% endblock %}		                                
 		                            </form>
 		                    </div>
 		                    <!-- /.table-responsive -->
@@ -230,6 +235,11 @@
 		                <!-- /.panel-body -->
 		            </div>
 		            <!-- /.panel -->
+	            </div>
+	            <div class="tile-footer text-center bg-tr-black lter dvd dvd-top">
+	            	<div class="text-center">
+                        {% block pagination %}{% pagination cl %}{% endblock %}
+                    </div>
 	            </div>	            
             </section>
         </div>

@@ -85,7 +85,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
 	foto = ImageField(upload_to=path_and_rename, max_length=255, null=True, blank=True)
 	is_active = models.BooleanField(default=True, verbose_name="Apakah Active?")
-	is_admin = models.BooleanField(default=False, verbose_name="Apakah Admin Sistem?")
+	is_admin = models.BooleanField(default=False, verbose_name="Apakah Admin?")
 
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
 	created_at = models.DateTimeField(editable=False)

@@ -568,7 +568,7 @@
     <section id="content">
         <div class="page page-fullwidth-layout">
             <div class="pageheader">
-                <h2>{% block content_title %}{% if title %}{{ title }}{% endif %}{% endblock %} <span>{% block pretitle %}{% endblock %}</span></h2>
+                <h2>{% block icotitle %}{% endblock %}{% block content_title %}{% if title %}{{ title }}{% endif %}{% endblock %} <span>{% block pretitle %}{% endblock %}</span></h2>
 
                 {% block breadcrumbs %}
                 <div class="page-bar">

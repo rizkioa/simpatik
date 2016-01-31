@@ -1,0 +1,56 @@
+{% load widgets %}
+
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}
+        <h2 class="legend">{{ fieldset.name }}
+            {% if fieldset.description %}
+                <span class="description">{{ fieldset.description|safe }}</span>
+            {% endif %}
+        </h2>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row form-group {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if field.field.is_hidden %} field-hidden{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                {% if not line.fields|length_is:'1' and forloop.first %}
+                    <label class="{% if field.field.field.required %}required{% endif %} col-sm-3 control-label" for="{{ field.field.auto_id }}">{{ field.field.label }}</label>
+                {% endif %}
+                <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                        {% if field.field.help_text %}
+                            <p class="help">{{ field.field.help_text|safe }}</p>
+                        {% endif %}
+                    {% else %}
+                        {% if field.field.is_hidden %}
+                            {{ field.field }}
+                        {% else %}
+                            {% if not line.fields|length_is:'1' and forloop.first %}
+                            {% else %}
+                                <label class="{% if field.field.field.required %}required{% endif %} col-sm-3 control-label" for="{{ field.field.auto_id }}">{{ field.field.label }}</label>
+                            {% endif %}
+                            <div class="col-sm-9">
+                                {% if field.is_readonly %}
+                                    <p>{{ field.contents|linebreaksbr }}</p>
+                                {% else %}
+                                    {% if field.field|is_readonlypassword %}
+                                        {{field.field|atribut:"disabled:disabled|class:form-control"}}
+                                    {% elif field.field|is_file %}
+                                        {{ field.field }}
+                                    {% else %}
+                                        {{ field.field|addcls:"form-control" }}
+                                    {% endif %}
+                                {% endif %}
+                                {% if field.field.help_text %}
+                                    <p class="help">{{ field.field.help_text|safe }}</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                   
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>

@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls access %}
+
+{% block extra-object-tools-items %}
+    {% if user.is_superuser or user|has_group:"Admin Sistem" %}
+    <li>
+        {% url 'admin:kepegawaian_userpegawai_change' original.pk as change_password_url %}
+        <a href="{{ change_password_url }}password" class="change-password">{% trans "Change password" %}</a>
+    </li>
+    {% endif %}
+    {% if user.is_superuser %}
+        <li>
+            {% url 'loginas-user-login' original.pk as login_sebagai_url %}
+            <a href="{{ login_sebagai_url }}" class="loginas">{% trans "Login Sebagai" %} {{ original.nama_lengkap }}</a>
+        </li>
+    {% endif %}
+{% endblock %}
