@@ -1,0 +1,72 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+
+{% block icotitle %}<i class="fa fa-history"></i>&nbsp;{% endblock %}
+
+{% block breadcrumbs %}
+	{% if not is_popup %}
+	<div class="page-bar">
+	    <ul class="page-breadcrumb">
+	        <li>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+	        </li>
+	        <li>
+	            <a href="{% url 'admin:app_list' app_label=opts.app_label %}" class="link-effect link-effect-21">{{ opts.app_config.verbose_name }}</a>
+	        </li>
+	        <li>
+	            <a href="{% url opts|admin_urlname:'changelist' %}" class="link-effect link-effect-21">{{ module_name }}</a>
+	        </li>
+	        <li>
+	        	<a href="{% url opts|admin_urlname:'change' object.pk|admin_urlquote %}" class="link-effect link-effect-21">
+	            {{ object|truncatewords:"18" }}
+	            </a>
+	        </li>
+	        <li>
+	        	<a href="#" class="link-effect">
+	            {% trans 'History' %}
+	            </a>
+	        </li>
+	    </ul>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default panel-filled">
+		    <div class="panel-heading">
+	            <h3 class="panel-title custom-font">{{ object|truncatewords:"18" }}</h3>
+	            <span>{% trans 'History' %}</span>
+		    </div>
+		    <div class="panel-body panel-body-table" style="">
+		        <div class="table-responsive">
+				{% if action_list %}
+				    <table id="change-history" class="table table-bordered table-condensed table-striped">
+				        <thead>
+				        <tr>
+				            <th scope="col">{% trans 'Date/time' %}</th>
+				            <th scope="col">{% trans 'User' %}</th>
+				            <th scope="col">{% trans 'Action' %}</th>
+				        </tr>
+				        </thead>
+				        <tbody>
+				        {% for action in action_list %}
+				        <tr>
+				            <th scope="row">{{ action.action_time|date:"DATETIME_FORMAT" }}</th>
+				            <td>{{ action.user.get_username }}{% if action.user.get_full_name %} ({{ action.user.get_full_name }}){% endif %}</td>
+				            <td>{{ action.change_message }}</td>
+				        </tr>
+				        {% endfor %}
+				        </tbody>
+				    </table>
+				{% else %}
+				    <p>{% trans "This object doesn't have a change history. It probably wasn't added via this admin site." %}</p>
+				{% endif %}
+				</div>
+		    </div>
+		</div>
+	</div>
+</div>
+{% endblock %}

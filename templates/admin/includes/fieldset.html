@@ -2,48 +2,92 @@
 
 <fieldset class="module aligned {{ fieldset.classes }}">
     {% if fieldset.name %}
-        <h2 class="legend">{{ fieldset.name }}
-            {% if fieldset.description %}
-                <span class="description">{{ fieldset.description|safe }}</span>
-            {% endif %}
-        </h2>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title custom-font"><strong>{{ fieldset.name }}</strong> 
+                    {% if fieldset.description %}
+                        : <span class="description">{{ fieldset.description|safe }}</span>
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="panel-body">
     {% endif %}
     {% for line in fieldset %}
         <div class="form-row form-group {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if field.field.is_hidden %} field-hidden{% endif %}{% endfor %}">
-            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            
             {% for field in line %}
                 {% if not line.fields|length_is:'1' and forloop.first %}
-                    <label class="{% if field.field.field.required %}required{% endif %} col-sm-3 control-label" for="{{ field.field.auto_id }}">{{ field.field.label }}</label>
+                    <label class="{% if field.field.field.required %}required{% endif %} col-sm-2 control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
                 {% endif %}
                 <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
-                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
                     {% if field.is_checkbox %}
-                        {{ field.field }}{{ field.label_tag }}
-                        {% if field.field.help_text %}
-                            <p class="help">{{ field.field.help_text|safe }}</p>
-                        {% endif %}
+                        <label class="{% if field.field.field.required %}required{% endif %} col-sm-2 control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
+                        <div class="col-sm-10">
+                            <div class="onoffswitch greensea inline-block">
+                                {{ field.field|addcls:"onoffswitch-checkbox" }}
+                                <label class="onoffswitch-label" for="{{ field.field.auto_id }}">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                            {% if field.field.help_text %}
+                                <span class="help-block mb-0">{{ field.field.help_text|safe }}</span>
+                            {% endif %}
+                        </div>
                     {% else %}
                         {% if field.field.is_hidden %}
                             {{ field.field }}
                         {% else %}
                             {% if not line.fields|length_is:'1' and forloop.first %}
                             {% else %}
-                                <label class="{% if field.field.field.required %}required{% endif %} col-sm-3 control-label" for="{{ field.field.auto_id }}">{{ field.field.label }}</label>
+                                <label class="{% if field.field.field.required %}required{% endif %} col-sm-2 control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
                             {% endif %}
-                            <div class="col-sm-9">
+                            <div class="col-sm-10">
                                 {% if field.is_readonly %}
                                     <p>{{ field.contents|linebreaksbr }}</p>
                                 {% else %}
                                     {% if field.field|is_readonlypassword %}
                                         {{field.field|atribut:"disabled:disabled|class:form-control"}}
+                                    {# File #}
                                     {% elif field.field|is_file %}
-                                        {{ field.field }}
-                                    {% else %}
-                                        {{ field.field|addcls:"form-control" }}
+                                        {% if field.field.errors %}
+                                            {{ field.field|addcls:"parsley-error" }}
+                                            <ul id="parsley-id-{{ field.field.auto_id }}" class="parsley-errors-list">
+                                                {% for error in field.field.errors %}
+                                                        <li><strong>{{ error|escape }}</strong></li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            {{ field.field }}
+                                        {% endif %}
+                                    {# Combo Box #}
+                                    {% elif field.field|is_select %}
+                                        {% if field.field.errors %}
+                                            {{ field.field|addcls:"chosen-select parsley-error" }}
+                                            <ul id="parsley-id-{{ field.field.auto_id }}" class="parsley-errors-list">
+                                                {% for error in field.field.errors %}
+                                                        <li><strong>{{ error|escape }}</strong></li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            {{ field.field|addcls:"chosen-select" }}
+                                        {% endif %}
+                                    {# Lainnya #}
+                                    {% else %}                          
+                                        {% if field.field.errors %}
+                                            {{ field.field|addcls:"form-control parsley-error" }}
+                                            <ul id="parsley-id-{{ field.field.auto_id }}" class="parsley-errors-list">
+                                                {% for error in field.field.errors %}
+                                                        <li><strong>{{ error|escape }}</strong></li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            {{ field.field|addcls:"form-control" }}
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                                 {% if field.field.help_text %}
-                                    <p class="help">{{ field.field.help_text|safe }}</p>
+                                    <span class="help-block mb-0">{{ field.field.help_text|safe }}</span>
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -53,4 +97,8 @@
             {% endfor %}
         </div>
     {% endfor %}
+    {% if fieldset.name %}
+    </div> <!-- end of panel body -->
+    </div> <!-- end of panel -->
+    {% endif %}
 </fieldset>

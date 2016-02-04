@@ -1,3 +1,4 @@
+from accounts.forms import AccountChangeForm
 from accounts.models import Account
 from simpdu.sites import usersite
 from accounts.utils import save_sync_siabjo
@@ -15,6 +16,7 @@ from master.utils import get_param
 import drest
 
 class AccountAdmin(UserAdmin):
+	form = AccountChangeForm
 	list_display = ('username', 'nama_lengkap', 'is_admin', 'login_as')
 	list_filter = ('is_admin', 'status', 'is_active')
 	search_fields = ('username', 'nama_lengkap', 'alamat', 'telephone', 'email', 'tempat_lahir',)

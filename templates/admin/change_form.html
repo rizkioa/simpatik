@@ -2,7 +2,7 @@
 {% load i18n admin_urls admin_static admin_modify %}
 
 {% block title %}{{ opts.verbose_name }}{% endblock %}
-{% block icotitle %}<i class="fa fa-pencil"></i>{% endblock %}
+{% block icotitle %}<i class="fa fa-pencil"></i>&nbsp;{% endblock %}
 {% block content_title %}
     {% if add %} {% trans 'Add' %} {% else %} {% trans 'Edit' %} {% endif %} {{ opts.verbose_name }}    
 {% endblock %}
@@ -16,53 +16,109 @@
 {% endblock %}
 
 {% block breadcrumbs %}
+	{% if not is_popup %}
 	<div class="page-bar">
 	    <ul class="page-breadcrumb">
 	        <li>
-	            <a href="{% url 'admin:index' %}"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
 	        </li>
 	        <li>
-	            <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+	            <a href="{% url 'admin:app_list' app_label=opts.app_label %}" class="link-effect link-effect-21">{{ opts.app_config.verbose_name }}</a>
 	        </li>
 	        <li>
-	            {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+	            {% if has_change_permission %}<a href="{% url opts|admin_urlname:'changelist' %}" class="link-effect link-effect-21">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}<a href="#" class="link-effect">{{ opts.verbose_name_plural|capfirst }}</a>{% endif %}
 	        </li>
 	        <li>
-	        	<a href="#">
+	        	<a href="#" class="link-effect">
 	            {% if add %}{% trans 'Add' %} {{ opts.verbose_name }}{% else %}{{ original|truncatewords:"18" }}{% endif %}
 	            </a>
 	        </li>
 	    </ul>
 	</div>
+	{% endif %}
 {% endblock %}
 
 {% block custom_style %}
-	<style type="text/css">
-		.required label, label.required {
-		    font-weight: 600 !important;
-		}
-
+	<style type="text/css">	
 		div.form-row div.field-box{
 		    display: inline-block;
+		}
+
+		div.errors {
+		    background: #ffc none repeat scroll 0 0;
+		    padding-top: 15px;
+		    padding-bottom: 10px;
+		    border: 1px solid #ff7b76;
+		}
+		div.errors label{
+			color: #ff7b76;
+		}
+
+		.checkbox-row .help-block{
+		    display: inline-block;
+		    margin-left: 5px;
+		    vertical-align: super;
 		}
 		.clickable {
 		    display: inline-block;
 		    border-radius: 4px;
 		    cursor: pointer;
 		}
+		.submit-row p {
+		    margin: 0.3em;
+		}
+		.submit-row p.deletelink-box {
+		    float: left;
+		}
+		a.deletelink:link, a.deletelink:visited {
+		    color: #fff !important;
+		    text-decoration: none;
+		}
+		.module h2, .module caption, .inline-group h2 {
+		    background: url("{% static "images/default-bg.gif" %}") repeat-x scroll left top #7ca0c7;
+		    color: white;
+		    font-size: 11px;
+		    font-weight: bold;
+		    margin: 0;
+		    padding: 8px 12px;
+		    text-align: left;
+		}
+		.selector-chosen select{
+			height: 274px;
+		}
+		.selector select, .selector .h2, .selector-filter input{
+		    border: 1px solid #dbe0e2;
+		}
+		.selector-filter label{
+			margin: 0;
+		}
+		.selector .selector-filter {
+			border-color: #dbe0e2;
+		}
+		a.selector-chooseall {
+		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll right -258px;
+		}
+		a.active.selector-chooseall {
+		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll right -285px;
+		}
+		a.selector-clearall {
+		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll left -207px;
+		}
+		a.active.selector-clearall {
+		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll left -233px;
+		}
+
 	</style>
 {% endblock %}
 {% block bodyclass %}
     {{ block.super }} {{ opts.app_label }}-{{ opts.object_name.lower }} change-form
 {% endblock %}
 
-{# block extrastyle #}
+{% block extrastyle %}
 	{{ block.super }}
-	<link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload.css" %}">
-	<link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css" %}">
-	<noscript><link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css" %}"></noscript>
-	<noscript><link rel="stylesheet" href="{% static "scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css" %}"></noscript>
-{# endblock #}
+	<link rel="stylesheet" type="text/css" href="{% static "admin/css/widgets.css" %}" />
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
+{% endblock %}
 
 {% block extrajs %}
 	{{ block.super }}
@@ -74,6 +130,11 @@
 			    var effect = $(this).data('effect');
 			        $(this).closest('.panel')[effect]();
 				})
+			$('.parsley-errors-list').animate({
+			    opacity: 0.95,
+			    padding: "5px 0 0",
+			}, 1000, function() {
+			});
 		})
 	</script>
 	<script src="{% static 'suit/js/suit.js' %}"></script>
@@ -81,6 +142,7 @@
 
 {% block extrajs_site %}
 	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
 	<!-- ============================================
     ============== Custom JavaScripts ===============
     ============================================= -->
@@ -92,10 +154,10 @@
 <div id="content-main">
 	<div class="row">
         <div class="col-md-12">
-        	<div class="panel panel-primary">
+        	<div class="panel panel-darkgray panel-filled">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                    	&nbsp;
+                    	Perhatian..
                     	<span class="pull-right clickable" data-effect="fadeOut"><i class="fa fa-times"></i></span>
                     </h3>
                 </div>
@@ -112,13 +174,14 @@
 		            {% endif %}
 		            {% if errors %}
 		                <div class="alert alert-danger">
-		                    {% blocktrans count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+		                    {% blocktrans count counter=errors|length %}Harap perbaiki kesalahan yang ada di bawah ini.{% plural %}Harap perbaiki kesalahan yang ada di bawah ini.{% endblocktrans %}
 		                    {{ adminform.form.non_field_errors }}
 		                </div>
 		            {% endif %} 
-		            <blockquote class="blockquote-success" style="margin-bottom: 0px;">
+		            <blockquote class="blockquote-success custom-font" style="margin-bottom: 0px;">
                         <p>{% blocktrans %}Inputan dengan label yang memakai huruf <strong>tebal</strong> wajib diisi. {% endblocktrans %}</p>
-                        <p>Tekan tanda <img width="10" height="10" src="{% static "admin/img/icon_addlink.gif" %}" alt="Tambah Kegiatan Lainnya"> untuk menambahkan pilihan lainnya yg tidak tersedia dalam list pilihan.</p>
+                        <p>Tekan tanda <img width="10" height="10" src="{% static "admin/img/icon_addlink.gif" %}" alt="Tambah Kegiatan Lainnya"> untuk menambahkan item lainnya yg tidak tersedia dalam list pilihan.</p>
+                        <p>Tekan tanda <img width="10" height="10" src="{% static "admin/img/icon_changelink.gif" %}" alt="Tambah Kegiatan Lainnya"> untuk mengubah item dalam list pilihan.</p>
                     </blockquote>			            
                 </div>                           
             </div>
@@ -196,8 +259,6 @@
 			            {% endfor %}
 			            {% endblock %}
 			            {% block after_related_objects %}{% endblock %}
-			            <br />
-			            <br />
 			            {% block admin_change_form_document_ready %}
 						    <script type="text/javascript">
 						        (function($) {

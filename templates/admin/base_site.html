@@ -6,6 +6,9 @@
 	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu') }}
 {% endblock %}
 
+{% block extrastyle %}
+    <link rel="stylesheet" href="{% static "styles/css/custom_main.css" %}">
+{% endblock %}
 
 {% block extrajs %}
 	{{ block.super }}
@@ -568,16 +571,18 @@
     <section id="content">
         <div class="page page-fullwidth-layout">
             <div class="pageheader">
-                <h2>{% block icotitle %}{% endblock %}{% block content_title %}{% if title %}{{ title }}{% endif %}{% endblock %} <span>{% block pretitle %}{% endblock %}</span></h2>
+                <h2>{% block icotitle %}<i class="fa fa-desktop"></i>&nbsp;{% endblock %}{% block content_title %}{% if title %}{{ title }}{% endif %}{% endblock %} <span>{% block pretitle %}{% endblock %}</span></h2>
 
                 {% block breadcrumbs %}
                 <div class="page-bar">
                     <ul class="page-breadcrumb">
                         <li>
-                            <a href="{% url 'admin:index' %}"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+                            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
                         </li>
                         <li>
+                            <a href="#" class="link-effect">
                             {% if title %}{{ title }}{% endif %}
+                            </a>
                         </li>
                     </ul>
                 </div>

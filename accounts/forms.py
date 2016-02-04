@@ -1,6 +1,15 @@
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
 from collections import OrderedDict
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserChangeForm
+
+class AccountChangeForm(UserChangeForm):
+
+	class Meta:
+		fields = '__all__'
+
+	def clean_email(self):
+		return self.cleaned_data['email'] or None
 
 class CustomSetPasswordForm(forms.Form):
 	"""

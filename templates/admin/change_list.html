@@ -2,7 +2,7 @@
 {% load i18n admin_urls admin_static admin_list %}
 
 {% block title %}{{ cl.opts.verbose_name_plural|capfirst }}{% endblock %}
-{% block icotitle %}<i class="fa fa-list-alt"></i>{% endblock %}
+{% block icotitle %}<i class="fa fa-list-alt"></i>&nbsp;{% endblock %}
 {% block content_title %}
     Daftar {{ cl.opts.verbose_name_plural|capfirst }}
 {% endblock %}
@@ -111,19 +111,20 @@
     <!--/ custom javascripts -->
 {% endblock %}
 
-
 {% block breadcrumbs %}
 	{% if not is_popup %}
 	<div class="page-bar">
 	    <ul class="page-breadcrumb">
 	        <li>
-	            <a href="{% url 'admin:index' %}"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
 	        </li>
 	        <li>
-	            <a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}">{{ cl.opts.app_config.verbose_name }}</a>
+	        	<a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}" class="link-effect link-effect-21">{{ cl.opts.app_config.verbose_name }}</a>
 	        </li>
 	        <li>
+	        	<a href="#" class="link-effect">
 	            {{ cl.opts.verbose_name_plural|capfirst }}
+	            </a>
 	        </li>
 	    </ul>
 	</div>
@@ -204,37 +205,38 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="remove" title="Tutup"><a class="tile-close" tabindex="0" role="button"><i class="fa fa-times"></i></a></li>
                     </ul>
                 </div>
                 <div class="tile-body p-0">
-		            <div class="panel panel-default">
-		                <div class="panel-heading">
-		                    {% block custom_action %}
-                                {% if action_form and cl.full_result_count %}
-                                    <div style="margin-bottom: 0px;">{% admin_actions %}</div>
-                                {% endif %}
-                            {% endblock %}
-		                </div>
-		                <!-- /.panel-heading -->
-		                <div class="panel-body">
-		                    <div class="table-responsive" style="overflow: auto;">
-		                            <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-		                                {% if cl.formset %}
-		                                    <div>{{ cl.formset.management_form }}</div>
-		                                {% endif %}
-		                                {% block result_list %}		                                    
-		                                    {% block custom_result_list %}
-		                                        {% result_list cl %}
-		                                    {% endblock %}
-		                                {% endblock %}		                                
-		                            </form>
-		                    </div>
-		                    <!-- /.table-responsive -->
-		                </div>
-		                <!-- /.panel-body -->
-		            </div>
-		            <!-- /.panel -->
+	                <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+			            <div class="panel panel-default">
+			                <div class="panel-heading">
+			                    {% block custom_action %}
+	                                {% if action_form and cl.full_result_count %}
+	                                    <div style="margin-bottom: 0px;">{% admin_actions %}</div>
+	                                {% endif %}
+	                            {% endblock %}
+			                </div>
+			                <!-- /.panel-heading -->
+			                <div class="panel-body">
+			                    <div class="table-responsive" style="overflow: auto;">
+			                            
+			                                {% if cl.formset %}
+			                                    <div>{{ cl.formset.management_form }}</div>
+			                                {% endif %}
+			                                {% block result_list %}		                                    
+			                                    {% block custom_result_list %}
+			                                        {% result_list cl %}
+			                                    {% endblock %}
+			                                {% endblock %}		                                
+			                            
+			                    </div>
+			                    <!-- /.table-responsive -->
+			                </div>
+			                <!-- /.panel-body -->
+			            </div>
+			            <!-- /.panel -->
+			        </form>
 	            </div>
 	            <div class="tile-footer text-center bg-tr-black lter dvd dvd-top">
 	            	<div class="text-center">

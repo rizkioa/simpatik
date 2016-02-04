@@ -2740,7 +2740,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   right: 0;
   bottom: 0;
   width: auto;
-  left: 250px;
+  left: 220px;
   padding-left: 0;
   padding-top: 0;
   z-index: 1;
@@ -2815,7 +2815,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 
 #header .branding {
   background-color: #493d55;
-  width: 250px;
+  width: 220px;
   height: 45px;
   float: left;
   padding: 0 15px;
@@ -3215,7 +3215,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 }
 
 #sidebar {
-  width: 250px;
+  width: 220px;
   padding: 0;
   background-color: #493d55;
   z-index: 21;
