@@ -1,0 +1,7 @@
+{% load i18n admin_tools_menu_tags %}
+{% if menu.children %}
+	{% for item in menu.children %}
+		{% admin_tools_render_menu_item item 0 %}
+	{% endfor %}
+{% endif %}
+			

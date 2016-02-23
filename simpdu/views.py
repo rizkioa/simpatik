@@ -4,7 +4,6 @@ from django.contrib.admin import site
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-
 @login_required
 def admin_home(request):
 	if not request.user.is_admin:

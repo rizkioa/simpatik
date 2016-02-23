@@ -18,3 +18,16 @@
     text-transform: inherit;
     vertical-align: middle;
 }
+
+.footer {
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    background-color: #493d55;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+.appWrapper.popup #content {
+    left: 0 !important;
+}

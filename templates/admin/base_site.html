@@ -1,13 +1,18 @@
 {% extends "admin/base.html" %}
 
-{% load i18n admin_static %}
+{% load i18n admin_static admin_tools_menu_tags %}
 
 {% block title %}
 	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu') }}
 {% endblock %}
 
 {% block extrastyle %}
-    <link rel="stylesheet" href="{% static "styles/css/custom_main.css" %}">
+    <link rel="stylesheet" href="{% static "styles/css/main_site.css" %}">
+    <style type="text/css">
+        #header .list-group-item {
+            display: inline-flex;
+        }
+    </style>
 {% endblock %}
 
 {% block extrajs %}
@@ -131,7 +136,44 @@
             {% block usertools %}
             <ul class="nav-right pull-right list-inline">
                 {% if has_permission %}
-
+                <li class="dropdown messages">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="" aria-expanded="false">
+                        <i class="fa fa-envelope"></i>
+                        <span class="badge bg-lightred">4</span>
+                    </a>
+                    <div role="menu" class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInDown">
+                        <div class="panel-heading">
+                            You have <strong>4</strong> messages
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a class="media" href="#">
+                                    <span class="pull-left media-object thumb thumb-sm">
+                                        <img class="img-circle" alt="" src="{% static "images/no-avatar.jpg" %}">
+                                    </span>
+                                    <div class="media-body">
+                                        <span class="block">Imrich sent you a message</span>
+                                        <small class="text-muted">12 minutes ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="media" href="#">
+                                    <span class="pull-left media-object  thumb thumb-sm">
+                                        <img class="img-circle" alt="" src="{% static "images/no-avatar.jpg" %}">
+                                    </span>
+                                    <div class="media-body">
+                                        <span class="block">Ken sent you a message</span>
+                                        <small class="text-muted">3 hours ago</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="panel-footer">
+                            <a href="#">Show all messages <i class="pull-right fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                </li>
                 <li class="dropdown nav-profile">
                     <a href class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{% static "images/no-avatar.jpg" %}" alt="" class="img-circle size-30x30">
@@ -218,81 +260,11 @@
 	        <aside id="sidebar">
 	            <div id="sidebar-wrap">
 	                <div class="panel-group slim-scroll" role="tablist">
-	                    <div class="panel panel-default">
-	                        <div class="panel-heading" role="tab">
-	                            <h4 class="panel-title">
-	                                <a data-toggle="collapse" href="#sidebarNav">
-	                                    Menu Navigasi <i class="fa fa-angle-up"></i>
-	                                </a>
-	                            </h4>
-	                        </div>
-	                        <div id="sidebarNav" class="panel-collapse collapse in" role="tabpanel">
-	                            <div class="panel-body">
-	                                <!-- ===================================================
-	                                ================= NAVIGATION Content ===================
-	                                ==================================================== -->
-	                                <ul id="navigation">
-	                                    <li><a href="index.html"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a></li>
-	                                    <li>
-	                                        <a href="#"><i class="fa fa-envelope-o"></i> <span>Mail</span> <span class="badge bg-lightred">6</span></a>
-	                                        <ul>
-	                                            <li><a href="mail-inbox.html"><i class="fa fa-caret-right"></i> Inbox</a></li>
-	                                            <li><a href="mail-compose.html"><i class="fa fa-caret-right"></i> Compose Mail</a></li>
-	                                            <li><a href="mail-single.html"><i class="fa fa-caret-right"></i> Single Mail</a></li>
-	                                        </ul>
-	                                    </li>
-	                                    <li>
-	                                        <a href="#"><i class="fa fa-map-marker"></i> <span>Maps</span></a>
-	                                        <ul>
-	                                            <li><a href="maps-vector.html"><i class="fa fa-caret-right"></i> Vector Maps</a></li>
-	                                            <li><a href="maps-google.html"><i class="fa fa-caret-right"></i> Google Maps</a></li>
-	                                        </ul>
-	                                    </li>
-
-	                                    <li>
-	                                        <a href="#"><i class="fa fa-magic"></i> <span>Menu Levels</span></a>
-	                                        <ul>
-	                                            <li>
-	                                                <a href="#"><i class="fa fa-caret-right"></i> Menu Level 1.1</a>
-	                                                <ul>
-	                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.1</a></li>
-	                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.2</a></li>
-	                                                    <li>
-	                                                        <a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.3</a>
-	                                                        <ul>
-	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.1</a></li>
-	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.2</a></li>
-	                                                        </ul>
-	                                                    </li>
-	                                                </ul>
-	                                            </li>
-	                                            <li>
-	                                                <a href="#"><i class="fa fa-caret-right"></i> Menu Level 1.2</a>
-	                                                <ul>
-	                                                    <li>
-	                                                        <a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.1</a>
-	                                                        <ul>
-	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.1</a></li>
-	                                                            <li>
-	                                                                <a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.2</a>
-	                                                                <ul>
-	                                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 4.1</a></li>
-	                                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 4.2</a></li>
-	                                                                </ul>
-	                                                            </li>
-	                                                            <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 3.3</a></li>
-	                                                        </ul>
-	                                                    </li>
-	                                                    <li><a href="#"><i class="fa fa-caret-right"></i> Menu Level 2.2</a></li>
-	                                                </ul>
-	                                            </li>
-	                                        </ul>
-	                                    </li>
-	                                </ul>
-	                                <!--/ NAVIGATION Content -->
-	                            </div>
-	                        </div>
-	                    </div>
+                        {% if user.is_active and user.is_staff %}
+                            {% if not is_popup %}
+                                {% admin_tools_render_menu %}
+                            {% endif %}
+                        {% endif %}
 	                    <div class="panel charts panel-default">
 	                        <div class="panel-heading" role="tab">
 	                            <h4 class="panel-title">
@@ -316,7 +288,7 @@
 	                                            Loading...</span>
 	                                        </a>
 	                                        <div class="media-body">
-	                                            This week sales
+	                                            Ijin Masuk Minggu Ini
 	                                            <h4 class="media-heading">26, 149</h4>
 	                                        </div>
 	                                    </div>
@@ -332,7 +304,7 @@
 	                                            Loading...</span>
 	                                        </a>
 	                                        <div class="media-body">
-	                                            This week balance
+	                                            Saldo Masuk Minggu Ini
 	                                            <h4 class="media-heading">318, 651</h4>
 	                                        </div>
 	                                    </div>
@@ -610,8 +582,9 @@
             {% block object-tools %}{% endblock %}
             {{ content }}
             {% endblock %}
-            {% block sidebar %}{% endblock %}
+            {% block sidebar %}{% endblock %}            
         </div>
+        {% block footer %}{{ block.super }}{% endblock %}
     </section>
     <!--/ CONTENT -->
 {% endblock %}

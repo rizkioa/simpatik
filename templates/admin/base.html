@@ -71,15 +71,19 @@
     ================= Application Content ===================
     ===================================================== -->
     <div id="wrap" class="animsition">
-        
-        {% if not is_popup %}
-            {% block header_content %}{% endblock %}
+        {% block header_content %}{% endblock %}
+        {% if not is_popup %}            
             {% block control_content %}{% endblock %}
         {% endif %}
-        {% block page_content %}{% endblock %}
-        {% block footer %}<div id="footer"></div>{% endblock %}
+        {% block page_content %}
+            {% block footer %}
+                <div id="footer" class="footer">
+                    {% include "footer.html" %}
+                </div>
+            {% endblock %}
+        {% endblock %}
     </div>
-    <!-- END wrap -->
+    <!-- END wrap -->    
     {% block extracontent %}
     {% endblock %}
     {% block extrajs %}

@@ -12,7 +12,6 @@ urlpatterns = [
 	url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
 
-
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include(usersite.urls)),
 

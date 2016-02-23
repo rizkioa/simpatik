@@ -865,7 +865,7 @@ $(function() {
       $sidebar = $('#sidebar'),
       $controls = $('#controls'),
       $app = $('.appWrapper'),
-      $navigation = $('#navigation'),
+      $navigation = $('.navigation'),
       $sparklineEl = $('.sparklineChart'),
       $slimScrollEl = $('.slim-scroll'),
       $collapseSidebarEl = $('.collapse-sidebar'),
@@ -903,7 +903,6 @@ $(function() {
       $animateProgressEl = $('.animate-progress-bar'),
       $counterEl = $('.counter'),
       $splashEl = $('.splash');
-
 
   //!!!!!!!!!!!!!
   // initializing

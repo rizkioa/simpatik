@@ -1,5 +1,11 @@
 @charset "UTF-8";
 @import url(http://fonts.googleapis.com/css?family=Dosis:300,700|Ubuntu+Mono|Lato:300,400,700,300italic,400italic&subset=latin,latin-ext);
+
+/* CUSTOM */
+
+
+/* END CUSTOM */
+
 .page {
   padding: 20px;
 }
@@ -16285,7 +16291,8 @@ hr.line-full {
 #sidebar.scheme-black #navigation,
 #sidebar.scheme-black #sidebar-wrap:before,
 #header.scheme-black li.toggle-right-sidebar > a,
-.appWrapper.scheme-black .page-breadcrumb > li:first-child {
+.appWrapper.scheme-black .page-breadcrumb > li:first-child,
+.appWrapper.scheme-black .footer {
   background-color: #131e25 !important;
 }
 
@@ -16335,7 +16342,8 @@ hr.line-full {
 #sidebar.scheme-drank #navigation,
 #sidebar.scheme-drank #sidebar-wrap:before,
 #header.scheme-drank li.toggle-right-sidebar > a,
-.appWrapper.scheme-drank .page-breadcrumb > li:first-child {
+.appWrapper.scheme-drank .page-breadcrumb > li:first-child,
+.appWrapper.scheme-drank .footer {
   background-color: #493d55 !important;
 }
 
@@ -16385,7 +16393,8 @@ hr.line-full {
 #sidebar.scheme-greensea #navigation,
 #sidebar.scheme-greensea #sidebar-wrap:before,
 #header.scheme-greensea li.toggle-right-sidebar > a,
-.appWrapper.scheme-greensea .page-breadcrumb > li:first-child {
+.appWrapper.scheme-greensea .page-breadcrumb > li:first-child,
+.appWrapper.scheme-greensea .footer {
   background-color: #138a72 !important;
 }
 
@@ -16435,7 +16444,8 @@ hr.line-full {
 #sidebar.scheme-cyan #navigation,
 #sidebar.scheme-cyan #sidebar-wrap:before,
 #header.scheme-cyan li.toggle-right-sidebar > a,
-.appWrapper.scheme-cyan .page-breadcrumb > li:first-child {
+.appWrapper.scheme-cyan .page-breadcrumb > li:first-child,
+.appWrapper.scheme-cyan .footer {
   background-color: #11b4e7 !important;
 }
 
@@ -16485,7 +16495,8 @@ hr.line-full {
 #sidebar.scheme-lightred #navigation,
 #sidebar.scheme-lightred #sidebar-wrap:before,
 #header.scheme-lightred li.toggle-right-sidebar > a,
-.appWrapper.scheme-lightred .page-breadcrumb > li:first-child {
+.appWrapper.scheme-lightred .page-breadcrumb > li:first-child,
+.appWrapper.scheme-lightred .footer {
   background-color: #dc485c !important;
 }
 
@@ -16534,7 +16545,8 @@ hr.line-full {
 #sidebar.scheme-light,
 #sidebar.scheme-light #navigation,
 #sidebar.scheme-light #sidebar-wrap:before,
-#header.scheme-light li.toggle-right-sidebar > a {
+#header.scheme-light li.toggle-right-sidebar > a,
+.appWrapper.scheme-light .footer {
   background-color: #fff !important;
 }
 
@@ -16547,13 +16559,20 @@ hr.line-full {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
 }
 
+.appWrapper.scheme-light .footer {
+  -webkit-box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.05), 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.05), 1px 1px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
 #header.scheme-light .nav-right > li > a,
-#header.scheme-light .nav-left > li > a {
+#header.scheme-light .nav-left > li > a,
+.appWrapper.scheme-light .footer a {
   color: rgba(0, 0, 0, 0.7);
 }
 
 #header.scheme-light .nav-right > li > a:hover,
-#header.scheme-light .nav-left > li > a:hover {
+#header.scheme-light .nav-left > li > a:hover,
+.appWrapper.scheme-light .footer a:hover {
   color: rgba(0, 0, 0, 0.9);
 }
 
@@ -16617,6 +16636,10 @@ hr.line-full {
 #header .branding.scheme-light .brand {
   color: #4a555b;
   background-image: url(../../images/minovate-logo-color.png);
+}
+
+.appWrapper.scheme-light .footer p{
+  color: #4a555b;
 }
 
 #sidebar.scheme-light,

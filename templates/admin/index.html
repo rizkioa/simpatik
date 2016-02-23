@@ -3,6 +3,101 @@
 
 {% block bodyclass %}{{ block.super }} dashboard{% endblock %}
 
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/morris/morris.css" %}">
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.min.css" %}">
+
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">	
+		table.tabel-riwayat td{
+		    vertical-align: middle !important;
+		}
+		table.tabel-riwayat td a{
+		    margin: 0;
+		}
+
+	</style>
+{% endblock %}
+
+{% block extrajs_site %}
+	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/raphael/raphael-min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/morris/morris.min.js" %}"></script>
+	<script type="text/javascript">
+		$(window).load(function(){
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": true,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+
+			data_riwayat = [
+                    {label: 'Penghapusan Data', value: 0, color: '#d9544f'},
+                    {label: 'Pengubahan Data', value: 0, color: '#ffc100'},
+                    {label: 'Penambahan Data', value: 0, color: '#1693A5'},
+                    {label: 'Lainnya', value: 0, color: '#00a3d8'}
+                ]
+			//Initialize morris chart
+            Morris.Donut({
+                element: 'riwayat-aktivitas',
+                data: data_riwayat,
+                resize: true
+            });
+            $('#tile-riwayat').addClass('refreshing');
+            //*Initialize morris chart
+			$.when( 
+				$.ajax("{% url 'admin:json_riwayat' %}")
+			).then(function( data, textStatus, jqXHR ) {
+				Morris.Donut({
+	                element: 'riwayat-aktivitas',
+	                data: $.parseJSON(data),
+	                resize: true
+	            });
+			   $('#tile-riwayat').removeClass('refreshing');
+			}).fail(function( data, textStatus, jqXHR ) {
+			   toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.", "Error")
+			   $('#tile-riwayat').removeClass('refreshing');
+			});
+			
+        });
+	</script>
+	<!-- ============================================
+    ============== Custom JavaScripts ===============
+    ============================================= -->
+    <script src="{% static "scripts/js/main.js" %}"></script>
+    <!--/ custom javascripts -->
+{% endblock %}
+
+{% block messages %}
+	{{ block.super }}
+	<!--[if lt IE 8]>
+	<div class="row">
+        <div class="col-sm-12">             
+            <div class="alert alert-danger alert-dismissable">
+                <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
+               	<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            </div>
+        </div>
+    </div>
+	<![endif]-->
+{% endblock %}
+
 {% block content %}
 	<div class="row">
     	<div class="col-lg-8">
@@ -46,35 +141,168 @@
 			</div>
 		</div>
 		<div class="col-lg-4">
-        	<div id="content-related">
-        		<div class="module" id="recent-actions-module">
-        			<h2>{% trans 'Recent Actions' %}</h2>
-			        <h3>{% trans 'My Actions' %}</h3>
-			            {% load log %}
-			            {% get_admin_log 10 as admin_log for_user user %}
-			            {% if not admin_log %}
-			            <p>{% trans 'None available' %}</p>
-			            {% else %}
-			            <ul class="actionlist">
-			            {% for entry in admin_log %}
-			            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
-			                {% if entry.is_deletion or not entry.get_admin_url %}
-			                    {{ entry.object_repr }}
-			                {% else %}
-			                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
-			                {% endif %}
-			                <br/>
-			                {% if entry.content_type %}
-			                    <span class="mini quiet">{% filter capfirst %}{{ entry.content_type }}{% endfilter %}</span>
-			                {% else %}
-			                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
-			                {% endif %}
-			            </li>
-			            {% endfor %}
-			            </ul>
-			            {% endif %}
-        		</div>
-        	</div>
+			<section id="tile-riwayat" class="tile widget-todo" ng-controller="TodoWidgetCtrl" fullscreen="isFullscreen04">
+				<div class="tile-header dvd dvd-btm">
+					<h1 class="custom-font">
+						<strong>Riwayat</strong> Aktivitas
+					</h1>
+					<ul class="controls">
+		                <li class="dropdown">
+		                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+		                        <i class="fa fa-cog"></i>
+		                        <i class="fa fa-spinner fa-spin"></i>
+		                    </a>
+
+		                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+		                        <li>
+		                            <a class="tile-toggle" tabindex="0" role="button">
+		                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+		                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+		                            </a>
+		                        </li>
+		                        <li>
+		                            <a class="tile-refresh" tabindex="0" role="button">
+		                                <i class="fa fa-refresh"></i> Refresh
+		                            </a>
+		                        </li>
+		                        <li>
+		                            <a class="tile-fullscreen" tabindex="0" role="button">
+		                                <i class="fa fa-expand"></i> Fullscreen
+		                            </a>
+		                        </li>
+		                    </ul>
+
+		                </li>
+		                <li class="remove"><a class="tile-close" tabindex="0" role="button"><i class="fa fa-times"></i></a></li>
+		            </ul>
+		        </div>
+		        <div class="tile-widget">
+		        	<div id="riwayat-aktivitas" style="height: 250px"></div>
+		        </div>
+		        {% load logs %}
+		        <div class="tile-body p-0">
+		        	<div id="accordion" class="panel-group icon-plus" aria-multiselectable="true" role="tablist">
+		        		<div class="panel panel-default panel-transparent">
+		        			<div id="headingOne" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseOne" aria-expanded="true" href="#collapseOne" data-parent="#accordion" data-toggle="collapse" class="">
+                                        <span><i class="fa fa-minus text-sm mr-5"></i> Bulan Ini</span>
+                                        <!--<span class="badge pull-right bg-lightred">3</span>-->
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in" aria-labelledby="headingOne" role="tabpanel" aria-expanded="true" style="">
+                            	<div class="panel-body">
+                            		<table class="table table-no-border m-0 tabel-riwayat">
+                            			<tbody>
+                            				{% get_riwayat_admin request.user 'bulan ini' as riwayat_bulan_ini %}
+                            				{% if riwayat_bulan_ini %}
+	                            				{% for r in riwayat_bulan_ini %}
+	                            				<tr>
+	                            					<td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}">
+	                            						<span class="fa fa-{% if r.is_addition %}plus-circle{% elif r.is_change %}edit{% elif r.is_deletion %}times{% endif %} fa-fw" style="color: #{% if r.is_addition %}5cb85c{% endif %}{% if r.is_change %}f0ad4e{% endif %}{% if r.is_deletion %}d9534f{% endif %};"></span>
+	                            					</td>
+	                                                <td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}">
+		                                                {% if r.is_deletion or not r.get_admin_url %}
+										                    <a href="#" onclick="return false;" class="link-effect link-effect-5"><span data-hover="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %}">{{ r.object_repr }}</span></a>
+										                {% else %}
+										                	<a href="{{ r.get_admin_url }}" class="link-effect link-effect-5"><span data-hover="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %}">{{ r.object_repr }}</span></a>
+										                {% endif %}
+							                		</td>
+	                                                <td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}"><small>Tanggal {{ r.action_time|date:"d" }} Pukul {{ r.action_time|date:"H:i" }}</small></td>
+	                                            </tr>
+	                                            {% endfor %}
+	                                        {% else %}
+	                                        	<tr>
+	                                        		<td colspan="3" class="text-center">Tidak Ada Data</td>
+	                                        	</tr>
+	                                        {% endif %}
+                            			</tbody>
+                            		</table>
+                            	</div>
+                            </div>
+		        		</div>
+		        		<div class="panel panel-default panel-transparent">
+		        			<div id="headingTwo" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseTwo" aria-expanded="false" href="#collapseTwo" data-parent="#accordion" data-toggle="collapse" class="collapsed">
+                                        <span><i class="fa fa-minus text-sm mr-5"></i> Bulan Kemaren</span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse" aria-labelledby="headingTwo" role="tabpanel" aria-expanded="false" style="height: 0px;">
+                            	<div class="panel-body">
+                            		<table class="table table-no-border m-0 tabel-riwayat">
+                            			<tbody>
+                            				{% get_riwayat_admin request.user 'bulan kemaren' as riwayat_bulan_kemaren %}
+                            				{% if riwayat_bulan_kemaren %}
+	                            				{% for r in riwayat_bulan_kemaren %}
+	                            				<tr>
+	                            					<td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}">
+	                            						<span class="fa fa-{% if r.is_addition %}plus-circle{% elif r.is_change %}edit{% elif r.is_deletion %}times{% endif %} fa-fw" style="color: #{% if r.is_addition %}5cb85c{% endif %}{% if r.is_change %}f0ad4e{% endif %}{% if r.is_deletion %}d9534f{% endif %};"></span>
+	                            					</td>
+	                                                <td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}">
+		                                                {% if r.is_deletion or not r.get_admin_url %}
+										                    <a href="#" onclick="return false;" class="link-effect link-effect-5"><span data-hover="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %}">{{ r.object_repr }}</span></a>
+										                {% else %}
+										                	<a href="{{ r.get_admin_url }}" class="link-effect link-effect-5"><span data-hover="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %}">{{ r.object_repr }}</span></a>
+										                {% endif %}
+							                		</td>
+	                                                <td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}"><small>Tanggal {{ r.action_time|date:"d" }} Pukul {{ r.action_time|date:"H:i" }}</small></td>
+	                                            </tr>
+	                                            {% endfor %}
+	                                        {% else %}
+	                                        	<tr>
+	                                        		<td colspan="3" class="text-center">Tidak Ada Data</td>
+	                                        	</tr>
+	                                        {% endif %}
+                            			</tbody>
+                            		</table>
+                            	</div>
+                            </div>
+		        		</div>
+		        		<div class="panel panel-default panel-transparent">
+		        			<div id="headingThree" role="tab" class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a aria-controls="collapseThree" aria-expanded="false" href="#collapseThree" data-parent="#accordion" data-toggle="collapse" class="collapsed">
+                                        <span><i class="fa fa-minus text-sm mr-5"></i> Tahun Ini</span>
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse" aria-labelledby="headingThree" role="tabpanel" aria-expanded="false" style="height: 0px;">
+                            	<div class="panel-body">
+                            		<table class="table table-no-border m-0 tabel-riwayat">
+                            			<tbody>
+                            				{% get_riwayat_admin request.user 'tahun ini' as riwayat_tahun_ini %}
+                            				{% if riwayat_tahun_ini %}
+	                            				{% for r in riwayat_tahun_ini %}
+	                            				<tr>
+	                            					<td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}">
+	                            						<span class="fa fa-{% if r.is_addition %}plus-circle{% elif r.is_change %}edit{% elif r.is_deletion %}times{% endif %} fa-fw" style="color: #{% if r.is_addition %}5cb85c{% endif %}{% if r.is_change %}f0ad4e{% endif %}{% if r.is_deletion %}d9534f{% endif %};"></span>
+	                            					</td>
+	                                                <td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}">
+		                                                {% if r.is_deletion or not r.get_admin_url %}
+										                    <a href="#" onclick="return false;" class="link-effect link-effect-5"><span data-hover="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %}">{{ r.object_repr }}</span></a>
+										                {% else %}
+										                	<a href="{{ r.get_admin_url }}" class="link-effect link-effect-5"><span data-hover="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %}">{{ r.object_repr }}</span></a>
+										                {% endif %}
+							                		</td>
+	                                                <td data-trigger="hover" data-content="{% if r.change_message %}{{ r.change_message }} {% else %}{% if r.is_addition %}Data ditambahkan {% elif r.is_change %}Data diubah {% elif r.is_deletion %}Data dihapus {% endif %}{% endif %}pada Hari {{ r.action_time|date:"l" }} Tanggal {{ r.action_time|date:"d M Y" }} Pukul {{ r.action_time|date:"H:i" }}" data-placement="top" data-toggle="popover" data-container="body" data-original-title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}" title="{% if r.content_type %}{{ r.content_type }}{% else %}{% trans 'Unknown content' %}{% endif %} {{ r.object_repr }}"><small>Tanggal {{ r.action_time|date:"d" }} Pukul {{ r.action_time|date:"H:i" }}</small></td>
+	                                            </tr>
+	                                            {% endfor %}
+	                                        {% else %}
+	                                        	<tr>
+	                                        		<td colspan="3" class="text-center">Tidak Ada Data</td>
+	                                        	</tr>
+	                                        {% endif %}
+                            			</tbody>
+                            		</table>
+                            	</div>
+                            </div>
+		        		</div>
+		        	</div>
+		        </div>
+			</section>
         </div>
 	</div>
 {% endblock %}

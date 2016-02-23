@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = (
     'suit',
+    'admin_tools.menu',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -147,3 +148,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'files/media/')
 LOGIN_URL = '/admin/login/'
 
 AUTH_USER_MODEL = 'accounts.Account'
+
+ADMIN_TOOLS_MENU = 'menu.CustomMenu'
