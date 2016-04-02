@@ -26,10 +26,26 @@ class Settings(models.Model):
 
 
 # ALAMAT LOKASI #
+class Provinsi(models.Model):
+	nama_prov = models.CharField(max_length=40, verbose_name="Provinsi")
+	keterangan = models.CharField(max_length=255, null=True, verbose_name="Keterangan")
+	lt = models.CharField(max_length=100, null=True, verbose_name='Latitute')
+	lg = models.CharField(max_length=100, null=True, verbose_name='Longitute')
+
+	def __unicode__(self):
+		return "%s" % (self.nama_prov,)
+
+	class Meta:
+		verbose_name = "Provinsi"
+		verbose_name_plural = "Provinsi"
 
 class Kabupaten(models.Model):
 	"""docstring for Kabupaten"""
+	nama_prov = models.ForeignKey(Provinsi, verbose_name="Provinsi")
 	nama_kab = models.CharField(max_length=40, verbose_name="Kabupaten")
+	keterangan = models.CharField(max_length=255, null=True, verbose_name="Keterangan")
+	lt = models.CharField(max_length=100, null=True, verbose_name='Latitute')
+	lg = models.CharField(max_length=100, null=True, verbose_name='Longitute')
 
 	def __unicode__ (self):
 		return "%s" % (self.nama_kab,)
@@ -42,6 +58,9 @@ class Kecamatan(models.Model):
 	"""docstring for Kecamatan"""
 	nama_kab = models.ForeignKey(Kabupaten, verbose_name="Kabupaten")
 	nama_kec = models.CharField(max_length=40, verbose_name="Kecamatan")
+	keterangan = models.CharField(max_length=255, null=True, verbose_name="Keterangan")
+	lt = models.CharField(max_length=100, null=True, verbose_name='Latitute')
+	lg = models.CharField(max_length=100, null=True, verbose_name='Longitute')
 
 	def __unicode__(self):
 		return "%s" % (self.nama_kec,)
@@ -53,7 +72,10 @@ class Kecamatan(models.Model):
 class Desa(models.Model):
 	"""docstring for Desa"""
 	nama_kec = models.ForeignKey(Kecamatan, verbose_name="Kecamatan")
-	nama_desa = models.CharField(max_length=40,verbose_name="Nama Desa")
+	nama_desa = models.CharField(max_length=40, null=True, verbose_name="Nama Desa")
+	keterangan = models.CharField(max_length=255, null=True, verbose_name="Keterangan")
+	lt = models.CharField(max_length=100, null=True, verbose_name='Latitute')
+	lg = models.CharField(max_length=100, null=True, verbose_name='Longitute')
 
 	def __unicode__(self):
 		return "Kec. %s - %s" % (self.nama_kec,self.nama_desa,)

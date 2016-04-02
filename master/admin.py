@@ -3,6 +3,7 @@ from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
+from master.models import Settings, Provinsi, Kabupaten, Kecamatan, Desa, JenisNomorIdentitas
 
 import json
 # Register your models here.
@@ -89,7 +90,10 @@ class LogEntryAdmin(admin.ModelAdmin):
 			return None
 
 	def json_riwayat(self, request):
-		logs = LogEntry.objects.all()
+		if request.user.is_superuser:
+			logs = LogEntry.objects.all()
+		else :
+			logs = LogEntry.objects.filter(user=request.user)
 		total = logs.count()
 		penghapusan = 0
 		pengubahan = 0
@@ -119,3 +123,10 @@ class LogEntryAdmin(admin.ModelAdmin):
 
 		
 admin.site.register(LogEntry, LogEntryAdmin)
+admin.site.register(JenisNomorIdentitas)
+admin.site.register(Provinsi)
+admin.site.register(Kabupaten)
+admin.site.register(Kecamatan)
+admin.site.register(Desa)
+admin.site.register(Settings)
+

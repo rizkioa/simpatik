@@ -162,12 +162,14 @@
 		            </h1>
                     <ul class="controls">                    	
                     	{% block object-tools %}
-                    		{% block object-tools-items %}
-	                    	<li class="add" title="Tambah">
-	                    		{% url cl.opts|admin_urlname:'add' as add_url %}
-	                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
-	                    	</li>
-	                    	{% endblock %}
+	                    	{% if has_add_permission %}
+	                    		{% block object-tools-items %}
+		                    	<li class="add" title="Tambah">
+		                    		{% url cl.opts|admin_urlname:'add' as add_url %}
+		                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
+		                    	</li>
+		                    	{% endblock %}
+		                    {% endif %}
 	                    {% endblock %}
 	                    {% block extra-object-tools %}
                     		{% block filters %}
@@ -224,11 +226,20 @@
 			                                {% if cl.formset %}
 			                                    <div>{{ cl.formset.management_form }}</div>
 			                                {% endif %}
-			                                {% block result_list %}		                                    
-			                                    {% block custom_result_list %}
-			                                        {% result_list cl %}
-			                                    {% endblock %}
-			                                {% endblock %}		                                
+			                                {% if cl.result_count %}
+				                                {% block result_list %}		                                    
+				                                    {% block custom_result_list %}
+				                                        {% result_list cl %}
+				                                    {% endblock %}
+
+				                                {% endblock %}	
+				                               
+				                            {% else %}
+				                            <div class="alert alert-cyan">
+													<strong>Data Kosong</strong>
+											</div>
+				                            {% endif %}	     
+
 			                            
 			                    </div>
 			                    <!-- /.table-responsive -->

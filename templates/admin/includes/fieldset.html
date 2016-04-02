@@ -72,7 +72,7 @@
                                         {% else %}
                                             {{ field.field|addcls:"chosen-select" }}
                                         {% endif %}
-                                    {# Lainnya #}
+                                    {# Lainnya perlu dicheck maneh untuk yg select foreign key sama datefield untuk yang error #}
                                     {% else %}                          
                                         {% if field.field.errors %}
                                             {{ field.field|addcls:"form-control parsley-error" }}
@@ -81,8 +81,15 @@
                                                         <li><strong>{{ error|escape }}</strong></li>
                                                 {% endfor %}
                                             </ul>
-                                        {% else %}
-                                            {{ field.field|addcls:"form-control" }}
+                                        {% else %}                                            
+                                            {% if field.field|is_date or field.field|is_datetime %}
+                                                <div class="related-date-wrapper">
+                                                    {{ field.field }}
+                                                </div>
+
+                                            {% else %}
+                                                {{ field.field|addcls:"form-control" }}
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}

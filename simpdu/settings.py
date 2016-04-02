@@ -44,6 +44,8 @@ INSTALLED_APPS = (
     'loginas',
     'master',
     'accounts',
+    'perusahaan',
+    'izin',
 
 )
 

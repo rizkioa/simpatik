@@ -86,6 +86,9 @@
 		.selector-chosen select{
 			height: 274px;
 		}
+		.chosen-container{
+			min-width: 100px;
+		}
 		.selector select, .selector .h2, .selector-filter input{
 		    border: 1px solid #dbe0e2;
 		}
@@ -107,7 +110,53 @@
 		a.active.selector-clearall {
 		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll left -233px;
 		}
+		.related-widget-wrapper{
+			padding-right: 42px;
+		}
+		.related-widget-wrapper .add-related{
+		    position: absolute;
+		    right: 36px;
+		    top: 6px;
+		}
+		.related-widget-wrapper .change-related{
+		    position: absolute;
+		    right: 20px;
+		    top: 6px;
+		}
+		.related-date-wrapper{
+			overflow: hidden;
+			display: inline-flex; 
+		}
+		.related-date-wrapper .vDateField, .related-date-wrapper .vTimeField{
+			height: 32px;
+			width: 90px;
+			background-color: #fff;
+   			border: 1px solid #dbe0e2;
+		    border-radius: 2px;
+		    box-shadow: none;
+		    color: #616f77;
+		    filter: none !important;
+		    outline: 0 none;
+		    transition: all 0.2s linear 0s;
+		    vertical-align: top;
+		    background-image: none;
 
+		}
+		.datetime br {
+    		display: none;
+		}
+		.datetime .datetimeshortcuts {
+ 		   padding-right: 10px;
+		}
+		.related-date-wrapper .vTimeField{
+			margin-left:11px; 
+		}
+		.calendarbox, .clockbox {
+		    z-index: 2;
+		}
+		.datetimeshortcuts{
+			margin-top: 4px;
+		}
 	</style>
 {% endblock %}
 {% block bodyclass %}
@@ -193,6 +242,7 @@
                     	{% if add %} <strong>{% trans 'Add' %}</strong> {{ opts.verbose_name }}{% else %} <strong>{% trans 'Edit' %}</strong> {{ original|truncatewords:"18" }}{% endif %}</h1>
                     <ul class="controls">
                     	{% block object-tools %}
+                    		{% if has_add_permission %}
 	                    	{% if change %}{% if not is_popup %}
 	                    	<li class="dropdown">
 	                    		<a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
@@ -213,6 +263,7 @@
 			                    {% endblock %}
 					        </li>
 					        {% endif %}{% endif %}
+					        {% endif %}
 			            {% endblock %}
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
