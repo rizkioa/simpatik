@@ -1,0 +1,568 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls widgets admin_static %}
+
+{% block pretitle %}<span class="fa fa-pencil"></span>{% endblock %}
+{% block content_title %}
+	Formulir SIUP 
+{% endblock %}
+
+{% block breadcrumbs %}
+	{% if not is_popup %}
+	<div class="page-bar">
+	    <ul class="page-breadcrumb">
+	        <li>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+	        </li>
+	        <li>
+	        	<a href="{% url 'admin:izin_izin_changelist' %}" class="link-effect link-effect-21">Daftar Izin</a>
+	        </li>
+	        <li>
+	        	<a href="#" class="link-effect">Formulir
+	            </a>
+	        </li>
+	    </ul>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block extrajs_site %}
+	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+    <script src="{% static "scripts/js/vendor/jquery-ui/jquery-ui.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}" ></script>
+    <script src="{% static "scripts/js/vendor/toastr/toastr.min.js"}"></script>
+
+	<script type="text/javascript">
+		$(window).load(function(){
+                $('#rootwizard').bootstrapWizard({
+                    onTabShow: function(tab, navigation, index) {
+                        var $total = navigation.find('li').length;
+                        var $current = index+1;
+
+                        // If it's the last tab then hide the last button and show the finish instead
+                        if($current >= $total) {
+                            $('#rootwizard').find('.pager .next').hide();
+                            $('#rootwizard').find('.pager .finish').show();
+                            $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                        } else {
+                            $('#rootwizard').find('.pager .next').show();
+                            $('#rootwizard').find('.pager .finish').hide();
+                        }
+                    },
+                    onNext: function(tab, navigation, index) {
+                        return true;
+                    },
+                    onTabClick: function(tab, navigation, index) {
+                    	return true;
+                    }
+                });
+
+            });
+        function set_chosen_pemohon(){
+            $chosenEl = $('.pemohon-chosen-select')
+            if ($chosenEl.length > 0) {            	
+                $chosenEl.each(function() {
+                  var element = $(this);
+                  element.on('chosen:ready', function(e, chosen) {
+                    var width = element.css("width");
+                    element.next().find('.chosen-choices').addClass('form-control');
+                    element.next().css("width", width);
+                    element.next().find('.search-field input').css("width", "125px");
+                  }).chosen().change(function(data){
+                  	//$( "#data_pemohon").html(data);
+                    $.when( 
+                        $.ajax("{% url 'admin:index' %}")
+                    ).then(function( data, textStatus, jqXHR ) {
+
+                    }).fail(function( data, textStatus, jqXHR ) {
+
+                    });
+                  });
+                });
+            }
+        }
+        set_chosen_pemohon()
+        input_chosen = $('#id_pemohon_chosen .chosen-search input');
+        if ($chosenEl.length > 0) {
+            $('#id_pemohon_chosen .chosen-search input').keyup(function(e) {
+                value_ = $(this).val()
+                // var code = e.which;
+                if(value_.length > 1){
+                	//Ditambah Loading 
+
+                    $.when( 
+                        $.ajax("{% url 'admin:pemohon_ajax_autocomplete' %}")
+                    ).then(function( data, textStatus, jqXHR ) {
+                        // alert(data)
+                        // $('.pemohon-chosen-select').chosen("destroy");
+                        $( "#id_pemohon").html(data);
+                        $('.pemohon-chosen-select').trigger("chosen:updated");
+                       	// $(this).val(value_)
+                       	$('#id_pemohon_chosen .chosen-search input').val(value_);
+                                              
+                        // render html
+                        set_chosen_pemohon()
+
+                    }).fail(function( data, textStatus, jqXHR ) {
+
+                    	/*Command: toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+
+						toastr.options = {
+						  "closeButton": false,
+						  "debug": false,
+						  "newestOnTop": false,
+						  "progressBar": false,
+						  "positionClass": "toast-bottom-right",
+						  "preventDuplicates": false,
+						  "onclick": null,
+						  "showDuration": "300",
+						  "hideDuration": "1000",
+						  "timeOut": "5000",
+						  "extendedTimeOut": "1000",
+						  "showEasing": "swing",
+						  "hideEasing": "linear",
+						  "showMethod": "fadeIn",
+						  "hideMethod": "fadeOut"
+						}*/
+
+                    });
+                    
+                }
+                e.preventDefault();
+            });
+        }
+        
+      
+	</script>
+	<!-- ============================================
+    ============== Custom JavaScripts ===============
+    ============================================= -->
+    <script src="{% static "scripts/js/main.js" %}"></script>
+    <!--/ custom javascripts -->
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
+    <link rel="stylesheet" href="{% static "scripts/js/vendor/jquery-ui/jquery-ui.min.css" %}">
+{% endblock %}
+
+{% block custom_style %}
+	
+	<style type="text/css">	
+	    .selector-chosen select{
+            height: 274px;
+        }
+        .chosen-container{
+            min-width: 100px;
+            width: 100% !important;
+        }
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div id="rootwizard" class="tab-container tab-wizard">
+	    <ul class="nav nav-tabs nav-justified nav-pills">
+	        <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="true">Pemohon<span class="badge badge-default pull-right wizard-step">1</span></a></li>
+	        <li><a href="#tab2" data-toggle="tab">Identitas Perusahaan<span class="badge badge-default pull-right wizard-step">2</span></a></li>
+	        <li><a href="#tab3" data-toggle="tab">Legalitas Perusahaan<span class="badge badge-default pull-right wizard-step">3</span></a></li>
+	        <li><a href="#tab4" data-toggle="tab">Kekayaan<span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	        <li><a href="#tab5" data-toggle="tab">Kegiatan Usaha<span class="badge badge-default pull-right wizard-step">5</span></a></li>
+            <li><a href="#tab6" data-toggle="tab">Validasi<span class="badge badge-default pull-right wizard-step">6</span></a></li>
+	    </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+
+                <form name="form_izin_pemohon" role="form" id="id_form_izin_pemohon" action="" method="POST">
+                    {% csrf_token %}
+                    {% for field in form_izin_pemohon %}
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="{{ field.auto_id }}">{{ field.label_tag }} </label>
+                                {{field|atribut:"class:form-control pemohon-chosen-select"}}
+                            </div>      
+                        </div>      
+                    {% endfor %}
+                </form>		                                    
+                    <section class="tile">
+                    	<div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Data Pemohon</strong> Terpilih</h1>
+		                    <ul class="controls">								                    
+		                        <li class="dropdown">
+		                            <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+		                                <i class="fa fa-cog"></i>
+		                                <i class="fa fa-spinner fa-spin"></i>
+		                            </a>
+		                            <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+		                                <li>
+		                                    <a class="tile-toggle" tabindex="0" role="button">
+		                                        <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+		                                        <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+		                                    </a>
+		                                </li>
+		                                <li>
+		                                    <a class="tile-edit" tabindex="0" role="button">
+		                                        <i class="fa fa-edit">{% trans '  Edit' %}</i>
+		                                    </a>
+		                                </li>
+		                                <li>
+		                                    <a class="tile-refresh" tabindex="0" role="button">
+		                                        <i class="fa fa-refresh"></i> Refresh
+		                                    </a>
+		                                </li>
+		                                <li>
+		                                    <a class="tile-fullscreen" tabindex="0" role="button">
+		                                        <i class="fa fa-expand"></i> Fullscreen
+		                                    </a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                </div>
+		                <div class="tile-body">	
+			                <div class="data_pemohon">		                                
+                        		<div class="form-group col-md-12">
+                                    <label for="nama_pemohon">Nama Lengkap : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="alamat_pemohon">Alamat : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div> 		                                            
+                                    <div class="form-group col-md-8">
+                                        <label for="tempat_pemohon">Tempat : </label>
+                                        <input type="text" name="street" id="street" class="form-control" required="" disabled>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="tanggal_lahir_pemohon">Tanggal Lahir: </label>
+                                        <input type="text" name="dnumber" id="dnumber" class="form-control"required="" disabled> 
+                                    </div>
+
+                                <div class="form-group col-md-12">
+                                    <label for="nomor_tlp_pemohon">Nomor Telp/Fax : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="nomor_ktp/paspor_pemohon">Nomor KTP/Paspor : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required=""disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="kwarganegaraan_pemohon">Kwarganegaraan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div> 
+                           	</div>
+		                </div>
+                    </section>		                                    						
+            </div>
+            <div class="tab-pane" id="tab2">
+
+                <form name="form_identitas_perusahaan" role="form" id="id_form_identitas_perusahaan" action="" method="POST">
+                    {% csrf_token %}
+                    {% for field in form_izin_perusahaan %}
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="{{ field.auto_id }}">{{ field.label_tag }} </label>
+                                {{field|atribut:"class:form-control perusahaan-chosen-select"}}
+                            </div>      
+                        </div>      
+                    {% endfor %}
+                </form>
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Identitas Perusahaan</strong> Terpilih</h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+		                                <li>
+		                                    <a class="tile-edit" tabindex="0" role="button">
+		                                        <i class="fa fa-edit"></i> Edit
+		                                    </a>
+		                                </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="identitas_perusahaan">                                      
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nama Perusahaan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">Alamat Perusahaan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>                                                  
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nomor Telp/Fax : </label>
+                                    <input type="text" name="street" id="street" class="form-control" required="" disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">NPWP : </label>
+                                    <input type="text" name="dnumber" id="dnumber" class="form-control"required="" disabled> 
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Provinsi : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kabupaten/Kota/Kotamadya : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required=""disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kecamatan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kelurahan/Desa : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Status : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required=""disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kode Pos : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                            </div>
+                        </div>
+                    </section>  
+            </div>
+            <div class="tab-pane" id="tab3">
+
+                  <form name="form_legalitas_perusahaan" role="form" id="id_form_legalitas_perusahaan" action="" method="POST">
+
+                </form>
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Legalitas Perusahaan</strong> Terpilih</h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+		                                <li>
+		                                    <a class="tile-edit" tabindex="0" role="button">
+		                                        <i class="fa fa-edit"></i> Edit
+		                                    </a>
+		                                </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="identitas_perusahaan">                                      
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nama Perusahaan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">Alamat Perusahaan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>                                                  
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nomor Telp/Fax : </label>
+                                    <input type="text" name="street" id="street" class="form-control" required="" disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">NPWP : </label>
+                                    <input type="text" name="dnumber" id="dnumber" class="form-control"required="" disabled> 
+                                </div>
+                            </div>
+                        </div>
+                    </section>  
+            </div>
+            <div class="tab-pane" id="tab4">
+
+                <form name="form_kekayaan" role="form" id="id_form_kekayaan" action="" method="POST">
+
+                </form>
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Kekayaan Bersih Dan Saham</strong> </h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+		                                <li>
+		                                    <a class="tile-edit" tabindex="0" role="button">
+		                                        <i class="fa fa-edit"></i> Edit
+		                                    </a>
+		                                </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="identitas_perusahaan">                                      
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kekayaan Bersih Perusahaan : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <label for="street">Saham (Khusus Untuk Penanam Modal Asing) : </label>
+                                <div class="form-group col-md-12">
+                                    <label for="street">a. Total Nilai Saham : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">b. Komposisi Kepemilikan Saham : </label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label for="street">Nasional : </label>
+                                    <input type="text" name="street" id="street" class="form-control" required="" disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">Asing : </label>
+                                    <input type="text" name="dnumber" id="dnumber" class="form-control"required="" disabled> 
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            </div>
+            <div class="tab-pane" id="tab5">
+
+                <form name="form_kegiatan_usaha" role="form" id="id_form_kegiatan_usaha" action="" method="POST">
+
+                </form>
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Kegiatan Usaha</strong> </h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+		                                <li>
+		                                    <a class="tile-edit" tabindex="0" role="button">
+		                                        <i class="fa fa-edit"></i> Edit
+		                                    </a>
+		                                </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="kegiatan_usaha">                                      
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kegiatan Usaha : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                <label for="street">Kegiatan Usaha (KBLI) : </label>
+                                    <input type="text" name="street" id="street" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                <label for="street">Barang/jasa dagangan utama : </label>
+                                    <input type="text" name="street" id="street" class="form-control" required="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+            </div>
+            <div class="tab-pane" id="tab6">
+
+                <p class="well">Demikian Suran Permohonan SIUP ini kami buat dengan sebenarnya dan apabila di kemudian hari ternyata data/informasi dan keterangan tersebut tidak benar, maka kami menyatakan bersedia dibatalkan SIUP yang telah kami miliki dan dituntut sesuai dengan ketentuan peraturan perundang-undangan</p>
+
+                <form name="step5" role="form" novalidate="">
+
+                    <div class="checkbox">
+                        <label class="checkbox checkbox-custom">
+                            <input type="checkbox" name="agree" id="agree" required=""><i></i> I agree to the <a href="" class="text-info">Terms of Service</a>
+                        </label>
+                    </div>
+
+                    <div class="checkbox">
+                        <label class="checkbox checkbox-custom">
+                            <input type="checkbox" name="newsletter" id="newsletter"><i></i> Receive newsletter
+                        </label>
+                    </div>
+
+                </form>
+            </div>
+            <ul class="pager wizard">
+                <li class="previous disabled"><button class="btn btn-default">Previous</button></li>
+                <li class="next"><button class="btn btn-default">Next</button></li>
+                <li class="next finish" style="display: none;"><button class="btn btn-success">Finish</button></li>
+            </ul>
+        </div>   
+	</div>	   
+{% endblock %}
