@@ -162,14 +162,12 @@
 		            </h1>
                     <ul class="controls">                    	
                     	{% block object-tools %}
-	                    	{% if has_add_permission %}
 	                    		{% block object-tools-items %}
 		                    	<li class="add" title="Tambah">
 		                    		{% url cl.opts|admin_urlname:'add' as add_url %}
 		                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
 		                    	</li>
 		                    	{% endblock %}
-		                    {% endif %}
 	                    {% endblock %}
 	                    {% block extra-object-tools %}
                     		{% block filters %}

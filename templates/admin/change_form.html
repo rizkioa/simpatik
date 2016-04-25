@@ -53,6 +53,9 @@
 		div.errors label{
 			color: #ff7b76;
 		}
+		input.parsley-error, select.parsley-error, textarea.parsley-error, .checkbox-custom.parsley-error > i, div.form-row.errors a.chosen-single, div.form-row.errors div.chosen-drop{
+		    border-color: #ff7b76 !important;
+		}
 
 		.checkbox-row .help-block{
 		    display: inline-block;
@@ -114,12 +117,12 @@
 			padding-right: 42px;
 		}
 		.related-widget-wrapper .add-related{
-		    position: absolute;
+		    /*position: absolute;*/
 		    right: 36px;
 		    top: 6px;
 		}
 		.related-widget-wrapper .change-related{
-		    position: absolute;
+		    /*position: absolute;*/
 		    right: 20px;
 		    top: 6px;
 		}
@@ -129,7 +132,7 @@
 		}
 		.related-date-wrapper .vDateField, .related-date-wrapper .vTimeField{
 			height: 32px;
-			width: 90px;
+			width: 102px;
 			background-color: #fff;
    			border: 1px solid #dbe0e2;
 		    border-radius: 2px;
@@ -140,7 +143,7 @@
 		    transition: all 0.2s linear 0s;
 		    vertical-align: top;
 		    background-image: none;
-
+		    padding: 6px 12px;
 		}
 		.datetime br {
     		display: none;
@@ -167,6 +170,8 @@
 	{{ block.super }}
 	<link rel="stylesheet" type="text/css" href="{% static "admin/css/widgets.css" %}" />
 	<link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
+
+
 {% endblock %}
 
 {% block extrajs %}
@@ -192,7 +197,7 @@
 {% block extrajs_site %}
 	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
-	<!-- ============================================
+		<!-- ============================================
     ============== Custom JavaScripts ===============
     ============================================= -->
     <script src="{% static "scripts/js/main.js" %}"></script>

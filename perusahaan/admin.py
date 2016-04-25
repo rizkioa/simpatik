@@ -1,6 +1,14 @@
 from django.contrib import admin
 from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, StatusPerusahaan, JenisKerjasama, JenisBadanUsaha, Perusahaan, JenisKedudukan, DataPimpinan, JenisKegiatanUsaha, JenisPengecer, KegiatanUsaha, DataRincianPerusahaan, PemegangSahamLain, Kelembagaan, ProdukUtama, JenisMesin, MesinHuller, MesinPerusahaan, AktaNotaris, JenisModalKoprasi, ModalKoprasi, NilaiModal, LokasiUnitProduksi
 from perusahaan.perusahaan_admin import PerusahaanAdmin
+from django.http import HttpResponseRedirect, HttpResponse
+import json
+from django.utils.decorators import method_decorator
+from django.template import RequestContext, loader
+from django.contrib.auth.decorators import user_passes_test
+from perusahaan.forms import AktaNotarisForm,PerusahaanForm
+from django.forms.formsets import formset_factory, BaseFormSet
+
 
 # Register your models here.
 
@@ -64,9 +72,65 @@ class MesinPerusahaanAdmin(admin.ModelAdmin):
 admin.site.register(MesinPerusahaan, MesinPerusahaanAdmin)
 
 class AktaNotarisAdmin(admin.ModelAdmin):
-	list_display = ('no_akta','tanggal_akta','jenis_akta')
-	list_filter = ('no_akta','tanggal_akta')
-	search_fields = ('no_akta','tanggal_akta','jenis_akta')
+	list_display = ('perusahaan','no_akta','tanggal_akta','jenis_akta')
+	list_filter = ('perusahaan','no_akta','tanggal_akta')
+	search_fields = ('perusahaan','no_akta','tanggal_akta','jenis_akta')
+
+	@method_decorator(user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='Front Desk').exists()))
+	def add_form_legaliatas(self, request):
+		# pemohon_list = Pemohon.objects.filter(status=1)
+	    class RequiredFormSet(BaseFormSet):
+	        def __init__(self, *args, **kwargs):
+	            super(RequiredFormSet, self).__init__(*args, **kwargs)
+	            for form in self.forms:
+	                form.empty_permitted = False
+	    AktaNotarisFormSet = formset_factory(AktaNotarisForm, max_num=10, formset=RequiredFormSet)
+	    if request.method == 'POST': # If the form has been submitted...
+	        perusahaan_form = PerusahaanForm(request.POST) # A form bound to the POST data
+	        # Create a formset from the submitted data
+	        akta_notaris_formset = AktaNotarisFormSet(request.POST, request.FILES)
+
+	        if perusahaan_form.is_valid() and akta_notaris_formset.is_valid():
+	            perusahaan_list = perusahaan_form.save()
+	            for form in akta_notaris_formset.forms:
+	                akta_notaris_item = form.save(commit=False)
+	                akta_notaris_item.list = perusahaan_list
+	                akta_notaris_item.save()
+	            return HttpResponseRedirect('thanks') # Redirect to a 'success' page
+	    else:
+	        perusahaan_form = PerusahaanForm()
+	        akta_notaris_formset = AktaNotarisFormSet()
+
+		extra_context = {'title' : 'Legalitas'}
+		# form_legalitas_perusahaan = AktaNotarisForm()
+		extra_context.update({'perusahaan_form': perusahaan_form,
+		         'akta_notaris_formset': akta_notaris_formset,})
+		template = loader.get_template("admin/perusahaan/aktanotaris/form_legalitas.html")
+		ec = RequestContext(request, extra_context)
+
+		return HttpResponse(template.render(ec))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(AktaNotarisAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^legalitas/add/$', self.admin_site.admin_view(self.add_form_legaliatas), name='add_form_legaliatas'),
+			)
+		return my_urls + urls
+
+	def add_view(self, request, form_url='', extra_context={}):
+		# if request.user.groups.filter(name='Front Desk').exists():
+		# self.change_form_template = 'admin/change_form.html'
+
+		return super(AktaNotarisAdmin, self).add_view(request,form_url, extra_context=extra_context)
+
+	# def get_urls(self):
+	# 	from django.conf.urls import patterns, url
+	# 	urls = super(AktaNotarisAdmin, self).get_urls()
+	# 	my_urls = patterns('',
+	# 		url(r'^ajax/legalitas/(?P<aktanotaris_id>\w+)/$', self.admin_site.admin_view(self.ajax_legalitas_perusahaan), name='ajax_legalitas_perusahaan'),
+	# 		)
+	# 	return my_urls + urls
 
 admin.site.register(AktaNotaris, AktaNotarisAdmin)
 

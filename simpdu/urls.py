@@ -11,12 +11,12 @@ admin.autodiscover()
 urlpatterns = [
 	url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
-
+    url(r'^perusahaan/', include('perusahaan.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include(usersite.urls)),
-
     url(r'^accounts/login/$', 'cas.views.login', name='login_cas'),
     url(r'^accounts/logout/$', 'cas.views.logout', name='logout_cas'),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -27,6 +27,6 @@ urlpatterns += patterns('loginas.views',
 
 # Front-end
 urlpatterns += [
-    url(r'^$', 'simpdu.views.welcome', name='welcome'),
+    url(r'^$', 'simpdu.views.frontindex', name='frontindex'),
 ]
 

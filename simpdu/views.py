@@ -16,5 +16,7 @@ def user_home(request):
 		return HttpResponseRedirect(reverse('admin:index'))
 	return site.index(request)
 
-def welcome(request):
-	return HttpResponse('Not Ready Yet.')
+def frontindex(request):
+	return render(
+		request, "front-end/home.html"	
+	)

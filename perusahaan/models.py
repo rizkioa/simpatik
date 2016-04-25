@@ -3,9 +3,12 @@ from perusahaan.utils import AKTA, KEDUDUKAN
 
 from master.models import Desa
 from accounts.models import IdentitasPribadi
+from master.models import Desa,Kecamatan,Kabupaten,Provinsi
 
 from datetime import datetime
 from django.db import models
+
+import json
 
 
 # Create your models here.
@@ -83,26 +86,27 @@ class Perusahaan(models.Model):
 	perusahaan_induk = models.ForeignKey('Perusahaan', blank=True, null=True)
 	nama_perusahaan = models.CharField(max_length=100, verbose_name='Nama Perusahaan')
 	alamat_perusahaan = models.CharField(max_length=255,  blank=True, null=True, verbose_name='Alamat Perusahaan')
-	lt = models.CharField(max_length=100, null=True, verbose_name='Latitute')
-	lg = models.CharField(max_length=100, null=True, verbose_name='Longitute')
-	kode_pos = models.IntegerField(verbose_name='Kode Pos')
+	desa = models.ForeignKey(Desa,null=True,blank=True, verbose_name='Desa')
+	lt = models.CharField(max_length=100, blank=True, null=True, verbose_name='Latitute')
+	lg = models.CharField(max_length=100, blank=True, null=True, verbose_name='Longitute')
+	kode_pos = models.IntegerField(verbose_name='Kode Pos', blank=True, null=True)
 	telepon = models.CharField(max_length=50, blank=True, null=True, verbose_name='Telepon')
-	fax = models.CharField(max_length=20, verbose_name='Fax')
+	fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
 	email = models.EmailField(max_length=50, blank=True, null=True, verbose_name='E-mail')
 
 	jenis_perusahaan = models.ForeignKey(JenisPerusahaan, blank=True, null=True, verbose_name='Jenis Perusahaan')
 	kbli = models.ForeignKey(KBLI, blank=True, null=True, verbose_name='KBLI')
-	nama_kelompok_perusahaan = models.CharField(max_length=100, verbose_name='Nama Kelompok Perusahaan')
-	nasabah_utama_bank1 = models.CharField(max_length=255, verbose_name='Nasabah Utama Bank 1')
-	nasabah_utama_bank2 = models.CharField(max_length=255, verbose_name='Nasabah Utama Bank 2')
-	jumlah_bank = models.IntegerField(verbose_name='Jumlah Bank')
+	nama_kelompok_perusahaan = models.CharField(max_length=100, blank=True, null=True, verbose_name='Nama Kelompok Perusahaan')
+	nasabah_utama_bank1 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 1')
+	nasabah_utama_bank2 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 2')
+	jumlah_bank = models.IntegerField(verbose_name='Jumlah Bank', blank=True, null=True,)
 	npwp = models.IntegerField(blank=True, null=True, verbose_name='NPWP')
 	
-	tanggal_pendirian = models.DateField(verbose_name='Tanggal Pendirian')
-	tanggal_mulai_kegiatan = models.DateField(verbose_name='Tanggal Mulai Kegiatan')
-	merk_dagang = models.CharField(max_length=255, verbose_name='Merk Dagang')
-	pemegang_hak_paten = models.CharField(max_length=255, verbose_name='Pemegang Hak Paten')
-	pemegang_hak_cipta = models.CharField(max_length=255, verbose_name='Pemegang Hak Cipta')
+	tanggal_pendirian = models.DateField(verbose_name='Tanggal Pendirian',  blank=True, null=True,)
+	tanggal_mulai_kegiatan = models.DateField(verbose_name='Tanggal Mulai Kegiatan', blank=True, null=True,)
+	merk_dagang = models.CharField(max_length=255, verbose_name='Merk Dagang', blank=True, null=True,)
+	pemegang_hak_paten = models.CharField(max_length=255, verbose_name='Pemegang Hak Paten', blank=True, null=True,)
+	pemegang_hak_cipta = models.CharField(max_length=255, verbose_name='Pemegang Hak Cipta', blank=True, null=True,)
 
 	penanaman_modal = models.ForeignKey(JenisPenanamanModal, blank=True, null=True, verbose_name='Jenis Penanaman Modal')
 	status_perusahaan = models.ForeignKey(StatusPerusahaan, blank=True, null=True, verbose_name='Status Perusahaan')
@@ -112,6 +116,30 @@ class Perusahaan(models.Model):
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
 	created_at = models.DateTimeField(editable=False)
 	updated_at = models.DateTimeField(auto_now=True)
+	
+	def as_json(self):
+		desa = ''
+		kecamatan = ''
+		kabupaten = ''
+		provinsi = ''
+		kbli = ''
+		kegiatan_usaha = ''
+		if self.desa:
+			desa = self.desa.nama_desa
+			if self.desa.kecamatan:
+				kecamatan = self.desa.kecamatan.nama_kecamatan
+				if self.desa.kecamatan.kabupaten:
+					kabupaten = self.desa.kecamatan.kabupaten.nama_kabupaten
+					if self.desa.kecamatan.kabupaten.provinsi:
+						provinsi = self.desa.kecamatan.kabupaten.provinsi.nama_provinsi
+						if self.kbli:
+							kbli = self.kbli.nama_kbli
+		return dict(id=self.id,nama_perusahaan=self.nama_perusahaan,alamat_perusahaan=self.alamat_perusahaan,
+			telepon=self.telepon,fax=self.fax,npwp=self.npwp,kode_pos=self.kode_pos,desa=desa,status_perusahaan=self.status_perusahaan.status_perusahaan,
+			kecamatan=kecamatan,kabupaten=kabupaten,provinsi=provinsi,kbli=kbli)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
 
 	def __unicode__ (self):
 		return "%s" % (self.nama_perusahaan)
@@ -201,26 +229,36 @@ class DataRincianPerusahaan(models.Model):
 	"""docstring for Data Rincian Perusahaan"""
 	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
 	omset_per_tahun = models.IntegerField(blank=True, null=True, verbose_name='Omset Per Tahun')
-	total_aset = models.IntegerField(verbose_name='Total Aset')
-	jumlah_karyawan_wni = models.IntegerField(verbose_name='Jumlah Karyawan WNI')
-	jumlah_karyawan_wna = models.IntegerField(verbose_name='Jumlah Karyawan WNA')
+	total_aset = models.IntegerField(blank=True, null=True, verbose_name='Total Aset')
+	jumlah_karyawan_wni = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Karyawan WNI')
+	jumlah_karyawan_wna = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Karyawan WNA')
 
-	kapasitas_mesin_terpasang = models.IntegerField(verbose_name='Kapasitas Mesin Terpasang')
-	stuan_kapasitas_msin_terpasang = models.CharField(max_length=10, verbose_name='Satuan Kapasitas Mesin Terpasang')
-	kapasitas_produksi_pertahun = models.IntegerField(verbose_name='Kapasitas Produksi Per Tahun')
-	stuan_kapasitas_produksi = models.CharField(max_length=255, verbose_name='Satuan Kapasitas Produksi')
+	kapasitas_mesin_terpasang = models.IntegerField(blank=True, null=True, verbose_name='Kapasitas Mesin Terpasang')
+	stuan_kapasitas_msin_terpasang = models.CharField(max_length=10,blank=True, null=True, verbose_name='Satuan Kapasitas Mesin Terpasang')
+	kapasitas_produksi_pertahun = models.IntegerField(blank=True, null=True, verbose_name='Kapasitas Produksi Per Tahun')
+	stuan_kapasitas_produksi = models.CharField(blank=True, null=True, max_length=255, verbose_name='Satuan Kapasitas Produksi')
 
 	jenis_kegiatan = models.ForeignKey(JenisKegiatanUsaha, blank=True, null=True, verbose_name='Jenis Kegiatan Usaha')
 	kegiatan_usaha = models.ForeignKey(KegiatanUsaha, blank=True, null=True, verbose_name='Kegiatan Usaha')
 	pengecer = models.ForeignKey(JenisPengecer, blank=True, null=True, verbose_name='Jenis Pengecer')
-	presentase_kandungan_komponen_produk_lokal = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Presentase Kandungan Komponen Produk Lokal')
-	presentase_kandungan_komponen_produk_import = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Presentase Kandungan Komponen Produk Import')
+	presentase_kandungan_komponen_produk_lokal = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True, verbose_name='Presentase Kandungan Komponen Produk Lokal')
+	presentase_kandungan_komponen_produk_import = models.DecimalField(max_digits=5, decimal_places=2,blank=True, null=True, verbose_name='Presentase Kandungan Komponen Produk Import')
 	
-	modal_dasar = models.IntegerField(verbose_name='Modal Dasar')
-	modal_disetor = models.IntegerField(verbose_name='Modal Disetor')
-	modal_ditempatkan = models.IntegerField(verbose_name='Modal Ditempatkan')
-	jumlah_saham = models.IntegerField(verbose_name='Jumlah Saham')
-	nilai_saham_per_lembar = models.IntegerField(verbose_name='Nilai Saham Per Lembar')
+	modal_dasar = models.IntegerField(blank=True, null=True, verbose_name='Modal Dasar')
+	modal_disetor = models.IntegerField(blank=True, null=True, verbose_name='Modal Disetor')
+	modal_ditempatkan = models.IntegerField(blank=True, null=True, verbose_name='Modal Ditempatkan')
+	jumlah_saham = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Saham')
+	nilai_saham_per_lembar = models.IntegerField(blank=True, null=True,verbose_name='Nilai Saham Per Lembar')
+
+	def as_json(self):
+		perusahaan = ''
+		kegiatan_usaha = ''
+		if self.perusahaan:
+			perusahaan = self.perusahaan.nama_perusahaan
+			if self.kegiatan_usaha:
+				kegiatan_usaha = self.kegiatan_usaha.kegiatan_usaha
+
+		return dict(id=self.id, perusahaan=self.perusahaan.nama_perusahaan,kegiatan_usaha=kegiatan_usaha)
 
 	def __unicode__(self):
 		return "%s" % str(self.omset_per_tahun)
@@ -231,10 +269,10 @@ class DataRincianPerusahaan(models.Model):
 		verbose_name_plural = 'Data Rincian Perusahaan'
 
 class PemegangSahamLain(IdentitasPribadi):
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
+	perusahaan = models.ForeignKey(Perusahaan,blank=True, null=True, verbose_name='Perusahaan')
 	npwp = models.IntegerField(blank=True, null=True, verbose_name='NPWP')
-	jumlah_saham_dimiliki = models.IntegerField(verbose_name='Jumlah Saham Dimiliki')
-	jumlah_modal_disetor = models.IntegerField(verbose_name='Jumlah Modal Disetor')
+	jumlah_saham_dimiliki = models.IntegerField(blank=True, null=True, verbose_name='Jumlah Saham Dimiliki')
+	jumlah_modal_disetor = models.IntegerField( blank=True, null=True, verbose_name='Jumlah Modal Disetor')
 
 	def __unicode__(self):
 		return "%s" % str(self.npwp)
@@ -256,9 +294,16 @@ class Kelembagaan(models.Model):
 		verbose_name_plural = 'Kelembagaan'
 
 class ProdukUtama(models.Model):
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
-	kelembagaan = models.ForeignKey(Kelembagaan, verbose_name='Kelembagaan')
-	barang_jasa_utama = models.CharField(max_length=255, verbose_name='Barang Jasa Utama')
+	perusahaan = models.ForeignKey(Perusahaan,blank=True, null=True,  verbose_name='Perusahaan')
+	kelembagaan = models.ForeignKey(Kelembagaan, blank=True, null=True, verbose_name='Kelembagaan')
+	barang_jasa_utama = models.CharField(max_length=255, blank=True, null=True, verbose_name='Barang Jasa Utama')
+	
+	def as_json(self):
+		perusahaan = ''
+		if self.perusahaan:
+			perusahaan = self.perusahaan.nama_perusahaan
+
+		return dict(id=self.id, perusahaan=self.perusahaan.nama_perusahaan,barang_jasa_utama=self.barang_jasa_utama)
 
 	def __unicode__(self):
 		return "%s" % (self.barang_jasa_utama)
@@ -280,7 +325,7 @@ class JenisMesin(models.Model):
 		verbose_name_plural = 'Jenis Mesin'
 
 class MesinHuller(models.Model):
-	jenis = models.ForeignKey(JenisMesin, verbose_name='Jenis Mesin')
+	jenis = models.ForeignKey(JenisMesin,blank=True, null=True, verbose_name='Jenis Mesin')
 	mesin_huller = models.CharField(max_length=255, blank=True, null=True, verbose_name='Mesin Huller')
 
 	def __unicode__(self):
@@ -292,13 +337,13 @@ class MesinHuller(models.Model):
 		verbose_name_plural = 'Mesin Huller'
 
 class MesinPerusahaan(models.Model):
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
-	mesin = models.ForeignKey(MesinHuller, verbose_name='Mesin Huller')
-	tipe = models.CharField(max_length=255, verbose_name='Type')
-	PK = models.CharField(max_length=255, verbose_name='PK')
-	kapasitas = models.IntegerField(verbose_name='Kapasitas')
-	merk = models.CharField(max_length=255, verbose_name='Merk')
-	jumlah_unit = models.CharField(max_length=255, verbose_name='Jumlah Unit')
+	perusahaan = models.ForeignKey(Perusahaan, blank=True, null=True, verbose_name='Perusahaan')
+	mesin = models.ForeignKey(MesinHuller, blank=True, null=True, verbose_name='Mesin Huller')
+	tipe = models.CharField(blank=True, null=True, max_length=255, verbose_name='Type')
+	PK = models.CharField(blank=True, null=True, max_length=255, verbose_name='PK')
+	kapasitas = models.IntegerField(blank=True, null=True, verbose_name='Kapasitas')
+	merk = models.CharField(blank=True, null=True, max_length=255, verbose_name='Merk')
+	jumlah_unit = models.CharField(blank=True, null=True, max_length=255, verbose_name='Jumlah Unit')
 
 	def __unicode__(self):
 		return "%s" % (self.tipe)
@@ -310,15 +355,32 @@ class MesinPerusahaan(models.Model):
 
 
 class AktaNotaris(models.Model):
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
+	perusahaan = models.ForeignKey(Perusahaan,blank=True, null=True, verbose_name='Perusahaan')
 	no_akta = models.CharField(max_length=255, blank=True, null=True, verbose_name='No Akta')
 	tanggal_akta = models.DateField( blank=True, null=True, verbose_name='Tanggal Akta')
 	no_pengesahan = models.CharField(max_length=255, blank=True, null=True, verbose_name='No Pengesahan')
-	tanggal_pengesahan = models.DateField(verbose_name='Tanggal Pengesahan')
-	jenis_akta = models.CharField(max_length=20, verbose_name='Jenis Akta', choices=AKTA, default=1)
+	tanggal_pengesahan = models.DateField(blank=True, null=True, verbose_name='Tanggal Pengesahan')
+	jenis_akta = models.CharField(blank=True, null=True, max_length=20, verbose_name='Jenis Akta', choices=AKTA, default=1)
+
+	def as_json(self):
+		perusahaan = ''
+		tanggal_pengesahan = ''
+		tanggal_akta = ''
+		if self.perusahaan:
+			perusahaan = self.perusahaan.nama_perusahaan
+			if self.tanggal_pengesahan:
+				tanggal_pengesahan = self.tanggal_pengesahan.strftime("%d-%m-%Y")
+				if self.tanggal_akta:
+					tanggal_akta = self.tanggal_akta.strftime("%d-%m-%Y")
+
+		return dict(id=self.id, perusahaan=self.perusahaan.nama_perusahaan, no_akta=self.no_akta, 
+			tanggal_akta=tanggal_akta, no_pengesahan=self.no_pengesahan,tanggal_pengesahan=tanggal_pengesahan)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.no_akta)+"</option>"
 
 	def __unicode__(self):
-		return "%s" % (self.no_akta)
+		return "%s" % (self.no_akta + " (" + str(self.perusahaan) + ")")
 
 	class Meta:
 		ordering = ['id']
@@ -337,7 +399,7 @@ class JenisModalKoprasi(models.Model):
 		verbose_name_plural = 'Jenis Modal Koprasi'
 
 class ModalKoprasi(models.Model):
-	jenis_modal = models.ForeignKey(JenisModalKoprasi, verbose_name='Jenis Modal Koprasi')
+	jenis_modal = models.ForeignKey(JenisModalKoprasi, blank=True, null=True, verbose_name='Jenis Modal Koprasi')
 	modal_koprasi = models.CharField(max_length=255, blank=True, null=True, verbose_name='Modal Koprasi')
 
 	def __unicode__(self):
@@ -349,9 +411,9 @@ class ModalKoprasi(models.Model):
 		verbose_name_plural = 'Modal Koprasi'
 
 class NilaiModal(models.Model):
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
-	modal = models.ForeignKey(ModalKoprasi, verbose_name='Modal Koprasi')
-	nilai = models.IntegerField(verbose_name='Modal Koprasi')
+	perusahaan = models.ForeignKey(Perusahaan,blank=True, null=True, verbose_name='Perusahaan')
+	modal = models.ForeignKey(ModalKoprasi, blank=True, null=True, verbose_name='Modal Koprasi')
+	nilai = models.IntegerField(blank=True, null=True, verbose_name='Modal Koprasi')
 
 	def __unicode__(self):
 		return "%s" % str(self.nilai)
@@ -362,9 +424,9 @@ class NilaiModal(models.Model):
 		verbose_name_plural = 'Nilai Modal'
 
 class LokasiUnitProduksi(models.Model):
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
-	desa = models.ForeignKey(Desa, verbose_name='Desa')
-	alamat = models.CharField(max_length=255, verbose_name='Alamat')
+	perusahaan = models.ForeignKey(Perusahaan,blank=True, null=True, verbose_name='Perusahaan')
+	desa = models.ForeignKey(Desa,blank=True, null=True,  verbose_name='Desa')
+	alamat = models.CharField(blank=True, null=True, max_length=255, verbose_name='Alamat')
 
 	def __unicode__(self):
 		return "%s" % (self.alamat)
