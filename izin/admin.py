@@ -3,6 +3,8 @@ from izin.models import JenisPemohon, Pemohon, JenisPeraturan, DasarHukum, Syara
 from izin.izin_admin import IzinAdmin
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
+from perusahaan.models import Perusahaan
+from django.core.urlresolvers import reverse
 # from django.shortcuts import get_object_or_404
 # from django.core import serializers
 import json
@@ -25,12 +27,24 @@ class PemohonAdmin(admin.ModelAdmin):
 		results = [ob.as_json() for ob in pemohon_get]
 		return HttpResponse(json.dumps(results))
 
+	# def pemohon_add(request, pemohon_id=None):
+	# 	pemohon_add = Pemohon.objects.filter(id=pemohon_id)
+	# 	return HttpResponse(pemohon_add)
+
+	# def admin_pemohon_edit(self, request, pemohon_id=None, extra_context={}):
+	# 	if pemohon_id:
+	# 		pemohon = Pemohon.objects.get(pk=pemohon_id)
+	# 		pemohon_edit()
+	# 	return HttpResponseRedirect(reverse("admin:izin_pemohon_change"))
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(PemohonAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^ajax/autocomplete/$', self.admin_site.admin_view(self.ajax_autocomplete), name='pemohon_ajax_autocomplete'),
 			url(r'^ajax/pemohon/(?P<pemohon_id>\w+)/$', self.admin_site.admin_view(self.ajax_pemohon), name='ajax_pemohon'),
+			# url(r'^pemohon/(?P<pemohon_id>[0-9]+)/$', self.admin_site.admin_view(self.admin_pemohon_edit), name="admin_pemohon_edit"),
+			# url(r'^(?P<pemohon_id>[0-9]+)/$', self.admin_site.admin_view(self.pemohon_edit), name="pemohon_edit"),
 			)
 		return my_urls + urls
 
@@ -68,6 +82,7 @@ class PemohonAdmin(admin.ModelAdmin):
 		)
 		return fieldsets
 		
+
 
 
 
@@ -163,6 +178,19 @@ admin.site.register(Izin, IzinAdmin)
 class KekayaanDanSahamAdmin(admin.ModelAdmin):
 	list_display = ('kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
 	list_filter = ('kekayaan_bersih','total_nilai_saham')
+
+	def ajax_kekayaan(self, request, perusahaan_id=None):
+		kekayaan_get = KekayaanDanSaham.objects.filter(izin__perusahaan_id=perusahaan_id)
+		results = [ob.as_json() for ob in kekayaan_get]
+		return HttpResponse(json.dumps(results))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(KekayaanDanSahamAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^ajax/kekayaan/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_kekayaan), name='ajax_kekayaan'),
+			)
+		return my_urls + urls
 
 admin.site.register(KekayaanDanSaham, KekayaanDanSahamAdmin)
 

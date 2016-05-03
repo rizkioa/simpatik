@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import accounts.models
-import mptt.fields
-from django.conf import settings
 
 
 class Migration(migrations.Migration):
@@ -15,24 +13,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Bidang',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('nama_bidang', models.CharField(max_length=200, verbose_name=b'Organisasi di Bawah SKPD')),
-                ('plt', models.BooleanField(default=False, verbose_name=b'Apakah PLT?')),
-                ('keterangan', models.CharField(max_length=255, null=True, blank=True)),
-                ('lft', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('level', models.PositiveIntegerField(editable=False, db_index=True)),
-            ],
-            options={
-                'ordering': ['id'],
-                'verbose_name': 'Organisasi di Bawah SKPD',
-                'verbose_name_plural': 'Organisasi di Bawah SKPD',
-            },
-        ),
         migrations.CreateModel(
             name='IdentitasPribadi',
             fields=[
@@ -54,19 +34,6 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Jabatan',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('nama_jabatan', models.CharField(max_length=50, verbose_name=b'Nama Jabatan')),
-                ('keterangan', models.CharField(max_length=255, null=True, blank=True)),
-            ],
-            options={
-                'ordering': ['id'],
-                'verbose_name': 'Jabatan',
-                'verbose_name_plural': 'Jabatan',
-            },
-        ),
-        migrations.CreateModel(
             name='NomorIdentitasPengguna',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -76,24 +43,6 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Nomor Identitas Pengguna',
                 'verbose_name_plural': 'Nomor Identitas Pengguna',
-            },
-        ),
-        migrations.CreateModel(
-            name='SKPD',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('kode_satker', models.IntegerField(null=True, verbose_name=b'Kode Satker', blank=True)),
-                ('nama_skpd', models.CharField(max_length=100, verbose_name=b'SKPD')),
-                ('plt', models.BooleanField(default=False, verbose_name=b'Apakah PLT?')),
-                ('keterangan', models.CharField(max_length=255, null=True, blank=True)),
-                ('lft', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('rght', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('tree_id', models.PositiveIntegerField(editable=False, db_index=True)),
-                ('level', models.PositiveIntegerField(editable=False, db_index=True)),
-            ],
-            options={
-                'verbose_name': 'SKPD',
-                'verbose_name_plural': 'SKPD',
             },
         ),
         migrations.CreateModel(
@@ -110,6 +59,8 @@ class Migration(migrations.Migration):
                 ('status', models.PositiveSmallIntegerField(default=1, verbose_name=b'Status Data', choices=[(1, b'Active'), (2, b'Inactive'), (3, b'Blocked'), (4, b'Submitted'), (5, b'Archive')])),
                 ('created_at', models.DateTimeField(editable=False)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
+                ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
             options={
                 'ordering': ['id'],
@@ -119,11 +70,6 @@ class Migration(migrations.Migration):
             bases=('accounts.identitaspribadi', models.Model),
         ),
         migrations.AddField(
-            model_name='skpd',
-            name='kepala',
-            field=models.ForeignKey(related_name='kepala', verbose_name=b'Kepala SKPD', blank=True, to=settings.AUTH_USER_MODEL, null=True),
-        ),
-        migrations.AddField(
             model_name='nomoridentitaspengguna',
             name='user',
             field=models.ForeignKey(verbose_name=b'User', to='accounts.IdentitasPribadi'),
@@ -131,35 +77,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='identitaspribadi',
             name='desa',
-            field=models.ForeignKey(verbose_name=b'Desa', to='master.Desa', null=True),
-        ),
-        migrations.AddField(
-            model_name='bidang',
-            name='kepala',
-            field=models.ForeignKey(related_name='kepala_uptd', verbose_name=b'Kepala UPTD', blank=True, to=settings.AUTH_USER_MODEL, null=True),
-        ),
-        migrations.CreateModel(
-            name='Pegawai',
-            fields=[
-                ('account_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to=settings.AUTH_USER_MODEL)),
-                ('bidang', mptt.fields.TreeForeignKey(verbose_name=b'Bidang', to='accounts.Bidang')),
-                ('jabatan', models.ForeignKey(verbose_name=b'Jabatan', to='accounts.Jabatan')),
-                ('skpd', mptt.fields.TreeForeignKey(verbose_name=b'SKPD', to='accounts.SKPD')),
-            ],
-            options={
-                'verbose_name': 'Pegawai',
-                'verbose_name_plural': 'Pegawai',
-            },
-            bases=('accounts.account',),
-        ),
-        migrations.AddField(
-            model_name='account',
-            name='groups',
-            field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups'),
-        ),
-        migrations.AddField(
-            model_name='account',
-            name='user_permissions',
-            field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions'),
+            field=models.ForeignKey(verbose_name=b'Desa', blank=True, to='master.Desa', null=True),
         ),
     ]

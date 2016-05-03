@@ -10,6 +10,8 @@ from django.utils.deconstruct import deconstructible
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
 
+from datetime import datetime
+
 # Create your models here.
 
 @deconstructible
@@ -51,7 +53,11 @@ class Pemohon(Account):
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
 
 	def as_json(self):
-		return dict(id=self.id, nama_lengkap=self.nama_lengkap, jabatan_pemohon=self.jabatan_pemohon)
+		tanggal_lahir = ''
+		if self.tanggal_lahir:
+			tanggal_lahir = self.tanggal_lahir.strftime("%d-%m-%Y")
+		return dict(id=self.id,username=self.username, nama_lengkap=self.nama_lengkap, jabatan_pemohon=self.jabatan_pemohon, alamat=self.alamat, tempat_lahir=self.tempat_lahir,
+					tanggal_lahir=tanggal_lahir,telephone=self.telephone, kewarganegaraan=self.kewarganegaraan)
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+"</option>"
@@ -278,7 +284,7 @@ class DetilIMBPapanReklame(models.Model):
 		verbose_name_plural = 'Detil IMB Papan Reklame'
 
 class JenisGangguan(models.Model):
-	jenis_gangguan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Gangguan')
+	jenis_gangguan = models.CharField(max_length=255,null=True, blank=True,verbose_name='Jenis Gangguan')
 
 	def __unicode__(self):
 		return "%s" % (self.jenis_gangguan)
@@ -292,19 +298,19 @@ class Izin(models.Model):
 	izin_induk = models.ForeignKey('Izin', blank=True, null=True)
 
 	perusahaan = models.ForeignKey(Perusahaan, null=True, blank=True, verbose_name='Perusahaan')
-	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin')
-	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
-	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
-	detil_papan_reklame = models.ForeignKey(DetilIMBPapanReklame, verbose_name='Detil IMB Papan Reklame')
+	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin',null=True, blank=True,)
+	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, null=True, blank=True, verbose_name='Kelompok Jenis Izin')
+	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, null=True, blank=True, verbose_name='Jenis Permohonan Izin')
+	detil_papan_reklame = models.ForeignKey(DetilIMBPapanReklame, null=True, blank=True, verbose_name='Detil IMB Papan Reklame')
 
-	jenis_gangguan = models.ManyToManyField(JenisGangguan, verbose_name='Jenis Gangguan')
-	jenis_kegiatan_pembangunan = models.ManyToManyField(JenisKegiatanPembangunan, verbose_name='Jenis Kegiatan Pembangunan')
-	parameter_bgunan = models.ManyToManyField(ParameterBangunan, verbose_name='Parameter')
+	jenis_gangguan = models.ManyToManyField(JenisGangguan,blank=True, verbose_name='Jenis Gangguan')
+	jenis_kegiatan_pembangunan = models.ManyToManyField(JenisKegiatanPembangunan,blank=True, verbose_name='Jenis Kegiatan Pembangunan')
+	parameter_bgunan = models.ManyToManyField(ParameterBangunan, blank=True, verbose_name='Parameter')
 	
-	pendaftaran = models.SmallIntegerField(verbose_name='Pendaftaran')
-	pembaharuan = models.IntegerField(verbose_name='Pembaharuan')
+	pendaftaran = models.IntegerField(null=True, blank=True, verbose_name='Pendaftaran')
+	pembaharuan = models.IntegerField(null=True, blank=True, verbose_name='Pembaharuan')
 	
-	create_by = models.ForeignKey(Account, related_name='izin_create_by' ,verbose_name='Dibuat Oleh' )
+	create_by = models.ForeignKey(Account,null=True, blank=True, related_name='izin_create_by' ,verbose_name='Dibuat Oleh' )
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
 	created_at = models.DateTimeField(editable=False)
 	updated_at = models.DateTimeField(auto_now=True)
@@ -326,11 +332,28 @@ class Izin(models.Model):
 
 class KekayaanDanSaham(models.Model):
 	"""docstring for Kekayaan Dan Saham"""
-	izin = models.ForeignKey(Izin, verbose_name='Izin')
-	kekayaan_bersih = models.DecimalField(max_digits=10, decimal_places=2, null=True, verbose_name='Kekayaan Bersih')
+	izin = models.ForeignKey(Izin,blank=True, null=True, verbose_name='Izin')
+	kekayaan_bersih = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True, verbose_name='Kekayaan Bersih')
 	total_nilai_saham = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
 	presentase_saham_nasional = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
 	presentase_saham_asing = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Asing')
+	
+	def as_json(self):
+		kekayaan_bersih = ''
+		presentase_saham_asing = ''
+		total_nilai_saham = ''
+		presentase_saham_nasional = ''
+		if self.presentase_saham_asing:
+			presentase_saham_asing = str(self.presentase_saham_asing)
+			if self.kekayaan_bersih:
+				kekayaan_bersih = str(self.kekayaan_bersih)
+				if self.total_nilai_saham:
+					total_nilai_saham = str(self.total_nilai_saham)
+					if self.presentase_saham_nasional:
+						presentase_saham_nasional = str(self.presentase_saham_nasional)
+
+		return dict(id=self.id,kekayaan_bersih=kekayaan_bersih, total_nilai_saham=total_nilai_saham, 
+			presentase_saham_nasional=presentase_saham_nasional, presentase_saham_asing=presentase_saham_asing)
 
 	def __unicode__(self):
 		return "%s" % str(self.kekayaan_bersih)

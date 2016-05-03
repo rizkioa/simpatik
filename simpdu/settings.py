@@ -40,12 +40,14 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'mptt',
     'cas',
     'loginas',
     'master',
     'accounts',
-    'perusahaan',
-    'izin',
+    'kepegawaian',
+    # 'perusahaan',
+    # 'izin',
 
 )
 
@@ -92,8 +94,8 @@ WSGI_APPLICATION = 'simpdu.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'simpdu',
-        'USER': 'simpdu',
+        'NAME': 'simpatik',
+        'USER': 'simpatik',
         'PASSWORD': '!QAZ@WSX',
         'HOST': '127.0.0.1',
         'PORT': '3306'
@@ -110,22 +112,49 @@ TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+DATETIME_INPUT_FORMATS = [
+      "%d-%m-%Y %H.%M.%S", 
+      "%d-%m-%Y %H.%M.%S.%f", 
+      "%d-%m-%Y %H.%M", 
+      "%d-%m-%Y", 
+      "%d-%m-%Y %H.%M.%S", 
+      "%d-%m-%Y %H.%M.%S.%f", 
+      "%d-%m-%Y %H.%M", 
+      "%d-%m-%Y", 
+      "%m/%d/%Y %H.%M.%S", 
+      "%m/%d/%Y %H.%M.%S.%f", 
+      "%m/%d/%Y %H.%M", 
+      "%m/%d/%Y", 
+      "%m/%d/%Y %H.%M.%S", 
+      "%m/%d/%Y %H.%M.%S.%f", 
+      "%m/%d/%Y %H.%M", 
+      "%m/%d/%Y", 
+      "%Y-%m-%d %H:%M:%S", 
+      "%Y-%m-%d %H:%M:%S.%f", 
+      "%Y-%m-%d %H:%M", 
+      "%Y-%m-%d"
+    ]
+
+DATE_INPUT_FORMATS = ("%d-%m-%Y", "%d/%m/%Y", "%d-%m-%Y", "%d/%m/%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d")
 
 # configuraton CAS
 CAS_SERVER_URL = "http://siabjo.kedirikab.go.id/cas/"
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'cas.backends.CASBackend',
+    # 'cas.backends.CASBackend',
+    'accounts.backends.CASBackend',
 )
 
 CAS_LOGOUT_COMPLETELY = False
 CAS_PROVIDE_URL_TO_LOGOUT = True
 CAS_GATEWAY = True
-
+CAS_AUTO_CREATE_USER = False
+CAS_CUSTOM_FORBIDDEN = 'login_failed'
 USE_X_FORWARDED_HOST = True
 
 # Djago Loginas

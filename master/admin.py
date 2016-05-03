@@ -3,7 +3,12 @@ from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from master.models import Settings, Provinsi, Kabupaten, Kecamatan, Desa, JenisNomorIdentitas
+from master.models import *
+from provinsi_admin import ProvinsiAdmin
+from kabupaten_admin import KabupatenAdmin
+from kecamatan_admin import KecamatanAdmin
+from desa_admin import DesaAdmin
+from django.db.models import Q
 
 import json
 # Register your models here.
@@ -90,10 +95,7 @@ class LogEntryAdmin(admin.ModelAdmin):
 			return None
 
 	def json_riwayat(self, request):
-		if request.user.is_superuser:
-			logs = LogEntry.objects.all()
-		else :
-			logs = LogEntry.objects.filter(user=request.user)
+		logs = LogEntry.objects.all()
 		total = logs.count()
 		penghapusan = 0
 		pengubahan = 0
@@ -120,13 +122,14 @@ class LogEntryAdmin(admin.ModelAdmin):
 			url(r'^json/$', self.admin_site.admin_view(self.json_riwayat), name='json_riwayat'),
 			)
 		return my_urls + urls
-
 		
 admin.site.register(LogEntry, LogEntryAdmin)
-admin.site.register(JenisNomorIdentitas)
-admin.site.register(Provinsi)
-admin.site.register(Kabupaten)
-admin.site.register(Kecamatan)
-admin.site.register(Desa)
-admin.site.register(Settings)
 
+admin.site.register(Negara)
+admin.site.register(Provinsi, ProvinsiAdmin)
+admin.site.register(Kabupaten, KabupatenAdmin)
+admin.site.register(Kecamatan, KecamatanAdmin)
+admin.site.register(Desa, DesaAdmin)
+
+admin.site.register(Settings)
+admin.site.register(JenisNomorIdentitas)
