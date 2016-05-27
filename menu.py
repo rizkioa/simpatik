@@ -105,37 +105,7 @@ class CustomMenu(Menu):
                         #         ),
                         #     ]
                         # ),
-                        items.MenuItem(
-                            title='Daftar Lokasi',
-                            icon='icon-globe',
-                            children= [
-                                items.MenuItem(
-                                    title='Negara',
-                                    icon='icon-globe',
-                                    url=reverse('admin:master_negara_changelist'),
-                                ),
-                                items.MenuItem(
-                                    title='Provinsi',
-                                    icon='fa fa-globe',
-                                    url=reverse('admin:master_provinsi_changelist'),
-                                ),
-                                items.MenuItem(
-                                    title='Kota / Kabupaten',
-                                    icon='icon-globe-alt',
-                                    url=reverse('admin:master_kabupaten_changelist'),
-                                ),
-                                items.MenuItem(
-                                    title='Kecamatan',
-                                    icon='icon-map',
-                                    url=reverse('admin:master_kecamatan_changelist'),
-                                ),
-                                items.MenuItem(
-                                    title='Desa / Kelurahan',
-                                    icon='fa fa-map-marker',
-                                    url=reverse('admin:master_desa_changelist'),
-                                ),
-                            ]
-                        ),
+                        
                         # items.MenuItem(
                         #     title='Permodalan',
                         #     icon='fa fa-money',
@@ -259,46 +229,71 @@ class CustomMenu(Menu):
                             icon='fa fa-shield',
                             url=reverse('admin:auth_group_changelist'),
                         ),
-                        items.MenuItem(
-                            title='Info Pengaturan',
-                            icon='fa fa-users',
-                            children= [
-                                items.MenuItem(
-                                    title='Unit Kerja',
-                                    icon='fa fa-sitemap',
-                                    children= [
-                                        items.MenuItem(
-                                            title='Jenis Unit Kerja',
-                                            icon='fa fa-sitemap',
-                                            url=reverse('admin:kepegawaian_jenisunitkerja_changelist'),
-                                        ),
-                                        items.MenuItem(
-                                            title='Semua Unit Kerja',
-                                            icon='fa fa-institution',
-                                            url=reverse('admin:kepegawaian_unitkerja_changelist'),
-                                        ),
-                                        items.MenuItem(
-                                            title='Bidang / Bagian / Seksi',
-                                            icon='fa fa-building-o',
-                                            url=reverse('admin:kepegawaian_bidangstruktural_changelist'),
-                                        ),
-                                    ]
-                                ),
-                                items.MenuItem(
-                                    title='Jabatan',
-                                    icon='fa fa-star',
-                                    url=reverse('admin:kepegawaian_jabatan_changelist'),
-                                ),
-                            ]
-                        ),
                     ]
                 )
 
         menu_lainnya = items.MenuItem(
-                    title=_('Menu Lainnya'),
-                    description='Menu Lainnya',
-                    accesskey='menuLainnya',
+                    title=_('Menu Pengaturan'),
+                    description='Menu Pengaturan',
+                    accesskey='menuPengaturan',
                     children= [
+                     items.MenuItem(
+                            title='Unit Kerja',
+                            icon='fa fa-sitemap',
+                            children= [
+                                items.MenuItem(
+                                    title='Jenis Unit Kerja',
+                                    icon='fa fa-sitemap',
+                                    url=reverse('admin:kepegawaian_jenisunitkerja_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Semua Unit Kerja',
+                                    icon='fa fa-institution',
+                                    url=reverse('admin:kepegawaian_unitkerja_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Bidang / Bagian / Seksi',
+                                    icon='fa fa-building-o',
+                                    url=reverse('admin:kepegawaian_bidangstruktural_changelist'),
+                                ),
+                            ]
+                        ),
+                        items.MenuItem(
+                            title='Daftar Lokasi',
+                            icon='icon-globe',
+                            children= [
+                                items.MenuItem(
+                                    title='Negara',
+                                    icon='icon-globe',
+                                    url=reverse('admin:master_negara_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Provinsi',
+                                    icon='fa fa-globe',
+                                    url=reverse('admin:master_provinsi_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Kota / Kabupaten',
+                                    icon='icon-globe-alt',
+                                    url=reverse('admin:master_kabupaten_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Kecamatan',
+                                    icon='icon-map',
+                                    url=reverse('admin:master_kecamatan_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Desa / Kelurahan',
+                                    icon='fa fa-map-marker',
+                                    url=reverse('admin:master_desa_changelist'),
+                                ),
+                            ]
+                        ),
+                        items.MenuItem(
+                            title='Jabatan',
+                            icon='fa fa-star',
+                            url=reverse('admin:kepegawaian_jabatan_changelist'),
+                        ),
                         items.MenuItem(
                             title=_('Setting'),
                             description='Setting atau Konfigurasi',
@@ -316,8 +311,7 @@ class CustomMenu(Menu):
 
         if request.user.is_superuser:
             self.children += [
-                menu_pengguna,
-                menu_master,                
+                menu_pengguna,              
                 menu_lainnya,
             ]
         if request.user.groups.filter(name='Front Desk').exists() or request.user.is_superuser:

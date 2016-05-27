@@ -9,7 +9,7 @@ class JenisUnitKerja(MPTTModel):
 	keterangan = models.CharField(max_length=255, blank=True, null=True)
 
 	def __unicode__(self):
-		return u'%s. %s' % (self.id, self.jenis_unit_kerja)
+		return u'%s' % (self.jenis_unit_kerja)
 
 	def save(self, *args, **kwargs):
 		super(JenisUnitKerja, self).save(*args, **kwargs)

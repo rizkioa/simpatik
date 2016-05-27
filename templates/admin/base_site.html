@@ -3,7 +3,7 @@
 {% load i18n admin_static admin_tools_menu_tags %}
 
 {% block title %}
-	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu') }}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
 {% endblock %}
 
 {% block extrastyle %}
@@ -38,7 +38,7 @@
             <div class="branding">
                 {% block branding %}
                 	<a class="brand" href="{% url 'admin:index' %}">
-				        <span><strong>SIM</strong>PDU</span>
+				        <span><strong>SIM</strong>PATIK</span>
 				    </a>
 				    <a href="{% url 'admin:index' %}" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
                 {% endblock %}

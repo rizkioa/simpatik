@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
-admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu'
+admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
 from simpdu.sites import usersite
 
