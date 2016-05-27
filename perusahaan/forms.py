@@ -24,4 +24,4 @@ class AktaNotarisForm(ModelForm):
 class BarangJasaForm(ModelForm):
 	class Meta:
 		model = KegiatanUsaha
-		fields = ('kegiatan_usaha','nama_kbli','barang_jasa_utama')
+		exclude = ('kegiatan_usaha','nama_kbli','barang_jasa_utama')
