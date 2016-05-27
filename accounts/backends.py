@@ -28,7 +28,7 @@ from cas.exceptions import CasTicketException
 from cas.models import Tgt, PgtIOU
 from cas.utils import cas_response_callbacks
 
-__all__ = ['CASBackend']
+__all__ = ['CASBackend2']
 
 logger = logging.getLogger(__name__)
 
@@ -232,13 +232,15 @@ class CASBackend(object):
 
         if not username:
             return None
-
+        
         try:
             user = User.objects.get(username__iexact=username)
         except User.DoesNotExist:
             # user will have an "unusable" password
             if settings.CAS_AUTO_CREATE_USER:
-                user = User.objects.create_user(username, '')
+                print "user Creating"
+                user = User.objects.create_user(username,username, '')
+                print user
                 user.save()
             else:
                 user = None

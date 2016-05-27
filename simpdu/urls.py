@@ -3,6 +3,8 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 
+admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
+
 from simpdu.sites import usersite
 
 admin.autodiscover()
@@ -16,6 +18,7 @@ urlpatterns = [
     url(r'^user/', include(usersite.urls)),
     url(r'^accounts/login/$', 'cas.views.login', name='login_cas'),
     url(r'^accounts/logout/$', 'cas.views.logout', name='logout_cas'),
+    url(r'^accounts/login/failed/$', 'accounts.views.cas_failed', name='login_failed'),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

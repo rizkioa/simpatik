@@ -15,12 +15,17 @@
 
 {% block custom_style %}
 	<style type="text/css">
+		#result_list th.action-checkbox-column, #result_list td.action-checkbox {
+		    text-align: center;
+		    width: 1.5em;
+		    padding: 5px !important;
+		}
 		th.action-checkbox-column, td.action-checkbox {
 		    text-align: center;
 		    width: 1.5em;
 		}
 		.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
-		    padding: 5px !important;
+		    padding: 5px;
 		}
 		thead th, tfoot td {
 		    background: url("{% static 'images/nav-bg.gif' %}") repeat-x scroll left top #e1e1e1 !important;
@@ -162,12 +167,14 @@
 		            </h1>
                     <ul class="controls">                    	
                     	{% block object-tools %}
-	                    		{% block object-tools-items %}
+                    		{% block object-tools-items %}
+                    		{% if has_add_permission %}
 		                    	<li class="add" title="Tambah">
 		                    		{% url cl.opts|admin_urlname:'add' as add_url %}
 		                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
 		                    	</li>
-		                    	{% endblock %}
+	                    	{% endif %}
+	                    	{% endblock %}
 	                    {% endblock %}
 	                    {% block extra-object-tools %}
                     		{% block filters %}
@@ -224,20 +231,11 @@
 			                                {% if cl.formset %}
 			                                    <div>{{ cl.formset.management_form }}</div>
 			                                {% endif %}
-			                                {% if cl.result_count %}
-				                                {% block result_list %}		                                    
-				                                    {% block custom_result_list %}
-				                                        {% result_list cl %}
-				                                    {% endblock %}
-
-				                                {% endblock %}	
-				                               
-				                            {% else %}
-				                            <div class="alert alert-cyan">
-													<strong>Data Kosong</strong>
-											</div>
-				                            {% endif %}	     
-
+			                                {% block result_list %}		                                    
+			                                    {% block custom_result_list %}
+			                                        {% result_list cl %}
+			                                    {% endblock %}
+			                                {% endblock %}		                                
 			                            
 			                    </div>
 			                    <!-- /.table-responsive -->

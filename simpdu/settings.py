@@ -40,11 +40,13 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'mptt',
     'cas',
     'loginas',
     'master',
     'accounts',
-    'perusahaan',
+    'kepegawaian',
+    # 'perusahaan',
     'izin',
 
 )
@@ -92,8 +94,8 @@ WSGI_APPLICATION = 'simpdu.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'simpdu',
-        'USER': 'simpdu',
+        'NAME': 'simpatik',
+        'USER': 'simpatik',
         'PASSWORD': '!QAZ@WSX',
         'HOST': '127.0.0.1',
         'PORT': '3306'
@@ -144,13 +146,15 @@ CAS_SERVER_URL = "http://siabjo.kedirikab.go.id/cas/"
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'cas.backends.CASBackend',
+    # 'cas.backends.CASBackend',
+    'accounts.backends.CASBackend',
 )
 
 CAS_LOGOUT_COMPLETELY = False
 CAS_PROVIDE_URL_TO_LOGOUT = True
 CAS_GATEWAY = True
-
+CAS_AUTO_CREATE_USER = False
+CAS_CUSTOM_FORBIDDEN = 'login_failed'
 USE_X_FORWARDED_HOST = True
 
 # Djago Loginas

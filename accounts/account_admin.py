@@ -25,11 +25,12 @@ class AccountAdmin(UserAdmin):
 	search_fields = ('username', 'nama_lengkap', 'alamat', 'telephone', 'email', 'tempat_lahir',)
 	ordering = ('id',)
 	readonly_fields = ('last_login', 'created_at', 'updated_at')
-	filter_horizontal = ('groups', 'user_permissions',)
+	filter_horizontal = ()
 
 	fieldsets = (
 		(None, {'fields': ('nama_lengkap', 'username', 'password')}),
-		('Personal info', {'fields': ('tempat_lahir', 'tanggal_lahir','telephone', 'email','alamat', ('lintang','bujur'), 'kewarganegaraan','foto',)}),
+		('Personal info', {'fields': ('tempat_lahir', 'tanggal_lahir','telephone', 'email', 'kewarganegaraan','foto',)}),
+		('Alamat', {'fields': ('alamat', 'negara', 'provinsi', 'kabupaten', 'kecamatan', 'desa', ('lintang','bujur'))}),
 		('Hak Akses', {'fields': ('groups', 'user_permissions', 'status', 'is_active','is_admin','is_superuser','last_login', 'created_at', 'updated_at')}),
 	)
 	add_fieldsets = (
@@ -138,6 +139,11 @@ class AccountAdmin(UserAdmin):
 				return TemplateResponse(request, usersite.password_change_template, context)
 			else:
 				return TemplateResponse(request, "registration/password_change_form.html", context)
+
+	def get_form(self, request, obj=None, **kwargs):
+		form = super(AccountAdmin, self).get_form(request, obj, **kwargs)
+		form.request = request
+		return form
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url

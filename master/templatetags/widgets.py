@@ -23,11 +23,9 @@ def atribut(field_, attr_):
 
 @register.filter('is_select')
 def is_select(field):
+	if isinstance(field.field.widget, forms.RadioSelect):
+		return False
 	return isinstance(field.field.widget, forms.Select) or str(field.field.widget.__class__.__name__) == 'RelatedFieldWidgetWrapper'
-
-# @register.filter('is_relatedfield')
-# def is_relatedfield(field):
-# 	return str(field.field.widget.__class__.__name__) == 'RelatedFieldWidgetWrapper'
 
 @register.filter('is_date')
 def is_date(field):
@@ -36,7 +34,7 @@ def is_date(field):
 @register.filter('is_datetime')
 def is_datetime(field):
 	return isinstance(field.field.widget, forms.SplitDateTimeWidget)
-
+	
 @register.filter('is_file')
 def is_file(field):
 	return isinstance(field.field.widget, forms.FileInput)

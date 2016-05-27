@@ -42,16 +42,26 @@ class IzinAdmin(admin.ModelAdmin):
 				# no_pendaftaran = form_izin_pemohon.save(commit=False)
 
 
-				a = datetime.date.today()
-				b = a.strftime("%m%d%y")
+				# a = datetime.date.today()
+				# b = a.strftime("%m%d%y")
 				# print b
-				c = '0'
-				max_id = Izin.objects.latest('id').id
+				# c = '00'
+				max_id = Izin.objects.latest('pendaftaran').pendaftaran
 				d = max_id + 1
-				f = b + c + str(d)  					
+				# print max_id
+				# e = d.pendaftaran
+				# f = b + c 
+				# a = 0
+				# for x in range (1,999):
+					# f = int(f) + 1
+					# print (f)
 					
-				pendaftaran = int(f)
+					
+				pendaftaran = d
+				print pendafataran
+
 				# print pendaftaran
+				# print perusahaan
 
 				izin_pemohon.pemohon = p
 				izin_perusahaan.perusahaan = q
@@ -59,8 +69,9 @@ class IzinAdmin(admin.ModelAdmin):
 				# print izin_perusahaan.pendaftaran
 				# print izin_pemohon.pemohon
 				# print izin_perusahaan.perusahaan
-				izin_perusahaan.save()
-				izin_pemohon.save()
+				# print izin_perusahaan.perusahaan
+				# izin_perusahaan.save()
+				# izin_pemohon.save()
 				# print izin_pemohon
 				# print izin_perusahaan
 				# form_izin_pemohon = IzinPemohonForm(False)

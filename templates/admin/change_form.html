@@ -12,6 +12,9 @@
 {% block extrascript %}
     {{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    <script type="text/javascript">
+    	django.formats.DATE_INPUT_FORMATS = ["%d-%m-%Y", "%d/%m/%Y", "%d-%m-%Y", "%d/%m/%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d"]
+    </script>
     {{ media }}
 {% endblock %}
 
@@ -40,21 +43,108 @@
 
 {% block custom_style %}
 	<style type="text/css">	
-		div.form-row div.field-box{
-		    display: inline-block;
+		/* Inline */
+		.empty-form {
+		    display: none;
 		}
+		.inline-group {
+			border: 1px solid #ccc;
+			margin: 10px 0;
+			padding: 0;
+		}
+		.inline-related {
+		    position: relative;
+		}
+		.inline-related h3 {
+		    background: #e1e1e1 url("{% static "images/nav-bg.gif" %}") repeat-x scroll left top;
+		    border-bottom: 1px solid #ddd;
+		    color: #666;
+		    font-size: 11px;
+		    margin: 0;
+		    padding: 6px 12px;
+		}
+		.inline-related h3 {
+		    color: #666;
+		    font-size: 11px;
+		}
+		.inline-related h3 span.delete {
+		    float: right;
+		}
+		.inline-related h3 span.delete label {
+		    font-size: 11px;
+		    margin-left: 2px;
+		}
+		.inline-related fieldset {
+		    background: #fff none repeat scroll 0 0;
+		    border: medium none;
+		    margin: 0;
+		    width: 100%;
+		}
+		.inline-related .form-row {
+		    border-bottom: 1px solid #eee;
+		    font-size: 11px;
+		    margin-bottom: 0;
+		    padding: 8px 12px;
+		}
+		.inline-group div.add-row, .inline-group .tabular tr.add-row td {
+		    background: #e1e1e1 url("{% static "images/nav-bg.gif" %}") repeat-x scroll left top;
+		    border-bottom: 1px solid #ddd;
+		    color: #666;
+		    padding: 3px 5px;
+		}
+		.inline-group ul.tools a.add, .inline-group div.add-row a, .inline-group .tabular tr.add-row td a {
+		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/icon_addlink.gif" %}") no-repeat scroll 0 50%;
+		    font-size: 11px;
+		    outline: 0 none;
+		    padding-left: 14px;
+		}
+		.inline-related .form-group {
+		    margin-left: 0;
+		    margin-right: 0;
+		}
+		.inline-group .add-row{
+			text-align: right;
+		}		
+		/* end of inline */
 
+		div.form-row div.field-box{
+		    /*display: inline-block;
+		    display: -moz-box;
+		    display: -webkit-box;*/
+		    float: left;
+		}
+		/*div.form-group > label.control-label{
+			padding-top: 17px;
+		}*/
+		div.field-box > label.control-label, div.field-box > div{
+			float: left;
+		}
+		/*div.form-row div.field-box.errors {
+		    padding-right: 35px;
+		}*/
+		div.form-row div.field-box:not(:first-child) {
+		    padding-left: 20px;
+		}
+		div.field-box > label.control-label {
+		    padding-right: 15px;
+		}
 		div.errors {
-		    background: #ffc none repeat scroll 0 0;
+		   /* background: #ffc none repeat scroll 0 0;
 		    padding-top: 15px;
-		    padding-bottom: 10px;
-		    border: 1px solid #ff7b76;
+		    border: 1px solid #ff7b76;*/
+		    padding-bottom: 10px;		    
 		}
 		div.errors label{
 			color: #ff7b76;
 		}
-		input.parsley-error, select.parsley-error, textarea.parsley-error, .checkbox-custom.parsley-error > i, div.form-row.errors a.chosen-single, div.form-row.errors div.chosen-drop{
+		input.parsley-error, select.parsley-error, textarea.parsley-error, .checkbox-custom.parsley-error > i, div.form-row.errors a.chosen-single, div.form-row.errors div.chosen-drop, .form-row .errors input.vDateField{
 		    border-color: #ff7b76 !important;
+		}
+		ul.errorlist {
+		    background: #ffc none repeat scroll 0 0;
+		    border: 1px solid #ff7b76;
+		    padding-bottom: 10px;
+		    padding-top: 15px;
 		}
 
 		.checkbox-row .help-block{
@@ -90,7 +180,7 @@
 			height: 274px;
 		}
 		.chosen-container{
-			min-width: 100px;
+			min-width: 250px;
 		}
 		.selector select, .selector .h2, .selector-filter input{
 		    border: 1px solid #dbe0e2;
@@ -113,7 +203,9 @@
 		a.active.selector-clearall {
 		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll left -233px;
 		}
+
 		.related-widget-wrapper{
+			overflow: visible;
 			padding-right: 42px;
 		}
 		.related-widget-wrapper .add-related{
@@ -144,6 +236,7 @@
 		    vertical-align: top;
 		    background-image: none;
 		    padding: 6px 12px;
+
 		}
 		.datetime br {
     		display: none;
@@ -160,6 +253,16 @@
 		.datetimeshortcuts{
 			margin-top: 4px;
 		}
+
+		.calendar caption{
+		    text-align: center;
+		}
+		.calendarnav-previous, .calendarnav-next {
+		    margin-top: 5px;
+		}
+		.calendarbox{
+			border: 1px solid activeborder;
+		}
 	</style>
 {% endblock %}
 {% block bodyclass %}
@@ -170,8 +273,6 @@
 	{{ block.super }}
 	<link rel="stylesheet" type="text/css" href="{% static "admin/css/widgets.css" %}" />
 	<link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
-
-
 {% endblock %}
 
 {% block extrajs %}
@@ -197,7 +298,7 @@
 {% block extrajs_site %}
 	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
-		<!-- ============================================
+	<!-- ============================================
     ============== Custom JavaScripts ===============
     ============================================= -->
     <script src="{% static "scripts/js/main.js" %}"></script>
@@ -247,7 +348,6 @@
                     	{% if add %} <strong>{% trans 'Add' %}</strong> {{ opts.verbose_name }}{% else %} <strong>{% trans 'Edit' %}</strong> {{ original|truncatewords:"18" }}{% endif %}</h1>
                     <ul class="controls">
                     	{% block object-tools %}
-                    		{% if has_add_permission %}
 	                    	{% if change %}{% if not is_popup %}
 	                    	<li class="dropdown">
 	                    		<a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
@@ -268,7 +368,6 @@
 			                    {% endblock %}
 					        </li>
 					        {% endif %}{% endif %}
-					        {% endif %}
 			            {% endblock %}
                         <li class="dropdown">
                             <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">

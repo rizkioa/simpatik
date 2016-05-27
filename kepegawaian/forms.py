@@ -1,12 +1,52 @@
 from django import forms
-from django.utils.translation import ugettext, ugettext_lazy as _
-from collections import OrderedDict
-from django.core.urlresolvers import reverse
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, UserChangeForm
+from kepegawaian.models import Pegawai, BidangStruktural
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
+from django.core.urlresolvers import reverse
 
-class AccountChangeForm(UserChangeForm):
+class KepegawaianForm(forms.ModelForm):
+	"""docstring for KepegawaianForm"""
+	bidang_struktural = forms.ModelChoiceField(label="Bagian / Bidang / Seksi (Struktural)", queryset=BidangStruktural.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
+	def __init__(self, *args, **kwargs):
+		super(KepegawaianForm, self).__init__(*args, **kwargs)
+		
+		if self.request.user.has_perm('kepegawaian.add_bidangstruktural') or self.request.user.has_perm('kepegawaian.change_bidangstruktural'):
+			self.fields['bidang_struktural'].help_text = {}
+			self.fields['bidang_struktural'].help_text.update({'info': 'Pilih Unit Kerja dulu.'})
+			if self.request.user.has_perm('kepegawaian.add_bidangstruktural'):
+				self.fields['bidang_struktural'].help_text.update({'add_code': '<a id="add_id_bidangstruktural" class="related-widget-wrapper-link add-related" href="'+reverse('admin:kepegawaian_bidangstruktural_add')+'?_to_field=id&_popup=1"><img width="10" height="10" alt="Tambah" src="/static/admin/img/icon_addlink.gif"></a>'})
+			if self.request.user.has_perm('kepegawaian.change_bidangstruktural'):
+				self.fields['bidang_struktural'].help_text.update({'change_code': '<a id="change_id_bidangstrukltural" class="related-widget-wrapper-link change-related" title="Change selected Bidang Struktural" data-href-template="/admin/kepegawaian/bidangstruktural/__fk__/?_to_field=id&_popup=1"><img width="10" height="10" alt="Ubah" src="/static/admin/img/icon_changelink.gif"></a>'})
+
+		unit_kerja = self.request.POST.get('unit_kerja', None)
+		if unit_kerja:
+			self.fields['bidang_struktural'].queryset = BidangStruktural.objects.filter(unit_kerja__id=unit_kerja)
+			self.fields['bidang_struktural'].widget.attrs = {}
+			bidang_struktural = self.request.POST.get('bidang_struktural', None)
+			if bidang_struktural:
+				self.fields['bidang_struktural'].initial = bidang_struktural
+
+		if self.instance.pk:
+			if self.instance.bidang_struktural:
+				self.fields['bidang_struktural'].queryset = BidangStruktural.objects.filter(unit_kerja=self.instance.unit_kerja)
+				self.fields['bidang_struktural'].initial = self.instance.bidang_struktural
+				self.fields['bidang_struktural'].widget.attrs = {}
+
+
+class AddPegawaiForm(KepegawaianForm):
+	nama_lengkap = forms.CharField(label="Nama Lengkap", widget=forms.TextInput(attrs={'placeholder': 'Nama Lengkap'}))
+
+	def __init__(self, *args, **kwargs):
+		super(AddPegawaiForm, self).__init__(*args, **kwargs)
+
+	class Meta:
+		model = Pegawai
+		fields = '__all__'
+
+class PegawaiForm(KepegawaianForm):
+	nama_lengkap = forms.CharField(label="Nama Lengkap", widget=forms.TextInput(attrs={'placeholder': 'Nama Lengkap'}))
+
 	alamat = forms.CharField(label="Alamat", required=True,)
+	
 	negara = forms.ModelChoiceField(label="Negara", queryset=Negara.objects.all(),)
 	provinsi = forms.ModelChoiceField(label="Provinsi", help_text="Pilih Negara dulu.", queryset=Provinsi.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
 	kabupaten = forms.ModelChoiceField(label="Kabupaten / Kota", help_text="Pilih Provinsi dulu.", queryset=Kabupaten.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
@@ -14,7 +54,7 @@ class AccountChangeForm(UserChangeForm):
 	desa = forms.ModelChoiceField(label="Desa / Kelurahan", help_text="Pilih Kecamatan dulu.", queryset=Desa.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
 
 	def __init__(self, *args, **kwargs):
-		super(AccountChangeForm, self).__init__(*args, **kwargs)
+		super(PegawaiForm, self).__init__(*args, **kwargs)
 		if self.request.user.has_perm('master.add_negara') or self.request.user.has_perm('master.change_negara'):
 			self.fields['negara'].help_text = {}
 			if self.request.user.has_perm('master.add_negara'):
@@ -92,74 +132,5 @@ class AccountChangeForm(UserChangeForm):
 			self.fields['desa'].initial = self.instance.desa
 
 	class Meta:
+		model = Pegawai
 		fields = '__all__'
-
-	def clean_email(self):
-		return self.cleaned_data['email'] or None
-
-class CustomSetPasswordForm(forms.Form):
-	"""
-	A form that lets a user change set their password without entering the old
-	password
-	"""
-	error_messages = {
-		'password_mismatch': _("The two password fields didn't match."),
-	}
-	new_password1 = forms.CharField(label=_("New password"),
-									widget=forms.PasswordInput)
-	new_password2 = forms.CharField(label=_("New password confirmation"),
-									widget=forms.PasswordInput)
-
-	def __init__(self, user, *args, **kwargs):
-		self.user = user
-		super(CustomSetPasswordForm, self).__init__(*args, **kwargs)
-		if not self.user.has_usable_password():
-			del self.fields['old_password']
-
-	def clean_new_password2(self):
-		password1 = self.cleaned_data.get('new_password1')
-		password2 = self.cleaned_data.get('new_password2')
-		if password1 and password2:
-			if password1 != password2:
-				raise forms.ValidationError(
-					self.error_messages['password_mismatch'],
-					code='password_mismatch',
-				)
-		return password2
-
-	def save(self, commit=True):
-		self.user.set_password(self.cleaned_data['new_password1'])
-		if commit:
-			self.user.save()
-		return self.user
-		
-class CustomPasswordChangeForm(CustomSetPasswordForm):
-	"""
-	A form that lets a user change their password by entering their old
-	password.
-	"""
-	error_messages = dict(CustomSetPasswordForm.error_messages, **{
-		'password_incorrect': _("Your old password was entered incorrectly. "
-								"Please enter it again."),
-	})
-	old_password = forms.CharField(label="Old Password",
-								   widget=forms.PasswordInput)
-
-
-	def clean_old_password(self):
-		"""
-		Validates that the old_password field is correct.
-		"""
-		old_password = self.cleaned_data["old_password"]
-		if self.user.has_usable_password():
-			if not self.user.check_password(old_password):
-				raise forms.ValidationError(
-					self.error_messages['password_incorrect'],
-					code='password_incorrect',
-				)
-		return old_password
-
-CustomPasswordChangeForm.base_fields = OrderedDict(
-	(k, CustomPasswordChangeForm.base_fields[k])
-	for k in ['old_password', 'new_password1', 'new_password2']
-)
