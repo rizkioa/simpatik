@@ -47,7 +47,7 @@ INSTALLED_APPS = (
     'accounts',
     'kepegawaian',
     # 'perusahaan',
-    # 'izin',
+    'izin',
 
 )
 

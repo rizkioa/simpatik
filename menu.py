@@ -205,13 +205,13 @@ class CustomMenu(Menu):
                     children= [
                         items.MenuItem(
                             title='Daftar Pengguna',
-                            icon='fa fa-users',
+                            icon='icon-user',
                             children= [
-                                # items.MenuItem(
-                                #     title='Pemohon',
-                                #     icon='fa fa-user-md',
-                                #     url=reverse('admin:izin_pemohon_changelist'),
-                                # ),
+                                items.MenuItem(
+                                    title='Pemohon',
+                                    icon='fa fa-user-md',
+                                    url=reverse('admin:izin_pemohon_changelist'),
+                                ),
                                 items.MenuItem(
                                     title='Pegawai',
                                     icon='fa fa-user-md',
@@ -293,6 +293,11 @@ class CustomMenu(Menu):
                             title='Jabatan',
                             icon='fa fa-star',
                             url=reverse('admin:kepegawaian_jabatan_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Jenis Pemohon',
+                            icon='fa fa-child',
+                            url=reverse('admin:master_jenispemohon_changelist'),
                         ),
                         items.MenuItem(
                             title=_('Setting'),

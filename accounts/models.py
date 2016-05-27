@@ -72,7 +72,7 @@ class IdentitasPribadi(models.Model):
 
 	tempat_lahir = models.CharField(max_length=30, verbose_name='Tempat Lahir', null=True, blank=True)
 	tanggal_lahir = models.DateField(verbose_name='Tanggal Lahir', null=True, blank=True)
-	telephone = models.CharField(max_length=50, null=True, blank=True)
+	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
 	email = models.EmailField(unique=True, blank=True, null=True)
 
 	desa = models.ForeignKey(Desa,null=True,blank=True, verbose_name='Desa')

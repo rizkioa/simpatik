@@ -2,6 +2,18 @@ from django.db import models
 
 # Create your models here.
 
+class JenisPemohon(models.Model):
+	jenis_pemohon = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jenis Pemohon')
+	keterangan = models.CharField(max_length=255, blank=True, null=True)
+	
+	def __unicode__(self):
+		return "%s" % (self.jenis_pemohon)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Pemohon'
+		verbose_name_plural = 'Jenis Pemohon'
+
 class JenisNomorIdentitas(models.Model):
 	"""docstring for skpd"""
 	jenis_nomor_identitas = models.CharField(max_length=30, verbose_name='Jenis Nomor Identitas')
