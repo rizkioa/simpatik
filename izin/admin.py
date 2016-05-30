@@ -1,10 +1,10 @@
 from django.contrib import admin
-# from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 # from django.http import HttpResponse
-# from django.utils.safestring import mark_safe
+from django.utils.safestring import mark_safe
 
 from izin.pemohon_admin import PemohonAdmin
-from izin.models import Pemohon
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin
 from master.models import JenisPemohon
 
 # import json
@@ -18,21 +18,36 @@ from master.models import JenisPemohon
 # Register your models here.
 
 admin.site.register(JenisPemohon)
-
 admin.site.register(Pemohon, PemohonAdmin)
 
-# class JenisPeraturanAdmin(admin.ModelAdmin):
-# 	list_display = ('jenis_peraturan','keterangan')
-# 	list_filter = ('jenis_peraturan','keterangan')
+class JenisPeraturanAdmin(admin.ModelAdmin):
+	list_display = ('jenis_peraturan','keterangan')
 
-# admin.site.register(JenisPeraturan,JenisPeraturanAdmin)
+admin.site.register(JenisPeraturan, JenisPeraturanAdmin)
 
-# class DasarHukumAdmin(admin.ModelAdmin):
-# 	list_display = ('instansi','nomor','tentang')
-# 	list_filter = ('instansi','nomor','tentang')
-# 	search_fields = ('jenis_peraturan','instansi','nomor','tentang')
+class DasarHukumAdmin(admin.ModelAdmin):
+	list_display = ('nomor', 'instansi', 'jenis_peraturan', 'tentang', 'keterangan', 'aksi')
+	list_filter = ('jenis_peraturan__jenis_peraturan', 'tahun', )
+	search_fields = ('jenis_peraturan','instansi','nomor','tentang', 'keterangan')
 
-# admin.site.register(DasarHukum,DasarHukumAdmin)
+	def aksi(self, obj):
+		aksi_str = '<a title="Hapus Dasar Hukum" href="'+reverse('admin:izin_dasarhukum_delete', args=(obj.id,))+'"><span class="glyphicon glyphicon-remove-circle"></span></a>'
+		link_berkas = ""
+		if obj.berkas:
+			link_berkas = "<a href='"+str(obj.get_file_url())+"'><span class='fa fa-download'></span></a>"
+			aksi_str = link_berkas+" "+aksi_str
+		return mark_safe(aksi_str)
+	aksi.short_description = 'Aksi'
+
+
+admin.site.register(DasarHukum, DasarHukumAdmin)
+
+class JenisIzinAdmin(admin.ModelAdmin):
+	list_display = ('nama_izin','jenis_izin','keterangan')
+	list_filter = ('dasar_hukum','jenis_izin')
+	search_fields = ('nama_izin','jenis_izin', 'dasar_hukum', 'keterangan')
+
+admin.site.register(JenisIzin, JenisIzinAdmin)
 
 # class SyaratAdmin(admin.ModelAdmin):
 # 	list_display = ('syarat', 'keterangan')
@@ -57,14 +72,6 @@ admin.site.register(Pemohon, PemohonAdmin)
 # 	hargabeli.admin_order_field = 'biaya'
 
 # admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
-
-# class JenisIzinAdmin(admin.ModelAdmin):
-# 	list_display = ('nama_izin','jenis_izin','keterangan')
-# 	list_filter = ('nama_izin','jenis_izin')
-# 	search_fields = ('nama_izin','jenis_izin')
-# 	filter_horizontal = ('dasar_hukum',)
-
-# admin.site.register(JenisIzin,JenisIzinAdmin)
 
 # class DataPerubahanAdmin(admin.ModelAdmin):
 # 	list_display = ('tabel_asal','nama_field','isi_field_lama','created_at')

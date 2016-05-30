@@ -16,7 +16,6 @@ from django.core.urlresolvers import resolve
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 
-
 class ItemInlineFormSet(BaseInlineFormSet):
 	def clean(self):
 		c_ = super(ItemInlineFormSet, self).clean()
@@ -70,13 +69,19 @@ class NomorIdentitasInline(admin.StackedInline):
 
 class PegawaiAdmin(admin.ModelAdmin):
 	# form = PegawaiForm
-	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', )
+	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai')
+	list_filter = ('groups__name', )
 	inlines = [NomorIdentitasInline,]
 
 	def nomor_identitas(self, obj):
 		return obj.username
 	nomor_identitas.short_description = 'Nomor Identitas'
 	nomor_identitas.admin_order_field = 'username'
+
+	def jenis_pegawai(self, obj):
+		groups = obj.groups.all()
+		return ", ".join(str(g.name) for g in groups)
+	jenis_pegawai.short_description = 'Jenis Pegawai'
 
 	def option_pegawai(self, request):		
 		pegawai_list = Pegawai.objects.all()
@@ -111,15 +116,15 @@ class PegawaiAdmin(admin.ModelAdmin):
 		if func_view.__name__ == self.change_view.__name__:
 			field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email')
 			add_fieldsets = (
-					(None, {
-						'classes': ('wide',),
-						'fields': field
-						}
-					),
-					('Kepegawaian', {'fields': ('unit_kerja', 'bidang_struktural', 'jabatan', )}),
-					('Alamat', {'fields': ('alamat', 'negara', 'provinsi', 'kabupaten', 'kecamatan', 'desa')}),
-					('Lain-lain', {'fields': ('foto', 'keterangan', )}),
-				)
+				(None, {
+					'classes': ('wide',),
+					'fields': field
+					}
+				),
+				('Kepegawaian', {'fields': ('unit_kerja', 'bidang_struktural', 'jabatan', )}),
+				('Alamat', {'fields': ('alamat', 'negara', 'provinsi', 'kabupaten', 'kecamatan', 'desa')}),
+				('Lain-lain', {'fields': ('foto', 'keterangan', 'groups')}),
+			)
 		else:
 			field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email')
 

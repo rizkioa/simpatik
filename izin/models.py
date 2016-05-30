@@ -1,10 +1,17 @@
+from django.conf import settings
 from django.db import models
 from accounts.models import Account
 from master.models import JenisPemohon
 
+from uuid import uuid4
+from django.utils.deconstruct import deconstructible
+
+import os, re
+
+from izin.utils import JENIS_IZIN, get_tahun_choices
+
 # from accounts.utils import STATUS
 # from perusahaan.models import Perusahaan
-# from izin.utils import JENIS
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -16,6 +23,26 @@ from master.models import JenisPemohon
 
 # Create your models here.
 
+@deconstructible
+class PathAndRename(object):
+
+	def __init__(self, sub_path):
+		self.path = sub_path
+
+	def __call__(self, instance, filename):
+		ext = filename.split('.')[-1]
+		# set filename as random string
+		filename = '{}.{}'.format(uuid4().hex, ext)
+		# return the whole path to the file
+		return os.path.join(self.path, filename)
+
+class FileField(models.FileField):
+	def save_form_data(self, instance, data):
+		if data is not None: 
+			file = getattr(instance, self.attname)
+			if file != data:
+				file.delete(save=False)
+		super(FileField, self).save_form_data(instance, data)
 
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
@@ -31,6 +58,33 @@ class Pemohon(Account):
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+"</option>"
 
+	def set_username(self):
+		nomor_list = self.nomoridentitaspengguna_set.all()
+		jumlah_ =  nomor_list.count()
+		if jumlah_ == 1:
+			nomor_ = nomor_list.first()
+			nomor_.set_as_username()
+		elif jumlah_ > 1:
+			username = None
+			nip_list = []
+			jenis_identitas = None
+			for n in nomor_list:
+				ji = n.jenis_identitas
+				nip_list.append(ji)
+				if jenis_identitas and ji:
+					if jenis_identitas.id > ji.id:
+						jenis_identitas = ji
+						username = n.nomor
+				elif not jenis_identitas and ji:
+					jenis_identitas = ji
+					username = n.nomor
+			if username:
+				self.username = re.sub('[^0-9a-zA-Z]+', '', username)
+
+	def save(self, *args, **kwargs):
+		self.nama_lengkap = self.nama_lengkap.upper()
+		super(Pemohon, self).save(*args, **kwargs)
+
 	def __unicode__(self):
 		return "%s" % (self.nama_lengkap)
 
@@ -39,55 +93,62 @@ class Pemohon(Account):
 		verbose_name = 'Pemohon'
 		verbose_name_plural = 'Pemohon'
 
-# @deconstructible
-# class PathAndRename(object):
+class JenisPeraturan(models.Model):
+	jenis_peraturan = models.CharField(max_length=100, verbose_name='Jenis Peraturan')
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
-# 	def __init__(self, sub_path):
-# 		self.path = sub_path
+	def __unicode__(self):
+		return "%s" % (self.jenis_peraturan)
 
-# 	def __call__(self, instance, filename):
-# 		ext = filename.split('.')[-1]
-# 		# set filename as random string
-# 		filename = '{}.{}'.format(uuid4().hex, ext)
-# 		# return the whole path to the file
-# 		return os.path.join(self.path, filename)
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Peraturan'
+		verbose_name_plural = 'Jenis Peraturan'
 
-# path_and_rename = PathAndRename("berkas/")
+class DasarHukum(models.Model):
+	jenis_peraturan = models.ForeignKey(JenisPeraturan, verbose_name='Jenis Peraturan')
+	instansi = models.CharField(max_length=100, verbose_name='Instansi')
+	nomor = models.CharField(max_length=100, verbose_name='Nomor')
+	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
+	tentang = models.CharField(max_length=255, verbose_name='Tentang')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+	berkas = FileField(upload_to=PathAndRename("peraturan/"), null=True, blank=True, max_length=255)
 
-# class FileField(models.FileField):
-# 	def save_form_data(self, instance, data):
-# 		if data is not None: 
-# 			file = getattr(instance, self.attname)
-# 			if file != data:
-# 				file.delete(save=False)
-# 		super(FileField, self).save_form_data(instance, data)
+	def get_file_url(self):
+		if self.berkas:
+			return settings.MEDIA_URL+str(self.berkas)
+		return "#"
 
-# class JenisPeraturan(models.Model):
-# 	jenis_peraturan = models.CharField(max_length=100,null=True, blank=True, verbose_name='Jenis Peraturan')
-# 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+	def __unicode__(self):
+		return "%s" % (self.nomor)
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_peraturan)
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Dasar Hukum'
+		verbose_name_plural = 'Dasar Hukum'
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Peraturan'
-# 		verbose_name_plural = 'Jenis Peraturan'
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
 
-# class DasarHukum(models.Model):
-# 	jenis_peraturan = models.ForeignKey(JenisPeraturan, verbose_name='Jenis Peraturan')
-# 	instansi = models.CharField(max_length=100,null=True, blank=True, verbose_name='Instansi')
-# 	nomor = models.CharField(max_length=100,null=True, blank=True, verbose_name='Nomor')
-# 	tentang = models.CharField(max_length=255,null=True, blank=True, verbose_name='Tentang')
-# 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+@receiver(pre_delete, sender=DasarHukum)
+def dasarhukum_delete(sender, instance, **kwargs):
+	# Pass false so FileField doesn't save the model.
+	if instance:
+		instance.berkas.delete(False)
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.instansi)
+class JenisIzin(models.Model):
+	dasar_hukum = models.ManyToManyField(DasarHukum, verbose_name='Dasar Hukum')
+	nama_izin = models.CharField(max_length=100, verbose_name='Nama Izin')
+	jenis_izin = models.CharField(max_length=20, verbose_name='Jenis Izin', choices=JENIS_IZIN, default=1)
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+	
+	def __unicode__(self):
+		return "%s" % (self.nama_izin)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Dasar Hukum'
-# 		verbose_name_plural = 'Dasar Hukum'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Izin'
+		verbose_name_plural = 'Jenis Izin'
 
 # class Syarat(models.Model):
 # 	syarat = models.CharField(max_length=255,null=True, blank=True, verbose_name='Syarat')
@@ -113,20 +174,6 @@ class Pemohon(Account):
 # 		ordering = ['id']
 # 		verbose_name = 'Prosedur'
 # 		verbose_name_plural = 'Prosedur'
-
-# class JenisIzin(models.Model):
-# 	dasar_hukum = models.ManyToManyField(DasarHukum, verbose_name='Dasar Hukum')
-# 	nama_izin = models.CharField(max_length=100,null=True, blank=True, verbose_name='Nama Izin')
-# 	jenis_izin = models.CharField(max_length=20, verbose_name='Jenis Izin', choices=JENIS, default=1)
-# 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.nama_izin)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Izin'
-# 		verbose_name_plural = 'Jenis Izin'
 
 # class KelompokJenisIzin(models.Model):
 # 	jenis_izin = models.ForeignKey(JenisIzin, verbose_name='Jenis Izin')
