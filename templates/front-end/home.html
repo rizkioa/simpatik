@@ -1,1 +1,13 @@
-Belum Jadi...
+{% extends "front-end/index.html" %}
+{% load i18n admin_static %}
+{% load i18n admin_static %}
+
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}front-end/css/revolution-slider/extralayers.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}front-end/css/revolution-slider/settings.css" media="screen" />
+{% endblock %}
+
+{% block page-content %}
+
+{% endblock %}

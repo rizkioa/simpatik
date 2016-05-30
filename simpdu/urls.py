@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^accounts/logout/$', 'cas.views.logout', name='logout_cas'),
     url(r'^accounts/login/failed/$', 'accounts.views.cas_failed', name='login_failed'),
 
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Login As
