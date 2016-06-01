@@ -231,26 +231,31 @@ class CustomMenu(Menu):
                                 icon='fa fa-file-text-o',
                                 url=reverse('admin:izin_jenisizin_changelist'),
                             ),
-                            # items.MenuItem(
-                            #     title='Jenis Permohonan Izin',
-                            #     icon='fa fa-file-text-o',
-                            #     url=reverse('admin:izin_jenispermohonanizin_changelist'),
-                            # ),
+                            items.MenuItem(
+                                title='Kelompok Jenis Izin',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_kelompokjenisizin_changelist'),
+                            ),
+                            items.MenuItem(
+                                title='Syarat Izin',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_syarat_changelist'),
+                            ),
+                            items.MenuItem(
+                                title='Prosedur Izin',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_prosedur_changelist'),
+                            ),
+                            items.MenuItem(
+                                title='Jenis Permohonan Izin',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_jenispermohonanizin_changelist'),
+                            ),
                             # items.MenuItem(
                             #     title='KBLI',
                             #     icon='fa fa-file-text-o',
                             #     url=reverse('admin:perusahaan_kbli_changelist'),
-                            # ),
-                            # items.MenuItem(
-                            #     title='Syarat Izin',
-                            #     icon='fa fa-file-text-o',
-                            #     url=reverse('admin:izin_syarat_changelist'),
-                            # ),
-                            # items.MenuItem(
-                            #     title='Kelompok Jenis Izin',
-                            #     icon='fa fa-file-text-o',
-                            #     url=reverse('admin:izin_kelompokjenisizin_changelist'),
-                            # ),
+                            # ),                           
                         ]
                     ),
                     items.MenuItem(

@@ -3,6 +3,7 @@ from django.db import models
 from accounts.models import Account
 from master.models import JenisPemohon
 
+from decimal import Decimal
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 
@@ -150,48 +151,61 @@ class JenisIzin(models.Model):
 		verbose_name = 'Jenis Izin'
 		verbose_name_plural = 'Jenis Izin'
 
-# class Syarat(models.Model):
-# 	syarat = models.CharField(max_length=255,null=True, blank=True, verbose_name='Syarat')
-# 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+class Syarat(models.Model):
+	syarat = models.CharField(max_length=255, verbose_name='Syarat')
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.syarat)
+	def __unicode__(self):
+		return "%s" % (self.syarat)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Syarat'
-# 		verbose_name_plural = 'Syarat'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Syarat'
+		verbose_name_plural = 'Syarat'
 
-# class Prosedur(models.Model):
-# 	prosedur = models.CharField(max_length=255,null=True, blank=True, verbose_name='Prosedur')
-# 	lama = models.DateTimeField()
-# 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+class Prosedur(models.Model):
+	prosedur = models.CharField(max_length=255, verbose_name='Prosedur')
+	lama = models.PositiveSmallIntegerField(verbose_name='Lama (Berapa Hari?)', null=True, blank=True,)
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.prosedur)
+	def __unicode__(self):
+		return "%s" % (self.prosedur)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Prosedur'
-# 		verbose_name_plural = 'Prosedur'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Prosedur'
+		verbose_name_plural = 'Prosedur'
 
-# class KelompokJenisIzin(models.Model):
-# 	jenis_izin = models.ForeignKey(JenisIzin, verbose_name='Jenis Izin')
-# 	kelompok_jenis_izin = models.CharField(max_length=100,null=True, blank=True, verbose_name='Kelompok Jenis Izin')
-# 	biaya = models.DecimalField(max_digits=10, decimal_places=2,null=True, blank=True,verbose_name='Biaya')
-# 	standart_waktu = models.DateTimeField()
-# 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+class KelompokJenisIzin(models.Model):
+	jenis_izin = models.ForeignKey(JenisIzin, verbose_name='Jenis Izin')
+	kelompok_jenis_izin = models.CharField(max_length=100, verbose_name='Kelompok Jenis Izin')
+	biaya = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'), verbose_name='Biaya')
+	standart_waktu = models.PositiveSmallIntegerField(verbose_name='Standar Waktu (Berapa Hari?)', null=True, blank=True,)
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.kelompok_jenis_izin)
+	def __unicode__(self):
+		return "%s" % (self.kelompok_jenis_izin)
 
-# 	def get_biaya(self):
-# 		return 'Rp. %.2f' % self.biaya
+	def get_biaya(self):
+		return 'Rp. %.2f' % self.biaya
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Kelompok Jenis Izin'
-# 		verbose_name_plural = 'Kelompok Jenis Izin'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Kelompok Jenis Izin'
+		verbose_name_plural = 'Kelompok Jenis Izin'
+
+
+class JenisPermohonanIzin(models.Model):
+	jenis_permohonan_izin = models.CharField(max_length=255, verbose_name='Jenis Permohonan Izin')
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.jenis_permohonan_izin)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name ='Jenis Permohonan Izin'
+		verbose_name_plural = 'Jenis Permohonan Izin'
 
 # class JenisBerkas(models.Model):
 # 	jenis_berkas = models.CharField(max_length=50, null=True, blank=True, verbose_name='Jenis Berkas')
@@ -292,17 +306,6 @@ class JenisIzin(models.Model):
 # 		ordering = ['id']
 # 		verbose_name = 'Jenis Kegiatan Pembangunan'
 # 		verbose_name_plural = 'Jenis Kegiatan pembangunan'
-
-# class JenisPermohonanIzin(models.Model):
-# 	jenis_permohonan_izin = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jenis Permohonan Izin')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_permohonan_izin)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name ='Jenis Permohonan Izin'
-# 		verbose_name_plural = 'Jenis Permohonan Izin'
 
 # class DetilIMBPapanReklame(models.Model):
 # 	jenis_papan_reklame = models.CharField(max_length=255, verbose_name='Jenis Papan Reklame')

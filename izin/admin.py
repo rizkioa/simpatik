@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 
 from izin.pemohon_admin import PemohonAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin
 from master.models import JenisPemohon
 
 # import json
@@ -49,29 +49,32 @@ class JenisIzinAdmin(admin.ModelAdmin):
 
 admin.site.register(JenisIzin, JenisIzinAdmin)
 
-# class SyaratAdmin(admin.ModelAdmin):
-# 	list_display = ('syarat', 'keterangan')
-# 	search_fields = ('syarat',)
+class SyaratAdmin(admin.ModelAdmin):
+	list_display = ('syarat', 'keterangan')
+	search_fields = ('syarat', 'keterangan')
 
-# admin.site.register(Syarat, SyaratAdmin)
+admin.site.register(Syarat, SyaratAdmin)
 
-# class ProsedurAdmin(admin.ModelAdmin):
-# 	list_display = ('prosedur','lama','keterangan')
-# 	list_filter = ('prosedur','lama')
+class ProsedurAdmin(admin.ModelAdmin):
+	list_display = ('prosedur','lama','keterangan')
+	search_fields = ('prosedur','lama','keterangan')
 
-# admin.site.register(Prosedur, ProsedurAdmin)
+admin.site.register(Prosedur, ProsedurAdmin)
 
-# class KelompokJenisIzinAdmin(admin.ModelAdmin):
-# 	list_display = ('kelompok_jenis_izin','hargabeli','standart_waktu','keterangan')
-# 	list_filter = ('kelompok_jenis_izin','biaya','standart_waktu')
-# 	search_fields = ('kelompok_jenis_izin','biaya')
+class KelompokJenisIzinAdmin(admin.ModelAdmin):
+	list_display = ('kelompok_jenis_izin','jenis_izin', 'hargabeli', 'standart_waktu', 'keterangan')
+	list_filter = ('biaya','standart_waktu', 'jenis_izin')
+	search_fields = ('kelompok_jenis_izin','biaya', 'jenis_izin', 'biaya', 'standart_waktu', 'keterangan')
 
-# 	def hargabeli(self, obj):
-# 		return obj.get_biaya()
-# 	hargabeli.short_description = 'Biaya'
-# 	hargabeli.admin_order_field = 'biaya'
+	def hargabeli(self, obj):
+		return obj.get_biaya()
+	hargabeli.short_description = 'Biaya'
+	hargabeli.admin_order_field = 'biaya'
 
-# admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
+admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
+
+admin.site.register(JenisPermohonanIzin)
+
 
 # class DataPerubahanAdmin(admin.ModelAdmin):
 # 	list_display = ('tabel_asal','nama_field','isi_field_lama','created_at')
@@ -97,7 +100,7 @@ admin.site.register(JenisIzin, JenisIzinAdmin)
 
 # admin.site.register(JenisKegiatanPembangunan, JenisKegiatanPembangunanAdmin)
 
-# admin.site.register(JenisPermohonanIzin)
+
 
 # class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 # 	list_display = ('jenis_papan_reklame','lebar','tinggi','lokasi_pasang')
