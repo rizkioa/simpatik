@@ -16,18 +16,14 @@
 {% block custom_style %}
 	<style type="text/css">
 
-		.pagination > li > a, .pagination > li > span {
-		    background-color: #fff;
-		    border: 1px solid #ddd;
-		    color: #337ab7;
-		    float: left;
-		    line-height: 1.42857;
-		    margin-left: -1px;
-		    padding: 6px 12px;
-		    position: relative;
-		    text-decoration: none;
+		.pagination > li.active > a, .pagination > li.active > span {
+		    color: rgba(255, 255, 255, 0.7) !important;
 		}
-		
+
+		.pagination > li > a, .pagination > li > span {
+		    color: #337ab7 !important;
+		}
+
 		#result_list th.action-checkbox-column, #result_list td.action-checkbox {
 		    text-align: center;
 		    width: 1.5em;
