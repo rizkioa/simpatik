@@ -151,31 +151,6 @@ class JenisIzin(models.Model):
 		verbose_name = 'Jenis Izin'
 		verbose_name_plural = 'Jenis Izin'
 
-class Syarat(models.Model):
-	syarat = models.CharField(max_length=255, verbose_name='Syarat')
-	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
-
-	def __unicode__(self):
-		return "%s" % (self.syarat)
-
-	class Meta:
-		ordering = ['id']
-		verbose_name = 'Syarat'
-		verbose_name_plural = 'Syarat'
-
-class Prosedur(models.Model):
-	prosedur = models.CharField(max_length=255, verbose_name='Prosedur')
-	lama = models.PositiveSmallIntegerField(verbose_name='Lama (Berapa Hari?)', null=True, blank=True,)
-	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
-
-	def __unicode__(self):
-		return "%s" % (self.prosedur)
-
-	class Meta:
-		ordering = ['id']
-		verbose_name = 'Prosedur'
-		verbose_name_plural = 'Prosedur'
-
 class KelompokJenisIzin(models.Model):
 	jenis_izin = models.ForeignKey(JenisIzin, verbose_name='Jenis Izin')
 	kelompok_jenis_izin = models.CharField(max_length=100, verbose_name='Kelompok Jenis Izin')
@@ -194,6 +169,33 @@ class KelompokJenisIzin(models.Model):
 		verbose_name = 'Kelompok Jenis Izin'
 		verbose_name_plural = 'Kelompok Jenis Izin'
 
+class Syarat(models.Model):
+	jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
+	syarat = models.CharField(max_length=255, verbose_name='Syarat')
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.syarat)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Syarat'
+		verbose_name_plural = 'Syarat'
+
+class Prosedur(models.Model):
+	jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
+	nomor_urut = models.IntegerField(verbose_name="Nomor Urut", null=True, blank=True)
+	prosedur = models.CharField(max_length=255, verbose_name='Prosedur')
+	lama = models.PositiveSmallIntegerField(verbose_name='Lama (Berapa Hari?)', null=True, blank=True,)
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.prosedur)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Prosedur'
+		verbose_name_plural = 'Prosedur'
 
 class JenisPermohonanIzin(models.Model):
 	jenis_permohonan_izin = models.CharField(max_length=255, verbose_name='Jenis Permohonan Izin')
