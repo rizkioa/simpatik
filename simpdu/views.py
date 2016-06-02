@@ -17,6 +17,13 @@ def user_home(request):
 	return site.index(request)
 
 def frontindex(request):
-	return render(
-		request, "front-end/home.html"	
-	)
+	return render(request, "front-end/home.html")
+
+def front_login(request):
+	return render(request, "front-end/login/login.html")
+
+def monitoring_berkas(request):
+	return render(request, "front-end/Monitoringberkas.html")
+
+def register(request):
+	return render(request, "front-end/register.html")

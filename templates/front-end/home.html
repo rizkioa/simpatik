@@ -1,13 +1,52 @@
 {% extends "front-end/index.html" %}
 {% load i18n admin_static %}
-{% load i18n admin_static %}
+
 
 {% block css %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}front-end/css/revolution-slider/extralayers.css" media="screen" />
-<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}front-end/css/revolution-slider/settings.css" media="screen" />
+        <link rel="stylesheet" href="{% static "front-end/css/style.css" %}"/>
+
+        <link rel="stylesheet" href="{% static "front-end/css/vendor/animate.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/css/vendor/font-awesome.min.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/animsition/css/animsition.min.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/morris/morris.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/owl-carousel/owl.carousel.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/owl-carousel/owl.theme.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/rickshaw/rickshaw.min.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/chosen/chosen.css" %}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/summernote/summernote.css" %}">
+
+        <!-- project main css files -->
+        <link rel="stylesheet" href="{% static "front-end/css/main.css" %}">
+        <!--/ stylesheets -->
+
+        <!-- ==========================================
+        ================= Modernizr ===================
+        =========================================== -->
+        <script src="{% static "front-end/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js" %}"></script>
+        <script src="{% static "front-end/js/vendor/slider/bootstrap-slider.min.js" %}"></script>
 {% endblock %}
 
 {% block page-content %}
+
+{% endblock %}
+
+{% block js %}
+{{ block.super }}
+<!--     	<script src="{% static "front-end/js/vendor/jquery/jquery-1.11.2.js" %}"></script>
+        <script src="{% static "front-end/js/vendor/bootstrap/bootstrap.min.js" %}"></script>
+       <script src="{% static "front-end/js/vendor/jRespond/jRespond.min.js" %}"></script>
+        <script src="{% static "front-end/js/vendor/sparkline/jquery.sparkline.min.js" %}"></script>
+       <script src="{% static "front-end/js/vendor/js/vendor/slimscroll/jquery.slimscroll.min.js" %}"></script>
+       <script src="{% static "front-end/js/vendor/js/vendor/animsition/js/jquery.animsition.min.js" %}"></script>
+       <script src="{% static "front-end/js/vendor/js/vendor/screenfull/screenfull.min.js" %}"></script>
+ -->        <!--/ vendor javascripts -->
+
+        <!-- ============================================
+        ============== Custom JavaScripts ===============
+        ============================================= -->
+        <!-- <<script src="{% static "front-end//js/main.js" %}"></script> -->
+        <!--/ custom javascripts -->
+
 
 {% endblock %}
