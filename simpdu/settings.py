@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -95,13 +94,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'simpatik',
-        'USER': 'simpatik',
-        'PASSWORD': '!QAZ@WSX',
-        'HOST': '127.0.0.1',
-        'PORT': '3306'
+        'USER':'root',
+        'PASSWORD':'s1CUSE',
+        #'HOST':'192.168.100.88',
+        'PORT': '3306',
+        'OPTIONS': {
+            # "init_command": "SET foreign_key_checks = 0;",
+            "init_command": "SET storage_engine=INNODB",
+         },
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
