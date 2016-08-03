@@ -1,5 +1,5 @@
 /*!
- * animsition v3.4.3
+ * animsition v3.5.2
  * http://blivesta.github.io/animsition/
  * Licensed under MIT
  * Author : blivesta
@@ -59,7 +59,12 @@
           $(options.linkElement).on("click." + namespace, function(event) {
             event.preventDefault();
             var $self = $(this);
-            methods.pageOut.call(_this, $self);
+            var url = $self.attr("href");
+            if (event.which === 2 || event.metaKey || event.shiftKey || navigator.platform.toUpperCase().indexOf("WIN") !== -1 && event.ctrlKey) {
+              window.open(url, "_blank");
+            } else {
+              methods.pageOut.call(_this, $self, url);
+            }
           });
         }
       });
@@ -141,25 +146,27 @@
     },
     pageInBasic: function(inClass, inDuration) {
       var $this = $(this);
-      $this.css({
+      $this.trigger("animsition.start").css({
         "animation-duration": inDuration / 1e3 + "s"
       }).addClass(inClass).animateCallback(function() {
         $this.removeClass(inClass).css({
           opacity: 1
-        });
+        }).trigger("animsition.end");
       });
     },
     pageInOverlay: function(inClass, inDuration) {
       var $this = $(this);
       var options = $this.data(namespace).options;
-      $this.css({
+      $this.trigger("animsition.start").css({
         opacity: 1
       });
       $(options.overlayParentElement).children("." + options.overlayClass).css({
         "animation-duration": inDuration / 1e3 + "s"
-      }).addClass(inClass);
+      }).addClass(inClass).animateCallback(function() {
+        $this.trigger("animsition.end");
+      });
     },
-    pageOut: function($self) {
+    pageOut: function($self, url) {
       var _this = this;
       var $this = $(this);
       var options = $this.data(namespace).options;
@@ -172,7 +179,6 @@
       var outClass = methods.animationCheck.call(_this, isOutClass, true, false);
       var outDuration = methods.animationCheck.call(_this, isOutDuration, false, false);
       var overlayMode = methods.optionCheck.call(_this, options);
-      var url = $self.attr("href");
       if (overlayMode) {
         methods.pageOutOverlay.call(_this, outClass, outDuration, url);
       } else {
@@ -196,9 +202,6 @@
       $(options.overlayParentElement).children("." + options.overlayClass).css({
         "animation-duration": outDuration / 1e3 + "s"
       }).removeClass(inClass).addClass(outClass).animateCallback(function() {
-        $this.css({
-          opacity: 0
-        });
         location.href = url;
       });
     },

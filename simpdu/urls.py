@@ -31,5 +31,8 @@ urlpatterns += patterns('loginas.views',
 # Front-end
 urlpatterns += [
     url(r'^$', 'simpdu.views.frontindex', name='frontindex'),
+    url(r'^user/$', 'simpdu.views.front_login', name='front_login'),
+    url(r'^monitoring/$', 'simpdu.views.monitoring_berkas', name='monitoring_berkas'),
+    url(r'^register/$', 'simpdu.views.register', name='register'),
 ]
 
