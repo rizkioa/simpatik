@@ -1,392 +1,299 @@
-{% load i18n admin_static %}
-{% trans "Sistem Informasi Perizinan Teknologi Informasi Kediri - Kab. Kediri" as title_1 %}
-<!doctype html>
-<html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{% block title %}SIMPATIK {% endblock %} | {{ title_1 }}</title>
-        <link rel="icon" type="image/ico" href="{% static 'images/SIMPATIK.ico' %}" />
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'styles/css/vendor/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'styles/css/vendor/animate.css' %}">
-        <link rel="stylesheet" href="{% static 'styles/css/vendor/font-awesome.min.css' %}">
-        <link rel="stylesheet" href="{% static 'scripts/js/vendor/animsition/css/animsition.min.css' %}">
-        <link rel="stylesheet" href="{% static 'styles/css/mainfront.css' %}">
-        <script src="{% static 'scripts/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
-        <style type="text/css">
-            @media screen and (max-width: 600px) {
-              #title_message {
-                visibility: hidden;
-                clear: both;
-                float: left;
-                margin: 10px auto 5px 20px;
-                width: 28%;
-                display: none;
-              }
-            }
-            #menu_line {
-                line-height: 10px;
-            }
-        </style>
-        <script type="text/javascript">
-            lokasi = document.createElement("a");
-            lokasi.href = location.href;
-            window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
-        </script>
-        {% block extrastyle %}
-        {% endblock %}
-        {% block just_index %}
-        <style type="text/css">
-            body {
-               animation: colorBackground 20s infinite;
-               -webkit-animation: colorBackground 20s infinite;
-               -moz-animation: colorBackground 20s infinite;
-               -o-animation: colorBackground 20s infinite;
-               }
-              @keyframes colorBackground {
-               0% { background-color: #fbcf61; color: #fbcf61; }
-               20% { background-color: #6bd57e; color: #6bd57e; }
-               40% { background-color: #ff6f6f; color: #ff6f6f; }
-               60% { background-color: #57cff4; color: #57cff4; }
-               80% { background-color: #0ed4c8; color: #0ed4c8; }
-               100% { background-color: #fbcf61; color: #fbcf61; }
-               }
-               @-webkit-keyframes colorBackground {
-               0% { background-color: #fbcf61; color: #fbcf61; }
-               20% { background-color: #6bd57e; color: #6bd57e; }
-               40% { background-color: #ff6f6f; color: #ff6f6f; }
-               60% { background-color: #57cff4; color: #57cff4; }
-               80% { background-color: #0ed4c8; color: #0ed4c8; }
-               100% { background-color: #fbcf61; color: #fbcf61; }
-               }
-               @-moz-keyframes colorBackground {
-               0% { background-color: #fbcf61; color: #fbcf61; }
-               20% { background-color: #6bd57e; color: #6bd57e; }
-               40% { background-color: #ff6f6f; color: #ff6f6f; }
-               60% { background-color: #57cff4; color: #57cff4; }
-               80% { background-color: #0ed4c8; color: #0ed4c8; }
-               100% { background-color: #fbcf61; color: #fbcf61; }
-               }
-               @-o-keyframes colorBackground {
-               0% { background-color: #fbcf61; color: #fbcf61; }
-               20% { background-color: #6bd57e; color: #6bd57e; }
-               40% { background-color: #ff6f6f; color: #ff6f6f; }
-               60% { background-color: #57cff4; color: #57cff4; }
-               80% { background-color: #0ed4c8; color: #0ed4c8; }
-               100% { background-color: #fbcf61; color: #fbcf61; }
-            }
-        </style>
-        <script src="{% static 'front-end/js/wow.js' %}"></script>
-        {% endblock %}
-    </head>
-    <body id="minovate" class="appWrapper hz-menu device-lg header-fixed aside-fixed rightbar-hidden lightred-scheme-color scheme-light">
-        <div id="wrap" class="animsition">
-            <section id="header">
-                <header class="clearfix">
-                    <div class="branding">
-                        <a class="brand">
-                            <strong>SIMPATIK</strong><br>
-                            <span class="title_message">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</span>
-                        </a>
-                        <a href="#" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
-                    </div>
-                    <ul class="nav-right pull-right list-inline menu_line" style="padding-right: 6px;">
-                        <a href="{% url 'frontindex' %}" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b mb-10"> Beranda <i class="fa fa-arrow-right"></i></a>
-                        <a href="{% url 'tentang' %}" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b mb-10"> Tentang BPM-P2TSP <i class="fa fa-arrow-right"></i></a>
-                        <a href="" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b mb-10"> Login <i class="fa fa-arrow-right"></i></a>
-                        <a href="" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b mb-10"> Register <i class="fa fa-arrow-right"></i></a>
-                    </ul>
-                </header>
-            </section>
-            <section id="content">
-                <div class="page page-hz-menu-layout">
-                    {% block section %}
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <br>
-                            <div class="wow bounceInDown" data-wow-duration="5s" data-wow-delay="2s">
-                                <img src="{{ STATIC_URL }}images/kabkediri.png" class="logo" alt="Logo Kabupaten Kediri" title="Logo Kabupaten Kediri" />
-                            </div>
-                            <script language="JavaScript">
-                            var text="<h2>Selamat Datang di Situs SIMPATIK Kabupaten Kediri </h2>";
-                            var delay=20;
-                            var currentChar=1;
-                            var destination="[none]";
-                            function type()
-                            {
-                            //if (document.all)
-                            {
-                            var dest=document.getElementById(destination);
-                            if (dest)// && dest.innerHTML)
-                            {
-                            dest.innerHTML=text.substr(0, currentChar)+"<blink></blink>";
-                            currentChar++;
-                            if (currentChar>text.length)
-                            {
-                            currentChar=1;
-                            // setTimeout("type()", 1000);
-                            }
-                            else
-                            {
-                            setTimeout("type()", delay);
-                            }}}}
-                            function startTyping(textParam, delayParam, destinationParam)
-                            {
-                            text=textParam;
-                            delay=delayParam;
-                            currentChar=1;
-                            destination=destinationParam;
-                            type();
-                            }
-                            </script> 
-                            <div 0px="" 12px="" arial="" color:="black" ff0000="" font:="" id="textDestination" margin:="" style="background-color: none ; color:black;">
-                            </div>
-                            <script language="JavaScript">
-                            javascript:startTyping(text, 100, "textDestination");
-                            </script>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="wow bounceInUp" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12" >
-                                <div class="card">
-                                    <div class="front bg-greensea">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-sign-in fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Layanan</p>
-                                                <!-- <span>Layanan Perizinan</span> -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-greensea">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-sign-in fa-2x"></i> Layanan Perizinan</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="wow slideInRight" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-lightred">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-map-marker fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Peta</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-lightred">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-map-marker fa-2x"></i> Peta Layanan Perizinan</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="wow slideInLeft" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-blue">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-folder-open-o fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Monitoring</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-blue">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-folder-open-o fa-2x"></i> Monitoring Berkas</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="wow bounceInUp" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-slategray">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-globe fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Website</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-slategray">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href="http://bpmpd.kedirikab.go.id/" target="_blank"><i class="fa fa-globe fa-2x"></i> Website BPM-P2TSP</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
 
-                    <div class="row">
-                        <div class="wow bounceInDown" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-cyan">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-file-text fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Regulasi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-cyan">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-file-text fa-2x"></i> Regulasi BPM</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="wow slideInRight" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-orange">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-phone fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Call</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-orange">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-phone fa-2x"></i> Call Center BPM</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="wow slideInLeft" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-darkgray">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-video-camera fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Video</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-darkgray">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-video-camera fa-2x"></i> Video Tutorial</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="wow bounceInDown" data-wow-duration="4s" data-wow-delay="1s">
-                            <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                                <div class="card">
-                                    <div class="front bg-dutch">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <i class="fa fa-info fa-4x"></i>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                <p class="text-elg text-strong mb-0">Prosedur</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="back bg-dutch">
-                                        <div class="row">
-                                            <div class="col-xs-12">
-                                                <a href=#><i class="fa fa-info fa-2x"></i> Syarat & Prosedur Perizinan</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'front-end/css/bootstrap.vertical-tabs.css' %}">
+<style type="text/css">
+  body {
+     animation: colorBackground 20s infinite;
+     -webkit-animation: colorBackground 20s infinite;
+     -moz-animation: colorBackground 20s infinite;
+     -o-animation: colorBackground 20s infinite;
+     }
+    @keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+     }
+     @-webkit-keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+     }
+     @-moz-keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+     }
+     @-o-keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+  }
+</style>
+<script src="{% static 'front-end/js/wow.js' %}"></script>
+{% endblock %}
 
-                    {% endblock %}
-                    <a id="back-to-top" href="#" class="btn btn-cyan btn-lg back-to-top" role="button" title="Click to return on the top page" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
+{% block section %}
+<div class="row">
+  <div class="col-md-12 text-center">
+    <br>
+    <div class="wow bounceInDown" data-wow-duration="5s" data-wow-delay="2s">
+        <img src="{{ STATIC_URL }}images/kabkediri.png" class="logo" alt="Logo Kabupaten Kediri" title="Logo Kabupaten Kediri" />
+    </div>
+    <script language="JavaScript">
+    var text="<h2>Selamat Datang di Situs SIMPATIK Kabupaten Kediri </h2>";
+    var delay=20;
+    var currentChar=1;
+    var destination="[none]";
+    function type()
+    {
+    //if (document.all)
+    {
+    var dest=document.getElementById(destination);
+    if (dest)// && dest.innerHTML)
+    {
+    dest.innerHTML=text.substr(0, currentChar)+"<blink></blink>";
+    currentChar++;
+    if (currentChar>text.length)
+    {
+    currentChar=1;
+    // setTimeout("type()", 1000);
+    }
+    else
+    {
+    setTimeout("type()", delay);
+    }}}}
+    function startTyping(textParam, delayParam, destinationParam)
+    {
+    text=textParam;
+    delay=delayParam;
+    currentChar=1;
+    destination=destinationParam;
+    type();
+    }
+    </script> 
+    <div 0px="" 12px="" arial="" color:="black" ff0000="" font:="" id="textDestination" margin:="" style="background-color: none ; color:black;">
+    </div>
+    <script language="JavaScript">
+    javascript:startTyping(text, 100, "textDestination");
+    </script>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wow bounceInUp" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12" >
+        <div class="card">
+            <div class="front bg-greensea">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-sign-in fa-4x"></i>
+                    </div>
+                    <div class="col-xs-8">
+                        <p class="text-elg text-strong mb-0">Layanan</p>
+                    </div>
                 </div>
-            </section>
+            </div>
+            <div class="back bg-greensea">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in fa-2x"></i> Pendaftaran Perizinan Daerah</a>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in fa-2x"></i> Perizinan Penanaman Modal</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% block extratools %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
-        <script src="{% static 'scripts/js/vendor/bootstrap/bootstrap.min.js' %}"></script>
-        <script src="{% static 'scripts/js/vendor/jRespond/jRespond.min.js' %}"></script>
-        <script src="{% static 'scripts/js/vendor/sparkline/jquery.sparkline.min.js' %}"></script>
-        <script src="{% static 'scripts/js/vendor/slimscroll/jquery.slimscroll.min.js' %}"></script>
-        <script src="{% static 'scripts/js/vendor/animsition/js/jquery.animsition.min.js' %}"></script>
-        <script src="{% static 'scripts/js/mainfront.js' %}"></script>
-        <script>
-            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
-            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
-            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
-            e.src='https://www.google-analytics.com/analytics.js';
-            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-            ga('create','UA-XXXXX-X','auto');ga('send','pageview');
-        </script>
-        <script type="text/javascript">
-            $(document).ready(function(){
-                $(window).scroll(function () {
-                    if ($(this).scrollTop() > 50) {
-                        $('#back-to-top').fadeIn();
-                    } else {
-                        $('#back-to-top').fadeOut();
-                    }
-                });
-                $('#back-to-top').click(function () {
-                    $('#back-to-top').tooltip('hide');
-                    $('body,html').animate({
-                        scrollTop: 0
-                    }, 800);
-                    return false;
-                });                
-                $('#back-to-top').tooltip('show');
-            });
-        </script>
-        {% endblock %}
-    </body>
-</html>
+    </div>
+  </div>
+  
+  <div class="wow slideInRight" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+            <div class="front bg-lightred">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-map-marker fa-4x"></i>
+                    </div>
+                    <div class="col-xs-8">
+                        <p class="text-elg text-strong mb-0">Peta</p>
+                    </div>
+                </div>
+            </div>
+            <div class="back bg-lightred">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href=#><i class="fa fa-map-marker fa-2x"></i> Peta Layanan Perizinan</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow slideInLeft" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-blue">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-folder-open-o fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Monitoring</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-blue">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href="{% url 'monitoring' %}"><i class="fa fa-folder-open-o fa-2x"></i> Monitoring Pengajuan Izin</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow bounceInUp" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-slategray">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-globe fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Website</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-slategray">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href="http://bpmpd.kedirikab.go.id/" target="_blank"><i class="fa fa-globe fa-2x"></i> Website BPM-P2TSP</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>                        
+</div>
+
+<div class="row">
+  <div class="wow bounceInDown" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-cyan">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-file-text fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Regulasi</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-cyan">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-file-text fa-2x"></i> Regulasi BPM</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow slideInRight" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-orange">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-phone fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Call</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-orange">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-phone fa-2x"></i> Call Center BPM</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow slideInLeft" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-darkgray">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-video-camera fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Video</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-darkgray">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-video-camera fa-2x"></i> Video Tutorial</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow bounceInDown" data-wow-duration="4s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-dutch">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-info fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Prosedur</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-dutch">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-info fa-2x"></i> Syarat & Prosedur Perizinan</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+{% endblock %}

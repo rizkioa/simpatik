@@ -16,16 +16,8 @@ def user_home(request):
 		return HttpResponseRedirect(reverse('admin:index'))
 	return site.index(request)
 
-def frontindex(request):
-	return render(
-		request, "front-end/home.html"	
-	)
-
 def awal(request):
 	return render(request, "front-end/index-awal.html")
-
-def tentang(request):
-	return render(request, "front-end/tentang.html")
 
 def monitoring_berkas(request):
 	return render(request, "front-end/Monitoring/Monitoringberkas.html")

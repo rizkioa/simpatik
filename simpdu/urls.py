@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^perusahaan/', include('perusahaan.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include(usersite.urls)),
+    url(r'^',include('izin.urls')),
     url(r'^accounts/login/$', 'cas.views.login', name='login_cas'),
     url(r'^accounts/logout/$', 'cas.views.logout', name='logout_cas'),
     url(r'^accounts/login/failed/$', 'accounts.views.cas_failed', name='login_failed'),
@@ -30,9 +31,7 @@ urlpatterns += patterns('loginas.views',
 
 # Front-end
 urlpatterns += [
-    url(r'^$', 'simpdu.views.frontindex', name='frontindex'),
     url(r'^index-awal/$', 'simpdu.views.awal', name='awal'),
-    url(r'^tentang/$', 'simpdu.views.tentang', name='tentang'),
     url(r'^monitoring/$', 'simpdu.views.monitoring_berkas', name='monitoring_berkas'),
     url(r'^register/$', 'simpdu.views.register', name='register'),
     url(r'^syarat/$', "simpdu.views.syarat", name="syarat"),
@@ -64,6 +63,5 @@ urlpatterns += [
     url(r'^syarat/daftar_perusahaan$', "simpdu.views.daftar_perusahaan", name="daftar_perusahaan"),
     url(r'^syarat/daftar_usaha_kecil$', "simpdu.views.daftar_usaha_kecil", name="daftar_usaha_kecil"),
     url(r'^syarat/daftar_usaha_mikro$', "simpdu.views.daftar_usaha_mikro", name="daftar_usaha_mikro"),
-
     ]
 

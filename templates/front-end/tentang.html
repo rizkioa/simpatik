@@ -1,29 +1,25 @@
-{% extends "front-end/index.html" %}
+{% extends "front-end/base.html" %}
 {% load i18n admin_static staticfiles widgets %}
-{% block just_index %}
-{% endblock%}
 {% block extrastyle %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'front-end/css/bootstrap.vertical-tabs.css' %}">
-
 {% endblock %}
 
 {% block section %}
 <div class="pageheader">
     <h2>Tentang BPM
 		<span>Berikut adalah info Tentang BPM SIMPATIK Kabupaten Kediri.</span>
-		</h2>
-
-  <div class="page-bar">
-    <ul class="page-breadcrumb">
-      <li>
-        <a href="#"><i class="fa fa-home"></i> Home</a>
-      </li>
-      <li>
-        <a href="#"> Daya Tampung SMP</a>
-      </li>
-    </ul>
-  </div>
+	</h2>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+		  <li>
+		    <a href="#"><i class="fa fa-home"></i> Home</a>
+		  </li>
+		  <li>
+		    <a href="#"> Daya Tampung SMP</a>
+		  </li>
+		</ul>
+	</div>
 </div>
 <div class="row">
 	<div  class="col-md-12">
