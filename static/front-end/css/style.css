@@ -381,7 +381,7 @@ input { outline: none; }
 	position: absolute;
 	left: 50%; top: 50%;
 	margin: -18px 0 0 -50px;
-	background: url(../img/preloader.png);
+	background: url({{ STATIC_URL }}images/preloader.gif);
 }
 
 /*-----------------------------------------------------------------------------------*/

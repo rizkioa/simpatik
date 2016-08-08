@@ -1,0 +1,127 @@
+{% load i18n admin_static %}
+{% trans "Sistem Informasi Perizinan Teknologi Informasi Kediri - Kab. Kediri" as title_1 %}
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+
+
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>{% block title %}SIMPATIK {% endblock %} | {{ title_1 }} </title>
+        <link rel="icon" type="image/ico" href="{{ STATIC_URL }}images/kabkediri.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+
+
+
+        <!-- ============================================
+        ================= Stylesheets ===================
+        ============================================= -->
+        <!-- vendor css files -->
+        <link rel="stylesheet" href="{% static "front-end/css/vendor/bootstrap.min.css"%}">
+        <link rel="stylesheet" href="{% static "front-end/css/vendor/animate.css"%}">
+        <link rel="stylesheet" href="{% static "front-end/css/vendor/font-awesome.min.css"%}">
+        <link rel="stylesheet" href="{% static "front-end/js/vendor/animsition/css/animsition.min.css"%}">
+        <!-- project main css files -->
+        <link rel="stylesheet" href="{% static "front-end/css/main.css"%}">
+        <!--/ stylesheets -->
+
+
+
+        <!-- ==========================================
+        ================= Modernizr ===================
+        =========================================== -->
+        <script src="{% static "front-end/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js"%}"></script>
+        <!--/ modernizr -->
+
+
+
+
+    </head>
+
+
+
+
+
+    <body id="minovate" class="appWrapper">
+
+
+
+
+
+
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- ====================================================
+        ================= Application Content ===================
+        ===================================================== -->
+
+
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title custom-font">Izin Usaha Industri</h3>
+                                                        <button onclick="myFunction()"  class="btn btn-danger">Print this page</button>
+                                                            <script>
+                                                            function myFunction() {
+                                                            window.print();
+                                                            }
+                                                            </script>
+                                                </div>
+                                            <div class="modal-body">
+                                                 <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Dokumen Persyaratan Perijinan Baru</h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <ul>
+                                                           &raquo;&nbsp;Surat Pernyataan / Permohonan<br>&raquo;&nbsp;Scan KTP Asli Pemohon<br>&raquo;&nbsp;Copy KTP Penanggung Jawab<br>&raquo;&nbsp;Copy KTP Pemilik<br>&raquo;&nbsp;Scan NPWP<br>&raquo;&nbsp;Scan Akta Notaris Pendirian Perusahaan Lengkap<br>&raquo;&nbsp;Scan Asli IG/HO Industri<br>&raquo;&nbsp;Copy IMB<br>&raquo;&nbsp;Keterangan dari Pengelola Kawasan Industri/Berikat<br>&raquo;&nbsp;Daftar Mesin dan Peralatan ditandatangani Pimpinan Perusahaan<br>&raquo;&nbsp;Daftar Bahan Baku Penolong ditandatangani Pimpinan Perusahaan<br>&raquo;&nbsp;Dokumen Lingkungan Perusahaan (SPPL,UKL/UPL,AMDAL,DPLH) - Surat permohonan dan lembar yang disahkan BPLH<br>Nomor Pendaftaran Perusahaan (NPP) BPJS Ketenagakerjaan<br>
+                                                        </ul>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                 <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Dokumen Persyaratan Perpanjangan Perijinan</h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <ul>
+                                                          &raquo;&nbsp;Scan KTP Asli  Pemohon<br>&raquo;&nbsp;Scan Akta Notaris Pendirian Perusahaan Lengkap<br>&raquo;&nbsp;Scan NPWP<br>&raquo;&nbsp;Daftar Mesin dan Peralatan ditandatangani Pimpinan Perusahaan<br>&raquo;&nbsp;Daftar Bahan Baku Penolong ditandatangani Pimpinan Perusahaan<br>&raquo;&nbsp;Scan Izin Usaha Industri Sebelumnya<br>&raquo;&nbsp;Scan Asli IG/HO Industri<br>&raquo;&nbsp; Nomor Pendaftaran Perusahaan (NPP) BPJS Ketenagakerjaan<br>
+                                                        </ul>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                            <div class="modal-body">
+                                                 <div class="panel panel-primary">
+                                                    <div class="panel-heading">
+                                                        <h3 class="panel-title">Dokumen Persyaratan Perubahan Perijinan</h3>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <ul>
+                                                              &raquo;&nbsp;Surat Pernyataan / Permohonan<br>&raquo;&nbsp;Scan KTP Asli  Pemohon<br>&raquo;&nbsp;Copy KTP Penanggung Jawab<br>&raquo;&nbsp;Copy KTP Pemilik<br>&raquo;&nbsp;Scan Akta Notaris Pendirian Perusahaan Lengkap<br>&raquo;&nbsp;Scan NPWP<br>&raquo;&nbsp;Daftar Mesin dan Peralatan ditandatangani Pimpinan Perusahaan<br>&raquo;&nbsp;Daftar Bahan Baku Penolong ditandatangani Pimpinan Perusahaan<br>&raquo;&nbsp;Scan Izin Usaha Industri Sebelumnya<br>&raquo;&nbsp;Copy IG/HO<br>&raquo;&nbsp;Copy IMB<br>&raquo;&nbsp;Keterangan dari Pengelola Kawasan Industri/Berikat<br>&raquo;&nbsp; Nomor Pendaftaran Perusahaan (NPP)BPJS Ketenagakerjaan<br>      
+                                                        </ul>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>

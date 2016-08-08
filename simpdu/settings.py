@@ -23,10 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c^-$x(edvg3!dfpx^t0pf$*9n#v!#252dxgta-k+n)f*yf4&cd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -95,13 +94,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'simpatik',
-        'USER': 'simpatik',
-        'PASSWORD': '!QAZ@WSX',
-        'HOST': '127.0.0.1',
-        'PORT': '3306'
+        'USER':'root',
+        'PASSWORD':'s1CUSE',
+        #'HOST':'192.168.100.88',
+        'PORT': '3306',
+        'OPTIONS': {
+            # "init_command": "SET foreign_key_checks = 0;",
+            "init_command": "SET storage_engine=INNODB",
+         },
     }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -181,3 +183,4 @@ LOGIN_URL = '/admin/login/'
 AUTH_USER_MODEL = 'accounts.Account'
 
 ADMIN_TOOLS_MENU = 'menu.CustomMenu'
+
