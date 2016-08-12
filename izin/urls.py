@@ -1,9 +1,12 @@
 from django.conf.urls import patterns, include, url
+from django.core.urlresolvers import reverse_lazy
 
 urlpatterns = [
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': reverse_lazy('frontindex')}, name='frontlogout'),
     url(r'^$', 'izin.views.frontindex', name='frontindex'),
     url(r'^404/', 'izin.views.page_404', name='404'),
-    url(r'^login/', 'izin.views.frontlogin', name='frontlogin'),
+    #url(r'^login/', 'izin.views.frontlogin', name='frontlogin'),
     url(r'^tentang/$', 'izin.views.tentang', name='tentang'),
     url(r'^layanan/$', 'izin.views.layanan', name='layanan'),
     url(r'^layanan/siup$', 'izin.views.layanan_siup', name='layanan_siup'),

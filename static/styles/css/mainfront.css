@@ -2845,6 +2845,10 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   -webkit-transition: none;
   -moz-transition: none;
   transition: none;
+  @media only screen and (max-width: 768px){
+    font-size: 56px;
+    line-height: 60px;
+  }
 }
 
 #header .branding a.brand:hover {
@@ -3029,7 +3033,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   line-height: 45px;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1100px) {
   .appWrapper.sidebar-sm #header .branding,
   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding {
     width: 80px;
@@ -3041,6 +3045,9 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   .appWrapper.sidebar-sm #header .branding .brand,
   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding .brand {
     margin-left: 12px;
+    font-size: 52px;
+    line-height: 65px;
+    padding-left: 80px;
   }
   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding {
     width: 40px;
@@ -3048,12 +3055,23 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding .brand {
     margin-left: -9px;
   }
+  .appWrapper.aside-fixed #sidebar {
+    padding-top: 25px;
+  }
+  #header .branding {
+    padding: 0 0px;
+  }
 }
 
 @media only screen and (max-width: 768px) {
   .appWrapper.sidebar-xs #header {
     position: relative;
     z-index: 22;
+  }
+
+  .appWrapper.sidebar-xs #header .branding a.brand {
+    font-size: 47px;
+    line-height: 65px;
   }
   .appWrapper.sidebar-xs #header .branding {
     float: none;
@@ -3064,7 +3082,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   .appWrapper.sidebar-xs #header .branding > a {
     float: none;
     width: auto;
-    background-position: 8px 1px;
+    background-position: 12px 5px;
   }
   .appWrapper.sidebar-xs #header .branding .brand > span {
     display: inline-block;
@@ -3805,7 +3823,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 
 @media only screen and (max-width: 768px) {
   .appWrapper.sidebar-xs.aside-fixed #sidebar {
-    top: 90px;
+    top: 45px;
   }
   .appWrapper.sidebar-xs.aside-fixed.header-static #sidebar {
     top: 0;
