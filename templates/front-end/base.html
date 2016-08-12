@@ -16,15 +16,39 @@
         <link rel="stylesheet" href="{% static 'styles/css/mainfront.css' %}">
         <script src="{% static 'scripts/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
         <style type="text/css">
-            @media screen and (max-width: 600px) {
-              #title_message {
-                visibility: hidden;
-                clear: both;
-                float: left;
-                margin: 10px auto 5px 20px;
-                width: 28%;
-                display: none;
-              }
+            
+            @media only screen and (min-width:992px) {
+                .mobile-only {
+                    display:none !important;
+                }
+
+                .desktop-only {
+                    display:block !important;
+                }
+            }
+
+            @media only screen and (max-width: 991px) {
+                .mobile-only {
+                    display:block !important;
+                }
+
+                .desktop-only {
+                    display:none !important;
+                }
+            }
+            @media only screen and (max-width: 1200px) {
+                .font_hidden {
+                    display: none !important;
+                }
+                .strong_title {
+                    line-height: 64px;
+                    font-size: 40px;
+                }
+            }
+            @media only screen and (min-width: 1199px) {
+                .font_hidden {
+                    display: block !important;
+                }
             }
             #menu_line {
                 line-height: 10px;
@@ -45,22 +69,67 @@
         <div id="wrap" class="animsition">
             <section id="header">
                 <header class="clearfix">
-                    <div class="branding">
+                    <div class="branding" style="width: 45%;">
                         <a class="brand">
-                            <strong>SIMPATIK</strong><br>
-                            <span class="title_message">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</span>
+                            <strong class="strong_title">SIMPATIK</strong><br>
+                            <span class="font_hidden"><font size="4px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</font></span>
                         </a>
                         <a href="#" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
                     </div>
-                    <ul class="nav-right pull-right list-inline menu_line" style="padding-right: 6px; line-height: 25px;">
-                        <!-- <span class="pull-right" style="color:#f0f8ff;">Selamat Datang, Febri Ahmad Nurhidayat</span> --><br>
+                    <ul class="nav-right pull-right list-inline menu_line desktop-only" style="padding-right: 6px; line-height: 25px;">
+                        {% if user.is_authenticated %}
+                        <span class="pull-right" style="color:#f0f8ff;">Selamat Datang, {{ user.nama_lengkap }}</span>
+                        {% endif %}<br class="mobile-hide">
                         <a href="{% url 'frontindex' %}" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b button_turun"> Beranda <i class="fa fa-arrow-right"></i></a>
                         <a href="{% url 'tentang' %}" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b button_turun"> Tentang BPM-P2TSP <i class="fa fa-arrow-right"></i></a>
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'frontlogout' %}" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b button_turun"> Logout <i class="fa fa-arrow-right"></i></a>
+                        <a href="" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b button_turun"> Profile <i class="fa fa-arrow-right"></i></a>
+                        {% else %}
                         <a href="{% url 'frontlogin' %}" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b button_turun"> Login <i class="fa fa-arrow-right"></i></a>
                         <a href="" class="btn btn-primary btn-border btn-rounded-20 btn-ef btn-ef-4 btn-ef-4b button_turun"> Register <i class="fa fa-arrow-right"></i></a>
+                        {% endif %}
                     </ul>
                 </header>
             </section>
+            <div id="controls"  class="mobile-only">
+                <aside id="sidebar">
+                    <div id="sidebar-wrap">
+                        <div class="panel-group slim-scroll" role="tablist">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#sidebarNav">
+                                            Navigation <i class="fa fa-angle-up"></i>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="sidebarNav" class="panel-collapse collapse in" role="tabpanel">
+                                    <div class="panel-body">
+                                        <ul id="navigation">
+                                            <li><a href="{% url 'frontindex' %}"><i class="fa fa-dashboard" title="Beranda"></i> <span> Beranda</span></a>
+                                            </li>
+                                            <li><a href="{% url 'tentang' %}"><i class="fa fa-dashboard" title="Tentang"></i> <span> Tentang</span></a>
+                                            </li>
+                                            {% if user.is_authenticated %}
+                                            <li><a href="{% url 'frontlogin' %}"><i class="fa fa-dashboard" title="Logout"></i> <span> Logout</span></a>
+                                            </li>
+                                            <li><a href="#"><i class="fa fa-user" title="Profile"></i> <span> Profile</span></a>
+                                            </li>
+                                            {% else %}
+                                            <li><a href="{% url 'frontlogin' %}"><i class="fa fa-dashboard" title="Login"></i> <span> Login</span></a>
+                                            </li>
+                                            <li><a href="#"><i class="fa fa-dashboard" title="Register"></i> <span> Register</span></a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
             <section id="content">
                 <div class="page page-hz-menu-layout">
                     {% block section %}
