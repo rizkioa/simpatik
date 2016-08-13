@@ -21,7 +21,7 @@ from izin.utils import JENIS_IZIN, get_tahun_choices
 # from django.db.models.signals import pre_delete
 # from django.dispatch.dispatcher import receiver
 
-# from datetime import datetime
+from datetime import datetime
 
 # Create your models here.
 
@@ -49,6 +49,15 @@ class FileField(models.FileField):
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
+
+	created_by = models.ForeignKey("accounts.Account", related_name="create_pemohon_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	verified_by = models.ForeignKey("accounts.Account", related_name="verify_pemohon_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_at = models.DateTimeField(editable=False)
+	rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pemohon_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
+
+	def get_color_status(self):
+		return get_status_color(self)
 
 	def as_json(self):
 		tanggal_lahir = ''
@@ -85,13 +94,16 @@ class Pemohon(Account):
 
 	def save(self, *args, **kwargs):
 		self.nama_lengkap = self.nama_lengkap.upper()
+		if not self.id:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
 		super(Pemohon, self).save(*args, **kwargs)
 
 	def __unicode__(self):
 		return "%s" % (self.nama_lengkap)
 
 	class Meta:
-		ordering = ['id']
+		ordering = ['-status', 'id']
 		verbose_name = 'Pemohon'
 		verbose_name_plural = 'Pemohon'
 
