@@ -82,6 +82,8 @@ class IdentitasPribadi(models.Model):
 
 	kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
 
+	pekerjaan = models.CharField(max_length=255, blank=True, null=True)
+	
 	keterangan = models.CharField(max_length=255, blank=True, null=True)
 
 	def __unicode__(self):

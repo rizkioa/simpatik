@@ -9,6 +9,7 @@ from django.utils.deconstruct import deconstructible
 
 import os, re
 
+from accounts.utils import STATUS, get_status_color
 from izin.utils import JENIS_IZIN, get_tahun_choices
 
 # from accounts.utils import STATUS
@@ -213,38 +214,45 @@ class JenisPermohonanIzin(models.Model):
 class PengajuanIzin(models.Model):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
 	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)	
-	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin',null=True, blank=True,)
+	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
+	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
+	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
+
 	# perusahaan = models.ForeignKey(Perusahaan, null=True, blank=True, verbose_name='Perusahaan')
-# 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, null=True, blank=True, verbose_name='Kelompok Jenis Izin')
-# 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, null=True, blank=True, verbose_name='Jenis Permohonan Izin')
 # 	detil_papan_reklame = models.ForeignKey(DetilIMBPapanReklame, null=True, blank=True, verbose_name='Detil IMB Papan Reklame')
 
 # 	jenis_gangguan = models.ManyToManyField(JenisGangguan,blank=True, verbose_name='Jenis Gangguan')
 # 	jenis_kegiatan_pembangunan = models.ManyToManyField(JenisKegiatanPembangunan,blank=True, verbose_name='Jenis Kegiatan Pembangunan')
 # 	parameter_bgunan = models.ManyToManyField(ParameterBangunan, blank=True, verbose_name='Parameter')
 	
-# 	pendaftaran = models.IntegerField(null=True, blank=True, verbose_name='Pendaftaran')
-# 	pembaharuan = models.IntegerField(null=True, blank=True, verbose_name='Pembaharuan')
-	
-# 	create_by = models.ForeignKey(Account,null=True, blank=True, related_name='izin_create_by' ,verbose_name='Dibuat Oleh' )
-# 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
-# 	created_at = models.DateTimeField(editable=False)
-# 	updated_at = models.DateTimeField(auto_now=True)
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
 
-# 	def save(self, *args, **kwargs):
-# 		''' On save, update timestamps '''
-# 		if not self.id:
-# 			self.created_at = datetime.now()
-# 		self.updated_at = datetime.now()
-# 		return super(Izin, self).save(*args, **kwargs)
+	created_by = models.ForeignKey("accounts.Account", related_name="create_pengajuan_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	created_at = models.DateTimeField(editable=False)
+	verified_by = models.ForeignKey("accounts.Account", related_name="verify_pengajuan_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_at = models.DateTimeField(editable=False)
+	rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pengajuan_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
 
-# 	def __unicode__(self):
-# 		return "%s" % str(self.pendaftaran)
+	updated_at = models.DateTimeField(auto_now=True)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Izin'
-# 		verbose_name_plural = 'Izin'
+	def get_color_status(self):
+		return get_status_color(self)
+		
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		if not self.id:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+		return super(PengajuanIzin, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status', '-updated_at',]
+		verbose_name = 'Pengajuan Izin'
+		verbose_name_plural = 'Pengajuan Izin'
 
 # class JenisBerkas(models.Model):
 # 	jenis_berkas = models.CharField(max_length=50, null=True, blank=True, verbose_name='Jenis Berkas')
