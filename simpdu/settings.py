@@ -45,7 +45,7 @@ INSTALLED_APPS = (
     'master',
     'accounts',
     'kepegawaian',
-    'perusahaan',
+    # 'perusahaan',
     'izin',
 
 )
@@ -94,13 +94,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'simpatik',
-        'USER':'root',
-        'PASSWORD':'s1CUSE',
-        #'HOST':'192.168.100.88',
+        'USER':'simpatik',
+        'PASSWORD':'!QAZ@WSX',
         'PORT': '3306',
         'OPTIONS': {
-            # "init_command": "SET foreign_key_checks = 0;",
-            "init_command": "SET storage_engine=INNODB",
+            "init_command": "SET foreign_key_checks = 0;",
+            # "init_command": "SET storage_engine=INNODB",
          },
     }
 }

@@ -7,6 +7,17 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 @register.assignment_tag
+def get_logs(user, total_):
+	if user.is_superuser:
+		logs = LogEntry.objects.all()
+	else:
+		logs = LogEntry.objects.filter(user=user)
+	if total_:
+		return [logs[:total_], logs.count()]
+	else:
+		return [logs, logs.count()]
+
+@register.assignment_tag
 def get_riwayat_admin(user_, waktu_):
 	if not user_.is_superuser:
 		logs = LogEntry.objects.filter(user=user_)

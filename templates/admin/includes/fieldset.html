@@ -13,7 +13,7 @@
             <div class="panel-body">
     {% endif %}
     {% for line in fieldset %}
-        <div class="form-row form-group {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if field.field.is_hidden %} field-hidden{% endif %}{% endfor %}">
+        <div class="form-row form-group {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if field.field.is_hidden %} field-hidden hide{% endif %}{% endfor %}">
             
             {% for field in line %}
                 {% if not line.fields|length_is:'1' and forloop.first %}
@@ -44,8 +44,20 @@
                                 <label class="{% if field.field.field.required %}required{% endif %} {% if line.fields|length_is:'1' %}col-sm-2{% endif %} control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
                             {% endif %}
                             <div class="{% if line.fields|length_is:'1' %}col-sm-10{% endif %}">
+
                                 {% if field.is_readonly %}
                                     <p>{{ field.contents|linebreaksbr }}</p>
+                                {% elif field.field.help_text.readonly %}
+                                    {% if field.field.value %}
+                                        {% if field.field|is_file %}
+                                            <p><a href="{{MEDIA_URL}}{{ field.field.value|linebreaksbr }}" class="btn btn-primary btn-rounded-10 btn-ef btn-ef-3 btn-ef-3b mb-10"><i class="fa fa-download"></i> Download</a></p>
+                                        {% else %}
+                                            <p>{{ field.field.value|linebreaksbr }}</p>
+                                        {% endif %}
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                    
                                 {% else %}
                                     {% if field.field|is_readonlypassword %}
                                         {{field.field|atribut:"disabled:disabled|class:form-control"}}
@@ -88,9 +100,6 @@
                                 {% if field.field.help_text.add_code %}
                                     {{ field.field.help_text.add_code|safe }}
                                 {% endif %}
-                                {% if field.field.help_text.info %}
-                                    <span class="help-block mb-0">{{ field.field.help_text.info|safe }}</span>
-                                {% endif %}
                                 {% if field.field.errors %}
                                     <ul id="parsley-id-{{ field.field.auto_id }}" class="parsley-errors-list">
                                         {% for error in field.field.errors %}
@@ -98,11 +107,12 @@
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
-                                {% if not field.field.help_text.add_code and not field.field.help_text.change_code %}
-                                    {% if field.field.help_text %}
-                                        <span class="help-block mb-0">{{ field.field.help_text|safe }}</span>
-                                    {% endif %}
+                                {% if field.field.help_text.info %}
+                                    <span class="help-block mb-0">{{ field.field.help_text.info|safe }}</span>
+                                {% elif field.field.help_text and not field.field.help_text.values %}
+                                    <span class="help-block mb-0">{{ field.field.help_text|safe }}</span>
                                 {% endif %}
+                                
                             </div>
                         {% endif %}
                     {% endif %}

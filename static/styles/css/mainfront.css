@@ -2744,15 +2744,11 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 }
 
 .appWrapper.header-fixed.aside-fixed #content {
-  position: absolute;
-  top: 45px;
-  right: 0;
-  bottom: 0;
-  width: auto;
-  left: 220px;
-  padding-left: 0;
-  padding-top: 0;
-  z-index: 1;
+    padding-left: 0;
+    padding-top: 63px;
+    top: 45px;
+    width: auto;
+    z-index: 1;
 }
 
 .appWrapper.header-static #content {

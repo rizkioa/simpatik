@@ -200,6 +200,7 @@ class Prosedur(models.Model):
 class JenisPermohonanIzin(models.Model):
 	jenis_permohonan_izin = models.CharField(max_length=255, verbose_name='Jenis Permohonan Izin')
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+	jenis_izin = models.ManyToManyField(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 
 	def __unicode__(self):
 		return "%s" % (self.jenis_permohonan_izin)
@@ -208,6 +209,42 @@ class JenisPermohonanIzin(models.Model):
 		ordering = ['id']
 		verbose_name ='Jenis Permohonan Izin'
 		verbose_name_plural = 'Jenis Permohonan Izin'
+
+class PengajuanIzin(models.Model):
+	# berkaitan dengan pengejuan izin sebelumnya jika ada
+	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)	
+	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin',null=True, blank=True,)
+	# perusahaan = models.ForeignKey(Perusahaan, null=True, blank=True, verbose_name='Perusahaan')
+# 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, null=True, blank=True, verbose_name='Kelompok Jenis Izin')
+# 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, null=True, blank=True, verbose_name='Jenis Permohonan Izin')
+# 	detil_papan_reklame = models.ForeignKey(DetilIMBPapanReklame, null=True, blank=True, verbose_name='Detil IMB Papan Reklame')
+
+# 	jenis_gangguan = models.ManyToManyField(JenisGangguan,blank=True, verbose_name='Jenis Gangguan')
+# 	jenis_kegiatan_pembangunan = models.ManyToManyField(JenisKegiatanPembangunan,blank=True, verbose_name='Jenis Kegiatan Pembangunan')
+# 	parameter_bgunan = models.ManyToManyField(ParameterBangunan, blank=True, verbose_name='Parameter')
+	
+# 	pendaftaran = models.IntegerField(null=True, blank=True, verbose_name='Pendaftaran')
+# 	pembaharuan = models.IntegerField(null=True, blank=True, verbose_name='Pembaharuan')
+	
+# 	create_by = models.ForeignKey(Account,null=True, blank=True, related_name='izin_create_by' ,verbose_name='Dibuat Oleh' )
+# 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
+# 	created_at = models.DateTimeField(editable=False)
+# 	updated_at = models.DateTimeField(auto_now=True)
+
+# 	def save(self, *args, **kwargs):
+# 		''' On save, update timestamps '''
+# 		if not self.id:
+# 			self.created_at = datetime.now()
+# 		self.updated_at = datetime.now()
+# 		return super(Izin, self).save(*args, **kwargs)
+
+# 	def __unicode__(self):
+# 		return "%s" % str(self.pendaftaran)
+
+# 	class Meta:
+# 		ordering = ['id']
+# 		verbose_name = 'Izin'
+# 		verbose_name_plural = 'Izin'
 
 # class JenisBerkas(models.Model):
 # 	jenis_berkas = models.CharField(max_length=50, null=True, blank=True, verbose_name='Jenis Berkas')
@@ -337,42 +374,6 @@ class JenisPermohonanIzin(models.Model):
 # 		ordering = ['id']
 # 		verbose_name = 'Jenis Gangguan'
 # 		verbose_name_plural = 'Jenis Gangguan'
-
-# class Izin(models.Model):
-# 	izin_induk = models.ForeignKey('Izin', blank=True, null=True)
-
-# 	perusahaan = models.ForeignKey(Perusahaan, null=True, blank=True, verbose_name='Perusahaan')
-# 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin',null=True, blank=True,)
-# 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, null=True, blank=True, verbose_name='Kelompok Jenis Izin')
-# 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, null=True, blank=True, verbose_name='Jenis Permohonan Izin')
-# 	detil_papan_reklame = models.ForeignKey(DetilIMBPapanReklame, null=True, blank=True, verbose_name='Detil IMB Papan Reklame')
-
-# 	jenis_gangguan = models.ManyToManyField(JenisGangguan,blank=True, verbose_name='Jenis Gangguan')
-# 	jenis_kegiatan_pembangunan = models.ManyToManyField(JenisKegiatanPembangunan,blank=True, verbose_name='Jenis Kegiatan Pembangunan')
-# 	parameter_bgunan = models.ManyToManyField(ParameterBangunan, blank=True, verbose_name='Parameter')
-	
-# 	pendaftaran = models.IntegerField(null=True, blank=True, verbose_name='Pendaftaran')
-# 	pembaharuan = models.IntegerField(null=True, blank=True, verbose_name='Pembaharuan')
-	
-# 	create_by = models.ForeignKey(Account,null=True, blank=True, related_name='izin_create_by' ,verbose_name='Dibuat Oleh' )
-# 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
-# 	created_at = models.DateTimeField(editable=False)
-# 	updated_at = models.DateTimeField(auto_now=True)
-
-# 	def save(self, *args, **kwargs):
-# 		''' On save, update timestamps '''
-# 		if not self.id:
-# 			self.created_at = datetime.now()
-# 		self.updated_at = datetime.now()
-# 		return super(Izin, self).save(*args, **kwargs)
-
-# 	def __unicode__(self):
-# 		return "%s" % str(self.pendaftaran)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Izin'
-# 		verbose_name_plural = 'Izin'
 
 # class KekayaanDanSaham(models.Model):
 # 	"""docstring for Kekayaan Dan Saham"""
