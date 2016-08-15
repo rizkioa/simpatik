@@ -2744,11 +2744,14 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 }
 
 .appWrapper.header-fixed.aside-fixed #content {
-    padding-left: 0;
-    padding-top: 63px;
-    top: 45px;
-    width: auto;
-    z-index: 1;
+  top: 45px;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  left: 0px;
+  padding-left: 0;
+  padding-top: 50px;
+  z-index: 1;
 }
 
 .appWrapper.header-static #content {
@@ -2834,7 +2837,8 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   color: white;
   padding-left: 65px;
   height: 65px;
-  line-height: 32px;
+  line-height: 22px;
+  padding-top: 12px;
   background: url(../../images/SIMPATIK.png) no-repeat 0 7px;
   background-size: 50px 50px;
   float: left;
@@ -3043,19 +3047,22 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
     margin-left: 12px;
     font-size: 52px;
     line-height: 65px;
-    padding-left: 80px;
+    padding-left: 60px;
   }
   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding {
     width: 40px;
   }
   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding .brand {
-    margin-left: -9px;
+    margin-left: 11px;
   }
   .appWrapper.aside-fixed #sidebar {
     padding-top: 25px;
   }
   #header .branding {
     padding: 0 0px;
+  }
+  .appWrapper.header-fixed.sidebar-xs #content {
+    padding-left: 20px
   }
 }
 
@@ -3162,6 +3169,10 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
   }
   .appWrapper.sidebar-xs.header-fixed #header {
     position: fixed;
+  }
+  #content {
+    left: 80px;
+    padding-left: 65px;
   }
 }
 
@@ -3686,7 +3697,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 
 .appWrapper.header-fixed.sidebar-sm #content {
   left: 80px;
-  padding-left: 0;
+  padding-left: 0px;
 }
 
 .appWrapper:not(.header-fixed).sidebar-sm #header {
@@ -3774,7 +3785,7 @@ html.boxed-layout .appWrapper.header-fixed.aside-static #header {
 }
 
 .appWrapper.header-fixed.sidebar-xs #content {
-  left: 40px;
+  left: 0px;
   padding-left: 0;
 }
 

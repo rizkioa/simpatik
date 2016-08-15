@@ -2,27 +2,12 @@
 {% load i18n admin_static staticfiles widgets %}
 {% block extrastyle %}
 {{ block.super }}
-<style type="text/css">
-  .col_sm_12{
-    height: 125px;
-  }
-  .border_tambah{
-    border-width:2px; 
-    border-bottom-width: 3px;
-    background-color: #1c2b36;
-  }
-  .font_modal {
-    font-size: 24px;
-  }
-  a{
-    color: #cfd1d2;
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/font-responsive.css' %}">
 {% endblock %}
 
 {% block section %}
 <div class="pageheader">
-  <h2>Layanan BPM
+  <h2>Pendaftaran Perizinan Daerah
     <span>Berikut adalah info Layanan Pendaftaran Perizinan Daerah SIMPATIK Kabupaten Kediri.</span>
   </h2>
   <div class="page-bar">
@@ -47,7 +32,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:25px;">Surat Izin Usaha Perdagangan (SIUP)</p>
+                    <p class="text-center text-strong pa">Surat Izin Usaha Perdagangan (SIUP)</p>
                   </div>
                 </div>
             </div>
@@ -58,7 +43,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-elg text-strong">Izin Gangguan (HO)</p>
+                    <p class="text-center text-strong pa">Izin Gangguan (HO)</p>
                   </div>
                 </div>
               </div>
@@ -69,7 +54,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:26px;">Izin Pemanfaatan Air Tanah (SIPA)</p>
+                    <p class="text-center text-strong pa">Izin Pemanfaatan Air Tanah (SIPA)</p>
                   </div>
                 </div>
               </div>
@@ -80,7 +65,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-elg text-strong">Izin Pertambangan</p>
+                    <p class="text-center text-strong pa">Izin Pertambangan</p>
                   </div>
                 </div>
               </div>
@@ -94,7 +79,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:25px;">Tanda Daftar Perusahaan (TDP)</p>
+                    <p class="text-center text-strong pa">Tanda Daftar Perusahaan (TDP)</p>
                   </div>
                 </div>
               </div>
@@ -105,7 +90,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:27px;">Izin Pemasangan Reklame</p>
+                    <p class="text-center text-strong pa">Izin Pemasangan Reklame</p>
                   </div>
                 </div>
               </div>
@@ -116,7 +101,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:28px;">Izin Pemakaian Kekayaan Daerah</p>
+                    <p class="text-center text-strong pa">Izin Pemakaian Kekayaan Daerah</p>
                   </div>
                 </div>
               </div>
@@ -127,7 +112,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:23px;">Izin Usaha Perusahaan Penggilingan Padi dan Huller</p>
+                    <p class="text-center text-strong pa">Izin Usaha Perusahaan Penggilingan Padi dan Huller</p>
                   </div>
                 </div>
               </div>
@@ -141,7 +126,7 @@
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
-                    <p class="text-center text-strong" style="font-size:28px;">Izin Mendirikan Bangunan (IMB)</p>
+                    <p class="text-center text-strong pa">Izin Mendirikan Bangunan (IMB)</p>
                   </div>
                 </div>
               </div>
@@ -168,7 +153,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">SIPA SUMUR Bor</p>
+                  <p class="text-center text-strong pa">SIPA SUMUR Bor</p>
                 </div>
               </div>
             </div>
@@ -179,7 +164,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">SIPA Sumur Pasak</p>
+                  <p class="text-center text-strong pa">SIPA Sumur Pasak</p>
                 </div>
               </div>
             </div>
@@ -207,7 +192,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">TDP - Perseroan Terbatas (PT)</p>
+                  <p class="text-center text-strong pa">TDP - Perseroan Terbatas (PT)</p>
                 </div>
               </div>
             </div>
@@ -218,7 +203,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-strong font_modal">TDP - Persekutuan Komanditer (CV)</p>
+                  <p class="text-center text-strong pa">TDP - Persekutuan Komanditer (CV)</p>
                 </div>
               </div>
             </div>
@@ -229,7 +214,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">TDP - Firma</p>
+                  <p class="text-center text-strong pa">TDP - Firma</p>
                 </div>
               </div>
             </div>
@@ -240,7 +225,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">TDP - Perorangan</p>
+                  <p class="text-center text-strong pa">TDP - Perorangan</p>
                 </div>
               </div>
             </div>
@@ -251,7 +236,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">TDP - Koperasi</p>
+                  <p class="text-center text-strong pa">TDP - Koperasi</p>
                 </div>
               </div>
             </div>
@@ -262,7 +247,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">TDP - Bentuk Usaha lainnya</p>
+                  <p class="text-center text-strong pa">TDP - Bentuk Usaha lainnya</p>
                 </div>
               </div>
             </div>
@@ -290,7 +275,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">IMB - Umum</p>
+                  <p class="text-center text-strong pa">IMB - Umum</p>
                 </div>
               </div>
             </div>
@@ -301,7 +286,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">IMB - Perumahan</p>
+                  <p class="text-center text-strong pa">IMB - Perumahan</p>
                 </div>
               </div>
             </div>
@@ -312,7 +297,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-elg text-strong">IMB - Papan Reklame</p>
+                  <p class="text-center text-strong pa">IMB - Papan Reklame</p>
                 </div>
               </div>
             </div>

@@ -1,0 +1,82 @@
+@media only screen and (max-width: 785px) {
+    .appWrapper.header-fixed.sidebar-xs #content {
+      left: 0px;
+      padding-left: 24px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .appWrapper.header-fixed.sidebar-xs #content {
+      left: 0px;
+      padding-left: 24px;
+    }
+}
+
+@media only screen and (min-width:992px) {
+    .mobile-only {
+        display:none !important;
+    }
+
+    .desktop-only {
+        display:block !important;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .mobile-only {
+        display:block !important;
+    }
+
+    .desktop-only {
+        display:none !important;
+    }
+
+    .appWrapper.header-fixed.sidebar-sm #content {
+      left: 80px;
+      padding-left: 65px;
+    }
+
+}
+@media only screen and (max-width: 1203px) {
+    .font_hidden {
+        display: none !important;
+    }
+
+    #header .branding{
+        width: 30%;
+    }
+    .strong_title {
+        line-height: 64px;
+        font-size: 40px;
+    }
+}
+@media only screen and (min-width: 1199px) {
+    .font_hidden {
+        display: block !important;
+    }
+    #header .branding{
+        width: 45%;
+    }
+}
+#menu_line {
+    line-height: 10px;
+}
+.button_turun{
+    margin-bottom: -15px !important;
+}
+
+@media only screen and (max-width: 1100px){
+   .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding {
+        width: 30%;
+    } 
+}
+
+@media only screen and (max-width: 1100px){
+    .appWrapper.sidebar-sm #header .branding .brand, .appWrapper:not(.sidebar-sm):not(.sidebar-xs) #header .branding .brand {
+        margin-left: 12px;
+        font-size: 52px;
+        line-height: 57px;
+        padding-left: 76px;
+    }
+}
+

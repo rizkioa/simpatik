@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^layanan/imb-umum$', 'izin.views.layanan_imb_umum', name='layanan_imb_umum'),
     url(r'^layanan/imb-perumahan$', 'izin.views.layanan_imb_perumahan', name='layanan_imb_perumahan'),
     url(r'^layanan/imb-reklame$', 'izin.views.layanan_imb_reklame', name='layanan_imb_reklame'),
-    url(r'^monitoring$', 'izin.views.monitoring', name='monitoring'),
+    url(r'^cari-pengajuan-izin$', 'izin.views.cari_pengajuan', name='cari_pengajuan'),
+    url(r'^layanan/siup/formulir$', 'izin.views.formulir_siup', name='formulir_siup'),
     ]

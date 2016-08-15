@@ -3,48 +3,8 @@
 
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'front-end/css/bootstrap.vertical-tabs.css' %}">
-<style type="text/css">
-  body {
-     animation: colorBackground 20s infinite;
-     -webkit-animation: colorBackground 20s infinite;
-     -moz-animation: colorBackground 20s infinite;
-     -o-animation: colorBackground 20s infinite;
-     }
-    @keyframes colorBackground {
-     0% { background-color: #fbcf61; color: #fbcf61; }
-     20% { background-color: #6bd57e; color: #6bd57e; }
-     40% { background-color: #ff6f6f; color: #ff6f6f; }
-     60% { background-color: #57cff4; color: #57cff4; }
-     80% { background-color: #0ed4c8; color: #0ed4c8; }
-     100% { background-color: #fbcf61; color: #fbcf61; }
-     }
-     @-webkit-keyframes colorBackground {
-     0% { background-color: #fbcf61; color: #fbcf61; }
-     20% { background-color: #6bd57e; color: #6bd57e; }
-     40% { background-color: #ff6f6f; color: #ff6f6f; }
-     60% { background-color: #57cff4; color: #57cff4; }
-     80% { background-color: #0ed4c8; color: #0ed4c8; }
-     100% { background-color: #fbcf61; color: #fbcf61; }
-     }
-     @-moz-keyframes colorBackground {
-     0% { background-color: #fbcf61; color: #fbcf61; }
-     20% { background-color: #6bd57e; color: #6bd57e; }
-     40% { background-color: #ff6f6f; color: #ff6f6f; }
-     60% { background-color: #57cff4; color: #57cff4; }
-     80% { background-color: #0ed4c8; color: #0ed4c8; }
-     100% { background-color: #fbcf61; color: #fbcf61; }
-     }
-     @-o-keyframes colorBackground {
-     0% { background-color: #fbcf61; color: #fbcf61; }
-     20% { background-color: #6bd57e; color: #6bd57e; }
-     40% { background-color: #ff6f6f; color: #ff6f6f; }
-     60% { background-color: #57cff4; color: #57cff4; }
-     80% { background-color: #0ed4c8; color: #0ed4c8; }
-     100% { background-color: #fbcf61; color: #fbcf61; }
-  }
-</style>
-<script src="{% static 'front-end/js/wow.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/color-background.css' %}">
+<script src="{% static 'scripts/js/vendor/wow/wow.js' %}"></script>
 {% endblock %}
 
 {% block section %}
@@ -104,17 +64,14 @@
                         <i class="fa fa-sign-in fa-4x"></i>
                     </div>
                     <div class="col-xs-8">
-                        <p class="text-elg text-strong mb-0">Layanan</p>
+                        <p class="text-elg text-strong mb-0">Pengajuan</p>
                     </div>
                 </div>
             </div>
             <div class="back bg-greensea">
                 <div class="row">
-                    <div class="col-md-6">
-                        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in fa-2x"></i> Pendaftaran Perizinan Daerah</a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in fa-2x"></i> Perizinan Penanaman Modal</a>
+                    <div class="col-md-12">
+                        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in fa-2x"></i> Pengajuan Perizinan Daerah</a>
                     </div>
                 </div>
             </div>
@@ -152,17 +109,17 @@
               <div class="front bg-blue">
                   <div class="row">
                       <div class="col-xs-4">
-                          <i class="fa fa-folder-open-o fa-4x"></i>
+                          <i class="fa fa-search fa-4x"></i>
                       </div>
                       <div class="col-xs-8">
-                          <p class="text-elg text-strong mb-0">Monitoring</p>
+                          <p class="text-elg text-strong mb-0">Cari Pengajuan</p>
                       </div>
                   </div>
               </div>
               <div class="back bg-blue">
                   <div class="row">
                       <div class="col-xs-12">
-                          <a href="{% url 'monitoring' %}"><i class="fa fa-folder-open-o fa-2x"></i> Monitoring Pengajuan Izin</a>
+                          <a href="{% url 'cari_pengajuan' %}"><i class="fa fa-search fa-2x"></i> Cari Pengajuan Izin</a>
                       </div>
                   </div>
               </div>
