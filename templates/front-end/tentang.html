@@ -1,0 +1,104 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'front-end/css/bootstrap.vertical-tabs.css' %}">
+{% endblock %}
+
+{% block section %}
+<div class="pageheader">
+    <h2>Tentang BPM
+		<span>Berikut adalah info Tentang BPM SIMPATIK Kabupaten Kediri.</span>
+	</h2>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+		  <li>
+		    <a href="#"><i class="fa fa-home"></i> Home</a>
+		  </li>
+		  <li>
+		    <a href="#"> Daya Tampung SMP</a>
+		  </li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div  class="col-md-12">
+	  <section class="tile">
+	    <div class="tile-header dvd dvd-btm">
+	      <h1 class="custom-font"><strong>Normal</strong> Headings</h1>
+	      <ul class="controls">
+	        <li class="dropdown">
+	          <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
+	            <i class="fa fa-cog"></i>
+	            <i class="fa fa-spinner fa-spin"></i>
+	          </a>
+	          <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+	            <li>
+	              <a role="button" tabindex="0" class="tile-toggle">
+	                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+	                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+	              </a>
+	            </li>
+	            <li>
+	              <a role="button" tabindex="0" class="tile-refresh">
+	                <i class="fa fa-refresh"></i> Refresh
+	              </a>
+	            </li>
+	            <li>
+	              <a role="button" tabindex="0" class="tile-fullscreen">
+	                <i class="fa fa-expand"></i> Fullscreen
+	              </a>
+	            </li>
+	          </ul>
+	        </li>
+	        <li class="remove"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
+	      </ul>
+	    </div>
+	    <div class="tile-body">
+			<div class="col-md-3">
+			  <ul class="nav nav-tabs tabs-left">
+			    <li class="active"><a href="#tentang" data-toggle="tab">Tentang BPM-P2TSP</a></li>
+			    <li><a href="#visimisi" data-toggle="tab">Visi & Misi</a></li>
+			    <li><a href="#motto" data-toggle="tab">Motto</a></li>
+			    <li><a href="#kontak" data-toggle="tab">Kontak Kami</a></li>
+			  </ul>
+			</div>
+			<div class="col-md-9">
+			  <div class="tab-content">
+			    <div class="tab-pane active" id="tentang">
+			    	<h2>Tentang BPM-P2TSP</h2>
+			    	<p>BPM-P2TSP adalah Dinas Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu. BPM-P2TSP mempunyai tugas pokok melaksanakan penyusunan dan pelaksanaan kebijakan daerah yang bersifat spesifik dibidang penanaman modal dan pelayanan perizinan. Pelayanan perizinan yang dilakukan di BPM-P2TSP meliputi :</p>
+			    	<ol>
+			    		<li>Surat Izin Usaha Perdagangan (SIUP)</li>
+			    		<li>Tanda Daftar Perusahaan (TDP)</li>
+			    		<li>Izin Mendirikan Bangunan (IMB)</li>
+			    		<li>Izin Gangguan (HO)</li>
+			    		<li>Izin Pemasangan Reklame</li>
+			    		<li>Izin Pemanfaatan Ain Tanah (SIPA)</li>
+			    		<li>Izin Pemakaian Kekayaan Daerah</li>
+			    		<li>Izin PerTambangan</li>
+			    		<li>Izin Usaha Perusahaan Penggilingan Padi dan Huller</li>
+			    	</ol>
+			    </div>
+			    <div class="tab-pane" id="visimisi">
+			    	<h2>Visi & Misi</h2>
+			    </div>
+			    <div class="tab-pane" id="motto">
+			    	<h2>Motto</h2>
+			    </div>
+			    <div class="tab-pane" id="kontak">
+			    	<h2>Kontak Kami</h2>
+			    </div>
+			  </div>
+			</div>
+			<div class="clearfix"></div>
+	    </div>
+	  </section>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+{% endblock %}

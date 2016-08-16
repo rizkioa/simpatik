@@ -15,6 +15,3 @@ def user_home(request):
 	if request.user.is_admin:
 		return HttpResponseRedirect(reverse('admin:index'))
 	return site.index(request)
-
-def welcome(request):
-	return HttpResponse('Not Ready Yet.')

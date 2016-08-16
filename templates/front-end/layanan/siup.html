@@ -1,0 +1,152 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/bootstrap.vertical-tabs.css' %}">
+<style type="text/css">
+	.a_warna{
+	color: #fdfeff;
+	}
+</style>
+{% endblock %}
+
+{% block section %}
+<div class="pageheader">
+    <h2>Surat Perizinan Usaha Perdagangan (SIUP)
+		<span>Berikut adalah info pendaftaran perizinan SIUP Kabupaten Kediri.</span>
+	</h2>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+		  <li>
+		    <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+		  </li>
+		  <li>
+		    <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+		  </li>
+		  <li>
+		  	<a href="#">SIUP</a>
+		  </li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-darkgray">
+			<div class="panel-body">
+				<div class="container">
+					<br>
+					<p>Untuk mengajukan izin silahkan mengisi <a href="{% url 'formulir_siup' %}" type="button" class="btn btn-success mb-10">FORMULIR</a></p>
+					<ul class="nav nav-tabs" style="background-color: #1c2b36;">
+					  <li class="active"><a class="a_warna" data-toggle="tab" href="#home">Prosedur dan Persyaratan Pengajuan</a></li>
+					  <li><a class="a_warna" data-toggle="tab" href="#menu1">Alur Proses Pengajuan</a></li>
+					  <li><a class="a_warna" data-toggle="tab" href="#menu2">Dasar Hukum</a></li>
+					  <li><a class="a_warna" data-toggle="tab" href="#menu3">Unduh Berkas</a></li>
+					</ul>
+
+					<div class="tab-content">
+					  <div id="home" class="tab-pane fade in active">
+					    <h3>Prosedur dan Persyaratan Pengajuan</h3>
+					    <div class="panel panel-darkgray">
+							<div class="panel-body">
+								<h4>Persyaratan yang perlu dibawa:</h4>
+								<ol>
+									<li>Formulir / Surat Permohonan (pencetakan sudah disediakan diaplikasi SIMPATIK)</li>
+									<li>Surat Pernyataan (sudah disediakan diaplikasi SIMPATIK)</li>
+									<li>Foto Berwarna Ukuran 3x4 / 4x6 (3 Lembar)</li>
+									<li>Foto Copy KTP</li>
+									<li>Foto Copy NPWP Pribadi / Perusahaan</li>
+									<li>Materai 6000 (2 Lembar) untuk ditempel diFormulir Permohonan dan Surat Pernyataan </li>
+								</ol>
+							</div>
+						</div>
+						<div class="panel panel-darkgray">
+							<div class="panel-body">
+								<h4>Lama Waktu Pengajuan Izin:</h4>
+								<p>...........Hari</p>
+							</div>
+						</div>
+						<div class="panel panel-darkgray">
+							<div class="panel-body">
+								<h4>Biaya Pengajuan Izin:</h4>
+								<p>Gratis Perizinan ini tidak ditarik biaya</p>
+							</div>
+						</div>
+					  </div>
+					  <div id="menu1" class="tab-pane fade">
+					    <h3>Alur Proses Pengajuan</h3>
+					    <img src="{% static 'images/alur.png' %}" width="100%">
+					  </div>
+					  <div id="menu2" class="tab-pane fade">
+					    <h3>Dasar Hukum</h3>
+					    <table class="table table-bordered">
+						    <thead>
+						      <tr>
+						        <th>Peraturan</th>
+						        <th>Tentang</th>
+						        <th>Aksi</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						      <tr>
+						        <td>Peraturan Menteri Perdagangan RI No. 36/M-DAG/PER/9/2007 tanggal 4 September 2007</td>
+						        <td>Ketentuan Penerbitan Surat Izin Usaha Perdagangan (SIUP)</td>
+						        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+						      </tr>
+						      <tr>
+						        <td>Peraturan Menteri Perdagangan RI No. 46/M-DAG/PER/9/2009 tanggal 16 September 2009</td>
+						        <td></td>
+						        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+						      </tr>
+						      <tr>
+						        <td>Peraturan Menteri Perdagangan RI No. 39/M-DAG/PER/12/2011 tanggal 9 Desember 2011</td>
+						        <td></td>
+						        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+						      </tr>
+						    </tbody>
+						</table>
+					  </div>
+					  <div id="menu3" class="tab-pane fade">
+					    <h3>Unduh Berkas</h3>
+					    <table class="table table-bordered">
+						    <thead>
+						      <tr>
+						        <th>No.</th>
+						        <th>Nama Berkas</th>
+						        <th>Lingkup Izin</th>
+						        <th>Aksi</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						      <tr>
+						      	<td>1.</td>
+						        <td>Petunjuk Cara mendaftarkan akun (Register)</td>
+						        <td>Semua / Umum</td>
+						        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+						      </tr>
+						      <tr>
+						      	<td>2.</td>
+						        <td>Petunjuk Penggunaan Aplikasi SIUP</td>
+						        <td>SIUP</td>
+						        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+						      </tr>
+						      <tr>
+						      	<td>3.</td>
+						        <td>Surat Pernyataan dari pemohon tentang lokasi usaha perusahaan</td>
+						        <td>SIUP</td>
+						        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+						      </tr>
+						    </tbody>
+						</table>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+{% endblock %}

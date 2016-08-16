@@ -1,0 +1,256 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/color-background.css' %}">
+<script src="{% static 'scripts/js/vendor/wow/wow.js' %}"></script>
+{% endblock %}
+
+{% block section %}
+<div class="row">
+  <div class="col-md-12 text-center">
+    <br>
+    <div class="wow littleFadeInDown" data-wow-duration="3s" data-wow-delay="2s">
+        <img src="{{ STATIC_URL }}images/kabkediri.png" class="logo" alt="Logo Kabupaten Kediri" title="Logo Kabupaten Kediri" />
+    </div>
+    <script language="JavaScript">
+    var text="<h2>Selamat Datang di Situs SIMPATIK Kabupaten Kediri </h2>";
+    var delay=20;
+    var currentChar=1;
+    var destination="[none]";
+    function type()
+    {
+    //if (document.all)
+    {
+    var dest=document.getElementById(destination);
+    if (dest)// && dest.innerHTML)
+    {
+    dest.innerHTML=text.substr(0, currentChar)+"<blink></blink>";
+    currentChar++;
+    if (currentChar>text.length)
+    {
+    currentChar=1;
+    // setTimeout("type()", 1000);
+    }
+    else
+    {
+    setTimeout("type()", delay);
+    }}}}
+    function startTyping(textParam, delayParam, destinationParam)
+    {
+    text=textParam;
+    delay=delayParam;
+    currentChar=1;
+    destination=destinationParam;
+    type();
+    }
+    </script> 
+    <div 0px="" 12px="" arial="" color:="black" ff0000="" font:="" id="textDestination" margin:="" style="background-color: none ; color:black;">
+    </div>
+    <script language="JavaScript">
+    javascript:startTyping(text, 50, "textDestination");
+    </script>
+  </div>
+</div>
+
+<div class="row">
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12" >
+        <div class="card">
+            <div class="front bg-greensea">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-sign-in fa-4x"></i>
+                    </div>
+                    <div class="col-xs-8">
+                        <p class="text-elg text-strong mb-0">Pengajuan</p>
+                    </div>
+                </div>
+            </div>
+            <div class="back bg-greensea">
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in fa-2x"></i> Pengajuan Perizinan Daerah</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+            <div class="front bg-lightred">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <i class="fa fa-map-marker fa-4x"></i>
+                    </div>
+                    <div class="col-xs-8">
+                        <p class="text-elg text-strong mb-0">Peta</p>
+                    </div>
+                </div>
+            </div>
+            <div class="back bg-lightred">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href=#><i class="fa fa-map-marker fa-2x"></i> Peta Layanan Perizinan</a>
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-blue">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-search fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Cari Pengajuan</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-blue">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href="{% url 'cari_pengajuan' %}"><i class="fa fa-search fa-2x"></i> Cari Pengajuan Izin</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-slategray">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-globe fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Website</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-slategray">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href="http://bpmpd.kedirikab.go.id/" target="_blank"><i class="fa fa-globe fa-2x"></i> Website BPM-P2TSP</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>                        
+</div>
+
+<div class="row">
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-cyan">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-file-text fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Regulasi</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-cyan">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-file-text fa-2x"></i> Regulasi BPM</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-orange">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-phone fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Call</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-orange">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-phone fa-2x"></i> Call Center BPM</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-darkgray">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-video-camera fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Video</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-darkgray">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-video-camera fa-2x"></i> Video Tutorial</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="card-container col-lg-3 col-sm-6 col-sm-12">
+          <div class="card">
+              <div class="front bg-dutch">
+                  <div class="row">
+                      <div class="col-xs-4">
+                          <i class="fa fa-info fa-4x"></i>
+                      </div>
+                      <div class="col-xs-8">
+                          <p class="text-elg text-strong mb-0">Prosedur</p>
+                      </div>
+                  </div>
+              </div>
+              <div class="back bg-dutch">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a href=#><i class="fa fa-info fa-2x"></i> Syarat & Prosedur Perizinan</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+{% endblock %}

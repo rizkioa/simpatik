@@ -1,0 +1,38 @@
+body {
+     animation: colorBackground 20s infinite;
+     -webkit-animation: colorBackground 20s infinite;
+     -moz-animation: colorBackground 20s infinite;
+     -o-animation: colorBackground 20s infinite;
+     }
+    @keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+     }
+     @-webkit-keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+     }
+     @-moz-keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+     }
+     @-o-keyframes colorBackground {
+     0% { background-color: #fbcf61; color: #fbcf61; }
+     20% { background-color: #6bd57e; color: #6bd57e; }
+     40% { background-color: #ff6f6f; color: #ff6f6f; }
+     60% { background-color: #57cff4; color: #57cff4; }
+     80% { background-color: #0ed4c8; color: #0ed4c8; }
+     100% { background-color: #fbcf61; color: #fbcf61; }
+}

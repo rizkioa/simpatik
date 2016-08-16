@@ -1,3 +1,9 @@
 *.pyc
 files/
 simpdu/settings.py
+
+accounts/migrations/
+master/migrations/
+kepegawaian/migrations/
+izin/migrations/
+perusahaan/migrations/

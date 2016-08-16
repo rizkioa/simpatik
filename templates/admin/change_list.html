@@ -15,12 +15,26 @@
 
 {% block custom_style %}
 	<style type="text/css">
-		th.action-checkbox-column, td.action-checkbox {
+
+		.pagination > li.active > a, .pagination > li.active > span {
+		    color: rgba(255, 255, 255, 0.7) !important;
+		}
+
+		.pagination > li > a, .pagination > li > span {
+		    color: #337ab7 !important;
+		}
+
+		#result_list th.action-checkbox-column, #result_list td.action-checkbox {
+		    text-align: center;
+		    width: 1.5em;
+		    padding: 5px !important;
+		}
+		th.action-checkbox-column, td.action-checkbox, td.field-aksi {
 		    text-align: center;
 		    width: 1.5em;
 		}
 		.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
-		    padding: 5px !important;
+		    padding: 5px;
 		}
 		thead th, tfoot td {
 		    background: url("{% static 'images/nav-bg.gif' %}") repeat-x scroll left top #e1e1e1 !important;
@@ -163,10 +177,12 @@
                     <ul class="controls">                    	
                     	{% block object-tools %}
                     		{% block object-tools-items %}
-	                    	<li class="add" title="Tambah">
-	                    		{% url cl.opts|admin_urlname:'add' as add_url %}
-	                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
-	                    	</li>
+                    		{% if has_add_permission %}
+		                    	<li class="add" title="Tambah">
+		                    		{% url cl.opts|admin_urlname:'add' as add_url %}
+		                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
+		                    	</li>
+	                    	{% endif %}
 	                    	{% endblock %}
 	                    {% endblock %}
 	                    {% block extra-object-tools %}

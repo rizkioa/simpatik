@@ -1,0 +1,1155 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls widgets admin_static %}
+
+{% block pretitle %}<span class="fa fa-pencil"></span>{% endblock %}
+{% block content_title %}
+	Formulir SIUP 
+{% endblock %}
+
+{% block breadcrumbs %}
+	{% if not is_popup %}
+	<div class="page-bar">
+	    <ul class="page-breadcrumb">
+	        <li>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+	        </li>
+	        <li>
+	        	<a href="{% url 'admin:izin_izin_changelist' %}" class="link-effect link-effect-21">Daftar Izin</a>
+	        </li>
+	        <li>
+	        	<a href="#" class="link-effect">Formulir
+	            </a>
+	        </li>
+	    </ul>
+	</div>
+	{% endif %}
+{% endblock %}
+
+{% block extrajs_site %}
+    <script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+    <script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+    <script src="{% static "scripts/js/vendor/jquery-ui/jquery-ui.min.js" %}"></script>
+    <script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}" ></script>
+    <script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
+    <script src="{% static "scripts/js/vendor/parsley/parsley.min.js" %}"></script>
+    <script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.min.js" %}"></script>
+
+	<script type="text/javascript">
+      $(window).load(function(){
+                $('#rootwizard').bootstrapWizard({
+                    onTabShow: function(tab, navigation, index) {
+                        var $total = navigation.find('li').length;
+                        var $current = index+1;
+
+                        // If it's the last tab then hide the last button and show the finish instead
+                        if($current >= $total) {
+                            $('#rootwizard').find('.pager .next').hide();
+                            $('#rootwizard').find('.pager .finish').show();
+                            $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                            Validasi();
+
+                        } else {
+                            $('#rootwizard').find('.pager .next').show();
+                            $('#rootwizard').find('.pager .finish').hide();
+                        }
+                    },
+                    onNext: function(tab, navigation, index) {
+
+                        var form = $('form[name="step'+ index +'"]');
+
+                        form.parsley().validate();
+
+                        if (!form.parsley().isValid()) {
+                            return false;
+                        }
+
+                    },
+                    onTabClick: function(tab, navigation, index) {
+
+                        var form = $('form[name="step'+ (index+1) +'"]');
+                        form.parsley().validate();
+
+                        if (!form.parsley().isValid()) {
+                            return false;
+                        }
+
+                    }
+                });
+            });
+
+        function set_chosen_pemohon(){
+            $chosenEl = $('.pemohon-chosen-select')
+            if ($chosenEl.length > 0) {            	
+                $chosenEl.each(function() {
+                  var element = $(this);
+                  element.on('chosen:ready', function(e, chosen) {
+                    var width = element.css("width");
+                    element.next().find('.chosen-choices').addClass('form-control');
+                    element.next().css("width", width);
+                    element.next().find('.search-field input').css("width", "125px");
+                  }).chosen()                  
+                });
+            }
+        }
+        function load_pemohon(id_pemohon){
+            $.when( 
+                $.ajax("{% url 'admin:index' %}izin/pemohon/ajax/pemohon/" + id_pemohon + "/")
+                        // $.ajax("/admin/izin/pemohon/ajax/pemohon/7/")
+                 ).then(function( data, textStatus, jqXHR ) {
+                        var data_json = $.parseJSON(data);
+                        
+                        if (data_json.length > 0){
+                          
+                        $('#id_input_pemohon').val(data_json[0].id)
+                        $('#id_input_nama_lengkap').val(data_json[0].nama_lengkap)
+                        $('#id_input_alamat_pemohon').val(data_json[0].alamat)
+                        $('#id_input_tempat_lahir').val(data_json[0].tempat_lahir)
+                        $('#id_input_tanggal_lahir').val(data_json[0].tanggal_lahir)
+                        $('#id_input_nomor_telephone_fax_pemohon').val(data_json[0].telephone)
+                        $('#id_input_username').val(data_json[0].username)
+                        $('#id_input_kwarganegaraan').val(data_json[0].kewarganegaraan)
+                        }
+
+                    }).fail(function( data, textStatus, jqXHR ) {
+                        toastr.options = {
+                          "closeButton": false,
+                          "debug": false,
+                          "newestOnTop": false,
+                          "progressBar": false,
+                          "positionClass": "toast-top-right",
+                          "preventDuplicates": false,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                            }
+                        toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                    });
+        }
+        set_chosen_pemohon()
+        input_chosen = $('#id_pemohon_chosen .chosen-search input');
+        if ($chosenEl.length > 0) {
+            $('#id_pemohon_chosen .chosen-search input').keyup(function(e) {
+                value_ = $(this).val()
+                // var code = e.which;
+                if(value_.length > 1){
+                	//Ditambah Loading 
+                    $("#form_data_pemohon").mask("Waiting...");
+                    $.when( 
+                        $.ajax("{% url 'admin:pemohon_ajax_autocomplete' %}")
+                    ).then(function( data, textStatus, jqXHR ) {
+                        // alert(data)
+                        // $('.pemohon-chosen-select').chosen("destroy");
+                        $( "#id_pemohon").html(data);
+                        $('.pemohon-chosen-select').trigger("chosen:updated");
+                       	// $(this).val(value_)
+                       	$('#id_pemohon_chosen .chosen-search input').val(value_);                    
+                        // render html
+                        set_chosen_pemohon()
+                        $( "#id_pemohon").change(function(){
+                            id_pemohon = $(this).val()
+                            load_pemohon(id_pemohon)
+                        })
+                        $("#form_data_pemohon").unmask();
+                    }).fail(function( data, textStatus, jqXHR ) {
+						// toastr.options = {
+						//   "closeButton": false,
+						//   "debug": false,
+						//   "newestOnTop": false,
+						//   "progressBar": false,
+						//   "positionClass": "toast-bottom-right",
+						//   "preventDuplicates": false,
+						//   "onclick": null,
+						//   "showDuration": "300",
+						//   "hideDuration": "1000",
+						//   "timeOut": "5000",
+						//   "extendedTimeOut": "1000",
+						//   "showEasing": "swing",
+						//   "hideEasing": "linear",
+						//   "showMethod": "fadeIn",
+						//   "hideMethod": "fadeOut"
+						// }
+      //                   toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                    });
+                   
+                }
+
+                e.preventDefault();
+            });
+        }
+
+        function set_chosen_perusahaan(){
+            $chosenEl = $('.perusahaan-chosen-select')
+            if ($chosenEl.length > 0) {             
+                $chosenEl.each(function() {
+                  var element = $(this);
+                  element.on('chosen:ready', function(e, chosen) {
+                    var width = element.css("width");
+                    element.next().find('.chosen-choices').addClass('form-control');
+                    element.next().css("width", width);
+                    element.next().find('.search-field input').css("width", "125px");
+                  }).chosen()
+                   
+                });
+            }
+        }
+
+        function load_perusahaan(id_perusahaan){
+            $.when( 
+                $.ajax("{% url 'admin:index' %}perusahaan/perusahaan/ajax/perusahaan/" + id_perusahaan + "/")
+                        // $.ajax("/admin/perusahaan/perusahaan/ajax/perusahaan/1/")
+            ).then(function( data, textStatus, jqXHR ) {
+                var data_json = $.parseJSON(data);
+                  
+                if (data_json.length > 0){
+
+                    $('#id_input_perusahaan').val(data_json[0].id)
+                    $('#id_input_nama_perusahaan').val(data_json[0].nama_perusahaan)
+                    $('#id_input_alamat_perusahaan').val(data_json[0].alamat_perusahaan)
+                    $('#id_input_nomor_telephone_perusahaan').val(data_json[0].telepon)
+                    $('#id_input_nomor_fax_perusahaan').val(data_json[0].fax)
+                    $('#id_input_npwp').val(data_json[0].npwp)
+                    $('#id_input_kode_pos_perusahaan').val(data_json[0].kode_pos)
+                    $('#id_input_status_perusahaan').val(data_json[0].status_perusahaan)
+                    $('#id_input_kelurahan_desa').val(data_json[0].desa)
+                    $('#id_input_kecamatan').val(data_json[0].kecamatan)
+                    $('#id_input_kabupaten_kota').val(data_json[0].kabupaten)
+                    $('#id_input_provinsi').val(data_json[0].provinsi)  
+                    $('#id_input_kegiatan_usaha_kbli').val(data_json[0].kbli)              
+                                    
+                    }
+
+                }).fail(function( data, textStatus, jqXHR ) {
+                        toastr.options = {
+                          "closeButton": false,
+                          "debug": false,
+                          "newestOnTop": false,
+                          "progressBar": false,
+                          "positionClass": "toast-top-right",
+                          "preventDuplicates": false,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                            }
+                        toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                });
+            }
+            function load_legalitas(){
+            $.when( 
+                $.ajax("{% url 'admin:index' %}perusahaan/perusahaan/ajax/legalitas/" + id_perusahaan + "/")
+                        // $.ajax("/admin/perusahaan/perusahaan/ajax/perusahaan/1/")
+            ).then(function( data, textStatus, jqXHR ) {
+                var data_json = $.parseJSON(data);
+                  
+                if (data_json.length > 0){
+
+                    $('#id_input_nomor_akta_pendirian').val(data_json[0].no_akta)
+                    $('#id_input_nomor_tgl_pengesahan_pendirian').val(data_json[0].tanggal_akta)
+                    $('#id_input_nomor_akta_tgl_perubahan').val(data_json[0].no_pengesahan)
+                    $('#id_input_nomor_tgl_pengesahan_perubahan').val(data_json[0].tanggal_pengesahan)
+                    }
+
+                }).fail(function( data, textStatus, jqXHR ) {
+                        toastr.options = {
+                          "closeButton": false,
+                          "debug": false,
+                          "newestOnTop": false,
+                          "progressBar": false,
+                          "positionClass": "toast-top-right",
+                          "preventDuplicates": false,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                            }
+                        toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                });
+            }
+            function load_kegiatan_usaha(){
+            $.when( 
+                $.ajax("{% url 'admin:index' %}perusahaan/perusahaan/ajax/kegiatan_usaha/" + id_perusahaan + "/")
+                        // $.ajax("/admin/perusahaan/perusahaan/ajax/perusahaan/1/")
+            ).then(function( data, textStatus, jqXHR ) {
+                var data_json = $.parseJSON(data);
+                  
+                if (data_json.length > 0){
+
+                    $('#id_input_kegiatan_usaha').val(data_json[0].kegiatan_usaha)
+                    }
+
+                }).fail(function( data, textStatus, jqXHR ) {
+                        toastr.options = {
+                          "closeButton": false,
+                          "debug": false,
+                          "newestOnTop": false,
+                          "progressBar": false,
+                          "positionClass": "toast-top-right",
+                          "preventDuplicates": false,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                            }
+                        toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                });
+            }
+            function load_produk_utama(){
+            $.when( 
+                $.ajax("{% url 'admin:index' %}perusahaan/perusahaan/ajax/produk_utama/" + id_perusahaan + "/")
+                        // $.ajax("/admin/perusahaan/perusahaan/ajax/perusahaan/1/")
+            ).then(function( data, textStatus, jqXHR ) {
+                var data_json = $.parseJSON(data);
+                  
+                if (data_json.length > 0){
+
+                    $('#id_input_barang_jasa_utama').val(data_json[0].barang_jasa_utama)
+                    }
+
+                }).fail(function( data, textStatus, jqXHR ) {
+                        toastr.options = {
+                          "closeButton": false,
+                          "debug": false,
+                          "newestOnTop": false,
+                          "progressBar": false,
+                          "positionClass": "toast-top-right",
+                          "preventDuplicates": false,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                            }
+                        toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                });
+            }
+            function load_kekayaan(){
+            $.when( 
+                $.ajax("{% url 'admin:index' %}izin/kekayaandansaham/ajax/kekayaan/" + id_perusahaan + "/")
+                        // $.ajax("/admin/perusahaan/perusahaan/ajax/perusahaan/1/")
+            ).then(function( data, textStatus, jqXHR ) {
+                var data_json = $.parseJSON(data);
+                  
+                if (data_json.length > 0){
+
+                    $('#id_input_kekayaan_bersih').val(data_json[0].kekayaan_bersih)
+                    $('#id_input_total_nilai_saham').val(data_json[0].total_nilai_saham)
+                    $('#id_input_kepemilikan_saham_nasional').val(data_json[0].presentase_saham_nasional)
+                    $('#id_input_kepemilikan_saham_asing').val(data_json[0].presentase_saham_asing)
+
+                    }
+
+                }).fail(function( data, textStatus, jqXHR ) {
+                        toastr.options = {
+                          "closeButton": false,
+                          "debug": false,
+                          "newestOnTop": false,
+                          "progressBar": false,
+                          "positionClass": "toast-top-right",
+                          "preventDuplicates": false,
+                          "onclick": null,
+                          "showDuration": "300",
+                          "hideDuration": "1000",
+                          "timeOut": "5000",
+                          "extendedTimeOut": "1000",
+                          "showEasing": "swing",
+                          "hideEasing": "linear",
+                          "showMethod": "fadeIn",
+                          "hideMethod": "fadeOut"
+                            }
+                        toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                });
+            }
+        set_chosen_perusahaan()
+        input_chosen = $('#id_perusahaan_chosen .chosen-search input');
+        if ($chosenEl.length > 0) {
+            $('#id_perusahaan_chosen .chosen-search input').keyup(function(e) {
+                value_ = $(this).val()
+                // var code = e.which;
+                if(value_.length > 1){
+                    //Ditambah Loading 
+                    $("#form_data_perusahaan").mask("Waiting...");
+                    $.when( 
+                        $.ajax("{% url 'admin:perusahaan_ajax_autocomplete' %}")
+                    ).then(function( data, textStatus, jqXHR ) {
+                        // alert(data)
+                        // $('.pemohon-chosen-select').chosen("destroy");
+                        $( "#id_perusahaan").html(data);
+                        $('.perusahaan-chosen-select').trigger("chosen:updated");
+                        // $(this).val(value_)
+                        $('#id_perusahaan_chosen .chosen-search input').val(value_);                    
+                        // render html
+                        set_chosen_perusahaan()
+                        $( "#id_perusahaan").change(function(){
+                        id_perusahaan = $(this).val()
+                        load_perusahaan(id_perusahaan)
+                        load_legalitas(id_perusahaan)
+                        load_kekayaan(id_perusahaan)
+                        load_kegiatan_usaha(id_perusahaan)
+                        load_produk_utama(id_perusahaan)
+                        })
+                        $("#form_data_perusahaan").unmask();
+                    }).fail(function( data, textStatus, jqXHR ) {
+                     
+                        // toastr.options = {
+                        //   "closeButton": false,
+                        //   "debug": false,
+                        //   "newestOnTop": false,
+                        //   "progressBar": false,
+                        //   "positionClass": "toast-bottom-right",
+                        //   "preventDuplicates": false,
+                        //   "onclick": null,
+                        //   "showDuration": "300",
+                        //   "hideDuration": "1000",
+                        //   "timeOut": "5000",
+                        //   "extendedTimeOut": "1000",
+                        //   "showEasing": "swing",
+                        //   "hideEasing": "linear",
+                        //   "showMethod": "fadeIn",
+                        //   "hideMethod": "fadeOut"
+                        // }
+                        // toastr["error"]("Terjadi kesalahan waktu mengambil data ke server.");
+                    });
+                   
+                }
+
+                e.preventDefault();
+            });
+        }
+
+	</script>
+   <script type="text/javascript">
+    function Validasi(){
+
+      var perusahaan = document.getElementById("id_input_perusahaan").value;
+      var pemohon = document.getElementById("id_input_pemohon").value;
+
+      var nama_lengkap = document.getElementById("id_input_nama_lengkap").value;
+      var alamat_pemohon = document.getElementById("id_input_alamat_pemohon").value;
+      var tempat_lahir = document.getElementById("id_input_tempat_lahir").value;
+      var tanggal_lahir = document.getElementById("id_input_tanggal_lahir").value;
+      var nomor_telephone_fax = document.getElementById("id_input_nomor_telephone_fax_pemohon").value;
+      var username = document.getElementById("id_input_username").value;
+      var kwarganegaraan = document.getElementById("id_input_kwarganegaraan").value; 
+
+      var nama_perusahaan = document.getElementById("id_input_nama_perusahaan").value;
+      var alamat_perusahaan = document.getElementById("id_input_alamat_perusahaan").value ;
+      var nomor_telephone_perusahaan = document.getElementById("id_input_nomor_telephone_perusahaan").value ;
+      var nomor_fax_perusahaan = document.getElementById("id_input_nomor_fax_perusahaan").value;
+      var npwp = document.getElementById("id_input_npwp").value ;
+      var kode_pos_perusahaan = document.getElementById("id_input_kode_pos_perusahaan").value;
+      var status_perusahaan = document.getElementById("id_input_status_perusahaan").value;
+      var kelurahan_desa = document.getElementById("id_input_kelurahan_desa").value;
+      var kecamatan = document.getElementById("id_input_kecamatan").value ;
+      var kabupaten_kota = document.getElementById("id_input_kabupaten_kota").value;
+      var provinsi = document.getElementById("id_input_provinsi").value ;
+
+      var nomor_akta_pendirian = document.getElementById("id_input_nomor_akta_pendirian").value;
+      var nomor_tgl_pengesahan_pendirian = document.getElementById("id_input_nomor_tgl_pengesahan_pendirian").value;
+      var nomor_akta_tgl_perubahan = document.getElementById("id_input_nomor_akta_tgl_perubahan").value ;
+      var nomor_tgl_pengesahan_perubahan = document.getElementById("id_input_nomor_tgl_pengesahan_perubahan").value;
+
+      var kekayaan_bersih = document.getElementById("id_input_kekayaan_bersih").value;
+      var total_nilai_saham = document.getElementById("id_input_total_nilai_saham").value;
+      var kepemilikan_saham_nasional = document.getElementById("id_input_kepemilikan_saham_nasional").value;
+      var kepemilikan_saham_asing = document.getElementById("id_input_kepemilikan_saham_asing").value;
+                    
+      var kegiatan_usaha = document.getElementById("id_input_kegiatan_usaha").value;
+      var kegiatan_usaha_kbli = document.getElementById("id_input_kegiatan_usaha_kbli").value;
+      var barang_jasa_utama = document.getElementById("id_input_barang_jasa_utama").value;
+      
+
+      document.getElementById("perusahaan").value = perusahaan;
+      document.getElementById("pemohon").value = pemohon;
+
+
+      document.getElementById("nama_lengkap").value = nama_lengkap;
+      document.getElementById("alamat_pemohon").value = alamat_pemohon;
+      document.getElementById("tempat_lahir").value = tempat_lahir;
+      document.getElementById("tanggal_lahir").value = tanggal_lahir;
+      document.getElementById("nomor_telephone_fax_pemohon").value = nomor_telephone_fax;
+      document.getElementById("username").value = username;
+      document.getElementById("kwarganegaraan").value = kwarganegaraan;
+
+      document.getElementById("nama_perusahaan").value = nama_perusahaan;
+      document.getElementById("alamat_perusahaan").value = alamat_perusahaan;
+      document.getElementById("nomor_telephone_perusahaan").value = nomor_telephone_perusahaan;
+      document.getElementById("nomor_fax_perusahaan").value = nomor_fax_perusahaan;
+      document.getElementById("npwp").value = npwp;
+      document.getElementById("kode_pos_perusahaan").value = kode_pos_perusahaan;
+      document.getElementById("status_perusahaan").value = status_perusahaan;
+      document.getElementById("kelurahan_desa").value = kelurahan_desa;
+      document.getElementById("kecamatan").value = kecamatan;
+      document.getElementById("kabupaten_kota").value = kabupaten_kota;
+      document.getElementById("provinsi").value = provinsi;
+
+      document.getElementById("nomor_akta_pendirian").value = nomor_akta_pendirian;
+      document.getElementById("nomor_tgl_pengesahan_pendirian").value = nomor_tgl_pengesahan_pendirian;
+      document.getElementById("nomor_akta_tgl_perubahan").value = nomor_akta_tgl_perubahan;
+      document.getElementById("nomor_tgl_pengesahan_perubahan").value = nomor_tgl_pengesahan_perubahan;
+
+      document.getElementById("kekayaan_bersih").value = kekayaan_bersih;
+      document.getElementById("total_nilai_saham").value = total_nilai_saham;
+      document.getElementById("kepemilikan_saham_nasional").value = kepemilikan_saham_nasional;
+      document.getElementById("kepemilikan_saham_asing").value = kepemilikan_saham_asing;
+      
+      document.getElementById("kegiatan_usaha").value = kegiatan_usaha;
+      document.getElementById("kegiatan_usaha_kbli").value = kegiatan_usaha_kbli;
+      document.getElementById("barang_jasa_utama").value = barang_jasa_utama;
+      }
+    
+
+  </script>
+  <script type="text/javascript">
+    function popitup(url) {
+    newwindow=window.open(url,'{{title}}','height=1000,width=900,scrollbars=yes');
+    if (window.focus) {newwindow.focus()}
+    return false;
+    }
+  </script>
+
+  <script type="text/javascript">
+    var form = $('#validasi');
+    form.submit(function (data, textStatus, jqXHR ) {
+        $.ajax({
+            type: form.attr('method'),
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (data) {
+              // alert(data);
+
+            //     $("").html(data);
+            },
+            // error: function(data) {
+            //     $("").html("Something went wrong!");
+            // }
+        });
+        return false;
+    });
+</script>
+
+	<!-- ============================================
+    ============== Custom JavaScripts ===============
+    ============================================= -->
+    <script src="{% static "scripts/js/main.js" %}"></script>
+    <!--/ custom javascripts -->
+{% endblock %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
+    <link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.css" %}">
+    <link rel="stylesheet" href="{% static "scripts/js/vendor/loadmask/jquery.loadmask.css" %}">
+    <link rel="stylesheet" href="{% static "scripts/js/vendor/jquery-ui/jquery-ui.min.css" %}">
+{% endblock %}
+
+{% block custom_style %}
+	
+	<style type="text/css">	
+	    .selector-chosen select{
+            height: 274px;
+        }
+        .chosen-container{
+            min-width: 100px;
+            width: 100% !important;
+        }
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div id="rootwizard" class="tab-container tab-wizard">
+	    <ul class="nav nav-tabs nav-justified nav-pills">
+	        <li class="active"><a href="#tab1" data-toggle="tab" aria-expanded="true">Pemohon<span class="badge badge-default pull-right wizard-step">1</span></a></li>
+	        <li><a href="#tab2" data-toggle="tab">Identitas Perusahaan<span class="badge badge-default pull-right wizard-step">2</span></a></li>
+	        <li><a href="#tab3" data-toggle="tab">Legalitas Perusahaan<span class="badge badge-default pull-right wizard-step">3</span></a></li>
+	        <li><a href="#tab4" data-toggle="tab">Kekayaan<span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	        <li><a href="#tab5" data-toggle="tab">Kegiatan Usaha<span class="badge badge-default pull-right wizard-step">5</span></a></li>
+            <li><a href="#tab6" data-toggle="tab">Validasi<span class="badge badge-default pull-right wizard-step">6</span></a></li>
+	    </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab1">
+                <form name="step1" id="{{ opts.model_name }}_form" action="" method="POST" novalidate>
+                    {% csrf_token %}
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                {{ form_izin_pemohon.pemohon.errors}}
+                                <label for="{{ form_izin_pemohon.pemohon.id_for_label }}">Pilih Pemohon :</label>
+                                 {{form_izin_pemohon.pemohon|addcls:"form-control pemohon-chosen-select"}}
+                            </div>      
+                        </div>      
+    
+               
+                    <section class="tile" role="form" >
+                    	<div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Data Pemohon</strong> Terpilih</h1>
+		                    <ul class="controls">								                    
+		                        <li class="dropdown">
+		                            <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+		                                <i class="fa fa-cog"></i>
+		                                <i class="fa fa-spinner fa-spin"></i>
+		                            </a>
+		                            <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+		                                <li>
+		                                    <a class="tile-toggle" tabindex="0" role="button">
+		                                        <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+		                                        <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+		                                    </a>
+		                                </li>
+                                     <li>
+                                      <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/izin/pemohon/add/')">
+                                            <i class="fa fa-edit">{% trans '  Tambah' %}
+                                        </a></i>
+                                    </li>
+                                     <li>
+                                      <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/izin/pemohon/' + id_pemohon + '/')">
+                                            <i class="fa fa-edit">{% trans '  Edit' %}
+                                        </a></i>
+                                    </li>
+		                                <li>
+		                                    <a class="tile-refresh" tabindex="form_data_pemohon" role="button">
+		                                        <i class="fa fa-refresh"></i> Refresh
+		                                    </a>
+		                                </li>
+		                                <li>
+		                                    <a class="tile-fullscreen" tabindex="0" role="button">
+		                                        <i class="fa fa-expand"></i> Fullscreen
+		                                    </a>
+		                                </li>
+		                            </ul>
+		                        </li>
+		                    </ul>
+		                </div>
+		                <div class="tile-body" >	
+			                <div class="data_pemohon" id="form_data_pemohon">		                                
+                        		<div class="form-group col-md-12">
+                            <input type="text" name="pemohon" id="id_input_pemohon" required="" hidden>
+
+                                    <label for="nama_pemohon">Nama Lengkap : </label>
+                                    <input type="text" name="nama_lengkap" id="id_input_nama_lengkap" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="alamat_pemohon">Alamat : </label>
+                                    <input type="text" name="alamat" id="id_input_alamat_pemohon" class="form-control"required="" disabled>
+                                </div> 		                                            
+                                    <div class="form-group col-md-8">
+                                        <label for="tempat_pemohon">Tempat Lahir: </label>
+                                        <input type="text" name="tempat_lahir" id="id_input_tempat_lahir" class="form-control" required="" disabled>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="tanggal_lahir_pemohon">Tanggal Lahir: </label>
+                                        <input type="text" name="tanggal_lahir" id="id_input_tanggal_lahir" class="form-control"required="" disabled> 
+                                    </div>
+
+                                <div class="form-group col-md-12">
+                                    <label for="nomor_tlp_pemohon">Nomor Telp/Fax : </label>
+                                    <input type="text" name="nomor_telephone_fax" id="id_input_nomor_telephone_fax_pemohon" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="nomor_ktp/paspor_pemohon">Nomor KTP/Paspor : </label>
+                                    <input type="text" name="username" id="id_input_username" class="form-control"required=""disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="kwarganegaraan_pemohon">Kwarganegaraan : </label>
+                                    <input type="text" name="kwarganegaraan" id="id_input_kwarganegaraan" class="form-control"required="" disabled>
+                                </div> 
+                           	</div>
+		                </div>
+                    </section>		                                    						
+            </div>  
+           </form>
+            <div class="tab-pane" id="tab2">
+                <form name="step2" id="id_form_identitas_perusahaan" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                            <div class="form-group col-md-12">
+                                {{ form_izin_pemohon.perusahaan.errors}}
+                                <label for="{{ form_izin_pemohon.perusahaan.id_for_label }}">Pilih Perusahaan :</label>
+                                 {{form_izin_pemohon.perusahaan|addcls:"form-control perusahaan-chosen-select"}}
+                            </div>      
+                        </div>      
+      
+                    <section class="tile" role="form">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Identitas Perusahaan</strong> Terpilih</h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+                                     <li>
+                                      <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/perusahaan/perusahaan/add/')">
+                                            <i class="fa fa-edit">{% trans '  Tambah' %}
+                                        </a></i>
+                                    </li>
+                                     <li>
+                                      <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/perusahaan/perusahaan/' + id_perusahaan + '/')">
+                                            <i class="fa fa-edit">{% trans '  Edit' %}
+                                        </a></i>
+                                    </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="identitas_perusahaan" id="form_data_perusahaan">   
+                                    <input type="text" name="perusahaan" id="id_input_perusahaan" required="" hidden>
+
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nama Perusahaan : </label>
+                                    <input type="text" name="Nama_perusahaan" id="id_input_nama_perusahaan" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">Alamat Perusahaan : </label>
+                                    <input type="text" name="alamat_perusahaan" id="id_input_alamat_perusahaan" class="form-control"required="" disabled>
+                                </div>                                                  
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nomor Telp : </label>
+                                    <input type="text" name="nomor_telephone_perusahaan" id="id_input_nomor_telephone_perusahaan" class="form-control" required="" disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Fax : </label>
+                                    <input type="text" name="id_input_nomor_fax_perusahaan" id="id_input_nomor_fax_perusahaan" class="form-control" required="" disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">NPWP : </label>
+                                    <input type="text" name="npwp" id="id_input_npwp" class="form-control"required="" disabled> 
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Provinsi : </label>
+                                    <input type="text" name="provinsi" id="id_input_provinsi" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kabupaten/Kota/Kotamadya : </label>
+                                    <input type="text" name="kabupaten_kota" id="id_input_kabupaten_kota" class="form-control"required=""disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kecamatan : </label>
+                                    <input type="text" name="kecamatan" id="id_input_kecamatan" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kelurahan/Desa : </label>
+                                    <input type="text" name="kelurahan_desa" id="id_input_kelurahan_desa" class="form-control"required="" disabled>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Status : </label>
+                                    <input type="text" name="status_perusahaan" id="id_input_status_perusahaan" class="form-control"required=""disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kode Pos : </label>
+                                    <input type="text" name="kode_pos_perusahaan" id="id_input_kode_pos_perusahaan" class="form-control"required="" disabled>
+                                </div>
+                        </div>
+                    </section>  
+            </div>
+           </form>
+            <div class="tab-pane" id="tab3">
+                <form name="step3" role="form" id="id_form_legalitas_perusahaan" action="" method="POST">
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Legalitas Perusahaan</strong> Terpilih</h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                          <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/perusahaan/aktanotaris/add/')">
+                                                <i class="fa fa-edit">{% trans '  Tambah' %}
+                                            </a></i>
+                                        </li>
+                                        <li>
+                                          <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/perusahaan/aktanotaris/' + id_perusahaan + '/')">
+                                                <i class="fa fa-edit">{% trans '  Edit' %}
+                                            </a></i>
+                                        </li>
+                                        <li>
+                                          <a class="tile-refresh" tabindex="0" role="button">
+                                              <i class="fa fa-refresh"></i> Refresh
+                                          </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="akta_notaris" id="legalitas_perusahaan">                                      
+                                <div class="form-group col-md-12">
+                                	<label for="Akta">Akta Pendirian : </label><br>
+                                    <label for="Akta">a. Nomor dan tgl Akta : </label>
+                                    <input type="text" name="nomor_akta_tgl_pendirian" id="id_input_nomor_akta_pendirian" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="Nomor">b. Nomor dan tgl Pengesahan : </label>
+                                    <input type="text" name="nomor_tgl_pengesahan_pendirian" id="id_input_nomor_tgl_pengesahan_pendirian" class="form-control"required="" disabled>
+                                </div>             
+                                <div class="form-group col-md-12">                                     
+                                	<label for="street">Akta Perubahan : </label><br>
+                                    <label for="street">a. Nomor dan tgl Akta : </label>
+                                    <input type="text" name="nomor_akta_tgl_perubahan" id="id_input_nomor_akta_tgl_perubahan" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">b. Nomor dan tgl Pengesahan : </label>
+                                    <input type="text" name="nomor_tgl_pengesahan_perubahan" id="id_input_nomor_tgl_pengesahan_perubahan" class="form-control"required="" disabled>
+                                </div> 
+                            </div>
+                        </div>
+                    </section>  
+            </div>
+            </form>
+            <div class="tab-pane" id="tab4">
+                <form name="step4" role="form" id="id_form_kekayaan" action="" method="POST">
+       <!--          {% csrf_token %}
+                    {% for field in form_kekayaandansaham %}
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label for="{{ field.auto_id }}">{{ field.label_tag }} </label>
+                                {{field|atribut:"class:form-control kekayaandansaham-chosen-select"}}
+                            </div>      
+                        </div>      --> 
+                    <!-- {% endfor %}  -->
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Kekayaan Bersih Dan Saham</strong> </h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                          <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/izin/kekayaandansaham/add/')">
+                                                <i class="fa fa-edit">{% trans '  Tambah' %}
+                                            </a></i>
+                                        </li>
+                                        <li>
+                                          <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/izin/kekayaandansaham/' + id_perusahaan + '/')">
+                                                <i class="fa fa-edit">{% trans '  Edit' %}
+                                            </a></i>
+                                        </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="identitas_perusahaan">                                      
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kekayaan Bersih Perusahaan : </label>
+                                    <input type="text" name="kekayaan_bersih" id="id_input_kekayaan_bersih" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">Saham (Khusus Untuk Penanam Modal Asing) : </label><br>
+                                    <label for="street">a. Total Nilai Saham : </label>
+                                    <input type="text" name="total_nilai_saham" id="id_input_total_nilai_saham" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">b. Komposisi Kepemilikan Saham : </label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label for="street">Nasional : </label>
+                                    <input type="text" name="kepemilikan_saham_nasional" id="id_input_kepemilikan_saham_nasional" class="form-control" required="" disabled>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">Asing : </label>
+                                    <input type="text" name="kepemilikan_saham_asing" id="id_input_kepemilikan_saham_asing" class="form-control"required="" disabled> 
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+              </form>
+            <div class="tab-pane" id="tab5">
+                <form name="step5" role="form" id="id_form_kegiatan_usaha" action="" method="POST">
+                    <section class="tile">
+                        <div class="tile-header bg-slategray text-center">
+                            <button class="btn bg-tr-black pull-left btn-black-transparent" type="button"><i class="fa fa-caret-square-o-down"></i></button>
+                                <h1 class="custom-font text-uppercase"><strong>Kegiatan Usaha</strong> </h1>
+                            <ul class="controls">                                                   
+                                <li class="dropdown">
+                                    <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button" aria-expanded="false">
+                                        <i class="fa fa-cog"></i>
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+                                        <li>
+                                            <a class="tile-toggle" tabindex="0" role="button">
+                                                <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+                                                <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                          <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/perusahaan/produkutama/add/')">
+                                                <i class="fa fa-edit">{% trans '  Tambah' %}
+                                            </a></i>
+                                        </li>
+                                        <li>
+                                          <a href="{% url 'admin:index' %}" onclick="return popitup('/admin/perusahaan/produkutama/' + id_perusahaan + '/')">
+                                                <i class="fa fa-edit">{% trans '  Edit' %}
+                                            </a></i>
+                                        </li>
+                                        <li>
+                                            <a class="tile-refresh" tabindex="0" role="button">
+                                                <i class="fa fa-refresh"></i> Refresh
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="tile-fullscreen" tabindex="0" role="button">
+                                                <i class="fa fa-expand"></i> Fullscreen
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tile-body"> 
+                            <div class="kegiatan_usaha">                                      
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kegiatan Usaha : </label>
+                                    <input type="text" name="kegiatan_usaha" id="id_input_kegiatan_usaha" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                <label for="street">Kegiatan Usaha (KBLI) : </label>
+                                    <input type="text" name="kegiatan_usaha_kbli" id="id_input_kegiatan_usaha_kbli" class="form-control"required="" disabled>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                <label for="street">Barang/jasa dagangan utama : </label>
+                                    <input type="text" name="barang_jasa_utama" id="id_input_barang_jasa_utama" class="form-control" required="" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </form>
+
+            <div class="tab-pane" id="tab6">
+<!--             <div class="form-group col-md-12" id="output" > 
+
+            </div> -->
+            <form name="step6" id="validasi" action="" novalidate="" method="POST">
+             {% csrf_token %}
+                        <div class="tile-body" > 
+                            <div class="validasi">
+                                <div class="form-group col-md-12">
+                                    <input type="text" name="perusahaan" id="perusahaan" required="" hidden>
+                                    <input type="text" name="pemohon" id="pemohon" required="" hidden>
+                                </div>    
+                                <div class="form-group col-md-12">
+                                    <label for="nama_pemohon">Nama Lengkap : </label>
+                                    <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="alamat_pemohon">Alamat : </label>
+                                    <input type="text" name="alamat" id="alamat_pemohon" class="form-control"required="" readonly>
+                                </div>                                                
+                                    <div class="form-group col-md-8">
+                                        <label for="tempat_pemohon">Tempat Lahir: </label>
+                                        <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" required="" readonly>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="tanggal_lahir_pemohon">Tanggal Lahir: </label>
+                                        <input type="text" name="tanggal_lahir" id="tanggal_lahir" class="form-control"required="" readonly> 
+                                    </div>
+
+                                <div class="form-group col-md-12">
+                                    <label for="nomor_tlp_pemohon">Nomor Telp/Fax : </label>
+                                    <input type="text" name="nomor_telephone_fax" id="nomor_telephone_fax_pemohon" class="form-control"required="" readonly>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="nomor_ktp/paspor_pemohon">Nomor KTP/Paspor : </label>
+                                    <input type="text" name="username" id="username" class="form-control"required=""readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="kwarganegaraan_pemohon">Kwarganegaraan : </label>
+                                    <input type="text" name="kwarganegaraan" id="kwarganegaraan" class="form-control"required="" readonly>
+                                </div>  
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nama Perusahaan : </label>
+                                    <input type="text" name="Nama_perusahaan" id="nama_perusahaan" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">Alamat Perusahaan : </label>
+                                    <input type="text" name="alamat_perusahaan" id="alamat_perusahaan" class="form-control"required="" readonly>
+                                </div>                                                  
+                                <div class="form-group col-md-12">
+                                    <label for="street">Nomor Telp : </label>
+                                    <input type="text" name="nomor_telephone_perusahaan" id="nomor_telephone_perusahaan" class="form-control" required="" readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Fax : </label>
+                                    <input type="text" name="id_input_nomor_fax_perusahaan" id="nomor_fax_perusahaan" class="form-control" required="" readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">NPWP : </label>
+                                    <input type="text" name="npwp" id="npwp" class="form-control"required="" readonly> 
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Provinsi : </label>
+                                    <input type="text" name="provinsi" id="provinsi" class="form-control"required="" readonly>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kabupaten/Kota/Kotamadya : </label>
+                                    <input type="text" name="kabupaten_kota" id="kabupaten_kota" class="form-control"required=""readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kecamatan : </label>
+                                    <input type="text" name="kecamatan" id="kecamatan" class="form-control"required="" readonly>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kelurahan/Desa : </label>
+                                    <input type="text" name="kelurahan_desa" id="kelurahan_desa" class="form-control"required="" readonly>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Status : </label>
+                                    <input type="text" name="status_perusahaan" id="status_perusahaan" class="form-control"required=""readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kode Pos : </label>
+                                    <input type="text" name="kode_pos_perusahaan" id="kode_pos_perusahaan" class="form-control"required="" readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                  <label for="Akta">Akta Pendirian : </label><br>
+                                    <label for="Akta">a. Nomor dan tgl Akta : </label>
+                                    <input type="text" name="nomor_akta_tgl_pendirian" id="nomor_akta_pendirian" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="Nomor">b. Nomor dan tgl Pengesahan : </label>
+                                    <input type="text" name="nomor_tgl_pengesahan_pendirian" id="nomor_tgl_pengesahan_pendirian" class="form-control"required="" readonly>
+                                </div>             
+                                <div class="form-group col-md-12">                                     
+                                  <label for="street">Akta Perubahan : </label><br>
+                                    <label for="street">a. Nomor dan tgl Akta : </label>
+                                    <input type="text" name="nomor_akta_tgl_perubahan" id="nomor_akta_tgl_perubahan" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">b. Nomor dan tgl Pengesahan : </label>
+                                    <input type="text" name="nomor_tgl_pengesahan_perubahan" id="nomor_tgl_pengesahan_perubahan" class="form-control"required="" readonly>
+                                </div> 
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kekayaan Bersih Perusahaan : </label>
+                                    <input type="text" name="kekayaan_bersih" id="kekayaan_bersih" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">Saham (Khusus Untuk Penanam Modal Asing) : </label><br>
+                                    <label for="street">a. Total Nilai Saham : </label>
+                                    <input type="text" name="total_nilai_saham" id="total_nilai_saham" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                    <label for="street">b. Komposisi Kepemilikan Saham : </label>
+                                </div>
+                                <div class="form-group col-md-12">
+                                <label for="street">Nasional : </label>
+                                    <input type="text" name="kepemilikan_saham_nasional" id="kepemilikan_saham_nasional" class="form-control" required="" readonly>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="dnumber">Asing : </label>
+                                    <input type="text" name="kepemilikan_saham_asing" id="kepemilikan_saham_asing" class="form-control"required="" readonly> 
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label for="street">Kegiatan Usaha : </label>
+                                    <input type="text" name="kegiatan_usaha" id="kegiatan_usaha" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                <label for="street">Kegiatan Usaha (KBLI) : </label>
+                                    <input type="text" name="kegiatan_usaha_kbli" id="kegiatan_usaha_kbli" class="form-control"required="" readonly>
+                                </div>   
+                                <div class="form-group col-md-12">
+                                <label for="street">Barang/jasa dagangan utama : </label>
+                                    <input type="text" name="barang_jasa_utama" id="barang_jasa_utama" class="form-control" required="" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="well">Demikian Surat Permohonan SIUP ini kami buat dengan sebenarnya dan apabila di kemudian hari ternyata data/informasi dan keterangan tersebut tidak benar, maka kami menyatakan bersedia dibatalkan SIUP yang telah kami miliki dan dituntut sesuai dengan ketentuan peraturan perundang-undangan</p>
+
+                    <div class="checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" name="agree" id="agree" required=""><i></i>Setuju<a href="" class="text-info"></a>
+                        </label>
+                    </div>
+                    <button class="btn btn-success" type="submit" value="{% trans 'Save' %}" name="_save">Finish</button>
+                </form>
+            </div>
+            <ul class="pager wizard">
+                <li class="previous disabled"><button class="btn btn-default">Previous</button></li>
+                <li class="next"><button class="btn btn-default">Next</button></li>
+                <li class="next finish" style="display: none;"></li>
+            </ul>
+        </div>   
+	</div>	   
+{% endblock %}

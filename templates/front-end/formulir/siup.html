@@ -1,0 +1,188 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+<style type="text/css">
+  @media only screen and (max-width: 1280px){
+    .hidden_title{
+       display: none !important;
+    }
+    .tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+      padding-bottom: 24px
+    }
+    .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+      padding-bottom: 24px;
+    }
+  }
+  @media only screen and (max-width: 844px){
+    .hidden_title{
+      display: block !important;
+    }
+  }
+</style>
+{% endblock %}
+{% block section %}
+<div class="pageheader">
+    <h2>Surat Perizinan Usaha Perdagangan (SIUP)
+    <span>Berikut adalah info pendaftaran perizinan SIUP Kabupaten Kediri.</span>
+  </h2>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+      </li>
+      <li>
+        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+      </li>
+      <li>
+        <a href="{% url 'layanan_siup' %}"> SIUP</a>
+      </li>
+      <li>
+        <a href="#">Formulir SIUP</a>
+      </li>
+    </ul>
+  </div>
+</div>
+  
+<div id="rootwizard" class="tab-container tab-wizard">
+  <ul class="nav nav-tabs nav-justified">
+    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Legalitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Kekayaan </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane" id="tab1">
+      <form method="POST" name="step1" role="form" class="form-horizontal">
+        {% csrf_token %}
+        {% include 'front-end/include/formulir_siup/identitas_pemohon.html' %}
+      </form>
+    </div>
+
+    <div class="tab-pane" id="tab2">
+      <form method="POST" name="step2" role="form" class="form-horizontal">
+      {% csrf_token %}   
+        <div class="row">
+          <div class="col-md-12">
+            <h3>IDENTITAS PERUSAHAAN</h3>
+            <hr style="border-color:black;">
+          </div>
+        </div> 
+        {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+      </form>
+    </div>
+
+    <div class="tab-pane" id="tab3">
+      <form method="POST" name="step3" role="form" class="form-horizontal">
+      {% csrf_token %}
+        <h3>LEGALITAS PERUSAHAAN</h3>
+        <hr style="border-color:black;">
+        <h4>A. Akta Pendirian</h4>
+        {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
+      </form>
+    </div>
+
+    <div class="tab-pane" id="tab4">
+      <form method="POST" name="step4" role="form" class="form-horizontal">
+        {% csrf_token %}
+        <h3>KEKAYAAN BERSIH DAN SAHAM</h3>
+        <hr style="border-color:black;">
+        {% include 'front-end/include/formulir_siup/kekayaan.html' %}
+      </form>
+    </div>
+
+    <div class="tab-pane" id="tab5">
+      <form method="POST" name="step5" role="form" class="form-horizontal">
+        {% csrf_token %}
+        <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+        <hr style="border-color:black;">
+        {% include 'front-end/include/formulir_siup/upload_dokumen.html' %}
+      </form>
+    </div>
+
+    <div class="tab-pane" id="tab6">
+      <form method="POST" name="step6" role="form">
+        {% csrf_token %}
+        <h3>KOMFIRMASI DATA</h3>
+        <hr style="border-color:black;">
+        {% include 'front-end/include/formulir_siup/konfirmasi.html' %}
+    </div>
+
+    <ul class="pager wizard">
+      <li class="previous"><a class="btn btn-default">Kembali</a></li>
+      <li class="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+      <li class="next finish" style="display:none;">
+        <button onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
+          <i class="fa fa-arrow-right"></i>
+          <span>Selesai</span>
+        </button>
+      </li>
+      </form>
+    </ul>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script>
+    $(window).load(function(){
+
+        $('#rootwizard').bootstrapWizard({
+            onTabShow: function(tab, navigation, index) {
+                var $total = navigation.find('li').length;
+                var $current = index+1;
+                if($current >= $total) {
+                    $('#rootwizard').find('.pager .next').hide();
+                    $('#rootwizard').find('.pager .finish').show();
+                    $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                } else {
+                    $('#rootwizard').find('.pager .next').show();
+                    $('#rootwizard').find('.pager .finish').hide();
+                }
+
+            },
+
+            onNext: function(tab, navigation, index) {
+                var form = $('form[name="step'+ index +'"]');
+
+                form.parsley().validate();
+
+                if (!form.parsley().isValid()) {
+                    return false;
+                }
+
+            },
+
+            onTabClick: function(tab, navigation, index) {
+
+                var form = $('form[name="step'+ (index+1) +'"]');
+                form.parsley().validate();
+
+                if (!form.parsley().isValid()) {
+                    return false;
+                }
+
+            }
+
+        });
+
+    });
+</script>
+{% endblock %}

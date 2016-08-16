@@ -12,6 +12,9 @@
 {% block extrascript %}
     {{ block.super }}
     <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    <script type="text/javascript">
+    	django.formats.DATE_INPUT_FORMATS = ["%d-%m-%Y", "%d/%m/%Y", "%d-%m-%Y", "%d/%m/%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d"]
+    </script>
     {{ media }}
 {% endblock %}
 
@@ -40,18 +43,121 @@
 
 {% block custom_style %}
 	<style type="text/css">	
-		div.form-row div.field-box{
-		    display: inline-block;
+		.vDateField[disabled], .vTimeField[disabled], .vDateField[readonly], .vTimeField[readonly] {
+		    background-color: #eee !important;
+		    opacity: 1;
 		}
 
+		.form-horizontal .form-row div div p{
+		    margin-bottom: 0;
+		    padding-top: 5px;
+		}
+
+		/* Inline */
+		.empty-form {
+		    display: none;
+		}
+		.inline-group {
+			border: 1px solid #ccc;
+			margin: 10px 0;
+			padding: 0;
+		}
+		.inline-related {
+		    position: relative;
+		}
+		.inline-related h3 {
+		    background: #e1e1e1 url("{% static "images/nav-bg.gif" %}") repeat-x scroll left top;
+		    border-bottom: 1px solid #ddd;
+		    color: #666;
+		    font-size: 11px;
+		    margin: 0;
+		    padding: 6px 12px;
+		}
+		.inline-related h3 {
+		    color: #666;
+		    font-size: 11px;
+		}
+		.inline-related h3 span.delete {
+		    float: right;
+		    margin-top:-5px;
+		}
+		.inline-related h3 span.delete label {
+		    font-size: 11px;
+		    margin-left: 2px;
+		    position: relative;
+    		top: -3px;
+		}
+		.inline-related fieldset {
+		    background: #fff none repeat scroll 0 0;
+		    border: medium none;
+		    margin: 0;
+		    width: 100%;
+		}
+		.inline-related .form-row {
+		    border-bottom: 1px solid #eee;
+		    font-size: 11px;
+		    margin-bottom: 0;
+		    padding: 8px 12px;
+		}
+		.inline-group div.add-row, .inline-group .tabular tr.add-row td {
+		    background: #e1e1e1 url("{% static "images/nav-bg.gif" %}") repeat-x scroll left top;
+		    border-bottom: 1px solid #ddd;
+		    color: #666;
+		    padding: 3px 5px;
+		}
+		.inline-group ul.tools a.add, .inline-group div.add-row a, .inline-group .tabular tr.add-row td a {
+		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/icon_addlink.gif" %}") no-repeat scroll 0 50%;
+		    font-size: 11px;
+		    outline: 0 none;
+		    padding-left: 14px;
+		}
+		.inline-related .form-group {
+		    margin-left: 0;
+		    margin-right: 0;
+		}
+		.inline-group .add-row{
+			text-align: right;
+		}		
+		/* end of inline */
+
+		div.form-row div.field-box{
+		    /*display: inline-block;
+		    display: -moz-box;
+		    display: -webkit-box;*/
+		    float: left;
+		}
+		/*div.form-group > label.control-label{
+			padding-top: 17px;
+		}*/
+		div.field-box > label.control-label, div.field-box > div{
+			float: left;
+		}
+		/*div.form-row div.field-box.errors {
+		    padding-right: 35px;
+		}*/
+		div.form-row div.field-box:not(:first-child) {
+		    padding-left: 20px;
+		}
+		div.field-box > label.control-label {
+		    padding-right: 15px;
+		}
 		div.errors {
-		    background: #ffc none repeat scroll 0 0;
+		   /* background: #ffc none repeat scroll 0 0;
 		    padding-top: 15px;
-		    padding-bottom: 10px;
-		    border: 1px solid #ff7b76;
+		    border: 1px solid #ff7b76;*/
+		    padding-bottom: 10px;		    
 		}
 		div.errors label{
 			color: #ff7b76;
+		}
+		input.parsley-error, select.parsley-error, textarea.parsley-error, .checkbox-custom.parsley-error > i, div.form-row.errors a.chosen-single, div.form-row.errors div.chosen-drop, .form-row .errors input.vDateField{
+		    border-color: #ff7b76 !important;
+		}
+		ul.errorlist {
+		    background: #ffc none repeat scroll 0 0;
+		    border: 1px solid #ff7b76;
+		    padding-bottom: 10px;
+		    padding-top: 15px;
 		}
 
 		.checkbox-row .help-block{
@@ -59,13 +165,14 @@
 		    margin-left: 5px;
 		    vertical-align: super;
 		}
+		
 		.clickable {
 		    display: inline-block;
 		    border-radius: 4px;
 		    cursor: pointer;
 		}
 		.submit-row p {
-		    margin: 0.3em;
+		    margin: 0 0.3em 0.3em;
 		}
 		.submit-row p.deletelink-box {
 		    float: left;
@@ -73,6 +180,7 @@
 		a.deletelink:link, a.deletelink:visited {
 		    color: #fff !important;
 		    text-decoration: none;
+		    height: 34px;
 		}
 		.module h2, .module caption, .inline-group h2 {
 		    background: url("{% static "images/default-bg.gif" %}") repeat-x scroll left top #7ca0c7;
@@ -85,6 +193,9 @@
 		}
 		.selector-chosen select{
 			height: 274px;
+		}
+		.chosen-container{
+			min-width: 400px;
 		}
 		.selector select, .selector .h2, .selector-filter input{
 		    border: 1px solid #dbe0e2;
@@ -108,6 +219,69 @@
 		    background: rgba(0, 0, 0, 0) url("{% static "admin/img/selector-icons.gif" %}") no-repeat scroll left -233px;
 		}
 
+		.related-widget-wrapper{
+			overflow: visible;
+			padding-right: 42px;
+			float: unset;
+		}
+		.related-widget-wrapper .add-related{
+		    /*position: absolute;*/
+		    right: 36px;
+		    top: 6px;
+		}
+		.related-widget-wrapper .change-related{
+		    /*position: absolute;*/
+		    right: 20px;
+		    top: 6px;
+		}
+		.related-date-wrapper .vDateField, .related-date-wrapper .vTimeField{
+			height: 32px;
+			width: 102px;
+			background-color: #fff;
+   			border: 1px solid #dbe0e2;
+		    border-radius: 2px;
+		    box-shadow: none;
+		    color: #616f77;
+		    filter: none !important;
+		    outline: 0 none;
+		    transition: all 0.2s linear 0s;
+		    background-image: none;
+		    padding: 6px 12px;
+
+		}
+		div.related-widget-wrapper + span.help-block {
+		    display: inline-block;
+		}
+		div.related-widget-wrapper select.form-control{
+			display: inline-block;
+			width: unset;
+			vertical-align: inherit;
+		}
+		.datetime br {
+    		display: none;
+		}
+		.datetime .datetimeshortcuts {
+ 		   padding-right: 10px;
+		}
+		.related-date-wrapper .vTimeField{
+			margin-left:11px; 
+		}
+		.calendarbox, .clockbox {
+		    z-index: 2;
+		}
+		.datetimeshortcuts{
+			margin-top: 4px;
+		}
+
+		.calendar caption{
+		    text-align: center;
+		}
+		.calendarnav-previous, .calendarnav-next {
+		    margin-top: 5px;
+		}
+		.calendarbox, .clockbox{
+			border: 1px solid activeborder;
+		}
 	</style>
 {% endblock %}
 {% block bodyclass %}
@@ -148,9 +322,16 @@
     ============================================= -->
     <script src="{% static "scripts/js/main.js" %}"></script>
     <!--/ custom javascripts -->
+    <script type="text/javascript">
+        function open_splash(btnEl){
+            $("#splash .modal-title").html($(btnEl).attr('data-title'))
+            $("#splash .modal-body").html($(btnEl).attr('data-body'))
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
+{# adminform.form.errors #}
 <div id="content-main">
 	<div class="row">
         <div class="col-md-12">
@@ -190,7 +371,9 @@
             	<form class="form-horizontal" {% if has_file_field %}enctype="multipart/form-data" {% endif %}action="{{ form_url }}" method="post" id="{{ opts.model_name }}_form">{% csrf_token %}
             	<div class="tile-header dvd dvd-btm">
                     <h1 class="custom-font">
-                    	{% if add %} <strong>{% trans 'Add' %}</strong> {{ opts.verbose_name }}{% else %} <strong>{% trans 'Edit' %}</strong> {{ original|truncatewords:"18" }}{% endif %}</h1>
+                    	{% block header-table %}
+                    		{% if add %} <strong>{% trans 'Add' %}</strong> {{ opts.verbose_name }}{% else %} <strong>{% trans 'Edit' %}</strong> {{ original|truncatewords:"18" }}{% endif %}</h1>
+                    	{% endblock %}
                     <ul class="controls">
                     	{% block object-tools %}
 	                    	{% if change %}{% if not is_popup %}
@@ -201,12 +384,12 @@
 	                            </a>
 					            {% block object-tools-items %}
 			                    <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-			                    	{% if user.is_superuser %}
+			                    	{# if user.is_superuser #}
 				                        <li>
 					                        {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
 					                        <a href="{% add_preserved_filters history_url %}" class="historylink">{% trans "History" %}</a>
 				                        </li>
-				                    {% endif %}
+				                    {# endif #}
 			                        {% if has_absolute_url %}<li><a href="{% url 'admin:view_on_site' content_type_id original.pk %}" class="viewsitelink">{% trans "View on site" %}</a></li>{% endif%}
 			                        {% block extra-object-tools-items %}{% endblock %}
 			                    </ul>
@@ -266,6 +449,7 @@
 						                $('.add-another').click(function(e) {
 						                    e.preventDefault();
 						                    showAddAnotherPopup(this);
+
 						                });
 						                $('.related-lookup').click(function(e) {
 						                    e.preventDefault();

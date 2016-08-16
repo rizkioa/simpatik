@@ -557,7 +557,19 @@ $(function() {
             element.next().find('.chosen-choices').addClass('form-control');
             element.next().css("width", width);
             element.next().find('.search-field input').css("width", "125px");
-          }).chosen();
+          }).chosen().change(function(data){
+            //var id = $(this).val();
+            $this = $(this)
+            var siblings = $this.nextAll('.change-related, .delete-related');
+            if (!siblings.length) return;
+            var value = $this.val();
+            if (value) {
+                siblings.each(function(){
+                    var elm = $(this);
+                    elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
+                });
+            } else siblings.removeAttr('href');
+          });
         });
       }
     },

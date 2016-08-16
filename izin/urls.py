@@ -1,0 +1,31 @@
+from django.conf.urls import patterns, include, url
+from django.core.urlresolvers import reverse_lazy
+
+urlpatterns = [
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': reverse_lazy('frontindex')}, name='frontlogout'),
+    url(r'^$', 'izin.views.frontindex', name='frontindex'),
+    url(r'^404/', 'izin.views.page_404', name='404'),
+    #url(r'^login/', 'izin.views.frontlogin', name='frontlogin'),
+    url(r'^tentang/$', 'izin.views.tentang', name='tentang'),
+    url(r'^layanan/$', 'izin.views.layanan', name='layanan'),
+    url(r'^layanan/siup$', 'izin.views.layanan_siup', name='layanan_siup'),
+    url(r'^layanan/ho$', 'izin.views.layanan_ho', name='layanan_ho'),
+    url(r'^layanan/sipa-sumur-bor$', 'izin.views.layanan_sipa_sumur_bor', name='layanan_sipa_sumur_bor'),
+    url(r'^layanan/sipa-sumur-pasak$', 'izin.views.layanan_sipa_sumur_pasak', name='layanan_sipa_sumur_pasak'),
+    url(r'^layanan/izin-pertambangan$', 'izin.views.layanan_pertambangan', name='layanan_pertambangan'),
+    url(r'^layanan/tdp-pt$', 'izin.views.layanan_tdp_pt', name='layanan_tdp_pt'),
+    url(r'^layanan/tdp-cv$', 'izin.views.layanan_tdp_cv', name='layanan_tdp_cv'),
+    url(r'^layanan/tdp-firma$', 'izin.views.layanan_tdp_firma', name='layanan_tdp_firma'),
+    url(r'^layanan/tdp-perorangan$', 'izin.views.layanan_tdp_perorangan', name='layanan_tdp_perorangan'),
+    url(r'^layanan/tdp-koperasi$', 'izin.views.layanan_tdp_koperasi', name='layanan_tdp_koperasi'),
+    url(r'^layanan/tdp-bul$', 'izin.views.layanan_tdp_bul', name='layanan_tdp_bul'),
+    url(r'^layanan/reklame$', 'izin.views.layanan_reklame', name='layanan_reklame'),
+    url(r'^layanan/pemakaian-kekayaan$', 'izin.views.layanan_kekayaan', name='layanan_kekayaan'),
+    url(r'^layanan/penggilingan-padi-&-huller$', 'izin.views.layanan_huller', name='layanan_huller'),
+    url(r'^layanan/imb-umum$', 'izin.views.layanan_imb_umum', name='layanan_imb_umum'),
+    url(r'^layanan/imb-perumahan$', 'izin.views.layanan_imb_perumahan', name='layanan_imb_perumahan'),
+    url(r'^layanan/imb-reklame$', 'izin.views.layanan_imb_reklame', name='layanan_imb_reklame'),
+    url(r'^cari-pengajuan-izin$', 'izin.views.cari_pengajuan', name='cari_pengajuan'),
+    url(r'^layanan/siup/formulir$', 'izin.views.formulir_siup', name='formulir_siup'),
+    ]

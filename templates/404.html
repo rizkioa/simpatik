@@ -1,0 +1,64 @@
+{% load i18n staticfiles %}
+{% load i18n admin_static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>404 Caveman</title>
+    <meta name="author" content="name" />
+    <meta name="keywords" content="404, css3, html5, template" />
+    <meta name="description" content="404template" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link type="text/css" media="all" href="{% static 'styles/css/vendor/bootstrap.min.css' %}" rel="stylesheet" />
+    <link type="text/css" media="all" href="{% static 'error/assets/css/style.css' %}" rel="stylesheet" />
+    <link type="text/css" media="all" href="{% static 'styles/css/vendor/responsive.css' %}" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,800italic,800,700italic,700,600italic,600,400italic,300' rel='stylesheet' type='text/css' />
+    <link rel="shortcut icon" href="{% static 'images/SIMPATIK.ico' %}" />
+  </head>
+  <body>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <h1>404</h1>
+            <h2>Page not found</h2>
+            <p>We're sorry, but something went wrong.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="illustration">
+              <div class="laptop"></div>
+              <div class="hand"></div>
+              <div class="caveman"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <a href="#"><div class="btn btn-action">Take me out of here</div></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12">
+            <p>Copyright (c) 2016 <strong>Copyright Holder</strong> All Rights Reserved.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
+    <script src="{% static 'scripts/js/vendor/bootstrap/bootstrap.min.js' %}"></script>
+  </body>
+</html>

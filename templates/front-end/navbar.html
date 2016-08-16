@@ -1,0 +1,17 @@
+<ul class="nav-right pull-right list-inline menu_line desktop-only" style="padding-right: 6px; line-height: 49px;">
+      <li>
+            <a href="{% url 'frontindex' %}" class="btn btn-greensea mb-10 button_turun"> <i class="fa fa-home"></i> Beranda</a>
+      </li>
+      <li>
+            <a href="{% url 'layanan' %}" class="btn btn-greensea mb-10 button_turun"><i class="fa fa-building-o"></i> Pengajuan izin</a>
+      </li>
+      <li>
+            <a href="{% url 'cari_pengajuan' %}" class="btn btn-greensea mb-10 button_turun"><i class="fa fa-search"></i> Cari Pengajuan</a>
+      </li>
+      <li>
+            <a href="#" class="btn btn-greensea mb-10 button_turun"><i class="fa fa-info"></i> Artikel</a>
+      </li>
+      <li>            
+            <a href="{% url 'admin:index' %}" class="btn btn-greensea mb-10 button_turun"><i class="fa fa-user"></i> {% if user.is_authenticated %}Admin{% else %}Login{% endif %}</a>
+      </li>
+</ul>
