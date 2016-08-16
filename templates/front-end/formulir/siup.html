@@ -2,9 +2,9 @@
 {% load i18n admin_static staticfiles widgets %}
 {% block extrastyle %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
-<link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.min.css" %}">
-<link rel="stylesheet" href="{% static "scripts/js/vendor/loadmask/jquery.loadmask.css" %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
 <style type="text/css">
   @media only screen and (max-width: 1280px){
     .hidden_title{
@@ -114,10 +114,10 @@
     </div>
 
     <ul class="pager wizard">
-      <li class="previous"><button class="btn btn-default">Kembali</button></li>
-      <li class="next"><button onclick="next_tab(this)" class="btn btn-default">Selanjutnya</button></li>
+      <li class="previous"><a class="btn btn-default">Kembali</a></li>
+      <li class="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
       <li class="next finish" style="display:none;">
-        <button onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success btn-rounded-10 btn-ef btn-ef-5 btn-ef-5a pull-right">
+        <button onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
           <i class="fa fa-arrow-right"></i>
           <span>Selesai</span>
         </button>
@@ -129,18 +129,18 @@
   <br>
   <br>
 </div>
-
 {% endblock %}
 
 {% block extratools %}
 {{ block.super }}
-<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
-<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
-<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
-<script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
-<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
-<script src="{% static "scripts/js/jquery.maskedinput.js" %}"></script>
+<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 <script>
     $(window).load(function(){
 
@@ -148,8 +148,6 @@
             onTabShow: function(tab, navigation, index) {
                 var $total = navigation.find('li').length;
                 var $current = index+1;
-
-                // If it's the last tab then hide the last button and show the finish instead
                 if($current >= $total) {
                     $('#rootwizard').find('.pager .next').hide();
                     $('#rootwizard').find('.pager .finish').show();
@@ -162,7 +160,6 @@
             },
 
             onNext: function(tab, navigation, index) {
-
                 var form = $('form[name="step'+ index +'"]');
 
                 form.parsley().validate();

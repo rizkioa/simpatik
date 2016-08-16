@@ -5,6 +5,7 @@ from django.contrib.admin import site
 from functools import wraps
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import available_attrs
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
 
 def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
     def decorator(view_func):
@@ -87,5 +88,17 @@ def layanan_imb_perumahan(request):
 def cari_pengajuan(request):
 	return render(request, "front-end/cari_pengajuan.html")
 
-def formulir_siup(request):
-	return render(request, "front-end/formulir/siup.html")
+def formulir_siup(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	return render(request, "front-end/formulir/siup.html", extra_context)

@@ -491,7 +491,7 @@ $(function() {
               toLabel: 'To',
               customRangeLabel: 'Custom',
               daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-              monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+              monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'October', 'November', 'December'],
               firstDay: 1
             }
           }, function(start, end, label) {
