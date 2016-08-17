@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
 from izin.pemohon_admin import PemohonAdmin
@@ -46,6 +46,22 @@ class JenisIzinAdmin(admin.ModelAdmin):
 	list_display = ('nama_izin','jenis_izin','keterangan')
 	list_filter = ('dasar_hukum','jenis_izin')
 	search_fields = ('nama_izin','jenis_izin', 'dasar_hukum', 'keterangan')
+
+	def tr_dasar_hukum(self, request, id_jenis_izin):
+		jenis_izin_list = JenisIzin.objects.filter(id=id_jenis_izin)
+		dasar_hukum_list = DasarHukum.objects.none()
+
+		if jenis_izin_list.exists():
+			dasar_hukum_list = jenis_izin_list.first().dasar_hukum.all()
+		return HttpResponse(mark_safe("".join(x.as_tr() for x in dasar_hukum_list)))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(JenisIzinAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^tr/(?P<id_jenis_izin>\w+)/$', self.tr_dasar_hukum, name="tr_dasar_hukum_jenis_izin" )
+			)
+		return my_urls + urls
 
 admin.site.register(JenisIzin, JenisIzinAdmin)
 
