@@ -50,12 +50,18 @@
 							<div class="panel-body">
 								<h4>Persyaratan yang perlu dibawa:</h4>
 								<ol>
-									<li>Formulir / Surat Permohonan (pencetakan sudah disediakan diaplikasi SIMPATIK)</li>
+									<!-- <li>Formulir / Surat Permohonan (pencetakan sudah disediakan diaplikasi SIMPATIK)</li>
 									<li>Surat Pernyataan (sudah disediakan diaplikasi SIMPATIK)</li>
 									<li>Foto Berwarna Ukuran 3x4 / 4x6 (3 Lembar)</li>
 									<li>Foto Copy KTP</li>
 									<li>Foto Copy NPWP Pribadi / Perusahaan</li>
-									<li>Materai 6000 (2 Lembar) untuk ditempel diFormulir Permohonan dan Surat Pernyataan </li>
+									<li>Materai 6000 (2 Lembar) untuk ditempel diFormulir Permohonan dan Surat Pernyataan </li> -->
+									{% if syarat %}
+									{% for s in syarat %}
+									<li>{{ s.syarat }}</li>
+									{% endfor %}
+									{% endif %}
+									
 								</ol>
 							</div>
 						</div>
