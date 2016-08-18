@@ -12,7 +12,6 @@ import os, re
 from accounts.utils import STATUS, get_status_color
 from izin.utils import JENIS_IZIN, get_tahun_choices
 
-# from accounts.utils import STATUS
 # from perusahaan.models import Perusahaan
 
 # from mptt.models import MPTTModel

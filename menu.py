@@ -38,127 +38,30 @@ class CustomMenu(Menu):
                             icon='fa fa-dashboard fa-fw',
                             url=reverse('admin:index'),
                         ),
-                        # items.MenuItem(
-                        #     title='Izin',
-                        #     icon='fa fa-file-text-o',
-                        #     url=reverse('admin:izin_izin_changelist'),
-                        # ),
+                        items.MenuItem(
+                            title='Pengajuan Izin',
+                            icon='fa fa-file-text-o',
+                            children= [
+                                items.MenuItem(
+                                    title='Pengajuan Baru',
+                                    icon='fa fa-edit',
+                                    url=reverse('admin:add_wizard_izin'),
+                                ),
+                                items.MenuItem(
+                                    title='Pengajuan Masuk',
+                                    icon='fa fa-tasks',
+                                    url='#',
+                                ),
+                            ]                            
+                        ),
+                        items.MenuItem(
+                            title='Pengajuan Izin',
+                            icon='fa fa-file-text-o', 
+                            url='#',                        
+                        ),
                     ]
                 )
         
-        # menu_master = items.MenuItem(
-        #             title=_('Menu Master'),
-        #             description='Menu Master',
-        #             accesskey='menuMaster',
-        #             children= [
-                        # items.MenuItem(
-                        #     title='Pertanahan',
-                        #     icon='fa fa-puzzle-piece',
-                        #     children= [
-                        #         items.MenuItem(
-                        #             title='Jenis Tanah',
-                        #             icon='fa fa-puzzle-piece',
-                        #             url=reverse('admin:izin_jenistanah_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Kepemilikkan Tanah',
-                        #             icon='fa fa-puzzle-piece',
-                        #             url=reverse('admin:izin_kepemilikkantanah_changelist'),
-                        #         ),
-                        #     ]
-                        # ),
-                        
-                        # items.MenuItem(
-                        #     title='Permodalan',
-                        #     icon='fa fa-money',
-                        #     children= [
-                        #         items.MenuItem(
-                        #             title='Jenis Modal Koprasi',
-                        #             icon='fa fa-money',
-                        #             url=reverse('admin:perusahaan_jenismodalkoprasi_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Jenis Penanaman Modal',
-                        #             icon='fa fa-money',
-                        #             url=reverse('admin:perusahaan_jenispenanamanmodal_changelist'),
-                        #         ),
-                        #     ]
-                        # ),
-                        # items.MenuItem(
-                        #     title='Perizinan',
-                        #     icon='fa fa-file-text-o',
-                        #     children= [
-                        #         items.MenuItem(
-                        #             title='Jenis Izin',
-                        #             icon='fa fa-file-text-o',
-                        #             url=reverse('admin:izin_jenisizin_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Jenis Permohonan Izin',
-                        #             icon='fa fa-file-text-o',
-                        #             url=reverse('admin:izin_jenispermohonanizin_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='KBLI',
-                        #             icon='fa fa-file-text-o',
-                        #             url=reverse('admin:perusahaan_kbli_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Syarat Izin',
-                        #             icon='fa fa-file-text-o',
-                        #             url=reverse('admin:izin_syarat_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Kelompok Jenis Izin',
-                        #             icon='fa fa-file-text-o',
-                        #             url=reverse('admin:izin_kelompokjenisizin_changelist'),
-                        #         ),
-                        #     ]
-                        # ),
-                        # items.MenuItem(
-                        #     title='Reklame',
-                        #     icon='fa fa-th-large',
-                        #     children= [
-                        #         items.MenuItem(
-                        #             title='Jenis Reklame',
-                        #             icon='fa fa-th-large',
-                        #             url=reverse('admin:izin_jenisreklame_changelist'),
-                        #         ),
-                        #     ]
-                        # ),
-                        # items.MenuItem(
-                        #     title='Menu Badan Usaha',
-                        #     icon='fa fa-building-o',
-                        #     children= [
-                        #         items.MenuItem(
-                        #             title='Perusahaan',
-                        #             icon='fa fa-building-o',
-                        #             url=reverse('admin:perusahaan_perusahaan_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Jenis Perusahaan',
-                        #             icon='fa fa-building-o',
-                        #             url=reverse('admin:perusahaan_jenisperusahaan_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Kelembagaan',
-                        #             icon='fa fa-building-o',
-                        #             url=reverse('admin:perusahaan_kelembagaan_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Kegiatan Usaha',
-                        #             icon='fa fa-building-o',
-                        #             url=reverse('admin:perusahaan_kegiatanusaha_changelist'),
-                        #         ),
-                        #         items.MenuItem(
-                        #             title='Jenis Kerjasama',
-                        #             icon='fa fa-building-o',
-                        #             url=reverse('admin:perusahaan_jeniskerjasama_changelist'),
-                        #         ),
-                        #     ]
-                        # ),
-                #     ]
-                # )
 
         if hasattr(request.user, "pemohon"):
             menu_utama.children += [

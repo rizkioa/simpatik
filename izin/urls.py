@@ -28,4 +28,4 @@ urlpatterns = [
     url(r'^layanan/imb-reklame$', 'izin.views.layanan_imb_reklame', name='layanan_imb_reklame'),
     url(r'^cari-pengajuan-izin$', 'izin.views.cari_pengajuan', name='cari_pengajuan'),
     url(r'^layanan/siup/formulir$', 'izin.views.formulir_siup', name='formulir_siup'),
-    ]
+]
