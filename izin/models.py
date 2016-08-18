@@ -208,6 +208,11 @@ class Syarat(models.Model):
 	syarat = models.CharField(max_length=255, verbose_name='Syarat')
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
+	def as_li(self):
+		return """
+			<li>%s</li>
+		""" % (str(self.syarat))
+
 	def __unicode__(self):
 		return "%s" % (self.syarat)
 

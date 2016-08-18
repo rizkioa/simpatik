@@ -12,7 +12,7 @@
 
 {% block section %}
 <div class="pageheader">
-    <h2>{{title_long}} - Koperasi
+    <h2>{{title_long}}
 		<span>Berikut adalah info pendaftaran perizinan {{ title_short }} Kabupaten Kediri.</span>
 	</h2>
 	<div class="page-bar">
@@ -63,13 +63,13 @@
 						<div class="panel panel-darkgray">
 							<div class="panel-body">
 								<h4>Lama Waktu Pengajuan Izin:</h4>
-								<p> Hari</p>
+								<p>{{ kelompok.standart_waktu }} Hari</p>
 							</div>
 						</div>
 						<div class="panel panel-darkgray">
 							<div class="panel-body">
 								<h4>Biaya Pengajuan Izin:</h4>
-								<p></p>
+								<p>{{ kelompok.biaya }}</p>
 							</div>
 						</div>
 					  </div>
