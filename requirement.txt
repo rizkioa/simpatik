@@ -1,2 +1,4 @@
 Django
 MySQL-python
+pip install django-tastypie
+pip install python-dateutil

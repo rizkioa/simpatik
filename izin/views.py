@@ -6,6 +6,8 @@ from functools import wraps
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import available_attrs
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin
+from django.shortcuts import get_object_or_404
 
 def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
     def decorator(view_func):
@@ -18,7 +20,7 @@ def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
         return _wrapped_view
     return decorator
 
-#@passes_test_cache(lambda request: request.user.is_anonymous(), 3600)
+@passes_test_cache(lambda request: request.user.is_anonymous(), 3600)
 def frontindex(request):
 	return render(request, "front-end/index.html")
 
@@ -34,8 +36,28 @@ def tentang(request):
 def layanan(request):
 	return render(request, "front-end/layanan.html")
 
-def layanan_siup(request):
-	return render(request, "front-end/layanan/siup.html")
+def layanan_siup(request, extra_context={}):
+	# jenis_izin = JenisIzin.objects.filter(nama_izin = "SURAT IZIN USAHA PERDAGANGAN (SIUP)")
+	# extra_context.update({'jenis_izin': jenis_izin})
+	syarat = Syarat.objects.filter(jenis_izin=17)
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/layanan/siup.html", extra_context)
+
+def layanan_siup_pt(request, extra_context={}):
+	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - PT"})
+	extra_context.update({'title_short': "SIUP - PT"})
+	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'id_jenis_izin': "2" })
+	return render(request, "front-end/layanan/siup_pt.html", extra_context)
+
+def layanan_siup_koperasi(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, id=18)
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Koperasi"})
+	extra_context.update({'title_short': "SIUP - Koperasi"})
+	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'id_jenis_izin': "6" })
+	return render(request, "front-end/layanan/siup_koperasi.html", extra_context)
 
 def layanan_ho(request):
 	return render(request, "front-end/layanan/ho.html")

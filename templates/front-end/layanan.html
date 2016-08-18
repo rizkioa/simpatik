@@ -28,14 +28,14 @@
       <div class="tile-body">
         <div class="row">
           <div class="col-md-3">
-            <a href="{% url 'layanan_siup' %}">
+            <a href="#" data-toggle="modal" data-target="#siup">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
                     <p class="text-center text-strong pa">Surat Izin Usaha Perdagangan (SIUP)</p>
                   </div>
                 </div>
-            </div>
+              </div>
             </a>
           </div>
           <div class="col-md-3">
@@ -144,7 +144,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-          <h3 class="modal-title custom-font">Izin Pemanfaatan Air Tanah (SIPA)</h3>
+        <h3 class="modal-title custom-font">Izin Pemanfaatan Air Tanah (SIPA)</h3>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -173,7 +173,7 @@
         </div>
       </div>
       <div class="modal-footer">
-          <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
       </div>
     </div>
   </div>
@@ -183,7 +183,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-          <h3 class="modal-title custom-font">Tanda Daftar Perusahaan (TDP)</h3>
+        <h3 class="modal-title custom-font">Tanda Daftar Perusahaan (TDP)</h3>
       </div>
       <div class="modal-body">
         <div class="row">
@@ -256,7 +256,7 @@
         </div>
       </div>
       <div class="modal-footer">
-          <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
       </div>
     </div>
   </div>
@@ -306,7 +306,112 @@
         </div>
       </div>
       <div class="modal-footer">
-          <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="siup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title custom-font">Surat Izin Usaha Perdagangan (SIUP)</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Persero Terbatas (PT)</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_siup_koperasi' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Koperasi</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - CV dan Firma</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Perseorangan</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Pendaftaran Ulang</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Perubahan</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Pergantian (Hilang)</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">SIUP - Pergantian (Rusak)</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
       </div>
     </div>
   </div>

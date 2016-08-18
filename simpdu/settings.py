@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'debug_toolbar',
     'mptt',
     'cas',
     'loginas',
@@ -93,7 +94,7 @@ WSGI_APPLICATION = 'simpdu.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'simpatik',
+        'NAME': 'simpatik_2016',
         'USER':'simpatik',
         'PASSWORD':'!QAZ@WSX',
         'PORT': '3306',

@@ -110,6 +110,12 @@ class JenisPeraturan(models.Model):
 	jenis_peraturan = models.CharField(max_length=100, verbose_name='Jenis Peraturan')
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
+	def get_title(self):
+		if self.keterangan:
+			return self.keterangan
+		else:
+			return self.jenis_peraturan
+
 	def __unicode__(self):
 		return "%s" % (self.jenis_peraturan)
 
@@ -127,6 +133,20 @@ class DasarHukum(models.Model):
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 	berkas = FileField(upload_to=PathAndRename("peraturan/"), null=True, blank=True, max_length=255)
 
+	def as_tr(self):
+		file_url = self.get_file_url()
+		if file_url == "#":
+			file_url = "-"
+		else:
+			file_url = '<a href="'+file_url+'"><i class="fa fa-download"></i> Unduh</a>'
+		return """
+			<tr>
+		        <td>%s %s No. %s Tahun %s</td>
+		        <td>%s</td>
+		        <td>%s</td>
+	      	</tr>
+		""" % (str(self.jenis_peraturan), str(self.instansi), str(self.nomor), str(self.tahun), self.tentang, file_url)
+
 	def get_file_url(self):
 		if self.berkas:
 			return settings.MEDIA_URL+str(self.berkas)
@@ -139,6 +159,7 @@ class DasarHukum(models.Model):
 		ordering = ['id']
 		verbose_name = 'Dasar Hukum'
 		verbose_name_plural = 'Dasar Hukum'
+
 
 from django.db.models.signals import pre_delete
 from django.dispatch.dispatcher import receiver
@@ -185,6 +206,11 @@ class Syarat(models.Model):
 	jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	syarat = models.CharField(max_length=255, verbose_name='Syarat')
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+
+	def as_li(self):
+		return """
+			<li>%s</li>
+		""" % (str(self.syarat))
 
 	def __unicode__(self):
 		return "%s" % (self.syarat)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse
-# from django.http import HttpResponse
+from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
 
@@ -49,11 +49,39 @@ class JenisIzinAdmin(admin.ModelAdmin):
 	list_filter = ('dasar_hukum','jenis_izin')
 	search_fields = ('nama_izin','jenis_izin', 'dasar_hukum', 'keterangan')
 
+	def tr_dasar_hukum(self, request, id_jenis_izin):
+		jenis_izin_list = JenisIzin.objects.filter(id=id_jenis_izin)
+		dasar_hukum_list = DasarHukum.objects.none()
+
+		if jenis_izin_list.exists():
+			dasar_hukum_list = jenis_izin_list.first().dasar_hukum.all()
+		return HttpResponse(mark_safe("".join(x.as_tr() for x in dasar_hukum_list)))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(JenisIzinAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^tr/(?P<id_jenis_izin>\w+)/$', self.tr_dasar_hukum, name="tr_dasar_hukum_jenis_izin" )
+			)
+		return my_urls + urls
+
 admin.site.register(JenisIzin, JenisIzinAdmin)
 
 class SyaratAdmin(admin.ModelAdmin):
 	list_display = ('syarat', 'keterangan')
 	search_fields = ('syarat', 'keterangan')
+
+	def li(self, request, id_kelompok_jenis_izin):
+		syarat_list = Syarat.objects.filter(jenis_izin__id=id_kelompok_jenis_izin)
+		return HttpResponse(mark_safe("".join(x.as_li() for x in syarat_list)))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(SyaratAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^li/(?P<id_kelompok_jenis_izin>\w+)/$', self.li, name="li_syarat_kelompok_izin" )
+			)
+		return my_urls + urls
 
 admin.site.register(Syarat, SyaratAdmin)
 
@@ -72,6 +100,8 @@ class KelompokJenisIzinAdmin(admin.ModelAdmin):
 		return obj.get_biaya()
 	hargabeli.short_description = 'Biaya'
 	hargabeli.admin_order_field = 'biaya'
+
+	
 
 admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
 

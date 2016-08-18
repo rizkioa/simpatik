@@ -75,7 +75,7 @@ class IdentitasPribadi(models.Model):
 	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
 	email = models.EmailField(unique=True, blank=True, null=True)
 
-	desa = models.ForeignKey(Desa,null=True,blank=True, verbose_name='Desa')
+	desa = models.ForeignKey(Desa, null=True,blank=True, verbose_name='Desa')
 	alamat = models.CharField(max_length=255, null=True, blank=True)
 	lintang = models.CharField(max_length=255, verbose_name='Lintang', blank=True, null=True)
 	bujur = models.CharField(max_length=255, verbose_name='Bujur', blank=True, null=True)
