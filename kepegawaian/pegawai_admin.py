@@ -12,7 +12,7 @@ import re
 import xlrd
 
 from django.shortcuts import render
-from django.core.urlresolvers import resolve
+from django.core.urlresolvers import resolve, reverse
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -69,9 +69,14 @@ class NomorIdentitasInline(admin.StackedInline):
 
 class PegawaiAdmin(admin.ModelAdmin):
 	# form = PegawaiForm
-	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai')
+	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as')
 	list_filter = ('groups__name', )
 	inlines = [NomorIdentitasInline,]
+
+	def login_as(self, obj):
+		str_aksi = ""
+		return mark_safe(str_aksi+'<a class="btn btn-xs btn-success" title="Login sebagai %s" href="%s"><i style="margin: 0px;" class="icon-login"></i></a>' % (obj.nama_lengkap,reverse('loginas-user-login', kwargs={'user_id': obj.id })))
+	login_as.short_description = 'Aksi'
 
 	def nomor_identitas(self, obj):
 		return obj.username

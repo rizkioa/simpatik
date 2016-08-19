@@ -3,13 +3,15 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
-from izin.pemohon_admin import PemohonAdmin
+
+from izin.izin_admin import IzinAdmin
 from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin
+from izin.pemohon_admin import PemohonAdmin
+
 from master.models import JenisPemohon
 
 # import json
 
-# from izin.izin_admin import IzinAdmin
 # from perusahaan.models import Perusahaan
 
 # from django.shortcuts import get_object_or_404

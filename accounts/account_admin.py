@@ -144,6 +144,14 @@ class AccountAdmin(UserAdmin):
 		form = super(AccountAdmin, self).get_form(request, obj, **kwargs)
 		form.request = request
 		return form
+	
+	def get_queryset(self, request):
+		qs = super(AccountAdmin, self).get_queryset(request)
+		# exclude pegawai
+		qs = qs.filter(pegawai__isnull=True)
+		# exclude pemohon
+		qs = qs.filter(pemohon__isnull=True)
+		return qs
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
