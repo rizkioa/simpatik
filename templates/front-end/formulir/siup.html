@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 <style type="text/css">
   @media only screen and (max-width: 1280px){
     .hidden_title{
@@ -38,7 +39,7 @@
         <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
       </li>
       <li>
-        <a href="{% url 'layanan_siup' %}"> SIUP</a>
+        <a href="#"> SIUP</a>
       </li>
       <li>
         <a href="#">Formulir SIUP</a>
@@ -57,60 +58,34 @@
     <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane" id="tab1">
-      <form method="POST" name="step1" role="form" class="form-horizontal">
-        {% csrf_token %}
-        {% include 'front-end/include/formulir_siup/identitas_pemohon.html' %}
-      </form>
+    <div class="tab-pane" id="tab1"> 
+      <!-- Identitas pemohon --> 
+      {% include 'front-end/include/formulir_siup/identitas_pemohon.html' %}
     </div>
 
     <div class="tab-pane" id="tab2">
-      <form method="POST" name="step2" role="form" class="form-horizontal">
-      {% csrf_token %}   
-        <div class="row">
-          <div class="col-md-12">
-            <h3>IDENTITAS PERUSAHAAN</h3>
-            <hr style="border-color:black;">
-          </div>
-        </div> 
-        {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
-      </form>
+      <!-- Identitas perusahaan -->
+      {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
     </div>
 
     <div class="tab-pane" id="tab3">
-      <form method="POST" name="step3" role="form" class="form-horizontal">
-      {% csrf_token %}
-        <h3>LEGALITAS PERUSAHAAN</h3>
-        <hr style="border-color:black;">
-        <h4>A. Akta Pendirian</h4>
-        {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
-      </form>
+      <!-- Legalitas perusahaan -->
+      {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
     </div>
 
     <div class="tab-pane" id="tab4">
-      <form method="POST" name="step4" role="form" class="form-horizontal">
-        {% csrf_token %}
-        <h3>KEKAYAAN BERSIH DAN SAHAM</h3>
-        <hr style="border-color:black;">
-        {% include 'front-end/include/formulir_siup/kekayaan.html' %}
-      </form>
+      <!-- Kekayaan -->
+      {% include 'front-end/include/formulir_siup/kekayaan.html' %}
     </div>
 
     <div class="tab-pane" id="tab5">
-      <form method="POST" name="step5" role="form" class="form-horizontal">
-        {% csrf_token %}
-        <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
-        <hr style="border-color:black;">
-        {% include 'front-end/include/formulir_siup/upload_dokumen.html' %}
-      </form>
+      <!-- Dokumen upload -->
+      {% include 'front-end/include/formulir_siup/upload_dokumen.html' %}
     </div>
 
     <div class="tab-pane" id="tab6">
-      <form method="POST" name="step6" role="form">
-        {% csrf_token %}
-        <h3>KOMFIRMASI DATA</h3>
-        <hr style="border-color:black;">
-        {% include 'front-end/include/formulir_siup/konfirmasi.html' %}
+      <!-- Konfirmasi -->
+      {% include 'front-end/include/formulir_siup/konfirmasi.html' %}
     </div>
 
     <ul class="pager wizard">

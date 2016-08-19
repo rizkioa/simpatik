@@ -77,7 +77,7 @@ class SyaratAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(SyaratAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^li/(?P<id_kelompok_jenis_izin>\w+)/$', self.li, name="li_syarat_kelompok_izin" )
+			url(r'^li/(?P<id_kelompok_jenis_izin>\w+)/$', self.li, name="li_syarat_kelompok_jenis_izin" )
 			)
 		return my_urls + urls
 
@@ -86,6 +86,18 @@ admin.site.register(Syarat, SyaratAdmin)
 class ProsedurAdmin(admin.ModelAdmin):
 	list_display = ('prosedur','lama','keterangan')
 	search_fields = ('prosedur','lama','keterangan')
+
+	def li(self, request, id_kelompok_jenis_izin):
+		prosedur_list = Prosedur.objects.filter(jenis_izin__id=id_kelompok_jenis_izin).order_by('nomor_urut')
+		return HttpResponse(mark_safe("".join(x.as_li() for x in prosedur_list)))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(ProsedurAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^li/(?P<id_kelompok_jenis_izin>\w+)/$', self.li, name="li_prosedur_kelompok_jenis_izin" )
+			)
+		return my_urls + urls
 
 admin.site.register(Prosedur, ProsedurAdmin)
 

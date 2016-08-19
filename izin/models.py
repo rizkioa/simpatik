@@ -228,6 +228,11 @@ class Prosedur(models.Model):
 	lama = models.PositiveSmallIntegerField(verbose_name='Lama (Berapa Hari?)', null=True, blank=True,)
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
+	def as_li(self):
+		return """
+			<li>%s</li>
+		""" % (str(self.prosedur))
+
 	def __unicode__(self):
 		return "%s" % (self.prosedur)
 

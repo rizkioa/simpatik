@@ -32,4 +32,3 @@ urlpatterns += patterns('loginas.views',
 # Front-end
 urlpatterns += [
     ]
-
