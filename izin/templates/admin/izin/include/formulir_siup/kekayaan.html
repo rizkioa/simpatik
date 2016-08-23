@@ -1,0 +1,37 @@
+<form method="POST" name="step4" role="form" class="form-horizontal">
+  {% csrf_token %}
+  <h3>KEKAYAAN BERSIH DAN SAHAM</h3>
+  <hr style="border-color:black;">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">Kekayaan bersih perusahaan </label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="input01">
+      <span class="help-block mb-0">(tidak termasuk tanah dan bangunan tempat usaha)</span>
+    </div>
+  </div>
+
+  <h4 class="custom-font"><strong>Saham</strong> (Khusus Untuk Penanaman Modal Asing)</h4>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">a. Total Nilai Saham</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="input01">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">b. Komposisi Kepemilikan Saham</label>
+    <div class="col-sm-5">
+      <div class="input-group mb-9">
+        <span class="input-group-addon">Nasional</span>
+        <input type="text" class="form-control">
+        <span class="input-group-addon">%</span>
+      </div>
+      &nbsp;
+      <div class="input-group mb-9">
+        <span class="input-group-addon">Asing</span>
+        <input type="text" class="form-control">
+        <span class="input-group-addon">%</span>
+      </div>
+    </div>
+  </div>
+</form>
