@@ -134,3 +134,40 @@ class PegawaiForm(KepegawaianForm):
 	class Meta:
 		model = Pegawai
 		fields = '__all__'
+
+
+class BidangStrukturalForm(forms.ModelForm):
+	bidang_induk = forms.ModelChoiceField(label="Bagian / Bidang / Seksi (Struktural) Induk", queryset=BidangStruktural.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}), required=False)
+	def __init__(self, *args, **kwargs):
+		super(BidangStrukturalForm, self).__init__(*args, **kwargs)
+		
+		if self.request.user.has_perm('kepegawaian.add_bidangstruktural') or self.request.user.has_perm('kepegawaian.change_bidangstruktural'):
+			self.fields['bidang_induk'].help_text = {}
+			self.fields['bidang_induk'].help_text.update({'info': 'Pilih Unit Kerja dulu.'})
+			if self.request.user.has_perm('kepegawaian.add_bidangstruktural'):
+				self.fields['bidang_induk'].help_text.update({'add_code': '<a id="add_id_bidangstruktural" class="related-widget-wrapper-link add-related" href="'+reverse('admin:kepegawaian_bidangstruktural_add')+'?_to_field=id&_popup=1"><img width="10" height="10" alt="Tambah" src="/static/admin/img/icon_addlink.gif"></a>'})
+				print self.fields['bidang_induk'].help_text
+			if self.request.user.has_perm('kepegawaian.change_bidangstruktural'):
+				self.fields['bidang_induk'].help_text.update({'change_code': '<a id="change_id_bidangstrukltural" class="related-widget-wrapper-link change-related" title="Change selected Bidang Struktural" data-href-template="/admin/kepegawaian/bidangstruktural/__fk__/?_to_field=id&_popup=1"><img width="10" height="10" alt="Ubah" src="/static/admin/img/icon_changelink.gif"></a>'})
+
+		unit_kerja = self.request.POST.get('unit_kerja', None)
+		if unit_kerja:
+			self.fields['bidang_induk'].queryset = BidangStruktural.objects.filter(unit_kerja__id=unit_kerja)
+			self.fields['bidang_induk'].widget.attrs = {}
+			bidang_induk = self.request.POST.get('bidang_induk', None)
+			if bidang_induk:
+				self.fields['bidang_induk'].initial = bidang_induk
+
+		if self.instance.pk:
+			if self.instance.bidang_induk:
+				self.fields['bidang_induk'].queryset = BidangStruktural.objects.filter(unit_kerja=self.instance.unit_kerja)
+				self.fields['bidang_induk'].initial = self.instance.bidang_induk
+				self.fields['bidang_induk'].widget.attrs = {}
+
+	def clean_bidang_induk(self):
+		bidang_induk = self.cleaned_data.get('bidang_induk', None)
+		unit_kerja = self.cleaned_data.get('unit_kerja', None)
+		if bidang_induk:
+			if bidang_induk.unit_kerja != unit_kerja:
+				raise forms.ValidationError("Unit Kerja Bidang Induk harus sama.")
+		return bidang_induk

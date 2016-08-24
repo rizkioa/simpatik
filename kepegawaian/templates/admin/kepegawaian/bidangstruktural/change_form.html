@@ -1,0 +1,73 @@
+{% extends "admin/change_form.html" %}
+{% load admin_static %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/loadmask/jquery.loadmask.css" %}">
+{% endblock %}
+
+{% block extrajs_site %}
+	{{ block.super }}
+	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
+	<script type="text/javascript">
+		function chosen_change(elem_){
+			var siblings = elem_.nextAll('.change-related, .delete-related');
+	        if (!siblings.length) return;
+	        var value = elem_.val();
+	        if (value) {
+	            siblings.each(function(){
+	                var elm = $(this);
+	                elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
+	            });
+	        } else siblings.removeAttr('href');
+		}
+		function update_related(elm){
+			if($(elm).prop( "disabled")){
+				$(elm).nextAll(".change-related, .add-related").css('display', 'None')
+			}else{
+				$(elm).nextAll(".change-related, .add-related").css('display', 'inline-block')
+			}
+		}
+		function make_disabled(elem_, dis_){
+	        elem_.prop( "disabled", dis_);
+	        elem_.trigger("chosen:updated");
+	        update_related(elem_)
+		}
+		function load_bidang(id_unit_kerja){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+	        $( "#id_bidang_induk_chosen" ).mask('loading')
+	        $( "#id_bidang_induk_chosen .loadmask-msg" ).css('top', '2px')
+	        $.ajax({ // create an AJAX call...
+                data: { csrfmiddlewaretoken: csrf_token, unit_kerja: id_unit_kerja }, // get the form data
+                type: 'POST', // GET or POST
+                url: '{% url 'admin:option_bidangstruktural' %}', // the file to call
+                success: function(response) { // on success..
+                    elem = $( "#id_bidang_induk" )
+                    elem.html(response);
+			        make_disabled(elem, false)
+			        $( "#id_bidang_induk_chosen" ).unmask()
+			        $( "#id_bidang_induk" ).change(function(){
+						$this = $(this)
+				        chosen_change($this)
+					})
+                },
+                error: function(data) {                
+                    toast_server_error()
+                }
+            });
+		}
+		update_related($( "#id_bidang_induk" ))
+		$( "#id_unit_kerja" ).change(function(){
+			$this = $(this)
+	        chosen_change($this)
+
+	        id_unit_kerja = $(this).val()
+			if(id_unit_kerja.length > 0){
+		        load_bidang(id_unit_kerja)
+	        }else{
+	        	elem = $( "#id_bidang_induk" )
+	        	make_disabled(elem, true)
+	        }
+		})
+	</script>
+{% endblock %}
