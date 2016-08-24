@@ -7,7 +7,7 @@
 
 {% block section %}
 <div class="pageheader">
-  <h2>Pendaftaran Perizinan Daerah
+  <h2>Pendaftaran Perizinan Daerah & Penanaman Modal
     <span>Berikut adalah info Layanan Pendaftaran Perizinan Daerah SIMPATIK Kabupaten Kediri.</span>
   </h2>
   <div class="page-bar">
@@ -39,7 +39,7 @@
             </a>
           </div>
           <div class="col-md-3">
-            <a href="{% url 'layanan_ho' %}">
+            <a href="#" data-toggle="modal" data-target="#ho">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
@@ -127,6 +127,17 @@
                 <div class="panel-body">
                   <div class="col-xs-12">
                     <p class="text-center text-strong pa">Izin Mendirikan Bangunan (IMB)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Penanaman Modal</p>
                   </div>
                 </div>
               </div>
@@ -253,6 +264,28 @@
             </div>
             </a>
           </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_cabang' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Kantor Cabang</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_daftar_ulang' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Daftar Ulang</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -293,11 +326,11 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="{% url 'layanan_imb_reklame' %}">
+            <a href="{% url 'layanan_imb_bupati' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-strong pa">IMB - Papan Reklame</p>
+                  <p class="text-center text-strong pa">IMB - Bupati</p>
                 </div>
               </div>
             </div>
@@ -321,7 +354,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_pt' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -343,7 +376,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_cv' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -354,7 +387,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_perorangan' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -365,7 +398,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_pendaftaran_ulang' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -376,7 +409,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_perubahan' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -387,7 +420,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_pergantian_hilang' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -398,11 +431,133 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="">
+            <a href="{% url 'layanan_siup_pergantian_rusak' %}">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
                   <p class="text-center text-strong pa">SIUP - Pergantian (Rusak)</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title custom-font">Izin Gangguan (HO)</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_ho_baru' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">HO - Permohonan Baru</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_ho_daftar_ulang' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">HO - Daftar Ulang</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title custom-font">Penanaman Modal</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_izin_prinsip_penanaman_modal' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Prinsip Penanaman Modal</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_izin_prinsip_perluasan_penanaman_modal' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Prinsip Perluasan Penanaman Modal</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_izin_prinsip_perubahan_penanaman_modal' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Prinsip Perubahan Penanaman Modal</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Usaha dan Izin Usaha Perluasan Penanaman Modal</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_izin_usaha_perubahan_penanaman_modal' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Usaha Perubahan Penanaman Modal</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_izin_usaha_penggabunggan_penanaman_modal' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Usaha Penggabungan Penanaman Modal</p>
                 </div>
               </div>
             </div>

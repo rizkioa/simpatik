@@ -13,4 +13,28 @@
 	    	})
 	    });
     </script>
+
+    <script type="text/javascript">
+		$(document).ready(function() {
+	    	$.ajax({
+	    		type: 'GET',
+	    		url: '{% url 'admin:li_syarat_kelompok_jenis_izin' id_kelompok_jenis_izin %}',
+	    		success: function(response){
+	    			$('#id_list_syarat').html(response)
+	    		}
+	    	})
+	    });
+    </script>
+
+   	<script type="text/javascript">
+		$(document).ready(function() {
+	    	$.ajax({
+	    		type: 'GET',
+	    		url: '{% url 'admin:li_prosedur_kelompok_jenis_izin' id_kelompok_jenis_izin %}',
+	    		success: function(response){
+	    			$('#id_list_prosedur').html(response)
+	    		}
+	    	})
+	    });
+    </script>
 {% endblock %}

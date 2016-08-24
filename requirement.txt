@@ -1,4 +1,13 @@
 Django
 MySQL-python
-pip install django-tastypie
-pip install python-dateutil
+django-suit
+django-extensions
+django-mptt
+django-mama-cas
+django-cas-client==1.2.0
+django-loginas==0.1.5
+drest
+xlrd
+pillow==2.3.0
+django-tastypie
+python-dateutil
