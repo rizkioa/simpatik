@@ -1,6 +1,6 @@
 {% extends "admin/base_site.html" %}
 
-{% load i18n admin_static %}
+{% load i18n admin_static widgets%}
 
 {% block title %}
 	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
@@ -18,59 +18,92 @@
     <script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
     <!--/ custom javascripts -->
     <script type="text/javascript">
-    	make_disabled($( "#id_izin" ), true)
+        make_disabled($( "#id_nama_izin" ), true)
+    	make_disabled($( "#id_kelompok_jenis_izin" ), true)
 
-    	function chosen_change(elem_){
-			var siblings = elem_.nextAll('.change-related, .delete-related');
-	        if (!siblings.length) return;
-	        var value = elem_.val();
-	        if (value) {
-	            siblings.each(function(){
-	                var elm = $(this);
-	                elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
-	            });
-	        } else siblings.removeAttr('href');
-		}
 
 		function make_disabled(elem_, dis_){
+            if (dis_ == true){
+                elem_.empty();
+            }
 	        elem_.prop( "disabled", dis_);
 	        elem_.trigger("chosen:updated");
-	        // update_related(elem_)
 		}
 
-		function load_izin(id_jenis){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-	        $( "#id_izin_chosen" ).mask('loading')
-	        $( "#id_izin_chosen .loadmask-msg" ).css('top', '2px')
+        function load_option(param_, elem_, elem_chosen_, url_){
+            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            elem_chosen_.mask('loading')
+            $( ".loadmask-msg" ).css('top', '2px')
             $.ajax({ // create an AJAX call...
-                data: { csrfmiddlewaretoken: csrf_token, jenis: id_jenis }, // get the form data
+                data: { csrfmiddlewaretoken: csrf_token, param: param_ }, // get the form data
                 type: 'POST', // GET or POST
-                url: '{% url 'admin:option_izin' %}', // the file to call
+                url: url_, // the file to call
                 success: function(response) { // on success..
-                    elem = $( "#id_izin" )
-                    elem.html(response);
-			        make_disabled(elem, false)
-			        $( "#id_izin_chosen" ).unmask()
+                    var json = $.parseJSON(response);
+                    // console.log(json.count)
+                    elem_.html(json.data);
+                    make_disabled(elem_, false)
+                    elem_chosen_.unmask()
                 },
                 error: function(data) {                
                     toast_server_error("Ada Kesalahan Server")
                 }
             });
-		}
+        }
 
+        function load_kelompok(param_, elem_, elem_chosen_, url_){
+            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            elem_chosen_.mask('loading')
+            $( ".loadmask-msg" ).css('top', '2px')
+            $.ajax({ // create an AJAX call...
+                data: { csrfmiddlewaretoken: csrf_token, param: param_ }, // get the form data
+                type: 'POST', // GET or POST
+                url: url_, // the file to call
+                success: function(response) { // on success..
+                    var json = $.parseJSON(response);
+                    // console.log(json.count)
+                    elem_.html(json.data);
+                    make_disabled(elem_, false)
+                    elem_chosen_.unmask()
+                    if (json.count > 1){
+                        $( ".field-id_kelompok_jenis_izin" ).css('display', 'block')
+                    }else{
+                        $( ".field-id_kelompok_jenis_izin" ).css('display', 'none')
+                    }
+                },
+                error: function(data) {                
+                    toast_server_error("Ada Kesalahan Server")
+                }
+            });
+        }
+
+        if ($( "#id_jenis_izin" ).val() != ""){
+            id_jenis = $( "#id_jenis_izin" ).val()
+            load_option(id_jenis, $( "#id_nama_izin" ), $( "#id_nama_izin_chosen" ), '{% url 'admin:option_namaizin' %}')
+        }
 
     	$( "#id_jenis_izin" ).change(function(){
-			$this = $(this)
-	        chosen_change($this)
-
 	        id_jenis = $(this).val()
 			if(id_jenis.length > 0){
-		        load_izin(id_jenis)
+                load_option(id_jenis, $( "#id_nama_izin" ), $( "#id_nama_izin_chosen" ), '{% url 'admin:option_namaizin' %}')
 	        }else{
-	        	elem = $( "#id_jenis_izin" )
-	        	make_disabled(elem, true)
+                make_disabled($( "#id_nama_izin" ), true)
+	        	make_disabled($( "#id_kelompok_jenis_izin" ), true)
+                $( ".field-id_kelompok_jenis_izin" ).css('display', 'none')
 	        }
 		})
+
+        $( "#id_nama_izin" ).change(function(){
+            id_jenis = $(this).val()
+            
+            if(id_jenis.length > 0){
+                load_kelompok(id_jenis, $( "#id_kelompok_jenis_izin" ), $( "#id_kelompok_jenis_izin_chosen" ), '{% url 'admin:option_kelompokjenisizin' %}')
+               
+            }else{
+                make_disabled($( "#id_kelompok_jenis_izin" ), true)
+                $( ".field-id_kelompok_jenis_izin" ).css('display', 'none')
+            }
+        })
 
 		
     </script>
@@ -95,7 +128,7 @@
 	<div class="row">
         <div class="col-md-12">
         	<section class="tile">
-        	<form class="form-horizontal" action="" method="" id="">
+        	<form class="form-horizontal" action="" method="POST" id="">
         	{% csrf_token %}
                 <!-- tile header -->
                 <div class="tile-header dvd dvd-btm">
@@ -134,30 +167,38 @@
 
                 <!-- tile body -->
                 <div class="tile-body">
-                	<div class="form-row form-group field-jenis_izin">
-                		<label class="required col-sm-2 control-label" for="id_jenis_izin">Pilih Jenis Izin</label>
-                		<select class="chosen-select" id="id_jenis_izin" name="jenis_izin">
-                			<option></option>
-							<option value="Izin Daerah">IZIN DAERAH</option>
-							<option value="Izin Penanaman Modal">IZIN PENANAMAN MODAL</option>
-						</select>
-                	</div>
-                	<div class="form-row form-group field-izin">
-                		<label class="required col-sm-2 control-label" for="" ></label>
-                		<select class="chosen-select" id="id_izin" name="jenis_izin">
-							
-						</select>
-                	</div>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    {% for field in form %}
+                        {{ field.errors }}
+                        <div class="form-row form-group field-{{ field.id_for_label}}">
+                            <label class="required col-sm-2 control-label" for="{{ field.id_for_label}}">{{ field.label }}</label>
+                            {% if field|is_select %}
+                                {{ field|addcls:"chosen-select" }}
+                            {% else %}
+                                {{ field|addcls:"form-control" }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="form-row form-group field-id_kelompok_jenis_izin" style="display: none">
+                        <label class="required col-sm-2 control-label" for="">&nbsp;</label>
+                        <select class="chosen-select" id="id_kelompok_jenis_izin" name="jenis_izin">
+                        
+                        </select>
+                    </div>
                 </div>
                 <!-- /tile body -->
                 <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
 					<div class="submit-row">
-						<!-- <button type="submit" class="btn btn-primary btn-ef btn-ef-3 btn-ef-3a" name="_save">
+						<button type="submit" class="btn btn-primary btn-ef btn-ef-3 btn-ef-3a" name="_save">
 							<i class="fa fa-plus-circle"></i>
 							Buat Izin
-						</button> -->
-						<a href="{% url 'admin:option_izin_proses_1' %}" class="btn btn-primary btn-ef btn-ef-3 btn-ef-3a"><i class="fa fa-plus-circle"></i>
-							Buat Izin</a>
+						</button>
 					</div>
 				</div>
 			</form>

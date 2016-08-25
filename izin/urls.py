@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller$', 'izin.views.layanan_huller', name='layanan_huller'),
     url(r'^layanan/imb-umum$', 'izin.views.layanan_imb_umum', name='layanan_imb_umum'),
     url(r'^layanan/imb-perumahan$', 'izin.views.layanan_imb_perumahan', name='layanan_imb_perumahan'),
-    url(r'^layanan/imb-bupati$', 'izin.views.layanan_imb_bupati', name='layanan_imb_bupati'),
+    url(r'^layanan/imb-bupati$', 'izin.views.layanan_imb_reklame', name='layanan_imb_reklame'),
     url(r'^layanan/izin-prinsip-penanaman-modal$', 'izin.views.layanan_izin_prinsip_penanaman_modal', name='layanan_izin_prinsip_penanaman_modal'),
     url(r'^layanan/izin-prinsip-perluasan-penanaman-modal$', 'izin.views.layanan_izin_prinsip_perluasan_penanaman_modal', name='layanan_izin_prinsip_perluasan_penanaman_modal'),
     url(r'^layanan/izin-prinsip-perubahan-penanaman-modal$', 'izin.views.layanan_izin_prinsip_perubahan_penanaman_modal', name='layanan_izin_prinsip_perubahan_penanaman_modal'),
@@ -45,4 +45,15 @@ urlpatterns = [
     url(r'^layanan/siup/formulir$', 'izin.views.formulir_siup', name='formulir_siup'),
     url(r'^layanan/tdp-pt/formulir$', 'izin.views.formulir_tdp_pt', name='formulir_tdp_pt'),
     url(r'^layanan/imb-umum/formulir$', 'izin.views.formulir_imb_umum', name='formulir_imb_umum'),
+    url(r'^layanan/imb-perumahan/formulir$', 'izin.views.formulir_imb_perumahan', name='formulir_imb_perumahan'),
+    url(r'^layanan/imb-reklame/formulir$', 'izin.views.formulir_imb_reklame', name='formulir_imb_reklame'),
+
+    # url for ajax siup
+    url(r'^layanan/siup/pemohon/save/$', 'izin.views.siup_identitas_pemohon_save_cookie', name='siup_pemohon_save'),
+    url(r'^layanan/siup/identitasperusahaan/save/$', 'izin.views.siup_identitas_perusahan_save_cookie', name='siup_identitas_perusahan_save'),
+    url(r'^layanan/siup/legalitasperusahaan/save/$', 'izin.views.siup_legalitas_perusahaan_save_cookie', name='siup_legalitas_perusahaan_save'),
+    url(r'^layanan/siup/kekayaan/save/$', 'izin.views.siup_kekayaan_save_cookie', name='siup_kekayaan_save'),
+    url(r'^layanan/siup/upload/save/$', 'izin.views.siup_upload_dokumen_cookie', name='siup_upload_dokumen'),
+    url(r'^layanan/siup/save/$', 'izin.views.siup_done', name='siup_done'),
+    # End
     ]

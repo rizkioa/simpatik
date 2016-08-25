@@ -229,24 +229,24 @@ def layanan_imb_umum(request, extra_context={}):
 	extra_context.update({'id_kelompok_jenis_izin': "2" })
 	return render(request, "front-end/layanan/imb_umum.html", extra_context)
 
-def layanan_imb_bupati(request, extra_context={}):
+def layanan_imb_reklame(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
 	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Bupati"})
+	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Papan Reklame"})
 	extra_context.update({'title_short': "IMB - Umum"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_imb_reklame") })
 	extra_context.update({'id_jenis_izin': "1" })
 	extra_context.update({'id_kelompok_jenis_izin': "1" })
-	return render(request, "front-end/layanan/imb_bupati.html", extra_context)
+	return render(request, "front-end/layanan/imb_reklame.html", extra_context)
 
 def layanan_imb_perumahan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=11)
+	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Perumahan"})
-	extra_context.update({'title_short': "IMB - Umum"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'title_short': "IMB - Perumahan"})
+	extra_context.update({'link_formulir': reverse("formulir_imb_perumahan") })
 	extra_context.update({'id_jenis_izin': "1" })
-	extra_context.update({'id_kelompok_jenis_izin': "11" })
+	extra_context.update({'id_kelompok_jenis_izin': "1" })
 	return render(request, "front-end/layanan/imb_perumahan.html", extra_context)
 
 def layanan_reklame(request, extra_context={}):
@@ -396,6 +396,36 @@ def formulir_imb_umum(request, extra_context={}):
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
 	return render(request, "front-end/formulir/imb_umum.html", extra_context)
 
+def formulir_imb_perumahan(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
+
+def formulir_imb_reklame(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	return render(request, "front-end/formulir/imb_reklame.html", extra_context)
+
 def identitas_pemohon(request, extra_context={}):
 	nama_lengkap = request.POST.get("nama_lengkap", None)
 	tempat_lahir = request.POST.get("tempat_lahir", None)
@@ -408,4 +438,40 @@ def identitas_pemohon(request, extra_context={}):
 	kewarganegaraan = request.POST.get("kewarganegaraan", None)
 	pekerjaan = request.POSt.get("pekerjaan", None)
 	data = {'success': True, 'pesan': 'Simpan data siswa berhasil.', 'id_siswa': siswa.id }
+	return HttpResponse(json.dumps(data))
+
+from izin.izin_forms import PemohonForm
+
+def siup_identitas_pemohon_save_cookie(request):
+	pemohon = PemohonForm(request.POST)
+	if pemohon.is_valid():
+		nama_lengkap = pemohon.cleaned_data.get('nama_lengkap')
+		data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
+		response = HttpResponse(json.dumps(data))	
+		response.set_cookie(key='nama_lengkap', value=nama_lengkap) # set cookie
+	else:
+		# data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
+		data = {'success': False, 'pesan': 'Pengisian tidak lengkap.' }
+		response = HttpResponse(json.dumps(data))
+	return response
+
+def siup_identitas_perusahan_save_cookie(request):
+	# print request.COOKIES # Untuk Tes cookies
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
+	return HttpResponse(json.dumps(data))
+
+def siup_legalitas_perusahaan_save_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
+	return HttpResponse(json.dumps(data))
+
+def siup_kekayaan_save_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
+	return HttpResponse(json.dumps(data))
+
+def siup_upload_dokumen_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
+	return HttpResponse(json.dumps(data))
+
+def siup_done(request):
+	data = {'success': True, 'pesan': 'Proses Selesai.' }
 	return HttpResponse(json.dumps(data))
