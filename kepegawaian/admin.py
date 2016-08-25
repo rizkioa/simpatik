@@ -4,7 +4,7 @@ from kepegawaian.models import *
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from kepegawaian.pegawai_admin import PegawaiAdmin
-
+from kepegawaian.forms import BidangStrukturalForm
 # Register your models here.
 
 class JenisUnitKerjaAdmin(MPTTModelAdmin):
@@ -19,7 +19,13 @@ class BidangStrukturalAdmin(MPTTModelAdmin):
 	mptt_level_indent = 20
 	list_display = ('nama_bidang', 'keterangan', 'unit_kerja', 'bidang_induk' )
 	list_filter = ('unit_kerja', )
+	form = BidangStrukturalForm
 
+	def get_form(self, request, obj=None, **kwargs):
+		form = super(BidangStrukturalAdmin, self).get_form(request, obj, **kwargs)
+		form.request = request
+		return form
+		
 	def option_bidangstruktural(self, request):		
 		bidangstruktural_list = BidangStruktural.objects.all()
 		unit_kerja = request.POST.get('unit_kerja', None)

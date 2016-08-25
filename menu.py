@@ -268,7 +268,7 @@ class CustomMenu(Menu):
                                 url=reverse('admin:kepegawaian_pegawai_changelist'),
                             ),
                             items.MenuItem(
-                                title='Administrator',
+                                title='Pengguna Lainnya',
                                 icon='fa fa-user-md',
                                 url=reverse('admin:accounts_account_changelist'),
                             ),
@@ -285,50 +285,6 @@ class CustomMenu(Menu):
             self.children += [
                 menu_pengguna,              
                 menu_pengaturan,
-            ]
-        if request.user.groups.filter(name='Front Desk').exists() or request.user.is_superuser:
-            menu_operator = items.MenuItem(
-                        title=_('Menu Operator'),
-                        description='Menu Operator',
-                        accesskey='menuOperator',
-                        children= [
-            #                 items.MenuItem(
-            #                     title='Perubahan Izin',
-            #                     icon='fa fa-file-text-o',
-            #                     children= [
-            #                         items.MenuItem(
-            #                             title='SIUP',
-            #                             icon='fa fa-caret-right',
-            #                             url=reverse('admin:izin_pemohon_changelist'),
-            #                         ),
-            #                         items.MenuItem(
-            #                             title='TDP',
-            #                             icon='fa fa-caret-right',
-            #                             url="#",
-            #                         ),
-            #                         items.MenuItem(
-            #                             title='IMB',
-            #                             icon='fa fa-toggle-right',
-            #                             children= [
-            #                                 items.MenuItem(
-            #                                     title='IMB Gedung',
-            #                                     icon='fa fa-caret-right',
-            #                                     url=reverse('admin:izin_pemohon_changelist'),
-            #                                 ),
-            #                                 items.MenuItem(
-            #                                     title='IMB Papan Reklame',
-            #                                     icon='fa fa-caret-right',
-            #                                     url="#",
-            #                                 ),
-            #                            ]
-            #                         ),
-            #                     ]
-            #                 ),
-                        ]
-                    )
-
-            self.children += [
-                menu_operator,
             ]
         
         return super(CustomMenu, self).init_with_context(context)

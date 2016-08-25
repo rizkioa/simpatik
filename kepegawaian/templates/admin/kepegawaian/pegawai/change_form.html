@@ -4,13 +4,11 @@
 {% block extrastyle %}
 	{{ block.super }}
 	<link rel="stylesheet" href="{% static "scripts/js/vendor/loadmask/jquery.loadmask.css" %}">
-	<link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.min.css" %}">
 {% endblock %}
 
 {% block extrajs_site %}
 	{{ block.super }}
 	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
 	<script type="text/javascript">
 		function chosen_change(elem_){
 			var siblings = elem_.nextAll('.change-related, .delete-related');
@@ -34,26 +32,6 @@
 	        elem_.prop( "disabled", dis_);
 	        elem_.trigger("chosen:updated");
 	        update_related(elem_)
-		}
-		function toast_server_error(){
-			toastr.options = {
-			  "closeButton": true,
-			  "debug": false,
-			  "newestOnTop": false,
-			  "progressBar": false,
-			  "positionClass": "toast-top-right",
-			  "preventDuplicates": false,
-			  "onclick": null,
-			  "showDuration": "300",
-			  "hideDuration": "1000",
-			  "timeOut": "5000",
-			  "extendedTimeOut": "1000",
-			  "showEasing": "swing",
-			  "hideEasing": "linear",
-			  "showMethod": "fadeIn",
-			  "hideMethod": "fadeOut"
-			}
-			toastr["error"]("Terjadi kesalahan pada koneksi server.")
 		}
 		function load_bidang(id_unit_kerja){
 			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
