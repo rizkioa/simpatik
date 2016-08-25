@@ -83,10 +83,22 @@ class JenisBadanUsaha(models.Model):
 		verbose_name = 'Jenis Badan Usaha'
 		verbose_name_plural = 'Jenis Badan Usaha'
 
+class KegiatanUsaha(models.Model):
+	kegiatan_usaha = models.CharField(max_length=255, blank=True, null=True, verbose_name='Kegiatan Usaha')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.kegiatan_usaha)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Kegiatan Usaha'
+		verbose_name_plural = 'Kegiatan Usaha'
 
 class Perusahaan(models.Model):
-	"""docstring for Perusahaan"""
-	perusahaan_induk = models.ForeignKey('Perusahaan', blank=True, null=True)
+	perusahaan_induk = models.ForeignKey('Perusahaan', blank=True, null=True) # contoh: Jika cabang, pusat nya dimasukkan juga
+	perusahaan_lama = models.ForeignKey('Perusahaan', blank=True, null=True) # contoh: pengembangan CV ke PT
+
 	nama_perusahaan = models.CharField(max_length=100, verbose_name='Nama Perusahaan')
 	alamat_perusahaan = models.CharField(max_length=255,  verbose_name='Alamat Perusahaan')
 	desa = models.ForeignKey(Desa, verbose_name='Desa')
@@ -96,7 +108,7 @@ class Perusahaan(models.Model):
 	telepon = models.CharField(max_length=50, verbose_name='Telepon')
 	fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
 	email = models.EmailField(max_length=50, blank=True, null=True, verbose_name='E-mail')
-	npwp = models.CharField(max_length=100, verbose_name='NPWP')
+	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
 
 	# SIUP
 	kbli = models.ManyToManyField(KBLI, verbose_name='KBLI')
@@ -244,16 +256,7 @@ class Perusahaan(models.Model):
 # 		verbose_name = 'Jenis Pengecer'
 # 		verbose_name_plural = 'Jenis Pengecer'
 
-# class KegiatanUsaha(models.Model):
-# 	kegiatan_usaha = models.CharField(max_length=255, blank=True, null=True, verbose_name='Kegiatan Usaha')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.kegiatan_usaha)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Kegiatan Usaha'
-# 		verbose_name_plural = 'Kegiatan Usaha'
 
 
 # class DataRincianPerusahaan(models.Model):

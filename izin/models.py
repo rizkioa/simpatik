@@ -259,16 +259,8 @@ class PengajuanIzin(models.Model):
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
-
-	# perusahaan = models.ForeignKey(Perusahaan, null=True, blank=True, verbose_name='Perusahaan')
-# 	detil_papan_reklame = models.ForeignKey(DetilIMBPapanReklame, null=True, blank=True, verbose_name='Detil IMB Papan Reklame')
-
-# 	jenis_gangguan = models.ManyToManyField(JenisGangguan,blank=True, verbose_name='Jenis Gangguan')
-# 	jenis_kegiatan_pembangunan = models.ManyToManyField(JenisKegiatanPembangunan,blank=True, verbose_name='Jenis Kegiatan Pembangunan')
-# 	parameter_bgunan = models.ManyToManyField(ParameterBangunan, blank=True, verbose_name='Parameter')
 	
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
-
 	created_by = models.ForeignKey("accounts.Account", related_name="create_pengajuan_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
 	created_at = models.DateTimeField(editable=False)
 	verified_by = models.ForeignKey("accounts.Account", related_name="verify_pengajuan_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
@@ -295,6 +287,20 @@ class PengajuanIzin(models.Model):
 		ordering = ['-status', '-updated_at',]
 		verbose_name = 'Pengajuan Izin'
 		verbose_name_plural = 'Pengajuan Izin'
+
+class DetilSIUP(PengajuanIzin):
+	kekayaan_bersih = models.DecimalField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_digits=10, decimal_places=2, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
+	total_nilai_saham = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
+	presentase_saham_nasional = models.DecimalField(max_digits=3, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
+	presentase_saham_asing = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Asing')
+
+	def __unicode__(self):
+		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status', '-updated_at',]
+		verbose_name = 'Detil SIUP'
+		verbose_name_plural = 'Detil SIUP'
 
 # class JenisBerkas(models.Model):
 # 	jenis_berkas = models.CharField(max_length=50, null=True, blank=True, verbose_name='Jenis Berkas')
@@ -424,39 +430,6 @@ class PengajuanIzin(models.Model):
 # 		ordering = ['id']
 # 		verbose_name = 'Jenis Gangguan'
 # 		verbose_name_plural = 'Jenis Gangguan'
-
-# class KekayaanDanSaham(models.Model):
-# 	"""docstring for Kekayaan Dan Saham"""
-# 	izin = models.ForeignKey(Izin,blank=True, null=True, verbose_name='Izin')
-# 	kekayaan_bersih = models.DecimalField(max_digits=10, decimal_places=2,blank=True, null=True, verbose_name='Kekayaan Bersih')
-# 	total_nilai_saham = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
-# 	presentase_saham_nasional = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
-# 	presentase_saham_asing = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Asing')
-	
-# 	def as_json(self):
-# 		kekayaan_bersih = ''
-# 		presentase_saham_asing = ''
-# 		total_nilai_saham = ''
-# 		presentase_saham_nasional = ''
-# 		if self.presentase_saham_asing:
-# 			presentase_saham_asing = str(self.presentase_saham_asing)
-# 			if self.kekayaan_bersih:
-# 				kekayaan_bersih = str(self.kekayaan_bersih)
-# 				if self.total_nilai_saham:
-# 					total_nilai_saham = str(self.total_nilai_saham)
-# 					if self.presentase_saham_nasional:
-# 						presentase_saham_nasional = str(self.presentase_saham_nasional)
-
-# 		return dict(id=self.id,kekayaan_bersih=kekayaan_bersih, total_nilai_saham=total_nilai_saham, 
-# 			presentase_saham_nasional=presentase_saham_nasional, presentase_saham_asing=presentase_saham_asing)
-
-# 	def __unicode__(self):
-# 		return "%s" % str(self.kekayaan_bersih)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Kekayaan Dan Saham'
-# 		verbose_name_plural = 'Kekayaan Dan Saham'
 
 # class DetilHo(models.Model):
 # 	jenis_lokasi = models.ForeignKey(jenisLokasiUsaha, verbose_name='Jenis Lokasi Usaha')
