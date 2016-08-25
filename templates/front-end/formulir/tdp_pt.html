@@ -23,6 +23,33 @@
       display: block !important;
     }
   }
+
+  hr.style14 { 
+    border: 0; 
+    height: 1px; 
+    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+  }
+  .tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+    background-color: #22beef;
+    color: aliceblue;
+  }
+  .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+    background-color: #616f77;
+  }
+  .tab-wizard .nav-tabs > li:before {
+    background-color: #333;
+  }
+  /*@media screen and (max-width: 767px)*/
+  .table-responsive {
+      width: 100%;
+      margin-bottom: 15px;
+      overflow-y: hidden;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+      border: 1px solid #ddd;
+  }
 </style>
 {% endblock %}
 {% block section %}
@@ -50,20 +77,20 @@
   
 <div id="rootwizard" class="tab-container tab-wizard">
   <ul class="nav nav-tabs nav-justified">
-    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Umum Perusahaan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Data Kegiatan Perusahaan </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Legalitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Izin-izin Lainnya</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
-    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Data Lain Perusahaan</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
-    <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">Upload Dokumen Persyaratan</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
-    <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
+    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">STAP #1</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">STAP #2</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">STAP #3</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">STAP #4 </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">STAP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">STAP #6</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">STAP #7</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+    <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">STAP #8</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
+    <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">STAP #9</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane" id="tab1"> 
       <!-- Identitas pemohon --> 
-      {% include 'front-end/include/formulir_siup/identitas_pemohon.html' %}
+      {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
     </div>
 
     <div class="tab-pane" id="tab2">
@@ -158,18 +185,183 @@
 
             onTabClick: function(tab, navigation, index) {
 
-                var form = $('form[name="step'+ (index+1) +'"]');
+                /*var form = $('form[name="step'+ (index+1) +'"]');
                 form.parsley().validate();
 
                 if (!form.parsley().isValid()) {
                     return false;
-                }
+                }*/
 
             }
 
         });
 
+        function make_disabled(elem_){
+            elem_.prop( "disabled", "disabled");
+            elem_.trigger("chosen:updated");
+        }
+
+        function make_enabled(elem_){
+              elem_.removeAttr('disabled')
+              elem_.trigger("chosen:updated");
+        }
+
+        function form_akta_perubahan_make_disabled(){
+          make_disabled($('#akta_pengesahan'))
+          make_disabled($('#nama_notaris_akta_perubahan'))
+          make_disabled($('#alamat_notaris'))
+          make_disabled($('#telp_notaris'))
+          make_disabled($('#no_akta_notaris'))
+          make_disabled($('#tanggal_akta_akta_perubahan'))
+          make_disabled($('#no_pengesahan'))
+          make_disabled($('#tanggal_pengesahan'))
+        }
+
+        form_akta_perubahan_make_disabled();
+
+        function form_akta_perubahan_make_enabled(){
+          make_enabled($('#akta_pengesahan'))
+          make_enabled($('#nama_notaris_akta_perubahan'))
+          make_enabled($('#alamat_notaris'))
+          make_enabled($('#telp_notaris'))
+          make_enabled($('#no_akta_notaris'))
+          make_enabled($('#tanggal_akta_akta_perubahan'))
+          make_enabled($('#no_pengesahan'))
+          make_enabled($('#tanggal_pengesahan'))
+        }
+
+        $("#switch_akta_perubahan").change(function(){
+          if($(this).is(':checked')){
+            form_akta_perubahan_make_enabled();
+          }else{
+            form_akta_perubahan_make_disabled();
+          }
+        })
+
+        // form C
+        function form_pengesahan_menteri_make_disabled(){
+          make_disabled($('#c_jenis_akta'))
+          make_disabled($('#c_no_pengesahan'))
+          make_disabled($('#c_tanggal_pengesahan'))
+        }
+
+        form_pengesahan_menteri_make_disabled();
+
+        function form_pengesahan_menteri_make_enabled(){
+          make_enabled($('#c_jenis_akta'))
+          make_enabled($('#c_no_pengesahan'))
+          make_enabled($('#c_tanggal_pengesahan'))
+        }
+
+        $("#switch_pengesahan_menteri").change(function(){
+          if($(this).is(':checked')){
+            form_pengesahan_menteri_make_enabled();
+          }else{
+            form_pengesahan_menteri_make_disabled();
+          }
+        })
+
+        // form D
+        function form_persetujuan_menteri_make_disabled(){
+          make_disabled($('#d_jenis_akta'))
+          make_disabled($('#d_no_pengesahan'))
+          make_disabled($('#d_tanggal_pengesahan'))
+        }
+
+        form_persetujuan_menteri_make_disabled();
+
+        function form_persetujuan_menteri_make_enabled(){
+          make_enabled($('#d_jenis_akta'))
+          make_enabled($('#d_no_pengesahan'))
+          make_enabled($('#d_tanggal_pengesahan'))
+        }
+
+        $("#switch_persetujuan_menteri").change(function(){
+          if($(this).is(':checked')){
+            form_persetujuan_menteri_make_enabled();
+          }else{
+            form_persetujuan_menteri_make_disabled();
+          }
+        })
+
+        // form E
+        function form_penerimaan_laporan_make_disabled(){
+          make_disabled($('#e_jenis_akta'))
+          make_disabled($('#e_no_pengesahan'))
+          make_disabled($('#e_tanggal_pengesahan'))
+        }
+
+        form_penerimaan_laporan_make_disabled();
+
+        function form_penerimaan_laporan_make_enabled(){
+          make_enabled($('#e_jenis_akta'))
+          make_enabled($('#e_no_pengesahan'))
+          make_enabled($('#e_tanggal_pengesahan'))
+        }
+
+        $("#switch_penerimaan_laporan").change(function(){
+          if($(this).is(':checked')){
+            form_penerimaan_laporan_make_enabled();
+          }else{
+            form_penerimaan_laporan_make_disabled();
+          }
+        })
+
+        // form F
+        function form_penerimaan_pemberitahuan_make_disabled(){
+          make_disabled($('#f_jenis_akta'))
+          make_disabled($('#f_no_pengesahan'))
+          make_disabled($('#f_tanggal_pengesahan'))
+        }
+
+        form_penerimaan_pemberitahuan_make_disabled();
+
+        function form_penerimaan_pemberitahuan_make_enabled(){
+          make_enabled($('#f_jenis_akta'))
+          make_enabled($('#f_no_pengesahan'))
+          make_enabled($('#f_tanggal_pengesahan'))
+        }
+
+        $("#switch_penerimaan_pemberitahuan").change(function(){
+          if($(this).is(':checked')){
+            form_penerimaan_pemberitahuan_make_enabled();
+          }else{
+            form_penerimaan_pemberitahuan_make_disabled();
+          }
+        })
+
+        // Izin Lain
+        function form_izin_lain_make_disabled(){
+          make_disabled($('#izin_lain_jenis_izin'))
+          make_disabled($('#izin_lain_no_izin'))
+          make_disabled($('#izin_lain_dikeluarkan'))
+          make_disabled($('#izin_lain_tanggal_keluar'))
+          make_disabled($('#izin_lain_masa_berlaku'))
+          make_disabled($('#izin_lain_simpan'))
+        }
+
+        form_izin_lain_make_disabled();
+
+        function form_izin_lain_make_enabled(){
+          make_enabled($('#izin_lain_jenis_izin'))
+          make_enabled($('#izin_lain_no_izin'))
+          make_enabled($('#izin_lain_dikeluarkan'))
+          make_enabled($('#izin_lain_tanggal_keluar'))
+          make_enabled($('#izin_lain_masa_berlaku'))
+          make_enabled($('#izin_lain_simpan'))
+        }
+
+        $("#switch_izin_lain").change(function(){
+          if($(this).is(':checked')){
+            form_izin_lain_make_enabled();
+          }else{
+            form_izin_lain_make_disabled();
+          }
+        })
+
     });
 </script>
-
+{% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
+{% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}
+{% include 'front-end/include/formulir_tdp_pt/popup/tambah_cabang.html' %}
 {% endblock %}

@@ -1,0 +1,127 @@
+<div class="modal fade" id="create_cabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title custom-font">Tambah Kantor Cabang/Pembantu/Perwakilan</h3>
+      </div>
+      <div class="modal-body">
+        <form role="form" class="form-horizontal">
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Nama Perusahaan</strong></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="input01">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Alamat</strong></label>
+            <div class="col-sm-8">
+              <textarea class="form-control" rows="5" name=""></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Provinsi</strong></label>
+            <div class="col-sm-3">
+              <select class="form-control chosen-select">
+                <option value>-- Pilih Provinsi --</option>
+                {% if provinsi %}
+                {% for p in provinsi %}
+                <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+
+            <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong></label>
+            <div class="col-sm-3">
+              <select class="form-control chosen-select">
+                <option value>-- Pilih Kota/Kabupaten --</option>
+                {% if kabupaten %}
+                {% for k in kabupaten %}
+                <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Kecamatan</strong></label>
+            <div class="col-sm-3">
+              <select class="form-control chosen-select">
+                <option value>-- Pilih Kecamatan --</option>
+                {% if kecamatan %}
+                {% for k in kecamatan %}
+                <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+            <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+            <div class="col-sm-3">
+              <select class="form-control chosen-select mb-10">
+                <option value>-- Pilih Kelurahan/Desa --</option>
+                {% if desa %}
+                {% for d in desa %}
+                <option value="{{ d.id }}">{{ d.nama_desa }}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Kode Pos</strong></label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="input01">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>No. Telp / Fax</strong></label>
+            <label for="input01" class="col-sm-1 control-label"><strong>Telp</strong></label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="input01">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"></label>
+            <label for="input01" class="col-sm-1 control-label"><strong>Fax</strong></label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" id="input01">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Status perusahaan</strong></label>
+            <div class="col-sm-5">
+              <select class="form-control chosen-select mb-10">
+                <option>-- Pilih Status perusahaan --</option>
+                <option>Kantor Tunggal</option>
+                <option>Kantor Pusat</option>
+                <option>Kantor Pembantu</option>
+                <option>Perwakilan</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label"><strong>Kegiatan Usaha</strong></label>
+            <div class="col-sm-5">
+              <select class="form-control chosen-select mb-10">
+                <option>-- Pilih Kegiatan Usaha --</option>
+                <option>Perdagangan mikro</option>
+                <option>Perdagangan kecil</option>
+                <option>Perdagangan menengah</option>
+                <option>Perdagangan besar</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-3 control-label">No TDP</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="input01">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
