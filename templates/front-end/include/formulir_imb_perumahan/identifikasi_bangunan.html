@@ -1,0 +1,173 @@
+<form method="POST" name="step2" role="form" class="form-horizontal">
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>IDENTIFIKASI BANGUNAN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">A. Kegiatan Pembangunan Gedung</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>------</option>
+            <option>Pembangunan Bangunan Gedung Baru(1.00)</option>
+            <option>Rehabilitasi/Renovasi Berat(0.65)</option>
+            <option>Rehabilitasi/Renovasi Sedang(0.45)</option>
+            <option>Pelestarian/Pemugaran Pratama(0.65)</option>
+            <option>Pelestarian/Pemugaran Madya(0.45)</option>
+            <option>Pelestarian/Pemugaran Pratama(0.30)</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">B. Parameter Bangunan Gedung</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Fungsi Bangunan</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tingkat Kompleksitas (0,25)</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tingkat Permanensi (0,20)</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Ketinggian Bangunan (0,10)</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Lokasi Bangunan (0,15)</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kepemilikan Bangunan (0.05)</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Lama Penggunaan Bangunan</label>
+      <div class="form-group">
+        <div class="col-sm-4">
+          <select class="form-control chosen-select mb-20">
+            <option>-- Pilih Bentuk Kegiatan Usaha</option>
+            <option>Kecil</option>
+            <option>Menengah</option>
+            <option>Besar</option>
+          </select>
+        </div>
+        <label for="input01" class="col-sm-2 control-label">Bobot</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="input01">
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Total</label>
+      <div class="col-sm-2 total">
+        <input type="text" class="form-control total" id="input01">
+      </div>
+    </div>
+</form>
