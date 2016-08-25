@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12">
         <h3>IDENTITAS PERUSAHAAN</h3>
-        <hr style="border-color:black;">
+        <hr class="style14">
       </div>
     </div>
 
@@ -25,7 +25,10 @@
       <label for="input01" class="col-sm-2 control-label">Bentuk kegiatan usaha</label>
       <div class="col-sm-4">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>-- Pilih Bentuk Kegiatan Usaha</option>
+          <option>Kecil</option>
+          <option>Menengah</option>
+          <option>Besar</option>
         </select>
       </div>
     </div>
@@ -41,7 +44,12 @@
       <label for="input01" class="col-sm-2 control-label">Provinsi</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option value>-- Pilih Provinsi --</option>
+          {% if provinsi %}
+          {% for p in provinsi %}
+          <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
+          {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>
@@ -50,7 +58,12 @@
       <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option value>-- Pilih Kota/Kabupaten --</option>
+          {% if kabupaten %}
+          {% for k in kabupaten %}
+          <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+          {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>
@@ -59,7 +72,12 @@
       <label for="input01" class="col-sm-2 control-label">Kecamatan</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option value>-- Pilih Kecamatan --</option>
+          {% if kecamatan %}
+          {% for k in kecamatan %}
+          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+          {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>
@@ -68,7 +86,12 @@
       <label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option value>-- Pilih Kelurahan/Desa --</option>
+          {% if desa %}
+          {% for d in desa %}
+          <option value="{{ d.id }}">{{ d.nama_desa }}</option>
+          {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>
@@ -105,7 +128,10 @@
       <label for="input01" class="col-sm-2 control-label">Status penanaman modal</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>-- Pilih Status penanaman modal --</option>
+          <option>PMA (Penanaman Modal Asing)</option>
+          <option>PMDN (Penanaman Modal Dalam Negeri)</option>
+          <option>Lain-lain</option>
         </select>
       </div>
     </div>
@@ -114,7 +140,12 @@
       <label for="input01" class="col-sm-2 control-label">Jenis badan usaha perusahaan</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>PERSERO TERBATAS (PT)</option>
+          <option>PERSEKUTUAN KOMANDITER (CV)</option>
+          <option>FIRMA</option>
+          <option>PERUSAHAAN PERORANGAN (PO)</option>
+          <option>KOPERASI</option>
+          <option>BENTUK USAHA LAINNYA (BUL)</option>
         </select>
       </div>
     </div>
@@ -123,7 +154,10 @@
       <label for="input01" class="col-sm-2 control-label">Status perusahaan</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>Kantor Tunggal</option>
+          <option>Kantor Pusat</option>
+          <option>Kantor Pembantu</option>
+          <option>Perwakilan</option>
         </select>
       </div>
     </div>
@@ -132,7 +166,10 @@
       <label for="input01" class="col-sm-2 control-label">Kegiatan usaha</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>Perdagangan mikro</option>
+          <option>Perdagangan kecil</option>
+          <option>Perdagangan menengah</option>
+          <option>Perdagangan besar</option>
         </select>
       </div>
     </div>
@@ -141,7 +178,7 @@
       <label for="input01" class="col-sm-2 control-label">Kegiatan usaha (KBLI)</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>KBLI</option>
         </select>
       </div>
     </div>
@@ -150,7 +187,7 @@
       <label for="input01" class="col-sm-2 control-label">Barang/jasa dagangan utama</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>Produk</option>
         </select>
       </div>
     </div>
@@ -159,7 +196,12 @@
       <label for="input01" class="col-sm-2 control-label">Bentuk kerjasama</label>
       <div class="col-sm-6">
         <select class="form-control chosen-select mb-10">
-          <option>1</option>
+          <option>mandiri</option>
+          <option>jaringan internasional</option>
+          <option>jaringan nasional</option>
+          <option>waralaba internasional</option>
+          <option>waralaba nasional</option>
+          <option>kso</option>
         </select>
       </div>
     </div>
