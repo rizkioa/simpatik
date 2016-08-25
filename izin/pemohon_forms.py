@@ -4,7 +4,6 @@ from izin.models import Pemohon
 from django.core.urlresolvers import reverse
 
 class PemohonForm(forms.ModelForm):
-	
 	negara = forms.ModelChoiceField(label="Negara", queryset=Negara.objects.all(),)
 	provinsi = forms.ModelChoiceField(label="Provinsi", help_text="Pilih Negara dulu.", queryset=Provinsi.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
 	kabupaten = forms.ModelChoiceField(label="Kabupaten / Kota", help_text="Pilih Provinsi dulu.", queryset=Kabupaten.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
@@ -89,8 +88,7 @@ class PemohonForm(forms.ModelForm):
 			self.fields['desa'].queryset = Desa.objects.filter(kecamatan__id=self.instance.desa.kecamatan.id)
 			self.fields['desa'].widget.attrs = {}
 			self.fields['desa'].initial = self.instance.desa
-
-
+	
 	class Meta:
 		model = Pemohon
 		fields = '__all__'

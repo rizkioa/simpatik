@@ -176,6 +176,9 @@ class JenisIzin(models.Model):
 	jenis_izin = models.CharField(max_length=20, verbose_name='Jenis Izin', choices=JENIS_IZIN, default=1)
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 	
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_izin)+"</option>"
+
 	def __unicode__(self):
 		return "%s" % (self.nama_izin)
 
@@ -196,6 +199,9 @@ class KelompokJenisIzin(models.Model):
 
 	def get_biaya(self):
 		return 'Rp. %.2f' % self.biaya
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.kelompok_jenis_izin)+"</option>"
 
 	class Meta:
 		ordering = ['id']
