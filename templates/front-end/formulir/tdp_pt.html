@@ -42,6 +42,14 @@
   .tab-wizard .nav-tabs > li:before {
     background-color: #333;
   }
+  /*@media screen and (max-width: 767px)*/
+  .table-responsive {
+      width: 100%;
+      margin-bottom: 15px;
+      overflow-y: hidden;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+      border: 1px solid #ddd;
+  }
 </style>
 {% endblock %}
 {% block section %}
@@ -177,12 +185,12 @@
 
             onTabClick: function(tab, navigation, index) {
 
-                var form = $('form[name="step'+ (index+1) +'"]');
+                /*var form = $('form[name="step'+ (index+1) +'"]');
                 form.parsley().validate();
 
                 if (!form.parsley().isValid()) {
                     return false;
-                }
+                }*/
 
             }
 
@@ -353,5 +361,7 @@
 
     });
 </script>
-
+{% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
+{% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}
+{% include 'front-end/include/formulir_tdp_pt/popup/tambah_cabang.html' %}
 {% endblock %}
