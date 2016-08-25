@@ -44,4 +44,5 @@ urlpatterns = [
     url(r'^cari-pengajuan-izin$', 'izin.views.cari_pengajuan', name='cari_pengajuan'),
     url(r'^layanan/siup/formulir$', 'izin.views.formulir_siup', name='formulir_siup'),
     url(r'^layanan/tdp-pt/formulir$', 'izin.views.formulir_tdp_pt', name='formulir_tdp_pt'),
+    url(r'^layanan/imb-umum/formulir$', 'izin.views.formulir_imb_umum', name='formulir_imb_umum'),
     ]

@@ -1,0 +1,162 @@
+<form method="POST" name="step2" role="form" class="form-horizontal">
+  {% csrf_token %}
+  	<h3>DATA IMB</h3>
+  	<hr class="style14" >
+
+  	<div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Bangunan</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Luas bangunan</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span>M&sup2;</span>
+          </span>
+        </div>
+      </div>
+
+      <label for="input01" class="col-sm-2 control-label">Jumlah bangunan</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span>Unit</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Lokasi pembangunan</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" rows="5" name="alamat" ></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+    	<label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong></label>
+        <div class="col-sm-3">
+			<select class="form-control chosen-select">
+	            <option value>-- Pilih Kota/Kabupaten --</option>
+	            {% if kabupaten %}
+	            {% for k in kabupaten %}
+	            <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+	            {% endfor %}
+	            {% endif %}
+			</select>
+        </div>
+    </div>
+
+    <div class="form-group">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
+	    <div class="col-sm-3">
+	      <select class="form-control chosen-select">
+	        <option value>-- Pilih Kecamatan --</option>
+	        {% if kecamatan %}
+	        {% for k in kecamatan %}
+	        <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+	        {% endfor %}
+	        {% endif %}
+	      </select>
+	    </div>
+    </div>
+
+    <div class="form-group">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+	    <div class="col-sm-3">
+	      <select class="form-control chosen-select mb-10">
+	        <option value>-- Pilih Kelurahan/Desa --</option>
+	        {% if desa %}
+	        {% for d in desa %}
+	        <option value="{{ d.id }}">{{ d.nama_desa }}</option>
+	        {% endfor %}
+	        {% endif %}
+	      </select>
+	    </div>
+    </div>
+
+    <div class="form-group">
+		<label for="input01" class="col-sm-2 control-label">Luas tanah</label>
+		<div class="col-sm-3">
+		    <div class="input-group">
+	          <input type="text" class="form-control">
+	          <span class="input-group-addon">
+	            <span>M&sup2;</span>
+	          </span>
+	        </div>
+		</div>
+	</div>
+
+	<div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Status hak tanah</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select mb-10">
+            <option>-- Pilih Status hak tanah --</option>
+            <option>Hak Milik</option>
+            <option>Hak Guna</option>
+            <option>Milik</option>
+            <option>Yang dikuasai</option>
+          </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+		<label for="input01" class="col-sm-2 control-label">No. Surat Tanah</label>
+		<div class="col-sm-3">
+		  <input type="text" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal surat tanah</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h5><u><strong>Perluasan / Penambahan Bangunan</strong></u></h5>
+    <h5>Isi jika perluasan / penambahan bangunan</h5>
+
+    <div class="form-group">
+		<label for="input01" class="col-sm-2 control-label">Luas bangunan yg sudah ada</label>
+		<div class="col-sm-3">
+		 	<div class="input-group">
+	          <input type="text" class="form-control">
+	          <span class="input-group-addon">
+	            <span>M&sup2;</span>
+	          </span>
+	        </div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="input01" class="col-sm-2 control-label">No IMB</label>
+		<div class="col-sm-4">
+		  <input type="text" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal IMB</label>
+      <div class="col-sm-4">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+</form>

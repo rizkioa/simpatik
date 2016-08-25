@@ -189,4 +189,3 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 #LOGOUT_URL = 'frontlogout'
 
 LOGIN_REDIRECT_URL = 'frontindex'
-
