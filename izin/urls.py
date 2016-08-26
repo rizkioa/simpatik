@@ -47,6 +47,9 @@ urlpatterns = [
     url(r'^layanan/imb-umum/formulir$', 'izin.views.formulir_imb_umum', name='formulir_imb_umum'),
     url(r'^layanan/imb-perumahan/formulir$', 'izin.views.formulir_imb_perumahan', name='formulir_imb_perumahan'),
     url(r'^layanan/imb-reklame/formulir$', 'izin.views.formulir_imb_reklame', name='formulir_imb_reklame'),
+    url(r'^layanan/tdp-cv/formulir$', 'izin.views.formulir_tdp_cv', name='formulir_tdp_cv'),
+    url(r'^layanan/tdp-firma/formulir$', 'izin.views.formulir_tdp_firma', name='formulir_tdp_firma'),
+    url(r'^layanan/tdp-po/formulir$', 'izin.views.formulir_tdp_po', name='formulir_tdp_po'),
 
     # url for ajax siup
     url(r'^layanan/siup/pemohon/save/$', 'izin.views.siup_identitas_pemohon_save_cookie', name='siup_pemohon_save'),
