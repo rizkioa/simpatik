@@ -1,0 +1,300 @@
+<form method="POST" name="step5" role="form" class="form-horizontal">
+  {% csrf_token %}
+    <h3>LEGALITAS PERUSAHAAN</h3>
+    <hr class="style14">
+    <h4>A. Akta Pendirian</h4>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Akta dan Pengesahan</label>
+      <div class="col-sm-7">
+        <select class="form-control chosen-select mb-10">
+          <option>1</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Nama Notaris</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Alamat Notaris</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Telp Notaris</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Akta</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Akta</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Pengesahan</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Pengesahan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+		<h4 class="custom-font col-sm-2" style=""><strong>B. Akta Perubahan</strong></h4> 
+		<div class="col-sm-10" style="padding-bottom: 20px; padding-top: 2px;">
+			<label class="checkbox checkbox-custom-alt">
+				<input type="checkbox" id="switch_akta_perubahan"><i></i> Ada
+			</label>
+		</div>
+    </div>
+
+    <!-- <div id="perubahan" class="collapse"> -->
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Jenis Akta dan Pengesahan</label>
+        <div class="col-sm-7">
+          <select class="form-control chosen-select mb-10" id="akta_pengesahan">
+            <option>1</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Nama Notaris</label>
+        <div class="col-sm-7">
+          <input type="text" class="form-control" id="nama_notaris_akta_perubahan">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Alamat Notaris</label>
+        <div class="col-sm-7">
+          <textarea class="form-control" rows="5" id="alamat_notaris" name="alamat" placeholder="Isi alamat lengkap rumah anda"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Telp Notaris</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="telp_notaris">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">No. Akta</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="no_akta_notaris">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Tanggal Akta</label>
+        <div class="col-sm-5">
+          <div class="input-group datepicker w-360 mt-10" data-format="L">
+            <input type="text" class="form-control" id="tanggal_akta_akta_perubahan">
+            <span class="input-group-addon">
+              <span class="fa fa-calendar"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">No. Pengesahan</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" id="no_pengesahan">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Tanggal Pengesahan</label>
+        <div class="col-sm-5">
+          <div class="input-group datepicker w-360 mt-10" data-format="L">
+            <input type="text" class="form-control" id="tanggal_pengesahan">
+            <span class="input-group-addon">
+              <span class="fa fa-calendar"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <div class="row">
+		<h4 class="custom-font col-sm-4" style="width:28%"><strong>C. Pengesahan Materi Hukum dan HAM </strong></h4>
+		<div class="col-sm-5" style="padding-bottom: 20px; padding-top: 2px;">
+			<label class="checkbox checkbox-custom-alt">
+				<input type="checkbox" id="switch_pengesahan_menteri"><i></i> Ada
+			</label> 
+		</div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Akta dan Pengesahan</label>
+      <div class="col-sm-7">
+        <select class="form-control chosen-select mb-10" id="c_jenis_akta">
+          <option>1</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Pengesahan</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="c_no_pengesahan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Pengesahan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control" id="c_tanggal_pengesahan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+		<h4 class="custom-font col-sm-6" style="width:48%"><strong>D. Persetujuan Menteri Hukum dan HAM Atas Perubahan Anggaran Dasar </strong></h4> 
+		<div class="col-sm-6" style="padding-bottom: 20px; padding-top: 2px;">
+			<label class="checkbox checkbox-custom-alt">
+				<input type="checkbox" id="switch_persetujuan_menteri"><i></i> Ada
+			</label> 
+		</div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Akta dan Pengesahan</label>
+      <div class="col-sm-7">
+        <select class="form-control chosen-select mb-10" id="d_jenis_akta">
+          <option>1</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Pengesahan</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="d_no_pengesahan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Pengesahan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control" id="d_tanggal_pengesahan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+		<h4 class="custom-font col-sm-5" style="width:35%"><strong>E. Penerimaan Laporan Perubahan Anggaran Dasar </strong></h4>
+      	<div class="col-sm-5" style="padding-bottom: 20px; padding-top: 2px;">
+	        <label class="checkbox checkbox-custom-alt">
+				<input type="checkbox" id="switch_penerimaan_laporan"><i></i> Ada
+			</label> 
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Akta dan Pengesahan</label>
+      <div class="col-sm-7">
+        <select class="form-control chosen-select mb-10" id="e_jenis_akta">
+          <option>1</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Pengesahan</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="e_no_pengesahan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Pengesahan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control" id="e_tanggal_pengesahan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+		<h4 class="custom-font col-sm-5" style="width:41%"><strong>F. Penerimaan Pemberitahuan Perubahan Direksi/ Kominsaris </strong></h4> 
+		<div class="col-sm-5" style="padding-bottom: 20px; padding-top: 2px;">
+			<label class="checkbox checkbox-custom-alt">
+				<input type="checkbox" id="switch_penerimaan_pemberitahuan"><i></i> Ada
+			</label> 
+		</div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Akta dan Pengesahan</label>
+      <div class="col-sm-7">
+        <select class="form-control chosen-select mb-10" id="f_jenis_akta">
+          <option>1</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Pengesahan</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="f_no_pengesahan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Pengesahan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control" id="f_tanggal_pengesahan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+</form>

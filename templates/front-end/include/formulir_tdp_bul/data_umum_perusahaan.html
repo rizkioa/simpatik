@@ -1,0 +1,232 @@
+<form method="POST" name="step3" role="form" class="form-horizontal">
+	{% csrf_token %}  
+	<h3>DATA UMUM PERUSAHAAN</h3>
+	<hr class="style14">
+
+	<div class="row">
+      <div class="col-md-12">
+        <label class="checkbox checkbox-custom-alt">
+          <input type="checkbox" data-toggle="collapse" data-target="#cabang"><i></i> Bagi kantor cabang/kantor cabang pembantu/perwakilan, lengkapi data:
+        </label>
+      </div>
+    </div>
+
+    <div id="cabang" class="collapse">
+    	<div class="form-group">
+	      <label for="input01" class="col-sm-2 control-label">Nama Perusahaan</label>
+	      <div class="col-sm-7">
+	        <input type="text" class="form-control" id="input01">
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+	      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+	      <div class="col-sm-7">
+	        <textarea class="form-control" rows="5" name="alamat"></textarea>
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+		    <div class="col-sm-5">
+		      <select class="form-control chosen-select mb-10" name="provinsi">
+		        <option value>-- Pilih Provinsi --</option>
+		        {% if provinsi %}
+		        {% for p in provinsi %}
+		        <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
+		        {% endfor %}
+		        {% endif %}
+		      </select>
+		    </div>
+	    </div>
+
+	    <div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+		    <div class="col-sm-5">
+		      <select class="form-control chosen-select mb-10" name="kabupaten">
+		        <option value>-- Pilih Kota/Kabupaten --</option>
+		        {% if kabupaten %}
+		        {% for k in kabupaten %}
+		        <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+		        {% endfor %}
+		        {% endif %}
+		      </select>
+		    </div>
+	    </div>
+
+		<div class="form-group">
+			<label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+			<div class="col-sm-5">
+			  <select class="form-control chosen-select mb-10" name="kecamatan">
+			    <option value>-- Pilih Kecamatan --</option>
+			    {% if kecamatan %}
+			    {% for k in kecamatan %}
+			    <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+			    {% endfor %}
+			    {% endif %}
+			  </select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+			<div class="col-sm-5">
+			  <select class="form-control chosen-select mb-10" name="kelurahan">
+			    <option value>-- Pilih Kelurahan/Desa --</option>
+			    {% if desa %}
+			    {% for d in desa %}
+			    <option value="{{ d.id }}">{{ d.nama_desa }}</option>
+			    {% endfor %}
+			    {% endif %}
+			  </select>
+			</div>
+		</div>
+
+		<div class="form-group">
+	      <label for="input01" class="col-sm-2 control-label">No. TDP</label>
+	      <div class="col-sm-3">
+	        <input type="text" class="form-control" id="input01">
+	      </div>
+	    </div>
+    </div>
+	
+    <div class="row">
+      <div class="col-md-12">
+        <label class="checkbox checkbox-custom-alt">
+          <input type="checkbox" data-toggle="collapse" data-target="#produksi"><i></i> Bagi memiliki unit Produksi, lengkapi data:
+        </label>
+      </div>
+    </div>
+
+    <div id="produksi" class="collapse">
+    	<div class="form-group">
+	      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+	      <div class="col-sm-7">
+	        <textarea class="form-control" rows="5" name="alamat"></textarea>
+	      </div>
+	    </div>
+
+	    <div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+		    <div class="col-sm-5">
+		      <select class="form-control chosen-select mb-10" name="provinsi">
+		        <option value>-- Pilih Provinsi --</option>
+		        {% if provinsi %}
+		        {% for p in provinsi %}
+		        <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
+		        {% endfor %}
+		        {% endif %}
+		      </select>
+		    </div>
+	    </div>
+
+	    <div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+		    <div class="col-sm-5">
+		      <select class="form-control chosen-select mb-10" name="kabupaten">
+		        <option value>-- Pilih Kota/Kabupaten --</option>
+		        {% if kabupaten %}
+		        {% for k in kabupaten %}
+		        <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+		        {% endfor %}
+		        {% endif %}
+		      </select>
+		    </div>
+	    </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-4 control-label text-left"><strong>Jumlah bank dimana perusahaan ini menjadi nasabah</strong></label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Nasabah Utama Bank 1.</strong></label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">(isi jika ada) 2.</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>Tanggal Pendirian</strong></label>
+        <div class="col-sm-5">
+          <div class="input-group datepicker w-360 mt-10" data-format="L">
+            <input type="text" class="form-control" id="datepicker">
+            <span class="input-group-addon">
+              <span class="fa fa-calendar"></span>
+            </span>
+          </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>Tanggal mulai kegiatan</strong></label>
+        <div class="col-sm-5">
+          <div class="input-group datepicker w-360 mt-10" data-format="L">
+            <input type="text" class="form-control" id="datepicker2">
+            <span class="input-group-addon">
+              <span class="fa fa-calendar"></span>
+            </span>
+          </div>
+        </div>
+    </div>
+
+	<div class="form-group">
+		<label for="input01" class="col-sm-3 control-label text-left">Jangka waktu berdirinya perusahaan</label>
+		<div class="col-sm-1">
+			<input type="text" class="form-control" id="hasil">
+		</div>
+		<label for="input01" class="col-sm-1 control-label text-left">tahun</label>
+	</div>
+
+	<div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Merk dagang (jika ada)</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Merk Dagang</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Pemegang hak cipta (jika ada)</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Hak cipta</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Pemegang hak paten (jika ada)</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+        <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Hak paten</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+</form>

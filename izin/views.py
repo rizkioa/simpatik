@@ -154,7 +154,7 @@ def layanan_tdp_cv(request, extra_context={}):
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - CV"})
 	extra_context.update({'title_short': "TDP - CV"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_tdp_cv") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "26" })
 	return render(request, "front-end/layanan/tdp_cv.html", extra_context)
@@ -456,7 +456,7 @@ def formulir_tdp_firma(request, extra_context={}):
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
 	return render(request, "front-end/formulir/tdp_firma.html", extra_context)
 
-def formulir_tdp_po(request, extra_context={}):
+def formulir_tdp_perorangan(request, extra_context={}):
 	negara = Negara.objects.all()
 	extra_context.update({'negara': negara})
 	provinsi = Provinsi.objects.all()
@@ -470,6 +470,36 @@ def formulir_tdp_po(request, extra_context={}):
 	jenis_pemohon = JenisPemohon.objects.all()
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
 	return render(request, "front-end/formulir/tdp_po.html", extra_context)
+
+def formulir_tdp_koperasi(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	return render(request, "front-end/formulir/tdp_koperasi.html", extra_context)
+
+def formulir_tdp_bul(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	return render(request, "front-end/formulir/tdp_bul.html", extra_context)
 
 def identitas_pemohon(request, extra_context={}):
 	nama_lengkap = request.POST.get("nama_lengkap", None)
