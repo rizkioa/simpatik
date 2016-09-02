@@ -1,3 +1,75 @@
-<form method="POST" name="step8" role="form" class="form-horizontal">
-<h1>Upload dokumen persyaratan</h1>
+<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File KTP/Paspor (Dirut/Pemilik/Pengurus/Penanggung jawab)</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File NPWP Perusahaan</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File Akta Pendirian</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File Akta Perubahan (jika ada)</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">File Sertifikat Asli TDP (bagi yang Daftar Ulang)</label>
+    <div class="col-sm-5">
+      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+    </div>
+    <div class="col-sm-1">
+      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+    </div>
+  </div>
+
 </form>

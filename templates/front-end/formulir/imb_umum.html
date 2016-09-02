@@ -1,0 +1,236 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+<style type="text/css">
+  @media only screen and (max-width: 1280px){
+    .hidden_title{
+       /*display: none !important;*/
+       font-size: 10px;
+    }
+    /*.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+      padding-bottom: 24px
+    }
+    .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+      padding-bottom: 24px;
+    }*/
+  }
+  @media only screen and (max-width: 844px){
+    .hidden_title{
+      /*display: block !important;*/
+      font-size: 12px;
+    }
+  }
+  @media only screen and (max-width: 986px){
+    .hidden_title{
+       display: none !important;
+       /*font-size: 10px;*/
+    }
+    .tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+      padding-bottom: 24px
+    }
+    .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+      padding-bottom: 24px;
+    }
+  }
+  @media only screen and (max-width: 767px){
+    .hidden_title{
+      display: block !important;
+      /*font-size: 12px;*/
+    }
+  }
+  hr.style14 { 
+    border: 0; 
+    height: 2px; 
+    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+  }
+  .tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+    background-color: #22beef;
+    color: aliceblue;
+  }
+  .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+    background-color: #616f77;
+  }
+  .tab-wizard .nav-tabs > li:before {
+    background-color: #333;
+  }
+</style>
+{% endblock %}
+{% block section %}
+<div class="pageheader">
+    <h2>IMB Umum
+    <span>Berikut adalah info pendaftaran perizinan IMB Kabupaten Kediri.</span>
+  </h2>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+      </li>
+      <li>
+        <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+      </li>
+      <li>
+        <a href="#"> IMB Umum</a>
+      </li>
+      <li>
+        <a href="#">Formulir IMB Umum</a>
+      </li>
+    </ul>
+  </div>
+</div>
+  
+<div id="rootwizard" class="tab-container tab-wizard">
+  <ul class="nav nav-tabs nav-justified">
+    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Data IMB</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Identitas Bangunan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane" id="tab1"> 
+      <!-- Identitas pemohon --> 
+      {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+    </div>
+
+    <div class="tab-pane" id="tab2">
+      <!-- data imb -->
+      {% include 'front-end/include/imb_umum/data_imb.html' %}
+    </div>
+
+    <div class="tab-pane" id="tab3">
+      <!-- identifikasi bangunan -->
+      {% include 'front-end/include/imb_umum/identifikasi_bangunan.html' %}
+    </div>
+
+    <div class="tab-pane" id="tab4">
+      <!-- Upload Dokumen -->
+      {% include 'front-end/include/imb_umum/upload_dokumen.html' %}
+    </div>
+
+    <div class="tab-pane" id="tab5">
+      <!-- Konfirmasi -->
+      {% include 'front-end/include/imb_umum/konfirmasi.html' %}
+    </div>
+
+    <ul class="pager wizard">
+      <li class="previous"><a class="btn btn-default">Kembali</a></li>
+      <li class="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+      <li class="next finish" style="display:none;">
+        <button onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
+          <i class="fa fa-arrow-right"></i>
+          <span>Selesai</span>
+        </button>
+      </li>
+      </form>
+    </ul>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script>
+    $(window).load(function(){
+
+        $('#rootwizard').bootstrapWizard({
+            onTabShow: function(tab, navigation, index) {
+                var $total = navigation.find('li').length;
+                var $current = index+1;
+                if($current >= $total) {
+                    $('#rootwizard').find('.pager .next').hide();
+                    $('#rootwizard').find('.pager .finish').show();
+                    $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                } else {
+                    $('#rootwizard').find('.pager .next').show();
+                    $('#rootwizard').find('.pager .finish').hide();
+                }
+
+            },
+
+            onNext: function(tab, navigation, index) {
+                var form = $('form[name="step'+ index +'"]');
+
+                form.parsley().validate();
+
+                if (!form.parsley().isValid()) {
+                    return false;
+                }
+
+            },
+
+            onTabClick: function(tab, navigation, index) {
+
+                // var form = $('form[name="step'+ (index+1) +'"]');
+                // form.parsley().validate();
+
+                // if (!form.parsley().isValid()) {
+                //     return false;
+                // }
+
+            }
+        });
+
+        function make_disabled(elem_){
+            elem_.prop( "disabled", "disabled");
+            elem_.trigger("chosen:updated");
+        }
+
+        function make_enabled(elem_){
+              elem_.removeAttr('disabled')
+              elem_.trigger("chosen:updated");
+        }
+
+        function form_akta_perubahan_make_disabled(){
+          make_disabled($('#akta_pengesahan'))
+          make_disabled($('#nama_notaris_akta_perubahan'))
+          make_disabled($('#alamat_notaris'))
+          make_disabled($('#telp_notaris'))
+          make_disabled($('#no_akta_notaris'))
+          make_disabled($('#tanggal_akta_akta_perubahan'))
+          make_disabled($('#no_pengesahan'))
+          make_disabled($('#tanggal_pengesahan'))
+        }
+
+        form_akta_perubahan_make_disabled();
+
+        function form_akta_perubahan_make_enabled(){
+          make_enabled($('#akta_pengesahan'))
+          make_enabled($('#nama_notaris_akta_perubahan'))
+          make_enabled($('#alamat_notaris'))
+          make_enabled($('#telp_notaris'))
+          make_enabled($('#no_akta_notaris'))
+          make_enabled($('#tanggal_akta_akta_perubahan'))
+          make_enabled($('#no_pengesahan'))
+          make_enabled($('#tanggal_pengesahan'))
+        }
+
+        $("#switch_akta_perubahan").change(function(){
+          if($(this).is(':checked')){
+            form_akta_perubahan_make_enabled();
+          }else{
+            form_akta_perubahan_make_disabled();
+          }
+        })
+
+    });
+</script>
+{% endblock %}

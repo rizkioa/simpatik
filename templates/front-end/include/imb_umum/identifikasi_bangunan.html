@@ -1,0 +1,154 @@
+<form method="POST" name="step3" role="form" class="form-horizontal">
+  {% csrf_token %}
+  	<h3>IDENTIFIKASI BANGUNAN</h3>
+  	<hr class="style14">
+
+  	<div class="form-group">
+        <label for="input01" class="col-sm-3 control-label text-left">A. Kegiatan Pembangunan Gedung</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Kegiatan Pembangunan Gedung --</option>
+            <option>Pembangunan Bangunan Gedung Baru (1,00)</option>
+            <option>Rehabilitasi/Renovasi Berat (0,65)</option>
+            <option>Rehabilitasi/Renovasi Sedang (0,45)</option>
+            <option>Pelestarian/Pemugaran Pratama (0,65)</option>
+            <option>Pelestarian/Pemugaran Madya (0,45)</option>
+            <option>Pelestarian/Pemugaran Utama (0,30)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <h5>B. Parameter Bangunan Gedung</h5>
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Fungsi Bangunan</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Fungsi Bangunan --</option>
+            <option>Hunian (0,50)</option>
+            <option>Keagamaan (0,00)</option>
+            <option>Usaha (3,00)</option>
+            <option>Sosial Budaya Milik Negara (0,00)</option>
+            <option>Sosial Budaya Selain Milik Negara (1,00)</option>
+            <option>Ganda (4,00)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Tingkat Kompleksitas (0,25)</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Tingkat Kompleksitas --</option>
+            <option>Sederhana (0,40)</option>
+            <option>Tidak Sederhana (0,70)</option>
+            <option>Khusus (1,00)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+	<div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Tingkat Permanensi (0,20)</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Tingkat Permanensi --</option>
+            <option>Permanen (1,00)</option>
+            <option>Semi Permanen (0,70)</option>
+            <option>Darurat (0,40)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Ketinggian Bangunan (0,10)</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Ketinggian Bangunan --</option>
+            <option>1 s/d 2 lantai (0,40)</option>
+            <option>3 s/d 5 lantai (0,70)</option>
+            <option>5 lantai ke atas (1,00)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Lokasi Bangunan (0,15)</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Lokasi Bangunan --</option>
+            <option>Tepi Jalan Nasional (1,00)</option>
+            <option>Tepi Jalan Provinsi (0,70)</option>
+            <option>Tepi Jalan Kabupaten (0,50)</option>
+            <option>Tepi Jalan Desa (0,40)</option>
+            <option>Tepi Jalan Stategis (0,70)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Kepemilikan Bangunan (0,05)</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Kepemilikan Bangunan --</option>
+            <option>Negara (0,00)</option>
+            <option>Yayasan (0,40)</option>
+            <option>Badan Usaha (1,00)</option>
+            <option>Perorangan (0,70)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">Lama Penggunaan Bangunan</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select">
+            <option>-- Pilih Lama Penggunaan Bangunan --</option>
+            <option>< 6 bulan (0,40)</option>
+            <option>6 bulan s/d 3 tahun (0,70)</option>
+            <option>> 3 tahun (1,00)</option>
+          </select>
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>
+
+    <div class="form-group">
+        <label for="input01" class="col-sm-3 control-label">TOTAL BOBOT</label>
+        <div class="col-sm-5">
+          
+        </div>
+        <label class="col-sm-1 control-label" style="width:47px;"></label>
+	    <div class="col-sm-1">
+	        <input type="text" class="form-control" id="input01">
+	    </div>
+    </div>     
+</form>

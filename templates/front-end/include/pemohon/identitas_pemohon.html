@@ -36,17 +36,18 @@
   </div>
 
   <div class="form-group">
-    <label for="input01" class="col-sm-2 control-label"><strong>No. KTP</strong> </label>
+    <label for="input01" class="col-sm-2 control-label"><strong>No. KTP/Paspor</strong> </label>
     <div class="col-sm-5">
       <input type="text" class="form-control" id="input01" name="ktp">
     </div>
   </div>
-  <div class="form-group">
+  
+  <!-- <div class="form-group">
     <label for="input01" class="col-sm-2 control-label"><strong>Paspor</strong> </label>
     <div class="col-sm-5">
       <input type="text" class="form-control" id="input01" name="paspor" data-msg="Data tidak boleh kosong">
     </div>
-  </div>
+  </div> -->
 
   <div class="form-group">
     <label for="input01" class="col-sm-2 control-label"><strong>Nama Lengkap</strong> </label>
@@ -74,11 +75,14 @@
       <input type="text" class="form-control" id="input01" name="tempat_lahir">
       <span></span>
     </div>
-    <div class="input-group datepicker w-360" data-format="L">
-      <input type="text" class="form-control" name="tanggal_lahir">
-      <span class="input-group-btn">
-        <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-      </span>
+    <label for="input01" class="col-sm-1 control-label"></label>
+    <div class="col-sm-3">
+      <div class="input-group datepicker" data-format="L">
+        <input type="text" class="form-control">
+        <span class="input-group-addon">
+          <span class="fa fa-calendar"></span>
+        </span>
+      </div>
     </div>
   </div>
 
