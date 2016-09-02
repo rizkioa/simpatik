@@ -45,9 +45,9 @@ class DasarHukumAdmin(admin.ModelAdmin):
 admin.site.register(DasarHukum, DasarHukumAdmin)
 
 class JenisIzinAdmin(admin.ModelAdmin):
-	list_display = ('nama_izin','jenis_izin','keterangan')
+	list_display = ('kode','nama_izin','jenis_izin','keterangan')
 	list_filter = ('dasar_hukum','jenis_izin')
-	search_fields = ('nama_izin','jenis_izin', 'dasar_hukum', 'keterangan')
+	search_fields = ('kode','nama_izin','jenis_izin', 'dasar_hukum', 'keterangan')
 
 	def tr_dasar_hukum(self, request, id_jenis_izin):
 		jenis_izin_list = JenisIzin.objects.filter(id=id_jenis_izin)

@@ -286,5 +286,9 @@ class CustomMenu(Menu):
                 menu_pengguna,              
                 menu_pengaturan,
             ]
+
+        if request.user.groups.filter(name="Operator"):
+            pass
+
         
         return super(CustomMenu, self).init_with_context(context)

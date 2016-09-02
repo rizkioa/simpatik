@@ -172,12 +172,13 @@ def dasarhukum_delete(sender, instance, **kwargs):
 
 class JenisIzin(models.Model):
 	dasar_hukum = models.ManyToManyField(DasarHukum, verbose_name='Dasar Hukum')
+	kode = models.CharField(max_length=5, verbose_name="Kode", blank=True, null=True)
 	nama_izin = models.CharField(max_length=100, verbose_name='Nama Izin')
 	jenis_izin = models.CharField(max_length=20, verbose_name='Jenis Izin', choices=JENIS_IZIN, default=1)
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 	
 	def as_option(self):
-		return "<option value='"+str(self.id)+"'>"+str(self.nama_izin)+"</option>"
+		return "<option value='"+str(self.kode)+"'>"+str(self.nama_izin)+"</option>"
 
 	def __unicode__(self):
 		return "%s" % (self.nama_izin)

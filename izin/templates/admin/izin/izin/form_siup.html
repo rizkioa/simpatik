@@ -65,6 +65,7 @@
                     elem_.html(json.data);
                     make_disabled(elem_, false)
                     elem_chosen_.unmask()
+                    
                     if (json.count > 1){
                         $( ".field-id_kelompok_jenis_izin" ).css('display', 'block')
                     }else{
@@ -76,6 +77,8 @@
                 }
             });
         }
+
+
 
         if ($( "#id_jenis_izin" ).val() != ""){
             id_jenis = $( "#id_jenis_izin" ).val()
@@ -167,32 +170,31 @@
 
                 <!-- tile body -->
                 <div class="tile-body">
-                    {% if messages %}
-                        <ul class="messages">
-                            {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                    {% for field in form %}
-                        {{ field.errors }}
-                        <div class="form-row form-group field-{{ field.id_for_label}}">
-                            <label class="required col-sm-2 control-label" for="{{ field.id_for_label}}">{{ field.label }}</label>
-                            {% if field|is_select %}
-                                {{ field|addcls:"chosen-select" }}
-                            {% else %}
-                                {{ field|addcls:"form-control" }}
+                    
+                    <div class="form-row form-group field-jenis_izin">
+                        <label class="required col-sm-2 control-label" for="">Jenis Izin</label>
+                        <select class="chosen-select" id="id_jenis_izin" name="jenis_izin">
+                            {% if jenis %}
+                                {% for j in jenis %}
+                                <option value="{{ j.0 }}">{{ j.1 }}</option>
+                                {% endfor %}
                             {% endif %}
-                        </div>
-                    {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-row form-group field-nama_izin">
+                        <label class="required col-sm-2 control-label" for="">&nbsp;</label>
+                        <select class="chosen-select" id="id_nama_izin" name="nama_izin">
+                        </select>
+                    </div>
                     <div class="form-row form-group field-id_kelompok_jenis_izin" style="display: none">
                         <label class="required col-sm-2 control-label" for="">&nbsp;</label>
-                        <select class="chosen-select" id="id_kelompok_jenis_izin" name="jenis_izin">
-                        
+                        <select class="chosen-select" id="id_kelompok_jenis_izin" name="kelompok_izin">
+                            
                         </select>
                     </div>
                 </div>
                 <!-- /tile body -->
+                            
                 <div class="tile-footer text-right bg-tr-black lter dvd dvd-top">
 					<div class="submit-row">
 						<button type="submit" class="btn btn-primary btn-ef btn-ef-3 btn-ef-3a" name="_save">
