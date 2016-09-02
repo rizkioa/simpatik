@@ -1,0 +1,84 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" >
+  {% csrf_token %}   
+	<h3>IDENTITAS PERUSAHAAN</h3>
+    <hr class="style14" style="height:2px">
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label text-left">Status penanaman modal</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option>-- Pilih Status penanaman modal --</option>
+          <option>PMA (Penanaman Modal Asing)</option>
+          <option>PMDN (Penanaman Modal Dalam Negeri)</option>
+          <option>Lain-lain</option>
+        </select>
+      </div>
+    </div>
+
+    <h4><u><strong>Kekeayaan Bersih Dan Saham</strong></u></h4>
+
+    <div class="form-group">
+	    <label class="col-sm-2 control-label text-left">Kekayaan bersih perusahaan </label>
+	    <div class="col-sm-5">
+	      <input type="text" class="form-control" id="input01">
+	      <span class="help-block mb-0">(tidak termasuk tanah dan bangunan tempat usaha)</span>
+	    </div>
+	</div>
+
+	<h4>Saham (Khusus Untuk Penanaman Modal Asing)</h4>
+	<div class="form-group">
+	    <label class="col-sm-2 control-label">a. Total Nilai Saham</label>
+	    <div class="col-sm-5">
+	      <input type="text" class="form-control">
+	    </div>
+	</div>
+
+	<div class="form-group">
+	    <label class="col-sm-2 control-label">b. Komposisi Kepemilikan Saham</label>
+	    <div class="col-sm-5">
+	      <div class="input-group " style="padding-top: 6px;padding-bottom: 10px;">
+	        <span class="input-group-addon">Nasional</span>
+	        <input type="text" class="form-control">
+	        <span class="input-group-addon">%</span>
+	      </div>
+	      <div class="input-group ">
+	        <span class="input-group-addon text-center" style="padding-left: 31px;">Asing</span>
+	        <input type="text" class="form-control">
+	        <span class="input-group-addon">%</span>
+	      </div>
+	    </div>
+	</div>
+
+	<h4><u><strong>Kegiatan Usaha</strong></u></h4>
+
+	<div class="form-group">
+      <label class="col-sm-2 control-label text-left">Kelembagaan</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option>-- Pilih Kelembagaan --</option>
+          <option>Perdagangan mikro</option>
+          <option>Perdagangan kecil</option>
+          <option>Perdagangan menengah</option>
+          <option>Perdagangan besar</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label text-left">Kegiatan usaha (KBLI)</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option>-- Pilih Kegiatan usaha --</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label text-left">Barang / jasa dagangan utama</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option>-- Pilih Produk --</option>
+        </select>
+      </div>
+    </div>
+</form>
