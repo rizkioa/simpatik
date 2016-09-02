@@ -61,6 +61,18 @@
   .tab-wizard .nav-tabs > li:before {
     background-color: #333;
   }
+  .onoffswitch.labeled .onoffswitch-inner:before {
+    content: "Ada";
+  }
+  .onoffswitch.labeled .onoffswitch-inner:after {
+    content: "Tidak";
+  }
+  .onoffswitch.labeled {
+    width: 59px;
+  }
+  .onoffswitch.labeled .onoffswitch-switch {
+    right: 34px;
+  }
 </style>
 {% endblock %}
 {% block section %}
@@ -90,8 +102,8 @@
   <ul class="nav nav-tabs nav-justified">
     <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
     <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Legalitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Kekayaan </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data SIUP</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Legalitas Perusahaan </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
     <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
     <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
   </ul>
@@ -108,12 +120,12 @@
 
     <div class="tab-pane" id="tab3">
       <!-- Legalitas perusahaan -->
-      {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
+      {% include 'front-end/include/formulir_siup/data_siup.html' %}
     </div>
 
     <div class="tab-pane" id="tab4">
       <!-- Kekayaan -->
-      {% include 'front-end/include/formulir_siup/kekayaan.html' %}
+      {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
     </div>
 
     <div class="tab-pane" id="tab5">
