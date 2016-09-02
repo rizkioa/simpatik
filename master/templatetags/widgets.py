@@ -1,6 +1,19 @@
 from django import template
-register = template.Library()
 from django import forms
+import datetime
+
+register = template.Library()
+
+
+@register.filter(name='add_date')
+def add_date(datetime_, addDays=0):
+
+	if (addDays!=0):
+		anotherTime = datetime_ + datetime.timedelta(days=addDays)
+	else:
+		anotherTime = datetime_
+
+	return anotherTime
 
 @register.filter(name='addcls')
 def addcls(field, css):

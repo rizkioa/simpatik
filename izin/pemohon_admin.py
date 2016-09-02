@@ -79,6 +79,18 @@ class PemohonAdmin(admin.ModelAdmin):
 		results = [ob.as_json() for ob in pemohon_get]
 		return HttpResponse(json.dumps(results))
 
+	def ajax_cek_email(self, request):
+		email_ = request.POST.get('value', None)
+		results = False
+		if email_:
+			pemohon = Pemohon.objects.filter(email=email_)
+			print pemohon.count()
+			if pemohon.count() > 0:
+				results = False
+			else:
+				results = True
+		return HttpResponse(json.dumps(results))
+
 	# def pemohon_add(request, pemohon_id=None):
 	# 	pemohon_add = Pemohon.objects.filter(id=pemohon_id)
 	# 	return HttpResponse(pemohon_add)
@@ -100,6 +112,7 @@ class PemohonAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^ajax/autocomplete/$', self.admin_site.admin_view(self.ajax_autocomplete), name='pemohon_ajax_autocomplete'),
 			url(r'^ajax/pemohon/(?P<pemohon_id>\w+)/$', self.admin_site.admin_view(self.ajax_pemohon), name='ajax_pemohon'),
+			url(r'^ajax/cek-email/$', self.admin_site.admin_view(self.ajax_cek_email), name='ajax_cek_email'),
 			# url(r'^pemohon/(?P<pemohon_id>[0-9]+)/$', self.admin_site.admin_view(self.admin_pemohon_edit), name="admin_pemohon_edit"),
 			# url(r'^(?P<pemohon_id>[0-9]+)/$', self.admin_site.admin_view(self.pemohon_edit), name="pemohon_edit"),
 			)
