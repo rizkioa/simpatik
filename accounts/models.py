@@ -7,7 +7,7 @@ from django.db import models
 
 from django.utils.deconstruct import deconstructible
 
-from master.models import JenisNomorIdentitas, Desa
+from master.models import JenisNomorIdentitas, Desa, AtributTambahan
 
 from uuid import uuid4
 
@@ -67,7 +67,7 @@ class AccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-class IdentitasPribadi(models.Model):
+class IdentitasPribadi(AtributTambahan):
 	nama_lengkap = models.CharField("Nama Lengkap", max_length=100)
 
 	tempat_lahir = models.CharField(max_length=30, verbose_name='Tempat Lahir', null=True, blank=True)
@@ -105,10 +105,6 @@ class Account(AbstractBaseUser, PermissionsMixin, IdentitasPribadi):
 	is_active = models.BooleanField(default=True, verbose_name="Apakah Active?")
 	is_admin = models.BooleanField(default=False, verbose_name="Apakah Admin?")
 
-	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
-	created_at = models.DateTimeField(editable=False)
-	updated_at = models.DateTimeField(auto_now=True)
-
 	objects = AccountManager()
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = ['nama_lengkap']
@@ -132,15 +128,15 @@ class Account(AbstractBaseUser, PermissionsMixin, IdentitasPribadi):
 			return settings.MEDIA_URL+str(self.foto)
 		return settings.STATIC_URL+"images/no-avatar.jpg"
 
-	def __unicode__(self):
-		return u'%s - %s' % (self.nama_lengkap, self.username)
-
 	def save(self, *args, **kwargs):
-		''' On save, update timestamps '''
+		self.nama_lengkap = self.nama_lengkap.upper()
 		if not self.id:
 			self.created_at = datetime.now()
 		self.updated_at = datetime.now()
-		return super(Account, self).save(*args, **kwargs)
+		super(Account, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return u'%s - %s' % (self.nama_lengkap, self.username)
 
 	class Meta:
 		ordering = ['id']

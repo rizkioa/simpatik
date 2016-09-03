@@ -1,5 +1,5 @@
 from django.db import models
-from master.models import Desa
+from master.models import Desa, AtributTambahan
 from accounts.utils import STATUS
 # from perusahaan.utils import AKTA, KEDUDUKAN
 # from accounts.models import IdentitasPribadi
@@ -95,9 +95,9 @@ class KegiatanUsaha(models.Model):
 		verbose_name = 'Kegiatan Usaha'
 		verbose_name_plural = 'Kegiatan Usaha'
 
-class Perusahaan(models.Model):
-	perusahaan_induk = models.ForeignKey('Perusahaan', blank=True, null=True) # contoh: Jika cabang, pusat nya dimasukkan juga
-	perusahaan_lama = models.ForeignKey('Perusahaan', blank=True, null=True) # contoh: pengembangan CV ke PT
+class Perusahaan(AtributTambahan):
+	perusahaan_induk = models.ForeignKey('Perusahaan', related_name='izin_perusahaan_induk', blank=True, null=True) # contoh: Jika cabang, pusat nya dimasukkan juga
+	perusahaan_lama = models.ForeignKey('Perusahaan', related_name='izin_perusahaan_lama', blank=True, null=True) # contoh: pengembangan CV ke PT
 
 	nama_perusahaan = models.CharField(max_length=100, verbose_name='Nama Perusahaan')
 	alamat_perusahaan = models.CharField(max_length=255,  verbose_name='Alamat Perusahaan')
@@ -111,12 +111,12 @@ class Perusahaan(models.Model):
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
 
 	# SIUP
-	kbli = models.ManyToManyField(KBLI, verbose_name='KBLI')
-	kelembagaan = models.ForeignKey(Kelembagaan, blank=True, null=True, verbose_name='Kelembagaan')
-	produk_utama = models.ManyToManyField(ProdukUtama, verbose_name='Barang / Jasa Utama')
-	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, blank=True, null=True, verbose_name='Jenis Penanaman Modal')
+	# 
+	# kelembagaan = models.ForeignKey(Kelembagaan, blank=True, null=True, verbose_name='Kelembagaan')
+	# produk_utama = models.ManyToManyField(ProdukUtama, verbose_name='Barang / Jasa Utama')
+	# jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, blank=True, null=True, verbose_name='Jenis Penanaman Modal')
 
-	jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, blank=True, null=True, verbose_name='Jenis Badan Usaha')
+	# jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, blank=True, null=True, verbose_name='Jenis Badan Usaha')
 
 	# nama_kelompok_perusahaan = models.CharField(max_length=100, blank=True, null=True, verbose_name='Nama Kelompok Perusahaan')
 	# nasabah_utama_bank1 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 1')
@@ -132,10 +132,6 @@ class Perusahaan(models.Model):
 	# status_perusahaan = models.ForeignKey(StatusPerusahaan, blank=True, null=True, verbose_name='Status Perusahaan')
 	# kerjasama = models.ForeignKey(JenisKerjasama, blank=True, null=True, verbose_name='Jenis Kerjasama')
 
-	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
-	created_at = models.DateTimeField(editable=False)
-	updated_at = models.DateTimeField(auto_now=True)
-	
 	def as_json(self):
 		desa = ''
 		kecamatan = ''
@@ -162,13 +158,6 @@ class Perusahaan(models.Model):
 
 	def __unicode__ (self):
 		return "%s" % (self.nama_perusahaan)
-
-	def save(self, *args, **kwargs):
-		''' On save, update timestamps '''
-		if not self.id:
-			self.created_at = datetime.now()
-		self.updated_at = datetime.now()
-		return super(Perusahaan, self).save(*args, **kwargs)
 
 	class Meta:
 		ordering = ['id']

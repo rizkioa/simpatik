@@ -1,6 +1,34 @@
 from django.db import models
+from accounts.utils import STATUS, get_status_color
+# from accounts.models import Account
+from datetime import datetime
 
 # Create your models here.
+
+class AtributTambahan(models.Model):
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
+
+	created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	created_at = models.DateTimeField(editable=False)
+	verified_by = models.ForeignKey("accounts.Account", related_name="verify_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_at = models.DateTimeField(editable=False, blank=True, null=True)
+	rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
+
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def get_color_status(self):
+		return get_status_color(self)
+		
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		if not self.id:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+		return super(AtributTambahan, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.status))
 
 class JenisPemohon(models.Model):
 	jenis_pemohon = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jenis Pemohon')

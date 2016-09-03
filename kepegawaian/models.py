@@ -137,10 +137,6 @@ class Pegawai(Account):
 			if username:
 				self.username = re.sub('[^0-9a-zA-Z]+', '', username)
 
-	def save(self, *args, **kwargs):
-		self.nama_lengkap = self.nama_lengkap.upper()
-		super(Pegawai, self).save(*args, **kwargs)
-
 	def __unicode__(self):
 		return u'%s' % (self.nama_lengkap)
 

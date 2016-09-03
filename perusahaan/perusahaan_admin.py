@@ -8,7 +8,7 @@ from django.template import RequestContext, loader
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 
-from perusahaan.models import Perusahaan,AktaNotaris,DataRincianPerusahaan,ProdukUtama
+from perusahaan.models import Perusahaan,ProdukUtama
 import json
 
 class PerusahaanAdmin(admin.ModelAdmin):
@@ -77,15 +77,15 @@ class PerusahaanAdmin(admin.ModelAdmin):
 		results = [ob.as_json() for ob in perusahaan_get]
 		return HttpResponse(json.dumps(results))
 
-	def ajax_legalitas_perusahaan(self, request, perusahaan_id=None):
-		aktanotaris_get = AktaNotaris.objects.filter( id=perusahaan_id )
-		results = [ob.as_json() for ob in aktanotaris_get]
-		return HttpResponse(json.dumps(results))
+	# def ajax_legalitas_perusahaan(self, request, perusahaan_id=None):
+	# 	aktanotaris_get = AktaNotaris.objects.filter( id=perusahaan_id )
+	# 	results = [ob.as_json() for ob in aktanotaris_get]
+	# 	return HttpResponse(json.dumps(results))
 
-	def ajax_kegiatan_usaha(self, request, perusahaan_id=None):
-		kegiatan_get = DataRincianPerusahaan.objects.filter( id=perusahaan_id )
-		results = [ob.as_json() for ob in kegiatan_get]
-		return HttpResponse(json.dumps(results))
+	# def ajax_kegiatan_usaha(self, request, perusahaan_id=None):
+	# 	kegiatan_get = DataRincianPerusahaan.objects.filter( id=perusahaan_id )
+	# 	results = [ob.as_json() for ob in kegiatan_get]
+	# 	return HttpResponse(json.dumps(results))
 
 	def ajax_produk_utama(self, request, perusahaan_id=None):
 		produkutama_get = ProdukUtama.objects.filter( id=perusahaan_id )
@@ -99,8 +99,8 @@ class PerusahaanAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^ajax/autocomplete/$', self.admin_site.admin_view(self.ajax_autocomplete), name='perusahaan_ajax_autocomplete'),
 			url(r'^ajax/perusahaan/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_perusahaan), name='ajax_perusahaan'),
-			url(r'^ajax/legalitas/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_legalitas_perusahaan), name='ajax_legalitas_perusahaan'),
-			url(r'^ajax/kegiatan_usaha/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_kegiatan_usaha), name='ajax_kegiatan_usaha'),
+			# url(r'^ajax/legalitas/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_legalitas_perusahaan), name='ajax_legalitas_perusahaan'),
+			# url(r'^ajax/kegiatan_usaha/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_kegiatan_usaha), name='ajax_kegiatan_usaha'),
 			url(r'^ajax/produk_utama/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_produk_utama), name='ajax_produk_utama'),
 			
 			)
