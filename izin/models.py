@@ -1,18 +1,15 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon
-
+from master.models import JenisPemohon, AtributTambahan
+from perusahaan.models import KBLI
 from decimal import Decimal
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 
 import os, re
 
-from accounts.utils import STATUS, get_status_color
 from izin.utils import JENIS_IZIN, get_tahun_choices
-
-# from perusahaan.models import Perusahaan
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -49,15 +46,6 @@ class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
 
-	created_by = models.ForeignKey("accounts.Account", related_name="create_pemohon_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
-	verified_by = models.ForeignKey("accounts.Account", related_name="verify_pemohon_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
-	verified_at = models.DateTimeField(editable=False)
-	rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pemohon_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
-	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
-
-	def get_color_status(self):
-		return get_status_color(self)
-
 	def as_json(self):
 		tanggal_lahir = ''
 		if self.tanggal_lahir:
@@ -90,13 +78,6 @@ class Pemohon(Account):
 					username = n.nomor
 			if username:
 				self.username = re.sub('[^0-9a-zA-Z]+', '', username)
-
-	def save(self, *args, **kwargs):
-		self.nama_lengkap = self.nama_lengkap.upper()
-		if not self.id:
-			self.created_at = datetime.now()
-		self.updated_at = datetime.now()
-		super(Pemohon, self).save(*args, **kwargs)
 
 	def __unicode__(self):
 		return "%s" % (self.nama_lengkap)
@@ -260,13 +241,13 @@ class JenisPermohonanIzin(models.Model):
 		verbose_name ='Jenis Permohonan Izin'
 		verbose_name_plural = 'Jenis Permohonan Izin'
 
-class PengajuanIzin(models.Model):
+class PengajuanIzin(AtributTambahan):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
 	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)	
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
-	
+
 	no_pengajuan = models.CharField(max_length=255, verbose_name='No. Pengajuan', blank=True, null=True)
 	no_izin = models.CharField(max_length=255, verbose_name='No. Izin', blank=True, null=True)
 	nama_kuasa = models.CharField(max_length=255, verbose_name='Nama Kuasa', blank=True, null=True)
@@ -302,6 +283,7 @@ class PengajuanIzin(models.Model):
 		verbose_name_plural = 'Pengajuan Izin'
 
 class DetilSIUP(PengajuanIzin):
+	kbli = models.ManyToManyField(KBLI, verbose_name='KBLI')
 	kekayaan_bersih = models.DecimalField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_digits=10, decimal_places=2, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
 	total_nilai_saham = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
 	presentase_saham_nasional = models.DecimalField(max_digits=3, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
