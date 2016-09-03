@@ -10,7 +10,27 @@ from izin.controllers.siup import add_wizard_siup, formulir_siup
 import json
 
 class IzinAdmin(admin.ModelAdmin):
-	list_display = ('pemohon','kelompok_jenis_izin','jenis_permohonan','status', 'button_cetak_pendaftaran')
+	list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+
+	def get_perusahaan(self, obj):
+		return "Perusaahaan Maju Mundur"
+	get_perusahaan.short_description = "Perusahaan"
+
+	def get_status_proses(self, obj):
+		return "%s\n%s" % (obj.created_at.strftime("%d/%m/%y"), "Pengajuan Dibuat")
+	get_status_proses.short_description = "Tgl & Status Proses"
+
+	def get_kelompok_jenis_izin(self, obj):
+		return obj.kelompok_jenis_izin
+	get_kelompok_jenis_izin.short_description = "Izin Pengajuan"
+
+	def get_tanggal_pengajuan(self, obj):
+		return obj.created_at
+	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
+
+	def get_no_pengajuan(self, obj):
+		return "SIUP/120/1230/2016"
+	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def button_cetak_pendaftaran(self, obj):
 		btn = mark_safe("""

@@ -50,7 +50,7 @@ class CustomMenu(Menu):
                                 items.MenuItem(
                                     title='Pengajuan Masuk',
                                     icon='fa fa-tasks',
-                                    url='#',
+                                    url=reverse('admin:izin_pengajuanizin_changelist'),
                                 ),
                             ]                            
                         ),

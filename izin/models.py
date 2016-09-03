@@ -267,11 +267,17 @@ class PengajuanIzin(models.Model):
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
 	
+	no_pengajuan = models.CharField(max_length=255, verbose_name='No. Pengajuan', blank=True, null=True)
+	no_izin = models.CharField(max_length=255, verbose_name='No. Izin', blank=True, null=True)
+	nama_kuasa = models.CharField(max_length=255, verbose_name='Nama Kuasa', blank=True, null=True)
+	no_identitas_kuasa = models.CharField(max_length=255, verbose_name='No. Identitas Kuasa', blank=True, null=True)
+	tlp_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
+
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
 	created_by = models.ForeignKey("accounts.Account", related_name="create_pengajuan_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
 	created_at = models.DateTimeField(editable=False)
 	verified_by = models.ForeignKey("accounts.Account", related_name="verify_pengajuan_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
-	verified_at = models.DateTimeField(editable=False)
+	verified_at = models.DateTimeField(editable=False, blank=True, null=True)
 	rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pengajuan_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
 	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
 

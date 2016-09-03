@@ -33,13 +33,16 @@ def add_wizard_siup(request):
 		if request.POST.get('nama_izin') :
 			if request.POST.get('nama_izin') and request.POST.get('kelompok_izin'):
 				id_kelompok_ = request.POST.get('kelompok_izin')
+				id_kelompok_ = int(id_kelompok_)
 			else:
 				kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
 				id_kelompok_ = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
+				id_kelompok_ = id_kelompok_.id
 
 			url_ = reverse('admin:izin_proses_siup')
 			response = HttpResponseRedirect(url_) # Redirect to url
-			response.set_cookie(key='id_kelompok_izin', value=id_kelompok_.id) # to set cookie in browser
+			response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
+
 			print request.COOKIES
 			return response
 		else:
@@ -61,11 +64,12 @@ def formulir_siup(request):
 	extra_context.update({'negara': negara})
 	jenis_pemohon = JenisPemohon.objects.all()
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
-	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__jenis_izin__kode='SIUP') # Untuk SIUP
+	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 
 	# print request.COOKIES
 	extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 	template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
+	# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
 
@@ -77,7 +81,7 @@ def formulir_siup(request):
 # 	extra_context.update({'negara': negara})
 # 	jenis_pemohon = JenisPemohon.objects.all()
 # 	extra_context.update({'jenis_pemohon': jenis_pemohon})
-# 	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__jenis_izin__kode='SIUP') # Untuk SIUP
+# 	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin') # Untuk SIUP
 
 # 	# print request.COOKIES
 # 	extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})

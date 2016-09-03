@@ -29,7 +29,7 @@ class PemohonForm(forms.ModelForm):
 	
 	def __init__(self, *args, **kwargs):
 		super(PemohonForm, self).__init__(*args, **kwargs)
-		self.fields['desa'].required = True
+		# self.fields['desa'].required = True
 		self.fields['alamat'].required = True
 		self.fields['telephone'].required = True
 

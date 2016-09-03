@@ -520,7 +520,9 @@ from izin.izin_forms import PemohonForm
 def siup_identitas_pemohon_save_cookie(request):
 	pemohon = PemohonForm(request.POST)
 	if pemohon.is_valid():
-		nama_lengkap = pemohon.cleaned_data.get('nama_lengkap')
+		# p = pemohon.save(commit=False)
+		pemohon.save()
+		
 		data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
 		response = HttpResponse(json.dumps(data))	
 		response.set_cookie(key='nama_lengkap', value=nama_lengkap) # set cookie
