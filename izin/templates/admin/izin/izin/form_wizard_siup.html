@@ -65,6 +65,7 @@
 
 			});
 
+
 			function make_disabled(elem_){
 				elem_.prop( "disabled", "disabled");
 				elem_.trigger("chosen:updated");
@@ -110,6 +111,12 @@
 
 		});
 
+		// Function to capitalize for string
+		String.prototype.capitalize = function() {
+		    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+		};
+
+
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 			var frm = $('form[name="step'+ index +'"]');
@@ -130,8 +137,19 @@
 							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
 							$(tab_index).tab('show')
 			            }else{
-			            	// toastr["error"](respon)
-			            	toastr["error"](respon.pesan)
+			            	// console.log(respon);
+			            	// console.log(typeof respon);
+			            	var a = Object.keys(respon);
+			            	// console.log(respon['nama_lengkap'][0]['message']);
+			            	// console.log(a.length);
+			            	for (var i = 0; i < a.length; i++){
+			            		// console.log(a[i]);
+			            		// console.log(respon[a[i]]);
+			            		var field = a[i].replace("_", " ").capitalize();
+			            		toastr["error"](field+", "+respon[a[i]][0]['message'])
+			            		$("#"+a[i]+"").addClass("has-error");
+			            		// console.log($("#"+a[i]+"").addClass("parsley-error"));
+			            	}
 			            	$( ".tab-content #tab"+index ).unmask()
 			            }
 					},

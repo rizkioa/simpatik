@@ -1,0 +1,78 @@
+{% extends "admin/base_site.html" %}
+
+{% load i18n admin_static widgets %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% endblock %}
+
+{% block icotitle %}<i class="icon-printer"></i>&nbsp;{% endblock %}
+
+{% block content_title %}
+	{{ title }}
+{% endblock %}
+
+
+{% block content %}
+<div id="content-main">
+	<div class="row">
+        <div class="col-md-12">
+	        <section class="tile">
+
+	            <!-- tile header -->
+	            <div class="tile-header dvd dvd-btm">
+	                <h1 class="custom-font"><strong>Bukti Pendaftaran </strong></h1>
+	            </div>
+	            <!-- /tile header -->
+
+	            <!-- tile body -->
+	            <div class="tile-body">
+		            <form class="form-horizontal" role="form">
+		            	<div class="form-group">
+	                        <label class="col-sm-2 control-label">Nama Pemohon</label>
+	                        <div class="col-sm-10">
+	                            <p class="form-control-static">{{ pemohon }} ({{ jenis_pemohon }})</p>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-sm-2 control-label">Alamat</label>
+	                        <div class="col-sm-10">
+	                            <p class="form-control-static">{{ alamat_pemohon }}</p>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-sm-2 control-label">Jenis Permohonan</label>
+	                        <div class="col-sm-10">
+	                            <p class="form-control-static">{{ jenis_permohonan }}</p>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-sm-2 control-label">Kelompok Jenis Izin</label>
+	                        <div class="col-sm-10">
+	                            <p class="form-control-static">{{ kelompok_jenis_izin }}</p>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-sm-2 control-label">Dibuat Tanggal</label>
+	                        <div class="col-sm-10">
+	                            <p class="form-control-static">{{ created_at|date:"d F Y" }}, Pukul {{ created_at|time:"H:i" }}</p>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="col-sm-2 control-label">&nbsp;</label>
+	                        <div class="col-sm-10">
+	                            <p class="form-control-static" style="color: #ff635c">Batas maksimal verifikasi s/d {{ created_at|add_date:3|date:"d F Y" }} </p>
+	                        </div>
+	                    </div>
+	                    <div class="form-group">
+		                    <div class="col-sm-4 col-sm-offset-2">
+		                    	<a href="{% url 'admin:print_out_pendaftaran' id_pengajuan %}" class="btn btn-lightred" target="_blank"> Cetak</a>
+	                        </div>
+	                    </div>
+	                </form>
+	            </div>
+	        </section>
+	    </div>
+	</div>
+</div>
+{% endblock %}

@@ -525,9 +525,10 @@ def siup_identitas_pemohon_save_cookie(request):
 		response = HttpResponse(json.dumps(data))	
 		response.set_cookie(key='nama_lengkap', value=nama_lengkap) # set cookie
 	else:
-		# data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
-		data = {'success': False, 'pesan': 'Pengisian tidak lengkap.' }
-		response = HttpResponse(json.dumps(data))
+		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
+		# data = {'success': False, 'pesan': 'Pengisian tidak lengkap.', 'error':pemohon.errors.as_json() }
+		# response = HttpResponse(json.dumps(data))
+		response = HttpResponse(data)
 	return response
 
 def siup_identitas_perusahan_save_cookie(request):

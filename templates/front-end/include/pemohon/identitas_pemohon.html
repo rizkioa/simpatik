@@ -3,7 +3,7 @@
   <div class="form-group">
     <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pengajuan</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="jenis_pengajuan">
+      <select class="form-control chosen-select mb-10" name="jenis_pengajuan" id="id_jenis_pengajuan">
         <option></option>
         {% if jenispermohonanizin_list %}
           {% for jenis in jenispermohonanizin_list %}
@@ -21,10 +21,10 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="jenis_pemohon">
     <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pemohon</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="jenis_pemohon">
+      <select class="form-control chosen-select mb-10" name="jenis_pemohon" id="id_jenis_pemohon">
         <option value>-- Pilih Jenis Pemohon --</option>
         {% if jenis_pemohon %}
         {% for j in jenis_pemohon %}
@@ -35,105 +35,102 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label for="input01" class="col-sm-2 control-label"><strong>No. KTP/Paspor</strong> </label>
+  <div class="form-group" id="ktp">
+    <label for="input01" class="col-sm-2 control-label"><strong>No. KTP</strong> </label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" id="input01" name="ktp">
+      <input type="text" class="form-control" id="id_ktp" name="ktp">
+    </div>
+  </div>
+  <div class="form-group" id="paspor">
+    <label for="input01" class="col-sm-2 control-label"><strong>Paspor</strong> </label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="id_passpor" name="paspor" data-msg="Data tidak boleh kosong">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="nama_lengkap">
     <label for="input01" class="col-sm-2 control-label"><strong>Nama Lengkap</strong> </label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" id="input01" name="nama_lengkap">
+      <input type="text" class="form-control" id="id_nama_lengkap" name="nama_lengkap">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="alamat">
     <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong> </label>
     <div class="col-sm-7">
       <textarea class="form-control" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda"></textarea>
     </div>
   </div>
+  <div class="form-group" id="negara">
+    <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="negara" id="id_negara">
+        <option value>-- Pilih Negara --</option>
+        {% if negara %}
+          {% for p in negara %}
+          <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
 
-  <div class="form-group">
+  <div class="form-group" id="provinsi">
     <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="provinsi">
-        <option value>-- Pilih Provinsi --</option>
-        {% if provinsi %}
-        {% for p in provinsi %}
-        <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
-        {% endfor %}
-        {% endif %}
-      </select>
+      <select class="form-control chosen-select mb-10" name="provinsi" id="id_provinsi">
+        
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="kabupaten">
     <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="kabupaten">
-        <option value>-- Pilih Kota/Kabupaten --</option>
-        {% if kabupaten %}
-        {% for k in kabupaten %}
-        <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
-        {% endfor %}
-        {% endif %}
+      <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten">
+        
       </select>
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="kecamatan">
     <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="kecamatan">
-        <option value>-- Pilih Kecamatan --</option>
-        {% if kecamatan %}
-        {% for k in kecamatan %}
-        <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
-        {% endfor %}
-        {% endif %}
+      <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan">
+        
       </select>
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="desa">
     <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="desa">
-        <option value>-- Pilih Kelurahan/Desa --</option>
-        {% if desa %}
-        {% for d in desa %}
-        <option value="{{ d.id }}">{{ d.nama_desa }}</option>
-        {% endfor %}
-        {% endif %}
+      <select class="form-control chosen-select mb-10" name="desa" id="id_desa">
       </select>
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="telephone">
     <label for="input01" class="col-sm-2 control-label">Telepon</label>
     <div class="col-sm-6">
       <input type="text" class="form-control" id="input01" name="telephone">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="hp">
     <label for="input01" class="col-sm-2 control-label"><strong>No. HP</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" id="input01" name="no_hp">
+      <input type="text" class="form-control" id="input01" name="hp">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="email">
     <label for="input01" class="col-sm-2 control-label">E-mail</label>
     <div class="col-sm-6">
-      <input type="email" class="form-control" id="input01" name="email">
+      <input type="email" class="form-control" id="email" name="email">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="kewarganegaraan">
     <label for="input01" class="col-sm-2 control-label"><strong>Kewarganegraan</strong></label>
     <div class="col-sm-4">
       <input class="form-control" id="id_kewarganegaraan" maxlength="100" name="kewarganegaraan" type="text">
