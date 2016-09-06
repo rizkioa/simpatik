@@ -242,6 +242,7 @@ class JenisPermohonanIzin(models.Model):
 		verbose_name_plural = 'Jenis Permohonan Izin'
 
 class PengajuanIzin(AtributTambahan):
+# class PengajuanIzin(models.Model):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
 	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)	
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
@@ -254,31 +255,31 @@ class PengajuanIzin(AtributTambahan):
 	no_identitas_kuasa = models.CharField(max_length=255, verbose_name='No. Identitas Kuasa', blank=True, null=True)
 	tlp_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
 
-	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
-	created_by = models.ForeignKey("accounts.Account", related_name="create_pengajuan_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
-	created_at = models.DateTimeField(editable=False)
-	verified_by = models.ForeignKey("accounts.Account", related_name="verify_pengajuan_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
-	verified_at = models.DateTimeField(editable=False, blank=True, null=True)
-	rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pengajuan_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
-	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
+	# status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
+	# created_by = models.ForeignKey("accounts.Account", related_name="create_pengajuan_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	# created_at = models.DateTimeField(editable=False)
+	# verified_by = models.ForeignKey("accounts.Account", related_name="verify_pengajuan_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	# verified_at = models.DateTimeField(editable=False, blank=True, null=True)
+	# rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pengajuan_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	# rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
 
-	updated_at = models.DateTimeField(auto_now=True)
+	# updated_at = models.DateTimeField(auto_now=True)
 
-	def get_color_status(self):
-		return get_status_color(self)
+	# def get_color_status(self):
+	# 	return get_status_color(self)
 		
-	def save(self, *args, **kwargs):
-		''' On save, update timestamps '''
-		if not self.id:
-			self.created_at = datetime.now()
-		self.updated_at = datetime.now()
-		return super(PengajuanIzin, self).save(*args, **kwargs)
+	# def save(self, *args, **kwargs):
+	# 	''' On save, update timestamps '''
+	# 	if not self.id:
+	# 		self.created_at = datetime.now()
+	# 	self.updated_at = datetime.now()
+	# 	return super(PengajuanIzin, self).save(*args, **kwargs)
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status', '-updated_at',]
+		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Pengajuan Izin'
 		verbose_name_plural = 'Pengajuan Izin'
 
@@ -293,7 +294,7 @@ class DetilSIUP(PengajuanIzin):
 		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status', '-updated_at',]
+		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Detil SIUP'
 		verbose_name_plural = 'Detil SIUP'
 
