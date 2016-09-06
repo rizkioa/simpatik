@@ -28,7 +28,7 @@
       <div class="tile-body">
         <div class="row">
           <div class="col-md-3">
-            <a href="#" data-toggle="modal" data-target="#siup">
+            <a href="{% url 'layanan_siup' %}">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
@@ -49,7 +49,7 @@
               </div>
             </a>
           </div>
-          <div class="col-md-3">
+          <!-- <div class="col-md-3">
             <a href="#" data-toggle="modal" data-target="#sipa">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
@@ -59,8 +59,8 @@
                 </div>
               </div>
             </a>
-          </div>
-          <div class="col-md-3">
+          </div> -->
+          <!-- <div class="col-md-3">
             <a href="{% url 'layanan_pertambangan' %}">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
@@ -70,10 +70,10 @@
                 </div>
               </div>
             </a>
-          </div>
-        </div>
+          </div> -->
+        <!-- </div>
 
-        <div class="row">
+        <div class="row"> -->
           <div class="col-md-3">
             <a href="#" data-toggle="modal" data-target="#tdp">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
@@ -118,9 +118,9 @@
               </div>
             </a>
           </div>
-        </div>
+        <!-- </div>
 
-        <div class="row">
+        <div class="row"> -->
           <div class="col-md-3">
             <a href="#" data-toggle="modal" data-target="#imb">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
@@ -331,111 +331,6 @@
               <div class="panel-body">
                 <div class="col-xs-12">
                   <p class="text-center text-strong pa">IMB - Papan Reklame</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="siup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title custom-font">Surat Izin Usaha Perdagangan (SIUP)</h3>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_pt' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Persero Terbatas (PT)</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_koperasi' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Koperasi</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_cv' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - CV dan Firma</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_perorangan' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Perseorangan</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_pendaftaran_ulang' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Pendaftaran Ulang</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_perubahan' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Perubahan</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_pergantian_hilang' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Pergantian (Hilang)</p>
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="{% url 'layanan_siup_pergantian_rusak' %}">
-            <div class="panel panel-darkgray col_sm_12 border_tambah">
-              <div class="panel-body">
-                <div class="col-xs-12">
-                  <p class="text-center text-strong pa">SIUP - Pergantian (Rusak)</p>
                 </div>
               </div>
             </div>

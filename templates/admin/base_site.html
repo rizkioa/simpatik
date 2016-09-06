@@ -386,7 +386,7 @@
                             {% for message in messages %}                    
                             <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'warning' %}alert-warning{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissable">
                                 <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
-                                {{ message }}
+                                {{ message|safe }}
                             </div>
                             {% endfor %}
                         </div>

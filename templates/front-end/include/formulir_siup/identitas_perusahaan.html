@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}">
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -8,24 +8,24 @@
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">NPWP</label>
+      <label class="col-sm-2 control-label"><strong>NPWP</strong></label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control npwp" required="" data-parsley-trigger="change">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Nama Perusahaan</label>
+      <label for="input01" class="col-sm-2 control-label"><strong>Nama Perusahaan</strong></label>
       <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Bentuk kegiatan usaha</label>
+      <label class="col-sm-2 control-label"><strong>Bentuk kegiatan usaha</strong></label>
       <div class="col-sm-4">
-        <select class="form-control chosen-select mb-10">
-          <option>-- Pilih Bentuk Kegiatan Usaha</option>
+        <select class="form-control chosen-select" required="" data-parsley-trigger="change">
+          <option value>-- Pilih Bentuk Kegiatan Usaha --</option>
           <option>Kecil</option>
           <option>Menengah</option>
           <option>Besar</option>
@@ -34,165 +34,84 @@
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+      <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong></label>
       <div class="col-sm-7">
-        <textarea class="form-control" rows="5" name="alamat"></textarea>
+        <textarea class="form-control" rows="5" name="alamat" required="" data-parsley-trigger="change"></textarea>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Provinsi</label>
+    <div class="form-group" id="negara">
+      <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Provinsi --</option>
-          {% if provinsi %}
-          {% for p in provinsi %}
-          <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
-          {% endfor %}
+        <select class="form-control chosen-select mb-10" name="negara" id="id_negara" required="" data-parsley-trigger="change">
+          <option value>-- Pilih Negara --</option>
+          {% if negara %}
+            {% for p in negara %}
+            <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+            {% endfor %}
           {% endif %}
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+    <div class="form-group" id="provinsi">
+      <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kota/Kabupaten --</option>
-          {% if kabupaten %}
-          {% for k in kabupaten %}
-          <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
-          {% endfor %}
-          {% endif %}
+        <select class="form-control chosen-select mb-10" name="provinsi" id="id_provinsi" required="" data-parsley-trigger="change">
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kecamatan</label>
+    <div class="form-group" id="kabupaten">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kecamatan --</option>
-          {% if kecamatan %}
-          {% for k in kecamatan %}
-          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
-          {% endfor %}
-          {% endif %}
+        <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten" required="" data-parsley-trigger="change"> 
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+    <div class="form-group" id="kecamatan">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kelurahan/Desa --</option>
-          {% if desa %}
-          {% for d in desa %}
-          <option value="{{ d.id }}">{{ d.nama_desa }}</option>
-          {% endfor %}
-          {% endif %}
+        <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan" required="" data-parsley-trigger="change">
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kode Pos</label>
+    <div class="form-group" id="desa">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa" required="" data-parsley-trigger="change">
+
+        </select>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">No. Telp</label>
+      <label class="col-sm-2 control-label">Kode Pos</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control kodepos" max="5" >
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">No. Fax</label>
+      <label class="col-sm-2 control-label">No. Telp</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">E-mail</label>
+      <label class="col-sm-2 control-label">No. Fax</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
-
-    <!-- 
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Jenis badan usaha perusahaan</label>
-      <div class="col-sm-6">
-        <select class="form-control chosen-select mb-10">
-          <option>PERSERO TERBATAS (PT)</option>
-          <option>PERSEKUTUAN KOMANDITER (CV)</option>
-          <option>FIRMA</option>
-          <option>PERUSAHAAN PERORANGAN (PO)</option>
-          <option>KOPERASI</option>
-          <option>BENTUK USAHA LAINNYA (BUL)</option>
-        </select>
+        <input type="text" class="form-control fax" data-inputmask="'mask': '99-9999999'">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Status perusahaan</label>
-      <div class="col-sm-6">
-        <select class="form-control chosen-select mb-10">
-          <option>Kantor Tunggal</option>
-          <option>Kantor Pusat</option>
-          <option>Kantor Pembantu</option>
-          <option>Perwakilan</option>
-        </select>
+      <label class="col-sm-2 control-label">E-mail</label>
+      <div class="col-sm-5">
+        <input type="email" class="form-control " data-parsley-trigger="change" id="email">
       </div>
     </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kegiatan usaha</label>
-      <div class="col-sm-6">
-        <select class="form-control chosen-select mb-10">
-          <option>Perdagangan mikro</option>
-          <option>Perdagangan kecil</option>
-          <option>Perdagangan menengah</option>
-          <option>Perdagangan besar</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kegiatan usaha (KBLI)</label>
-      <div class="col-sm-6">
-        <select class="form-control chosen-select mb-10">
-          <option>KBLI</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Barang/jasa dagangan utama</label>
-      <div class="col-sm-6">
-        <select class="form-control chosen-select mb-10">
-          <option>Produk</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Bentuk kerjasama</label>
-      <div class="col-sm-6">
-        <select class="form-control chosen-select mb-10">
-          <option>mandiri</option>
-          <option>jaringan internasional</option>
-          <option>jaringan nasional</option>
-          <option>waralaba internasional</option>
-          <option>waralaba nasional</option>
-          <option>kso</option>
-        </select>
-      </div>
-    </div> -->
 </form>

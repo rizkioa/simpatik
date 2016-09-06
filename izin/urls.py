@@ -8,14 +8,7 @@ urlpatterns = [
     url(r'^404/', 'izin.views.page_404', name='404'),
     url(r'^tentang/$', 'izin.views.tentang', name='tentang'),
     url(r'^layanan/$', 'izin.views.layanan', name='layanan'),
-    url(r'^layanan/siup-pt$', 'izin.views.layanan_siup_pt', name='layanan_siup_pt'),
-    url(r'^layanan/siup-koperasi$', 'izin.views.layanan_siup_koperasi', name='layanan_siup_koperasi'),
-    url(r'^layanan/siup-cv$', 'izin.views.layanan_siup_cv', name='layanan_siup_cv'),
-    url(r'^layanan/siup-perorangan$', 'izin.views.layanan_siup_perorangan', name='layanan_siup_perorangan'),
-    url(r'^layanan/siup-pendaftaran-ulang$', 'izin.views.layanan_siup_pendaftaran_ulang', name='layanan_siup_pendaftaran_ulang'),
-    url(r'^layanan/siup-perubahan$', 'izin.views.layanan_siup_perubahan', name='layanan_siup_perubahan'),
-    url(r'^layanan/siup-pergantian-hilang$', 'izin.views.layanan_siup_pergantian_hilang', name='layanan_siup_pergantian_hilang'),
-    url(r'^layanan/siup-pergantian-rusak$', 'izin.views.layanan_siup_pergantian_rusak', name='layanan_siup_pergantian_rusak'),
+    url(r'^layanan/siup$', 'izin.views.layanan_siup', name='layanan_siup'),
     url(r'^layanan/ho-permohonan-baru$', 'izin.views.layanan_ho_baru', name='layanan_ho_baru'),
     url(r'^layanan/ho-daftar-ulang$', 'izin.views.layanan_ho_daftar_ulang', name='layanan_ho_daftar_ulang'),
     url(r'^layanan/sipa-sumur-bor$', 'izin.views.layanan_sipa_sumur_bor', name='layanan_sipa_sumur_bor'),
@@ -52,7 +45,8 @@ urlpatterns = [
     url(r'^layanan/tdp-perorangan/formulir$', 'izin.views.formulir_tdp_perorangan', name='formulir_tdp_perorangan'),
     url(r'^layanan/tdp-koperasi/formulir$', 'izin.views.formulir_tdp_koperasi', name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', 'izin.views.formulir_tdp_bul', name='formulir_tdp_bul'),
-
+    url(r'^layanan/siup/formulir/cetak$', 'izin.views.cetak_permohonan', name='cetak_permohonan'),
+    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran$', 'izin.views.cetak_bukti_pendaftaran', name='cetak_bukti_pendaftaran'),
 
     # url for ajax siup
     url(r'^layanan/siup/pemohon/save/$', 'izin.views.siup_identitas_pemohon_save_cookie', name='siup_pemohon_save'),

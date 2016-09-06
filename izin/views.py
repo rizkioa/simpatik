@@ -39,85 +39,15 @@ def tentang(request):
 def layanan(request):
 	return render(request, "front-end/layanan.html")
 
-def layanan_siup_pt(request, extra_context={}):
+def layanan_siup(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=17)
 	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - PT"})
-	extra_context.update({'title_short': "SIUP - PT"})
+	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP)"})
+	extra_context.update({'title_short': "SIUP"})
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "6" })
 	extra_context.update({'id_kelompok_jenis_izin': "17" })
-	return render(request, "front-end/layanan/siup_pt.html", extra_context)
-
-def layanan_siup_koperasi(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=18)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Koperasi"})
-	extra_context.update({'title_short': "SIUP - Koperasi"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "18" })
-	return render(request, "front-end/layanan/siup_koperasi.html", extra_context)
-
-def layanan_siup_cv(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=19)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - CV dan Firma"})
-	extra_context.update({'title_short': "SIUP - CV dan Firma"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "19" })
-	return render(request, "front-end/layanan/siup_cv.html", extra_context)
-
-def layanan_siup_perorangan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=20)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Perorangan"})
-	extra_context.update({'title_short': "SIUP - Perorangan"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "20" })
-	return render(request, "front-end/layanan/siup_perorangan.html", extra_context)
-
-def layanan_siup_pendaftaran_ulang(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=21)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Pendaftaran Ulang"})
-	extra_context.update({'title_short': "SIUP - Pendaftaran Ulang"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "21" })
-	return render(request, "front-end/layanan/siup_pendaftaran_ulang.html", extra_context)
-
-def layanan_siup_perubahan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=22)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Perubahan"})
-	extra_context.update({'title_short': "SIUP - Perubahan"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "22" })
-	return render(request, "front-end/layanan/siup_perubahan.html", extra_context)
-
-def layanan_siup_pergantian_hilang(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=23)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Pergantian Hilang"})
-	extra_context.update({'title_short': "SIUP - Pergantian Hilang"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "23" })
-	return render(request, "front-end/layanan/siup_pergantian_hilang.html", extra_context)
-
-def layanan_siup_pergantian_rusak(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=24)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Pergantian Rusak"})
-	extra_context.update({'title_short': "SIUP - Pergantian Rusak"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "24" })
-	return render(request, "front-end/layanan/siup_pergantian_rusak.html", extra_context)
+	return render(request, "front-end/layanan/siup.html", extra_context)
 
 def layanan_ho_baru(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=12)
@@ -516,14 +446,104 @@ def identitas_pemohon(request, extra_context={}):
 	return HttpResponse(json.dumps(data))
 
 from izin.izin_forms import PemohonForm
+from izin.utils import get_nomor_pengajuan
+from accounts.models import NomorIdentitasPengguna
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
+
+try:
+	from django.utils.encoding import force_text
+except ImportError:
+	from django.utils.encoding import force_unicode as force_text
+
+from django.utils.translation import ugettext_lazy as _
+
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 
 def siup_identitas_pemohon_save_cookie(request):
-	pemohon = PemohonForm(request.POST)
+	pemohon = PemohonForm(request.POST) 
 	if pemohon.is_valid():
-		nama_lengkap = pemohon.cleaned_data.get('nama_lengkap')
-		data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
-		response = HttpResponse(json.dumps(data))	
-		response.set_cookie(key='nama_lengkap', value=nama_lengkap) # set cookie
+		# Untuk Nomor Identitas
+		ktp_ = request.POST.get('ktp', None)
+		paspor_ = request.POST.get('paspor', None)
+		# End
+		jenis_permohonan_ = request.POST.get('jenis_pengajuan', None)
+		k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+		nomor_pengajuan_ = get_nomor_pengajuan(k.jenis_izin.kode)
+		try:
+			p = pemohon.save(commit=False)
+			# print pemohon.cleaned_data
+			p.username = ktp_
+			p.save()
+			if ktp_:
+				try:
+					i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+				except ObjectDoesNotExist:
+					i, created = NomorIdentitasPengguna.objects.get_or_create(
+								nomor = ktp_,
+								jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
+								user_id=p.id,
+								)
+			if paspor_:
+				try:
+					i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
+				except ObjectDoesNotExist:
+					i, created = NomorIdentitasPengguna.objects.get_or_create(
+								nomor = paspor_,
+								jenis_identitas_id=2,
+								user_id=p.id,
+								)
+
+			# SIMPAN PENGAJUAN verified_at=datetime.datetime.now(),
+			pengajuan = PengajuanIzin(no_pengajuan=nomor_pengajuan_,kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user )
+			pengajuan.save()
+			data = {'success': True, 'pesan': 'Pemohon dan Pengajuan disimpan. Proses Selanjutnya.'  }
+			response = HttpResponse(json.dumps(data))
+		except IntegrityError as e:
+			if ktp_:
+				p = Pemohon.objects.get(username = ktp_)
+			elif paspor_:
+				p = Pemohon.objects.get(username = paspor_)
+			elif ktp_ and paspor_:
+				p = Pemohon.objects.get(username = ktp_)
+
+			# print p.id
+			# print p.desa
+			
+			pengajuan = PengajuanIzin(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user  )
+			pengajuan.save()
+
+			data = {'success': True, 'pesan': 'Pengajuan disimpan. Proses Selanjutnya.'  }
+			response = HttpResponse(json.dumps(data))	
+
+		response.set_cookie(key='nama_lengkap', value=p.nama_lengkap) # set cookie	
+		if jenis_permohonan_:
+			response.set_cookie(key='jenis_permohonan', value=pengajuan.jenis_permohonan) # set cookie	
+		if ktp_ or paspor_:
+			value = ""
+			if ktp_:
+				value += "KTP "+str(ktp_)
+			if paspor_:
+				value += ", PASPOR "+str(paspor_)
+			response.set_cookie(key='ktp', value=value) # set cookie	
+		if p.desa:
+			alamat_ = str(p.alamat)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
+			response.set_cookie(key='alamat', value=alamat_) # set cookie	
+		if p.jenis_pemohon:
+			response.set_cookie(key='jenis_pemohon', value=p.jenis_pemohon) # set cookie	
+		if p.hp:
+			response.set_cookie(key='hp', value=p.hp) # set cookie	
+		if p.telephone:
+			response.set_cookie(key='telephone', value=p.telephone) # set cookie	
+		if p.kewarganegaraan:
+			response.set_cookie(key='kewarganegaraan', value=p.kewarganegaraan) # set cookie	
+		if p.tempat_lahir:
+			ttl_ = str(p.tempat_lahir)+", "+str(p.tanggal_lahir)
+			response.set_cookie(key='ttl', value=ttl_) # set cookie
+		if p.email:
+			response.set_cookie(key='email', value=p.email) # set cookie	
 	else:
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		# data = {'success': False, 'pesan': 'Pengisian tidak lengkap.', 'error':pemohon.errors.as_json() }
@@ -550,4 +570,23 @@ def siup_upload_dokumen_cookie(request):
 
 def siup_done(request):
 	data = {'success': True, 'pesan': 'Proses Selesai.' }
-	return HttpResponse(json.dumps(data))
+	response = HttpResponse(json.dumps(data))
+	# For delete cookie
+	response.delete_cookie(key='nama_lengkap') # set cookie	
+	response.delete_cookie(key='jenis_permohonan') # set cookie
+	response.delete_cookie(key='ktp') # set cookie	
+	response.delete_cookie(key='alamat') # set cookie
+	response.delete_cookie(key='jenis_pemohon') # set cookie
+	response.delete_cookie(key='hp') # set cookie	
+	response.delete_cookie(key='telephone') # set cookie
+	response.delete_cookie(key='kewarganegaraan') # set cookie
+	response.delete_cookie(key='ttl') # set cookie
+	response.delete_cookie(key='email') # set cookie	
+	response.delete_cookie(key='id_kelompok_izin') # set cookie	
+	return response
+
+def cetak_permohonan(request, extra_context={}):
+	return render(request, "front-end/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran(request, extra_context={}):
+	return render(request, "front-end/cetak_bukti_pendaftaran.html", extra_context)

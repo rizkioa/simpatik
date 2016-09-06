@@ -10,7 +10,27 @@ from izin.controllers.siup import add_wizard_siup, formulir_siup
 import json
 
 class IzinAdmin(admin.ModelAdmin):
-	list_display = ('pemohon','kelompok_jenis_izin','jenis_permohonan','status', 'button_cetak_pendaftaran')
+	list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+
+	def get_perusahaan(self, obj):
+		return "Perusaahaan Maju Mundur"
+	get_perusahaan.short_description = "Perusahaan"
+
+	def get_status_proses(self, obj):
+		return "%s\n%s" % (obj.created_at.strftime("%d/%m/%y"), "Pengajuan Dibuat")
+	get_status_proses.short_description = "Tgl & Status Proses"
+
+	def get_kelompok_jenis_izin(self, obj):
+		return obj.kelompok_jenis_izin
+	get_kelompok_jenis_izin.short_description = "Izin Pengajuan"
+
+	def get_tanggal_pengajuan(self, obj):
+		return obj.created_at
+	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
+
+	def get_no_pengajuan(self, obj):
+		return obj.no_pengajuan
+	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def button_cetak_pendaftaran(self, obj):
 		btn = mark_safe("""
@@ -47,7 +67,10 @@ class IzinAdmin(admin.ModelAdmin):
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
 			extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
-			extra_context.update({'alamat_pemohon': str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)})
+			alamat_ = ""
+			if pengajuan_.pemohon.desa:
+				alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+			extra_context.update({'alamat_pemohon': alamat_})
 			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})

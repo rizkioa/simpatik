@@ -76,7 +76,7 @@ class IdentitasPribadi(AtributTambahan):
 	hp = models.CharField(verbose_name='No. HP', max_length=50, null=True, blank=True)
 	email = models.EmailField(unique=True, blank=True, null=True)
 
-	desa = models.ForeignKey(Desa, null=True,blank=True, verbose_name='Desa')
+	desa = models.ForeignKey(Desa, null=True, blank=True, verbose_name='Desa')
 	alamat = models.CharField(max_length=255, null=True, blank=True)
 	lintang = models.CharField(max_length=255, verbose_name='Lintang', blank=True, null=True)
 	bujur = models.CharField(max_length=255, verbose_name='Bujur', blank=True, null=True)
@@ -104,6 +104,10 @@ class Account(AbstractBaseUser, PermissionsMixin, IdentitasPribadi):
 	foto = ImageField(upload_to=path_and_rename, max_length=255, null=True, blank=True)
 	is_active = models.BooleanField(default=True, verbose_name="Apakah Active?")
 	is_admin = models.BooleanField(default=False, verbose_name="Apakah Admin?")
+
+	# status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=1)
+	# created_at = models.DateTimeField(editable=False)
+	# updated_at = models.DateTimeField(auto_now=True)
 
 	objects = AccountManager()
 	USERNAME_FIELD = 'username'
