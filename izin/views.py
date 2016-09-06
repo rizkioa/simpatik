@@ -39,85 +39,15 @@ def tentang(request):
 def layanan(request):
 	return render(request, "front-end/layanan.html")
 
-def layanan_siup_pt(request, extra_context={}):
+def layanan_siup(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=17)
 	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - PT"})
-	extra_context.update({'title_short': "SIUP - PT"})
+	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP)"})
+	extra_context.update({'title_short': "SIUP"})
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "6" })
 	extra_context.update({'id_kelompok_jenis_izin': "17" })
-	return render(request, "front-end/layanan/siup_pt.html", extra_context)
-
-def layanan_siup_koperasi(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=18)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Koperasi"})
-	extra_context.update({'title_short': "SIUP - Koperasi"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "18" })
-	return render(request, "front-end/layanan/siup_koperasi.html", extra_context)
-
-def layanan_siup_cv(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=19)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - CV dan Firma"})
-	extra_context.update({'title_short': "SIUP - CV dan Firma"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "19" })
-	return render(request, "front-end/layanan/siup_cv.html", extra_context)
-
-def layanan_siup_perorangan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=20)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Perorangan"})
-	extra_context.update({'title_short': "SIUP - Perorangan"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "20" })
-	return render(request, "front-end/layanan/siup_perorangan.html", extra_context)
-
-def layanan_siup_pendaftaran_ulang(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=21)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Pendaftaran Ulang"})
-	extra_context.update({'title_short': "SIUP - Pendaftaran Ulang"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "21" })
-	return render(request, "front-end/layanan/siup_pendaftaran_ulang.html", extra_context)
-
-def layanan_siup_perubahan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=22)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Perubahan"})
-	extra_context.update({'title_short': "SIUP - Perubahan"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "22" })
-	return render(request, "front-end/layanan/siup_perubahan.html", extra_context)
-
-def layanan_siup_pergantian_hilang(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=23)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Pergantian Hilang"})
-	extra_context.update({'title_short': "SIUP - Pergantian Hilang"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "23" })
-	return render(request, "front-end/layanan/siup_pergantian_hilang.html", extra_context)
-
-def layanan_siup_pergantian_rusak(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=24)
-	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP) - Pergantian Rusak"})
-	extra_context.update({'title_short': "SIUP - Pergantian Rusak"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
-	extra_context.update({'id_jenis_izin': "6" })
-	extra_context.update({'id_kelompok_jenis_izin': "24" })
-	return render(request, "front-end/layanan/siup_pergantian_rusak.html", extra_context)
+	return render(request, "front-end/layanan/siup.html", extra_context)
 
 def layanan_ho_baru(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=12)
@@ -654,3 +584,10 @@ def siup_done(request):
 	response.delete_cookie(key='email') # set cookie	
 	response.delete_cookie(key='id_kelompok_izin') # set cookie	
 	return response
+
+
+def cetak_permohonan(request, extra_context={}):
+	return render(request, "front-end/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran(request, extra_context={}):
+	return render(request, "front-end/cetak_bukti_pendaftaran.html", extra_context)
