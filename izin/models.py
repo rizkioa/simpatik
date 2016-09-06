@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from accounts.models import Account
 from master.models import JenisPemohon, AtributTambahan
-from perusahaan.models import KBLI
+from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha
 from decimal import Decimal
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
@@ -242,7 +242,6 @@ class JenisPermohonanIzin(models.Model):
 		verbose_name_plural = 'Jenis Permohonan Izin'
 
 class PengajuanIzin(AtributTambahan):
-# class PengajuanIzin(models.Model):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
 	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)	
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
@@ -253,27 +252,7 @@ class PengajuanIzin(AtributTambahan):
 	no_izin = models.CharField(max_length=255, verbose_name='No. Izin', blank=True, null=True)
 	nama_kuasa = models.CharField(max_length=255, verbose_name='Nama Kuasa', blank=True, null=True)
 	no_identitas_kuasa = models.CharField(max_length=255, verbose_name='No. Identitas Kuasa', blank=True, null=True)
-	tlp_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
-
-	# status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
-	# created_by = models.ForeignKey("accounts.Account", related_name="create_pengajuan_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
-	# created_at = models.DateTimeField(editable=False)
-	# verified_by = models.ForeignKey("accounts.Account", related_name="verify_pengajuan_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
-	# verified_at = models.DateTimeField(editable=False, blank=True, null=True)
-	# rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_pengajuan_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
-	# rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
-
-	# updated_at = models.DateTimeField(auto_now=True)
-
-	# def get_color_status(self):
-	# 	return get_status_color(self)
-		
-	# def save(self, *args, **kwargs):
-	# 	''' On save, update timestamps '''
-	# 	if not self.id:
-	# 		self.created_at = datetime.now()
-	# 	self.updated_at = datetime.now()
-	# 	return super(PengajuanIzin, self).save(*args, **kwargs)
+	telephone_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -285,6 +264,11 @@ class PengajuanIzin(AtributTambahan):
 
 class DetilSIUP(PengajuanIzin):
 	kbli = models.ManyToManyField(KBLI, verbose_name='KBLI')
+	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
+	kelembagaan = models.ForeignKey(Kelembagaan, blank=True, null=True, verbose_name='Kelembagaan')
+	produk_utama = models.ManyToManyField(ProdukUtama, verbose_name='Barang / Jasa Dagangan Utama')
+	bentuk_kegiatan_usaha = models.ForeignKey(BentukKegiatanUsaha, blank=True, null=True, verbose_name='Kegiatan Usaha')
+	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, blank=True, null=True, verbose_name='Jenis Penanaman Modal')
 	kekayaan_bersih = models.DecimalField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_digits=10, decimal_places=2, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
 	total_nilai_saham = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
 	presentase_saham_nasional = models.DecimalField(max_digits=3, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')

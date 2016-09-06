@@ -71,6 +71,7 @@ class JenisPenanamanModal(models.Model):
 		verbose_name = 'Jenis Penanaman Modal'
 		verbose_name_plural = 'Jenis Penanaman Modal'
 
+# PERSEROAN TERBATAS (PT), PERSEKUTUAN KOMANDITER (CV), FIRMA, PERUSAHAAN PERORANGAN (PO), KOPERASI, BENTUK USAHA LAINNYA
 class JenisBadanUsaha(models.Model):
 	jenis_badan_usaha = models.CharField(max_length=255, verbose_name='Jenis Badan Usaha')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
@@ -82,8 +83,8 @@ class JenisBadanUsaha(models.Model):
 		ordering = ['id']
 		verbose_name = 'Jenis Badan Usaha'
 		verbose_name_plural = 'Jenis Badan Usaha'
-
-class KegiatanUsaha(models.Model):
+# mikro, kecil, menengah, besar
+class BentukKegiatanUsaha(models.Model):
 	kegiatan_usaha = models.CharField(max_length=255, blank=True, null=True, verbose_name='Kegiatan Usaha')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
@@ -100,6 +101,7 @@ class Perusahaan(AtributTambahan):
 	perusahaan_lama = models.ForeignKey('Perusahaan', related_name='izin_perusahaan_lama', blank=True, null=True) # contoh: pengembangan CV ke PT
 
 	nama_perusahaan = models.CharField(max_length=100, verbose_name='Nama Perusahaan')
+	nama_grup = models.CharField(max_length=100, verbose_name='Nama Grup Perusahaan', blank=True, null=True)
 	alamat_perusahaan = models.CharField(max_length=255,  verbose_name='Alamat Perusahaan')
 	desa = models.ForeignKey(Desa, verbose_name='Desa')
 	lt = models.CharField(max_length=100, blank=True, null=True, verbose_name='Latitute')
@@ -109,15 +111,11 @@ class Perusahaan(AtributTambahan):
 	fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
 	email = models.EmailField(max_length=50, blank=True, null=True, verbose_name='E-mail')
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
+	
+	penanggung_jawab = models.ForeignKey('izin.Pemohon', related_name='penanggung_jawab_perusahaan', blank=True, null=True)
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-	# SIUP
-	# 
-	# kelembagaan = models.ForeignKey(Kelembagaan, blank=True, null=True, verbose_name='Kelembagaan')
-	# produk_utama = models.ManyToManyField(ProdukUtama, verbose_name='Barang / Jasa Utama')
-	# jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, blank=True, null=True, verbose_name='Jenis Penanaman Modal')
-
-	# jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, blank=True, null=True, verbose_name='Jenis Badan Usaha')
-
+	# TDP
 	# nama_kelompok_perusahaan = models.CharField(max_length=100, blank=True, null=True, verbose_name='Nama Kelompok Perusahaan')
 	# nasabah_utama_bank1 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 1')
 	# nasabah_utama_bank2 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 2')
@@ -131,27 +129,6 @@ class Perusahaan(AtributTambahan):
 	# jenis_perusahaan = models.ForeignKey(JenisPerusahaan, blank=True, null=True, verbose_name='Jenis Perusahaan')
 	# status_perusahaan = models.ForeignKey(StatusPerusahaan, blank=True, null=True, verbose_name='Status Perusahaan')
 	# kerjasama = models.ForeignKey(JenisKerjasama, blank=True, null=True, verbose_name='Jenis Kerjasama')
-
-	def as_json(self):
-		desa = ''
-		kecamatan = ''
-		kabupaten = ''
-		provinsi = ''
-		kbli = ''
-		kegiatan_usaha = ''
-		if self.desa:
-			desa = self.desa.nama_desa
-			if self.desa.kecamatan:
-				kecamatan = self.desa.kecamatan.nama_kecamatan
-				if self.desa.kecamatan.kabupaten:
-					kabupaten = self.desa.kecamatan.kabupaten.nama_kabupaten
-					if self.desa.kecamatan.kabupaten.provinsi:
-						provinsi = self.desa.kecamatan.kabupaten.provinsi.nama_provinsi
-						if self.kbli:
-							kbli = self.kbli.nama_kbli
-		return dict(id=self.id,nama_perusahaan=self.nama_perusahaan,alamat_perusahaan=self.alamat_perusahaan,
-			telepon=self.telepon,fax=self.fax,npwp=self.npwp,kode_pos=self.kode_pos,desa=desa,status_perusahaan=self.status_perusahaan.status_perusahaan,
-			kecamatan=kecamatan,kabupaten=kabupaten,provinsi=provinsi,kbli=kbli)
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
