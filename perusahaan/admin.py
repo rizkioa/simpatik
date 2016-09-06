@@ -1,5 +1,5 @@
 from django.contrib import admin
-from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, KegiatanUsaha, Kelembagaan, ProdukUtama
+from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, ProdukUtama
 from perusahaan.perusahaan_admin import PerusahaanAdmin
 from django.http import HttpResponseRedirect, HttpResponse
 import json
@@ -154,5 +154,5 @@ admin.site.register(Perusahaan, PerusahaanAdmin)
 
 # admin.site.register(NilaiModal, NilaiModalAdmin)
 
-admin.site.register(KegiatanUsaha)
+admin.site.register(BentukKegiatanUsaha)
 admin.site.register(JenisBadanUsaha)
