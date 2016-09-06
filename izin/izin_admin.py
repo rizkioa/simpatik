@@ -29,7 +29,7 @@ class IzinAdmin(admin.ModelAdmin):
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
 	def get_no_pengajuan(self, obj):
-		return "SIUP/120/1230/2016"
+		return obj.no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def button_cetak_pendaftaran(self, obj):
@@ -67,7 +67,10 @@ class IzinAdmin(admin.ModelAdmin):
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
 			extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
-			extra_context.update({'alamat_pemohon': str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)})
+			alamat_ = ""
+			if pengajuan_.pemohon.desa:
+				alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+			extra_context.update({'alamat_pemohon': alamat_})
 			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})

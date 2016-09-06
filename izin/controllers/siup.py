@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.safestring import mark_safe
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon
@@ -36,8 +37,13 @@ def add_wizard_siup(request):
 				id_kelompok_ = int(id_kelompok_)
 			else:
 				kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
-				id_kelompok_ = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
-				id_kelompok_ = id_kelompok_.id
+				try:
+					id_kelompok_ = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
+					id_kelompok_ = id_kelompok_.id
+				except AttributeError:
+					msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
+					messages.warning(request, msg_, extra_tags='safe')
+					return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
 			url_ = reverse('admin:izin_proses_siup')
 			response = HttpResponseRedirect(url_) # Redirect to url
@@ -59,20 +65,23 @@ def add_wizard_siup(request):
 
 def formulir_siup(request):
 	extra_context={}
-	extra_context.update({'title': 'SIUP Baru'})
-	negara = Negara.objects.all()
-	extra_context.update({'negara': negara})
-	jenis_pemohon = JenisPemohon.objects.all()
-	extra_context.update({'jenis_pemohon': jenis_pemohon})
-	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		extra_context.update({'title': 'SIUP Baru'})
+		negara = Negara.objects.all()
+		extra_context.update({'negara': negara})
+		jenis_pemohon = JenisPemohon.objects.all()
+		extra_context.update({'jenis_pemohon': jenis_pemohon})
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 
-	# print request.COOKIES
-	extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-	template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
-	# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
-	ec = RequestContext(request, extra_context)
-	return HttpResponse(template.render(ec))
-
+		# print request.COOKIES
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
+		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+	else:
+		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
+		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
 # def formulir_siup(request):
 # 	extra_context={}

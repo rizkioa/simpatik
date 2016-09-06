@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'simpatik',
         'USER':'simpatik',
-        'PASSWORD':'!QAZ@WSX',
+        'PASSWORD':'simpatik',
         'PORT': '3306',
         'OPTIONS': {
             "init_command": "SET foreign_key_checks = 0;",

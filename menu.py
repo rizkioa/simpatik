@@ -119,6 +119,10 @@ class CustomMenu(Menu):
             menu_utama,
         ]
 
+        if hasattr(request.user, "operator"):
+            self.children += [
+                menu_utama,
+            ]
         if request.user.is_superuser:
             menu_pengaturan = items.MenuItem(
                 title=_('Menu Pengaturan'),
@@ -286,9 +290,6 @@ class CustomMenu(Menu):
                 menu_pengguna,              
                 menu_pengaturan,
             ]
-
-        if request.user.groups.filter(name="Operator"):
-            pass
 
         
         return super(CustomMenu, self).init_with_context(context)
