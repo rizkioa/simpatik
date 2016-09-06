@@ -263,12 +263,12 @@ class PengajuanIzin(AtributTambahan):
 		verbose_name_plural = 'Pengajuan Izin'
 
 class DetilSIUP(PengajuanIzin):
-	kbli = models.ManyToManyField(KBLI, verbose_name='KBLI')
+	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI')
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
-	kelembagaan = models.ForeignKey(Kelembagaan, blank=True, null=True, verbose_name='Kelembagaan')
-	produk_utama = models.ManyToManyField(ProdukUtama, verbose_name='Barang / Jasa Dagangan Utama')
-	bentuk_kegiatan_usaha = models.ForeignKey(BentukKegiatanUsaha, blank=True, null=True, verbose_name='Kegiatan Usaha')
-	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, blank=True, null=True, verbose_name='Jenis Penanaman Modal')
+	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
+	produk_utama = models.ManyToManyField(ProdukUtama, related_name='barang_jasa_siup', verbose_name='Barang / Jasa Dagangan Utama')
+	bentuk_kegiatan_usaha = models.ForeignKey(BentukKegiatanUsaha, related_name='bentuk_kegiatan_usaha_siup', blank=True, null=True, verbose_name='Kegiatan Usaha')
+	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_siup', blank=True, null=True, verbose_name='Jenis Penanaman Modal')
 	kekayaan_bersih = models.DecimalField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_digits=10, decimal_places=2, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
 	total_nilai_saham = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
 	presentase_saham_nasional = models.DecimalField(max_digits=3, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
