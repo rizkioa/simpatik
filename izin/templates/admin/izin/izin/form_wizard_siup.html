@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+
 	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
@@ -58,7 +58,8 @@
 					form.parsley().validate();
 
 					if (!form.parsley().isValid()) {
-						return false;
+						// return false;
+						return true;
 					}
 
 				}

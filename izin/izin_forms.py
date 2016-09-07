@@ -4,7 +4,7 @@ from izin.utils import JENIS_IZIN
 from izin.models import Pemohon, KelompokJenisIzin, JenisIzin
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
 from accounts.models import NomorIdentitasPengguna
-
+from perusahaan.models import Perusahaan
 
 EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 
@@ -36,8 +36,17 @@ class PemohonForm(forms.ModelForm):
 
 	class Meta:
 		model = Pemohon
-		fields = ('jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email')
+		fields = ('jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None
 
+class PerusahaanForm(forms.ModelForm):
+	"""docstring for PerusahaaanForm"""
+
+	class Meta:
+		model = Perusahaan
+		fields = ('nama_perusahaan', 'nama_grup','alamat_perusahaan','desa','kode_pos','telepon','fax','email','npwp')
+
+
+		

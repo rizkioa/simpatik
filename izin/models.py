@@ -1,13 +1,9 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan
+from master.models import JenisPemohon, AtributTambahan, Berkas
 from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha
 from decimal import Decimal
-from uuid import uuid4
-from django.utils.deconstruct import deconstructible
-
-import os, re
 
 from izin.utils import JENIS_IZIN, get_tahun_choices
 
@@ -20,27 +16,6 @@ from izin.utils import JENIS_IZIN, get_tahun_choices
 from datetime import datetime
 
 # Create your models here.
-
-@deconstructible
-class PathAndRename(object):
-
-	def __init__(self, sub_path):
-		self.path = sub_path
-
-	def __call__(self, instance, filename):
-		ext = filename.split('.')[-1]
-		# set filename as random string
-		filename = '{}.{}'.format(uuid4().hex, ext)
-		# return the whole path to the file
-		return os.path.join(self.path, filename)
-
-class FileField(models.FileField):
-	def save_form_data(self, instance, data):
-		if data is not None: 
-			file = getattr(instance, self.attname)
-			if file != data:
-				file.delete(save=False)
-		super(FileField, self).save_form_data(instance, data)
 
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
@@ -112,7 +87,7 @@ class DasarHukum(models.Model):
 	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
 	tentang = models.CharField(max_length=255, verbose_name='Tentang')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-	berkas = FileField(upload_to=PathAndRename("peraturan/"), null=True, blank=True, max_length=255)
+	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", blank=True, null=True)
 
 	def as_tr(self):
 		file_url = self.get_file_url()
@@ -130,7 +105,7 @@ class DasarHukum(models.Model):
 
 	def get_file_url(self):
 		if self.berkas:
-			return settings.MEDIA_URL+str(self.berkas)
+			return self.berkas.get_file_url()
 		return "#"
 
 	def __unicode__(self):
@@ -140,16 +115,6 @@ class DasarHukum(models.Model):
 		ordering = ['id']
 		verbose_name = 'Dasar Hukum'
 		verbose_name_plural = 'Dasar Hukum'
-
-
-from django.db.models.signals import pre_delete
-from django.dispatch.dispatcher import receiver
-
-@receiver(pre_delete, sender=DasarHukum)
-def dasarhukum_delete(sender, instance, **kwargs):
-	# Pass false so FileField doesn't save the model.
-	if instance:
-		instance.berkas.delete(False)
 
 class JenisIzin(models.Model):
 	dasar_hukum = models.ManyToManyField(DasarHukum, verbose_name='Dasar Hukum')
@@ -282,42 +247,6 @@ class DetilSIUP(PengajuanIzin):
 		verbose_name = 'Detil SIUP'
 		verbose_name_plural = 'Detil SIUP'
 
-# class JenisBerkas(models.Model):
-# 	jenis_berkas = models.CharField(max_length=50, null=True, blank=True, verbose_name='Jenis Berkas')
-# 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.nama_berkas)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Berkas'
-# 		verbose_name_plural = 'Jenis Berkas'
-
-# class Berkas(models.Model):
-# 	pemohon = models.ForeignKey(Pemohon,null=True, related_name='pemohon_izin_berkas')
-# 	perusahaan = models.ForeignKey(Perusahaan,null=True, verbose_name='Perusahaan')
-# 	jenis_berkas = models.ForeignKey(JenisBerkas,null=True, blank=True, verbose_name='Jenis Berkas')
-# 	nama_berkas = models.CharField("Nama Berkas", max_length=100)
-# 	berkas = FileField(upload_to=path_and_rename, max_length=255)
-
-# 	def get_file_url(self):
-# 		if self.berkas:
-# 			return settings.MEDIA_URL+str(self.berkas)
-# 		return "#"
-
-# 	def __unicode__(self):
-# 		return self.nama_berkas
-
-# 	class Meta:
-# 		verbose_name='Berkas'
-# 		verbose_name_plural='Berkas'
-
-# @receiver(pre_delete, sender=Berkas)
-# def mymodel_delete(sender, instance, **kwargs):
-# 	# Pass false so FileField doesn't save the model.
-# 	if instance:
-# 		instance.berkas.delete(False)
 
 
 # class DataPerubahan(models.Model):
