@@ -1,5 +1,5 @@
 from django.db import models
-from master.models import Desa, AtributTambahan
+from master.models import Desa, AtributTambahan, Berkas
 from accounts.utils import STATUS
 # from perusahaan.utils import AKTA, KEDUDUKAN
 # from accounts.models import IdentitasPribadi
@@ -141,6 +141,35 @@ class Perusahaan(AtributTambahan):
 		verbose_name = 'Perusahaan'
 		verbose_name_plural = 'Perusahaan'
 
+class JenisLegalitas(models.Model):
+	jenis_legalitas = models.CharField(max_length=100, verbose_name='Jenis Legalitas')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__ (self):
+		return "%s" % (self.jenis_legalitas)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Legalitas'
+		verbose_name_plural = 'Jenis Legalitas'
+
+class Legalitas(AtributTambahan):
+	nama_notaris = models.CharField(max_length=100, verbose_name='Nama Notaris')
+	jenis_legalitas = models.ForeignKey(JenisLegalitas, related_name='jenis_legalitas_perusahaan', blank=True, null=True)
+	alamat = models.CharField(max_length=255, null=True, blank=True)
+	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
+	nomor_pengesahan = models.CharField("Nomor Pengesahan", max_length=30, blank=True, null=True)
+	tanggal_pengesahan = models.DateField("Tanggal Pengesahan", blank=True, null=True)
+	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", blank=True, null=True)
+	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
+
+	def __unicode__ (self):
+		return "%s" % (str(self.jenis_legalitas))
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Legalitas'
+		verbose_name_plural = 'Legalitas'
 
 # class StatusPerusahaan(models.Model):
 # 	status_perusahaan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Status Perusahaan')
