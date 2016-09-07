@@ -91,7 +91,6 @@ class IdentitasPribadi(AtributTambahan):
 		return u'%s' % (self.nama_lengkap)
 
 	class Meta:
-		ordering = ['id']
 		verbose_name = 'Identitas Pribadi'
 		verbose_name_plural = 'Identitas Pribadi'
 
