@@ -41,6 +41,7 @@ class PemohonForm(forms.ModelForm):
 	def clean_email(self):
 		return self.cleaned_data['email'] or None
 
+
 class PerusahaanForm(forms.ModelForm):
 	"""docstring for PerusahaaanForm"""
 

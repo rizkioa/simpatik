@@ -163,6 +163,10 @@ class Desa(models.Model):
 		verbose_name_plural = "Desa / Kelurahan"
 
 # END OF ALAMAT LOKASI #
+<<<<<<< HEAD
+=======
+
+>>>>>>> 35dc2de385febb9eb3e9b7fd0e22128696c6cd3b
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 import os, re
@@ -170,7 +174,10 @@ from django.conf import settings
 
 @deconstructible
 class PathAndRename(object):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 35dc2de385febb9eb3e9b7fd0e22128696c6cd3b
 	def __init__(self, sub_path):
 		self.path = sub_path
 
@@ -185,7 +192,11 @@ path_and_rename = PathAndRename("berkas/")
 
 class FileField(models.FileField):
 	def save_form_data(self, instance, data):
+<<<<<<< HEAD
 		if data is not None: 
+=======
+		if data is not None:
+>>>>>>> 35dc2de385febb9eb3e9b7fd0e22128696c6cd3b
 			file = getattr(instance, self.attname)
 			if file != data:
 				file.delete(save=False)
