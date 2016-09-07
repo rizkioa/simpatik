@@ -228,7 +228,7 @@ class PengajuanIzin(AtributTambahan):
 		verbose_name_plural = 'Pengajuan Izin'
 
 class DetilSIUP(PengajuanIzin):
-	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI')
+	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI', blank=True)
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
 	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
 	produk_utama = models.ManyToManyField(ProdukUtama, related_name='barang_jasa_siup', verbose_name='Barang / Jasa Dagangan Utama')
