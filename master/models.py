@@ -171,7 +171,6 @@ from django.conf import settings
 
 @deconstructible
 class PathAndRename(object):
-
 	def __init__(self, sub_path):
 		self.path = sub_path
 
@@ -186,7 +185,7 @@ path_and_rename = PathAndRename("berkas/")
 
 class FileField(models.FileField):
 	def save_form_data(self, instance, data):
-		if data is not None: 
+		if data is not None:
 			file = getattr(instance, self.attname)
 			if file != data:
 				file.delete(save=False)

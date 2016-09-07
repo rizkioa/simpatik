@@ -35,7 +35,8 @@ class IzinAdmin(admin.ModelAdmin):
 	def button_cetak_pendaftaran(self, obj):
 		btn = mark_safe("""
 			<a href="%s" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
-			""" % reverse('admin:print_out_pendaftaran', kwargs={'id_pengajuan_izin_': obj.id}))
+			""" % reverse('cetak_bukti_pendaftaran'))
+			# reverse('admin:print_out_pendaftaran', kwargs={'id_pengajuan_izin_': obj.id})
 		return btn
 	button_cetak_pendaftaran.short_description = "Cetak Pendafaran"
 
@@ -143,6 +144,12 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			)
 		return my_urls + urls
+
+	def suit_cell_attributes(self, obj, column):
+		if column in ['button_cetak_pendaftaran']:
+			return {'class': 'text-center'}
+		else:
+			return None
 
 	def save_model(self, request, obj, form, change):
 		# clean the nomor_identitas

@@ -4,7 +4,26 @@
 <head>
 	<title>Cetak Bukti Pendaftaran</title>
 </head>
+<!--[if ]>
+<style>
+.page{
+    min-height: 309mm;
+}
+</style>
+<![endif]-->
 <style type="text/css">
+    
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
 	body {
         width: 100%;
         height: 100%;
@@ -53,8 +72,6 @@
             background: initial;
             page-break-after: always;
         }
-
-        
     }
 
     .title, .tabel{
@@ -64,7 +81,7 @@
     	margin-top: 0px;
     }
     .tabel{
-    	padding-top: 20px;
+    	padding-top: 0px;
     	padding-bottom: 10px;
     }
 
@@ -75,7 +92,10 @@
 	.ceklist {
 	    border: 1px solid black;
 	}
-
+    .font {
+        font-size: 12px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
 </style>
 <body>
     <div class="book">
@@ -95,62 +115,265 @@
                         <tr>
                             <td>
                                 <h5>No. Pengajuan Izin : SIUP/1001/0802/2016<br>
-                                Masa berlaku pengajuan s/d 10 September 2016</h5>
+                                <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div>
                     <h4 align="center"><u>PERMOHONAN SURAT IZIN USAHA PERDAGANGAN</u></h4>
-                    <p style="font-size: 12px;text-indent: 50px;">
+                    <p style="font-size: 12px;text-indent: 30px;">
                         Yang bertanda tangan dibawah ini mengajukan permohonan Surat Izin Usaha Perdagangan (Mikro/Kecil/Menengah/Besar*) sebagaimana dimaksud dalam Peraturan Menteri Perdagangan RI No. 36/M-DAG/PER/9/2007 tanggal 4 September 2007 tentang Ketentuan Penerbitan Surat Izin Usaha Perdagangan (SIUP) sebagaimana diubah dengan Peraturan Menteri Perdagangan RI No. 46/M-DAG/PER/9/2009 tanggal 16 September 2009 sebagaimana diubah dengan Peraturan Menteri Perdagangan RI No. 39/M-DAG/PER/12/2011 tanggal 9 Desember 2011
                     </p>
                 </div>
-            	<div class="tabel">
-            		<table style="width:100%">
-    	        		<tbody>
-    	        			<tr>
-    	        				<td width="25%">Nama Pemohon</td>
-    	        				<td>:</td>
-    	        				<td>{{ pemohon }} ({{ jenis_pemohon }})</td>
-    	        			</tr>
-    	        			<tr>
-    	        				<td width="25%">Nomor Identitas</td>
-    	        				<td>:</td>
-    	        				<td>
-    	        				{% for n in nomor_identitas %}
-    	        					{{ n.jenis_identitas.jenis_nomor_identitas }} {{ n.nomor }}
-    	        				{% endfor %}
-    	        				</td>
-    	        			</tr>
-    	        			<tr>
-    	        				<td valign="top">Alamat</td>
-    	        				<td valign="top">:</td>
-    	        				<td>{{ alamat_pemohon }}</td>
-    	        			</tr>
-    	        			<tr>
-    	        				<td>Jenis Permohonan</td>
-    	        				<td>:</td>
-    	        				<td>{{ jenis_permohonan }}</td>
-    	        			</tr>
-    	        			<tr>
-    	        				<td valign="top">Kelompok Jenis Izin</td>
-    	        				<td valign="top">:</td>
-    	        				<td>{{ kelompok_jenis_izin }}</td>
-    	        			</tr>
-    	        			<tr>
-    	        				<td>Dibuat Tanggal</td>
-    	        				<td>:</td>
-    	        				<td></td>
-    	        			</tr>
-    	        		</tbody>
-    	        	</table>
-            	</div>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pengajuan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Baru</td>
+                    </tr>
+                </table>
+                <h5><u>IDENTITAS PEMOHON</u></h5>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pemohon</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Pemilik</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nomor KTP/Paspor</td>
+                        <td width="10%">:</td>
+                        <td width="65%">350001010010101001</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Aiwinur Siti Diah Ayu Mega Ningrum Dwi Pangestuti Lestasi Endang Pamikasih Sri Kumala Sari Dewi Puspita Anggraini</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. HP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">085736662908</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kewarganegaraan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Indonesia</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Pekerjaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Swasta</td>
+                    </tr>
+                </table>
+                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">NPWP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">1234567890</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">UD. MAKMUR JAYA</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kode Pos</td>
+                        <td width="10%">:</td>
+                        <td width="65%"></td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">087895172617</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Fax</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                </table>
+                <h5><u>DATA SIUP</u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Status Penanaman Modal</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Lain-lain</td>
+                    </tr>
+                </table>
+                <h5><u>Kekayaan Bersih dan Saham </u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="40%">Kekayaan Bersih Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="50%">Rp. 5.390.025</td>
+                    </tr>
+                    <tr>
+                        <td width="40%">(tidak termasuk tanah dan bangunan tempat usaha)</td>
+                        <td width="10%">:</td>
+                        <td width="60%"></td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
+                        <td width="5%"></td>
+                        <td width="65%"></td>
+                    </tr>
+                    <tr>
+                        <td width="30%">a. Total Nilai Saham</td>
+                        <td width="10%">:</td>
+                        <td width="60%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">b. Komposisi Kepemilikan Saham</td>
+                        <td width="10%"></td>
+                        <td width="60%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="30%" style="padding-left: 10%;">Dalam</td>
+                        <td width="10%">:</td>
+                        <td width="60%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="30%" style="padding-left: 10%;">Asing</td>
+                        <td width="10%">:</td>
+                        <td width="60%">-</td>
+                    </tr>
+                </table>
+                
+                <hr>
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
             </div>    
         </div>
         <div class="page">
             <div class="subpage">
-            	
+                <h5><u>Kegiatan Usaha</u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="30%">Kelembagaan</td>
+                        <td width="5%">:</td>
+                        <td width="65%">Perdagangan Kecil</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">KBLI</td>
+                        <td width="5%">:</td>
+                        <td width="65%">12345</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Barang/jasa dagang utama</td>
+                        <td width="5%">:</td>
+                        <td width="65%">Peralatan pertanian, Bibit</td>
+                    </tr>
+                </table>
+            	<h5><u>LEGALITAS PERUSAHAAN</u></h5>
+                <table class="font" width="100%" border="1" style="border: 2px solid #ddd;">
+                    <thead>
+                        <tr align="center">
+                            <td>Jenis Akta dan Pengesahaan</td>
+                            <td>Nama Notaris</td>
+                            <td>Alamat Notaris</td>
+                            <td>Telp. Notaris</td>
+                            <td>No. Akta</td>
+                            <td>Tgl. Akta</td>
+                            <td>No. Pengesahaan</td>
+                            <td>Tgl Pengesahaan</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center">
+                            <td>Akta Pendirian</td>
+                            <td>Hasanuddin, S.H</td>
+                            <td>Jl. Mekar Asri No.2 Kediri</td>
+                            <td>035455908</td>
+                            <td>9</td>
+                            <td>10/09/2009</td>
+                            <td>123/ABC/2009</td>
+                            <td>16/09/2009</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <p style="font-size: 12px;text-indent: 30px;">
+                    Demikian Surat permohonan SIUP ini kami buat dengan sebenarnya dan apabila di kemudian hari ternyata data/informasi dan keterangan tersebut tidak benar, maka kami menyatakan bersedia dibatalkan SIUP yang telah kami miliki dan dituntut sesuani dengan kententuan peraturan perundang-undangan.
+                </p>
+                <br>
+                <br>
+                <p align="center" style="font-size:13px;padding-left:75%">
+                    Kediri,.......................
+                    <br>
+                    Nama dan Tanga tangan
+                    <br>
+                    Pemilik
+                    <br>
+                    Cv. Makmur Jaya
+                    <br>
+                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+                    <br>
+                    <br>
+                    <br>
+                    <u class="font"><b>Aiwinur Siti Diah Ayu Mega Ningrum Dwi Pangestuti Lestasi Endang Pamikasih Sri Kumala Sari Dewi Puspita Anggraini</b></u>
+                </p>
+                <br>
+                <hr class="style14">
+                <h5>Syarat SIUP:</h5>
+                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <td width="5%">No</td>
+                            <td width="80%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if syarat %}
+                            {% for s in syarat %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ s.syarat }}</td>
+                                <td align="center"><input type="checkbox"></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <!-- <ol class="font">
+                    {% if syarat %}
+                        {% for s in syarat %}
+                            <li>{{ s.syarat }}</li>
+                        {% endfor %}
+                    {% endif %}
+                </ol> -->
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
             </div>    
         </div>
     </div>
