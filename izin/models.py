@@ -1,13 +1,9 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan
+from master.models import JenisPemohon, AtributTambahan, Berkas
 from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha
 from decimal import Decimal
-from uuid import uuid4
-from django.utils.deconstruct import deconstructible
-
-import os, re
 
 from izin.utils import JENIS_IZIN, get_tahun_choices
 
@@ -20,27 +16,6 @@ from izin.utils import JENIS_IZIN, get_tahun_choices
 from datetime import datetime
 
 # Create your models here.
-
-@deconstructible
-class PathAndRename(object):
-
-	def __init__(self, sub_path):
-		self.path = sub_path
-
-	def __call__(self, instance, filename):
-		ext = filename.split('.')[-1]
-		# set filename as random string
-		filename = '{}.{}'.format(uuid4().hex, ext)
-		# return the whole path to the file
-		return os.path.join(self.path, filename)
-
-class FileField(models.FileField):
-	def save_form_data(self, instance, data):
-		if data is not None: 
-			file = getattr(instance, self.attname)
-			if file != data:
-				file.delete(save=False)
-		super(FileField, self).save_form_data(instance, data)
 
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
@@ -112,7 +87,7 @@ class DasarHukum(models.Model):
 	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
 	tentang = models.CharField(max_length=255, verbose_name='Tentang')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-	berkas = FileField(upload_to=PathAndRename("peraturan/"), null=True, blank=True, max_length=255)
+	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", blank=True, null=True)
 
 	def as_tr(self):
 		file_url = self.get_file_url()
@@ -130,7 +105,7 @@ class DasarHukum(models.Model):
 
 	def get_file_url(self):
 		if self.berkas:
-			return settings.MEDIA_URL+str(self.berkas)
+			return self.berkas.get_file_url()
 		return "#"
 
 	def __unicode__(self):
@@ -140,16 +115,6 @@ class DasarHukum(models.Model):
 		ordering = ['id']
 		verbose_name = 'Dasar Hukum'
 		verbose_name_plural = 'Dasar Hukum'
-
-
-from django.db.models.signals import pre_delete
-from django.dispatch.dispatcher import receiver
-
-@receiver(pre_delete, sender=DasarHukum)
-def dasarhukum_delete(sender, instance, **kwargs):
-	# Pass false so FileField doesn't save the model.
-	if instance:
-		instance.berkas.delete(False)
 
 class JenisIzin(models.Model):
 	dasar_hukum = models.ManyToManyField(DasarHukum, verbose_name='Dasar Hukum')
@@ -248,8 +213,8 @@ class PengajuanIzin(AtributTambahan):
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
 
-	no_pengajuan = models.CharField(max_length=255, verbose_name='No. Pengajuan', blank=True, null=True)
-	no_izin = models.CharField(max_length=255, verbose_name='No. Izin', blank=True, null=True)
+	no_pengajuan = models.CharField(max_length=255, verbose_name='No. Pengajuan', blank=True, null=True, unique=True)
+	no_izin = models.CharField(max_length=255, verbose_name='No. Izin', blank=True, null=True, unique=True)
 	nama_kuasa = models.CharField(max_length=255, verbose_name='Nama Kuasa', blank=True, null=True)
 	no_identitas_kuasa = models.CharField(max_length=255, verbose_name='No. Identitas Kuasa', blank=True, null=True)
 	telephone_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
@@ -268,7 +233,7 @@ class DetilSIUP(PengajuanIzin):
 	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
 	produk_utama = models.ManyToManyField(ProdukUtama, related_name='barang_jasa_siup', verbose_name='Barang / Jasa Dagangan Utama')
 	bentuk_kegiatan_usaha = models.ForeignKey(BentukKegiatanUsaha, related_name='bentuk_kegiatan_usaha_siup', blank=True, null=True, verbose_name='Kegiatan Usaha')
-	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_siup', blank=True, null=True, verbose_name='Jenis Penanaman Modal')
+	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_siup', blank=True, null=True, verbose_name='Jenis Penanaman Modal')	
 	kekayaan_bersih = models.DecimalField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_digits=10, decimal_places=2, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
 	total_nilai_saham = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
 	presentase_saham_nasional = models.DecimalField(max_digits=3, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
@@ -281,44 +246,6 @@ class DetilSIUP(PengajuanIzin):
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Detil SIUP'
 		verbose_name_plural = 'Detil SIUP'
-
-# class JenisBerkas(models.Model):
-# 	jenis_berkas = models.CharField(max_length=50, null=True, blank=True, verbose_name='Jenis Berkas')
-# 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.nama_berkas)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Berkas'
-# 		verbose_name_plural = 'Jenis Berkas'
-
-# class Berkas(models.Model):
-# 	pemohon = models.ForeignKey(Pemohon,null=True, related_name='pemohon_izin_berkas')
-# 	perusahaan = models.ForeignKey(Perusahaan,null=True, verbose_name='Perusahaan')
-# 	jenis_berkas = models.ForeignKey(JenisBerkas,null=True, blank=True, verbose_name='Jenis Berkas')
-# 	nama_berkas = models.CharField("Nama Berkas", max_length=100)
-# 	berkas = FileField(upload_to=path_and_rename, max_length=255)
-
-# 	def get_file_url(self):
-# 		if self.berkas:
-# 			return settings.MEDIA_URL+str(self.berkas)
-# 		return "#"
-
-# 	def __unicode__(self):
-# 		return self.nama_berkas
-
-# 	class Meta:
-# 		verbose_name='Berkas'
-# 		verbose_name_plural='Berkas'
-
-# @receiver(pre_delete, sender=Berkas)
-# def mymodel_delete(sender, instance, **kwargs):
-# 	# Pass false so FileField doesn't save the model.
-# 	if instance:
-# 		instance.berkas.delete(False)
-
 
 # class DataPerubahan(models.Model):
 # 	tabel_asal = models.CharField(max_length=255, blank=True, null=True, verbose_name='Tabel Asal')

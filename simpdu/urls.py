@@ -16,7 +16,8 @@ urlpatterns = [
     # url(r'^perusahaan/', include('perusahaan.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^user/', include(usersite.urls)),
-    url(r'^',include('izin.urls')),
+    url(r'^', include('izin.urls')),
+
     url(r'^accounts/login/$', 'cas.views.login', name='login_cas'),
     url(r'^accounts/logout/$', 'cas.views.logout', name='logout_cas'),
     url(r'^accounts/login/failed/$', 'accounts.views.cas_failed', name='login_failed'),

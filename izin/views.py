@@ -47,7 +47,9 @@ def layanan_siup(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "6" })
 	extra_context.update({'id_kelompok_jenis_izin': "17" })
-	return render(request, "front-end/layanan/siup.html", extra_context)
+	response = render(request, "front-end/layanan/siup.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value=17)
+	return response
 
 def layanan_ho_baru(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=12)
@@ -294,6 +296,8 @@ def formulir_siup(request, extra_context={}):
 	extra_context.update({'desa': desa})
 	jenis_pemohon = JenisPemohon.objects.all()
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+	extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 	return render(request, "front-end/formulir/siup.html", extra_context)
 
 def formulir_tdp_pt(request, extra_context={}):
@@ -445,7 +449,7 @@ def identitas_pemohon(request, extra_context={}):
 	data = {'success': True, 'pesan': 'Simpan data siswa berhasil.', 'id_siswa': siswa.id }
 	return HttpResponse(json.dumps(data))
 
-from izin.izin_forms import PemohonForm
+from izin.izin_forms import PemohonForm, PerusahaaanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin
@@ -518,6 +522,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			data = {'success': True, 'pesan': 'Pengajuan disimpan. Proses Selanjutnya.'  }
 			response = HttpResponse(json.dumps(data))	
 
+		response.set_cookie(key='id_pemohon', value=p.id)
 		response.set_cookie(key='nama_lengkap', value=p.nama_lengkap) # set cookie	
 		if jenis_permohonan_:
 			response.set_cookie(key='jenis_permohonan', value=pengajuan.jenis_permohonan) # set cookie	
@@ -553,8 +558,28 @@ def siup_identitas_pemohon_save_cookie(request):
 
 def siup_identitas_perusahan_save_cookie(request):
 	# print request.COOKIES # Untuk Tes cookies
-	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
-	return HttpResponse(json.dumps(data))
+	perusahaan = PerusahaanForm(request.POST) 
+	if perusahaan.is_valid():
+		p = perusahaan.save(commit=False)
+		p.pemohon_id = request.COOKIES['id_pemohon']
+		p.save()
+
+		data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.'  }
+		response = HttpResponse(json.dumps(data))
+		
+		response.set_cookie(key='npwp', value=p.npwp)
+		response.set_cookie(key='nama_perusahaan', value=p.nama_perusahaan)
+		alamat_ = str(p.alamat_perusahaan)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
+		response.set_cookie(key='alamat_perusahaan', value=alamat_)
+		response.set_cookie(key='kode_pos', value=p.kode_pos)
+		response.set_cookie(key='telepon', value=p.telepon)
+		response.set_cookie(key='fax', value=p.fax)
+		response.set_cookie(key='email', value=p.email)
+
+	else:
+		data = perusahaan.errors.as_json()
+		response = HttpResponse(data)
+	return response
 
 def siup_legalitas_perusahaan_save_cookie(request):
 	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
@@ -573,6 +598,7 @@ def siup_done(request):
 	response = HttpResponse(json.dumps(data))
 	# For delete cookie
 	response.delete_cookie(key='nama_lengkap') # set cookie	
+	response.delete_cookie(key='id_pemohon') # set cookie	
 	response.delete_cookie(key='jenis_permohonan') # set cookie
 	response.delete_cookie(key='ktp') # set cookie	
 	response.delete_cookie(key='alamat') # set cookie
@@ -590,4 +616,6 @@ def cetak_permohonan(request, extra_context={}):
 	return render(request, "front-end/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
+	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/cetak_bukti_pendaftaran.html", extra_context)

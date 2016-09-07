@@ -163,3 +163,58 @@ class Desa(models.Model):
 		verbose_name_plural = "Desa / Kelurahan"
 
 # END OF ALAMAT LOKASI #
+
+from uuid import uuid4
+from django.utils.deconstruct import deconstructible
+import os, re
+from django.conf import settings
+
+@deconstructible
+class PathAndRename(object):
+	def __init__(self, sub_path):
+		self.path = sub_path
+
+	def __call__(self, instance, filename):
+		ext = filename.split('.')[-1]
+		# set filename as random string
+		filename = '{}.{}'.format(uuid4().hex, ext)
+		# return the whole path to the file
+		return os.path.join(self.path, filename)
+
+path_and_rename = PathAndRename("berkas/")
+
+class FileField(models.FileField):
+	def save_form_data(self, instance, data):
+		if data is not None:
+			file = getattr(instance, self.attname)
+			if file != data:
+				file.delete(save=False)
+		super(FileField, self).save_form_data(instance, data)
+
+class Berkas(AtributTambahan):
+	nama_berkas = models.CharField("Nama Berkas", max_length=100)
+	berkas = FileField(upload_to=path_and_rename, max_length=255)
+	no_berkas = models.CharField("Nomor Berkas", max_length=30, blank=True, null=True, help_text="Masukkan Nomor Surat / Berkas jika ada.")
+
+	keterangan = models.CharField("Keterangan", blank=True, null=True, max_length=255)
+
+	def get_file_url(self):
+		if self.berkas:
+			return settings.MEDIA_URL+str(self.berkas)
+		return "#"
+
+	def __unicode__(self):
+		return self.nama_berkas
+
+	class Meta:
+		verbose_name='Berkas'
+		verbose_name_plural='Berkas'
+
+from django.db.models.signals import pre_delete
+from django.dispatch.dispatcher import receiver
+
+@receiver(pre_delete, sender=Berkas)
+def mymodel_delete(sender, instance, **kwargs):
+	# Pass false so FileField doesn't save the model.
+	if instance:
+		instance.berkas.delete(False)

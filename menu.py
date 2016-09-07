@@ -55,8 +55,13 @@ class CustomMenu(Menu):
                             ]                            
                         ),
                         items.MenuItem(
-                            title='Pengajuan Izin',
-                            icon='fa fa-file-text-o', 
+                            title='Semua Izin',
+                            icon='fa fa-file-text', 
+                            url='#',                        
+                        ),
+                        items.MenuItem(
+                            title='Semua Perusahan',
+                            icon='fa fa-building', 
                             url='#',                        
                         ),
                     ]
@@ -119,10 +124,15 @@ class CustomMenu(Menu):
             menu_utama,
         ]
 
-        if hasattr(request.user, "operator"):
-            self.children += [
-                menu_utama,
+        if request.user.groups.filter(name="Operator").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Semua Pemohon',
+                    icon='fa fa-user-md',
+                    url=reverse('admin:izin_pemohon_changelist'),
+                ),
             ]
+
         if request.user.is_superuser:
             menu_pengaturan = items.MenuItem(
                 title=_('Menu Pengaturan'),
