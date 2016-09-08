@@ -38,5 +38,6 @@ class ProvinsiAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^json/$', self.admin_site.admin_view(self.json_provinsi), name='json_provinsi'),
 			url(r'^option/$', self.admin_site.admin_view(self.option_provinsi), name='option_provinsi'),
+			url(r'^option-front/$', self.option_provinsi, name='option_provinsi_front'),
 			)
 		return my_urls + urls

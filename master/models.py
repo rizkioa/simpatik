@@ -163,7 +163,6 @@ class Desa(models.Model):
 		verbose_name_plural = "Desa / Kelurahan"
 
 # END OF ALAMAT LOKASI #
-
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 import os, re
@@ -185,7 +184,7 @@ path_and_rename = PathAndRename("berkas/")
 
 class FileField(models.FileField):
 	def save_form_data(self, instance, data):
-		if data is not None:
+		if data is not None: 
 			file = getattr(instance, self.attname)
 			if file != data:
 				file.delete(save=False)
