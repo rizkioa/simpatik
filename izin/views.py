@@ -452,7 +452,7 @@ def identitas_pemohon(request, extra_context={}):
 from izin.izin_forms import PemohonForm, PerusahaanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
@@ -501,10 +501,10 @@ def siup_identitas_pemohon_save_cookie(request):
 								)
 
 			# SIMPAN PENGAJUAN verified_at=datetime.datetime.now(),
-			pengajuan = PengajuanIzin(no_pengajuan=nomor_pengajuan_,kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user )
-			pengajuan.save()
-			data = {'success': True, 'pesan': 'Pemohon dan Pengajuan disimpan. Proses Selanjutnya.'  }
-			response = HttpResponse(json.dumps(data))
+			# pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_,kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user )
+			# pengajuan.save()
+			# data = {'success': True, 'pesan': 'Pemohon disimpan. Proses Selanjutnya.'  }
+			# response = HttpResponse(json.dumps(data))
 		except IntegrityError as e:
 			if ktp_:
 				p = Pemohon.objects.get(username = ktp_)
@@ -515,15 +515,16 @@ def siup_identitas_pemohon_save_cookie(request):
 
 			# print p.id
 			# print p.desa
-			
-			pengajuan = PengajuanIzin(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user  )
-			pengajuan.save()
+		
+		# Simpan ke DetilSIUP
+		pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user  )
+		pengajuan.save()
 
-			data = {'success': True, 'pesan': 'Pengajuan disimpan. Proses Selanjutnya.'  }
-			response = HttpResponse(json.dumps(data))	
+		data = {'success': True, 'pesan': 'Pengajuan disimpan. Proses Selanjutnya.'  }
+		response = HttpResponse(json.dumps(data))	
 
 		response.set_cookie(key='id_pemohon', value=p.id)
-		response.set_cookie(key='nama_lengkap', value=p.nama_lengkap) # set cookie	
+		response.set_cookie(key='nama_lengkap', value=p.nama_lengkap) # set cookie
 		if jenis_permohonan_:
 			response.set_cookie(key='jenis_permohonan', value=pengajuan.jenis_permohonan) # set cookie	
 		if ktp_ or paspor_:
@@ -561,7 +562,7 @@ def siup_identitas_perusahan_save_cookie(request):
 	perusahaan = PerusahaanForm(request.POST) 
 	if perusahaan.is_valid():
 		p = perusahaan.save(commit=False)
-		p.pemohon_id = request.COOKIES['id_pemohon']
+		p.penanggung_jawab_id = request.COOKIES['id_pemohon']
 		p.save()
 
 		data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.'  }

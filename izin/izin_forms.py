@@ -1,7 +1,7 @@
 from django import forms
 
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan
@@ -48,6 +48,14 @@ class PerusahaanForm(forms.ModelForm):
 	class Meta:
 		model = Perusahaan
 		fields = ('nama_perusahaan', 'nama_grup','alamat_perusahaan','desa','kode_pos','telepon','fax','email','npwp')
+
+class PengajuanSiupForm(forms.ModelForm):
+	"""docstring for LegalitasPerusahaanForm"""
+	
+	class Meta:
+		model = DetilSIUP
+		fields = ('pemohon','jenis_permohonan','kelompok_jenis_izin','kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
+		
 
 
 		

@@ -29,7 +29,16 @@ class IzinAdmin(admin.ModelAdmin):
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
 	def get_no_pengajuan(self, obj):
-		return obj.no_pengajuan
+		no_pengajuan = mark_safe("""
+			<a href="%s" target="_blank"> %s </a>
+			""" % ("#", obj.no_pengajuan ))
+		split_ = obj.no_pengajuan.split('/')
+		# print split_
+		if split_[0] == 'SIUP':
+			no_pengajuan = mark_safe("""
+				<a href="%s" target="_blank"> %s </a>
+				""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def button_cetak_pendaftaran(self, obj):

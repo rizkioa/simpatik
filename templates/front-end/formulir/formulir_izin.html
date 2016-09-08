@@ -64,6 +64,7 @@
   {% endblock %}
 
   <div class="tab-content">
+
     {% block tab-content %}
       
     {% endblock %}
@@ -114,11 +115,12 @@
       },
 
       onNext: function(tab, navigation, index) {
-        var form = $('form[name="step'+ index +'"]');
-        form.parsley().validate();
-        if (!form.parsley().isValid()) {
-            return false;
-        }
+        // var form = $('form[name="step'+ index +'"]');
+        // form.parsley().validate();
+        // if (!form.parsley().isValid()) {
+        //     return false;
+        // }
+        return false;
       },
 
       onTabClick: function(tab, navigation, index) {

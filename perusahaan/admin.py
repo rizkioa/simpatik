@@ -50,11 +50,11 @@ admin.site.register(Perusahaan, PerusahaanAdmin)
 
 # admin.site.register(DataRincianPerusahaan, DataRincianPerusahaanAdmin)
 
-# class KelembagaanAdmin(admin.ModelAdmin):
-# 	list_display = ('nama_kelembagaan',)
-# 	search_fields = ('nama_kelembagaan',)
+class KelembagaanAdmin(admin.ModelAdmin):
+	list_display = ('kelembagaan','keterangan')
+	search_fields = ('kelembagaan',)
 
-# admin.site.register(Kelembagaan, KelembagaanAdmin)
+admin.site.register(Kelembagaan, KelembagaanAdmin)
 
 # class PemegangSahamaLainAdmin(admin.ModelAdmin):
 # 	list_display = ('perusahaan','npwp','jumlah_saham_dimiliki','jumlah_modal_disetor')
@@ -133,11 +133,11 @@ admin.site.register(Perusahaan, PerusahaanAdmin)
 
 # admin.site.register(AktaNotaris, AktaNotarisAdmin)
 
-# class ProdukUtamaAdmin(admin.ModelAdmin):
-# 	list_display = ('perusahaan','kelembagaan','barang_jasa_utama')
-# 	list_filter = ('barang_jasa_utama',)
+class ProdukUtamaAdmin(admin.ModelAdmin):
+	list_display = ('barang_jasa_utama', 'keterangan')
+	list_filter = ('barang_jasa_utama',)
 
-# admin.site.register(ProdukUtama, ProdukUtamaAdmin)
+admin.site.register(ProdukUtama, ProdukUtamaAdmin)
 
 # class MesinHullerAdmin(admin.ModelAdmin):
 # 	list_display = ('jenis','mesin_huller')
