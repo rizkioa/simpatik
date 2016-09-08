@@ -56,6 +56,7 @@ urlpatterns = [
     # url for ajax siup
     url(r'^layanan/siup/pemohon/save/$', siup_view.siup_identitas_pemohon_save_cookie, name='siup_pemohon_save'),
     url(r'^layanan/siup/identitasperusahaan/save/$', siup_view.siup_identitas_perusahan_save_cookie, name='siup_identitas_perusahan_save'),
+    url(r'^layanan/siup/detilsiup/save/$', siup_view.siup_detilsiup_save_cookie, name='siup_detilsiup_save'),
     url(r'^layanan/siup/legalitasperusahaan/save/$', siup_view.siup_legalitas_perusahaan_save_cookie, name='siup_legalitas_perusahaan_save'),
     url(r'^layanan/siup/kekayaan/save/$', siup_view.siup_kekayaan_save_cookie, name='siup_kekayaan_save'),
     url(r'^layanan/siup/upload/save/$', siup_view.siup_upload_dokumen_cookie, name='siup_upload_dokumen'),

@@ -1,4 +1,7 @@
-from izin.izin_forms import PemohonForm, PerusahaaanForm
+from django.http import HttpResponse
+import json
+
+from izin.izin_forms import PemohonForm, PerusahaanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP
@@ -124,6 +127,10 @@ def siup_identitas_perusahan_save_cookie(request):
 		data = perusahaan.errors.as_json()
 		response = HttpResponse(data)
 	return response
+
+def siup_detilsiup_save_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
+	return HttpResponse(json.dumps(data))
 
 def siup_legalitas_perusahaan_save_cookie(request):
 	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }

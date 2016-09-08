@@ -1,61 +1,62 @@
-<form method="POST" name="step3" role="form" class="form-horizontal" >
+<form method="POST" name="step3" role="form" action="{% url 'siup_detilsiup_save'%}" class="form-horizontal" >
   {% csrf_token %}   
 	<h3>IDENTITAS PERUSAHAAN</h3>
     <hr class="style14" style="height:2px">
 
-    <div class="form-group">
+    <div class="form-group" id="bentuk_kegiatan_usaha">
       <label class="col-sm-2 control-label"><strong>Bentuk kegiatan usaha</strong></label>
       <div class="col-sm-4">
-        <select class="form-control chosen-select" required="" data-parsley-trigger="change">
+        <select class="form-control chosen-select" required="" data-parsley-trigger="change" name="bentuk_kegiatan_usaha">
           <option value>-- Pilih Bentuk Kegiatan Usaha --</option>
-          <option>Kecil</option>
-          <option>Menengah</option>
-          <option>Besar</option>
+          {% for val in bentuk_kegiatan_usaha_list %}
+            <option value="{{val.id}}">{{ val.kegiatan_usaha}}</option>
+          {% endfor %}
+
         </select>
       </div>
     </div>
     
-    <div class="form-group">
+    <div class="form-group" id="jenis_penanaman_modal">
       <label class="col-sm-2 control-label text-left">Status penanaman modal</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select class="form-control chosen-select mb-10" name="jenis_penanaman_modal">
           <option>-- Pilih Status penanaman modal --</option>
-          <option>PMA (Penanaman Modal Asing)</option>
-          <option>PMDN (Penanaman Modal Dalam Negeri)</option>
-          <option>Lain-lain</option>
+          {% for val in jenis_penanaman_modal_list%}
+            <option value="{{val.id}}">{{val.jenis_penanaman_modal}}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
 
     <h4><u><strong>Kekeayaan Bersih Dan Saham</strong></u></h4>
 
-    <div class="form-group">
+    <div class="form-group" id="kekayaan_bersih">
 	    <label class="col-sm-2 control-label text-left">Kekayaan bersih perusahaan </label>
 	    <div class="col-sm-5">
-	      <input type="text" class="form-control" id="input01">
+	      <input type="text" class="form-control" id="input01" name="kekayaan_bersih">
 	      <span class="help-block mb-0">(tidak termasuk tanah dan bangunan tempat usaha)</span>
 	    </div>
 	</div>
 
 	<h4>Saham (Khusus Untuk Penanaman Modal Asing)</h4>
-	<div class="form-group">
+	<div class="form-group" id="total_nilai_saham">
 	    <label class="col-sm-2 control-label">a. Total Nilai Saham</label>
 	    <div class="col-sm-5">
-	      <input type="text" class="form-control">
+	      <input type="text" class="form-control" name="total_nilai_saham">
 	    </div>
 	</div>
 
 	<div class="form-group">
 	    <label class="col-sm-2 control-label">b. Komposisi Kepemilikan Saham</label>
 	    <div class="col-sm-5">
-	      <div class="input-group " style="padding-top: 6px;padding-bottom: 10px;">
+	      <div class="input-group " style="padding-top: 6px;padding-bottom: 10px;" id="presentase_saham_nasional">
 	        <span class="input-group-addon">Nasional</span>
-	        <input type="text" class="form-control">
+	        <input type="text" class="form-control" name="presentase_saham_nasional">
 	        <span class="input-group-addon">%</span>
 	      </div>
-	      <div class="input-group ">
+	      <div class="input-group " id="presentase_saham_asing">
 	        <span class="input-group-addon text-center" style="padding-left: 31px;">Asing</span>
-	        <input type="text" class="form-control">
+	        <input type="text" class="form-control" name="presentase_saham_asing">
 	        <span class="input-group-addon">%</span>
 	      </div>
 	    </div>
@@ -63,33 +64,38 @@
 
 	<h4><u><strong>Kegiatan Usaha</strong></u></h4>
 
-	<div class="form-group">
+	<div class="form-group" id="kelembagaan">
       <label class="col-sm-2 control-label text-left">Kelembagaan</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select class="form-control chosen-select mb-10" name="kelembagaan">
           <option>-- Pilih Kelembagaan --</option>
-          <option>Perdagangan mikro</option>
-          <option>Perdagangan kecil</option>
-          <option>Perdagangan menengah</option>
-          <option>Perdagangan besar</option>
+          {% for val in kelembagaan_list %}
+            <option value="{{val.id}}">{{val.kelembagaan}}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="kbli">
       <label class="col-sm-2 control-label text-left">Kegiatan usaha (KBLI)</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select class="form-control chosen-select mb-10" name="kbli">
           <option>-- Pilih Kegiatan usaha --</option>
+          {% for val in kbli_list %}
+            <option value="{{val.id}}">{{val.kode_kbli}} - {{val.nama_kbli}}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="produk_utama">
       <label class="col-sm-2 control-label text-left">Barang / jasa dagangan utama</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select class="form-control chosen-select mb-10" name="produk_utama">
           <option>-- Pilih Produk --</option>
+          {% for val in produk_utama_list %}
+            <option value="{{val.id}}">{{val.barang_jasa_utama}}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
