@@ -111,7 +111,7 @@ class Perusahaan(AtributTambahan):
 	fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
 	email = models.EmailField(max_length=50, blank=True, null=True, verbose_name='E-mail')
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
-	
+	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_perusahaan', blank=True, null=True)
 	penanggung_jawab = models.ForeignKey('izin.Pemohon', related_name='penanggung_jawab_perusahaan', blank=True, null=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
