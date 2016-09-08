@@ -55,8 +55,11 @@ def formulir_siup(request, extra_context={}):
 	extra_context.update({'desa': desa})
 	jenis_pemohon = JenisPemohon.objects.all()
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
-	jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
-	extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
 	return render(request, "front-end/formulir/siup.html", extra_context)
 
 def formulir_tdp_pt(request, extra_context={}):
