@@ -154,6 +154,7 @@ class JenisLegalitas(models.Model):
 		verbose_name_plural = 'Jenis Legalitas'
 
 class Legalitas(AtributTambahan):
+	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
 	nama_notaris = models.CharField(max_length=100, verbose_name='Nama Notaris')
 	jenis_legalitas = models.ForeignKey(JenisLegalitas, related_name='jenis_legalitas_perusahaan', blank=True, null=True)
 	alamat = models.CharField(max_length=255, null=True, blank=True)

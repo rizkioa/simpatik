@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from accounts.models import Account
 from master.models import JenisPemohon, AtributTambahan, Berkas
-from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha
+from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas
 from decimal import Decimal
 
 from izin.utils import JENIS_IZIN, get_tahun_choices
@@ -228,6 +228,7 @@ class PengajuanIzin(AtributTambahan):
 		verbose_name_plural = 'Pengajuan Izin'
 
 class DetilSIUP(PengajuanIzin):
+	legalitas = models.ManyToManyField(Legalitas, related_name='legalitas_siup', verbose_name='Legalitas', blank=True)
 	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI', blank=True)
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
 	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
