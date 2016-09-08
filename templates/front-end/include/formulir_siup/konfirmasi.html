@@ -2,285 +2,142 @@
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
-  <div class="row">
-    <div class="col-md-3">
-      <span>Jenis Pengajuan</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.jenis_permohonan}}</span>
-    </div>
-  </div>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+    </tr>
+  </table>
   <br>
   <h4><u>#1. IDENTITAS PEMOHON</u></h4>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Jenis Pemohon</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.jenis_pemohon}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Nomor KTP/Pastor</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{ request.COOKIES.ktp }}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Nama</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.nama_lengkap}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Alamat tempat tinggal</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.alamat}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>No.Telp</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.telephone}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>No.HP</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.hp}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>E-mail</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.email}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Kewarganegaraan</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>{{request.COOKIES.kewarganegaraan}}</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Pekerjaan</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Swasta</span>
-    </div>
-  </div>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_pemohon}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Pastor</td>
+      <td width="5%">:</td>
+      <td width="70%">{{ request.COOKIES.ktp }}</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.nama_lengkap}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.alamat}}</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.telephone}}</td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.hp}}</td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.email}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.kewarganegaraan}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Swasta</td>
+    </tr>
+  </table>
   <br>
   <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
-  <div class="row">
-    <div class="col-md-3">
-      <span>NPWP</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>12345678974</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Nama Perusahaan</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>UD. Maju Mundur</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Bentuk Kegiatan Usaha</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Mikro</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Alamat Perusahaan</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Kode Pos</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>-</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>No.Telp</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>082123981923</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>No.Fax</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>-</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>E-mail</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>-</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Status Penanaman Modal</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Lain-lain</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Jenis Badan Usaha</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Firma</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Status Perusahaan</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Kantor Tunggal</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>KBLI</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>12345</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Kegiatan Usaha</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Perdagangan kecil</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Barang/jasa dagang utama</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Peralatan pertanian</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Bentuk Kerjasama</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Mandiri</span>
-    </div>
-  </div>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%">12345678974</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">UD. Maju Mundur</td>
+    </tr>
+    <tr>
+      <td width="25%">Bentuk Kegiatan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%">Mikro</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%">082123981923</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+    <tr>
+      <td width="25%">Status Penanaman Modal</td>
+      <td width="5%">:</td>
+      <td width="70%">Lain-lain</td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Badan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%">Firma</td>
+    </tr>
+    <tr>
+      <td width="25%">Status Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Kantor Tunggal</td>
+    </tr>
+    <tr>
+      <td width="25%">KBLI</td>
+      <td width="5%">:</td>
+      <td width="70%">12345</td>
+    </tr>
+    <tr>
+      <td width="25%">Kegiatan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%">Perdagangan kecil</td>
+    </tr>
+    <tr>
+      <td width="25%">Barang/jasa dagang utama</td>
+      <td width="5%">:</td>
+      <td width="70%">Peralatan pertanian</td>
+    </tr>
+    <tr>
+      <td width="25%">Bentuk Kerjasama</td>
+      <td width="5%">:</td>
+      <td width="70%">Mandiri</td>
+    </tr>
+  </table>
+  
   <br>
   <h4><u>#3. LEGALITAS PERUSAHAAN</u></h4>
   <div class="table-responsive">
@@ -313,57 +170,44 @@
   </div>
   <br>
   <h4><u>#4. KEKAYAAN BERSIH DAN SAHAM</u></h4>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Kekayaan Bersih Perusahaan<br>(tidak termasuk tanah dan bangunan tempat usaha)</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>Rp.1000.000.000</span>
-    </div>
-  </div>
-  <span>Saham (Khusus Untuk Penanaman Modal Asing):</span>
-  <div class="row">
-    <div class="col-md-3">
-      <span>a. Total Nilai Saham</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>-</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>b. Komposisi Kepemilikan Saham</span>
-    </div>
-    
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Dalam Negeri</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>-</span>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-3">
-      <span>Asing</span>
-    </div>
-    <div class="col-md-1">
-      <span class="pull-right">:</span>
-    </div>
-    <div class="col-md-8">
-      <span>-</span>
-    </div>
-  </div>
+  <table class="font" width="100%">
+    <tr>
+      <td width="40%">Kekayaan Bersih Perusahaan</td>
+      <td width="10%">:</td>
+      <td width="50%">Rp. 5.390.025</td>
+    </tr>
+    <tr>
+      <td width="40%">(tidak termasuk tanah dan bangunan tempat usaha)</td>
+      <td width="10%">:</td>
+      <td width="60%"></td>
+    </tr>
+    <tr>
+      <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
+      <td width="5%"></td>
+      <td width="65%"></td>
+    </tr>
+    <tr>
+      <td width="30%">a. Total Nilai Saham</td>
+      <td width="10%">:</td>
+      <td width="60%">-</td>
+    </tr>
+    <tr>
+      <td width="30%">b. Komposisi Kepemilikan Saham</td>
+      <td width="10%"></td>
+      <td width="60%">-</td>
+    </tr>
+    <tr>
+      <td width="30%" style="padding-left: 10%;">Dalam</td>
+      <td width="10%">:</td>
+      <td width="60%">-</td>
+    </tr>
+    <tr>
+      <td width="30%" style="padding-left: 10%;">Asing</td>
+      <td width="10%">:</td>
+      <td width="60%">-</td>
+    </tr>
+  </table>
+  
   <br>
   <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>
   <table class="table table-bordered">

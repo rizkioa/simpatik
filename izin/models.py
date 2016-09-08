@@ -20,6 +20,8 @@ from datetime import datetime
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
+	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
+	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
 	def as_json(self):
 		tanggal_lahir = ''
@@ -118,7 +120,7 @@ class DasarHukum(models.Model):
 
 class JenisIzin(models.Model):
 	dasar_hukum = models.ManyToManyField(DasarHukum, verbose_name='Dasar Hukum')
-	kode = models.CharField(max_length=5, verbose_name="Kode", blank=True, null=True)
+	kode = models.CharField(max_length=15, verbose_name="Kode", blank=True, null=True)
 	nama_izin = models.CharField(max_length=100, verbose_name='Nama Izin')
 	jenis_izin = models.CharField(max_length=20, verbose_name='Jenis Izin', choices=JENIS_IZIN, default=1)
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
@@ -136,6 +138,7 @@ class JenisIzin(models.Model):
 
 class KelompokJenisIzin(models.Model):
 	jenis_izin = models.ForeignKey(JenisIzin, verbose_name='Jenis Izin')
+	kode = models.CharField(max_length=15, verbose_name="Kode", blank=True, null=True)
 	kelompok_jenis_izin = models.CharField(max_length=100, verbose_name='Kelompok Jenis Izin')
 	biaya = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'), verbose_name='Biaya')
 	standart_waktu = models.PositiveSmallIntegerField(verbose_name='Standar Waktu (Berapa Hari?)', null=True, blank=True,)
@@ -219,6 +222,8 @@ class PengajuanIzin(AtributTambahan):
 	no_identitas_kuasa = models.CharField(max_length=255, verbose_name='No. Identitas Kuasa', blank=True, null=True)
 	telephone_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
 
+	berkas_tambahan = models.ManyToManyField(Berkas, related_name='berkas_tambahan_izin', verbose_name="Berkas Tambahan", blank=True)
+
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
@@ -228,6 +233,11 @@ class PengajuanIzin(AtributTambahan):
 		verbose_name_plural = 'Pengajuan Izin'
 
 class DetilSIUP(PengajuanIzin):
+	# salah satu dari data pemohon
+	berkas_foto = models.ForeignKey(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_siup', blank=True, null=True)
+	# salah satu dari data pemohon
+	berkas_npwp_pemohon = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Pemohon", related_name='berkas_npwp_pemohon_siup', blank=True, null=True)
+	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_siup', blank=True, null=True)
 	legalitas = models.ManyToManyField(Legalitas, related_name='legalitas_siup', verbose_name='Legalitas', blank=True)
 	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI', blank=True)
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar

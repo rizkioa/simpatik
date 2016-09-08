@@ -7,6 +7,7 @@ admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu 
 
 from simpdu.sites import usersite
 
+
 admin.autodiscover()
 
 #Admin
