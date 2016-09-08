@@ -62,6 +62,21 @@ def formulir_siup(request, extra_context={}):
 		return HttpResponseRedirect(reverse('layanan'))
 	return render(request, "front-end/formulir/siup.html", extra_context)
 
+def formulir_ho_baru(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	return render(request, "front-end/formulir/ho_baru.html", extra_context)
+
 def formulir_tdp_pt(request, extra_context={}):
 	negara = Negara.objects.all()
 	extra_context.update({'negara': negara})

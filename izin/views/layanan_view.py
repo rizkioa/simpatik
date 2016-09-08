@@ -22,7 +22,7 @@ def layanan_ho_baru(request, extra_context={}):
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Gangguan (HO) - Permohonan Baru"})
 	extra_context.update({'title_short': "HO - Permohonan Baru"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_ho_baru") })
 	extra_context.update({'id_jenis_izin': "2" })
 	extra_context.update({'id_kelompok_jenis_izin': "12" })
 	return render(request, "front-end/layanan/ho_baru.html", extra_context)

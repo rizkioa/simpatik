@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^cari-pengajuan-izin$', views.cari_pengajuan, name='cari_pengajuan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),
+    url(r'^layanan/ho-baru/formulir$', views.formulir_ho_baru, name='formulir_ho_baru'),
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
     url(r'^layanan/imb-umum/formulir$', views.formulir_imb_umum, name='formulir_imb_umum'),
     url(r'^layanan/imb-perumahan/formulir$', views.formulir_imb_perumahan, name='formulir_imb_perumahan'),
