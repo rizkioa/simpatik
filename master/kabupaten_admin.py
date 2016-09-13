@@ -49,6 +49,7 @@ class KabupatenAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^json/$', self.admin_site.admin_view(self.json_kabupaten), name='json_kabupaten'),
 			url(r'^option/$', self.admin_site.admin_view(self.option_kabupaten), name='option_kabupaten'),
+			url(r'^option-front/$', self.option_kabupaten, name='option_kabupaten_front'),
 			url(r'^option/complete/$', self.admin_site.admin_view(self.option_kabupaten_complete), name='option_kabupaten_complete'),
 			)
 		return my_urls + urls

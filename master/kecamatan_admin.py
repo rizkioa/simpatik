@@ -38,5 +38,6 @@ class KecamatanAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^json/$', self.admin_site.admin_view(self.json_kecamatan), name='json_kecamatan'),
 			url(r'^option/$', self.admin_site.admin_view(self.option_kecamatan), name='option_kecamatan'),
+			url(r'^option-front-end/$', self.option_kecamatan, name='option_kecamatan_front'),
 			)
 		return my_urls + urls

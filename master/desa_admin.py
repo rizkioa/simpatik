@@ -38,5 +38,6 @@ class DesaAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^json/$', self.admin_site.admin_view(self.json_desa), name='json_desa'),
 			url(r'^option/$', self.admin_site.admin_view(self.option_desa), name='option_desa'),
+			url(r'^option-front/$', self.option_desa, name='option_desa_front'),
 			)
 		return my_urls + urls

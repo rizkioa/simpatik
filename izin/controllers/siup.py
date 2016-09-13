@@ -8,9 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilSIUP
 from izin.izin_forms import PengajuanBaruForm, PemohonForm
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama
 
 
 try:
@@ -26,6 +27,7 @@ from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 import datetime
 
 from izin.utils import JENIS_IZIN
+
 def add_wizard_siup(request):
 	extra_context = {}
 	extra_context.update({'title': 'Pengajuan Baru'})
@@ -68,13 +70,24 @@ def formulir_siup(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'SIUP Baru'})
 		negara = Negara.objects.all()
-		extra_context.update({'negara': negara})
 		jenis_pemohon = JenisPemohon.objects.all()
-		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
+		kelembagaan_list = Kelembagaan.objects.all()
+		kbli_list = KBLI.objects.all()
+		produk_utama_list = ProdukUtama.objects.all()
 
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+		extra_context.update({'negara': negara})
+		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
+		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
+		extra_context.update({'kelembagaan_list': kelembagaan_list})
+		extra_context.update({'kbli_list': kbli_list})
+		extra_context.update({'produk_utama_list': produk_utama_list})
+
 		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 		ec = RequestContext(request, extra_context)
@@ -82,6 +95,23 @@ def formulir_siup(request):
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
 		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
+
+def cetak(request, id_pengajuan_izin_):
+	extra_context = {}
+	extra_context.update({'title': 'Pengajuan Selesai'})
+	pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+	extra_context.update({'pemohon': pengajuan_.pemohon})
+	extra_context.update({'no_pengajuan': pengajuan_.no_pengajuan})
+	extra_context.update({'id_pengajuan': pengajuan_.id})
+	extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
+	extra_context.update({'alamat_pemohon': str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)})
+	extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+	extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+	extra_context.update({'created_at': pengajuan_.created_at})
+	template = loader.get_template("admin/izin/izin/cetak.html")
+	ec = RequestContext(request, extra_context)
+	return HttpResponse(template.render(ec))
+		
 
 # def formulir_siup(request):
 # 	extra_context={}

@@ -1,0 +1,384 @@
+<form method="POST" name="step2" role="form" class="form-horizontal"  %}">
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>IDENTITAS PERUSAHAAN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <!-- Montor Penggerak -->
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+
+        <div class="form-group">
+          <div class="col-sm-6">
+            <label for="input01" class="col-sm-7 control-label">Type / Model</label>
+            <label for="input01" class="col-sm-3 control-label">PK</label>
+          </div>
+          <div class="col-sm-4">
+            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Montor Bensin</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_montor_bensin">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_montor_bensin">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_montor_bensin">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_montor_bensin">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Montor Diesel</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_montor_diesel">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_montor_diesel">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_montor_diesel">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_montor_diesel">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Diesel Generating Set</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_diesel_generating">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_diesel_generating">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_diesel_generating">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_diesel_generating">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mesin Pecah Kulit / Pengupas Gabah -->
+
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+
+        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Gabah Pecah Kulit Per-jam
+        <div class="form-group">
+          <div class="col-sm-6">
+            <label for="input01" class="col-sm-7 control-label">Type / Model</label>
+            <label for="input01" class="col-sm-3 control-label">PK</label>
+          </div>
+          <div class="col-sm-4">
+            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Rubber Roll / Roll Karet</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_rubber_roll">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_rubber_roll">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_rubber_roll">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_rubber_roll">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Flash Type / Type Banting</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_flash_type">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_flash_type">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_flash_type">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_flash_type">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mesin Pemisah Gabah -->
+
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+
+        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Per-jam
+        <div class="form-group">
+          <div class="col-sm-6">
+            <label for="input01" class="col-sm-7 control-label">Type / Model</label>
+            <label for="input01" class="col-sm-3 control-label">PK</label>
+          </div>
+          <div class="col-sm-4">
+            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Geogan</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_gedogan">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_gedogan">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_gedogan">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_gedogan">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Dimple Plate</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_dimple_plate">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_dimple_plate">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_dimple_plate">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_dimple_plate">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Screen</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_screen">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_screen">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_screen">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_screen">
+          </div>
+        </div>
+        
+      </div>
+    </div> 
+
+    <!-- Mesin Penyosoh Beras -->
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+
+        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Sosoh / Putih Per-jam
+        <div class="form-group">
+          <div class="col-sm-6">
+            <label for="input01" class="col-sm-7 control-label">Type / Model</label>
+            <label for="input01" class="col-sm-3 control-label">PK</label>
+          </div>
+          <div class="col-sm-4">
+            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Mesin Slip Horizontal</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_slip_horizontal">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_slip_horizontal">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_slip_horizontal">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_slip_horizontal">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Mesin Slip Vertikal</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_slip_vertikal">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_slip_vertikal">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_slip_vertikal">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_slip_vertikal">
+          </div>
+        </div>
+        
+      </div>
+    </div>  
+
+    <!-- Mesin Lain-lain -->
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+
+        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Sosoh / Putih Per-jam
+        <div class="form-group">
+          <div class="col-sm-6">
+            <label for="input01" class="col-sm-7 control-label">Type / Model</label>
+            <label for="input01" class="col-sm-3 control-label">PK</label>
+          </div>
+          <div class="col-sm-4">
+            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Paddy Cleaner / Pembersih Gabah (Blower)</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_paddy_cleaner">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_paddy_cleaner">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_paddy_cleaner">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_paddy_cleaner">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Mesin Polis Brushe</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_mesin_polis">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_mesin_polis">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_mesin_polis">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_mesin_polis">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Grader / Mesin Pemisah</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_grader">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_grader">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_grader">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_grader">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Kualitas</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_kualitas">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_kualitas">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_kualitas">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_kualitas">
+          </div>
+        </div>
+
+        Lainnya
+        <div class="form-group">
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="nama_lainya">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="type_lainnya">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="pk_lainnya">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="buatan_lainnya">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="input01" name="jumlah_lainnya">
+          </div>
+        </div>
+        
+        <a href="#">Tambah lainnya</a>
+      </div>
+    </div>
+
+    <table border="0">
+      <tr>
+        <td>Kapasitas Potensial Giling keseluruhan Mesin Memproduksi Beras</td>
+        <td> &nbsp : &nbsp</td>
+        <td><div class="col-sm-15">
+          <div class="input-group">
+            <input type="text" class="form-control" name="kapitas_jam">
+            <span class="input-group-addon">
+              <span>Ton setara Beras per-jam</span>
+           </span>
+          </div>
+        </div></td>
+      </tr>
+      <tr>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td> &nbsp : &nbsp</td>
+        <<td><div class="col-sm-15">
+          <div class="input-group">
+            <input type="text" class="form-control" name="kapitas_tahun">
+            <span class="input-group-addon">
+              <span>Ton setara Beras per-tahun</span>
+           </span>
+          </div>
+        </div></td>
+      </tr>
+    </table>
+
+
+</form>

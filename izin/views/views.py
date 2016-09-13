@@ -62,7 +62,7 @@ def formulir_siup(request, extra_context={}):
 		return HttpResponseRedirect(reverse('layanan'))
 	return render(request, "front-end/formulir/siup.html", extra_context)
 
-def formulir_ho_baru(request, extra_context={}):
+def formulir_ho_pemohonan_baru(request, extra_context={}):
 	negara = Negara.objects.all()
 	extra_context.update({'negara': negara})
 	provinsi = Provinsi.objects.all()
@@ -75,7 +75,52 @@ def formulir_ho_baru(request, extra_context={}):
 	extra_context.update({'desa': desa})
 	jenis_pemohon = JenisPemohon.objects.all()
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
 	return render(request, "front-end/formulir/ho_baru.html", extra_context)
+
+def formulir_ho_daftar_ulang(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/ho_baru.html", extra_context)
+
+def formulir_huller(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/huller.html", extra_context)
 
 def formulir_tdp_pt(request, extra_context={}):
 	negara = Negara.objects.all()
@@ -233,3 +278,11 @@ def cetak_bukti_pendaftaran(request, extra_context={}):
 	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_ho_baru(request, extra_context={}):
+	return render(request, "front-end/include/formulir_ho_baru/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_ho_baru(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HO")
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_ho_baru/cetak_bukti_pendaftaran.html", extra_context)

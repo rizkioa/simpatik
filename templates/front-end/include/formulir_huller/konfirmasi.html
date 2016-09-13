@@ -1,0 +1,477 @@
+<form method="POST" name="step5" role="form"  %}">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_pemohon}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Pastor</td>
+      <td width="5%">:</td>
+      <td width="70%">{{ request.COOKIES.ktp }}</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.nama_lengkap}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.alamat}}</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.telephone}}</td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.hp}}</td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.email}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.kewarganegaraan}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Swasta</td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%">12345678974</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">UD. Maju Mundur</td>
+    </tr>
+    <tr>
+      <td width="25%">Bentuk Kegiatan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%">Mikro</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%">082123981923</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+  </table>
+
+  
+  
+  <br>
+  <h4><u>#3. Pemilik dan Pengusaha</u></h4>
+  <h5><u>Pemilik</u></h5>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemilik</td>
+      <td width="5%">:</td>
+      <td width="70%">Perorangan</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Pemilik</td>
+      <td width="5%">:</td>
+      <td width="70%">-------</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Pemilik</td>
+      <td width="5%">:</td>
+      <td width="70%">Jl.</td>
+    </tr>
+  </table>
+  <h5><u>Pengusaha</u></h5>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengusaha</td>
+      <td width="5%">:</td>
+      <td width="70%">Badan Usaha</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Badan Usaha Pengusaha</td>
+      <td width="5%">:</td>
+      <td width="70%">---------</td>
+    </tr>
+  </table>
+  <br>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NHubungan Pemilik dengan Pengusaha :</td>
+      <td width="5%">:</td>
+      <td width="70%">_______________________________________________________________________</td>
+    </tr>
+  </table>
+  
+  
+  <br>
+  <h4><u>#4. DATA MESIN</u></h4>
+  <h5><u>Montor Pengerak</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td>Montor Bensin</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Montor Diesel</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Diesel Generating Set</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5><u>Mesin Pecah Kulit / Pengupas Gabah</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td>Rubber Roll / Roll Karet</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Flash Type / Type Banting</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5><u>Mesin Pemisah Gabah dan Beras Pecah Kulit</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td>Gedogan</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Dimple Plate</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Screen</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5><u>Mesin Penyosoh Beras</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td>Mesin Slip Horizontal</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Mesin Slip Vertikal</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      </tbody>
+  </table>
+
+  <h5><u>Mesin Lain-lain</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td>Paddy Cleaner / Pembersih Gabah (Blower)</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Mesin Polis</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Brusher</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Grader / Mesin Pemisah</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Kualitas</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      <tr align="center">
+        <td>Lain-lain</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr>
+      </tbody>
+  </table>
+
+
+  <br>
+  <h4><u>#4. Upload Dokumen Persyaratan</u></h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr align="center">
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Keputusan Izin Gangguan (HO)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Akta Pendirian Perusahaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            KTP / Paspor (Dirut/pemilik/pengurus/penanggung jawab)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Foto 4x6cm
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Denah Bangunan dan Tata letak Bangunan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rekomendasi dari Dinas Pertanian Kabupanten Kediri
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Struktur Organisasi Pemilik jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Struktur Organisasi Pengusaha jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Akta Pendirian Perusahaan Pemilik jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Akta Pendirian Perusahaan Pengusaha jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt">
+        <input type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>

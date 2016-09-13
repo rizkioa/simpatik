@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat
-from izin.controllers.siup import add_wizard_siup, formulir_siup
+from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 
 import json
 
@@ -29,7 +29,16 @@ class IzinAdmin(admin.ModelAdmin):
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
 	def get_no_pengajuan(self, obj):
-		return obj.no_pengajuan
+		no_pengajuan = mark_safe("""
+			<a href="%s" target="_blank"> %s </a>
+			""" % ("#", obj.no_pengajuan ))
+		split_ = obj.no_pengajuan.split('/')
+		# print split_
+		if split_[0] == 'SIUP':
+			no_pengajuan = mark_safe("""
+				<a href="%s" target="_blank"> %s </a>
+				""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def button_cetak_pendaftaran(self, obj):
@@ -54,7 +63,6 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'created_at': pengajuan_.created_at})
 
 
-		# template = loader.get_template("admin/izin/izin/add_wizard.html")
 		template = loader.get_template("admin/izin/izin/pengajuan_baru_selesai.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -140,7 +148,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^option/izin/$', self.admin_site.admin_view(self.option_namaizin), name='option_namaizin'),
 			url(r'^option/kelompokizin/$', self.admin_site.admin_view(self.option_kelompokjenisizin), name='option_kelompokjenisizin'),
 			url(r'^wizard/add/proses/siup/$', self.admin_site.admin_view(formulir_siup), name='izin_proses_siup'),
-			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.pendaftaran_selesai), name='pendaftaran_selesai'),
+			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			)
 		return my_urls + urls

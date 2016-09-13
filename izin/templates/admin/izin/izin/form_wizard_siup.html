@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
+
 	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
@@ -21,9 +21,18 @@
 	<script src="{% static "scripts/js/vendor/filestyle/bootstrap-filestyle.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+  	
 	<!--/ custom javascripts -->
 	<script type="text/javascript">
 		$(window).load(function(){
+
+			$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
+			$(".npwp").mask("99.999.999.9-999.999");
+			$(".kodepos").mask("99999");
+			$(".no_hp").mask("+6299999999999",{placeholder:"+6299999999999"});
+			$('.no_ktp').on('keydown', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
 
 			$('#rootwizard').bootstrapWizard({
 				onTabShow: function(tab, navigation, index) {
@@ -54,63 +63,75 @@
 
 				onTabClick: function(tab, navigation, index) {
 
-					var form = $('form[name="step'+ (index+1) +'"]');
-					form.parsley().validate();
+					// var form = $('form[name="step'+ (index+1) +'"]');
+					// form.parsley().validate();
 
-					if (!form.parsley().isValid()) {
-						// return false;
-						return true;
-					}
-
+					// if (!form.parsley().isValid()) {
+					// 	// return false;
+					// }
+					return true;
 				}
 
 			});
 
-
-			function make_disabled(elem_){
-				elem_.prop( "disabled", "disabled");
-				elem_.trigger("chosen:updated");
-			}
-
-			function make_enabled(elem_){
-				elem_.removeAttr('disabled')
-				elem_.trigger("chosen:updated");
-			}
-
-			function form_akta_perubahan_make_disabled(){
-				make_disabled($('#akta_pengesahan'))
-				make_disabled($('#nama_notaris_akta_perubahan'))
-				make_disabled($('#alamat_notaris'))
-				make_disabled($('#telp_notaris'))
-				make_disabled($('#no_akta_notaris'))
-				make_disabled($('#tanggal_akta_akta_perubahan'))
-				make_disabled($('#no_pengesahan'))
-				make_disabled($('#tanggal_pengesahan'))
-			}
-
-			form_akta_perubahan_make_disabled();
-
-			function form_akta_perubahan_make_enabled(){
-				make_enabled($('#akta_pengesahan'))
-				make_enabled($('#nama_notaris_akta_perubahan'))
-				make_enabled($('#alamat_notaris'))
-				make_enabled($('#telp_notaris'))
-				make_enabled($('#no_akta_notaris'))
-				make_enabled($('#tanggal_akta_akta_perubahan'))
-				make_enabled($('#no_pengesahan'))
-				make_enabled($('#tanggal_pengesahan'))
-			}
-			
-
-			$("#switch_akta_perubahan").change(function(){
-				if($(this).is(':checked')){
-					form_akta_perubahan_make_enabled();
-				}else{
-					form_akta_perubahan_make_disabled();
-				}
-			})
-
 		});
+
+
+		function form_akta_perubahan_make_disabled(){
+			make_disabled($('#akta_pengesahan'), true)
+		      make_disabled($('#nama_notaris_akta_perubahan'), true)
+		      make_disabled($('#alamat_notaris'), true)
+		      make_disabled($('#telp_notaris'), true)
+		      make_disabled($('#no_akta_notaris'), true)
+		      make_disabled($('#tanggal_akta_akta_perubahan'), true)
+		      make_disabled($('#no_pengesahan'), true)
+		      make_disabled($('#tanggal_pengesahan'), true)
+		}
+
+		form_akta_perubahan_make_disabled();
+
+		function form_akta_perubahan_make_enabled(){
+			make_disabled($('#akta_pengesahan'), false)
+		      make_disabled($('#nama_notaris_akta_perubahan'), false)
+		      make_disabled($('#alamat_notaris'), false)
+		      make_disabled($('#telp_notaris'), false)
+		      make_disabled($('#no_akta_notaris'), false)
+		      make_disabled($('#tanggal_akta_akta_perubahan'), false)
+		      make_disabled($('#no_pengesahan'), false)
+		      make_disabled($('#tanggal_pengesahan'), false)
+		}
+		
+
+		$("#switch_akta_perubahan").change(function(){
+			if($(this).is(':checked')){
+				form_akta_perubahan_make_enabled();
+			}else{
+				form_akta_perubahan_make_disabled();
+			}
+		})
+
+		function form_pemohon_kuasa_make_disabled(){
+	      make_disabled($('#nama_kuasa'), true)
+	      make_disabled($('#no_identitas_kuasa'), true)
+	      make_disabled($('#telp_kuasa'), true)
+	    }
+
+	    form_pemohon_kuasa_make_disabled();
+
+	    function form_pemohon_kuasa_make_enabled(){
+	      make_disabled($('#nama_kuasa'), false)
+	      make_disabled($('#no_identitas_kuasa'), false)
+	      make_disabled($('#telp_kuasa'), false)
+	    }
+
+	    $("#switch_pemohon").change(function(){
+	      if($(this).is(':checked')){
+	        form_pemohon_kuasa_make_enabled();
+	      }else{
+	        form_pemohon_kuasa_make_disabled();
+	      }
+	    })
+
 
 		function make_disabled(elem_, dis_){
             if (dis_ == true){
@@ -309,6 +330,17 @@
 			}
 		}
 
+		document.querySelector('#alert').onclick = function(){
+	      // swal("Good job!", "You clicked the button!", "success");
+	      swal({
+	        showConfirmButton: false,
+	        type: 'success',
+	        title: 'Pendaftaran Berhasil Tersimpan',
+	        timer: 2000
+	      })
+	      window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+	    };
+
 	</script>
 {% endblock %}
 
@@ -318,6 +350,7 @@
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
 {% endblock %}
 
 {% block custom_style %}
@@ -343,22 +376,27 @@
 		.chosen-container{
 			min-width: 400px;
 		}
-		.tab-wizard .nav-tabs > li > a:before {
-				border-left: 19px solid #abacad;
+		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+        background-color: #22beef;
+        color: aliceblue;
 		}
-		.tab-wizard .nav-tabs > li > a,
-		.tab-wizard .nav-tabs > li > a:hover,
-		.tab-wizard .nav-tabs > li > a:focus {
-		  background-color: #abacad;
+		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+		background-color: #616f77;
 		}
-
-		.tab-wizard .nav-tabs > li.active > a:before {
-		  border-left-color: #abacad;
+		.tab-wizard .nav-tabs > li:before {
+		background-color: #333;
 		}
-
-		.tab-wizard .nav-tabs > li.active > a,
-		.tab-wizard .nav-tabs > li.active > a:hover {
-		  background-color: #abacad;
+		.onoffswitch.labeled .onoffswitch-inner:before {
+		content: "Ya";
+		}
+		.onoffswitch.labeled .onoffswitch-inner:after {
+		content: "Tidak";
+		}
+		.onoffswitch.labeled {
+		width: 59px;
+		}
+		.onoffswitch.labeled .onoffswitch-switch {
+		right: 34px;
 		}
 
 	</style>
@@ -369,8 +407,8 @@
   <ul class="nav nav-tabs nav-justified">
 	<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
 	<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-	<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Legalitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-	<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Kekayaan </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data SIUP</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+	<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Legalitas Perusahaan </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
 	<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
 	<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
   </ul>
@@ -387,12 +425,12 @@
 
 	<div class="tab-pane" id="tab3">
 	  <!-- Legalitas perusahaan -->
-	  {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
+	  {% include 'front-end/include/formulir_siup/data_siup.html' %}
 	</div>
 
 	<div class="tab-pane" id="tab4">
 	  <!-- Kekayaan -->
-	  {% include 'front-end/include/formulir_siup/kekayaan.html' %}
+	  {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
 	</div>
 
 	<div class="tab-pane" id="tab5">
@@ -409,7 +447,7 @@
 	  <li class="previous"><a class="btn btn-default">Kembali</a></li>
 	  <li class="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
 	  <li class="next finish" style="display:none;">
-		<button onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
+		<button value="Submit" type="submit" class="btn btn-success pull-right" id="alert">
 		  <i class="fa fa-arrow-right"></i>
 		  <span>Selesai</span>
 		</button>

@@ -62,7 +62,7 @@ class CustomMenu(Menu):
                         items.MenuItem(
                             title='Semua Perusahan',
                             icon='fa fa-building', 
-                            url='#',                        
+                            url=reverse('admin:perusahaan_perusahaan_changelist'),                        
                         ),
                     ]
                 )
@@ -303,4 +303,3 @@ class CustomMenu(Menu):
 
         
         return super(CustomMenu, self).init_with_context(context)
-
