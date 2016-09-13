@@ -96,7 +96,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'simpatik',
         'USER':'simpatik',
-        'PASSWORD':'!QAZ@WSX',
+        'PASSWORD':'simpatik',
         'PORT': '3306',
         'OPTIONS': {
             "init_command": "SET foreign_key_checks = 0;",
@@ -142,6 +142,7 @@ DATETIME_INPUT_FORMATS = [
     ]
 
 DATE_INPUT_FORMATS = ("%d-%m-%Y", "%d/%m/%Y", "%d-%m-%Y", "%d/%m/%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d")
+
 
 # configuraton CAS
 CAS_SERVER_URL = "http://siabjo.kedirikab.go.id/cas/"

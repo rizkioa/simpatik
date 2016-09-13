@@ -11,7 +11,7 @@ from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPem
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilSIUP
 from izin.izin_forms import PengajuanBaruForm, PemohonForm
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas
 
 
 try:
@@ -76,6 +76,7 @@ def formulir_siup(request):
 		kelembagaan_list = Kelembagaan.objects.all()
 		kbli_list = KBLI.objects.all()
 		produk_utama_list = ProdukUtama.objects.all()
+		jenis_legalitas_list = JenisLegalitas.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 		extra_context.update({'negara': negara})
@@ -87,6 +88,7 @@ def formulir_siup(request):
 		extra_context.update({'kelembagaan_list': kelembagaan_list})
 		extra_context.update({'kbli_list': kbli_list})
 		extra_context.update({'produk_utama_list': produk_utama_list})
+		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 
 		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
