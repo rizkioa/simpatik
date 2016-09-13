@@ -1,5 +1,5 @@
 from django.contrib import admin
-from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, ProdukUtama
+from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, ProdukUtama, Legalitas, JenisLegalitas
 from perusahaan.perusahaan_admin import PerusahaanAdmin
 from django.http import HttpResponseRedirect, HttpResponse
 import json
@@ -13,6 +13,17 @@ from django.forms.formsets import formset_factory, BaseFormSet
 # Register your models here.
 
 admin.site.register(JenisPenanamanModal)
+
+class JenisLegalitasAdmin(admin.ModelAdmin):
+	list_display = ('jenis_legalitas','keterangan')
+
+admin.site.register(JenisLegalitas, JenisLegalitasAdmin)
+
+class LegalitasAdmin(admin.ModelAdmin):
+	list_display = ('perusahaan','jenis_legalitas')
+	# search_fields = ('jenis_perusahaan',)
+
+admin.site.register(Legalitas, LegalitasAdmin)
 
 class JenisPerusahaanAdmin(admin.ModelAdmin):
 	list_display = ('jenis_perusahaan',)

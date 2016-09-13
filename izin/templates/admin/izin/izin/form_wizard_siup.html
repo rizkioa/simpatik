@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block extrajs_site %}
-
+	<script src="{% static "scripts/js/vendor/jquery-cookie/jquery.cookie.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
@@ -22,7 +22,32 @@
 	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
-	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
+	<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/vendor/jquery.ui.widget.js" %}"></script>
+    <!-- The Templates plugin is included to render the upload/download listings -->
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <!-- blueimp Gallery script -->
+    <script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.iframe-transport.js" %}"></script>
+    <!-- The basic File Upload plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload.js" %}"></script>
+    <!-- The File Upload processing plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload-process.js" %}"></script>
+    <!-- The File Upload image preview & resize plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload-image.js" %}"></script>
+    <!-- The File Upload audio preview plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload-audio.js" %}"></script>
+    <!-- The File Upload video preview plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload-video.js" %}"></script>
+    <!-- The File Upload validation plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload-validate.js" %}"></script>
+    <!-- The File Upload user interface plugin -->
+    <script src="{% static "scripts/js/vendor/file-upload/js/jquery.fileupload-ui.js" %}"></script>
   	
 	<!--/ custom javascripts -->
 	<script type="text/javascript">
@@ -74,7 +99,9 @@
 
 			});
 
+
 		});
+
 
 
 		function form_akta_perubahan_make_disabled(){
@@ -301,6 +328,16 @@
 			            $(btn).removeAttr('disabled')
 			            if(respon.success){
 			            	toastr["success"](respon.pesan)
+			            	// $.cookie("keys", "value"); set cookie
+			            	for (var i = 0; i < respon.data.length; i++){
+			            		var key = Object.keys(respon.data[i]); // Mencari key json
+			            		// console.log(key[0]);
+			            		var val = respon.data[i][key[0]] // mencari value json
+			            		// console.log(key[0]+"_konfirmasi");
+			            		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+			            		$(id).text(val);
+			            	}
 							$( ".tab-content #tab"+index ).unmask()
 							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
 							$(tab_index).tab('show')
@@ -342,6 +379,144 @@
 	    };
 
 	</script>
+	<script type="text/javascript">
+		function load_provinsi1(id_negara1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_provinsi_chosen1" ).mask('loading')
+      $( "#id_provinsi_chosen1.loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_provinsi1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_provinsi_chosen1" ).unmask()
+          $( "#id_provinsi1" ).change(function(){
+            $this = $(this)
+
+            id_provinsi1 = $(this).val()
+            if(id_provinsi1.length > 0){
+              load_kabupaten1(id_provinsi1)
+            }else{
+              elem = $( "#id_kabupaten1" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    make_disabled($( "#id_provinsi1" ), true)
+    make_disabled($( "#id_kabupaten1" ), true)
+    make_disabled($( "#id_kecamatan1" ), true)
+    make_disabled($( "#id_desa1" ), true)
+
+    $( "#id_negara1" ).change(function(){
+      $this = $(this)
+
+      id_negara1 = $(this).val()
+      if(id_negara1.length > 0){
+          load_provinsi1(id_negara1)
+      }else{
+        elem = $( "#id_provinsi1" )
+        make_disabled(elem, true)
+        make_disabled($( "#id_provinsi1" ), true)
+        make_disabled($( "#id_kabupaten1" ), true)
+        make_disabled($( "#id_kecamatan1" ), true)
+        make_disabled($( "#id_desa1" ), true)
+      }
+    })
+
+    function load_kabupaten1(id_provinsi1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_kabupaten_chosen1" ).mask('loading')
+      $( "#id_kabupaten_chosen1 .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_kabupaten1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_kabupaten_chosen1" ).unmask()
+          $( "#id_kabupaten1" ).change(function(){
+            $this = $(this)
+
+            id_kabupaten1 = $(this).val()
+            if(id_kabupaten1.length > 0){
+              load_kecamatan1(id_kabupaten1)
+            }else{
+              elem = $( "#id_kecamatan1" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    function load_kecamatan1(id_kabupaten1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_kecamatan_chosen1" ).mask('loading')
+      $( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_kecamatan1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_kecamatan_chosen1" ).unmask()
+          $( "#id_kecamatan1" ).change(function(){
+            $this = $(this)
+            
+            id_kecamatan1 = $(this).val()
+            if(id_kecamatan1.length > 0){
+              load_desa1(id_kecamatan1)
+            }else{
+              elem = $( "#id_desa1" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    function load_desa1(id_kecamatan1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_desa_chosen1" ).mask('loading')
+      $( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_desa' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_desa1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_desa_chosen1" ).unmask()
+          $( "#id_desa1" ).change(function(){
+              $this = $(this)
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+	</script>
 {% endblock %}
 
 {% block extrastyle %}
@@ -351,6 +526,14 @@
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 <link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+<!-- blueimp Gallery styles -->
+<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+<!-- CSS adjustments for browsers with JavaScript disabled -->
+<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
 {% endblock %}
 
 {% block custom_style %}
@@ -452,7 +635,6 @@
 		  <span>Selesai</span>
 		</button>
 	  </li>
-	  </form>
 	</ul>
   </div>
   <br>
