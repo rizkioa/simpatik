@@ -786,58 +786,58 @@ $(function() {
 
 	};
 
-  // var $window = $(window),
-  //     $body = $('body'),
-  //     $header = $('#header'),
-  //     $branding = $('#header .branding'),
-  //     $sidebar = $('#sidebar'),
-  //     $controls = $('#controls'),
-  //     $app = $('.appWrapper'),
-  //     $navigation = $('#navigation'),
-  //     $sparklineEl = $('.sparklineChart'),
-  //     $slimScrollEl = $('.slim-scroll'),
-  //     $collapseSidebarEl = $('.collapse-sidebar'),
-  //     $wrap = $('#wrap'),
-  //     $offcanvasToggleEl = $('.offcanvas-toggle'),
+  var $window = $(window),
+      $body = $('body'),
+      $header = $('#header'),
+      $branding = $('#header .branding'),
+      $sidebar = $('#sidebar'),
+      $controls = $('#controls'),
+      $app = $('.appWrapper'),
+      $navigation = $('#navigation'),
+      $sparklineEl = $('.sparklineChart'),
+      $slimScrollEl = $('.slim-scroll'),
+      $collapseSidebarEl = $('.collapse-sidebar'),
+      $wrap = $('#wrap'),
+      $offcanvasToggleEl = $('.offcanvas-toggle'),
 
-  //     //navigation elements
-  //     $dropdowns = $navigation.find('ul').parent('li'),
-  //     $a = $dropdowns.children('a'),
-  //     $notDropdowns = $navigation.children('li').not($dropdowns),
-  //     $notDropdownsLinks = $notDropdowns.children('a'),
-  //     // end of navuigation elements
+      //navigation elements
+      $dropdowns = $navigation.find('ul').parent('li'),
+      $a = $dropdowns.children('a'),
+      $notDropdowns = $navigation.children('li').not($dropdowns),
+      $notDropdownsLinks = $notDropdowns.children('a'),
+      // end of navuigation elements
 
-  //     $headerSchemeEl = $('.color-schemes .header-scheme'),
-  //     $brandingSchemeEl = $('.color-schemes .branding-scheme'),
-  //     $sidebarSchemeEl = $('.color-schemes .sidebar-scheme'),
-  //     $colorSchemeEl = $('.color-schemes .color-scheme'),
-  //     $fixedHeaderEl = $('#fixed-header'),
-  //     $fixedAsideEl = $('#fixed-aside'),
-  //     $toggleRightbarEl = $('.toggle-right-sidebar'),
-  //     $pickDateEl = $('.pickDate'),
+      $headerSchemeEl = $('.color-schemes .header-scheme'),
+      $brandingSchemeEl = $('.color-schemes .branding-scheme'),
+      $sidebarSchemeEl = $('.color-schemes .sidebar-scheme'),
+      $colorSchemeEl = $('.color-schemes .color-scheme'),
+      $fixedHeaderEl = $('#fixed-header'),
+      $fixedAsideEl = $('#fixed-aside'),
+      $toggleRightbarEl = $('.toggle-right-sidebar'),
+      $pickDateEl = $('.pickDate'),
 
-  //     $tileEl = $('.tile'),
-  //     $tileToggleEl = $('.tile .tile-toggle'),
-  //     $tileRefreshEl = $('.tile .tile-refresh'),
-  //     $tileFullscreenEl = $('.tile .tile-fullscreen'),
-  //     $tileCloseEl = $('.tile .tile-close'),
+      $tileEl = $('.tile'),
+      $tileToggleEl = $('.tile .tile-toggle'),
+      $tileRefreshEl = $('.tile .tile-refresh'),
+      $tileFullscreenEl = $('.tile .tile-fullscreen'),
+      $tileCloseEl = $('.tile .tile-close'),
 
-  //     $easypiechartEl = $('.easypiechart'),
-  //     $chosenEl = $('.chosen-select'),
-  //     $toggleClassEl = $('.toggle-class'),
-  //     $colorPickerEl = $('.colorpicker'),
-  //     $touchspinEl = $('.touchspin'),
-  //     $datepickerEl = $('.datepicker'),
-  //     $animateProgressEl = $('.animate-progress-bar'),
-  //     $counterEl = $('.counter'),
-  //     $splashEl = $('.splash');
+      $easypiechartEl = $('.easypiechart'),
+      $chosenEl = $('.chosen-select'),
+      $toggleClassEl = $('.toggle-class'),
+      $colorPickerEl = $('.colorpicker'),
+      $touchspinEl = $('.touchspin'),
+      $datepickerEl = $('.datepicker'),
+      $animateProgressEl = $('.animate-progress-bar'),
+      $counterEl = $('.counter'),
+      $splashEl = $('.splash');
 
 
-  //!!!!!!!!!!!!!
+  // !!!!!!!!!!!!!
   // initializing
-  //!!!!!!!!!!!!!
-  // $(document).ready( MINOVATE.documentOnReady.init );
-  // $window.load( MINOVATE.documentOnLoad.init );
-  // $window.on( 'resize', MINOVATE.documentOnResize.init );
+  // !!!!!!!!!!!!!
+  $(document).ready( MINOVATE.documentOnReady.init );
+  $window.load( MINOVATE.documentOnLoad.init );
+  $window.on( 'resize', MINOVATE.documentOnResize.init );
 
 });

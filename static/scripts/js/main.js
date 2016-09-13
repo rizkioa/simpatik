@@ -68,14 +68,14 @@ $(function() {
 		},
 
     layout: function() {
-      var defaultHeaderScheme = 'scheme-default',
-          defaultNavbarScheme = 'scheme-default',
-          defaultBrandingScheme = 'scheme-default',
+      var defaultHeaderScheme = 'scheme-black',
+          defaultNavbarScheme = 'scheme-black',
+          defaultBrandingScheme = 'scheme-black',
           defaultColorScheme = 'default-scheme-color',
           defaultHeaderPosition = 'header-fixed',
           defaultNavbarPosition = 'aside-fixed',
           defaultRightbarVisibility = 'rightbar-hidden',
-          defaultAppClasses = 'scheme-default default-scheme-color header-fixed aside-fixed rightbar-hidden';
+          defaultAppClasses = 'scheme-black default-scheme-color header-fixed aside-fixed rightbar-hidden';
 
       $body.addClass(defaultAppClasses);
       $header.addClass(defaultHeaderScheme);
