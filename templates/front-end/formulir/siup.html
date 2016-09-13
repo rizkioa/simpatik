@@ -95,16 +95,6 @@
 
 {% block extratools %}
   {{ block.super }}
-  <!-- masking input -->
-  <script>
-    $(function() {
-      $(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
-      $(".npwp").mask("99.999.999.9-999.999");
-      $(".kodepos").mask("99999");
-      $('.no_ktp').on('keydown', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-    })
-  </script>
-  <!-- end masking input -->
   <!-- ajax alamat load -->
   <script type="text/javascript">
     function make_disabled(elem_, dis_){
@@ -122,7 +112,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi' %}', // the file to call
+        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi" )
           elem.html(response);
@@ -174,7 +164,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten" )
           elem.html(response);
@@ -205,7 +195,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan" )
           elem.html(response);
@@ -236,7 +226,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa' %}', // the file to call
+        url: '{% url 'admin:option_desa_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa" )
           elem.html(response);
@@ -281,7 +271,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi' %}', // the file to call
+        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi1" )
           elem.html(response);
@@ -333,7 +323,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten1" )
           elem.html(response);
@@ -364,7 +354,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan1" )
           elem.html(response);
@@ -395,7 +385,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa' %}', // the file to call
+        url: '{% url 'admin:option_desa_front' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa1" )
           elem.html(response);

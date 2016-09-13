@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}" data-parsley-validate novalidate>
+<form method="POST" name="step2" role="form" class="form-horizontal" {% if user.is_authenticated %} action="{% url 'siup_identitas_perusahan_save' %}" {% else %} action="#" {% endif %} data-parsley-validate novalidate>
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">

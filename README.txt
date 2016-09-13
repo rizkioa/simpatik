@@ -1,22 +1,22 @@
-4. Buat Database simpdu untuk user simpdu dengan password tertentu
+4. Buat Database simpatik untuk user simpatik dengan password tertentu
 
 -  Masuk mysql console
 
 mysql -u root -p
 
-- Buat user simpdu
+- Buat user simpatik
 
-CREATE USER 'simpdu'@'localhost' IDENTIFIED BY '!QAZ@WSX';
+CREATE USER 'simpatik'@'localhost' IDENTIFIED BY '!QAZ@WSX';
 
-- Buat database simpdu
+- Buat database simpatik
 
-create database simpdu;
+create database simpatik;
 
-- Beri akses untuk user simpdu
+- Beri akses untuk user simpatik
 
-grant usage on *.* to simpdu@localhost identified by '!QAZ@WSX';
+grant usage on *.* to simpatik@localhost identified by '!QAZ@WSX';
 
-grant all privileges on simpdu.* to simpdu@localhost;
+grant all privileges on simpatik.* to simpatik@localhost;
 
 FLUSH PRIVILEGES;
 
