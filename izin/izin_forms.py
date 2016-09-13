@@ -3,7 +3,7 @@ from izin.utils import JENIS_IZIN
 from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
 from accounts.models import NomorIdentitasPengguna
-from perusahaan.models import Perusahaan
+from perusahaan.models import Perusahaan, Legalitas
 
 EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 
@@ -49,8 +49,29 @@ class PerusahaanForm(forms.ModelForm):
 		fields = ('nama_perusahaan', 'nama_grup','alamat_perusahaan','desa','kode_pos','telepon','fax','email','npwp')
 
 class PengajuanSiupForm(forms.ModelForm):
-	"""docstring for LegalitasPerusahaanForm"""
+	"""docstring for PengajuanSiupForm"""
 	
 	class Meta:
 		model = DetilSIUP
+<<<<<<< HEAD
 		fields = ('pemohon','jenis_permohonan','kelompok_jenis_izin','kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
+=======
+		fields = ('kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
+
+
+class LegalitasPerusahaanForm(forms.ModelForm):
+	"""docstring for LegalitasAktaPerusahaanForm"""
+	class Meta:
+		model = Legalitas
+		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
+
+class AktaPerusahaanForm(forms.ModelForm):
+	"""docstring for AktaPerusahaanForm"""
+	pass
+		
+		
+		
+
+
+		
+>>>>>>> 831b9f1514f59a70ed6c93a623ac0d9abcd9095b

@@ -7,7 +7,9 @@
       <label class="col-sm-2 control-label text-left">Jenis Akta dan Pengesahan</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10">
-          <option>Akta pendirian</option>
+          {% for j in jenis_legalitas_list %}
+            <option value="{{j.id}}">{{j.jenis_legalitas}}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
@@ -15,7 +17,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label text-left">Nama Notaris</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" id="input01" name="nama_notaris">
       </div>
     </div>
 
@@ -29,7 +31,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label text-left">Telp Notaris</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" name="telephone">
       </div>
     </div>
 
@@ -55,7 +57,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label text-left">No. Pengesahan</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" id="input01" name="nomor_pengesahan">
       </div>
     </div>
 
@@ -63,7 +65,7 @@
       <label class="col-sm-2 control-label text-left">Tanggal Pengesahan</label>
       <div class="col-sm-5">
         <div class="input-group datepicker" data-format="L">
-          <input type="text" class="form-control">
+          <input type="text" class="form-control" name="tanggal_pengesahan">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>

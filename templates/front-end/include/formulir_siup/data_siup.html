@@ -189,7 +189,7 @@
       <label class="col-sm-2 control-label text-left">Barang / jasa dagangan utama</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10" name="produk_utama">
-          <option>-- Pilih Produk --</option>
+          <option value="">-- Pilih Produk --</option>
           {% for val in produk_utama_list %}
             <option value="{{val.id}}">{{val.barang_jasa_utama}}</option>
           {% endfor %}

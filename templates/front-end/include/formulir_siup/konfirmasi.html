@@ -1,3 +1,4 @@
+
 <form method="POST" name="step6" role="form" {% if user.is_authenticated %} action="{% url 'cetak_permohonan' %}" {% else %} action="#" {% endif %} data-parsley-validate novalidate>
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
@@ -6,7 +7,7 @@
     <tr>
       <td width="25%">Jenis Pengajuan</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
     </tr>
   </table>
   <br>
@@ -15,47 +16,47 @@
     <tr>
       <td width="25%">Jenis Pemohon</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.jenis_pemohon}}</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
     <tr>
-      <td width="25%">Nomor KTP/Pastor</td>
+      <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%">{{ request.COOKIES.ktp }}</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.nama_lengkap}}</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Alamat tempat tinggal</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.alamat}}</td>
+      <td width="70%"><span id='alamat_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.telephone}}</td>
+      <td width="70%"><span id='telephone_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">No.HP</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.hp}}</td>
+      <td width="70%"><span id='hp_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.email}}</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.kewarganegaraan}}</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Pekerjaan</td>
       <td width="5%">:</td>
-      <td width="70%">Swasta</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
     </tr>
   </table>
   <br>
@@ -64,77 +65,77 @@
     <tr>
       <td width="25%">NPWP</td>
       <td width="5%">:</td>
-      <td width="70%">12345678974</td>
+      <td width="70%"><span id='npwp_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Nama Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">UD. Maju Mundur</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Bentuk Kegiatan Usaha</td>
       <td width="5%">:</td>
-      <td width="70%">Mikro</td>
+      <td width="70%"><span id='bentuk_kegiatan_usaha_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Alamat Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Kode Pos</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='kode_pos_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%">082123981923</td>
+      <td width="70%"><span id='telepon_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">No.Fax</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id='fax_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Status Penanaman Modal</td>
       <td width="5%">:</td>
-      <td width="70%">Lain-lain</td>
+      <td width="70%"><span id='jenis_penanaman_modal_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Jenis Badan Usaha</td>
       <td width="5%">:</td>
-      <td width="70%">Firma</td>
+      <td width="70%"><span id=''></span></td>
     </tr>
     <tr>
       <td width="25%">Status Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">Kantor Tunggal</td>
+      <td width="70%"><span id=''></span></td>
     </tr>
     <tr>
       <td width="25%">KBLI</td>
       <td width="5%">:</td>
-      <td width="70%">12345</td>
+      <td width="70%"><span id='kbli_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Kegiatan Usaha</td>
       <td width="5%">:</td>
-      <td width="70%">Perdagangan kecil</td>
+      <td width="70%"><span id='jbentuk_kegiatan_usaha_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Barang/jasa dagang utama</td>
       <td width="5%">:</td>
-      <td width="70%">Peralatan pertanian</td>
+      <td width="70%"><span id='produk_utama_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">Bentuk Kerjasama</td>
       <td width="5%">:</td>
-      <td width="70%">Mandiri</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
   </table>
   
@@ -156,14 +157,14 @@
         </thead>
         <tbody>
           <tr>
-            <td>Akta Pendirian</td>
-            <td>Hasannuddin, SH</td>
-            <td>Jl. Mekar no 2</td>
-            <td>035478888</td>
-            <td>9</td>
-            <td>10/09/2009</td>
-            <td>123/ABC/2009</td>
-            <td>16/09/2009</td>
+            <td><span id='jenis_legalitas_konfirmasi'></span></td>
+            <td><span id='nama_notaris_konfirmasi'></span></td>
+            <td><span id='alamat_konfirmasi'></span></td>
+            <td><span id='telephone_konfirmasi'></span></td>
+            <td><span id=''></span></td>
+            <td><span id=''></span></td>
+            <td><span id='nomor_pengesahan_konfirmasi'></span></td>
+            <td><span id='tanggal_pengesahan_konfirmasi'></span></td>
           </tr>
         </tbody>
     </table>
@@ -174,7 +175,7 @@
     <tr>
       <td width="40%">Kekayaan Bersih Perusahaan</td>
       <td width="10%">:</td>
-      <td width="50%">Rp. 5.390.025</td>
+      <td width="50%">Rp. <span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="40%">(tidak termasuk tanah dan bangunan tempat usaha)</td>
@@ -184,27 +185,27 @@
     <tr>
       <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
       <td width="5%"></td>
-      <td width="65%"></td>
+      <td width="65%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="30%">a. Total Nilai Saham</td>
       <td width="10%">:</td>
-      <td width="60%">-</td>
+      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="30%">b. Komposisi Kepemilikan Saham</td>
       <td width="10%"></td>
-      <td width="60%">-</td>
+      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="30%" style="padding-left: 10%;">Dalam</td>
       <td width="10%">:</td>
-      <td width="60%">-</td>
+      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="30%" style="padding-left: 10%;">Asing</td>
       <td width="10%">:</td>
-      <td width="60%">-</td>
+      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
     </tr>
   </table>
   

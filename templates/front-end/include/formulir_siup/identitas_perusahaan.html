@@ -10,21 +10,21 @@
     <div class="form-group">
       <label class="col-sm-2 control-label"><strong>NPWP</strong></label>
       <div class="col-sm-5">
-        <input type="text" class="form-control npwp" required="" data-parsley-trigger="change">
+        <input type="text" name="npwp" class="form-control npwp" required="" data-parsley-trigger="change">
       </div>
     </div>
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><strong>Nama Perusahaan</strong></label>
       <div class="col-sm-7">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change">
+        <input type="text"  name="nama_perusahaan" class="form-control" required="" data-parsley-trigger="change">
       </div>
     </div>
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong></label>
       <div class="col-sm-7">
-        <textarea class="form-control" rows="5" name="alamat" required="" data-parsley-trigger="change"></textarea>
+        <textarea class="form-control" rows="5" name="alamat_perusahaan" required="" data-parsley-trigger="change"></textarea>
       </div>
     </div>
 
@@ -69,7 +69,7 @@
     <div class="form-group" id="desa1">
       <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="desa1" id="id_desa1" required="" data-parsley-trigger="change">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa1" required="" data-parsley-trigger="change">
         </select>
       </div>
     </div>
@@ -77,28 +77,28 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">Kode Pos</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control kodepos"  >
+        <input type="text" class="form-control kodepos" name="kode_pos" >
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-sm-2 control-label">No. Telp</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" name="telepon">
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-sm-2 control-label">No. Fax</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control fax" data-inputmask="'mask': '99-9999999'">
+        <input type="text" class="form-control fax" name="fax" data-inputmask="'mask': '99-9999999'">
       </div>
     </div>
 
     <div class="form-group">
       <label class="col-sm-2 control-label">E-mail</label>
       <div class="col-sm-5">
-        <input type="email" class="form-control " data-parsley-trigger="change" id="email">
+        <input type="email" class="form-control " data-parsley-trigger="change" id="email" name="email">
       </div>
     </div>
 </form>
