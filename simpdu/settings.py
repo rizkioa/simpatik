@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 """
 Django settings for simpdu project.
 
@@ -190,7 +190,7 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 #LOGOUT_URL = 'frontlogout'
 
 LOGIN_REDIRECT_URL = 'frontindex'
-=======
+
 """
 Django settings for simpdu project.
 
@@ -383,4 +383,4 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 #LOGOUT_URL = 'frontlogout'
 
 LOGIN_REDIRECT_URL = 'frontindex'
->>>>>>> 831b9f1514f59a70ed6c93a623ac0d9abcd9095b
+
