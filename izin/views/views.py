@@ -53,6 +53,13 @@ def formulir_siup(request, extra_context={}):
 	extra_context.update({'kecamatan': kecamatan})
 	desa = Desa.objects.all()
 	extra_context.update({'desa': desa})
+	extra_context.update({'kode_1': '{% for (var i=0, file; file=o.files[i]; i++) { %}'})
+	extra_context.update({'kode_2': '{%=file.name%}'})
+	extra_context.update({'kode_3': '{% if (!i && !o.options.autoUpload) { %}'})
+	extra_context.update({'kode_4': '{% } %}'})
+	extra_context.update({'kode_5': '{% if (!i) { %}'})
+	extra_context.update({'kode_6': '{% } %}'})
+	extra_context.update({'kode_7': '{% } %}'})
 	jenis_pemohon = JenisPemohon.objects.all()
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
 	if 'id_kelompok_izin' in request.COOKIES.keys():
