@@ -227,5 +227,5 @@ def siup_done(request):
 	response.delete_cookie(key='kewarganegaraan') # set cookie
 	response.delete_cookie(key='ttl') # set cookie
 	response.delete_cookie(key='email') # set cookie	
-	response.delete_cookie(key='id_kelompok_izin') # set cookie	
+	response.delete_cookie(key='id_kelompok_izin') # set cookie
 	return response

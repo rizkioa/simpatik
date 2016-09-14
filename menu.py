@@ -303,4 +303,3 @@ class CustomMenu(Menu):
 
         
         return super(CustomMenu, self).init_with_context(context)
-

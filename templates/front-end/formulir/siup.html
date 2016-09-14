@@ -95,6 +95,7 @@
 
 {% block extratools %}
   {{ block.super }}
+
   <!-- ajax alamat load -->
   <script type="text/javascript">
     function make_disabled(elem_, dis_){
@@ -256,13 +257,6 @@
   <!-- end masking input -->
   <!-- ajax alamat perusahaan load -->
   <script type="text/javascript">
-    // function make_disabled(elem_, dis_){
-    //   if (dis_ == true){
-    //       elem_.empty();
-    //   }
-    //   elem_.prop( "disabled", dis_);
-    //   elem_.trigger("chosen:updated");
-    // }
 
     function load_provinsi1(id_negara1){
       csrf_token = $("input[name='csrfmiddlewaretoken']").val();

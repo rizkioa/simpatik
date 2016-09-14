@@ -1,5 +1,4 @@
 from django import forms
-
 from izin.utils import JENIS_IZIN
 from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
@@ -54,6 +53,9 @@ class PengajuanSiupForm(forms.ModelForm):
 	
 	class Meta:
 		model = DetilSIUP
+<<<<<<< HEAD
+		fields = ('pemohon','jenis_permohonan','kelompok_jenis_izin','kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
+=======
 		fields = ('kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
 
 
@@ -72,3 +74,4 @@ class AktaPerusahaanForm(forms.ModelForm):
 
 
 		
+>>>>>>> 831b9f1514f59a70ed6c93a623ac0d9abcd9095b

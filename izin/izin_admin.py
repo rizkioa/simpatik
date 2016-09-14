@@ -11,6 +11,13 @@ import json
 
 class IzinAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+	list_filter = ('kelompok_jenis_izin',)
+	search_fields = ('no_izin', 'pemohon__nama_lengkap')
+
+	def changelist_view(self, request, extra_context={}):
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
 	def get_perusahaan(self, obj):
 		return "Perusaahaan Maju Mundur"
