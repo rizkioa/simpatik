@@ -37,7 +37,6 @@ class KecamatanAdmin(admin.ModelAdmin):
 		urls = super(KecamatanAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^json/$', self.admin_site.admin_view(self.json_kecamatan), name='json_kecamatan'),
-			url(r'^option/$', self.admin_site.admin_view(self.option_kecamatan), name='option_kecamatan'),
-			url(r'^option-front-end/$', self.option_kecamatan, name='option_kecamatan_front'),
+			url(r'^option/$', self.option_kecamatan, name='option_kecamatan'),
 			)
 		return my_urls + urls
