@@ -141,7 +141,9 @@ def siup_identitas_perusahan_save_cookie(request):
 		p.pemohon_id = request.COOKIES['id_pemohon']
 		p.save()
 
-		data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.'  }
+		data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data': [
+			
+			]  }
 		response = HttpResponse(json.dumps(data))
 		
 		response.set_cookie(key='id_perusahaan', value=p.id)
