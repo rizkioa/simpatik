@@ -64,4 +64,3 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 
 class AktaPerusahaanForm(forms.ModelForm):
 	"""docstring for AktaPerusahaanForm"""
-	pass

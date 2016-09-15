@@ -152,7 +152,7 @@ def layanan_reklame(request, extra_context={}):
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Pemasangan Reklame"})
 	extra_context.update({'title_short': "Izin Pemasangan Reklame"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_reklame") })
 	extra_context.update({'id_jenis_izin': "3" })
 	extra_context.update({'id_kelompok_jenis_izin': "14" })
 	return render(request, "front-end/layanan/reklame.html", extra_context)
