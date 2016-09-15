@@ -1,4 +1,3 @@
-
 4. Buat Database simpatik untuk user simpatik dengan password tertentu
 
 -  Masuk mysql console
@@ -27,6 +26,4 @@ sudo python manage.py makemigrations
 sudo python manage.py migrate
 
 6. Buat superuser
-
->>>>>>> c6e59816ff3cc0a3a3fdfe2b55e40fa25937cd5e
 python manage.py createsuperuser
