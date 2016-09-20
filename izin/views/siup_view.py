@@ -1,12 +1,13 @@
 from django.http import HttpResponse
 import json
 
-from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, AktaPerusahaanForm, NPWPPerusahaanForm
+from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, NPWPPerusahaanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from master.models import Berkas
 
 try:
 	from django.utils.encoding import force_text
@@ -213,16 +214,24 @@ def siup_kekayaan_save_cookie(request):
 
 def siup_upload_dokumen_cookie(request):
 	form = NPWPPerusahaanForm(request.POST, request.FILES)
-	print request.FILES
+	# print request.FILES
 	if request.method == "POST":
-		if request.FILES.get('npwp_perusahaan'):
-			perusahaan = Perusahaan.objects.get(id=100)
-			perusahaan.berkas_npwp = request.FILES.get('npwp_perusahaan')
-			perusahaan.save()
-			data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+		if request.FILES.get('berkas'):
+			if form.is_valid():
+				berkas = form.save(commit=False)
+				berkas.nama_berkas = "Akta Pendirian Perushaan"
+				berkas.save()
+				# update model yang lain.
+				# p = Perushaan.object.get(id=request.COOKIES['id_perusahaan'])
+				# p.berkas_npwp = berkas.id
+				# p.save()
+
+				data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 						{'status_upload': 'ok'},
 					]}
-			data = json.dumps(data)
+				data = json.dumps(data)
+			else:
+				data = form.errors.as_json()
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
 			data = json.dumps(data)

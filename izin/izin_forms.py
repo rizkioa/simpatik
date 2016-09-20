@@ -1,7 +1,7 @@
 from django import forms
 from izin.utils import JENIS_IZIN
 from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
 
@@ -64,11 +64,15 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 
 
 
-class NPWPPerusahaanForm(forms.Form):
+# class NPWPPerusahaanForm(forms.Form):
+# 	"""docstring for FileUploadForm"""
+# 	npwp_perusahaan = forms.FileField()
+		
+		
+class NPWPPerusahaanForm(forms.ModelForm):
 	"""docstring for FileUploadForm"""
-	npwp_perusahaan = forms.FileField()
-		
-		
-		
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
 		
 
