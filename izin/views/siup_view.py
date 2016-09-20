@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 import json
+from sqlite3 import OperationalError
 
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadNPWPPerusahaanForm
 from izin.utils import get_nomor_pengajuan
@@ -34,30 +35,35 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
+		status = request.POST.get('status', None)
 		try:
 			p = pemohon.save(commit=False)
 			# print pemohon.cleaned_data
-			p.status = 1
 			p.username = ktp_
-			p.save()
-			if ktp_:
-				try:
-					i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
-				except ObjectDoesNotExist:
-					i, created = NomorIdentitasPengguna.objects.get_or_create(
-								nomor = ktp_,
-								jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
-								user_id=p.id,
-								)
-			if paspor_:
-				try:
-					i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-				except ObjectDoesNotExist:
-					i, created = NomorIdentitasPengguna.objects.get_or_create(
-								nomor = paspor_,
-								jenis_identitas_id=2,
-								user_id=p.id,
-								)
+			p.status = status
+			try:
+				p.save()
+				if ktp_:
+					try:
+						i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+					except ObjectDoesNotExist:
+						i, created = NomorIdentitasPengguna.objects.get_or_create(
+									nomor = ktp_,
+									jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
+									user_id=p.id,
+									)
+				if paspor_:
+					try:
+						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
+					except ObjectDoesNotExist:
+						i, created = NomorIdentitasPengguna.objects.get_or_create(
+									nomor = paspor_,
+									jenis_identitas_id=2,
+									user_id=p.id,
+									)
+			except OperationalError:
+				pass
+				
 
 		except IntegrityError as e:
 			if ktp_:

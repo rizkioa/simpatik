@@ -133,3 +133,4 @@ admin.site.register(Desa, DesaAdmin)
 
 admin.site.register(Settings)
 admin.site.register(JenisNomorIdentitas)
+admin.site.register(Berkas)

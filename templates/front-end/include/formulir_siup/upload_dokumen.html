@@ -1,74 +1,92 @@
-<form method="POST" name="step5" role="form" class="form-horizontal" enctype="multipart/form-data" id="myForm_upload">
+<form method="POST" name="step5" enctype="multipart/form-data" id="myForm_upload">
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14" style="height:2px">
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Foto</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File KTP/Paspor (Dirut/pemilik/pengurus/penanggungjawab)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+  <form role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-md-3 text-left" style="margin-left: -12px;width: 25.3%;">File Foto</label>
+      <div class="col-md-5" style="width: 43%;">
+        <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+      </div>
+      <div class="col-md-4" style="width: 10%;">
+        <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  </form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File NPWP Pribadi</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+  <form role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File KTP/Paspor </label>
+      <div class="col-sm-5">
+        <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+        <label class="help-text">(Dirut/pemilik/pengurus/penanggungjawab)</label>
+      </div>
+      <div class="col-sm-4">
+        <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  </form>
 
-  <div class="form-group" id="berkas">
-    <label class="col-sm-3 control-label text-left">File NPWP Perusahaan</label>
-    <div class="col-sm-5">
-      <input type="file" name="berkas" class="filestyle npwp_perusahaan" data-buttonText="Browse" data-iconName="fa fa-inbox">
+  <form role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File NPWP Pribadi</label>
+      <div class="col-sm-5">
+        <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+      </div>
+      <div class="col-sm-4">
+        <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <a id="submit_file_npwp_perusahaan" type="button" class="btn btn-success mb-10 start_upload_npwp_perusahaan"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  </form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Akta Pendirian</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+  <form role="form" class="form-horizontal" enctype="multipart/form-data" id="id_form_berkas_npwp">
+  {% csrf_token %}
+    <div class="form-group" id="berkas">
+      <label class="col-sm-3 control-label text-left">File NPWP Perusahaan</label>
+      <div class="col-sm-5">
+        <input type="file" id="berkas_npwp" name="berkas" class="filestyle npwp_perusahaan" data-buttonText="Browse" data-iconName="fa fa-inbox">
+      </div>
+      <div class="col-sm-4">
+        <a type="submit" class="btn btn-success mb-10 start_upload_npwp_perusahaan"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  </form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+  <form role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File Akta Pendirian</label>
+      <div class="col-sm-5">
+        <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+      </div>
+      <div class="col-sm-4">
+        <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  </form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+  <form role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
+      <div class="col-sm-5">
+        <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+      </div>
+      <div class="col-sm-4">
+        <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+  </form>
+
+  <form role="form" class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
+      <div class="col-sm-5">
+        <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+      </div>
+      <div class="col-sm-4">
+        <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
+      </div>
     </div>
-  </div>
+  </form>
+  <input type="file" name="berkas_npwp" id="berkas_npwp">
 </form>
