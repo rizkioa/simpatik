@@ -332,11 +332,16 @@
 			            	for (var i = 0; i < respon.data.length; i++){
 			            		var key = Object.keys(respon.data[i]); // Mencari key json
 			            		// console.log(key[0]);
-			            		var val = respon.data[i][key[0]] // mencari value json
-			            		// console.log(key[0]+"_konfirmasi");
-			            		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+			            		if (key[0]= "status_upload") {
+			            			$("#npwp_perusahaan").hide(1000)
 
-			            		$(id).text(val);
+			            		}else{
+				            		var val = respon.data[i][key[0]] // mencari value json
+				            		// console.log(key[0]+"_konfirmasi");
+				            		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+				            		$(id).text(val);
+				            	}
 			            	}
 							$( ".tab-content #tab"+index ).unmask()
 							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
@@ -516,6 +521,57 @@
         }
       });
     }
+
+    $(".start_upload_npwp_perusahaan").click(function() {
+    	// body...
+    	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    	npwp_perusahaan = $("input[name='npwp_perusahaan']").val();
+    	$.ajax({
+			type: 'POST',
+			url: "{% url 'siup_upload_dokumen' %}",
+		    contentType: 'multipart/form-data',
+			data: { csrfmiddlewaretoken: csrf_token, npwp_perusahaan: npwp_perusahaan },
+			success: function (response){
+				respon = $.parseJSON(response)
+				if(respon.success){
+	            	toastr["success"](respon.pesan)
+	            	// $.cookie("keys", "value"); set cookie
+	            	for (var i = 0; i < respon.data.length; i++){
+	            		var key = Object.keys(respon.data[i]); // Mencari key json
+	            		// console.log(key[0]);
+	            		if (key[0]= "status_upload") {
+	            			$("#npwp_perusahaan").hide(1000)
+
+	            		}else{
+		            		var val = respon.data[i][key[0]] // mencari value json
+		            		// console.log(key[0]+"_konfirmasi");
+		            		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+		            		$(id).text(val);
+		            	}
+	            	}																																																	
+				}else{
+					// console.log(respon);
+	            	// console.log(typeof respon);
+	            	var a = Object.keys(respon);
+	            	// console.log(respon['nama_lengkap'][0]['message']);
+	            	// console.log(a.length);
+	            	for (var i = 0; i < a.length; i++){
+	            		// console.log(a[i]);
+	            		// console.log(respon[a[i]]);
+	            		var field = a[i].replace("_", " ").capitalize();
+	            		toastr["error"](field+", "+respon[a[i]][0]['message'])
+	            		$("#"+a[i]+"").addClass("has-error");
+	            		// console.log($("#"+a[i]+"").addClass("parsley-error"));
+	            	}
+				}
+			},
+			error: function(data) {                
+	          toast_server_error()
+	        }
+		});
+    });
+
 	</script>
 {% endblock %}
 

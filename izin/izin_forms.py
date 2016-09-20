@@ -66,6 +66,12 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 class AktaPerusahaanForm(forms.ModelForm):
 	"""docstring for AktaPerusahaanForm"""
 	pass
+
+
+class NPWPPerusahaanForm(forms.Form):
+	"""docstring for FileUploadForm"""
+	npwp_perusahaan = forms.FileField()
+		
 		
 		
 		

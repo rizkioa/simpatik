@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 import json
 
-from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, AktaPerusahaanForm
+from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, AktaPerusahaanForm, NPWPPerusahaanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin
@@ -181,6 +181,7 @@ def siup_detilsiup_save_cookie(request):
 
 	return response
 
+from perusahaan.models import Perusahaan
 def siup_legalitas_perusahaan_save_cookie(request):
 	if 'id_perusahaan' in request.COOKIES.keys():
 		if request.COOKIES['id_perusahaan'] != '':
@@ -209,8 +210,43 @@ def siup_kekayaan_save_cookie(request):
 	return HttpResponse(json.dumps(data))
 
 def siup_upload_dokumen_cookie(request):
-	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
-	return HttpResponse(json.dumps(data))
+	form = NPWPPerusahaanForm(request.POST, request.FILES)
+	print request.FILES
+	if request.method == "POST":
+		if request.FILES.get('npwp_perusahaan'):
+			perusahaan = Perusahaan.objects.get(id=100)
+			perusahaan.berkas_npwp = request.FILES.get('npwp_perusahaan')
+			perusahaan.save()
+			data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+						{'status_upload': 'ok'},
+					]}
+			data = json.dumps(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
+			data = json.dumps(data)
+	else:
+		data = form.errors.as_json()
+	# if 'id_perusahaan' in request.COOKIES.keys():
+	# 	if request.COOKIES['id_perusahaan'] != '':
+	# 		form = NPWPPerusahaanForm(request.POST, request.FILES)
+	# 		if form.is_valid():
+	# 			perusahaan = Perusahaan(berkas_npwp=request.FILES['file'])
+	# 			perusahaan.save()
+	# 			data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+	# 						{'status_upload': 'ok'},
+	# 					]}
+	# 			data = json.dumps(data)
+	# 		else:
+	# 			data = form.errors.as_json()
+	# 	else:
+	# 		data = {'Terjadi Kesalahan': [{'message': 'Data Perusahaan tidak ditemukan/data kosong'}]}
+	# 		data = json.dumps(data)
+	# else:
+	# 	data = {'Terjadi Kesalahan': [{'message': 'Data Perusahaan tidak ditemukan/tidak ada'}]}
+	# 	data = json.dumps(data)
+
+	response = HttpResponse(data)
+	return response
 
 def siup_done(request):
 	data = {'success': True, 'pesan': 'Proses Selesai.' }
