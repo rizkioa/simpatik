@@ -95,6 +95,7 @@
 
 {% block extratools %}
   {{ block.super }}
+
   <!-- ajax alamat load -->
   <script type="text/javascript">
     function make_disabled(elem_, dis_){
@@ -112,7 +113,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi" )
           elem.html(response);
@@ -164,7 +165,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten" )
           elem.html(response);
@@ -195,7 +196,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan" )
           elem.html(response);
@@ -226,7 +227,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa" )
           elem.html(response);
@@ -256,22 +257,15 @@
   <!-- end masking input -->
   <!-- ajax alamat perusahaan load -->
   <script type="text/javascript">
-    // function make_disabled(elem_, dis_){
-    //   if (dis_ == true){
-    //       elem_.empty();
-    //   }
-    //   elem_.prop( "disabled", dis_);
-    //   elem_.trigger("chosen:updated");
-    // }
 
     function load_provinsi1(id_negara1){
       csrf_token = $("input[name='csrfmiddlewaretoken']").val();
       $( "#id_provinsi_chosen1" ).mask('loading')
       $( "#id_provinsi_chosen1.loadmask-msg" ).css('top', '2px')
       $.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara1 }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi1" )
           elem.html(response);
@@ -280,9 +274,9 @@
           $( "#id_provinsi1" ).change(function(){
             $this = $(this)
 
-            id_provinsi1 = $(this).val()
-            if(id_provinsi1.length > 0){
-              load_kabupaten1(id_provinsi1)
+            id_provinsi = $(this).val()
+            if(id_provinsi.length > 0){
+              load_kabupaten1(id_provinsi)
             }else{
               elem = $( "#id_kabupaten1" )
               make_disabled(elem, true)
@@ -303,9 +297,9 @@
     $( "#id_negara1" ).change(function(){
       $this = $(this)
 
-      id_negara1 = $(this).val()
-      if(id_negara1.length > 0){
-          load_provinsi1(id_negara1)
+      id_negara = $(this).val()
+      if(id_negara.length > 0){
+          load_provinsi1(id_negara)
       }else{
         elem = $( "#id_provinsi1" )
         make_disabled(elem, true)
@@ -321,9 +315,9 @@
       $( "#id_kabupaten_chosen1" ).mask('loading')
       $( "#id_kabupaten_chosen1 .loadmask-msg" ).css('top', '2px')
       $.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi1 }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten1" )
           elem.html(response);
@@ -332,9 +326,9 @@
           $( "#id_kabupaten1" ).change(function(){
             $this = $(this)
 
-            id_kabupaten1 = $(this).val()
-            if(id_kabupaten1.length > 0){
-              load_kecamatan1(id_kabupaten1)
+            id_kabupaten = $(this).val()
+            if(id_kabupaten.length > 0){
+              load_kecamatan1(id_kabupaten)
             }else{
               elem = $( "#id_kecamatan1" )
               make_disabled(elem, true)
@@ -352,9 +346,9 @@
       $( "#id_kecamatan_chosen1" ).mask('loading')
       $( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
       $.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten1 }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan1" )
           elem.html(response);
@@ -363,9 +357,9 @@
           $( "#id_kecamatan1" ).change(function(){
             $this = $(this)
             
-            id_kecamatan1 = $(this).val()
-            if(id_kecamatan1.length > 0){
-              load_desa1(id_kecamatan1)
+            id_kecamatan = $(this).val()
+            if(id_kecamatan.length > 0){
+              load_desa1(id_kecamatan)
             }else{
               elem = $( "#id_desa1" )
               make_disabled(elem, true)
@@ -383,9 +377,9 @@
       $( "#id_desa_chosen1" ).mask('loading')
       $( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
       $.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa1" )
           elem.html(response);
@@ -457,26 +451,40 @@
       }
     })
 
-    function form_pemohon_kuasa_make_disabled(){
-      make_disabled($('#nama_kuasa'), true)
-      make_disabled($('#no_identitas_kuasa'), true)
-      make_disabled($('#telp_kuasa'), true)
-    }
+    // function form_pemohon_kuasa_make_disabled(){
+    //   make_disabled($('#nama_kuasa'), true)
+    //   make_disabled($('#no_identitas_kuasa'), true)
+    //   make_disabled($('#telp_kuasa'), true)
+    // }
 
-    form_pemohon_kuasa_make_disabled();
+    // form_pemohon_kuasa_make_disabled();
 
-    function form_pemohon_kuasa_make_enabled(){
-      make_disabled($('#nama_kuasa'), false)
-      make_disabled($('#no_identitas_kuasa'), false)
-      make_disabled($('#telp_kuasa'), false)
-    }
+    // function form_pemohon_kuasa_make_enabled(){
+    //   make_disabled($('#nama_kuasa'), false)
+    //   make_disabled($('#no_identitas_kuasa'), false)
+    //   make_disabled($('#telp_kuasa'), false)
+    // }
 
-    $("#switch_pemohon").change(function(){
-      if($(this).is(':checked')){
-        form_pemohon_kuasa_make_enabled();
-      }else{
-        form_pemohon_kuasa_make_disabled();
-      }
-    })
+    // $("#switch_pemohon").change(function(){
+    //   if($(this).is(':checked')){
+    //     form_pemohon_kuasa_make_enabled();
+    //   }else{
+    //     form_pemohon_kuasa_make_disabled();
+    //   }
+    // })
+  </script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+        $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+        $("#switch_pemohon_disabled").change(function() {
+          if ($(this).is(':checked')) {
+            $('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+            $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+          }
+          else {
+            $('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+          }
+          });
+      });
   </script>
 {% endblock %}

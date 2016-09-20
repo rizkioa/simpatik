@@ -141,7 +141,9 @@ def siup_identitas_perusahan_save_cookie(request):
 		p.pemohon_id = request.COOKIES['id_pemohon']
 		p.save()
 
-		data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.'  }
+		data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data': [
+			
+			]  }
 		response = HttpResponse(json.dumps(data))
 		
 		response.set_cookie(key='id_perusahaan', value=p.id)
@@ -263,5 +265,5 @@ def siup_done(request):
 	response.delete_cookie(key='kewarganegaraan') # set cookie
 	response.delete_cookie(key='ttl') # set cookie
 	response.delete_cookie(key='email') # set cookie	
-	response.delete_cookie(key='id_kelompok_izin') # set cookie	
+	response.delete_cookie(key='id_kelompok_izin') # set cookie
 	return response

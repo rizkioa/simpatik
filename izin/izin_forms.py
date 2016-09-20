@@ -1,5 +1,4 @@
 from django import forms
-
 from izin.utils import JENIS_IZIN
 from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
@@ -63,9 +62,6 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 		model = Legalitas
 		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
 
-class AktaPerusahaanForm(forms.ModelForm):
-	"""docstring for AktaPerusahaanForm"""
-	pass
 
 
 class NPWPPerusahaanForm(forms.Form):
@@ -76,5 +72,3 @@ class NPWPPerusahaanForm(forms.Form):
 		
 		
 
-
-		

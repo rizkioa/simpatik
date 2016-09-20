@@ -26,5 +26,4 @@ sudo python manage.py makemigrations
 sudo python manage.py migrate
 
 6. Buat superuser
-
 python manage.py createsuperuser
