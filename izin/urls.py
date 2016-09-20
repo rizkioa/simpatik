@@ -71,6 +71,7 @@ urlpatterns = [
     url(r'^layanan/siup/legalitasperusahaan/save/$', siup_view.siup_legalitas_perusahaan_save_cookie, name='siup_legalitas_perusahaan_save'),
     url(r'^layanan/siup/kekayaan/save/$', siup_view.siup_kekayaan_save_cookie, name='siup_kekayaan_save'),
     url(r'^layanan/siup/upload/save/$', siup_view.siup_upload_dokumen_cookie, name='siup_upload_dokumen'),
+    url(r'^layanan/siup/upload_npwp_perusahaan/save/$', siup_view.siup_upload_berkas_npwp_perusahaan, name='siup_upload_npwp_perusahaan'),
     url(r'^layanan/siup/save/$', siup_view.siup_done , name='siup_done'),
     # End
     ]

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 import json
 
-from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, AktaPerusahaanForm
+from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadNPWPPerusahaanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin
@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from perusahaan.models import Perusahaan
 
 def siup_identitas_pemohon_save_cookie(request):
 	pemohon = PemohonForm(request.POST) 
@@ -30,9 +31,13 @@ def siup_identitas_pemohon_save_cookie(request):
 		jenis_permohonan_ = request.POST.get('jenis_pengajuan', None)
 		k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 		nomor_pengajuan_ = get_nomor_pengajuan(k.jenis_izin.kode)
+		nama_kuasa = request.POST.get('nama_kuasa', None)
+		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
+		telephone_kuasa = request.POST.get('telephone_kuasa', None)
 		try:
 			p = pemohon.save(commit=False)
 			# print pemohon.cleaned_data
+			p.status = 1
 			p.username = ktp_
 			p.save()
 			if ktp_:
@@ -65,7 +70,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			# print p.id
 			# print p.desa
 			
-		pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user  )
+		pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id,jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
 		pengajuan.save()
 
 		# data = {'success': True, 'pesan': 'Pengajuan disimpan. Proses Selanjutnya.'  }
@@ -213,6 +218,32 @@ def siup_kekayaan_save_cookie(request):
 def siup_upload_dokumen_cookie(request):
 	data = {'success': True, 'pesan': 'Proses Selanjutnya.' }
 	return HttpResponse(json.dumps(data))
+
+def siup_upload_berkas_npwp_perusahaan(request):
+	# if 'id_perusahaan' in request.COOKIES.keys():
+	# 	if request.COOKIES['id_perusahaan'] != '':
+	# 		perusahaan_ = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+	# 		# detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
+			
+	# 	else:
+	# 		data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP Perusahaan tidak ditemukan/data kosong'}]}
+	# 		data = json.dumps(data)
+	# else:
+	# 	data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP Perusahaan tidak ditemukan/tidak ada'}]}
+	# 	data = json.dumps(data)
+	form = UploadNPWPPerusahaanForm(data=request.POST, files=request.FILES)
+	print request.POST, len(request.FILES)
+	if form.is_valid():
+		f = form.save(commit=False)
+		f.perusahaan_id = request.COOKIES['id_perusahaan']
+		f.save()
+
+		data = {'success': True, 'pesan': 'Upload NPWP Perusahaan berhasil disimpan. Proses Selanjutnya.'}
+		data = json.dumps(data)
+	else:
+		data = form.errors.as_json()
+	response = HttpResponse(data)
+	return response
 
 def siup_done(request):
 	data = {'success': True, 'pesan': 'Proses Selesai.' }

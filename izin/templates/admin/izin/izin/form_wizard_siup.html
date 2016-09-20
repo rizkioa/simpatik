@@ -70,36 +70,31 @@
 					// }
 					return true;
 				}
-
 			});
-
-
 		});
-
-
 
 		function form_akta_perubahan_make_disabled(){
 			make_disabled($('#akta_pengesahan'), true)
-		      make_disabled($('#nama_notaris_akta_perubahan'), true)
-		      make_disabled($('#alamat_notaris'), true)
-		      make_disabled($('#telp_notaris'), true)
-		      make_disabled($('#no_akta_notaris'), true)
-		      make_disabled($('#tanggal_akta_akta_perubahan'), true)
-		      make_disabled($('#no_pengesahan'), true)
-		      make_disabled($('#tanggal_pengesahan'), true)
+		    make_disabled($('#nama_notaris_akta_perubahan'), true)
+		    make_disabled($('#alamat_notaris'), true)
+		    make_disabled($('#telp_notaris'), true)
+		    make_disabled($('#no_akta_notaris'), true)
+		    make_disabled($('#tanggal_akta_akta_perubahan'), true)
+		    make_disabled($('#no_pengesahan'), true)
+		    make_disabled($('#tanggal_pengesahan'), true)
 		}
 
 		form_akta_perubahan_make_disabled();
 
 		function form_akta_perubahan_make_enabled(){
 			make_disabled($('#akta_pengesahan'), false)
-		      make_disabled($('#nama_notaris_akta_perubahan'), false)
-		      make_disabled($('#alamat_notaris'), false)
-		      make_disabled($('#telp_notaris'), false)
-		      make_disabled($('#no_akta_notaris'), false)
-		      make_disabled($('#tanggal_akta_akta_perubahan'), false)
-		      make_disabled($('#no_pengesahan'), false)
-		      make_disabled($('#tanggal_pengesahan'), false)
+		    make_disabled($('#nama_notaris_akta_perubahan'), false)
+		    make_disabled($('#alamat_notaris'), false)
+		    make_disabled($('#telp_notaris'), false)
+		    make_disabled($('#no_akta_notaris'), false)
+		    make_disabled($('#tanggal_akta_akta_perubahan'), false)
+		    make_disabled($('#no_pengesahan'), false)
+		    make_disabled($('#tanggal_pengesahan'), false)
 		}
 		
 
@@ -112,17 +107,17 @@
 		})
 
 		function form_pemohon_kuasa_make_disabled(){
-	      make_disabled($('#nama_kuasa'), true)
-	      make_disabled($('#no_identitas_kuasa'), true)
-	      make_disabled($('#telp_kuasa'), true)
+	        make_disabled($('#nama_kuasa'), true)
+	        make_disabled($('#no_identitas_kuasa'), true)
+	        make_disabled($('#telp_kuasa'), true)
 	    }
 
 	    form_pemohon_kuasa_make_disabled();
 
 	    function form_pemohon_kuasa_make_enabled(){
-	      make_disabled($('#nama_kuasa'), false)
-	      make_disabled($('#no_identitas_kuasa'), false)
-	      make_disabled($('#telp_kuasa'), false)
+	        make_disabled($('#nama_kuasa'), false)
+	        make_disabled($('#no_identitas_kuasa'), false)
+	        make_disabled($('#telp_kuasa'), false)
 	    }
 
 	    $("#switch_pemohon").change(function(){
@@ -279,12 +274,10 @@
             });
         }
 
-
 		// Function to capitalize for string
 		String.prototype.capitalize = function() {
 		    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 		};
-
 
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
@@ -469,45 +462,117 @@
     }
 
     function load_desa1(id_kecamatan1){
-      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-      $( "#id_desa_chosen1" ).mask('loading')
-      $( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
-      $.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
-        type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa' %}', // the file to call
-        success: function(response) { // on success..
-          elem = $( "#id_desa1" )
-          elem.html(response);
-          make_disabled(elem, false)
-          $( "#id_desa_chosen1" ).unmask()
-          $( "#id_desa1" ).change(function(){
-              $this = $(this)
-          })
-        },
-        error: function(data) {                
-          toast_server_error()
-        }
-      });
+	      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+	      $( "#id_desa_chosen1" ).mask('loading')
+	      $( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
+	      $.ajax({ // create an AJAX call...
+	        data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
+	        type: 'POST', // GET or POST
+	        url: '{% url 'admin:option_desa' %}', // the file to call
+	        success: function(response) { // on success..
+	          elem = $( "#id_desa1" )
+	          elem.html(response);
+	          make_disabled(elem, false)
+	          $( "#id_desa_chosen1" ).unmask()
+	          $( "#id_desa1" ).change(function(){
+	              $this = $(this)
+	          })
+	        },
+	        error: function(data) {                
+	          toast_server_error()
+	        }
+	      });
     }
+	</script>
+	<script type="text/javascript">
+		function upload_npwp_perusahaan(){
+		    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+		    berkas_npwp = $("input[name='berkas']").val();
+		    $.ajax({ // create an AJAX call...
+		    	data: { csrfmiddlewaretoken: csrf_token, berkas: berkas_npwp, nama_berkas:'coba.jpg' }, // get the form data
+		        type: 'POST', // GET or POST
+		        url: '{% url 'siup_upload_npwp_perusahaan' %}', // the file to call
+		        success: function(response) { // on success..
+		            alert("ajax_perusahaan_npwp");
+		            // respon = $.parseJSON(response)
+			           //  if(respon.success){
+			           //  	toastr["success"](respon.pesan)
+			           //  	// $.cookie("keys", "value"); set cookie
+			           //  	for (var i = 0; i < respon.data.length; i++){
+			           //  		var key = Object.keys(respon.data[i]); // Mencari key json
+			           //  		// console.log(key[0]);
+			           //  		var val = respon.data[i][key[0]] // mencari value json
+			           //  		// console.log(key[0]+"_konfirmasi");
+			           //  		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+			           //  		$(id).text(val);
+			           //  	}
+			           //  }else{
+			           //  	// console.log(respon);
+			           //  	// console.log(typeof respon);
+			           //  	var a = Object.keys(respon);
+			           //  	// console.log(respon['nama_lengkap'][0]['message']);
+			           //  	// console.log(a.length);
+			           //  	for (var i = 0; i < a.length; i++){
+			           //  		// console.log(a[i]);
+			           //  		// console.log(respon[a[i]]);
+			           //  		var field = a[i].replace("_", " ").capitalize();
+			           //  		toastr["error"](field+", "+respon[a[i]][0]['message'])
+			           //  		$("#"+a[i]+"").addClass("has-error");
+			           //  		// console.log($("#"+a[i]+"").addClass("parsley-error"));
+			           //  	}
+			           //  }
+		        },
+		        error: function(data) {                
+		            toast_server_error()
+		        }
+		    });
+		}
+	</script>
+	<script type="text/javascript">
+		$('#submit_file_npwp_perusahaan').click(function() {
+			var form_data = new FormData();
+			form_data.append('berkas', $('#myForm_upload').get(0));
+			form_data.append( 'csrfmiddlewaretoken', $("input[name='csrfmiddlewaretoken']").val())
+			console.log(form_data);
+			$.ajax({
+				url: '{% url 'siup_upload_npwp_perusahaan' %}',
+				data: form_data,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function(data) {
+                	var data = $.parseJSON(data);
+                    alert('Success');
+                },
+                error: function(xhr) {
+                        alert(xhr.statusText);
+                },
+                params: {
+	                'csrf_token': '{{ csrf_token }}',
+	                'csrf_name': 'csrfmiddlewaretoken',
+	                'csrf_xname': 'X-CSRFToken',
+                },
+			});
+		});
 	</script>
 {% endblock %}
 
 {% block extrastyle %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
-<!-- blueimp Gallery styles -->
-<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
-<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
-<!-- CSS adjustments for browsers with JavaScript disabled -->
-<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
-<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
+	{{ block.super }}
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+		<!-- blueimp Gallery styles -->
+		<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+		<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+		<!-- CSS adjustments for browsers with JavaScript disabled -->
+		<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+		<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
 {% endblock %}
 
 {% block custom_style %}
