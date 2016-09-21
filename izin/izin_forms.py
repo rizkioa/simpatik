@@ -22,8 +22,6 @@ class PengajuanBaruForm(forms.Form):
 				self.fields['kelompok_jenis_izin'].queryset = KelompokJenisIzin.objects.filter(jenis_izin__id=nama_izin)
 
 
-
-
 class PemohonForm(forms.ModelForm):
 	"""docstring for PemohonForm"""
 
@@ -61,8 +59,56 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 	class Meta:
 		model = Legalitas
 		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
+from django.conf import settings
+class LegalitasPerusahaanPerubahanForm(forms.Form):
+	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""
+	nama_notaris_perubahan = forms.CharField(initial='nama_notaris_perubahan')
+	alamat_notaris_perubahan = forms.CharField(initial='alamat_notaris_perubahan')
+	telephone_notaris_perubahan = forms.CharField(initial='telephone_notaris_perubahan')
+	# nomor_akta_perubahan = forms.CharField(initial='nomor_akta_perubahan')
+	# tanggal_akta_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
+	nomor_pengesahan_perubahan = forms.CharField(initial='nomor_pengesahan_perubahan')
+	tanggal_pengesahan_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
 
-class UploadNPWPPerusahaanForm(forms.ModelForm):
+
+class UploadBerkasFotoForm(forms.ModelForm):
+	"""docstring for UploadBerkasFotoForm"""
 	class Meta:
 		model = Berkas
-		fields = ('nama_berkas','berkas')
+		fields = ('berkas',)
+
+class UploadBerkasKTPForm(forms.ModelForm):
+	"""docstring for UploadBerkasKTPForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasNPWPPribadiForm(forms.ModelForm):
+	"""docstring for UploadBerkasNPWPPribadiForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasNPWPPerusahaanForm(forms.ModelForm):
+	"""docstring for UploadBerkasNPWPPerusahaanForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasAktaPendirianForm(forms.ModelForm):
+	"""docstring for UploadBerkasAktaPendirianForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasAktaPerubahanForm(forms.ModelForm):
+	"""docstring for UploadBerkasAktaPerubahanForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+		
+class UploadBerkasPendukungForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)

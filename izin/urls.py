@@ -71,7 +71,15 @@ urlpatterns = [
     url(r'^layanan/siup/legalitasperusahaan/save/$', siup_view.siup_legalitas_perusahaan_save_cookie, name='siup_legalitas_perusahaan_save'),
     url(r'^layanan/siup/kekayaan/save/$', siup_view.siup_kekayaan_save_cookie, name='siup_kekayaan_save'),
     url(r'^layanan/siup/upload/save/$', siup_view.siup_upload_dokumen_cookie, name='siup_upload_dokumen'),
-    url(r'^layanan/siup/upload_npwp_perusahaan/save/$', siup_view.siup_upload_berkas_npwp_perusahaan, name='siup_upload_npwp_perusahaan'),
+    # url upload siup
+    url(r'^layanan/siup/upload-berkas-foto-pemohon/save/$', siup_view.siup_upload_berkas_foto_pemohon, name='siup_upload_berkas_foto_pemohon'),
+    url(r'^layanan/siup/upload-berkas-ktp-pemohon/save/$', siup_view.siup_upload_berkas_ktp_pemohon, name='siup_upload_berkas_ktp_pemohon'),
+    url(r'^layanan/siup/upload-berkas-npwp-pribadi/save/$', siup_view.siup_upload_berkas_npwp_pribadi, name='siup_upload_berkas_npwp_pribadi'),
+    url(r'^layanan/siup/upload-berkas-npwp-perusahaan/save/$', siup_view.siup_upload_berkas_npwp_perusahaan, name='siup_upload_berkas_npwp_perusahaan'),
+    url(r'^layanan/siup/upload-berkas-akta-pendirian/save/$', siup_view.siup_upload_berkas_akta_pendirian, name='siup_upload_berkas_akta_pendirian'),
+    url(r'^layanan/siup/upload-berkas-akta-perubahan/save/$', siup_view.siup_upload_berkas_akta_perubahan, name='siup_upload_berkas_akta_perubahan'),
+    url(r'^layanan/siup/upload-berkas-pendukung/save/$', siup_view.siup_upload_berkas_pendukung, name='siup_upload_berkas_pendukung'),
+    # end url upload siup
     url(r'^layanan/siup/save/$', siup_view.siup_done , name='siup_done'),
     # End
     ]
