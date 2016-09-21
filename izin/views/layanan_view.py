@@ -162,7 +162,7 @@ def layanan_kekayaan(request, extra_context={}):
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Pemakaian Kekayaan Daerah"})
 	extra_context.update({'title_short': "Izin Pemakaian Kekayaan Daerah"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_kekayaan") })
 	extra_context.update({'id_jenis_izin': "5" })
 	extra_context.update({'id_kelompok_jenis_izin': "16" })
 	return render(request, "front-end/layanan/kekayaan.html", extra_context)

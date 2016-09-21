@@ -122,7 +122,6 @@ def formulir_huller(request, extra_context={}):
 		return HttpResponseRedirect(reverse('layanan'))
 	return render(request, "front-end/formulir/huller.html", extra_context)
 
-
 def formulir_reklame(request, extra_context={}):
 	negara = Negara.objects.all()
 	extra_context.update({'negara': negara})
@@ -141,7 +140,27 @@ def formulir_reklame(request, extra_context={}):
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 	else:
 		return HttpResponseRedirect(reverse('layanan'))
-	return render(request, "front-end/formulir/reklame.html", extra_context)
+	return render(request, "front-end/formulir/reklamee.html", extra_context)
+
+def formulir_kekayaan(request, extra_context={}):
+	negara = Negara.objects.all()
+	extra_context.update({'negara': negara})
+	provinsi = Provinsi.objects.all()
+	extra_context.update({'provinsi': provinsi})
+	kabupaten = Kabupaten.objects.all()
+	extra_context.update({'kabupaten': kabupaten})
+	kecamatan = Kecamatan.objects.all()
+	extra_context.update({'kecamatan': kecamatan})
+	desa = Desa.objects.all()
+	extra_context.update({'desa': desa})
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/kekayaan.html", extra_context)
 
 def formulir_tdp_pt(request, extra_context={}):
 	negara = Negara.objects.all()
@@ -312,7 +331,7 @@ def cetak_reklame(request, extra_context={}):
 	return render(request, "front-end/include/formulir_reklame/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_reklame(request, extra_context={}):
-	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="Relk")
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_reklame/cetak_bukti_pendaftaran.html", extra_context)
 
@@ -330,4 +349,12 @@ def cetak_huller(request, extra_context={}):
 def cetak_bukti_pendaftaran_huller(request, extra_context={}):
 	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HULLER") #cetak bukti blm ada
 	extra_context.update({'syarat': syarat})
-	return render(request, "front-end/include/formulir_ho_baru/cetak_bukti_pendaftaran.html", extra_context)
+	return render(request, "front-end/include/formulir_huller/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_kekayaan(request, extra_context={}):
+	return render(request, "front-end/include/formulir_kekayaan/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_kekayaan(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="5") #cetak bukti blm ada
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_kekayaan/cetak_bukti_pendaftaran.html", extra_context)
