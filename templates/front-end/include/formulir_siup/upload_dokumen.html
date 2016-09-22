@@ -1,74 +1,132 @@
-<form method="POST" name="step5" role="form" class="form-horizontal" {% if user.is_authenticated %} action="{% url 'siup_upload_dokumen' %}" {% else %} action="#" {% endif %}>
+<form method="POST" name="step5" enctype="multipart/form-data" id="myForm_upload">
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14" style="height:2px">
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Foto</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File KTP/Paspor (Dirut/pemilik/pengurus/penanggungjawab)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File NPWP Pribadi</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File NPWP Perusahaan</label>
-    <div class="col-sm-5">
-      <input type="file" id="npwp_perusahaan" name="file_npwp_perusahaan" class="filestyle npwp_perusahaan" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10 start_upload_npwp_perusahaan"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Akta Pendirian</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
 </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_foto" action="{% url 'siup_upload_berkas_foto_pemohon' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left"><strong>File Foto</strong></label>
+      <div class="col-sm-5">
+        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_foto"></div >
+          <div class="percent" id="percent_berkas_foto">0%</div>
+        </div> -->
+      </div>
+      <div class="col-sm-4">
+        <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_foto" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_ktp" action="{% url 'siup_upload_berkas_ktp_pemohon' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left"><strong>File KTP/Paspor</strong></label>
+      <div class="col-sm-5">
+        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_ktp"></div >
+          <div class="percent" id="percent_berkas_ktp">0%</div>
+        </div> -->
+        <label class="help-text">(Dirut/pemilik/pengurus/penanggungjawab)</label>
+      </div>
+      <div class="col-sm-4">
+        <button id="btn_berkas_ktp" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_ktp" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_npwp_pribadi" action="{% url 'siup_upload_berkas_npwp_pribadi' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left"><strong>File NPWP Pribadi</strong></label>
+      <div class="col-sm-5">
+        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_npwp_pribadi"></div >
+          <div class="percent" id="percent_berkas_npwp_pribadi">0%</div>
+        </div> -->
+      </div>
+      <div class="col-sm-4">
+        <button id="btn_berkas_npwp_pribadi" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_npwp_pribadi" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_npwp_perusahaan" action="{% url 'siup_upload_berkas_npwp_perusahaan' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+    <div class="form-group" id="berkas">
+      <label class="col-sm-3 control-label text-left"><strong>File NPWP Perusahaan</strong></label>
+      <div class="col-sm-5">
+        <input type="file" name="berkas" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_npwp_perusahaan"></div >
+          <div class="percent" id="percent_berkas_npwp_perusahaan">0%</div>
+        </div> -->
+      </div>
+      <div class="col-sm-4">
+        <button id="button_berkas_npwp_perusahaan" type="submit" class="btn btn-success mb-10 start_upload_npwp_perusahaan"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_akta_pendirian" action="{% url 'siup_upload_berkas_akta_pendirian' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left"><strong>File Akta Pendirian</strong></label>
+      <div class="col-sm-5">
+        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_akta_pendirian"></div >
+          <div class="percent" id="percent_berkas_akta_pendirian">0%</div>
+        </div> -->
+      </div>
+      <div class="col-sm-4">
+        <button id="btn_berkas_akta_pendirian" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_akta_pendirian" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_akta_perubahan" action="{% url 'siup_upload_berkas_akta_perubahan' %}">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
+      <div class="col-sm-5">
+        <input name="berkas" type="file" class="filestyle akta_perubahan_disable" data-buttonText="Browse" data-iconName="fa fa-inbox">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_akta_perubahan"></div>
+          <div class="percent" id="percent_berkas_akta_perubahan">0%</div>
+        </div> -->
+      </div>
+      <div class="col-sm-4">
+        <button id="btn_berkas_akta_perubahan" type="submit" class="btn btn-success mb-10 akta_perubahan_disable"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_akta_perubahan" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_pendukung" action="{% url 'siup_upload_berkas_pendukung' %}">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
+      <div class="col-sm-5">
+        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
+        <!-- <div class="progress">
+          <div class="bar" id="bar_berkas_pendukung"></div >
+          <div class="percent" id="percent_berkas_pendukung">0%</div>
+        </div> -->
+      </div>
+      <div class="col-sm-4">
+        <button id="btn_berkas_pendukung" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent_berkas_pendukung" type="button" class="btn btn-success btn-border mb-10">0%</a>
+      </div>
+    </div>
+  </form>

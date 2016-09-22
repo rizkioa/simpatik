@@ -29,8 +29,8 @@
 {% endblock %}
 
 {% block pageheader %}
-  <h2>Surat Izin Gangguan (HO)
-      <span>Berikut adalah info pendaftaran perizinan HO Kabupaten Kediri.</span>
+  <h2>Surat Izin Pemasangan Reklame
+      <span>Berikut adalah info pendaftaran perizinan SIUP Kabupaten Kediri.</span>
     </h2>
     <div class="page-bar">
       <ul class="page-breadcrumb">
@@ -41,10 +41,10 @@
           <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
         </li>
         <li>
-          <a href="#"> HO</a>
+          <a href="#"> Reklame</a>
         </li>
         <li>
-          <a href="#">Formulir HO</a>
+          <a href="#">Formulir Reklame</a>
         </li>
       </ul>
     </div>
@@ -54,7 +54,7 @@
   <ul class="nav nav-tabs nav-justified">
     <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
     <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Kegiatan Gangguan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Reklame</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
     <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
     <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
   </ul>
@@ -68,22 +68,22 @@
 
   <div class="tab-pane" id="tab2">
     <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_ho_baru/identitas_perusahaan.html' %}
+    {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
   </div>
 
   <div class="tab-pane" id="tab3">
-    <!-- Data Kegiatan Gangguan -->
-    {% include 'front-end/include/formulir_ho_baru/data_kegiatan_gangguan.html' %}
+    <!-- Data reklame -->
+    {% include 'front-end/include/formulir_siup/data_siup.html' %}
   </div>
 
   <div class="tab-pane" id="tab4">
-    <!-- Upload Dokumen -->
-    {% include 'front-end/include/formulir_ho_baru/upload_dokumen.html' %}
+    <!-- Dokumen upload -->
+    {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
   </div>
 
   <div class="tab-pane" id="tab5">
     <!-- Konfirmasi -->
-    {% include 'front-end/include/formulir_ho_baru/konfirmasi.html' %}
+    {% include 'front-end/include/formulir_siup/upload_dokumen.html' %}
   </div>
 {% endblock %}
 
@@ -412,6 +412,38 @@
     //       elem_.removeAttr('disabled')
     //       elem_.trigger("chosen:updated");
     // }
+
+    function form_akta_perubahan_make_disabled(){
+      make_disabled($('#akta_pengesahan'), true)
+      make_disabled($('#nama_notaris_akta_perubahan'), true)
+      make_disabled($('#alamat_notaris'), true)
+      make_disabled($('#telp_notaris'), true)
+      make_disabled($('#no_akta_notaris'), true)
+      make_disabled($('#tanggal_akta_akta_perubahan'), true)
+      make_disabled($('#no_pengesahan'), true)
+      make_disabled($('#tanggal_pengesahan'), true)
+    }
+
+    form_akta_perubahan_make_disabled();
+
+    function form_akta_perubahan_make_enabled(){
+      make_disabled($('#akta_pengesahan'), false)
+      make_disabled($('#nama_notaris_akta_perubahan'), false)
+      make_disabled($('#alamat_notaris'), false)
+      make_disabled($('#telp_notaris'), false)
+      make_disabled($('#no_akta_notaris'), false)
+      make_disabled($('#tanggal_akta_akta_perubahan'), false)
+      make_disabled($('#no_pengesahan'), false)
+      make_disabled($('#tanggal_pengesahan'), false)
+    }
+
+    $("#switch_akta_perubahan").change(function(){
+      if($(this).is(':checked')){
+        form_akta_perubahan_make_enabled();
+      }else{
+        form_akta_perubahan_make_disabled();
+      }
+    })
 
     function form_pemohon_kuasa_make_disabled(){
       make_disabled($('#nama_kuasa'), true)

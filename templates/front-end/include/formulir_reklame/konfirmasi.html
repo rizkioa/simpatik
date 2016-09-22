@@ -2,7 +2,7 @@
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
-  <table width="100%" border="0">
+  table width="100%" border="0">
     <tr>
       <td width="25%">Jenis Pengajuan</td>
       <td width="5%">:</td>
@@ -106,54 +106,46 @@
   
   
   <br>
-  <h4><u>#3. Data Kegiata Gangguan</u></h4>
+  <h4><u>#3. Informasi Kekayaan Daerah</u></h4>
+  <h5><u>Pemilik</u></h5>
   <table width="100%" border="0">
     <tr>
-      <td width="25%">Rencana Perkiraan Modal</td>
+      <td width="25%">Jenis Reklame</td>
       <td width="5%">:</td>
-      <td width="70%">Rp. ___</td>
+      <td width="70%">___________</td>
     </tr>
     <tr>
-      <td width="25%">Tujuan Gangguan</td>
+      <td width="25%">Nama / Judul Reklame</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%">___________</td>
     </tr>
     <tr>
-      <td width="25%">Tujuan Gangguan</td>
+      <td width="25%">Ukuran, Panjang x Ukuran x Muka/Sisi</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%">___________</td>
     </tr>
     <tr>
-      <td width="25%"><h5><u>Lokasi</u></h5></td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="25%">Jumlah</td>
+      <td width="5%">:</td>
+      <td width="70%">_____</td>
     </tr>
     <tr>
-      <td width="25%">Alamat</td>
+      <td width="25%">Waktu / Lama Pemasangan</td>
       <td width="5%">:</td>
-      <td width="70%">Jl</td>
+      <td width="70%">_____</td>
     </tr>
     <tr>
-      <td width="25%">Desa / Kelurahan</td>
+      <td width="25%">Letak Pemasangan</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
-    </tr>
-    <tr>
-      <td width="25%">Kecamatan</td>
-      <td width="5%">:</td>
-      <td width="70%">-</td>
-    </tr>
-    <tr>
-      <td width="25%">Kabupaten / Kota</td>
-      <td width="5%">:</td>
-      <td width="70%">Kab. Kediri</td>
+      <td width="70%">_____</td>
     </tr>
   </table>
+
   <br>
-  <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN</u></h4>
-  <table class="table table-bordered">
+  <h4><u>#4. Upload Dokumen Persyaratan</u></h4>
+    <table class="table table-bordered">
       <thead>
-        <tr >
+        <tr align="center">
           <th>Dokumen Persyaratan</th>
           <th>Telah Terupload</th>
         </tr>
@@ -161,7 +153,7 @@
       <tbody>
         <tr align="center">
           <td>
-            Pernyataan persetujuan lingkungan dan Pakta Integritas
+           Gambar Kontruksi Pemasangan Reklame
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -171,7 +163,7 @@
         </tr>
         <tr align="center">
           <td>
-            Izin Mendirikan Bangunan(IMB) sesuai peruntukan
+            Gambar Foto Lokasi Pemasangan Reklame
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -181,8 +173,7 @@
         </tr>
         <tr align="center">
           <td>
-            Surat Izin Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah
-            (Sertifikat / Akte Jual Beli / Petok D / Surat Keterangan Status Tanah)
+            Gambar Denah Lokasi Pemasangan Rekalame
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -192,8 +183,7 @@
         </tr>
         <tr align="center">
           <td>
-            Rencana Teknis Bangunan Gedung
-            (Denah Bangunan & Site Plan & Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang mebidangi
+            Surat Ketetapan Pajak Daerah (SKPD)
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -203,7 +193,7 @@
         </tr>
         <tr align="center">
           <td>
-            KTP / Paspor
+            Surat Setoran Pajak Daerah (SSPD)
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -213,31 +203,31 @@
         </tr>
         <tr align="center">
           <td>
-            NPWP Pribadi
+            Rekomendasi dari Kanto SATPOL PP
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" checked="" disabled><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            NPWP Perusahaan
+            Berita Acara Perusahaan(BAP) Tim Perizinan
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" checked="" disabled><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-           Surat Kuasa bagi yang Mewakili Perusahaan / Badan Hukum
+            Surat Perjanjian Kesepakatan dengan pemilik rumah, tembok, pagar atau perkarangan bagi reklame tempel/melekat
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" checked="" disabled><i></i>
             </label>
           </td>
         </tr>

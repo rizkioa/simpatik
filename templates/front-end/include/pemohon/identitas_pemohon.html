@@ -104,7 +104,6 @@
     <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
     <div class="col-sm-5">
       <select class="form-control chosen-select mb-10" name="desa" id="id_desa" required="" data-parsley-trigger="change">
-
       </select>
     </div>
   </div>
@@ -142,9 +141,9 @@
     <div class="col-sm-4">
       <select class="form-control chosen-select mb-10" name="pekerjaan" required="" data-parsley-trigger="change">
         <option value>-- Pilih Pekerjaan --</option>
-        <option>PNS</option>
-        <option>Swasta</option>
-        <option>Wiraswasta</option>
+        <option value="PNS">PNS</option>
+        <option value="Swasta">Swasta</option>
+        <option class="Wiraswasta">Wiraswasta</option>
       </select>
     </div>
   </div>
@@ -153,8 +152,8 @@
     <h4 class="custom-font col-sm-3"><strong>Apakah anda kuasa penanggungjawab ?</strong></h4> 
     <div class="col-sm-9" style="padding-bottom: 10px; padding-top: 8px;">
       <div class="onoffswitch labeled greensea inline-block">
-        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_pemohon" >
-        <label class="onoffswitch-label" for="switch_pemohon">
+        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switch_pemohon_disabled" id="switch_pemohon_disabled" >
+        <label class="onoffswitch-label" for="switch_pemohon_disabled">
             <span class="onoffswitch-inner"></span>
             <span class="onoffswitch-switch"></span>
         </label>
@@ -163,25 +162,26 @@
   </div>
 
   <div class="form-group">
-    <label class="col-sm-2 control-label"><strong>Nama</strong></label>
+    <label class="col-sm-2 control-label"><strong>Nama Kuasa</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" name="nama" id="nama_kuasa">
+      <input type="text" class="form-control kuasa_disable" name="nama_kuasa">
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-sm-2 control-label"><strong>Nomor Identitas</strong></label>
+    <label class="col-sm-2 control-label"><strong>Nomor Identitas Kuasa</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" name="nama" id="no_identitas_kuasa">
+      <input type="text" class="form-control kuasa_disable" name="no_identitas_kuasa">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Telp Kuasa</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" name="nama" id="telp_kuasa">
+      <input type="text" class="form-control kuasa_disable" name="telephone_kuasa">
     </div>
   </div>
+  <input type="hidden" name="status" value="2">
 </form>
 
 

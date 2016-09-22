@@ -1,0 +1,109 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}">
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>DATA REKLAME</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Reklame</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Jenis Reklame --</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Judul Reklame</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" required="" name="alamat" placeholder=""></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Ukuran Reklame</label>
+      <label for="input01" class="col-sm-2 control-label">Panjang</label>
+      <div class="col-sm-2">
+        <input type="text" required="" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">&nbsp</label>
+      <label for="input01" class="col-sm-2 control-label">Lebar</label>
+      <div class="col-sm-2">
+        <input type="text" required="" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">&nbsp</label>
+      <label for="input01" class="col-sm-2 control-label">Sisi</label>
+      <div class="col-sm-2">
+        <input type="text" required="" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Lama Pemasangan</label>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <input type="text" required="" class="form-control">
+          <span class="input-group-addon">
+            <span>Hari</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Letak Reklame</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" name="alamat" required="" placeholder="isi alamat pemasangan letak reklame"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kota/Kabupaten --</option>
+          {% if kabupaten %}
+          {% for k in kabupaten %}
+          <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kecamatan</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kecamatan --</option>
+          {% if kecamatan %}
+          {% for k in kecamatan %}
+          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kelurahan/Desa --</option>
+          {% if desa %}
+          {% for d in desa %}
+          <option value="{{ d.id }}">{{ d.nama_desa }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+    
+</form>

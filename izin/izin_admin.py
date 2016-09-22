@@ -50,11 +50,11 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def button_cetak_pendaftaran(self, obj):
 		btn = mark_safe("""
-			<a href="%s" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
-			""" % reverse('cetak_bukti_pendaftaran'))
+			<a href="%s" target="_blank" class="btn btn-success btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
+			""" % reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id}))
 			# reverse('admin:print_out_pendaftaran', kwargs={'id_pengajuan_izin_': obj.id})
 		return btn
-	button_cetak_pendaftaran.short_description = "Cetak Pendafaran"
+	button_cetak_pendaftaran.short_description = "Aksi"
 
 	def pendaftaran_selesai(self, request, id_pengajuan_izin_):
 		extra_context = {}
@@ -96,6 +96,30 @@ class IzinAdmin(admin.ModelAdmin):
 
 		# template = loader.get_template("admin/izin/izin/add_wizard.html")
 		template = loader.get_template("admin/izin/izin/cetak_bukti_pendaftaran.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
+	def view_pengajuan_siup(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
+			extra_context.update({'pemohon': pengajuan_.pemohon})
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
+			alamat_ = ""
+			if pengajuan_.pemohon.desa:
+				alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+			extra_context.update({'alamat_pemohon': alamat_})
+			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'created_at': pengajuan_.created_at})
+
+			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
+			extra_context.update({'syarat': syarat_})
+
+		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_siup.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
@@ -157,6 +181,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/siup/$', self.admin_site.admin_view(formulir_siup), name='izin_proses_siup'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
+			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
 			)
 		return my_urls + urls
 

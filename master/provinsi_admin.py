@@ -37,7 +37,6 @@ class ProvinsiAdmin(admin.ModelAdmin):
 		urls = super(ProvinsiAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^json/$', self.admin_site.admin_view(self.json_provinsi), name='json_provinsi'),
-			url(r'^option/$', self.admin_site.admin_view(self.option_provinsi), name='option_provinsi'),
-			url(r'^option-front/$', self.option_provinsi, name='option_provinsi_front'),
+			url(r'^option/$', self.option_provinsi, name='option_provinsi'),
 			)
 		return my_urls + urls

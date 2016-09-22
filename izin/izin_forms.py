@@ -1,7 +1,7 @@
 from django import forms
 from izin.utils import JENIS_IZIN
 from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
 
@@ -22,8 +22,6 @@ class PengajuanBaruForm(forms.Form):
 				self.fields['kelompok_jenis_izin'].queryset = KelompokJenisIzin.objects.filter(jenis_izin__id=nama_izin)
 
 
-
-
 class PemohonForm(forms.ModelForm):
 	"""docstring for PemohonForm"""
 
@@ -35,7 +33,7 @@ class PemohonForm(forms.ModelForm):
 
 	class Meta:
 		model = Pemohon
-		fields = ('jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan')
+		fields = ('jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None
@@ -62,7 +60,57 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 		model = Legalitas
 		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
 
-class AktaPerusahaanForm(forms.ModelForm):
-	"""docstring for AktaPerusahaanForm"""
-	pass
+from django.conf import settings
 
+class LegalitasPerusahaanPerubahanForm(forms.Form):
+	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""
+	nama_notaris_perubahan = forms.CharField(initial='nama_notaris_perubahan')
+	alamat_notaris_perubahan = forms.CharField(initial='alamat_notaris_perubahan')
+	telephone_notaris_perubahan = forms.CharField(initial='telephone_notaris_perubahan')
+	# nomor_akta_perubahan = forms.CharField(initial='nomor_akta_perubahan')
+	# tanggal_akta_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
+	nomor_pengesahan_perubahan = forms.CharField(initial='nomor_pengesahan_perubahan')
+	tanggal_pengesahan_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
+
+
+class UploadBerkasFotoForm(forms.ModelForm):
+	"""docstring for UploadBerkasFotoForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasKTPForm(forms.ModelForm):
+	"""docstring for UploadBerkasKTPForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasNPWPPribadiForm(forms.ModelForm):
+	"""docstring for UploadBerkasNPWPPribadiForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasNPWPPerusahaanForm(forms.ModelForm):
+	"""docstring for UploadBerkasNPWPPerusahaanForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasAktaPendirianForm(forms.ModelForm):
+	"""docstring for UploadBerkasAktaPendirianForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasAktaPerubahanForm(forms.ModelForm):
+	"""docstring for UploadBerkasAktaPerubahanForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+		
+class UploadBerkasPendukungForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
