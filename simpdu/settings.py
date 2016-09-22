@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'simpdu.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'simpatik',
+        'NAME': 'simpdu',
         'USER':'simpatik',
         'PASSWORD':'!QAZ@WSX',
         'PORT': '3306',
