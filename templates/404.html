@@ -4,13 +4,349 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>404 Caveman</title>
+    <title>404</title>
     <meta name="author" content="name" />
     <meta name="keywords" content="404, css3, html5, template" />
     <meta name="description" content="404template" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link type="text/css" media="all" href="{% static 'styles/css/vendor/bootstrap.min.css' %}" rel="stylesheet" />
-    <link type="text/css" media="all" href="{% static 'error/assets/css/style.css' %}" rel="stylesheet" />
+    <style type="text/css">
+      * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      }
+
+      body {
+        background-color: #FEFEFE;
+        color: #262524;
+        font-weight: 400;
+        font-size: 24px;
+        text-align: center;
+      }
+
+      h1, h2 {
+        text-transform: uppercase;
+        margin: 6px 0;
+      }
+
+      p {
+        margin: 6px 0;
+      }
+
+      h1 {
+        font-weight: 900;
+        font-size: 150px;
+        color: #EA6D28;
+        line-height: 150px;
+      }
+
+      h2 {
+        font-weight: 600;
+        font-size: 60px;
+        line-height: 60px;
+      }
+
+      section {
+        margin-bottom: 60px;
+      }
+
+      /* Button */
+      .btn-action {
+        background-color: #EA6D28;
+        color: #FEFEFE !important;
+        text-transform: uppercase;
+        font-size: 24px;
+        padding: 20px 60px;
+      }
+
+      .btn-action:hover {
+        background-color: #CE5C24;
+      }
+
+      /* Illustration */
+      .illustration {
+        background-size: 100%;
+        position: relative;
+        width: 476px;
+        height: 409px;
+        display: inline-block;
+      }
+      .illustration .laptop {
+        background: url({% static 'error/img/laptop.png' %}) no-repeat;
+        background-size: 100%;
+        position: absolute;
+        width: 289px;
+        height: 344px;
+        bottom: 0;
+      }
+      .illustration .caveman {
+        background: url({% static 'error/img/caveman.png' %}) no-repeat;
+        background-size: 100%;
+        z-index: 2;
+        position: absolute;
+        width: 167px;
+        height: 409px;
+        bottom: 0;
+        right: 0;
+      }
+      .illustration .hand {
+        background: url({% static 'error/img/hand.png' %}) no-repeat;
+        background-size: 100%;
+        z-index: 1;
+        position: absolute;
+        width: 180px;
+        height: 60px;
+        top: 115px;
+        left: 190px;
+        -moz-animation: 1s ease 0s normal none infinite hand;
+        -moz-transform-origin: right top;
+        -webkit-animation: hand 1s infinite ease-in-out;
+        -webkit-transform-origin: right top;
+        -o-animation: 1s ease 0s normal none infinite hand;
+        -o-transform-origin: right top;
+        -o-animation: hand 1s infinite ease-in-out;
+        -o-transform-origin: right top;
+        -ms-animation: 1s ease 0s normal none infinite hand;
+        -ms-transform-origin: right top;
+        -ms-animation: hand 1s infinite ease-in-out;
+        -ms-transform-origin: right top;
+        animation: 1s ease 0s normal none infinite hand;
+        transform-origin: right top;
+        animation: hand 1s infinite ease-in-out;
+        transform-origin: right top;
+      }
+
+      @-moz-keyframes hand {
+        0% {
+          -moz-transform: rotate(-2deg);
+        }
+        50% {
+          -moz-transform: rotate(45deg);
+        }
+        100% {
+          -moz-transform: rotate(-2deg);
+        }
+      }
+      @-webkit-keyframes hand {
+        0% {
+          -webkit-transform: rotate(-2deg);
+        }
+        50% {
+          -webkit-transform: rotate(45deg);
+        }
+        100% {
+          -webkit-transform: rotate(-2deg);
+        }
+      }
+      @-o-keyframes hand {
+        0% {
+          -o-transform: rotate(-2deg);
+        }
+        50% {
+          -o-transform: rotate(45deg);
+        }
+        100% {
+          -o-transform: rotate(-2deg);
+        }
+      }
+      @-ms-keyframes hand {
+        0% {
+          -ms-transform: rotate(-2deg);
+        }
+        50% {
+          -ms-transform: rotate(45deg);
+        }
+        100% {
+          -ms-transform: rotate(-2deg);
+        }
+      }
+      @keyframes hand {
+        0% {
+          transform: rotate(-2deg);
+        }
+        50% {
+          transform: rotate(45deg);
+        }
+        100% {
+          transform: rotate(-2deg);
+        }
+      }
+
+      /* max-width: 1920px */
+      @media (max-width: 1920px) {
+        body {
+          font-size: 19.2px;
+        }
+
+        h1, h2, p {
+          margin: 4.8px;
+        }
+
+        h1 {
+          font-size: 120px;
+          line-height: 120px;
+        }
+
+        h2 {
+          font-size: 48px;
+          line-height: 48px;
+        }
+
+        .btn-action {
+          padding: 16px 48px;
+          font-size: 19.2px;
+        }
+
+        section {
+          margin-bottom: 48px;
+        }
+
+        .illustration {
+          width: 380.8px;
+          height: 327.2px;
+        }
+        .illustration .laptop {
+          width: 231.2px;
+          height: 275.2px;
+        }
+        .illustration .caveman {
+          width: 133.6px;
+          height: 327.2px;
+        }
+        .illustration .hand {
+          width: 144px;
+          height: 48px;
+          top: 92px;
+          left: 152px;
+        }
+      }
+      /* max-width: 1366px */
+      @media (max-width: 1440px) {
+        body {
+          font-size: 14.4px;
+        }
+
+        h1, h2, p {
+          margin: 3.6px;
+        }
+
+        h1 {
+          font-size: 90px;
+          line-height: 90px;
+        }
+
+        h2 {
+          font-size: 36px;
+          line-height: 36px;
+        }
+
+        .btn-action {
+          padding: 16px 36px;
+          font-size: 14.4px;
+        }
+
+        section {
+          margin-bottom: 36px;
+        }
+
+        .illustration {
+          width: 285.6px;
+          height: 245.4px;
+        }
+        .illustration .laptop {
+          width: 173.4px;
+          height: 206.4px;
+        }
+        .illustration .caveman {
+          width: 100.2px;
+          height: 245.4px;
+        }
+        .illustration .hand {
+          width: 108px;
+          height: 36px;
+          top: 69px;
+          left: 114px;
+        }
+      }
+      /* max-width: 768px */
+      @media (max-width: 768px) {
+        body {
+          font-size: 12px;
+        }
+
+        h1, h2, p {
+          margin: 3px;
+        }
+
+        h1 {
+          font-size: 75px;
+          line-height: 75px;
+        }
+
+        h2 {
+          font-size: 30px;
+          line-height: 30px;
+        }
+
+        .btn-action {
+          padding: 16px 30px;
+          font-size: 12px;
+        }
+
+        section {
+          margin-bottom: 30px;
+        }
+
+        .illustration {
+          width: 238px;
+          height: 204.5px;
+        }
+        .illustration .laptop {
+          width: 144.5px;
+          height: 172px;
+        }
+        .illustration .caveman {
+          width: 83.5px;
+          height: 204.5px;
+        }
+        .illustration .hand {
+          width: 90px;
+          height: 30px;
+          top: 57.5px;
+          left: 95px;
+        }
+      }
+      /* max-width: 468px */
+      @media (max-width: 468px) {
+        .btn-action {
+          padding: 16px 24px;
+          font-size: 9.6px;
+        }
+
+        section {
+          margin-bottom: 24px;
+        }
+
+        .illustration {
+          width: 190.4px;
+          height: 163.6px;
+        }
+        .illustration .laptop {
+          width: 115.6px;
+          height: 137.6px;
+        }
+        .illustration .caveman {
+          width: 66.8px;
+          height: 163.6px;
+        }
+        .illustration .hand {
+          width: 72px;
+          height: 24px;
+          top: 46px;
+          left: 76px;
+        }
+      }
+
+    </style>
     <link type="text/css" media="all" href="{% static 'styles/css/vendor/responsive.css' %}" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300italic,800italic,800,700italic,700,600italic,600,400italic,300' rel='stylesheet' type='text/css' />
     <link rel="shortcut icon" href="{% static 'images/SIMPATIK.ico' %}" />
@@ -44,7 +380,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-12">
-            <a href="#"><div class="btn btn-action">Take me out of here</div></a>
+            <a href="{% url 'frontindex' %}"><div class="btn btn-action">Take me out of here</div></a>
           </div>
         </div>
       </div>
@@ -53,7 +389,7 @@
       <div class="container">
         <div class="row">
           <div class="col-sm-12">
-            <p>Copyright (c) 2016 <strong>Copyright Holder</strong> All Rights Reserved.</p>
+            <p>Copyright (c) 2016 <strong>Copyright Febri Ahmad Nuhidayat</strong> All Rights Reserved.</p>
           </div>
         </div>
       </div>

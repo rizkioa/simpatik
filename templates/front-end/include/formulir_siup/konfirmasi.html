@@ -1,8 +1,10 @@
 
 <form method="POST" name="step6" role="form" {% if user.is_authenticated %} action="{% url 'cetak_permohonan' %}" {% else %} action="#" {% endif %} data-parsley-validate novalidate>
   {% csrf_token %}
+  
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
+  
   <table width="100%" border="0">
     <tr>
       <td width="25%">Jenis Pengajuan</td>
@@ -73,11 +75,6 @@
       <td width="70%"><span id='nama_perusahaan_konfirmasi'></span></td>
     </tr>
     <tr>
-      <td width="25%">Bentuk Kegiatan Usaha</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='bentuk_kegiatan_usaha_konfirmasi'></span></td>
-    </tr>
-    <tr>
       <td width="25%">Alamat Perusahaan</td>
       <td width="5%">:</td>
       <td width="70%"><span id='alamat_perusahaan_konfirmasi'></span></td>
@@ -102,45 +99,73 @@
       <td width="5%">:</td>
       <td width="70%"><span id='email_konfirmasi'></span></td>
     </tr>
+  </table>
+  <br>
+  <h4><u>#3. DATA SIUP</u></h4>
+  <table width="100%" border="0">
     <tr>
-      <td width="25%">Status Penanaman Modal</td>
+      <td width="25%">Bentuk Kegiatan Usaha</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='jenis_penanaman_modal_konfirmasi'></span></td>
+      <td width="70%"></td>
     </tr>
     <tr>
-      <td width="25%">Jenis Badan Usaha</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id=''></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Status Perusahaan</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id=''></span></td>
-    </tr>
-    <tr>
-      <td width="25%">KBLI</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='kbli_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Kegiatan Usaha</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='jbentuk_kegiatan_usaha_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Barang/jasa dagang utama</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='produk_utama_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Bentuk Kerjasama</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+      <td>Status Penanaman Modal</td>
+      <td>:</td>
+      <td></td>
     </tr>
   </table>
-  
+  <h5><u>Kekayaan Bersih dan Saham</u></h5>
+  <table width="100%" border="0">
+    <tr>
+      <td width="40%">Kekayaan Bersih Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="55%"></td>
+    </tr>
+    <tr>
+      <td colspan="3">(tidak termasuk tanah dan bengunan temoat usaha)</td>
+    </tr>
+    <tr>
+      <td colspan="3">Saham (Khusus Untuk Penanaman Modal Asing):</td>
+    </tr>
+    <tr>
+      <td><p style="text-indent: 30px;">a. Total Nilai Saham</p></td>
+      <td>:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="3"><p style="text-indent: 30px;">b. Komposisi Kepemilikan Saham:</p></td>
+    </tr>
+    <tr>
+      <td><p style="text-indent: 60px;">Dalam Negeri</p></td>
+      <td>:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td><p style="text-indent: 60px;">Asing</p></td>
+      <td>:</td>
+      <td></td>
+    </tr>
+  </table>
+  <h5><u>Kegiatan Usaha</u></h5>
+  <table class="font" width="100%">
+      <tr>
+          <td width="25%">Kelembagaan</td>
+          <td width="5%">:</td>
+          <td width="70%">Perdagangan Kecil</td>
+      </tr>
+      <tr>
+          <td width="25%">KBLI</td>
+          <td width="5%">:</td>
+          <td width="70%">12345</td>
+      </tr>
+      <tr>
+          <td width="25%">Barang/jasa dagang utama</td>
+          <td width="5%">:</td>
+          <td width="70%">Peralatan pertanian, Bibit</td>
+      </tr>
+  </table>
   <br>
-  <h4><u>#3. LEGALITAS PERUSAHAAN</u></h4>
+  <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
   <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -170,46 +195,6 @@
     </table>
   </div>
   <br>
-  <h4><u>#4. KEKAYAAN BERSIH DAN SAHAM</u></h4>
-  <table class="font" width="100%">
-    <tr>
-      <td width="40%">Kekayaan Bersih Perusahaan</td>
-      <td width="10%">:</td>
-      <td width="50%">Rp. <span id='jenis_pemohon_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="40%">(tidak termasuk tanah dan bangunan tempat usaha)</td>
-      <td width="10%">:</td>
-      <td width="60%"></td>
-    </tr>
-    <tr>
-      <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
-      <td width="5%"></td>
-      <td width="65%"><span id='jenis_pemohon_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="30%">a. Total Nilai Saham</td>
-      <td width="10%">:</td>
-      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="30%">b. Komposisi Kepemilikan Saham</td>
-      <td width="10%"></td>
-      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="30%" style="padding-left: 10%;">Dalam</td>
-      <td width="10%">:</td>
-      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="30%" style="padding-left: 10%;">Asing</td>
-      <td width="10%">:</td>
-      <td width="60%"><span id='jenis_pemohon_konfirmasi'></span></td>
-    </tr>
-  </table>
-  
-  <br>
   <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>
   <table class="table table-bordered">
       <thead>
@@ -225,7 +210,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox_berkas_foto" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -235,7 +220,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox_berkas_ktp" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -245,7 +230,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox_berkas_npwp_pribadi" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -255,7 +240,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox_berkas_npwp_perusahaan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -265,7 +250,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox_berkas_akta_pendirian" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -275,17 +260,31 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" id="checkbox_berkas_akta_pembaruan" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Pendukung lainnya (jika ada)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox_berkas_pendukung" disabled><i></i>
             </label>
           </td>
         </tr>
       </tbody>
   </table>
   <br>
-  <section class="tile bg-greensea">
-    <div class="tile-body">
-      <label class="checkbox checkbox-custom-alt">
-        <input required="" data-parsley-trigger="change" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
-      </label>
-    </div>
-  </section>
+  <div class="form-group">
+    <section class="tile bg-greensea">
+      <div class="tile-body">
+        <label class="checkbox checkbox-custom-alt">
+          <input required="" data-parsley-trigger="change" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+        </label>
+      </div>
+    </section>
+  </div>
+  <input type="submit" name="">
+</form>
