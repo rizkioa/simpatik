@@ -234,6 +234,7 @@ class PengajuanIzin(AtributTambahan):
 
 class DetilSIUP(PengajuanIzin):
 	# salah satu dari data pemohon
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='siup_perusahaan', blank=True, null=True)
 	berkas_foto = models.ForeignKey(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_siup', blank=True, null=True)
 	# salah satu dari data pemohon
 	berkas_npwp_pemohon = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Pemohon", related_name='berkas_npwp_pemohon_siup', blank=True, null=True)
