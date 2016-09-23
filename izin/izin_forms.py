@@ -59,8 +59,7 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 	class Meta:
 		model = Legalitas
 		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
-		
-from django.conf import settings
+
 class LegalitasPerusahaanPerubahanForm(forms.Form):
 	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""
 	nama_notaris_perubahan = forms.CharField(initial='nama_notaris_perubahan')

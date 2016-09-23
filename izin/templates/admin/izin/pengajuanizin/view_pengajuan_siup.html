@@ -20,12 +20,10 @@
                 <h1 class="custom-font"> {{ title }}</h1>
                 <ul class="controls">
                     <li class="dropdown">
-
                         <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
                             <i class="fa fa-cog"></i>
                             <i class="fa fa-spinner fa-spin"></i>
                         </a>
-
                         <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
                             <li>
                                 <a role="button" tabindex="0" class="tile-toggle">
@@ -230,78 +228,61 @@
 			<div class="tile-header dvd dvd-btm">
                 <h1 class="custom-font" align="center"> Validasi Persyaratan</h1>
                 <ul class="controls">
-                    <li class="dropdown">
-                        <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
-                            <i class="fa fa-cog"></i>
-                            <i class="fa fa-spinner fa-spin"></i>
+                    <li>
+                        <a role="button" tabindex="0" class="tile-toggle">
+                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
+                            <span class="expand"><i class="fa fa-angle-up"></i></span>
                         </a>
-                        <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-                            <li>
-                                <a role="button" tabindex="0" class="tile-toggle">
-                                    <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
-                                    <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a role="button" tabindex="0" class="tile-refresh">
-                                    <i class="fa fa-refresh"></i> Refresh
-                                </a>
-                            </li>
-                            <li>
-                                <a role="button" tabindex="0" class="tile-fullscreen">
-                                    <i class="fa fa-expand"></i> Fullscreen
-                                </a>
-                            </li>
-                        </ul>
                     </li>
-                    <li class="remove"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
                 </ul>
             </div>
-            <div class="tile-body">
-                <table class="table table-bordered">
-			        <thead>
-				        <tr >
-				        	<th>No.</th>
-				          	<th>Dokumen Persyaratan</th>
-				          	<th>Lengkap/Tidak</th>
-				        </tr>
-			        </thead>
-			        <tbody>
-			        	{% if syarat %}
-			        		{% for s in syarat %}
-			        			<tr>
-			        				<td valign="top">{{ forloop.counter }}</td>
-						          	<td>
-						            	{{ s.syarat }}
-						          	</td>
-						          	<td align="center">
-							            <label class="checkbox checkbox-custom-alt">
-							              	<input type="checkbox"><i></i>
-							            </label>
-						          	</td>
-						        </tr>
-			        		{% endfor %}
-			        	{% endif %}
-			        </tbody>
-			    </table>
-			    <br>
-			    <br>
-			    <section class="tile bg-greensea">
-				    <div class="tile-body">
-				      <label class="checkbox checkbox-custom-alt">
-				        <input required="" data-parsley-trigger="change" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan dan setuju bahwa pengajuan bisa diteruskan ke KABID untuk ditindaklanjuti.
-				      </label>
-				    </div>
-			    </section>
-			</div>
-			<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
-				<div class="row">
-					<div class="col-md-12" align="right">
-						<a type="button" class="btn btn-red mb-10">Kembalikan</a>
-						<a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+            <div id="minimize">
+            	<div class="tile-body">
+	                <!-- <table class="table table-bordered">
+				        <thead>
+					        <tr >
+					        	<th>No.</th>
+					          	<th>Dokumen Persyaratan</th>
+					          	<th>Lengkap/Tidak</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+				        	{% if syarat %}
+				        		{% for s in syarat %}
+				        			<tr>
+				        				<td valign="top">{{ forloop.counter }}</td>
+							          	<td>
+							            	{{ s.syarat }}
+							          	</td>
+							          	<td align="center">
+								            <label class="checkbox checkbox-custom-alt">
+								              	<input type="checkbox"><i></i>
+								            </label>
+							          	</td>
+							        </tr>
+				        		{% endfor %}
+				        	{% endif %}
+				        </tbody>
+				    </table> -->
+				    <br>
+				    <br>
+				    <section class="tile bg-greensea">
+					    <div class="tile-body">
+					      <label class="checkbox checkbox-custom-alt">
+					        <input required="" data-parsley-trigger="change" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan dan setuju bahwa pengajuan bisa diteruskan ke KABID untuk ditindaklanjuti.
+					      </label>
+					    </div>
+				    </section>
+				</div>
+				<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
+					<div class="row">
+						<div class="col-md-12" align="right">
+							<a type="button" class="btn btn-red mb-10">Kembalikan</a>
+							<a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+						</div>
 					</div>
 				</div>
-			</div>
+            </div>
 		</section>
 	</div>
 </div>
@@ -346,9 +327,7 @@
 					      <td width="25%">Nomor KTP/Paspor</td>
 					      <td width="5%">:</td>
 					      <td width="70%">
-					      	{% for n in nomor_identitas %}
-	        					{{ n.jenis_identitas.jenis_nomor_identitas }} {{ n.nomor }}
-	        				{% endfor %}
+					      	
 	        			  </td>
 					    </tr>
 					    <tr>
@@ -364,27 +343,27 @@
 					    <tr>
 					      <td width="25%">No.Telp</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+					      <td width="70%">{{ pemohon.telephone }}<span id='telephone_konfirmasi'></span></td>
 					    </tr>
 					    <tr>
 					      <td width="25%">No.HP</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='hp_konfirmasi'></span></td>
+					      <td width="70%">{% if pemohon.hp == None or "" %}-{% else %}{{ pemohon.hp }}{% endif %}<span id='hp_konfirmasi'></span></td>
 					    </tr>
 					    <tr>
 					      <td width="25%">E-mail</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='email_konfirmasi'></span></td>
+					      <td width="70%">{% if pemohon.email == None or "" %}-{% else %}{{ pemohon.email }}{% endif %}<span id='email_konfirmasi'></span></td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Kewarganegaraan</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+					      <td width="70%">{{ pemohon.kewarganegaraan }}<span id='kewarganegaraan_konfirmasi'></span></td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Pekerjaan</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+					      <td width="70%">{{ pemohon.pekerjaan }}<span id='pekerjaan_konfirmasi'></span></td>
 					    </tr>
 				    </table>
 				    <br>
