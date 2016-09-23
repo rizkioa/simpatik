@@ -7,7 +7,7 @@ from django.db import models
 
 from django.utils.deconstruct import deconstructible
 
-from master.models import JenisNomorIdentitas, Desa, AtributTambahan
+from master.models import JenisNomorIdentitas, Desa, AtributTambahan, Berkas
 
 from uuid import uuid4
 
@@ -150,6 +150,7 @@ class NomorIdentitasPengguna(models.Model):
 	nomor = models.CharField(max_length=100, unique=True)
 	user = models.ForeignKey(IdentitasPribadi, verbose_name='User')
 	jenis_identitas = models.ForeignKey(JenisNomorIdentitas, verbose_name='Jenis Nomor Identitas')
+	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_nomor_identitas', blank=True, null=True)
 
 	def set_as_username(self):
 		self.user.username = re.sub('[^0-9a-zA-Z]+', '', self.nomor)
