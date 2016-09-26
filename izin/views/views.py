@@ -9,6 +9,7 @@ from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPem
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
 from django.shortcuts import get_object_or_404
 from perusahaan.models import JenisLegalitas
+
 import json
 from django.utils.decorators import method_decorator
 

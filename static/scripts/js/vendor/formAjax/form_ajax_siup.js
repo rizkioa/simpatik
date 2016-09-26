@@ -335,6 +335,8 @@
 		}
 		else{
 			$('#checkbox_berkas_akta_pembaruan').prop('checked', false);
+			btn_berkas_akta_perubahan.show();
+    		percent_berkas_akta_perubahan.hide();
 			// console.log(respon);
         	// console.log(typeof respon);
         	var a = Object.keys(respon);
@@ -347,8 +349,6 @@
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
         		// console.log($("#"+a[i]+"").addClass("parsley-error"));
-        	btn_berkas_akta_perubahan.show();
-    		percent_berkas_akta_perubahan.hide();
         	}
 		}
 	}
