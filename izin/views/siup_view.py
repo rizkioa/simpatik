@@ -37,12 +37,10 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
-		status = request.POST.get('status', None)
 		try:
 			p = pemohon.save(commit=False)
 			# print pemohon.cleaned_data
 			p.username = ktp_
-			p.status = status
 			try:
 				p.save()
 				if ktp_:
@@ -181,7 +179,7 @@ def siup_detilsiup_save_cookie(request):
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
 			if detilSIUP.is_valid():
 				detilSIUP.save()
-				data = {'success': True, 'pesan': 'Detail SIUP berhasil disimpan. Proses Selanjutnya.'}
+				data = {'success': True, 'pesan': 'Detail SIUP berhasil disimpan. Proses Selanjutnya.', 'data': [] }
 				data = json.dumps(data)
 			else:
 				data = detilSIUP.errors.as_json()
