@@ -92,7 +92,7 @@ def layanan_tdp_bul(request, extra_context={}):
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Bentuk Usaha Lainnya"})
 	extra_context.update({'title_short': "TDP - BUL"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_tdp_bul") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "30" })
 	return render(request, "front-end/layanan/tdp_bul.html", extra_context)

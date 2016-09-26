@@ -8,7 +8,7 @@ from django.utils.decorators import available_attrs
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
 from django.shortcuts import get_object_or_404
-
+from perusahaan.models import JenisLegalitas
 import json
 from django.utils.decorators import method_decorator
 
@@ -143,7 +143,7 @@ def formulir_reklame(request, extra_context={}):
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 	else:
 		return HttpResponseRedirect(reverse('layanan'))
-	return render(request, "front-end/formulir/reklamee.html", extra_context)
+	return render(request, "front-end/formulir/reklame.html", extra_context)
 
 def formulir_kekayaan(request, extra_context={}):
 	negara = Negara.objects.all()
@@ -350,7 +350,7 @@ def cetak_huller(request, extra_context={}):
 	return render(request, "front-end/include/formulir_huller/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_huller(request, extra_context={}):
-	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HULLER") #cetak bukti blm ada
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="4") #cetak bukti blm ada
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_huller/cetak_bukti_pendaftaran.html", extra_context)
 
