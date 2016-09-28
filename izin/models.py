@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa
 from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas
 from decimal import Decimal
 
@@ -259,7 +259,17 @@ class DetilSIUP(PengajuanIzin):
 		verbose_name = 'Detil SIUP'
 		verbose_name_plural = 'Detil SIUP'
 
-
+class DetilReklame(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='reklame_perusahaan', blank=True, null=True)
+	jenis_reklame = models.ForeignKey(JenisReklame, verbose_name='Jenis Reklame')
+	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame')
+	panjang = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Panjang', null=True, blank=True)
+	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar', null=True, blank=True)
+	sisi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Sisi', null=True, blank=True)
+	letak_pemasangan = models.CharField(max_length=255, verbose_name='Letak Pemasangan', null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa')
+	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
+	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
 # class DataPerubahan(models.Model):
 # 	tabel_asal = models.CharField(max_length=255, blank=True, null=True, verbose_name='Tabel Asal')

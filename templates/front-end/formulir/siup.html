@@ -407,6 +407,9 @@
       })
     };
   </script>
+  <script src="{% static 'scripts/js/vendor/ajax/jquery.form.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/ajax/jquery.cookie.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/formAjax/form_ajax_siup.js' %}"></script>
   <script type="text/javascript">
       $(document).ready(function() {
           $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
@@ -428,6 +431,14 @@
               $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
             }
             });
+          
+          $('#percent_berkas_foto').hide()
+          $('#percent_berkas_ktp').hide()
+          $('#percent_berkas_npwp_pribadi').hide()
+          $('#percent_berkas_npwp_perusahaan').hide()
+          $('#percent_berkas_akta_pendirian').hide()
+          $('#percent_berkas_akta_perubahan').hide()
+          $('#percent_berkas_pendukung').hide()
         });
   </script>
 {% endblock %}

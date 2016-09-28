@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^layanan/ho-daftar-ulang/formulir$', views.formulir_ho_daftar_ulang, name='formulir_ho_daftar_ulang'),
     url(r'^layanan/penggilingan-padi-&-huller/formulir$', views.formulir_huller, name='formulir_huller'),
     url(r'^layanan/reklame/formulir$', views.formulir_reklame, name='formulir_reklame'),
+    url(r'^layanan/pemakaian-kekayaan/formulir$', views.formulir_kekayaan, name='formulir_kekayaan'),
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
     url(r'^layanan/imb-umum/formulir$', views.formulir_imb_umum, name='formulir_imb_umum'),
     url(r'^layanan/imb-perumahan/formulir$', views.formulir_imb_perumahan, name='formulir_imb_perumahan'),
@@ -59,10 +60,13 @@ urlpatterns = [
     url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak$', views.cetak_huller, name='cetak_huller'),
     url(r'^layanan/reklame/formulir/cetak$', views.cetak_reklame, name='cetak_reklame'),
+    url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),
     url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_baru, name='cetak_bukti_pendaftaran_ho_baru'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
-    url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklmae'),
+    url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
+    url(r'^layanan/pemakaian-kekayaan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_kekayaan, name='cetak_bukti_pendaftaran_kekayaan'),
 
     # url for ajax siup
     url(r'^layanan/siup/pemohon/save/$', siup_view.siup_identitas_pemohon_save_cookie, name='siup_pemohon_save'),

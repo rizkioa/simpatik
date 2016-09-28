@@ -45,7 +45,6 @@
 						$('#rootwizard').find('.pager .next').show();
 						$('#rootwizard').find('.pager .finish').hide();
 					}
-
 				},
 
 				onNext: function(tab, navigation, index) {
@@ -578,10 +577,10 @@
 	</div>
 
 	<ul class="pager wizard">
-	  <li class="previous"><a class="btn btn-default">Kembali</a></li>
-	  <li class="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+	  <li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
+	  <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
 	  <li class="next finish" style="display:none;">
-		<button value="Submit" type="submit" class="btn btn-success pull-right" id="alert">
+		<button type="submit" class="btn btn-success pull-right" id="alert">
 		  <i class="fa fa-arrow-right"></i>
 		  <span>Selesai</span>
 		</button>

@@ -5,6 +5,18 @@ from datetime import datetime
 
 # Create your models here.
 
+class JenisReklame(models.Model):
+	jenis_reklame = models.CharField(max_length=255, verbose_name='Jenis Reklame')
+	keterangan = models.CharField(max_length=255, blank=True, null=True)
+	
+	def __unicode__(self):
+		return "%s" % (self.jenis_reklame)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Reklame'
+		verbose_name_plural = 'Jenis Reklame'
+
 class AtributTambahan(models.Model):
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
 
@@ -31,7 +43,7 @@ class AtributTambahan(models.Model):
 		return u'%s' % (str(self.status))
 
 class JenisPemohon(models.Model):
-	jenis_pemohon = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jenis Pemohon')
+	jenis_pemohon = models.CharField(max_length=255, verbose_name='Jenis Pemohon')
 	keterangan = models.CharField(max_length=255, blank=True, null=True)
 	
 	def __unicode__(self):
