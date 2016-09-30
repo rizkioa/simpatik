@@ -1,5 +1,7 @@
 *.pyc
 files/
+venv/
+.idea/
 simpdu/settings.py
 
 accounts/migrations/

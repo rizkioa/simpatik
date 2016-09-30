@@ -1,0 +1,98 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}">
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Info Kekayaan Daerahx</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Lokasi</label>
+      <div class="col-sm-5">
+        <textarea class="from-control" rows="5" name="lokasi" placeholder="Isi lokasi kekayaan daerah"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group" id="negara">
+      <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10 " name="negara" id="id_negara2" required="" data-parsley-trigger="change">
+          <option value>-- Pilih Negara --</option>
+          {% if negara %}
+            {% for p in negara %}
+            <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+            {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+  </div>
+
+  <div class="form-group" id="provinsi">
+      <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10 " name="provinsi" id="id_provinsi2" required="" data-parsley-trigger="change">
+        </select>
+      </div>
+  </div>
+
+  <div class="form-group" id="kabupaten">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10 " name="kabupaten" id="id_kabupaten2" required="" data-parsley-trigger="change"> 
+        </select>
+      </div>
+  </div>
+
+  <div class="form-group" id="kecamatan">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10 " name="kecamatan" id="id_kecamatan2" required="" data-parsley-trigger="change">
+        </select>
+      </div>
+  </div>
+
+  <div class="form-group" id="desa">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10 " name="desa" id="id_desa2" required="" data-parsley-trigger="change">
+
+        </select>
+      </div>
+  </div>
+
+    
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Luas</label>
+      <label for="input01" class="col-sm-2 control-label">Panjang</label>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span>M</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">&nbsp</label>
+      <label for="input01" class="col-sm-2 control-label">Lebar</label>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <input type="text" class="form-control">
+          <span class="input-group-addon">
+            <span>M</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Penggunaan</label>
+      <div class="col-sm-5">
+        <textarea class="from-control" rows="5" name="penggunaan" placeholder=""></textarea>
+      </div>
+    </div>
+
+    
+</form>

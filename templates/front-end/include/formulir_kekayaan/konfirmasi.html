@@ -1,0 +1,180 @@
+<form method="POST" name="step5" role="form"  %}">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_pemohon}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Pastor</td>
+      <td width="5%">:</td>
+      <td width="70%">{{ request.COOKIES.ktp }}</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.nama_lengkap}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.alamat}}</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.telephone}}</td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.hp}}</td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.email}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.kewarganegaraan}}</td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Swasta</td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%">12345678974</td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">UD. Maju Mundur</td>
+    </tr>
+    <tr>
+      <td width="25%">Bentuk Kegiatan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%">Mikro</td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%">Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%">082123981923</td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%">-</td>
+    </tr>
+  </table>
+  
+  <br>
+  <h4><u>#3. Informasi Kekayaan Daerah</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Lokasi</td>
+      <td width="5%">:</td>
+      <td width="70%">________________</td>
+    </tr>
+    <tr>
+      <td width="25%">Ukuran</td>
+      <td width="5%">:</td>
+      <td width="70%">___M</td>
+    </tr>
+    <tr>
+      <td width="25%">Panjang</td>
+      <td width="5%">:</td>
+      <td width="70%">___M</td>
+    </tr>
+    <tr>
+      <td width="25%">Lebar</td>
+      <td width="5%">:</td>
+      <td width="70%">___M</td>
+    </tr>
+  </table>
+
+  <br>
+  <h4><u>#4. Upload Dokumen Persyaratan</u></h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr align="center">
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            KTP / Paspor
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Tanda Lunas Retribusi
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rekomendasi dari Dinas terkai (DISPENDA, BPKAD, Dinas Perhubungan/Dinas/Bagian.........)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt">
+        <input type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
