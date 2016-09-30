@@ -56,14 +56,12 @@ def add_wizard_siup(request):
 		else:
 			messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
 
-
 	EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 	extra_context.update({'jenis': EMPTY_JENIS_IZIN})
 
 	template = loader.get_template("admin/izin/izin/form_siup.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
-
 
 def formulir_siup(request):
 	extra_context={}
@@ -90,6 +88,11 @@ def formulir_siup(request):
 		extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 
+		# extra_context jika cookie masih ada
+		# konfirmasi_ec_pemohon = Pemohon.objects.filter(id=request.COOKIES['id_pemohon'])
+		# if request.COOKIES['id_detail_siup'] is not None:
+		#konfirmasi_ec_detilsiup = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+		#extra_context.update({'konfirmasi_ec_detilsiup': konfirmasi_ec_detilsiup})
 		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 		ec = RequestContext(request, extra_context)
@@ -113,7 +116,6 @@ def cetak(request, id_pengajuan_izin_):
 	template = loader.get_template("admin/izin/izin/cetak.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
-		
 
 # def formulir_siup(request):
 # 	extra_context={}

@@ -242,16 +242,26 @@
 			            	for (var i = 0; i < respon.data.length; i++){
 			            		var key = Object.keys(respon.data[i]); // Mencari key json
 			            		// console.log(key[0]);
-			            		if (key[0]= "status_upload") {
-			            			$("#npwp_perusahaan").hide(1000)
+			            		var val = respon.data[i][key[0]]
+			            		var id = "#"+key[0]+"_konfirmasi"
+			            		$(id).text(val);
 
-			            		}else{
-				            		var val = respon.data[i][key[0]] // mencari value json
-				            		// console.log(key[0]+"_konfirmasi");
-				            		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+			            		if(key[0] === "jenis_legalitas_perubahan"){
+			            			$('#konfirmasi_legalitas_perubahan').hide();
+			            		}
+			            		else{
+			            			$('#konfirmasi_legalitas_perubahan').show();
+			            		}
+			            		// if (key[0]= "status_upload") {
+			            		// 	$("#npwp_perusahaan").hide(1000)
 
-				            		$(id).text(val);
-				            	}
+			            		// }else{
+				            	// 	var val = respon.data[i][key[0]] // mencari value json
+				            	// 	// console.log(key[0]+"_konfirmasi");
+				            	// 	var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+				            	// 	$(id).text(val);
+				            	// }
 			            	}
 							$( ".tab-content #tab"+index ).unmask()
 							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
@@ -432,9 +442,9 @@
 		    });
 	    }
 	</script>
-	<script src="{% static 'scripts/js/vendor/ajax/jquery.form.js' %}"></script>
-	<script src="{% static 'scripts/js/vendor/ajax/jquery.cookie.js' %}"></script>
-	<script src="{% static 'scripts/js/vendor/formAjax/form_ajax_siup.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+  	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+  	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
 	<script type="text/javascript">
 	    $(document).ready(function() {
 	        $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
@@ -445,7 +455,7 @@
 	          else {
 	            $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
 	          }
-	          });
+	        });
 
 	        $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
 	        $("#switch_pemohon_disabled").change(function() {
@@ -455,7 +465,7 @@
 	          else {
 	            $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
 	          }
-	          });
+	        });
 
 	        $('#percent_berkas_foto').hide()
 	        $('#percent_berkas_ktp').hide()
@@ -464,7 +474,14 @@
 	        $('#percent_berkas_akta_pendirian').hide()
 	        $('#percent_berkas_akta_perubahan').hide()
 	        $('#percent_berkas_pendukung').hide()
-	      });
+
+	        // if($('#switch_akta_perubahan_disabled').val() !== "on" ){
+	        // 	$('#konfirmasi_legalitas_perubahan').hide();
+	        // }
+	        // else{
+	        // 	$('#konfirmasi_legalitas_perubahan').show();
+	        // }
+	    });
   	</script>
 {% endblock %}
 

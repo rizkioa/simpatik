@@ -113,7 +113,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi" )
           elem.html(response);
@@ -165,7 +165,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten" )
           elem.html(response);
@@ -196,7 +196,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan" )
           elem.html(response);
@@ -227,7 +227,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa" )
           elem.html(response);
@@ -252,7 +252,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi1" )
           elem.html(response);
@@ -304,7 +304,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten1" )
           elem.html(response);
@@ -335,7 +335,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan1" )
           elem.html(response);
@@ -366,7 +366,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa1" )
           elem.html(response);
@@ -404,7 +404,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi1" )
           elem.html(response);
@@ -456,7 +456,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten1" )
           elem.html(response);
@@ -487,7 +487,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan1" )
           elem.html(response);
@@ -518,7 +518,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa1" )
           elem.html(response);
@@ -641,7 +641,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara_pemilik }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi_pemilik" )
           elem.html(response);
@@ -693,7 +693,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi_pemilik }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten_pemilik" )
           elem.html(response);
@@ -724,7 +724,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten_pemilik }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan_pemilik" )
           elem.html(response);
@@ -755,7 +755,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan_pemilik }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa_pemilik" )
           elem.html(response);
@@ -780,7 +780,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara_pemilik }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_provinsi_front' %}', // the file to call
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_provinsi_pengusaha" )
           elem.html(response);
@@ -832,7 +832,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi_pengusaha }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kabupaten_front' %}', // the file to call
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kabupaten_pengusaha" )
           elem.html(response);
@@ -863,7 +863,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten_pengusaha }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_kecamatan_front' %}', // the file to call
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_kecamatan_pengusaha" )
           elem.html(response);
@@ -894,7 +894,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan_pengusaha }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa_front' %}', // the file to call
+        url: '{% url 'admin:option_desa ' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa_pengusaha" )
           elem.html(response);
