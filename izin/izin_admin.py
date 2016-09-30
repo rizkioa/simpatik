@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 
-from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat
+from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 
 import json
@@ -18,6 +18,28 @@ class IzinAdmin(admin.ModelAdmin):
 		izin = KelompokJenisIzin.objects.all()
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def get_fieldsets(self, request, obj=None):
+		fields = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
+		fields_admin = ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'rejected_by', 'rejected_at')
+		if obj:
+			if request.user.is_superuser:
+				add_fieldsets = (
+					(None, {
+						'classes': ('wide',),
+						'fields': fields+fields_admin
+						}),
+				)
+			elif request.user.groups.filter(name='Operator') or request.user.groups.filter(name='Kabid'):
+				add_fieldsets = (
+					(None, {
+						'classes': ('wide',),
+						'fields': fields
+						}),
+				)
+		else:
+			pass
+		return add_fieldsets
 
 	def get_perusahaan(self, obj):
 		return "Perusaahaan Maju Mundur"
@@ -115,7 +137,11 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
-
+			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'pengajuan': pengajuan_})
+			#+++++++++++++ page logout ++++++++++
+			extra_context.update({'has_permission': True })
+			#+++++++++++++ end page logout ++++++++++
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
 			extra_context.update({'syarat': syarat_})
 
@@ -170,6 +196,45 @@ class IzinAdmin(admin.ModelAdmin):
 		# <option>TDP</option>
 		# """
 		# return HttpResponse(mark_safe(pilihan));
+	
+	def aksi_detil_siup(self, request):
+		id_detil_siup = request.POST.get('id_detil_siup', None)
+		try:
+			obj = DetilSIUP.objects.get(id=id_detil_siup)
+			if request.POST.get('aksi', None) and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
+				if request.POST.get('aksi') == '_submit_operator':
+					obj.status = 4
+					obj.save()
+					response = {
+						"success": True,
+						"pesan": "Izin berhasih di verifikasi.",
+						"redirect": '',
+					}
+				elif request.POST.get('aksi') == '_submit_kabid':
+					obj.status = 5
+					obj.save()
+					response = {
+						"success": True,
+						"pesan": "Izin berhasih di verifikasi.",
+						"redirect": '',
+					}
+				else:
+					response = {
+						"success": False,
+						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+					}
+			else:
+				response = {
+					"success": False,
+					"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+				}
+		except ObjectDoesNotExist:
+			response = {
+					"success": False,
+					"pesan": "Terjadi kesalahan, detil siup tidak ada dalam daftar.",
+				}
+		return HttpResponse(json.dumps(response))
+
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -182,6 +247,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
+			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),
 			)
 		return my_urls + urls
 
@@ -197,3 +263,4 @@ class IzinAdmin(admin.ModelAdmin):
 		obj.save()
 
 admin.site.register(PengajuanIzin, IzinAdmin)
+admin.site.register(DetilSIUP )

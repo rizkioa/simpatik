@@ -9,7 +9,7 @@
         <select class="form-control chosen-select" required="" data-parsley-trigger="change" name="bentuk_kegiatan_usaha">
           <option value>-- Pilih Bentuk Kegiatan Usaha --</option>
           {% for val in bentuk_kegiatan_usaha_list %}
-            <option value="{{val.id}}">{{ val.kegiatan_usaha}}</option>
+            <option value="{{ val.id }}">{{ val.kegiatan_usaha}}</option>
           {% endfor %}
 
         </select>
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div class="form-group" id="kbli">
+    <!-- <div class="form-group" id="kbli">
       <label class="col-sm-2 control-label text-left">Kegiatan usaha (KBLI)</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10" name="kbli">
@@ -86,9 +86,20 @@
           {% endfor %}
         </select>
       </div>
+    </div> -->
+
+    <div class="form-group" id="kbli">
+        <label class="col-sm-2 control-label text-left">Kegiatan usaha (KBLI)</label>
+        <div class="col-sm-10">
+            <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="kbli">
+                {% for val in kbli_list %}
+                  <option value="{{val.id}}">{{val.kode_kbli}} - {{val.nama_kbli}}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
 
-    <div class="form-group" id="produk_utama">
+    <!-- <div class="form-group" id="produk_utama">
       <label class="col-sm-2 control-label text-left">Barang / jasa dagangan utama</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10" name="produk_utama">
@@ -98,5 +109,16 @@
           {% endfor %}
         </select>
       </div>
+    </div> -->
+
+    <div class="form-group" id="produk_utama">
+        <label class="col-sm-2 control-label text-left">Barang / jasa dagangan utama</label>
+        <div class="col-sm-10">
+            <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="produk_utama">
+              {% for val in produk_utama_list %}
+                <option value="{{val.id}}">{{val.barang_jasa_utama}}</option>
+              {% endfor %}
+            </select>
+        </div>
     </div>
 </form>

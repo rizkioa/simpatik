@@ -97,7 +97,7 @@
         font-family: "Open Sans", Helvetica, Arial, sans-serif;
     }
 </style>
-<body>
+<body onload="window.print()">
     <div class="book">
         <div class="page">
             <div class="subpage">
@@ -114,7 +114,7 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : SIUP/1001/0802/2016<br>
+                                <h5>No. Pengajuan Izin : {{no_pengajuan}}<br>
                                 <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
                             </td>
                         </tr>
@@ -138,47 +138,47 @@
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
                         <td width="10%">:</td>
-                        <td width="65%">Pemilik</td>
+                        <td width="65%">{{ jenis_permohonan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">350001010010101001</td>
+                        <td width="65%">{{pemohon.nomor_identitas}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>
                         <td width="10%">:</td>
-                        <td width="65%">Aiwinur Siti Diah Ayu Mega Ningrum Dwi Pangestuti Lestasi Endang Pamikasih Sri Kumala Sari Dewi Puspita Anggraini</td>
+                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ pemohon.telephone }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. HP</td>
                         <td width="10%">:</td>
-                        <td width="65%">085736662908</td>
+                        <td width="65%">{{ pemohon.hp }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ pemohon.email }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Indonesia</td>
+                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pekerjaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Swasta</td>
+                        <td width="65%">{{pemohon.pekerjaan}}</td>
                     </tr>
                 </table>
                 <h5><u>IDENTITAS PERUSAHAAN</u></h5>
@@ -186,45 +186,50 @@
                     <tr>
                         <td width="25%">NPWP</td>
                         <td width="10%">:</td>
-                        <td width="65%">1234567890</td>
+                        <td width="65%">{{ perusahaan.npwp }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">UD. MAKMUR JAYA</td>
+                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
                         <td width="10%">:</td>
-                        <td width="65%"></td>
+                        <td width="65%">{{ perusahaan.kode_pos }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">087895172617</td>
+                        <td width="65%">{{ perusahaan.telepon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Fax</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ perusahaan.fax }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ perusahaan.email }}</td>
                     </tr>
                 </table>
                 <h5><u>DATA SIUP</u></h5>
                 <table class="font" width="100%">
                     <tr>
+                        <td width="25%">Bentuk Kegiatan Usaha</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ bentuk_kegiatan_usaha }}</td>
+                    </tr>
+                    <tr>
                         <td width="25%">Status Penanaman Modal</td>
                         <td width="10%">:</td>
-                        <td width="65%">Lain-lain</td>
+                        <td width="65%">{{ status_penanaman_modal }}</td>
                     </tr>
                 </table>
                 <h5><u>Kekayaan Bersih dan Saham </u></h5>
@@ -232,7 +237,7 @@
                     <tr>
                         <td width="40%">Kekayaan Bersih Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="50%">Rp. 5.390.025</td>
+                        <td width="50%">Rp. </td>
                     </tr>
                     <tr>
                         <td width="40%">(tidak termasuk tanah dan bangunan tempat usaha)</td>
@@ -247,22 +252,22 @@
                     <tr>
                         <td width="30%">a. Total Nilai Saham</td>
                         <td width="10%">:</td>
-                        <td width="60%">-</td>
+                        <td width="60%">{{ total_nilai_saham }} %</td>
                     </tr>
                     <tr>
                         <td width="30%">b. Komposisi Kepemilikan Saham</td>
                         <td width="10%"></td>
-                        <td width="60%">-</td>
+                        <td width="60%"></td>
                     </tr>
                     <tr>
                         <td width="30%" style="padding-left: 10%;">Dalam</td>
                         <td width="10%">:</td>
-                        <td width="60%">-</td>
+                        <td width="60%">{{ presentase_saham_nasional }} %</td>
                     </tr>
                     <tr>
                         <td width="30%" style="padding-left: 10%;">Asing</td>
                         <td width="10%">:</td>
-                        <td width="60%">-</td>
+                        <td width="60%">{{ presentase_saham_asing }} %</td>
                     </tr>
                 </table>
                 
@@ -280,17 +285,17 @@
                     <tr>
                         <td width="30%">Kelembagaan</td>
                         <td width="5%">:</td>
-                        <td width="65%">Perdagangan Kecil</td>
+                        <td width="65%">{{ kelembagaan }}</td>
                     </tr>
                     <tr>
                         <td width="30%">KBLI</td>
                         <td width="5%">:</td>
-                        <td width="65%">12345</td>
+                        <td width="65%">{{ "kosong" }}</td>
                     </tr>
                     <tr>
                         <td width="30%">Barang/jasa dagang utama</td>
                         <td width="5%">:</td>
-                        <td width="65%">Peralatan pertanian, Bibit</td>
+                        <td width="65%">{{ "kosong" }}</td>
                     </tr>
                 </table>
             	<h5><u>LEGALITAS PERUSAHAAN</u></h5>

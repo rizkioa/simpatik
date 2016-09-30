@@ -17,6 +17,6 @@ def get_nomor_pengajuan(kode_):
 	if kode_:
 		nomor += str(kode_)
 		nomor += "/"+str(now.strftime("%f")[:4])
-		nomor += "/"+str(now.strftime("%d"))+str(now.strftime("%m"))
+		nomor += "/"+str(now.strftime("%m"))+str(now.strftime("%d"))
 		nomor += "/"+str(now.strftime("%Y"))
 	return nomor
