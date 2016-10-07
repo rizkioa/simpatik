@@ -56,6 +56,18 @@
             $("#splash .modal-title").html($(btnEl).attr('data-title'))
             $("#splash .modal-body").html($(btnEl).attr('data-body'))
         }
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url: '{% url 'admin:total_izin' %}',
+                success: function(response) {
+                    respon = $.parseJSON(response)
+                    $('.t a').append('<span class="badge bg-info draft">'+(respon)+'</span>')
+                }
+
+
+            })
+        })
     </script>
     {% block extrajs_site %}
     	<!-- ============================================

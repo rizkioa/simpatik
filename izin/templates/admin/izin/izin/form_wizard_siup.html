@@ -22,6 +22,8 @@
 	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
+	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+
   	
 	<!--/ custom javascripts -->
 	<script type="text/javascript">
@@ -30,7 +32,6 @@
 			$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
 			$(".npwp").mask("99.999.999.9-999.999");
 			$(".kodepos").mask("99999");
-			$(".no_hp").mask("+6299999999999",{placeholder:"+6299999999999"});
 			$('.no_ktp').on('keydown', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
 
 			$('#rootwizard').bootstrapWizard({
@@ -55,6 +56,8 @@
 					// if (!form.parsley().isValid()) {
 					//     return true;
 					// }
+					// 
+
 					return false;
 
 				},
@@ -227,7 +230,8 @@
 			var frm = $('form[name="step'+ index +'"]');
 			frm.parsley().validate();
 			if (frm.parsley().isValid()) {
-				$( ".tab-content #tab"+index ).mask('loading')
+				// $( ".tab-content #tab"+index ).mask('loading')
+				$(".tab-content").mLoading();
 				$(btn).attr('disabled', 'disabled')
 				$.ajax({
 					type: frm.attr('method'),
@@ -263,7 +267,8 @@
 				            	// 	$(id).text(val);
 				            	// }
 			            	}
-							$( ".tab-content #tab"+index ).unmask()
+							// $( ".tab-content #tab"+index ).unmask()
+							$(".tab-content").mLoading('hide');
 							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
 							$(tab_index).tab('show')
 			            }else{
@@ -280,7 +285,8 @@
 			            		$("#"+a[i]+"").addClass("has-error");
 			            		// console.log($("#"+a[i]+"").addClass("parsley-error"));
 			            	}
-			            	$( ".tab-content #tab"+index ).unmask()
+			            	// $( ".tab-content #tab"+index ).unmask()
+			            	$(".tab-content").mLoading('hide');
 			            }
 					},
 					error: function(response){
@@ -292,15 +298,35 @@
 			}
 		}
 
+
 		document.querySelector('#alert').onclick = function(){
-	      // swal("Good job!", "You clicked the button!", "success");
-	      swal({
-	        showConfirmButton: false,
-	        type: 'success',
-	        title: 'Pendaftaran Berhasil Tersimpan',
-	        timer: 2000
-	      })
-	      window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+	      	// swal("Good job!", "You clicked the button!", "success");
+	      	var pengajuan_cookie = $.cookie('id_pengajuan'); 
+	      	var pemohon_cookie = $.cookie('id_pemohon'); 
+	      	var perusahaan_cookie = $.cookie('id_perusahaan'); 
+	      	if (pengajuan_cookie === ""){
+	      		toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+	      		tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+	      	}
+	      	else if(pemohon_cookie === ""){
+	      		toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+	      		tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+	      	}else if(perusahaan_cookie === ""){
+	      		toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+	      		tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+				$(tab_index).tab('show');
+	      	}
+	      	else{
+	      		swal({
+		        	showConfirmButton: false,
+		        	type: 'success',
+		        	title: 'Pendaftaran Berhasil Tersimpan',
+		        	timer: 2000
+		      	})
+		      	window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+	      	}
 	    };
 
 	</script>
@@ -441,12 +467,22 @@
 		        }
 		    });
 	    }
+	    function load_alamat(){
+	    	var alamat = $('#alamat_pemohon_load').val();
+			$('#alamat_perusahaan_load').val(alamat);
+	    }
+
+	    function load_no_telepon(){
+	    	var no = $('#no_telepon_pemohon_load').val();
+			$('#no_telepon_perusahaan_load').val(no);
+	    }
 	</script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
 	<script type="text/javascript">
 	    $(document).ready(function() {
+	    	// $("body").mLoading();
 	        $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
 	        $("#switch_akta_perubahan_disabled").change(function() {
 	          if ($(this).is(':checked')) {
@@ -474,13 +510,34 @@
 	        $('#percent_berkas_akta_pendirian').hide()
 	        $('#percent_berkas_akta_perubahan').hide()
 	        $('#percent_berkas_pendukung').hide()
+	        $('#konfirmasi_legalitas_perubahan').hide();
 
-	        // if($('#switch_akta_perubahan_disabled').val() !== "on" ){
-	        // 	$('#konfirmasi_legalitas_perubahan').hide();
-	        // }
-	        // else{
-	        // 	$('#konfirmasi_legalitas_perubahan').show();
-	        // }
+	        if ($.cookie('id_pengajuan') === undefined){
+	        	$.cookie('id_pengajuan', "", {path:"/"});
+	        }
+	        if ($.cookie('id_pemohon') === undefined){
+	        	$.cookie('id_pemohon', "", {path:"/"});
+	        }
+	        if ($.cookie('id_perusahaan') === undefined){
+	        	$.cookie('id_perusahaan', "", {path:"/"});
+	        }
+
+	        $( "#alert" ).prop( "disabled", true );
+	        $('#checkbox_siup_done').change(function() {
+	            if ($(this).is(':checked')) {
+	              $( "#alert" ).prop( "disabled", false );
+	              window.onbeforeunload = null;
+	            }
+	            else{
+	              $( "#alert" ).prop( "disabled", true );
+	            }
+          	});
+	        if($('#switch_akta_perubahan_disabled').is(':checked')){
+	        	$('#konfirmasi_legalitas_perubahan').show();
+	        }
+	        else{
+	        	$('#konfirmasi_legalitas_perubahan').hide();
+	        }
 	    });
   	</script>
 {% endblock %}
@@ -488,6 +545,7 @@
 {% block extrastyle %}
 	{{ block.super }}
 	
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">

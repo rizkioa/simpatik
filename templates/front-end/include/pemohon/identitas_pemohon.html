@@ -38,7 +38,7 @@
   <div class="form-group" id="ktp">
     <label for="input01" class="col-sm-2 control-label"><strong>No. KTP</strong> </label>
     <div class="col-sm-5">
-      <input type="text" class="form-control no_ktp" id="id_ktp" name="ktp" required="" data-parsley-trigger="change">
+      <input onchange="load_pemohon($(this).val())" type="text" class="form-control no_ktp" id="id_ktp" name="ktp" required="" data-parsley-trigger="change">
     </div>
   </div>
   <div class="form-group" id="paspor">
@@ -58,7 +58,7 @@
   <div class="form-group" id="alamat">
     <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong> </label>
     <div class="col-sm-7">
-      <textarea class="form-control" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda" required="" data-parsley-trigger="change"></textarea>
+      <textarea class="form-control" oninput="load_alamat();" id="alamat_pemohon_load" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda" required="" data-parsley-trigger="change"></textarea>
     </div>
   </div>
 
@@ -111,35 +111,40 @@
   <div class="form-group" id="telephone">
     <label for="input01" class="col-sm-2 control-label"><strong>Telepon</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control" name="telephone">
+      <input type="text" oninput="load_no_telepon();" id="no_telepon_pemohon_load" class="form-control" name="telephone" required="" data-parsley-trigger="change">
     </div>
   </div>
 
   <div class="form-group" id="hp">
     <label for="input01" class="col-sm-2 control-label">No. HP</label>
     <div class="col-sm-6">
-      <input type="text" class="form-control no_hp" name="hp">
+      <input id="hp_load" type="text" class="form-control no_hp" name="hp">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-sm-2 control-label">E-mail</label>
     <div class="col-sm-6">
-      <input type="email" class="form-control" name="email" data-parsley-trigger="change">
+      <input id="email_pemohon_load" type="email" class="form-control" name="email" data-parsley-trigger="change">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Kewarganegraan</strong></label>
     <div class="col-sm-4">
-      <input class="form-control" name="kewarganegaraan" type="text" required="" data-parsley-trigger="change">
+      <!-- <input id="kewarganegaraan_pemohon_load" class="form-control" name="kewarganegaraan" type="text" required="" data-parsley-trigger="change"> -->
+      <select id="kewarganegaraan_pemohon_load" class="form-control chosen-select mb-10" name="kewarganegaraan" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Kewarganegaraan --</option>
+        <option value="WNI">WNI</option>
+        <option value="WNA">WNA</option>
+      </select>
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Pekerjaan</strong></label>
     <div class="col-sm-4">
-      <select class="form-control chosen-select mb-10" name="pekerjaan" required="" data-parsley-trigger="change">
+      <select id="pekerjaan_pemohon_load" class="form-control chosen-select mb-10" name="pekerjaan" required="" data-parsley-trigger="change">
         <option value>-- Pilih Pekerjaan --</option>
         <option value="PNS">PNS</option>
         <option value="Swasta">Swasta</option>

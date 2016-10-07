@@ -2,11 +2,23 @@
   {% csrf_token %}
     <h3>LEGALITAS PERUSAHAAN</h3>
     <hr class="style14" style="height:2px">
-    <h4>A. Akta Pendirian</h4>
+    <div class="row">
+      <h4 class="custom-font col-sm-2"><strong>A. Akta Pendirian</strong></h4> 
+      <div class="col-sm-10" style="padding-bottom: 10px; padding-top: 8px;">
+        <div class="onoffswitch labeled greensea inline-block">
+          <input type="checkbox" name="onoffswitch_pendirian" class="onoffswitch-checkbox" id="switch_akta_pendirian_disabled" >
+          <label class="onoffswitch-label" for="switch_akta_pendirian_disabled">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
     <div class="form-group" id="jenis_legalitas">
       <label class="col-sm-2 control-label text-left">Jenis Akta dan Pengesahan</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="jenis_legalitas">
+        <select class="form-control chosen-select mb-10 akta_pendirian_disable" name="jenis_legalitas">
           {% for j in jenis_legalitas_list %}
             <option value="{{ j.id }}">{{j.jenis_legalitas}}</option>
           {% endfor %}
@@ -17,21 +29,21 @@
     <div class="form-group" id="nama_notaris">
       <label class="col-sm-2 control-label text-left">Nama Notaris</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" name="nama_notaris">
+        <input type="text" class="form-control akta_pendirian_disable" name="nama_notaris">
       </div>
     </div>
 
     <div class="form-group" id="alamat">
       <label class="col-sm-2 control-label text-left">Alamat Notaris</label>
       <div class="col-sm-5">
-        <textarea class="form-control" rows="5" name="alamat"></textarea>
+        <textarea class="form-control akta_pendirian_disable" rows="5" name="alamat"></textarea>
       </div>
     </div>
 
     <div class="form-group" id="telephone">
       <label class="col-sm-2 control-label text-left">Telp Notaris</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" name="telephone">
+        <input type="text" class="form-control akta_pendirian_disable" name="telephone">
       </div>
     </div>
 
@@ -57,7 +69,7 @@
     <div class="form-group" id="nomor_pengesahan">
       <label class="col-sm-2 control-label text-left">No. Pengesahan</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01" name="nomor_pengesahan">
+        <input type="text" class="form-control akta_pendirian_disable" name="nomor_pengesahan">
       </div>
     </div>
 
@@ -65,7 +77,7 @@
       <label class="col-sm-2 control-label text-left">Tanggal Pengesahan</label>
       <div class="col-sm-5">
         <div class="input-group datepicker" data-format="L">
-          <input type="text" class="form-control" name="tanggal_pengesahan">
+          <input type="text" class="form-control akta_pendirian_disable" name="tanggal_pengesahan">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>

@@ -6,13 +6,15 @@ from django.contrib import admin
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
 from simpdu.sites import usersite
+from .views import index
 
 
 admin.autodiscover()
 
 #Admin
 urlpatterns = [
-	url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
+    # url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
+	url(r'^admin/$', index, name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
     # url(r'^perusahaan/', include('perusahaan.urls')),
     url(r'^admin/', include(admin.site.urls)),

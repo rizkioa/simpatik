@@ -56,3 +56,7 @@ def is_file(field):
 def is_readonlypassword(field):
 	from django.contrib.auth.forms import ReadOnlyPasswordHashWidget
 	return isinstance(field.field.widget, ReadOnlyPasswordHashWidget)
+
+@register.filter(name='joinby')
+def joinby(value, arg):
+    return arg.join(value)

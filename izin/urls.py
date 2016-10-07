@@ -55,13 +55,15 @@ urlpatterns = [
     url(r'^layanan/tdp-perorangan/formulir$', views.formulir_tdp_perorangan, name='formulir_tdp_perorangan'),
     url(r'^layanan/tdp-koperasi/formulir$', views.formulir_tdp_koperasi, name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
-    url(r'^layanan/siup/formulir/cetak$', views.cetak_permohonan, name='cetak_permohonan'),
+
+    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
+
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak$', views.cetak_ho_perpanjang, name='cetak_ho_perpanjang'),
     url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak$', views.cetak_huller, name='cetak_huller'),
     url(r'^layanan/reklame/formulir/cetak$', views.cetak_reklame, name='cetak_reklame'),
     url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),
-    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_baru, name='cetak_bukti_pendaftaran_ho_baru'),
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
@@ -84,5 +86,7 @@ urlpatterns = [
     url(r'^layanan/siup/upload-berkas-pendukung/save/$', siup_view.siup_upload_berkas_pendukung, name='siup_upload_berkas_pendukung'),
     # end url upload siup
     url(r'^layanan/siup/save/$', siup_view.siup_done , name='siup_done'),
+    url(r'^load-pemohon/(?P<ktp_>[0-9A-Za-z_\-]+)$', siup_view.load_pemohon , name='load_pemohon'),
+    url(r'^load-perusahaan/(?P<npwp_>[0-9A-Za-z_\-.]+)$', siup_view.load_perusahaan , name='load_perusahaan'),
     # End
     ]

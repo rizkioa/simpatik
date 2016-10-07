@@ -7,7 +7,7 @@
     <tr>
       <td width="25%">Jenis Pengajuan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='jenis_permohonan_konfirmasi'>{{ konfirmasi_ec_detilsiup.jenis_permohonan.jenis_permohonan }}</span></td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'>{{ jenis_permohonan_konfirmasi }}</span></td>
     </tr>
   </table>
   <br>
@@ -16,47 +16,47 @@
     <tr>
       <td width="25%">Jenis Pemohon</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ konfirmasi_ec_detilsiup.pemohon.jenis_pemohon }}</span></td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ konfirmasi_ec_detilsiup.nomor_identitas }}</span></td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ pemohon_konfirmasi.nomor_identitas }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat tempat tinggal</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_ }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.HP</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='hp_konfirmasi'></span></td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_konfirmasi'></span></td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Pekerjaan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
     </tr>
   </table>
   <br>
@@ -65,37 +65,37 @@
     <tr>
       <td width="25%">NPWP</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='npwp_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kode Pos</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='telepon_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ telepon }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Fax</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='fax_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email }}</span></td>
     </tr>
   </table>
   <br>
@@ -312,7 +312,7 @@
     <section class="tile bg-greensea">
       <div class="tile-body">
         <label class="checkbox checkbox-custom-alt">
-          <input required="" data-parsley-trigger="change" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+          <input id="checkbox_siup_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
         </label>
       </div>
     </section>

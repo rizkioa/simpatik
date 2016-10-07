@@ -112,3 +112,9 @@ class UploadBerkasPendukungForm(forms.ModelForm):
 	class Meta:
 		model = Berkas
 		fields = ('berkas',)
+
+class UploadBerkasPenolakanIzinForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)

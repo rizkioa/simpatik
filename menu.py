@@ -50,14 +50,14 @@ class CustomMenu(Menu):
                                 items.MenuItem(
                                     title='Pengajuan Masuk',
                                     icon='fa fa-tasks',
-                                    url=reverse('admin:izin_pengajuanizin_changelist'),
+                                    url='#',
                                 ),
                             ]                            
                         ),
                         items.MenuItem(
                             title='Semua Izin',
                             icon='fa fa-file-text', 
-                            url='#',                        
+                            url=reverse('admin:izin_pengajuanizin_changelist'),                        
                         ),
                         items.MenuItem(
                             title='Semua Perusahan',
@@ -67,6 +67,24 @@ class CustomMenu(Menu):
                     ]
                 )
         
+        if request.user.groups.filter(name="Kabid").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Verifikasi',
+                    icon='fa fa-file-text',
+                    css_classes='t', 
+                    url=reverse('admin:verifikasi'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Kadin").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Verifikasi',
+                    icon='fa fa-file-text', 
+                    url=reverse('admin:verifikasi'),                
+                ),
+            ]
 
         if hasattr(request.user, "pemohon"):
             menu_utama.children += [
