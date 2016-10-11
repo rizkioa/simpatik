@@ -25,7 +25,12 @@
 
 {% block extrajs %}
 	{{ block.super }}
-    <script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
+    <audio id="sound_alert">
+        <source src="{% static 'sound/alert.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+    <script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
     <script type="text/javascript">
         function toast_server_error(msg_){
             toastr.options = {
@@ -56,17 +61,126 @@
             $("#splash .modal-title").html($(btnEl).attr('data-title'))
             $("#splash .modal-body").html($(btnEl).attr('data-body'))
         }
+        
         $(document).ready(function() {
-            $.ajax({
-                type: 'GET',
-                url: '{% url 'admin:total_izin' %}',
-                success: function(response) {
-                    respon = $.parseJSON(response)
-                    $('.t a').append('<span class="badge bg-info draft">'+(respon)+'</span>')
-                }
 
+            if ($.cookie('id_notify') === undefined){
+                $.cookie("id_notify", "0", {path:"/"});
+            }
 
-            })
+            function total_izin(){
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url 'admin:total_izin' %}',
+                    success: function(response) {
+                        respon_total = $.parseJSON(response)
+                        if (respon_total > 0 ){
+                            $('.t a').append('<span class="badge bg-info">'+(respon_total)+'</span>')
+                        }
+                        // var total = respon_total
+                    }
+                })
+            }
+            function total_skizin(){
+                $.ajax({
+                    type: 'GET',
+                    url: '{% url 'admin:total_skizin' %}',
+                    success: function(response) {
+                        respon_total = $.parseJSON(response)
+                        if (respon_total > 0 ){
+                            $('.r a').append('<span class="badge bg-warning">'+(respon_total)+'</span>')
+                        }
+                        // var total = respon_total
+                    }
+                })
+            }
+            total_izin()
+            total_skizin()
+
+            // if ( 1 === respon_total){
+            // setInterval(total_izin , 20000);
+            // }
+            // alert(total)
+
+            function notify(){
+               $.ajax({
+                    type: 'GET',
+                    url: '{% url 'admin:notification' %}',
+                    success: function(response) {
+                        respon = $.parseJSON(response)
+                        // request permission on page load
+                        if(respon.success){
+                            
+                            document.addEventListener('DOMContentLoaded', function () {
+                              if (!Notification) {
+                                alert('Desktop notifications not available in your browser. Try Chromium.'); 
+                                return;
+                              }
+
+                              if (Notification.permission !== "granted")
+                                Notification.requestPermission();
+                            });
+
+                            function notification() {
+                              if (Notification.permission !== "granted")
+                                Notification.requestPermission();
+                              else {
+                                var dts = Math.floor(Date.now());
+
+                                var notification = new Notification('Notification SIMPATIK', {
+                                    icon: '{% static 'images/SIMPATIK.ico' %}',
+                                    body: respon.pesan,
+                                    vibrate: [200, 100, 200],
+                                    timestamp: dts,
+                                    silent: true,
+                                    data: 'I like peas.'
+                                  // dir: 'rtl'
+                                });
+
+                                // setTimeout(notification.close, 100);
+                                // setTimeout(function() { notification.close() }, 1);
+
+                                notification.sound
+                                notification.timestamp
+                                notification.silent
+                                notification.data
+
+                                notification.onclick = function () {
+                                  // window.open(respon.url, _self);
+                                  location.replace(respon.url);      
+                                };
+
+                                // setTimeout(function(){
+                                //     notification.close();
+                                // }, 10000);
+                                //
+                                
+                                setTimeout(notification.close.bind(notification), 10000); 
+                              }
+                            }
+                            if ($.cookie('id_notify') === respon.total.toString() ){
+                                // console.log("masuk if")
+                            }
+                            else{
+                                // console.log("masuk else")
+                                if (respon.total > 0 ){
+                                    total_skizin()
+                                    total_izin()
+                                    $.cookie("id_notify", respon.total, {path:"/"});
+                                    notification()
+                                    $('#sound_alert')[0].play();
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+
+            // if ( $.cookie('id_notify') > 0){
+            setInterval(notify , 20000);
+            // }
+            
+            
         })
     </script>
     {% block extrajs_site %}

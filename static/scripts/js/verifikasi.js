@@ -158,28 +158,7 @@ function penomoran_izin(id_detil_siup, aksi){
 	  	})
 }
 
-function cetak_izin(id_detil_siup, aksi){
-	openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/'+id_detil_siup,'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
-  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-	$.ajax({ // create an AJAX call...
-	    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi }, // get the form data
-	    type: 'POST', // GET or POST
-	    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
-	    success: function(response) { // on success..
-	        respon = $.parseJSON(response)
-	        if(respon.success){
-	          	toastr["success"](respon.pesan)
-	          	window.location.href= "";
-	      	}
-	      	else{
-              	toastr["error"](respon.pesan)
-            }
-	    },
-	    error: function(data) {                
-	      	toast_server_error()
-	    }
-	});
-}
+
 
 function izin_selesai(id_detil_siup, aksi){
   	csrf_token = $("input[name='csrfmiddlewaretoken']").val();

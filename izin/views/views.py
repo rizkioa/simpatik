@@ -5,13 +5,12 @@ from django.contrib.admin import site
 from functools import wraps
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import available_attrs
-
+from django.core.exceptions import ObjectDoesNotExist
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas, Legalitas
 from izin.models import PengajuanIzin, DetilSIUP
-
 
 from django.template import RequestContext, loader
 import json
@@ -80,32 +79,39 @@ def formulir_siup(request, extra_context={}):
 	extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 
 	# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
-	# if 'id_pengajuan' in request.COOKIES.keys():
-	# 	pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-	# 	alamat_ = ""
-	# 	alamat_perusahaan_ = ""
-	# 	if pengajuan_.pemohon != '':
-	# 		if pengajuan_.pemohon.desa:
-	# 			alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-	# 			extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
-	# 		extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+	if 'id_pengajuan' in request.COOKIES.keys():
+		try:
+			pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+				extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
 
-		# if pengajuan_.perusahaan != '':
-		# 	if pengajuan_.perusahaan.desa:
-		# 		alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-		# 		extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
-		# 	extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
+				extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
 
-		# extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
-		# extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
-		# extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
-		# extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
-		# extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
-		# extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
-		# extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
-		# extra_context.update({ 'presentase_saham_nasional_konfirmasi': pengajuan_.presentase_saham_nasional })
-		# extra_context.update({ 'presentase_saham_asing_konfirmasi': pengajuan_.presentase_saham_asing })
-		# extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+			extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+			extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+			extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
+			if pengajuan_.bentuk_kegiatan_usaha:
+				extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
+			if pengajuan_.jenis_penanaman_modal:
+				extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
+			extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+			extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+			extra_context.update({ 'presentase_saham_nasional_konfirmasi': pengajuan_.presentase_saham_nasional })
+			extra_context.update({ 'presentase_saham_asing_konfirmasi': pengajuan_.presentase_saham_asing })
+			if pengajuan_.kelembagaan:
+				extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+		
+		except ObjectDoesNotExist:
+			pass
 		
 	# print request.COOKIES['id_pengajuan']
 	# +++++++++++++++++++ end jika cookie pengajuan ada dan di refrash +++++++++++++++++

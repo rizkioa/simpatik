@@ -78,6 +78,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			p.desa_id = request.POST.get('desa', None)
 			p.telephone = request.POST.get('telephone', None)
 			p.hp = request.POST.get('hp', None)
+			p.email = request.POST.get('email', None)
 			p.kewarganegaraan = request.POST.get('kewarganegaraan', None)
 			p.pekerjaan = request.POST.get('pekerjaan', None)
 			p.save()
