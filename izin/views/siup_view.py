@@ -92,16 +92,19 @@ def siup_identitas_pemohon_save_cookie(request):
 									user_id=p.id,
 									)
 
-		
-		try:
-			pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-			pengajuan.nama_kuasa = nama_kuasa
-			pengajuan.no_identitas_kuasa = no_identitas_kuasa
-			pengajuan.telephone_kuasa = telephone_kuasa
-			pengajuan.jenis_permohonan_id = jenis_permohonan_
-		except ObjectDoesNotExist:
-			pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
-		pengajuan.save()
+		if k.kode == "503.08/":
+			try:
+				pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+				pengajuan.nama_kuasa = nama_kuasa
+				pengajuan.no_identitas_kuasa = no_identitas_kuasa
+				pengajuan.telephone_kuasa = telephone_kuasa
+				pengajuan.jenis_permohonan_id = jenis_permohonan_
+			except ObjectDoesNotExist:
+				pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+			pengajuan.save()
+		# elif k.kode == ""
+		else:
+			pass
 
 		# if request.user.is_authenticated():
 		# 	created = request.user
@@ -297,21 +300,7 @@ def siup_identitas_perusahan_save_cookie(request):
 	else:
 		data = {'Terjadi Kesalahan': [{'message': 'Data Pemohon tidak ditemukan/tidak ada'}]}
 		data = json.dumps(data)
-	# print "http respon"
 		response = HttpResponse(data)
-	# try:
-	# 	get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
-	# 	response.set_cookie(key='id_perusahaan', value=get_perusahaan.id)
-	# except ObjectDoesNotExist:
-	# 	response.set_cookie(key='id_perusahaan', value=p.id)
-	# if Perusahaan.objects.filter(npwp=request.POST.get('npwp')) is not None:
-	# 	response.set_cookie(key='id_perusahaan', value=get_perusahaan.id)
-	# else:
-	# 	response.set_cookie(key='id_perusahaan', value=perusahaan.id)
-	# if get_perusahaan:
-	# 	response.set_cookie(key='id_perusahaan', value=get_perusahaan.id)
-	# else:
-	# 	response.set_cookie(key='id_perusahaan', value=p.id)
 	return response
 
 def siup_detilsiup_save_cookie(request):

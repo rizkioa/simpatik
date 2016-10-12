@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
 from accounts.models import NomorIdentitasPengguna
-from izin.models import Pemohon
+from izin.models import Pemohon, PengajuanIzin, Riwayat
 from master.models import JenisNomorIdentitas
 from pemohon_forms import PemohonForm
 
@@ -65,10 +65,43 @@ class NomorIdentitasInline(admin.StackedInline):
 class PemohonAdmin(admin.ModelAdmin):
 	form = PemohonForm
 	inlines = [NomorIdentitasInline,]
-	list_display = ('nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon')
+	list_display = ('get_nomor_ktp', 'nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon', 'get_alamat', 'get_riwayat', 'get_pengajuan_terakhir')
 	list_filter = ('nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon')
 	search_fields = ('jenis_pemohon','jabatan_pemohon')
 	
+	def get_list_display_links(self, request, list_display):
+		if request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin') or request.user.groups.filter(name='Pembuat Surat') or request.user.groups.filter(name='Penomoran') or request.user.groups.filter(name='Cetak') or request.user.groups.filter(name='Selesai'):
+			list_display_links = None
+		else:
+			list_display_links = ('nama_lengkap',)
+		return list_display_links
+
+	def get_riwayat(self, obj):
+		# pengajuan_ = PengajuanIzin.objects.filter(pemohon=obj.id).last()
+		riwayat_ = Riwayat.objects.filter(pengajuan_izin__pemohon=obj).last()
+		aktivitas_ = riwayat_.created_at
+		# aktivitas_ = ""
+		return aktivitas_
+	get_riwayat.short_description = "Tgl Aktivitas Terakhir"
+
+	def get_nomor_ktp(self, obj):
+		ktp_ = str(obj.nomoridentitaspengguna_set.last())
+		return ktp_
+	get_nomor_ktp.short_description = "No KTP/Paspor"
+
+	def get_pengajuan_terakhir(self, obj):
+		pengajuan_ = PengajuanIzin.objects.filter(pemohon=obj).last()
+		jenis_izin_ = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
+		return jenis_izin_
+	get_pengajuan_terakhir.short_description = "Pengajuan Izin Terakhir"
+
+	def get_alamat(self, obj):
+		alamat_ = obj.alamat
+		if obj.desa:
+			alamat_ = str(obj.alamat)+", "+str(obj.desa)+", Kec. "+str(obj.desa.kecamatan)+", "+str(obj.desa.kecamatan.kabupaten)
+		return alamat_
+	get_alamat.short_description = "Alamat"
+
 	def ajax_autocomplete(self, request):
 		pilihan = "<option></option>"
 		pemohon_list = Pemohon.objects.all()
@@ -162,6 +195,12 @@ class PemohonAdmin(admin.ModelAdmin):
 		# 		}),
 		# )
 		return fieldsets
+
+	def suit_cell_attributes(self, obj, column):
+		if column in ['alamat']:
+			return {'class': 'text-center'}
+		else:
+			return None
 
 	def save_formset(self, request, form, formset, change):
 		instances = formset.save(commit=False)

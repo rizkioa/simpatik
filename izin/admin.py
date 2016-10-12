@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
-
+from izin.detilsiup_admin import DetilSIUPAdmin
 from izin.izin_admin import IzinAdmin
 from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat
 from izin.pemohon_admin import PemohonAdmin
