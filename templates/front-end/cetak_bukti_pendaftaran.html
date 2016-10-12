@@ -1,5 +1,5 @@
 {% load i18n admin_static staticfiles widgets %}
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
 	<title>Cetak Bukti Pendaftaran</title>
@@ -24,7 +24,7 @@
     * {
       font-family: "Open Sans", Helvetica, Arial, sans-serif;
     }
-	body {
+    body {
         width: 100%;
         height: 100%;
         margin: 0;
@@ -75,29 +75,109 @@
     }
 
     .title, .tabel{
-		border-bottom: 1px solid #7d7d7d;
+        border-bottom: 1px solid #7d7d7d;
     }
     .title h3{
-    	margin-top: 0px;
+        margin-top: 0px;
     }
     .tabel{
-    	padding-top: 0px;
-    	padding-bottom: 10px;
+        padding-top: 0px;
+        padding-bottom: 10px;
     }
 
     table {
     border-collapse: collapse;
-	}
+    }
 
-	.ceklist {
-	    border: 1px solid black;
-	}
+    .ceklist {
+        border: 1px solid black;
+    }
     .font {
         font-size: 12px;
         font-family: "Open Sans", Helvetica, Arial, sans-serif;
     }
+
+    
+    .style2 {
+        border-top: 3px double #8c8b8b;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+    th, td {
+        padding: 0px;
+    }
 </style>
-<body onload="window.print()">
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'scripts/js/print/print.css' %}"> -->
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'scripts/js/print/css/print-preview.css' %}"> -->
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'scripts/js/print/screen.css' %}"> -->
+<!-- <script src="{% static 'scripts/js/print/jquery.tools.min.js' %}"></script>
+<script src="{% static 'scripts/js/print/jquery.print-preview.js' %}"></script> -->
+<!-- <script type="text/javascript">
+    $(function() {
+        /*
+         * Initialise example carousel
+         */
+        $("#feature > div").scrollable({interval: 3000}).autoscroll();
+        
+        /*
+         * Initialise print preview plugin
+         */
+        // Add link for print preview and intialise
+        // $('#aside').prepend('<a class="print-preview">Print this page</a>');
+        // $('a.print-preview').printPreview();
+        
+        // Add keybinding (not recommended for production use)
+        // $(document).bind('keydown', function(e) {
+        //     var code = (e.keyCode ? e.keyCode : e.which);
+        //     if (code == 80 && !$('#print-modal').length) {
+        //         $.printPreview.loadPrintPreview();
+        //         return false;
+        //     }            
+        // });
+        $(document).ready(function() {
+            $.printPreview.loadPrintPreview();
+            return false;
+        })
+        
+    });
+</script> -->
+<body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
     <div class="book">
         <div class="page">
             <div class="subpage">
@@ -114,8 +194,8 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : {{no_pengajuan}}<br>
-                                <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
+                                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
@@ -138,12 +218,12 @@
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ jenis_permohonan }}</td>
+                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{pemohon.nomor_identitas}}</td>
+                        <td width="65%">{{ pemohon.nomor_identitas }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>
@@ -163,12 +243,12 @@
                     <tr>
                         <td width="25%">No. HP</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.hp }}</td>
+                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.email }}</td>
+                        <td width="65%">{% if pemohon.email %}}{{ pemohon.email }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
@@ -178,7 +258,7 @@
                     <tr>
                         <td width="25%">Pekerjaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{pemohon.pekerjaan}}</td>
+                        <td width="65%">{{ pemohon.pekerjaan }}</td>
                     </tr>
                 </table>
                 <h5><u>IDENTITAS PERUSAHAAN</u></h5>
@@ -237,49 +317,52 @@
                     <tr>
                         <td width="40%">Kekayaan Bersih Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="50%">Rp. </td>
+                        <td width="50%">Rp. {{ pengajuan.kekayaan_bersih }}</td>
                     </tr>
                     <tr>
-                        <td width="40%">(tidak termasuk tanah dan bangunan tempat usaha)</td>
-                        <td width="10%">:</td>
-                        <td width="60%"></td>
+                        <td colspan="3">(tidak termasuk tanah dan bangunan tempat usaha)</td>
                     </tr>
                     <tr>
                         <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
-                        <td width="5%"></td>
-                        <td width="65%"></td>
+                        <td width="10%"></td>
+                        <td width="60%">:</td>
                     </tr>
                     <tr>
-                        <td width="30%">a. Total Nilai Saham</td>
+                        <td width="40%" style="padding-left: 30px;">a. Total Nilai Saham</td>
                         <td width="10%">:</td>
-                        <td width="60%">{{ total_nilai_saham }} %</td>
+                        <td width="50%">Rp. {{ pengajuan.total_nilai_saham }}</td>
                     </tr>
                     <tr>
-                        <td width="30%">b. Komposisi Kepemilikan Saham</td>
+                        <td width="30%" style="padding-left: 30px;">b. Komposisi Kepemilikan Saham</td>
                         <td width="10%"></td>
                         <td width="60%"></td>
                     </tr>
                     <tr>
-                        <td width="30%" style="padding-left: 10%;">Dalam</td>
+                        <td width="30%" style="padding-left: 20%;">Dalam</td>
                         <td width="10%">:</td>
-                        <td width="60%">{{ presentase_saham_nasional }} %</td>
+                        <td width="60%">{{ pengajuan.presentase_saham_nasional }} %</td>
                     </tr>
                     <tr>
-                        <td width="30%" style="padding-left: 10%;">Asing</td>
+                        <td width="30%" style="padding-left: 20%;">Asing</td>
                         <td width="10%">:</td>
-                        <td width="60%">{{ presentase_saham_asing }} %</td>
+                        <td width="60%">{% if pengajuan.presentase_saham_asing %}{{ pengajuan.presentase_saham_asing }} %{% else %}-{% endif %}</td>
                     </tr>
                 </table>
                 
+                <br>
+                <br>
+                <br>
                 <hr>
                 <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> 
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                 </i>
             </div>    
         </div>
         <div class="page">
             <div class="subpage">
+                
+
                 <h5><u>Kegiatan Usaha</u></h5>
                 <table class="font" width="100%">
                     <tr>
@@ -290,41 +373,44 @@
                     <tr>
                         <td width="30%">KBLI</td>
                         <td width="5%">:</td>
-                        <td width="65%">{{ "kosong" }}</td>
+                        <td width="65%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
                     </tr>
                     <tr>
                         <td width="30%">Barang/jasa dagang utama</td>
                         <td width="5%">:</td>
-                        <td width="65%">{{ "kosong" }}</td>
+                        <td width="65%">{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
+                    {% endfor %}</td>
                     </tr>
                 </table>
+                {% if pengajuan.legalitas.all %}
             	<h5><u>LEGALITAS PERUSAHAAN</u></h5>
-                <table class="font" width="100%" border="1" style="border: 2px solid #ddd;">
+                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
                     <thead>
                         <tr align="center">
                             <td>Jenis Akta dan Pengesahaan</td>
                             <td>Nama Notaris</td>
                             <td>Alamat Notaris</td>
                             <td>Telp. Notaris</td>
-                            <td>No. Akta</td>
-                            <td>Tgl. Akta</td>
                             <td>No. Pengesahaan</td>
                             <td>Tgl Pengesahaan</td>
                         </tr>
                     </thead>
                     <tbody>
+                    {% for l in pengajuan.legalitas.all %}
                         <tr align="center">
-                            <td>Akta Pendirian</td>
-                            <td>Hasanuddin, S.H</td>
-                            <td>Jl. Mekar Asri No.2 Kediri</td>
-                            <td>035455908</td>
-                            <td>9</td>
-                            <td>10/09/2009</td>
-                            <td>123/ABC/2009</td>
-                            <td>16/09/2009</td>
+                            <td><span>{{ l.jenis_legalitas.jenis_legalitas }}</span></td>
+                            <td><span>{{ l.nama_notaris }}</span></td>
+                            <td><span>{{ l.alamat }}</span></td>
+                            <td><span>{{ l.telephone }}</span></td>
+                            <td><span>{{ l.nomor_pengesahan }}</span></td>
+                            <td><span>{{ l.tanggal_pengesahan }}</span></td>
                         </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <br>
+                {% endif %}
                 <br>
                 <br>
                 <p style="font-size: 12px;text-indent: 30px;">
@@ -339,16 +425,15 @@
                     <br>
                     Pemilik
                     <br>
-                    Cv. Makmur Jaya
+                    {{ perusahaan.nama_perusahaan }}
                     <br>
                     <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
                     <br>
                     <br>
                     <br>
-                    <u class="font"><b>Aiwinur Siti Diah Ayu Mega Ningrum Dwi Pangestuti Lestasi Endang Pamikasih Sri Kumala Sari Dewi Puspita Anggraini</b></u>
+                    <u class="font"><b>{{ pemohon.nama_lengkap }}</b></u>
                 </p>
                 <br>
-                <hr class="style14">
                 <h5>Syarat SIUP:</h5>
                 <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
                     <thead>
@@ -370,6 +455,10 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <br>
+                <br>
+                <br>
+                
                 <!-- <ol class="font">
                     {% if syarat %}
                         {% for s in syarat %}
@@ -378,7 +467,10 @@
                     {% endif %}
                 </ol> -->
                 <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <br>
+                <br>
+                <br>
             </div>    
         </div>
     </div>

@@ -3,11 +3,13 @@
 	
 	{% block extrastyle %}
 		{{ block.super }}
-		 <link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+		<!-- <meta http-equiv="refresh" content="60"> -->
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	{% endblock %}
 
 	{% block extrajs_site %}
 		{{ block.super }}
+
 		<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 		<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 		<script type="text/javascript">
@@ -21,6 +23,12 @@
 	            
 	            return true;
 	        }
+
+	        function reloadpage() {
+			    location.reload(false);
+			}
+
+			setInterval(reloadpage , 120000);
 	    </script>
 	{% endblock %}
 	

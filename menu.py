@@ -38,35 +38,109 @@ class CustomMenu(Menu):
                             icon='fa fa-dashboard fa-fw',
                             url=reverse('admin:index'),
                         ),
-                        items.MenuItem(
-                            title='Pengajuan Izin',
-                            icon='fa fa-file-text-o',
-                            children= [
-                                items.MenuItem(
-                                    title='Pengajuan Baru',
-                                    icon='fa fa-edit',
-                                    url=reverse('admin:add_wizard_izin'),
-                                ),
-                                items.MenuItem(
-                                    title='Pengajuan Masuk',
-                                    icon='fa fa-tasks',
-                                    url=reverse('admin:izin_pengajuanizin_changelist'),
-                                ),
-                            ]                            
-                        ),
+                        # items.MenuItem(
+                        #     title='Pengajuan Izin',
+                        #     icon='fa fa-file-text-o',
+                        #     children= [
+                        #         items.MenuItem(
+                        #             title='Pengajuan Baru',
+                        #             icon='fa fa-edit',
+                        #             url=reverse('admin:add_wizard_izin'),
+                        #         ),
+                        #         items.MenuItem(
+                        #             title='Pengajuan Masuk',
+                        #             icon='fa fa-tasks',
+                        #             url='#',
+                        #         ),
+                        #     ]                            
+                        # ),
                         items.MenuItem(
                             title='Semua Izin',
                             icon='fa fa-file-text', 
-                            url='#',                        
+                            url=reverse('admin:izin_pengajuanizin_changelist'),                        
                         ),
-                        items.MenuItem(
-                            title='Semua Perusahan',
-                            icon='fa fa-building', 
-                            url=reverse('admin:perusahaan_perusahaan_changelist'),                        
-                        ),
+                        # items.MenuItem(
+                        #     title='Semua Perusahan',
+                        #     icon='fa fa-building', 
+                        #     url=reverse('admin:perusahaan_perusahaan_changelist'),                        
+                        # ),
                     ]
                 )
-        
+        if request.user.groups.filter(name="Operator").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Verifikasi Pengajuan',
+                    icon='icon-check',
+                    css_classes='t',
+                    url=reverse('admin:verifikasi'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Kabid").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Verifikasi Pengajuan',
+                    icon='fa fa-file-text',
+                    css_classes='t', 
+                    url=reverse('admin:verifikasi'),                
+                ),
+                items.MenuItem(
+                    title='Verifikasi SKIzin',
+                    icon='fa fa-file-text',
+                    css_classes='r', 
+                    url=reverse('admin:verifikasi_skizin'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Pembuat Surat").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Buat Surat',
+                    icon='fa fa-file-text',
+                    css_classes='t', 
+                    url=reverse('admin:verifikasi'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Kadin").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Verifikasi SKIzin',
+                    icon='fa fa-file-text',
+                    css_classes='r', 
+                    url=reverse('admin:verifikasi_skizin'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Penomoran").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Penomoran Izin',
+                    icon='fa fa-file-text',
+                    css_classes='r', 
+                    url=reverse('admin:verifikasi_skizin'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Cetak").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Pencetakan Izin',
+                    icon='fa fa-file-text',
+                    css_classes='r', 
+                    url=reverse('admin:verifikasi_skizin'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Selsai").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Penstempelan Izin',
+                    icon='fa fa-file-text',
+                    css_classes='r', 
+                    url=reverse('admin:verifikasi_skizin'),                
+                ),
+            ]
 
         if hasattr(request.user, "pemohon"):
             menu_utama.children += [
