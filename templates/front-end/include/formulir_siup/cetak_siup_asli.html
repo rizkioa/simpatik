@@ -128,43 +128,18 @@
 		    padding: 5px;
 		}
 	</style>
-	<script>
-		if ({{ pengajuan.status }} !== 1 || {{ pengajuan.status }} !== 2){
-			document.querySelector('style').textContent += "@media print { body { display: none !important; } }"
-		}
-		// request permission on page load
-		document.addEventListener('DOMContentLoaded', function () {
-		  if (!Notification) {
-		    alert('Desktop notifications not available in your browser. Try Chromium.'); 
-		    return;
-		  }
-
-		  if (Notification.permission !== "granted")
-		    Notification.requestPermission();
-		});
-
-		function notifyMe() {
-		  if (Notification.permission !== "granted")
-		    Notification.requestPermission();
-		  else {
-		    var notification = new Notification('Notification SIMPATIK', {
-		      icon: '{% static 'images/SIMPATIK.ico' %}',
-		      body: "Hey there! You've been notified!",
-		    });
-
-		    // setTimeout(notification.close, 100);
-		    setTimeout(function() { notification.close() }, 1);
-
-		    notification.onclick = function () {
-		      window.open("http://stackoverflow.com/a/13328397/1269037");      
-		    };
-
-		  }
-
-		}
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+	<script type="text/javascript">
+		
 	</script>
+	{% else %}
+	<script>
+		document.querySelector('style').textContent += "@media print { body { display: none !important; } }"
+	</script>
+	{% endif %}
 </head>
 <body id="body">
+{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
 		<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
 			<img src="{% static 'images/icon-print.png' %}">
@@ -173,8 +148,8 @@
 		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
 			<img src="{% static 'images/icon-close.png' %}">
 		</a>
-		<button onclick="notifyMe()">Notify me!</button>
 	</div>
+{% endif %}
 	<div class="book">
 	    <div class="page">
 	        <div class="subpage">
@@ -298,7 +273,7 @@
 		    if(x) window.close();
 	    }
 	    jQuery('#qrcodeTable').qrcode({
-			text	: "{{ pengajuan.no_izin }}{{ perusahaan.nama_perusahaan }}",
+			text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
 			width 	: 100,
 			height 	: 100,
 		});	

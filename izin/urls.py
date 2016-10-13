@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view
+from izin.views import views, layanan_view, siup_view, reklame_view
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -89,4 +89,8 @@ urlpatterns = [
     url(r'^load-pemohon/(?P<ktp_>[0-9A-Za-z_\-]+)$', siup_view.load_pemohon , name='load_pemohon'),
     url(r'^load-perusahaan/(?P<npwp_>[0-9A-Za-z_\-.]+)$', siup_view.load_perusahaan , name='load_perusahaan'),
     # End
+    # 
+    # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
+    url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
+    # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
     ]

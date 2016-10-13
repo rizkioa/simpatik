@@ -5,7 +5,7 @@ from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, D
 from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -274,6 +274,14 @@ class DetilReklame(PengajuanIzin):
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
+	def __unicode__(self):
+		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Detil Reklame'
+		verbose_name_plural = 'Detil Reklame'
+
 class SKIzin(AtributTambahan):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin')
 	isi = models.TextField(verbose_name="Isi", blank=True, null=True)
@@ -281,11 +289,60 @@ class SKIzin(AtributTambahan):
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 	
 class Riwayat(AtributTambahan):
-	alasan = models.CharField(max_length=255, verbose_name='Keterangan')
+	alasan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 	sk_izin = models.ForeignKey(SKIzin, verbose_name='SK Izin', null=True, blank=True)
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin', null=True, blank=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_penolakan', blank=True, null=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.pengajuan_izin), str(self.sk_izin))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Riwayat'
+		verbose_name_plural = 'Riwayat'
+
+class DetilIUJK(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iujk_perusahaan', blank=True, null=True)
+	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IZIN)
+
+	def __unicode__(self):
+		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.jenis_iujk))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Detil IUJK'
+		verbose_name_plural = 'Detil IUJK'
+
+class PaketPekerjaan(models.Model):
+	detil_iujk = models.ForeignKey(DetilIUJK, related_name='paket_pekerjaan_iujk', verbose_name='Detil IUJK')
+	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
+	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU') 
+	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
+	nilai_paket_pekerjaan = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.nama_paket_pekerjaan), str(self.detil_iujk))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Paket Pekerjaan'
+		verbose_name_plural = 'Paket Pekerjaan'
+
+class AnggotaBadanUsaha(models.Model):
+	detil_iujk = models.ForeignKey(DetilIUJK, related_name='anggota_badan_iujk', verbose_name='Detil IUJK')
+	jenis_anggota_badan = models.CharField(max_length=255, verbose_name='Jenis Anggota Badan Usaha', choices=JENIS_ANGGOTA_BADAN_USAHA)
+	nama = models.CharField(max_length=255, verbose_name='Nama')
+	berkas_tambahan = models.ManyToManyField(Berkas, related_name='berkas_anggota_badan_usaha', verbose_name="Berkas Tambahan", blank=True)
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.nama), str(self.detil_iujk))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Anggota Badan Usaha'
+		verbose_name_plural = 'Anggota Badan Usaha'
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
