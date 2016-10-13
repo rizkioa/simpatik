@@ -130,7 +130,6 @@ admin.site.register(Provinsi, ProvinsiAdmin)
 admin.site.register(Kabupaten, KabupatenAdmin)
 admin.site.register(Kecamatan, KecamatanAdmin)
 admin.site.register(Desa, DesaAdmin)
-
 admin.site.register(Settings)
 admin.site.register(JenisNomorIdentitas)
 admin.site.register(Berkas)

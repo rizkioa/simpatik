@@ -1,12 +1,12 @@
-<form method="POST" name="step5" role="form"  %}">
+<form method="POST" name="step5" role="form">
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
-  table width="100%" border="0">
+  <table width="100%" border="0">
     <tr>
       <td width="25%">Jenis Pengajuan</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'>{{ jenis_permohonan_konfirmasi }}</span></td>
     </tr>
   </table>
   <br>
@@ -15,96 +15,91 @@
     <tr>
       <td width="25%">Jenis Pemohon</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.jenis_pemohon}}</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
     </tr>
     <tr>
-      <td width="25%">Nomor KTP/Pastor</td>
+      <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%">{{ request.COOKIES.ktp }}</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ pemohon_konfirmasi.nomor_identitas }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.nama_lengkap}}</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat tempat tinggal</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.alamat}}</td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_ }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.telephone}}</td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.HP</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.hp}}</td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.email}}</td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.kewarganegaraan}}</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Pekerjaan</td>
       <td width="5%">:</td>
-      <td width="70%">Swasta</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
     </tr>
   </table>
   <br>
+
   <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
   <table width="100%" border="0">
     <tr>
       <td width="25%">NPWP</td>
       <td width="5%">:</td>
-      <td width="70%">12345678974</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">UD. Maju Mundur</td>
-    </tr>
-    <tr>
-      <td width="25%">Bentuk Kegiatan Usaha</td>
-      <td width="5%">:</td>
-      <td width="70%">Mikro</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kode Pos</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%">082123981923</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ telepon }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Fax</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email }}</span></td>
     </tr>
   </table>
+  <br>
 
-  
-  
   <br>
   <h4><u>#3. Informasi Kekayaan Daerah</u></h4>
   <h5><u>Pemilik</u></h5>
@@ -112,32 +107,32 @@
     <tr>
       <td width="25%">Jenis Reklame</td>
       <td width="5%">:</td>
-      <td width="70%">___________</td>
+      <td width="70%"></td>
     </tr>
     <tr>
       <td width="25%">Nama / Judul Reklame</td>
       <td width="5%">:</td>
-      <td width="70%">___________</td>
+      <td width="70%"></td>
     </tr>
     <tr>
       <td width="25%">Ukuran, Panjang x Ukuran x Muka/Sisi</td>
       <td width="5%">:</td>
-      <td width="70%">___________</td>
+      <td width="70%"></td>
     </tr>
     <tr>
       <td width="25%">Jumlah</td>
       <td width="5%">:</td>
-      <td width="70%">_____</td>
+      <td width="70%"></td>
     </tr>
     <tr>
       <td width="25%">Waktu / Lama Pemasangan</td>
       <td width="5%">:</td>
-      <td width="70%">_____</td>
+      <td width="70%"></td>
     </tr>
     <tr>
       <td width="25%">Letak Pemasangan</td>
       <td width="5%">:</td>
-      <td width="70%">_____</td>
+      <td width="70%"></td>
     </tr>
   </table>
 
@@ -157,7 +152,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -167,7 +162,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -177,7 +172,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -187,7 +182,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -197,7 +192,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -207,7 +202,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -217,7 +212,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -227,7 +222,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -237,7 +232,7 @@
   <section class="tile bg-greensea">
     <div class="tile-body">
       <label class="checkbox checkbox-custom-alt">
-        <input type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+        <input id="checkbox_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
       </label>
     </div>
   </section>

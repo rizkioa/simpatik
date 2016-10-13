@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}Selamat Datang | SIMPATIK {% endblock %}
+{% block icotitle %}<i class="fa fa-dashboard"></i>&nbsp;{% endblock %}
+{% block content_title %}
+    Dashboard
+{% endblock %}
+
+{% block breadcrumbs %}
+	{% if not is_popup %}
+	<div class="page-bar">
+	    <ul class="page-breadcrumb">
+	        <li>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-dashboard"></i> Dasboard</a>
+	        </li>
+	    </ul>
+	</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block content %}
+<div id="content-main">
+	<div class="row">
+        <div class="col-lg-12">
+            <section class="tile bg-greensea">
+                <div class="tile-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <center>
+                        	   <h2>Selamat Datang diaplikasi SIMPATIK ( Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri )</h2>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs_site %}
+{{ block.super }}
+{% endblock %}
+
+

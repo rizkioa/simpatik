@@ -34,28 +34,36 @@ def add_wizard_siup(request):
 
 	if request.method == 'POST':
 		if request.POST.get('nama_izin') :
+			print "POST"
 			if request.POST.get('nama_izin') and request.POST.get('kelompok_izin'):
+				print "if"
 				id_kelompok_ = request.POST.get('kelompok_izin')
 				id_kelompok_ = int(id_kelompok_)
 			else:
 				kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
+				print kode_izin_
 				try:
-					id_kelompok_ = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
-					id_kelompok_ = id_kelompok_.id
+					id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
+					id_kelompok_ = id_kelompok_list.id
 				except AttributeError:
 					msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
 					messages.warning(request, msg_, extra_tags='safe')
 					return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
-
-			url_ = reverse('admin:izin_proses_siup')
+				print "kelompok"+id_kelompok_list.kode
+				if id_kelompok_list.kode == "503.08/":
+				# print "idkelom"+id_kelompok_list.kode
+					url_ = reverse('admin:izin_proses_siup')
+				elif id_kelompok_list.kode == "503.03.01/" or id_kelompok_list.kode == "503.03.02/":
+					url_ = reverse('admin:izin_proses_reklame')
+				else:
+					url_ = "#"
 			response = HttpResponseRedirect(url_) # Redirect to url
 			response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
 
-			print request.COOKIES
+			# print request.COOKIES
 			return response
 		else:
 			messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
-
 
 	EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 	extra_context.update({'jenis': EMPTY_JENIS_IZIN})
@@ -63,7 +71,6 @@ def add_wizard_siup(request):
 	template = loader.get_template("admin/izin/izin/form_siup.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
-
 
 def formulir_siup(request):
 	extra_context={}
@@ -90,6 +97,11 @@ def formulir_siup(request):
 		extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 
+		# extra_context jika cookie masih ada
+		# konfirmasi_ec_pemohon = Pemohon.objects.filter(id=request.COOKIES['id_pemohon'])
+		# if request.COOKIES['id_detail_siup'] is not None:
+		#konfirmasi_ec_detilsiup = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+		#extra_context.update({'konfirmasi_ec_detilsiup': konfirmasi_ec_detilsiup})
 		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 		ec = RequestContext(request, extra_context)
@@ -113,7 +125,6 @@ def cetak(request, id_pengajuan_izin_):
 	template = loader.get_template("admin/izin/izin/cetak.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
-		
 
 # def formulir_siup(request):
 # 	extra_context={}

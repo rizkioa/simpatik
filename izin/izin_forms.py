@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -48,11 +48,15 @@ class PerusahaanForm(forms.ModelForm):
 
 class PengajuanSiupForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
-	
 	class Meta:
 		model = DetilSIUP
 		fields = ('kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
 
+class PengajuanReklameForm(forms.ModelForm):
+	"""docstring for PengajuanSiupForm"""
+	class Meta:
+		model = DetilReklame
+		fields = ('jenis_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan', 'desa')
 
 class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
@@ -108,6 +112,12 @@ class UploadBerkasAktaPerubahanForm(forms.ModelForm):
 		fields = ('berkas',)
 		
 class UploadBerkasPendukungForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)
+
+class UploadBerkasPenolakanIzinForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
 	class Meta:
 		model = Berkas

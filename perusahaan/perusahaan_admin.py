@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.decorators import user_passes_test
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.utils.decorators import method_decorator
@@ -12,7 +12,7 @@ from perusahaan.models import Perusahaan,ProdukUtama
 import json
 
 class PerusahaanAdmin(admin.ModelAdmin):
-	list_display = ('nama_perusahaan', 'alamat_perusahaan', 'telepon', 'fax','email',)
+	# list_display = ('nama_perusahaan', 'alamat_perusahaan', 'telepon', 'fax','email',)
 	list_filter = ('status',)
 	search_fields = ('nama_perusahaan', 'alamat_perusahaan', 'telepon','fax', 'email')
 	ordering = ('id',)
@@ -67,6 +67,40 @@ class PerusahaanAdmin(admin.ModelAdmin):
 
 			return fieldsets
 
+	def get_readonly_fields(self, request, obj=None):
+		rf = ('nama_perusahaan', 'alamat_perusahaan', 'lt','lg','kode_pos','telepon','fax','email')
+		rf_superuser = (None,)
+		if request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin') or request.user.groups.filter(name='Pembuat Surat') or request.user.groups.filter(name='Penomoran') or request.user.groups.filter(name='Cetak') or request.user.groups.filter(name='Selesai'):
+			return rf
+		else:
+			return rf_superuser
+		return rf
+
+	def perusahaan_terdaftar(self, request, extra_context={}):
+		self.request = request
+		return super(PerusahaanAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def get_list_display(self, request):
+		func_view, func_view_args, func_view_kwargs = resolve(request.path)
+		list_display = ('nama_perusahaan', 'alamat_perusahaan', 'telepon', 'fax','email',)
+		if func_view.__name__ == 'perusahaan_terdaftar':
+			list_display = ('npwp', 'nama_perusahaan', 'get_alamat', 'created_at')
+		return list_display
+
+	def get_list_display_links(self, request, list_display):
+		if request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin') or request.user.groups.filter(name='Pembuat Surat') or request.user.groups.filter(name='Penomoran') or request.user.groups.filter(name='Cetak') or request.user.groups.filter(name='Selesai'):
+			list_display_links = None
+		else:
+			list_display_links = ('nama_perusahaan',)
+		return list_display_links
+
+	def get_alamat(self, obj):
+		alamat_ = obj.alamat_perusahaan
+		if obj.desa:
+			alamat_ = str(obj.alamat_perusahaan)+", "+str(obj.desa)+", Kec. "+str(obj.desa.kecamatan)+", "+str(obj.desa.kecamatan.kabupaten)
+		return alamat_
+	get_alamat.short_description = "Alamat"
+
 	def ajax_autocomplete(self, request):
 		pilihan = "<option></option>"
 		perusahaan_list = Perusahaan.objects.all()
@@ -102,6 +136,6 @@ class PerusahaanAdmin(admin.ModelAdmin):
 			# url(r'^ajax/legalitas/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_legalitas_perusahaan), name='ajax_legalitas_perusahaan'),
 			# url(r'^ajax/kegiatan_usaha/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_kegiatan_usaha), name='ajax_kegiatan_usaha'),
 			url(r'^ajax/produk_utama/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_produk_utama), name='ajax_produk_utama'),
-			
+			url(r'^perusahaan-terdaftar/$', self.admin_site.admin_view(self.perusahaan_terdaftar), name='perusahaan_terdaftar'),
 			)
 		return my_urls + urls

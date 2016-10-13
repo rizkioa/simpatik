@@ -211,7 +211,7 @@ class JenisPermohonanIzin(models.Model):
 
 class PengajuanIzin(AtributTambahan):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
-	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)	
+	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	jenis_permohonan = models.ForeignKey(JenisPermohonanIzin, verbose_name='Jenis Permohonan Izin')
@@ -223,6 +223,8 @@ class PengajuanIzin(AtributTambahan):
 	telephone_kuasa = models.CharField(max_length=255, verbose_name='Telp. Kuasa', blank=True, null=True)
 
 	berkas_tambahan = models.ManyToManyField(Berkas, related_name='berkas_tambahan_izin', verbose_name="Berkas Tambahan", blank=True)
+
+	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -248,8 +250,9 @@ class DetilSIUP(PengajuanIzin):
 	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_siup', blank=True, null=True, verbose_name='Jenis Penanaman Modal')	
 	kekayaan_bersih = models.DecimalField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_digits=10, decimal_places=2, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
 	total_nilai_saham = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True, verbose_name='Total Nilai Saham')
-	presentase_saham_nasional = models.DecimalField(max_digits=3, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
+	presentase_saham_nasional = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
 	presentase_saham_asing = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Asing')
+	jenis_pengajuan = models.IntegerField(verbose_name="Jenis Pengajuan", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -271,19 +274,18 @@ class DetilReklame(PengajuanIzin):
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
-# class DataPerubahan(models.Model):
-# 	tabel_asal = models.CharField(max_length=255, blank=True, null=True, verbose_name='Tabel Asal')
-# 	nama_field = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nama Field')
-# 	isi_field_lama = models.CharField(max_length=255, blank=True, null=True, verbose_name='Isi Field Lama')
-# 	created_at = models.DateTimeField(editable=False)
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.tabel_asal)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Data Perubahan'
-# 		verbose_name_plural = 'Data Perubahan'
+class SKIzin(AtributTambahan):
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin')
+	isi = models.TextField(verbose_name="Isi", blank=True, null=True)
+	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_sk', blank=True, null=True)
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+	
+class Riwayat(AtributTambahan):
+	alasan = models.CharField(max_length=255, verbose_name='Keterangan')
+	sk_izin = models.ForeignKey(SKIzin, verbose_name='SK Izin', null=True, blank=True)
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin', null=True, blank=True)
+	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_penolakan', blank=True, null=True)
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
@@ -379,34 +381,6 @@ class DetilReklame(PengajuanIzin):
 # 		ordering = ['id']
 # 		verbose_name = 'Detil HO'
 # 		verbose_name_plural = 'Detil HO'
-
-# class JenisReklame(models.Model):
-# 	jenis_reklame = models.CharField(max_length=255, verbose_name='Jenis Reklame')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_reklame)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Reklame'
-# 		verbose_name_plural = 'Jenis Reklame'
-
-# class DataReklame(models.Model):
-# 	izin = models.ForeignKey(Izin, verbose_name='Izin')
-# 	jenis_reklame = models.ForeignKey(JenisReklame, verbose_name='Jenis Reklame')
-# 	judul_reklame = models.CharField(max_length=255,null=True, blank=True, verbose_name='Judul Reklame')
-# 	panjang = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Panjang')
-# 	lebar = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Lebar')
-# 	sisi = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name='Sisi')
-# 	lama_pemasangan = models.IntegerField(blank=True, null=True, verbose_name='Lama Pemasangan')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.judul_reklame)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Data Reklame'
-# 		verbose_name_plural = 'Data Reklame'
 
 # class VerivikasiIzin(models.Model):
 # 	nama_verifikasi = models.CharField(max_length=255,null=True, blank=True, verbose_name='Nama Verifikasi')

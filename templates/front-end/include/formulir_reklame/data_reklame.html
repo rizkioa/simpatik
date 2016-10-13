@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}">
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'reklame_detilreklame_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -8,48 +8,59 @@
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Jenis Reklame</label>
+      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select class="form-control chosen-select mb-10" name="jenis_reklame" required="" data-parsley-trigger="change">
           <option value>-- Jenis Reklame --</option>
+          {% if jenis_reklame %}
+            {% for j in jenis_reklame %}
+              <option id="id_jenis_reklame" value="{{ j.id }}">{{ j.jenis_reklame }}</option>
+            {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Judul Reklame</label>
+      <label for="input01" class="col-sm-2 control-label"><strong>Judul Reklame</strong></label>
       <div class="col-sm-7">
-        <textarea class="form-control" rows="5" required="" name="alamat" placeholder=""></textarea>
+        <textarea class="form-control" rows="5" required="" data-parsley-trigger="change" name="alamat" placeholder=""></textarea>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Ukuran Reklame</label>
-      <label for="input01" class="col-sm-2 control-label">Panjang</label>
-      <div class="col-sm-2">
-        <input type="text" required="" class="form-control">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">&nbsp</label>
-      <label for="input01" class="col-sm-2 control-label">Lebar</label>
-      <div class="col-sm-2">
-        <input type="text" required="" class="form-control">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">&nbsp</label>
-      <label for="input01" class="col-sm-2 control-label">Sisi</label>
-      <div class="col-sm-2">
-        <input type="text" required="" class="form-control">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Lama Pemasangan</label>
-      <div class="col-sm-2">
+      <label for="input01" class="col-sm-2 control-label"><strong>Ukuran Reklame</strong></label>
+      <div class="col-sm-3">
         <div class="input-group">
-          <input type="text" required="" class="form-control">
+            <span class="input-group-addon">
+              <span>Panjang</span>
+            </span>
+            <input type="text" required="" data-parsley-trigger="change" class="form-control">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
+            <span class="input-group-addon">
+              <span>Lebar</span>
+            </span>
+            <input type="text" required="" data-parsley-trigger="change" class="form-control">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
+            <span class="input-group-addon">
+              <span>Sisi</span>
+            </span>
+            <input type="text" required="" data-parsley-trigger="change" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Lama Pemasangan</strong></label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" required="" data-parsley-trigger="change" class="form-control">
           <span class="input-group-addon">
             <span>Hari</span>
           </span>
@@ -58,30 +69,25 @@
     </div>
 
      <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Letak Reklame</label>
+      <label for="input01" class="col-sm-2 control-label"><strong>Letak Reklame</strong></label>
       <div class="col-sm-7">
-        <textarea class="form-control" rows="5" name="alamat" required="" placeholder="isi alamat pemasangan letak reklame"></textarea>
+        <textarea class="form-control" rows="5" name="alamat" required="" data-parsley-trigger="change" placeholder="isi alamat pemasangan letak reklame"></textarea>
       </div>
     </div>
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kota/Kabupaten --</option>
-          {% if kabupaten %}
-          {% for k in kabupaten %}
-          <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
-          {% endfor %}
-          {% endif %}
+        <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+          <option value="1">Kabupaten Kediri</option>
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kecamatan</label>
+    <div class="form-group" id="kecamatan3">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select id="id_kecamatan3" required="" data-parsley-trigger="change" name="kecamatan" class="form-control chosen-select mb-10">
           <option value>-- Pilih Kecamatan --</option>
           {% if kecamatan %}
           {% for k in kecamatan %}
@@ -92,18 +98,11 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+    <div class="form-group" id="desa3">
+      <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kelurahan/Desa --</option>
-          {% if desa %}
-          {% for d in desa %}
-          <option value="{{ d.id }}">{{ d.nama_desa }}</option>
-          {% endfor %}
-          {% endif %}
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa3" required="" data-parsley-trigger="change">
         </select>
       </div>
     </div>
-    
 </form>

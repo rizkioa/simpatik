@@ -98,116 +98,48 @@
 <script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
 <script>
-  $(window).load(function(){
-    $('#rootwizard').bootstrapWizard({
-      onTabShow: function(tab, navigation, index) {
-        var $total = navigation.find('li').length;
-        var $current = index+1;
-        if($current >= $total) {
-          $('#rootwizard').find('.pager .next').hide();
-          $('#rootwizard').find('.pager .finish').show();
-          $('#rootwizard').find('.pager .finish').removeClass('disabled');
-        } else {
-          $('#rootwizard').find('.pager .next').show();
-          $('#rootwizard').find('.pager .finish').hide();
-        }
-      },
+	$(window).load(function(){
+		$('#rootwizard').bootstrapWizard({
+			onTabShow: function(tab, navigation, index) {
+			    var $total = navigation.find('li').length;
+			    var $current = index+1;
+			    if($current >= $total) {
+			      $('#rootwizard').find('.pager .next').hide();
+			      $('#rootwizard').find('.pager .finish').show();
+			      $('#rootwizard').find('.pager .finish').removeClass('disabled');
+			    }else{
+			      $('#rootwizard').find('.pager .next').show();
+			      $('#rootwizard').find('.pager .finish').hide();
+			    }
+			},
 
-      onNext: function(tab, navigation, index) {
-        var form = $('form[name="step'+ index +'"]');
-        form.parsley().validate();
-        if (!form.parsley().isValid()) {
-            return false;
-        }
-      },
+			onNext: function(tab, navigation, index) {
+			    // var form = $('form[name="step'+ index +'"]');
+			    // form.parsley().validate();
+			    // if (!form.parsley().isValid()) {
+			    //     return false;
+			    // }
+			    return false;
+			},
 
-      onTabClick: function(tab, navigation, index) {
-        // var form = $('form[name="step'+ (index+1) +'"]');
-        // form.parsley().validate();
-        // if (!form.parsley().isValid()) {
-        //     return false;
-        // }
-        return true;
-      }
-    });
+		  	onTabClick: function(tab, navigation, index) {
+			    // var form = $('form[name="step'+ (index+1) +'"]');
+			    // form.parsley().validate();
+			    // if (!form.parsley().isValid()) {
+			    //     return false;
+			    // }
+			    return true;
+		  	}
+		});
+	});
 
-    // document.querySelector('#alert').onclick = function(){
-    //     // swal("Good job!", "You clicked the button!", "success");
-    //     swal({
-    //       showConfirmButton: false,
-    //       type: 'success',
-    //       title: 'Pendaftaran Berhasil Tersimpan',
-    //       timer: 2000
-    //     })
-    //     window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
-    //   };
-  });
+	// Function to capitalize for string
+	String.prototype.capitalize = function() {
+	  return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+	};
 
-  // Function to capitalize for string
-  String.prototype.capitalize = function() {
-      return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-  };
-
-  function next_tab(btn){
-  var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
-  var frm = $('form[name="step'+ index +'"]');
-  frm.parsley().validate();
-  if (frm.parsley().isValid()) {
-    $( ".tab-content #tab"+index ).mask('loading')
-    $(btn).attr('disabled', 'disabled')
-    $.ajax({
-        type: frm.attr('method'),
-        url: frm.attr('action'),
-        data: frm.serialize(),
-        success: function (response){
-          respon = $.parseJSON(response)
-                $(btn).removeAttr('disabled')
-                if(respon.success){
-                  toastr["success"](respon.pesan)
-                  // $.cookie("keys", "value"); set cookie
-                  for (var i = 0; i < respon.data.length; i++){
-                    var key = Object.keys(respon.data[i]); // Mencari key json
-                    // console.log(key[0]);
-                    if (key[0]= "status_upload") {
-                      $("#npwp_perusahaan").hide(1000)
-
-                    }else{
-                      var val = respon.data[i][key[0]] // mencari value json
-                      // console.log(key[0]+"_konfirmasi");
-                      var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-                      $(id).text(val);
-                    }
-                  }
-            $( ".tab-content #tab"+index ).unmask()
-            tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-            $(tab_index).tab('show')
-                }else{
-                  // console.log(respon);
-                  // console.log(typeof respon);
-                  var a = Object.keys(respon);
-                  // console.log(respon['nama_lengkap'][0]['message']);
-                  // console.log(a.length);
-                  for (var i = 0; i < a.length; i++){
-                    // console.log(a[i]);
-                    // console.log(respon[a[i]]);
-                    var field = a[i].replace("_", " ").capitalize();
-                    toastr["error"](field+", "+respon[a[i]][0]['message'])
-                    $("#"+a[i]+"").addClass("has-error");
-                    // console.log($("#"+a[i]+"").addClass("parsley-error"));
-                  }
-                  $( ".tab-content #tab"+index ).unmask()
-                }
-        },
-        error: function(response){
-          $( ".tab-content #tab"+index ).unmask()
-          $(btn).removeAttr('disabled')
-          toastr["error"]("Terjadi kesalahan pada koneksi server.")
-        }
-      });
-    }
-  };
 </script>
 
 

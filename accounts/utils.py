@@ -7,16 +7,27 @@ STATUS = (
 	(5, 'Archive'),
 	(6, 'Draft'),
 	(7, 'Rejected'),
+	(8, 'Survey'),
+	(9, 'Verified'),
+	(10, 'Regitered'),
 )
 
 # Status Data : 
-# 1. Active: Data Transaksi
-# 2. Inactive: Data diinputkan oleh staff dan perlu diverifikasi sama admin
-# 3. Blocked: Data tidak dapat dipakai sampai admin mengubahnya ke status yg lain
-# 4. Submitted: Sudah tidak dapat diubah sama sekali, untuk mengubahnya harus menggunakan surat resmi kepada admin
-# 5. Archive: pemindahan data ke sistem archive
-# 6. Draft: 
+# 1. Active: Ketika izin selesai
+# 2. Inactive: Kalo tidak ada survey kabid mengubah status dari Submitted ke Inactive
+# 3. Blocked: 
+# 4. Submitted: Operator mengubah Draft ke Submitted
+# 5. Archive: 
+# 6. Draft: default
 # 7. Rejected:
+# 8. Survey: Dan jika ada survey mengubah status Submitted ke Survey dan jika Survey selesai kabid merubah status menjadi Inactive
+# 9. Verified:
+# 10. Regitered:
+# 
+# Status Data surat:
+# 1. Surat dibuat default status Draft
+# 2. kabid merubah status Draft ke Submitted
+# 3. 
 
 def get_status_color(obj):
 	warna = ""

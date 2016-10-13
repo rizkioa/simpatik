@@ -1,15 +1,13 @@
-
-<form method="POST" name="step6" role="form" {% if user.is_authenticated %} action="{% url 'cetak_permohonan' %}" {% else %} action="#" {% endif %} data-parsley-validate novalidate>
+<form method="POST" name="step6" role="form" data-parsley-validate novalidate>
   {% csrf_token %}
   
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
-  
   <table width="100%" border="0">
     <tr>
       <td width="25%">Jenis Pengajuan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'>{{ jenis_permohonan_konfirmasi }}</span></td>
     </tr>
   </table>
   <br>
@@ -18,47 +16,47 @@
     <tr>
       <td width="25%">Jenis Pemohon</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ pemohon_konfirmasi.nomor_identitas }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat tempat tinggal</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_ }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.HP</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='hp_konfirmasi'></span></td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_konfirmasi'></span></td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Pekerjaan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
     </tr>
   </table>
   <br>
@@ -67,37 +65,37 @@
     <tr>
       <td width="25%">NPWP</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='npwp_konfirmasi'></span></td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_perusahaan_konfirmasi'></span></td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kode Pos</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='kode_pos_konfirmasi'></span></td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='telepon_konfirmasi'></span></td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ telepon }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Fax</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='fax_konfirmasi'></span></td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_konfirmasi'></span></td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email }}</span></td>
     </tr>
   </table>
   <br>
@@ -106,12 +104,12 @@
     <tr>
       <td width="25%">Bentuk Kegiatan Usaha</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id="bentuk_kegiatan_usaha_konfirmasi"></span></td>
     </tr>
     <tr>
       <td>Status Penanaman Modal</td>
       <td>:</td>
-      <td></td>
+      <td><span id="status_penanaman_modal_konfirmasi"></span></td>
     </tr>
   </table>
   <h5><u>Kekayaan Bersih dan Saham</u></h5>
@@ -119,7 +117,7 @@
     <tr>
       <td width="40%">Kekayaan Bersih Perusahaan</td>
       <td width="5%">:</td>
-      <td width="55%"></td>
+      <td width="55%"><span id="kekayaan_bersih_konfirmasi"></span></td>
     </tr>
     <tr>
       <td colspan="3">(tidak termasuk tanah dan bengunan temoat usaha)</td>
@@ -130,7 +128,7 @@
     <tr>
       <td><p style="text-indent: 30px;">a. Total Nilai Saham</p></td>
       <td>:</td>
-      <td></td>
+      <td><span id="total_nilai_saham_konfirmasi"></span></td>
     </tr>
     <tr>
       <td colspan="3"><p style="text-indent: 30px;">b. Komposisi Kepemilikan Saham:</p></td>
@@ -138,12 +136,12 @@
     <tr>
       <td><p style="text-indent: 60px;">Dalam Negeri</p></td>
       <td>:</td>
-      <td></td>
+      <td><span id="presentase_saham_nasional_konfirmasi"></span></td>
     </tr>
     <tr>
       <td><p style="text-indent: 60px;">Asing</p></td>
       <td>:</td>
-      <td></td>
+      <td><span id="presentase_saham_asing_konfirmasi"></span></td>
     </tr>
   </table>
   <h5><u>Kegiatan Usaha</u></h5>
@@ -151,17 +149,17 @@
       <tr>
           <td width="25%">Kelembagaan</td>
           <td width="5%">:</td>
-          <td width="70%">Perdagangan Kecil</td>
+          <td width="70%"><span id="kelembagaan_konfirmasi"></span></td>
       </tr>
       <tr>
           <td width="25%">KBLI</td>
           <td width="5%">:</td>
-          <td width="70%">12345</td>
+          <td width="70%"><span id="kbli_konfirmasi_c"></span></td>
       </tr>
       <tr>
           <td width="25%">Barang/jasa dagang utama</td>
           <td width="5%">:</td>
-          <td width="70%">Peralatan pertanian, Bibit</td>
+          <td width="70%"><span id="produk_utama_konfirmasi"></span></td>
       </tr>
   </table>
   <br>
@@ -174,8 +172,8 @@
             <th>Nama Notaris</th>
             <th>Alamat Notaris</th>
             <th>Telp. Notaris</th>
-            <th>No. Akta</th>
-            <th>Tgl Akta</th>
+            <!-- <th>No. Akta</th>
+            <th>Tgl Akta</th> -->
             <th>No. Pengesahan</th>
             <th>Tgl Pengesahan</th>
           </tr>
@@ -184,16 +182,49 @@
           <tr>
             <td><span id='jenis_legalitas_konfirmasi'></span></td>
             <td><span id='nama_notaris_konfirmasi'></span></td>
-            <td><span id='alamat_konfirmasi'></span></td>
-            <td><span id='telephone_konfirmasi'></span></td>
-            <td><span id=''></span></td>
-            <td><span id=''></span></td>
-            <td><span id='nomor_pengesahan_konfirmasi'></span></td>
+            <td><span id='alamat_notaris_konfirmasi'></span></td>
+            <td><span id='telephone_notaris_konfirmasi'></span></td>
+            <!-- <td><span id=''></span></td>
+            <td><span id=''></span></td> -->
+            <td><span id='nomor_pengesahaan_konfirmasi'></span></td>
             <td><span id='tanggal_pengesahan_konfirmasi'></span></td>
           </tr>
         </tbody>
     </table>
   </div>
+  <br>
+  <div id="konfirmasi_legalitas_perubahan">
+    <h4><u>#LEGALITAS PERUBAHAN PERUSAHAAN</u></h4>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Jenis Akta dan Pengesahan</th>
+              <th>Nama Notaris</th>
+              <th>Alamat Notaris</th>
+              <th>Telp. Notaris</th>
+              <!-- <th>No. Akta</th>
+              <th>Tgl Akta</th> -->
+              <th>No. Pengesahan</th>
+              <th>Tgl Pengesahan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span id='jenis_legalitas_perubahan_konfirmasi'></span></td>
+              <td><span id='nama_notaris_perubahan_konfirmasi'></span></td>
+              <td><span id='alamat_notaris_perubahan_konfirmasi'></span></td>
+              <td><span id='telephone_notaris_perubahan_konfirmasi'></span></td>
+              <!-- <td><span id=''></span></td>
+              <td><span id=''></span></td> -->
+              <td><span id='nomor_pengesahaan_perubahan_konfirmasi'></span></td>
+              <td><span id='tanggal_pengesahan_perubahan_konfirmasi'></span></td>
+            </tr>
+          </tbody>
+      </table>
+    </div>
+  </div>
+  
   <br>
   <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>
   <table class="table table-bordered">
@@ -281,7 +312,7 @@
     <section class="tile bg-greensea">
       <div class="tile-body">
         <label class="checkbox checkbox-custom-alt">
-          <input required="" data-parsley-trigger="change" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+          <input id="checkbox_siup_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
         </label>
       </div>
     </section>
