@@ -20,3 +20,15 @@ def get_nomor_pengajuan(kode_):
 		nomor += "/"+str(now.strftime("%m"))+str(now.strftime("%d"))
 		nomor += "/"+str(now.strftime("%Y"))
 	return nomor
+
+JENIS_IUJK = (
+	('IUJK Pelaksana Kontruksi', 'IUJK Pelaksana Kontruksi'),
+	('IUJK Perencana Kontruksi', 'IUJK Perencana Kontruksi'),
+	('IUJK Pengawas Kontruksi', 'IUJK Pengawas Kontruksi'),
+)
+
+JENIS_ANGGOTA_BADAN_USAHA = (
+	('Direktur / Penanggung Jawab Badan Usaha', 'Direktur / Penanggung Jawab Badan Usaha'),
+	('Penanggung Jawab Teknik Badan Usaha', 'Penanggung Jawab Teknik Badan Usaha'),
+	('Tenaga Non Teknik', 'Tenaga Non Teknik'),
+)
