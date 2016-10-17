@@ -495,7 +495,7 @@ def cetak_huller(request, extra_context={}):
 	return render(request, "front-end/include/formulir_huller/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_huller(request, extra_context={}):
-	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="4") #cetak bukti blm ada
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="4") 
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_huller/cetak_bukti_pendaftaran.html", extra_context)
 
@@ -503,7 +503,30 @@ def cetak_kekayaan(request, extra_context={}):
 	return render(request, "front-end/include/formulir_kekayaan/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_kekayaan(request, extra_context={}):
-	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="5") #cetak bukti blm ada
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="5") 
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_kekayaan/cetak_bukti_pendaftaran.html", extra_context)
 
+def cetak_imb_umum(request, extra_context={}):
+	return render(request, "front-end/include/imb_umum/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_imb_umum(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/imb_umum/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_imb_perumahan(request, extra_context={}):
+	return render(request, "front-end/include/formulir_imb_perumahan/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_imb_perumahan(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_imb_perumahan/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_imb_reklame(request, extra_context={}):
+	return render(request, "front-end/include/formulir_imb_reklame/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
