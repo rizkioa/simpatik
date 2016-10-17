@@ -46,6 +46,9 @@ class PerusahaanForm(forms.ModelForm):
 		model = Perusahaan
 		fields = ('nama_perusahaan', 'nama_grup','alamat_perusahaan','desa','kode_pos','telepon','fax','email','npwp')
 
+	def clean_email(self):
+		return self.cleaned_data['email'] or None
+
 class PengajuanSiupForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:

@@ -65,7 +65,7 @@ class NomorIdentitasInline(admin.StackedInline):
 class PemohonAdmin(admin.ModelAdmin):
 	form = PemohonForm
 	inlines = [NomorIdentitasInline,]
-	list_display = ('get_nomor_ktp', 'nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon', 'get_alamat', 'get_riwayat', 'get_pengajuan_terakhir')
+	list_display = ('get_nomor_ktp', 'nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon', 'get_alamat')
 	list_filter = ('nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon')
 	search_fields = ('jenis_pemohon','jabatan_pemohon')
 	
