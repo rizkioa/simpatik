@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
-from izin.models import DetilSIUP
+from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, Pemohon
+from perusahaan.models import Perusahaan
 from django.utils.safestring import mark_safe
+from django.http import HttpResponse
+import json
+from django.db.models import Q
+from datetime import date
 
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -69,5 +74,33 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		else:
 			return rf_superuser
 		return rf
+
+	def ajax_dashboard(self, request):
+		tahun_sekarang = date.today().year
+		pemohon = len(Pemohon.objects.all())
+		perusahaan = len(Perusahaan.objects.all())
+		pengajuan_selesai = len(PengajuanIzin.objects.filter(status=1))
+		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1)))
+		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
+		pengajuan_siup = len(DetilSIUP.objects.filter(created_at__year=tahun_sekarang))
+		pengajuan_reklame = len(DetilReklame.objects.filter(created_at__year=tahun_sekarang))
+		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_reklame': pengajuan_reklame }
+		return HttpResponse(json.dumps(data))
+
+	def ajax_load_pengajuan_siup(self, request, id_pengajuan_):
+		data = ""
+		if id_pengajuan_:
+			pengajuan_list = PengajuanIzin.objects.filter(id=id_pengajuan_)
+
+		return HttpResponse(json.dumps(data))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(DetilSIUPAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^ajax-dashboard/$', self.admin_site.admin_view(self.ajax_dashboard), name='ajax_dashboard'),
+			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
+			)
+		return my_urls + urls
 
 admin.site.register(DetilSIUP, DetilSIUPAdmin)

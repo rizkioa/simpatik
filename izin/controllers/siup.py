@@ -100,11 +100,52 @@ def formulir_siup(request):
 		extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 
-		# extra_context jika cookie masih ada
-		# konfirmasi_ec_pemohon = Pemohon.objects.filter(id=request.COOKIES['id_pemohon'])
-		# if request.COOKIES['id_detail_siup'] is not None:
-		#konfirmasi_ec_detilsiup = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-		#extra_context.update({'konfirmasi_ec_detilsiup': konfirmasi_ec_detilsiup})
+		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != "":
+				try:
+					pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+					alamat_ = ""
+					alamat_perusahaan_ = ""
+					if pengajuan_.pemohon:
+						if pengajuan_.pemohon.desa:
+							alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+						extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+						extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+						try:
+							ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+							extra_context.update({'cookie_file_ktp': ktp_.berkas })
+						except ObjectDoesNotExist:
+							pass
+					if pengajuan_.perusahaan:
+						if pengajuan_.perusahaan.desa:
+							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
+						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
+						# if pengajuan_.perusahaan.legalitas:
+						legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
+						legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+						extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
+						extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+
+					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+					extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
+					if pengajuan_.bentuk_kegiatan_usaha:
+						extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
+					if pengajuan_.jenis_penanaman_modal:
+						extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
+					extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+					extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+					extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
+					extra_context.update({ 'presentase_saham_asing_konfirmasi': str(pengajuan_.presentase_saham_asing)+" %" })
+					if pengajuan_.kelembagaan:
+						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+					extra_context.update({ 'pengajuan_': pengajuan_ })
+
+				except ObjectDoesNotExist:
+					pass
 		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 		ec = RequestContext(request, extra_context)

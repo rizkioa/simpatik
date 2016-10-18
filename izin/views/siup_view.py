@@ -72,16 +72,16 @@ def siup_identitas_pemohon_save_cookie(request):
 				p = Pemohon.objects.get(username = paspor_)
 			elif ktp_ and paspor_:
 				p = Pemohon.objects.get(username = ktp_)
-
-			p.nama_lengkap = request.POST.get('nama_lengkap', None)
-			p.alamat = request.POST.get('alamat', None)
-			p.desa_id = request.POST.get('desa', None)
-			p.telephone = request.POST.get('telephone', None)
-			p.hp = request.POST.get('hp', None)
-			p.email = request.POST.get('email', None)
-			p.kewarganegaraan = request.POST.get('kewarganegaraan', None)
-			p.pekerjaan = request.POST.get('pekerjaan', None)
-			p.save()
+			pemohon = PemohonForm(request.POST, instance=p)
+			pemohon.nama_lengkap = request.POST.get('nama_lengkap', None)
+			pemohon.alamat = request.POST.get('alamat', None)
+			pemohon.desa_id = request.POST.get('desa', None)
+			pemohon.telephone = request.POST.get('telephone', None)
+			pemohon.hp = request.POST.get('hp', None)
+			pemohon.email = request.POST.get('email', None)
+			pemohon.kewarganegaraan = request.POST.get('kewarganegaraan', None)
+			pemohon.pekerjaan = request.POST.get('pekerjaan', None)
+			pemohon.save()
 			if paspor_:
 					try:
 						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
@@ -357,6 +357,7 @@ def siup_detilsiup_save_cookie(request):
 					# pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha print
 					# detilSIUP.bentuk_kegiatan_usaha.kegiatan_usaha
 					kbli_json = [k.as_json() for k in KBLI.objects.filter(id__in=kbli_list)]
+					# produk_utama_json = [k.as_json() for k in ProdukUtama.objects.filter(id__in=produk_utama_list)]
 					data = {'success': True, 
 						'pesan': 'Detail SIUP berhasil disimpan. Proses Selanjutnya.', 
 						'data': [
@@ -367,7 +368,7 @@ def siup_detilsiup_save_cookie(request):
 							{'presentase_saham_nasional': str(pengajuan_.presentase_saham_nasional)+" %"},
 							{'presentase_saham_asing': str(pengajuan_.presentase_saham_asing)+" %"},
 							{'kelembagaan': pengajuan_.kelembagaan.kelembagaan},
-							# {'produk_utama': pengajuan_.produk_utama.all()},
+							# {'produk_utama': produk_utama_json},
 							{'kbli': kbli_json},
 						]
 					}
@@ -500,6 +501,7 @@ def siup_upload_berkas_foto_pemohon(request):
 							# update model yang lain.
 							p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
 							berkas.nama_berkas = "Foto Pemohon "+p.nama_lengkap
+							berkas.keterangan = "foto"
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
@@ -545,6 +547,7 @@ def siup_upload_berkas_ktp_pemohon(request):
 					if form.is_valid():
 						berkas = form.save(commit=False)
 						berkas.nama_berkas = "Berkas KTP Pemohon "+request.COOKIES['nomor_ktp']
+						berkas.keterangan = "ktp"
 						if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 						else:
@@ -594,6 +597,7 @@ def siup_upload_berkas_npwp_pribadi(request):
 							d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 							p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
 							berkas.nama_berkas = "NPWP Pribadi "+p.nama_lengkap
+							berkas.keterangan = "npwp pribadi"
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
@@ -645,6 +649,7 @@ def siup_upload_berkas_npwp_perusahaan(request):
 							p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 							berkas = form.save(commit=False)
 							berkas.nama_berkas = "NPWP Perusahaan "+p.nama_perusahaan
+							berkas.keterangan = "npwp perusahaan"
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
@@ -693,6 +698,7 @@ def siup_upload_berkas_akta_pendirian(request):
 							a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 							berkas = form.save(commit=False)
 							berkas.nama_berkas = "Berkas Akta Pendirian "+a.nama_perusahaan
+							berkas.keterangan = "akta pendirian"
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
@@ -741,6 +747,7 @@ def siup_upload_berkas_akta_perubahan(request):
 							a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 							berkas = form.save(commit=False)
 							berkas.nama_berkas = "Berkas Akta Perubahan "+a.nama_perusahaan
+							berkas.keterangan = "akta perubahan"
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
@@ -790,6 +797,7 @@ def siup_upload_berkas_pendukung(request):
 							p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
 							berkas = form.save(commit=False)
 							berkas.nama_berkas = "Berkas Pendukung "+p.pemohon.nama_lengkap
+							berkas.keterangan = "pendukung"
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
@@ -889,8 +897,27 @@ def load_pemohon(request, ktp_):
 			provinsi = pemohon.desa.kecamatan.kabupaten.provinsi.id
 		if pemohon.desa.kecamatan.kabupaten.provinsi.negara:
 			negara = pemohon.desa.kecamatan.kabupaten.provinsi.negara.id
-
-		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
+		foto = pemohon.berkas_foto.all().last()
+		foto_url = ""
+		foto_nama = ""
+		if foto:
+			foto_url = str(foto.berkas.url)
+			foto_nama = str(foto.nama_berkas)
+		npwp_pribadi_nama = ""
+		npwp_pribadi_url = ""
+		if pemohon.berkas_npwp:
+			npwp_pribadi_url = str(pemohon.berkas_npwp.berkas.url)
+			npwp_pribadi_nama = str(pemohon.berkas_npwp.nama_berkas)
+		try:
+			ktp_nama = ""
+			ktp_url = ""
+			ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id)
+			if ktp_.berkas:
+				ktp_url = str(ktp_.berkas.berkas.url)
+				ktp_nama = str(ktp_.berkas.nama_berkas)
+		except ObjectDoesNotExist:
+			pass
+		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'foto_url': foto_url, 'foto_nama': foto_nama, 'ktp_nama': ktp_nama, 'ktp_url': ktp_url, 'npwp_pribadi_url': npwp_pribadi_url, 'npwp_pribadi_nama': npwp_pribadi_nama }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
@@ -939,8 +966,26 @@ def load_perusahaan(request, npwp_):
 			provinsi = perusahaan.desa.kecamatan.kabupaten.provinsi.id
 		if perusahaan.desa.kecamatan.kabupaten.provinsi.negara:
 			negara = perusahaan.desa.kecamatan.kabupaten.provinsi.negara.id
-
-		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
+		npwp_perusahaan_nama = ""
+		npwp_perusahaan_url = ""
+		if perusahaan.berkas_npwp:
+			npwp_perusahaan_url = str(perusahaan.berkas_npwp.berkas.url)
+			npwp_perusahaan_nama = str(perusahaan.berkas_npwp.nama_berkas)
+		legalitas_pendirian_url = ""
+		legalitas_pendirian_nama = ""
+		legalitas_pendirian = perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
+		if legalitas_pendirian:
+			legalitas_pendirian_url = str(legalitas_pendirian.berkas.berkas.url)
+			legalitas_pendirian_nama = str(legalitas_pendirian.berkas.nama_berkas)
+		legalitas_perubahan_url = ""
+		legalitas_perubahan_nama = ""
+		legalitas_perubahan = perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+		if legalitas_perubahan:
+			legalitas_perubahan_url =  str(legalitas_perubahan.berkas.berkas.url)
+			legalitas_perubahan_nama = str(legalitas_perubahan.berkas.nama_berkas)
+		
+		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'npwp_perusahaan_url': npwp_perusahaan_url, 'npwp_perusahaan_nama': npwp_perusahaan_nama, 'legalitas_pendirian_url': legalitas_pendirian_url, 'legalitas_pendirian_nama': legalitas_pendirian_nama, 'legalitas_perubahan_url': legalitas_perubahan_url, 'legalitas_perubahan_nama': legalitas_perubahan_nama }}
+		print data
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
