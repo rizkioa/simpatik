@@ -264,13 +264,13 @@ class DetilSIUP(PengajuanIzin):
 
 class DetilReklame(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='reklame_perusahaan', blank=True, null=True)
-	jenis_reklame = models.ForeignKey(JenisReklame, verbose_name='Jenis Reklame')
+	jenis_reklame = models.ForeignKey(JenisReklame, verbose_name='Jenis Reklame', blank=True, null=True)
 	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame')
 	panjang = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Panjang', null=True, blank=True)
 	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar', null=True, blank=True)
 	sisi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Sisi', null=True, blank=True)
 	letak_pemasangan = models.CharField(max_length=255, verbose_name='Letak Pemasangan', null=True, blank=True)
-	desa = models.ForeignKey(Desa, verbose_name='Desa')
+	desa = models.ForeignKey(Desa, verbose_name='Desa', blank=True, null=True)
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 

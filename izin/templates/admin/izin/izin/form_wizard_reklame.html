@@ -234,8 +234,6 @@
 			            		var val = respon.data[i][key[0]]
 			            		var id = "#"+key[0]+"_konfirmasi"
 			            		$(id).text(val);
-
-			            		
 			            	}
 							$(".tab-content").mLoading('hide');
 							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
@@ -302,6 +300,22 @@
 		      	$.removeCookie('nomor_paspor', { path: '/' });
 	      	}
     	};
+
+  //   	$(document).ajaxSuccess(function () {
+		//   	$(".tab-content").mLoading('hide');
+		// });
+
+		// $(document).ajaxComplete(function () {
+		//     $(".tab-content").mLoading('hide');
+		// });
+
+		// $(document).ajaxSend(function () {
+		//     $(".tab-content").mLoading();
+		// });
+
+		// $(document).ajaxError(function () {
+		//     $(".tab-content").mLoading();
+		// });
 	</script>
 	<script type="text/javascript">
 		function load_provinsi1(id_negara){
@@ -589,22 +603,39 @@
 	          $(".tab-content").mLoading('hide');
 	          respon = $.parseJSON(data)
 	            if(respon.success){
-	              load_provinsi(respon.data.negara)
-	              load_kabupaten(respon.data.provinsi)
-	              load_kecamatan(respon.data.kabupaten)
-	              load_desa(respon.data.kecamatan)
-	              $('#id_nama_lengkap').val(respon.data.nama_lengkap);
-	              $('#alamat_pemohon_load').val(respon.data.alamat);
-	              $('#no_telepon_pemohon_load').val(respon.data.telephone);
-	              $('#hp_load').val(respon.data.hp);
-	              $('#email_pemohon_load').val(respon.data.email);
-	              $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
-	              $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-	              $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-	              $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-	              $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
-	              $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-	              $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+	              	load_provinsi(respon.data.negara)
+	              	load_kabupaten(respon.data.provinsi)
+	              	load_kecamatan(respon.data.kabupaten)
+	              	load_desa(respon.data.kecamatan)
+	              	// alert("Load Pemohon")
+	              	setTimeout(function(){
+						$('#id_nama_lengkap').val(respon.data.nama_lengkap);
+		              	$('#alamat_pemohon_load').val(respon.data.alamat);
+		              	$('#no_telepon_pemohon_load').val(respon.data.telephone);
+		              	$('#hp_load').val(respon.data.hp);
+		              	$('#email_pemohon_load').val(respon.data.email);
+		              	$('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
+		              	$('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
+		              	$('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+					}, 1000);
+	            }
+	            else{
+	            	$('#id_nama_lengkap').val("");
+	              	$('#alamat_pemohon_load').val("");
+	              	$('#no_telepon_pemohon_load').val("");
+	              	$('#hp_load').val("");
+	              	$('#email_pemohon_load').val("");
+	              	$('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten').val("").prop('selected',true).trigger("chosen:updated")
+	              	$('#id_kecamatan').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
 	            }
 	        },
 	        error: function(data) {
@@ -625,21 +656,36 @@
 	          $(".tab-content").mLoading('hide');
 	          respon = $.parseJSON(data)
 	            if(respon.success){
-	              load_provinsi1(respon.data.negara)
-	              load_kabupaten1(respon.data.provinsi)
-	              load_kecamatan1(respon.data.kabupaten)
-	              load_desa1(respon.data.kecamatan)
-	              $('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
-	              $('#alamat_perusahaan_load').val(respon.data.alamat);
-	              $('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
-	              $('#no_telepon_perusahaan_load').val(respon.data.telepon);
-	              $('#id_email_perusahaan').val(respon.data.email);
-	              $('#id_fax_perusahaan').val(respon.data.fax)
-	              $('#id_negara1').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-	              $('#id_provinsi1').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-	              $('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-	              $('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-	              $('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+	              	load_provinsi1(respon.data.negara)
+	              	load_kabupaten1(respon.data.provinsi)
+	              	load_kecamatan1(respon.data.kabupaten)
+	              	load_desa1(respon.data.kecamatan)
+	              	setTimeout(function(){
+		              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
+		              	$('#alamat_perusahaan_load').val(respon.data.alamat);
+		              	$('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
+		              	$('#no_telepon_perusahaan_load').val(respon.data.telepon);
+		              	$('#id_email_perusahaan').val(respon.data.email);
+		              	$('#id_fax_perusahaan').val(respon.data.fax)
+		              	$('#id_negara1').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_provinsi1').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+		            }, 1000);
+	            }
+	            else{
+	            	$('#id_nama_perusahaan').val("");
+	              	$('#alamat_perusahaan_load').val("");
+	              	$('#kode_pos_perusahaan_load').val("");
+	              	$('#no_telepon_perusahaan_load').val("");
+	              	$('#id_email_perusahaan').val("");
+	              	$('#id_fax_perusahaan').val("")
+	              	$('#id_negara1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kecamatan1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa1').val("").prop('selected',true).trigger("chosen:updated");
 	            }
 	        },
 	        error: function(data) {
