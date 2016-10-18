@@ -31,6 +31,7 @@ from izin.utils import JENIS_IZIN
 def add_wizard_siup(request):
 	extra_context = {}
 	extra_context.update({'title': 'Pengajuan Baru'})
+	extra_context.update({'has_permission': True})
 
 	if request.method == 'POST':
 		if request.POST.get('nama_izin') :
@@ -60,6 +61,8 @@ def add_wizard_siup(request):
 					url_ = reverse('admin:izin_proses_siup')
 				elif id_kelompok_list.kode == "503.03.01/" or id_kelompok_list.kode == "503.03.02/":
 					url_ = reverse('admin:izin_proses_reklame')
+				elif id_kelompok_list.kode == "IUJK":
+					url_ = reverse('admin:izin_iujk')
 				else:
 					url_ = "#"
 				response = HttpResponseRedirect(url_) # Redirect to url

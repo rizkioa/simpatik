@@ -251,6 +251,7 @@
 			            	for (var i = 0; i < respon.data.length; i++){
 			            		var key = Object.keys(respon.data[i]); // Mencari key json
 			            		// console.log(key[0]);
+
 			            		var val = respon.data[i][key[0]]
 			            		var id = "#"+key[0]+"_konfirmasi"
 			            		$(id).text(val);
@@ -587,31 +588,49 @@
 	          $(".tab-content").mLoading('hide');
 	          respon = $.parseJSON(data)
 	            if(respon.success){
-	              // toastr["success"](respon.pesan);
-	              
-	              load_provinsi(respon.data.negara)
-	              load_kabupaten(respon.data.provinsi)
-	              load_kecamatan(respon.data.kabupaten)
-	              load_desa(respon.data.kecamatan)
-	              $('#id_nama_lengkap').val(respon.data.nama_lengkap);
-	              $('#alamat_pemohon_load').val(respon.data.alamat);
-	              $('#no_telepon_pemohon_load').val(respon.data.telephone);
-	              $('#hp_load').val(respon.data.hp);
-	              $('#email_pemohon_load').val(respon.data.email);
-	              $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
-	              $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-	              $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-	              $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-	              $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
-	              $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-	              $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-	              $('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.foto_url+"'>"+respon.data.foto_nama+"</a></span>")
-	              $('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.ktp_url+"'>"+respon.data.ktp_nama+"</a></span>")
-	              $('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_pribadi_url+"'>"+respon.data.npwp_pribadi_nama+"</a></span>")
+	              	load_provinsi(respon.data.negara)
+	              	load_kabupaten(respon.data.provinsi)
+	              	load_kecamatan(respon.data.kabupaten)
+	              	load_desa(respon.data.kecamatan)
+	              	$('#id_nama_lengkap').val(respon.data.nama_lengkap);
+	              	$('#alamat_pemohon_load').val(respon.data.alamat);
+	             	$('#no_telepon_pemohon_load').val(respon.data.telephone);
+	              	$('#hp_load').val(respon.data.hp);
+	              	$('#email_pemohon_load').val(respon.data.email);
+	              	$('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
+	              	$('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
+	              	$('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+	              	if (respon.data.foto_url !== ''){
+	              		$('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.foto_url+"'>"+respon.data.foto_nama+"</a></span>")
+	          		}
+	              	if (respon.data.ktp_url !== ''){
+	              		$('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.ktp_url+"'>"+respon.data.ktp_nama+"</a></span>")
+	          	  	}
+	              	if (respon.data.npwp_pribadi_url !== ''){
+	              		$('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_pribadi_url+"'>"+respon.data.npwp_pribadi_nama+"</a></span>");
+	              	}
 	            }
-	            // else{
-	            //   toastr["info"](respon.pesan);
-	            // }
+	            else{
+	             	$('#id_nama_lengkap').val("");
+	              	$('#alamat_pemohon_load').val("");
+	              	$('#no_telepon_pemohon_load').val("");
+	              	$('#hp_load').val("");
+	              	$('#email_pemohon_load').val("");
+	              	$('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten').val("").prop('selected',true).trigger("chosen:updated")
+	              	$('#id_kecamatan').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon'></span>")
+	              	$('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon'></span>")
+	              	$('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi'></span>")
+	            }
 	        },
 	        error: function(data) {
 	          toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
@@ -621,7 +640,6 @@
 	    }
 
 	    function load_perusahaan_a(npwp_){
-	      // $( "#rootwizard" ).mask('loading')
 	      $(".tab-content").mLoading();
 	      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 	      $.ajax({
@@ -632,38 +650,47 @@
 	          $(".tab-content").mLoading('hide');
 	          respon = $.parseJSON(data)
 	            if(respon.success){
-	              // toastr["success"](respon.pesan);
-	              load_provinsi1(respon.data.negara)
-	              load_kabupaten1(respon.data.provinsi)
-	              load_kecamatan1(respon.data.kabupaten)
-	              load_desa1(respon.data.kecamatan)
-	              $('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
-	              $('#alamat_perusahaan_load').val(respon.data.alamat);
-	              $('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
-	              $('#no_telepon_perusahaan_load').val(respon.data.telepon);
-	              $('#id_email_perusahaan').val(respon.data.email);
-	              $('#id_fax_perusahaan').val(respon.data.fax)
-
-	              $('#id_negara1').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-	              $('#id_provinsi1').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-	              $('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-	              $('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-	              $('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-	              if (respon.data.npwp_perusahaan_url !== ''){
-	              	$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_perusahaan_url+"'>"+respon.data.npwp_perusahaan_nama+"</a></span>")
-	              }
-	              if (respon.data.legalitas_pendirian_url !== ''){
-	              	$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_pendirian_url+"'>"+respon.data.legalitas_pendirian_nama+"</a></span>")
-	              }
-	              if (respon.data.legalitas_perubahan_url !== ''){
-	              	$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_perubahan_url+"'>"+respon.data.legalitas_perubahan_nama+"</a></span>")
-	              }
-	              
-	              alert(respon.data.legalitas_perubahan_nama)
+	              	load_provinsi1(respon.data.negara)
+	              	load_kabupaten1(respon.data.provinsi)
+	              	load_kecamatan1(respon.data.kabupaten)
+	              	load_desa1(respon.data.kecamatan)
+	              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
+	              	$('#alamat_perusahaan_load').val(respon.data.alamat);
+	              	$('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
+	              	$('#no_telepon_perusahaan_load').val(respon.data.telepon);
+	              	$('#id_email_perusahaan').val(respon.data.email);
+	              	$('#id_fax_perusahaan').val(respon.data.fax)
+	              	$('#id_negara1').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi1').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+	              	if (respon.data.npwp_perusahaan_url !== ''){
+	              		$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_perusahaan_url+"'>"+respon.data.npwp_perusahaan_nama+"</a></span>")
+	              	}
+	              	if (respon.data.legalitas_pendirian_url !== ''){
+	              		$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_pendirian_url+"'>"+respon.data.legalitas_pendirian_nama+"</a></span>")
+	              	}
+	              	if (respon.data.legalitas_perubahan_url !== ''){
+	              		$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_perubahan_url+"'>"+respon.data.legalitas_perubahan_nama+"</a></span>")
+	              	}
 	            }
-	            // else{
-	            //   toastr["info"](respon.pesan);
-	            // }
+	            else{
+	              	$('#id_nama_perusahaan').val("");
+	              	$('#alamat_perusahaan_load').val("");
+	              	$('#kode_pos_perusahaan_load').val("");
+	              	$('#no_telepon_perusahaan_load').val("");
+	              	$('#id_email_perusahaan').val("");
+	              	$('#id_fax_perusahaan').val("");
+	              	$('#id_negara1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kecamatan1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa1').val("").prop('selected',true).trigger("chosen:updated");
+	              	$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan'></span>");
+	              	$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian'></span>");
+	              	$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan'></span>");
+	            }
 	          
 	        },
 	        error: function(data) {
@@ -685,7 +712,6 @@
 		    	$('.saham').removeClass('has-error')
 		    	$('.error-saham').remove()
 		    }
-		    // alert(total_a_n)
 	    }
   	</script>
 {% endblock %}

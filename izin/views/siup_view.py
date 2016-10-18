@@ -5,7 +5,7 @@ from sqlite3 import OperationalError
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from master.models import Berkas
@@ -92,28 +92,49 @@ def siup_identitas_pemohon_save_cookie(request):
 									user_id=p.id,
 									)
 
+		# if k.kode == "503.08/":
+		# 	try:
+		# 		pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+		# 		pengajuan.nama_kuasa = nama_kuasa
+		# 		pengajuan.no_identitas_kuasa = no_identitas_kuasa
+		# 		pengajuan.telephone_kuasa = telephone_kuasa
+		# 		pengajuan.jenis_permohonan_id = jenis_permohonan_
+		# 	except ObjectDoesNotExist:
+		# 		pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+		# 	pengajuan.save()
+		# elif k.kode == "IUJK":
+		# 	try:
+		# 		pengajuan = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+		# 		pengajuan.nama_kuasa = nama_kuasa
+		# 		pengajuan.no_identitas_kuasa = no_identitas_kuasa
+		# 		pengajuan.telephone_kuasa = telephone_kuasa
+		# 		pengajuan.jenis_permohonan_id = jenis_permohonan_
+		# 	except ObjectDoesNotExist:
+		# 		pengajuan = DetilIUJK(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user,nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+		# 	pengajuan.save()
+		# # elif k.kode == ""
+		# else:
+		# 	pass
+
+		from izin import models as app_models
+
 		if k.kode == "503.08/":
+			objects_ = getattr(app_models, 'DetilSIUP')
+		elif k.kode == "IUJK":
+			objects_ = getattr(app_models, 'DetilIUJK')
+		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+			objects_ = getattr(app_models, 'DetilReklame')
+
+		if objects_:
 			try:
-				pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+				pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
 				pengajuan.nama_kuasa = nama_kuasa
 				pengajuan.no_identitas_kuasa = no_identitas_kuasa
 				pengajuan.telephone_kuasa = telephone_kuasa
 				pengajuan.jenis_permohonan_id = jenis_permohonan_
 			except ObjectDoesNotExist:
-				pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+				pengajuan = objects_(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
 			pengajuan.save()
-		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
-			try:
-				pengajuan = DetilReklame.objects.get(id=request.COOKIES['id_pengajuan'])
-				pengajuan.nama_kuasa = nama_kuasa
-				pengajuan.no_identitas_kuasa = no_identitas_kuasa
-				pengajuan.telephone_kuasa = telephone_kuasa
-				pengajuan.jenis_permohonan_id = jenis_permohonan
-			except ObjectDoesNotExist:
-				pengajuan = DetilReklame(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
-			pengjauan.save()
-		else:
-			pass
 
 		# if request.user.is_authenticated():
 		# 	created = request.user
@@ -123,7 +144,8 @@ def siup_identitas_pemohon_save_cookie(request):
 		riwayat_ = Riwayat(
 						pengajuan_izin_id = pengajuan.id,
 						created_by_id = p.id,
-						keterangan = "Draf (Pengajuan)"
+						keterangan = "Draf (Pengajuan)",
+						alasan=''
 					)
 		riwayat_.save()
 
