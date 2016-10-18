@@ -102,7 +102,16 @@ def siup_identitas_pemohon_save_cookie(request):
 			except ObjectDoesNotExist:
 				pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
 			pengajuan.save()
-		# elif k.kode == ""
+		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+			try:
+				pengajuan = DetilReklame.objects.get(id=request.COOKIES['id_pengajuan'])
+				pengajuan.nama_kuasa = nama_kuasa
+				pengajuan.no_identitas_kuasa = no_identitas_kuasa
+				pengajuan.telephone_kuasa = telephone_kuasa
+				pengajuan.jenis_permohonan_id = jenis_permohonan
+			except ObjectDoesNotExist:
+				pengajuan = DetilReklame(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+			pengjauan.save()
 		else:
 			pass
 

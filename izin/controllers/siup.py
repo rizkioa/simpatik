@@ -35,10 +35,15 @@ def add_wizard_siup(request):
 	if request.method == 'POST':
 		if request.POST.get('nama_izin') :
 			print "POST"
+
 			if request.POST.get('nama_izin') and request.POST.get('kelompok_izin'):
 				print "if"
 				id_kelompok_ = request.POST.get('kelompok_izin')
 				id_kelompok_ = int(id_kelompok_)
+				
+				url_ = "#"
+				response = HttpResponseRedirect(url_)
+				response.delete_cookie('id_kelompok_izin')
 			else:
 				kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
 				print kode_izin_
@@ -57,8 +62,8 @@ def add_wizard_siup(request):
 					url_ = reverse('admin:izin_proses_reklame')
 				else:
 					url_ = "#"
-			response = HttpResponseRedirect(url_) # Redirect to url
-			response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
+				response = HttpResponseRedirect(url_) # Redirect to url
+				response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
 
 			# print request.COOKIES
 			return response

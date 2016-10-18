@@ -38,7 +38,8 @@ urlpatterns = [
     url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
     url(r'^layanan/$', views.layanan, name='layanan'),
-    url(r'^cari-pengajuan-izin$', views.cari_pengajuan, name='cari_pengajuan'),
+    url(r'^cari-pengajuan-izin/$', views.cari_pengajuan, name='cari_pengajuan'),
+    url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),
     url(r'^layanan/ho-pemohonan-baru/formulir$', views.formulir_ho_pemohonan_baru, name='formulir_ho_pemohonan_baru'),
@@ -115,5 +116,6 @@ urlpatterns = [
     # 
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
+    url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
     ]

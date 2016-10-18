@@ -90,8 +90,50 @@
             </div>
           </div>
         </div>
+        <br>
+        <br>
+        <br>
+        {% if riwayat %}
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="custom-font" align="center">Riwayat Pendaftaran Izin</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <td>No. Pengajuan</td>
+                    <td>Kelompok Jenis Izin</td>
+                    <td>Keterangan</td>
+                    <td>Penanggung Jawab</td>
+                    <td>Tanggal Proses</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if riwayat %}
+                    {% for r in riwayat %}
+                      <tr>
+                        <td>{{ r.pengajuan_izin.no_pengajuan }}</td>
+                        <td>{{ r.pengajuan_izin.kelompok_jenis_izin.jenis_izin }}</td>
+                        <td>{{ r.keterangan }}</td>
+                        <td>{{ r.created_by }}</td>
+                        <td>{{ r.created_at }}</td>
+                      </tr>
+                    {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        {% endif %}
       </div>
     </section>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
   </div>
 </div>
 {% endblock %}
