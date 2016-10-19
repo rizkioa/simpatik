@@ -1,7 +1,7 @@
 from django import template
 from django import forms
 import datetime
-
+import os
 register = template.Library()
 
 
@@ -60,3 +60,14 @@ def is_readonlypassword(field):
 @register.filter(name='joinby')
 def joinby(value, arg):
     return arg.join(value)
+
+@register.filter('extension')
+def get_extension(value_):
+	name, extension = os.path.splitext(os.path.basename(value_))
+	return extension
+
+@register.filter
+def InList(value, list_):
+	if value in list(list_.split(',')):
+		return True
+	return False
