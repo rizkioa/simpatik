@@ -270,7 +270,9 @@ class DetilReklame(PengajuanIzin):
 	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar', null=True, blank=True)
 	sisi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Sisi', null=True, blank=True)
 	letak_pemasangan = models.CharField(max_length=255, verbose_name='Letak Pemasangan', null=True, blank=True)
-	desa = models.ForeignKey(Desa, verbose_name='Desa', blank=True, null=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa')
+	tanggal_mulai = models.DateField(verbose_name='Tanggal Mulai Dipasang')
+	tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Dipasang')
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 

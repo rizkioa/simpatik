@@ -48,8 +48,6 @@ INSTALLED_APPS = (
     'kepegawaian',
     'perusahaan',
     'izin',
-    'raven.contrib.django.raven_compat',
-    'formtools',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,7 +113,7 @@ TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -190,12 +188,3 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 #LOGOUT_URL = 'frontlogout'
 
 LOGIN_REDIRECT_URL = 'frontindex'
-
-import raven
-
-RAVEN_CONFIG = {
-    'dsn': 'http://887ac2bf23de46e8ab2b717a1ed297a1:70ffee8add874faf90b5fd79561d17cf@10.50.2.119:9000/5',
-    # If you are using git, you can also automatically configure the
-    # release based on the git info.
-    #'release': raven.fetch_git_sha(os.path.dirname(__file__)),
-}

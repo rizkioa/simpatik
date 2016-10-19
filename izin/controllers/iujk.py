@@ -1,4 +1,3 @@
-from formtools.wizard.views import SessionWizardView
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse

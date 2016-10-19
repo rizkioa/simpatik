@@ -536,10 +536,6 @@ def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
 
-from captcha._compat import (
-    build_opener, ProxyHandler, PY2, Request, urlencode, urlopen, want_bytes
-)
-import captcha.client
 def ajax_cek_pengajuan(request):
 	no_pengajuan_ = request.POST.get('no_pengajuan_', None)
 	print no_pengajuan_
