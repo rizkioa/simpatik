@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 
 def layanan_siup(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=17)
+	response.set_cookie(key='id_kelompok_izin', value="17")
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP)"})
 	extra_context.update({'title_short': "SIUP"})
@@ -14,10 +15,10 @@ def layanan_siup(request, extra_context={}):
 	extra_context.update({'id_jenis_izin': "6" })
 	extra_context.update({'id_kelompok_jenis_izin': "17" })
 	response = render(request, "front-end/layanan/siup.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value=17)
 	return response
 
 def layanan_ho_baru(request, extra_context={}):
+	# response.set_cookie(key='id_kelompok_izin', value="12")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=12)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Gangguan (HO) - Permohonan Baru"})
@@ -28,6 +29,7 @@ def layanan_ho_baru(request, extra_context={}):
 	return render(request, "front-end/layanan/ho_baru.html", extra_context)
 
 def layanan_ho_daftar_ulang(request, extra_context={}):
+	# response.set_cookie(key='id_kelompok_izin', value="13")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=13)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Gangguan (HO) - Daftar Ulang"})
@@ -38,6 +40,7 @@ def layanan_ho_daftar_ulang(request, extra_context={}):
 	return render(request, "front-end/layanan/ho_daftar_ulang.html", extra_context)
 
 def layanan_tdp_pt(request, extra_context={}):
+	# response.set_cookie(key='id_kelompok_izin', value="25")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=25)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - PT"})
@@ -48,6 +51,7 @@ def layanan_tdp_pt(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_pt.html", extra_context)
 
 def layanan_tdp_cv(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="26")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=26)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - CV"})
@@ -58,6 +62,7 @@ def layanan_tdp_cv(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_cv.html", extra_context)
 
 def layanan_tdp_firma(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="27")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=27)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Firma"})
@@ -68,6 +73,7 @@ def layanan_tdp_firma(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_firma.html", extra_context)
 
 def layanan_tdp_perorangan(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="28")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=28)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Perorangan"})
@@ -78,6 +84,7 @@ def layanan_tdp_perorangan(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_perorangan.html", extra_context)
 
 def layanan_tdp_koperasi(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="29")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=29)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Koperasi"})
@@ -88,6 +95,7 @@ def layanan_tdp_koperasi(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_koperasi.html", extra_context)
 
 def layanan_tdp_bul(request, extra_context={}):
+	# response.set_cookie(key='id_kelompok_izin', value="30")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=30)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Bentuk Usaha Lainnya"})
@@ -98,6 +106,7 @@ def layanan_tdp_bul(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_bul.html", extra_context)
 
 def layanan_tdp_baru_cabang(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="31")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=31)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Kantor Cabang"})
@@ -108,6 +117,7 @@ def layanan_tdp_baru_cabang(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_cabang.html", extra_context)
 
 def layanan_tdp_daftar_ulang(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="32")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=32)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Permohonan Ulang"})
@@ -118,6 +128,7 @@ def layanan_tdp_daftar_ulang(request, extra_context={}):
 	return render(request, "front-end/layanan/tdp_daftar_ulang.html", extra_context)
 
 def layanan_imb_umum(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="2")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=2)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Umum"})
@@ -128,6 +139,7 @@ def layanan_imb_umum(request, extra_context={}):
 	return render(request, "front-end/layanan/imb_umum.html", extra_context)
 
 def layanan_imb_reklame(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="1")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Papan Reklame"})
@@ -138,7 +150,8 @@ def layanan_imb_reklame(request, extra_context={}):
 	return render(request, "front-end/layanan/imb_reklame.html", extra_context)
 
 def layanan_imb_perumahan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
+	response.set_cookie(key='id_kelompok_izin', value="1")
+	kelompok = get_object_or_404(KelompokJenisIzin, id=11)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Perumahan"})
 	extra_context.update({'title_short': "IMB - Perumahan"})
@@ -148,6 +161,7 @@ def layanan_imb_perumahan(request, extra_context={}):
 	return render(request, "front-end/layanan/imb_perumahan.html", extra_context)
 
 def layanan_reklame(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="14")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=14)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Pemasangan Reklame"})
@@ -158,6 +172,7 @@ def layanan_reklame(request, extra_context={}):
 	return render(request, "front-end/layanan/reklame.html", extra_context)
 
 def layanan_kekayaan(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="16")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=16)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Pemakaian Kekayaan Daerah"})
@@ -168,6 +183,7 @@ def layanan_kekayaan(request, extra_context={}):
 	return render(request, "front-end/layanan/kekayaan.html", extra_context)
 
 def layanan_huller(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="15")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=15)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Usaha Perusahaan Penggilingan Padi & Huller"})
@@ -178,6 +194,7 @@ def layanan_huller(request, extra_context={}):
 	return render(request, "front-end/layanan/huller.html", extra_context)
 
 def layanan_izin_prinsip_penanaman_modal(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="33")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=33)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Prinsip Penanaman Modal"})
@@ -188,6 +205,7 @@ def layanan_izin_prinsip_penanaman_modal(request, extra_context={}):
 	return render(request, "front-end/layanan/izin_prinsip_penanaman_modal.html", extra_context)
 
 def layanan_izin_prinsip_perluasan_penanaman_modal(request, extra_context={}):
+	response.set_cookie(key='id_kelompok_izin', value="35")
 	kelompok = get_object_or_404(KelompokJenisIzin, id=35)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Prinsip Perluasan Penanaman Modal"})

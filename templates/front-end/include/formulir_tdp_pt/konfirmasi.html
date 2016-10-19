@@ -1,3 +1,460 @@
-<form method="POST" name="step9" role="form" class="form-horizontal">
-<h1>Konfirmasi</h1>
+<form method="POST" name="step9" role="form" action="{% url 'siup_done' %}">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#3. DATA UMUM PERUSAHAAN</u></h4>
+    <table width="100%" border="0">
+        <tr>
+          <td width="25%">Jenis Badan Usaha</td>
+          <td width="5%">:</td>
+          <td width="70%"></td>
+        </tr>
+        <tr>
+          <td width="25%">Status Perusahaan</td>
+          <td width="5%">:</td>
+          <td width="70%">Kantor Tunggal</td>
+        </tr>
+        <tr>
+          <td width="25%">Jumlah Bank Dimana Perusahaan ini menjadi Nasabah</td>
+          <td width="5%">:</td>
+          <td width="70%">3</td>
+        </tr>
+        <tr>
+          <td width="25%">Nasabah Utama 1.</td>
+          <td width="5%">:</td>
+          <td width="70%">BRI</td>
+        </tr>
+        <tr>
+          <td width="25%">Nasabah Utama 2.</td>
+          <td width="5%">:</td>
+          <td width="70%">BCA</td>
+        </tr>
+        <tr>
+          <td width="25%">Status Penanaman Modal</td>
+          <td width="5%">:</td>
+          <td width="70%">Lain-Lain</td>
+        </tr>
+        <tr>
+          <td width="25%">Tanggal Pendirian</td>
+          <td width="5%">:</td>
+          <td width="70%">07/09/2009</td>
+        </tr>
+        <tr>
+          <td width="25%">Tanggal mulai kegiatan</td>
+          <td width="5%">:</td>
+          <td width="70%">10/09/2009</td>
+        </tr>
+        <tr>
+          <td width="25%">Jangka Waktu Berdirinya Perusahaan</td>
+          <td width="5%">:</td>
+          <td width="70%">7 Tahun</td>
+        </tr>
+        <tr>
+          <td width="25%">Betuk Kerja Sama</td>
+          <td width="5%">:</td>
+          <td width="70%">Tidak Ada</td>
+        </tr>
+        <tr>
+          <td width="25%">Merk Dagang (Jika Ada)</td>
+          <td width="5%">:</td>
+          <td width="70%">-</td>
+        </tr>
+        <tr>
+          <td width="25%">No. Merk Dagang</td>
+          <td width="5%">:</td>
+          <td width="70%">-</td>
+        </tr>
+        <tr>
+          <td width="25%">Pemegang Hak Cipta(Jika Ada)</td>
+          <td width="5%">:</td>
+          <td width="70%">-</td>
+        </tr>
+        <tr>
+          <td width="25%">No. Hak Cipta</td>
+          <td width="5%">:</td>
+          <td width="70%">-</td>
+        </tr>
+        <tr>
+          <td width="25%">Pemegang Hak Paten</td>
+          <td width="5%">:</td>
+          <td width="70%">-</td>
+        </tr>
+        <tr>
+          <td width="25%">No. Hak Paten</td>
+          <td width="5%">:</td>
+          <td width="70%">-</td>
+        </tr>
+    </table>
+  <br>
+  <h4><u>#4. DATA KEGIATAN PERUSAHAAN</u></h4>
+  <table width="100%">
+    <tr>
+      <td><i>A. JENIS KEGIATAN USAHA</i></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Kegiatan Usaha Pokok</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Kegiatan Usaha Lain. a</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Kegiatan Usaha Lain. b</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Komoditi / Produk Pokok</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Komoditi / Produk Lain. a</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Komoditi / Produk Lain. b</td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td><i>B.Omset Perusahaan Per Tahun (setelah perusahaan beroperasi) Rp. </i></td>
+      <td></td>
+    </tr>
+    
+    <tr>
+      <td><i>C. Modal dan Saham </i></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">1. Modal Dasar Rp.</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">2. Modal ditempatkan Rp.</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">3. Modal disetor Rp.</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Banyak Saham (lembar)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Nilai Nominal per saham Rp.</td>
+      <td></td>
+    </tr>
+    
+    <tr>
+      <td><i>D. Total Asset (setelah perusahaan beroperasi) Rp. </i></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <td><i>E. Jumlah Karyawan </i></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">WNI</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">WNA</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Total</td>
+      <td></td>
+    </tr>
+
+     <tr>
+      <td><i>F. Kedudukan dalam mata rantai kegiatan usaha</i></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Jika Produsen, untuk perusahaan yang menggunakan mesin</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:2%">a. Kapasitas terpasang</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:2%">b. Kapasitas produksi per</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:2%">c. Kandungan Komponen produk lokal</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:2%">d. Kandungan Komponen produk import</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td width="25%" style="padding-left:1%">Jika Pengecer, jenis usaha</td>
+      <td></td>
+    </tr>
+  </table>
+  <br>
+  <br>
+
+  <p style="font-size:13px">Jenis Perusahaan</p>
+  <h5>LEGILITAS PERUSAHAAN</h5>
+  <table class="table table-bordered" width="100%">
+    <tr>
+      <td>Jenis Akta dan Pengesahan</td>
+      <td>Nama Notaris</td>
+      <td>Alamat Notaris</td>
+      <td>Telp. Notaris</td>
+      <td>No. Akta</td>
+      <td>Tgl. Akta</td>
+      <td>No. Pengesahan</td>
+      <td>Tgl. Pengesahan</td>
+    </tr>
+    <tr>
+      <td>Akta Pendirian</td>
+      <td>Hasanuddin,SH</td>
+      <td>Jl. Mekar Asri No. 2 Kediri</td>
+      <td>0354567929</td>
+      <td>9</td>
+      <td>10/09/2009</td>
+      <td>123/ABC/2009</td>
+      <td>16/09/2009</td>
+    </tr>
+  </table>
+
+  <h5>IZIN-IZIN DAN LEGILITA LAINNYA</h5>
+  <p style="font-size:14px">-Tidak Ada-</p>
+
+  <h4><u>DATA LAIN PERUSAHAAN</u></h4>
+  <h5>DATA PEMIMPIN PERUSAHAAN</h5>
+  <table class="table table-bordered" width="100%">
+    <tr>
+      <td>No.</td>
+      <td>Kedudukan dlm Perusahaan</td>
+      <td>Nama Lengkap</td>
+      <td>Tempat dan Tgl. lahir</td>
+      <td>Alamat Tetap</td>
+      <td>Kode Pos</td>
+      <td>No. Telp</td>
+      <td>Kewarganegaraan</td>
+      <td>Tgl. Mulai Menduduki Jabatan</td>
+      <td>(Khusus Komisaris / Direktur) Jumlah Saham yang dimilik (lembar)</td>
+      <td>(Khusus Komisaris / Direktur) Jumlah modal disetor (Rp)</td>
+      <td>Kedudukan dalam perusahaan lain</td>
+      <td>Nama Perusahaan</td>
+      <td>Alamat Perusahaan</td>
+      <td>Kode Pos</td>
+      <td>No. Telpon</td>
+      <td>Tgl. Mulai Menduduki Jabatan</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>Direktur</td>
+      <td>Hartato</td>
+      <td>Kediri, 01/01/1960</td>
+      <td>Jl. Erlangga No. 2 Kab. Kediri</td>
+      <td>64100</td>
+      <td>08123123123</td>
+      <td>Indonesia</td>
+      <td>09/09/2009</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+
+
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Ijin Usaha/ Ijin Teknis atau Surat Keterangan yang dipersamakan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File KTP/Paspor(Dirut/Pemilik/Pengurus/Penanggung Jawab)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File NPWP Perusahaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Akta Pendirian
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Akta Pembaruan (jika ada)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Sertifikat Asli TDP(bagi yang Daftar Ulang)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt">
+        <input type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
 </form>

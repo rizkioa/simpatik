@@ -91,6 +91,14 @@ urlpatterns = [
     #cetak IMB Reklame
     url(r'^layanan/imb-reklame/formulir/cetak$', views.cetak_imb_reklame, name='cetak_imb_reklame'),
     url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
+    
+    #cetak TDP Bul
+    url(r'^layanan/tdp-pt/formulir/cetak$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
+    url(r'^layanan/tdp-pt/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_pt, name='cetak_bukti_pendaftaran_tdp_pt'),
+    
+    #cetak TDP Bul
+    url(r'^layanan/tdp-bul/formulir/cetak$', views.cetak_tdp_bul, name='cetak_tdp_bul'),
+    url(r'^layanan/tdp-bul/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
 
 
     # url for ajax siup

@@ -530,3 +530,19 @@ def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
 	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_pt(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_pt/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_pt(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_pt/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_bul(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_bul/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_bul(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_bul/cetak_bukti_pendaftaran.html", extra_context)
