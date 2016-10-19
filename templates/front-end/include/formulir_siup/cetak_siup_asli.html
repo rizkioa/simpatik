@@ -153,6 +153,11 @@
 	<div class="book">
 	    <div class="page">
 	        <div class="subpage">
+	        	<table>
+	        		<tr>
+	        			<td></td>
+	        		</tr>
+	        	</table>
 	        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
 	        		<tr>
 	        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
@@ -169,17 +174,17 @@
 	        		</tr>
 	        	</table>
 	        	<hr class="style2">
-	        	<div style="padding-left: 11px;">
+	        	<!-- <div style="padding-left: 11px;">
 	        		<table frame="box" rules="rows" style="padding-left: 10px">
 		        		<tr>
 		        			<td><strong>ASLI</strong></td>
 		        		</tr>
 		        	</table>
-	        	</div>
+	        	</div> -->
 	        	
 	        	<center>
 	        		<font style="font-size: 25px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
-	        		<font style="font-size: 20px"><i>( KECIL )</i></font><br>
+	        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha }} )</i></font><br>
 	        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
 	        	</center>
 	        	<div id="qrcodeTable" style="float: right;">
@@ -236,7 +241,6 @@
 	        		</tr>
 	        	</table>
 	        	<br>
-	        	<br>
 	        	<div style="float: left; width: 50%">
 	        		<div style="padding-left: 10%;">
 	        			<img src="{{ foto.berkas.url }}" width="200px">
@@ -244,20 +248,16 @@
 	        	</div>
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 20%;" align="center">
-	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u></font>
-	                    <br>
-	                    <br>
-	                    An, PJ BUPATI KEDIRI
-	                    <br>
-	                    SEKRETARIS DAERAH
+	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
+	                    KEPALA BPM-P2TSP KAB. KEDIRI
 	                    <br>
 	                    <br>
 	                    <br>
 	                    <br>
 	                    <br>
-	                    <u><b>H. SUPOYO, SH,MSI</b></u><br>
-	                    <i>Pembina Utama Madya</i><br>
-	                    <i>NIP: 123456789023456789</i>
+	                    <u><b>{{ nama_kepala_dinas }}</b></u><br>
+	                    <i>Pembina Tk.l</i><br>
+	                    <i>NIP: {{nip_kepala_dinas}}</i>
 	                </p>
 	            </div>
 	        </div>    

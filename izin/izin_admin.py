@@ -5,9 +5,11 @@ from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ObjectDoesNotExist
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat
+from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
-from izin_forms import UploadBerkasPenolakanIzinForm
+from izin.controllers.iujk import IUJKWizard
+from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 import json
 import base64
 
@@ -439,12 +441,20 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
-			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last() })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:
 					extra_context.update({'skizin': skizin_ })
 					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
 			except ObjectDoesNotExist:
 				pass
 			# print pengajuan_.kbli.nama_kbli.all()
@@ -836,6 +846,9 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
 			url(r'^total-skizin/$', self.admin_site.admin_view(self.total_skizin), name='total_skizin'),
 			url(r'^notification/$', self.admin_site.admin_view(self.notification), name='notification'),
+
+
+			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
 
 			)
 		return my_urls + urls

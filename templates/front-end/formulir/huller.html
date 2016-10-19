@@ -894,7 +894,7 @@
       $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan_pengusaha }, // get the form data
         type: 'POST', // GET or POST
-        url: '{% url 'admin:option_desa ' %}', // the file to call
+        url: '{% url 'admin:option_desa' %}', // the file to call
         success: function(response) { // on success..
           elem = $( "#id_desa_pengusaha" )
           elem.html(response);

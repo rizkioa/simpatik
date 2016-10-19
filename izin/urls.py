@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller$', layanan_view.layanan_huller, name='layanan_huller'),
     url(r'^layanan/imb-umum$', layanan_view.layanan_imb_umum, name='layanan_imb_umum'),
     url(r'^layanan/imb-perumahan$', layanan_view.layanan_imb_perumahan, name='layanan_imb_perumahan'),
-    url(r'^layanan/imb-bupati$', layanan_view.layanan_imb_reklame, name='layanan_imb_reklame'),
+    url(r'^layanan/imb-reklame$', layanan_view.layanan_imb_reklame, name='layanan_imb_reklame'),
     url(r'^layanan/izin-prinsip-penanaman-modal$', layanan_view.layanan_izin_prinsip_penanaman_modal, name='layanan_izin_prinsip_penanaman_modal'),
     url(r'^layanan/izin-prinsip-perluasan-penanaman-modal$', layanan_view.layanan_izin_prinsip_perluasan_penanaman_modal, name='layanan_izin_prinsip_perluasan_penanaman_modal'),
     url(r'^layanan/izin-prinsip-perubahan-penanaman-modal$', layanan_view.layanan_izin_prinsip_perubahan_penanaman_modal, name='layanan_izin_prinsip_perubahan_penanaman_modal'),
@@ -38,7 +38,8 @@ urlpatterns = [
     url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
     url(r'^layanan/$', views.layanan, name='layanan'),
-    url(r'^cari-pengajuan-izin$', views.cari_pengajuan, name='cari_pengajuan'),
+    url(r'^cari-pengajuan-izin/$', views.cari_pengajuan, name='cari_pengajuan'),
+    url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),
     url(r'^layanan/ho-pemohonan-baru/formulir$', views.formulir_ho_pemohonan_baru, name='formulir_ho_pemohonan_baru'),
@@ -56,19 +57,42 @@ urlpatterns = [
     url(r'^layanan/tdp-koperasi/formulir$', views.formulir_tdp_koperasi, name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
 
+    #cetak SIUP
     url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_permohonan, name='cetak_permohonan'),
     url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
 
+    #cetak HO Baru
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak$', views.cetak_ho_perpanjang, name='cetak_ho_perpanjang'),
-    url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak$', views.cetak_huller, name='cetak_huller'),
-    url(r'^layanan/reklame/formulir/cetak$', views.cetak_reklame, name='cetak_reklame'),
-    url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_baru, name='cetak_bukti_pendaftaran_ho_baru'),
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
+    
+    #cetak HO Perpanjang
+    url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
     url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
+    
+    #cetak Penggilingan padi
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak$', views.cetak_huller, name='cetak_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
+    
+    #cetak reklame
+    url(r'^layanan/reklame/formulir/cetak$', views.cetak_reklame, name='cetak_reklame'),
     url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
+    
+    #cetak Pemakaian Kekayaan
+    url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),
     url(r'^layanan/pemakaian-kekayaan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_kekayaan, name='cetak_bukti_pendaftaran_kekayaan'),
+
+    #cetak IMB Umum
+    url(r'^layanan/imb-umum/formulir/cetak$', views.cetak_imb_umum, name='cetak_imb_umum'),
+    url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_umum, name='cetak_bukti_pendaftaran_imb_umum'),
+
+    #cetak IMB Perumahan
+    url(r'^layanan/imb-perumahan/formulir/cetak$', views.cetak_imb_perumahan, name='cetak_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
+
+    #cetak IMB Reklame
+    url(r'^layanan/imb-reklame/formulir/cetak$', views.cetak_imb_reklame, name='cetak_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
+
 
     # url for ajax siup
     url(r'^layanan/siup/pemohon/save/$', siup_view.siup_identitas_pemohon_save_cookie, name='siup_pemohon_save'),
@@ -92,5 +116,6 @@ urlpatterns = [
     # 
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
+    url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
     ]

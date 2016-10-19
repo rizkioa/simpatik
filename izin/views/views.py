@@ -80,38 +80,39 @@ def formulir_siup(request, extra_context={}):
 
 	# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 	if 'id_pengajuan' in request.COOKIES.keys():
-		try:
-			pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-			alamat_ = ""
-			alamat_perusahaan_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-					extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
-				extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+		if request.COOKIES['id_pengajuan'] != "":
+			try:
+				pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+				alamat_ = ""
+				alamat_perusahaan_ = ""
+				if pengajuan_.pemohon:
+					if pengajuan_.pemohon.desa:
+						alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+						extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+					extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
 
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-					extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
-				extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
+				if pengajuan_.perusahaan:
+					if pengajuan_.perusahaan.desa:
+						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+						extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
+					extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
 
-			extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
-			extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
-			extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
-			if pengajuan_.bentuk_kegiatan_usaha:
-				extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
-			if pengajuan_.jenis_penanaman_modal:
-				extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
-			extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
-			extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
-			extra_context.update({ 'presentase_saham_nasional_konfirmasi': pengajuan_.presentase_saham_nasional })
-			extra_context.update({ 'presentase_saham_asing_konfirmasi': pengajuan_.presentase_saham_asing })
-			if pengajuan_.kelembagaan:
-				extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
-		
-		except ObjectDoesNotExist:
-			pass
+				extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+				extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+				extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
+				if pengajuan_.bentuk_kegiatan_usaha:
+					extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
+				if pengajuan_.jenis_penanaman_modal:
+					extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
+				extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+				extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+				extra_context.update({ 'presentase_saham_nasional_konfirmasi': pengajuan_.presentase_saham_nasional })
+				extra_context.update({ 'presentase_saham_asing_konfirmasi': pengajuan_.presentase_saham_asing })
+				if pengajuan_.kelembagaan:
+					extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+			
+			except ObjectDoesNotExist:
+				pass
 		
 	# print request.COOKIES['id_pengajuan']
 	# +++++++++++++++++++ end jika cookie pengajuan ada dan di refrash +++++++++++++++++
@@ -373,6 +374,7 @@ def identitas_pemohon(request, extra_context={}):
 	data = {'success': True, 'pesan': 'Simpan data siswa berhasil.', 'id_siswa': siswa.id }
 	return HttpResponse(json.dumps(data))
 
+from izin.models import Riwayat
 def cetak_permohonan(request, id_pengajuan_):
 	# id_pengajuan_ = base64.b64decode(id_pengajuan_)
 	extra_context = {}
@@ -397,6 +399,10 @@ def cetak_permohonan(request, id_pengajuan_):
 			extra_context.update({ 'pengajuan': pengajuan_ })
 			pengajuan_id = base64.b64encode(str(pengajuan_.id))
 			extra_context.update({ 'pengajuan_id': pengajuan_id })
+
+			riwayat = Riwayat.objects.filter(pengajuan_izin=pengajuan_)
+			if riwayat:
+				extra_context.update({ 'riwayat': riwayat })
 			# extra_context.update({ 'jenis_permohonan': pengajuan_.jenis_permohonan })
 			# extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
 			extra_context.update({ 'created_at': pengajuan_.created_at })
@@ -494,7 +500,7 @@ def cetak_huller(request, extra_context={}):
 	return render(request, "front-end/include/formulir_huller/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_huller(request, extra_context={}):
-	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="4") #cetak bukti blm ada
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="4") 
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_huller/cetak_bukti_pendaftaran.html", extra_context)
 
@@ -502,7 +508,54 @@ def cetak_kekayaan(request, extra_context={}):
 	return render(request, "front-end/include/formulir_kekayaan/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_kekayaan(request, extra_context={}):
-	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="5") #cetak bukti blm ada
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="5") 
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_kekayaan/cetak_bukti_pendaftaran.html", extra_context)
 
+def cetak_imb_umum(request, extra_context={}):
+	return render(request, "front-end/include/imb_umum/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_imb_umum(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/imb_umum/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_imb_perumahan(request, extra_context={}):
+	return render(request, "front-end/include/formulir_imb_perumahan/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_imb_perumahan(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_imb_perumahan/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_imb_reklame(request, extra_context={}):
+	return render(request, "front-end/include/formulir_imb_reklame/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
+
+def ajax_cek_pengajuan(request):
+	no_pengajuan_ = request.POST.get('no_pengajuan_', None)
+	print no_pengajuan_
+	if no_pengajuan_:
+		try:
+			pengajuan_list = PengajuanIzin.objects.get(no_pengajuan=no_pengajuan_)
+			if pengajuan_list:
+				url = reverse('cetak_permohonan', kwargs={'id_pengajuan_': pengajuan_list.id} )
+				data = {'success': True, 'pesan': 'Pencarian pengajuan sukses.', 'url': url}
+				return HttpResponse(json.dumps(data))
+			else:
+				url = reverse('ajax_cek_pengajuan')
+				data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
+				return HttpResponse(json.dumps(data))
+		except ObjectDoesNotExist:
+			url = reverse('ajax_cek_pengajuan')
+			data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
+			return HttpResponse(json.dumps(data))
+	else:
+		url = reverse('ajax_cek_pengajuan')
+		data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
+		return HttpResponse(json.dumps(data))
+	
