@@ -86,7 +86,8 @@ class JenisBadanUsaha(models.Model):
 		ordering = ['id']
 		verbose_name = 'Jenis Badan Usaha'
 		verbose_name_plural = 'Jenis Badan Usaha'
-# mikro, kecil, menengah, besar
+
+# mikro, kecil, menengah, besar untuk SIUP
 class BentukKegiatanUsaha(models.Model):
 	kegiatan_usaha = models.CharField(max_length=255, blank=True, null=True, verbose_name='Kegiatan Usaha')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
