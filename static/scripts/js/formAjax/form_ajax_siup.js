@@ -19,38 +19,17 @@
 		respon = $.parseJSON(response)
 		if(respon.success){
         	toastr["success"](respon.pesan)
-        	$('#checkbox_berkas_foto').prop('checked', true);
-        	// $.cookie("keys", "value"); set cookie
-        	// for (var i = 0; i < respon.data.length; i++){
-        	// 	var key = Object.keys(respon.data[i]); // Mencari key json
-        	// 	// console.log(key[0]);
-        	// 	if (key[0]= "status_upload") {
-        	// 		$("#npwp_perusahaan").hide(1000)
-        	// 	}else{
-            // 		var val = respon.data[i][key[0]] // mencari value json
-            // 		// console.log(key[0]+"_konfirmasi");
-            // 		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-            // 		$(id).text(val);
-            // 	}
-        	// }	
+        	$('#checkbox_berkas_foto').prop('checked', true);	
         	var percentVal = '100%';
 	        percent_berkas_foto.html(percentVal);												
 		}
 		else{
 			$('#checkbox_berkas_foto').prop('checked', false);
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	btn_berkas_foto.show();
     		percent_berkas_foto.hide();
         	}
@@ -79,37 +58,16 @@
 		if(respon.success){
         	toastr["success"](respon.pesan)
 			$('#checkbox_berkas_ktp').prop('checked', true);
-        	// $.cookie("keys", "value"); set cookie
-        	// for (var i = 0; i < respon.data.length; i++){
-        	// 	var key = Object.keys(respon.data[i]); // Mencari key json
-        	// 	// console.log(key[0]);
-        	// 	if (key[0]= "status_upload") {
-        	// 		$("#npwp_perusahaan").hide(1000)
-        	// 	}else{
-            // 		var val = respon.data[i][key[0]] // mencari value json
-            // 		// console.log(key[0]+"_konfirmasi");
-            // 		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-            // 		$(id).text(val);
-            // 	}
-        	// }	
         	var percentVal = '100%';
 	        percent_berkas_ktp.html(percentVal);												
 		}
 		else{
 			$('#checkbox_berkas_ktp').prop('checked', false);
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	btn_berkas_ktp.show();
     		percent_berkas_ktp.hide();
         	}
@@ -138,38 +96,16 @@
 		if(respon.success){
         	toastr["success"](respon.pesan)
 			$('#checkbox_berkas_npwp_pribadi').prop('checked', true);
-
-        	// $.cookie("keys", "value"); set cookie
-        	// for (var i = 0; i < respon.data.length; i++){
-        	// 	var key = Object.keys(respon.data[i]); // Mencari key json
-        	// 	// console.log(key[0]);
-        	// 	if (key[0]= "status_upload") {
-        	// 		$("#npwp_perusahaan").hide(1000)
-        	// 	}else{
-            // 		var val = respon.data[i][key[0]] // mencari value json
-            // 		// console.log(key[0]+"_konfirmasi");
-            // 		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-            // 		$(id).text(val);
-            // 	}
-        	// }	
         	var percentVal = '100%';
 	        percent_berkas_npwp_pribadi.html(percentVal);												
 		}
 		else{
 			$('#checkbox_berkas_npwp_pribadi').prop('checked', false);
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	btn_berkas_npwp_pribadi.show();
     		percent_berkas_npwp_pribadi.hide();
         	}
@@ -198,37 +134,16 @@
 		if(respon.success){
         	toastr["success"](respon.pesan)
 			$('#checkbox_berkas_npwp_perusahaan').prop('checked', true);
-        	// $.cookie("keys", "value"); set cookie
-        	// for (var i = 0; i < respon.data.length; i++){
-        	// 	var key = Object.keys(respon.data[i]); // Mencari key json
-        	// 	// console.log(key[0]);
-        	// 	if (key[0]= "status_upload") {
-        	// 		$("#npwp_perusahaan").hide(1000)
-        	// 	}else{
-            // 		var val = respon.data[i][key[0]] // mencari value json
-            // 		// console.log(key[0]+"_konfirmasi");
-            // 		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-            // 		$(id).text(val);
-            // 	}
-        	// }	
         	var percentVal = '100%';
 	        percent_berkas_npwp_perusahaan.html(percentVal);												
 		}
 		else{
 			$('#checkbox_berkas_npwp_perusahaan').prop('checked', false);
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	btn_berkas_npwp_perusahaan.show();
     		percent_berkas_npwp_perusahaan.hide();
         	}
@@ -257,37 +172,16 @@
 		if(respon.success){
         	toastr["success"](respon.pesan)
 			$('#checkbox_berkas_akta_pendirian').prop('checked', true);
-        	// $.cookie("keys", "value"); set cookie
-        	// for (var i = 0; i < respon.data.length; i++){
-        	// 	var key = Object.keys(respon.data[i]); // Mencari key json
-        	// 	// console.log(key[0]);
-        	// 	if (key[0]= "status_upload") {
-        	// 		$("#npwp_perusahaan").hide(1000)
-        	// 	}else{
-            // 		var val = respon.data[i][key[0]] // mencari value json
-            // 		// console.log(key[0]+"_konfirmasi");
-            // 		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-            // 		$(id).text(val);
-            // 	}
-        	// }	
         	var percentVal = '100%';
 	        percent_berkas_akta_pendirian.html(percentVal);												
 		}
 		else{
 			$('#checkbox_berkas_akta_pendirian').prop('checked', false);
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	btn_berkas_akta_pendirian.show();
     		percent_berkas_akta_pendirian.hide();
         	}
@@ -316,20 +210,6 @@
 		if(respon.success){
         	toastr["success"](respon.pesan)
 			$('#checkbox_berkas_akta_pembaruan').prop('checked', true);
-        	// $.cookie("keys", "value"); set cookie
-        	// for (var i = 0; i < respon.data.length; i++){
-        	// 	var key = Object.keys(respon.data[i]); // Mencari key json
-        	// 	// console.log(key[0]);
-        	// 	if (key[0]= "status_upload") {
-        	// 		$("#npwp_perusahaan").hide(1000)
-        	// 	}else{
-            // 		var val = respon.data[i][key[0]] // mencari value json
-            // 		// console.log(key[0]+"_konfirmasi");
-            // 		var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-            // 		$(id).text(val);
-            // 	}
-        	// }	
         	var percentVal = '100%';
 	        percent_berkas_akta_perubahan.html(percentVal);												
 		}
@@ -337,18 +217,11 @@
 			$('#checkbox_berkas_akta_pembaruan').prop('checked', false);
 			btn_berkas_akta_perubahan.show();
     		percent_berkas_akta_perubahan.hide();
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	}
 		}
 	}
@@ -376,7 +249,6 @@
 		if(respon.success){
         	toastr["success"](respon.pesan)
 			$('#checkbox_berkas_pendukung').prop('checked', true);
-        	// $.cookie("keys", "value"); set cookie
         	for (var i = 0; i < respon.data.length; i++){
         		var key = Object.keys(respon.data[i]); // Mencari key json
         		// console.log(key[0]);
@@ -395,18 +267,11 @@
 		}
 		else{
 			$('#checkbox_berkas_pendukung').prop('checked', false);
-			// console.log(respon);
-        	// console.log(typeof respon);
         	var a = Object.keys(respon);
-        	// console.log(respon['nama_lengkap'][0]['message']);
-        	// console.log(a.length);
         	for (var i = 0; i < a.length; i++){
-        		// console.log(a[i]);
-        		// console.log(respon[a[i]]);
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        		// console.log($("#"+a[i]+"").addClass("parsley-error"));
         	btn_berkas_pendukung.show();
     		percent_berkas_pendukung.hide();
         	}

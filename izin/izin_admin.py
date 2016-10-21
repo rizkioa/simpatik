@@ -8,7 +8,8 @@ from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, Det
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
-from izin_forms import UploadBerkasPenolakanIzinForm
+from izin.controllers.iujk import IUJKWizard
+from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 import json
 import base64
 
@@ -845,6 +846,9 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
 			url(r'^total-skizin/$', self.admin_site.admin_view(self.total_skizin), name='total_skizin'),
 			url(r'^notification/$', self.admin_site.admin_view(self.notification), name='notification'),
+
+
+			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
 
 			)
 		return my_urls + urls

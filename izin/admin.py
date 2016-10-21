@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 from izin.detilsiup_admin import DetilSIUPAdmin
 from izin.izin_admin import IzinAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK
 from izin.pemohon_admin import PemohonAdmin
 
 from master.models import JenisPemohon
@@ -22,6 +22,9 @@ from master.models import JenisPemohon
 admin.site.register(JenisPemohon)
 admin.site.register(SKIzin)
 admin.site.register(Riwayat)
+admin.site.register(DetilIUJK)
+admin.site.register(PaketPekerjaan)
+admin.site.register(AnggotaBadanUsaha)
 admin.site.register(Pemohon, PemohonAdmin)
 
 class JenisPeraturanAdmin(admin.ModelAdmin):

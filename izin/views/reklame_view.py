@@ -6,7 +6,6 @@ from master.models import Berkas
 from izin.models import DetilReklame, PengajuanIzin
 from izin.izin_forms import UploadBerkasPendukungForm
 
-
 def reklame_detilreklame_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
@@ -42,14 +41,40 @@ def reklame_upload_berkas_pendukung(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			form = UploadBerkasPendukungForm(request.POST, request.FILES)
-			# print request.FILES
 			if request.method == "POST":
 				if request.FILES.get('berkas'):
 					if form.is_valid():
 						try:
 							p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
 							berkas = form.save(commit=False)
-							berkas.nama_berkas = "Berkas Pendukung "+p.pemohon.nama_lengkap
+							if request.POST.get('aksi') == "1":
+								berkas.nama_berkas = "Gambar Kontruksi Pemasangan Reklame"
+								berkas.keterangan = "Gambar Kontruksi Pemasangan Reklame"
+							elif request.POST.get('aksi') == "2":
+								berkas.nama_berkas = "Gambar Foto Lokasi Pemasangan Reklame"
+								berkas.keterangan = "Gambar Foto Lokasi Pemasangan Reklame"
+							elif request.POST.get('aksi') == "3":
+								berkas.nama_berkas = "Gambar Denah Lokasi Pemasangan Rekalame"
+								berkas.keterangan = "Gambar Denah Lokasi Pemasangan Rekalame"
+							elif request.POST.get('aksi') == "4":
+								berkas.nama_berkas = "Surat Ketetapan Pajak Daerah (SKPD)"
+								berkas.keterangan = "Surat Ketetapan Pajak Daerah (SKPD)"
+							elif request.POST.get('aksi') == "5":
+								berkas.nama_berkas = "Surat Setoran Pajak Daerah (SSPD)"
+								berkas.keterangan = "Surat Setoran Pajak Daerah (SSPD)"
+							elif request.POST.get('aksi') == "6":
+								berkas.nama_berkas = "Rekomendasi dari Kantor SATPOL PP"
+								berkas.keterangan = "Rekomendasi dari Kantor SATPOL PP"
+							elif request.POST.get('aksi') == "7":
+								berkas.nama_berkas = "Berita Acara Perusahaan(BAP) Tim Perizinan"
+								berkas.keterangan = "Berita Acara Perusahaan(BAP) Tim Perizinan"
+							elif request.POST.get('aksi') == "8":
+								berkas.nama_berkas = "Surat Perjanjian Kesepakatan"
+								berkas.keterangan = "Surat Perjanjian Kesepakatan"
+							else:
+								berkas.nama_berkas = "Berkas Tambahan"
+								berkas.keterangan = "Berkas Tambahan"
+								
 							if request.user.is_authenticated():
 								berkas.created_by_id = request.user.id
 							else:
