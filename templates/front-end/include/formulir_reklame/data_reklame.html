@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'reklame_detilreklame_save' %}" data-parsley-validate novalidate>
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'reklame_detilreklame_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -59,16 +59,37 @@
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><strong>Lama Pemasangan</strong></label>
       <div class="col-sm-3">
-        <div class="input-group">
-          <input name="" type="text" required="" data-parsley-trigger="change" class="form-control">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control akta_pendirian_disable" name="tanggal_mulai">
           <span class="input-group-addon">
-            <span>Hari</span>
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+      <label class="col-sm-1"><center>s/d</center></label>
+      <div class="col-sm-3">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control akta_pendirian_disable" name="tanggal_akhir">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
           </span>
         </div>
       </div>
     </div>
 
-     <div class="form-group">
+    <div class="form-group" id="tanggal_pengesahan">
+      <label class="col-sm-2 control-label text-left">Tanggal Pengesahan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control akta_pendirian_disable" name="tanggal_pengesahan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><strong>Letak Reklame</strong></label>
       <div class="col-sm-7">
         <textarea name="letak_pemasangan" class="form-control" rows="5" name="alamat" required="" data-parsley-trigger="change" placeholder="isi alamat pemasangan letak reklame"></textarea>

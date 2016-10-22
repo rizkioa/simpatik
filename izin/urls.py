@@ -141,5 +141,6 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
+    url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
     ]
