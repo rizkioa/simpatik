@@ -570,6 +570,14 @@ def cetak_bukti_pendaftaran_tdp_po(request, extra_context={}):
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_tdp_po/cetak_bukti_pendaftaran.html", extra_context)
 
+def cetak_tdp_koperasi(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_koperasi/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_koperasi(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_koperasi/cetak_bukti_pendaftaran.html", extra_context)
+
 def cetak_tdp_bul(request, extra_context={}):
 	return render(request, "front-end/include/formulir_tdp_bul/cetak.html", extra_context)
 
