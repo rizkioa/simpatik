@@ -4,19 +4,19 @@
 // 
 // ++++++++++++++  upload gambar konstruksi pemasangan reklame ++++++++
 
-var btn_berkas_foto = $('#btn_gambar_konstruksi_pemasangan_reklame');
-var percent_berkas_foto = $('#percent_gambar_konstruksi_pemasangan_reklame');
+var btn_gambar_konstruksi_pemasangan_reklame = $('#btn_gambar_konstruksi_pemasangan_reklame');
+var percent_gambar_konstruksi_pemasangan_reklame = $('#percent_gambar_konstruksi_pemasangan_reklame');
 
 $("#form_upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
 	beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_gambar_konstruksi_pemasangan_reklame.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-    	btn_berkas_foto.hide();
-    	percent_berkas_foto.show();
+    	btn_gambar_konstruksi_pemasangan_reklame.hide();
+    	percent_gambar_konstruksi_pemasangan_reklame.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_gambar_konstruksi_pemasangan_reklame.html(percentVal);
     },
 	success: function (response){
     	respon = $.parseJSON(response)
@@ -24,7 +24,7 @@ $("#form_upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
         	toastr["success"](respon.pesan)
         	$('#checkbox_gambar_konstruksi_pemasangan_reklame').prop('checked', true);	
         	var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);												
+            percent_gambar_konstruksi_pemasangan_reklame.html(percentVal);												
     	}
     	else{
     		$('#checkbox_gambar_konstruksi_pemasangan_reklame').prop('checked', false);
@@ -33,8 +33,8 @@ $("#form_upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
         		var field = a[i].replace("_", " ").capitalize();
         		toastr["error"](field+", "+respon[a[i]][0]['message'])
         		$("#"+a[i]+"").addClass("has-error");
-        	btn_berkas_foto.show();
-    		percent_berkas_foto.hide();
+        	btn_gambar_konstruksi_pemasangan_reklame.show();
+    		percent_gambar_konstruksi_pemasangan_reklame.hide();
         	}
     	}
     }
@@ -44,19 +44,19 @@ $("#form_upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
 
 // ++++++++++++++  upload gambar foto lokasi pemasangan reklame ++++++++
 
-var btn_berkas_foto = $('#btn_gambar_foto_lokasi_pemasangan_reklame');
-var percent_berkas_foto = $('#percent_gambar_foto_lokasi_pemasangan_reklame');
+var btn_gambar_foto_lokasi_pemasangan_reklame = $('#btn_gambar_foto_lokasi_pemasangan_reklame');
+var percent_gambar_foto_lokasi_pemasangan_reklame = $('#percent_gambar_foto_lokasi_pemasangan_reklame');
 
 $("#form_upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_gambar_foto_lokasi_pemasangan_reklame.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_gambar_foto_lokasi_pemasangan_reklame.hide();
+        percent_gambar_foto_lokasi_pemasangan_reklame.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_gambar_foto_lokasi_pemasangan_reklame.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -64,7 +64,7 @@ $("#form_upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_gambar_foto_lokasi_pemasangan_reklame').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_gambar_foto_lokasi_pemasangan_reklame.html(percentVal);                                               
         }
         else{
             $('#checkbox_gambar_foto_lokasi_pemasangan_reklame').prop('checked', false);
@@ -73,8 +73,8 @@ $("#form_upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_gambar_foto_lokasi_pemasangan_reklame.show();
+            percent_gambar_foto_lokasi_pemasangan_reklame.hide();
             }
         }
     }
@@ -84,19 +84,19 @@ $("#form_upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
 
 // ++++++++++++++  upload gambar denah lokasi pemasangan reklame ++++++++
 
-var btn_berkas_foto = $('#btn_gambar_denah_lokasi_pemasangan_reklame');
-var percent_berkas_foto = $('#percent_gambar_denah_lokasi_pemasangan_reklame');
+var btn_gambar_denah_lokasi_pemasangan_reklame = $('#btn_gambar_denah_lokasi_pemasangan_reklame');
+var percent_gambar_denah_lokasi_pemasangan_reklame = $('#percent_gambar_denah_lokasi_pemasangan_reklame');
 
 $("#form_upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_gambar_denah_lokasi_pemasangan_reklame.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_gambar_denah_lokasi_pemasangan_reklame.hide();
+        percent_gambar_denah_lokasi_pemasangan_reklame.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_gambar_denah_lokasi_pemasangan_reklame.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -104,7 +104,7 @@ $("#form_upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_gambar_denah_lokasi_pemasangan_reklame').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_gambar_denah_lokasi_pemasangan_reklame.html(percentVal);                                               
         }
         else{
             $('#checkbox_gambar_denah_lokasi_pemasangan_reklame').prop('checked', false);
@@ -113,8 +113,8 @@ $("#form_upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_gambar_denah_lokasi_pemasangan_reklame.show();
+            percent_gambar_denah_lokasi_pemasangan_reklame.hide();
             }
         }
     }
@@ -123,19 +123,19 @@ $("#form_upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
 
 // ++++++++++++++  upload surat ketetapan pajak daerah (skpd) ++++++++
 
-var btn_berkas_foto = $('#btn_surat_ketetapan_pajak_daerah');
-var percent_berkas_foto = $('#percent_surat_ketetapan_pajak_daerah');
+var btn_surat_ketetapan_pajak_daerah = $('#btn_surat_ketetapan_pajak_daerah');
+var percent_surat_ketetapan_pajak_daerah = $('#percent_surat_ketetapan_pajak_daerah');
 
 $("#form_upload_surat_ketetapan_pajak_daerah").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_surat_ketetapan_pajak_daerah.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_surat_ketetapan_pajak_daerah.hide();
+        percent_surat_ketetapan_pajak_daerah.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_surat_ketetapan_pajak_daerah.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -143,7 +143,7 @@ $("#form_upload_surat_ketetapan_pajak_daerah").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_surat_ketetapan_pajak_daerah').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_surat_ketetapan_pajak_daerah.html(percentVal);                                               
         }
         else{
             $('#checkbox_surat_ketetapan_pajak_daerah').prop('checked', false);
@@ -152,8 +152,8 @@ $("#form_upload_surat_ketetapan_pajak_daerah").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_surat_ketetapan_pajak_daerah.show();
+            percent_surat_ketetapan_pajak_daerah.hide();
             }
         }
     }
@@ -163,19 +163,19 @@ $("#form_upload_surat_ketetapan_pajak_daerah").ajaxForm({
 
 // ++++++++++++++  upload surat setoran pajak daerah (sspd) ++++++++
 
-var btn_berkas_foto = $('#btn_surat_setoran_pajak_daerah');
-var percent_berkas_foto = $('#percent_surat_setoran_pajak_daerah');
+var btn_surat_setoran_pajak_daerah = $('#btn_surat_setoran_pajak_daerah');
+var percent_surat_setoran_pajak_daerah = $('#percent_surat_setoran_pajak_daerah');
 
 $("#form_upload_surat_setoran_pajak_daerah").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_surat_setoran_pajak_daerah.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_surat_setoran_pajak_daerah.hide();
+        percent_surat_setoran_pajak_daerah.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_surat_setoran_pajak_daerah.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -183,7 +183,7 @@ $("#form_upload_surat_setoran_pajak_daerah").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_surat_setoran_pajak_daerah').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_surat_setoran_pajak_daerah.html(percentVal);                                               
         }
         else{
             $('#checkbox_surat_setoran_pajak_daerah').prop('checked', false);
@@ -192,8 +192,8 @@ $("#form_upload_surat_setoran_pajak_daerah").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_surat_setoran_pajak_daerah.show();
+            percent_surat_setoran_pajak_daerah.hide();
             }
         }
     }
@@ -203,19 +203,19 @@ $("#form_upload_surat_setoran_pajak_daerah").ajaxForm({
 
 // ++++++++++++++  upload rekomendasi dari kantor SATPOL PP  +++++
 
-var btn_berkas_foto = $('#btn_rekomendasi_satpol_pp');
-var percent_berkas_foto = $('#percent_rekomendasi_satpol_pp');
+var btn_rekomendasi_satpol_pp = $('#btn_rekomendasi_satpol_pp');
+var percent_rekomendasi_satpol_pp = $('#percent_rekomendasi_satpol_pp');
 
 $("#form_upload_rekomendasi_satpol_pp").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_rekomendasi_satpol_pp.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_rekomendasi_satpol_pp.hide();
+        percent_rekomendasi_satpol_pp.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_rekomendasi_satpol_pp.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -223,7 +223,7 @@ $("#form_upload_rekomendasi_satpol_pp").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_rekomendasi_satpol_pp').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_rekomendasi_satpol_pp.html(percentVal);                                               
         }
         else{
             $('#checkbox_rekomendasi_satpol_pp').prop('checked', false);
@@ -232,8 +232,8 @@ $("#form_upload_rekomendasi_satpol_pp").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_rekomendasi_satpol_pp.show();
+            percent_rekomendasi_satpol_pp.hide();
             }
         }
     }
@@ -242,19 +242,19 @@ $("#form_upload_rekomendasi_satpol_pp").ajaxForm({
 
 // ++++++++++++++  upload berita acara perusahaan  +++++
 
-var btn_berkas_foto = $('#btn_berita_acara_perusahaan');
-var percent_berkas_foto = $('#percent_berita_acara_perusahaan');
+var btn_berita_acara_perusahaan = $('#btn_berita_acara_perusahaan');
+var percent_berita_acara_perusahaan = $('#percent_berita_acara_perusahaan');
 
 $("#form_upload_berita_acara_perusahaan").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_berita_acara_perusahaan.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_berita_acara_perusahaan.hide();
+        percent_berita_acara_perusahaan.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_berita_acara_perusahaan.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -262,7 +262,7 @@ $("#form_upload_berita_acara_perusahaan").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_berita_acara_perusahaan').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_berita_acara_perusahaan.html(percentVal);                                               
         }
         else{
             $('#checkbox_berita_acara_perusahaan').prop('checked', false);
@@ -271,8 +271,8 @@ $("#form_upload_berita_acara_perusahaan").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_berita_acara_perusahaan.show();
+            percent_berita_acara_perusahaan.hide();
             }
         }
     }
@@ -282,19 +282,19 @@ $("#form_upload_berita_acara_perusahaan").ajaxForm({
 
 // ++++++++++++++ upload surat perjanjian +++++
 
-var btn_berkas_foto = $('#btn_surat_perjanjian');
-var percent_berkas_foto = $('#percent_surat_perjanjian');
+var btn_surat_perjanjian = $('#btn_surat_perjanjian');
+var percent_surat_perjanjian = $('#percent_surat_perjanjian');
 
 $("#form_upload_surat_perjanjian").ajaxForm({
     beforeSend: function() {
         var percentVal = '0%';
-        percent_berkas_foto.html(percentVal);
+        percent_surat_perjanjian.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-        btn_berkas_foto.hide();
-        percent_berkas_foto.show();
+        btn_surat_perjanjian.hide();
+        percent_surat_perjanjian.show();
         var percentVal = percentComplete + '%';
-        percent_berkas_foto.html(percentVal);
+        percent_surat_perjanjian.html(percentVal);
     },
     success: function (response){
         respon = $.parseJSON(response)
@@ -302,7 +302,7 @@ $("#form_upload_surat_perjanjian").ajaxForm({
             toastr["success"](respon.pesan)
             $('#checkbox_surat_perjanjian').prop('checked', true);   
             var percentVal = '100%';
-            percent_berkas_foto.html(percentVal);                                               
+            percent_surat_perjanjian.html(percentVal);                                               
         }
         else{
             $('#checkbox_surat_perjanjian').prop('checked', false);
@@ -311,8 +311,8 @@ $("#form_upload_surat_perjanjian").ajaxForm({
                 var field = a[i].replace("_", " ").capitalize();
                 toastr["error"](field+", "+respon[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
-            btn_berkas_foto.show();
-            percent_berkas_foto.hide();
+            btn_surat_perjanjian    .show();
+            percent_surat_perjanjian.hide();
             }
         }
     }

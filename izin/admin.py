@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
 from izin.detilsiup_admin import DetilSIUPAdmin
+from izin.detilreklame_admin import DetilReklameAdmin
 from izin.izin_admin import IzinAdmin
 from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK
 from izin.pemohon_admin import PemohonAdmin
