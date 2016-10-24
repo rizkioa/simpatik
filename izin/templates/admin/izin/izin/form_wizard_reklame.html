@@ -662,7 +662,7 @@
 	              	load_desa1(respon.data.kecamatan)
 	              	setTimeout(function(){
 		              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
-		              	$('#alamat_perusahaan_load').val(respon.data.alamat);
+		              	$('#alamat_perusahaan_load').val(respon.data.alamat_perusahaan);
 		              	$('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
 		              	$('#no_telepon_perusahaan_load').val(respon.data.telepon);
 		              	$('#id_email_perusahaan').val(respon.data.email);
@@ -680,7 +680,7 @@
 	              	$('#kode_pos_perusahaan_load').val("");
 	              	$('#no_telepon_perusahaan_load').val("");
 	              	$('#id_email_perusahaan').val("");
-	              	$('#id_fax_perusahaan').val("")
+	              	$('#id_fax_perusahaan').val("");
 	              	$('#id_negara1').val("").prop('selected',true).trigger("chosen:updated");
 	              	$('#id_provinsi1').val("").prop('selected',true).trigger("chosen:updated");
 	              	$('#id_kabupaten1').val("").prop('selected',true).trigger("chosen:updated");
@@ -693,6 +693,31 @@
 	          $(".tab-content").mLoading('hide');
 	        }
 	      });
+	    }
+
+	    if ('{{pengajuan_}}'){
+	    	// alert("{{ pengajuan_.pemohon.telephone }}");
+	    	$('#id_jenis_pemohon').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+	    	$('#id_nama_lengkap').val('{{ pengajuan_.pemohon.nama_lengkap }}')
+	    	$('#alamat_pemohon_load').val('{{ pengajuan_.pemohon.alamat }}')
+	    	load_provinsi('{{ pengajuan_.pemohon.desa.kecamatan.kabupaten.provinsi.negara.id }}')
+          	load_kabupaten('{{ pengajuan_.pemohon.desa.kecamatan.kabupaten.provinsi.id }}')
+          	load_kecamatan('{{ pengajuan_.pemohon.desa.kecamatan.kabupaten.id }}')
+          	load_desa('{{ pengajuan_.pemohon.desa.kecamatan.id }}')
+          	setTimeout(function(){
+	    		$('#id_negara').val('{{ pengajuan_.pemohon.desa.kecamatan.kabupaten.provinsi.negara.id }}').prop('selected',true).trigger("chosen:updated");
+              	$('#id_provinsi').val('{{ pengajuan_.pemohon.desa.kecamatan.kabupaten.provinsi.id }}').prop('selected',true).trigger("chosen:updated");
+              	$('#id_kabupaten').val('{{ pengajuan_.pemohon.desa.kecamatan.kabupaten.id }}').prop('selected',true).trigger("chosen:updated")
+              	$('#id_kecamatan').val('{{ pengajuan_.pemohon.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
+              	$('#id_desa').val('{{ pengajuan_.pemohon.desa.id }}').prop('selected',true).trigger("chosen:updated");
+
+          	}, 1000);
+          	$('#no_telepon_pemohon_load').val('{{ pengajuan_.pemohon.telephone }}');
+          	$('#hp_load').val('{{ pengajuan_.pemohon.hp }}');
+          	$('#email_pemohon_load').val('{{ pengajuan_.pemohon.email }}');
+          	$('#kewarganegaraan_pemohon_load').val('{{ pengajuan_.pemohon.kewarganegaraan }}').prop('selected',true).trigger("chosen:updated");
+          	$('#pekerjaan_pemohon_load').val('{{ pengajuan_.pemohon.pekerjaan }}').prop('selected',true).trigger("chosen:updated");
+
 	    }
   	</script>
 {% endblock %}

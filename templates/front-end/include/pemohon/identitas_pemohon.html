@@ -3,7 +3,7 @@
   <div class="form-group">
     <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pengajuan</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="jenis_pengajuan" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" id="id_jenis_pengajuan" name="jenis_pengajuan" required="" data-parsley-trigger="change">
         <option value>-- Pilih Jenis Pengajuan --</option>
         {% if jenispermohonanizin_list %}
           {% for jenis in jenispermohonanizin_list %}
@@ -24,7 +24,7 @@
   <div class="form-group" id="jenis_pemohon">
     <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pemohon</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="jenis_pemohon" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" id="id_jenis_pemohon" name="jenis_pemohon" required="" data-parsley-trigger="change">
         <option value>-- Pilih Jenis Pemohon --</option>
         {% if jenis_pemohon %}
         {% for j in jenis_pemohon %}
