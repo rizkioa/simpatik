@@ -23,6 +23,16 @@ from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Perusahaan
 from decimal import Decimal
 
+import datetime
+
+def set_cookie(response, key, value, days_expire = 7):
+  if days_expire is None:
+    max_age = 365 * 24 * 60 * 60  #one year
+  else:
+    max_age = days_expire * 24 * 60 * 60 
+  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+  response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
+
 def siup_identitas_pemohon_save_cookie(request):
 	pemohon = PemohonForm(request.POST) 
 	if pemohon.is_valid():
@@ -183,39 +193,11 @@ def siup_identitas_pemohon_save_cookie(request):
 
 		response.set_cookie(key='id_pengajuan', value=pengajuan.id)
 		response.set_cookie(key='id_pemohon', value=p.id)
-		# response.set_cookie(key='nomor_pengajuan', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
 		response.set_cookie(key='nomor_paspor', value=paspor_)
-		# response.set_cookie(key='nama_lengkap', value=p.nama_lengkap) # set cookie	
-		# if jenis_permohonan_:
-		# 	response.set_cookie(key='jenis_permohonan', value=pengajuan.jenis_permohonan) # set cookie	
-		# if ktp_ or paspor_:
-		# 	value = ""
-		# 	if ktp_:
-		# 		value += "KTP "+str(ktp_)
-		# 	if paspor_:
-		# 		value += ", PASPOR "+str(paspor_)
-		# 	response.set_cookie(key='ktp', value=value) # set cookie	
-		# if p.desa:
-		# 	alamat_ = str(p.alamat)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
-		# 	response.set_cookie(key='alamat', value=alamat_) # set cookie	
-		# if p.jenis_pemohon:
-		# 	response.set_cookie(key='jenis_pemohon', value=p.jenis_pemohon) # set cookie	
-		# if p.hp:
-		# 	response.set_cookie(key='hp', value=p.hp) # set cookie	
-		# if p.telephone:
-		# 	response.set_cookie(key='telephone', value=p.telephone) # set cookie	
-		# if p.kewarganegaraan:
-		# 	response.set_cookie(key='kewarganegaraan', value=p.kewarganegaraan) # set cookie	
-		# if p.tempat_lahir:
-		# 	ttl_ = str(p.tempat_lahir)+", "+str(p.tanggal_lahir)
-		# 	response.set_cookie(key='ttl', value=ttl_) # set cookie
-		# if p.email:
-		# 	response.set_cookie(key='email', value=p.email) # set cookie	
+			
 	else:
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
-		# data = {'success': False, 'pesan': 'Pengisian tidak lengkap.', 'error':pemohon.errors.as_json() }
-		# response = HttpResponse(json.dumps(data))
 		response = HttpResponse(data)
 	return response
 
