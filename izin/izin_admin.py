@@ -166,9 +166,15 @@ class IzinAdmin(admin.ModelAdmin):
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def button_cetak_pendaftaran(self, obj):
+		link_ = '#'
+		jenis_izin_ = obj.kelompok_jenis_izin.kode
+		if jenis_izin_ == "503.08/":
+			link_ = reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
+			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
-				""" % reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id}))
+				""" % link_ )
 		if self.request.user.groups.filter(name='Operator'):
 			if obj.status == 4:
 				btn = mark_safe("""<span class="label bg-primary">Verifikasi Kabid</span>""")
@@ -364,59 +370,6 @@ class IzinAdmin(admin.ModelAdmin):
 
 		# template = loader.get_template("admin/izin/izin/add_wizard.html")
 		template = loader.get_template("admin/izin/izin/cetak_bukti_pendaftaran.html")
-		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
-
-	def view_pengajuan_siup(self, request, id_pengajuan_izin_):
-		extra_context = {}
-		if id_pengajuan_izin_:
-			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
-			
-			alamat_ = ""
-			alamat_perusahaan_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-				extra_context.update({'nomor_identitas': nomor_identitas_ })
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
-				extra_context.update({'perusahaan': pengajuan_.perusahaan})
-
-			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
-			extra_context.update({'status': pengajuan_.status})
-			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': encode_pengajuan_id})
-			#+++++++++++++ page logout ++++++++++
-			extra_context.update({'has_permission': True })
-			#+++++++++++++ end page logout ++++++++++
-			banyak = len(DetilSIUP.objects.all())
-			extra_context.update({'banyak': banyak})
-			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
-			extra_context.update({'syarat': syarat_})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
-				if riwayat_:
-					extra_context.update({'riwayat': riwayat_ })
-			except ObjectDoesNotExist:
-				pass
-		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_siup.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
@@ -835,7 +788,6 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/reklame/$', self.admin_site.admin_view(formulir_reklame), name='izin_proses_reklame'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
-			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),
 			url(r'^aksi-tolak/$', self.admin_site.admin_view(self.penolakanizin), name='penolakanizin'),
 			url(r'^create-skizin/$', self.admin_site.admin_view(self.create_skizin), name='create_skizin'),
@@ -846,7 +798,6 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
 			url(r'^total-skizin/$', self.admin_site.admin_view(self.total_skizin), name='total_skizin'),
 			url(r'^notification/$', self.admin_site.admin_view(self.notification), name='notification'),
-
 
 			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
 

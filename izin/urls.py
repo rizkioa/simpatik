@@ -38,7 +38,8 @@ urlpatterns = [
     url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
     url(r'^layanan/$', views.layanan, name='layanan'),
-    url(r'^cari-pengajuan-izin$', views.cari_pengajuan, name='cari_pengajuan'),
+    url(r'^cari-pengajuan-izin/$', views.cari_pengajuan, name='cari_pengajuan'),
+    url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),
     url(r'^layanan/ho-pemohonan-baru/formulir$', views.formulir_ho_pemohonan_baru, name='formulir_ho_pemohonan_baru'),
@@ -91,6 +92,30 @@ urlpatterns = [
     #cetak IMB Reklame
     url(r'^layanan/imb-reklame/formulir/cetak$', views.cetak_imb_reklame, name='cetak_imb_reklame'),
     url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
+    
+    #cetak TDP PT
+    url(r'^layanan/tdp-pt/formulir/cetak$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
+    url(r'^layanan/tdp-pt/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_pt, name='cetak_bukti_pendaftaran_tdp_pt'),
+    
+    #cetak TDP CV
+    url(r'^layanan/tdp-cv/formulir/cetak$', views.cetak_tdp_cv, name='cetak_tdp_cv'),
+    url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
+    
+    #cetak TDP FIRMA
+    url(r'^layanan/tdp-firma/formulir/cetak$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
+    url(r'^layanan/tdp-firma/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_firma, name='cetak_bukti_pendaftaran_tdp_firma'),
+    
+    #cetak TDP PO
+    url(r'^layanan/tdp-perorangan/formulir/cetak$', views.cetak_tdp_po, name='cetak_tdp_po'),
+    url(r'^layanan/tdp-perorangan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_po, name='cetak_bukti_pendaftaran_tdp_po'),
+    
+    #cetak TDP KOPERASI
+    url(r'^layanan/tdp-koperasi/formulir/cetak$', views.cetak_tdp_koperasi, name='cetak_tdp_koperasi'),
+    url(r'^layanan/tdp-koperasi/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_koperasi, name='cetak_bukti_pendaftaran_tdp_koperasi'),
+    
+    #cetak TDP Bul
+    url(r'^layanan/tdp-bul/formulir/cetak$', views.cetak_tdp_bul, name='cetak_tdp_bul'),
+    url(r'^layanan/tdp-bul/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
 
 
     # url for ajax siup
@@ -115,6 +140,8 @@ urlpatterns = [
     # 
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
+    url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
+    url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK

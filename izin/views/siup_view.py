@@ -1,11 +1,11 @@
 from django.http import HttpResponse
 import json
 from sqlite3 import OperationalError
-
+import os
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from master.models import Berkas
@@ -22,6 +22,16 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Perusahaan
 from decimal import Decimal
+
+import datetime
+
+def set_cookie(response, key, value, days_expire = 7):
+  if days_expire is None:
+    max_age = 365 * 24 * 60 * 60  #one year
+  else:
+    max_age = days_expire * 24 * 60 * 60 
+  expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
+  response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
 	pemohon = PemohonForm(request.POST) 
@@ -122,6 +132,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilSIUP')
 		elif k.kode == "IUJK":
 			objects_ = getattr(app_models, 'DetilIUJK')
+		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+			objects_ = getattr(app_models, 'DetilReklame')
 
 		if objects_:
 			try:
@@ -181,39 +193,11 @@ def siup_identitas_pemohon_save_cookie(request):
 
 		response.set_cookie(key='id_pengajuan', value=pengajuan.id)
 		response.set_cookie(key='id_pemohon', value=p.id)
-		# response.set_cookie(key='nomor_pengajuan', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
 		response.set_cookie(key='nomor_paspor', value=paspor_)
-		# response.set_cookie(key='nama_lengkap', value=p.nama_lengkap) # set cookie	
-		# if jenis_permohonan_:
-		# 	response.set_cookie(key='jenis_permohonan', value=pengajuan.jenis_permohonan) # set cookie	
-		# if ktp_ or paspor_:
-		# 	value = ""
-		# 	if ktp_:
-		# 		value += "KTP "+str(ktp_)
-		# 	if paspor_:
-		# 		value += ", PASPOR "+str(paspor_)
-		# 	response.set_cookie(key='ktp', value=value) # set cookie	
-		# if p.desa:
-		# 	alamat_ = str(p.alamat)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
-		# 	response.set_cookie(key='alamat', value=alamat_) # set cookie	
-		# if p.jenis_pemohon:
-		# 	response.set_cookie(key='jenis_pemohon', value=p.jenis_pemohon) # set cookie	
-		# if p.hp:
-		# 	response.set_cookie(key='hp', value=p.hp) # set cookie	
-		# if p.telephone:
-		# 	response.set_cookie(key='telephone', value=p.telephone) # set cookie	
-		# if p.kewarganegaraan:
-		# 	response.set_cookie(key='kewarganegaraan', value=p.kewarganegaraan) # set cookie	
-		# if p.tempat_lahir:
-		# 	ttl_ = str(p.tempat_lahir)+", "+str(p.tanggal_lahir)
-		# 	response.set_cookie(key='ttl', value=ttl_) # set cookie
-		# if p.email:
-		# 	response.set_cookie(key='email', value=p.email) # set cookie	
+			
 	else:
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
-		# data = {'success': False, 'pesan': 'Pengisian tidak lengkap.', 'error':pemohon.errors.as_json() }
-		# response = HttpResponse(json.dumps(data))
 		response = HttpResponse(data)
 	return response
 
@@ -492,31 +476,38 @@ def siup_upload_berkas_foto_pemohon(request):
 	if 'id_pemohon' in request.COOKIES.keys():
 		if request.COOKIES['id_pemohon'] != '':
 			form = UploadBerkasFotoForm(request.POST, request.FILES)
-			# print request.FILES
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						try:
-							berkas = form.save(commit=False)
-							# update model yang lain.
-							p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
-							berkas.nama_berkas = "Foto Pemohon "+p.nama_lengkap
-							berkas.keterangan = "foto"
-							if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
-							else:
-								berkas.created_by_id = request.COOKIES['id_pemohon']
-							berkas.save()
-							# save many to many table
-							p.berkas_foto.add(berkas)
+						ext = os.path.splitext(berkas_.name)[1]
+					 	valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+					 	if not ext in valid_extensions:
+					 		data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								berkas = form.save(commit=False)
+								# update model yang lain.
+								p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
+								berkas.nama_berkas = "Foto Pemohon "+p.nama_lengkap
+								berkas.keterangan = "foto"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								# save many to many table
+								p.berkas_foto.add(berkas)
 
-							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-									{'status_upload': 'ok'},
-								]}
-						except ObjectDoesNotExist:
-							data = {'Terjadi Kesalahan': [{'message': 'Pemohon tidak ada dalam daftar.'}]}
-						data = json.dumps(data)
-						response = HttpResponse(data)
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+										{'status_upload': 'ok'},
+									]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Pemohon tidak ada dalam daftar.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)
@@ -542,27 +533,35 @@ def siup_upload_berkas_ktp_pemohon(request):
 		if request.COOKIES['id_pemohon'] and request.COOKIES['nomor_ktp'] != '':
 			ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
 			form = UploadBerkasKTPForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						berkas = form.save(commit=False)
-						berkas.nama_berkas = "Berkas KTP Pemohon "+request.COOKIES['nomor_ktp']
-						berkas.keterangan = "ktp"
-						if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
 						else:
-							berkas.created_by_id = request.COOKIES['id_pemohon']
-						berkas.save()
-						# update model yang lain.
-						# p = Perushaan.object.get(id=request.COOKIES['id_perusahaan'])
-						ktp_.berkas_id = berkas.id
-						ktp_.save()
+							berkas = form.save(commit=False)
+							berkas.nama_berkas = "Berkas KTP Pemohon "+request.COOKIES['nomor_ktp']
+							berkas.keterangan = "ktp"
+							if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+							else:
+								berkas.created_by_id = request.COOKIES['id_pemohon']
+							berkas.save()
+							# update model yang lain.
+							# p = Perushaan.object.get(id=request.COOKIES['id_perusahaan'])
+							ktp_.berkas_id = berkas.id
+							ktp_.save()
 
-						data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-								{'status_upload': 'ok'},
-							]}
-						data = json.dumps(data)
-						response = HttpResponse(data)
+							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)
@@ -587,34 +586,40 @@ def siup_upload_berkas_npwp_pribadi(request):
 	if 'id_pemohon' in request.COOKIES.keys():
 		if request.COOKIES['id_pemohon'] != '':
 			form = UploadBerkasNPWPPribadiForm(request.POST, request.FILES)
-			# print request.FILES
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						# update model yang lain.
-						try:
-							berkas = form.save(commit=False)
-							d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-							p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
-							berkas.nama_berkas = "NPWP Pribadi "+p.nama_lengkap
-							berkas.keterangan = "npwp pribadi"
-							if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
-							else:
-								berkas.created_by_id = request.COOKIES['id_pemohon']
-							berkas.save()
-							p.berkas_npwp = berkas
-							p.save()
-							d.berkas_npwp_pemohon = berkas
-							d.save()
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								berkas = form.save(commit=False)
+								d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
+								berkas.nama_berkas = "NPWP Pribadi "+p.nama_lengkap
+								berkas.keterangan = "npwp pribadi"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_pemohon = berkas
+								d.save()
 
-							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-									{'status_upload': 'ok'},
-								]}
-						except ObjectDoesNotExist:
-							data = {'Terjadi Kesalahan': [{'message': 'Pemohon tidak ada dalam daftar'}]}
-						data = json.dumps(data)
-						response = HttpResponse(data)
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+										{'status_upload': 'ok'},
+									]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Pemohon tidak ada dalam daftar'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)
@@ -636,36 +641,42 @@ def siup_upload_berkas_npwp_pribadi(request):
 	return response
 
 def siup_upload_berkas_npwp_perusahaan(request):
-	# print request.COOKIES['id_perusahaan']
 	if 'id_perusahaan' in request.COOKIES.keys():
 		if request.COOKIES['id_perusahaan'] != '':
 			form = UploadBerkasNPWPPerusahaanForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						# update model yang lain.
-						try:
-							d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-							p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-							berkas = form.save(commit=False)
-							berkas.nama_berkas = "NPWP Perusahaan "+p.nama_perusahaan
-							berkas.keterangan = "npwp perusahaan"
-							if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
-							else:
-								berkas.created_by_id = request.COOKIES['id_pemohon']
-							berkas.save()
-							p.berkas_npwp = berkas
-							p.save()
-							d.berkas_npwp_perusahaan = berkas
-							d.save()
-							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-								{'status_upload': 'ok'},
-							]}
-						except ObjectDoesNotExist:
-							data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
-						data = json.dumps(data)
-						response = HttpResponse(data)
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "NPWP Perusahaan "+p.nama_perusahaan
+								berkas.keterangan = "npwp perusahaan"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)
@@ -687,35 +698,42 @@ def siup_upload_berkas_npwp_perusahaan(request):
 	return response	
 
 def siup_upload_berkas_akta_pendirian(request):
-	# print request.COOKIES['id_legalitas']
 	if 'id_legalitas' in request.COOKIES.keys():
 		if request.COOKIES['id_legalitas'] != '':
 			form = UploadBerkasAktaPendirianForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						try:
-							a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-							berkas = form.save(commit=False)
-							berkas.nama_berkas = "Berkas Akta Pendirian "+a.nama_perusahaan
-							berkas.keterangan = "akta pendirian"
-							if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
-							else:
-								berkas.created_by_id = request.COOKIES['id_pemohon']
-							berkas.save()
-							# update model yang lain.
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Berkas Akta Pendirian "+a.nama_perusahaan
+								berkas.keterangan = "akta pendirian"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								# update model yang lain.
 
-							p = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
-							p.berkas = berkas
-							p.save()
-							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-								{'status_upload': 'ok'},
-							]}
-						except ObjectDoesNotExist:
-							data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
-						data = json.dumps(data)
-						response = HttpResponse(data)
+								p = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+								p.berkas = berkas
+								p.save()
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)
@@ -740,31 +758,39 @@ def siup_upload_berkas_akta_perubahan(request):
 	if 'id_legalitas_perubahan' in request.COOKIES.keys():
 		if request.COOKIES['id_legalitas_perubahan'] != '':
 			form = UploadBerkasAktaPerubahanForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						try:
-							a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-							berkas = form.save(commit=False)
-							berkas.nama_berkas = "Berkas Akta Perubahan "+a.nama_perusahaan
-							berkas.keterangan = "akta perubahan"
-							if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
-							else:
-								berkas.created_by_id = request.COOKIES['id_pemohon']
-							berkas.save()
-							# update model yang lain.
-							p = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
-							p.berkas = berkas
-							p.save()
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Berkas Akta Perubahan "+a.nama_perusahaan
+								berkas.keterangan = "akta perubahan"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								# update model yang lain.
+								p = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
+								p.berkas = berkas
+								p.save()
 
-							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-									{'status_upload': 'ok'},
-								]}
-						except ObjectDoesNotExist:
-							data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
-						data = json.dumps(data)
-						response = HttpResponse(data)		
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+										{'status_upload': 'ok'},
+									]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)		
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)
@@ -789,29 +815,36 @@ def siup_upload_berkas_pendukung(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			form = UploadBerkasPendukungForm(request.POST, request.FILES)
-			# print request.FILES
+			berkas_ = request.FILES.get('berkas')
 			if request.method == "POST":
-				if request.FILES.get('berkas'):
+				if berkas_:
 					if form.is_valid():
-						try:
-							p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
-							berkas = form.save(commit=False)
-							berkas.nama_berkas = "Berkas Pendukung "+p.pemohon.nama_lengkap
-							berkas.keterangan = "pendukung"
-							if request.user.is_authenticated():
-								berkas.created_by_id = request.user.id
-							else:
-								berkas.created_by_id = request.COOKIES['id_pemohon']
-							berkas.save()
-							p.berkas_tambahan.add(berkas)
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Berkas Pendukung "+p.pemohon.nama_lengkap
+								berkas.keterangan = "pendukung"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_tambahan.add(berkas)
 
-							data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-									{'status_upload': 'ok'},
-								]}
-						except ObjectDoesNotExist:
-							data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
-						data = json.dumps(data)
-						response = HttpResponse(data)
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+										{'status_upload': 'ok'},
+									]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
 					else:
 						data = form.errors.as_json()
 						response = HttpResponse(data)

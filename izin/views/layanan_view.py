@@ -14,7 +14,7 @@ def layanan_siup(request, extra_context={}):
 	extra_context.update({'id_jenis_izin': "6" })
 	extra_context.update({'id_kelompok_jenis_izin': "17" })
 	response = render(request, "front-end/layanan/siup.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value=17)
+	response.set_cookie(key='id_kelompok_izin', value="17")
 	return response
 
 def layanan_ho_baru(request, extra_context={}):
@@ -25,7 +25,9 @@ def layanan_ho_baru(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_ho_pemohonan_baru") })
 	extra_context.update({'id_jenis_izin': "2" })
 	extra_context.update({'id_kelompok_jenis_izin': "12" })
-	return render(request, "front-end/layanan/ho_baru.html", extra_context)
+	response = render(request, "front-end/layanan/ho_baru.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="12")
+	return response
 
 def layanan_ho_daftar_ulang(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=13)
@@ -35,7 +37,9 @@ def layanan_ho_daftar_ulang(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_ho_daftar_ulang") })
 	extra_context.update({'id_jenis_izin': "2" })
 	extra_context.update({'id_kelompok_jenis_izin': "13" })
-	return render(request, "front-end/layanan/ho_daftar_ulang.html", extra_context)
+	response = render(request, "front-end/layanan/ho_daftar_ulang.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="13")
+	return response
 
 def layanan_tdp_pt(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=25)
@@ -45,7 +49,9 @@ def layanan_tdp_pt(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_tdp_pt") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "25" })
-	return render(request, "front-end/layanan/tdp_pt.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_pt.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="25")
+	return response
 
 def layanan_tdp_cv(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=26)
@@ -55,37 +61,45 @@ def layanan_tdp_cv(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_tdp_cv") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "26" })
-	return render(request, "front-end/layanan/tdp_cv.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_cv.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="26")
+	return response
 
 def layanan_tdp_firma(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=27)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Firma"})
 	extra_context.update({'title_short': "TDP - Firma"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_tdp_firma") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "27" })
-	return render(request, "front-end/layanan/tdp_firma.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_firma.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="27")
+	return response
 
 def layanan_tdp_perorangan(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=28)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Perorangan"})
 	extra_context.update({'title_short': "TDP - Perorangan"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_tdp_perorangan") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "28" })
-	return render(request, "front-end/layanan/tdp_perorangan.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_perorangan.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="28")
+	return response
 
 def layanan_tdp_koperasi(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=29)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Koperasi"})
 	extra_context.update({'title_short': "TDP - Koperasi"})
-	extra_context.update({'link_formulir': reverse("formulir_siup") })
+	extra_context.update({'link_formulir': reverse("formulir_tdp_koperasi") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "29" })
-	return render(request, "front-end/layanan/tdp_koperasi.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_koperasi.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="29")
+	return response
 
 def layanan_tdp_bul(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=30)
@@ -95,7 +109,9 @@ def layanan_tdp_bul(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_tdp_bul") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "30" })
-	return render(request, "front-end/layanan/tdp_bul.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_bul.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="30")
+	return response
 
 def layanan_tdp_baru_cabang(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=31)
@@ -105,7 +121,9 @@ def layanan_tdp_baru_cabang(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "31" })
-	return render(request, "front-end/layanan/tdp_cabang.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_cabang.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="31")
+	return response
 
 def layanan_tdp_daftar_ulang(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=32)
@@ -115,7 +133,9 @@ def layanan_tdp_daftar_ulang(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "7" })
 	extra_context.update({'id_kelompok_jenis_izin': "32" })
-	return render(request, "front-end/layanan/tdp_daftar_ulang.html", extra_context)
+	response = render(request, "front-end/layanan/tdp_daftar_ulang.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="32")
+	return response
 
 def layanan_imb_umum(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=2)
@@ -125,7 +145,9 @@ def layanan_imb_umum(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_imb_umum") })
 	extra_context.update({'id_jenis_izin': "1" })
 	extra_context.update({'id_kelompok_jenis_izin': "2" })
-	return render(request, "front-end/layanan/imb_umum.html", extra_context)
+	response = render(request, "front-end/layanan/imb_umum.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="2")
+	return response
 
 def layanan_imb_reklame(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
@@ -135,17 +157,21 @@ def layanan_imb_reklame(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_imb_reklame") })
 	extra_context.update({'id_jenis_izin': "1" })
 	extra_context.update({'id_kelompok_jenis_izin': "1" })
-	return render(request, "front-end/layanan/imb_reklame.html", extra_context)
+	response = render(request, "front-end/layanan/imb_reklame.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="1")
+	return response
 
 def layanan_imb_perumahan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
+	kelompok = get_object_or_404(KelompokJenisIzin, id=11)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Mendirikan Bangunan (IMB) - Perumahan"})
 	extra_context.update({'title_short': "IMB - Perumahan"})
 	extra_context.update({'link_formulir': reverse("formulir_imb_perumahan") })
 	extra_context.update({'id_jenis_izin': "1" })
 	extra_context.update({'id_kelompok_jenis_izin': "1" })
-	return render(request, "front-end/layanan/imb_perumahan.html", extra_context)
+	response = render(request, "front-end/layanan/imb_perumahan.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="1")
+	return response
 
 def layanan_reklame(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=14)
@@ -155,7 +181,9 @@ def layanan_reklame(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_reklame") })
 	extra_context.update({'id_jenis_izin': "3" })
 	extra_context.update({'id_kelompok_jenis_izin': "14" })
-	return render(request, "front-end/layanan/reklame.html", extra_context)
+	response = render(request, "front-end/layanan/reklame.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="14")
+	return response
 
 def layanan_kekayaan(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=16)
@@ -165,7 +193,9 @@ def layanan_kekayaan(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_kekayaan") })
 	extra_context.update({'id_jenis_izin': "5" })
 	extra_context.update({'id_kelompok_jenis_izin': "16" })
-	return render(request, "front-end/layanan/kekayaan.html", extra_context)
+	response = render(request, "front-end/layanan/kekayaan.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="16")
+	return response
 
 def layanan_huller(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=15)
@@ -175,7 +205,9 @@ def layanan_huller(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_huller") })
 	extra_context.update({'id_jenis_izin': "4" })
 	extra_context.update({'id_kelompok_jenis_izin': "15" })
-	return render(request, "front-end/layanan/huller.html", extra_context)
+	response = render(request, "front-end/layanan/huller.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="15")
+	return response
 
 def layanan_izin_prinsip_penanaman_modal(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=33)
@@ -185,7 +217,9 @@ def layanan_izin_prinsip_penanaman_modal(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "8" })
 	extra_context.update({'id_kelompok_jenis_izin': "33" })
-	return render(request, "front-end/layanan/izin_prinsip_penanaman_modal.html", extra_context)
+	response = render(request, "front-end/layanan/izin_prinsip_penanaman_modal.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="33")
+	return response
 
 def layanan_izin_prinsip_perluasan_penanaman_modal(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=35)
@@ -195,7 +229,9 @@ def layanan_izin_prinsip_perluasan_penanaman_modal(request, extra_context={}):
 	extra_context.update({'link_formulir': reverse("formulir_siup") })
 	extra_context.update({'id_jenis_izin': "9" })
 	extra_context.update({'id_kelompok_jenis_izin': "35" })
-	return render(request, "front-end/layanan/izin_prinsip_perluasan_penanaman_modal.html", extra_context)
+	response = render(request, "front-end/layanan/izin_prinsip_perluasan_penanaman_modal.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="35")
+	return response
 
 def layanan_izin_prinsip_perubahan_penanaman_modal(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=1)

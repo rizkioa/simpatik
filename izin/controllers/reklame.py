@@ -3,10 +3,12 @@ from django.shortcuts import render
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
+from accounts.models import NomorIdentitasPengguna
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilSIUP
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilReklame
 
 def formulir_reklame(request):
 	extra_context={}
@@ -37,13 +39,37 @@ def formulir_reklame(request):
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 		extra_context.update({'jenis_reklame': jenis_reklame})
 
-		# extra_context jika cookie masih ada
-		# konfirmasi_ec_pemohon = Pemohon.objects.filter(id=request.COOKIES['id_pemohon'])
-		# if request.COOKIES['id_detail_siup'] is not None:
-		#konfirmasi_ec_detilsiup = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-		#extra_context.update({'konfirmasi_ec_detilsiup': konfirmasi_ec_detilsiup})
+		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != "":
+				try:
+					pengajuan_ = DetilReklame.objects.get(id=request.COOKIES['id_pengajuan'])
+					alamat_ = ""
+					alamat_perusahaan_ = ""
+					if pengajuan_.pemohon:
+						if pengajuan_.pemohon.desa:
+							alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+						extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+						extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+						try:
+							ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+							extra_context.update({'cookie_file_ktp': ktp_.berkas })
+						except ObjectDoesNotExist:
+							pass
+					if pengajuan_.perusahaan:
+						if pengajuan_.perusahaan.desa:
+							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
+						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
+					
+					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+					extra_context.update({ 'pengajuan_': pengajuan_ })
+
+				except ObjectDoesNotExist:
+					pass
 		template = loader.get_template("admin/izin/izin/form_wizard_reklame.html")
-		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 	else:

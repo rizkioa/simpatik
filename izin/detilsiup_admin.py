@@ -1,12 +1,16 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
-from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, Pemohon
+from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
 from perusahaan.models import Perusahaan
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 import json
 from django.db.models import Q
 from datetime import date
+import base64
+from django.core.exceptions import ObjectDoesNotExist
+from django.template import RequestContext, loader
+from accounts.models import NomorIdentitasPengguna
 
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -80,7 +84,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		pemohon = len(Pemohon.objects.all())
 		perusahaan = len(Perusahaan.objects.all())
 		pengajuan_selesai = len(PengajuanIzin.objects.filter(status=1))
-		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1)))
+		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1) and ~Q(status=6)))
 		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
 		pengajuan_siup = len(DetilSIUP.objects.filter(created_at__year=tahun_sekarang))
 		pengajuan_reklame = len(DetilReklame.objects.filter(created_at__year=tahun_sekarang))
@@ -94,12 +98,77 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 
 		return HttpResponse(json.dumps(data))
 
+	def view_pengajuan_siup(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+			
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+				extra_context.update({'nomor_identitas': nomor_identitas_ })
+				try:
+					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					extra_context.update({'cookie_file_ktp': ktp_.berkas })
+				except ObjectDoesNotExist:
+					pass
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
+				extra_context.update({'perusahaan': pengajuan_.perusahaan})
+
+				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
+				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
+				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+
+			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'created_at': pengajuan_.created_at})
+			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'pengajuan': pengajuan_})
+			encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
+			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+			#+++++++++++++ page logout ++++++++++
+			extra_context.update({'has_permission': True })
+			#+++++++++++++ end page logout ++++++++++
+			banyak = len(DetilSIUP.objects.all())
+			extra_context.update({'banyak': banyak})
+			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
+			extra_context.update({'syarat': syarat_})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
+				if riwayat_:
+					extra_context.update({'riwayat': riwayat_ })
+			except ObjectDoesNotExist:
+				pass
+		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_siup.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilSIUPAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^ajax-dashboard/$', self.admin_site.admin_view(self.ajax_dashboard), name='ajax_dashboard'),
 			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
+			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
 			)
 		return my_urls + urls
 

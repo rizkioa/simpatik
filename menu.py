@@ -106,7 +106,7 @@ class CustomMenu(Menu):
                     css_classes='t',
                     url=reverse('admin:verifikasi'),                
                 ),
-            ] 
+            ]
 
         if request.user.groups.filter(name="Kabid").exists():
             menu_utama.children += [

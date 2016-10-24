@@ -80,6 +80,7 @@ def formulir_siup(request, extra_context={}):
 
 	# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 	if 'id_pengajuan' in request.COOKIES.keys():
+
 		if request.COOKIES['id_pengajuan'] != "":
 			try:
 				pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -374,6 +375,7 @@ def identitas_pemohon(request, extra_context={}):
 	data = {'success': True, 'pesan': 'Simpan data siswa berhasil.', 'id_siswa': siswa.id }
 	return HttpResponse(json.dumps(data))
 
+from izin.models import Riwayat
 def cetak_permohonan(request, id_pengajuan_):
 	# id_pengajuan_ = base64.b64decode(id_pengajuan_)
 	extra_context = {}
@@ -398,6 +400,10 @@ def cetak_permohonan(request, id_pengajuan_):
 			extra_context.update({ 'pengajuan': pengajuan_ })
 			pengajuan_id = base64.b64encode(str(pengajuan_.id))
 			extra_context.update({ 'pengajuan_id': pengajuan_id })
+
+			riwayat = Riwayat.objects.filter(pengajuan_izin=pengajuan_)
+			if riwayat:
+				extra_context.update({ 'riwayat': riwayat })
 			# extra_context.update({ 'jenis_permohonan': pengajuan_.jenis_permohonan })
 			# extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
 			extra_context.update({ 'created_at': pengajuan_.created_at })
@@ -530,3 +536,76 @@ def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
 	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
 	extra_context.update({'syarat': syarat})
 	return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
+
+
+def cetak_tdp_pt(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_pt/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_pt(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_pt/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_cv(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_cv/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_cv(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_cv/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_firma(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_firma/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_firma(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_firma/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_po(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_po/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_po(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_po/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_koperasi(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_koperasi/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_koperasi(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_koperasi/cetak_bukti_pendaftaran.html", extra_context)
+
+def cetak_tdp_bul(request, extra_context={}):
+	return render(request, "front-end/include/formulir_tdp_bul/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_tdp_bul(request, extra_context={}):
+	syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
+	extra_context.update({'syarat': syarat})
+	return render(request, "front-end/include/formulir_tdp_bul/cetak_bukti_pendaftaran.html", extra_context)
+
+def ajax_cek_pengajuan(request):
+	no_pengajuan_ = request.POST.get('no_pengajuan_', None)
+	print no_pengajuan_
+	if no_pengajuan_:
+		try:
+			pengajuan_list = PengajuanIzin.objects.get(no_pengajuan=no_pengajuan_)
+			if pengajuan_list:
+				url = reverse('cetak_permohonan', kwargs={'id_pengajuan_': pengajuan_list.id} )
+				data = {'success': True, 'pesan': 'Pencarian pengajuan sukses.', 'url': url}
+				return HttpResponse(json.dumps(data))
+			else:
+				url = reverse('ajax_cek_pengajuan')
+				data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
+				return HttpResponse(json.dumps(data))
+		except ObjectDoesNotExist:
+			url = reverse('ajax_cek_pengajuan')
+			data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
+			return HttpResponse(json.dumps(data))
+	else:
+		url = reverse('ajax_cek_pengajuan')
+		data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
+		return HttpResponse(json.dumps(data))
+	

@@ -1,5 +1,5 @@
 <form method="POST" name="step9" role="form" action="{% url 'siup_done' %}">
-kjfhksjhdkfjhk
+
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
@@ -369,12 +369,43 @@ kjfhksjhdkfjhk
     </tr>
   </table>
 
+  <p>
+    <b>KATEGORI PERUSAHAAN(Kantor Tunggal tidak perlu mengisi)</b><br>
+    Apabila pendaftaran ini dilakukan oleh Kantor Pusat/Induk, agar disebutkan setiap Kantor Cabang/Kantor Pembantu/Perwakilan
+  </p>
+  <table width="100%" class="table table-bordered">
+    <tr>
+      <td>No.</td>
+      <td>Nama Lengkap</td>
+      <td>Alamat Lengkap</td>
+      <td>Nomor TDP</td>
+      <td>Kabupaten/Kota</td>
+      <td>Propinsi</td>
+      <td>Kode Pos</td>
+      <td>No. Telpon</td>
+      <td>Status Persahaan</td>
+      <td>Jenis Kegiantan Usaha</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
 
 
 
 
 
-  <!-- <table class="table table-bordered">
+
+  <table class="table table-bordered">
       <thead>
         <tr >
           <th>Dokumen Persyaratan</th>
@@ -384,7 +415,7 @@ kjfhksjhdkfjhk
       <tbody>
         <tr align="center">
           <td>
-            File Foto
+            File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -394,7 +425,7 @@ kjfhksjhdkfjhk
         </tr>
         <tr align="center">
           <td>
-            File KTP/Paspor
+            Dari Menteri Kahakiman Dan Hak Asasi Manusia
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -404,7 +435,17 @@ kjfhksjhdkfjhk
         </tr>
         <tr align="center">
           <td>
-            File NPWP Pribadi
+            File Ijin Usaha / Ijin Teknis atau Surat Keterangan yang dipersamakan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" checked="" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File KTP / Paspor (Dirut/Pemilik/Pengurus/Penanggung Jawab)
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -434,16 +475,16 @@ kjfhksjhdkfjhk
         </tr>
         <tr align="center">
           <td>
-            File Akta Pembaruan (jika ada)
+            File Sertifikan Asli TDP (bagi yang daftar ulang)
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox"  disabled><i></i>
             </label>
           </td>
         </tr>
       </tbody>
-  </table> -->
+  </table>
   <br>
   <section class="tile bg-greensea">
     <div class="tile-body">
