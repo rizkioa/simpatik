@@ -49,7 +49,6 @@ INSTALLED_APPS = (
     'perusahaan',
     'izin',
     'raven.contrib.django.raven_compat',
-    'formtools',
 )
 
 MIDDLEWARE_CLASSES = (
