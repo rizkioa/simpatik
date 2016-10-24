@@ -5,10 +5,13 @@ from django.test import TestCase
 import datetime
 
 now = datetime.datetime.now()
-print now.strftime("%f")[:4]
-print now.strftime("%Y")
-print now.strftime("%d")
-print now.strftime("%m")
-print now.strftime("%S")
+# print now.strftime("%f")[:4]
+# print now.strftime("%Y")
+# print now.strftime("%d")
+# print now.strftime("%m")
+# print now.strftime("%S")
+
+
+print '{:,.2f}'.format(18446744073709551616)
 
 
