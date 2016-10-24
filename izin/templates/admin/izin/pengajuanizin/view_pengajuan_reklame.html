@@ -960,19 +960,20 @@
             }
           });
 
-		function cetak_izin(id_detil_reklame, aksi){
+		function cetak_izin(id_pengajuan_izin, aksi){
 			
 		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 			$.ajax({ // create an AJAX call...
-			    data: { csrfmiddlewaretoken: csrf_token, id_detil_reklame: id_detil_reklame, aksi: aksi }, // get the form data
+			    data: { csrfmiddlewaretoken: csrf_token, id_pengajuan_izin: id_pengajuan_izin, aksi: aksi }, // get the form data
 			    type: 'POST', // GET or POST
 			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan_id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
-			          	toastr["success"](respon.pesan)
+			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
+
 
 			      	}
 			      	else{
@@ -1156,32 +1157,22 @@
 					    <tr>
 					      <td width="25%">Nama / Judul Reklame</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_penanaman_modal.jenis_penanaman_modal }}</td>
+					      <td width="70%">{{ pengajuan.judul_reklame}}</td>
 					    </tr>
 					    <tr>
 					      <td width="40%">Ukuran, Panjang x Lebar x Muka/sisi</td>
 					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.kekayaan_bersih }}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Ukuran, Panjang x Lebar x Muka/sisi</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.kekayaan_bersih }}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Jumlah</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.kekayaan_bersih }}</td>
+					      <td width="55%">{{ pengajuan.panjang }} x {{ pengajuan.lebar }} x {{ pengajuan.sisi }}</td>
 					    </tr>
 					    <tr>
 					      <td width="40%">Waktu / Lama Pemasangan</td>
 					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.kekayaan_bersih }}</td>
+					      <td width="55%">{{jumlah_lama}}</td>
 					    </tr>
 					    <tr>
 					      <td width="40%">Letak Pemasangan</td>
 					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.kekayaan_bersih }}</td>
+					      <td width="55%">{{ pengajuan.letak_pemasangan }}</td>
 					    </tr>
 				    </table>
 				    <br>

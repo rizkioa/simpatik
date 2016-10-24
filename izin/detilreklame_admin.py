@@ -1,10 +1,14 @@
 from django.contrib import admin
 from izin.models import DetilReklame, Syarat, SKIzin, Riwayat
+from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 import base64
+from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse, resolve
+import datetime
 
 class DetilReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -70,6 +74,15 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++
+			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
+				tanggal_mulai = pengajuan_.tanggal_mulai
+				tanggal_akhir = pengajuan_.tanggal_akhir
+
+				jumlah_lama =  tanggal_akhir-tanggal_mulai
+				extra_context.update({'jumlah_lama': jumlah_lama})
+
+			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
+			# print lama_pemasangan
 			banyak = len(DetilReklame.objects.all())
 			extra_context.update({'banyak': banyak})
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
@@ -94,8 +107,9 @@ class DetilReklameAdmin(admin.ModelAdmin):
 	def cetak_reklame_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
+		print id_pengajuan_izin_
 		if id_pengajuan_izin_:
-			pengajuan_ = Detilreklame.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -113,6 +127,12 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
+				tanggal_mulai = pengajuan_.tanggal_mulai
+				tanggal_akhir = pengajuan_.tanggal_akhir
+
+				jumlah_lama =  tanggal_akhir-tanggal_mulai
+				extra_context.update({'jumlah_lama': jumlah_lama})
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:

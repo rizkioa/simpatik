@@ -960,11 +960,11 @@
             }
           });
 
-		function cetak_izin(id_detil_siup, aksi){
+		function cetak_izin(id_pengajuan_izin, aksi){
 			
 		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 			$.ajax({ // create an AJAX call...
-			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi }, // get the form data
+			    data: { csrfmiddlewaretoken: csrf_token, id_pengajuan_izin: id_pengajuan_izin, aksi: aksi }, // get the form data
 			    type: 'POST', // GET or POST
 			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 			    success: function(response) { // on success..

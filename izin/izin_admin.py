@@ -201,8 +201,8 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
 			elif obj.status == 2 and not obj.skizin_set.all().exists():
 				btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-			elif obj.skizin_set.filter(status=6):
-				btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
+			# elif obj.skizin_set.filter(status=6):
+			# 	btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
 			elif obj.skizin_set.filter(status=4):
 				btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
 			elif obj.skizin_set.filter(status=9):
@@ -563,16 +563,17 @@ class IzinAdmin(admin.ModelAdmin):
 		return HttpResponse(json.dumps(response))
 	
 	def aksi_detil_siup(self, request):
-		id_detil_siup = request.POST.get('id_detil_siup', None)
+		id_pengajuan_izin = request.POST.get('id_pengajuan_izin', None)
+		print id_pengajuan_izin
 		try:
-			obj = DetilSIUP.objects.get(id=id_detil_siup)
+			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
 			if request.POST.get('aksi', None) and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
 				if request.POST.get('aksi') == '_submit_operator':
 					print "operator"
 					obj.status = 4
 					obj.save()
 					riwayat_ = Riwayat(
-						pengajuan_izin_id = id_detil_siup,
+						pengajuan_izin_id = id_pengajuan_izin,
 						created_by_id = request.user.id,
 						keterangan = "Submitted (Pengajuan)"
 					)
@@ -586,7 +587,7 @@ class IzinAdmin(admin.ModelAdmin):
 					obj.status = 2
 					obj.save()
 					riwayat_ = Riwayat(
-						pengajuan_izin_id = id_detil_siup,
+						pengajuan_izin_id = id_pengajuan_izin,
 						created_by_id = request.user.id,
 						keterangan = "Kabid Verified (Pengajuan)"
 					)
@@ -604,13 +605,13 @@ class IzinAdmin(admin.ModelAdmin):
 					}
 
 				try:
-					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
+					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
 					if request.POST.get('aksi') == '_submit_skizin_kabid':
 						obj_skizin.status = 4
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Kabid Verified (Izin)"
 						)
@@ -625,7 +626,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Kadin Verified (Izin)"
 						)
@@ -645,7 +646,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Registered (Izin)"
 						)
@@ -660,7 +661,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Printed (Izin)"
 						)
@@ -677,7 +678,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Finished (Izin)"
 						)
@@ -704,7 +705,7 @@ class IzinAdmin(admin.ModelAdmin):
 		except ObjectDoesNotExist:
 			response = {
 					"success": False,
-					"pesan": "Terjadi kesalahan, detil siup tidak ada dalam daftar.",
+					"pesan": "Terjadi kesalahan, pengajuan izin tidak ada dalam daftar.",
 					"redirect": '',
 				}
 		return HttpResponse(json.dumps(response))
