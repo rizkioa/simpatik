@@ -5,6 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 import base64
+from django.utils.safestring import mark_safe
+from django.core.urlresolvers import reverse, resolve
 
 class DetilReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
