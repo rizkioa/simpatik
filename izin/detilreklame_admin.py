@@ -8,7 +8,10 @@ from django.http import HttpResponse
 import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
+<<<<<<< HEAD
 import datetime
+=======
+>>>>>>> 982c87e70403695c1c4debb2fbc4fef27adec1c7
 
 class DetilReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')

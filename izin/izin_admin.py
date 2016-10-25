@@ -162,6 +162,10 @@ class IzinAdmin(admin.ModelAdmin):
 			no_pengajuan = mark_safe("""
 				<a href="%s" target="_blank"> %s </a>
 				""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+		elif split_[0] == 'Reklame':
+			no_pengajuan = mark_safe("""
+				<a href="%s" target="_blank"> %s </a>
+				""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 

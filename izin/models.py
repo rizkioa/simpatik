@@ -307,7 +307,7 @@ class Riwayat(AtributTambahan):
 
 class DetilIUJK(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iujk_perusahaan', blank=True, null=True)
-	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IZIN)
+	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK)
 
 	def __unicode__(self):
 		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.jenis_iujk))
@@ -326,6 +326,11 @@ class PaketPekerjaan(models.Model):
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.nama_paket_pekerjaan), str(self.detil_iujk))
+
+	def get_nilai_rupiah(self):
+		if self.nilai_paket_pekerjaan:
+			return 'Rp. '+'{:,.2f}'.format(float(self.nilai_paket_pekerjaan))
+		return 'Rp. 0.00'
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]

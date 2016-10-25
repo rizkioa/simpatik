@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -143,4 +143,12 @@ urlpatterns = [
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
+
+    # AJAX SAVE IUJK
+    url(r'^layanan/iujk/paketpekerjaan/save/$', iujk_views.iujk_paketpekerjaan_save, name='iujk_paketpekerjaan_save'),
+    url(r'^layanan/iujk/paketpekerjaan/edit/(?P<id_paket_>[0-9]+)$', iujk_views.iujk_paketpekerjaan_edit, name='iujk_paketpekerjaan_edit'),
+    url(r'^layanan/iujk/detiliujk/save/$', iujk_views.iujk_detiliujk_save, name='iujk_detiliujk_save'),
+    url(r'^layanan/iujk/legalitasperusahaan/save/$', iujk_views.iujk_legalitas_perusahaan_save, name='iujk_legalitas_perusahaan_save'),
+
+    # END
     ]

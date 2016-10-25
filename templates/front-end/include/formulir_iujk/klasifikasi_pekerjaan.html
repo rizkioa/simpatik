@@ -1,0 +1,44 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'iujk_detiliujk_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="input01" class="col-sm-2 control-label"><strong>Jenis IUJK</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="jenis_iujk" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Jenis IUJK --</option>
+        {% if jenis_iujk %}
+          {% for jenis in jenis_iujk %}
+            <option value="{{ jenis.0 }}">{{ jenis.1 }}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-12">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="tabel_klasifikasi_pekerjaan">
+            <thead>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Klasifikasi/Sub Klasifikasi Usaha Yang diinginkan</th>
+                <th>Nama Paket 10 Tahun Terakhir</th>
+                <th>Tahun Pelaksanaan</th>
+                <th>Nilai Paket Pekerjaan</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-12">
+      <a href="#" class="btn btn-success btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10" onclick="show_modal_add()">Tambah Paket <i class="fa fa-plus"></i></a>
+      <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="hapus_paket" onclick="deleteRow('tabel_klasifikasi_pekerjaan')">Hapus <i class="fa fa-trash"></i></a>
+    </div>
+  </div>
+</form>
