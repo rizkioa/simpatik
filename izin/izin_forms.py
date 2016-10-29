@@ -33,7 +33,7 @@ class PemohonForm(forms.ModelForm):
 
 	class Meta:
 		model = Pemohon
-		fields = ('jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
+		fields = ('jabatan_pemohon', 'jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None
@@ -53,7 +53,7 @@ class PengajuanSiupForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilSIUP
-		fields = ('kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal','kekayaan_bersih','total_nilai_saham','presentase_saham_nasional','presentase_saham_asing')
+		fields = ('kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal', 'presentase_saham_nasional','presentase_saham_asing')
 
 class PengajuanReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
@@ -67,15 +67,19 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 		model = Legalitas
 		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
 
-class LegalitasPerusahaanPerubahanForm(forms.Form):
+class LegalitasPerusahaanPerubahanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""
-	nama_notaris_perubahan = forms.CharField(initial='nama_notaris_perubahan')
-	alamat_notaris_perubahan = forms.CharField(initial='alamat_notaris_perubahan')
-	telephone_notaris_perubahan = forms.CharField(initial='telephone_notaris_perubahan')
+	# nama_notaris_perubahan = forms.CharField(initial='nama_notaris_perubahan')
+	# alamat_notaris_perubahan = forms.CharField(initial='alamat_notaris_perubahan')
+	# telephone_notaris_perubahan = forms.CharField(initial='telephone_notaris_perubahan')
 	# nomor_akta_perubahan = forms.CharField(initial='nomor_akta_perubahan')
 	# tanggal_akta_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
-	nomor_pengesahan_perubahan = forms.CharField(initial='nomor_pengesahan_perubahan')
-	tanggal_pengesahan_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
+	# nomor_pengesahan_perubahan = forms.CharField(initial='nomor_pengesahan_perubahan')
+	# tanggal_pengesahan_perubahan = forms.DateField(input_formats=['%d-%m-%Y'])
+
+	class Meta:
+		model = Legalitas
+		fields = ('nama_notaris','alamat','telephone','nomor_pengesahan', 'tanggal_pengesahan')
 
 
 class UploadBerkasFotoForm(forms.ModelForm):

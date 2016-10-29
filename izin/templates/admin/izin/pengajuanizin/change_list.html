@@ -9,7 +9,9 @@
 
 	{% block extrajs_site %}
 		{{ block.super }}
-
+		<script type="text/javascript"> 
+			if(document.referrer.indexOf('_popup') != -1) { self.close() } 
+		</script>
 		<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 		<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 		<script type="text/javascript">

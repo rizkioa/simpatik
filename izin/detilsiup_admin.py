@@ -15,6 +15,18 @@ from accounts.models import NomorIdentitasPengguna
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
 	search_fields = ('no_izin', 'pemohon__nama_lengkap')
+	# fieldsets = [
+	# 	('Detil SIUP',	{'fields':['pemohon', 'get_no_pengajuan']}),
+	# ]
+	# 
+	# def get_fieldsets(self, request, obj = None):
+	# 	if request.user.is_superuser:
+	# 		add_fieldsets = (
+	# 			(None, {
+	# 				'classes': ('wide',),
+	# 				'fields': ('get_no_pengajuan', 'get_kelompok_jenis_izin')
+	# 				})
+	# 			)
 
 	def get_kelompok_jenis_izin(self, obj):
 		return obj.kelompok_jenis_izin
@@ -22,7 +34,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 
 	def get_no_pengajuan(self, obj):
 		no_pengajuan = mark_safe("""
-			<a href="%s" target="_blank"> %s </a>
+			<a href="%s" > %s </a>
 			""" % ("#", obj.no_pengajuan ))
 		split_ = obj.no_pengajuan.split('/')
 		# print split_
@@ -36,10 +48,15 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 	def get_fieldsets(self, request, obj=None):
 		fields = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
+		fields_edit = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		if obj:
 			if request.user.is_superuser:
 				add_fieldsets = (
-					(None, {
+					# ('Pemohon', {
+					# 	'classes': ('wide',),
+					# 	'fields': ('pemohon',),
+					# 	}),
+					('Detil SIUP', {
 						'classes': ('wide',),
 						'fields': fields+fields_admin
 						}),
@@ -48,14 +65,14 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 				add_fieldsets = (
 					(None, {
 						'classes': ('wide',),
-						'fields': fields
+						'fields': fields_edit
 						}),
 				)
 			else:
 				add_fieldsets = (
 					(None, {
 						'classes': ('wide',),
-						'fields': ('no_pengajuan',)
+						'fields': fields_edit+('no_pengajuan',)
 						}),
 					)
 		else:
@@ -161,6 +178,11 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_siup.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
+
+	def response_change(self, request, obj):
+		if '_popup' in request.REQUEST:
+			request.path += '?_popup=1'
+		return super(DetilSIUPAdmin, self).response_change(request, obj)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url

@@ -10,7 +10,7 @@
     <div class="form-group" id="npwp">
       <label class="col-sm-2 control-label"><strong>NPWP</strong></label>
       <div class="col-sm-5">
-        <input onchange="load_perusahaan_a($(this).val())" type="text" name="npwp" class="form-control npwp" required="" data-parsley-trigger="change">
+        <input onchange="load_perusahaan_a($(this).val())" type="text" name="npwp" class="form-control npwp" required="" data-parsley-trigger="change" id="id_npwp_perusahaan">
       </div>
     </div>
 
@@ -24,7 +24,7 @@
     <div class="form-group" id="alamat_perusahaan">
       <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong></label>
       <div class="col-sm-7">
-        <textarea class="form-control" id="alamat_perusahaan_load" rows="5" name="alamat_perusahaan" required="" data-parsley-trigger="change"></textarea>
+        <textarea class="form-control" onclick="load_alamat();" id="alamat_perusahaan_load" rows="5" name="alamat_perusahaan" required="" data-parsley-trigger="change"></textarea>
       </div>
     </div>
 
@@ -82,9 +82,9 @@
     </div>
 
     <div class="form-group" id="telepon">
-      <label class="col-sm-2 control-label">No. Telp</label>
+      <label class="col-sm-2 control-label"><strong>No. Telp</strong></label>
       <div class="col-sm-5">
-        <input type="text" id="no_telepon_perusahaan_load" class="form-control no_ktp" name="telepon">
+        <input type="text" onclick="load_no_telepon();" id="no_telepon_perusahaan_load" class="form-control no_ktp" name="telepon">
       </div>
     </div>
 
