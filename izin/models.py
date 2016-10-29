@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from accounts.models import Account
 from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa
-from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas
+from perusahaan.models import KBLI, Kelembagaan, ProdukUtama, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
 from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA
@@ -225,6 +225,7 @@ class PengajuanIzin(AtributTambahan):
 	berkas_tambahan = models.ManyToManyField(Berkas, related_name='berkas_tambahan_izin', verbose_name="Berkas Tambahan", blank=True)
 
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+	legalitas = models.ManyToManyField(Legalitas, related_name='legalitas_pengajuan', verbose_name='Legalitas', blank=True)
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -241,7 +242,6 @@ class DetilSIUP(PengajuanIzin):
 	# salah satu dari data pemohon
 	berkas_npwp_pemohon = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Pemohon", related_name='berkas_npwp_pemohon_siup', blank=True, null=True)
 	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_siup', blank=True, null=True)
-	legalitas = models.ManyToManyField(Legalitas, related_name='legalitas_siup', verbose_name='Legalitas', blank=True)
 	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI', blank=True)
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
 	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
@@ -350,6 +350,74 @@ class AnggotaBadanUsaha(models.Model):
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Anggota Badan Usaha'
 		verbose_name_plural = 'Anggota Badan Usaha'
+
+class DetilTDP(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdp_perusahaan', blank=True, null=True)
+	
+	# Data Umum Perusahaan PT
+	status_perusahaan = models.ForeignKey(StatusPerusahaan, related_name='status_perusahaan_tdp', verbose_name='Status Perusahaan')
+	jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, related_name='jenis_badan_usaha_tdp', verbose_name='Jenis Badan Usaha')
+	bentuk_kerjasama = models.ForeignKey(BentukKerjasama, related_name='bentuk_kerjasama_tdp', verbose_name='Bentuk Kerjasama')
+
+	jumlah_bank = models.IntegerField(verbose_name='Jumlah Bank', default=0)
+	nasabah_utama_bank_1 = models.CharField(max_length=100, verbose_name='Nasabah Utama Bank 1')
+	nasabah_utama_bank_2 = models.CharField(max_length=100, verbose_name='Nasabah Utama Bank 2 (Jika Ada)', blank=True, null=True)
+	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_tdp', blank=True, null=True, verbose_name='Jenis Penanaman Modal')
+	tanggal_pendirian = models.DateField(verbose_name='Tanggal Pendirian', null=True, blank=True)
+	tanggal_mulai_kegiatan = models.DateField(verbose_name='Tanggal Mulai Kegiatan', null=True, blank=True)
+
+	# Jika bukan kantor pusat
+	nomor_tdp_kantor_pusat = models.CharField(max_length=150, verbose_name='No. TDP Kantor Pusat', null=True, blank=True)
+	# Jika memiliki unit produksi
+	alamat_unit_produksi = models.CharField(max_length=255,  verbose_name='Alamat Unit Produksi', null=True, blank=True)
+	desa_unit_produksi = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+
+	nasabah_utama_bank_2 = models.CharField(max_length=100, verbose_name='Nasabah Utama Bank 2 (Jika Ada)', blank=True, null=True)
+	merek_dagang = models.CharField(max_length=100, verbose_name='Merek Dagang (Jika Ada)', blank=True, null=True)
+	no_merek_dagang = models.CharField(max_length=100, verbose_name='Nomor Merek Dagang (Jika Ada)', blank=True, null=True)
+	pemegang_hak_cipta = models.CharField(max_length=100, verbose_name='Pemegang Hak Cipta (Jika Ada)', blank=True, null=True)
+	no_hak_cipta = models.CharField(max_length=100, verbose_name='Nomor Hak Cipta (Jika Ada)', blank=True, null=True)
+	pemegang_hak_paten = models.CharField(max_length=100, verbose_name='Pemegang Hak Paten (Jika Ada)', blank=True, null=True)
+	no_hak_paten = models.CharField(max_length=100, verbose_name='Nomor Hak Paten (Jika Ada)', blank=True, null=True)
+
+	# Data Kegiatan PT 
+	kegiatan_usaha_pokok = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Pokok', blank=True, null=True)
+	kegiatan_usaha_lain_1 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (1)', blank=True, null=True)
+	kegiatan_usaha_lain_2 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (2)', blank=True, null=True)
+	komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
+	komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
+	komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
+	omset_per_tahun = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
+	total_aset = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
+	jumlah_karyawan_wni = models.IntegerField(verbose_name='Jumlah Karyawan WNI', default=0)
+	jumlah_karyawan_wna = models.IntegerField(verbose_name='Jumlah Karyawan WNA', default=0)
+	kapasitas_mesin_terpasang = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Kapasitas Mesin Terpasang', null=True, blank=True)
+	satuan_kapasitas_mesin_terpasang = models.CharField(max_length=100, verbose_name='Satuan', blank=True, null=True)
+	kapasitas_produksi_per_tahun = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Kapasitas Produksi Per Tahun', null=True, blank=True)
+	satuan_kapasitas_produksi_per_tahun = models.CharField(max_length=100, verbose_name='Satuan', blank=True, null=True)
+	prosentase_kandungan_produk_lokal = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Prosentase Kandungan Produk Lokal', null=True, blank=True)
+	prosentase_kandungan_produk_import = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Prosentase Kandungan Produk Import', null=True, blank=True)
+	jenis_pengecer = models.ForeignKey(JenisPengecer, verbose_name='Jenis Pengecer', null=True, blank=True)
+	kedudukan_kegiatan_usaha = models.ForeignKey(KedudukanKegiatanUsaha, verbose_name='Kedudukan dalam mata rantai kegiatan usaha', null=True, blank=True)
+	jenis_perusahaan = models.ForeignKey(JenisPerusahaan, verbose_name='Jenis Perusahaan', null=True, blank=True)
+
+	# masih sampe tab4 TDP PT
+
+	def __unicode__(self):
+		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Detil TDP'
+		verbose_name_plural = 'Detil TDP'
+
+class RincianPerusahaan(models.Model):
+	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')
+	model_dasar = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Dasar Rp.')
+	model_ditempatkan = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
+	model_disetor = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Disetor Rp.', null=True, blank=True)
+	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
+	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
