@@ -2,7 +2,7 @@ from django.http import HttpResponse
 import json
 
 from izin.models import PaketPekerjaan, DetilIUJK
-from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm
+from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm, DataAnggotaForm
 from izin.izin_forms import LegalitasPerusahaanForm, LegalitasPerusahaanPerubahanForm
 
 
@@ -206,4 +206,20 @@ def iujk_legalitas_perusahaan_save(request):
 		data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ditemukan/tidak ada.'}]}
 		data = json.dumps(data)
 		response = HttpResponse(data)
+	return response
+
+
+def penanggung_jawab_save_bu():
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pass
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
 	return response

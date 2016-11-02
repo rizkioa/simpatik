@@ -25,6 +25,7 @@
 	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
 	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+	<script src="{% static "scripts/js/iujk.js" %}"></script>
 
 	<script type="text/javascript">
 	$(window).load(function(){
@@ -1019,6 +1020,112 @@
 						</div>
 
 					</div>
+				</form>
+				</div>
+			  </div>
+		</div>
+		<div class="modal-footer">
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" id="close_modal_"><i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="penanggung_jawab" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-md">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Direktur / Penanggung Jawab Badan Usaha</h3>
+		</div>
+		<div class="modal-body">
+			<form name="penanggung_jawab_form" role="form" id="penanggung_jawab_form">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for=""><strong>Nama </strong></label>
+					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
+				</div>
+				<div class="form-group">
+					<form action="">
+						<label for=""><strong>Foto 4X6 </strong></label>
+						<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+						<br>
+						 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+					 </form>
+				</div>
+				<div class="form-group">
+					<label for=""><strong>KTP </strong></label>
+					<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<br>
+					 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Surat Pernyataan bukan PNS/TNI/POLRI </strong></label>
+					<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<br>
+					 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Surat Pernyataan tidak merangkap/bekerja pada Badan Usaha Lain </strong></label>
+					<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<br>
+					 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button onclick="penanggung_jawab_save()" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="penanggung_jawab_cancel()"><i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="teknik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Klasifikasi Paket Pekerjaan</h3>
+		</div>
+		<div class="modal-body">
+			<p class="text-muted">Paket pekerjaan yang pernah dilaksanakan (Bila belum punya - tulis belum punya, manfaatkan nilai paket tertinggi) - 10 tahun lau</p>
+			
+			  <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title custom-font"><strong>Paket Pekerjaan</strong></h3>
+				</div>
+				<div class="panel-body">
+				<form name="form1" role="form" id="modal_form">
+				{% csrf_token %}
+				</form>
+				</div>
+			  </div>
+		</div>
+		<div class="modal-footer">
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" id="close_modal_"><i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="non_teknik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Klasifikasi Paket Pekerjaan</h3>
+		</div>
+		<div class="modal-body">
+			<p class="text-muted">Paket pekerjaan yang pernah dilaksanakan (Bila belum punya - tulis belum punya, manfaatkan nilai paket tertinggi) - 10 tahun lau</p>
+			
+			  <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title custom-font"><strong>Paket Pekerjaan</strong></h3>
+				</div>
+				<div class="panel-body">
+				<form name="form1" role="form" id="modal_form">
+				{% csrf_token %}
 				</form>
 				</div>
 			  </div>

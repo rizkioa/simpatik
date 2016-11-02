@@ -1,15 +1,15 @@
+<form method="POST" name="step5" role="form" class="form-horizontal" action="" data-parsley-validate novalidate>
+    {% csrf_token %}
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title custom-font"><strong>Direktur / Penanggung Jawab Badan Usaha</strong></h3>
   </div>
   <div class="panel-body">
-    <form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'iujk_detiliujk_save' %}" data-parsley-validate novalidate>
-    {% csrf_token %}
 
     <div class="form-group">
       <div class="col-sm-12">
         <div class="table-responsive">
-          <table class="table table-bordered" id="tabel_klasifikasi_pekerjaan">
+          <table class="table table-bordered" id="id_penanggung_jawab">
               <thead>
                 <tr>
                   <th>&nbsp;</th>
@@ -20,8 +20,8 @@
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody>
-
+              <tbody>           
+                
               </tbody>
           </table>
         </div>
@@ -30,11 +30,10 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10" onclick="show_modal_add()">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
-        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="hapus_paket" onclick="deleteRow('tabel_klasifikasi_pekerjaan')">Hapus <i class="fa fa-trash"></i></a>
+        <a href="#" class="btn btn-success btn-sm" onclick="penanggung_jawab_add()">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="hapus_paket" onclick="penanggung_jawab_delete()">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
-    </form> 
   </div>
 </div>
 
@@ -43,9 +42,6 @@
     <h3 class="panel-title custom-font"><strong>Penanggung Jawab Teknik Badan Usaha</strong></h3>
   </div>
   <div class="panel-body">
-    <form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'iujk_detiliujk_save' %}" data-parsley-validate novalidate>
-    {% csrf_token %}
-
     <div class="form-group">
       <div class="col-sm-12">
         <div class="table-responsive">
@@ -74,7 +70,6 @@
         <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="hapus_paket" onclick="deleteRow('tabel_klasifikasi_pekerjaan')">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
-    </form> 
   </div>
 </div>
 
@@ -84,9 +79,6 @@
     <h3 class="panel-title custom-font"><strong>Tenaga Non Teknik</strong></h3>
   </div>
   <div class="panel-body">
-    <form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'iujk_detiliujk_save' %}" data-parsley-validate novalidate>
-    {% csrf_token %}
-
     <div class="form-group">
       <div class="col-sm-12">
         <div class="table-responsive">
@@ -115,6 +107,7 @@
         <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="hapus_paket" onclick="deleteRow('tabel_klasifikasi_pekerjaan')">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
-    </form> 
   </div>
 </div>
+
+</form> 
