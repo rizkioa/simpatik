@@ -12,6 +12,7 @@ from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 import json
 import base64
+from izin.utils import terbilang_, terbilang
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -162,6 +163,10 @@ class IzinAdmin(admin.ModelAdmin):
 			no_pengajuan = mark_safe("""
 				<a href="%s" target="_blank"> %s </a>
 				""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+		elif split_[0] == 'Reklame':
+			no_pengajuan = mark_safe("""
+				<a href="%s" target="_blank"> %s </a>
+				""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
@@ -201,8 +206,8 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
 			elif obj.status == 2 and not obj.skizin_set.all().exists():
 				btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-			elif obj.skizin_set.filter(status=6):
-				btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
+			# elif obj.skizin_set.filter(status=6):
+			# 	btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
 			elif obj.skizin_set.filter(status=4):
 				btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
 			elif obj.skizin_set.filter(status=9):
@@ -395,6 +400,9 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			if pengajuan_.kekayaan_bersih:
+				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
+				extra_context.update({'terbilang': terbilang_ })
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:
@@ -563,16 +571,17 @@ class IzinAdmin(admin.ModelAdmin):
 		return HttpResponse(json.dumps(response))
 	
 	def aksi_detil_siup(self, request):
-		id_detil_siup = request.POST.get('id_detil_siup', None)
+		id_pengajuan_izin = request.POST.get('id_pengajuan_izin', None)
+		print id_pengajuan_izin
 		try:
-			obj = DetilSIUP.objects.get(id=id_detil_siup)
+			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
 			if request.POST.get('aksi', None) and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
 				if request.POST.get('aksi') == '_submit_operator':
 					print "operator"
 					obj.status = 4
 					obj.save()
 					riwayat_ = Riwayat(
-						pengajuan_izin_id = id_detil_siup,
+						pengajuan_izin_id = id_pengajuan_izin,
 						created_by_id = request.user.id,
 						keterangan = "Submitted (Pengajuan)"
 					)
@@ -586,7 +595,7 @@ class IzinAdmin(admin.ModelAdmin):
 					obj.status = 2
 					obj.save()
 					riwayat_ = Riwayat(
-						pengajuan_izin_id = id_detil_siup,
+						pengajuan_izin_id = id_pengajuan_izin,
 						created_by_id = request.user.id,
 						keterangan = "Kabid Verified (Pengajuan)"
 					)
@@ -604,13 +613,13 @@ class IzinAdmin(admin.ModelAdmin):
 					}
 
 				try:
-					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
+					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
 					if request.POST.get('aksi') == '_submit_skizin_kabid':
 						obj_skizin.status = 4
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Kabid Verified (Izin)"
 						)
@@ -625,7 +634,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Kadin Verified (Izin)"
 						)
@@ -645,7 +654,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Registered (Izin)"
 						)
@@ -660,7 +669,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Printed (Izin)"
 						)
@@ -677,7 +686,7 @@ class IzinAdmin(admin.ModelAdmin):
 						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_detil_siup,
+							pengajuan_izin_id = id_pengajuan_izin,
 							created_by_id = request.user.id,
 							keterangan = "Finished (Izin)"
 						)
@@ -704,7 +713,7 @@ class IzinAdmin(admin.ModelAdmin):
 		except ObjectDoesNotExist:
 			response = {
 					"success": False,
-					"pesan": "Terjadi kesalahan, detil siup tidak ada dalam daftar.",
+					"pesan": "Terjadi kesalahan, pengajuan izin tidak ada dalam daftar.",
 					"redirect": '',
 				}
 		return HttpResponse(json.dumps(response))
@@ -791,7 +800,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),
 			url(r'^aksi-tolak/$', self.admin_site.admin_view(self.penolakanizin), name='penolakanizin'),
 			url(r'^create-skizin/$', self.admin_site.admin_view(self.create_skizin), name='create_skizin'),
-			url(r'^cetak-siup-asli/(?P<id_pengajuan_izin_>[0-9A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_siup_asli), name='cetak_siup_asli'),
+			url(r'^cetak-siup-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_siup_asli), name='cetak_siup_asli'),
 			url(r'^verifikasi/$', self.admin_site.admin_view(self.verifikasi), name='verifikasi'),
 			url(r'^verifikasi-skizin/$', self.admin_site.admin_view(self.verifikasi_skizin), name='verifikasi_skizin'),
 			url(r'^izin-terdaftar/$', self.admin_site.admin_view(self.izinterdaftar), name='izinterdaftar'),

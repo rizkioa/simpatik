@@ -4,7 +4,7 @@ from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import IntegrityError
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.safestring import mark_safe
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
@@ -12,7 +12,7 @@ from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, P
 from izin.izin_forms import PengajuanBaruForm, PemohonForm
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas
-
+from django.db.models import Q
 
 try:
 	from django.utils.encoding import force_text
@@ -121,19 +121,26 @@ def formulir_siup(request):
 							extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
 						extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
 						extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+						ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+						extra_context.update({ 'ktp': ktp_ })
+						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+						extra_context.update({ 'paspor': paspor_ })
+
 						try:
 							ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
 							extra_context.update({'cookie_file_ktp': ktp_.berkas })
-						except ObjectDoesNotExist:
-							pass
+						except MultipleObjectsReturned:
+							ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
+							extra_context.update({'cookie_file_ktp': ktp_.berkas })
 					if pengajuan_.perusahaan:
 						if pengajuan_.perusahaan.desa:
 							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
 						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
 						# if pengajuan_.perusahaan.legalitas:
-						legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
-						legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+						legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+						legalitas_perubahan= pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas__id=2).last()
+
 						extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 						extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
@@ -157,7 +164,21 @@ def formulir_siup(request):
 		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
 		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
+		response = HttpResponse(template.render(ec))
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != "0":
+				if pengajuan_.pemohon:
+					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+				if pengajuan_.perusahaan:
+					response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
+				if legalitas_pendirian:
+					response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+				if legalitas_perubahan:
+					response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+				# print legalitas_perubahan.id
+				# print legalitas_pendirian.id
+
+		return response
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
 		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))

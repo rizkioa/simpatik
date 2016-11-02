@@ -6,7 +6,7 @@
     <div class="form-group" id="bentuk_kegiatan_usaha">
       <label class="col-sm-2 control-label text-left"><strong>Bentuk kegiatan usaha</strong></label>
       <div class="col-sm-4">
-        <select class="form-control chosen-select" required="" data-parsley-trigger="change" name="bentuk_kegiatan_usaha">
+        <select id="id_bentuk_kegiatan_usaha" class="form-control chosen-select" required="" data-parsley-trigger="change" name="bentuk_kegiatan_usaha">
           <option value>-- Pilih Bentuk Kegiatan Usaha --</option>
           {% for val in bentuk_kegiatan_usaha_list %}
             <option value="{{ val.id }}">{{ val.kegiatan_usaha}}</option>
@@ -18,7 +18,7 @@
     <div class="form-group" id="jenis_penanaman_modal">
       <label class="col-sm-2 control-label text-left"><strong>Status penanaman modal</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="jenis_penanaman_modal" required="" data-parsley-trigger="change">
+        <select class="form-control chosen-select mb-10" name="jenis_penanaman_modal" required="" data-parsley-trigger="change" id="id_jenis_penanaman_modal">
           <option>-- Pilih Status penanaman modal --</option>
           {% for val in jenis_penanaman_modal_list%}
             <option value="{{val.id}}">{{val.jenis_penanaman_modal}}</option>
@@ -30,11 +30,11 @@
     <h4><u><strong>Kekeayaan Bersih Dan Saham</strong></u></h4>
 
     <div class="form-group" id="kekayaan_bersih">
-	    <label class="col-sm-2 control-label text-left">Kekayaan bersih perusahaan </label>
+	    <label class="col-sm-2 control-label text-left"><strong>Kekayaan bersih perusahaan</strong></label>
 	    <div class="col-sm-5">
         <div class="input-group">
           <span class="input-group-addon">Rp</span>
-          <input type="text" class="form-control no_ktp" name="kekayaan_bersih">
+          <input id="id_kekayaan_bersih" type="text" class="form-control no_ktp" name="kekayaan_bersih" required="" data-parsley-trigger="change" onchange="formatAngka($(this).val())">
         </div>
 	      <span class="help-block mb-0">(tidak termasuk tanah dan bangunan tempat usaha)</span>
 	    </div>
@@ -46,7 +46,7 @@
   	    <div class="col-sm-5">
           <div class="input-group">
             <span class="input-group-addon">Rp</span>
-            <input type="text" class="form-control no_ktp" name="total_nilai_saham">
+            <input type="text" class="form-control no_ktp" name="total_nilai_saham" oninput="FormatCurrency(this)" id="id_total_nilai_saham">
           </div>
   	    </div>
   	</div>
@@ -73,7 +73,7 @@
     <div class="form-group" id="kelembagaan">
       <label class="col-sm-2 control-label text-left"><strong>Kelembagaan</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="kelembagaan" required="" data-parsley-trigger="change">
+        <select class="form-control chosen-select mb-10" name="kelembagaan" required="" data-parsley-trigger="change" id="id_kelembagaan">
           <option>-- Pilih Kelembagaan --</option>
           {% for val in kelembagaan_list %}
             <option value="{{val.id}}">{{val.kelembagaan}}</option>
@@ -97,7 +97,7 @@
     <div class="form-group" id="kbli">
         <label class="col-sm-2 control-label text-left"><strong>Kegiatan usaha (KBLI)</strong></label>
         <div class="col-sm-10">
-            <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="kbli" required="" data-parsley-trigger="change">
+            <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="kbli" required="" data-parsley-trigger="change" id="id_kbli">
                 {% for val in kbli_list %}
                   <option value="{{val.id}}">{{val.kode_kbli}} - {{val.nama_kbli}}</option>
                 {% endfor %}
@@ -118,13 +118,14 @@
     </div> -->
 
     <div class="form-group" id="produk_utama">
-        <label class="col-sm-2 control-label text-left"><strong>Barang / jasa dagangan utama</strong></label>
+        <label  class="col-sm-2 control-label text-left"><strong>Barang / jasa dagangan utama</strong></label>
         <div class="col-sm-10">
-            <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="produk_utama" required="" data-parsley-trigger="change">
+            <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="produk_utama" required="" data-parsley-trigger="change" id="id_produk_utama">
               {% for val in produk_utama_list %}
                 <option value="{{val.id}}">{{val.barang_jasa_utama}}</option>
               {% endfor %}
             </select>
         </div>
     </div>
+    <!-- <input type="text" value="ashdasidi" oninput="alert_kekayaan();" name=""> -->
 </form>

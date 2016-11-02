@@ -119,21 +119,6 @@ class Perusahaan(AtributTambahan):
 	penanggung_jawab = models.ForeignKey('izin.Pemohon', related_name='penanggung_jawab_perusahaan', blank=True, null=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-	# TDP
-	# nama_kelompok_perusahaan = models.CharField(max_length=100, blank=True, null=True, verbose_name='Nama Kelompok Perusahaan')
-	# nasabah_utama_bank1 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 1')
-	# nasabah_utama_bank2 = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nasabah Utama Bank 2')
-	# jumlah_bank = models.IntegerField(verbose_name='Jumlah Bank', blank=True, null=True,)
-		
-	# tanggal_pendirian = models.DateField(verbose_name='Tanggal Pendirian',  blank=True, null=True,)
-	# tanggal_mulai_kegiatan = models.DateField(verbose_name='Tanggal Mulai Kegiatan', blank=True, null=True,)
-	# merk_dagang = models.CharField(max_length=255, verbose_name='Merk Dagang', blank=True, null=True,)
-	# pemegang_hak_paten = models.CharField(max_length=255, verbose_name='Pemegang Hak Paten', blank=True, null=True,)
-	# pemegang_hak_cipta = models.CharField(max_length=255, verbose_name='Pemegang Hak Cipta', blank=True, null=True,)
-	# jenis_perusahaan = models.ForeignKey(JenisPerusahaan, blank=True, null=True, verbose_name='Jenis Perusahaan')
-	# status_perusahaan = models.ForeignKey(StatusPerusahaan, blank=True, null=True, verbose_name='Status Perusahaan')
-	# kerjasama = models.ForeignKey(JenisKerjasama, blank=True, null=True, verbose_name='Jenis Kerjasama')
-
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
 
@@ -176,28 +161,66 @@ class Legalitas(AtributTambahan):
 		verbose_name = 'Legalitas'
 		verbose_name_plural = 'Legalitas'
 
-# class StatusPerusahaan(models.Model):
-# 	status_perusahaan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Status Perusahaan')
+class JenisBadanUsaha(models.Model):
+	jenis_badan_usaha = models.CharField(max_length=100, verbose_name='Jenis Badan Usaha')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.status_perusahaan)
+	def __unicode__ (self):
+		return "%s" % (self.jenis_badan_usaha)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Status Perusahaan'
-# 		verbose_name_plural = 'Status Perusahaan'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Badan Usaha'
+		verbose_name_plural = 'Jenis Legalitas'
 
+# TDP PT
+class JenisPengecer(models.Model):
+	jenis_pengecer = models.CharField(max_length=255, verbose_name='Jenis Pengecer')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-# class JenisKerjasama(models.Model):
-# 	jenis_kerjasama = models.CharField(max_length=255,blank=True, null=True, verbose_name='Jenis Kerjasama')
+	def __unicode__(self):
+		return "%s" % (self.jenis_pengecer)
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_kerjasama)
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Pengecer'
+		verbose_name_plural = 'Jenis Pengecer'
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Kerjasama'
-# 		verbose_name_plural = 'Jenis Kerjasama'
+class KedudukanKegiatanUsaha(models.Model):
+	kedudukan_kegiatan_usaha = models.CharField(max_length=255, verbose_name='Kedudukan Kegiatan Usaha')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.kedudukan_kegiatan_usaha)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Kedudukan Kegiatan Usaha'
+		verbose_name_plural = 'Kedudukan Kegiatan Usaha'
+
+class StatusPerusahaan(models.Model):
+	status_perusahaan = models.CharField(max_length=255, verbose_name='Status Perusahaan')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.status_perusahaan)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Status Perusahaan'
+		verbose_name_plural = 'Status Perusahaan'
+
+class BentukKerjasama(models.Model):
+	bentuk_kerjasama = models.CharField(max_length=255, verbose_name='Bentuk Kerjasama')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return "%s" % (self.bentuk_kerjasama)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Bentuk Kerjasama'
+		verbose_name_plural = 'Bentuk Kerjasama'
 
 # class JenisKedudukan(models.Model):
 # 	kedudukan = models.CharField(max_length=50, choices=KEDUDUKAN, default=1 ,blank=True, null=True, verbose_name='Kedudukan')

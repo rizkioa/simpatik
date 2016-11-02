@@ -127,29 +127,6 @@
 		th, td {
 		    padding: 5px;
 		}
-		.row::after {
-		    content: "";
-		    clear: both;
-		    display: block;
-		    padding-block-start: 20px;
-		}
-		[class*="col-"] {
-		    float: left;
-		    padding: 15px;
-		    /*border: 1px solid red;*/
-		}
-		.col-1 {width: 8.33%;}
-		.col-2 {width: 16.66%;}
-		.col-3 {width: 25%;}
-		.col-4 {width: 33.33%;}
-		.col-5 {width: 41.66%;}
-		.col-6 {width: 50%;}
-		.col-7 {width: 58.33%;}
-		.col-8 {width: 66.66%;}
-		.col-9 {width: 75%;}
-		.col-10 {width: 83.33%;}
-		.col-11 {width: 91.66%;}
-		.col-12 {width: 100%;}
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 	<script type="text/javascript">
@@ -181,25 +158,22 @@
 	        			<td></td>
 	        		</tr>
 	        	</table>
-	        	<div style="background-color: white; color: white;">
-	        		<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
-		        		<tr>
-		        			<td><!-- <img src="{% static 'images/kabkediri.png' %}" width="100px"> --></td>
-		        			<td>
-		        				<center>
-		        					<p>
-		        						<font style="font-size: 30px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>SEKRETARIAT DAERAH</b></font><br>
-		        						<font>Jalan Soekarno Hatta Nomor I Telepon 689901 - 689905<br>
-		        						Website : <u>www.kedirikab.go.id</u></font><br>
-		        						<font style="font-size: 25px;">KEDIRI</font>
-		        					</p>
-		        				</center>
-		        			</td>
-		        		</tr>
-		        	</table>
-	        	</div>
-	        	
-	        	<!-- <hr class="style2"> -->
+	        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+	        		<tr>
+	        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
+	        			<td>
+	        				<center>
+	        					<p>
+	        						<font style="font-size: 30px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>SEKRETARIAT DAERAH</b></font><br>
+	        						<font>Jalan Soekarno Hatta Nomor I Telepon 689901 - 689905<br>
+	        						Website : <u>www.kedirikab.go.id</u></font><br>
+	        						<font style="font-size: 25px;">KEDIRI</font>
+	        					</p>
+	        				</center>
+	        			</td>
+	        		</tr>
+	        	</table>
+	        	<hr class="style2">
 	        	<!-- <div style="padding-left: 11px;">
 	        		<table frame="box" rules="rows" style="padding-left: 10px">
 		        		<tr>
@@ -207,86 +181,106 @@
 		        		</tr>
 		        	</table>
 	        	</div> -->
-	        	<!-- <div style="float: left; width: 25%">
-	        	</div> -->
-	        	<div class="row">
-	        		<div class="col-2">
-	        		
-		        	</div>
-		        	<div class="col-8">
-			        	<center>
-			        		<font style="font-size: 25px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
-			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha }} )</i></font><br>
-			        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
-			        	</center>
-			        </div>
-			        <div class="col-2">
-			        	<div id="qrcodeTable" >
-			        	</div>
-			        </div>
+	        	
+	        	<center>
+	        		<font style="font-size: 25px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
+	        		<font style="font-size: 20px"><i>(  )</i></font><br>
+	        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
+	        	</center>
+	        	<div id="qrcodeTable" style="float: right;">
 	        	</div>
-	        	<table width="100%" frame="box" rules="rows">
+	        	<table width="100%" border="1" frame="box" rules="rows">
 	        		<tr>
-	        			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
+	        			<td width="5%">1</td>
+	        			<td width="40%"><b>Nama Perusahaan/Instansi</b></td>
 	        			<td width="5%">:</td>
 	        			<td width="50%">{{ perusahaan.nama_perusahaan }}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
+	        			<td width="5%">2</td>
+	        			<td><b>Nama dan Alamat tempat usaha</b></td>
 	        			<td>:</td>
 	        			<td>{{ pemohon.nama_lengkap }} ({{ pemohon.jabatan_pemohon }})</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>ALAMAT PERUSAHAAN</b></td>
+	        			<td><b>Dasar pertimbangan pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td>{{ alamat_perusahaan }}</td>
+	        			<td></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>NPWP</b></td>
+	        			<td><b>Dasar hukum pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td>{{ perusahaan.npwp }}</td>
+	        			<td></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>NOMOR TELEPON</b></td>
-	        			<td>:</td>
-	        			<td>{{ perusahaan.telepon }}</td>
+	        			<td><b>a. Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b></td>
+	        			<td><b>b. Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
+	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
 	        			<td>:</td>
-	        			<td>Rp.{{ pengajuan.kekayaan_bersih }}<br>({{terbilang}})</td>
+	        			<td>{{pengajuan.jenis_reklame.jenis_reklame}}/{{pengajuan.judul_reklame}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>KELEMBAGAAN</b></td>
+	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
 	        			<td>:</td>
-	        			<td>{{ pengajuan.kelembagaan }}</td>
+	        			<td>{{pengajuan.panjang}}x{{pengajuan.lebar}}x{{pengajuan.sisi}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>KEGIATAN USAHA (KBLI/*)</b></td>
+	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td>{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
+	        			<td>{{jumlah_lama}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>BARANG/JASA DAGANGAN UTAMA</b></td>
+	        			<td><b>Letak pemasangan</b></td>
 	        			<td>:</td>
-	        			<td>{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
-	        			{% endfor %}</td>
+	        			<td>{{pengajuan.letak_pemasangan}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td colspan="3"><b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTARKAN ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b></td>
+	        			<td colspan="3"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :<br>
+											1. Tidak bertentangan dengan kepentingan umum : kesusilaan, keindahan, kesopanan, ketertiban umum dan keamanan. <br>
+											2. Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.<br>
+											3. Tidak mengganggu ketertiban lalu lintas.<br>
+											4. Pemasangan reklame tempel pada tembok-tembok/dinding-dinding rumah, kantor, toko harus memperoleh izin terlebih dahulu dari penguasa rumah, kantor, toko dan sebagainya.<br>
+											5. Pemasangan reklame spanduk dan banner dilarang merusak pohon (antara lain dengan menancapkan paku) dan dilarang ditalikan pada tiang listrik.<br>
+											6. Kerusakan dan semua akibat yang ditimbulkan atas pemasangan reklame, harus diperbaiki, ditanggung oleh dan atas biaya pemasang/pemilik reklame.<br>
+											7. Reklame yang sudah terpasang dapat dicabut/ dibongkar, apabila tempat-tempat tersebut diperlukan oleh pemerintah atau untuk kepentingan umum/sosial. Biaya pembongkaran papan Reklame dimaksud menjadi tanggung jawab Pemohon.<br>
+											8. Setelah habis masa pemasangan, reklame harus segera dibongkar kecuali jika diperpanjang waktu pemasangannya setelah terlebih dahulu menyelesaikan segala persyaratannya.<br>
+											9. Pelanggaran atas ketentuan dalam pemasangan reklame akan dikenakan sanksi sesuai dengan peraturan yang berlaku..</b></td>
 	        		</tr>
 	        	</table>
 	        	<br>
-	        	<div style="float: left; width: 50%">
+	        	<!-- <div style="float: left; width: 50%">
 	        		<div style="padding-left: 10%;">
-	        			<img src="{{ foto.berkas.url }}" width="200px">
+	        			
 	        		</div>
-	        	</div>
-	        	<div style="float: right; width: 50%">
+	        	</div> -->
+	        	<table width="100%" border="0" class="font">
+	        		<tr>
+	        			<td width="50%">Tembusan : 
+								Yth. 	Sdr. Anggota Tim Perizinan	    
+									Pemasangan Reklame Kab. Kediri           
+						</td>
+	        			<td width="50%">
+	        				<p style="font-size:17px; padding-left: 20%;" align="center">
+			                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
+			                    KEPALA BPM-P2TSP KAB. KEDIRI
+			                    <br>
+			                    <br>
+			                    <br>
+			                    <br>
+			                    <br>
+			                    <u><b>{{ nama_kepala_dinas }}</b></u><br>
+			                    <i>Pembina Tk.l</i><br>
+			                    <i>NIP: {{nip_kepala_dinas}}</i>
+			                </p>
+	        			</td>
+	        		</tr>
+	        	</table>
+	        	<!-- <div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 20%;" align="center">
 	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
-	                    <br>KEPALA BPM-P2TSP
-	                    <br>KABUPATEN KEDIRI
+	                    KEPALA BPM-P2TSP KAB. KEDIRI
 	                    <br>
 	                    <br>
 	                    <br>
@@ -296,11 +290,12 @@
 	                    <i>Pembina Tk.l</i><br>
 	                    <i>NIP: {{nip_kepala_dinas}}</i>
 	                </p>
-	            </div>
+	            </div> -->
 	        </div>    
 	    </div>
 	</div>
-	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
 	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
 	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
 	<script type="text/javascript">

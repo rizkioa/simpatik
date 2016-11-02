@@ -10,6 +10,7 @@ STATUS = (
 	(8, 'Survey'),
 	(9, 'Verified'),
 	(10, 'Regitered'),
+	(11, 'Insert'),
 )
 
 # Status Data : 
