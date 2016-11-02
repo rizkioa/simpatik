@@ -161,18 +161,6 @@ class Legalitas(AtributTambahan):
 		verbose_name = 'Legalitas'
 		verbose_name_plural = 'Legalitas'
 
-class JenisBadanUsaha(models.Model):
-	jenis_badan_usaha = models.CharField(max_length=100, verbose_name='Jenis Badan Usaha')
-	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-
-	def __unicode__ (self):
-		return "%s" % (self.jenis_badan_usaha)
-
-	class Meta:
-		ordering = ['id']
-		verbose_name = 'Jenis Badan Usaha'
-		verbose_name_plural = 'Jenis Legalitas'
-
 # TDP PT
 class JenisPengecer(models.Model):
 	jenis_pengecer = models.CharField(max_length=255, verbose_name='Jenis Pengecer')
