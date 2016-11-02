@@ -343,6 +343,14 @@
 		      	$.removeCookie('nomor_paspor', { path: '/' });
 	      	}
     	};
+
+  //   	$.ajaxSetup({
+		// 	timeout: 1, // Microseconds, for the laughs. Guaranteed timeout.
+		// 	error: function(request, status, maybe_an_exception_object) {
+		// 	if(status == 'timeout')
+		// 	alert("Internet connection is down!");
+		// 	}
+		// });
 		      	
 
 	</script>
@@ -484,6 +492,17 @@
 		    });
 	    }
 	    function load_alamat(){
+	    	load_provinsi1($('#id_negara').val())
+          	load_kabupaten1($('#id_provinsi').val())
+          	load_kecamatan1($('#id_kabupaten').val())
+          	load_desa1($('#id_kecamatan').val())
+          	setTimeout(function(){
+          		$('#id_negara1').val($('#id_negara').val()).prop('selected',true).trigger("chosen:updated");
+              	$('#id_provinsi1').val($('#id_provinsi').val()).prop('selected',true).trigger("chosen:updated");
+              	$('#id_kabupaten1').val($('#id_kabupaten').val()).prop('selected',true).trigger("chosen:updated");
+              	$('#id_kecamatan1').val($('#id_kecamatan').val()).prop('selected',true).trigger("chosen:updated");
+              	$('#id_desa1').val($('#id_desa').val()).prop('selected',true).trigger("chosen:updated");
+          	}, 1000);
 	    	var alamat = $('#alamat_pemohon_load').val();
 			$('#alamat_perusahaan_load').val(alamat);
 	    }
@@ -492,10 +511,38 @@
 	    	var no = $('#no_telepon_pemohon_load').val();
 			$('#no_telepon_perusahaan_load').val(no);
 	    }
+
+	    function alert_kekayaan(){
+	    	ke = $('#id_kekayaan_bersih').val()
+	    	res = ke.replace(/\./g, "")
+	    	alert(res)
+	    }
+	    $("#id_kekayaan_bersih").on("change", function(e) {
+	    	kekayaan = $('#id_kekayaan_bersih').val()
+	    	res = parseInt(kekayaan.replace(/\./g, ""))
+	    	if (res <= 50000000){
+	    		// alert("mikro")
+	    		$('#id_bentuk_kegiatan_usaha').val(1).prop('selected',true).trigger("chosen:updated");
+	    	}
+	    	else if(res > 50000000 && res <= 500000000){
+	    		// alert("kecil")
+	    		$('#id_bentuk_kegiatan_usaha').val(3).prop('selected',true).trigger("chosen:updated");
+	    	}
+	    	else if(res > 500000000 && res <= 10000000000){
+	    		// alert("menengah")
+	    		$('#id_bentuk_kegiatan_usaha').val(4).prop('selected',true).trigger("chosen:updated");
+	    	}
+	    	else if(res > 10000000000){
+	    		// alert("besar")
+	    		$('#id_bentuk_kegiatan_usaha').val(5).prop('selected',true).trigger("chosen:updated");
+	    	}
+	    })
 	</script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
+  	<script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
+  	<script src="http://www.decorplanit.com/plugin/autoNumeric-1.9.27.js" type=text/javascript> </script>
 	<script type="text/javascript">
 	    $(document).ready(function() {
 	    	// $("body").mLoading();
@@ -557,6 +604,12 @@
 	        if ($.cookie('id_perusahaan') === undefined){
 	        	$.cookie('id_perusahaan', "0", {path:"/"});
 	        }
+	        if ($.cookie('id_legalitas') === undefined){
+	        	$.cookie('id_legalitas', "0", {path:"/"});
+	        }
+	        if ($.cookie('id_legalitas_perubahan') === undefined){
+	        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+	        }
 
 	        $( "#alert" ).prop( "disabled", true );
 	        $('#checkbox_siup_done').change(function() {
@@ -593,6 +646,8 @@
 	              	load_kecamatan(respon.data.kabupaten)
 	              	load_desa(respon.data.kecamatan)
 	              	setTimeout(function(){
+	              		$('#id_paspor').val(respon.data.paspor);
+	              		$('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
 	              		$('#id_nama_lengkap').val(respon.data.nama_lengkap);
 		              	$('#alamat_pemohon_load').val(respon.data.alamat);
 		             	$('#no_telepon_pemohon_load').val(respon.data.telephone);
@@ -705,10 +760,13 @@
 	    }
 
 	    function total_n_a(){
-	    	var nasional = parseInt($('#id_presentase_saham_nasional').val())
-		    var asing = parseInt($('#id_presentase_saham_asing').val())
+	    	var nasional = parseFloat($('#id_presentase_saham_nasional').val())
+		    var asing = parseFloat($('#id_presentase_saham_asing').val())
 		    var total_a_n = nasional+asing
-		    if (total_a_n > 100){
+		    // alert(nasional)
+		    // alert(asing)
+		    // alert(total_a_n.toFixed(2))
+		    if (total_a_n.toFixed(2) > 100.00){
 		    	$('.saham').addClass('has-error')
 		    	$('.saham').append('<span class="help-block mb-0 error-saham"><font color="red">Jumlah persen saham nasional dan asing tidak boleh melebihi 100%.</font></span>')
 		    }
@@ -716,6 +774,140 @@
 		    	$('.saham').removeClass('has-error')
 		    	$('.error-saham').remove()
 		    }
+	    }
+	    // +++++++++++++ jquery format money idr ++++++++++++++++
+	    function FormatCurrency(objNum){
+		   var num = objNum.value
+		   var ent, dec;
+		   if (num != '' && num != objNum.oldvalue)
+		   {
+		     num = HapusTitik(num);
+		     if (isNaN(num))
+		     {
+		       objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+		     } else {
+		       var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+		       if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+		       {
+		         alert(num.split('.')[1]);
+		         objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+		       }
+		       else
+		       {
+		         objNum.value = TambahTitik(num.split('.')[0]);
+		       }
+		       objNum.oldvalue = objNum.value;
+		     }
+		   }
+		}
+
+		function HapusTitik(num){
+		   return (num.replace(/\./g, ''));
+		}
+
+		function TambahTitik(num){
+		   numArr=new String(num).split('').reverse();
+		   for (i=3;i<numArr.length;i+=3)
+		   {
+		     numArr[i]+='.';
+		   }
+		   return numArr.reverse().join('');
+		} 
+			        
+		function formatCurrency(num) {
+		   num = num.toString().replace(/\$|\./g,'');
+		   if(isNaN(num))
+		   num = "0";
+		   sign = (num == (num = Math.abs(num)));
+		   num = Math.floor(num*100+0.50000000001);
+		   cents = num0;
+		   num = Math.floor(num/100).toString();
+		   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+		   num = num.substring(0,num.length-(4*i+3))+'.'+
+		   num.substring(num.length-(4*i+3));
+		   return (((sign)?'':'-') + num);
+		}
+	    // +++++++++++++ end jquery format money idr ++++++++++++++++
+	    
+	    if ('{{pengajuan_}}'){
+	    	// alert("{{ pengajuan_.jenis_pengajuan }}");
+	    	// +++++++ pemohon +++++
+	    	$('#id_ktp').val('{{ ktp.nomor }}')
+	    	$('#id_paspor').val('{{ paspor.nomor }}')
+	    	$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+	    	$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+	    	
+  			load_pemohon('{{ ktp.nomor }}')
+          	if ('{{pengajuan_.nama_kuasa}}'){
+          		$('#switch_pemohon_disabled').prop( "checked", true );
+          		setTimeout(function(){
+          			$('.kuasa_disable').prop('disabled', false);
+	          		$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+	          		$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+	          		$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+          		}, 1000);
+          	}
+          	//+++++++ end pemohon +++++
+
+          	// +++++ perusahaan+++++++
+          	$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+          	setTimeout(function(){
+          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+          	}, 3000);
+          	// +++++ end perusahaan+++++++
+          	
+          	//+++ bentuk kegiatan usaha ++++
+          	$('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
+          	$('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
+          	$('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
+      		$('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
+      		$('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
+      		$('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+      		$('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
+      		$('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
+      		$('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
+      		var valkbli = [{% for k in pengajuan_.kbli.all %}{{k.id}},{% endfor %}]
+      		i = 0, size = valkbli.length;
+      		for(i; i < size; i++){
+      			$("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
+      		}
+      		var valproduk = [{% for p in pengajuan_.produk_utama.all %}{{ p.id }},{% endfor %}]
+      		i = 0, size = valproduk.length;
+      		for(i; i < size; i++){
+      			$("#id_produk_utama option[value='" + valproduk[i] + "']").attr("selected", 1);
+      		}
+          	//+++ end bentuk kegiatan usaha ++++
+          	// alert('{{legalitas_pendirian}}')
+          	//++++ legalitas pendirian +++
+          	if ('{{legalitas_pendirian}}' !== "None"){
+          		$('#switch_akta_pendirian_disabled').prop( "checked", true );
+          		setTimeout(function(){
+          			$('.akta_pendirian_disable').prop('disabled', false);
+          			$('#id_jenis_legalitas').val('{{ legalitas_pendirian.jenis_legalitas.id }}').prop('selected',true).trigger("chosen:updated");
+          			$('#id_nama_notaris_legalitas_pendirian').val('{{ legalitas_pendirian.nama_notaris }}');
+          			$('#id_alamat_legalitas_pendirian').val('{{ legalitas_pendirian.alamat }}');
+          			$('#id_telp_legalitas_pendirian').val('{{ legalitas_pendirian.telephone }}');
+          			$('#id_nomor_pengesahan_legalitas_pendirian').val('{{ legalitas_pendirian.nomor_pengesahan }}');
+          			$('#id_tanggal_pengesahan_legalitas_pendirian').val('{{ legalitas_pendirian.tanggal_pengesahan|date:"d-m-Y" }}')
+
+          		}, 1000);
+          	}
+          	//++++ end legalitas pendirian +++
+          	//++++ legalitas perubahan +++
+          	if ('{{ legalitas_perubahan }}' !== "None"){
+          		// alert("{{legalitas_perubahan.jenis_legalitas}}")
+          		$('#switch_akta_perubahan_disabled').prop( "checked", true );
+          		setTimeout(function(){
+          			$(".akta_perubahan_disable").prop('disabled', false)
+          			$('#id_nama_notaris_perubahan').val('{{ legalitas_perubahan.nama_notaris }}');
+          			$('#id_alamat_notaris_perubahan').val('{{ legalitas_perubahan.alamat }}');
+          			$('#id_telephone_notaris_perubahan').val('{{ legalitas_perubahan.telephone }}');
+          			$('#id_nomor_pengesahan_perubahan').val('{{ legalitas_perubahan.nomor_pengesahan }}');
+          			$('#id_tanggal_pengesahan_perubahan').val('{{ legalitas_perubahan.tanggal_pengesahan|date:"d-m-Y" }}')
+
+          		}, 1000);
+          	}
+          	//++++ end legalitas pendirian +++
 	    }
   	</script>
 {% endblock %}

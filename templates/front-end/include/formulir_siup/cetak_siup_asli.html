@@ -127,6 +127,29 @@
 		th, td {
 		    padding: 5px;
 		}
+		.row::after {
+		    content: "";
+		    clear: both;
+		    display: block;
+		    padding-block-start: 20px;
+		}
+		[class*="col-"] {
+		    float: left;
+		    padding: 15px;
+		    /*border: 1px solid red;*/
+		}
+		.col-1 {width: 8.33%;}
+		.col-2 {width: 16.66%;}
+		.col-3 {width: 25%;}
+		.col-4 {width: 33.33%;}
+		.col-5 {width: 41.66%;}
+		.col-6 {width: 50%;}
+		.col-7 {width: 58.33%;}
+		.col-8 {width: 66.66%;}
+		.col-9 {width: 75%;}
+		.col-10 {width: 83.33%;}
+		.col-11 {width: 91.66%;}
+		.col-12 {width: 100%;}
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 	<script type="text/javascript">
@@ -158,22 +181,25 @@
 	        			<td></td>
 	        		</tr>
 	        	</table>
-	        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
-	        		<tr>
-	        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
-	        			<td>
-	        				<center>
-	        					<p>
-	        						<font style="font-size: 30px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>SEKRETARIAT DAERAH</b></font><br>
-	        						<font>Jalan Soekarno Hatta Nomor I Telepon 689901 - 689905<br>
-	        						Website : <u>www.kedirikab.go.id</u></font><br>
-	        						<font style="font-size: 25px;">KEDIRI</font>
-	        					</p>
-	        				</center>
-	        			</td>
-	        		</tr>
-	        	</table>
-	        	<hr class="style2">
+	        	<div style="background-color: white; color: white;">
+	        		<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+		        		<tr>
+		        			<td><!-- <img src="{% static 'images/kabkediri.png' %}" width="100px"> --></td>
+		        			<td>
+		        				<center>
+		        					<p>
+		        						<font style="font-size: 30px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>SEKRETARIAT DAERAH</b></font><br>
+		        						<font>Jalan Soekarno Hatta Nomor I Telepon 689901 - 689905<br>
+		        						Website : <u>www.kedirikab.go.id</u></font><br>
+		        						<font style="font-size: 25px;">KEDIRI</font>
+		        					</p>
+		        				</center>
+		        			</td>
+		        		</tr>
+		        	</table>
+	        	</div>
+	        	
+	        	<!-- <hr class="style2"> -->
 	        	<!-- <div style="padding-left: 11px;">
 	        		<table frame="box" rules="rows" style="padding-left: 10px">
 		        		<tr>
@@ -181,13 +207,23 @@
 		        		</tr>
 		        	</table>
 	        	</div> -->
-	        	
-	        	<center>
-	        		<font style="font-size: 25px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
-	        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha }} )</i></font><br>
-	        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
-	        	</center>
-	        	<div id="qrcodeTable" style="float: right;">
+	        	<!-- <div style="float: left; width: 25%">
+	        	</div> -->
+	        	<div class="row">
+	        		<div class="col-2">
+	        		
+		        	</div>
+		        	<div class="col-8">
+			        	<center>
+			        		<font style="font-size: 25px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
+			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha }} )</i></font><br>
+			        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
+			        	</center>
+			        </div>
+			        <div class="col-2">
+			        	<div id="qrcodeTable" >
+			        	</div>
+			        </div>
 	        	</div>
 	        	<table width="100%" frame="box" rules="rows">
 	        		<tr>
@@ -218,7 +254,7 @@
 	        		<tr>
 	        			<td><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
 	        			<td>:</td>
-	        			<td>{{ pengajuan.kekayaan_bersih }}</td>
+	        			<td>Rp.{{ pengajuan.kekayaan_bersih }}<br>({{terbilang}})</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>KELEMBAGAAN</b></td>
@@ -249,7 +285,8 @@
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 20%;" align="center">
 	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
-	                    KEPALA BPM-P2TSP KAB. KEDIRI
+	                    <br>KEPALA BPM-P2TSP
+	                    <br>KABUPATEN KEDIRI
 	                    <br>
 	                    <br>
 	                    <br>
@@ -263,8 +300,7 @@
 	        </div>    
 	    </div>
 	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
 	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
 	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
 	<script type="text/javascript">
