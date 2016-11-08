@@ -26,6 +26,9 @@
 	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
 	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
 	<script src="{% static "scripts/js/iujk.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/countTo/jquery.countTo.js" %}"></script>
+
 
 	<script type="text/javascript">
 	$(window).load(function(){
@@ -309,9 +312,9 @@
 			});
 		}
 		// Function to capitalize for string
-		String.prototype.capitalize = function() {
-			return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-		};
+		// String.prototype.capitalize = function() {
+		// 	return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+		// };
 
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
@@ -359,7 +362,8 @@
 							for (var i = 0; i < a.length; i++){
 								// console.log(a[i]);
 								// console.log(respon[a[i]]);
-								var field = a[i].replace("_", " ").capitalize();
+								// var field = a[i].replace("_", " ").capitalize();
+								var field = a[i].replace("_", " ");
 								toastr["error"](field+", "+respon[a[i]][0]['message'])
 								$("#"+a[i]+"").addClass("has-error");
 								// console.log($("#"+a[i]+"").addClass("parsley-error"));
@@ -661,7 +665,7 @@
 						if(null != chkbox && true == chkbox.checked) {
 							$.ajax({
 								type: 'POST',
-								data: { csrfmiddlewaretoken: csrf_token = $("input[name='csrfmiddlewaretoken']").val(), 'id_paket_pekerjaan': $( 'input[name="chkbox[]"]:checked' ).val()},
+								data: { csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(), 'id_paket_pekerjaan': $( 'input[name="chkbox[]"]:checked' ).val()},
 								url: '{% url 'admin:delete_paketpekerjaan' %}',
 								success: function(response){
 									response = $.parseJSON(response)
@@ -670,13 +674,13 @@
 										table.deleteRow(i); //Hapus Tabel
 									}else{
 										toastr["error"](response.pesan)
-										console.log("2");
+										// console.log("2");
 									}
 
 								},
 								error: function(response){
 									toast_server_error()
-									console.log("3");
+									// console.log("3");
 								}
 							});
 
@@ -1039,42 +1043,48 @@
 			<h3 class="modal-title custom-font">Direktur / Penanggung Jawab Badan Usaha</h3>
 		</div>
 		<div class="modal-body">
-			<form name="penanggung_jawab_form" role="form" id="penanggung_jawab_form">
+			<form name="penanggung_jawab_form" role="form" id="penanggung_jawab_form" action="{% url 'penanggung_jawab_save_bu' %}" enctype="multipart/form-data">
 			{% csrf_token %}
 				<div class="form-group">
 					<label for=""><strong>Nama </strong></label>
 					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
 				</div>
 				<div class="form-group">
-					<form action="">
-						<label for=""><strong>Foto 4X6 </strong></label>
-						<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-						<br>
-						 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-					 </form>
+					<label for=""><strong>Foto 4X6 </strong></label>
+					<input name="berkas_foto" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
 				</div>
 				<div class="form-group">
 					<label for=""><strong>KTP </strong></label>
-					<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-					<br>
-					 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+					<input name="berkas_ktp" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
 				</div>
 				<div class="form-group">
 					<label for=""><strong>Surat Pernyataan bukan PNS/TNI/POLRI </strong></label>
-					<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-					<br>
-					 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+					<input name="berkas_pernyataan" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
 				</div>
 				<div class="form-group">
 					<label for=""><strong>Surat Pernyataan tidak merangkap/bekerja pada Badan Usaha Lain </strong></label>
-					<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-					<br>
-					 <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+					<input name="berkas_merangkap" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
 				</div>
 			</form>
 		</div>
 		<div class="modal-footer">
-			<button onclick="penanggung_jawab_save()" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<div class="progress-list progresdirektur" style="display: none;">
+                <div class="details">
+                    <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                </div>
+                <div class="status pull-right">
+                    <span class="counter" data-from="0" data-to="0" id="dataprogresuploaddirektur" data-speed="1000">0</span>%
+                </div>
+                <div class="clearfix"></div>
+                <div class="progress progress-xs no-radius">
+                    <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresuploaddirektur" data-percentage=""></div>
+                </div>
+            </div>
+			<button onclick="penanggung_jawab_save($(this))" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
 			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="penanggung_jawab_cancel()"><i class="fa fa-arrow-left"></i> Batal</button>
 		</div>
 	</div>

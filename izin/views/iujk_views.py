@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 import json
 
-from izin.models import PaketPekerjaan, DetilIUJK
+from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
+from master.models import Berkas
 from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm, DataAnggotaForm
 from izin.izin_forms import LegalitasPerusahaanForm, LegalitasPerusahaanPerubahanForm
 
@@ -209,10 +210,40 @@ def iujk_legalitas_perusahaan_save(request):
 	return response
 
 
-def penanggung_jawab_save_bu():
+def penanggung_jawab_save_bu(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
-		if request.COOKIES['id_pengajuan'] != '':
-			pass
+		# print request.POST
+		# print request.FILES
+		if request.COOKIES['id_pengajuan'] != '0':
+			form_ = DataAnggotaForm(request.POST)
+			if form_.is_valid():
+				da_ = form_.save(commit=False)
+				da_.detil_iujk_id = request.COOKIES['id_pengajuan']
+				da_.jenis_anggota_badan = 'Direktur / Penanggung Jawab Badan Usaha'
+				da_.save()
+
+				da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+				da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+				da_.berkas_tambahan.create(nama_berkas="Berkas bukan PNS/TNI/POLRI "+da_.nama, berkas=request.FILES.get('berkas_pernyataan'))
+				da_.berkas_tambahan.create(nama_berkas="Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
+				
+				# berkas_ = ", ".join(str(row.nama_berkas) for row in da_.berkas_tambahan.all().order_by('id'))
+				# print request.META['HTTP_REFERER']
+				berkas_ = ", ".join(str(row.berkas.url) for row in da_.berkas_tambahan.all().order_by('id'))
+
+				data = {'success': True, 'pesan': request.POST.get('nama')+' berhasil disimpan. Proses Selanjutnya.', 
+						'data': [
+						# # legalitas perubahaan
+							{ 'id': da_.id },
+							{ 'nama': da_.nama },
+							{ 'berkas': berkas_}
+						]}
+
+				data = json.dumps(data)
+				response = HttpResponse(data)
+			else:
+				data = form_.errors.as_json()
+				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)
@@ -221,5 +252,25 @@ def penanggung_jawab_save_bu():
 		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
 		data = json.dumps(data)
 		response = HttpResponse(data)
+
+	return response
+
+def penanggung_jawab_delete_bu(request):
+	id_ = request.POST.get('id')
+	if id_:
+		try:
+			obj = AnggotaBadanUsaha.objects.get(id = id_)
+			obj.berkas_tambahan.all().delete()
+			pesan_ = "Anggota Badan Usaha "+str(obj.nama)+" Berhasil Dihapus"
+			data = {'success': True, 'pesan': pesan_, 'id':obj.id}
+			obj.delete()
+		except AnggotaBadanUsaha.DoesNotExist:
+			data = {'success': False, 'pesan':'Anggota Badan Usaha Tidak ada'}
+	else:
+		data = {'success': False, 'pesan':'Anggota Badan Usaha Kosong'}
+
+	data = json.dumps(data)
+	response = HttpResponse(data)
+	# print response
 
 	return response

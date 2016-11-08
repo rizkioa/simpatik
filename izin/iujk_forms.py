@@ -21,6 +21,6 @@ class DataAnggotaForm(forms.ModelForm):
 	"""docstring for DataAnggotaForm"""
 	class Meta:
 		model = AnggotaBadanUsaha
-		fields = ('detil_iujk', )
+		fields = ('nama', )
 		
 		

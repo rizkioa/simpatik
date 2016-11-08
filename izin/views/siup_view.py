@@ -34,7 +34,7 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
-	print Pemohon.objects.get(username = request.POST.get('ktp'))
+	# print Pemohon.objects.get(username = request.POST.get('ktp'))
 	try:
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
@@ -53,6 +53,11 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
+		
+		p = pemohon.save(commit=False)
+		p.username = ktp_
+		p.save()
+
 		if ktp_:
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
@@ -71,9 +76,6 @@ def siup_identitas_pemohon_save_cookie(request):
 							jenis_identitas_id=2,
 							user_id=p.id,
 							)
-		p = pemohon.save(commit=False)
-		p.username = ktp_
-		p.save()
 
 		# try:
 		# 	p = pemohon.save(commit=False)
@@ -974,7 +976,7 @@ def siup_front_done(request):
 def load_pemohon(request, ktp_):
 	extra_context={}
 	pemohon = None
-	nomor_list = NomorIdentitasPengguna.objects.filter(nomor=ktp_).last()
+	nomor_list = NomorIdentitasPengguna.objects.filter(nomor=ktp_, jenis_identitas_id=1).last()
 	if nomor_list:
 		pemohon_list = Pemohon.objects.filter(id=nomor_list.user.id)
 		if pemohon_list.exists():
