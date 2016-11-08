@@ -15,16 +15,19 @@ def reklame_detilreklame_save_cookie(request):
 			if detilReklame.is_valid():
 				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
 				pengajuan_.save()
-				letak_ = pengajuan_.letak_pemasangan + "Desa "+str(pengajuan_.desa) + "Kec. "+str(pengajuan_.desa.kecamatan) + str(pengajuan_.desa.kecamatan.kabupaten)
+				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
+				awal = pengajuan_.tanggal_mulai
+				akhir = pengajuan_.tanggal_akhir
+				selisih = akhir-awal
 				data = {'success': True,
 						'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
 						'data': [
 						{'jenis_reklame': pengajuan_.jenis_reklame.jenis_reklame},
 						{'judul_reklame': pengajuan_.judul_reklame},
-						{'panjang': str(pengajuan_.panjang)},
-						{'lebar': str(pengajuan_.lebar)},
-						{'sisi': str(pengajuan_.sisi)},
-						{'letak_pemasangan': letak_}]}
+						{'ukuran': ukuran_},
+						{'letak_pemasangan': letak_},
+						{'selisih': selisih.days}]}
 				data = json.dumps(data)
 				response = HttpResponse(json.dumps(data))
 			else:
@@ -55,31 +58,31 @@ def reklame_upload_berkas_pendukung(request):
 								p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
 								berkas = form.save(commit=False)
 								if request.POST.get('aksi') == "1":
-									berkas.nama_berkas = "Gambar Kontruksi Pemasangan Reklame"
+									berkas.nama_berkas = "Gambar Kontruksi Pemasangan Reklame "+p.no_pengajuan
 									berkas.keterangan = "Gambar Kontruksi Pemasangan Reklame"
 								elif request.POST.get('aksi') == "2":
-									berkas.nama_berkas = "Gambar Foto Lokasi Pemasangan Reklame"
+									berkas.nama_berkas = "Gambar Foto Lokasi Pemasangan Reklame "+p.no_pengajuan
 									berkas.keterangan = "Gambar Foto Lokasi Pemasangan Reklame"
 								elif request.POST.get('aksi') == "3":
-									berkas.nama_berkas = "Gambar Denah Lokasi Pemasangan Rekalame"
+									berkas.nama_berkas = "Gambar Denah Lokasi Pemasangan Rekalame "+p.no_pengajuan
 									berkas.keterangan = "Gambar Denah Lokasi Pemasangan Rekalame"
 								elif request.POST.get('aksi') == "4":
-									berkas.nama_berkas = "Surat Ketetapan Pajak Daerah (SKPD)"
+									berkas.nama_berkas = "Surat Ketetapan Pajak Daerah (SKPD) "+p.no_pengajuan
 									berkas.keterangan = "Surat Ketetapan Pajak Daerah (SKPD)"
 								elif request.POST.get('aksi') == "5":
-									berkas.nama_berkas = "Surat Setoran Pajak Daerah (SSPD)"
+									berkas.nama_berkas = "Surat Setoran Pajak Daerah (SSPD) "+p.no_pengajuan
 									berkas.keterangan = "Surat Setoran Pajak Daerah (SSPD)"
 								elif request.POST.get('aksi') == "6":
-									berkas.nama_berkas = "Rekomendasi dari Kantor SATPOL PP"
+									berkas.nama_berkas = "Rekomendasi dari Kantor SATPOL PP "+p.no_pengajuan
 									berkas.keterangan = "Rekomendasi dari Kantor SATPOL PP"
 								elif request.POST.get('aksi') == "7":
-									berkas.nama_berkas = "Berita Acara Perusahaan(BAP) Tim Perizinan"
+									berkas.nama_berkas = "Berita Acara Perusahaan(BAP) Tim Perizinan "+p.no_pengajuan
 									berkas.keterangan = "Berita Acara Perusahaan(BAP) Tim Perizinan"
 								elif request.POST.get('aksi') == "8":
-									berkas.nama_berkas = "Surat Perjanjian Kesepakatan"
+									berkas.nama_berkas = "Surat Perjanjian Kesepakatan "+p.no_pengajuan
 									berkas.keterangan = "Surat Perjanjian Kesepakatan"
 								else:
-									berkas.nama_berkas = "Berkas Tambahan"
+									berkas.nama_berkas = "Berkas Tambahan "+p.no_pengajuan
 									berkas.keterangan = "Berkas Tambahan"
 									
 								if request.user.is_authenticated():

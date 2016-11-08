@@ -20,7 +20,7 @@
     <tr>
       <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ pemohon_konfirmasi.nomor_identitas }}</span></td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }}{% if paspor %} / {{ paspor }}{% endif %}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
@@ -30,7 +30,7 @@
     <tr>
       <td width="25%">Alamat tempat tinggal</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_ }}</span></td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_pemohon_konfirmasi }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
@@ -65,7 +65,7 @@
     <tr>
       <td width="25%">NPWP</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.perusahaan }}</span></td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama Perusahaan</td>
@@ -85,7 +85,7 @@
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ telepon }}</span></td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Fax</td>
@@ -95,44 +95,38 @@
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email }}</span></td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
     </tr>
   </table>
   <br>
 
   <br>
-  <h4><u>#3. Informasi Kekayaan Daerah</u></h4>
-  <h5><u>Pemilik</u></h5>
+  <h4><u>#3. DATA REKLAME</u></h4>
   <table width="100%" border="0">
     <tr>
       <td width="25%">Jenis Reklame</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id="jenis_reklame_konfirmasi" >{{ pengajuan_.jenis_reklame.jenis_reklame }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama / Judul Reklame</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id="judul_reklame_konfirmasi">{{ pengajuan_.judul_reklame }}</span></td>
     </tr>
     <tr>
       <td width="25%">Ukuran, Panjang x Ukuran x Muka/Sisi</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
-    </tr>
-    <tr>
-      <td width="25%">Jumlah</td>
-      <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id="ukuran_konfirmasi">{{ ukuran }}</span></td>
     </tr>
     <tr>
       <td width="25%">Waktu / Lama Pemasangan</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id="selisih_konfirmasi" >{{ selisih }}</span> Hari</td>
     </tr>
     <tr>
       <td width="25%">Letak Pemasangan</td>
       <td width="5%">:</td>
-      <td width="70%"></td>
+      <td width="70%"><span id="letak_pemasangan_konfirmasi" >{{ letak }}</span></td>
     </tr>
   </table>
 
@@ -226,12 +220,22 @@
             </label>
           </td>
         </tr>
+        <tr align="center">
+          <td>
+            Berkas Tambahan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox_berkas_tambahan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
       </tbody>
   </table>
   <br>
   <section class="tile bg-greensea">
     <div class="tile-body">
-      <label class="checkbox checkbox-custom-alt">
+      <label class="checkbox checkbox-custom-alt checkbox-custom-lg" style="color: white;">
         <input id="checkbox_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
       </label>
     </div>

@@ -21,7 +21,7 @@
     <tr>
       <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ pemohon_konfirmasi.nomor_identitas }}</span></td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
@@ -95,7 +95,7 @@
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email }}</span></td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
     </tr>
   </table>
   <br>
@@ -152,15 +152,15 @@
           <td width="70%"><span id="kelembagaan_konfirmasi">{{ kelembagaan_konfirmasi }}</span></td>
       </tr>
       <tr>
-          <td width="25%">KBLI</td>
+          <td width="25%">KBLI / Barang atau Jasa Dagang</td>
           <td width="5%">:</td>
-          <td width="70%"><span id="kbli_konfirmasi">{% for kbli in pengajuan_.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</span></td>
+          <td width="70%"><span id="kbli_konfirmasi"></span></td>
       </tr>
-      <tr>
+      <!-- <tr>
           <td width="25%">Barang/jasa dagang utama</td>
           <td width="5%">:</td>
           <td width="70%"><span id="produk_utama_konfirmasi">{% for produk_utama in pengajuan_.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %}{% endfor %}</span></td>
-      </tr>
+      </tr> -->
   </table>
   <br>
   <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
@@ -177,47 +177,31 @@
           </tr>
         </thead>
         <tbody>
-          {% for p in pengajuan_.legalitas.all %}
-          <tr>
-            <td><span id='jenis_legalitas_konfirmasi'>{{ p.jenis_legalitas }}</span></td>
-            <td><span id='nama_notaris_konfirmasi'>{{ p.nama_notaris }}</span></td>
-            <td><span id='alamat_notaris_konfirmasi'>{{ p.alamat }}</span></td>
-            <td><span id='telephone_notaris_konfirmasi'>{{ p.telephone }}</span></td>
-            <td><span id='nomor_pengesahaan_konfirmasi'>{{ p.nomor_pengesahan }}</span></td>
-            <td><span id='tanggal_pengesahan_konfirmasi'>{{ p.tanggal_pengesahan|date:"d-m-Y" }}</span></td>
-          </tr>
-          {% endfor %}
+          {% if pengajuan_.legalitas.last %}
+            {% for p in pengajuan_.legalitas.all %}
+            <tr>
+              <td><span id='jenis_legalitas_konfirmasi'>{{ p.jenis_legalitas }}</span></td>
+              <td><span id='nama_notaris_konfirmasi'>{{ p.nama_notaris }}</span></td>
+              <td><span id='alamat_notaris_konfirmasi'>{{ p.alamat }}</span></td>
+              <td><span id='telephone_notaris_konfirmasi'>{{ p.telephone }}</span></td>
+              <td><span id='nomor_pengesahaan_konfirmasi'>{{ p.nomor_pengesahan }}</span></td>
+              <td><span id='tanggal_pengesahan_konfirmasi'>{{ p.tanggal_pengesahan|date:"d-m-Y" }}</span></td>
+            </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td><span id='jenis_legalitas_konfirmasi'></span></td>
+              <td><span id='nama_notaris_konfirmasi'></span></td>
+              <td><span id='alamat_notaris_konfirmasi'></span></td>
+              <td><span id='telephone_notaris_konfirmasi'></span></td>
+              <td><span id='nomor_pengesahaan_konfirmasi'></span></td>
+              <td><span id='tanggal_pengesahan_konfirmasi'></span></td>
+            </tr>
+          {% endif %}
         </tbody>
     </table>
   </div>
   <br>
-  <div id="konfirmasi_legalitas_perubahan">
-    <h4><u>#LEGALITAS PERUBAHAN PERUSAHAAN</u></h4>
-    <div class="table-responsive">
-      <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Jenis Akta dan Pengesahan</th>
-              <th>Nama Notaris</th>
-              <th>Alamat Notaris</th>
-              <th>Telp. Notaris</th>
-              <th>No. Pengesahan</th>
-              <th>Tgl Pengesahan</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span id='jenis_legalitas_perubahan_konfirmasi'></span></td>
-              <td><span id='nama_notaris_perubahan_konfirmasi'></span></td>
-              <td><span id='alamat_notaris_perubahan_konfirmasi'></span></td>
-              <td><span id='telephone_notaris_perubahan_konfirmasi'></span></td>
-              <td><span id='nomor_pengesahaan_perubahan_konfirmasi'></span></td>
-              <td><span id='tanggal_pengesahan_perubahan_konfirmasi'></span></td>
-            </tr>
-          </tbody>
-      </table>
-    </div>
-  </div>
   
   <br>
   <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>

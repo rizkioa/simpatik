@@ -318,3 +318,42 @@ $("#form_upload_surat_perjanjian").ajaxForm({
     }
 });
 // ++++++++++++++ end upload surat perjanjian++++++++
+
+// ++++++++++++++ upload surat perjanjian +++++
+
+var btn_tambahan = $('#btn_tambahan');
+var percent_tambahan = $('#percent_tambahan');
+
+$("#form_upload_berkas_tambahan").ajaxForm({
+    beforeSend: function() {
+        var percentVal = '0%';
+        percent_tambahan.html(percentVal);
+    },
+    uploadProgress: function(event, position, total, percentComplete) {
+        btn_tambahan.hide();
+        percent_tambahan.show();
+        var percentVal = percentComplete + '%';
+        percent_tambahan.html(percentVal);
+    },
+    success: function (response){
+        respon = $.parseJSON(response)
+        if(respon.success){
+            toastr["success"](respon.pesan)
+            $('#checkbox_surat_perjanjian').prop('checked', true);   
+            var percentVal = '100%';
+            percent_tambahan.html(percentVal);                                               
+        }
+        else{
+            $('#checkbox_surat_perjanjian').prop('checked', false);
+            var a = Object.keys(respon);
+            for (var i = 0; i < a.length; i++){
+                var field = a[i].replace("_", " ").capitalize();
+                toastr["error"](field+", "+respon[a[i]][0]['message'])
+                $("#"+a[i]+"").addClass("has-error");
+            btn_tambahan.show();
+            percent_tambahan.hide();
+            }
+        }
+    }
+});
+// ++++++++++++++ end upload surat perjanjian++++++++
