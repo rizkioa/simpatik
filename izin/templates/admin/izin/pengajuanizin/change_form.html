@@ -1,15 +1,16 @@
 {% extends "admin/change_form.html" %}
 {% load i18n admin_urls access admin_static %}
 {% block submit_buttons_bottom %}
-    <div class="submit-row">
+    <!-- <div class="submit-row"> -->
         {% url opts|admin_urlname:'changelist' as back_url %}
-        <input type="button" onclick="location.href='{% add_preserved_filters back_url %}'" value="{% trans 'Kembali' %}" class="btn btn-info btn-xs" name="_back" />
+            <input type="button" onclick="location.href='{% add_preserved_filters back_url %}'" value="{% trans 'Kembali' %}" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10" name="_back" />
+        {% endurl %}
         {% if user.is_superuser %}
-            <input type="submit" value="{% trans 'Save' %}" class="btn btn-primary btn-xs" name="_save" />
+            <input type="submit" value="{% trans 'Save' %}" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10" name="_save" />
         {% endif %}
         {% if not is_popup and has_delete_permission and change %}
             {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
             <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}" class="deletelink">{% trans "Delete" %}</a></p>
         {% endif %}
-    </div>
+    <!-- </div> -->
 {% endblock %}

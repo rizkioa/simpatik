@@ -55,7 +55,7 @@
       <label class="col-sm-3 control-label text-left"><strong>File NPWP Pribadi</strong></label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if pemohon_konfirmasi %}
+        {% if pemohon_konfirmasi.berkas_npwp %}
         <span class="help-block" style="color:blue;">file : <a href="{{ pemohon_konfirmasi.berkas_npwp.berkas.url }}" target="blank_">{{ pemohon_konfirmasi.berkas_npwp }}</a></span>
         {% endif %}
         <span id="load_npwp_pribadi"></span>
@@ -99,7 +99,7 @@
       <label class="col-sm-3 control-label text-left"><strong>File Akta Pendirian</strong></label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle akta_pendirian_disable" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if legalitas_pendirian %}
+        {% if legalitas_pendirian.berkas %}
         <span class="help-block" style="color:blue;">file : <a href="{{ legalitas_pendirian.berkas.url }}" target="blank_">{{ legalitas_pendirian.berkas }}</a></span>
         {% endif %}
         <span id="load_akta_pendirian"></span>
@@ -121,7 +121,7 @@
       <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle akta_perubahan_disable" data-buttonText="Browse" data-iconName="fa fa-inbox">
-        {% if legalitas_perubahan %}
+        {% if legalitas_perubahan.berkas %}
         <span class="help-block" style="color:blue;">file : <a href="{{ legalitas_perubahan.berkas.url }}" target="blank_">{{ legalitas_perubahan.berkas }}</a></span>
         {% endif %}
         <span id="load_akta_perubahan"></span>
@@ -143,7 +143,7 @@
       <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-        {% if pengajuan_.berkas_tambahan %}
+        {% if pengajuan_.berkas_tambahan.berkas %}
         <span class="help-block" style="color:blue;">file : <a href="{{ pengajuan_.berkas_tambahan.berkas.url }}" target="blank_">{{ pengajuan_.berkas_tambahan }}</a></span>
         {% endif %}
         <!-- <div class="progress">

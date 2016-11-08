@@ -44,7 +44,7 @@
   <div class="form-group" id="paspor">
     <label for="input01" class="col-sm-2 control-label">Paspor </label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" id="id_passpor" name="paspor">
+      <input type="text" class="form-control" id="id_paspor" name="paspor">
     </div>
   </div>
 
@@ -55,10 +55,17 @@
     </div>
   </div>
 
+  <div class="form-group" id="jabatan_pemohon">
+    <label for="input01" class="col-sm-2 control-label"><strong>Jabatan</strong> </label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="id_jabatan_pemohon" name="jabatan_pemohon" required="" data-parsley-trigger="change">
+    </div>
+  </div>
+
   <div class="form-group" id="alamat">
     <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong> </label>
     <div class="col-sm-7">
-      <textarea class="form-control" oninput="load_alamat();" id="alamat_pemohon_load" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda" required="" data-parsley-trigger="change"></textarea>
+      <textarea class="form-control" id="alamat_pemohon_load" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda" required="" data-parsley-trigger="change"></textarea>
     </div>
   </div>
 
@@ -111,7 +118,7 @@
   <div class="form-group" id="telephone">
     <label for="input01" class="col-sm-2 control-label"><strong>Telepon</strong></label>
     <div class="col-sm-6">
-      <input type="text" oninput="load_no_telepon();" id="no_telepon_pemohon_load" class="form-control no_ktp" name="telephone" required="" data-parsley-trigger="change">
+      <input type="text" id="no_telepon_pemohon_load" class="form-control no_ktp" name="telephone" required="" data-parsley-trigger="change">
     </div>
   </div>
 
@@ -169,21 +176,21 @@
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Nama Kuasa</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control kuasa_disable" name="nama_kuasa">
+      <input type="text" class="form-control kuasa_disable" name="nama_kuasa" id="id_nama_kuasa">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Nomor Identitas Kuasa</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control kuasa_disable" name="no_identitas_kuasa">
+      <input type="text" class="form-control kuasa_disable" name="no_identitas_kuasa" id="id_no_identitas_kuasa">
     </div>
   </div>
 
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Telp Kuasa</strong></label>
     <div class="col-sm-6">
-      <input type="text" class="form-control kuasa_disable" name="telephone_kuasa">
+      <input type="text" class="form-control kuasa_disable" name="telephone_kuasa" id="id_telephone_kuasa">
     </div>
   </div>
   <input type="hidden" name="status" value="2">

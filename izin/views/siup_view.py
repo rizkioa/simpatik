@@ -6,7 +6,7 @@ from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, Lega
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
 from master.models import Berkas
 from perusahaan.models import Legalitas, KBLI, ProdukUtama
@@ -22,7 +22,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Perusahaan
 from decimal import Decimal
-
+from django.shortcuts import get_object_or_404
 import datetime
 
 def set_cookie(response, key, value, days_expire = 7):
@@ -34,7 +34,13 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
-	pemohon = PemohonForm(request.POST) 
+	print Pemohon.objects.get(username = request.POST.get('ktp'))
+	try:
+		p = Pemohon.objects.get(username = request.POST.get('ktp'))
+		pemohon = PemohonForm(request.POST, instance=p)
+	except ObjectDoesNotExist:
+		pemohon = PemohonForm(request.POST)
+
 	if pemohon.is_valid():
 		# Untuk Nomor Identitas
 		ktp_ = request.POST.get('ktp', None)
@@ -47,61 +53,95 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
-		try:
-			p = pemohon.save(commit=False)
-			p.username = ktp_
+		if ktp_:
 			try:
-				p.save()
-				if ktp_:
-					try:
-						i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
-					except ObjectDoesNotExist:
-						i, created = NomorIdentitasPengguna.objects.get_or_create(
-									nomor = ktp_,
-									jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
-									user_id=p.id,
-									)
-				if paspor_:
-					try:
-						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-					except ObjectDoesNotExist:
-						i, created = NomorIdentitasPengguna.objects.get_or_create(
-									nomor = paspor_,
-									jenis_identitas_id=2,
-									user_id=p.id,
-									)
-			except OperationalError:
-				print "error"
+				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+			except ObjectDoesNotExist:
+				i, created = NomorIdentitasPengguna.objects.get_or_create(
+							nomor = ktp_,
+							jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
+							user_id=p.id,
+							)
+		if paspor_:
+			try:
+				i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
+			except ObjectDoesNotExist:
+				i, created = NomorIdentitasPengguna.objects.get_or_create(
+							nomor = paspor_,
+							jenis_identitas_id=2,
+							user_id=p.id,
+							)
+		p = pemohon.save(commit=False)
+		p.username = ktp_
+		p.save()
+
+		# try:
+		# 	p = pemohon.save(commit=False)
+		# 	p.username = ktp_
+		# 	try:
+		# 		p.save()
+		# 		if ktp_:
+		# 			try:
+		# 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+		# 			except ObjectDoesNotExist:
+		# 				i, created = NomorIdentitasPengguna.objects.get_or_create(
+		# 							nomor = ktp_,
+		# 							jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
+		# 							user_id=p.id,
+		# 							)
+		# 		if paspor_:
+		# 			try:
+		# 				i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
+		# 			except ObjectDoesNotExist:
+		# 				i, created = NomorIdentitasPengguna.objects.get_or_create(
+		# 							nomor = paspor_,
+		# 							jenis_identitas_id=2,
+		# 							user_id=p.id,
+		# 							)
+		# 	except OperationalError:
+		# 		print "error"
 				
+		# except IntegrityError as e:
+		# 	try:
+		# 		print "intergrity"
+		# 		if ktp_:
+		# 			p = get_object_or_404(Pemohon, username = ktp_)
+		# 		elif paspor_:
+		# 			p = get_object_or_404(Pemohon, username = paspor_)
+		# 		elif ktp_ and paspor_:
+		# 			p = get_object_or_404(Pemohon, username = ktp_)
+		# 		# pemohon = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
+		# 		pemohon = PemohonForm(request.POST, instance=p)
+		# 		print "atas is valid"
+		# 		if pemohon.is_valid():
+		# 			print "masuk is valid"
+		# 			# pemohon.nama_lengkap = request.POST.get('nama_lengkap', None)
+		# 			# pemohon.alamat = request.POST.get('alamat', None)
+		# 			# pemohon.desa_id = request.POST.get('desa', None)
+		# 			# pemohon.telephone = request.POST.get('telephone', None)
+		# 			# pemohon.hp = request.POST.get('hp', None)
+		# 			# pemohon.cleaned_data['email']
+		# 			# email = request.POST.get('email', None)
+		# 			# email = email.lower().strip()
+		# 			# if email != "":
+		# 			# 	pemohon.email = email
+		# 			# elif email == None:
+		# 			# 	pemohon.email = None
+		# 			# pemohon.kewarganegaraan = request.POST.get('kewarganegaraan', None)
+		# 			# pemohon.pekerjaan = request.POST.get('pekerjaan', None)
+		# 			pemohon.save()
+		# 			if paspor_:
+		# 					try:
+		# 						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
+		# 					except ObjectDoesNotExist:
+		# 						i, created = NomorIdentitasPengguna.objects.get_or_create(
+		# 									nomor = paspor_,
+		# 									jenis_identitas_id=2,
+		# 									user_id=p.id,
+		# 									)
 
-		except IntegrityError as e:
-			print "intergrity"
-			if ktp_:
-				p = Pemohon.objects.get(username = ktp_)
-			elif paspor_:
-				p = Pemohon.objects.get(username = paspor_)
-			elif ktp_ and paspor_:
-				p = Pemohon.objects.get(username = ktp_)
-			pemohon = PemohonForm(request.POST, instance=p)
-			pemohon.nama_lengkap = request.POST.get('nama_lengkap', None)
-			pemohon.alamat = request.POST.get('alamat', None)
-			pemohon.desa_id = request.POST.get('desa', None)
-			pemohon.telephone = request.POST.get('telephone', None)
-			pemohon.hp = request.POST.get('hp', None)
-			pemohon.email = request.POST.get('email', None)
-			pemohon.kewarganegaraan = request.POST.get('kewarganegaraan', None)
-			pemohon.pekerjaan = request.POST.get('pekerjaan', None)
-			pemohon.save()
-			if paspor_:
-					try:
-						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-					except ObjectDoesNotExist:
-						i, created = NomorIdentitasPengguna.objects.get_or_create(
-									nomor = paspor_,
-									jenis_identitas_id=2,
-									user_id=p.id,
-									)
-
+		# 	except ObjectDoesNotExist:
+		# 		pass
 		# if k.kode == "503.08/":
 		# 	try:
 		# 		pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -138,18 +178,14 @@ def siup_identitas_pemohon_save_cookie(request):
 		if objects_:
 			try:
 				pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+				pengajuan.status = 11
 				pengajuan.nama_kuasa = nama_kuasa
 				pengajuan.no_identitas_kuasa = no_identitas_kuasa
 				pengajuan.telephone_kuasa = telephone_kuasa
 				pengajuan.jenis_permohonan_id = jenis_permohonan_
 			except ObjectDoesNotExist:
-				pengajuan = objects_(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+				pengajuan = objects_(status=11,no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
 			pengajuan.save()
-
-		# if request.user.is_authenticated():
-		# 	created = request.user
-		# else:
-		# 	created = p.id
 
 		riwayat_ = Riwayat(
 						pengajuan_izin_id = pengajuan.id,
@@ -197,6 +233,8 @@ def siup_identitas_pemohon_save_cookie(request):
 		response.set_cookie(key='nomor_paspor', value=paspor_)
 			
 	else:
+		print "error"
+		print pemohon.errors
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		response = HttpResponse(data)
 	return response
@@ -321,14 +359,24 @@ def siup_detilsiup_save_cookie(request):
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
+			print "sesuatu"
+			kekayaan = unicode(request.POST.get('kekayaan_bersih').replace(".", ""))
+			total_saham = unicode(request.POST.get('total_nilai_saham').replace(".", ""))
+			print type(total_saham)
+			print type(kekayaan)
+			# print type(request.POST.get('total_nilai_saham'))
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
 				try:
+					pengajuan_.kekayaan_bersih = kekayaan
+					pengajuan_.total_nilai_saham = total_saham
+					# detilSIUP.save()
 					kbli_list = request.POST.getlist('kbli')
 					produk_utama_list = request.POST.getlist('produk_utama')
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
 					# pengajuan_.presentase_saham_asing = request.POST.get('presentase_saham_asing', Decimal('0.00'))
+					detilSIUP.save()
 					pengajuan_.save()
 					# print "kbli"+kbli_list
 					# print str(produk_utama_list)
@@ -380,7 +428,15 @@ def siup_legalitas_perusahaan_save_cookie(request):
 				if request.COOKIES['id_pengajuan'] != '':
 					pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 					if request.POST.get('onoffswitch_pendirian') == 'on':
-						form = LegalitasPerusahaanForm(request.POST)
+						if request.COOKIES['id_legalitas'] == "":
+							form = LegalitasPerusahaanForm(request.POST)
+						else:
+							try:
+								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+								form = LegalitasPerusahaanForm(request.POST, instance=l)
+							except ObjectDoesNotExist:
+								form = LegalitasPerusahaanForm(request.POST)
+
 						if form.is_valid():
 							f = form.save(commit=False)
 							f.perusahaan_id = request.COOKIES['id_perusahaan']
@@ -390,36 +446,58 @@ def siup_legalitas_perusahaan_save_cookie(request):
 								f.created_by_id = request.COOKIES['id_pemohon']
 							f.save()
 							pengajuan_.legalitas.add(f)
-							data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
-								{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
-								{'nama_notaris': f.nama_notaris},
-								{'alamat_notaris': f.alamat},
-								{'telephone_notaris': f.telephone},
-								{'nomor_pengesahaan': f.nomor_pengesahan},
-								{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
-								]}
-							data = json.dumps(data)
-							response = HttpResponse(data)
-							response.set_cookie(key='id_legalitas', value=f.id)
+							if request.POST.get('onoffswitch') != 'on':
+								data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpanaaaa. Proses Selanjutnya.', 'data': [
+									{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
+									{'nama_notaris': f.nama_notaris},
+									{'alamat_notaris': f.alamat},
+									{'telephone_notaris': f.telephone},
+									{'nomor_pengesahaan': f.nomor_pengesahan},
+									{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
+									]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+								response.set_cookie(key='id_legalitas', value=f.id)
 
 							if request.POST.get('onoffswitch') == 'on':
-								formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+								# formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+								if request.COOKIES['id_legalitas_perubahan'] == "":
+									formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+								else:
+									try:
+										lp = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
+										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST, instance=lp)
+									except ObjectDoesNotExist:
+										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
 								
 								if formperubahan.is_valid():
 									if request.user.is_authenticated():
 										created = request.user.id
 									else:
 										created = request.COOKIES['id_pemohon']
-									legalitas = Legalitas(
-										created_by_id = created,	
-										jenis_legalitas_id = 2,
-										perusahaan_id = request.COOKIES['id_perusahaan'],
-										nama_notaris=request.POST.get('nama_notaris_perubahan'), 
-										alamat=request.POST.get('alamat_notaris_perubahan'), 
-										telephone=request.POST.get('telephone_notaris_perubahan'), 
-										nomor_pengesahan=request.POST.get('nomor_pengesahan_perubahan'), 
-										tanggal_pengesahan=formperubahan.cleaned_data['tanggal_pengesahan_perubahan'])
+									legalitas = formperubahan.save(commit=False)
+									legalitas.perusahaan_id = request.COOKIES['id_perusahaan']
+									legalitas.jenis_legalitas_id = 2
+									legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
+									legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
+									legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
+									legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
+									legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+									if request.user.is_authenticated():
+										legalitas.created_by_id = request.user.id
+									else:
+										legalitas.created_by_id = request.COOKIES['id_pemohon']
 									legalitas.save()
+									# legalitas = Legalitas(
+									# 	created_by_id = created,	
+									# 	jenis_legalitas_id = 2,
+									# 	perusahaan_id = request.COOKIES['id_perusahaan'],
+									# 	nama_notaris=request.POST.get('nama_notaris_perubahan'), 
+									# 	alamat=request.POST.get('alamat_notaris_perubahan'), 
+									# 	telephone=request.POST.get('telephone_notaris_perubahan'), 
+									# 	nomor_pengesahan=request.POST.get('nomor_pengesahan_perubahan'), 
+									# 	tanggal_pengesahan=formperubahan.cleaned_data['tanggal_pengesahan_perubahan'])
+									# legalitas.save()
 									pengajuan_.legalitas.add(legalitas)
 									data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
 										# # legalitas perubahaan
@@ -433,6 +511,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 									data = json.dumps(data)
 									response = HttpResponse(data)
 									response.set_cookie(key='id_legalitas_perubahan', value=legalitas.id)
+									response.set_cookie(key='id_legalitas', value=f.id)
 								else:
 									data = formperubahan.errors.as_json()
 									response = HttpResponse(data)
@@ -866,21 +945,25 @@ def siup_upload_berkas_pendukung(request):
 	return response
 
 def siup_done(request):
-	data = {'success': True, 'pesan': 'Proses Selesai.' }
-	response = HttpResponse(json.dumps(data))
-	# For delete cookie
-	response.delete_cookie(key='nama_lengkap') # set cookie	
-	response.delete_cookie(key='id_pemohon') # set cookie	
-	response.delete_cookie(key='jenis_permohonan') # set cookie
-	response.delete_cookie(key='ktp') # set cookie	
-	response.delete_cookie(key='alamat') # set cookie
-	response.delete_cookie(key='jenis_pemohon') # set cookie
-	response.delete_cookie(key='hp') # set cookie	
-	response.delete_cookie(key='telephone') # set cookie
-	response.delete_cookie(key='kewarganegaraan') # set cookie
-	response.delete_cookie(key='ttl') # set cookie
-	response.delete_cookie(key='email') # set cookie	
-	response.delete_cookie(key='id_kelompok_izin') # set cookie
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+			
+			response.delete_cookie(key='id_pemohon') # set cookie	
+			response.delete_cookie(key='id_kelompok_izin') # set cookie
+
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
 	return response
 
 def siup_front_done(request):
@@ -891,66 +974,77 @@ def siup_front_done(request):
 def load_pemohon(request, ktp_):
 	extra_context={}
 	pemohon = None
-	nomor_list = NomorIdentitasPengguna.objects.filter(nomor=ktp_).values("user_id")
-	pemohon_list = Pemohon.objects.filter(id=nomor_list)
-	if pemohon_list.exists():
-		try:
-			pemohon = pemohon_list.latest("created_at")
-		except Pemohon.DoesNotExist:
-			pemohon = None
-	if pemohon:
-		nama_lengkap = ""
-		alamat = ""
-		telephone = ""
-		hp = ""
-		email = ""
-		kewarganegaraan = ""
-		pekerjaan = ""
-		if pemohon.nama_lengkap:
-			nama_lengkap = pemohon.nama_lengkap
-		if pemohon.alamat:
-			alamat = pemohon.alamat
-		if pemohon.telephone:
-			telephone = pemohon.telephone
-		if pemohon.hp:
-			hp = pemohon.hp
-		if pemohon.email:
-			email = pemohon.email
-		if pemohon.kewarganegaraan:
-			kewarganegaraan = pemohon.kewarganegaraan
-		if pemohon.pekerjaan:
-			pekerjaan = pemohon.pekerjaan
-		if pemohon.desa:
-			desa = pemohon.desa.id
-		if pemohon.desa.kecamatan:
-			kecamatan = pemohon.desa.kecamatan.id
-		if pemohon.desa.kecamatan.kabupaten:
-			kabupaten = pemohon.desa.kecamatan.kabupaten.id
-		if pemohon.desa.kecamatan.kabupaten.provinsi:
-			provinsi = pemohon.desa.kecamatan.kabupaten.provinsi.id
-		if pemohon.desa.kecamatan.kabupaten.provinsi.negara:
-			negara = pemohon.desa.kecamatan.kabupaten.provinsi.negara.id
-		foto = pemohon.berkas_foto.all().last()
-		foto_url = ""
-		foto_nama = ""
-		if foto:
-			foto_url = str(foto.berkas.url)
-			foto_nama = str(foto.nama_berkas)
-		npwp_pribadi_nama = ""
-		npwp_pribadi_url = ""
-		if pemohon.berkas_npwp:
-			npwp_pribadi_url = str(pemohon.berkas_npwp.berkas.url)
-			npwp_pribadi_nama = str(pemohon.berkas_npwp.nama_berkas)
-		try:
-			ktp_nama = ""
-			ktp_url = ""
-			ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id)
-			if ktp_.berkas:
-				ktp_url = str(ktp_.berkas.berkas.url)
-				ktp_nama = str(ktp_.berkas.nama_berkas)
-		except ObjectDoesNotExist:
-			pass
-		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'foto_url': foto_url, 'foto_nama': foto_nama, 'ktp_nama': ktp_nama, 'ktp_url': ktp_url, 'npwp_pribadi_url': npwp_pribadi_url, 'npwp_pribadi_nama': npwp_pribadi_nama }}
+	nomor_list = NomorIdentitasPengguna.objects.filter(nomor=ktp_).last()
+	if nomor_list:
+		pemohon_list = Pemohon.objects.filter(id=nomor_list.user.id)
+		if pemohon_list.exists():
+			try:
+				pemohon = pemohon_list.latest("created_at")
+			except Pemohon.DoesNotExist:
+				pemohon = None
+		if pemohon:
+			paspor = ""
+			jabatan_pemohon = ""
+			nama_lengkap = ""
+			alamat = ""
+			telephone = ""
+			hp = ""
+			email = ""
+			kewarganegaraan = ""
+			pekerjaan = ""
+			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id, jenis_identitas_id=2).last()
+			if paspor_:
+				paspor = paspor_.nomor
+			if pemohon.jabatan_pemohon:
+				jabatan_pemohon = pemohon.jabatan_pemohon
+			if pemohon.nama_lengkap:
+				nama_lengkap = pemohon.nama_lengkap
+			if pemohon.alamat:
+				alamat = pemohon.alamat
+			if pemohon.telephone:
+				telephone = pemohon.telephone
+			if pemohon.hp:
+				hp = pemohon.hp
+			if pemohon.email:
+				email = pemohon.email
+			if pemohon.kewarganegaraan:
+				kewarganegaraan = pemohon.kewarganegaraan
+			if pemohon.pekerjaan:
+				pekerjaan = pemohon.pekerjaan
+			if pemohon.desa:
+				desa = pemohon.desa.id
+			if pemohon.desa.kecamatan:
+				kecamatan = pemohon.desa.kecamatan.id
+			if pemohon.desa.kecamatan.kabupaten:
+				kabupaten = pemohon.desa.kecamatan.kabupaten.id
+			if pemohon.desa.kecamatan.kabupaten.provinsi:
+				provinsi = pemohon.desa.kecamatan.kabupaten.provinsi.id
+			if pemohon.desa.kecamatan.kabupaten.provinsi.negara:
+				negara = pemohon.desa.kecamatan.kabupaten.provinsi.negara.id
+			foto = pemohon.berkas_foto.all().last()
+			foto_url = ""
+			foto_nama = ""
+			if foto:
+				foto_url = str(foto.berkas.url)
+				foto_nama = str(foto.nama_berkas)
+			npwp_pribadi_nama = ""
+			npwp_pribadi_url = ""
+			if pemohon.berkas_npwp:
+				npwp_pribadi_url = str(pemohon.berkas_npwp.berkas.url)
+				npwp_pribadi_nama = str(pemohon.berkas_npwp.nama_berkas)
+			try:
+				ktp_nama = ""
+				ktp_url = ""
+				try:
+					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id)
+				except MultipleObjectsReturned:
+					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id).last()
+				if ktp_.berkas:
+					ktp_url = str(ktp_.berkas.berkas.url)
+					ktp_nama = str(ktp_.berkas.nama_berkas)
+			except ObjectDoesNotExist:
+				pass
+			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'foto_url': foto_url, 'foto_nama': foto_nama, 'ktp_nama': ktp_nama, 'ktp_url': ktp_url, 'npwp_pribadi_url': npwp_pribadi_url, 'npwp_pribadi_nama': npwp_pribadi_nama }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
