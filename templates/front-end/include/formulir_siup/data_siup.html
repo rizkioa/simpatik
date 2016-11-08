@@ -27,14 +27,14 @@
       </div>
     </div>
 
-    <h4><u><strong>Kekeayaan Bersih Dan Saham</strong></u></h4>
+    <h4><u><strong>Kekayaan Bersih Dan Saham</strong></u></h4>
 
     <div class="form-group" id="kekayaan_bersih">
 	    <label class="col-sm-2 control-label text-left"><strong>Kekayaan bersih perusahaan</strong></label>
 	    <div class="col-sm-5">
         <div class="input-group">
           <span class="input-group-addon">Rp</span>
-          <input id="id_kekayaan_bersih" type="text" class="form-control no_ktp" name="kekayaan_bersih" required="" data-parsley-trigger="change" onchange="formatAngka($(this).val())">
+          <input id="id_kekayaan_bersih" type="text" class="form-control no_ktp" name="kekayaan_bersih" required="" data-parsley-trigger="change">
         </div>
 	      <span class="help-block mb-0">(tidak termasuk tanah dan bangunan tempat usaha)</span>
 	    </div>
@@ -46,7 +46,7 @@
   	    <div class="col-sm-5">
           <div class="input-group">
             <span class="input-group-addon">Rp</span>
-            <input type="text" class="form-control no_ktp" name="total_nilai_saham" oninput="FormatCurrency(this)" id="id_total_nilai_saham">
+            <input type="text" class="form-control no_ktp" name="total_nilai_saham" id="id_total_nilai_saham">
           </div>
   	    </div>
   	</div>
@@ -117,7 +117,7 @@
       </div>
     </div> -->
 
-    <div class="form-group" id="produk_utama">
+    <!-- <div class="form-group" id="produk_utama">
         <label  class="col-sm-2 control-label text-left"><strong>Barang / jasa dagangan utama</strong></label>
         <div class="col-sm-10">
             <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="produk_utama" required="" data-parsley-trigger="change" id="id_produk_utama">
@@ -126,6 +126,6 @@
               {% endfor %}
             </select>
         </div>
-    </div>
+    </div> -->
     <!-- <input type="text" value="ashdasidi" oninput="alert_kekayaan();" name=""> -->
 </form>

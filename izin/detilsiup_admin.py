@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
 from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
-from perusahaan.models import Perusahaan
+from perusahaan.models import Perusahaan, KBLI, ProdukUtama
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 import json
@@ -130,20 +130,23 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+				ktp_ = pengajuan_.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=1).last()
+				paspor_ = pengajuan_.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=2).last()
+				extra_context.update({'ktp': ktp_ })
+				extra_context.update({'paspor': paspor_ })
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
 				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id, jenis_identitas__id=1)
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({'perusahaan': pengajuan_.perusahaan})
-
-				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
-				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+				legalitas_pendirian = pengajuan_.legalitas.filter(~Q(jenis_legalitas_id=2)).last()
+				legalitas_perubahan = pengajuan_.legalitas.filter(jenis_legalitas_id=2).last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
@@ -179,10 +182,19 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def response_change(self, request, obj):
-		if '_popup' in request.REQUEST:
-			request.path += '?_popup=1'
-		return super(DetilSIUPAdmin, self).response_change(request, obj)
+	def ajax_konfirmasi_kbli(self, request, id_pengajuan_izin_):
+		if id_pengajuan_izin_:
+			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+			kbli_list = pengajuan_.kbli.all()
+			kbli_ = [ obj.as_dict() for obj in kbli_list ]
+		data = {'success': True, 'pesan': 'Proses Selesai.', 'kbli': kbli_ }
+		response = HttpResponse(json.dumps(data))
+		return response
+
+	def ajax_konfirmasi_produk(self, request, id_pengajuan_izin_):
+		data = {'success': True, 'pesan': 'Proses Selesai.' }
+		response = HttpResponse(json.dumps(data))
+		return response
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -191,6 +203,8 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			url(r'^ajax-dashboard/$', self.admin_site.admin_view(self.ajax_dashboard), name='ajax_dashboard'),
 			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
 			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
+			url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.ajax_konfirmasi_kbli), name='ajax_konfirmasi_kbli'),
+			url(r'^ajax-konfirmasi-produk/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.ajax_konfirmasi_produk), name='ajax_konfirmasi_produk'),
 			)
 		return my_urls + urls
 

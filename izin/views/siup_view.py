@@ -53,11 +53,9 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
-		
 		p = pemohon.save(commit=False)
 		p.username = ktp_
 		p.save()
-
 		if ktp_:
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
@@ -77,96 +75,6 @@ def siup_identitas_pemohon_save_cookie(request):
 							user_id=p.id,
 							)
 
-		# try:
-		# 	p = pemohon.save(commit=False)
-		# 	p.username = ktp_
-		# 	try:
-		# 		p.save()
-		# 		if ktp_:
-		# 			try:
-		# 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
-		# 			except ObjectDoesNotExist:
-		# 				i, created = NomorIdentitasPengguna.objects.get_or_create(
-		# 							nomor = ktp_,
-		# 							jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
-		# 							user_id=p.id,
-		# 							)
-		# 		if paspor_:
-		# 			try:
-		# 				i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-		# 			except ObjectDoesNotExist:
-		# 				i, created = NomorIdentitasPengguna.objects.get_or_create(
-		# 							nomor = paspor_,
-		# 							jenis_identitas_id=2,
-		# 							user_id=p.id,
-		# 							)
-		# 	except OperationalError:
-		# 		print "error"
-				
-		# except IntegrityError as e:
-		# 	try:
-		# 		print "intergrity"
-		# 		if ktp_:
-		# 			p = get_object_or_404(Pemohon, username = ktp_)
-		# 		elif paspor_:
-		# 			p = get_object_or_404(Pemohon, username = paspor_)
-		# 		elif ktp_ and paspor_:
-		# 			p = get_object_or_404(Pemohon, username = ktp_)
-		# 		# pemohon = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
-		# 		pemohon = PemohonForm(request.POST, instance=p)
-		# 		print "atas is valid"
-		# 		if pemohon.is_valid():
-		# 			print "masuk is valid"
-		# 			# pemohon.nama_lengkap = request.POST.get('nama_lengkap', None)
-		# 			# pemohon.alamat = request.POST.get('alamat', None)
-		# 			# pemohon.desa_id = request.POST.get('desa', None)
-		# 			# pemohon.telephone = request.POST.get('telephone', None)
-		# 			# pemohon.hp = request.POST.get('hp', None)
-		# 			# pemohon.cleaned_data['email']
-		# 			# email = request.POST.get('email', None)
-		# 			# email = email.lower().strip()
-		# 			# if email != "":
-		# 			# 	pemohon.email = email
-		# 			# elif email == None:
-		# 			# 	pemohon.email = None
-		# 			# pemohon.kewarganegaraan = request.POST.get('kewarganegaraan', None)
-		# 			# pemohon.pekerjaan = request.POST.get('pekerjaan', None)
-		# 			pemohon.save()
-		# 			if paspor_:
-		# 					try:
-		# 						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-		# 					except ObjectDoesNotExist:
-		# 						i, created = NomorIdentitasPengguna.objects.get_or_create(
-		# 									nomor = paspor_,
-		# 									jenis_identitas_id=2,
-		# 									user_id=p.id,
-		# 									)
-
-		# 	except ObjectDoesNotExist:
-		# 		pass
-		# if k.kode == "503.08/":
-		# 	try:
-		# 		pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-		# 		pengajuan.nama_kuasa = nama_kuasa
-		# 		pengajuan.no_identitas_kuasa = no_identitas_kuasa
-		# 		pengajuan.telephone_kuasa = telephone_kuasa
-		# 		pengajuan.jenis_permohonan_id = jenis_permohonan_
-		# 	except ObjectDoesNotExist:
-		# 		pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
-		# 	pengajuan.save()
-		# elif k.kode == "IUJK":
-		# 	try:
-		# 		pengajuan = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
-		# 		pengajuan.nama_kuasa = nama_kuasa
-		# 		pengajuan.no_identitas_kuasa = no_identitas_kuasa
-		# 		pengajuan.telephone_kuasa = telephone_kuasa
-		# 		pengajuan.jenis_permohonan_id = jenis_permohonan_
-		# 	except ObjectDoesNotExist:
-		# 		pengajuan = DetilIUJK(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user,nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
-		# 	pengajuan.save()
-		# # elif k.kode == ""
-		# else:
-		# 	pass
 
 		from izin import models as app_models
 
@@ -362,10 +270,10 @@ def siup_detilsiup_save_cookie(request):
 			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
 			print "sesuatu"
-			kekayaan = unicode(request.POST.get('kekayaan_bersih').replace(".", ""))
-			total_saham = unicode(request.POST.get('total_nilai_saham').replace(".", ""))
-			print type(total_saham)
-			print type(kekayaan)
+			kekayaan = unicode(request.POST.get('kekayaan_bersih', Decimal('0.00')).replace(".", ""))
+			total_saham = unicode(request.POST.get('total_nilai_saham', Decimal('0.00')).replace(".", ""))
+			# print type(total_saham)
+			# print type(kekayaan)
 			# print type(request.POST.get('total_nilai_saham'))
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
@@ -374,7 +282,7 @@ def siup_detilsiup_save_cookie(request):
 					pengajuan_.total_nilai_saham = total_saham
 					# detilSIUP.save()
 					kbli_list = request.POST.getlist('kbli')
-					produk_utama_list = request.POST.getlist('produk_utama')
+					# produk_utama_list = request.POST.getlist('produk_utama')
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
 					# pengajuan_.presentase_saham_asing = request.POST.get('presentase_saham_asing', Decimal('0.00'))
@@ -385,8 +293,8 @@ def siup_detilsiup_save_cookie(request):
 					#++++++++++++++++multi select manytomany ++++++++
 					for kbli in kbli_list:
 						pengajuan_.kbli.add(KBLI.objects.get(id=kbli))
-					for produk_utama in produk_utama_list:
-						pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
+					# for produk_utama in produk_utama_list:
+					# 	pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
 					#++++++++++++++++ end multi select manytomany ++++++++
 					# pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha print
 					# detilSIUP.bentuk_kegiatan_usaha.kegiatan_usaha
@@ -1034,18 +942,12 @@ def load_pemohon(request, ktp_):
 			if pemohon.berkas_npwp:
 				npwp_pribadi_url = str(pemohon.berkas_npwp.berkas.url)
 				npwp_pribadi_nama = str(pemohon.berkas_npwp.nama_berkas)
-			try:
-				ktp_nama = ""
-				ktp_url = ""
-				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id)
-				except MultipleObjectsReturned:
-					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id).last()
-				if ktp_.berkas:
-					ktp_url = str(ktp_.berkas.berkas.url)
-					ktp_nama = str(ktp_.berkas.nama_berkas)
-			except ObjectDoesNotExist:
-				pass
+			ktp_nama = ""
+			ktp_url = ""
+			ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id, jenis_identitas_id=1)
+			if ktp_.berkas:
+				ktp_url = str(ktp_.berkas.berkas.url)
+				ktp_nama = str(ktp_.berkas.nama_berkas)
 			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'foto_url': foto_url, 'foto_nama': foto_nama, 'ktp_nama': ktp_nama, 'ktp_url': ktp_url, 'npwp_pribadi_url': npwp_pribadi_url, 'npwp_pribadi_nama': npwp_pribadi_nama }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
@@ -1114,7 +1016,6 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_nama = str(legalitas_perubahan.berkas.nama_berkas)
 		
 		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'npwp_perusahaan_url': npwp_perusahaan_url, 'npwp_perusahaan_nama': npwp_perusahaan_nama, 'legalitas_pendirian_url': legalitas_pendirian_url, 'legalitas_pendirian_nama': legalitas_pendirian_nama, 'legalitas_perubahan_url': legalitas_perubahan_url, 'legalitas_perubahan_nama': legalitas_perubahan_nama }}
-		print data
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))

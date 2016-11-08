@@ -248,7 +248,7 @@
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">{% if pemohon.email %}}{{ pemohon.email }}{% else %}-{% endif %}</td>
+                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
@@ -296,7 +296,7 @@
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.email }}</td>
+                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
                     </tr>
                 </table>
                 <h5><u>DATA SIUP</u></h5>
@@ -317,20 +317,20 @@
                     <tr>
                         <td width="40%">Kekayaan Bersih Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="50%">Rp. {{ pengajuan.kekayaan_bersih }}</td>
+                        <td width="50%">{{ kekayaan_bersih_konfirmasi }}</td>
                     </tr>
                     <tr>
                         <td colspan="3">(tidak termasuk tanah dan bangunan tempat usaha)</td>
                     </tr>
                     <tr>
                         <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
-                        <td width="10%"></td>
-                        <td width="60%">:</td>
+                        <td width="10%">:</td>
+                        <td width="60%"></td>
                     </tr>
                     <tr>
                         <td width="40%" style="padding-left: 30px;">a. Total Nilai Saham</td>
                         <td width="10%">:</td>
-                        <td width="50%">Rp. {{ pengajuan.total_nilai_saham }}</td>
+                        <td width="50%">{{ total_nilai_saham_konfirmasi }}</td>
                     </tr>
                     <tr>
                         <td width="30%" style="padding-left: 30px;">b. Komposisi Kepemilikan Saham</td>
@@ -371,16 +371,16 @@
                         <td width="65%">{{ kelembagaan }}</td>
                     </tr>
                     <tr>
-                        <td width="30%">KBLI</td>
+                        <td width="30%">KBLI / Barang Jasa</td>
                         <td width="5%">:</td>
-                        <td width="65%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
+                        <td width="65%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli}}-{{kbli.nama_kbli}}) {% endfor %}</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td width="30%">Barang/jasa dagang utama</td>
                         <td width="5%">:</td>
                         <td width="65%">{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
                     {% endfor %}</td>
-                    </tr>
+                    </tr> -->
                 </table>
                 {% if pengajuan.legalitas.all %}
             	<h5><u>LEGALITAS PERUSAHAAN</u></h5>
@@ -403,7 +403,7 @@
                             <td><span>{{ l.alamat }}</span></td>
                             <td><span>{{ l.telephone }}</span></td>
                             <td><span>{{ l.nomor_pengesahan }}</span></td>
-                            <td><span>{{ l.tanggal_pengesahan }}</span></td>
+                            <td><span>{{ l.tanggal_pengesahan|date:'d-m-Y' }}</span></td>
                         </tr>
                     {% endfor %}
                     </tbody>

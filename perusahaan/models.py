@@ -21,6 +21,13 @@ class KBLI(models.Model):
 	def as_json(self):
 		return dict(id=self.id, nama_kbli=self.nama_kbli, kode_kbli=self.kode_kbli)
 
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"kode_kbli": self.kode_kbli,
+			"nama_kbli": self.nama_kbli,
+		}
+
 	class Meta:
 		ordering = ['id']
 		verbose_name = 'KBLI'
@@ -56,6 +63,12 @@ class ProdukUtama(models.Model):
 
 	def __unicode__(self):
 		return "%s" % (self.barang_jasa_utama)
+
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"barang_jasa_utama": self.barang_jasa_utama,
+		}
 
 	class Meta:
 		ordering = ['id']

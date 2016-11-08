@@ -16,7 +16,8 @@ function verifikasi_operator(id_detil_siup, aksi){
                   	toastr["error"](respon.pesan)
                 }
 	        },
-	        error: function(data) {                
+	        error: function(data) {
+	        	alert('{{ pengajuan.id }}')                
 	          	toast_server_error()
 	        }
 	    });

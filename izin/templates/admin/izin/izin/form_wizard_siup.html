@@ -46,6 +46,32 @@
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
+						// alert("a")
+						$.ajax({
+							url: '{% url 'admin:ajax_konfirmasi_kbli' pengajuan_.id %}',
+							success: function (response){
+								respon = $.parseJSON(response)
+								a = respon.kbli.length
+								console.log(a)
+								console.log(respon.kbli[0].kode_kbli)
+								if (respon.kbli){
+									str = ""
+									for (var i = 0; i < a; i++){
+										respon.kbli[i].kode_kbli
+										str = str+"("+respon.kbli[i].kode_kbli+" - "+respon.kbli[i].nama_kbli+") "
+										// $('#kbli_konfirmasi').append("("+respon.kbli[i].kode_kbli+")")
+									}
+									$('#kbli_konfirmasi').html(str)
+								}
+							}
+						})
+						// $.ajax({
+						// 	url: '{% url 'admin:ajax_konfirmasi_produk' pengajuan_.id %}',
+						// 	success: function (response){
+						// 		respon = $.parseJSON(response)
+						// 		alert('produk')
+						// 	}
+						// })
 					} else {
 						$('#rootwizard').find('.pager .next').show();
 						$('#rootwizard').find('.pager .finish').hide();
@@ -334,23 +360,35 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
-	        
-		      	window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+		        $.ajax({
+	        	// window.location.href = "{% url 'siup_done' %}";
+	        	url: '{% url 'siup_done' %}',
+	        	success: function(response) {
+	        		respon = $.parseJSON(response)
+	        		if(respon.success){
+	        			toastr["success"](respon.pesan)
+	        		}
+	        	}
+	        	});
+		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
 		      	$.removeCookie('id_pengajuan', { path: '/' });
 		      	$.removeCookie('id_perusahaan', { path: '/' });
 		      	$.removeCookie('id_pemohon', { path: '/' });
 		      	$.removeCookie('nomor_ktp', { path: '/' });
 		      	$.removeCookie('nomor_paspor', { path: '/' });
+		      	$.removeCookie('id_kelompok_izin', { path: '/' });
+		      	$.removeCookie('id_legalitas', { path: '/' });
+		      	$.removeCookie('id_legalitas_perubahan', { path: '/' });
 	      	}
     	};
 
-  //   	$.ajaxSetup({
-		// 	timeout: 1, // Microseconds, for the laughs. Guaranteed timeout.
-		// 	error: function(request, status, maybe_an_exception_object) {
-		// 	if(status == 'timeout')
-		// 	alert("Internet connection is down!");
-		// 	}
-		// });
+    	$.ajaxSetup({
+			timeout: 10000, // Microseconds, for the laughs. Guaranteed timeout.
+			error: function(request, status, maybe_an_exception_object) {
+			if(status == 'timeout')
+			alert("Jaringan Internet anda terputus!");
+			}
+		});
 		      	
 
 	</script>
@@ -393,7 +431,6 @@
 
 	    $( "#id_negara1" ).change(function(){
 			$this = $(this)
-
 			id_negara1 = $(this).val()
 			if(id_negara1.length > 0){
 			  	load_provinsi1(id_negara1)
@@ -491,6 +528,7 @@
 		        }
 		    });
 	    }
+
 	    function load_alamat(){
 	    	load_provinsi1($('#id_negara').val())
           	load_kabupaten1($('#id_provinsi').val())
@@ -512,28 +550,24 @@
 			$('#no_telepon_perusahaan_load').val(no);
 	    }
 
-	    function alert_kekayaan(){
-	    	ke = $('#id_kekayaan_bersih').val()
-	    	res = ke.replace(/\./g, "")
-	    	alert(res)
-	    }
+	    // function alert_kekayaan(){
+	    // 	ke = $('#id_kekayaan_bersih').val()
+	    // 	res = ke.replace(/\./g, "")
+	    // 	alert(res)
+	    // }
 	    $("#id_kekayaan_bersih").on("change", function(e) {
 	    	kekayaan = $('#id_kekayaan_bersih').val()
 	    	res = parseInt(kekayaan.replace(/\./g, ""))
 	    	if (res <= 50000000){
-	    		// alert("mikro")
 	    		$('#id_bentuk_kegiatan_usaha').val(1).prop('selected',true).trigger("chosen:updated");
 	    	}
 	    	else if(res > 50000000 && res <= 500000000){
-	    		// alert("kecil")
 	    		$('#id_bentuk_kegiatan_usaha').val(3).prop('selected',true).trigger("chosen:updated");
 	    	}
 	    	else if(res > 500000000 && res <= 10000000000){
-	    		// alert("menengah")
 	    		$('#id_bentuk_kegiatan_usaha').val(4).prop('selected',true).trigger("chosen:updated");
 	    	}
 	    	else if(res > 10000000000){
-	    		// alert("besar")
 	    		$('#id_bentuk_kegiatan_usaha').val(5).prop('selected',true).trigger("chosen:updated");
 	    	}
 	    })
@@ -542,7 +576,6 @@
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
   	<script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
-  	<script src="http://www.decorplanit.com/plugin/autoNumeric-1.9.27.js" type=text/javascript> </script>
 	<script type="text/javascript">
 	    $(document).ready(function() {
 	    	// $("body").mLoading();
@@ -630,7 +663,6 @@
 	    });
 
 	    function load_pemohon(ktp_){
-	      // $( "#rootwizard" ).mask('loading')
 	      $(".tab-content").mLoading();
 	      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 	      $.ajax({
@@ -662,12 +694,15 @@
 		              	$('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
 		              	if (respon.data.foto_url !== ''){
 		              		$('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.foto_url+"'>"+respon.data.foto_nama+"</a></span>")
+		              		$('#checkbox_berkas_foto').prop('checked', 1)
 		          		}
 		              	if (respon.data.ktp_url !== ''){
 		              		$('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.ktp_url+"'>"+respon.data.ktp_nama+"</a></span>")
+		              		$('#checkbox_berkas_ktp').prop('checked', 1)
 		          	  	}
 		              	if (respon.data.npwp_pribadi_url !== ''){
 		              		$('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_pribadi_url+"'>"+respon.data.npwp_pribadi_nama+"</a></span>");
+		              		$('#checkbox_berkas_npwp_pribadi').prop('checked', 1)
 		              	}
 	              	}, 1000);
 	            }
@@ -685,8 +720,11 @@
 	              	$('#id_kecamatan').val("").prop('selected',true).trigger("chosen:updated");
 	              	$('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
 	              	$('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon'></span>")
+              		$('#checkbox_berkas_foto').prop('checked', 0)
 	              	$('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon'></span>")
+	              	$('#checkbox_berkas_ktp').prop('checked', 0)
 	              	$('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi'></span>")
+	              	$('#checkbox_berkas_npwp_pribadi').prop('checked', 0)
 	            }
 	        },
 	        error: function(data) {
@@ -725,12 +763,15 @@
 		              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
 		              	if (respon.data.npwp_perusahaan_url !== ''){
 		              		$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_perusahaan_url+"'>"+respon.data.npwp_perusahaan_nama+"</a></span>")
+		              		$('#checkbox_berkas_npwp_perusahaan').prop('checked', 1)
 		              	}
 		              	if (respon.data.legalitas_pendirian_url !== ''){
 		              		$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_pendirian_url+"'>"+respon.data.legalitas_pendirian_nama+"</a></span>")
+		              		$('#checkbox_berkas_akta_pendirian').prop('checked', 1)
 		              	}
 		              	if (respon.data.legalitas_perubahan_url !== ''){
 		              		$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_perubahan_url+"'>"+respon.data.legalitas_perubahan_nama+"</a></span>")
+		              		$('#checkbox_berkas_akta_pembaruan').prop('checked', 1)
 		              	}
 		            }, 1000);
 	            }
@@ -747,8 +788,11 @@
 	              	$('#id_kecamatan1').val("").prop('selected',true).trigger("chosen:updated");
 	              	$('#id_desa1').val("").prop('selected',true).trigger("chosen:updated");
 	              	$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan'></span>");
+	              	$('#checkbox_berkas_npwp_perusahaan').prop('checked', 0)
 	              	$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian'></span>");
+	              	$('#checkbox_berkas_akta_pendirian').prop('checked', 0)
 	              	$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan'></span>");
+	              	$('#checkbox_berkas_akta_pembaruan').prop('checked', 0)
 	            }
 	          
 	        },
@@ -763,9 +807,6 @@
 	    	var nasional = parseFloat($('#id_presentase_saham_nasional').val())
 		    var asing = parseFloat($('#id_presentase_saham_asing').val())
 		    var total_a_n = nasional+asing
-		    // alert(nasional)
-		    // alert(asing)
-		    // alert(total_a_n.toFixed(2))
 		    if (total_a_n.toFixed(2) > 100.00){
 		    	$('.saham').addClass('has-error')
 		    	$('.saham').append('<span class="help-block mb-0 error-saham"><font color="red">Jumlah persen saham nasional dan asing tidak boleh melebihi 100%.</font></span>')
@@ -775,59 +816,6 @@
 		    	$('.error-saham').remove()
 		    }
 	    }
-	    // +++++++++++++ jquery format money idr ++++++++++++++++
-	    function FormatCurrency(objNum){
-		   var num = objNum.value
-		   var ent, dec;
-		   if (num != '' && num != objNum.oldvalue)
-		   {
-		     num = HapusTitik(num);
-		     if (isNaN(num))
-		     {
-		       objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
-		     } else {
-		       var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
-		       if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
-		       {
-		         alert(num.split('.')[1]);
-		         objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
-		       }
-		       else
-		       {
-		         objNum.value = TambahTitik(num.split('.')[0]);
-		       }
-		       objNum.oldvalue = objNum.value;
-		     }
-		   }
-		}
-
-		function HapusTitik(num){
-		   return (num.replace(/\./g, ''));
-		}
-
-		function TambahTitik(num){
-		   numArr=new String(num).split('').reverse();
-		   for (i=3;i<numArr.length;i+=3)
-		   {
-		     numArr[i]+='.';
-		   }
-		   return numArr.reverse().join('');
-		} 
-			        
-		function formatCurrency(num) {
-		   num = num.toString().replace(/\$|\./g,'');
-		   if(isNaN(num))
-		   num = "0";
-		   sign = (num == (num = Math.abs(num)));
-		   num = Math.floor(num*100+0.50000000001);
-		   cents = num0;
-		   num = Math.floor(num/100).toString();
-		   for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
-		   num = num.substring(0,num.length-(4*i+3))+'.'+
-		   num.substring(num.length-(4*i+3));
-		   return (((sign)?'':'-') + num);
-		}
-	    // +++++++++++++ end jquery format money idr ++++++++++++++++
 	    
 	    if ('{{pengajuan_}}'){
 	    	// alert("{{ pengajuan_.jenis_pengajuan }}");
@@ -838,7 +826,7 @@
 	    	$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
 	    	
   			load_pemohon('{{ ktp.nomor }}')
-          	if ('{{pengajuan_.nama_kuasa}}'){
+          	if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
           		$('#switch_pemohon_disabled').prop( "checked", true );
           		setTimeout(function(){
           			$('.kuasa_disable').prop('disabled', false);
@@ -871,13 +859,13 @@
       		for(i; i < size; i++){
       			$("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
       		}
-      		var valproduk = [{% for p in pengajuan_.produk_utama.all %}{{ p.id }},{% endfor %}]
-      		i = 0, size = valproduk.length;
-      		for(i; i < size; i++){
-      			$("#id_produk_utama option[value='" + valproduk[i] + "']").attr("selected", 1);
-      		}
+      		// var valproduk = [{% for p in pengajuan_.produk_utama.all %}{{ p.id }},{% endfor %}]
+      		// i = 0, size = valproduk.length;
+      		// for(i; i < size; i++){
+      		// 	$("#id_produk_utama option[value='" + valproduk[i] + "']").attr("selected", 1);
+      		// }
           	//+++ end bentuk kegiatan usaha ++++
-          	// alert('{{legalitas_pendirian}}')
+          	
           	//++++ legalitas pendirian +++
           	if ('{{legalitas_pendirian}}' !== "None"){
           		$('#switch_akta_pendirian_disabled').prop( "checked", true );
@@ -907,26 +895,28 @@
 
           		}, 1000);
           	}
+          	
           	//++++ end legalitas pendirian +++
+          	
+          	if ('{{pengajuan_.berkas_tambahan}}'){
+          		$('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{% for p in pengajuan_.berkas_tambahan.all %}{{ p.berkas.url }}{% endfor %}'+"'>"+'{% for p in pengajuan_.berkas_tambahan.all %}{{ p.nama_berkas }}{% endfor %}'+"</a></span>")
+          		$('#checkbox_berkas_pendukung').prop('checked', 1)
+          	}
 	    }
   	</script>
 {% endblock %}
 
 {% block extrastyle %}
 	{{ block.super }}
-	
 	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
-	<!-- blueimp Gallery styles -->
 	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
-	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
-	<!-- CSS adjustments for browsers with JavaScript disabled -->
 	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
 	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.css' %}">
@@ -976,6 +966,14 @@
 		}
 		.onoffswitch.labeled .onoffswitch-switch {
 			right: 34px;
+		}
+		.checkbox-custom-alt input[disabled] + i {
+		    border-color: #0a0b0a;
+		    background-color: #fcfafa;
+		}
+		.checkbox-custom-alt input[disabled] + i::before {
+		    background-color: transparent;
+		    color: #0f0f0f;
 		}
 
 	</style>

@@ -105,7 +105,7 @@
 	<div class="col-lg-12">
 		<section class="tile">
 			<div class="tile-header dvd dvd-btm">
-                <h1 class="custom-font"> {{ title }} </h1>
+                <h1 class="custom-font"> {{ title }} {{ pengajuan.id }}</h1>
                 <ul class="controls">
                     <li class="dropdown">
                         <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
@@ -211,7 +211,10 @@
 					<div class="col-md-12" align="center">
 						<a data-toggle="modal" data-target="#detail_siup" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-list"></i> <span>Lihat Detail Pengajuan</span></a>
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class=" icon-folder"></i> <span>Lihat Berkas Pengajuan</span></a>
-						<a onclick="openPopupCenter('{% url 'admin:izin_detilsiup_change' pengajuan.id %}?_popup=1','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+
+						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
+							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_siup' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -224,11 +227,12 @@
 			<div class="tile-body">
 				<center>
 					<!-- <a class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir</a> -->
-					<a class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 					
-					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
+					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
+
 					{% if skizin_status == 1 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
@@ -376,7 +380,7 @@
 								</div>
 							</div>
 
-							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
+							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px; display: none">
 								<form>
 									<div class="panel-body">
 										<h4>SURVEY</h4>
@@ -961,19 +965,20 @@
             }
           });
 
-		function cetak_izin(id_pengajuan_izin, aksi){
+		function cetak_izin(id_detil_siup, aksi){
 			
 		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 			$.ajax({ // create an AJAX call...
-			    data: { csrfmiddlewaretoken: csrf_token, id_pengajuan_izin: id_pengajuan_izin, aksi: aksi }, // get the form data
+			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi }, // get the form data
 			    type: 'POST', // GET or POST
 			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/'+{{ pengajuan_id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
+			        	// openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
+			        	window.open('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}', '_blank')
 			          	toastr["success"](respon.pesan)
-			          	window.location.href= "";
+			          	// window.location.href= "";
 
 			      	}
 			      	else{
@@ -993,6 +998,7 @@
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
 	<script>
         $(window).load(function(){
 
@@ -1043,6 +1049,10 @@
             }
 
         });
+        function change_edit_pengajuan(){
+        	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
+        	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
+        }
     </script>
 	<div class="modal fade" id="detail_siup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -1069,7 +1079,7 @@
 					    <tr>
 					      <td width="25%">Nomor KTP/Paspor</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ nomor_identitas }}</td>
+					      <td width="70%">{{ ktp }} {% if paspor %}/ {{ paspor }}{% endif %}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nama</td>
@@ -1204,17 +1214,14 @@
 					          <td width="5%">:</td>
 					          <td width="70%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
 					      </tr>
-					      <tr>
+					      <!-- <tr>
 					          <td width="25%">Barang/jasa dagang utama</td>
 					          <td width="5%">:</td>
 					          <td width="70%">{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
                     {% endfor %}</td>
-					      </tr>
+					      </tr> -->
 				    </table>
 				    <br>
-				    {% if pengajuan.jenis_pengajuan %}
-				    -
-				    {% else %}
 				    <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
 				    <div class="table-responsive">
 					    <table class="table table-bordered">
@@ -1242,7 +1249,6 @@
 					        </tbody>
 					    </table>
 				    </div>
-				    {% endif %}
 				    <br>
 		      	</div>
 		      	<div class="modal-footer">
@@ -1261,40 +1267,42 @@
 		      	<div class="modal-body" style="padding-right: 32px;">
                     <div class="row mix-grid">
                         <div class="gallery" data-lightbox="gallery">
-                        	{% for a in pengajuan.berkas_tambahan.all %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-	                                <div class="img-container">
-	                                	<div class="img-responsi" angle='0'>
-	                                		{% with a.berkas.name|extension|stringformat:"s" as ext %}
-		                                		{% if ext|InList:'.pdf, .PDF' %}
-			                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+                        	{% if pengajuan.berkas_tambahan.all %}
+	                        	{% for a in pengajuan.berkas_tambahan.all %}
+	                            	<div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+		                                <div class="img-container">
+		                                	<div class="img-responsi" angle='0'>
+		                                		{% with a.berkas.name|extension|stringformat:"s" as ext %}
+			                                		{% if ext|InList:'.pdf, .PDF' %}
+				                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+														</div>
+													{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
+													<div class="imageloaderImage" style="background-image: url({{a.berkas.url}});">			
 													</div>
-												{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
-												<div class="imageloaderImage" style="background-image: url({{cookie_file_foto.berkas.url}});">			
-												</div>
-												{% endif %}
-				  							{% endwith %}
-	                                	</div>
-	                                    
-	                                    <div class="img-details">
-	                                        <h4 class="custom-font ng-binding">{{ a.nama_berkas }}</h4>
-	                                        <div class="img-controls">
-	                                            {% with a.berkas.name|extension|stringformat:"s" as ext %}
-	                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
-			                                            <a href="{{ a.berkas.url }}" target="_blank" class="img-link">
-			                                                <i class="fa fa-link"></i>
-			                                            </a>
-			                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-			                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="img-link">
-			                                                <i class="fa fa-link"></i>
-			                                            </a>
-			                                        {% endif %}
-	                                            {% endwith %}
-	                                        </div>
-	                                    </div>
-	                                </div>
-                            	</div>
-                            {% endfor %}
+													{% endif %}
+					  							{% endwith %}
+		                                	</div>
+		                                    
+		                                    <div class="img-details">
+		                                        <h4 class="custom-font ng-binding">{{ a.nama_berkas }}</h4>
+		                                        <div class="img-controls">
+		                                            {% with a.berkas.name|extension|stringformat:"s" as ext %}
+		                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
+				                                            <a href="{{ a.berkas.url }}" target="_blank" class="img-link">
+				                                                <i class="fa fa-link"></i>
+				                                            </a>
+				                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+				                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="img-link">
+				                                                <i class="fa fa-link"></i>
+				                                            </a>
+				                                        {% endif %}
+		                                            {% endwith %}
+		                                        </div>
+		                                    </div>
+		                                </div>
+	                            	</div>
+	                            {% endfor %}
+                            {% endif %}
                             {% if cookie_file_foto %}
                             <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
                             	<div class="img-container">
@@ -1303,7 +1311,7 @@
                                 			{% if ext|InList:'.pdf, .PDF' %}
 		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
-											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
 												<div class="imageloaderImage" style="background-image: url({{cookie_file_foto.berkas.url}});">			
 												</div>
 											{% endif %}
@@ -1313,7 +1321,7 @@
                                         <h4 class="custom-font ng-binding">{{ cookie_file_foto.nama_berkas }}</h4>
                                         <div class="img-controls">
                                             {% with cookie_file_foto.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
 		                                            <a href="{{ cookie_file_foto.berkas.url }}" target="_blank" class="img-link">
 		                                                <i class="fa fa-link"></i>
 		                                            </a>
@@ -1336,7 +1344,7 @@
                                 			{% if ext|InList:'.pdf, .PDF' %}
 		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
-											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
 												<div class="imageloaderImage" style="background-image: url({{cookie_file_ktp.berkas.url}});">			
 												</div>
 											{% endif %}
@@ -1346,7 +1354,7 @@
                                         <h4 class="custom-font ng-binding">{{ cookie_file_ktp.nama_berkas }}</h4>
                                         <div class="img-controls">
                                             {% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
 		                                            <a href="{{ cookie_file_ktp.berkas.url }}" target="_blank" class="img-link">
 		                                                <i class="fa fa-link"></i>
 		                                            </a>
@@ -1369,7 +1377,7 @@
                                 			{% if ext|InList:'.pdf, .PDF' %}
 		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
-											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
 												<div class="imageloaderImage" style="background-image: url({{pemohon.berkas_npwp.berkas.url}});">			
 												</div>
 											{% endif %}
@@ -1379,7 +1387,7 @@
                                         <h4 class="custom-font ng-binding">{{ pemohon.berkas_npwp.nama_berkas }}</h4>
                                         <div class="img-controls">
                                             {% with pemohon.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
 		                                            <a href="{{ pemohon.berkas_npwp.berkas.url }}" target="_blank" class="img-link">
 		                                                <i class="fa fa-link"></i>
 		                                            </a>
@@ -1402,7 +1410,7 @@
                                 			{% if ext|InList:'.pdf, .PDF' %}
 		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
-											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
 												<div class="imageloaderImage" style="background-image: url({{perusahaan.berkas_npwp.berkas.url}});">			
 												</div>
 											{% endif %}
@@ -1412,7 +1420,7 @@
                                         <h4 class="custom-font ng-binding">{{ perusahaan.berkas_npwp.nama_berkas }}</h4>
                                         <div class="img-controls">
                                             {% with perusahaan.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
 		                                            <a href="{{ perusahaan.berkas_npwp.berkas.url }}" target="_blank" class="img-link">
 		                                                <i class="fa fa-link"></i>
 		                                            </a>
@@ -1435,7 +1443,7 @@
                                 			{% if ext|InList:'.pdf, .PDF' %}
 		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
-											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
 												<div class="imageloaderImage" style="background-image: url({{legalitas_pendirian.berkas.berkas.url}});">
 												</div>
 											{% endif %}
@@ -1445,7 +1453,7 @@
                                         <h4 class="custom-font ng-binding">{{ legalitas_pendirian.berkas.nama_berkas }}</h4>
                                         <div class="img-controls">
                                             {% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
 		                                            <a href="{{ legalitas_pendirian.berkas.berkas.url }}" target="_blank" class="img-link">
 		                                                <i class="fa fa-link"></i>
 		                                            </a>
@@ -1468,7 +1476,7 @@
                                 			{% if ext|InList:'.pdf, .PDF' %}
 		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
-											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
 												<div class="imageloaderImage" style="background-image: url({{legalitas_perubahan.berkas.berkas.url}});">
 												</div>
 											{% endif %}
@@ -1478,7 +1486,7 @@
                                         <h4 class="custom-font ng-binding">{{ legalitas_perubahan.berkas.nama_berkas }}</h4>
                                         <div class="img-controls">
                                             {% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
 		                                            <a href="{{ legalitas_perubahan.berkas.berkas.url }}" target="_blank" class="img-link">
 		                                                <i class="fa fa-link"></i>
 		                                            </a>

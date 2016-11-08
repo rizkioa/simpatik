@@ -10,9 +10,6 @@
       <label class="col-sm-3 control-label text-left"><strong>File Foto</strong></label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if cookie_file_foto %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ cookie_file_foto.berkas.url }}" target="blank_">{{ cookie_file_foto }}</a></span>
-        {% endif %}
         <span id="load_foto_pemohon"></span>
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_foto"></div >
@@ -32,10 +29,8 @@
       <label class="col-sm-3 control-label text-left"><strong>File KTP/Paspor</strong></label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if cookie_file_ktp %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ cookie_file_ktp.berkas.url }}" target="blank_">{{ cookie_file_ktp }}</a></span>
-        {% endif %}
         <span id="load_ktp_pemohon"></span>
+        
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_ktp"></div >
           <div class="percent" id="percent_berkas_ktp">0%</div>
@@ -55,9 +50,6 @@
       <label class="col-sm-3 control-label text-left"><strong>File NPWP Pribadi</strong></label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if pemohon_konfirmasi.berkas_npwp %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ pemohon_konfirmasi.berkas_npwp.berkas.url }}" target="blank_">{{ pemohon_konfirmasi.berkas_npwp }}</a></span>
-        {% endif %}
         <span id="load_npwp_pribadi"></span>
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_npwp_pribadi"></div >
@@ -77,9 +69,6 @@
       <label class="col-sm-3 control-label text-left"><strong>File NPWP Perusahaan</strong></label>
       <div class="col-sm-5">
         <input type="file" name="berkas" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if perusahaan_konfirmasi.berkas_npwp %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ perusahaan_konfirmasi.berkas_npwp.berkas.url }}" target="blank_">{{ perusahaan_konfirmasi.berkas_npwp }}</a></span>
-        {% endif %}
         <span id="load_npwp_perusahaan"></span>
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_npwp_perusahaan"></div >
@@ -99,9 +88,6 @@
       <label class="col-sm-3 control-label text-left"><strong>File Akta Pendirian</strong></label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle akta_pendirian_disable" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        {% if legalitas_pendirian.berkas %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ legalitas_pendirian.berkas.url }}" target="blank_">{{ legalitas_pendirian.berkas }}</a></span>
-        {% endif %}
         <span id="load_akta_pendirian"></span>
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_akta_pendirian"></div >
@@ -121,9 +107,6 @@
       <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle akta_perubahan_disable" data-buttonText="Browse" data-iconName="fa fa-inbox">
-        {% if legalitas_perubahan.berkas %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ legalitas_perubahan.berkas.url }}" target="blank_">{{ legalitas_perubahan.berkas }}</a></span>
-        {% endif %}
         <span id="load_akta_perubahan"></span>
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_akta_perubahan"></div>
@@ -143,9 +126,7 @@
       <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
       <div class="col-sm-5">
         <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-        {% if pengajuan_.berkas_tambahan.berkas %}
-        <span class="help-block" style="color:blue;">file : <a href="{{ pengajuan_.berkas_tambahan.berkas.url }}" target="blank_">{{ pengajuan_.berkas_tambahan }}</a></span>
-        {% endif %}
+        <span id="load_berkas_tambahan"></span>
         <!-- <div class="progress">
           <div class="bar" id="bar_berkas_pendukung"></div >
           <div class="percent" id="percent_berkas_pendukung">0%</div>
