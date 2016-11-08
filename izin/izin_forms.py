@@ -53,13 +53,13 @@ class PengajuanSiupForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilSIUP
-		fields = ('kbli','kelembagaan','produk_utama','bentuk_kegiatan_usaha','jenis_penanaman_modal', 'presentase_saham_nasional','presentase_saham_asing')
+		fields = ('kbli','kelembagaan','bentuk_kegiatan_usaha','jenis_penanaman_modal', 'presentase_saham_nasional','presentase_saham_asing')
 
 class PengajuanReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilReklame
-		fields = ('jenis_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan', 'desa')
+		fields = ('jenis_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan', 'desa', 'tanggal_mulai', 'tanggal_akhir')
 
 class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""

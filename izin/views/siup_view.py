@@ -34,7 +34,7 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
-	print Pemohon.objects.get(username = request.POST.get('ktp'))
+	# print Pemohon.objects.get(username = request.POST.get('ktp'))
 	try:
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
@@ -53,6 +53,9 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
+		p = pemohon.save(commit=False)
+		p.username = ktp_
+		p.save()
 		if ktp_:
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
@@ -71,9 +74,7 @@ def siup_identitas_pemohon_save_cookie(request):
 							jenis_identitas_id=2,
 							user_id=p.id,
 							)
-		p = pemohon.save(commit=False)
-		p.username = ktp_
-		p.save()
+		
 
 		# try:
 		# 	p = pemohon.save(commit=False)
@@ -360,10 +361,10 @@ def siup_detilsiup_save_cookie(request):
 			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
 			print "sesuatu"
-			kekayaan = unicode(request.POST.get('kekayaan_bersih').replace(".", ""))
-			total_saham = unicode(request.POST.get('total_nilai_saham').replace(".", ""))
-			print type(total_saham)
-			print type(kekayaan)
+			kekayaan = unicode(request.POST.get('kekayaan_bersih', Decimal('0.00')).replace(".", ""))
+			total_saham = unicode(request.POST.get('total_nilai_saham', Decimal('0.00')).replace(".", ""))
+			# print type(total_saham)
+			# print type(kekayaan)
 			# print type(request.POST.get('total_nilai_saham'))
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
@@ -372,7 +373,7 @@ def siup_detilsiup_save_cookie(request):
 					pengajuan_.total_nilai_saham = total_saham
 					# detilSIUP.save()
 					kbli_list = request.POST.getlist('kbli')
-					produk_utama_list = request.POST.getlist('produk_utama')
+					# produk_utama_list = request.POST.getlist('produk_utama')
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
 					# pengajuan_.presentase_saham_asing = request.POST.get('presentase_saham_asing', Decimal('0.00'))
@@ -383,8 +384,8 @@ def siup_detilsiup_save_cookie(request):
 					#++++++++++++++++multi select manytomany ++++++++
 					for kbli in kbli_list:
 						pengajuan_.kbli.add(KBLI.objects.get(id=kbli))
-					for produk_utama in produk_utama_list:
-						pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
+					# for produk_utama in produk_utama_list:
+					# 	pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
 					#++++++++++++++++ end multi select manytomany ++++++++
 					# pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha print
 					# detilSIUP.bentuk_kegiatan_usaha.kegiatan_usaha
@@ -974,7 +975,7 @@ def siup_front_done(request):
 def load_pemohon(request, ktp_):
 	extra_context={}
 	pemohon = None
-	nomor_list = NomorIdentitasPengguna.objects.filter(nomor=ktp_).last()
+	nomor_list = NomorIdentitasPengguna.objects.filter(nomor=ktp_, jenis_identitas_id=1).last()
 	if nomor_list:
 		pemohon_list = Pemohon.objects.filter(id=nomor_list.user.id)
 		if pemohon_list.exists():
@@ -1032,18 +1033,12 @@ def load_pemohon(request, ktp_):
 			if pemohon.berkas_npwp:
 				npwp_pribadi_url = str(pemohon.berkas_npwp.berkas.url)
 				npwp_pribadi_nama = str(pemohon.berkas_npwp.nama_berkas)
-			try:
-				ktp_nama = ""
-				ktp_url = ""
-				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id)
-				except MultipleObjectsReturned:
-					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id).last()
-				if ktp_.berkas:
-					ktp_url = str(ktp_.berkas.berkas.url)
-					ktp_nama = str(ktp_.berkas.nama_berkas)
-			except ObjectDoesNotExist:
-				pass
+			ktp_nama = ""
+			ktp_url = ""
+			ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id, jenis_identitas_id=1)
+			if ktp_.berkas:
+				ktp_url = str(ktp_.berkas.berkas.url)
+				ktp_nama = str(ktp_.berkas.nama_berkas)
 			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'foto_url': foto_url, 'foto_nama': foto_nama, 'ktp_nama': ktp_nama, 'ktp_url': ktp_url, 'npwp_pribadi_url': npwp_pribadi_url, 'npwp_pribadi_nama': npwp_pribadi_nama }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
@@ -1112,7 +1107,6 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_nama = str(legalitas_perubahan.berkas.nama_berkas)
 		
 		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'npwp_perusahaan_url': npwp_perusahaan_url, 'npwp_perusahaan_nama': npwp_perusahaan_nama, 'legalitas_pendirian_url': legalitas_pendirian_url, 'legalitas_pendirian_nama': legalitas_pendirian_nama, 'legalitas_perubahan_url': legalitas_perubahan_url, 'legalitas_perubahan_nama': legalitas_perubahan_nama }}
-		print data
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))

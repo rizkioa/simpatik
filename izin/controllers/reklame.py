@@ -52,11 +52,11 @@ def formulir_reklame(request):
 							extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
 						extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
 						extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
-						try:
-							ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
-							extra_context.update({'cookie_file_ktp': ktp_.berkas })
-						except ObjectDoesNotExist:
-							pass
+						ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+						extra_context.update({ 'ktp': ktp_ })
+						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+						extra_context.update({ 'paspor': paspor_ })
+						extra_context.update({'cookie_file_ktp': ktp_.berkas })
 					if pengajuan_.perusahaan:
 						if pengajuan_.perusahaan.desa:
 							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
@@ -66,12 +66,57 @@ def formulir_reklame(request):
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
+					panjang = str(int(pengajuan_.panjang))
+					lebar = str(int(pengajuan_.lebar))
+					sisi = str(int(pengajuan_.sisi))
+					ukuran_ = panjang+"x"+lebar+"x"+sisi
+					extra_context.update({ 'panjang': panjang })
+					extra_context.update({ 'lebar': lebar })
+					extra_context.update({ 'sisi': sisi })
+					extra_context.update({ 'ukuran': ukuran_ })
 
+					awal = pengajuan_.tanggal_mulai
+					akhir = pengajuan_.tanggal_akhir
+					selisih = akhir-awal
+
+					extra_context.update({ 'selisih': selisih.days })
+
+					letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+
+					berkas_1 = pengajuan_.berkas_tambahan.filter(keterangan="Gambar Kontruksi Pemasangan Reklame").last()
+					extra_context.update({ 'berkas_1': berkas_1 })
+					berkas_2 = pengajuan_.berkas_tambahan.filter(keterangan="Gambar Foto Lokasi Pemasangan Reklame").last()
+					extra_context.update({ 'berkas_2': berkas_2 })
+					berkas_3 = pengajuan_.berkas_tambahan.filter(keterangan="Gambar Denah Lokasi Pemasangan Rekalame").last()
+					extra_context.update({ 'berkas_3': berkas_3 })
+					berkas_4 = pengajuan_.berkas_tambahan.filter(keterangan="Surat Ketetapan Pajak Daerah (SKPD)").last()
+					extra_context.update({ 'berkas_4': berkas_4 })
+					berkas_5 = pengajuan_.berkas_tambahan.filter(keterangan="Surat Setoran Pajak Daerah (SSPD)").last()
+					extra_context.update({ 'berkas_5': berkas_5 })
+					berkas_6 = pengajuan_.berkas_tambahan.filter(keterangan="Rekomendasi dari Kantor SATPOL PP").last()
+					extra_context.update({ 'berkas_6': berkas_6 })
+					berkas_7 = pengajuan_.berkas_tambahan.filter(keterangan="Berita Acara Perusahaan(BAP) Tim Perizinan").last()
+					extra_context.update({ 'berkas_7': berkas_7 })
+					berkas_8 = pengajuan_.berkas_tambahan.filter(keterangan="Surat Perjanjian Kesepakatan").last()
+					extra_context.update({ 'berkas_8': berkas_8 })
+					berkas_9 = pengajuan_.berkas_tambahan.filter(keterangan="Berkas Tambahan").last()
+					extra_context.update({ 'berkas_9': berkas_9 })
+
+					extra_context.update({ 'letak': letak_ })
 				except ObjectDoesNotExist:
 					pass
 		template = loader.get_template("admin/izin/izin/form_wizard_reklame.html")
 		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
+		response = HttpResponse(template.render(ec))
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != "0":
+				if pengajuan_.pemohon:
+					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+				if pengajuan_.perusahaan:
+					response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
+				if ktp_:
+					response.set_cookie(key='nomor_ktp', value=ktp_)
+		return response
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
 		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))

@@ -26,7 +26,7 @@ from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 
 import datetime
 
-from izin.utils import JENIS_IZIN
+from izin.utils import JENIS_IZIN, formatrupiah
 
 def add_wizard_siup(request):
 	extra_context = {}
@@ -126,12 +126,12 @@ def formulir_siup(request):
 						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
 						extra_context.update({ 'paspor': paspor_ })
 
-						try:
-							ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
-							extra_context.update({'cookie_file_ktp': ktp_.berkas })
-						except MultipleObjectsReturned:
-							ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
-							extra_context.update({'cookie_file_ktp': ktp_.berkas })
+						# try:
+						# 	ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+						extra_context.update({'cookie_file_ktp': ktp_.berkas })
+						# except MultipleObjectsReturned:
+						# 	ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
+							# extra_context.update({'cookie_file_ktp': ktp_.berkas })
 					if pengajuan_.perusahaan:
 						if pengajuan_.perusahaan.desa:
 							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
@@ -151,10 +151,14 @@ def formulir_siup(request):
 						extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
 					if pengajuan_.jenis_penanaman_modal:
 						extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
-					extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
-					extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
-					extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
-					extra_context.update({ 'presentase_saham_asing_konfirmasi': str(pengajuan_.presentase_saham_asing)+" %" })
+					if pengajuan_.kekayaan_bersih:
+						extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
+					if pengajuan_.total_nilai_saham:
+						extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+					if pengajuan_.presentase_saham_nasional:
+						extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
+					if pengajuan_.presentase_saham_asing:
+						extra_context.update({ 'presentase_saham_asing_konfirmasi': str(pengajuan_.presentase_saham_asing)+" %" })
 					if pengajuan_.kelembagaan:
 						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
@@ -175,8 +179,8 @@ def formulir_siup(request):
 					response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
 				if legalitas_perubahan:
 					response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
-				# print legalitas_perubahan.id
-				# print legalitas_pendirian.id
+				if ktp_:
+					response.set_cookie(key='nomor_ktp', value=ktp_)
 
 		return response
 	else:

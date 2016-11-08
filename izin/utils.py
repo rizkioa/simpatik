@@ -75,3 +75,13 @@ if __name__ == '__main__':
 	for i in n:
 		s = '{:,}'.format(i)
 	print('{i} -> {t}'.format(i=s, t=terbilang(i)))
+
+def formatrupiah(uang):
+	i = int(uang)
+	y = str(i)
+	if len(y) <= 3 :
+		return 'Rp ' + y     
+	else :
+		p = y[-3:]
+		q = y[:-3]
+		return   formatrupiah(q) + '.' + p

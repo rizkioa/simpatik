@@ -198,17 +198,6 @@
 		        		</tr>
 		        	</table>
 	        	</div>
-	        	
-	        	<!-- <hr class="style2"> -->
-	        	<!-- <div style="padding-left: 11px;">
-	        		<table frame="box" rules="rows" style="padding-left: 10px">
-		        		<tr>
-		        			<td><strong>ASLI</strong></td>
-		        		</tr>
-		        	</table>
-	        	</div> -->
-	        	<!-- <div style="float: left; width: 25%">
-	        	</div> -->
 	        	<div class="row">
 	        		<div class="col-2">
 	        		
@@ -249,12 +238,12 @@
 	        		<tr>
 	        			<td><b>NOMOR TELEPON</b></td>
 	        			<td>:</td>
-	        			<td>{{ perusahaan.telepon }}</td>
+	        			<td>{{ perusahaan.telepon }} {% if perusahaan.fax %} FAX : {{ perusahaan.fax }}{% endif %}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
 	        			<td>:</td>
-	        			<td>Rp.{{ pengajuan.kekayaan_bersih }}<br>({{terbilang}})</td>
+	        			<td><span id="id_kekayaan"></span><br>({{terbilang}})</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>KELEMBAGAAN</b></td>
@@ -269,7 +258,9 @@
 	        		<tr>
 	        			<td><b>BARANG/JASA DAGANGAN UTAMA</b></td>
 	        			<td>:</td>
-	        			<td>{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
+	        			<!-- <td>{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
+	        			{% endfor %}</td> -->
+	        			<td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli }}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %}</td>
 	        		</tr>
 	        		<tr>
@@ -312,7 +303,20 @@
 			text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
 			width 	: 100,
 			height 	: 100,
-		});	
+		});
+
+		$(window).load(function(){
+			angka = parseInt("{{pengajuan.kekayaan_bersih}}")
+
+			if (typeof(angka) != 'string') angka = angka.toString();
+			var reg = new RegExp('([0-9]+)([0-9]{3})');
+			while(reg.test(angka)) angka = angka.replace(reg, '$1.$2');
+			// alert(angka)
+			$('#id_kekayaan').replaceWith('Rp. '+angka+',-')
+
+			return angka;
+
+		})
 	</script>
 </body>
 </html>

@@ -18,6 +18,7 @@ from django.utils.decorators import method_decorator
 import time
 from datetime import datetime
 import base64
+from izin.utils import formatrupiah
 
 def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
     def decorator(view_func):
@@ -435,12 +436,12 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_pemohon': alamat_ })
 				extra_context.update({ 'pemohon': pengajuan_.pemohon })
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
@@ -451,6 +452,8 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
 			# 	legalitas_ = [l.as_json() for l in Legalitas.objects.filter(id__in=legalitas_list)]
 			# legalitas_ = "kosong"
 			extra_context.update({ 'pengajuan': pengajuan_ })
+			extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
+			extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
 			extra_context.update({ 'syarat': syarat })
 			# extra_context.update({ 'legalitas': legalitas_ })
 			if pengajuan_.kelembagaan:
