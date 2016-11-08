@@ -201,8 +201,8 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
 			elif obj.status == 2 and not obj.skizin_set.all().exists():
 				btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-			elif obj.skizin_set.filter(status=6):
-				btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
+			#elif obj.skizin_set.filter(status=6):
+			#	btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
 			elif obj.skizin_set.filter(status=4):
 				btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
 			elif obj.skizin_set.filter(status=9):
@@ -238,27 +238,27 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
 			else:
 				btn = btn
-		elif self.request.user.groups.filter(name='Pembuat Surat'):
-			if obj.status == 6:
-				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-			elif obj.status == 4:
-				btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-			elif obj.skizin_set.filter(status=6):
-				btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
-			elif obj.skizin_set.filter(status=4):
-				btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
-			elif obj.skizin_set.filter(status=9):
-				btn = mark_safe("""<span class="label bg-cyan">Penomoran</span>""")
-			elif obj.skizin_set.filter(status=10):
-				btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
-			elif obj.skizin_set.filter(status=2):
-				btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-			elif obj.status == 1:
-				btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-			elif obj.status == 7:
-				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-			else:
-				btn = btn
+#		elif self.request.user.groups.filter(name='Pembuat Surat'):
+#			if obj.status == 6:
+#				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
+#			elif obj.status == 4:
+#				btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
+#			elif obj.skizin_set.filter(status=6):
+#				btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
+#			elif obj.skizin_set.filter(status=4):
+#				btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
+#			elif obj.skizin_set.filter(status=9):
+#				btn = mark_safe("""<span class="label bg-cyan">Penomoran</span>""")
+#			elif obj.skizin_set.filter(status=10):
+#				btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
+#			elif obj.skizin_set.filter(status=2):
+#				btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
+#			elif obj.status == 1:
+#				btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
+#			elif obj.status == 7:
+#				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
+#			else:
+#				btn = btn
 		elif self.request.user.groups.filter(name='Penomoran'):
 			if obj.status == 6:
 				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
@@ -280,27 +280,27 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
 			else:
 				btn = btn
-		elif self.request.user.groups.filter(name='Cetak'):
-			if obj.status == 6:
-				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-			elif obj.status == 4:
-				btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-			elif obj.status == 2 and not obj.skizin_set.all().exists():
-				btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-			elif obj.skizin_set.filter(status=6):
-				btn = mark_safe("""<span class="label bg-info">Menunggu SK Kabid</span>""")
-			elif obj.skizin_set.filter(status=4):
-				btn = mark_safe("""<span class="label bg-warning">Menunggu SK Kadin</span>""")
-			elif obj.skizin_set.filter(status=9):
-				btn = mark_safe("""<span class="label bg-cyan">Menunggu Penomoran</span>""")
-			elif obj.skizin_set.filter(status=2):
-				btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-			elif obj.status == 1:
-				btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-			elif obj.status == 7:
-				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-			else:
-				btn = btn
+#		elif self.request.user.groups.filter(name='Cetak'):
+#			if obj.status == 6:
+#				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
+#			elif obj.status == 4:
+#				btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
+#			elif obj.status == 2 and not obj.skizin_set.all().exists():
+#				btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
+#			elif obj.skizin_set.filter(status=6):
+#				btn = mark_safe("""<span class="label bg-info">Menunggu SK Kabid</span>""")
+#			elif obj.skizin_set.filter(status=4):
+#				btn = mark_safe("""<span class="label bg-warning">Menunggu SK Kadin</span>""")
+#			elif obj.skizin_set.filter(status=9):
+#				btn = mark_safe("""<span class="label bg-cyan">Menunggu Penomoran</span>""")
+#			elif obj.skizin_set.filter(status=2):
+#				btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
+#			elif obj.status == 1:
+#				btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
+#			elif obj.status == 7:
+#				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
+#			else:
+#				btn = btn
 		elif self.request.user.groups.filter(name='Selesai'):
 			if obj.status == 6:
 				btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
