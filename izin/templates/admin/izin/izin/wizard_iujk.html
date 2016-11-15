@@ -32,6 +32,17 @@
 
 	<script type="text/javascript">
 	$(window).load(function(){
+		$('#percent-sertifikat').hide()
+        $('#percent_kartu_teknis_bu').hide()
+        $('#percent_pernyataan_pengikat').hide()
+        $('#percent_pernyataan').hide()
+        $('#percent_npwp').hide()
+        $('#percent_keterangan_domisili').hide()
+        $('#percent_denah_lokasi').hide()
+        $('#percent_foto_papan').hide()
+        $('#percent_akta_pendirian').hide()
+        $('#percent_akta_perubahan').hide();
+        
 		$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
 		$(".npwp").mask("99.999.999.9-999.999");
 		$(".kodepos").mask("99999");
@@ -950,7 +961,7 @@
 
 	<div class="tab-pane" id="tab6">
 	  <!-- Konfirmasi -->
-	  
+	  {% include 'front-end/include/formulir_iujk/upload_dokumen.html' %}
 	</div>
 
 	<div class="tab-pane" id="tab7">
@@ -1051,22 +1062,22 @@
 				</div>
 				<div class="form-group">
 					<label for=""><strong>Foto 4X6 </strong></label>
-					<input name="berkas_foto" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<input name="berkas_foto" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
 
 				</div>
 				<div class="form-group">
 					<label for=""><strong>KTP </strong></label>
-					<input name="berkas_ktp" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<input name="berkas_ktp" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
 
 				</div>
 				<div class="form-group">
 					<label for=""><strong>Surat Pernyataan bukan PNS/TNI/POLRI </strong></label>
-					<input name="berkas_pernyataan" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<input name="berkas_pernyataan" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
 
 				</div>
 				<div class="form-group">
 					<label for=""><strong>Surat Pernyataan tidak merangkap/bekerja pada Badan Usaha Lain </strong></label>
-					<input name="berkas_merangkap" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+					<input name="berkas_merangkap" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
 
 				</div>
 			</form>
@@ -1093,56 +1104,108 @@
 
 
 <div class="modal fade" id="teknik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-md">
 	<div class="modal-content">
 		<div class="modal-header">
-			<h3 class="modal-title custom-font">Klasifikasi Paket Pekerjaan</h3>
+			<h3 class="modal-title custom-font">Tambah Penanggung Jawab Teknik Badan Usaha</h3>
 		</div>
-		<div class="modal-body">
-			<p class="text-muted">Paket pekerjaan yang pernah dilaksanakan (Bila belum punya - tulis belum punya, manfaatkan nilai paket tertinggi) - 10 tahun lau</p>
-			
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title custom-font"><strong>Paket Pekerjaan</strong></h3>
+		<div class="modal-body">			
+			<form name="teknik_form" role="form" id="teknik_form" action="{% url 'penanggung_jawab_teknik_save_bu' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for=""><strong>Nama </strong></label>
+					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
 				</div>
-				<div class="panel-body">
-				<form name="form1" role="form" id="modal_form">
-				{% csrf_token %}
-				</form>
+				<div class="form-group">
+					<label for=""><strong>Foto 4X6 </strong></label>
+					<input name="berkas_foto" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
 				</div>
-			  </div>
+				<div class="form-group">
+					<label for=""><strong>KTP </strong></label>
+					<input name="berkas_ktp" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Ijazah SMA </strong></label>
+					<input name="ijazah_sma" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>SKA / SKT </strong></label>
+					<input name="ska_skt" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Surat Pernyataan tidak merangkap/bekerja pada Badan Usaha Lain </strong></label>
+					<input name="berkas_merangkap" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+				</div>
+			</form>
 		</div>
 		<div class="modal-footer">
-			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
-			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" id="close_modal_"><i class="fa fa-arrow-left"></i> Batal</button>
+			<div class="progress-list progresteknik" style="display: none;">
+                <div class="details">
+                    <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                </div>
+                <div class="status pull-right">
+                    <span class="counter" data-from="0" data-to="0" id="dataprogresteknik" data-speed="1000">0</span>%
+                </div>
+                <div class="clearfix"></div>
+                <div class="progress progress-xs no-radius">
+                    <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresteknik" data-percentage=""></div>
+                </div>
+            </div>
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" onclick="penanggung_jawab_teknik_save($(this))"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="tenaga_teknik_cancel()"><i class="fa fa-arrow-left"></i> Batal</button>
 		</div>
 	</div>
 </div>
 </div>
 
 <div class="modal fade" id="non_teknik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
+<div class="modal-dialog modal-md">
 	<div class="modal-content">
 		<div class="modal-header">
-			<h3 class="modal-title custom-font">Klasifikasi Paket Pekerjaan</h3>
+			<h3 class="modal-title custom-font">Tambah Penanggung Jawab Teknik Badan Usaha</h3>
 		</div>
 		<div class="modal-body">
-			<p class="text-muted">Paket pekerjaan yang pernah dilaksanakan (Bila belum punya - tulis belum punya, manfaatkan nilai paket tertinggi) - 10 tahun lau</p>
-			
-			  <div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title custom-font"><strong>Paket Pekerjaan</strong></h3>
+			<form name="teknik_form" role="form" id="non_teknik_form" action="{% url 'penanggung_jawab_non_teknik_save_bu' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for=""><strong>Nama </strong></label>
+					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
 				</div>
-				<div class="panel-body">
-				<form name="form1" role="form" id="modal_form">
-				{% csrf_token %}
-				</form>
+				<div class="form-group">
+					<label for=""><strong>Foto 4X6 </strong></label>
+					<input name="berkas_foto" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
 				</div>
-			  </div>
+				<div class="form-group">
+					<label for=""><strong>KTP </strong></label>
+					<input name="berkas_ktp" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Ijazah SMA </strong></label>
+					<input name="ijazah_sma" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+			</form>
 		</div>
 		<div class="modal-footer">
-			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
-			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" id="close_modal_"><i class="fa fa-arrow-left"></i> Batal</button>
+			<div class="progress-list progresnonteknik" style="display: none;">
+                <div class="details">
+                    <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                </div>
+                <div class="status pull-right">
+                    <span class="counter" data-from="0" data-to="0" id="dataprogresnonteknik" data-speed="1000">0</span>%
+                </div>
+                <div class="clearfix"></div>
+                <div class="progress progress-xs no-radius">
+                    <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresnonteknik" data-percentage=""></div>
+                </div>
+            </div>
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" onclick="penanggung_jawab_non_teknik_save($(this))"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="tenaga_non_teknik_cancel()"> <i class="fa fa-arrow-left"></i> Batal</button>
 		</div>
 	</div>
 </div>

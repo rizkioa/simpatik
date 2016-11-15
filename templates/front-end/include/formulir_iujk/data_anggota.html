@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form" class="form-horizontal" action="" data-parsley-validate novalidate>
+<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'penanggung_jawab_next' %}" data-parsley-validate novalidate>
     {% csrf_token %}
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -9,7 +9,7 @@
     <div class="form-group">
       <div class="col-sm-12">
         <div class="table-responsive">
-          <table class="table table-bordered" id="id_penanggung_jawab">
+          <table class="table table-bordered" id="tabel_penanggung_jawab">
               <thead>
                 <tr>
                   <th>&nbsp;</th>
@@ -17,7 +17,7 @@
                   <th>File Foto 4X6 </th>
                   <th>KTP</th>
                   <th>Surat Pernyataan Bukan PNS/TNI/POLRI</th>
-                  <th>Surat Tidak Merangkap</th>
+                  <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
                 </tr>
               </thead>
               <tbody>           
@@ -30,8 +30,8 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm" onclick="penanggung_jawab_add()">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
-        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="direktur_hapus" onclick="penanggung_jawab_delete($(this))">Hapus <i class="fa fa-trash"></i></a>
+        <a href="#" class="btn btn-success btn-sm" onclick="show_modal_dataanggota_add($('#penanggung_jawab'))">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="direktur_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
   </div>
@@ -45,14 +45,16 @@
     <div class="form-group">
       <div class="col-sm-12">
         <div class="table-responsive">
-          <table class="table table-bordered" id="tabel_klasifikasi_pekerjaan">
+          <table class="table table-bordered" id="tabel_penanggung_jawab_teknik">
               <thead>
                 <tr>
                   <th>&nbsp;</th>
-                  <th>Klasifikasi/Sub Klasifikasi Usaha Yang diinginkan</th>
-                  <th>Nama Paket 10 Tahun Terakhir</th>
-                  <th>Tahun Pelaksanaan</th>
-                  <th>Nilai Paket Pekerjaan</th>
+                  <th>Nama</th>
+                  <th>File Foto 4X6 </th>
+                  <th>KTP</th>
+                  <th>Ijazah SMA</th>
+                  <th>SKA/SKT</th>
+                  <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,8 +67,8 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10" onclick="show_modal_add()">Tambah Penanggung Jawab Teknik Badan Usaha <i class="fa fa-plus"></i></a>
-        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="teknik_hapus" onclick="deleteRow('tabel_klasifikasi_pekerjaan')">Hapus <i class="fa fa-trash"></i></a>
+        <a href="#" class="btn btn-success btn-sm" onclick="show_modal_dataanggota_add($('#teknik'))">Tambah Penanggung Jawab Teknik Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="teknik_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab_teknik'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
   </div>
@@ -81,14 +83,14 @@
     <div class="form-group">
       <div class="col-sm-12">
         <div class="table-responsive">
-          <table class="table table-bordered" id="tabel_klasifikasi_pekerjaan">
+          <table class="table table-bordered" id="tabel_penanggung_jawab_non_teknik">
               <thead>
                 <tr>
                   <th>&nbsp;</th>
-                  <th>Klasifikasi/Sub Klasifikasi Usaha Yang diinginkan</th>
-                  <th>Nama Paket 10 Tahun Terakhir</th>
-                  <th>Tahun Pelaksanaan</th>
-                  <th>Nilai Paket Pekerjaan</th>
+                  <th>Nama</th>
+                  <th>File Foto 4X6 </th>
+                  <th>KTP</th>
+                  <th>Ijazah SMA</th>
                 </tr>
               </thead>
               <tbody>
@@ -101,8 +103,8 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10" onclick="show_modal_add()">Tambah Tenaga Non Teknik <i class="fa fa-plus"></i></a>
-        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="tenaga_non_teknik" onclick="deleteRow('tabel_klasifikasi_pekerjaan')">Hapus <i class="fa fa-trash"></i></a>
+        <a href="#" class="btn btn-success btn-sm" onclick="show_modal_dataanggota_add($('#non_teknik'))">Tambah Tenaga Non Teknik <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="tenaga_non_teknik" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab_non_teknik'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
   </div>

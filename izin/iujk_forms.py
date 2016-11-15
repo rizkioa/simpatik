@@ -2,6 +2,7 @@ from django import forms
 
 
 from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
+from master.models import Berkas
 
 class PaketPekerjaanForm(forms.ModelForm):
 
@@ -22,5 +23,12 @@ class DataAnggotaForm(forms.ModelForm):
 	class Meta:
 		model = AnggotaBadanUsaha
 		fields = ('nama', )
+
+class BerkasFom(forms.ModelForm):
+	"""docstring for BerkasFom"""
+	class Meta:
+		model = Berkas
+		fields = ('berkas', )
+		
 		
 		
