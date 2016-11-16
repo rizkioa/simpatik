@@ -18,7 +18,7 @@ class JenisReklame(models.Model):
 		verbose_name_plural = 'Jenis Reklame'
 
 class AtributTambahan(models.Model):
-	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=11)
 
 	created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
 	created_at = models.DateTimeField(editable=False)

@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 
+from izin.detiltdp_admin import DetilTDPAdmin
 from izin.detilsiup_admin import DetilSIUPAdmin
 from izin.detilreklame_admin import DetilReklameAdmin
 from izin.izin_admin import IzinAdmin
