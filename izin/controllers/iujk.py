@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 
 from master.models import Negara, JenisPemohon
