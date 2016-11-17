@@ -197,7 +197,10 @@ function load_desa3(id_kecamatan){
     });
 }
 
+// 44444444
 make_disabled($( "#id_kabupaten4" ), true)
+make_disabled($( "#id_kecamatan4" ), true)
+make_disabled($( "#id_desa4" ), true)
 
 $( "#id_provinsi4" ).change(function(){
     $this = $(this)
@@ -208,7 +211,10 @@ $( "#id_provinsi4" ).change(function(){
     }else{
         elem = $( "#id_kabupaten4" )
         make_disabled(elem, true)
+        // make_disabled($( "#id_provinsi" ), true)
         make_disabled($( "#id_kabupaten4" ), true)
+        make_disabled($( "#id_kecamatan4" ), true)
+        make_disabled($( "#id_desa4" ), true)
     }
 })
 
@@ -228,6 +234,14 @@ function load_kabupaten4(id_provinsi){
             $( "#id_kabupaten_chosen" ).unmask()
             $( "#id_kabupaten4" ).change(function(){
                 $this = $(this)
+
+                id_kabupaten = $(this).val()
+                if(id_kabupaten.length > 0){
+                    load_kecamatan4(id_kabupaten)
+                }else{
+                    elem = $( "#id_kecamatan4" )
+                    make_disabled(elem, true)
+                }
             })
         },
         error: function(data) {                
@@ -235,5 +249,63 @@ function load_kabupaten4(id_provinsi){
         }
     });
 }
+
+function load_kecamatan4(id_kabupaten){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_kecamatan_chosen" ).mask('loading')
+    $( "#id_kecamatan_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        url: __base_url__+'/admin/master/kecamatan/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_kecamatan4" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_kecamatan_chosen" ).unmask()
+            $( "#id_kecamatan4" ).change(function(){
+                $this = $(this)
+                
+                id_kecamatan = $(this).val()
+                if(id_kecamatan.length > 0){
+                    load_desa4(id_kecamatan)
+                }else{
+                    elem = $( "#id_desa4" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+
+function load_desa4(id_kecamatan){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_desa_chosen" ).mask('loading')
+    $( "#id_desa_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_desa' %}', // the file to call
+        url: __base_url__+'/admin/master/desa/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_desa4" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_desa_chosen" ).unmask()
+            $( "#id_desa4" ).change(function(){
+                $this = $(this)
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+
+
 
 //++++++++ end load wilayah ++++++++++

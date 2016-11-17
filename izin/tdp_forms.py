@@ -1,6 +1,6 @@
 from django import forms
 from izin.models import DetilTDP, RincianPerusahaan
-from perusahaan.models import Legalitas
+from perusahaan.models import Legalitas, DataPimpinan, PemegangSaham
 
 class DataUmumPerusahaanPTForm(forms.ModelForm):
 	class Meta:
@@ -26,3 +26,13 @@ class LegalitasForm(forms.ModelForm):
 	class Meta:
 		model = Legalitas
 		fields = ('nama_notaris', 'alamat', 'telephone', 'nomor_pengesahan', 'tanggal_pengesahan' )
+
+class DataPimpinanForm(forms.ModelForm):
+	class Meta:
+		model = DataPimpinan
+		fields = ('nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'telephone', 'hp', 'email', 'kewarganegaraan', 'tanggal_menduduki_jabatan', 'jumlah_saham_dimiliki', 'jumlah_saham_disetor', 'kedudukan_diperusahaan_lain', 'nama_perusahaan_lain', 'alamat_perusahaan_lain', 'kode_pos_perusahaan_lain', 'telepon_perusahaan_lain', 'tanggal_menduduki_jabatan_perusahaan_lain')
+
+class PemegangSahamForm(forms.ModelForm):
+	class Meta:
+		model = PemegangSaham
+		fields = ('nama_lengkap', 'alamat', 'telephone', 'kewarganegaraan', 'npwp', 'jumlah_saham_dimiliki', 'jumlah_saham_disetor')

@@ -197,6 +197,35 @@
 
 	        	$('#id_pemegang_hak_paten').val('{{pengajuan_.pemegang_hak_paten}}');
 	        	$('#id_no_hak_paten').val('{{pengajuan_.no_hak_paten}}')
+
+	        	// perusahaan induk 
+	        	if('{{perusahaan_induk}}' !== 'None'){
+	        		$('#switch_data_umum_kantor_cabang_disabled').prop("checked", 1)
+	        		$('.data_umum_kantor_cabang').prop('disabled', false).trigger("chosen:updated");
+	        		$('#id_npwp_perusahaan_induk').val('{{perusahaan_induk.npwp}}');
+	        		load_perusahaan_induk('{{perusahaan_induk.npwp}}');
+	        		$('#no_tdp_induk').val('{{pengajuan_.nomor_tdp_kantor_pusat}}');
+	        	}
+	        	if('{{pengajuan_.alamat_unit_produksi}}' !== 'None'){
+	        		$('#switch_stap3_bagi_unit_disabled').prop("checked", 1)
+	        		$('.stap3_bagian_unit').prop('disabled', false).trigger("chosen:updated");
+	        		$('#id_alamat_unit_produksi').val('{{pengajuan_.alamat_unit_produksi}}');
+	        		var provinsi = '{{pengajuan_.desa_unit_produksi.kecamatan.kabupaten.provinsi.id}}';
+	        		var kabupaten = '{{pengajuan_.desa_unit_produksi.kecamatan.kabupaten.id}}';
+	        		var kecamatan = '{{pengajuan_.desa_unit_produksi.kecamatan.id}}';
+	        		var desa = '{{pengajuan_.desa_unit_produksi.id}}';
+	        		load_kabupaten4(provinsi)
+	        		load_kecamatan4(kabupaten)
+	        		load_desa4(kecamatan)
+	        		setTimeout(function(){
+	        			$('#id_provinsi4').val(provinsi).prop('disabled', false).trigger("chosen:updated");
+	        			$('#id_kabupaten4').val(kabupaten).prop('disabled', false).trigger("chosen:updated");
+	        			$('#id_kecamatan4').val(kecamatan).prop('disabled', false).trigger("chosen:updated");
+	        			$('#id_desa4').val(desa).prop('disabled', false).trigger("chosen:updated");
+        			}, 4000);
+	        	}
+	        	// alert('{{perusahaan_induk.npwp}}')
+	        	
 	        	//++++++++ data kegiatan perusahaan
 	        	$('#id_kegiatan_usaha_pokok').val('{{pengajuan_.kegiatan_usaha_pokok}}');
 	        	$('#id_kegiatan_usaha_lain_1').val('{{pengajuan_.kegiatan_usaha_lain_1}}');
@@ -279,6 +308,49 @@
 		var total = wni+wna;
 		$('#id_total_wni_wna').val(total);
 	}
+
+	
+	function load_perusahaan_induk(npwp_){
+		$(".tab-content").mLoading();
+		// csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+		$.ajax({
+			type: 'GET',
+			url: __base_url__+'/load-perusahaan/'+npwp_,
+			// data: { csrfmiddlewaretoken: csrf_token },
+			success: function (data) {
+	  			$(".tab-content").mLoading('hide');
+	  			respon_induk = $.parseJSON(data)
+	    		if(respon_induk.success){
+		          	load_kabupaten3(respon_induk.data.provinsi)
+		          	load_kecamatan3(respon_induk.data.kabupaten)
+		          	load_desa3(respon_induk.data.kecamatan)
+		          	
+	              	$('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
+	              	$('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
+		            setTimeout(function(){
+		              	$('#id_provinsi3').val(respon_induk.data.provinsi).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_kabupaten3').val(respon_induk.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_kecamatan3').val(respon_induk.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_desa3').val(respon_induk.data.desa).prop('selected',true).trigger("chosen:updated");
+		              	
+		            }, 3000);
+	    		}
+		        else{
+		          	$('#id_nama_perusahaan_induk').val("");
+		          	$('#id_alamat_perusahaan_induk').val("");
+		          	$('#id_provinsi3').val("").prop('selected',true).trigger("chosen:updated");
+		          	$('#id_kabupaten3').val("").prop('selected',true).trigger("chosen:updated");
+		          	$('#id_kecamatan3').val("").prop('selected',true).trigger("chosen:updated");
+		          	$('#id_desa3').val("").prop('selected',true).trigger("chosen:updated");
+		        }
+	    	},
+		    error: function(data) {
+		      toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+		      $(".tab-content").mLoading('hide');
+		    }
+		});
+	}
+	
 
 	</script>
 	{% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}

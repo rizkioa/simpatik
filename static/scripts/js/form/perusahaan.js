@@ -13,7 +13,7 @@ function load_perusahaan_a(npwp_){
 	          	// load_kabupaten1(respon.data.provinsi)
 	          	load_kecamatan1(respon.data.kabupaten)
 	          	load_desa1(respon.data.kecamatan)
-	          	setTimeout(function(){
+	          	
 	              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
 	              	$('#alamat_perusahaan_load').val(respon.data.alamat_perusahaan);
 	              	$('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
@@ -23,6 +23,7 @@ function load_perusahaan_a(npwp_){
 	              	// $('#id_negara1').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
 	              	// $('#id_provinsi1').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
 	              	// $('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+	            setTimeout(function(){
 	              	$('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
 	              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
 	              	if (respon.data.npwp_perusahaan_url !== ''){
@@ -37,7 +38,7 @@ function load_perusahaan_a(npwp_){
 	              		$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_perubahan_url+"'>"+respon.data.legalitas_perubahan_nama+"</a></span>")
 	              		$('#checkbox_berkas_akta_pembaruan').prop('checked', 1)
 	              	}
-	            }, 1000);
+	            }, 2000);
     		}
 	        else{
 	          	$('#id_nama_perusahaan').val("");
