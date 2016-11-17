@@ -1,8 +1,12 @@
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
 import json
+import os
 
-from izin.models import PaketPekerjaan, DetilIUJK
-from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm
+from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
+from perusahaan.models import Perusahaan
+from master.models import Berkas
+from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm, DataAnggotaForm, BerkasFom
 from izin.izin_forms import LegalitasPerusahaanForm, LegalitasPerusahaanPerubahanForm
 
 
@@ -207,3 +211,330 @@ def iujk_legalitas_perusahaan_save(request):
 		data = json.dumps(data)
 		response = HttpResponse(data)
 	return response
+
+
+def penanggung_jawab_save_bu(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		# print request.POST
+		# print request.FILES
+		# print os.path.splitext(request.FILES.get('berkas_foto').name)[1]
+		if request.COOKIES['id_pengajuan'] != '0':
+			form_ = DataAnggotaForm(request.POST)
+			if form_.is_valid():
+				# ext = os.path.splitext(berkas_.name)[1]
+				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
+					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
+						if os.path.splitext(request.FILES.get('berkas_pernyataan').name)[1] in valid_extensions:
+							if os.path.splitext(request.FILES.get('berkas_merangkap').name)[1] in valid_extensions:
+								da_ = form_.save(commit=False)
+								da_.detil_iujk_id = request.COOKIES['id_pengajuan']
+								da_.jenis_anggota_badan = 'Direktur / Penanggung Jawab Badan Usaha'
+								da_.save()
+
+								da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+								da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+								da_.berkas_tambahan.create(nama_berkas="Berkas Pernyataan bukan PNS/TNI/POLRI "+da_.nama, berkas=request.FILES.get('berkas_pernyataan'))
+								da_.berkas_tambahan.create(nama_berkas="Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
+								
+								# berkas_ = ", ".join(str(row.nama_berkas) for row in da_.berkas_tambahan.all().order_by('id'))
+								# print request.META['HTTP_REFERER']
+								berkas_ = ", ".join(str(row.berkas.url) for row in da_.berkas_tambahan.all().order_by('id'))
+
+								data = {'success': True, 'pesan': request.POST.get('nama')+' berhasil disimpan. Proses Selanjutnya.', 
+										'data': [
+										# # legalitas perubahaan
+											{ 'id': da_.id },
+											{ 'nama': da_.nama },
+											{ 'berkas': berkas_}
+										]}
+
+								data = json.dumps(data)
+								response = HttpResponse(data)
+
+							else:
+								data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan Tidak Merangkap format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+
+						else:
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan bukan PNS/TNI/POLRI format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan bukan PNS/TNI/POLRI format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+
+			else:
+				data = form_.errors.as_json()
+				response = HttpResponse(data)
+
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+	return response
+
+def penanggung_jawab_delete_bu(request):
+	id_ = request.POST.get('id')
+	if id_:
+		try:
+			obj = AnggotaBadanUsaha.objects.get(id = id_)
+			obj.berkas_tambahan.all().delete()
+			pesan_ = "Anggota Badan Usaha "+str(obj.nama)+" Berhasil Dihapus"
+			data = {'success': True, 'pesan': pesan_, 'id':obj.id}
+			obj.delete()
+		except AnggotaBadanUsaha.DoesNotExist:
+			data = {'success': False, 'pesan':'Anggota Badan Usaha Tidak ada'}
+	else:
+		data = {'success': False, 'pesan':'Anggota Badan Usaha Kosong'}
+
+	data = json.dumps(data)
+	response = HttpResponse(data)
+	# print response
+
+	return response
+
+
+def penanggung_jawab_teknik_save_bu(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		# print request.POST
+		# print request.FILES
+		if request.COOKIES['id_pengajuan'] != '0':
+			form_ = DataAnggotaForm(request.POST)
+			if form_.is_valid():
+				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
+					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
+						if os.path.splitext(request.FILES.get('ijazah_sma').name)[1] in valid_extensions:
+							if os.path.splitext(request.FILES.get('ska_skt').name)[1] in valid_extensions:
+								if os.path.splitext(request.FILES.get('berkas_merangkap').name)[1] in valid_extensions:
+									da_ = form_.save(commit=False)
+									da_.detil_iujk_id = request.COOKIES['id_pengajuan']
+									da_.jenis_anggota_badan = 'Penanggung Jawab Teknik Badan Usaha'
+									da_.save()
+
+
+									da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+									da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+									da_.berkas_tambahan.create(nama_berkas="Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
+									da_.berkas_tambahan.create(nama_berkas="Berkas SKA/SKT "+da_.nama, berkas=request.FILES.get('ska_skt'))
+									da_.berkas_tambahan.create(nama_berkas="Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
+									
+									# berkas_ = ", ".join(str(row.nama_berkas) for row in da_.berkas_tambahan.all().order_by('id'))
+									# print request.META['HTTP_REFERER']
+									berkas_ = ", ".join(str(row.berkas.url) for row in da_.berkas_tambahan.all().order_by('id'))
+
+									data = {'success': True, 'pesan': request.POST.get('nama')+' berhasil disimpan. Proses Selanjutnya.', 
+											'data': [
+											# # legalitas perubahaan
+												{ 'id': da_.id },
+												{ 'nama': da_.nama },
+												{ 'berkas': berkas_}
+											]}
+
+									data = json.dumps(data)
+									response = HttpResponse(data)
+								else:
+									data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan Tidak Merangkap format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+							else:
+								data = {'Terjadi Kesalahan': [{'message': 'Berkas SKA/SKT format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+						else:
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah SMA format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+					
+			else:
+				data = form_.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+	return response
+
+def penanggung_jawab_non_teknik_save_bu(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		# print request.POST
+		# print request.FILES
+		if request.COOKIES['id_pengajuan'] != '0':
+			form_ = DataAnggotaForm(request.POST)
+			if form_.is_valid():
+				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
+					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
+						if os.path.splitext(request.FILES.get('ijazah_sma').name)[1] in valid_extensions:
+							da_ = form_.save(commit=False)
+							da_.detil_iujk_id = request.COOKIES['id_pengajuan']
+							da_.jenis_anggota_badan = 'Tenaga Non Teknik'
+							da_.save()
+
+							da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+							da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+							da_.berkas_tambahan.create(nama_berkas="Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
+
+							berkas_ = ", ".join(str(row.berkas.url) for row in da_.berkas_tambahan.all().order_by('id'))
+
+							data = {'success': True, 'pesan': request.POST.get('nama')+' berhasil disimpan. Proses Selanjutnya.', 
+									'data': [
+									# # legalitas perubahaan
+										{ 'id': da_.id },
+										{ 'nama': da_.nama },
+										{ 'berkas': berkas_}
+									]}
+
+							data = json.dumps(data)
+							response = HttpResponse(data)
+								
+						else:
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah SMA format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+					
+			else:
+				data = form_.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+	return response
+
+def penanggung_jawab_next(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		# print request.POST
+		# print request.FILES
+		if request.COOKIES['id_pengajuan'] != '0':
+
+			data = {}
+
+			da_ = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Direktur / Penanggung Jawab Badan Usaha')
+			if len(da_) > 0 :
+				da_t = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Penanggung Jawab Teknik Badan Usaha')
+				if len(da_t) > 0 :
+					da_n = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Tenaga Non Teknik')
+					if len(da_n) > 0 :
+						data['success'] = True
+						data['pesan'] = 'Data Anggota Selesai, Proses Selanjutnya'
+					else:
+						data['Terjadi Kesalahan'] = [{'message': 'Tenaga Non Teknik Belum Ada'}]
+				else:
+					data['Terjadi Kesalahan'] = [{'message': 'Penanggung Jawab Teknik Badan Usaha Belum Ada'}]
+			else:
+				data['Terjadi Kesalahan'] = [{'message': 'Direktur / Penanggung Jawab Badan Usaha Belum Ada'}]
+
+
+			data = json.dumps(data)
+			response = HttpResponse(data)
+			
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+	return response
+
+
+def upload_sertifikat_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Sertifikat Badan Usaha "+p.nama_perusahaan
+								berkas.keterangan = "sertifikat Badan Usaha"
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	

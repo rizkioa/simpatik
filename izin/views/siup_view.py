@@ -5,7 +5,7 @@ import os
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
 from izin.utils import get_nomor_pengajuan
 from accounts.models import NomorIdentitasPengguna
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
 from master.models import Berkas
@@ -24,6 +24,7 @@ from perusahaan.models import Perusahaan
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
 import datetime
+from izin import models as app_models
 
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
@@ -74,100 +75,6 @@ def siup_identitas_pemohon_save_cookie(request):
 							jenis_identitas_id=2,
 							user_id=p.id,
 							)
-		
-
-		# try:
-		# 	p = pemohon.save(commit=False)
-		# 	p.username = ktp_
-		# 	try:
-		# 		p.save()
-		# 		if ktp_:
-		# 			try:
-		# 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
-		# 			except ObjectDoesNotExist:
-		# 				i, created = NomorIdentitasPengguna.objects.get_or_create(
-		# 							nomor = ktp_,
-		# 							jenis_identitas_id=1, # untuk KTP harusnya membutuhkan kode lagi
-		# 							user_id=p.id,
-		# 							)
-		# 		if paspor_:
-		# 			try:
-		# 				i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-		# 			except ObjectDoesNotExist:
-		# 				i, created = NomorIdentitasPengguna.objects.get_or_create(
-		# 							nomor = paspor_,
-		# 							jenis_identitas_id=2,
-		# 							user_id=p.id,
-		# 							)
-		# 	except OperationalError:
-		# 		print "error"
-				
-		# except IntegrityError as e:
-		# 	try:
-		# 		print "intergrity"
-		# 		if ktp_:
-		# 			p = get_object_or_404(Pemohon, username = ktp_)
-		# 		elif paspor_:
-		# 			p = get_object_or_404(Pemohon, username = paspor_)
-		# 		elif ktp_ and paspor_:
-		# 			p = get_object_or_404(Pemohon, username = ktp_)
-		# 		# pemohon = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
-		# 		pemohon = PemohonForm(request.POST, instance=p)
-		# 		print "atas is valid"
-		# 		if pemohon.is_valid():
-		# 			print "masuk is valid"
-		# 			# pemohon.nama_lengkap = request.POST.get('nama_lengkap', None)
-		# 			# pemohon.alamat = request.POST.get('alamat', None)
-		# 			# pemohon.desa_id = request.POST.get('desa', None)
-		# 			# pemohon.telephone = request.POST.get('telephone', None)
-		# 			# pemohon.hp = request.POST.get('hp', None)
-		# 			# pemohon.cleaned_data['email']
-		# 			# email = request.POST.get('email', None)
-		# 			# email = email.lower().strip()
-		# 			# if email != "":
-		# 			# 	pemohon.email = email
-		# 			# elif email == None:
-		# 			# 	pemohon.email = None
-		# 			# pemohon.kewarganegaraan = request.POST.get('kewarganegaraan', None)
-		# 			# pemohon.pekerjaan = request.POST.get('pekerjaan', None)
-		# 			pemohon.save()
-		# 			if paspor_:
-		# 					try:
-		# 						i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
-		# 					except ObjectDoesNotExist:
-		# 						i, created = NomorIdentitasPengguna.objects.get_or_create(
-		# 									nomor = paspor_,
-		# 									jenis_identitas_id=2,
-		# 									user_id=p.id,
-		# 									)
-
-		# 	except ObjectDoesNotExist:
-		# 		pass
-		# if k.kode == "503.08/":
-		# 	try:
-		# 		pengajuan = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-		# 		pengajuan.nama_kuasa = nama_kuasa
-		# 		pengajuan.no_identitas_kuasa = no_identitas_kuasa
-		# 		pengajuan.telephone_kuasa = telephone_kuasa
-		# 		pengajuan.jenis_permohonan_id = jenis_permohonan_
-		# 	except ObjectDoesNotExist:
-		# 		pengajuan = DetilSIUP(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
-		# 	pengajuan.save()
-		# elif k.kode == "IUJK":
-		# 	try:
-		# 		pengajuan = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
-		# 		pengajuan.nama_kuasa = nama_kuasa
-		# 		pengajuan.no_identitas_kuasa = no_identitas_kuasa
-		# 		pengajuan.telephone_kuasa = telephone_kuasa
-		# 		pengajuan.jenis_permohonan_id = jenis_permohonan_
-		# 	except ObjectDoesNotExist:
-		# 		pengajuan = DetilIUJK(no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user,nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
-		# 	pengajuan.save()
-		# # elif k.kode == ""
-		# else:
-		# 	pass
-
-		from izin import models as app_models
 
 		if k.kode == "503.08/":
 			objects_ = getattr(app_models, 'DetilSIUP')
@@ -175,6 +82,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilIUJK')
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
+		elif k.id == 25:
+			objects_ = getattr(app_models, 'DetilTDP')
 
 		if objects_:
 			try:
@@ -244,53 +153,36 @@ def siup_identitas_perusahan_save_cookie(request):
 	# print request.COOKIES # Untuk Tes cookies
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			print "sesuatu"
-			# 
-			# perusahaan_list = Perusahaan.objects.filter(npwp=request.POST.get('npwp'))
-			# if perusahaan_list.exists():
-			# 	perusahaan = perusahaan_list.last()
-			# 	print "exists"
-			# else:
-			# 	perusahaan, created = Perusahaan.objects.get_or_create(npwp=request.POST.get('npwp'))
-			# 	print "get_or_create"
-			# perusahaan.pemohon_id = request.COOKIES['id_pemohon']
-			# perusahaan.desa_id = request.POST.get('desa', None)
-			# if request.user.is_authenticated():
-			# 	perusahaan.created_by = request.user
-			# perusahaan.save()
-			# perusahaan = PerusahaanForm(request.POST)
-			# if perusahaan.is_valid():
-			# 	perusahaan.pemohon_id = request.COOKIES['id_pemohon']
-			# 	perusahaan.desa_id = 378
-			# 	if request.user.is_authenticated():
-			# 		perusahaan.created_by = request.user
-			# 	perusahaan.save()
-			# 	# alamat_ = str(get_perusahaan.alamat_perusahaan)+" "+str(get_perusahaan.desa)+", Kec. "+str(get_perusahaan.desa.kecamatan)+", Kab./Kota "+str(get_perusahaan.desa.kecamatan.kabupaten)
-			# 	data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
-			# 		# {'npwp_perusahaan': get_perusahaan.npwp},
-			# 		# {'nama_perusahaan': get_perusahaan.nama_perusahaan},
-			# 		# # {'alamat_perusahaan': alamat_ },
-			# 		# {'kode_pos_perusahaan': get_perusahaan.kode_pos},
-			# 		# {'telepon_perusahaan': get_perusahaan.telepon},
-			# 		# {'fax_perusahaan': get_perusahaan.fax},
-			# 		# {'email_perusahaan': get_perusahaan.email}
-			# 		]}
-			# 	data = json.dumps(data)
-			# 	response = HttpResponse(json.dumps(data))
-			# else:
-			# 	data = perusahaan.errors.as_json()
+			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 			try:
+				print "try"
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
-				# print get_perusahaan
-				# print "gfjjhfhgfhjfgfjhfgjfjhfjfghfh"
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
 				if perusahaan.is_valid():
-					perusahaan.penanggung_jawab_id = request.COOKIES['id_pemohon']
+					per = perusahaan.save(commit=False)
+					per.penanggung_jawab_id = request.COOKIES['id_pemohon']
 					if request.user.is_authenticated():
-						perusahaan.created_by_id = request.user
+						per.created_by_id = request.user
 					else:
-						perusahaan.created_by_id = request.COOKIES['id_pemohon']
-					perusahaan.save()
+						per.created_by_id = request.COOKIES['id_pemohon']
+					per.save()
+					if k.kode == "503.08/":
+						objects_ = getattr(app_models, 'DetilSIUP')
+					elif k.kode == "IUJK":
+						objects_ = getattr(app_models, 'DetilIUJK')
+					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+						objects_ = getattr(app_models, 'DetilReklame')
+					elif k.id == 25:
+						objects_ = getattr(app_models, 'DetilTDP')
+					if objects_:
+						try:
+							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+							pengajuan.perusahaan = per
+						except ObjectDoesNotExist:
+							pengajuan = objects_(perusahaan=per)
+						pengajuan.save()
+
+
 					alamat_ = str(get_perusahaan.alamat_perusahaan)+" "+str(get_perusahaan.desa)+", Kec. "+str(get_perusahaan.desa.kecamatan)+", Kab./Kota "+str(get_perusahaan.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 					{'npwp_perusahaan': get_perusahaan.npwp},
@@ -307,10 +199,9 @@ def siup_identitas_perusahan_save_cookie(request):
 				else:
 					data = perusahaan.errors.as_json()
 			except Perusahaan.DoesNotExist:
-				# print "except"
+				print "except"
 				perusahaan = PerusahaanForm(request.POST) 
 				if perusahaan.is_valid():
-					# print "valid"
 					p = perusahaan.save(commit=False)
 					p.penanggung_jawab_id = request.COOKIES['id_pemohon']
 					if request.user.is_authenticated():
@@ -318,6 +209,21 @@ def siup_identitas_perusahan_save_cookie(request):
 					else:
 						p.created_by = request.COOKIES['id_pemohon']
 					p.save()
+					if k.kode == "503.08/":
+						objects_ = getattr(app_models, 'DetilSIUP')
+					elif k.kode == "IUJK":
+						objects_ = getattr(app_models, 'DetilIUJK')
+					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+						objects_ = getattr(app_models, 'DetilReklame')
+					elif k.id == 25:
+						objects_ = getattr(app_models, 'DetilTDP')
+					if objects_:
+						try:
+							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+							pengajuan.perusahaan = p
+						except ObjectDoesNotExist:
+							pengajuan = objects_(perusahaan=p)
+						pengajuan.save()
 					alamat_ = str(p.alamat_perusahaan)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 						{'npwp_perusahaan': p.npwp},
@@ -333,18 +239,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					response.set_cookie(key='id_perusahaan', value=p.id)
 				else:
 					data = perusahaan.errors.as_json()
-					# data = json.dumps(data)
 					response = HttpResponse(data)
-			# response.set_cookie(key='npwp', value=p.npwp)
-			# response.set_cookie(key='nama_perusahaan', value=p.nama_perusahaan)
-			# alamat_ = str(p.alamat_perusahaan)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
-			# response.set_cookie(key='alamat_perusahaan', value=alamat_)
-			# response.set_cookie(key='kode_pos', value=p.kode_pos)
-			# response.set_cookie(key='telepon', value=p.telepon)
-			# response.set_cookie(key='fax', value=p.fax)
-			# response.set_cookie(key='email', value=p.email)
-				
-			# data = json.dumps(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pemohon tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)

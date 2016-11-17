@@ -35,7 +35,7 @@ def add_wizard_siup(request):
 
 	if request.method == 'POST':
 		if request.POST.get('nama_izin') :
-			print "POST"
+			# print "POST"
 
 			# if request.POST.get('nama_izin') and request.POST.get('kelompok_izin'):
 			# 	print "if"
@@ -50,13 +50,20 @@ def add_wizard_siup(request):
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
 			print kode_izin_
 			try:
-				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
-				id_kelompok_ = id_kelompok_list.id
+				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_)
+				if len(id_kelompok_list) > 1:
+					id_kelompok_ = request.POST.get('kelompok_izin')
+					id_kelompok_list = KelompokJenisIzin.objects.filter(id=id_kelompok_).last()
+				else:
+					id_kelompok_list = id_kelompok_list.last()
+					id_kelompok_ = id_kelompok_list.id
+				print id_kelompok_list
+				print id_kelompok_
 			except AttributeError:
 				msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
 				messages.warning(request, msg_, extra_tags='safe')
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
-			print "kelompok"+id_kelompok_list.kode
+			# print "kelompok"+id_kelompok_list.kode
 			if id_kelompok_list.kode == "503.08/":
 			# print "idkelom"+id_kelompok_list.kode
 				url_ = reverse('admin:izin_proses_siup')
@@ -66,6 +73,8 @@ def add_wizard_siup(request):
 				url_ = reverse('admin:izin_proses_reklame')
 			elif id_kelompok_list.kode == "IUJK":
 				url_ = reverse('admin:izin_iujk')
+			elif id_kelompok_list.id == 25:
+				url_ = reverse('admin:izin_proses_tdp_pt')
 			else:
 				url_ = "#"
 			response = HttpResponseRedirect(url_) # Redirect to url
@@ -88,6 +97,7 @@ def formulir_siup(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'SIUP Baru'})
 		negara = Negara.objects.all()
+		kecamatan = Kecamatan.objects.filter(kabupaten=1)
 		jenis_pemohon = JenisPemohon.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
@@ -98,8 +108,8 @@ def formulir_siup(request):
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 		extra_context.update({'negara': negara})
+		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
 		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
@@ -125,19 +135,12 @@ def formulir_siup(request):
 						extra_context.update({ 'ktp': ktp_ })
 						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
 						extra_context.update({ 'paspor': paspor_ })
-
-						# try:
-						# 	ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
 						extra_context.update({'cookie_file_ktp': ktp_.berkas })
-						# except MultipleObjectsReturned:
-						# 	ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
-							# extra_context.update({'cookie_file_ktp': ktp_.berkas })
 					if pengajuan_.perusahaan:
 						if pengajuan_.perusahaan.desa:
 							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
 						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
-						# if pengajuan_.perusahaan.legalitas:
 						legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
 						legalitas_perubahan= pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas__id=2).last()
 
@@ -163,25 +166,25 @@ def formulir_siup(request):
 						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
 
-				except ObjectDoesNotExist:
-					pass
-		template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
-		# template = loader.get_template("admin/izin/izin/izin_baru_form_pemohon.html")
-		ec = RequestContext(request, extra_context)
-		response = HttpResponse(template.render(ec))
-		if 'id_pengajuan' in request.COOKIES.keys():
-			if request.COOKIES['id_pengajuan'] != "0":
-				if pengajuan_.pemohon:
-					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
-				if pengajuan_.perusahaan:
-					response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
-				if legalitas_pendirian:
-					response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
-				if legalitas_perubahan:
-					response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
-				if ktp_:
-					response.set_cookie(key='nomor_ktp', value=ktp_)
+					template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
+					ec = RequestContext(request, extra_context)
+					response = HttpResponse(template.render(ec))
 
+					if pengajuan_.pemohon:
+						response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+					if pengajuan_.perusahaan:
+						response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
+					if legalitas_pendirian:
+						response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+					if legalitas_perubahan:
+						response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+					if ktp_:
+						response.set_cookie(key='nomor_ktp', value=ktp_)
+				except ObjectDoesNotExist:
+					template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
+					ec = RequestContext(request, extra_context)
+					response = HttpResponse(template.render(ec))
+					response.set_cookie(key='id_pengajuan', value='0')
 		return response
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')

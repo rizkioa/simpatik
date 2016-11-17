@@ -8,6 +8,7 @@ from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, Det
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
+from izin.controllers.tdp import formulir_tdp_pt
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 import json
@@ -167,6 +168,10 @@ class IzinAdmin(admin.ModelAdmin):
 			no_pengajuan = mark_safe("""
 				<a href="%s" target="_blank"> %s </a>
 				""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+		elif split_[0] == 'TDP':
+			no_pengajuan = mark_safe("""
+				<a href="%s" target="_blank"> %s </a>
+				""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
@@ -794,6 +799,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^option/kelompokizin/$', self.admin_site.admin_view(self.option_kelompokjenisizin), name='option_kelompokjenisizin'),
 			url(r'^wizard/add/proses/siup/$', self.admin_site.admin_view(formulir_siup), name='izin_proses_siup'),
 			url(r'^wizard/add/proses/reklame/$', self.admin_site.admin_view(formulir_reklame), name='izin_proses_reklame'),
+			url(r'^wizard/add/proses/tdp-pt/$', self.admin_site.admin_view(formulir_tdp_pt), name='izin_proses_tdp_pt'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),

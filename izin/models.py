@@ -355,9 +355,9 @@ class DetilTDP(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdp_perusahaan', blank=True, null=True)
 	
 	# Data Umum Perusahaan PT
-	status_perusahaan = models.ForeignKey(StatusPerusahaan, related_name='status_perusahaan_tdp', verbose_name='Status Perusahaan')
-	jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, related_name='jenis_badan_usaha_tdp', verbose_name='Jenis Badan Usaha')
-	bentuk_kerjasama = models.ForeignKey(BentukKerjasama, related_name='bentuk_kerjasama_tdp', verbose_name='Bentuk Kerjasama')
+	status_perusahaan = models.ForeignKey(StatusPerusahaan, related_name='status_perusahaan_tdp', verbose_name='Status Perusahaan', blank=True, null=True)
+	jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, related_name='jenis_badan_usaha_tdp', verbose_name='Jenis Badan Usaha', blank=True, null=True)
+	bentuk_kerjasama = models.ForeignKey(BentukKerjasama, related_name='bentuk_kerjasama_tdp', verbose_name='Bentuk Kerjasama', blank=True, null=True)
 
 	jumlah_bank = models.IntegerField(verbose_name='Jumlah Bank', default=0)
 	nasabah_utama_bank_1 = models.CharField(max_length=100, verbose_name='Nasabah Utama Bank 1')
@@ -372,7 +372,6 @@ class DetilTDP(PengajuanIzin):
 	alamat_unit_produksi = models.CharField(max_length=255,  verbose_name='Alamat Unit Produksi', null=True, blank=True)
 	desa_unit_produksi = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 
-	nasabah_utama_bank_2 = models.CharField(max_length=100, verbose_name='Nasabah Utama Bank 2 (Jika Ada)', blank=True, null=True)
 	merek_dagang = models.CharField(max_length=100, verbose_name='Merek Dagang (Jika Ada)', blank=True, null=True)
 	no_merek_dagang = models.CharField(max_length=100, verbose_name='Nomor Merek Dagang (Jika Ada)', blank=True, null=True)
 	pemegang_hak_cipta = models.CharField(max_length=100, verbose_name='Pemegang Hak Cipta (Jika Ada)', blank=True, null=True)
