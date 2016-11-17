@@ -136,7 +136,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 				extra_context.update({'paspor': paspor_ })
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
 				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id, jenis_identitas__id=1).last()
+					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id, jenis_identitas__id=1)
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass
