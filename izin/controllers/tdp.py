@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, KedudukanKegiatanUsaha, JenisPerusahaan, JenisPengecer, Legalitas
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, KedudukanKegiatanUsaha, JenisPerusahaan, JenisPengecer, Legalitas, Perusahaan
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilTDP, RincianPerusahaan
 
 def formulir_tdp_pt(request):
@@ -75,6 +75,8 @@ def formulir_tdp_pt(request):
 							extra_context.update({ 'penerimaan_laporan': penerimaan_laporan })
 							extra_context.update({ 'penerimaan_pemberitahuan': penerimaan_pemberitahuan })
 						extra_context.update({ 'pengajuan_': pengajuan_ })
+						perusahaan_induk = Perusahaan.objects.filter(id=request.COOKIES['id_perusahaan_induk']).last()
+						extra_context.update({'perusahaan_induk': perusahaan_induk})
 						try:
 							rp = RincianPerusahaan.objects.get(detil_tdp_id=pengajuan_.id)
 							extra_context.update({ 'rincianperusahaan': rp })
