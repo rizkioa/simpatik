@@ -48,7 +48,7 @@ def add_wizard_siup(request):
 				# response.set_cookie(key='id_kelompok_izin', value=id_kelompok_)
 			# else:
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
-			print kode_izin_
+			# print kode_izin_
 			try:
 				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_)
 				if len(id_kelompok_list) > 1:
@@ -57,8 +57,8 @@ def add_wizard_siup(request):
 				else:
 					id_kelompok_list = id_kelompok_list.last()
 					id_kelompok_ = id_kelompok_list.id
-				print id_kelompok_list
-				print id_kelompok_
+				# print id_kelompok_list
+				# print id_kelompok_
 			except AttributeError:
 				msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
 				messages.warning(request, msg_, extra_tags='safe')
@@ -185,6 +185,11 @@ def formulir_siup(request):
 					ec = RequestContext(request, extra_context)
 					response = HttpResponse(template.render(ec))
 					response.set_cookie(key='id_pengajuan', value='0')
+		else:
+			template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
+			ec = RequestContext(request, extra_context)
+			response = HttpResponse(template.render(ec))
+			response.set_cookie(key='id_pengajuan', value='0')
 		return response
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
