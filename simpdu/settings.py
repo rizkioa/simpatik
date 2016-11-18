@@ -189,3 +189,7 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 #LOGOUT_URL = 'frontlogout'
 
 LOGIN_REDIRECT_URL = 'frontindex'
+
+HTMLVALIDATOR_ENABLED = True
+
+HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'

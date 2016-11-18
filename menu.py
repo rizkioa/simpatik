@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from admin_tools.menu import items
 
 from admin_tools.menus import Menu
+from django.db.models import Q
 
 class CustomMenu(Menu):
     """
@@ -66,32 +67,32 @@ class CustomMenu(Menu):
                         # ),
                     ]
                 )
-
-        menu_izin = items.MenuItem(
-                    title=_('Menu Izin'),
-                    description='Menu Izin',
-                    accesskey='menuIzin',
-                    children= [
-                    	items.MenuItem(
-                            title=_('Izin Terdaftar'),
-                            description='Page Izin Terdaftar',
-                            icon='icon-flag',
-                            url=reverse("admin:izinterdaftar"),
-                        ),
-                        items.MenuItem(
-                            title=_('Pemohon Terdaftar'),
-                            description='Page Pemohon Terdaftar',
-                            icon='icon-user-following',
-                            url=reverse("admin:izin_pemohon_changelist"),
-                        ),
-                        items.MenuItem(
-                            title=_('Perusahaan Terdaftar'),
-                            description='Page Perusahaan Terdaftar',
-                            icon='icon-globe',
-                            url=reverse("admin:perusahaan_terdaftar"),
-                        ),
-                    ]
-                )
+        if ~Q(request.user.is_superuser):
+            menu_izin = items.MenuItem(
+                        title=_('Menu Izin'),
+                        description='Menu Izin',
+                        accesskey='menuIzin',
+                        children= [
+                        	items.MenuItem(
+                                title=_('Izin Terdaftar'),
+                                description='Page Izin Terdaftar',
+                                icon='icon-flag',
+                                url=reverse("admin:izinterdaftar"),
+                            ),
+                            items.MenuItem(
+                                title=_('Pemohon Terdaftar'),
+                                description='Page Pemohon Terdaftar',
+                                icon='icon-user-following',
+                                url=reverse("admin:izin_pemohon_changelist"),
+                            ),
+                            items.MenuItem(
+                                title=_('Perusahaan Terdaftar'),
+                                description='Page Perusahaan Terdaftar',
+                                icon='icon-globe',
+                                url=reverse("admin:perusahaan_terdaftar"),
+                            ),
+                        ]
+                    )
 
         if request.user.groups.filter(name="Operator").exists():
             menu_utama.children += [
