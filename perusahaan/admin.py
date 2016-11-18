@@ -32,7 +32,7 @@ class JenisPerusahaanAdmin(admin.ModelAdmin):
 admin.site.register(JenisPerusahaan, JenisPerusahaanAdmin)
 
 class KBLIAdmin(admin.ModelAdmin):
-	list_display = ('kode_kbli','nama_kbli')
+	list_display = ('kode_kbli','nama_kbli', 'versi')
 	search_fields = ('nama_kbli',)
 
 admin.site.register(KBLI, KBLIAdmin)
