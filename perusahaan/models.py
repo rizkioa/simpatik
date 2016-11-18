@@ -14,6 +14,7 @@ from accounts.models import IdentitasPribadi
 class KBLI(models.Model):
 	kode_kbli = models.IntegerField(verbose_name='Kode KBLI')
 	nama_kbli = models.CharField(max_length=255, verbose_name='Nama KBLI')
+	versi = models.CharField(max_length=255, null=True, blank=True, verbose_name='Versi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
 	def __unicode__(self):
@@ -273,7 +274,7 @@ class PemegangSaham(IdentitasPribadi):
 		ordering = ['id']
 		verbose_name = 'Pemegang Saham'
 		verbose_name_plural = 'Pemegang Saham'
-		
+
 # class DataRincianPerusahaan(models.Model):
 # 	"""docstring for Data Rincian Perusahaan"""
 # 	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
