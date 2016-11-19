@@ -12,7 +12,7 @@ from accounts.models import IdentitasPribadi
 # Create your models here.
 
 class KBLI(models.Model):
-	kode_kbli = models.IntegerField(verbose_name='Kode KBLI')
+	kode_kbli = models.CharField(max_length=15, verbose_name='Kode KBLI')
 	nama_kbli = models.CharField(max_length=255, verbose_name='Nama KBLI')
 	versi = models.CharField(max_length=255, null=True, blank=True, verbose_name='Versi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
