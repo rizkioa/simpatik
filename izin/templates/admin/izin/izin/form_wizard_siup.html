@@ -44,15 +44,15 @@
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
 						// alert("a")
-						id_pengajuan = $.cookie('id_pengajuan')
-						if (id_pengajuan > '0'){
+						id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                		if (id_pengajuan > 0){
 							$.ajax({
-								url: __base_url__+'/admin/ajax-konfirmasi-kbli/'+id_pengajuan,
+								url: __base_url__+'/ajax-konfirmasi-kbli/'+id_pengajuan,
 								success: function (response){
 									respon = $.parseJSON(response)
 									a = respon.kbli.length
-									console.log(a)
-									console.log(respon.kbli[0].kode_kbli)
+									// console.log(a)
+									// console.log(respon.kbli[0].kode_kbli)
 									if (respon.kbli){
 										str = ""
 										for (var i = 0; i < a; i++){
@@ -425,10 +425,10 @@
           	
           	//++++ end legalitas pendirian +++
           	
-          	if ('{{pengajuan_.berkas_tambahan}}'){
-          		$('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{% for p in pengajuan_.berkas_tambahan.all %}{{ p.berkas.url }}{% endfor %}'+"'>"+'{% for p in pengajuan_.berkas_tambahan.all %}{{ p.nama_berkas }}{% endfor %}'+"</a></span>")
-          		$('#checkbox_berkas_pendukung').prop('checked', 1)
-          	}
+          	if ('{{ berkas_ }}' !== 'None'){
+		        $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
+		        $('#checkbox_berkas_pendukung').prop('checked', 1)
+	      	}
 	    }
   	</script>
 {% endblock %}
@@ -501,6 +501,9 @@
 		.checkbox-custom-alt input[disabled] + i::before {
 		    background-color: transparent;
 		    color: #0f0f0f;
+		}
+		label, h4, h3, table{
+			color:black;
 		}
 
 	</style>

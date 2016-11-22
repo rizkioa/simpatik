@@ -11,6 +11,7 @@ import base64
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from accounts.models import NomorIdentitasPengguna
+from izin.utils import formatrupiah
 
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -125,7 +126,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
@@ -165,6 +166,11 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			extra_context.update({'banyak': banyak})
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
 			extra_context.update({'syarat': syarat_})
+			kekayaan_bersih = int(pengajuan_.kekayaan_bersih)
+			extra_context.update({'kekayaan_bersih': formatrupiah(kekayaan_bersih)})
+			total_nilai_saham = int(pengajuan_.total_nilai_saham)
+			extra_context.update({'total_nilai_saham': formatrupiah(total_nilai_saham)})
+
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:
@@ -182,20 +188,6 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def ajax_konfirmasi_kbli(self, request, id_pengajuan_izin_):
-		if id_pengajuan_izin_:
-			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
-			kbli_list = pengajuan_.kbli.all()
-			kbli_ = [ obj.as_dict() for obj in kbli_list ]
-		data = {'success': True, 'pesan': 'Proses Selesai.', 'kbli': kbli_ }
-		response = HttpResponse(json.dumps(data))
-		return response
-
-	def ajax_konfirmasi_produk(self, request, id_pengajuan_izin_):
-		data = {'success': True, 'pesan': 'Proses Selesai.' }
-		response = HttpResponse(json.dumps(data))
-		return response
-
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilSIUPAdmin, self).get_urls()
@@ -203,8 +195,6 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			url(r'^ajax-dashboard/$', self.admin_site.admin_view(self.ajax_dashboard), name='ajax_dashboard'),
 			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
 			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
-			url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.ajax_konfirmasi_kbli), name='ajax_konfirmasi_kbli'),
-			url(r'^ajax-konfirmasi-produk/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.ajax_konfirmasi_produk), name='ajax_konfirmasi_produk'),
 			)
 		return my_urls + urls
 
