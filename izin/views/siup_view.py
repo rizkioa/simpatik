@@ -85,6 +85,12 @@ def siup_identitas_pemohon_save_cookie(request):
 		elif k.id == 25:
 			objects_ = getattr(app_models, 'DetilTDP')
 
+		# print "sesuatu"
+		# print request.user.id
+		if request.user.is_anonymous():
+			created_by = p.id
+		else:
+			created_by =  request.user.id
 		if objects_:
 			try:
 				pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -94,7 +100,7 @@ def siup_identitas_pemohon_save_cookie(request):
 				pengajuan.telephone_kuasa = telephone_kuasa
 				pengajuan.jenis_permohonan_id = jenis_permohonan_
 			except ObjectDoesNotExist:
-				pengajuan = objects_(status=11,no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by=request.user, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
+				pengajuan = objects_(status=11,no_pengajuan=nomor_pengajuan_, kelompok_jenis_izin_id=request.COOKIES['id_kelompok_izin'], pemohon_id=p.id, jenis_permohonan_id=jenis_permohonan_, created_by_id=created_by, nama_kuasa=nama_kuasa, no_identitas_kuasa=no_identitas_kuasa, telephone_kuasa=telephone_kuasa)
 			pengajuan.save()
 
 		riwayat_ = Riwayat(
@@ -143,8 +149,8 @@ def siup_identitas_pemohon_save_cookie(request):
 		response.set_cookie(key='nomor_paspor', value=paspor_)
 			
 	else:
-		print "error"
-		print pemohon.errors
+		# print "error"
+		# print pemohon.errors
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		response = HttpResponse(data)
 	return response

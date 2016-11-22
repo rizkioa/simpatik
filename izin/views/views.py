@@ -141,10 +141,10 @@ def formulir_siup(request, extra_context={}):
 						response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
 					if pengajuan_.perusahaan:
 						response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
-					if legalitas_pendirian:
-						response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
-					if legalitas_perubahan:
-						response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+						if legalitas_pendirian.exists():
+							response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+						if legalitas_perubahan.exists():
+							response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
 					if ktp_:
 						response.set_cookie(key='nomor_ktp', value=ktp_)
 				except ObjectDoesNotExist:
