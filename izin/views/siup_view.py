@@ -161,14 +161,14 @@ def siup_identitas_perusahan_save_cookie(request):
 		if request.COOKIES['id_pengajuan'] != '':
 			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 			try:
-				print "try"
+				# print "try"
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
 				if perusahaan.is_valid():
 					per = perusahaan.save(commit=False)
 					per.penanggung_jawab_id = request.COOKIES['id_pemohon']
 					if request.user.is_authenticated():
-						per.created_by_id = request.user
+						per.created_by = request.user
 					else:
 						per.created_by_id = request.COOKIES['id_pemohon']
 					per.save()
@@ -213,7 +213,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					if request.user.is_authenticated():
 						p.created_by = request.user
 					else:
-						p.created_by = request.COOKIES['id_pemohon']
+						p.created_by_id = request.COOKIES['id_pemohon']
 					p.save()
 					if k.kode == "503.08/":
 						objects_ = getattr(app_models, 'DetilSIUP')
