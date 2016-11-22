@@ -34,7 +34,7 @@
 	    <div class="col-sm-5">
         <div class="input-group">
           <span class="input-group-addon">Rp</span>
-          <input id="id_kekayaan_bersih" type="text" class="form-control no_ktp" name="kekayaan_bersih" required="" data-parsley-trigger="change">
+          <input id="id_kekayaan_bersih" type="text" class="form-control no_ktp" name="kekayaan_bersih" required="" data-parsley-trigger="change" value="0">
         </div>
 	      <span class="help-block mb-0">(tidak termasuk tanah dan bangunan tempat usaha)</span>
 	    </div>
@@ -46,7 +46,7 @@
   	    <div class="col-sm-5">
           <div class="input-group">
             <span class="input-group-addon">Rp</span>
-            <input type="text" class="form-control no_ktp" name="total_nilai_saham" id="id_total_nilai_saham">
+            <input type="text" class="form-control no_ktp" name="total_nilai_saham" id="id_total_nilai_saham" value="0">
           </div>
   	    </div>
   	</div>
@@ -56,13 +56,13 @@
   	    <div class="col-sm-5">
   	      <div class="input-group " style="padding-top: 6px;padding-bottom: 10px;" id="presentase_saham_nasional">
   	        <span class="input-group-addon">Nasional</span>
-            <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_saham_nasional" onchange="total_n_a();" name="presentase_saham_nasional">
+            <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_saham_nasional" onchange="total_n_a();" name="presentase_saham_nasional" value="0">
   	        <!-- <input max="100" min="0" type="text" class="form-control no_ktp" name="presentase_saham_nasional" id="id_presentase_saham_nasional" onchange="total_n_a();"> -->
   	        <!-- <span class="input-group-addon">%</span> -->
   	      </div>
   	      <div class="input-group " id="presentase_saham_asing">
   	        <span class="input-group-addon text-center" style="padding-left: 31px;">Asing</span>
-            <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_saham_asing" onchange="total_n_a();" name="presentase_saham_asing">
+            <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_saham_asing" onchange="total_n_a();" name="presentase_saham_asing" value="0">
   	        <!-- <input max="100" min="0" type="text" class="form-control no_ktp" name="presentase_saham_asing" id="id_presentase_saham_asing" onchange="total_n_a();"> -->
   	        <!-- <span class="input-group-addon">%</span> -->
   	      </div>
