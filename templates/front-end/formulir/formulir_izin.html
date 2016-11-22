@@ -100,40 +100,7 @@
 <script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
 <script>
-	$(window).load(function(){
-		$('#rootwizard').bootstrapWizard({
-			onTabShow: function(tab, navigation, index) {
-			    var $total = navigation.find('li').length;
-			    var $current = index+1;
-			    if($current >= $total) {
-			      $('#rootwizard').find('.pager .next').hide();
-			      $('#rootwizard').find('.pager .finish').show();
-			      $('#rootwizard').find('.pager .finish').removeClass('disabled');
-			    }else{
-			      $('#rootwizard').find('.pager .next').show();
-			      $('#rootwizard').find('.pager .finish').hide();
-			    }
-			},
-
-			onNext: function(tab, navigation, index) {
-			    // var form = $('form[name="step'+ index +'"]');
-			    // form.parsley().validate();
-			    // if (!form.parsley().isValid()) {
-			    //     return false;
-			    // }
-			    return false;
-			},
-
-		  	onTabClick: function(tab, navigation, index) {
-			    // var form = $('form[name="step'+ (index+1) +'"]');
-			    // form.parsley().validate();
-			    // if (!form.parsley().isValid()) {
-			    //     return false;
-			    // }
-			    return true;
-		  	}
-		});
-	});
+	
 
 	// Function to capitalize for string
 	String.prototype.capitalize = function() {

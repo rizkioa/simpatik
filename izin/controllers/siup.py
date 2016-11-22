@@ -165,6 +165,7 @@ def formulir_siup(request):
 					if pengajuan_.kelembagaan:
 						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
+					extra_context.update({ 'berkas_': pengajuan_.berkas_tambahan.last() })
 
 					template = loader.get_template("admin/izin/izin/form_wizard_siup.html")
 					ec = RequestContext(request, extra_context)
