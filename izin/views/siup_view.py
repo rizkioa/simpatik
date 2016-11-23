@@ -898,8 +898,14 @@ def siup_done(request):
 			pengajuan_.status = 6
 			pengajuan_.save()
 			
+			response.delete_cookie(key='id_pengajuan') # set cookie	
+			response.delete_cookie(key='id_perusahaan') # set cookie	
+			response.delete_cookie(key='nomor_ktp') # set cookie	
+			response.delete_cookie(key='nomor_paspor') # set cookie	
 			response.delete_cookie(key='id_pemohon') # set cookie	
 			response.delete_cookie(key='id_kelompok_izin') # set cookie
+			response.delete_cookie(key='id_legalitas') # set cookie
+			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
 
 			data = {'success': True, 'pesan': 'Proses Selesai.' }
 			response = HttpResponse(json.dumps(data))
