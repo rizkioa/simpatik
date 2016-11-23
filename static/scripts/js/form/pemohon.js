@@ -82,7 +82,7 @@ function make_disabled(elem_, dis_){
 		
 function load_provinsi(id_negara){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    $( "#id_provinsi_chosen" ).mask('loading')
+    // $( "#id_provinsi_chosen" ).mask('loading')
     $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
@@ -93,7 +93,7 @@ function load_provinsi(id_negara){
             elem = $( "#id_provinsi" )
             elem.html(response);
             make_disabled(elem, false)
-            $( "#id_provinsi_chosen" ).unmask()
+            // $( "#id_provinsi_chosen" ).unmask()
             $( "#id_provinsi" ).change(function(){
                 $this = $(this)
 
@@ -135,7 +135,7 @@ $( "#id_negara" ).change(function(){
 
 function load_kabupaten(id_provinsi){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    $( "#id_kabupaten_chosen" ).mask('loading')
+    // $( "#id_kabupaten_chosen" ).mask('loading')
     $( "#id_kabupaten_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
@@ -146,7 +146,7 @@ function load_kabupaten(id_provinsi){
             elem = $( "#id_kabupaten" )
             elem.html(response);
             make_disabled(elem, false)
-            $( "#id_kabupaten_chosen" ).unmask()
+            // $( "#id_kabupaten_chosen" ).unmask()
             $( "#id_kabupaten" ).change(function(){
                 $this = $(this)
 
@@ -167,7 +167,7 @@ function load_kabupaten(id_provinsi){
 
 function load_kecamatan(id_kabupaten){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    $( "#id_kecamatan_chosen" ).mask('loading')
+    // $( "#id_kecamatan_chosen" ).mask('loading')
     $( "#id_kecamatan_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
@@ -178,7 +178,7 @@ function load_kecamatan(id_kabupaten){
             elem = $( "#id_kecamatan" )
             elem.html(response);
             make_disabled(elem, false)
-            $( "#id_kecamatan_chosen" ).unmask()
+            // $( "#id_kecamatan_chosen" ).unmask()
             $( "#id_kecamatan" ).change(function(){
                 $this = $(this)
                 
@@ -199,7 +199,7 @@ function load_kecamatan(id_kabupaten){
 
 function load_desa(id_kecamatan){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    $( "#id_desa_chosen" ).mask('loading')
+    // $( "#id_desa_chosen" ).mask('loading')
     $( "#id_desa_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
@@ -210,7 +210,7 @@ function load_desa(id_kecamatan){
             elem = $( "#id_desa" )
             elem.html(response);
             make_disabled(elem, false)
-            $( "#id_desa_chosen" ).unmask()
+            // $( "#id_desa_chosen" ).unmask()
             $( "#id_desa" ).change(function(){
                 $this = $(this)
             })

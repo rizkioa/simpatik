@@ -1153,7 +1153,7 @@
 					    <tr>
 					      <td width="25%">E-mail</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
+					      <td width="70%"><span id='email_konfirmasi'>{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</span></td>
 					    </tr>
 				    </table>
 				    <br>
@@ -1175,7 +1175,7 @@
 					    <tr>
 					      <td width="40%">Kekayaan Bersih Perusahaan</td>
 					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.kekayaan_bersih }}</td>
+					      <td width="55%">{{ kekayaan_bersih }}</td>
 					    </tr>
 					    <tr>
 					      <td colspan="3">(tidak termasuk tanah dan bengunan temoat usaha)</td>
@@ -1186,7 +1186,7 @@
 					    <tr>
 					      <td><p style="text-indent: 30px;">a. Total Nilai Saham</p></td>
 					      <td>:</td>
-					      <td>{{ pengajuan.total_nilai_saham }}</td>
+					      <td>{{ total_nilai_saham }}</td>
 					    </tr>
 					    <tr>
 					      <td colspan="3"><p style="text-indent: 30px;">b. Komposisi Kepemilikan Saham:</p></td>
@@ -1194,12 +1194,12 @@
 					    <tr>
 					      <td><p style="text-indent: 60px;">Dalam Negeri</p></td>
 					      <td>:</td>
-					      <td>{{ pengajuan.presentase_saham_nasional }}</td>
+					      <td>{{ pengajuan.presentase_saham_nasional }} %</td>
 					    </tr>
 					    <tr>
 					      <td><p style="text-indent: 60px;">Asing</p></td>
 					      <td>:</td>
-					      <td>{{ pengajuan.presentase_saham_asing }}</td>
+					      <td>{{ pengajuan.presentase_saham_asing }} %</td>
 					    </tr>
 				    </table>
 				    <h5><u>Kegiatan Usaha</u></h5>
@@ -1212,7 +1212,7 @@
 					      <tr>
 					          <td width="25%">KBLI</td>
 					          <td width="5%">:</td>
-					          <td width="70%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
+					          <td width="70%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }} - {{kbli.nama_kbli}}) {% endfor %}</td>
 					      </tr>
 					      <!-- <tr>
 					          <td width="25%">Barang/jasa dagang utama</td>
