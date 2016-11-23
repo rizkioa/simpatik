@@ -163,14 +163,14 @@
               return false;
           },
 
-            onTabClick: function(tab, navigation, index) {
-              // var form = $('form[name="step'+ (index+1) +'"]');
-              // form.parsley().validate();
-              // if (!form.parsley().isValid()) {
-              //     return false;
-              // }
-              return false;
-            }
+          onTabClick: function(tab, navigation, index) {
+            // var form = $('form[name="step'+ (index+1) +'"]');
+            // form.parsley().validate();
+            // if (!form.parsley().isValid()) {
+            //     return false;
+            // }
+            return false;
+          }
         });
       });
 
@@ -366,33 +366,34 @@
           title: 'Pendaftaran Berhasil Tersimpan',
           timer: 2000
         })
-        $.ajax({
-          url: '{% url 'siup_done' %}',
-          success: function(response) {
-            respon = $.parseJSON(response)
-            if(respon.success){
-              toastr["success"](respon.pesan)
-            }
-          }
-        });
+        
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ !== ""){
           window.location.replace("/layanan/siup/formulir/cetak/"+id_pengajuan_);
-          $.removeCookie('id_pengajuan', { path: '/' });
-          $.removeCookie('id_perusahaan', { path: '/' });
-          $.removeCookie('id_pemohon', { path: '/' });
-          $.removeCookie('nomor_ktp', { path: '/' });
-          $.removeCookie('nomor_paspor', { path: '/' });
-          $.removeCookie('id_kelompok_izin', { path: '/' });
-          $.removeCookie('id_legalitas', { path: '/' });
-          $.removeCookie('id_legalitas_perubahan', { path: '/' });
+          // $.removeCookie('id_pengajuan', { path: '/' });
+          // $.removeCookie('id_perusahaan', { path: '/' });
+          // $.removeCookie('id_pemohon', { path: '/' });
+          // $.removeCookie('nomor_ktp', { path: '/' });
+          // $.removeCookie('nomor_paspor', { path: '/' });
+          // $.removeCookie('id_kelompok_izin', { path: '/' });
+          // $.removeCookie('id_legalitas', { path: '/' });
+          // $.removeCookie('id_legalitas_perubahan', { path: '/' });
+          $.ajax({
+            url: '{% url 'siup_done' %}',
+            success: function(response) {
+              respon = $.parseJSON(response)
+              if(respon.success){
+                toastr["success"](respon.pesan)
+              }
+            }
+          });
 
         }
       }
     };
 
     $.ajaxSetup({
-      timeout: 20000, // Microseconds, for the laughs. Guaranteed timeout.
+      timeout: 50000, // Microseconds, for the laughs. Guaranteed timeout.
       error: function(request, status, maybe_an_exception_object) {
       if(status == 'timeout')
       alert("Jaringan Internet anda terputus!");

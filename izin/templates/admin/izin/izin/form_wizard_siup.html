@@ -192,7 +192,17 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
-		        $.ajax({
+		        
+		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
+		      	// $.removeCookie('id_pengajuan', { path: '/' });
+		      	// $.removeCookie('id_perusahaan', { path: '/' });
+		      	// $.removeCookie('id_pemohon', { path: '/' });
+		      	// $.removeCookie('nomor_ktp', { path: '/' });
+		      	// $.removeCookie('nomor_paspor', { path: '/' });
+		      	// $.removeCookie('id_kelompok_izin', { path: '/' });
+		      	// $.removeCookie('id_legalitas', { path: '/' });
+		      	// $.removeCookie('id_legalitas_perubahan', { path: '/' });
+		      	$.ajax({
 		        	url: '{% url 'siup_done' %}',
 		        	success: function(response) {
 		        		respon = $.parseJSON(response)
@@ -201,20 +211,11 @@
 		        		}
 		        	}
 	        	});
-		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
-		      	$.removeCookie('id_pengajuan', { path: '/' });
-		      	$.removeCookie('id_perusahaan', { path: '/' });
-		      	$.removeCookie('id_pemohon', { path: '/' });
-		      	$.removeCookie('nomor_ktp', { path: '/' });
-		      	$.removeCookie('nomor_paspor', { path: '/' });
-		      	$.removeCookie('id_kelompok_izin', { path: '/' });
-		      	$.removeCookie('id_legalitas', { path: '/' });
-		      	$.removeCookie('id_legalitas_perubahan', { path: '/' });
 	      	}
     	};
 
     	$.ajaxSetup({
-			timeout: 20000, // Microseconds, for the laughs. Guaranteed timeout.
+			timeout: 50000, // Microseconds, for the laughs. Guaranteed timeout.
 			error: function(request, status, maybe_an_exception_object) {
 			if(status == 'timeout')
 			alert("Jaringan Internet anda terputus!");
