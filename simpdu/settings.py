@@ -96,7 +96,7 @@ DATABASES = {
         'NAME': 'simpatik',
         'USER':'simpatik',
         'PASSWORD':'!QAZ@WSX',
-        'PORT': '3306',
+        # 'PORT': '3306',
         'OPTIONS': {
             "init_command": "SET foreign_key_checks = 0;",
             # "init_command": "SET storage_engine=INNODB",

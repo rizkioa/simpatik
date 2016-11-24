@@ -147,6 +147,15 @@
                       }
                     }
                   })
+                  $.ajax({
+                    url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
+                    success: function (response){
+                      respon = $.parseJSON(response)
+                      if (respon.success){
+                        $("<br><br><table border='0' width='100%'><tr><td colspan='3'><h3 class='custom-font'>Data Kuasa</h3></td></tr><tr><td width='25%'>Nama Kuasa</td><td width='5%'>:</td><td width='70%'>"+respon.nama_kuasa+"</td></tr><tr><td>No Identitas Kuasa</td><td>:</td><td>"+respon.no_identitas_kuasa+"</td></tr><tr><td>Telpon Kuasa</td><td>:</td><td>"+respon.telephone_kuasa+"</td></tr></table>").insertAfter("#id_table_pemohon_komfirmasi");
+                      }
+                    }
+                  })
                 }
               }else{
                 $('#rootwizard').find('.pager .next').show();
@@ -440,82 +449,47 @@
       $('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
       
       load_pemohon('{{ ktp.nomor }}')
-          if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
-            $('#switch_pemohon_disabled').prop( "checked", true );
-            setTimeout(function(){
-              $('.kuasa_disable').prop('disabled', false);
-              $('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
-              $('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
-              $('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
-            }, 1000);
-          }
-          //+++++++ end pemohon +++++
+      if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+        $('#switch_pemohon_disabled').prop( "checked", true );
+        setTimeout(function(){
+          $('.kuasa_disable').prop('disabled', false);
+          $('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+          $('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+          $('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+        }, 1000);
+      }
+      //+++++++ end pemohon +++++
 
-          // +++++ perusahaan+++++++
-          $('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-          setTimeout(function(){
-            load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-          }, 3000);
-          // +++++ end perusahaan+++++++
+      // +++++ perusahaan+++++++
+      $('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+      setTimeout(function(){
+        load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+      }, 3000);
+      // +++++ end perusahaan+++++++
           
-          //+++ bentuk kegiatan usaha ++++
-          $('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
-          $('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
-          $('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
-        $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
-        $('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
-        $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
-        $('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
-        $('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
-        $('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
-        var valkbli = [{% for k in pengajuan_.kbli.all %}{{k.id}},{% endfor %}]
-        i = 0, size = valkbli.length;
-        for(i; i < size; i++){
-          $("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
-        }
-        // var valproduk = [{% for p in pengajuan_.produk_utama.all %}{{ p.id }},{% endfor %}]
-        // i = 0, size = valproduk.length;
-        // for(i; i < size; i++){
-        //  $("#id_produk_utama option[value='" + valproduk[i] + "']").attr("selected", 1);
-        // }
-          //+++ end bentuk kegiatan usaha ++++
+      //+++ bentuk kegiatan usaha ++++
+      $('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
+      $('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
+      $('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
+      $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
+      $('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
+      $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+      $('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
+      $('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
+      $('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
+      var valkbli = [{% for k in pengajuan_.kbli.all %}{{k.id}},{% endfor %}]
+      i = 0, size = valkbli.length;
+      for(i; i < size; i++){
+        $("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
+      }
+      //+++ end bentuk kegiatan usaha ++++
           
-          //++++ legalitas pendirian +++
-          if ('{{legalitas_pendirian}}' !== "None"){
-            $('#switch_akta_pendirian_disabled').prop( "checked", true );
-            setTimeout(function(){
-              $('.akta_pendirian_disable').prop('disabled', false);
-              $('#id_jenis_legalitas').val('{{ legalitas_pendirian.jenis_legalitas.id }}').prop('selected',true).trigger("chosen:updated");
-              $('#id_nama_notaris_legalitas_pendirian').val('{{ legalitas_pendirian.nama_notaris }}');
-              $('#id_alamat_legalitas_pendirian').val('{{ legalitas_pendirian.alamat }}');
-              $('#id_telp_legalitas_pendirian').val('{{ legalitas_pendirian.telephone }}');
-              $('#id_nomor_pengesahan_legalitas_pendirian').val('{{ legalitas_pendirian.nomor_pengesahan }}');
-              $('#id_tanggal_pengesahan_legalitas_pendirian').val('{{ legalitas_pendirian.tanggal_pengesahan|date:"d-m-Y" }}')
-
-            }, 2000);
-          }
-          //++++ end legalitas pendirian +++
-          //++++ legalitas perubahan +++
-          if ('{{ legalitas_perubahan }}' !== "None"){
-            // alert("{{legalitas_perubahan.jenis_legalitas}}")
-            $('#switch_akta_perubahan_disabled').prop( "checked", true );
-            setTimeout(function(){
-              $(".akta_perubahan_disable").prop('disabled', false)
-              $('#id_nama_notaris_perubahan').val('{{ legalitas_perubahan.nama_notaris }}');
-              $('#id_alamat_notaris_perubahan').val('{{ legalitas_perubahan.alamat }}');
-              $('#id_telephone_notaris_perubahan').val('{{ legalitas_perubahan.telephone }}');
-              $('#id_nomor_pengesahan_perubahan').val('{{ legalitas_perubahan.nomor_pengesahan }}');
-              $('#id_tanggal_pengesahan_perubahan').val('{{ legalitas_perubahan.tanggal_pengesahan|date:"d-m-Y" }}')
-
-            }, 3000);
-          }
+      {% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
           
-          //++++ end legalitas pendirian +++
-          
-          if ('{{ berkas_ }}' !== 'None'){
-            $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
-            $('#checkbox_berkas_pendukung').prop('checked', 1)
-          }
+      if ('{{ berkas_ }}' !== 'None'){
+        $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
+        $('#checkbox_berkas_pendukung').prop('checked', 1)
+      }
     }
   </script>
 {% endblock %}

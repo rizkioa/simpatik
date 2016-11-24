@@ -426,13 +426,13 @@ def cetak_permohonan(request, id_pengajuan_):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_pemohon': alamat_ })
 				extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 
@@ -651,11 +651,24 @@ def ajax_cek_pengajuan(request):
 		return HttpResponse(json.dumps(data))
 
 def ajax_konfirmasi_kbli(request, id_pengajuan_izin_):
+	kbli_ = ""
 	if id_pengajuan_izin_:
 		pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
 		kbli_list = pengajuan_.kbli.all()
 		kbli_ = [ obj.as_dict() for obj in kbli_list ]
 	data = {'success': True, 'pesan': 'Proses Selesai.', 'kbli': kbli_ }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def ajax_kuasa_pemohon(request, id_pengajuan_izin_):
+	kuasa_ = ""
+	if id_pengajuan_izin_:
+		pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
+		nama_kuasa = pengajuan_.nama_kuasa
+		no_identitas_kuasa = pengajuan_.no_identitas_kuasa
+		telephone_kuasa = pengajuan_.telephone_kuasa
+
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'nama_kuasa': nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa': telephone_kuasa }
 	response = HttpResponse(json.dumps(data))
 	return response
 	

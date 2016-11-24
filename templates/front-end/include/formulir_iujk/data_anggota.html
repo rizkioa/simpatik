@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'penanggung_jawab_next' %}" data-parsley-validate novalidate>
+<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'penanggung_jawab_next' %}">
     {% csrf_token %}
 <div class="panel panel-default">
   <div class="panel-heading">
@@ -30,7 +30,7 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm" onclick="show_modal_dataanggota_add($('#penanggung_jawab'))">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="show_modal_dataanggota_add($('#penanggung_jawab'))">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
         <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="direktur_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
@@ -67,7 +67,7 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm" onclick="show_modal_dataanggota_add($('#teknik'))">Tambah Penanggung Jawab Teknik Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="show_modal_dataanggota_add($('#teknik'))">Tambah Penanggung Jawab Teknik Badan Usaha <i class="fa fa-plus"></i></a>
         <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="teknik_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab_teknik'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
@@ -103,7 +103,7 @@
 
     <div class="form-group">
       <div class="col-sm-12">
-        <a href="#" class="btn btn-success btn-sm" onclick="show_modal_dataanggota_add($('#non_teknik'))">Tambah Tenaga Non Teknik <i class="fa fa-plus"></i></a>
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="show_modal_dataanggota_add($('#non_teknik'))">Tambah Tenaga Non Teknik <i class="fa fa-plus"></i></a>
         <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="tenaga_non_teknik" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab_non_teknik'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
