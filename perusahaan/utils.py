@@ -33,6 +33,7 @@ def import_kbli():
 
 				kbli, created = KBLI.objects.get_or_create(kode_kbli=kode, nama_kbli=judul, versi=versi)
 				kbli.keterangan = keterangan
+				
 				# kbli.status_data = status_data
 				kbli.save()
 				success_count += 1
