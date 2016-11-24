@@ -60,7 +60,7 @@
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan1" required="" data-parsley-trigger="change">
           <option value>-- Pilih Kecamatan --</option>
-          {% for k in kecamatan %}
+          {% for k in kecamatan_perusahaan %}
           <option value="{{ k.id }}">{{k.nama_kecamatan}}</option>
           {% endfor %}
         </select>

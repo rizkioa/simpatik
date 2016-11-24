@@ -18,7 +18,7 @@ def get_kecamatan(request):
 	return kecamatan_list
 
 class KecamatanAdmin(admin.ModelAdmin):
-	list_display = ('nama_kecamatan','kabupaten','keterangan')
+	list_display = ('kode', 'nama_kecamatan','kabupaten','keterangan')
 	list_filter = ('kabupaten__provinsi','kabupaten')
 	search_fields = ('nama_kecamatan', 'keterangan')
 

@@ -18,7 +18,7 @@ def get_provinsi(request):
 	return provinsi_list
 
 class ProvinsiAdmin(admin.ModelAdmin):
-	list_display = ('nama_provinsi','negara','keterangan')
+	list_display = ('kode', 'nama_provinsi','negara','keterangan')
 	list_filter = ('negara',)
 	search_fields = ('nama_provinsi', 'keterangan')
 

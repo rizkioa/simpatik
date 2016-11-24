@@ -898,6 +898,10 @@ def siup_done(request):
 			pengajuan_.status = 6
 			pengajuan_.save()
 			
+			
+
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
 			response.delete_cookie(key='id_pengajuan') # set cookie	
 			response.delete_cookie(key='id_perusahaan') # set cookie	
 			response.delete_cookie(key='nomor_ktp') # set cookie	
@@ -906,9 +910,6 @@ def siup_done(request):
 			response.delete_cookie(key='id_kelompok_izin') # set cookie
 			response.delete_cookie(key='id_legalitas') # set cookie
 			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
-
-			data = {'success': True, 'pesan': 'Proses Selesai.' }
-			response = HttpResponse(json.dumps(data))
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
 			data = json.dumps(data)

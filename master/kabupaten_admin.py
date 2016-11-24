@@ -19,9 +19,15 @@ def get_kabupaten(request):
 	return kabupaten_list
 
 class KabupatenAdmin(admin.ModelAdmin):
-	list_display = ('nama_kabupaten','provinsi','keterangan')
-	list_filter = ('provinsi__negara','provinsi')
+	list_display = ('provinsi_kode', 'kode', 'nama_kabupaten','provinsi','keterangan')
+	list_filter = ('provinsi',)
 	search_fields = ('nama_kabupaten', 'keterangan')
+
+	def provinsi_kode(self, obj):
+		kode = ""
+		if obj.provinsi:
+			kode = obj.provinsi.kode
+		return kode
 
 	def json_kabupaten(self, request):		
 		kabupaten_list = get_kabupaten(request)
