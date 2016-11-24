@@ -651,11 +651,24 @@ def ajax_cek_pengajuan(request):
 		return HttpResponse(json.dumps(data))
 
 def ajax_konfirmasi_kbli(request, id_pengajuan_izin_):
+	kbli_ = ""
 	if id_pengajuan_izin_:
 		pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
 		kbli_list = pengajuan_.kbli.all()
 		kbli_ = [ obj.as_dict() for obj in kbli_list ]
 	data = {'success': True, 'pesan': 'Proses Selesai.', 'kbli': kbli_ }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def ajax_kuasa_pemohon(request, id_pengajuan_izin_):
+	kuasa_ = ""
+	if id_pengajuan_izin_:
+		pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
+		nama_kuasa = pengajuan_.nama_kuasa
+		no_identitas_kuasa = pengajuan_.no_identitas_kuasa
+		telephone_kuasa = pengajuan_.telephone_kuasa
+
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'nama_kuasa': nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa': telephone_kuasa }
 	response = HttpResponse(json.dumps(data))
 	return response
 	
