@@ -1,5 +1,5 @@
 from django.db import models
-from master.models import Desa, AtributTambahan, Berkas
+from master.models import Desa, AtributTambahan, Berkas, MetaAtribut
 from accounts.utils import STATUS
 # from perusahaan.utils import AKTA, KEDUDUKAN
 # from accounts.models import IdentitasPribadi
@@ -11,7 +11,7 @@ from accounts.models import IdentitasPribadi
 
 # Create your models here.
 
-class KBLI(models.Model):
+class KBLI(MetaAtribut):
 	kode_kbli = models.CharField(max_length=15, verbose_name='Kode KBLI')
 	nama_kbli = models.CharField(max_length=255, verbose_name='Nama KBLI')
 	versi = models.CharField(max_length=255, null=True, blank=True, verbose_name='Versi')

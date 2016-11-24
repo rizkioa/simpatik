@@ -157,7 +157,15 @@ urlpatterns = [
     url(r'^layanan/iujk/penanggungjawabnonteknik/save/$', iujk_views.penanggung_jawab_non_teknik_save_bu, name='penanggung_jawab_non_teknik_save_bu'),
     url(r'^layanan/iujk/penanggungjawab/next/$', iujk_views.penanggung_jawab_next, name='penanggung_jawab_next'),
     url(r'^layanan/iujk/uploaddokumen/sertifikat/$', iujk_views.upload_sertifikat_badan_usaha, name='upload_sertifikat_badan_usaha'),
-    # END
+    url(r'^layanan/iujk/uploaddokumen/kartu-teknis-badan-usaha/$', iujk_views.upload_kartu_teknis_badan_usaha, name='upload_kartu_teknis_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/pernyataan-pengikat-badan-usaha/$', iujk_views.upload_pernyataan_pengikat_badan_usaha, name='upload_pernyataan_pengikat_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/pernyataan-badan-usaha/$', iujk_views.upload_pernyataan_badan_usaha, name='upload_pernyataan_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/npwp-badan-usaha/$', iujk_views.upload_npwp_badan_usaha, name='upload_npwp_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/keterangan-domisili-badan-usaha/$', iujk_views.upload_keterangan_domisili_badan_usaha, name='upload_keterangan_domisili_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/denah-lokasi-badan-usaha/$', iujk_views.upload_denah_lokasi_badan_usaha, name='upload_denah_lokasi_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/foto-papan-badan-usaha/$', iujk_views.upload_foto_papan_badan_usaha, name='upload_foto_papan_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/akta-pendirian-badan-usaha/$', iujk_views.upload_akta_pendirian_badan_usaha, name='upload_akta_pendirian_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/akta-perubahan-badan-usaha/$', iujk_views.upload_akta_perubahan_badan_usaha, name='upload_akta_perubahan_badan_usaha'),
 
     # +++++++ ajax save tdp pt +++++++
     url(r'^layanan/tdp-pt/data-umum-perusahaan/save/$', tdp_view.tdp_data_umum_perusahaan_cookie, name='tdp_pt_data_umum_perusahaan_save'),

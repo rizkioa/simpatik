@@ -33,15 +33,16 @@
 	<script type="text/javascript">
 	$(window).load(function(){
 		$('#percent-sertifikat').hide()
-        $('#percent_kartu_teknis_bu').hide()
-        $('#percent_pernyataan_pengikat').hide()
-        $('#percent_pernyataan').hide()
-        $('#percent_npwp').hide()
-        $('#percent_keterangan_domisili').hide()
-        $('#percent_denah_lokasi').hide()
-        $('#percent_foto_papan').hide()
-        $('#percent_akta_pendirian').hide()
-        $('#percent_akta_perubahan').hide();
+        $('#percent-kartu_teknis_bu').hide()
+        $('#percent-pernyataan_pengikat').hide()
+        $('#percent-pernyataan').hide()
+        $('#percent-npwp').hide()
+        $('#percent-keterangan_domisili').hide()
+        $('#percent-denah_lokasi').hide()
+        $('#percent-foto_papan').hide()
+        $('#percent-akta_pendirian').hide()
+        $('#percent-akta_perubahan').hide();
+
         
 		$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
 		$(".npwp").mask("99.999.999.9-999.999");
@@ -109,21 +110,27 @@
 			};
 
 			$('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+			$('#btn-akta_pendirian').hide()
 			  $("#switch_akta_pendirian_disabled").change(function() {
 				if ($(this).is(':checked')) {
+				  $('#btn-akta_pendirian').show()
 				  $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
 				}
 				else {
+				  $('#btn-akta_pendirian').hide()
 				  $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
 				}
 			});
 
 			$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+			$('#btn-akta_perubahan').hide()
 			$("#switch_akta_perubahan_disabled").change(function() {
 			  if ($(this).is(':checked')) {
+			  	$('#btn-akta_perubahan').hide()
 				$('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
 			  }
 			  else {
+			  	$('#btn-akta_perubahan').show()
 				$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
 			  }
 			});
@@ -138,14 +145,7 @@
 			  }
 			});
 
-			$('#percent_berkas_foto').hide()
-			$('#percent_berkas_ktp').hide()
-			$('#percent_berkas_npwp_pribadi').hide()
-			$('#percent_berkas_npwp_perusahaan').hide()
-			$('#percent_berkas_akta_pendirian').hide()
-			$('#percent_berkas_akta_perubahan').hide()
-			$('#percent_berkas_pendukung').hide()
-			$('#konfirmasi_legalitas_perubahan').hide();
+			
 
 			if ($.cookie('id_pengajuan') === undefined){
 				$.cookie('id_pengajuan', "0", {path:"/"});
@@ -330,6 +330,7 @@
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 			var frm = $('form[name="step'+ index +'"]');
+			// console.log(frm.parsley())
 			frm.parsley().validate();
 			if (frm.parsley().isValid()) {
 				// $( ".tab-content #tab"+index ).mask('loading')

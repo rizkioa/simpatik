@@ -502,7 +502,7 @@ def upload_sertifikat_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Sertifikat Badan Usaha "+p.nama_perusahaan
-								berkas.keterangan = "sertifikat Badan Usaha"
+								berkas.keterangan = "sertifikat Badan Usaha"+p.nama_perusahaan
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -512,7 +512,7 @@ def upload_sertifikat_badan_usaha(request):
 								p.save()
 								d.berkas_npwp_perusahaan = berkas
 								d.save()
-								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+								data = {'success': True, 'pesan': 'Sertifikat Badan Usaha '+p.nama_perusahaan+' berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
 							except ObjectDoesNotExist:
@@ -530,11 +530,526 @@ def upload_sertifikat_badan_usaha(request):
 				data = form.errors.as_json()
 				response = HttpResponse(data)
 		else:
-			data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP Perusahaan tidak ditemukan/data kosong.'}]}
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Sertifikat Badan Usaha, Perusahaan tidak ditemukan/data kosong.'}]}
 			data = json.dumps(data)
 			response = HttpResponse(data)
 	else:
-		data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Sertifikat Badan Usaha, Perusahaan tidak ditemukan/tidak ada.'}]}
 		data = json.dumps(data)
 		response = HttpResponse(data)
 	return response	
+
+def upload_kartu_teknis_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Kartu Teknis Badan Usaha "+p.nama_perusahaan
+								berkas.keterangan = "Kartu Teknis Usaha"+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Kartu Teknis Badan Usaha '+p.nama_perusahaan+'Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Kartu Teknis Badan Usaha, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Kartu Teknis Badan Usaha, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+
+def upload_pernyataan_pengikat_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan
+								berkas.keterangan = "Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Surat Pernyataaan Pengikatan Diri PJT-BU '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Surat Pernyataaan Pengikatan Diri PJT-BU, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Surat Pernyataaan Pengikatan Diri PJT-BU, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+def upload_pernyataan_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan
+								berkas.keterangan = "Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+def upload_npwp_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "NPWP "+p.nama_perusahaan
+								berkas.keterangan = "NPWP "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'NPWP '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload NPWP, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def upload_keterangan_domisili_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan
+								berkas.keterangan = "Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+def upload_denah_lokasi_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan
+								berkas.keterangan = "Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Gambar denah lokasi/posisi badan usaha '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Gambar denah lokasi/posisi badan usaha, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Gambar denah lokasi/posisi badan usaha, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+def upload_foto_papan_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Gambar/foto papan nama badan usaha "+p.nama_perusahaan
+								berkas.keterangan = "Gambar/foto papan nama badan usaha "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Gambar/foto papan nama badan usaha '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Gambar/foto papan nama badan usaha, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Gambar/foto papan nama badan usaha, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+def upload_akta_pendirian_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Akta Pendirian "+p.nama_perusahaan
+								berkas.keterangan = "Akta Pendirian "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Akta Pendirian '+p.nama_perusahaan +' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Akta Pendirian, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Akta Pendirian, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response	
+
+
+def upload_akta_perubahan_badan_usaha(request):
+	if 'id_perusahaan' in request.COOKIES.keys():
+		if request.COOKIES['id_perusahaan'] != '':
+			form = BerkasFom(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if request.method == "POST":
+				if berkas_:
+					if form.is_valid():
+						ext = os.path.splitext(berkas_.name)[1]
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						if not ext in valid_extensions:
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = json.dumps(data)
+							response = HttpResponse(data)
+						else:
+							try:
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+								berkas = form.save(commit=False)
+								berkas.nama_berkas = "Akta Perubahan "+p.nama_perusahaan
+								berkas.keterangan = "Akta Perubahan "+p.nama_perusahaan
+								if request.user.is_authenticated():
+									berkas.created_by_id = request.user.id
+								else:
+									berkas.created_by_id = request.COOKIES['id_pemohon']
+								berkas.save()
+								p.berkas_npwp = berkas
+								p.save()
+								d.berkas_npwp_perusahaan = berkas
+								d.save()
+								data = {'success': True, 'pesan': 'Akta Perubahan '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
+									{'status_upload': 'ok'},
+								]}
+							except ObjectDoesNotExist:
+								data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}					
+							data = json.dumps(data)
+							response = HttpResponse(data)
+					else:
+						data = form.errors.as_json()
+						response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong.'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = form.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload Akta Perubahan, Perusahaan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload Akta Perubahan, Perusahaan tidak ditemukan/tidak ada.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response		
