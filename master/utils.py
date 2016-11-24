@@ -6,3 +6,4 @@ def get_param(parameter_):
 	if sett_list.exists():
 		sett_ = sett_list.last()
 	return sett_
+
