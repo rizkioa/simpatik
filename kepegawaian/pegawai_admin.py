@@ -72,6 +72,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as', 'username', 'password',)
 	list_filter = ('groups__name', )
 	inlines = [NomorIdentitasInline,]
+	search_fields = ('username', 'nama_lengkap')
 
 	def login_as(self, obj):
 		str_aksi = ""

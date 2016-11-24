@@ -350,6 +350,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 						if form.is_valid():
 							f = form.save(commit=False)
 							f.perusahaan_id = request.COOKIES['id_perusahaan']
+							f.jenis_legalitas_id = 1
 							if request.user.is_authenticated():
 								f.created_by_id = request.user.id
 							else:
@@ -390,6 +391,8 @@ def siup_legalitas_perusahaan_save_cookie(request):
 									legalitas.jenis_legalitas_id = 2
 									legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
 									legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
+									legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
+									legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 									legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
 									legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
 									legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')

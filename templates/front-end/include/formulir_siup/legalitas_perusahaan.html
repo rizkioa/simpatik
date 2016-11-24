@@ -15,16 +15,13 @@
       </div>
     </div>
 
-    <div class="form-group" id="jenis_legalitas">
+    <!-- <div class="form-group" id="jenis_legalitas">
       <label class="col-sm-2 control-label text-left">Jenis Akta dan Pengesahan</label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10 akta_pendirian_disable" name="jenis_legalitas" id="id_jenis_legalitas">
-          {% for j in jenis_legalitas_list %}
-            <option value="{{ j.id }}">{{j.jenis_legalitas}}</option>
-          {% endfor %}
         </select>
       </div>
-    </div>
+    </div> -->
 
     <div class="form-group" id="nama_notaris">
       <label class="col-sm-2 control-label text-left">Nama Notaris</label>
@@ -47,10 +44,10 @@
       </div>
     </div>
 
-    <!-- <div class="form-group">
+    <div class="form-group">
       <label class="col-sm-2 control-label text-left">No. Akta</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control">
+        <input type="text" class="form-control akta_pendirian_disable" name="nomor_akta" id="id_nomor_akta_legalitas_pendirian">
       </div>
     </div>
 
@@ -58,13 +55,13 @@
       <label class="col-sm-2 control-label text-left">Tanggal Akta</label>
       <div class="col-sm-5">
         <div class="input-group datepicker" data-format="L">
-          <input type="text" class="form-control">
+          <input type="text" class="form-control akta_pendirian_disable" name="tanggal_akta" id="id_tanggal_akta_legalitas_pendirian">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="form-group" id="nomor_pengesahan">
       <label class="col-sm-2 control-label text-left">No. Pengesahan</label>
@@ -129,10 +126,10 @@
       </div>
     </div>
 
-    <!-- <div class="form-group" id="nomor_akta_perubahan">
+    <div class="form-group" id="nomor_akta_perubahan">
       <label  class="col-sm-2 control-label text-left">No. Akta</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control akta_perubahan_disable" name="nomor_akta_perubahan">
+        <input type="text" class="form-control akta_perubahan_disable" name="nomor_akta_perubahan" id="id_nomor_akta_perubahan">
       </div>
     </div>
 
@@ -140,13 +137,13 @@
       <label class="col-sm-2 control-label text-left">Tanggal Akta</label>
       <div class="col-sm-5">
         <div class="input-group datepicker" data-format="L">
-          <input type="text" class="form-control akta_perubahan_disable" name="tanggal_akta_perubahan">
+          <input type="text" class="form-control akta_perubahan_disable" name="tanggal_akta_perubahan" id="id_tanggal_akta_perubahan">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="form-group" id="nomor_pengesahan_perubahan">
       <label class="col-sm-2 control-label text-left">No. Pengesahan</label>
