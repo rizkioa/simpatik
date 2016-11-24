@@ -81,7 +81,7 @@ class Settings(models.Model):
 class Negara(models.Model):
 	nama_negara = models.CharField(max_length=40, verbose_name="Negara")
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
-	code = models.CharField(max_length=10, blank=True, null=True, verbose_name="Kode Negara")
+	kode = models.CharField(max_length=10, blank=True, null=True, verbose_name="Kode Negara")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
@@ -99,6 +99,7 @@ class Provinsi(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
 
 	def as_json(self):
 		return dict(id=self.id, nama_provinsi=self.nama_provinsi, negara=self.negara.nama_negara, keterangan=self.keterangan)
@@ -121,6 +122,7 @@ class Kabupaten(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_kabupaten)+"</option>"
@@ -143,6 +145,8 @@ class Kecamatan(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
+
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_kecamatan)+"</option>"
@@ -162,6 +166,8 @@ class Desa(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
+	
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_desa)+"</option>"

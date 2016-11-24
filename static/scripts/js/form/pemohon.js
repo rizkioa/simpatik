@@ -79,7 +79,7 @@ function make_disabled(elem_, dis_){
     elem_.prop( "disabled", dis_);
     elem_.trigger("chosen:updated");
 }
-		
+
 function load_provinsi(id_negara){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     // $( "#id_provinsi_chosen" ).mask('loading')
@@ -96,7 +96,6 @@ function load_provinsi(id_negara){
             // $( "#id_provinsi_chosen" ).unmask()
             $( "#id_provinsi" ).change(function(){
                 $this = $(this)
-
                 id_provinsi = $(this).val()
                 if(id_provinsi.length > 0){
                     load_kabupaten(id_provinsi)
@@ -111,28 +110,26 @@ function load_provinsi(id_negara){
         }
     });
 }
-
 make_disabled($( "#id_provinsi" ), true)
 make_disabled($( "#id_kabupaten" ), true)
 make_disabled($( "#id_kecamatan" ), true)
 make_disabled($( "#id_desa" ), true)
-
 $( "#id_negara" ).change(function(){
     $this = $(this)
-
     id_negara = $(this).val()
     if(id_negara.length > 0){
         load_provinsi(id_negara)
+        make_disabled($( "#id_provinsi" ), true)
+        make_disabled($( "#id_kabupaten" ), true)
+        make_disabled($( "#id_kecamatan" ), true)
+        make_disabled($( "#id_desa" ), true)
     }else{
-        elem = $( "#id_provinsi" )
-        make_disabled(elem, true)
         make_disabled($( "#id_provinsi" ), true)
         make_disabled($( "#id_kabupaten" ), true)
         make_disabled($( "#id_kecamatan" ), true)
         make_disabled($( "#id_desa" ), true)
     }
 })
-
 function load_kabupaten(id_provinsi){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     // $( "#id_kabupaten_chosen" ).mask('loading')
@@ -149,7 +146,6 @@ function load_kabupaten(id_provinsi){
             // $( "#id_kabupaten_chosen" ).unmask()
             $( "#id_kabupaten" ).change(function(){
                 $this = $(this)
-
                 id_kabupaten = $(this).val()
                 if(id_kabupaten.length > 0){
                     load_kecamatan(id_kabupaten)
@@ -164,7 +160,6 @@ function load_kabupaten(id_provinsi){
         }
     });
 }
-
 function load_kecamatan(id_kabupaten){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     // $( "#id_kecamatan_chosen" ).mask('loading')
@@ -196,7 +191,6 @@ function load_kecamatan(id_kabupaten){
         }
     });
 }
-
 function load_desa(id_kecamatan){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     // $( "#id_desa_chosen" ).mask('loading')

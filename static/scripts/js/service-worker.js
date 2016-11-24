@@ -1,9 +1,37 @@
-var dataCacheName = '[Chache_Name]-v1';
-var cacheName = '[Chache_Name]-v1';
+var dataCacheName = '[javascript-css]-v1';
+var cacheName = '[javascript-css]-v1';
 var PATH = '';
 var filesToCache = [
-   PATH + '/',
-   PATH + '/index.html'
+   // IMG
+   PATH + '/static/images/kabkediri.png',
+   PATH + '/static/images/SIMPATIK.ico',
+   PATH + '/static/images/alur.png',
+
+   // JS
+   PATH + '/static/scripts/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js',
+   PATH + '/static/scripts/js/vendor/wow/wow.js',
+   PATH + '/static/scripts/js/vendor/jquery/jquery-1.11.2.min.js',
+   PATH + '/static/scripts/js/vendor/bootstrap/bootstrap.min.js',
+   PATH + '/static/scripts/js/vendor/jRespond/jRespond.min.js',
+   PATH + '/static/scripts/js/vendor/slimscroll/jquery.slimscroll.min.js',
+   PATH + '/static/scripts/js/vendor/animsition/js/jquery.animsition.min.js',
+   PATH + '/static/scripts/js/mainfront.js',
+   // CSS
+   PATH + '/static/styles/css/main_site.css',
+   PATH + '/static/styles/css/vendor/bootstrap.min.css',
+   PATH + '/static/styles/css/vendor/animate.css',
+   PATH + '/static/styles/css/vendor/font-awesome.min.css',
+   PATH + '/static/scripts/js/vendor/animsition/css/animsition.min.css',
+   PATH + '/static/styles/css/mainfront.css',
+   PATH + '/static/styles/css/mobile-frontend.css',
+   PATH + '/static/styles/css/vendor/color-background.css',
+
+   // PAGES
+   PATH + '',
+   PATH + '/index.html',
+   PATH + '/layanan/',
+   PATH + '/layanan/siup',
+
 ];
 self.addEventListener( 'install', function( e ) {
    console.log( '[ServiceWorker] Install' );

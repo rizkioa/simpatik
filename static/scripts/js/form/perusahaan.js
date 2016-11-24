@@ -11,7 +11,7 @@ function load_perusahaan_a(npwp_){
     		if(respon.success){
 	          	// load_provinsi1(respon.data.negara)
 	          	// load_kabupaten1(respon.data.provinsi)
-	          	load_kecamatan1(respon.data.kabupaten)
+	          	// load_kecamatan1(respon.data.kabupaten)
 	          	load_desa1(respon.data.kecamatan)
 	          	
 	              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
@@ -68,37 +68,37 @@ function load_perusahaan_a(npwp_){
 	});
 }
 
-function load_kecamatan1(id_kabupaten){
-	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-	$( "#id_kecamatan_chosen1" ).mask('loading')
-	$( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
-	$.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kabupaten: 1 }, // get the form data
-        type: 'POST', // GET or POST
-        // url: '{% url 'admin:option_kecamatan' %}', // the file to call
-        url: __base_url__+'/admin/master/kecamatan/option/',
-        success: function(response) { // on success..
-          elem = $( "#id_kecamatan1" )
-          elem.html(response);
-          make_disabled(elem, false)
-          $( "#id_kecamatan_chosen1" ).unmask()
-          $( "#id_kecamatan1" ).change(function(){
-            $this = $(this)
+// function load_kecamatan1(id_kabupaten){
+// 	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+// 	$( "#id_kecamatan_chosen1" ).mask('loading')
+// 	$( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
+// 	$.ajax({ // create an AJAX call...
+//         data: { csrfmiddlewaretoken: csrf_token, kabupaten: 1083 }, // get the form data
+//         type: 'POST', // GET or POST
+//         // url: '{% url 'admin:option_kecamatan' %}', // the file to call
+//         url: __base_url__+'/admin/master/kecamatan/option/',
+//         success: function(response) { // on success..
+//           elem = $( "#id_kecamatan1" )
+//           elem.html(response);
+//           make_disabled(elem, false)
+//           $( "#id_kecamatan_chosen1" ).unmask()
+//           $( "#id_kecamatan1" ).change(function(){
+//             $this = $(this)
             
-            id_kecamatan1 = $(this).val()
-            if(id_kecamatan1.length > 0){
-              load_desa1(id_kecamatan1)
-            }else{
-              elem = $( "#id_desa1" )
-              make_disabled(elem, true)
-            }
-          })
-        },
-        error: function(data) {                
-          toast_server_error()
-        }
-    });
-}
+//             id_kecamatan1 = $(this).val()
+//             if(id_kecamatan1.length > 0){
+//               load_desa1(id_kecamatan1)
+//             }else{
+//               elem = $( "#id_desa1" )
+//               make_disabled(elem, true)
+//             }
+//           })
+//         },
+//         error: function(data) {                
+//           toast_server_error()
+//         }
+//     });
+// }
 
 function load_desa1(id_kecamatan){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
@@ -131,6 +131,8 @@ $( "#id_kecamatan1" ).change(function(){
 	id_kecamatan1 = $(this).val()
 	if(id_kecamatan1.length > 0){
 	  	load_desa1(id_kecamatan1)
+		make_disabled($( "#id_desa1" ), true)
+	  	
 	}else{
 		// elem = $( "#id_kecamatan3" )
 		// make_disabled(elem, true)
