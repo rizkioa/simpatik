@@ -1,18 +1,20 @@
 from django.db import models
-from master.models import Desa, AtributTambahan, Berkas
+from master.models import Desa, AtributTambahan, Berkas, MetaAtribut
 from accounts.utils import STATUS
 # from perusahaan.utils import AKTA, KEDUDUKAN
 # from accounts.models import IdentitasPribadi
 from datetime import datetime
-
+# from izin.models import DetilTDP
+from accounts.models import IdentitasPribadi
 # import json
 
 
 # Create your models here.
 
-class KBLI(models.Model):
-	kode_kbli = models.IntegerField(verbose_name='Kode KBLI')
+class KBLI(MetaAtribut):
+	kode_kbli = models.CharField(max_length=15, verbose_name='Kode KBLI')
 	nama_kbli = models.CharField(max_length=255, verbose_name='Nama KBLI')
+	versi = models.CharField(max_length=255, null=True, blank=True, verbose_name='Versi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
 	def __unicode__(self):
@@ -223,65 +225,55 @@ class BentukKerjasama(models.Model):
 		verbose_name = 'Bentuk Kerjasama'
 		verbose_name_plural = 'Bentuk Kerjasama'
 
-# class JenisKedudukan(models.Model):
-# 	kedudukan = models.CharField(max_length=50, choices=KEDUDUKAN, default=1 ,blank=True, null=True, verbose_name='Kedudukan')
+class JenisKedudukan(models.Model):
+	kedudukan_pimpinan = models.CharField(max_length=255, verbose_name='Kedudukan')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.kedudukan)
+	def __unicode__(self):
+		return "%s" % (self.kedudukan_pimpinan)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Kedudukan'
-# 		verbose_name_plural = 'Jenis Kedudukan'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Kedudukan'
+		verbose_name_plural = 'Jenis Kedudukan'
 
-# class DataPimpinan(IdentitasPribadi):
-# 	"""docstring for Data Pimpinan"""
-# 	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
-# 	kedudukan = models.ForeignKey(JenisKedudukan, verbose_name='Jenis Kedudukan')
-# 	tanggal_menduduki_jabatan = models.DateField(verbose_name='Tanggal Menduduki Jabatan')
-# 	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
-# 	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
+class DataPimpinan(IdentitasPribadi):
+	"""docstring for Data Pimpinan"""
+	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
+	kedudukan = models.ForeignKey(JenisKedudukan, verbose_name='Jenis Kedudukan')
+	detil_tdp = models.ForeignKey('izin.DetilTDP', verbose_name='Detil TDP')
+	tanggal_menduduki_jabatan = models.DateField(verbose_name='Tanggal Menduduki Jabatan')
+	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
+	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
 
-# 	kedudukan_diperusahaan_lain = models.CharField(max_length=255, verbose_name='Kedudukan Di Perusahaan Lain')
-# 	nama_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nama Perusahaan Lain')
-# 	alamat_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Alamat Perusahaan Lain')
-# 	kode_pos_perusahaan_lain = models.IntegerField(blank=True, null=True, verbose_name='Kode Pos Perusahaan Lain')
-# 	telepon_perusahaan_lain = models.CharField(max_length=50, blank=True, null=True, verbose_name='Telepon Perusahaan Lain')
-# 	tanggal_menduduki_jabatan_perusahaan_lain = models.DateField(blank=True, null=True, verbose_name=' Tanggal Menduduki Jabatan Di Perusahaan Lain')
+	kedudukan_diperusahaan_lain = models.CharField(max_length=255, verbose_name='Kedudukan Di Perusahaan Lain')
+	nama_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nama Perusahaan Lain')
+	alamat_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Alamat Perusahaan Lain')
+	kode_pos_perusahaan_lain = models.IntegerField(blank=True, null=True, verbose_name='Kode Pos Perusahaan Lain')
+	telepon_perusahaan_lain = models.CharField(max_length=50, blank=True, null=True, verbose_name='Telepon Perusahaan Lain')
+	tanggal_menduduki_jabatan_perusahaan_lain = models.DateField(blank=True, null=True, verbose_name=' Tanggal Menduduki Jabatan Di Perusahaan Lain')
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.kedudukan)
+	def __unicode__(self):
+		return "%s" % (self.kedudukan)
 
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Data Pimpinan'
-# 		verbose_name_plural = 'Data Pimpinan'
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Data Pimpinan'
+		verbose_name_plural = 'Data Pimpinan'
 
+class PemegangSaham(IdentitasPribadi):
+	"""docstring for Pemegang Saham"""
+	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
+	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
+	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
 
-# class JenisKegiatanUsaha(models.Model):
-# 	jenis_kegiatan_usaha = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jenis Kegiatan Usaha')
+	def __unicode__(self):
+		return "%s" % (self.npwp)
 
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_kegiatan_usaha)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Kegiatan Usaha'
-# 		verbose_name_plural = 'Jenis Kegiatan Usaha'
-
-# class JenisPengecer(models.Model):
-# 	jenis_pengecer = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jenis Pengecer')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_pengecer)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Jenis Pengecer'
-# 		verbose_name_plural = 'Jenis Pengecer'
-
-
-
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Pemegang Saham'
+		verbose_name_plural = 'Pemegang Saham'
 
 # class DataRincianPerusahaan(models.Model):
 # 	"""docstring for Data Rincian Perusahaan"""

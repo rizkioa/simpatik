@@ -5,6 +5,8 @@ from datetime import datetime
 
 # Create your models here.
 
+
+
 class JenisReklame(models.Model):
 	jenis_reklame = models.CharField(max_length=255, verbose_name='Jenis Reklame')
 	keterangan = models.CharField(max_length=255, blank=True, null=True)
@@ -17,8 +19,38 @@ class JenisReklame(models.Model):
 		verbose_name = 'Jenis Reklame'
 		verbose_name_plural = 'Jenis Reklame'
 
-class AtributTambahan(models.Model):
+class MetaAtribut(models.Model):
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
+	# created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	created_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	created_at = models.DateTimeField(editable=False)
+	# verified_by = models.ForeignKey("accounts.Account", related_name="verify_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_verify_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_at = models.DateTimeField(editable=False, blank=True, null=True)
+	# rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_rejected_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
+
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def get_color_status(self):
+		return get_status_color(self)
+		
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		if not self.id:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+		return super(MetaAtribut, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.status))
+
+	class Meta:
+		abstract = True
+
+class AtributTambahan(models.Model):
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=11)
 
 	created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
 	created_at = models.DateTimeField(editable=False)
@@ -81,7 +113,7 @@ class Settings(models.Model):
 class Negara(models.Model):
 	nama_negara = models.CharField(max_length=40, verbose_name="Negara")
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
-	code = models.CharField(max_length=10, blank=True, null=True, verbose_name="Kode Negara")
+	kode = models.CharField(max_length=10, blank=True, null=True, verbose_name="Kode Negara")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
@@ -99,6 +131,7 @@ class Provinsi(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
 
 	def as_json(self):
 		return dict(id=self.id, nama_provinsi=self.nama_provinsi, negara=self.negara.nama_negara, keterangan=self.keterangan)
@@ -121,6 +154,7 @@ class Kabupaten(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_kabupaten)+"</option>"
@@ -143,6 +177,8 @@ class Kecamatan(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
+
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_kecamatan)+"</option>"
@@ -162,6 +198,8 @@ class Desa(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
+	
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_desa)+"</option>"

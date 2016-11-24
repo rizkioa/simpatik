@@ -31,9 +31,9 @@ def import_kbli():
 				keterangan = first_sheet.cell(row,4).value
 				keterangan = keterangan.strip()
 
-				kbli, created = KBLI.objects.get_or_create(kode_kbli=kode, nama=judul, versi=versi)
+				kbli, created = KBLI.objects.get_or_create(kode_kbli=kode, nama_kbli=judul, versi=versi)
 				kbli.keterangan = keterangan
-				kbli.status_data = status_data
+				# kbli.status_data = status_data
 				kbli.save()
 				success_count += 1
 		print "############################## START #############################"

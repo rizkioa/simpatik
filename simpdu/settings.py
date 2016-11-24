@@ -97,7 +97,7 @@ DATABASES = {
         'NAME': 'simpatik',
         'USER':'simpatik',
         'PASSWORD':'simpatik',
-        'PORT': '3306',
+        # 'PORT': '3306',
         'OPTIONS': {
             "init_command": "SET foreign_key_checks = 0;",
             # "init_command": "SET storage_engine=INNODB",
@@ -189,3 +189,7 @@ ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 #LOGOUT_URL = 'frontlogout'
 
 LOGIN_REDIRECT_URL = 'frontindex'
+
+HTMLVALIDATOR_ENABLED = True
+
+HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'

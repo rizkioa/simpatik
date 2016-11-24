@@ -11,7 +11,8 @@ from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPem
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas, Legalitas
 from izin.models import PengajuanIzin, DetilSIUP
-
+from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
+from django.db.models import Q
 from django.template import RequestContext, loader
 import json
 from django.utils.decorators import method_decorator
@@ -51,81 +52,118 @@ def cari_pengajuan(request):
 	return render(request, "front-end/cari_pengajuan.html")
 
 def formulir_siup(request, extra_context={}):
-	negara = Negara.objects.all()
-	provinsi = Provinsi.objects.all()
-	kabupaten = Kabupaten.objects.all()
-	kecamatan = Kecamatan.objects.all()
-	desa = Desa.objects.all()
-
-	extra_context.update({'negara': negara})
-	extra_context.update({'provinsi': provinsi})
-	extra_context.update({'kabupaten': kabupaten})
-	extra_context.update({'kecamatan': kecamatan})
-	extra_context.update({'desa': desa})
-
-	jenis_pemohon = JenisPemohon.objects.all()
-	jenis_legalitas_list = JenisLegalitas.objects.all()
-	bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
-	jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
-	kelembagaan_list = Kelembagaan.objects.all()
-	kbli_list = KBLI.objects.all()
-	produk_utama_list = ProdukUtama.objects.all()
-
-	extra_context.update({'jenis_pemohon': jenis_pemohon})
-	extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
-	extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
-	extra_context.update({'kelembagaan_list': kelembagaan_list})
-	extra_context.update({'kbli_list': kbli_list})
-	extra_context.update({'produk_utama_list': produk_utama_list})
-	extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
-
-	# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
-	if 'id_pengajuan' in request.COOKIES.keys():
-
-		if request.COOKIES['id_pengajuan'] != "":
-			try:
-				pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-				alamat_ = ""
-				alamat_perusahaan_ = ""
-				if pengajuan_.pemohon:
-					if pengajuan_.pemohon.desa:
-						alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-						extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
-					extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
-
-				if pengajuan_.perusahaan:
-					if pengajuan_.perusahaan.desa:
-						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-						extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
-					extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
-
-				extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
-				extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
-				extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
-				if pengajuan_.bentuk_kegiatan_usaha:
-					extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
-				if pengajuan_.jenis_penanaman_modal:
-					extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
-				extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
-				extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
-				extra_context.update({ 'presentase_saham_nasional_konfirmasi': pengajuan_.presentase_saham_nasional })
-				extra_context.update({ 'presentase_saham_asing_konfirmasi': pengajuan_.presentase_saham_asing })
-				if pengajuan_.kelembagaan:
-					extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
-			
-			except ObjectDoesNotExist:
-				pass
-		
-	# print request.COOKIES['id_pengajuan']
-	# +++++++++++++++++++ end jika cookie pengajuan ada dan di refrash +++++++++++++++++
-	# request.delete_cookie(key='id_pengajuan')
-
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	
+		negara = Negara.objects.all()
+		provinsi = Provinsi.objects.all()
+		kabupaten = Kabupaten.objects.all()
+		kecamatan = Kecamatan.objects.all()
+		desa = Desa.objects.all()
+
+		extra_context.update({'negara': negara})
+		extra_context.update({'provinsi': provinsi})
+		extra_context.update({'kabupaten': kabupaten})
+		extra_context.update({'kecamatan': kecamatan})
+		extra_context.update({'desa': desa})
+
+		kecamatan_perusahaan = Kecamatan.objects.filter(kabupaten_id=1083)
+		extra_context.update({'kecamatan_perusahaan': kecamatan_perusahaan})
+
+
+		jenis_pemohon = JenisPemohon.objects.all()
+		jenis_legalitas_list = JenisLegalitas.objects.all()
+		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
+		kelembagaan_list = Kelembagaan.objects.all()
+		kbli_list = KBLI.objects.all()
+		produk_utama_list = ProdukUtama.objects.all()
+
+		extra_context.update({'jenis_pemohon': jenis_pemohon})
+		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
+		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
+		extra_context.update({'kelembagaan_list': kelembagaan_list})
+		extra_context.update({'kbli_list': kbli_list})
+		extra_context.update({'produk_utama_list': produk_utama_list})
+		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
+
+		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != "":
+				try:
+					pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+					alamat_ = ""
+					alamat_perusahaan_ = ""
+					if pengajuan_.pemohon:
+						if pengajuan_.pemohon.desa:
+							alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+						extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+						extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+						ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+						extra_context.update({ 'ktp': ktp_ })
+						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+						extra_context.update({ 'paspor': paspor_ })
+						extra_context.update({'cookie_file_ktp': ktp_.berkas })
+					if pengajuan_.perusahaan:
+						if pengajuan_.perusahaan.desa:
+							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
+						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
+						legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+						legalitas_perubahan= pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas__id=2).last()
+
+						extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
+						extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+					
+					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+					extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
+					if pengajuan_.bentuk_kegiatan_usaha:
+						extra_context.update({ 'bentuk_kegiatan_usaha_konfirmasi': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha })
+					if pengajuan_.jenis_penanaman_modal:
+						extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
+					if pengajuan_.kekayaan_bersih:
+						extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
+					if pengajuan_.total_nilai_saham:
+						extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+					if pengajuan_.presentase_saham_nasional:
+						extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
+					if pengajuan_.presentase_saham_asing:
+						extra_context.update({ 'presentase_saham_asing_konfirmasi': str(pengajuan_.presentase_saham_asing)+" %" })
+					if pengajuan_.kelembagaan:
+						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+					extra_context.update({ 'pengajuan_': pengajuan_ })
+					extra_context.update({ 'berkas_': pengajuan_.berkas_tambahan.last() })
+					
+					template = loader.get_template("front-end/formulir/siup.html")
+					ec = RequestContext(request, extra_context)
+					response = HttpResponse(template.render(ec))
+
+					if pengajuan_.pemohon:
+						response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+					if pengajuan_.perusahaan:
+						response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
+						if legalitas_pendirian:
+							response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+						if legalitas_perubahan:
+							response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+					if ktp_:
+						response.set_cookie(key='nomor_ktp', value=ktp_)
+				except ObjectDoesNotExist:
+					template = loader.get_template("front-end/formulir/siup.html")
+					ec = RequestContext(request, extra_context)
+					response = HttpResponse(template.render(ec))
+					response.set_cookie(key='id_pengajuan', value='0')
+		else:
+			template = loader.get_template("front-end/formulir/siup.html")
+			ec = RequestContext(request, extra_context)
+			response = HttpResponse(template.render(ec))
+			response.set_cookie(key='id_pengajuan', value='0')
+		return response
 	else:
 		return HttpResponseRedirect(reverse('layanan'))
-	return render(request, "front-end/formulir/siup.html", extra_context)
 
 def formulir_ho_pemohonan_baru(request, extra_context={}):
 	negara = Negara.objects.all()
@@ -611,4 +649,13 @@ def ajax_cek_pengajuan(request):
 		url = reverse('ajax_cek_pengajuan')
 		data = {'success': False, 'pesan': 'Pengajuan tidak ada dalam daftar.', 'url': url}
 		return HttpResponse(json.dumps(data))
+
+def ajax_konfirmasi_kbli(request, id_pengajuan_izin_):
+	if id_pengajuan_izin_:
+		pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+		kbli_list = pengajuan_.kbli.all()
+		kbli_ = [ obj.as_dict() for obj in kbli_list ]
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'kbli': kbli_ }
+	response = HttpResponse(json.dumps(data))
+	return response
 	

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, ProdukUtama, Legalitas, JenisLegalitas
+from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, ProdukUtama, Legalitas, JenisLegalitas, BentukKerjasama, StatusPerusahaan, KedudukanKegiatanUsaha, JenisPengecer
 from perusahaan.perusahaan_admin import PerusahaanAdmin
 from django.http import HttpResponseRedirect, HttpResponse
 import json
@@ -32,7 +32,7 @@ class JenisPerusahaanAdmin(admin.ModelAdmin):
 admin.site.register(JenisPerusahaan, JenisPerusahaanAdmin)
 
 class KBLIAdmin(admin.ModelAdmin):
-	list_display = ('kode_kbli','nama_kbli')
+	list_display = ('kode_kbli','nama_kbli', 'versi')
 	search_fields = ('nama_kbli',)
 
 admin.site.register(KBLI, KBLIAdmin)
@@ -167,3 +167,7 @@ admin.site.register(ProdukUtama, ProdukUtamaAdmin)
 
 admin.site.register(BentukKegiatanUsaha)
 admin.site.register(JenisBadanUsaha)
+admin.site.register(BentukKerjasama)
+admin.site.register(StatusPerusahaan)
+admin.site.register(KedudukanKegiatanUsaha)
+admin.site.register(JenisPengecer)
