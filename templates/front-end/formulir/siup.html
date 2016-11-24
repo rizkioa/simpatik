@@ -147,6 +147,15 @@
                       }
                     }
                   })
+                  $.ajax({
+                    url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
+                    success: function (response){
+                      respon = $.parseJSON(response)
+                      if (respon.success){
+                        
+                      }
+                    }
+                  })
                 }
               }else{
                 $('#rootwizard').find('.pager .next').show();
