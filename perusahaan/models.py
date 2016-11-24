@@ -163,6 +163,8 @@ class Legalitas(AtributTambahan):
 	jenis_legalitas = models.ForeignKey(JenisLegalitas, related_name='jenis_legalitas_perusahaan', blank=True, null=True)
 	alamat = models.CharField(max_length=255, null=True, blank=True)
 	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
+	nomor_akta = models.CharField("Nomor Akta", max_length=30, blank=True, null=True)
+	tanggal_akta = models.DateField("Tanggal Akta", blank=True, null=True)
 	nomor_pengesahan = models.CharField("Nomor Pengesahan", max_length=30, blank=True, null=True)
 	tanggal_pengesahan = models.DateField("Tanggal Pengesahan", blank=True, null=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", blank=True, null=True)
