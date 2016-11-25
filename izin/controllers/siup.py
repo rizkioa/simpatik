@@ -97,7 +97,7 @@ def formulir_siup(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'SIUP Baru'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten=1)
+		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 		jenis_pemohon = JenisPemohon.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
@@ -109,6 +109,7 @@ def formulir_siup(request):
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
+		extra_context.update({'kecamatan_perusahaan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
