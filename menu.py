@@ -55,11 +55,11 @@ class CustomMenu(Menu):
                         #         ),
                         #     ]                            
                         # ),
-                        items.MenuItem(
-                            title='Semua Izin',
-                            icon='fa fa-file-text', 
-                            url=reverse('admin:izin_pengajuanizin_changelist'),                        
-                        ),
+                        # items.MenuItem(
+                        #     title='Semua Izin',
+                        #     icon='fa fa-file-text', 
+                        #     url=reverse('admin:izin_pengajuanizin_changelist'),                        
+                        # ),
                         # items.MenuItem(
                         #     title='Semua Perusahan',
                         #     icon='fa fa-building', 
@@ -67,12 +67,18 @@ class CustomMenu(Menu):
                         # ),
                     ]
                 )
+
         if ~Q(request.user.is_superuser):
             menu_izin = items.MenuItem(
                         title=_('Menu Izin'),
                         description='Menu Izin',
                         accesskey='menuIzin',
                         children= [
+                            items.MenuItem(
+                                title='Semua Izin',
+                                icon='fa fa-file-text', 
+                                url=reverse('admin:izin_pengajuanizin_changelist'),                        
+                            ),
                         	items.MenuItem(
                                 title=_('Izin Terdaftar'),
                                 description='Page Izin Terdaftar',
@@ -102,7 +108,7 @@ class CustomMenu(Menu):
                     url=reverse('admin:add_wizard_izin'),
                 ),
                 items.MenuItem(
-                    title='Verifikasi Pengajuan',
+                    title='Pengajuan Masuk',
                     icon='icon-check',
                     css_classes='t',
                     url=reverse('admin:verifikasi'),                
@@ -112,13 +118,13 @@ class CustomMenu(Menu):
         if request.user.groups.filter(name="Kabid").exists():
             menu_utama.children += [
                 items.MenuItem(
-                    title='Verifikasi Pengajuan',
+                    title='Pengajuan Masuk',
                     icon='icon-check',
                     css_classes='t', 
                     url=reverse('admin:verifikasi'),                
                 ),
                 items.MenuItem(
-                    title='Verifikasi SKIzin',
+                    title='Draft SK',
                     icon='icon-list',
                     css_classes='r', 
                     url=reverse('admin:verifikasi_skizin'),                
@@ -128,7 +134,7 @@ class CustomMenu(Menu):
         if request.user.groups.filter(name="Pembuat Surat").exists():
             menu_utama.children += [
                 items.MenuItem(
-                    title='Buat Surat',
+                    title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='t', 
                     url=reverse('admin:verifikasi'),                
@@ -138,7 +144,7 @@ class CustomMenu(Menu):
         if request.user.groups.filter(name="Kadin").exists():
             menu_utama.children += [
                 items.MenuItem(
-                    title='Verifikasi SKIzin',
+                    title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='r', 
                     url=reverse('admin:verifikasi_skizin'),                
@@ -148,7 +154,7 @@ class CustomMenu(Menu):
         if request.user.groups.filter(name="Penomoran").exists():
             menu_utama.children += [
                 items.MenuItem(
-                    title='Penomoran Izin',
+                    title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='r', 
                     url=reverse('admin:verifikasi_skizin'),                
@@ -158,7 +164,7 @@ class CustomMenu(Menu):
         if request.user.groups.filter(name="Cetak").exists():
             menu_utama.children += [
                 items.MenuItem(
-                    title='Pencetakan Izin',
+                    title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='r', 
                     url=reverse('admin:verifikasi_skizin'),                
@@ -168,7 +174,7 @@ class CustomMenu(Menu):
         if request.user.groups.filter(name="Selesai").exists():
             menu_utama.children += [
                 items.MenuItem(
-                    title='Penstempelan Izin',
+                    title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='r', 
                     url=reverse('admin:verifikasi_skizin'),                
