@@ -252,6 +252,12 @@ class Berkas(AtributTambahan):
 			return settings.MEDIA_URL+str(self.berkas)
 		return "#"
 
+	def as_dict(self):
+		return {
+			'nama_berkas': nama_berkas,
+			'berkas': self.get_file_url(),
+		}
+
 	def __unicode__(self):
 		return self.nama_berkas
 
