@@ -465,7 +465,7 @@ def cetak_permohonan(request, id_pengajuan_):
 	# return render(request, response , extra_context)
 
 def cetak_bukti_pendaftaran(request, id_pengajuan_):
-	id_pengajuan_ = base64.b64decode(id_pengajuan_)
+	# id_pengajuan_ = base64.b64decode(id_pengajuan_)
 	extra_context = {}
 	if id_pengajuan_:
 		pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_)

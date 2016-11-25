@@ -9,10 +9,6 @@ urlpatterns = [
 
     url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kbli, name='ajax_konfirmasi_kbli'),
     url(r'^ajax-konfirmasi-kuasa/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_kuasa_pemohon, name='ajax_kuasa_pemohon'),
-    url(r'^ajax-konfirmasi-paket-pekerjaan/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_nama_paket_pekerjaan, name='ajax_paket_pekerjaan'),
-    url(r'^ajax-konfirmasi-anggota-badan-direktur/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_direktur, name='ajax_konfirmasi_anggota_badan_direktur'),
-    url(r'^ajax-konfirmasi-anggota-badan-teknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_teknik, name='ajax_konfirmasi_anggota_badan_teknik'),
-    url(r'^ajax-konfirmasi-anggota-badan-nonteknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_non_teknik, name='ajax_konfirmasi_anggota_badan_non_teknik'),
     url(r'^ajax-konfirmasi-legalitas/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_legalitas_konfirmasi, name='ajax_legalitas_konfirmasi'),
 
     url(r'^layanan/siup$', layanan_view.layanan_siup, name='layanan_siup'),
@@ -66,8 +62,8 @@ urlpatterns = [
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
 
     #cetak SIUP
-    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9A-Za-z_\-=]+)$', views.cetak_permohonan, name='cetak_permohonan'),
-    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9A-Za-z_\-=]+)$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
+    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
 
     #cetak HO Baru
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak$', views.cetak_ho_perpanjang, name='cetak_ho_perpanjang'),
