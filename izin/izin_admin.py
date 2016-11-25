@@ -575,8 +575,8 @@ class IzinAdmin(admin.ModelAdmin):
 	
 	def aksi_detil_siup(self, request):
 		id_pengajuan_izin = request.POST.get('id_detil_siup')
-		print request.POST.get('aksi')
-		print id_pengajuan_izin
+		# print request.POST.get('aksi')
+		# print id_pengajuan_izin
 		try:
 			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
 			if request.POST.get('aksi', None) and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
