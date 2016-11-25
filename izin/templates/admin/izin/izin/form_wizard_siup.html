@@ -12,22 +12,22 @@
 {% endblock %}
 
 {% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
-	<script src="{% static "scripts/js/main.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/filestyle/bootstrap-filestyle.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
-	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+	<script src="{% static 'scripts/js/main.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
-  	<script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
+  	<!-- <script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script> -->
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
   	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
   	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
@@ -43,7 +43,6 @@
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
-						// alert("a")
 						id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 		if (id_pengajuan > 0){
 							$.ajax({
@@ -62,16 +61,51 @@
 										}
 										$('#kbli_konfirmasi').html(str)
 									}
+									else{
+										$('#kbli_konfirmasi').html('');
+									}
 								}
+								// error: function(response){
+								// 	$('#kbli_konfirmasi').html('');
+								// }
 							})
+							$.ajax({
+			                    url: __base_url__+'/ajax-konfirmasi-legalitas/'+id_pengajuan,
+			                    success: function (response){
+			                      	respon = $.parseJSON(response)
+			                      	a = respon.legalitas.length
+			                      	if (respon.legalitas){
+				                        str = ""
+				                        for (var i = 0; i < a; i++){
+				                          // console.log(respon.legalitas[i].jenis_legalitas)
+				                          row = '<tr><td>'+respon.legalitas[i].jenis_legalitas+'</td><td>'+respon.legalitas[i].nama_notaris+'</td><td>'+respon.legalitas[i].alamat+'</td><td>'+respon.legalitas[i].telephone+'</td><td>'+respon.legalitas[i].nomor_akta+'</td><td>'+respon.legalitas[i].tanggal_akta+'</td><td>'+respon.legalitas[i].nomor_pengesahan+'</td><td>'+respon.legalitas[i].tanggal_pengesahan+'</td></tr>'
+				                          $('#legalitas_table > tbody').prepend(row);
+				                        }
+			                      	}
+			                      	else{
+			                      		row = '<tr><td colspan="8"></td></tr>'
+			                      		$('#legalitas_table > tbody').prepend(row);
+			                      	}
+			                    }
+			                    // error: function(response){
+			                    // 	row = '<tr><td colspan='8'></td></tr>'
+			                    //   		$('#legalitas_table > tbody').prepend(row);
+			                    // }
+		                  	})
 							$.ajax({
 			                    url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
 			                    success: function (response){
-			                      respon = $.parseJSON(response)
-			                      if (respon.success){
-			                        $("<br><br><table border='0' width='100%'><tr><td colspan='3'><h3 class='custom-font'>Data Kuasa</h3></td></tr><tr><td width='25%'>Nama Kuasa</td><td width='5%'>:</td><td width='70%'>"+respon.nama_kuasa+"</td></tr><tr><td>No Identitas Kuasa</td><td>:</td><td>"+respon.no_identitas_kuasa+"</td></tr><tr><td>Telpon Kuasa</td><td>:</td><td>"+respon.telephone_kuasa+"</td></tr></table>").insertAfter("#id_table_pemohon_komfirmasi");
-			                      }
+			                      	respon = $.parseJSON(response)
+			                      	if (respon.success){
+			                        	$("<br><br><table border='0' width='100%'><tr><td colspan='3'><h3 class='custom-font'>Data Kuasa</h3></td></tr><tr><td width='25%'>Nama Kuasa</td><td width='5%'>:</td><td width='70%'>"+respon.nama_kuasa+"</td></tr><tr><td>No Identitas Kuasa</td><td>:</td><td>"+respon.no_identitas_kuasa+"</td></tr><tr><td>Telpon Kuasa</td><td>:</td><td>"+respon.telephone_kuasa+"</td></tr></table>").insertAfter("#id_table_pemohon_komfirmasi");
+			                      	}
+			                      	else{
+										$('<br>').insertAfter("#id_table_pemohon_komfirmasi");
+			                      	}
 			                    }
+			                    // error: function(response){
+			                    // 	$('<br>').insertAfter("#id_table_pemohon_komfirmasi");
+			                    // }
 		                  	})
 						}
 					} else {
@@ -203,14 +237,6 @@
 		        })
 		        
 		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
-		      	// $.removeCookie('id_pengajuan', { path: '/' });
-		      	// $.removeCookie('id_perusahaan', { path: '/' });
-		      	// $.removeCookie('id_pemohon', { path: '/' });
-		      	// $.removeCookie('nomor_ktp', { path: '/' });
-		      	// $.removeCookie('nomor_paspor', { path: '/' });
-		      	// $.removeCookie('id_kelompok_izin', { path: '/' });
-		      	// $.removeCookie('id_legalitas', { path: '/' });
-		      	// $.removeCookie('id_legalitas_perubahan', { path: '/' });
 		      	$.ajax({
 		        	url: '{% url 'siup_done' %}',
 		        	success: function(response) {
@@ -352,6 +378,11 @@
 		    	$('.error-saham').remove()
 		    }
 	    }
+
+  		// $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
+  		// $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+    	$('.rupiah').mask("000.000.000.000.000",{reverse:true});
+
 	    
 	    if ('{{pengajuan_}}'){
 	    	// alert("{{ pengajuan_.jenis_pengajuan }}");
@@ -384,9 +415,7 @@
           	$('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
           	$('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
           	$('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
-      		$('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
       		$('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
-      		$('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
       		$('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
       		$('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
       		$('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
@@ -402,6 +431,16 @@
 		        $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
 		        $('#checkbox_berkas_pendukung').prop('checked', 1)
 	      	}
+	    }
+	    id_pengajuan = parseInt($.cookie('id_pengajuan'))
+	    if (id_pengajuan > 0){
+	      $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
+	      load_provinsi('1')
+	      load_kabupaten('1')
+	      setTimeout(function(){
+	        $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
+	        $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
+	      }, 1000);
 	    }
   	</script>
 {% endblock %}

@@ -163,3 +163,7 @@ class NomorIdentitasPengguna(models.Model):
 		verbose_name = 'Nomor Identitas Pengguna'
 		verbose_name_plural = 'Nomor Identitas Pengguna'
 
+from django.contrib.auth.models import Group
+class HakAkses(Group):
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
