@@ -8,7 +8,7 @@ from django.template import RequestContext, loader
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
 
-from perusahaan.models import Perusahaan,ProdukUtama
+from perusahaan.models import Perusahaan
 import json
 
 class PerusahaanAdmin(admin.ModelAdmin):
@@ -121,10 +121,10 @@ class PerusahaanAdmin(admin.ModelAdmin):
 	# 	results = [ob.as_json() for ob in kegiatan_get]
 	# 	return HttpResponse(json.dumps(results))
 
-	def ajax_produk_utama(self, request, perusahaan_id=None):
-		produkutama_get = ProdukUtama.objects.filter( id=perusahaan_id )
-		results = [ob.as_json() for ob in produkutama_get]
-		return HttpResponse(json.dumps(results))
+	# def ajax_produk_utama(self, request, perusahaan_id=None):
+	# 	produkutama_get = ProdukUtama.objects.filter( id=perusahaan_id )
+	# 	results = [ob.as_json() for ob in produkutama_get]
+	# 	return HttpResponse(json.dumps(results))
 
 
 	def get_urls(self):
@@ -135,7 +135,7 @@ class PerusahaanAdmin(admin.ModelAdmin):
 			url(r'^ajax/perusahaan/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_perusahaan), name='ajax_perusahaan'),
 			# url(r'^ajax/legalitas/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_legalitas_perusahaan), name='ajax_legalitas_perusahaan'),
 			# url(r'^ajax/kegiatan_usaha/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_kegiatan_usaha), name='ajax_kegiatan_usaha'),
-			url(r'^ajax/produk_utama/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_produk_utama), name='ajax_produk_utama'),
+			# url(r'^ajax/produk_utama/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_produk_utama), name='ajax_produk_utama'),
 			url(r'^perusahaan-terdaftar/$', self.admin_site.admin_view(self.perusahaan_terdaftar), name='perusahaan_terdaftar'),
 			)
 		return my_urls + urls

@@ -7,7 +7,7 @@ from django.contrib import messages
 from master.models import Negara, JenisPemohon, Kecamatan
 from izin.models import JenisPermohonanIzin, PaketPekerjaan
 from izin.utils import JENIS_IUJK, get_tahun_choices
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 
 
 def IUJKWizard(request, extra_context={}):
@@ -19,7 +19,7 @@ def IUJKWizard(request, extra_context={}):
 	extra_context.update({'jenis_penanaman_modal_list': JenisPenanamanModal.objects.all()})
 	extra_context.update({'kelembagaan_list': Kelembagaan.objects.all()})
 	extra_context.update({'kbli_list': KBLI.objects.all()})
-	extra_context.update({'produk_utama_list': ProdukUtama.objects.all()})
+	# extra_context.update({'produk_utama_list': ProdukUtama.objects.all()})
 	extra_context.update({'jenis_legalitas_list': JenisLegalitas.objects.all()})
 	extra_context.update({'jenis_iujk': JENIS_IUJK })
 	extra_context.update({'tahun_choices': get_tahun_choices(1945) })

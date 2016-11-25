@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas, Legalitas
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas
 from izin.models import PengajuanIzin, DetilSIUP
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from django.db.models import Q
@@ -78,14 +78,14 @@ def formulir_siup(request, extra_context={}):
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
 		kelembagaan_list = Kelembagaan.objects.all()
 		kbli_list = KBLI.objects.all()
-		produk_utama_list = ProdukUtama.objects.all()
+		# produk_utama_list = ProdukUtama.objects.all()
 
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
 		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
 		extra_context.update({'kelembagaan_list': kelembagaan_list})
 		extra_context.update({'kbli_list': kbli_list})
-		extra_context.update({'produk_utama_list': produk_utama_list})
+		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++

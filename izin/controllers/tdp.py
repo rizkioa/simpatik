@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, KedudukanKegiatanUsaha, JenisPerusahaan, JenisPengecer, Legalitas, Perusahaan
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, KedudukanKegiatanUsaha, JenisPerusahaan, JenisPengecer, Legalitas, Perusahaan
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilTDP, RincianPerusahaan
 
 def formulir_tdp_pt(request):

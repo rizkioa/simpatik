@@ -9,7 +9,7 @@ from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
 from master.models import Berkas
-from perusahaan.models import Legalitas, KBLI, ProdukUtama
+from perusahaan.models import Legalitas, KBLI
 
 try:
 	from django.utils.encoding import force_text

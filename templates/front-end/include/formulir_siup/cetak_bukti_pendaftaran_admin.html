@@ -192,27 +192,27 @@
                         </table>
                     </div>
                 </div>
-                <h3><strong>BUKTI PENDAFTARAN IZIN</strong></h3>
+                <h3 align="center"><strong>BUKTI PENDAFTARAN IZIN</strong></h3>
                 <table width="100%" border="0">
                     <tr>
                         <td>No Pengajuan</td>
                         <td>:</td>
-                        <td></td>
+                        <td>{{pengajuan.no_pengajuan}}</td>
                     </tr>
                     <tr>
                         <td>Jenis Izin</td>
                         <td>:</td>
-                        <td></td>
+                        <td>{{pengajuan.kelompok_jenis_izin}}</td>
                     </tr>
                     <tr>
                         <td>Pemohon</td>
                         <td>:</td>
-                        <td></td>
+                        <td>{{pengajuan.pemohon}}</td>
                     </tr>
                     <tr>
                         <td>Perusahaan</td>
                         <td>:</td>
-                        <td></td>
+                        <td>{{pengajuan.perusahaan}}</td>
                     </tr>
                 </table>
                 <p>Simpan slip Bukti Pendaftaran Izin ini atau catat No. Pengajuan Anda di atas untuk memudahan Anda dalam pengambilan izin Anda saat izin Anda telah selesai diproses.</p>
@@ -222,7 +222,7 @@
                 <br>
                 <hr>
                 <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d F Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                 </i>
             </div>    
