@@ -342,3 +342,126 @@ function form_upload_dokumen(elem_){
   })
 }
 // ***** END *****
+
+
+// ****** KONFIRMASI *******
+function load_konfirmasi(id_pengajuan){
+  if (id_pengajuan > 0){
+    $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').empty();
+    $.ajax({
+      url: __base_url__+'/ajax-konfirmasi-paket-pekerjaan/'+id_pengajuan,
+      success: function (response){
+        
+        respon = $.parseJSON(response)
+        // console.log(a)
+        if (respon.paket){
+          a = respon.paket.length
+          str = ""
+          for (var i = 0; i < a; i++){
+            
+            // console.log(respon.paket[i].nama_paket_pekerjaan)
+            // console.log(respon.paket[i].klasifikasi_usaha)
+            // console.log(respon.paket[i].tahun)
+            // console.log(respon.paket[i].nilai_paket_pekerjaan)
+            str = '<tr>'
+            str += '<td>'+respon.paket[i].nama_paket_pekerjaan+'</td>'
+            str += '<td>'+respon.paket[i].klasifikasi_usaha+'</td>'
+            str += '<td>'+respon.paket[i].tahun+'</td>'
+            str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
+            str += '</tr>'
+            $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').prepend(str);
+          }
+          
+        }
+      }
+    })
+
+    $('#tabel_penanggung_jawab-konfirmasi > tbody').empty();
+    $.ajax({
+      url: __base_url__+'/ajax-konfirmasi-anggota-badan-direktur/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        // console.log(a)
+        if (respon.anggota){
+          a = respon.anggota.length
+          direktur = ""
+          for (var i = 0; i < a; i++){
+            
+            // console.log(respon.anggota[i].jenis_anggota_badan)
+            // console.log(respon.anggota[i].nama)
+            // console.log(respon.anggota[i].id)
+            // console.log(respon.anggota[i].berkas_tambahan)
+            direktur = '<tr>'
+            direktur += '<td>'+respon.anggota[i].nama+'</td>'
+            direktur += '<td></td>'
+            direktur += '<td></td>'
+            direktur += '<td></td>'
+            direktur += '<td></td>'
+            direktur += '</tr>'
+            $('#tabel_penanggung_jawab-konfirmasi > tbody').prepend(direktur);
+          }
+          
+        }
+      }
+    })
+
+    $('#tabel_penanggung_jawab_teknik-konfirmasi > tbody').empty();
+    $.ajax({
+      url: __base_url__+'/ajax-konfirmasi-anggota-badan-teknik/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        // console.log(a)
+        if (respon.anggota){
+          a = respon.anggota.length
+          teknik = ""
+          for (var i = 0; i < a; i++){
+            
+            // console.log(respon.anggota[i].jenis_anggota_badan)
+            // console.log(respon.anggota[i].nama)
+            // console.log(respon.anggota[i].id)
+            // console.log(respon.anggota[i].berkas_tambahan)
+            teknik = '<tr>'
+            teknik += '<td>'+respon.anggota[i].nama+'</td>'
+            teknik += '<td></td>'
+            teknik += '<td></td>'
+            teknik += '<td></td>'
+            teknik += '<td></td>'
+            teknik += '<td></td>'
+            teknik += '</tr>'
+            $('#tabel_penanggung_jawab_teknik-konfirmasi > tbody').prepend(teknik);
+          }
+          
+        }
+      }
+    })
+
+    $('#tabel_penanggung_jawab_non_teknik-konfirmasi > tbody').empty();
+    $.ajax({
+      url: __base_url__+'/ajax-konfirmasi-anggota-badan-nonteknik/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        // console.log(a)
+        if (respon.anggota){
+          a = respon.anggota.length
+          teknik = ""
+          for (var i = 0; i < a; i++){
+            
+            // console.log(respon.anggota[i].jenis_anggota_badan)
+            // console.log(respon.anggota[i].nama)
+            // console.log(respon.anggota[i].id)
+            // console.log(respon.anggota[i].berkas_tambahan)
+            teknik = '<tr>'
+            teknik += '<td>'+respon.anggota[i].nama+'</td>'
+            teknik += '<td></td>'
+            teknik += '<td></td>'
+            teknik += '<td></td>'
+            teknik += '</tr>'
+            $('#tabel_penanggung_jawab_non_teknik-konfirmasi > tbody').prepend(teknik);
+          }
+          
+        }
+      }
+    })
+  }
+}
+// ********* END ***********

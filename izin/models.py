@@ -332,6 +332,14 @@ class PaketPekerjaan(models.Model):
 			return 'Rp. '+'{:,.2f}'.format(float(self.nilai_paket_pekerjaan))
 		return 'Rp. 0.00'
 
+	def as_dict(self):
+		return {
+			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
+			'klasifikasi_usaha': self.klasifikasi_usaha,
+			'tahun': self.tahun,
+			'nilai_paket_pekerjaan': str(self.nilai_paket_pekerjaan),
+		}
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Paket Pekerjaan'
@@ -345,6 +353,14 @@ class AnggotaBadanUsaha(models.Model):
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.nama), str(self.detil_iujk))
+
+	def as_dict(self):
+		return {
+			'jenis_anggota_badan': self.jenis_anggota_badan,
+			'nama': self.nama,
+			'id': self.id,
+			# 'berkas_tambahan': self.berkas_tambahan.all(),
+		}
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]

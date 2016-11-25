@@ -17,7 +17,7 @@ class PerusahaanAdmin(admin.ModelAdmin):
 	search_fields = ('nama_perusahaan', 'alamat_perusahaan', 'telepon','fax', 'email')
 	ordering = ('id',)
 
-	def get_fieldset():
+	def get_fieldset(self, request, obj=None):
 		fieldsets = (
 			(' Alamat Perusahaan', {
 				'fields': ('nama_perusahaan', 'alamat_perusahaan', 'lt','lg','kode_pos','telepon','fax','email')
@@ -65,11 +65,11 @@ class PerusahaanAdmin(admin.ModelAdmin):
 				}),	
 				)
 
-			return fieldsets
+		return fieldsets
 
 	def get_readonly_fields(self, request, obj=None):
 		rf = ('nama_perusahaan', 'alamat_perusahaan', 'lt','lg','kode_pos','telepon','fax','email')
-		rf_superuser = (None,)
+		rf_superuser = ()
 		if request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin') or request.user.groups.filter(name='Pembuat Surat') or request.user.groups.filter(name='Penomoran') or request.user.groups.filter(name='Cetak') or request.user.groups.filter(name='Selesai'):
 			return rf
 		else:

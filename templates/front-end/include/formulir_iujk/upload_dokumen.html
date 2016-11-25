@@ -123,7 +123,7 @@
       </div>
     </div>
   </form>
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_pendirian" action="{% url 'upload_akta_pendirian_badan_usaha' %}">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_pendirian" action="{% url 'siup_upload_berkas_akta_pendirian' %}">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left">File Akta Pendirian </label>
@@ -137,7 +137,7 @@
       </div>
     </div>
   </form>
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_perubahan" action="{% url 'upload_akta_perubahan_badan_usaha' %}">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_perubahan" action="{% url 'siup_upload_berkas_akta_perubahan' %}">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>

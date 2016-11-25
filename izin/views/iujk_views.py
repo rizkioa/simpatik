@@ -94,15 +94,23 @@ def iujk_detiliujk_save(request):
 			pengajuan_ = DetilIUJK.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			DetilIUJKForm_ = DetilIUJKForm(request.POST, instance=pengajuan_)
 			if DetilIUJKForm_.is_valid():
-				iujk = DetilIUJKForm_.save(commit=False)
-				iujk.perusahaan_id = request.COOKIES['id_perusahaan']
-				iujk.save()
-				data = {'success': True, 
-					'pesan': 'Data IUJK Berhasil Disimpan.',
-					'data': []
-				}
-				data = json.dumps(data)
-				response = HttpResponse(data)
+				paket = PaketPekerjaan.objects.filter(detil_iujk_id=request.COOKIES['id_pengajuan'])
+				if len(paket) > 0 :
+					iujk = DetilIUJKForm_.save(commit=False)
+					iujk.perusahaan_id = request.COOKIES['id_perusahaan']
+					iujk.save()
+					data = {'success': True, 
+						'pesan': 'Data Paket Pekerjaan Berhasil Disimpan.',
+						'data': [
+							{'jenis_iujk': iujk.jenis_iujk }
+						]
+					}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Paket Pekerjaan Kosong, Silahkan masukkkan Paket Pekerjaan'}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
 			else:
 				data = DetilIUJKForm_.errors.as_json()
 				response = HttpResponse(data)
@@ -508,10 +516,9 @@ def upload_sertifikat_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Sertifikat Badan Usaha '+p.nama_perusahaan+' berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -565,10 +572,9 @@ def upload_kartu_teknis_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Kartu Teknis Badan Usaha '+p.nama_perusahaan+'Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -623,10 +629,9 @@ def upload_pernyataan_pengikat_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Surat Pernyataaan Pengikatan Diri PJT-BU '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -680,10 +685,9 @@ def upload_pernyataan_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -727,7 +731,7 @@ def upload_npwp_badan_usaha(request):
 							response = HttpResponse(data)
 						else:
 							try:
-								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								# d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "NPWP "+p.nama_perusahaan
@@ -739,8 +743,7 @@ def upload_npwp_badan_usaha(request):
 								berkas.save()
 								p.berkas_npwp = berkas
 								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
 								data = {'success': True, 'pesan': 'NPWP '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -794,10 +797,9 @@ def upload_keterangan_domisili_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -851,10 +853,9 @@ def upload_denah_lokasi_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Gambar denah lokasi/posisi badan usaha '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -908,10 +909,9 @@ def upload_foto_papan_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+								
+								d.berkas_tambahan.add(berkas)
+								# d.save()
 								data = {'success': True, 'pesan': 'Gambar/foto papan nama badan usaha '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -965,10 +965,10 @@ def upload_akta_pendirian_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+								l.berkas = berkas
+								l.save()
 								data = {'success': True, 'pesan': 'Akta Pendirian '+p.nama_perusahaan +' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -1023,10 +1023,10 @@ def upload_akta_perubahan_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
-								p.berkas_npwp = berkas
-								p.save()
-								d.berkas_npwp_perusahaan = berkas
-								d.save()
+
+								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+								l.berkas = berkas
+								l.save()
 								data = {'success': True, 'pesan': 'Akta Perubahan '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
 								]}
@@ -1053,3 +1053,42 @@ def upload_akta_perubahan_badan_usaha(request):
 		data = json.dumps(data)
 		response = HttpResponse(data)
 	return response		
+
+
+
+def ajax_konfirmasi_nama_paket_pekerjaan(request, id_pengajuan):
+	paket_ = ""
+	if id_pengajuan:
+		paket_list = PaketPekerjaan.objects.filter(detil_iujk__id=id_pengajuan)
+		paket_ = [ obj.as_dict() for obj in paket_list ]
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_ }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def ajax_konfirmasi_anggota_badan_direktur(request, id_pengajuan):
+	anggota = ""
+	if id_pengajuan:
+		anggota_list = AnggotaBadanUsaha.objects.filter(detil_iujk__id=id_pengajuan, jenis_anggota_badan='Direktur / Penanggung Jawab Badan Usaha')
+		anggota_ = [ obj.as_dict() for obj in anggota_list ]
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_ }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def ajax_konfirmasi_anggota_badan_teknik(request, id_pengajuan):
+	anggota = ""
+	if id_pengajuan:
+		anggota_list = AnggotaBadanUsaha.objects.filter(detil_iujk__id=id_pengajuan, jenis_anggota_badan='Penanggung Jawab Teknik Badan Usaha')
+		anggota_ = [ obj.as_dict() for obj in anggota_list ]
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_ }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+
+def ajax_konfirmasi_anggota_badan_non_teknik(request, id_pengajuan):
+	anggota = ""
+	if id_pengajuan:
+		anggota_list = AnggotaBadanUsaha.objects.filter(detil_iujk__id=id_pengajuan, jenis_anggota_badan='Tenaga Non Teknik')
+		anggota_ = [ obj.as_dict() for obj in anggota_list ]
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_ }
+	response = HttpResponse(json.dumps(data))
+	return response
