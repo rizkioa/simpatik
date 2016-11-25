@@ -59,23 +59,23 @@ class Kelembagaan(models.Model):
 		verbose_name = 'Kelembagaan'
 		verbose_name_plural = 'Kelembagaan'
 
-class ProdukUtama(models.Model):
-	barang_jasa_utama = models.CharField(max_length=255, verbose_name='Barang / Jasa Utama')
-	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+# class ProdukUtama(models.Model):
+# 	barang_jasa_utama = models.CharField(max_length=255, verbose_name='Barang / Jasa Utama')
+# 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-	def __unicode__(self):
-		return "%s" % (self.barang_jasa_utama)
+# 	def __unicode__(self):
+# 		return "%s" % (self.barang_jasa_utama)
 
-	def as_dict(self):
-		return {
-			# "id": self.id,
-			"barang_jasa_utama": self.barang_jasa_utama,
-		}
+# 	def as_dict(self):
+# 		return {
+# 			# "id": self.id,
+# 			"barang_jasa_utama": self.barang_jasa_utama,
+# 		}
 
-	class Meta:
-		ordering = ['id']
-		verbose_name = 'Produk Utama'
-		verbose_name_plural = 'Produk Utama'
+# 	class Meta:
+# 		ordering = ['id']
+# 		verbose_name = 'Produk Utama'
+# 		verbose_name_plural = 'Produk Utama'
 
 class JenisPenanamanModal(models.Model):
 	jenis_penanaman_modal = models.CharField(max_length=255, verbose_name='Jenis Penanaman Modal')

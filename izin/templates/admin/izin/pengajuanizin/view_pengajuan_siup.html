@@ -210,6 +210,7 @@
 				<div class="row">
 					<div class="col-md-12" align="center">
 						<a data-toggle="modal" data-target="#detail_siup" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-list"></i> <span>Lihat Detail Pengajuan</span></a>
+
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class=" icon-folder"></i> <span>Lihat Berkas Pengajuan</span></a>
 
 						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
@@ -227,7 +228,9 @@
 			<div class="tile-body">
 				<center>
 					<!-- <a class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir</a> -->
-					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+
+					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 					
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>

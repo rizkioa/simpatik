@@ -150,6 +150,12 @@
 		.col-10 {width: 83.33%;}
 		.col-11 {width: 91.66%;}
 		.col-12 {width: 100%;}
+
+		@media print {
+	 		.printhide { 
+	 			display: none !important; 
+			}
+		}
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 	<script type="text/javascript">
@@ -181,10 +187,12 @@
 	        			<td></td>
 	        		</tr>
 	        	</table>
-	        	<div style="background-color: white; color: white;">
+	        	<div class="printhide">
 	        		<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
 		        		<tr>
-		        			<td><!-- <img src="{% static 'images/kabkediri.png' %}" width="100px"> --></td>
+		        			<td>
+		        				<img src="{% static 'images/kabkediri.png' %}" width="100px">
+		        			</td>
 		        			<td>
 		        				<center>
 		        					<p>
@@ -198,6 +206,7 @@
 		        		</tr>
 		        	</table>
 	        	</div>
+	        	<hr class="style14 printhide">
 	        	<div class="row">
 	        		<div class="col-2">
 	        		
@@ -205,8 +214,8 @@
 		        	<div class="col-8">
 			        	<center>
 			        		<font style="font-size: 25px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
-			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha }} )</i></font><br>
-			        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
+			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</i></font><br>
+			        		<font style="font-size: 23px">Nomor : {% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}Tidak Ada{% endif %}</font><br>
 			        	</center>
 			        </div>
 			        <div class="col-2">
@@ -218,17 +227,17 @@
 	        		<tr>
 	        			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
 	        			<td width="5%">:</td>
-	        			<td width="50%">{{ perusahaan.nama_perusahaan }}</td>
+	        			<td width="50%">{{ perusahaan.nama_perusahaan.upper }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
 	        			<td>:</td>
-	        			<td>{{ pemohon.nama_lengkap }} ({{ pemohon.jabatan_pemohon }})</td>
+	        			<td>{{ pemohon.nama_lengkap.upper }} ({{ pemohon.jabatan_pemohon.upper }})</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>ALAMAT PERUSAHAAN</b></td>
 	        			<td>:</td>
-	        			<td>{{ alamat_perusahaan }}</td>
+	        			<td>{{ alamat_perusahaan.upper }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>NPWP</b></td>
@@ -243,12 +252,12 @@
 	        		<tr>
 	        			<td><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
 	        			<td>:</td>
-	        			<td><span id="id_kekayaan"></span><br>({{terbilang}})</td>
+	        			<td>{{ kekayaan_bersih }},-<br>({{terbilang.upper}} RUPIAH)</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>KELEMBAGAAN</b></td>
 	        			<td>:</td>
-	        			<td>{{ pengajuan.kelembagaan }}</td>
+	        			<td>{{ kelembagaan }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>KEGIATAN USAHA (KBLI/*)</b></td>
@@ -260,7 +269,7 @@
 	        			<td>:</td>
 	        			<!-- <td>{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %}</td> -->
-	        			<td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli }}{% if not forloop.last %}, {% endif %} 
+	        			<td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %}</td>
 	        		</tr>
 	        		<tr>
