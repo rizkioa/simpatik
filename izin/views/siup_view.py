@@ -126,12 +126,14 @@ def siup_identitas_pemohon_save_cookie(request):
 		if pemohon.cleaned_data['email']:
 			email_ = pemohon.cleaned_data['email']
 
+		alamat_ = str(pengajuan.pemohon.alamat)+", DESA "+str(pengajuan.pemohon.desa.nama_desa)+", KEC. "+str(pengajuan.pemohon.desa.kecamatan.nama_kecamatan)+", "+str(pengajuan.pemohon.desa.kecamatan.kabupaten.nama_kabupaten)
+
 		data = {'success': True, 'pesan': 'Identitas Pemohon berhasil tersimpan. Proses Selanjutnya.' ,'data': [
 			{'nama_lengkap': pemohon.cleaned_data['nama_lengkap']},
 			{'jenis_permohonan': jenis_permohonan_},
 			{'jenis_pemohon': jenis_ },
 			{'nomor_ktp': ktp_},
-			{'alamat': pemohon.cleaned_data['alamat']},
+			{'alamat': alamat_},
 			{'telephone': pemohon.cleaned_data['telephone']},
 			{'hp': pemohon.cleaned_data['hp']},
 			{'email': email_ },
@@ -142,21 +144,16 @@ def siup_identitas_pemohon_save_cookie(request):
 			{'telephone_kuasa': telephone_kuasa}
 			]}
 		response = HttpResponse(json.dumps(data))	
-
 		response.set_cookie(key='id_pengajuan', value=pengajuan.id)
 		response.set_cookie(key='id_pemohon', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
 		response.set_cookie(key='nomor_paspor', value=paspor_)
-			
 	else:
-		# print "error"
-		# print pemohon.errors
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		response = HttpResponse(data)
 	return response
 
 def siup_identitas_perusahan_save_cookie(request):
-	# print request.COOKIES # Untuk Tes cookies
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
@@ -188,8 +185,10 @@ def siup_identitas_perusahan_save_cookie(request):
 							pengajuan = objects_(perusahaan=per)
 						pengajuan.save()
 
-
-					alamat_ = str(get_perusahaan.alamat_perusahaan)+" "+str(get_perusahaan.desa)+", Kec. "+str(get_perusahaan.desa.kecamatan)+", Kab./Kota "+str(get_perusahaan.desa.kecamatan.kabupaten)
+					email_ = ""
+					if get_perusahaan.email:
+						email_ = get_perusahaan.email
+					alamat_ = str(get_perusahaan.alamat_perusahaan)+", DESA "+str(get_perusahaan.desa)+", KEC. "+str(get_perusahaan.desa.kecamatan)+", "+str(get_perusahaan.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 					{'npwp_perusahaan': get_perusahaan.npwp},
 					{'nama_perusahaan': get_perusahaan.nama_perusahaan},
@@ -197,7 +196,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					{'kode_pos_perusahaan': get_perusahaan.kode_pos},
 					{'telepon_perusahaan': get_perusahaan.telepon},
 					{'fax_perusahaan': get_perusahaan.fax},
-					{'email_perusahaan': get_perusahaan.email}
+					{'email_perusahaan': email_}
 					]}
 					data = json.dumps(data)
 					response = HttpResponse(data)

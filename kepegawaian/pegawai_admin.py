@@ -16,6 +16,8 @@ from django.core.urlresolvers import resolve, reverse
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 
+
+
 class ItemInlineFormSet(BaseInlineFormSet):
 	def clean(self):
 		c_ = super(ItemInlineFormSet, self).clean()
@@ -69,7 +71,7 @@ class NomorIdentitasInline(admin.StackedInline):
 
 class PegawaiAdmin(admin.ModelAdmin):
 	# form = PegawaiForm
-	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as', 'username', 'password',)
+	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as')
 	list_filter = ('groups__name', )
 	inlines = [NomorIdentitasInline,]
 	search_fields = ('username', 'nama_lengkap')
@@ -86,7 +88,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 
 	def jenis_pegawai(self, obj):
 		groups = obj.groups.all()
-		return ", ".join(str(g.name) for g in groups)
+		return ", ".join(str(g.hakakses.keterangan) if hasattr(g, 'hakakses') else str(g.name) for g in groups)
 	jenis_pegawai.short_description = 'Jenis Pegawai'
 
 	def option_pegawai(self, request):		
