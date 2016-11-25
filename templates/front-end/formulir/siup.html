@@ -112,11 +112,13 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
-  <script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
-  <script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+  <!-- <script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
+ -->  
+ <script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
   <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+  <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
   <script type="text/javascript">
       $(window).load(function(){
         $('#rootwizard').bootstrapWizard({
@@ -144,6 +146,23 @@
                           // $('#kbli_konfirmasi').append("("+respon.kbli[i].kode_kbli+")")
                         }
                         $('#kbli_konfirmasi').html(str)
+                      }
+                    }
+                  })
+                  $.ajax({
+                    url: __base_url__+'/ajax-konfirmasi-legalitas/'+id_pengajuan,
+                    success: function (response){
+                      respon = $.parseJSON(response)
+                      a = respon.legalitas.length
+                      if (respon.legalitas){
+                        str = ""
+                        for (var i = 0; i < a; i++){
+                          // str = str+"("+respon.legalitas[i].kode_kbli+" - "+respon.legalitas[i].nama_kbli+")"
+                          console.log(respon.legalitas[i].jenis_legalitas)
+                          // $('<tr><td>'+respon.legalitas[i].jenis_legalitas+'</td><td>'+respon.legalitas[i].nama_notaris+'</td><td>'+respon.legalitas[i].alamat+'</td><td>'+respon.legalitas[i].telephone+'</td><td>'+respon.legalitas[i].nomor_akta+'</td><td>'+respon.legalitas[i].tanggal_akta+'</td><td>'+respon.legalitas[i].nomor_pengesahan+'</td><td>'+respon.legalitas[i].tanggal_pengesahan+'</td></tr>')insertAfter('#legalitas_table')
+                          row = '<tr><td>'+respon.legalitas[i].jenis_legalitas+'</td><td>'+respon.legalitas[i].nama_notaris+'</td><td>'+respon.legalitas[i].alamat+'</td><td>'+respon.legalitas[i].telephone+'</td><td>'+respon.legalitas[i].nomor_akta+'</td><td>'+respon.legalitas[i].tanggal_akta+'</td><td>'+respon.legalitas[i].nomor_pengesahan+'</td><td>'+respon.legalitas[i].tanggal_pengesahan+'</td></tr>'
+                          $('#legalitas_table > tbody').prepend(row);
+                        }
                       }
                     }
                   })
@@ -280,7 +299,8 @@
       var frm = $('form[name="step'+ index +'"]');
       frm.parsley().validate();
         if (frm.parsley().isValid()) {
-          $(".tab-content #tab"+index).mask('loading')
+          // $(".tab-content #tab"+index).mask('loading')
+          $(".tab-content").mLoading();
           $(btn).attr('disabled', 'disabled')
           $.ajax({
             type: frm.attr('method'),
@@ -318,7 +338,8 @@
                       $('#konfirmasi_legalitas_perubahan').show();
                     }
                   }
-                  $( ".tab-content #tab"+index ).unmask()
+                  // $( ".tab-content #tab"+index ).unmask()
+                  $(".tab-content").mLoading('hide');
                   tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
                   $(tab_index).tab('show')
                 }
@@ -337,11 +358,13 @@
                     $("#"+a[i]+"").addClass("has-error");
                     // console.log($("#"+a[i]+"").addClass("parsley-error"));
                   }
-                  $( ".tab-content #tab"+index ).unmask()
+                  // $( ".tab-content #tab"+index ).unmask()
+                  $(".tab-content").mLoading('hide');
                 }
             },
             error: function(response){
-              $( ".tab-content #tab"+index ).unmask()
+              // $( ".tab-content #tab"+index ).unmask()
+              $(".tab-content").mLoading('hide');
               $(btn).removeAttr('disabled')
               toastr["error"]("Terjadi kesalahan pada koneksi server.")
             }
@@ -440,6 +463,13 @@
       }
     })
 
+    // $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
+    // $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+    // $('#id_kekayaan_bersih').mask("000.000.000.000.000",{reverse:true});
+    // $('#id_total_nilai_saham').mask("000.000.000.000.000",{reverse:true});
+    $('.rupiah').mask("000.000.000.000.000",{reverse:true});
+
+
     if ('{{pengajuan_}}'){
       // alert("{{ pengajuan_.jenis_pengajuan }}");
       // +++++++ pemohon +++++
@@ -470,10 +500,18 @@
       //+++ bentuk kegiatan usaha ++++
       $('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
       $('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
-      $('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
-      $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
-      $('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
-      $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+      if ('{{pengajuan_.kekayaan_bersih}}' == 'None'){
+        $('#id_kekayaan_bersih').val('0');
+      }
+      else{
+        $('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"));
+      }
+      if ('{{pengajuan_.total_nilai_saham}}' == 'None'){
+        $('#id_total_nilai_saham').val('0');
+      }
+      else{
+        $('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"));
+      }
       $('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
       $('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
       $('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");

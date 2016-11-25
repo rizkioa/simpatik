@@ -173,6 +173,19 @@ class Legalitas(AtributTambahan):
 	def __unicode__ (self):
 		return "%s" % (str(self.jenis_legalitas))
 
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"jenis_legalitas": self.jenis_legalitas.jenis_legalitas,
+			"nama_notaris": self.nama_notaris,
+			"alamat": self.alamat,
+			"telephone": self.telephone,
+			"nomor_akta": self.nomor_akta,
+			"tanggal_akta": self.tanggal_akta.strftime('%d-%m-%Y'),
+			"nomor_pengesahan": self.nomor_pengesahan,
+			"tanggal_pengesahan": self.tanggal_pengesahan.strftime('%d-%m-%Y'),			
+		}
+
 	class Meta:
 		ordering = ['id']
 		verbose_name = 'Legalitas'

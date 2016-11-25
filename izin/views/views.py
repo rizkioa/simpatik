@@ -661,14 +661,28 @@ def ajax_konfirmasi_kbli(request, id_pengajuan_izin_):
 	return response
 
 def ajax_kuasa_pemohon(request, id_pengajuan_izin_):
-	kuasa_ = ""
+	nama_kuasa = ""
+	no_identitas_kuasa = ""
+	telephone_kuasa = ""
 	if id_pengajuan_izin_:
 		pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
-		nama_kuasa = pengajuan_.nama_kuasa
-		no_identitas_kuasa = pengajuan_.no_identitas_kuasa
-		telephone_kuasa = pengajuan_.telephone_kuasa
+		if pengajuan_.nama_kuasa:
+			nama_kuasa = pengajuan_.nama_kuasa
+			no_identitas_kuasa = pengajuan_.no_identitas_kuasa
+			telephone_kuasa = pengajuan_.telephone_kuasa
 
 	data = {'success': True, 'pesan': 'Proses Selesai.', 'nama_kuasa': nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa': telephone_kuasa }
 	response = HttpResponse(json.dumps(data))
 	return response
+
+def ajax_legalitas_konfirmasi(request, id_pengajuan_izin_):
+	legalitas_ = ""
+	if id_pengajuan_izin_:
+		pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
+		legalitas_list = pengajuan_.legalitas.all()
+		legalitas_ = [ obj.as_dict() for obj in legalitas_list ]
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'legalitas': legalitas_ }
+	response = HttpResponse(json.dumps(data))
+	return response
+
 	

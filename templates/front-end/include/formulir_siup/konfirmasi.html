@@ -165,19 +165,21 @@
   <br>
   <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
   <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="legalitas_table">
         <thead>
           <tr>
             <th>Jenis Akta dan Pengesahan</th>
             <th>Nama Notaris</th>
             <th>Alamat Notaris</th>
             <th>Telp. Notaris</th>
+            <th>No. Akta</th>
+            <th>Tgl Akta</th>
             <th>No. Pengesahan</th>
             <th>Tgl Pengesahan</th>
           </tr>
         </thead>
         <tbody>
-          {% if pengajuan_.legalitas.last %}
+          <!-- {% if pengajuan_.legalitas.last %}
             {% for p in pengajuan_.legalitas.all %}
             <tr>
               <td><span id='jenis_legalitas_konfirmasi'>{{ p.jenis_legalitas }}</span></td>
@@ -190,16 +192,9 @@
               <td><span id='tanggal_pengesahan_konfirmasi'>{{ p.tanggal_pengesahan|date:"d-m-Y" }}</span></td>
             </tr>
             {% endfor %}
-          {% else %}
-            <tr>
-              <td><span id='jenis_legalitas_konfirmasi'></span></td>
-              <td><span id='nama_notaris_konfirmasi'></span></td>
-              <td><span id='alamat_notaris_konfirmasi'></span></td>
-              <td><span id='telephone_notaris_konfirmasi'></span></td>
-              <td><span id='nomor_pengesahaan_konfirmasi'></span></td>
-              <td><span id='tanggal_pengesahan_konfirmasi'></span></td>
-            </tr>
-          {% endif %}
+          {% else %} -->
+            
+          <!-- {% endif %} -->
         </tbody>
     </table>
   </div>

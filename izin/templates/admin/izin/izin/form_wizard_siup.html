@@ -12,22 +12,22 @@
 {% endblock %}
 
 {% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
-	<script src="{% static "scripts/js/main.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/filestyle/bootstrap-filestyle.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
-	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+	<script src="{% static 'scripts/js/main.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
-  	<script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
+  	<!-- <script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script> -->
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
   	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
   	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
@@ -203,14 +203,6 @@
 		        })
 		        
 		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
-		      	// $.removeCookie('id_pengajuan', { path: '/' });
-		      	// $.removeCookie('id_perusahaan', { path: '/' });
-		      	// $.removeCookie('id_pemohon', { path: '/' });
-		      	// $.removeCookie('nomor_ktp', { path: '/' });
-		      	// $.removeCookie('nomor_paspor', { path: '/' });
-		      	// $.removeCookie('id_kelompok_izin', { path: '/' });
-		      	// $.removeCookie('id_legalitas', { path: '/' });
-		      	// $.removeCookie('id_legalitas_perubahan', { path: '/' });
 		      	$.ajax({
 		        	url: '{% url 'siup_done' %}',
 		        	success: function(response) {
@@ -352,6 +344,11 @@
 		    	$('.error-saham').remove()
 		    }
 	    }
+
+  		// $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
+  		// $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+    	$('.rupiah').mask("000.000.000.000.000",{reverse:true});
+
 	    
 	    if ('{{pengajuan_}}'){
 	    	// alert("{{ pengajuan_.jenis_pengajuan }}");
@@ -384,9 +381,7 @@
           	$('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
           	$('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
           	$('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
-      		$('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
       		$('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
-      		$('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
       		$('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
       		$('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
       		$('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
