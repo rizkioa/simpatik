@@ -229,6 +229,9 @@ def siup_identitas_perusahan_save_cookie(request):
 						except ObjectDoesNotExist:
 							pengajuan = objects_(perusahaan=p)
 						pengajuan.save()
+					email_ = ""
+					if p.email:
+						email_ = p.email
 					alamat_ = str(p.alamat_perusahaan)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 						{'npwp_perusahaan': p.npwp},
@@ -237,7 +240,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						{'kode_pos_perusahaan': p.kode_pos},
 						{'telepon_perusahaan': p.telepon},
 						{'fax_perusahaan': p.fax},
-						{'email_perusahaan': p.email}
+						{'email_perusahaan': email_}
 						]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
