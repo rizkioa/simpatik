@@ -157,8 +157,8 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+			# encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
+			# extra_context.update({'pengajuan_id': encode_pengajuan_id})
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++

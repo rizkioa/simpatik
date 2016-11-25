@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': reverse_lazy('frontindex')}, name='frontlogout'),
     url(r'^$', views.frontindex, name='frontindex'),
-    
+
     url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kbli, name='ajax_konfirmasi_kbli'),
     url(r'^ajax-konfirmasi-kuasa/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_kuasa_pemohon, name='ajax_kuasa_pemohon'),
     url(r'^ajax-konfirmasi-legalitas/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_legalitas_konfirmasi, name='ajax_legalitas_konfirmasi'),
@@ -62,8 +62,8 @@ urlpatterns = [
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
 
     #cetak SIUP
-    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_permohonan, name='cetak_permohonan'),
-    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
+    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
 
     #cetak HO Baru
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak$', views.cetak_ho_perpanjang, name='cetak_ho_perpanjang'),
