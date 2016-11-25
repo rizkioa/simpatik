@@ -14,6 +14,7 @@ from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanFor
 import json
 import base64
 from izin.utils import terbilang_, terbilang, formatrupiah
+from django.db.models import Q
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -86,6 +87,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def semua_pengajuan(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -107,9 +114,11 @@ class IzinAdmin(admin.ModelAdmin):
 		qs = super(IzinAdmin, self).get_queryset(request)
 		if func_view.__name__ == 'izinterdaftar':
 			pengajuan_ = qs.filter(status=1)
+		elif func_view.__name__ == 'semua_pengajuan':
+			pengajuan_ = qs.filter(~Q(status=11))
 		elif func_view.__name__ == 'verifikasi':
 			if request.user.groups.filter(name='Operator'):
-				pengajuan_ = qs.filter(status=6)
+				pengajuan_ = qs.filter(~Q(status=6))
 			elif request.user.groups.filter(name='Kabid'):
 				pengajuan_ = qs.filter(status=4)
 			elif request.user.groups.filter(name='Pembuat Surat'):
@@ -811,12 +820,12 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^create-skizin/$', self.admin_site.admin_view(self.create_skizin), name='create_skizin'),
 			url(r'^cetak-siup-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_siup_asli), name='cetak_siup_asli'),
 			url(r'^verifikasi/$', self.admin_site.admin_view(self.verifikasi), name='verifikasi'),
+			url(r'^semua-pengajuan/$', self.admin_site.admin_view(self.semua_pengajuan), name='semua_pengajuan'),
 			url(r'^verifikasi-skizin/$', self.admin_site.admin_view(self.verifikasi_skizin), name='verifikasi_skizin'),
 			url(r'^izin-terdaftar/$', self.admin_site.admin_view(self.izinterdaftar), name='izinterdaftar'),
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
 			url(r'^total-skizin/$', self.admin_site.admin_view(self.total_skizin), name='total_skizin'),
 			url(r'^notification/$', self.admin_site.admin_view(self.notification), name='notification'),
-
 			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
 
 			)
