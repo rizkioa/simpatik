@@ -290,9 +290,10 @@ def siup_detilsiup_save_cookie(request):
 					#++++++++++++++++multi select manytomany ++++++++
 					nama_kbli = []
 					for kbli in kbli_list:
-						pengajuan_.kbli.add(KBLI.objects.get(id=kbli))
+						kbli_obj = KBLI.objects.get(id=kbli)
+						pengajuan_.kbli.add(kbli_obj)
 						
-						nama_kbli.append(kbli.nama_kbli)			
+						nama_kbli.append(kbli_obj.nama_kbli)			
 					if len(nama_kbli) > 1:
 						detilSIUP.produk_utama = ",".join(nama_kbli)
 					detilSIUP.save()

@@ -127,21 +127,22 @@ class IzinAdmin(admin.ModelAdmin):
 		elif func_view.__name__ == 'verifikasi_skizin':
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kabid'):
-				id_list = SKIzin.objects.filter(status=6).values('pengajuan_izin_id')
+				id_list = SKIzin.objects.filter(status=6).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list.append(id_list)
 				
 			elif request.user.groups.filter(name='Kadin'):
-				id_list = SKIzin.objects.filter(status=4).values('pengajuan_izin_id')
+				id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list.append(id_list)
 			if request.user.groups.filter(name='Penomoran'):
-				id_list = SKIzin.objects.filter(status=9).values('pengajuan_izin_id')
+				id_list = SKIzin.objects.filter(status=9).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list.append(id_list)
 			if request.user.groups.filter(name='Cetak'):
-				id_list = SKIzin.objects.filter(status=10).values('pengajuan_izin_id')
+				id_list = SKIzin.objects.filter(status=10).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list.append(id_list)
 			if request.user.groups.filter(name='Selesai'):
-				id_list = SKIzin.objects.filter(status=2).values('pengajuan_izin_id')
+				id_list = SKIzin.objects.filter(status=2).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list.append(id_list)
+			print id_pengajuan_list
 			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
 		else:
 			pengajuan_ = qs
