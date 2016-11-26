@@ -4,7 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from admin_tools.menu import items
 
 from admin_tools.menus import Menu
-from django.db.models import Q
 
 class CustomMenu(Menu):
     """
@@ -361,6 +360,16 @@ class CustomMenu(Menu):
                         url=reverse('admin:master_jenispemohon_changelist'),
                     ),
                     items.MenuItem(
+                        title='Kelembagaan',
+                        icon='fa fa-user-md',
+                        url=reverse('admin:perusahaan_kelembagaan_changelist'),
+                    ),
+                    items.MenuItem(
+                        title='KBLI',
+                        icon='fa fa-user-md',
+                        url=reverse('admin:perusahaan_kbli_changelist'),
+                    ),
+                    items.MenuItem(
                         title=_('Setting'),
                         description='Setting atau Konfigurasi',
                         icon='fa fa-cog fa-fw',
@@ -398,7 +407,7 @@ class CustomMenu(Menu):
                     items.MenuItem(
                         title='Hak Akses',
                         icon='fa fa-shield',
-                        url=reverse('admin:auth_group_changelist'),
+                        url=reverse('admin:accounts_hakakses_changelist'),
                     ),
                 ]
             )
