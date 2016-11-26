@@ -172,7 +172,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			extra_context.update({'total_nilai_saham': formatrupiah(total_nilai_saham)})
 
 			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 				if skizin_:
 					extra_context.update({'skizin': skizin_ })
 					extra_context.update({'skizin_status': skizin_.status })

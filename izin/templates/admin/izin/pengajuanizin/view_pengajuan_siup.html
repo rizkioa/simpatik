@@ -236,8 +236,8 @@
 						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 
-					{% if skizin_status == 1 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+					{% if skizin_status == 1  or skizin_status == 2 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 				</center>
 			</div>
@@ -868,7 +868,7 @@
 			<div class="col-lg-12">
 				<section class="tile">
 					<div class="tile-header dvd dvd-btm">
-		                <h1 class="custom-font" align="center"> Izin Selsai</h1>
+		                <h1 class="custom-font" align="center"> Izin Selesai</h1>
 		                <ul class="controls">
 		                    <li>
 		                        <a role="button" tabindex="0" class="tile-toggle">
@@ -886,7 +886,7 @@
 									<div class="panel-body">
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-									        <input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala BPM-P2TSP dan menyatakan proses pengajuan ini selsai.
+									        <input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala BPM-P2TSP dan menyatakan proses pengajuan ini selesai.
 								      	</label>
 									</div>
 								</div>
@@ -1009,12 +1009,14 @@
 			        if(respon.success){
 			        	// openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
 			        	// open_skprint()
-			        	$str = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Warning!</strong> This is the dismissable alert dialog.</div>';
-			        	$('#id_panel_pembuat_surat > center').prepend(row);
-			          	toastr["success"](respon.pesan)
+			        	// create_skizin({{ pengajuan.id }})
+			        	// $str = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Warning!</strong> This is the dismissable alert dialog.</div>';
+			        	// $('#id_panel_pembuat_surat > center').prepend(row);
+			          	// toastr["success"](respon.pesan)
+			          	create_skizin({{ pengajuan.id }})
 			          	$('#edit_skizin').hide()
 			          	$('.modal-backdrop').hide()
-			          	window.location.href= "";
+			          	// window.location.href= "";
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
@@ -1106,15 +1108,13 @@
 		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
 		      	</div>
 		      	<div class="modal-body">
-		      		<form novalidate="" name="form1" role="form" id="form1">
-                        <div class="form-group">
-                            <label for="username">Barang / Jasa Perdagangan Utama: </label>
-                            <input name="username" id="produk_utama_edit" class="form-control" data-parsley-trigger="change" required="" type="text"
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <label for="username">Barang / Jasa Perdagangan Utama: </label>
+                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{{ pengajuan.produk_utama }}</textarea>
+                    </div>
 		      	</div>
 		      	<div class="modal-footer">
-		      		<button type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+		      		<button onclick="edit_skizin({{ pengajuan.id }}, '_submit_edit_skizin')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
                     <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
                 </div>
 		    </div>
