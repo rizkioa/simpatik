@@ -548,15 +548,6 @@
       }
     }
 
-    id_pengajuan = parseInt($.cookie('id_pengajuan'))
-    if (id_pengajuan > 0){
-      $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
-      load_provinsi('1')
-      load_kabupaten('1')
-      setTimeout(function(){
-        $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
-        $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
-      }, 1000);
-    }
+    
   </script>
 {% endblock %}

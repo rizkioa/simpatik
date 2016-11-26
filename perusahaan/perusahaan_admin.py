@@ -111,31 +111,12 @@ class PerusahaanAdmin(admin.ModelAdmin):
 		results = [ob.as_json() for ob in perusahaan_get]
 		return HttpResponse(json.dumps(results))
 
-	# def ajax_legalitas_perusahaan(self, request, perusahaan_id=None):
-	# 	aktanotaris_get = AktaNotaris.objects.filter( id=perusahaan_id )
-	# 	results = [ob.as_json() for ob in aktanotaris_get]
-	# 	return HttpResponse(json.dumps(results))
-
-	# def ajax_kegiatan_usaha(self, request, perusahaan_id=None):
-	# 	kegiatan_get = DataRincianPerusahaan.objects.filter( id=perusahaan_id )
-	# 	results = [ob.as_json() for ob in kegiatan_get]
-	# 	return HttpResponse(json.dumps(results))
-
-	# def ajax_produk_utama(self, request, perusahaan_id=None):
-	# 	produkutama_get = ProdukUtama.objects.filter( id=perusahaan_id )
-	# 	results = [ob.as_json() for ob in produkutama_get]
-	# 	return HttpResponse(json.dumps(results))
-
-
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(PerusahaanAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^ajax/autocomplete/$', self.admin_site.admin_view(self.ajax_autocomplete), name='perusahaan_ajax_autocomplete'),
 			url(r'^ajax/perusahaan/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_perusahaan), name='ajax_perusahaan'),
-			# url(r'^ajax/legalitas/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_legalitas_perusahaan), name='ajax_legalitas_perusahaan'),
-			# url(r'^ajax/kegiatan_usaha/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_kegiatan_usaha), name='ajax_kegiatan_usaha'),
-			# url(r'^ajax/produk_utama/(?P<perusahaan_id>\w+)/$', self.admin_site.admin_view(self.ajax_produk_utama), name='ajax_produk_utama'),
 			url(r'^perusahaan-terdaftar/$', self.admin_site.admin_view(self.perusahaan_terdaftar), name='perusahaan_terdaftar'),
 			)
 		return my_urls + urls
