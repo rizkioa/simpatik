@@ -13,7 +13,7 @@ from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 import json
 import base64
-from izin.utils import terbilang_, terbilang
+from izin.utils import terbilang_, terbilang, formatrupiah
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -385,7 +385,7 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def cetak_siup_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
-		id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
+		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -403,9 +403,12 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
+			extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
 				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
-				extra_context.update({'terbilang': terbilang_ })
+				extra_context.update({'terbilang': str(terbilang_) })
+				extra_context.update({ 'kekayaan_bersih': formatrupiah(pengajuan_.kekayaan_bersih) })
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:
@@ -551,7 +554,8 @@ class IzinAdmin(admin.ModelAdmin):
 		if request.user.has_perm('izin.add_skizin') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
 			skizin = SKIzin(
 				pengajuan_izin_id = id_detil_siup,
-				created_by_id = request.user.id)
+				created_by_id = request.user.id,
+				status = 6)
 			skizin.save()
 			# print "id_skizin"+str(skizin.id)
 			riwayat_ = Riwayat(

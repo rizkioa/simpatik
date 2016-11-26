@@ -9,7 +9,7 @@ from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
 from master.models import Berkas
-from perusahaan.models import Legalitas, KBLI, ProdukUtama
+from perusahaan.models import Legalitas, KBLI
 
 try:
 	from django.utils.encoding import force_text
@@ -232,7 +232,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					email_ = ""
 					if p.email:
 						email_ = p.email
-					alamat_ = str(p.alamat_perusahaan)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
+					alamat_ = str(p.alamat_perusahaan)+", DESA "+str(p.desa)+", KEC. "+str(p.desa.kecamatan)+", "+str(p.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 						{'npwp_perusahaan': p.npwp},
 						{'nama_perusahaan': p.nama_perusahaan},

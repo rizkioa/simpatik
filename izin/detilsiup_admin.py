@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
 from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
-from perusahaan.models import Perusahaan, KBLI, ProdukUtama
+from perusahaan.models import Perusahaan, KBLI
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 import json
@@ -47,9 +47,9 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def get_fieldsets(self, request, obj=None):
-		fields = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
+		fields = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
-		fields_edit = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
+		fields_edit = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		if obj:
 			if request.user.is_superuser:
 				add_fieldsets = (
@@ -81,7 +81,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		return add_fieldsets
 
 	def get_readonly_fields(self, request, obj=None):
-		rf = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
+		rf = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		rf_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
 		rf_superuser = (None,)
 		# if request.user.is_superuser:
@@ -157,8 +157,8 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+			# encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
+			# extra_context.update({'pengajuan_id': encode_pengajuan_id})
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++
@@ -188,6 +188,17 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_bukti_admin(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+			extra_context.update({'pengajuan': pengajuan_ })
+		template = loader.get_template("front-end/include/formulir_siup/cetak_bukti_pendaftaran_admin.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilSIUPAdmin, self).get_urls()
@@ -195,6 +206,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			url(r'^ajax-dashboard/$', self.admin_site.admin_view(self.ajax_dashboard), name='ajax_dashboard'),
 			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
 			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
+			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin), name='cetak_bukti_admin'),
 			)
 		return my_urls + urls
 

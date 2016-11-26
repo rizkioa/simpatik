@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, ProdukUtama, JenisLegalitas
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilReklame
 
 def formulir_reklame(request):
@@ -21,7 +21,7 @@ def formulir_reklame(request):
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
 		kelembagaan_list = Kelembagaan.objects.all()
 		kbli_list = KBLI.objects.all()
-		produk_utama_list = ProdukUtama.objects.all()
+		# produk_utama_list = ProdukUtama.objects.all()
 		jenis_legalitas_list = JenisLegalitas.objects.all()
 		jenis_reklame = JenisReklame.objects.all()
 
@@ -35,7 +35,7 @@ def formulir_reklame(request):
 		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
 		extra_context.update({'kelembagaan_list': kelembagaan_list})
 		extra_context.update({'kbli_list': kbli_list})
-		extra_context.update({'produk_utama_list': produk_utama_list})
+		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 		extra_context.update({'jenis_reklame': jenis_reklame})
 
