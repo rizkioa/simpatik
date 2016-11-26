@@ -545,12 +545,12 @@
 	            </div>
 	            <div id="minimize_4">
 	            	<div class="tile-body">
-						<div class="panel-body">
+						<div class="panel-body" id="id_panel_pembuat_surat">
 						{% if skizin == None %}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
-						    	<!-- <a style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Edit Draf</span></a><br> -->
-						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Preview Draf</span></a><br>
+						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
+						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-settings"></i> <span>Generate Draf</span></a>
 						    </center>
 						</div>
 						{% endif %}
@@ -980,19 +980,60 @@
 			        respon = $.parseJSON(response)
 			        if(respon.success){
 			        	// openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
-			        	window.open('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}', '_blank')
+			        	// window.open('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}', '_blank')
+			        	open_skprint()
 			          	toastr["success"](respon.pesan)
-			          	// window.location.href= "";
-
+			          	window.location.href= "";
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
+		              	window.location.href= "";
 		            }
 			    },
 			    error: function(data) {                
 			      	toast_server_error()
+			      	window.location.href= "";
 			    }
 			});
+		}
+		function edit_skizin(id_detil_siup, aksi){
+			
+		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+		  	produk_utama = $('#produk_utama_edit').val();
+			$.ajax({ // create an AJAX call...
+			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, produk_utama: produk_utama }, // get the form data
+			    type: 'POST', // GET or POST
+			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+			    success: function(response) { // on success..
+			        respon = $.parseJSON(response)
+			        if(respon.success){
+			        	// openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
+			        	// open_skprint()
+			        	$str = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Warning!</strong> This is the dismissable alert dialog.</div>';
+			        	$('#id_panel_pembuat_surat > center').prepend(row);
+			          	toastr["success"](respon.pesan)
+			          	$('#edit_skizin').hide()
+			          	$('.modal-backdrop').hide()
+			          	window.location.href= "";
+			      	}
+			      	else{
+		              	toastr["error"](respon.pesan)
+		              	$('#edit_skizin').hide()
+			          	$('.modal-backdrop').hide()
+			          	window.location.href= "";
+		            }
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			      	$('#edit_skizin').hide()
+		          	$('.modal-backdrop').hide()
+		          	window.location.href= "";
+			    }
+			});
+		}
+		function open_skprint(){
+			// window.open('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}', '_blank');
+			openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
 		}
 	</script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
@@ -1058,6 +1099,27 @@
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         }
     </script>
+    <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
+		      	</div>
+		      	<div class="modal-body">
+		      		<form novalidate="" name="form1" role="form" id="form1">
+                        <div class="form-group">
+                            <label for="username">Barang / Jasa Perdagangan Utama: </label>
+                            <input name="username" id="produk_utama_edit" class="form-control" data-parsley-trigger="change" required="" type="text"
+                        </div>
+                    </form>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
 	<div class="modal fade" id="detail_siup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">

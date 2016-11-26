@@ -4,7 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from admin_tools.menu import items
 
 from admin_tools.menus import Menu
-from django.db.models import Q
 
 class CustomMenu(Menu):
     """
@@ -68,16 +67,18 @@ class CustomMenu(Menu):
                     ]
                 )
 
-        if ~Q(request.user.is_superuser):
+
+
+        if request.user.groups.filter(name="Operator").exists() and request.user.groups.filter(name="Kabid").exists() and request.user.groups.filter(name="Pembuat Surat").exists() and request.user.groups.filter(name="Kadin").exists() and request.user.groups.filter(name="Penomoran").exists() and request.user.groups.filter(name="Cetak").exists() and request.user.groups.filter(name="Selesai").exists():
             menu_izin = items.MenuItem(
                         title=_('Menu Izin'),
                         description='Menu Izin',
                         accesskey='menuIzin',
                         children= [
                             items.MenuItem(
-                                title='Semua Izin',
+                                title='Semua Pengajuan',
                                 icon='fa fa-file-text', 
-                                url=reverse('admin:izin_pengajuanizin_changelist'),                        
+                                url=reverse('admin:semua_pengajuan'),                        
                             ),
                         	items.MenuItem(
                                 title=_('Izin Terdaftar'),
@@ -235,9 +236,9 @@ class CustomMenu(Menu):
 
         self.children += [
             menu_utama,
-            menu_izin,
         ]
 
+        
         if request.user.is_superuser:
             menu_pengaturan = items.MenuItem(
                 title=_('Menu Pengaturan'),
@@ -359,6 +360,16 @@ class CustomMenu(Menu):
                         url=reverse('admin:master_jenispemohon_changelist'),
                     ),
                     items.MenuItem(
+                        title='Kelembagaan',
+                        icon='fa fa-user-md',
+                        url=reverse('admin:perusahaan_kelembagaan_changelist'),
+                    ),
+                    items.MenuItem(
+                        title='KBLI',
+                        icon='fa fa-user-md',
+                        url=reverse('admin:perusahaan_kbli_changelist'),
+                    ),
+                    items.MenuItem(
                         title=_('Setting'),
                         description='Setting atau Konfigurasi',
                         icon='fa fa-cog fa-fw',
@@ -396,7 +407,7 @@ class CustomMenu(Menu):
                     items.MenuItem(
                         title='Hak Akses',
                         icon='fa fa-shield',
-                        url=reverse('admin:auth_group_changelist'),
+                        url=reverse('admin:accounts_hakakses_changelist'),
                     ),
                 ]
             )
@@ -406,5 +417,14 @@ class CustomMenu(Menu):
                 menu_pengaturan,
             ]
 
+        if request.user.groups.filter(name="Admin Sistem").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Draft SK',
+                    icon='fa fa-file-text',
+                    css_classes='r', 
+                    url='#',                
+                ),
+            ]
         
         return super(CustomMenu, self).init_with_context(context)

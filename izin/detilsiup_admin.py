@@ -102,7 +102,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		pemohon = len(Pemohon.objects.all())
 		perusahaan = len(Perusahaan.objects.all())
 		pengajuan_selesai = len(PengajuanIzin.objects.filter(status=1))
-		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1) and ~Q(status=6)))
+		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1) and ~Q(status=6) and ~Q(status=11)))
 		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
 		pengajuan_siup = len(DetilSIUP.objects.filter(created_at__year=tahun_sekarang))
 		pengajuan_reklame = len(DetilReklame.objects.filter(created_at__year=tahun_sekarang))
