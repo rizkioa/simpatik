@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from admin_tools.menu import items
-
+from django.db.models import Q
 from admin_tools.menus import Menu
 
 class CustomMenu(Menu):
@@ -101,6 +101,15 @@ class CustomMenu(Menu):
                         ]
                     )
 
+        if request.user.is_superuser:
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Semua Pengajuan',
+                    icon='fa fa-file-text', 
+                    url=reverse('admin:semua_pengajuan'),                        
+                ),
+            ]
+
         if request.user.groups.filter(name="Operator").exists():
             menu_utama.children += [
             	items.MenuItem(
@@ -142,37 +151,7 @@ class CustomMenu(Menu):
                 ),
             ]
 
-        if request.user.groups.filter(name="Kadin").exists():
-            menu_utama.children += [
-                items.MenuItem(
-                    title='Draft SK',
-                    icon='fa fa-file-text',
-                    css_classes='r', 
-                    url=reverse('admin:verifikasi_skizin'),                
-                ),
-            ]
-
-        if request.user.groups.filter(name="Penomoran").exists():
-            menu_utama.children += [
-                items.MenuItem(
-                    title='Draft SK',
-                    icon='fa fa-file-text',
-                    css_classes='r', 
-                    url=reverse('admin:verifikasi_skizin'),                
-                ),
-            ]
-
-        if request.user.groups.filter(name="Cetak").exists():
-            menu_utama.children += [
-                items.MenuItem(
-                    title='Draft SK',
-                    icon='fa fa-file-text',
-                    css_classes='r', 
-                    url=reverse('admin:verifikasi_skizin'),                
-                ),
-            ]
-
-        if request.user.groups.filter(name="Selesai").exists():
+        if request.user.groups.filter(Q(name="Kadin")|Q(name="Penomoran")|Q(name="Cetak")|Q(name="Selesai")).exists():
             menu_utama.children += [
                 items.MenuItem(
                     title='Draft SK',

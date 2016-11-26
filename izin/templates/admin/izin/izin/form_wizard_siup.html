@@ -31,6 +31,7 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
   	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
   	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+  	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
   	
 	<!--/ custom javascripts -->
 	<script type="text/javascript">
@@ -414,8 +415,18 @@
           	//+++ bentuk kegiatan usaha ++++
           	$('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
           	$('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
-          	$('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"))
-      		$('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"))
+          	if ('{{pengajuan_.kekayaan_bersih}}' == 'None'){
+		        $('#id_kekayaan_bersih').val('0');
+	      	}
+	      	else{
+		        $('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"));
+	      	}
+	      	if ('{{pengajuan_.total_nilai_saham}}' == 'None'){
+		        $('#id_total_nilai_saham').val('0');
+	      	}
+	      	else{
+		        $('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"));
+	      	}
       		$('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
       		$('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
       		$('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
@@ -431,16 +442,6 @@
 		        $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
 		        $('#checkbox_berkas_pendukung').prop('checked', 1)
 	      	}
-	    }
-	    id_pengajuan = parseInt($.cookie('id_pengajuan'))
-	    if (id_pengajuan > 0){
-	      $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
-	      load_provinsi('1')
-	      load_kabupaten('1')
-	      setTimeout(function(){
-	        $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
-	        $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
-	      }, 1000);
 	    }
   	</script>
 {% endblock %}
