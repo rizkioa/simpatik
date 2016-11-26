@@ -169,7 +169,7 @@ urlpatterns = [
     url(r'^layanan/iujk/uploaddokumen/akta-pendirian-badan-usaha/$', iujk_views.upload_akta_pendirian_badan_usaha, name='upload_akta_pendirian_badan_usaha'),
     url(r'^layanan/iujk/uploaddokumen/akta-perubahan-badan-usaha/$', iujk_views.upload_akta_perubahan_badan_usaha, name='upload_akta_perubahan_badan_usaha'),
     url(r'^layanan/iujk/uploaddokumen/next/$', iujk_views.upload_berkas_next, name='upload_berkas_next'),
-
+    url(r'^layanan/iujk/save/$', iujk_views.iujk_done , name='iujk_done'),
     # +++++++ ajax save tdp pt +++++++
     url(r'^layanan/tdp-pt/data-umum-perusahaan/save/$', tdp_view.tdp_data_umum_perusahaan_cookie, name='tdp_pt_data_umum_perusahaan_save'),
     url(r'^layanan/tdp-pt/data-kegiatan-perusahaan/save/$', tdp_view.tdp_data_kegiatan_pt_cookie, name='tdp_pt_data_kegiatan_perusahaan_save'),

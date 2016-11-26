@@ -161,6 +161,12 @@
 			if ($.cookie('id_perusahaan') === undefined){
 				$.cookie('id_perusahaan', "0", {path:"/"});
 			}
+			if ($.cookie('id_legalitas') === undefined){
+	        	$.cookie('id_legalitas', "0", {path:"/"});
+	        }
+	        if ($.cookie('id_legalitas_perubahan') === undefined){
+	        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+	        }
 
 			$( "#alert" ).prop( "disabled", true );
 			$('#checkbox_siup_done').change(function() {
@@ -265,41 +271,45 @@
 		}
 
 		document.querySelector('#alert').onclick = function(){
-		// swal("Good job!", "You clicked the button!", "success");
-			var pengajuan_cookie = $.cookie('id_pengajuan'); 
-			var pemohon_cookie = $.cookie('id_pemohon'); 
-			var perusahaan_cookie = $.cookie('id_perusahaan'); 
-			if (pengajuan_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-				$(tab_index).tab('show');
-			}
-			else if(pemohon_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-				$(tab_index).tab('show');
-			}
-			else if(perusahaan_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-				tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-				$(tab_index).tab('show');
-			}
-			else{
-				swal({
-				  showConfirmButton: false,
-				  type: 'success',
-				  title: 'Pendaftaran Berhasil Tersimpan',
-				  timer: 2000
-				})
-			
-				window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
-				$.removeCookie('id_pengajuan', { path: '/' });
-				$.removeCookie('id_perusahaan', { path: '/' });
-				$.removeCookie('id_pemohon', { path: '/' });
-				$.removeCookie('nomor_ktp', { path: '/' });
-				$.removeCookie('nomor_paspor', { path: '/' });
-			}
-		};
+	    // swal("Good job!", "You clicked the button!", "success");
+		    var pengajuan_cookie = $.cookie('id_pengajuan'); 
+		    var pemohon_cookie = $.cookie('id_pemohon'); 
+		    var perusahaan_cookie = $.cookie('id_perusahaan'); 
+		    if (pengajuan_cookie === ""){
+		       	toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+		        $(tab_index).tab('show');
+		   	}
+	      	else if(pemohon_cookie === ""){
+		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+		        $(tab_index).tab('show');
+	      	}
+	      	else if(perusahaan_cookie === ""){
+		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+		        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+		        $(tab_index).tab('show');
+	      	}
+	      	else{
+		        swal({
+		          showConfirmButton: false,
+		          type: 'success',
+		          title: 'Pendaftaran Berhasil Tersimpan',
+		          timer: 2000
+		        })
+		        
+		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
+		      	$.ajax({
+		        	url: '{% url 'iujk_done' %}',
+		        	success: function(response) {
+		        		respon = $.parseJSON(response)
+		        		if(respon.success){
+		        			toastr["success"](respon.pesan)
+		        		}
+		        	}
+	        	});
+	      	}
+    	};
 	</script>
 	<!-- load data if exists -->
 
@@ -595,7 +605,7 @@
 
 	<div class="tab-pane" id="tab4">
 	  <!-- legalitas perushaan -->
-	  {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
+	  {% include 'front-end/include/formulir_iujk/legalitas_perusahaan.html' %}
 	</div>
 
 	<div class="tab-pane" id="tab5">
