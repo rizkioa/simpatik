@@ -489,6 +489,25 @@ def penanggung_jawab_next(request):
 
 	return response
 
+def upload_berkas_next(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		# print request.POST
+		# print request.FILES
+		if request.COOKIES['id_pengajuan'] != '0':
+			data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+			data = json.dumps(data)
+			response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+	return response
+
 
 def upload_sertifikat_badan_usaha(request):
 	if 'id_perusahaan' in request.COOKIES.keys():

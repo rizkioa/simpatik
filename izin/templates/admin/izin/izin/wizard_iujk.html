@@ -200,7 +200,8 @@
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 			var frm = $('form[name="step'+ index +'"]');
-			// console.log(frm.parsley())
+			console.log(frm.parsley())
+			console.log(frm)
 			frm.parsley().validate();
 			if (frm.parsley().isValid()) {
 				// $( ".tab-content #tab"+index ).mask('loading')
