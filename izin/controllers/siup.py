@@ -103,6 +103,7 @@ def formulir_siup(request):
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
 		kelembagaan_list = Kelembagaan.objects.all()
 		kbli_list = KBLI.objects.all()
+		kbli_list = kbli_list.extra(where=["CHAR_LENGTH(kode_kbli) = 5"])
 		# produk_utama_list = ProdukUtama.objects.all()
 		jenis_legalitas_list = JenisLegalitas.objects.all()
 

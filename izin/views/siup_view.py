@@ -35,7 +35,6 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
-	# print Pemohon.objects.get(username = request.POST.get('ktp'))
 	try:
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
@@ -274,9 +273,6 @@ def siup_detilsiup_save_cookie(request):
 				total_saham = Decimal(0.00)
 			else:
 				total_saham = tos.replace(".", "")
-			# print type(total_saham)
-			# print type(kekayaan)
-			# print type(request.POST.get('total_nilai_saham'))
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
 				try:
@@ -288,13 +284,20 @@ def siup_detilsiup_save_cookie(request):
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
 					# pengajuan_.presentase_saham_asing = request.POST.get('presentase_saham_asing', Decimal('0.00'))
-					detilSIUP.save()
 					pengajuan_.save()
 					# print "kbli"+kbli_list
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
+					nama_kbli = []
 					for kbli in kbli_list:
-						pengajuan_.kbli.add(KBLI.objects.get(id=kbli))
+						kbli_obj = KBLI.objects.get(id=kbli)
+						pengajuan_.kbli.add(kbli_obj)
+						
+						nama_kbli.append(kbli_obj.nama_kbli)			
+					if len(nama_kbli) > 1:
+						detilSIUP.produk_utama = ",".join(nama_kbli)
+					detilSIUP.save()
+
 					# for produk_utama in produk_utama_list:
 					# 	pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
 					#++++++++++++++++ end multi select manytomany ++++++++
