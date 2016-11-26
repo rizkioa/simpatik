@@ -123,26 +123,26 @@ class IzinAdmin(admin.ModelAdmin):
 				pengajuan_ = qs.filter(status=4)
 			elif request.user.groups.filter(name='Pembuat Surat'):
 				pengajuan_ = qs.filter(skizin__isnull=True, status=2)
-			else:
-			 	pengajuan_ = qs
+
 		elif func_view.__name__ == 'verifikasi_skizin':
+			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kabid'):
-				pengajuan_ = SKIzin.objects.filter(status=6).values('pengajuan_izin_id')
-				pengajuan_ = qs.filter(id__in=pengajuan_)
+				id_list = SKIzin.objects.filter(status=6).values('pengajuan_izin_id')
+				id_pengajuan_list.append(id_list)
+				
 			elif request.user.groups.filter(name='Kadin'):
-				pengajuan_ = SKIzin.objects.filter(status=4).values('pengajuan_izin_id')
-				pengajuan_ = qs.filter(id__in=pengajuan_)
-			elif request.user.groups.filter(name='Penomoran'):
-				pengajuan_ = SKIzin.objects.filter(status=9).values('pengajuan_izin_id')
-				pengajuan_ = qs.filter(id__in=pengajuan_)
-			elif request.user.groups.filter(name='Cetak'):
-				pengajuan_ = SKIzin.objects.filter(status=10).values('pengajuan_izin_id')
-				pengajuan_ = qs.filter(id__in=pengajuan_)
-			elif request.user.groups.filter(name='Selesai'):
-				pengajuan_ = SKIzin.objects.filter(status=2).values('pengajuan_izin_id')
-				pengajuan_ = qs.filter(id__in=pengajuan_)
-			else:
-				pengajuan_ = qs
+				id_list = SKIzin.objects.filter(status=4).values('pengajuan_izin_id')
+				id_pengajuan_list.append(id_list)
+			if request.user.groups.filter(name='Penomoran'):
+				id_list = SKIzin.objects.filter(status=9).values('pengajuan_izin_id')
+				id_pengajuan_list.append(id_list)
+			if request.user.groups.filter(name='Cetak'):
+				id_list = SKIzin.objects.filter(status=10).values('pengajuan_izin_id')
+				id_pengajuan_list.append(id_list)
+			if request.user.groups.filter(name='Selesai'):
+				id_list = SKIzin.objects.filter(status=2).values('pengajuan_izin_id')
+				id_pengajuan_list.append(id_list)
+			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
 		else:
 			pengajuan_ = qs
 		return pengajuan_
