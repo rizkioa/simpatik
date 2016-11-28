@@ -171,6 +171,9 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			total_nilai_saham = int(pengajuan_.total_nilai_saham)
 			extra_context.update({'total_nilai_saham': formatrupiah(total_nilai_saham)})
 
+			riwayat_penolakan = Riwayat.objects.filter(pengajuan_izin_id=1043, pengajuan_izin__status=7).last()
+			extra_context.update({'riwayat_penolakan': riwayat_penolakan })
+
 			try:
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 				if skizin_:
