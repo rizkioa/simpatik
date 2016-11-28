@@ -315,7 +315,7 @@ function form_upload_dokumen(elem_){
       respon = $.parseJSON(response)
       if(respon.success){
             toastr["success"](respon.pesan)
-            // $('#checkbox_berkas_foto').prop('checked', true); 
+            $('#'+split_+'-konfirmasi').prop('checked', true); 
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);                       
       }
