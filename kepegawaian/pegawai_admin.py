@@ -122,7 +122,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 	def get_fieldsets(self, request, obj = None):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		if func_view.__name__ == self.change_view.__name__:
-			field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email')
+			field = (('gelar_depan', 'nama_lengkap', 'gelar_belakang'), ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email')
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),

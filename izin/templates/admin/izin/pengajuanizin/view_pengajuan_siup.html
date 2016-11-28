@@ -230,7 +230,9 @@
 					<!-- <a class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir</a> -->
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
 
+					{% if status != 6 and status != 11 and status != 4%}
 					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					{% endif %}
 					
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
@@ -299,6 +301,8 @@
 						    		</center>
 						    	</div>
 						   	</div>
+
+						   	<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 					    {% endif %}
 					    <br>
 					    <br>
@@ -366,6 +370,20 @@
 						    		</center>
 						    	</div>
 						   	</div>
+						   	<table class="table-responsive" width="100%" border="0">
+								<thead>
+									<tr>
+										<td>Alasan Penolakan</td>
+										<td>Berkas Lampiran</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>{{ riwayat_penolakan.alasan }}</td>
+										<td>{{ riwayat_penolakan.alasan }}</td>
+									</tr>
+								</tbody>
+							</table>
 	            		{% endif %}
 						{% if status == 4 %}
 						    <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
@@ -617,6 +635,7 @@
 							    		</center>
 							    	</div>
 							   	</div>
+
 		            		{% endif %}
 
 							{% if skizin_status == 4 %}
@@ -1108,9 +1127,28 @@
 		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
 		      	</div>
 		      	<div class="modal-body">
+		      		<table class="table-responsive" width="100%" border="0">
+		      			<thead>
+		      				<tr>
+		      					<td>Kode KBLI</td>
+		      					<td>Nama KBLI</td>
+		      				</tr>
+		      			</thead>
+		      			<tbody>
+		      				{% for kbli in pengajuan.kbli.all %}
+		      				<tr>
+		      					<td>{{ kbli.kode_kbli }}</td>
+		      					<td>{{kbli.nama_kbli}}</td>
+		      				</tr>
+		      				{% endfor %}
+		      			</tbody>
+		      		</table>
+		      		<br>
+		      		<br>
+		      		<br>
                     <div class="form-group">
                         <label for="username">Barang / Jasa Perdagangan Utama: </label>
-                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{{ pengajuan.produk_utama }}</textarea>
+                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change"></textarea>
                     </div>
 		      	</div>
 		      	<div class="modal-footer">
