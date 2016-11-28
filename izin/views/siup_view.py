@@ -284,19 +284,20 @@ def siup_detilsiup_save_cookie(request):
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
 					# pengajuan_.presentase_saham_asing = request.POST.get('presentase_saham_asing', Decimal('0.00'))
-					pengajuan_.save()
+					
 					# print "kbli"+kbli_list
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
-					nama_kbli = []
+					# nama_kbli = []
 					for kbli in kbli_list:
 						kbli_obj = KBLI.objects.get(id=kbli)
 						pengajuan_.kbli.add(kbli_obj)
 						
-						nama_kbli.append(kbli_obj.nama_kbli)			
-					if len(nama_kbli) > 1:
-						detilSIUP.produk_utama = ",".join(nama_kbli)
+					# 	nama_kbli.append(kbli_obj.nama_kbli)			
+					# if len(nama_kbli) > 1:
+					# 	pengajuan_.produk_utama = ",".join(nama_kbli)
 					detilSIUP.save()
+					pengajuan_.save()
 
 					# for produk_utama in produk_utama_list:
 					# 	pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
