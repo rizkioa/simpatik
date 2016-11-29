@@ -223,7 +223,7 @@
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.nomor_identitas }}</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>

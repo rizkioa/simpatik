@@ -433,7 +433,7 @@ def cetak_permohonan(request, id_pengajuan_):
 
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 
@@ -475,12 +475,16 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_pemohon': alamat_ })
 				extra_context.update({ 'pemohon': pengajuan_.pemohon })
+				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+				extra_context.update({ 'paspor': paspor_ })
+				extra_context.update({ 'ktp': ktp_ })
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")

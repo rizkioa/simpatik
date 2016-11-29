@@ -4,27 +4,25 @@ from sqlite3 import OperationalError
 import os
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
 from izin.utils import get_nomor_pengajuan
-from accounts.models import NomorIdentitasPengguna
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
-from master.models import Berkas
-from perusahaan.models import Legalitas, KBLI
-
+from izin.utils import formatrupiah
 try:
 	from django.utils.encoding import force_text
 except ImportError:
 	from django.utils.encoding import force_unicode as force_text
-
 from django.utils.translation import ugettext_lazy as _
-
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-from perusahaan.models import Perusahaan
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
 import datetime
 from izin import models as app_models
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from perusahaan.models import Legalitas, KBLI, Perusahaan
+from accounts.models import NomorIdentitasPengguna
+from master.models import Berkas
+
 
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
@@ -84,8 +82,6 @@ def siup_identitas_pemohon_save_cookie(request):
 		elif k.id == 25:
 			objects_ = getattr(app_models, 'DetilTDP')
 
-		# print "sesuatu"
-		# print request.user.id
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
@@ -157,7 +153,6 @@ def siup_identitas_perusahan_save_cookie(request):
 		if request.COOKIES['id_pengajuan'] != '':
 			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 			try:
-				# print "try"
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
 				if perusahaan.is_valid():
@@ -310,9 +305,9 @@ def siup_detilsiup_save_cookie(request):
 						'pesan': 'Detail SIUP berhasil disimpan. Proses Selanjutnya.', 
 						'data': [
 							{'bentuk_kegiatan_usaha': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha},
-							{'kekayaan_bersih': str(pengajuan_.kekayaan_bersih)},
+							{'kekayaan_bersih': formatrupiah(pengajuan_.kekayaan_bersih)},
 							{'status_penanaman_modal': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal },
-							{'total_nilai_saham': str(pengajuan_.total_nilai_saham)},
+							{'total_nilai_saham': formatrupiah(pengajuan_.total_nilai_saham)},
 							{'presentase_saham_nasional': str(pengajuan_.presentase_saham_nasional)+" %"},
 							{'presentase_saham_asing': str(pengajuan_.presentase_saham_asing)+" %"},
 							{'kelembagaan': pengajuan_.kelembagaan.kelembagaan},
@@ -486,7 +481,7 @@ def siup_upload_berkas_foto_pemohon(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-						 	valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						 	valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 						 	if not ext in valid_extensions:
 						 		data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -548,7 +543,7 @@ def siup_upload_berkas_ktp_pemohon(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -606,7 +601,7 @@ def siup_upload_berkas_npwp_pribadi(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -669,7 +664,7 @@ def siup_upload_berkas_npwp_perusahaan(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -731,7 +726,7 @@ def siup_upload_berkas_akta_pendirian(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -793,7 +788,7 @@ def siup_upload_berkas_akta_perubahan(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -855,7 +850,7 @@ def siup_upload_berkas_pendukung(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -906,9 +901,7 @@ def siup_done(request):
 			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
-			
-			
-
+					
 			data = {'success': True, 'pesan': 'Proses Selesai.' }
 			response = HttpResponse(json.dumps(data))
 			response.delete_cookie(key='id_pengajuan') # set cookie	

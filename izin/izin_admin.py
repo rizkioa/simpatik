@@ -392,7 +392,7 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'pemohon': pengajuan_.pemohon})
 			extra_context.update({'id_pengajuan': pengajuan_.id})
 			extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
-			extra_context.update({'alamat_pemohon': str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)})
+			extra_context.update({'alamat_pemohon': str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)})
 			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
@@ -434,12 +434,12 @@ class IzinAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+",f"+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+",f"+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
@@ -451,21 +451,21 @@ class IzinAdmin(admin.ModelAdmin):
 				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
 				extra_context.update({'terbilang': str(terbilang_) })
 				extra_context.update({ 'kekayaan_bersih': formatrupiah(pengajuan_.kekayaan_bersih) })
-			try:
-				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
-				if kepala_:
-					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+			# try:
+			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+			if skizin_:
+				extra_context.update({'skizin': skizin_ })
+				extra_context.update({'skizin_status': skizin_.status })
+			# except ObjectDoesNotExist:
+			# 	pass
+			# try:
+			kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas").last()
+			if kepala_:
+				extra_context.update({'kepala_dinas': kepala_ })
+				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
-			except ObjectDoesNotExist:
-				pass
+			# except ObjectDoesNotExist:
+			# 	pass
 			# print pengajuan_.kbli.nama_kbli.all()
 			# print pengajuan_.produk_utama
 		template = loader.get_template("front-end/include/formulir_siup/cetak_siup_asli.html")
@@ -664,7 +664,7 @@ class IzinAdmin(admin.ModelAdmin):
 						detilsiup.save()
 						response = {
 							"success": True,
-							"pesan": "Izin berhasil di verifikasi.",
+							"pesan": "Barang / Jasa Perdagangan Utama berhasil di edit.",
 							"redirect": '',
 						}
 					except:
