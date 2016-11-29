@@ -27,6 +27,8 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+
+
 	def get_fieldsets(self, request, obj=None):
 		fields = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
@@ -116,9 +118,10 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def get_list_display_links(self, request, list_display):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
-		list_display_links = ('get_no_pengajuan',)
-		if func_view.__name__ == 'izinterdaftar':
-			list_display_links = None
+		list_display_links = None
+		# list_display_links = ('get_no_pengajuan',)
+		# if func_view.__name__ == 'izinterdaftar':
+		# 	list_display_links = None
 		return list_display_links
 
 	def get_queryset(self, request):
@@ -220,10 +223,13 @@ class IzinAdmin(admin.ModelAdmin):
 	def button_cetak_pendaftaran(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
+		# print jenis_izin_
 		if jenis_izin_ == "503.08/":
 			link_ = reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "IUJK":
+			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )

@@ -2,10 +2,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 
 
 from master.models import Negara, JenisPemohon, Kecamatan
-from izin.models import JenisPermohonanIzin, PaketPekerjaan
+from izin.models import JenisPermohonanIzin, PaketPekerjaan, DetilIUJK
 from izin.utils import JENIS_IUJK, get_tahun_choices
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 
@@ -30,7 +31,12 @@ def IUJKWizard(request, extra_context={}):
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":
-				extra_context.update({'paketpekerjaan_list': PaketPekerjaan.objects.filter(detil_iujk_id=request.COOKIES['id_pengajuan'])})
+				# print PaketPekerjaan.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'])
+				extra_context.update({'paketpekerjaan_list': PaketPekerjaan.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'])})
+				try:
+					pengajuan_ = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+				except ObjectDoesNotExist:
+					pass
 		template = loader.get_template("admin/izin/izin/wizard_iujk.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
