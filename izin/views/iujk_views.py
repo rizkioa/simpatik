@@ -1178,7 +1178,8 @@ def ajax_konfirmasi_nama_paket_pekerjaan(request, id_pengajuan):
 	if id_pengajuan:
 		paket_list = PaketPekerjaan.objects.filter(detil_iujk__id=id_pengajuan)
 		paket_ = [ obj.as_dict() for obj in paket_list ]
-	data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_ }
+		paket_list = paket_list.first()
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_, 'jenis':paket_list.detil_iujk.jenis_iujk }
 	response = HttpResponse(json.dumps(data))
 	return response
 
@@ -1187,7 +1188,8 @@ def ajax_konfirmasi_anggota_badan_direktur(request, id_pengajuan):
 	if id_pengajuan:
 		anggota_list = AnggotaBadanUsaha.objects.filter(detil_iujk__id=id_pengajuan, jenis_anggota_badan='Direktur / Penanggung Jawab Badan Usaha')
 		anggota_ = [ obj.as_dict() for obj in anggota_list ]
-	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_ }
+		# anggota_list = anggota_list.last()
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_, }
 	response = HttpResponse(json.dumps(data))
 	return response
 

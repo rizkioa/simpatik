@@ -5,9 +5,10 @@
     <div class="col-sm-5">
       <select class="form-control chosen-select mb-10" name="jenis_iujk" required="" data-parsley-trigger="change">
         <option value>-- Pilih Jenis IUJK --</option>
+
         {% if jenis_iujk %}
           {% for jenis in jenis_iujk %}
-            <option value="{{ jenis.0 }}">{{ jenis.1 }}</option>
+            <option value="{{ jenis.0 }}" {% if get_jenis_iujk == jenis.1 %} selected="selected" {% endif %}>{{ jenis.1 }}</option>
           {% endfor %}
         {% endif %}
       </select>

@@ -21,7 +21,18 @@
                 </tr>
               </thead>
               <tbody>   
-              
+              {% if anggota_list_deriktur %}
+                {% for a in anggota_list_deriktur %}
+                  <tr id="{{a.id}}">
+                    <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
+                    <td>{{a.nama}}</td>
+                    {% for b in a.berkas_tambahan.all %}
+
+                      <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endif %}
               </tbody>
           </table>
         </div>
@@ -58,7 +69,18 @@
                 </tr>
               </thead>
               <tbody>
+              {% if anggota_list_teknik %}
+                {% for a in anggota_list_teknik %}
+                  <tr id="{{a.id}}">
+                    <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
+                    <td>{{a.nama}}</td>
+                    {% for b in a.berkas_tambahan.all %}
 
+                      <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endif %}
               </tbody>
           </table>
         </div>
@@ -94,7 +116,18 @@
                 </tr>
               </thead>
               <tbody>
+              {% if anggota_list_non %}
+                {% for a in anggota_list_non %}
+                  <tr id="{{a.id}}">
+                    <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
+                    <td>{{a.nama}}</td>
+                    {% for b in a.berkas_tambahan.all %}
 
+                      <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endif %}
               </tbody>
           </table>
         </div>
