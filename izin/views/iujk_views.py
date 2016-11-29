@@ -4,7 +4,7 @@ import json
 import os
 
 from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
-from perusahaan.models import Perusahaan
+from perusahaan.models import Perusahaan, Legalitas
 from master.models import Berkas
 from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm, DataAnggotaForm, BerkasFom
 from izin.izin_forms import LegalitasPerusahaanForm, LegalitasPerusahaanPerubahanForm
@@ -132,46 +132,70 @@ def iujk_legalitas_perusahaan_save(request):
 				if request.COOKIES['id_pengajuan'] != '':
 					pengajuan_ = DetilIUJK.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 					if request.POST.get('onoffswitch_pendirian') == 'on':
-						form = LegalitasPerusahaanForm(request.POST)
+						if request.COOKIES['id_legalitas'] == "":
+							form = LegalitasPerusahaanForm(request.POST)
+						else:
+							try:
+								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+								form = LegalitasPerusahaanForm(request.POST, instance=l)
+							except ObjectDoesNotExist:
+								form = LegalitasPerusahaanForm(request.POST)
+
 						if form.is_valid():
 							f = form.save(commit=False)
 							f.perusahaan_id = request.COOKIES['id_perusahaan']
+							f.jenis_legalitas_id = 1
 							if request.user.is_authenticated():
 								f.created_by_id = request.user.id
 							else:
 								f.created_by_id = request.COOKIES['id_pemohon']
 							f.save()
 							pengajuan_.legalitas.add(f)
-							data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
-								{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
-								{'nama_notaris': f.nama_notaris},
-								{'alamat_notaris': f.alamat},
-								{'telephone_notaris': f.telephone},
-								{'nomor_pengesahaan': f.nomor_pengesahan},
-								{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
-								]}
-							data = json.dumps(data)
-							response = HttpResponse(data)
-							response.set_cookie(key='id_legalitas', value=f.id)
+							if request.POST.get('onoffswitch') != 'on':
+								data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpanaaaa. Proses Selanjutnya.', 'data': [
+									{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
+									{'nama_notaris': f.nama_notaris},
+									{'alamat_notaris': f.alamat},
+									{'telephone_notaris': f.telephone},
+									{'nomor_pengesahaan': f.nomor_pengesahan},
+									{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
+									]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+								response.set_cookie(key='id_legalitas', value=f.id)
 
 							if request.POST.get('onoffswitch') == 'on':
-								formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+								# formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+								if request.COOKIES['id_legalitas_perubahan'] == "":
+									formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+								else:
+									try:
+										lp = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
+										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST, instance=lp)
+									except ObjectDoesNotExist:
+										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
 								
 								if formperubahan.is_valid():
 									if request.user.is_authenticated():
 										created = request.user.id
 									else:
 										created = request.COOKIES['id_pemohon']
-									legalitas = Legalitas(
-										created_by_id = created,	
-										jenis_legalitas_id = 2,
-										perusahaan_id = request.COOKIES['id_perusahaan'],
-										nama_notaris=request.POST.get('nama_notaris_perubahan'), 
-										alamat=request.POST.get('alamat_notaris_perubahan'), 
-										telephone=request.POST.get('telephone_notaris_perubahan'), 
-										nomor_pengesahan=request.POST.get('nomor_pengesahan_perubahan'), 
-										tanggal_pengesahan=formperubahan.cleaned_data['tanggal_pengesahan_perubahan'])
+									legalitas = formperubahan.save(commit=False)
+									legalitas.perusahaan_id = request.COOKIES['id_perusahaan']
+									legalitas.jenis_legalitas_id = 2
+									legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
+									legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
+									legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
+									legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+									legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
+									legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
+									legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+									if request.user.is_authenticated():
+										legalitas.created_by_id = request.user.id
+									else:
+										legalitas.created_by_id = request.COOKIES['id_pemohon']
 									legalitas.save()
+
 									pengajuan_.legalitas.add(legalitas)
 									data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
 										# # legalitas perubahaan
@@ -185,6 +209,7 @@ def iujk_legalitas_perusahaan_save(request):
 									data = json.dumps(data)
 									response = HttpResponse(data)
 									response.set_cookie(key='id_legalitas_perubahan', value=legalitas.id)
+									response.set_cookie(key='id_legalitas', value=f.id)
 								else:
 									data = formperubahan.errors.as_json()
 									response = HttpResponse(data)
@@ -467,6 +492,7 @@ def penanggung_jawab_next(request):
 					if len(da_n) > 0 :
 						data['success'] = True
 						data['pesan'] = 'Data Anggota Selesai, Proses Selanjutnya'
+						data['data'] = []
 					else:
 						data['Terjadi Kesalahan'] = [{'message': 'Tenaga Non Teknik Belum Ada'}]
 				else:
@@ -487,6 +513,71 @@ def penanggung_jawab_next(request):
 		data = json.dumps(data)
 		response = HttpResponse(data)
 
+	return response
+
+def upload_berkas_next(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0':
+			try:
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				b = Berkas.objects.filter(nama_berkas="Sertifikat Badan Usaha "+p.nama_perusahaan)
+				if b.exists():
+					b = Berkas.objects.filter(nama_berkas="Kartu Teknis Badan Usaha "+p.nama_perusahaan)
+					if b.exists():
+						b = Berkas.objects.filter(nama_berkas="Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
+						if b.exists():
+							b = Berkas.objects.filter(nama_berkas="Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
+							if b.exists():
+								b = Berkas.objects.filter(nama_berkas="NPWP "+p.nama_perusahaan)
+								if b.exists():
+									b = Berkas.objects.filter(nama_berkas="Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
+									if b.exists():
+										b = Berkas.objects.filter(nama_berkas="Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
+										if b.exists():
+											b = Berkas.objects.filter(nama_berkas="Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
+											if b.exists():
+												data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+												data = json.dumps(data)
+											else:
+												data = {'Terjadi Kesalahan': [{'message': 'Gambar/foto papan nama badan usaha '+p.nama_perusahaan+' tidak ada'}]}
+												data = json.dumps(data)
+										else:
+											data = {'Terjadi Kesalahan': [{'message': 'Gambar denah lokasi/posisi badan usaha '+p.nama_perusahaan+' tidak ada'}]}
+											data = json.dumps(data)
+									else:
+										data = {'Terjadi Kesalahan': [{'message': 'Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat '+p.nama_perusahaan+' tidak ada'}]}
+										data = json.dumps(data)
+								else:
+									data = {'Terjadi Kesalahan': [{'message': 'NPWP '+p.nama_perusahaan+' tidak ada'}]}
+									data = json.dumps(data)
+							else:
+								data = {'Terjadi Kesalahan': [{'message': 'Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK '+p.nama_perusahaan+' tidak ada'}]}
+								data = json.dumps(data)
+						else:
+							data = {'Terjadi Kesalahan': [{'message': 'Surat Pernyataaan Pengikatan Diri PJT-BU '+p.nama_perusahaan+' tidak ada'}]}
+							data = json.dumps(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Kartu Teknis Badan Usaha '+p.nama_perusahaan+' tidak ada'}]}
+						data = json.dumps(data)
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Sertifikat Badan Usaha '+p.nama_perusahaan+' tidak ada'}]}
+					data = json.dumps(data)
+
+				
+				# response = HttpResponse(data)
+			except Perusahaan.DoesNotExist:
+				data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar.'}]}
+				data = json.dumps(data)
+				# response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong.'}]}
+			data = json.dumps(data)
+			# response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		
+	response = HttpResponse(data)
 	return response
 
 
@@ -1054,7 +1145,33 @@ def upload_akta_perubahan_badan_usaha(request):
 		response = HttpResponse(data)
 	return response		
 
+def iujk_done(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = DetilIUJK.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+			
 
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+			response.delete_cookie(key='id_pengajuan') # set cookie	
+			response.delete_cookie(key='id_perusahaan') # set cookie	
+			response.delete_cookie(key='nomor_ktp') # set cookie	
+			response.delete_cookie(key='nomor_paspor') # set cookie	
+			response.delete_cookie(key='id_pemohon') # set cookie	
+			response.delete_cookie(key='id_kelompok_izin') # set cookie
+			response.delete_cookie(key='id_legalitas') # set cookie
+			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
 
 def ajax_konfirmasi_nama_paket_pekerjaan(request, id_pengajuan):
 	paket_ = ""

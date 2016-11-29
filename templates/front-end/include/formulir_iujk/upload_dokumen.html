@@ -1,7 +1,8 @@
-<form method="POST" name="step6" enctype="multipart/form-data" id="myForm_upload" action="" data-parsley-validate novalidate>
+<form method="POST" name="step6" action="{% url 'upload_berkas_next' %}" data-parsley-validate novalidate>
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14" style="height:2px">
+
 </form>
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sertifikat" action="{% url 'upload_sertifikat_badan_usaha' %}" data-parsley-validate novalidate>
@@ -151,3 +152,4 @@
       </div>
     </div>
   </form>
+

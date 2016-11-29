@@ -5,6 +5,7 @@ from django.utils.safestring import mark_safe
 
 from izin.detiltdp_admin import DetilTDPAdmin
 from izin.detilsiup_admin import DetilSIUPAdmin
+from izin.detiliujk_admin import DetilIUJKAdmin
 from izin.detilreklame_admin import DetilReklameAdmin
 from izin.izin_admin import IzinAdmin
 from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
@@ -25,7 +26,7 @@ from master.models import JenisPemohon
 admin.site.register(JenisPemohon)
 admin.site.register(SKIzin)
 admin.site.register(Riwayat)
-admin.site.register(DetilIUJK)
+# admin.site.register(DetilIUJK)
 admin.site.register(AnggotaBadanUsaha)
 admin.site.register(Pemohon, PemohonAdmin)
 
