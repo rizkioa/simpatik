@@ -7,7 +7,7 @@ from django.db.models import Q
 
 
 from master.models import Negara, JenisPemohon, Kecamatan
-from izin.models import JenisPermohonanIzin, PaketPekerjaan, DetilIUJK
+from izin.models import JenisPermohonanIzin, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
 from izin.utils import JENIS_IUJK, get_tahun_choices
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
@@ -35,7 +35,7 @@ def IUJKWizard(request, extra_context={}):
 			if request.COOKIES['id_pengajuan'] != "":
 				# print PaketPekerjaan.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'])
 				extra_context.update({'paketpekerjaan_list': PaketPekerjaan.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'])})
-				
+
 				try:
 					pengajuan_ = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
 					if pengajuan_.pemohon:
@@ -63,6 +63,19 @@ def IUJKWizard(request, extra_context={}):
 
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
 					extra_context.update({'get_jenis_iujk': pengajuan_.jenis_iujk})
+					
+					anggota_list_deriktur = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Direktur / Penanggung Jawab Badan Usaha')
+					if anggota_list_deriktur.exists():
+						extra_context.update({'anggota_list_deriktur': anggota_list_deriktur})
+
+					anggota_list_teknik = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Penanggung Jawab Teknik Badan Usaha')
+					if anggota_list_teknik.exists():
+						extra_context.update({'anggota_list_teknik': anggota_list_teknik})
+
+					anggota_list_non = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Tenaga Non Teknik')
+					if anggota_list_non.exists():
+						extra_context.update({'anggota_list_non': anggota_list_non})
+
 					# extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
 				except ObjectDoesNotExist:
 					pass
