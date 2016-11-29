@@ -42,7 +42,9 @@
 	    .subpage {
 	        padding: 0.5cm;
 	        /*border: 5px red solid;*/
-	        height: 257mm;
+	        /*height: 257mm;*/
+	        height: 330mm;
+	        width: 216mm;
 	        /*outline: 2cm #FFEAEA solid;*/
 	    }
 	    
@@ -151,9 +153,20 @@
 		.col-11 {width: 91.66%;}
 		.col-12 {width: 100%;}
 
+		.printhide { 
+ 			display: none !important; 
+ 			color: white;
+ 			background-color: white;
+		}
+
 		@media print {
 	 		.printhide { 
-	 			display: none !important; 
+	 			/*display: none !important; */
+	 			color: white;
+	 			background-color: white;
+			}
+			.logokabhide{
+				display: none !important; 
 			}
 		}
 	</style>
@@ -191,15 +204,15 @@
 	        		<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
 		        		<tr>
 		        			<td>
-		        				<img src="{% static 'images/kabkediri.png' %}" width="100px">
+		        				<img class="logokabhide" src="{% static 'images/kabkediri.png' %}" width="100px">
 		        			</td>
 		        			<td>
 		        				<center>
-		        					<p>
-		        						<font style="font-size: 30px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>SEKRETARIAT DAERAH</b></font><br>
-		        						<font>Jalan Soekarno Hatta Nomor I Telepon 689901 - 689905<br>
-		        						Website : <u>www.kedirikab.go.id</u></font><br>
-		        						<font style="font-size: 25px;">KEDIRI</font>
+		        					<p class="printhide">
+		        						<font class="printhide" style="font-size: 23px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>BADAN PENANAMAN MODAL DAN PELAYANAN PERIZINAN TERPADU SATU PINTU</b></font><br>
+		        						<font class="printhide">Jl. Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>
+		        						Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></font><br>
+		        						<font class="printhide" style="font-size: 25px;">KEDIRI</font>
 		        					</p>
 		        				</center>
 		        			</td>
@@ -213,9 +226,9 @@
 		        	</div>
 		        	<div class="col-8">
 			        	<center>
-			        		<font style="font-size: 25px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
+			        		<font style="font-size: 22px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
 			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</i></font><br>
-			        		<font style="font-size: 23px">Nomor : {% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}Tidak Ada{% endif %}</font><br>
+			        		<font style="font-size: 22px">Nomor : {% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}Tidak Ada{% endif %}</font><br>
 			        	</center>
 			        </div>
 			        <div class="col-2">
@@ -232,7 +245,7 @@
 	        		<tr>
 	        			<td><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
 	        			<td>:</td>
-	        			<td>{{ pemohon.nama_lengkap.upper }} ({{ pemohon.jabatan_pemohon.upper }})</td>
+	        			<td>{{ pemohon.nama_lengkap.upper }} ({{ pemohon.jenis_pemohon.jenis_pemohon.upper }})</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>ALAMAT PERUSAHAAN</b></td>
@@ -269,9 +282,9 @@
 	        			<td>:</td>
 	        			<!-- <td>{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %}</td> -->
-	        			<!-- <td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }}{% if not forloop.last %}, {% endif %} 
-	        			{% endfor %}</td> -->
-	        			<td>{{pengajuan.produk_utama}}</td>
+	        			<td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }}{% if not forloop.last %}, {% endif %} 
+	        			{% endfor %} {% if pengajuan.produk_utama %}({{pengajuan.produk_utama.upper }}) {% endif %}</td>
+	        			<td></td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3"><b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTARKAN ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b></td>
@@ -279,12 +292,12 @@
 	        	</table>
 	        	<br>
 	        	<div style="float: left; width: 50%">
-	        		<div style="padding-left: 10%;">
-	        			<img src="{{ foto.berkas.url }}" width="200px" height="300px">
+	        		<div style="padding-left: 50%;">
+	        			<img src="{{ foto.berkas.url }}" width="194px" height="291px">
 	        		</div>
 	        	</div>
 	        	<div style="float: right; width: 50%">
-		        	<p style="font-size:17px; padding-left: 20%;" align="center">
+		        	<p style="font-size:17px; padding-left: 0%;" align="center">
 	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
 	                    <br>KEPALA BPM-P2TSP
 	                    <br>KABUPATEN KEDIRI
@@ -293,7 +306,7 @@
 	                    <br>
 	                    <br>
 	                    <br>
-	                    <u><b>{{ nama_kepala_dinas }}</b></u><br>
+	                    <u><b>{% if kepala_dinas.gelar_depan %}{{ kepala_dinas.gelar_depan }}{% endif %}{{ kepala_dinas.nama_lengkap }}{% if kepala_dinas.gelar_belakang %}{{kepala_dinas.gelar_belakang}}{% endif %}</b></u><br>
 	                    <i>Pembina Tk.l</i><br>
 	                    <i>NIP: {{nip_kepala_dinas}}</i>
 	                </p>
@@ -304,16 +317,19 @@
 	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
 	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
 	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
+
 	<script type="text/javascript">
 		function Exit() {
 		    var x=confirm('Are You sure want to exit:');
 		    if(x) window.close();
 	    }
-	    jQuery('#qrcodeTable').qrcode({
-			text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
-			width 	: 100,
-			height 	: 100,
-		});
+	    {% if pengajuan.no_izin %}
+		    jQuery('#qrcodeTable').qrcode({
+				text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
+				width 	: 100,
+				height 	: 100,
+			});
+		{% endif %}
 
 		$(window).load(function(){
 			angka = parseInt("{{pengajuan.kekayaan_bersih}}")

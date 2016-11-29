@@ -33,7 +33,7 @@ class PemohonForm(forms.ModelForm):
 
 	class Meta:
 		model = Pemohon
-		fields = ('jabatan_pemohon', 'jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
+		fields = ( 'jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None

@@ -1,10 +1,14 @@
+// lokasi = document.createElement("a");
+// lokasi.href = location.href;
+// window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
+var __base_url__ = 'http://simpatik.kedirikab.go.id'
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open('simpatik').then(cache => {
       return cache.addAll([
-        '/',
+        'http://simpatik.kedirikab.go.id/',
         // IMG
-        '/static/images/kabkediri.png',
+        'http://simpatik.kedirikab.go.id/static/images/kabkediri.png',
         '/static/images/SIMPATIK.ico',
         '/static/images/alur.png',
         // JS
@@ -33,7 +37,7 @@ self.addEventListener('install', e => {
         '/static/scripts/js/vendor/jquery/jquery.cookie.js',
         '/static/scripts/js/formAjax/form_ajax_siup.js',
         '/static/scripts/js/jquery.maskMoney.min.js',
-        '/static/scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js'
+        '/static/scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js',
 
 
         // CSS
@@ -50,7 +54,7 @@ self.addEventListener('install', e => {
         '/static/styles/css/mainfront.css',
         '/static/styles/css/mobile-frontend.css',
         '/static/styles/css/vendor/color-background.css',
-        '/static/scripts/js/mloading/jquery.mloading.css'
+        '/static/scripts/js/mloading/jquery.mloading.css',
         // PAGES
         '/layanan/',
         '/layanan/siup',
