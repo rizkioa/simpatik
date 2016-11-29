@@ -8,14 +8,14 @@ function load_pemohon(ktp_){
 		success: function (data) {
 			$(".tab-content").mLoading('hide');
 			respon = $.parseJSON(data)
-			if(respon.success){
+			if(respon.success === true){
 				load_provinsi(respon.data.negara)
 				load_kabupaten(respon.data.provinsi)
 				load_kecamatan(respon.data.kabupaten)
 				load_desa(respon.data.kecamatan)
 				
 				$('#id_paspor').val(respon.data.paspor);
-				$('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
+				// $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
 				$('#id_nama_lengkap').val(respon.data.nama_lengkap);
 				$('#alamat_pemohon_load').val(respon.data.alamat);
 				$('#no_telepon_pemohon_load').val(respon.data.telephone);
@@ -46,13 +46,14 @@ function load_pemohon(ktp_){
 			}
 			else{
 				$('#id_nama_lengkap').val("");
+                $('#id_paspor').val("");
 				$('#alamat_pemohon_load').val("");
 				$('#no_telepon_pemohon_load').val("");
 				$('#hp_load').val("");
 				$('#email_pemohon_load').val("");
 				$('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
 				$('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
-                if ($.cookie('id_pengajuan') !== '0'){
+                if ($.cookie('id_pemohon') === "0"){
                     $('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
                     $('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
                     $('#id_kabupaten').val("").prop('selected',true).trigger("chosen:updated")
