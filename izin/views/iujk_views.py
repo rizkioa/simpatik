@@ -1178,7 +1178,8 @@ def ajax_konfirmasi_nama_paket_pekerjaan(request, id_pengajuan):
 	if id_pengajuan:
 		paket_list = PaketPekerjaan.objects.filter(detil_iujk__id=id_pengajuan)
 		paket_ = [ obj.as_dict() for obj in paket_list ]
-	data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_ }
+		paket_list = paket_list.first()
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_, 'jenis':paket_list.detil_iujk.jenis_iujk }
 	response = HttpResponse(json.dumps(data))
 	return response
 

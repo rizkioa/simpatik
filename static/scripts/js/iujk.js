@@ -356,6 +356,7 @@ function load_konfirmasi(id_pengajuan){
         // console.log(a)
         if (respon.paket){
           a = respon.paket.length
+          $('#jenis_iujk_konfirmasi').html(respon.jenis)
           str = ""
           for (var i = 0; i < a; i++){
             
@@ -370,6 +371,7 @@ function load_konfirmasi(id_pengajuan){
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'
             $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').prepend(str);
+
           }
           
         }
