@@ -289,6 +289,9 @@ class SKIzin(AtributTambahan):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin')
 	isi = models.TextField(verbose_name="Isi", blank=True, null=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_sk', blank=True, null=True)
+	nama_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='Nama Pejabat')
+	jabatan_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jabatan Pejabat')
+	nip_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='NIP Pejabat')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 	
 class Riwayat(AtributTambahan):

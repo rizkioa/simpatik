@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^ajax-konfirmasi-anggota-badan-direktur/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_direktur, name='ajax_konfirmasi_anggota_badan_direktur'),
     url(r'^ajax-konfirmasi-anggota-badan-teknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_teknik, name='ajax_konfirmasi_anggota_badan_teknik'),
     url(r'^ajax-konfirmasi-anggota-badan-nonteknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_non_teknik, name='ajax_konfirmasi_anggota_badan_non_teknik'),
+    
+    url(r'^cek-izin-terdaftar/(?P<id_izin_>[0-9./]+)$', views.cek_izin_terdaftar, name='cek_izin_terdaftar'),
 
     url(r'^layanan/siup$', layanan_view.layanan_siup, name='layanan_siup'),
     url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),

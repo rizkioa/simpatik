@@ -694,4 +694,26 @@ def ajax_legalitas_konfirmasi(request, id_pengajuan_izin_):
 	response = HttpResponse(json.dumps(data))
 	return response
 
+def cek_izin_terdaftar(request, id_izin_, extra_context={}):
+	if id_izin_:
+		pengajuan_ = PengajuanIzin.objects.filter(no_izin=id_izin_).last()
+		if pengajuan_:
+			no_izin = str(pengajuan_.no_izin)
+			extra_context.update({'no_izin': no_izin})
+			jenis_izin = pengajuan_.kelompok_jenis_izin.jenis_izin.jenis_izin
+			extra_context.update({'jenis_izin': jenis_izin})
+			pemilik_izin = pengajuan_.pemohon.nama_lengkap
+			extra_context.update({'pemilik_izin': pemilik_izin})
+			extra_context.update({'pengajuan_status': pengajuan_.status})
+
+			if pengajuan_.kelompok_jenis_izin.kode == '503.08/':
+				detilsiup = DetilSIUP.objects.filter(no_izin=id_izin_).last()
+				if detilsiup.perusahaan:
+					nama_perusahaan = detilsiup.perusahaan.nama_perusahaan
+					alamat_ = str(detilsiup.perusahaan.alamat_perusahaan)+", Desa "+str(detilsiup.perusahaan.desa)+", KEC."+str(detilsiup.perusahaan.desa.kecamatan)+", "+str(detilsiup.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({'nama_perusahaan': nama_perusahaan})
+					extra_context.update({'alamat_perusahaan': alamat_})
+					extra_context.update({'lokasi': alamat_})
+
+	return render(request, "front-end/cek_izin.html", extra_context)
 	
