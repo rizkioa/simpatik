@@ -71,3 +71,7 @@ def InList(value, list_):
 	if value in list(list_.split(',')):
 		return True
 	return False
+
+@register.filter(name='split')
+def split(value, arg):
+    return value.split('Taufan Budiman')

@@ -14,7 +14,7 @@ from perusahaan.models import KBLI
 def import_kbli():
 	try:
 		print "############################## START #############################"
-		book = xlrd.open_workbook('files/import/KBLI2015___2.xlsx')
+		book = xlrd.open_workbook('files/import/KBLI_2015_New_2.xlsx')
 		first_sheet = book.sheet_by_index(0)
 		print "Total Baris : "+str(first_sheet.nrows-1)
 		success_count = 0
@@ -30,7 +30,7 @@ def import_kbli():
 				status_data = status_data.strip()
 				keterangan = first_sheet.cell(row,4).value
 				keterangan = keterangan.strip()
-				print "Baris #"+str(row)+" => "+str(kode)
+				print "Baris #"+str(row)+" => "+str(kode)+" : "+str(judul)
 
 				kbli, created = KBLI.objects.get_or_create(kode_kbli=kode, nama_kbli=judul, versi=versi)
 				kbli.keterangan = keterangan

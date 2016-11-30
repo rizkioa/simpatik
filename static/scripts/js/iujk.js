@@ -49,10 +49,10 @@ function penanggung_jawab_save(btn_){
             
             row = '<tr id="'+resp.data[0].id+'"> <td><input type="checkbox" value="'+resp.data[0].id+'" id="chkbox"></input></td> <td>'+resp.data[1].nama+'</td>'
             split = resp.data[2].berkas.split(",")
-            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Foto </a></td>'
-            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> KTP </a></td>'
-            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[2]+'" target="blank_"> <i class="fa fa-check"></i> Pernyataan </a></td>'
-            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[3]+'" target="blank_"> <i class="fa fa-check"></i> Pernyataan </a></td>'
+            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[2]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+            row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[3]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
             // <td align="center"><i class="fa fa-check"></i></td> <td align="center"><i class="fa fa-check"></i></td> <td align="center"><i class="fa fa-check"></i></td> 
             row += '</tr>'
             $('#tabel_penanggung_jawab > tbody').prepend(row);
@@ -172,11 +172,11 @@ function penanggung_jawab_teknik_save(btn_){
           
           row = '<tr id="'+resp.data[0].id+'"> <td><input type="checkbox" value="'+resp.data[0].id+'" id="chkbox"></input></td> <td>'+resp.data[1].nama+'</td>'
           split = resp.data[2].berkas.split(",")
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Foto </a></td>'
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> KTP </a></td>'
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[2]+'" target="blank_"> <i class="fa fa-check"></i> Ijazah SMA </a></td>'
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[3]+'" target="blank_"> <i class="fa fa-check"></i> SKA/SKT </a></td>'
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[4]+'" target="blank_"> <i class="fa fa-check"></i> Pernyataan </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[2]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[3]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[4]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
           // <td align="center"><i class="fa fa-check"></i></td> <td align="center"><i class="fa fa-check"></i></td> <td align="center"><i class="fa fa-check"></i></td> 
           row += '</tr>'
           $('#tabel_penanggung_jawab_teknik > tbody').prepend(row);
@@ -252,9 +252,9 @@ function penanggung_jawab_non_teknik_save(btn_){
           
           row = '<tr id="'+resp.data[0].id+'"> <td><input type="checkbox" value="'+resp.data[0].id+'" id="chkbox"></input></td> <td>'+resp.data[1].nama+'</td>'
           split = resp.data[2].berkas.split(",")
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Foto </a></td>'
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> KTP </a></td>'
-          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[2]+'" target="blank_"> <i class="fa fa-check"></i> Ijazah SMA </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
+          row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[2]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
           // <td align="center"><i class="fa fa-check"></i></td> <td align="center"><i class="fa fa-check"></i></td> <td align="center"><i class="fa fa-check"></i></td> 
           row += '</tr>'
           $('#tabel_penanggung_jawab_non_teknik > tbody').prepend(row);
@@ -356,9 +356,11 @@ function load_konfirmasi(id_pengajuan){
         // console.log(a)
         if (respon.paket){
           a = respon.paket.length
+          $('#jenis_iujk_konfirmasi').html(respon.jenis)
           str = ""
           for (var i = 0; i < a; i++){
-            
+            // split = respon.berkas[i].split(",")
+            // console.log(respon.berkas)
             // console.log(respon.paket[i].nama_paket_pekerjaan)
             // console.log(respon.paket[i].klasifikasi_usaha)
             // console.log(respon.paket[i].tahun)
@@ -370,6 +372,7 @@ function load_konfirmasi(id_pengajuan){
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'
             $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').prepend(str);
+
           }
           
         }
@@ -384,8 +387,11 @@ function load_konfirmasi(id_pengajuan){
         // console.log(a)
         if (respon.anggota){
           a = respon.anggota.length
+          // console.log(respon.berkas.split(','))
+          // berkas = respon.berkas.split(',')
           direktur = ""
           for (var i = 0; i < a; i++){
+            
             
             // console.log(respon.anggota[i].jenis_anggota_badan)
             // console.log(respon.anggota[i].nama)
@@ -393,10 +399,10 @@ function load_konfirmasi(id_pengajuan){
             // console.log(respon.anggota[i].berkas_tambahan)
             direktur = '<tr>'
             direktur += '<td>'+respon.anggota[i].nama+'</td>'
-            direktur += '<td></td>'
-            direktur += '<td></td>'
-            direktur += '<td></td>'
-            direktur += '<td></td>'
+            direktur += '<td><input id="" type="checkbox"></td>'
+            direktur += '<td><input id="" type="checkbox"></td>'
+            direktur += '<td><input id="" type="checkbox"></td>'
+            direktur += '<td><input id="" type="checkbox"></td>'
             direktur += '</tr>'
             $('#tabel_penanggung_jawab-konfirmasi > tbody').prepend(direktur);
           }
