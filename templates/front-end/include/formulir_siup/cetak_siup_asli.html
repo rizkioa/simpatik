@@ -1,4 +1,4 @@
-{% load i18n admin_static staticfiles widgets %}
+{% load i18n admin_static staticfiles widgets access %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -184,15 +184,14 @@
 		table tr:last-child td:last-child {
 		    border-bottom-right-radius: 10px;
 		}
+		@media print { body { display: none !important; } }
 	</style>
-	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
-	<script type="text/javascript">
-		
-	</script>
-	{% else %}
-	<script>
-		document.querySelector('style').textContent += "@media print { body { display: none !important; } }"
-	</script>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1%}
+		{% if request.user|has_group:'Cetak' %} 
+			<script>
+				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
+			</script>
+		{% endif %}
 	{% endif %}
 </head>
 <body id="body">
@@ -312,17 +311,20 @@
 	        	</div>
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 0%;" align="center">
-	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
-	                    <br>KEPALA BPM-P2TSP
-	                    <br>KABUPATEN KEDIRI
+	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-M-Y" }}</u></font>
 	                    <br>
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <u><b>{% if kepala_dinas.gelar_depan %}{{ kepala_dinas.gelar_depan }}{% endif %}{{ kepala_dinas.nama_lengkap }}{% if kepala_dinas.gelar_belakang %}{{kepala_dinas.gelar_belakang}}{% endif %}</b></u><br>
-	                    <i>Pembina Tk.l</i><br>
-	                    <i>NIP: {{nip_kepala_dinas}}</i>
+	                    {% if pengajuan.nama_pejabat %}
+		                    <br>{{pengajuan.jabatan_pejabat}}
+		                    <br>KABUPATEN KEDIRI
+		                    <br>
+		                    <br>
+		                    <br>
+		                    <br>
+		                    <br>
+		                    <u><b>{{ pengajuan.nama_pejabat }}</b></u><br>
+		                    <i>{% if pengajuan.keterangan %}{{ pengajuan.keterangan }}{% endif %}</i><br>
+		                    <i>NIP: {{pengajuan.nip_pejabat}}</i>
+		                {% endif %}
 	                </p>
 	            </div>
 	        </div>    
@@ -339,7 +341,7 @@
 	    }
 	    {% if pengajuan.no_izin %}
 		    jQuery('#qrcodeTable').qrcode({
-				text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
+				text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
 				width 	: 100,
 				height 	: 100,
 			});

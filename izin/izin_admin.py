@@ -107,11 +107,17 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def get_telephone_pemohon(self, obj):
+		return obj.pemohon.telephone
+	get_telephone_pemohon.short_description = "No. Telp"
+
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 		if func_view.__name__ == 'izinterdaftar':
-			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'jenis_permohonan', 'get_status_proses')
+			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan', 'get_status_proses', 'linkdetilizin')
+		if func_view.__name__ == 'semua_pengajuan':
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran', 'linkdetilizin')
 		# else:
 			# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses')
 		return list_display
@@ -219,6 +225,21 @@ class IzinAdmin(admin.ModelAdmin):
 			no_pengajuan
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
+
+	def linkdetilizin(self, obj):
+		link_ = '#'
+		jenis_izin_ = obj.kelompok_jenis_izin.kode
+		if jenis_izin_ == "503.08/":
+			link_ = reverse('admin:detil_siup_view', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
+			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "IUJK":
+			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
+		btn = mark_safe("""
+				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
+				""" % link_ )
+		return btn
+	linkdetilizin.short_description = "Aksi"
 
 	def button_cetak_pendaftaran(self, obj):
 		link_ = '#'
@@ -380,6 +401,8 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
 			else:
 				btn = btn
+
+
 		# elif obj.status == 1:
 		# 	btn = mark_safe("""<span class="label label-default">SELESAI</span>""")
 		# elif obj.status == 7:
@@ -387,6 +410,7 @@ class IzinAdmin(admin.ModelAdmin):
 		else:
 			btn = btn
 				# reverse('admin:print_out_pendaftaran', kwargs={'id_pengajuan_izin_': obj.id})
+		
 		return btn
 	button_cetak_pendaftaran.short_description = "Aksi"
 
@@ -627,8 +651,6 @@ class IzinAdmin(admin.ModelAdmin):
 	
 	def aksi_detil_siup(self, request):
 		id_pengajuan_izin = request.POST.get('id_detil_siup')
-		# print request.POST.get('aksi')
-		# print id_pengajuan_izin
 		try:
 			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
 			# and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem')
@@ -704,7 +726,13 @@ class IzinAdmin(admin.ModelAdmin):
 							"redirect": '',
 						}
 					elif request.POST.get('aksi') == '_submit_skizin_kadin':
+						pejabat = Pegawai.objects.filter(id=request.user_id).last()
 						obj_skizin.status = 9
+						nama_pejabat = pejabat.gelar_depan+" "+pejabat.nama_lengkap+" "+gelar_belakang
+						obj_skizin.nama_pejabat = nama_pejabat
+						obj_skizin.nip_pejabat = str(pejabat.username)
+						obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan)+" BPM-P2TSP"
+						obj_skizin.keterangan = "Pembina Tk.l"
 						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
@@ -892,6 +920,8 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def suit_cell_attributes(self, obj, column):
 		if column in ['button_cetak_pendaftaran']:
+			return {'class': 'text-center'}
+		elif column in ['linkdetilizin']:
 			return {'class': 'text-center'}
 		else:
 			return None
