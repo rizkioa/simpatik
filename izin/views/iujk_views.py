@@ -1188,7 +1188,8 @@ def ajax_konfirmasi_anggota_badan_direktur(request, id_pengajuan):
 	if id_pengajuan:
 		anggota_list = AnggotaBadanUsaha.objects.filter(detil_iujk__id=id_pengajuan, jenis_anggota_badan='Direktur / Penanggung Jawab Badan Usaha')
 		anggota_ = [ obj.as_dict() for obj in anggota_list ]
-	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_ }
+		# anggota_list = anggota_list.last()
+	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_, }
 	response = HttpResponse(json.dumps(data))
 	return response
 

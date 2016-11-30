@@ -254,7 +254,7 @@ class Berkas(AtributTambahan):
 
 	def as_dict(self):
 		return {
-			'nama_berkas': nama_berkas,
+			'nama_berkas': self.nama_berkas,
 			'berkas': self.get_file_url(),
 		}
 
