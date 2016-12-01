@@ -73,6 +73,42 @@
 					id_pengajuan = parseInt($.cookie('id_pengajuan'))
 					load_konfirmasi(id_pengajuan);
 				} else {
+					// 
+					if($current == 6){
+						// alert("OK")
+						id_perusahaan = parseInt($.cookie('id_perusahaan'))
+						load_berkas(id_perusahaan)
+					}
+					if($current == 1){
+						if( {{ktp}} ){
+							$('#id_ktp').val('{{ ktp.nomor }}')
+					    	$('#id_paspor').val('{{ paspor.nomor }}')
+					    	$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+					    	$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+					    	
+				  			load_pemohon('{{ ktp.nomor }}')
+				          	if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+				          		$('#switch_pemohon_disabled').prop( "checked", true );
+				          		setTimeout(function(){
+				          			$('.kuasa_disable').prop('disabled', false);
+					          		$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+					          		$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+					          		$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+				          		}, 1000);
+				          	}
+						}
+						
+					}
+					if($current == 2){
+						$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+						load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+			          	// setTimeout(function(){
+			          	// 	load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+			          	// }, 3000);
+					}
+					if ($current == 4){
+						{% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
+					}
 					$('#rootwizard').find('.pager .next').show();
 					$('#rootwizard').find('.pager .finish').hide();
 				}
