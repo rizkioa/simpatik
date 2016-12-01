@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^ajax-konfirmasi-anggota-badan-teknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_teknik, name='ajax_konfirmasi_anggota_badan_teknik'),
     url(r'^ajax-konfirmasi-anggota-badan-nonteknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_non_teknik, name='ajax_konfirmasi_anggota_badan_non_teknik'),
     url(r'^ajax-load-berkas/(?P<id_perusahaan>[0-9]+)$', iujk_views.ajax_load_berkas, name='ajax_load_berkas'),
-    url(r'^ajax-delete-berkas-upload/(?P<id_berkas>[0-9]+)$', iujk_views.ajax_delete_berkas, name='ajax_delete_berkas'),
+    url(r'^ajax-delete-berkas-upload/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iujk_views.ajax_delete_berkas, name='ajax_delete_berkas'),
 
     
     url(r'^cek-izin-terdaftar/(?P<id_izin_>[0-9./]+)$', views.cek_izin_terdaftar, name='cek_izin_terdaftar'),

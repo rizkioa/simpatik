@@ -319,7 +319,7 @@ function form_upload_dokumen(elem_){
             // console.log($('#'+split_+'-konfirmasi').prop('checked', true))
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
-            if ($.cookie('id_perusahaan') != undefined){
+            if ($.cookie('id_perusahaan') !== undefined){
               load_berkas($.cookie('id_perusahaan'))
             }  
                               
@@ -386,15 +386,19 @@ function load_berkas(id_perusahaan){
 function delete_berkas_upload(id, elemen, id_perusahaan){
   // $('#field-'+elemen).show()
   $(".tab-content").mLoading();
+  
   $.ajax({
-    url: __base_url__+'/ajax-delete-berkas-upload/'+id,
+    url: url = __base_url__+'/ajax-delete-berkas-upload/'+id+'/'+elemen,
       success: function (response){
         respon = $.parseJSON(response)
         if (respon.success) {
           toastr["success"](respon.pesan)
+          $('#form-'+elemen)[0].reset() 
+          $('#percent-'+elemen).hide()
+          $('#btn-'+elemen).show()
           $('#field-'+elemen).show()
           $('#load-'+elemen).html('')
-          $('#checkbox-'+elemen).prop('checked', false); 
+          $('#checkbox-'+elemen).prop('checked', false)
           // load_berkas(id_perusahaan)
         }
       },

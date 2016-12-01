@@ -1,6 +1,7 @@
 //++++ legalitas pendirian +++
 if ('{{legalitas_pendirian}}' !== "None"){
   $('#switch_akta_pendirian_disabled').prop( "checked", true );
+  $('#btn-akta_pendirian').show()
   setTimeout(function(){
     $('.akta_pendirian_disable').prop('disabled', false);
     $('#id_nama_notaris_legalitas_pendirian').val('{{ legalitas_pendirian.nama_notaris }}');
@@ -18,6 +19,7 @@ if ('{{legalitas_pendirian}}' !== "None"){
 if ('{{ legalitas_perubahan }}' !== "None"){
   // alert("{{legalitas_perubahan.jenis_legalitas}}")
   $('#switch_akta_perubahan_disabled').prop( "checked", true );
+  $('#btn-akta_perubahan').show()
   setTimeout(function(){
     $(".akta_perubahan_disable").prop('disabled', false)
     $('#id_nama_notaris_perubahan').val('{{ legalitas_perubahan.nama_notaris }}');

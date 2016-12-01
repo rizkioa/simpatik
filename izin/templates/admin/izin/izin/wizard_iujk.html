@@ -78,6 +78,7 @@
 						// alert("OK")
 						id_perusahaan = parseInt($.cookie('id_perusahaan'))
 						load_berkas(id_perusahaan)
+						
 					}
 					if($current == 1){
 						if( {{ktp}} ){
@@ -101,10 +102,10 @@
 					}
 					if($current == 2){
 						$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-						load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-			          	// setTimeout(function(){
-			          	// 	load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-			          	// }, 3000);
+						// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+			          	setTimeout(function(){
+			          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+			          	}, 3000);
 					}
 					if ($current == 4){
 						{% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
@@ -214,6 +215,7 @@
 				  $( "#alert" ).prop( "disabled", true );
 				}
 			});
+
 			if($('#switch_akta_perubahan_disabled').is(':checked')){
 				$('#konfirmasi_legalitas_perubahan').show();
 			}

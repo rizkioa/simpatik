@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 import json
 import os
 
@@ -1224,6 +1225,26 @@ def ajax_load_berkas(request, id_perusahaan):
 	if id_perusahaan:
 		try:
 			p = Perusahaan.objects.get(id=id_perusahaan)
+			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+
+			# print legalitas_pendirian
+			if legalitas_pendirian:
+				if legalitas_pendirian.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_pendirian.berkas.berkas.url)
+					id_elemen.append('akta_pendirian')
+					nm_berkas.append(legalitas_pendirian.berkas.nama_berkas)
+					id_berkas.append(legalitas_pendirian.berkas.id)
+
+			if legalitas_perubahan:
+				if legalitas_perubahan.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_perubahan.berkas.berkas.url)
+					id_elemen.append('akta_perubahan')
+					nm_berkas.append(legalitas_perubahan.berkas.nama_berkas)
+					id_berkas.append(legalitas_perubahan.berkas.id)
+
 			sertifikat = Berkas.objects.filter(nama_berkas="Sertifikat Badan Usaha "+p.nama_perusahaan)
 			if sertifikat.exists():
 				sertifikat = sertifikat.last()
@@ -1296,8 +1317,26 @@ def ajax_load_berkas(request, id_perusahaan):
 	response = HttpResponse(json.dumps(data))
 	return response
 
-def ajax_delete_berkas(request, id_berkas):
+def ajax_delete_berkas(request, id_berkas, kode):
 	if id_berkas:
+		if kode == 'akta_pendirian':
+			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+			legalitas_pendirian.berkas = None
+			legalitas_pendirian.save()
+		elif kode == 'akta_perubahan':
+			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+			legalitas_perubahan.berkas = None
+			legalitas_perubahan.save()
+		elif kode == 'npwp':
+			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+			p.berkas_npwp = None
+			p.save()
+		else:
+			pass
+
+			
 		try:
 			b = Berkas.objects.get(id=id_berkas)
 			data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
