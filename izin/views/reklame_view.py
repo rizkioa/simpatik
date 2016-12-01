@@ -6,10 +6,16 @@ from django.core.exceptions import ObjectDoesNotExist
 from master.models import Berkas
 from izin.models import DetilReklame, PengajuanIzin
 from izin.izin_forms import UploadBerkasPendukungForm
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.views import generic
+from django.views.decorators.http import require_POST
+from jfu.http import upload_receive, UploadResponse, JFUResponse
 
 def reklame_detilreklame_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
+			print request.COOKIES['id_pengajuan']
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
 			if detilReklame.is_valid():
@@ -122,3 +128,4 @@ def reklame_upload_berkas_pendukung(request):
 def reklame_upload_dokumen_cookie(request):
 	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
 	return HttpResponse(json.dumps(data))
+

@@ -1,10 +1,11 @@
 {% load i18n admin_static %}
+
 <form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14">
 </form>
-  
+
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_gambar_konstruksi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="1">
@@ -16,13 +17,13 @@
                                  
       </div>
       <div class="col-sm-4">
-        <button id="btn_gambar_konstruksi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <button href="#" id="btn_gambar_konstruksi_pemasangan_reklame" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
         <a id="percent_gambar_konstruksi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </div>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_gambar_foto_lokasi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+<!--   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_gambar_foto_lokasi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="2">
     <div class="form-group">
@@ -32,7 +33,7 @@
         <span id="berkas_2"></span>
       </div>
       <div class="col-sm-4">
-        <button id="btn_gambar_foto_lokasi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a href="#" id="btn_gambar_foto_lokasi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
         <a id="percent_gambar_foto_lokasi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </div>
     </div>
@@ -147,5 +148,5 @@
         <button id="btn_tambahan" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
         <a id="percent_tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </div>
-    </div>
+    </div> -->
   </form>

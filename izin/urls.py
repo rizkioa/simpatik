@@ -1,6 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf import settings
+from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
