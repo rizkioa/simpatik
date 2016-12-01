@@ -1,4 +1,4 @@
-{% load i18n admin_static staticfiles widgets %}
+{% load i18n admin_static staticfiles widgets access %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +41,7 @@
 	    }
 	    .subpage {
 	        padding: 0.5cm;
+	        padding-right: 60px;
 	        /*border: 5px red solid;*/
 	        /*height: 257mm;*/
 	        height: 330mm;
@@ -55,7 +56,7 @@
 	    @media print {
 	        html, body {
 	            width: 210mm;
-	            height: 297mm;        
+	            height: 330mm;        
 	        }
 	        .page {
 	            margin: 0;
@@ -126,8 +127,17 @@
 		    display: none !important;
 		  }
 		}
+		/*table, td, th {    
+		    border: 1px solid #ddd;
+		    text-align: left;
+		}*/
+
+		table {
+		    border-collapse: collapse;
+		    width: 100%;
+		}
 		th, td {
-		    padding: 5px;
+		    padding: 7px;
 		}
 		.row::after {
 		    content: "";
@@ -153,31 +163,35 @@
 		.col-11 {width: 91.66%;}
 		.col-12 {width: 100%;}
 
-		.printhide { 
- 			display: none !important; 
- 			color: white;
- 			background-color: white;
-		}
-
 		@media print {
 	 		.printhide { 
-	 			/*display: none !important; */
-	 			color: white;
-	 			background-color: white;
+	 			display: none !important; 
+	 			/*color: white;
+	 			background-color: white;*/
 			}
 			.logokabhide{
 				display: none !important; 
 			}
+			.subpage{
+				padding-top: 200px;
+			}
 		}
+
+		table tr:last-child td:first-child {
+		    border-bottom-left-radius: 10px;
+		}
+
+		table tr:last-child td:last-child {
+		    border-bottom-right-radius: 10px;
+		}
+		@media print { body { display: none !important; } }
 	</style>
-	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
-	<script type="text/javascript">
-		
-	</script>
-	{% else %}
-	<script>
-		document.querySelector('style').textContent += "@media print { body { display: none !important; } }"
-	</script>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1%}
+		{% if request.user|has_group:'Cetak' %} 
+			<script>
+				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
+			</script>
+		{% endif %}
 	{% endif %}
 </head>
 <body id="body">
@@ -195,11 +209,11 @@
 	<div class="book">
 	    <div class="page">
 	        <div class="subpage">
-	        	<table>
+	        	<!-- <table>
 	        		<tr>
 	        			<td></td>
 	        		</tr>
-	        	</table>
+	        	</table> -->
 	        	<div class="printhide">
 	        		<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
 		        		<tr>
@@ -236,7 +250,7 @@
 			        	</div>
 			        </div>
 	        	</div>
-	        	<table width="100%" frame="box" rules="rows">
+	        	<table width="100%" frame="box" rules="rows" style="border: 2px solid #999;">
 	        		<tr>
 	        			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
 	        			<td width="5%">:</td>
@@ -284,7 +298,6 @@
 	        			{% endfor %}</td> -->
 	        			<td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %} {% if pengajuan.produk_utama %}({{pengajuan.produk_utama.upper }}) {% endif %}</td>
-	        			<td></td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3"><b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTARKAN ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b></td>
@@ -298,17 +311,20 @@
 	        	</div>
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 0%;" align="center">
-	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
-	                    <br>KEPALA BPM-P2TSP
-	                    <br>KABUPATEN KEDIRI
+	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-M-Y" }}</u></font>
 	                    <br>
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <u><b>{% if kepala_dinas.gelar_depan %}{{ kepala_dinas.gelar_depan }}{% endif %}{{ kepala_dinas.nama_lengkap }}{% if kepala_dinas.gelar_belakang %}{{kepala_dinas.gelar_belakang}}{% endif %}</b></u><br>
-	                    <i>Pembina Tk.l</i><br>
-	                    <i>NIP: {{nip_kepala_dinas}}</i>
+	                    {% if pengajuan.nama_pejabat %}
+		                    <br>{{pengajuan.jabatan_pejabat}}
+		                    <br>KABUPATEN KEDIRI
+		                    <br>
+		                    <br>
+		                    <br>
+		                    <br>
+		                    <br>
+		                    <u><b>{{ pengajuan.nama_pejabat }}</b></u><br>
+		                    <i>{% if pengajuan.keterangan %}{{ pengajuan.keterangan }}{% endif %}</i><br>
+		                    <i>NIP: {{pengajuan.nip_pejabat}}</i>
+		                {% endif %}
 	                </p>
 	            </div>
 	        </div>    
@@ -325,7 +341,7 @@
 	    }
 	    {% if pengajuan.no_izin %}
 		    jQuery('#qrcodeTable').qrcode({
-				text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
+				text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
 				width 	: 100,
 				height 	: 100,
 			});

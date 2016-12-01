@@ -23,7 +23,7 @@ def formulir_reklame(request):
 		kbli_list = KBLI.objects.all()
 		# produk_utama_list = ProdukUtama.objects.all()
 		jenis_legalitas_list = JenisLegalitas.objects.all()
-		jenis_reklame = JenisReklame.objects.all()
+		reklame_jenis_list = JenisReklame.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
 		extra_context.update({'negara': negara})
@@ -37,8 +37,7 @@ def formulir_reklame(request):
 		extra_context.update({'kbli_list': kbli_list})
 		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
-		extra_context.update({'jenis_reklame': jenis_reklame})
-
+		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

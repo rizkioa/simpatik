@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import available_attrs
 from django.core.exceptions import ObjectDoesNotExist
 
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas
 from izin.models import PengajuanIzin, DetilSIUP
@@ -228,17 +228,21 @@ def formulir_huller(request, extra_context={}):
 
 def formulir_reklame(request, extra_context={}):
 	negara = Negara.objects.all()
-	extra_context.update({'negara': negara})
 	provinsi = Provinsi.objects.all()
-	extra_context.update({'provinsi': provinsi})
 	kabupaten = Kabupaten.objects.all()
-	extra_context.update({'kabupaten': kabupaten})
-	kecamatan = Kecamatan.objects.all()
-	extra_context.update({'kecamatan': kecamatan})
+	kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 	desa = Desa.objects.all()
-	extra_context.update({'desa': desa})
 	jenis_pemohon = JenisPemohon.objects.all()
+	reklame_jenis_list = JenisReklame.objects.all()
+
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	extra_context.update({'reklame_jenis_list': reklame_jenis_list})
+	extra_context.update({'desa': desa})
+	extra_context.update({'kecamatan': kecamatan})
+	extra_context.update({'kabupaten': kabupaten})
+	extra_context.update({'provinsi': provinsi})
+	extra_context.update({'negara': negara})
+
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
@@ -690,4 +694,26 @@ def ajax_legalitas_konfirmasi(request, id_pengajuan_izin_):
 	response = HttpResponse(json.dumps(data))
 	return response
 
+def cek_izin_terdaftar(request, id_izin_, extra_context={}):
+	if id_izin_:
+		pengajuan_ = PengajuanIzin.objects.filter(no_izin=id_izin_).last()
+		if pengajuan_:
+			no_izin = str(pengajuan_.no_izin)
+			extra_context.update({'no_izin': no_izin})
+			jenis_izin = pengajuan_.kelompok_jenis_izin.jenis_izin.jenis_izin
+			extra_context.update({'jenis_izin': jenis_izin})
+			pemilik_izin = pengajuan_.pemohon.nama_lengkap
+			extra_context.update({'pemilik_izin': pemilik_izin})
+			extra_context.update({'pengajuan_status': pengajuan_.status})
+
+			if pengajuan_.kelompok_jenis_izin.kode == '503.08/':
+				detilsiup = DetilSIUP.objects.filter(no_izin=id_izin_).last()
+				if detilsiup.perusahaan:
+					nama_perusahaan = detilsiup.perusahaan.nama_perusahaan
+					alamat_ = str(detilsiup.perusahaan.alamat_perusahaan)+", Desa "+str(detilsiup.perusahaan.desa)+", KEC."+str(detilsiup.perusahaan.desa.kecamatan)+", "+str(detilsiup.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({'nama_perusahaan': nama_perusahaan})
+					extra_context.update({'alamat_perusahaan': alamat_})
+					extra_context.update({'lokasi': alamat_})
+
+	return render(request, "front-end/cek_izin.html", extra_context)
 	
