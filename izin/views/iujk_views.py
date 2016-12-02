@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 import json
 import os
 
@@ -1179,7 +1180,11 @@ def ajax_konfirmasi_nama_paket_pekerjaan(request, id_pengajuan):
 		paket_list = PaketPekerjaan.objects.filter(detil_iujk__id=id_pengajuan)
 		paket_ = [ obj.as_dict() for obj in paket_list ]
 		paket_list = paket_list.first()
-	data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_, 'jenis':paket_list.detil_iujk.jenis_iujk }
+		if paket_list:
+			data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_, 'jenis':paket_list.detil_iujk.jenis_iujk }
+		else:
+			data = {'success': True, 'pesan': 'Proses Selesai.', 'paket': paket_, 'jenis':paket_list }
+
 	response = HttpResponse(json.dumps(data))
 	return response
 
@@ -1211,3 +1216,136 @@ def ajax_konfirmasi_anggota_badan_non_teknik(request, id_pengajuan):
 	data = {'success': True, 'pesan': 'Proses Selesai.', 'anggota': anggota_ }
 	response = HttpResponse(json.dumps(data))
 	return response
+
+def ajax_load_berkas(request, id_perusahaan):
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_perusahaan:
+		try:
+			p = Perusahaan.objects.get(id=id_perusahaan)
+			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+
+			# print legalitas_pendirian
+			if legalitas_pendirian:
+				if legalitas_pendirian.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_pendirian.berkas.berkas.url)
+					id_elemen.append('akta_pendirian')
+					nm_berkas.append(legalitas_pendirian.berkas.nama_berkas)
+					id_berkas.append(legalitas_pendirian.berkas.id)
+
+			if legalitas_perubahan:
+				if legalitas_perubahan.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_perubahan.berkas.berkas.url)
+					id_elemen.append('akta_perubahan')
+					nm_berkas.append(legalitas_perubahan.berkas.nama_berkas)
+					id_berkas.append(legalitas_perubahan.berkas.id)
+
+			sertifikat = Berkas.objects.filter(nama_berkas="Sertifikat Badan Usaha "+p.nama_perusahaan)
+			if sertifikat.exists():
+				sertifikat = sertifikat.last()
+				url_berkas.append(sertifikat.berkas.url)
+				id_elemen.append('sertifikat')
+				nm_berkas.append("Sertifikat Badan Usaha "+p.nama_perusahaan)
+				id_berkas.append(sertifikat.id)
+
+			kartu_teknis = Berkas.objects.filter(nama_berkas="Kartu Teknis Badan Usaha "+p.nama_perusahaan)
+			if kartu_teknis.exists():
+				kartu_teknis = kartu_teknis.last()
+				url_berkas.append(kartu_teknis.berkas.url)
+				id_elemen.append('kartu_teknis_bu')
+				nm_berkas.append("Kartu Teknis Badan Usaha "+p.nama_perusahaan)
+				id_berkas.append(kartu_teknis.id)
+
+			pernyataan = Berkas.objects.filter(nama_berkas="Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
+			if pernyataan.exists():
+				pernyataan = pernyataan.last()
+				url_berkas.append(pernyataan.berkas.url)
+				id_elemen.append('pernyataan_pengikat')
+				nm_berkas.append("Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
+				id_berkas.append(pernyataan.id)
+
+			pernyataan2 = Berkas.objects.filter(nama_berkas="Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
+			if pernyataan2.exists():
+				pernyataan2 = pernyataan2.last()
+				url_berkas.append(pernyataan2.berkas.url)
+				id_elemen.append('pernyataan')
+				nm_berkas.append("Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
+				id_berkas.append(pernyataan2.id)
+
+			npwp = Berkas.objects.filter(nama_berkas="NPWP "+p.nama_perusahaan)
+			if npwp.exists():
+				npwp = npwp.last()
+				url_berkas.append(npwp.berkas.url)
+				id_elemen.append('npwp')
+				nm_berkas.append("NPWP "+p.nama_perusahaan)
+				id_berkas.append(npwp.id)
+
+			domisli = Berkas.objects.filter(nama_berkas="Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
+			if domisli.exists():
+				domisli = domisli.last()
+				url_berkas.append(domisli.berkas.url)
+				id_elemen.append('keterangan_domisili')
+				nm_berkas.append("Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
+				id_berkas.append(domisli.id)
+
+			lokasi = Berkas.objects.filter(nama_berkas="Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
+			if lokasi.exists():
+				lokasi = lokasi.last()
+				url_berkas.append(lokasi.berkas.url)
+				id_elemen.append('denah_lokasi')
+				nm_berkas.append("Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
+				id_berkas.append(lokasi.id)
+
+			papan = Berkas.objects.filter(nama_berkas="Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
+			if papan.exists():
+				papan = papan.last()
+				url_berkas.append(papan.berkas.url)
+				id_elemen.append('foto_papan')
+				nm_berkas.append("Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
+				id_berkas.append(papan.id)
+
+			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }
+			
+		
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def ajax_delete_berkas(request, id_berkas, kode):
+	if id_berkas:
+		if kode == 'akta_pendirian':
+			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+			legalitas_pendirian.berkas = None
+			legalitas_pendirian.save()
+		elif kode == 'akta_perubahan':
+			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+			legalitas_perubahan.berkas = None
+			legalitas_perubahan.save()
+		elif kode == 'npwp':
+			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+			p.berkas_npwp = None
+			p.save()
+		else:
+			pass
+
+			
+		try:
+			b = Berkas.objects.get(id=id_berkas)
+			data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
+			b.delete()
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
+			
+		response = HttpResponse(json.dumps(data))
+		return response
+
+	return False
+		
