@@ -125,10 +125,18 @@
           onTabShow: function(tab, navigation, index) {
               var $total = navigation.find('li').length;
               var $current = index+1;
+              if($current === 5){
+                  // alert("OK")
+                  console.log("ok")
+                  id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                  load_berkas(id_pengajuan)
+
+                }
               if($current >= $total) {
                 $('#rootwizard').find('.pager .next').hide();
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 if (id_pengajuan > 0){
                   $.ajax({
@@ -267,13 +275,13 @@
             }
           });
           
-          $('#percent_berkas_foto').hide()
-          $('#percent_berkas_ktp').hide()
-          $('#percent_berkas_npwp_pribadi').hide()
-          $('#percent_berkas_npwp_perusahaan').hide()
-          $('#percent_berkas_akta_pendirian').hide()
-          $('#percent_berkas_akta_perubahan').hide()
-          $('#percent_berkas_pendukung').hide()
+          $('#percent-foto').hide()
+          $('#percent-ktp').hide()
+          $('#percent-npwp_pribadi').hide()
+          $('#percent-npwp_perusahaan').hide()
+          $('#percent-akta_pendirian').hide()
+          $('#percent-akta_perubahan').hide()
+          $('#percent-pendukung').hide()
           // $.removeCookie('id_pengajuan', { path: '/' });`
           // 
           if ($.cookie('id_pengajuan') === undefined){
@@ -494,8 +502,9 @@
       $('#id_paspor').val('{{ paspor.nomor }}')
       $('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
       $('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
-      
-      load_pemohon('{{ ktp.nomor }}')
+      setTimeout(function(){
+        load_pemohon('{{ ktp.nomor }}')
+      }, 1000);
       if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
         $('#switch_pemohon_disabled').prop( "checked", true );
         setTimeout(function(){
@@ -509,10 +518,14 @@
       // tabpos = $('#rootwizard').bootstrapWizard('currentIndex')
       // if (parseInt(tabpos) === 2){
         // +++++ perusahaan+++++++
-      $('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-      setTimeout(function(){
-        load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-      }, 3000);
+      // alert('{{perusahaan_konfirmasi.npwp}}')
+      if ('{{perusahaan_konfirmasi.npwp}}' !== ''){
+        $('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+        setTimeout(function(){
+          load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+        }, 3000);
+      }
+      
         // +++++ end perusahaan+++++++
       // }
       
@@ -547,6 +560,31 @@
         $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
         $('#checkbox_berkas_pendukung').prop('checked', 1)
       }
-    }    
+    }
+
+  function option_kbli(kbli){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, kbli: kbli }, // get the form data
+          type: 'POST', // GET or POST
+          // url: '{% url 'admin:option_kecamatan' %}', // the file to call
+          url: __base_url__+'/admin/master/kecamatan/option/',
+          success: function(response) { // on success..
+            elem = $( "#id_kecamatan1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_kecamatan1" ).change(function(){
+              $this = $(this)
+              id_kecamatan1 = $(this).val()
+              if(id_kecamatan1.length > 0){
+                load_desa1(id_kecamatan1)
+              }
+            })
+          },
+          error: function(data) {                
+            toast_server_error()
+          }
+      });
+  }    
   </script>
 {% endblock %}
