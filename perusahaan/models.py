@@ -23,6 +23,9 @@ class KBLI(MetaAtribut):
 	def as_json(self):
 		return dict(id=self.id, nama_kbli=self.nama_kbli, kode_kbli=self.kode_kbli)
 
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.kode_kbli)+str(self.nama_kbli)+"</option>"
+
 	def as_dict(self):
 		return {
 			# "id": self.id,
@@ -163,9 +166,9 @@ class Legalitas(AtributTambahan):
 	jenis_legalitas = models.ForeignKey(JenisLegalitas, related_name='jenis_legalitas_perusahaan', blank=True, null=True)
 	alamat = models.CharField(max_length=255, null=True, blank=True)
 	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
-	nomor_akta = models.CharField("Nomor Akta", max_length=30, blank=True, null=True)
+	nomor_akta = models.CharField("Nomor Akta", max_length=255, blank=True, null=True)
 	tanggal_akta = models.DateField("Tanggal Akta", blank=True, null=True)
-	nomor_pengesahan = models.CharField("Nomor Pengesahan", max_length=30, blank=True, null=True)
+	nomor_pengesahan = models.CharField("Nomor Pengesahan", max_length=255, blank=True, null=True)
 	tanggal_pengesahan = models.DateField("Tanggal Pengesahan", blank=True, null=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", blank=True, null=True)
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
