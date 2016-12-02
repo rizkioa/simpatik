@@ -311,19 +311,19 @@
 	        	</div>
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 0%;" align="center">
-	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-M-Y" }}</u></font>
+	                    <font size="4pt">Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-M-Y" }}</font>
 	                    <br>
-	                    {% if pengajuan.nama_pejabat %}
-		                    <br>{{pengajuan.jabatan_pejabat}}
+	                    {% if skizin.nama_pejabat %}
+		                    <br>{{skizin.jabatan_pejabat}}
 		                    <br>KABUPATEN KEDIRI
 		                    <br>
 		                    <br>
 		                    <br>
 		                    <br>
 		                    <br>
-		                    <u><b>{{ pengajuan.nama_pejabat }}</b></u><br>
-		                    <i>{% if pengajuan.keterangan %}{{ pengajuan.keterangan }}{% endif %}</i><br>
-		                    <i>NIP: {{pengajuan.nip_pejabat}}</i>
+		                    <u><b>{{ skizin.nama_pejabat }}</b></u><br>
+		                    <i>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</i><br>
+		                    <i>NIP: {{skizin.nip_pejabat}}</i>
 		                {% endif %}
 	                </p>
 	            </div>
