@@ -283,14 +283,14 @@ def siup_detilsiup_save_cookie(request):
 					# print "kbli"+kbli_list
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
-					# nama_kbli = []
+					nama_kbli = []
 					for kbli in kbli_list:
 						kbli_obj = KBLI.objects.get(id=kbli)
 						pengajuan_.kbli.add(kbli_obj)
 						
-					# 	nama_kbli.append(kbli_obj.nama_kbli)			
-					# if len(nama_kbli) > 1:
-					# 	pengajuan_.produk_utama = ",".join(nama_kbli)
+						nama_kbli.append(kbli_obj.nama_kbli)			
+					if len(nama_kbli) > 1:
+						pengajuan_.produk_utama = ",".join(nama_kbli)
 					detilSIUP.save()
 					pengajuan_.save()
 
@@ -1062,6 +1062,120 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_nama = str(legalitas_perubahan.berkas.nama_berkas)
 		
 		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'npwp_perusahaan_url': npwp_perusahaan_url, 'npwp_perusahaan_nama': npwp_perusahaan_nama, 'legalitas_pendirian_url': legalitas_pendirian_url, 'legalitas_pendirian_nama': legalitas_pendirian_nama, 'legalitas_perubahan_url': legalitas_perubahan_url, 'legalitas_perubahan_nama': legalitas_perubahan_nama }}
+
+		legalitas_pendirian_nama_notaris = ""
+		legalitas_pendirian_alamat = ""
+		legalitas_pendirian_telephone = ""
+		legalitas_pendirian_no_akta = ""
+		legalitas_pendirian_tanggal_akta = ""
+		legalitas_pendirian_no_pengesahan = ""
+		legalitas_pendirian_tanggal_pengesahan = ""
+		legalitas_pendirian = perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
+		if legalitas_pendirian:
+			legalitas_pendirian_nama_notaris = legalitas_pendirian.nama_notaris
+			legalitas_pendirian_alamat = legalitas_pendirian.alamat
+			legalitas_pendirian_telephone = legalitas_pendirian.telephone
+			legalitas_pendirian_no_akta = legalitas_pendirian.nomor_akta
+			legalitas_pendirian_tanggal_akta = legalitas_pendirian.tanggal_akta.strftime('%d-%m-%Y')
+			legalitas_pendirian_no_pengesahan = legalitas_pendirian.nomor_pengesahan
+			legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
+		legalitas_perubahan_nama_notaris = ""
+		legalitas_perubahan_alamat = ""
+		legalitas_perubahan_telephone = ""
+		legalitas_perubahan_no_akta = ""
+		legalitas_perubahan_tanggal_akta = ""
+		legalitas_perubahan_no_pengesahan = ""
+		legalitas_perubahan_tanggal_pengesahan = ""
+		legalitas_perubahan = perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
+		if legalitas_perubahan:
+			legalitas_perubahan_nama_notaris = legalitas_perubahan.nama_notaris
+			legalitas_perubahan_alamat = legalitas_perubahan.alamat
+			legalitas_perubahan_telephone = legalitas_perubahan.telephone
+			legalitas_perubahan_no_akta = legalitas_perubahan.nomor_akta
+			legalitas_perubahan_tanggal_akta = legalitas_perubahan.tanggal_akta.strftime('%d-%m-%Y')
+			legalitas_perubahan_no_pengesahan = legalitas_perubahan.nomor_pengesahan
+			legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
+		
+		data = {'success': True, 'pesan': 'Load data berhasil.', 
+		'data': 
+		{'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan}}
+
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
+
+def ajax_load_berkas_siup(request, id_pengajuan):
+	from master.models import Berkas
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			siup = DetilSIUP.objects.get(id=id_pengajuan)
+			p = siup.perusahaan
+			pemohon = siup.pemohon
+			berkas_ = siup.berkas_tambahan.all()
+			legalitas_pendirian = p.legalitas_set.filter(jenis_legalitas__id=1).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+
+			foto = pemohon.berkas_foto.last()
+			if foto:
+				url_berkas.append(foto.berkas.url)
+				id_elemen.append('foto')
+				nm_berkas.append(foto.nama_berkas)
+				id_berkas.append(foto.id)
+
+			nomor_ktp = request.COOKIES['nomor_ktp']
+			if nomor_ktp:
+				ktp_ = Berkas.objects.filter(nama_berkas="Berkas KTP Pemohon "+str(nomor_ktp)).last()
+				if ktp_:
+					url_berkas.append(ktp_.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp_.nama_berkas)
+					id_berkas.append(ktp_.id)
+
+			npwp_pribadi = pemohon.berkas_npwp
+			if npwp_pribadi:
+				url_berkas.append(npwp_pribadi.berkas.url)
+				id_elemen.append('npwp_pribadi')
+				nm_berkas.append(npwp_pribadi.nama_berkas)
+				id_berkas.append(npwp_pribadi.id)
+
+			npwp_perusahaan = p.berkas_npwp
+			if npwp_perusahaan:
+				url_berkas.append(npwp_perusahaan.berkas.url)
+				id_elemen.append('npwp_perusahaan')
+				nm_berkas.append(npwp_perusahaan.nama_berkas)
+				id_berkas.append(npwp_perusahaan.id)
+
+			# print legalitas_pendirian
+			if legalitas_pendirian:
+				if legalitas_pendirian.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_pendirian.berkas.berkas.url)
+					id_elemen.append('akta_pendirian')
+					nm_berkas.append(legalitas_pendirian.berkas.nama_berkas)
+					id_berkas.append(legalitas_pendirian.berkas.id)
+
+			if legalitas_perubahan:
+				if legalitas_perubahan.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_perubahan.berkas.berkas.url)
+					id_elemen.append('akta_perubahan')
+					nm_berkas.append(legalitas_perubahan.berkas.nama_berkas)
+					id_berkas.append(legalitas_perubahan.berkas.id)
+
+			if berkas_:
+				pendukung = berkas_.last()
+				if pendukung:
+					url_berkas.append(pendukung.berkas.url)
+					id_elemen.append('pendukung')
+					nm_berkas.append(pendukung.nama_berkas)
+					id_berkas.append(pendukung.id)
+
+			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }		
+	response = HttpResponse(json.dumps(data))
+	return response
