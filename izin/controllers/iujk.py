@@ -26,7 +26,7 @@ def IUJKWizard(request, extra_context={}):
 	extra_context.update({'jenis_legalitas_list': JenisLegalitas.objects.all()})
 	extra_context.update({'jenis_iujk': JENIS_IUJK })
 	extra_context.update({'tahun_choices': get_tahun_choices(1945) })
-	extra_context.update({'kecamatan_perusahaan': Kecamatan.objects.filter(kabupaten__kode="06", provinsi__kode="35") })
+	extra_context.update({'kecamatan_perusahaan': Kecamatan.objects.filter(kabupaten__kode="06", kabupaten__provinsi__kode="35") })
 
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
