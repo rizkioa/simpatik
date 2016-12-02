@@ -293,7 +293,7 @@ function penanggung_jawab_non_teknik_save(btn_){
 function form_upload_dokumen(elem_){
   var elem_ = elem_[0].id
   var split_ = elem_.split('-')[1]
-  
+  $(".tab-content").mLoading();
   var frm = $('#form-'+split_);
   // console.log(frm)
 
@@ -314,10 +314,14 @@ function form_upload_dokumen(elem_){
     success: function(response){
       respon = $.parseJSON(response)
       if(respon.success){
-            toastr["success"](respon.pesan)
-            $('#'+split_+'-konfirmasi').prop('checked', true); 
-            var percentVal = '100%';
-            $('#percent-'+split_).html(percentVal);                       
+          toastr["success"](respon.pesan)
+                     
+          // console.log($('#'+split_+'-konfirmasi').prop('checked', true))
+          var percentVal = '100%';
+          $('#percent-'+split_).html(percentVal);
+          if ($.cookie('id_pengajuan') != ''){
+            load_berkas($.cookie('id_pengajuan'))
+          }                  
       }
       else{
         // $('#checkbox_berkas_foto').prop('checked', false);
@@ -340,12 +344,74 @@ function form_upload_dokumen(elem_){
       $('#btn-'+split_).show();
     }
   })
+  $(".tab-content").mLoading('hide');
 }
 // ***** END *****
+
+// ***** Load Form Upload *****
+function load_berkas(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/ajax-load-berkas/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success) {
+          len = respon.berkas.length
+          for (var i = 0; i < len; i++) {
+            // console.log(respon.berkas[i])
+            // console.log(respon.elemen[i])
+            // console.log(respon.id_berkas[i])
+            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
+            // console.log(url)
+            $('#load-'+respon.elemen[i]).html(url)
+            $('#field-'+respon.elemen[i]).hide()
+            $('#checkbox-'+respon.elemen[i]).prop('checked', true); 
+            img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'
+            // console.log(img)
+            $('#btn-load-'+respon.elemen[i]).popover({
+              trigger: "hover",
+              html: true,
+              content: img,
+            });
+          }
+        }
+      }
+    });
+  }
+  $(".tab-content").mLoading('hide');
+}
+
+function delete_berkas_upload(id, elemen){
+  // $('#field-'+elemen).show()
+  $(".tab-content").mLoading();
+  
+  $.ajax({
+    url: url = __base_url__+'/ajax-delete-berkas-upload/'+id+'/'+elemen,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success) {
+          toastr["success"](respon.pesan)
+          $('#form-'+elemen)[0].reset() 
+          $('#percent-'+elemen).hide()
+          $('#btn-'+elemen).show()
+          $('#field-'+elemen).show()
+          $('#load-'+elemen).html('')
+          $('#checkbox-'+elemen).prop('checked', false)
+        }
+      },
+      error: function(response){
+      toast_server_error()
+    }
+  })
+  $(".tab-content").mLoading('hide');
+}
+// **** END *****
 
 
 // ****** KONFIRMASI *******
 function load_konfirmasi(id_pengajuan){
+  $(".tab-content").mLoading();
   if (id_pengajuan > 0){
     $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').empty();
     $.ajax({
@@ -399,10 +465,10 @@ function load_konfirmasi(id_pengajuan){
             // console.log(respon.anggota[i].berkas_tambahan)
             direktur = '<tr>'
             direktur += '<td>'+respon.anggota[i].nama+'</td>'
-            direktur += '<td><input id="" type="checkbox"></td>'
-            direktur += '<td><input id="" type="checkbox"></td>'
-            direktur += '<td><input id="" type="checkbox"></td>'
-            direktur += '<td><input id="" type="checkbox"></td>'
+            direktur += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked></td>'
+            direktur += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked></td>'
+            direktur += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked></td>'
+            direktur += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked></td>'
             direktur += '</tr>'
             $('#tabel_penanggung_jawab-konfirmasi > tbody').prepend(direktur);
           }
@@ -428,11 +494,11 @@ function load_konfirmasi(id_pengajuan){
             // console.log(respon.anggota[i].berkas_tambahan)
             teknik = '<tr>'
             teknik += '<td>'+respon.anggota[i].nama+'</td>'
-            teknik += '<td></td>'
-            teknik += '<td></td>'
-            teknik += '<td></td>'
-            teknik += '<td></td>'
-            teknik += '<td></td>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
             teknik += '</tr>'
             $('#tabel_penanggung_jawab_teknik-konfirmasi > tbody').prepend(teknik);
           }
@@ -458,9 +524,9 @@ function load_konfirmasi(id_pengajuan){
             // console.log(respon.anggota[i].berkas_tambahan)
             teknik = '<tr>'
             teknik += '<td>'+respon.anggota[i].nama+'</td>'
-            teknik += '<td></td>'
-            teknik += '<td></td>'
-            teknik += '<td></td>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
+            teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
             teknik += '</tr>'
             $('#tabel_penanggung_jawab_non_teknik-konfirmasi > tbody').prepend(teknik);
           }
@@ -469,5 +535,6 @@ function load_konfirmasi(id_pengajuan){
       }
     })
   }
+   $(".tab-content").mLoading('hide');
 }
 // ********* END ***********

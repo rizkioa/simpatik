@@ -70,7 +70,7 @@ class PemohonForm(forms.ModelForm):
 						desa = self.request.POST.get('desa', None)
 						if desa:
 							self.fields['desa'].initial = desa
-
+		
 		if self.instance.pk and self.instance.desa:
 			self.fields['negara'].initial = self.instance.desa.kecamatan.kabupaten.provinsi.negara
 			self.fields['provinsi'].queryset = Provinsi.objects.filter(negara__id=self.instance.desa.kecamatan.kabupaten.provinsi.negara.id)

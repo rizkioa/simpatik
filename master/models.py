@@ -50,7 +50,7 @@ class MetaAtribut(models.Model):
 		abstract = True
 
 class AtributTambahan(models.Model):
-	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=11)
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
 
 	created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
 	created_at = models.DateTimeField(editable=False)

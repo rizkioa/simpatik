@@ -1,151 +1,179 @@
 {% load i18n admin_static %}
+
 <form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14">
 </form>
-  
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_gambar_konstruksi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_gambar_konstruksi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="1">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Gambar Kontruksi Pemasangan Reklame</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_1"></span>
-                                 
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_gambar_konstruksi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_gambar_konstruksi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-gambar_konstruksi_pemasangan_reklame">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_1"></span>
+                                   
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-gambar_konstruksi_pemasangan_reklame" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-gambar_konstruksi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-gambar_konstruksi_pemasangan_reklame"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_gambar_foto_lokasi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_gambar_foto_lokasi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="2">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Gambar Foto Lokasi Pemasangan Reklame</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_2"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_gambar_foto_lokasi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_gambar_foto_lokasi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-gambar_foto_lokasi_pemasangan_reklame">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_2"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-gambar_foto_lokasi_pemasangan_reklame" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-gambar_foto_lokasi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-gambar_foto_lokasi_pemasangan_reklame"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_gambar_denah_lokasi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_gambar_denah_lokasi_pemasangan_reklame" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="3">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Gambar Denah Lokasi Pemasangan Rekalame</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_3"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_gambar_denah_lokasi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_gambar_denah_lokasi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-gambar_denah_lokasi_pemasangan_reklame">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_3"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-gambar_denah_lokasi_pemasangan_reklame" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-gambar_denah_lokasi_pemasangan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-gambar_denah_lokasi_pemasangan_reklame"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_surat_ketetapan_pajak_daerah" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_surat_ketetapan_pajak_daerah" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="4">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Surat Ketetapan Pajak Daerah (SKPD)</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_4"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_surat_ketetapan_pajak_daerah" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_surat_ketetapan_pajak_daerah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-surat_ketetapan_pajak_daerah">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_4"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-surat_ketetapan_pajak_daerah" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-surat_ketetapan_pajak_daerah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-surat_ketetapan_pajak_daerah"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_surat_setoran_pajak_daerah" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_surat_setoran_pajak_daerah" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="5">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Surat Setoran Pajak Daerah (SSPD)</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_5"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_surat_setoran_pajak_daerah" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_surat_setoran_pajak_daerah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-surat_setoran_pajak_daerah">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_5"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-surat_setoran_pajak_daerah" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-surat_setoran_pajak_daerah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-surat_setoran_pajak_daerah"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_rekomendasi_satpol_pp" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_rekomendasi_satpol_pp" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="6">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Rekomendasi dari Kantor SATPOL PP</strong> </label>
+      <span id="field-rekomendasi_satpol_pp">
       <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         <span id="berkas_6"></span>
       </div>
       <div class="col-sm-4">
-        <button id="btn_rekomendasi_satpol_pp" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_rekomendasi_satpol_pp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <button href="#" id="btn-rekomendasi_satpol_pp" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+        <a id="percent-rekomendasi_satpol_pp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </div>
+      </span>
+      <span class="col-sm-6" id="load-rekomendasi_satpol_pp"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_berita_acara_perusahaan" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_berita_acara_perusahaan" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="7">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Berita Acara Perusahaan(BAP) Tim Perizinan</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_7"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berita_acara_perusahaan" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berita_acara_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-berita_acara_perusahaan">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_7"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-berita_acara_perusahaan" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-berita_acara_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-berita_acara_perusahaan"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_surat_perjanjian" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_surat_perjanjian" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="8">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Surat Perjanjian Kesepakatan dengan pemilik rumah, tembok, pagar atau perkarangan bagi reklame tempel/melekat</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_8"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_surat_perjanjian" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_surat_perjanjian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-surat_perjanjian">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_8"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" id="btn-surat_perjanjian" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-surat_perjanjian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-surat_perjanjian"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_upload_berkas_tambahan" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_berkas_tambahan" action="{% url 'reklame_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
   {% csrf_token %}
     <input type="hidden" name="aksi" value="9">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Berkas Tambahan</strong> </label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="berkas_9"></span>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_tambahan" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-tambahan">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <span id="berkas_9"></span>
+        </div>
+        <div class="col-sm-4">
+          <button href="#" d="btn-tambahan" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+          <a id="percent-tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        </div>
+      </span>
+      <span class="col-sm-6" id="load-tambahan"></span>
     </div>
   </form>

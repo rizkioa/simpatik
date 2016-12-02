@@ -76,12 +76,36 @@ def IUJKWizard(request, extra_context={}):
 					if anggota_list_non.exists():
 						extra_context.update({'anggota_list_non': anggota_list_non})
 
+					extra_context.update({ 'pengajuan_': pengajuan_ })
+
+					template = loader.get_template("admin/izin/izin/wizard_iujk.html")
+					ec = RequestContext(request, extra_context)
+					response =  HttpResponse(template.render(ec))
+
+					if legalitas_pendirian:
+						response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+					if legalitas_perubahan:
+						response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+
 					# extra_context.update({ 'kelompok_jenis_izin_konfirmasi': pengajuan_.kelompok_jenis_izin })
 				except ObjectDoesNotExist:
-					pass
-		template = loader.get_template("admin/izin/izin/wizard_iujk.html")
-		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
+					template = loader.get_template("admin/izin/izin/wizard_iujk.html")
+					ec = RequestContext(request, extra_context)
+					response =  HttpResponse(template.render(ec))
+					response.set_cookie(key='id_pengajuan', value='0')
+			else:
+				template = loader.get_template("admin/izin/izin/wizard_iujk.html")
+				ec = RequestContext(request, extra_context)
+				response =  HttpResponse(template.render(ec))
+				response.set_cookie(key='id_pengajuan', value='0')
+		else:
+			template = loader.get_template("admin/izin/izin/wizard_iujk.html")
+			ec = RequestContext(request, extra_context)
+			response =  HttpResponse(template.render(ec))
+			# response.set_cookie(key='id_pengajuan', value='0')
+		
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
-		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
+		response = HttpResponseRedirect(reverse('admin:add_wizard_izin'))
+
+	return response

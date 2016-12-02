@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.min.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		.label-color{
 			color: white;
@@ -209,12 +210,12 @@
 		    <div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 				<div class="row">
 					<div class="col-md-12" align="center">
-						<a data-toggle="modal" data-target="#detail_siup" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-list"></i> <span>Lihat Detail Pengajuan</span></a>
+						<a onclick="get_load_detail_pengajuan(); return false;" data-toggle="modal" data-target="#detail_iujk" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-list"></i> <span>Lihat Detail Pengajuan</span></a>
 
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class=" icon-folder"></i> <span>Lihat Berkas Pengajuan</span></a>
 
 						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
-							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_siup' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_iujk' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 						{% endif %}
 					</div>
 				</div>
@@ -1046,6 +1047,8 @@
 	<script src="{% static 'scripts/js/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+	<script src="{% static "scripts/js/iujk.js" %}"></script>
 	<script>
         $(window).load(function(){
 
@@ -1100,6 +1103,10 @@
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         }
+
+        function get_load_detail_pengajuan(){
+        	load_konfirmasi({{ pengajuan.id }});
+        }
     </script>
     <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -1120,11 +1127,11 @@
 		    </div>
 		</div>
 	</div>
-	<div class="modal fade" id="detail_siup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="detail_iujk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Detail SIUP</h3>
+		        	<h3 class="modal-title custom-font">Detail IUJK</h3>
 		      	</div>
 		      	<div class="modal-body">
 		      		<table width="100%" border="0">
@@ -1223,70 +1230,23 @@
 					    </tr>
 				    </table>
 				    <br>
-				    <h4><u>#3. DATA SIUP</u></h4>
-				    <table width="100%" border="0">
-					    <tr>
-					      <td width="25%">Bentuk Kegiatan Usaha</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha }}</td>
-					    </tr>
-					    <tr>
-					      <td>Status Penanaman Modal</td>
-					      <td>:</td>
-					      <td>{{ pengajuan.jenis_penanaman_modal.jenis_penanaman_modal }}</td>
-					    </tr>
-				    </table>
-				    <h5><u>Kekayaan Bersih dan Saham</u></h5>
-				    <table width="100%" border="0">
-					    <tr>
-					      <td width="40%">Kekayaan Bersih Perusahaan</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ kekayaan_bersih }}</td>
-					    </tr>
-					    <tr>
-					      <td colspan="3">(tidak termasuk tanah dan bengunan temoat usaha)</td>
-					    </tr>
-					    <tr>
-					      <td colspan="3">Saham (Khusus Untuk Penanaman Modal Asing):</td>
-					    </tr>
-					    <tr>
-					      <td><p style="text-indent: 30px;">a. Total Nilai Saham</p></td>
-					      <td>:</td>
-					      <td>{{ total_nilai_saham }}</td>
-					    </tr>
-					    <tr>
-					      <td colspan="3"><p style="text-indent: 30px;">b. Komposisi Kepemilikan Saham:</p></td>
-					    </tr>
-					    <tr>
-					      <td><p style="text-indent: 60px;">Dalam Negeri</p></td>
-					      <td>:</td>
-					      <td>{{ pengajuan.presentase_saham_nasional }} %</td>
-					    </tr>
-					    <tr>
-					      <td><p style="text-indent: 60px;">Asing</p></td>
-					      <td>:</td>
-					      <td>{{ pengajuan.presentase_saham_asing }} %</td>
-					    </tr>
-				    </table>
-				    <h5><u>Kegiatan Usaha</u></h5>
-				    <table class="font" width="100%">
-					      <tr>
-					          <td width="25%">Kelembagaan</td>
-					          <td width="5%">:</td>
-					          <td width="70%">{{ pengajuan.kelembagaan }}</td>
-					      </tr>
-					      <tr>
-					          <td width="25%">KBLI</td>
-					          <td width="5%">:</td>
-					          <td width="70%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }} - {{kbli.nama_kbli}}) {% endfor %}</td>
-					      </tr>
-					      <!-- <tr>
-					          <td width="25%">Barang/jasa dagang utama</td>
-					          <td width="5%">:</td>
-					          <td width="70%">{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
-                    {% endfor %}</td>
-					      </tr> -->
-				    </table>
+				    <h4><u>#3. Klasifikasi Pekerjaan</u></h4>
+					  <div class="table-responsive">
+					  <strong>Jenis IUJK </strong> : <span id="jenis_iujk_konfirmasi"></span>
+					    <table class="table table-bordered" id="tabel_klasifikasi_pekerjaan-konfirmasi">
+					        <thead>
+					           <tr>
+					              <th>Klasifikasi/Sub Klasifikasi Usaha Yang diinginkan</th>
+					              <th>Nama Paket 10 Tahun Terakhir</th>
+					              <th>Tahun Pelaksanaan</th>
+					              <th>Nilai Paket Pekerjaan</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					          
+					        </tbody>
+					    </table>
+					  </div>
 				    <br>
 				    <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
 				    <div class="table-responsive">
@@ -1316,6 +1276,56 @@
 					    </table>
 				    </div>
 				    <br>
+				    <h4><u>#5. Data Anggota Badan</u></h4>
+					  <div class="table-responsive">
+					    <strong>Direktur / Penanggung Jawab Badan Usaha</strong>
+					    <table class="table table-bordered" id="tabel_penanggung_jawab-konfirmasi">
+					        <thead>
+					          <tr>
+					            <th>Nama</th>
+					            <th>File Foto 4X6 </th>
+					            <th>KTP</th>
+					            <th>Surat Pernyataan Bukan PNS/TNI/POLRI</th>
+					            <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
+					          </tr>
+					        </thead>
+					        <tbody>           
+					          
+					        </tbody>
+					    </table>
+					    <br>
+					    <strong>Penanggung Jawab Teknik Badan Usaha</strong>
+					    <table class="table table-bordered" id="tabel_penanggung_jawab_teknik-konfirmasi">
+					        <thead>
+					          <tr>
+					            <th>Nama</th>
+					            <th>File Foto 4X6 </th>
+					            <th>KTP</th>
+					            <th>Ijazah SMA</th>
+					            <th>SKA/SKT</th>
+					            <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
+					          </tr>
+					        </thead>
+					        <tbody>
+
+					        </tbody>
+					    </table>
+					    <br>
+					    <strong>Tenaga Non Teknik</strong>
+					    <table class="table table-bordered" id="tabel_penanggung_jawab_non_teknik-konfirmasi">
+					        <thead>
+					          <tr>
+					            <th>Nama</th>
+					            <th>File Foto 4X6 </th>
+					            <th>KTP</th>
+					            <th>Ijazah SMA</th>
+					          </tr>
+					        </thead>
+					        <tbody>
+
+					        </tbody>
+					    </table>
+					  </div>
 		      	</div>
 		      	<div class="modal-footer">
 			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>

@@ -25,12 +25,13 @@
 	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
 	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
-	<script src="{% static "scripts/js/iujk.js" %}"></script>
+	
 	<script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/countTo/jquery.countTo.js" %}"></script>
 
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
   	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+  	<script src="{% static "scripts/js/iujk.js" %}"></script>
 
 
 	<script type="text/javascript">
@@ -46,6 +47,22 @@
         $('#percent-akta_pendirian').hide()
         $('#percent-akta_perubahan').hide();
         $('#parsley-id-multiple-chkbox').remove();
+
+        if ($.cookie('id_pengajuan') === undefined){
+			$.cookie('id_pengajuan', "0", {path:"/"});
+		}
+		if ($.cookie('id_pemohon') === undefined){
+			$.cookie('id_pemohon', "0", {path:"/"});
+		}
+		if ($.cookie('id_perusahaan') === undefined){
+			$.cookie('id_perusahaan', "0", {path:"/"});
+		}
+		if ($.cookie('id_legalitas') === undefined){
+        	$.cookie('id_legalitas', "0", {path:"/"});
+        }
+        if ($.cookie('id_legalitas_perubahan') === undefined){
+        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+        }
         
 		$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
 		$(".npwp").mask("99.999.999.9-999.999");
@@ -73,6 +90,46 @@
 					id_pengajuan = parseInt($.cookie('id_pengajuan'))
 					load_konfirmasi(id_pengajuan);
 				} else {
+					// 
+					if($current == 6){
+						// alert("OK")
+						id_pengajuan = parseInt($.cookie('id_pengajuan'))
+						load_berkas(id_pengajuan)
+
+					}
+					if($current == 1){
+						ktp = '{{ktp}}'
+						if( ktp != '' ){
+							$('#id_ktp').val('{{ ktp.nomor }}')
+					    	$('#id_paspor').val('{{ paspor.nomor }}')
+					    	$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+					    	$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+					    	
+				  			load_pemohon('{{ ktp.nomor }}')
+				          	if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+				          		$('#switch_pemohon_disabled').prop( "checked", true );
+				          		setTimeout(function(){
+				          			$('.kuasa_disable').prop('disabled', false);
+					          		$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+					          		$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+					          		$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+				          		}, 1000);
+				          	}
+						}
+						
+					}
+					if($current == 2){
+						npwp = '{{perusahaan_konfirmasi.npwp}}'
+						if (npwp != ''){
+							$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+							// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	setTimeout(function(){
+				          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	}, 3000);
+						}
+						
+					}
+					
 					$('#rootwizard').find('.pager .next').show();
 					$('#rootwizard').find('.pager .finish').hide();
 				}
@@ -152,22 +209,6 @@
 
 			
 
-			if ($.cookie('id_pengajuan') === undefined){
-				$.cookie('id_pengajuan', "0", {path:"/"});
-			}
-			if ($.cookie('id_pemohon') === undefined){
-				$.cookie('id_pemohon', "0", {path:"/"});
-			}
-			if ($.cookie('id_perusahaan') === undefined){
-				$.cookie('id_perusahaan', "0", {path:"/"});
-			}
-			if ($.cookie('id_legalitas') === undefined){
-	        	$.cookie('id_legalitas', "0", {path:"/"});
-	        }
-	        if ($.cookie('id_legalitas_perubahan') === undefined){
-	        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
-	        }
-
 			$( "#alert" ).prop( "disabled", true );
 			$('#checkbox_siup_done').change(function() {
 				if ($(this).is(':checked')) {
@@ -178,6 +219,7 @@
 				  $( "#alert" ).prop( "disabled", true );
 				}
 			});
+
 			if($('#switch_akta_perubahan_disabled').is(':checked')){
 				$('#konfirmasi_legalitas_perubahan').show();
 			}
@@ -298,7 +340,7 @@
 		          timer: 2000
 		        })
 		        
-		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
+		      	window.location.href = '{% url 'admin:verifikasi' %}';
 		      	$.ajax({
 		        	url: '{% url 'iujk_done' %}',
 		        	success: function(response) {

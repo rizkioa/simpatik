@@ -1,6 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf import settings
+from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -14,6 +16,9 @@ urlpatterns = [
     url(r'^ajax-konfirmasi-anggota-badan-direktur/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_direktur, name='ajax_konfirmasi_anggota_badan_direktur'),
     url(r'^ajax-konfirmasi-anggota-badan-teknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_teknik, name='ajax_konfirmasi_anggota_badan_teknik'),
     url(r'^ajax-konfirmasi-anggota-badan-nonteknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_non_teknik, name='ajax_konfirmasi_anggota_badan_non_teknik'),
+    url(r'^ajax-load-berkas/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_load_berkas, name='ajax_load_berkas'),
+    url(r'^ajax-delete-berkas-upload/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iujk_views.ajax_delete_berkas, name='ajax_delete_berkas'),
+
     
     url(r'^cek-izin-terdaftar/(?P<id_izin_>[0-9./]+)$', views.cek_izin_terdaftar, name='cek_izin_terdaftar'),
 
@@ -152,6 +157,12 @@ urlpatterns = [
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
+    url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
+    url(r'^ajax-load-berkas-reklame/(?P<id_pengajuan>[0-9]+)$', reklame_view.ajax_load_berkas_reklame, name='ajax_load_berkas_reklame'),
+    url(r'^ajax-delete-berkas-reklame-upload/(?P<id_berkas>[0-9]+)$', reklame_view.ajax_delete_berkas_reklame, name='ajax_delete_berkas_reklame'),
+    url(r'^layanan/reklame/save/$', reklame_view.reklame_done , name='reklame_done'),
+
+
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK

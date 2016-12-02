@@ -208,7 +208,6 @@
 			}
 		}
 
-
 		document.querySelector('#alert').onclick = function(){
 	    // swal("Good job!", "You clicked the button!", "success");
 		    var pengajuan_cookie = $.cookie('id_pengajuan'); 
@@ -237,7 +236,7 @@
 		          timer: 2000
 		        })
 		        
-		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
+		      	window.location.href = __base_url__+'/admin/izin/detilsiup/view-pengajuan-siup/'+pengajuan_cookie;
 		      	$.ajax({
 		        	url: '{% url 'siup_done' %}',
 		        	success: function(response) {
@@ -257,8 +256,6 @@
 			alert("Jaringan Internet anda terputus!");
 			}
 		});
-		      	
-
 	</script>
 	<script type="text/javascript">
 		
@@ -435,8 +432,6 @@
       		for(i; i < size; i++){
       			$("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
       		}
-      		
-      		{% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
           	
           	if ('{{ berkas_ }}' !== 'None'){
 		        $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
