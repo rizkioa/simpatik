@@ -42,6 +42,12 @@
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
 					} else {
+						if($current == 4){
+						// alert("OK")
+							id_pengajuan = parseInt($.cookie('id_pengajuan'))
+							load_berkas(id_pengajuan)
+
+						}
 						$('#rootwizard').find('.pager .next').show();
 						$('#rootwizard').find('.pager .finish').hide();
 					}
@@ -216,7 +222,7 @@
 	    });
 
 	    if ('{{pengajuan_}}'){
-	    	
+	    	load_perusahaan_a('{{pengajuan_.perusahaan.npwp}}')
           	{% include 'front-end/load_pengajuan.html' %}
 
           	$('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
@@ -227,10 +233,10 @@
           	$('#id_tanggal_mulai').val('{{ pengajuan_.tanggal_mulai|date:'d-m-Y' }}');
           	$('#id_tanggal_akhir').val('{{ pengajuan_.tanggal_akhir|date:'d-m-Y' }}');
           	$('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
-          	$('#id_kecamatan3').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
-          	load_desa3('{{ pengajuan_.desa.kecamatan.id }}')
+          	$('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
+          	load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
           	setTimeout(function(){
-          		$('#id_desa3').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
+          		$('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
           	}, 1000);
 
           	$('a[data-toggle="tooltip"]').tooltip({
