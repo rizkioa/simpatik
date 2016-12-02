@@ -25,9 +25,10 @@
 	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
-  	<script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
-  	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
-  	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
+	<script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
+	<script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
+	<script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
   	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
 	<!--/ custom javascripts -->
 	<script type="text/javascript">
@@ -133,7 +134,7 @@
 		          timer: 2000
 		        })
 		        $.ajax({
-		        	url: '{% url 'siup_done' %}',
+		        	url: '{% url 'reklame_done' %}',
 		        	success: function(response) {
 		        		respon = $.parseJSON(response)
 		        		if(respon.success){
@@ -141,7 +142,7 @@
 		        		}
 		        	}
 	        	});
-		      	window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+		      	window.location.replace('{% url 'admin:izinterdaftar' %}');
 		      	$.removeCookie('id_pengajuan', { path: '/' });
 		      	$.removeCookie('id_perusahaan', { path: '/' });
 		      	$.removeCookie('id_pemohon', { path: '/' });
@@ -159,76 +160,6 @@
 			}
 		});
 	</script>
-	<script type="text/javascript">
-	    make_disabled($( "#id_desa3" ), true)
-	    $( "#id_kecamatan3" ).change(function(){
-			$this = $(this)
-
-			id_kecamatan3 = $(this).val()
-			if(id_kecamatan3.length > 0){
-			  	load_desa3(id_kecamatan3)
-			}else{
-				// elem = $( "#id_kecamatan3" )
-				// make_disabled(elem, true)
-				make_disabled($( "#id_desa3" ), true)
-			}
-	    })
-
-	    function load_kecamatan3(id_kabupaten){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_kecamatan_chosen1" ).mask('loading')
-			$( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-		        data: { csrfmiddlewaretoken: csrf_token, kabupaten: 1 }, // get the form data
-		        type: 'POST', // GET or POST
-		        url: '{% url 'admin:option_kecamatan' %}', // the file to call
-		        success: function(response) { // on success..
-		          elem = $( "#id_kecamatan3" )
-		          elem.html(response);
-		          make_disabled(elem, false)
-		          $( "#id_kecamatan_chosen3" ).unmask()
-		          $( "#id_kecamatan3" ).change(function(){
-		            $this = $(this)
-		            
-		            id_kecamatan3 = $(this).val()
-		            if(id_kecamatan3.length > 0){
-		              load_desa1(id_kecamatan3)
-		            }else{
-		              elem = $( "#id_desa3" )
-		              make_disabled(elem, true)
-		            }
-		          })
-		        },
-		        error: function(data) {                
-		          toast_server_error()
-		        }
-	        });
-	    }
-
-	    function load_desa3(id_kecamatan){
-		    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-		    $( "#id_desa_chosen1" ).mask('loading')
-			$( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-		        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
-		        type: 'POST', // GET or POST
-		        url: '{% url 'admin:option_desa' %}', // the file to call
-		        success: function(response) { // on success..
-		          elem = $( "#id_desa3" )
-		          elem.html(response);
-		          make_disabled(elem, false)
-		          $( "#id_desa_chosen3" ).unmask()
-		          $( "#id_desa3" ).change(function(){
-		              $this = $(this)
-		          })
-		        },
-		        error: function(data) {                
-		          toast_server_error()
-		        }
-		    });
-	    }
-	</script>
-
 	<script type="text/javascript">
 	    $(document).ready(function() {
 	    	window.onbeforeunload = function ref() {
@@ -251,15 +182,15 @@
 	          }
 	        });
 
-	        $('#percent_gambar_konstruksi_pemasangan_reklame').hide()
-	        $('#percent_gambar_foto_lokasi_pemasangan_reklame').hide()
-	        $('#percent_gambar_denah_lokasi_pemasangan_reklame').hide()
-	        $('#percent_surat_ketetapan_pajak_daerah').hide()
-	        $('#percent_surat_setoran_pajak_daerah').hide()
-	        $('#percent_rekomendasi_satpol_pp').hide()
-	        $('#percent_berita_acara_perusahaan').hide()
-	        $('#percent_surat_perjanjian').hide()
-	        $('#percent_tambahan').hide()
+	        $('#percent-gambar_konstruksi_pemasangan_reklame').hide()
+	        $('#percent-gambar_foto_lokasi_pemasangan_reklame').hide()
+	        $('#percent-gambar_denah_lokasi_pemasangan_reklame').hide()
+	        $('#percent-surat_ketetapan_pajak_daerah').hide()
+	        $('#percent-surat_setoran_pajak_daerah').hide()
+	        $('#percent-rekomendasi_satpol_pp').hide()
+	        $('#percent-berita_acara_perusahaan').hide()
+	        $('#percent-surat_perjanjian').hide()
+	        $('#percent-tambahan').hide()
 	        $('#konfirmasi_legalitas_perubahan').hide();
 
 	        if ($.cookie('id_pengajuan') === undefined){

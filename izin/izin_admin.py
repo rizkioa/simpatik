@@ -27,8 +27,6 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
-
-
 	def get_fieldsets(self, request, obj=None):
 		fields = ('pemohon', 'kelompok_jenis_izin', 'jenis_permohonan', 'no_pengajuan', 'no_izin', 'nama_kuasa', 'no_identitas_kuasa', 'telephone_kuasa', 'berkas_tambahan', 'perusahaan', 'berkas_foto', 'berkas_npwp_pemohon', 'berkas_npwp_perusahaan', 'legalitas', 'kbli', 'kelembagaan', 'produk_utama', 'bentuk_kegiatan_usaha', 'jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham', 'presentase_saham_nasional', 'presentase_saham_asing')
 		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
@@ -401,8 +399,6 @@ class IzinAdmin(admin.ModelAdmin):
 				btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
 			else:
 				btn = btn
-
-
 		# elif obj.status == 1:
 		# 	btn = mark_safe("""<span class="label label-default">SELESAI</span>""")
 		# elif obj.status == 7:
@@ -430,30 +426,30 @@ class IzinAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def print_out_pendaftaran(self, request, id_pengajuan_izin_):
-		extra_context = {}
-		if id_pengajuan_izin_:
-			extra_context.update({'title': 'Pengajuan Selesai'})
-			pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
-			extra_context.update({'pemohon': pengajuan_.pemohon})
-			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-			extra_context.update({'nomor_identitas': nomor_identitas_ })
-			extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
-			alamat_ = ""
-			if pengajuan_.pemohon.desa:
-				alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-			extra_context.update({'alamat_pemohon': alamat_})
-			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
+	# def print_out_pendaftaran(self, request, id_pengajuan_izin_):
+	# 	extra_context = {}
+	# 	if id_pengajuan_izin_:
+	# 		extra_context.update({'title': 'Pengajuan Selesai'})
+	# 		pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
+	# 		extra_context.update({'pemohon': pengajuan_.pemohon})
+	# 		nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+	# 		extra_context.update({'nomor_identitas': nomor_identitas_ })
+	# 		extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
+	# 		alamat_ = ""
+	# 		if pengajuan_.pemohon.desa:
+	# 			alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+	# 		extra_context.update({'alamat_pemohon': alamat_})
+	# 		extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+	# 		extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+	# 		extra_context.update({'created_at': pengajuan_.created_at})
 
-			syarat_ = Syarat.objects.filter(jenis_izin__id=pengajuan_.id)
-			extra_context.update({'syarat': syarat_})
+	# 		syarat_ = Syarat.objects.filter(jenis_izin__id=pengajuan_.id)
+	# 		extra_context.update({'syarat': syarat_})
 
-		# template = loader.get_template("admin/izin/izin/add_wizard.html")
-		template = loader.get_template("admin/izin/izin/cetak_bukti_pendaftaran.html")
-		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
+	# 	# template = loader.get_template("admin/izin/izin/add_wizard.html")
+	# 	template = loader.get_template("admin/izin/izin/cetak_bukti_pendaftaran.html")
+	# 	ec = RequestContext(request, extra_context)
+	# 	return HttpResponse(template.render(ec))
 
 	def cetak_siup_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
@@ -464,12 +460,12 @@ class IzinAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+",f"+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Ds. "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+",f"+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Ds. "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
@@ -726,12 +722,20 @@ class IzinAdmin(admin.ModelAdmin):
 							"redirect": '',
 						}
 					elif request.POST.get('aksi') == '_submit_skizin_kadin':
-						pejabat = Pegawai.objects.filter(id=request.user_id).last()
+						pejabat = Pegawai.objects.filter(id=request.user.id).last()
+						# print request.user.id
+						# print pejabat.nama_lengkap
 						obj_skizin.status = 9
-						nama_pejabat = pejabat.gelar_depan+" "+pejabat.nama_lengkap+" "+gelar_belakang
+						gelar_depan = ""
+						gelar_belakang = ""
+						if pejabat.gelar_depan:
+							gelar_depan = pejabat.gelar_depan
+						if pejabat.gelar_belakang:
+							gelar_belakang = pejabat.gelar_belakang
+						nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
 						obj_skizin.nama_pejabat = nama_pejabat
 						obj_skizin.nip_pejabat = str(pejabat.username)
-						obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan)+" BPM-P2TSP"
+						obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
 						obj_skizin.keterangan = "Pembina Tk.l"
 						obj_skizin.save()
 						riwayat_ = Riwayat(
@@ -899,7 +903,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/reklame/$', self.admin_site.admin_view(formulir_reklame), name='izin_proses_reklame'),
 			url(r'^wizard/add/proses/tdp-pt/$', self.admin_site.admin_view(formulir_tdp_pt), name='izin_proses_tdp_pt'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
-			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
+			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),
 			url(r'^aksi-tolak/$', self.admin_site.admin_view(self.penolakanizin), name='penolakanizin'),
 			url(r'^create-skizin/$', self.admin_site.admin_view(self.create_skizin), name='create_skizin'),

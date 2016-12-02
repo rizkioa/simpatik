@@ -266,3 +266,4 @@ function load_alamat(){
 	var alamat = $('#alamat_pemohon_load').val();
 	$('#alamat_perusahaan_load').val(alamat);
 }
+

@@ -206,7 +206,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return false;
+              return true;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -215,7 +215,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });
@@ -470,8 +470,7 @@
       if (res <= 50000000){
         $('#id_bentuk_kegiatan_usaha').val(1).prop('selected',true).trigger("chosen:updated");
       }
-      else if(res > :
-50000000 && res <= 500000000){
+      else if(res > 50000000 && res <= 500000000){
         $('#id_bentuk_kegiatan_usaha').val(3).prop('selected',true).trigger("chosen:updated");
       }
       else if(res > 500000000 && res <= 10000000000){
@@ -507,13 +506,16 @@
         }, 1000);
       }
       //+++++++ end pemohon +++++
-
-      // +++++ perusahaan+++++++
+      // tabpos = $('#rootwizard').bootstrapWizard('currentIndex')
+      // if (parseInt(tabpos) === 2){
+        // +++++ perusahaan+++++++
       $('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
       setTimeout(function(){
         load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
       }, 3000);
-      // +++++ end perusahaan+++++++
+        // +++++ end perusahaan+++++++
+      // }
+      
           
       //+++ bentuk kegiatan usaha ++++
       $('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
@@ -539,15 +541,12 @@
         $("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
       }
       //+++ end bentuk kegiatan usaha ++++
-          
-      {% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
+      
           
       if ('{{ berkas_ }}' !== 'None'){
         $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
         $('#checkbox_berkas_pendukung').prop('checked', 1)
       }
-    }
-
-    
+    }    
   </script>
 {% endblock %}

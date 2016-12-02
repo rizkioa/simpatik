@@ -26,6 +26,12 @@
         right: 34px;
       }
   </style>
+  <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+  <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+  <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+  <!-- CSS adjustments for browsers with JavaScript disabled -->
+  <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+  <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
 {% endblock %}
 
 {% block pageheader %}
@@ -97,9 +103,9 @@
   <script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
   <!-- <script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
  -->  
- <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
- <!-- <script src="{% static 'scripts/js/form/lokasi.js' %}"></script> -->
- <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
+  <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
+  <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
@@ -191,7 +197,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return false;
+              return true;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -200,7 +206,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });
@@ -294,6 +300,8 @@
             $('#konfirmasi_legalitas_perubahan').hide();
           }
         });
+
+
   </script>
   <script>
 
@@ -375,166 +383,149 @@
       }
     };
 
-    document.querySelector('#alert').onclick = function(){
-      // swal("Good job!", "You clicked the button!", "success");
-      var pengajuan_cookie = $.cookie('id_pengajuan'); 
-      var pemohon_cookie = $.cookie('id_pemohon'); 
-      var perusahaan_cookie = $.cookie('id_perusahaan'); 
-      if (pengajuan_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-        $(tab_index).tab('show');
-      }
-      else if(pemohon_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-        $(tab_index).tab('show');
-      }else if(perusahaan_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-        $(tab_index).tab('show');
-      }
-      else{
-        swal({
-          showConfirmButton: false,
-          type: 'success',
-          title: 'Pendaftaran Berhasil Tersimpan',
-          timer: 2000
-        })
-        
-        id_pengajuan_ = $.cookie("id_pengajuan");
-        if (id_pengajuan_ !== ""){
-          window.location.replace("/layanan/siup/formulir/cetak/"+id_pengajuan_);
-          // $.removeCookie('id_pengajuan', { path: '/' });
-          // $.removeCookie('id_perusahaan', { path: '/' });
-          // $.removeCookie('id_pemohon', { path: '/' });
-          // $.removeCookie('nomor_ktp', { path: '/' });
-          // $.removeCookie('nomor_paspor', { path: '/' });
-          // $.removeCookie('id_kelompok_izin', { path: '/' });
-          // $.removeCookie('id_legalitas', { path: '/' });
-          // $.removeCookie('id_legalitas_perubahan', { path: '/' });
-          $.ajax({
-            url: '{% url 'siup_done' %}',
-            success: function(response) {
-              respon = $.parseJSON(response)
-              if(respon.success){
-                toastr["success"](respon.pesan)
-              }
-            }
-          });
-
-        }
-      }
-    };
-
-    $.ajaxSetup({
-      timeout: 50000, // Microseconds, for the laughs. Guaranteed timeout.
-      error: function(request, status, maybe_an_exception_object) {
-      if(status == 'timeout')
-      alert("Jaringan Internet anda terputus!");
-      }
-    });
-
-    function total_n_a(){
-      var nasional = parseFloat($('#id_presentase_saham_nasional').val())
-      var asing = parseFloat($('#id_presentase_saham_asing').val())
-      var total_a_n = nasional+asing
-      if (total_a_n.toFixed(2) > 100.00){
-        $('.saham').addClass('has-error')
-        $('.saham').append('<span class="help-block mb-0 error-saham"><font color="red">Jumlah persen saham nasional dan asing tidak boleh melebihi 100%.</font></span>')
-      }
-      else{
-        $('.saham').removeClass('has-error')
-        $('.error-saham').remove()
-      }
-    }
-
-    $("#id_kekayaan_bersih").on("change", function(e) {
-      kekayaan = $('#id_kekayaan_bersih').val()
-      res = parseInt(kekayaan.replace(/\./g, ""))
-      if (res <= 50000000){
-        $('#id_bentuk_kegiatan_usaha').val(1).prop('selected',true).trigger("chosen:updated");
-      }
-      else if(res > 50000000 && res <= 500000000){
-        $('#id_bentuk_kegiatan_usaha').val(3).prop('selected',true).trigger("chosen:updated");
-      }
-      else if(res > 500000000 && res <= 10000000000){
-        $('#id_bentuk_kegiatan_usaha').val(4).prop('selected',true).trigger("chosen:updated");
-      }
-      else if(res > 10000000000){
-        $('#id_bentuk_kegiatan_usaha').val(5).prop('selected',true).trigger("chosen:updated");
-      }
-    })
-
-    // $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
-    // $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
-    // $('#id_kekayaan_bersih').mask("000.000.000.000.000",{reverse:true});
-    // $('#id_total_nilai_saham').mask("000.000.000.000.000",{reverse:true});
-    $('.rupiah').mask("000.000.000.000.000",{reverse:true});
-
-
-    if ('{{pengajuan_}}'){
-      // alert("{{ pengajuan_.jenis_pengajuan }}");
-      // +++++++ pemohon +++++
-      $('#id_ktp').val('{{ ktp.nomor }}')
-      $('#id_paspor').val('{{ paspor.nomor }}')
-      $('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
-      $('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
-      
-      load_pemohon('{{ ktp.nomor }}')
-      if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
-        $('#switch_pemohon_disabled').prop( "checked", true );
-        setTimeout(function(){
-          $('.kuasa_disable').prop('disabled', false);
-          $('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
-          $('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
-          $('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
-        }, 1000);
-      }
-      //+++++++ end pemohon +++++
-
-      // +++++ perusahaan+++++++
-      $('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-      setTimeout(function(){
-        load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-      }, 3000);
-      // +++++ end perusahaan+++++++
-          
-      //+++ bentuk kegiatan usaha ++++
-      $('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
-      $('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
-      if ('{{pengajuan_.kekayaan_bersih}}' == 'None'){
-        $('#id_kekayaan_bersih').val('0');
-      }
-      else{
-        $('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"));
-      }
-      if ('{{pengajuan_.total_nilai_saham}}' == 'None'){
-        $('#id_total_nilai_saham').val('0');
-      }
-      else{
-        $('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"));
-      }
-      $('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
-      $('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
-      $('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
-      var valkbli = [{% for k in pengajuan_.kbli.all %}{{k.id}},{% endfor %}]
-      i = 0, size = valkbli.length;
-      for(i; i < size; i++){
-        $("#id_kbli option[value='" + valkbli[i] + "']").attr("selected", 1);
-      }
-      //+++ end bentuk kegiatan usaha ++++
-          
-      {% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
-          
-      if ('{{ berkas_ }}' !== 'None'){
-        $('#load_berkas_tambahan').replaceWith("<span id='load_berkas_tambahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+'{{berkas_.berkas.url}}'+"'>"+'{{ berkas_.nama_berkas }}'+"</a></span>")
-        $('#checkbox_berkas_pendukung').prop('checked', 1)
-      }
-    }
 
 
   </script>
+
+  <script type="text/javascript">
+      $(document).ready(function() {
+        window.onbeforeunload = function ref() {
+              var r = confirm( "Do you want to leave?" );
+              if (r == true) {
+                  
+              }
+              else {
+                  return false;
+              }
+            };
+        
+          $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+          $("#switch_pemohon_disabled").change(function() {
+            if ($(this).is(':checked')) {
+              $('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+            }
+            else {
+              $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+            }
+          });
+
+          $('#percent-gambar_konstruksi_pemasangan_reklame').hide()
+          $('#percent-gambar_foto_lokasi_pemasangan_reklame').hide()
+          $('#percent-gambar_denah_lokasi_pemasangan_reklame').hide()
+          $('#percent-surat_ketetapan_pajak_daerah').hide()
+          $('#percent-surat_setoran_pajak_daerah').hide()
+          $('#percent-rekomendasi_satpol_pp').hide()
+          $('#percent-berita_acara_perusahaan').hide()
+          $('#percent-surat_perjanjian').hide()
+          $('#percent-tambahan').hide()
+          $('#konfirmasi_legalitas_perubahan').hide();
+
+          if ($.cookie('id_pengajuan') === undefined){
+            $.cookie('id_pengajuan', "0", {path:"/"});
+          }
+          if ($.cookie('id_pemohon') === undefined){
+            $.cookie('id_pemohon', "0", {path:"/"});
+          }
+          if ($.cookie('id_perusahaan') === undefined){
+            $.cookie('id_perusahaan', "0", {path:"/"});
+          }
+
+          $( "#alert" ).prop( "disabled", true );
+          $('#checkbox_done').change(function() {
+              if ($(this).is(':checked')) {
+                $( "#alert" ).prop( "disabled", false );
+                window.onbeforeunload = null;
+              }
+              else{
+                $( "#alert" ).prop( "disabled", true );
+              }
+            });
+      });
+
+      if ('{{pengajuan_}}'){
+        
+            {% include 'front-end/load_pengajuan.html' %}
+
+            $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
+            $('#id_judul_reklame').val('{{ pengajuan_.judul_reklame }}');
+            $('#id_panjang').val('{{ panjang }}');
+            $('#id_lebar').val('{{ lebar }}');
+            $('#id_sisi').val('{{ sisi }}');
+            $('#id_tanggal_mulai').val('{{ pengajuan_.tanggal_mulai|date:'d-m-Y' }}');
+            $('#id_tanggal_akhir').val('{{ pengajuan_.tanggal_akhir|date:'d-m-Y' }}');
+            $('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
+            $('#id_kecamatan3').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
+            load_desa3('{{ pengajuan_.desa.kecamatan.id }}')
+            setTimeout(function(){
+              $('#id_desa3').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+
+            $('a[data-toggle="tooltip"]').tooltip({
+          animated: 'fade',
+          placement: 'bottom',
+          html: true
+      });
+
+      $(document).ready(function(){
+        var berkas_1 = '<img src="{{ berkas_1.berkas.url }}"" height="120" width="200">';
+        $('#berkas_1_link').popover({placement: 'bottom', content: berkas_1, html: true});
+        var berkas_2 = '<img src="{{ berkas_2.berkas.url }}"" height="120" width="200">';
+        $('#berkas_2_link').popover({placement: 'bottom', content: berkas_2, html: true});
+        var berkas_3 = '<img src="{{ berkas_3.berkas.url }}"" height="120" width="200">';
+        $('#berkas_3_link').popover({placement: 'bottom', content: berkas_3, html: true});
+        var berkas_4 = '<img src="{{ berkas_4.berkas.url }}"" height="120" width="200">';
+        $('#berkas_4_link').popover({placement: 'bottom', content: berkas_4, html: true});
+        var berkas_5 = '<img src="{{ berkas_5.berkas.url }}"" height="120" width="200">';
+        $('#berkas_5_link').popover({placement: 'bottom', content: berkas_5, html: true});
+        var berkas_6 = '<img src="{{ berkas_6.berkas.url }}"" height="120" width="200">';
+        $('#berkas_6_link').popover({placement: 'bottom', content: berkas_6, html: true});
+        var berkas_7 = '<img src="{{ berkas_7.berkas.url }}"" height="120" width="200">';
+        $('#berkas_7_link').popover({placement: 'bottom', content: berkas_7, html: true});
+        var berkas_8 = '<img src="{{ berkas_8.berkas.url }}"" height="120" width="200">';
+        $('#berkas_8_link').popover({placement: 'bottom', content: berkas_8, html: true});
+        var berkas_9 = '<img src="{{ berkas_9.berkas.url }}"" height="120" width="200">';
+        $('#berkas_9_link').popover({placement: 'bottom', content: berkas_9, html: true});
+      });
+
+            if ('{{ berkas_1 }}' != 'None'){
+              $('#berkas_1').replaceWith("<span id='berkas_1' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_1.nama_berkas }}' id='berkas_1_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_1.berkas.url }}'+"' >"+'{{ berkas_1.nama_berkas }}'+"</a></span>")
+              $('#checkbox_gambar_konstruksi_pemasangan_reklame').prop('checked', 1)
+            }
+            if ('{{ berkas_2 }}' != 'None'){
+              $('#berkas_2').replaceWith("<span id='berkas_2' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_2.nama_berkas }}' id='berkas_2_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_2.berkas.url }}'+"'>"+'{{ berkas_2.nama_berkas }}'+"</a></span>")
+              $('#checkbox_gambar_foto_lokasi_pemasangan_reklame').prop('checked', 1)
+            }
+            if ('{{ berkas_3 }}' != 'None'){
+              $('#berkas_3').replaceWith("<span id='berkas_3' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_3.nama_berkas }}' id='berkas_3_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_3.berkas.url }}'+"'>"+'{{ berkas_3.nama_berkas }}'+"</a></span>")
+              $('#checkbox_gambar_denah_lokasi_pemasangan_reklame').prop('checked', 1)
+            }
+            if ('{{ berkas_4 }}' != 'None'){
+              $('#berkas_4').replaceWith("<span id='berkas_4' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_4.nama_berkas }}' id='berkas_4_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_4.berkas.url }}'+"'>"+'{{ berkas_4.nama_berkas }}'+"</a></span>")
+              $('#checkbox_surat_ketetapan_pajak_daerah').prop('checked', 1)
+            }
+            if ('{{ berkas_5 }}' != 'None'){
+              $('#berkas_5').replaceWith("<span id='berkas_5' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_5.nama_berkas }}' id='berkas_5_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_5.berkas.url }}'+"'>"+'{{ berkas_5.nama_berkas }}'+"</a></span>")
+              $('#checkbox_surat_setoran_pajak_daerah').prop('checked', 1)
+            }
+            if ('{{ berkas_6 }}' != 'None'){
+              $('#berkas_6').replaceWith("<span id='berkas_6' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_6.nama_berkas }}' id='berkas_6_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_6.berkas.url }}'+"'>"+'{{ berkas_6.nama_berkas }}'+"</a></span>")
+              $('#checkbox_rekomendasi_satpol_pp').prop('checked', 1)
+            }
+            if ('{{ berkas_7 }}' != 'None'){
+              $('#berkas_7').replaceWith("<span id='berkas_7' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_7.nama_berkas }}' id='berkas_7_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_7.berkas.url }}'+"'>"+'{{ berkas_7.nama_berkas }}'+"</a></span>")
+              $('#checkbox_berita_acara_perusahaan').prop('checked', 1)
+            }
+            if ('{{ berkas_8 }}' != 'None'){
+              $('#berkas_8').replaceWith("<span id='berkas_8' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_8.nama_berkas }}' id='berkas_8_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_8.berkas.url }}'+"'>"+'{{ berkas_8.nama_berkas }}'+"</a></span>")
+              $('#checkbox_surat_perjanjian').prop('checked', 1)
+            }
+            if ('{{ berkas_9 }}' != 'None'){
+              $('#berkas_9').replaceWith("<span id='berkas_9' class='help-block' style='color:blue;'> file : <a data-trigger='hover' rel='popover' data-content='' title='{{ berkas_9.nama_berkas }}' id='berkas_9_link' data-toggle='popover' data-placement='bottom' target='_blank' href='"+'{{ berkas_9.berkas.url }}'+"'>"+'{{ berkas_9.nama_berkas }}'+"</a></span>")
+              $('#checkbox_berkas_tambahan').prop('checked', 1)
+            }
+      }
+    </script>
+
 {% endblock %}
 
 
