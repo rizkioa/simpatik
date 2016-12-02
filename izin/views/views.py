@@ -579,7 +579,6 @@ def cetak_reklame(request,id_pengajuan_):
 	return HttpResponse(template.render(ec))
 
 def cetak_bukti_pendaftaran_reklame(request, id_pengajuan_):
-
 	extra_context = {}
 	if id_pengajuan_:
 		pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_)
@@ -601,15 +600,22 @@ def cetak_bukti_pendaftaran_reklame(request, id_pengajuan_):
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 				syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
-			# legalitas_ = Legalitas.objects.filter()
-			# if pengajuan_.legalitas is not None:
-			# 	print pengajuan_.legalitas
-			# 	legalitas_list = Legalitas.objects.list_filter(pengajuan_.legalitas)
-			# 	legalitas_ = [l.as_json() for l in Legalitas.objects.filter(id__in=legalitas_list)]
-			# legalitas_ = "kosong"
+			letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
+			if pengajuan_.tanggal_mulai:
+				awal = pengajuan_.tanggal_mulai
+			else:
+				awal = 0
+			if pengajuan_.tanggal_akhir:
+				akhir = pengajuan_.tanggal_akhir
+			else:
+				akhir = 0
+			
+			selisih = akhir-awal
+			extra_context.update({'letak_pemasangan': letak_})
+			extra_context.update({'selisih': selisih.days})
 			extra_context.update({ 'pengajuan': pengajuan_ })
 			extra_context.update({ 'syarat': syarat })
-			# extra_context.update({ 'legalitas': legalitas_ })
 			extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
 			extra_context.update({ 'created_at': pengajuan_.created_at })
 			response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")

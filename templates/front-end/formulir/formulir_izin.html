@@ -103,35 +103,9 @@
 	
 
 	// Function to capitalize for string
-	String.prototype.capitalize = function() {
-	  return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-	};
-function chosen_change(elem_){
-    var siblings = elem_.nextAll('.change-related, .delete-related');
-    if (!siblings.length) return;
-    var value = elem_.val();
-    if (value) {
-        siblings.each(function(){
-            var elm = $(this);
-            elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
-        });
-    } else siblings.removeAttr('href');
-}
-
-function update_related(elm){
-    if($(elm).prop( "disabled")){
-        $(elm).nextAll(".change-related, .add-related").css('display', 'None')
-    }else{
-        $(elm).nextAll(".change-related, .add-related").css('display', 'inline-block')
-    }
-}
-
-function make_disabled(elem_, dis_){
-    elem_.prop( "disabled", dis_);
-    elem_.trigger("chosen:updated");
-    update_related(elem_)
-}
-
+	// String.prototype.capitalize = function() {
+	//   return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+	// };
 </script>
 
 

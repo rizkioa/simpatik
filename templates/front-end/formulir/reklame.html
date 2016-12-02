@@ -100,9 +100,6 @@
   <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
-  <script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
-  <!-- <script src="{% static 'scripts/js/jquery.maskMoney.min.js' %}"></script>
- -->  
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
@@ -376,6 +373,7 @@
                 }
             },
             error: function(response){
+              alert(response)
               // $( ".tab-content #tab"+index ).unmask()
               $(".tab-content").mLoading('hide');
               $(btn).removeAttr('disabled')
@@ -414,7 +412,7 @@
         })
         
         id_pengajuan_ = $.cookie("id_pengajuan");
-        if (id_pengajuan_ !== ""){
+        if (id_pengajuan_ != undefined){
           
           // $.removeCookie('id_pengajuan', { path: '/' });
           // $.removeCookie('id_perusahaan', { path: '/' });
@@ -430,11 +428,10 @@
               respon = $.parseJSON(response)
               if(respon.success){
                 toastr["success"](respon.pesan)
-                window.location.replace("/layanan/reklame/formulir/cetak/"+id_pengajuan_);
               }
+              window.location.replace("/layanan/reklame/formulir/cetak/"+id_pengajuan_);
             }
           });
-
         }
       }
     };

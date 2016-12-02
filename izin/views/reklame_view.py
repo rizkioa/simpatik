@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
+from jfu.http import upload_receive, UploadResponse, JFUResponse
 
 def reklame_detilreklame_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():

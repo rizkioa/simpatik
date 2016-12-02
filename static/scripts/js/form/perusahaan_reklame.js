@@ -267,3 +267,5 @@ function load_alamat(){
 	$('#alamat_perusahaan_load').val(alamat);
 }
 
+$('#id_negara_reklame').val('1').prop('selected',true).trigger("chosen:updated");
+  load_provinsi_reklame('1')

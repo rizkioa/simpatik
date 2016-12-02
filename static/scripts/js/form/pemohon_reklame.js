@@ -219,8 +219,6 @@ function load_desa(id_kecamatan){
     });
 }
 
-id_pengajuan = $.cookie('id_pengajuan');
-if (id_pengajuan == '0'){
   $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
   load_provinsi('1')
   load_kabupaten('1')
@@ -229,4 +227,3 @@ if (id_pengajuan == '0'){
     $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
     $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
   }, 1000);
-}
