@@ -10,6 +10,8 @@ from izin.utils import formatrupiah
 
 
 class DetilIUJKAdmin(admin.ModelAdmin):
+
+	
 	
 	def view_pengajuan_siup(self, request, id_pengajuan_izin_):
 		extra_context = {}

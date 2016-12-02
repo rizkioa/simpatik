@@ -46,6 +46,22 @@
         $('#percent-akta_pendirian').hide()
         $('#percent-akta_perubahan').hide();
         $('#parsley-id-multiple-chkbox').remove();
+
+        if ($.cookie('id_pengajuan') === undefined){
+			$.cookie('id_pengajuan', "0", {path:"/"});
+		}
+		if ($.cookie('id_pemohon') === undefined){
+			$.cookie('id_pemohon', "0", {path:"/"});
+		}
+		if ($.cookie('id_perusahaan') === undefined){
+			$.cookie('id_perusahaan', "0", {path:"/"});
+		}
+		if ($.cookie('id_legalitas') === undefined){
+        	$.cookie('id_legalitas', "0", {path:"/"});
+        }
+        if ($.cookie('id_legalitas_perubahan') === undefined){
+        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+        }
         
 		$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
 		$(".npwp").mask("99.999.999.9-999.999");
@@ -76,12 +92,13 @@
 					// 
 					if($current == 6){
 						// alert("OK")
-						id_perusahaan = parseInt($.cookie('id_perusahaan'))
-						load_berkas(id_perusahaan)
-						
+						id_pengajuan = parseInt($.cookie('id_pengajuan'))
+						load_berkas(id_pengajuan)
+
 					}
 					if($current == 1){
-						if( {{ktp}} ){
+						ktp = '{{ktp}}'
+						if( ktp != '' ){
 							$('#id_ktp').val('{{ ktp.nomor }}')
 					    	$('#id_paspor').val('{{ paspor.nomor }}')
 					    	$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
@@ -101,15 +118,17 @@
 						
 					}
 					if($current == 2){
-						$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-						// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-			          	setTimeout(function(){
-			          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-			          	}, 3000);
+						npwp = '{{perusahaan_konfirmasi.npwp}}'
+						if (npwp != ''){
+							$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+							// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	setTimeout(function(){
+				          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	}, 3000);
+						}
+						
 					}
-					if ($current == 4){
-						{% include 'front-end/include/formulir_siup/load/load_legalitas.html' %}
-					}
+					
 					$('#rootwizard').find('.pager .next').show();
 					$('#rootwizard').find('.pager .finish').hide();
 				}
@@ -188,22 +207,6 @@
 			});
 
 			
-
-			if ($.cookie('id_pengajuan') === undefined){
-				$.cookie('id_pengajuan', "0", {path:"/"});
-			}
-			if ($.cookie('id_pemohon') === undefined){
-				$.cookie('id_pemohon', "0", {path:"/"});
-			}
-			if ($.cookie('id_perusahaan') === undefined){
-				$.cookie('id_perusahaan', "0", {path:"/"});
-			}
-			if ($.cookie('id_legalitas') === undefined){
-	        	$.cookie('id_legalitas', "0", {path:"/"});
-	        }
-	        if ($.cookie('id_legalitas_perubahan') === undefined){
-	        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
-	        }
 
 			$( "#alert" ).prop( "disabled", true );
 			$('#checkbox_siup_done').change(function() {
@@ -336,7 +339,7 @@
 		          timer: 2000
 		        })
 		        
-		      	window.location.href = '{% url 'admin:izin_pengajuanizin_changelist' %}';
+		      	window.location.href = '{% url 'admin:verifikasi' %}';
 		      	$.ajax({
 		        	url: '{% url 'iujk_done' %}',
 		        	success: function(response) {
