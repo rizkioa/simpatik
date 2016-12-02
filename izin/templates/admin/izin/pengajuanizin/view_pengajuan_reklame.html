@@ -222,8 +222,7 @@
 		<section class="tile">
 			<div class="tile-body">
 				<center>
-					<!-- <a class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir</a> -->
-					<a class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 					
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
@@ -1044,188 +1043,55 @@
 
         });
     </script>
-	<div class="modal fade" id="detail_reklame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Detail REKLAME</h3>
-		      	</div>
-		      	<div class="modal-body">
-		      		<table width="100%" border="0">
-					    <tr>
-					      <td width="25%">Jenis Pengajuan</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
-					    </tr>
-				    </table>
-				    <br>
-				    <h4><u>#1. IDENTITAS PEMOHON</u></h4>
-				    <table width="100%" border="0">
-					    <tr>
-					      <td width="25%">Jenis Pemohon</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Nomor KTP/Paspor</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ nomor_identitas }}</td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Nama</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon }} ({{ pemohon.jenis_pemohon }})</td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Alamat tempat tinggal</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ alamat_pemohon }}</td>
-					    </tr>
-					    <tr>
-					      <td width="25%">No.Telp</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon.telephone }}<span id='telephone_konfirmasi'></span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">No.HP</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{% if pemohon.hp == None or "" %}-{% else %}{{ pemohon.hp }}{% endif %}<span id='hp_konfirmasi'></span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">E-mail</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{% if pemohon.email == None or "" %}-{% else %}{{ pemohon.email }}{% endif %}<span id='email_konfirmasi'></span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Kewarganegaraan</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon.kewarganegaraan }}<span id='kewarganegaraan_konfirmasi'></span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Pekerjaan</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon.pekerjaan }}<span id='pekerjaan_konfirmasi'></span></td>
-					    </tr>
-				    </table>
-				    <br>
-				    <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
-				    <table width="100%" border="0">
-					    <tr>
-					      <td width="25%">NPWP</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='npwp_konfirmasi'>{{ perusahaan.npwp }}</span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Nama Perusahaan</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan.nama_perusahaan }}</span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Alamat Perusahaan</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan }}</span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Kode Pos</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='kode_pos_konfirmasi'>{{ perusahaan.kode_pos }}</span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">No.Telp</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='telepon_konfirmasi'>{{ perusahaan.telepon }}</span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">No.Fax</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='fax_konfirmasi'>{{ perusahaan.fax }}</span></td>
-					    </tr>
-					    <tr>
-					      <td width="25%">E-mail</td>
-					      <td width="5%">:</td>
-					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
-					    </tr>
-				    </table>
-				    <br>
-				    <h4><u>#3. DATA REKLAME</u></h4>
-				    <table width="100%" border="0">
-					    <tr>
-					      <td width="25%">Jenis Reklame</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_reklame.jenis_reklame }}</td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Nama / Judul Reklame</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.judul_reklame}}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Ukuran, Panjang x Lebar x Muka/sisi</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.panjang }} x {{ pengajuan.lebar }} x {{ pengajuan.sisi }}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Waktu / Lama Pemasangan</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{jumlah_lama}}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Letak Pemasangan</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.letak_pemasangan }}</td>
-					    </tr>
-				    </table>
-				    <br>
-		      	<div class="modal-footer">
-			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-			    </div>
-		    </div>
-		</div>
-	</div>
+{% endblock %}
 
-	<div class="modal fade" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" style="width: 80%;">
+{% block extracontent %}
+    {{ block.super }}
+	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
 		        	<h3 class="modal-title custom-font">Berkas</h3>
 		      	</div>
-		      	<div class="modal-body" style="padding-right: 32px;">
+		      	<div class="modal-body">
                     <div class="row mix-grid">
                         <div class="gallery" data-lightbox="gallery">
-                        	{% for a in pengajuan.berkas_tambahan.all %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-	                                <div class="img-container">
-	                                	<div class="img-responsi" angle='0'>
-	                                		{% with a.berkas.name|extension|stringformat:"s" as ext %}
-		                                		{% if ext|InList:'.pdf, .PDF' %}
-			                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+                        	{% if pengajuan.berkas_tambahan.all %}
+	                        	{% for a in pengajuan.berkas_tambahan.all %}
+	                            	<div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+		                                <div class="img-container">
+		                                	<div class="img-responsi" angle='0'>
+		                                		{% with a.berkas.name|extension|stringformat:"s" as ext %}
+			                                		{% if ext|InList:'.pdf, .PDF' %}
+				                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+														</div>
+													{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
+													<div class="imageloaderImage" style="background-image: url({{a.berkas.url}});">			
 													</div>
-												{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
-												<div class="imageloaderImage" style="background-image: url({{cookie_file_foto.berkas.url}});">			
-												</div>
-												{% endif %}
-				  							{% endwith %}
-	                                	</div>
-	                                    
-	                                    <div class="img-details">
-	                                        <h4 class="custom-font ng-binding">{{ a.nama_berkas }}</h4>
-	                                        <div class="img-controls">
-	                                            {% with a.berkas.name|extension|stringformat:"s" as ext %}
-	                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
-			                                            <a href="{{ a.berkas.url }}" target="_blank" class="img-link">
-			                                                <i class="fa fa-link"></i>
-			                                            </a>
-			                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-			                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="img-link">
-			                                                <i class="fa fa-link"></i>
-			                                            </a>
-			                                        {% endif %}
-	                                            {% endwith %}
-	                                        </div>
-	                                    </div>
-	                                </div>
-                            	</div>
-                            {% endfor %}
+													{% endif %}
+					  							{% endwith %}
+		                                	</div>
+		                                    
+		                                    <div class="img-details">
+		                                        <h4 class="custom-font ng-binding">{{ a.nama_berkas }}</h4>
+		                                        <div class="img-controls">
+		                                            {% with a.berkas.name|extension|stringformat:"s" as ext %}
+		                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
+				                                            <a href="{{ a.berkas.url }}" target="_blank" class="img-link">
+				                                                <i class="fa fa-link"></i>
+				                                            </a>
+				                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+				                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="img-link">
+				                                                <i class="fa fa-link"></i>
+				                                            </a>
+				                                        {% endif %}
+		                                            {% endwith %}
+		                                        </div>
+		                                    </div>
+		                                </div>
+	                            	</div>
+	                            {% endfor %}
+                            {% endif %}
                             {% if cookie_file_foto %}
                             <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
                             	<div class="img-container">
@@ -1426,7 +1292,7 @@
                             {% endif %}
                         </div>
                     </div>
-		      	</div>
+                </div>
 		      	<div class="modal-footer">
                     <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
                 </div>
@@ -1434,4 +1300,142 @@
 		</div>
 	</div>
 
+	<div class="modal fade detail_reklame" id="detail_reklame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Detail REKLAME</h3>
+		      	</div>
+		      	<div class="modal-body">
+		      		<table width="100%" border="0">
+					    <tr>
+					      <td width="25%">Jenis Pengajuan</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
+					    </tr>
+				    </table>
+				    <br>
+				    <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+				    <table width="100%" border="0">
+					    <tr>
+					      <td width="25%">Jenis Pemohon</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Nomor KTP/Paspor</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ nomor_identitas }}</td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Nama</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pemohon }} ({{ pemohon.jenis_pemohon }})</td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Alamat tempat tinggal</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ alamat_pemohon }}</td>
+					    </tr>
+					    <tr>
+					      <td width="25%">No.Telp</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pemohon.telephone }}<span id='telephone_konfirmasi'></span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">No.HP</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{% if pemohon.hp == None or "" %}-{% else %}{{ pemohon.hp }}{% endif %}<span id='hp_konfirmasi'></span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">E-mail</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{% if pemohon.email == None or "" %}-{% else %}{{ pemohon.email }}{% endif %}<span id='email_konfirmasi'></span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Kewarganegaraan</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pemohon.kewarganegaraan }}<span id='kewarganegaraan_konfirmasi'></span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Pekerjaan</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pemohon.pekerjaan }}<span id='pekerjaan_konfirmasi'></span></td>
+					    </tr>
+				    </table>
+				    <br>
+				    <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+				    <table width="100%" border="0">
+					    <tr>
+					      <td width="25%">NPWP</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='npwp_konfirmasi'>{{ perusahaan.npwp }}</span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Nama Perusahaan</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan.nama_perusahaan }}</span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Alamat Perusahaan</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan }}</span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Kode Pos</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='kode_pos_konfirmasi'>{{ perusahaan.kode_pos }}</span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">No.Telp</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='telepon_konfirmasi'>{{ perusahaan.telepon }}</span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">No.Fax</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='fax_konfirmasi'>{{ perusahaan.fax }}</span></td>
+					    </tr>
+					    <tr>
+					      <td width="25%">E-mail</td>
+					      <td width="5%">:</td>
+					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
+					    </tr>
+				    </table>
+				    <br>
+				    <h4><u>#3. DATA REKLAME</u></h4>
+				    <table width="100%" border="0">
+					    <tr>
+					      <td width="25%">Jenis Reklame</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pengajuan.jenis_reklame.jenis_reklame }}</td>
+					    </tr>
+					    <tr>
+					      <td width="25%">Nama / Judul Reklame</td>
+					      <td width="5%">:</td>
+					      <td width="70%">{{ pengajuan.judul_reklame}}</td>
+					    </tr>
+					    <tr>
+					      <td width="40%">Ukuran, Panjang x Lebar x Muka/sisi</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{ pengajuan.panjang }} x {{ pengajuan.lebar }} x {{ pengajuan.sisi }}</td>
+					    </tr>
+					    <tr>
+					      <td width="40%">Waktu / Lama Pemasangan</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{jumlah_lama}}</td>
+					    </tr>
+					    <tr>
+					      <td width="40%">Letak Pemasangan</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{ pengajuan.letak_pemasangan }}</td>
+					    </tr>
+				    </table>
+				    <br>
+		      	<div class="modal-footer">
+			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+			    </div>
+		    </div>
+		</div>
+	</div>
 {% endblock %}

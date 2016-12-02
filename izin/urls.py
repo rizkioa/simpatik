@@ -89,8 +89,8 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     
     #cetak reklame
-    url(r'^layanan/reklame/formulir/cetak$', views.cetak_reklame, name='cetak_reklame'),
-    url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
+    url(r'^layanan/reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_reklame, name='cetak_reklame'),
+    url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
     
     #cetak Pemakaian Kekayaan
     url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),

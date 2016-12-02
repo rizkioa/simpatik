@@ -36,6 +36,7 @@ self.addEventListener('install', e => {
         '/static/scripts/js/vendor/jquery/jquery.form.js',
         '/static/scripts/js/vendor/jquery/jquery.cookie.js',
         '/static/scripts/js/formAjax/form_ajax_siup.js',
+        '/static/scripts/js/formAjax/form_ajax_reklame.js',
         '/static/scripts/js/jquery.maskMoney.min.js',
         '/static/scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js',
 

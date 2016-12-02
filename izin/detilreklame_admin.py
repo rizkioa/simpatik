@@ -45,7 +45,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
-				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
 				try:
 					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
@@ -154,12 +154,23 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_bukti_admin_reklame(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			extra_context.update({'pengajuan': pengajuan_ })
+		template = loader.get_template("front-end/include/formulir_reklame/cetak_bukti_pendaftaran_admin.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilReklameAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-reklame-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_reklame_asli), name='cetak_reklame_asli'),
 			url(r'^view-pengajuan-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_reklame), name='view_pengajuan_reklame'),
+			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_reklame), name='cetak_bukti_admin_reklame'),
 			)
 		return my_urls + urls
 

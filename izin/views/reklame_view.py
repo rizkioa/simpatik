@@ -23,8 +23,15 @@ def reklame_detilreklame_save_cookie(request):
 				pengajuan_.save()
 				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
-				awal = pengajuan_.tanggal_mulai
-				akhir = pengajuan_.tanggal_akhir
+				if pengajuan_.tanggal_mulai:
+					awal = pengajuan_.tanggal_mulai
+				else:
+					awal = 0
+				if pengajuan_.tanggal_akhir:
+					akhir = pengajuan_.tanggal_akhir
+				else:
+					akhir = 0
+				
 				selisih = akhir-awal
 				data = {'success': True,
 						'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
@@ -37,7 +44,7 @@ def reklame_detilreklame_save_cookie(request):
 				data = json.dumps(data)
 				response = HttpResponse(json.dumps(data))
 			else:
-				data = detilSIUP.errors.as_json()
+				data = detilReklame.errors.as_json()
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)
@@ -132,7 +139,7 @@ def reklame_upload_dokumen_cookie(request):
 def reklame_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
 					
