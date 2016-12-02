@@ -98,6 +98,11 @@ def IUJKWizard(request, extra_context={}):
 				ec = RequestContext(request, extra_context)
 				response =  HttpResponse(template.render(ec))
 				response.set_cookie(key='id_pengajuan', value='0')
+		else:
+			template = loader.get_template("admin/izin/izin/wizard_iujk.html")
+			ec = RequestContext(request, extra_context)
+			response =  HttpResponse(template.render(ec))
+			# response.set_cookie(key='id_pengajuan', value='0')
 		
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')

@@ -314,15 +314,14 @@ function form_upload_dokumen(elem_){
     success: function(response){
       respon = $.parseJSON(response)
       if(respon.success){
-            toastr["success"](respon.pesan)
-                       
-            // console.log($('#'+split_+'-konfirmasi').prop('checked', true))
-            var percentVal = '100%';
-            $('#percent-'+split_).html(percentVal);
-            if ($.cookie('id_perusahaan') !== undefined){
-              load_berkas($.cookie('id_perusahaan'))
-            }  
-                              
+          toastr["success"](respon.pesan)
+                     
+          // console.log($('#'+split_+'-konfirmasi').prop('checked', true))
+          var percentVal = '100%';
+          $('#percent-'+split_).html(percentVal);
+          if ($.cookie('id_pengajuan') != ''){
+            load_berkas($.cookie('id_pengajuan'))
+          }                  
       }
       else{
         // $('#checkbox_berkas_foto').prop('checked', false);
@@ -350,11 +349,11 @@ function form_upload_dokumen(elem_){
 // ***** END *****
 
 // ***** Load Form Upload *****
-function load_berkas(id_perusahaan){
+function load_berkas(id_pengajuan){
   $(".tab-content").mLoading;
-  if (id_perusahaan>0){
+  if (id_pengajuan>0){
     $.ajax({
-      url: __base_url__+'/ajax-load-berkas/'+id_perusahaan,
+      url: __base_url__+'/ajax-load-berkas/'+id_pengajuan,
       success: function (response){
         respon = $.parseJSON(response)
         if (respon.success) {
@@ -363,7 +362,7 @@ function load_berkas(id_perusahaan){
             // console.log(respon.berkas[i])
             // console.log(respon.elemen[i])
             // console.log(respon.id_berkas[i])
-            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\', '+id_perusahaan+');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
+            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
             // console.log(url)
             $('#load-'+respon.elemen[i]).html(url)
             $('#field-'+respon.elemen[i]).hide()
@@ -383,7 +382,7 @@ function load_berkas(id_perusahaan){
   $(".tab-content").mLoading('hide');
 }
 
-function delete_berkas_upload(id, elemen, id_perusahaan){
+function delete_berkas_upload(id, elemen){
   // $('#field-'+elemen).show()
   $(".tab-content").mLoading();
   
@@ -399,7 +398,6 @@ function delete_berkas_upload(id, elemen, id_perusahaan){
           $('#field-'+elemen).show()
           $('#load-'+elemen).html('')
           $('#checkbox-'+elemen).prop('checked', false)
-          // load_berkas(id_perusahaan)
         }
       },
       error: function(response){
