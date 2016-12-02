@@ -1,12 +1,15 @@
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
+from django.template import RequestContext, loader
 import json
 import os
 
-from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
+from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, Syarat
+from izin.utils import formatrupiah
 from perusahaan.models import Perusahaan, Legalitas
 from master.models import Berkas
+from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm, DataAnggotaForm, BerkasFom
 from izin.izin_forms import LegalitasPerusahaanForm, LegalitasPerusahaanPerubahanForm
 
@@ -1352,4 +1355,46 @@ def ajax_delete_berkas(request, id_berkas, kode):
 		return response
 
 	return False
-		
+
+def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
+	# id_pengajuan_ = base64.b64decode(id_pengajuan_)
+	extra_context = {}
+	if id_pengajuan_:
+		pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_)
+		if pengajuan_.perusahaan != '':
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({ 'alamat_pemohon': alamat_ })
+				extra_context.update({ 'pemohon': pengajuan_.pemohon })
+				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+				extra_context.update({ 'paspor': paspor_ })
+				extra_context.update({ 'ktp': ktp_ })
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
+
+			extra_context.update({ 'pengajuan': pengajuan_ })
+
+			extra_context.update({ 'syarat': syarat })
+
+			extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+			extra_context.update({ 'created_at': pengajuan_.created_at })
+			
+			response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+		else:
+			response = HttpResponseRedirect(url_)
+			return response
+	else:
+		response = HttpResponseRedirect(url_)
+		return response	
+
+	template = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+	ec = RequestContext(request, extra_context)
+	return HttpResponse(template.render(ec))
