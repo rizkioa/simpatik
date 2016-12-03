@@ -414,6 +414,7 @@ function load_konfirmasi(id_pengajuan){
   $(".tab-content").mLoading();
   if (id_pengajuan > 0){
     $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').empty();
+    $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').html('<tr id=tabel_klasifikasi_pekerjaan-loading> <td colspan="4"> <i class="fa fa-spinner fa-spin"></i> Ambil Data... </td> </tr>')
     $.ajax({
       url: __base_url__+'/ajax-konfirmasi-paket-pekerjaan/'+id_pengajuan,
       success: function (response){
@@ -438,6 +439,7 @@ function load_konfirmasi(id_pengajuan){
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'
             $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').prepend(str);
+            $('#tabel_klasifikasi_pekerjaan-loading').remove();
 
           }
           
@@ -446,6 +448,7 @@ function load_konfirmasi(id_pengajuan){
     })
 
     $('#tabel_penanggung_jawab-konfirmasi > tbody').empty();
+    $('#tabel_penanggung_jawab-konfirmasi > tbody').html('<tr id=tabel_penanggung_jawab-loading> <td colspan="4"> <i class="fa fa-spinner fa-spin"></i> Ambil Data... </td> </tr>')
     $.ajax({
       url: __base_url__+'/ajax-konfirmasi-anggota-badan-direktur/'+id_pengajuan,
       success: function (response){
@@ -471,6 +474,8 @@ function load_konfirmasi(id_pengajuan){
             direktur += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked></td>'
             direktur += '</tr>'
             $('#tabel_penanggung_jawab-konfirmasi > tbody').prepend(direktur);
+            $('#tabel_penanggung_jawab-loading').remove();
+
           }
           
         }
@@ -478,6 +483,7 @@ function load_konfirmasi(id_pengajuan){
     })
 
     $('#tabel_penanggung_jawab_teknik-konfirmasi > tbody').empty();
+    $('#tabel_penanggung_jawab_teknik-konfirmasi > tbody').html('<tr id=tabel_penanggung_jawab_teknik-loading> <td colspan="4"> <i class="fa fa-spinner fa-spin"></i> Ambil Data... </td> </tr>')
     $.ajax({
       url: __base_url__+'/ajax-konfirmasi-anggota-badan-teknik/'+id_pengajuan,
       success: function (response){
@@ -501,6 +507,7 @@ function load_konfirmasi(id_pengajuan){
             teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
             teknik += '</tr>'
             $('#tabel_penanggung_jawab_teknik-konfirmasi > tbody').prepend(teknik);
+            $('#tabel_penanggung_jawab_teknik-loading').remove();
           }
           
         }

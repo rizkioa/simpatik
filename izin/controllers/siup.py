@@ -48,7 +48,6 @@ def add_wizard_siup(request):
 				# response.set_cookie(key='id_kelompok_izin', value=id_kelompok_)
 			# else:
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
-			# print kode_izin_
 			try:
 				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_)
 				if len(id_kelompok_list) > 1:
@@ -64,13 +63,11 @@ def add_wizard_siup(request):
 				messages.warning(request, msg_, extra_tags='safe')
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 			# print "kelompok"+id_kelompok_list.kode
-			if id_kelompok_list.kode == "503.08/":
-			# print "idkelom"+id_kelompok_list.kode
+
+			if kode_izin_ == "Reklame":
+				url_ = reverse('admin:izin_proses_reklame')
+			elif id_kelompok_list.kode == "503.08/":
 				url_ = reverse('admin:izin_proses_siup')
-			elif id_kelompok_list.kode == "503.03.01/":\
-				url_ = reverse('admin:izin_proses_reklame')
-			elif id_kelompok_list.kode == "503.03.02/":
-				url_ = reverse('admin:izin_proses_reklame')
 			elif id_kelompok_list.kode == "IUJK":
 				url_ = reverse('admin:izin_iujk')
 			elif id_kelompok_list.id == 25:
@@ -78,7 +75,17 @@ def add_wizard_siup(request):
 			else:
 				url_ = "#"
 			response = HttpResponseRedirect(url_) # Redirect to url
-			response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
+			if id_kelompok_:
+				response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
+			else:
+				try:
+					reklame_izin = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_).last()
+					reklame_izin_id = reklame_izin.id
+				except AttributeError:
+					msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
+					messages.warning(request, msg_, extra_tags='safe')
+					return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
+				response.set_cookie(key='id_kelompok_izin', value=reklame_izin_id) # to set cookie in browser
 
 			# print request.COOKIES
 			return response

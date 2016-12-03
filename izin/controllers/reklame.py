@@ -15,7 +15,7 @@ def formulir_reklame(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'Reklame Baru'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten__id=1)
+		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 		jenis_pemohon = JenisPemohon.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
@@ -25,7 +25,7 @@ def formulir_reklame(request):
 		jenis_legalitas_list = JenisLegalitas.objects.all()
 		reklame_jenis_list = JenisReklame.objects.all()
 
-		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
@@ -74,14 +74,25 @@ def formulir_reklame(request):
 					extra_context.update({ 'sisi': sisi })
 					extra_context.update({ 'ukuran': ukuran_ })
 
-					awal = pengajuan_.tanggal_mulai
-					akhir = pengajuan_.tanggal_akhir
+					if pengajuan_.tanggal_mulai:
+						awal = pengajuan_.tanggal_mulai
+					else:
+						awal = 0
+					if pengajuan_.tanggal_akhir:
+						akhir = pengajuan_.tanggal_akhir
+					else:
+						akhir = 0
+					
 					selisih = akhir-awal
-
-					extra_context.update({ 'selisih': selisih.days })
-
-					letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-
+					if selisih != 0:
+						extra_context.update({ 'selisih': selisih.days })
+					else:
+						extra_context.update({ 'selisih': selisih })
+					
+					if pengajuan_.desa:
+						letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+					else:
+						letak_ = ""
 					berkas_1 = pengajuan_.berkas_tambahan.filter(keterangan="Gambar Kontruksi Pemasangan Reklame").last()
 					extra_context.update({ 'berkas_1': berkas_1 })
 					berkas_2 = pengajuan_.berkas_tambahan.filter(keterangan="Gambar Foto Lokasi Pemasangan Reklame").last()
@@ -109,6 +120,7 @@ def formulir_reklame(request):
 		response = HttpResponse(template.render(ec))
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "0":
+				pengajuan_ = DetilReklame.objects.get(id=request.COOKIES['id_pengajuan'])
 				if pengajuan_.pemohon:
 					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
 				if pengajuan_.perusahaan:
