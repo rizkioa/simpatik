@@ -53,14 +53,9 @@ function load_pemohon(ktp_){
                 $('#email_pemohon_load').val("");
                 $('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
                 $('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
-                if ($.cookie('id_pemohon') === "0"){
-                    $('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_kabupaten').val("").prop('selected',true).trigger("chosen:updated")
-                    $('#id_kecamatan').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
-                }
-                
+                $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
+                $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
+                load_kabupaten(respon.data.provinsi)
                 $('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon'></span>")
                 $('#checkbox_berkas_foto').prop('checked', 0)
                 $('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon'></span>")
