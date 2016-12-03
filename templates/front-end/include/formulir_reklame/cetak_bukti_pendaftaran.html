@@ -11,6 +11,7 @@
 }
 </style>
 <![endif]-->
+
 <style type="text/css">
     
     hr.style14 { 
@@ -36,6 +37,7 @@
         box-sizing: border-box;
         -moz-box-sizing: border-box;
     }
+
     .page {
         width: 210mm;
         min-height: 297mm;
@@ -46,13 +48,20 @@
         background: white;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
+
     .subpage {
         padding: 0.5cm;
         /*border: 5px red solid;*/
         height: 257mm;
         /*outline: 2cm #FFEAEA solid;*/
     }
-    
+
+    @-moz-document url-prefix() {
+        .subpage {
+            height: 314mm;
+        }
+    }   
+
     @page {
         size: A4;
         margin: 0;
@@ -253,7 +262,7 @@
                     <p style="font-size: 12px;text-indent: 30px;">
                         Bersama ini kami mengajukan Permohonan / Perpanjangan *) Izin Pemasangan Reklame sebagaimana diatur dalam PERDA Nomor 1 Tahun 2012 tentang Pajak Daerah, dengan keterangan sebagai berikut :
                     </p>
-                <h5><u>IDENTITAS PEMOHON</u></h5>
+                <h5 style="padding-top: -2px;"><u>IDENTITAS PEMOHON</u></h5>
                 <table width="100%" border="0" class="font">
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
@@ -424,7 +433,7 @@
         <div class="page">
             <div class="subpage">            
                 <h5>Syarat Izin Pemasangan Reklame:</h5>
-                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
                             <td width="5%">No</td>
