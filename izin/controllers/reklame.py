@@ -120,6 +120,7 @@ def formulir_reklame(request):
 		response = HttpResponse(template.render(ec))
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "0":
+				pengajuan_ = DetilReklame.objects.get(id=request.COOKIES['id_pengajuan'])
 				if pengajuan_.pemohon:
 					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
 				if pengajuan_.perusahaan:
