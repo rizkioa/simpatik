@@ -98,18 +98,16 @@ def formulir_siup(request, extra_context={}):
                     alamat_perusahaan_ = ""
                     if pengajuan_.pemohon:
                         if pengajuan_.pemohon.desa:
-                            alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+                            alamat_ = str(pengajuan_.pemohon.alamat)+", Ds. "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
                             extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
                         extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
-                        extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
                         ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
                         extra_context.update({ 'ktp': ktp_ })
                         paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
                         extra_context.update({ 'paspor': paspor_ })
-                        extra_context.update({'cookie_file_ktp': ktp_.berkas })
                     if pengajuan_.perusahaan:
                         if pengajuan_.perusahaan.desa:
-                            alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+                            alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Ds. "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
                             extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
                         extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
                         legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
@@ -136,7 +134,6 @@ def formulir_siup(request, extra_context={}):
                     if pengajuan_.kelembagaan:
                         extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
                     extra_context.update({ 'pengajuan_': pengajuan_ })
-                    extra_context.update({ 'berkas_': pengajuan_.berkas_tambahan.last() })
                     
                     template = loader.get_template("front-end/formulir/siup.html")
                     ec = RequestContext(request, extra_context)

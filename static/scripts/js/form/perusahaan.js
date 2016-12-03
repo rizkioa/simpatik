@@ -40,28 +40,45 @@ function load_perusahaan_a(npwp_){
 	              		$('#checkbox_berkas_akta_pembaruan').prop('checked', 1)
 	              	}
 
-	              	// +++++++ legalitas pendirian ++++++++
-				    $('.akta_pendirian_disable').prop('disabled', false);
-				    $('#id_nama_notaris_legalitas_pendirian').val(respon.data.legalitas_pendirian_nama_notaris);
-				    $('#id_alamat_legalitas_pendirian').val(respon.data.legalitas_pendirian_alamat);
-				    $('#id_telp_legalitas_pendirian').val(respon.data.legalitas_pendirian_telephone);
-				    $('#id_nomor_akta_legalitas_pendirian').val(respon.data.legalitas_pendirian_no_akta);
-				    $('#id_tanggal_akta_legalitas_pendirian').val(respon.data.legalitas_pendirian_tanggal_akta);
-				    $('#id_nomor_pengesahan_legalitas_pendirian').val(respon.data.legalitas_pendirian_no_pengesahan);
-				    $('#id_tanggal_pengesahan_legalitas_pendirian').val(respon.data.legalitas_pendirian_tanggal_pengesahan);
-	              	// +++++++ end legalitas pendirian ++++++++
+	              	if (respon.data.legalitas_pendirian_nama_notaris !== ""){
+	              		// +++++++ legalitas pendirian ++++++++
+	              		$('#form-akta_pendirian').show()
+	              		$('#switch_akta_pendirian_disabled').prop( "checked", true );
+					    $('.akta_pendirian_disable').prop('disabled', false);
+					    $('#id_nama_notaris_legalitas_pendirian').val(respon.data.legalitas_pendirian_nama_notaris);
+					    $('#id_alamat_legalitas_pendirian').val(respon.data.legalitas_pendirian_alamat);
+					    $('#id_telp_legalitas_pendirian').val(respon.data.legalitas_pendirian_telephone);
+					    $('#id_nomor_akta_legalitas_pendirian').val(respon.data.legalitas_pendirian_no_akta);
+					    $('#id_tanggal_akta_legalitas_pendirian').val(respon.data.legalitas_pendirian_tanggal_akta);
+					    $('#id_nomor_pengesahan_legalitas_pendirian').val(respon.data.legalitas_pendirian_no_pengesahan);
+					    $('#id_tanggal_pengesahan_legalitas_pendirian').val(respon.data.legalitas_pendirian_tanggal_pengesahan);
+		              	// +++++++ end legalitas pendirian ++++++++
+	              	}
+	              	else{
+	              		$('#switch_akta_pendirian_disabled').prop( "checked", false );
+	              		$('#form-akta_pendirian').hide()
+	              	}
+	              	
+	              	if(respon.data.legalitas_perubahan_nama_notaris !== ""){
+	              		// ++++++ legalitas perubahan ++++++++
+	              		$('#form-akta_perubahan').hide()
+		              	$('#switch_akta_perubahan_disabled').prop( "checked", true );
+					    $(".akta_perubahan_disable").prop('disabled', false)
+					    $('#id_nama_notaris_perubahan').val(respon.data.legalitas_perubahan_nama_notaris);
+					    $('#id_alamat_notaris_perubahan').val(respon.data.legalitas_perubahan_alamat);
+					    $('#id_telephone_notaris_perubahan').val(respon.data.legalitas_perubahan_telephone);
+					    $('#id_nomor_akta_perubahan').val(respon.data.legalitas_perubahan_no_akta);
+					    $('#id_tanggal_akta_perubahan').val(respon.data.legalitas_perubahan_tanggal_akta);
+					    $('#id_nomor_pengesahan_perubahan').val(respon.data.legalitas_perubahan_no_pengesahan);
+					    $('#id_tanggal_pengesahan_perubahan').val(respon.data.legalitas_perubahan_tanggal_pengesahan);
+		              	// ++++++ end legalitas perubahan ++++++++
+	              	}
+	              	else{
+	              		$('#switch_akta_perubahan_disabled').prop( "checked", false );
+	              		$('#form-akta_perubahan').hide()
 
-	              	// ++++++ legalitas perubahan ++++++++
-	              	$('#switch_akta_perubahan_disabled').prop( "checked", true );
-				    $(".akta_perubahan_disable").prop('disabled', false)
-				    $('#id_nama_notaris_perubahan').val(respon.data.legalitas_perubahan_nama_notaris);
-				    $('#id_alamat_notaris_perubahan').val(respon.data.legalitas_perubahan_alamat);
-				    $('#id_telephone_notaris_perubahan').val(respon.data.legalitas_perubahan_telephone);
-				    $('#id_nomor_akta_perubahan').val(respon.data.legalitas_perubahan_no_akta);
-				    $('#id_tanggal_akta_perubahan').val(respon.data.legalitas_perubahan_tanggal_akta);
-				    $('#id_nomor_pengesahan_perubahan').val(respon.data.legalitas_perubahan_no_pengesahan);
-				    $('#id_tanggal_pengesahan_perubahan').val(respon.data.legalitas_perubahan_tanggal_pengesahan);
-	              	// ++++++ end legalitas perubahan ++++++++
+	              	}
+	              	
 			  	}, 2000);
     		}
 	        else{
