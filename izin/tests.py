@@ -14,15 +14,19 @@ from django.test import TestCase
 
 # print '{:,.2f}'.format(18446744073709551616)
 
-from htmlvalidator.client import ValidatingClient
+# from htmlvalidator.client import ValidatingClient
 
-class CheckExample(TestCase):
-	def setUp(self):
-	self.client = ValidatingClient()
+# class CheckExample(TestCase):
+# 	def setUp(self):
+# 	self.client = ValidatingClient()
 
-def tearDown(self):
-	pass
+# def tearDown(self):
+# 	pass
 
-def test_example(self):
-	response = self.client.get('/example/')
-	self.assertEqual(response.status_code, 200)
+# def test_example(self):
+# 	response = self.client.get('/example/')
+# 	self.assertEqual(response.status_code, 200)
+
+a = "[2, 8, 2, 5, 7]"
+print a
+print eval(a)
