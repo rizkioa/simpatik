@@ -72,9 +72,3 @@ def index(request):
 # 	extra_context.update({'form':form})
 # 	return render(request, "front_end/tambah.html", extra_context)
 
-from django.http import HttpResponse
-from django.utils.safestring import mark_safe
-def option_kbli(request, kbli):
-    kbli_list = KBLI.objects.filter(nama_kbli__contains=kbli)
-    pilihan = '<option></option>'
-    return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in kbli_list)));

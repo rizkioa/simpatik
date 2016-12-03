@@ -36,7 +36,12 @@
       label, h3, h4, table{
         color: black;
       }
+      #id_kbli_chosen .search-field input{
+        min-width: 125px;
+      }
   </style>
+  <link rel="stylesheet" href="{% static "scripts/js/vendor/loadmask/jquery.loadmask.css" %}">
+
   <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 {% endblock %}
 
@@ -119,6 +124,7 @@
   <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
   <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+  <script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
   <script type="text/javascript">
       $(window).load(function(){
         $('#rootwizard').bootstrapWizard({
@@ -132,6 +138,44 @@
                   load_berkas(id_pengajuan)
 
                 }
+              if($current === 3){
+                // $('#id_kbli_chosen .search-field input').css('width: 300px;');
+
+
+                set_chosen_element($('select#id_kbli'))
+                $('#id_kbli_chosen .search-field input').keyup(function(event) {
+                  // alert("sesuatu")
+                  // console.log();
+
+                  var event = window.event ? window.event : event;
+                  value_ = $(this).val()
+                  if(value_.length > 1 && event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40){
+                    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+                    $( "#id_kbli_chosen .chosen-results" ).mask('loading')
+                    select = "["+$("#id_kbli option:selected").map(function(){ return this.value }).get().join(", ")+"]"
+                    $.ajax({ // create an AJAX call...
+                        data: { csrfmiddlewaretoken: csrf_token, kbli: value_, select: select }, // get the form data
+                        type: 'POST', // GET or POST
+                        url: __base_url__+'/option-kbli/', // the file to call
+                        success: function(response) { // on success..
+                            selected = $("#id_kbli option:selected").map(function(){ elm=$(this).attr('selected', 'selected'); return elm.outerHTML() }).get().join("");
+                            // console.log(selected+response)
+                            elem = $( "select#id_kbli" )
+                            elem.html(selected+response);
+                            $( "#id_kbli_chosen .chosen-results" ).unmask()
+                            $('select#id_kbli').trigger("chosen:updated");
+                            $('#id_kbli_chosen .search-field input').val(value_); 
+                            // $(this).css("width,"+value_.length+"00px")
+                            set_chosen_element($('select#id_kbli'))
+                        },
+                        error: function(data) {                
+                            toast_server_error()
+                        }
+                    });
+                  }
+                  event.preventDefault();
+                }); 
+              }
               if($current >= $total) {
                 $('#rootwizard').find('.pager .next').hide();
                 $('#rootwizard').find('.pager .finish').show();
@@ -214,7 +258,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -227,6 +271,35 @@
           }
         });
       });
+
+      $.fn.outerHTML = function(){
+
+          // IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
+          return (!this.length) ? this : (this[0].outerHTML || (
+            function(el){
+                var div = document.createElement('div');
+                div.appendChild(el.cloneNode(true));
+                var contents = div.innerHTML;
+                div = null;
+                return contents;
+          })(this[0]));
+
+      }
+
+      function set_chosen_element(chosenEl){
+          $chosenEl = $(chosenEl)
+          if ($chosenEl.length > 0) {             
+              $chosenEl.each(function() {
+                var element = $(this);
+                element.on('chosen:ready', function(e, chosen) {
+                  var width = element.css("width");
+                  element.next().find('.chosen-choices').addClass('form-control');
+                  element.next().css("width", width);
+                  element.next().find('.search-field input').css("width", "125px");
+                }).chosen();                
+              });
+          }
+      }
 
       $(document).ready(function() {
 
@@ -562,29 +635,46 @@
       }
     }
 
-  function option_kbli(kbli){
-    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    $.ajax({ // create an AJAX call...
-          data: { csrfmiddlewaretoken: csrf_token, kbli: kbli }, // get the form data
-          type: 'POST', // GET or POST
-          // url: '{% url 'admin:option_kecamatan' %}', // the file to call
-          url: __base_url__+'/admin/master/kecamatan/option/',
-          success: function(response) { // on success..
-            elem = $( "#id_kecamatan1" )
-            elem.html(response);
-            make_disabled(elem, false)
-            $( "#id_kecamatan1" ).change(function(){
-              $this = $(this)
-              id_kecamatan1 = $(this).val()
-              if(id_kecamatan1.length > 0){
-                load_desa1(id_kecamatan1)
-              }
-            })
-          },
-          error: function(data) {                
-            toast_server_error()
-          }
-      });
-  }    
+  // document.getElementById('input:text', '#id_kbli_chosen').oninput = function() {option_kbli()};
+
+  // $('#id_kbli_chosen .search-field input').keyup(function(event) {
+  //   console.log("kbli");
+  // });
+  // $(document).ready(function() {
+    
+  // });
+
+
+  // $('input:text', '#id_kbli_chosen').change(
+  //   function option_kbli(){
+  //     option_kbli_input = $('input:text', '#id_kbli_chosen').val();
+  //     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+  //     $.ajax({ // create an AJAX call...
+  //           data: { csrfmiddlewaretoken: csrf_token, kbli: option_kbli_input }, // get the form data
+  //           type: 'POST', // GET or POST
+  //           // url: '{% url 'admin:option_kecamatan' %}', // the file to call
+  //           url: __base_url__+'/option-kbli/',
+  //           success: function(response) { // on success..
+  //             elem = $( "#id_kbli" )
+  //             elem.html(response);
+  //             // make_disabled(elem, false)
+  //             // $( "#id_kecamatan1" ).change(function(){
+  //             //   $this = $(this)
+  //             //   id_kecamatan1 = $(this).val()
+  //             //   if(id_kecamatan1.length > 0){
+  //             //     load_desa1(id_kecamatan1)
+  //             //   }
+  //             // })
+  //           },
+  //           error: function(data) {                
+  //             toast_server_error()
+  //           }
+  //       });
+  //   })
+
+  // alert($('#id_kbli_chosen .search-field input'))
+  // 
+
+        
   </script>
 {% endblock %}
