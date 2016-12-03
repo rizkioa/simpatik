@@ -45,7 +45,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
-				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
 				try:
 					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
@@ -154,12 +154,58 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_bukti_admin_reklame(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			if pengajuan_.perusahaan != '':
+				alamat_ = ""
+				alamat_perusahaan_ = ""
+				if pengajuan_.pemohon:
+					if pengajuan_.pemohon.desa:
+						alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+						extra_context.update({ 'alamat_pemohon': alamat_ })
+					extra_context.update({ 'pemohon': pengajuan_.pemohon })
+					paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+					extra_context.update({ 'paspor': paspor_ })
+					extra_context.update({ 'ktp': ktp_ })
+				if pengajuan_.perusahaan:
+					if pengajuan_.perusahaan.desa:
+						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+						extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+					extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+					syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
+				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
+				if pengajuan_.tanggal_mulai:
+					awal = pengajuan_.tanggal_mulai
+				else:
+					awal = 0
+				if pengajuan_.tanggal_akhir:
+					akhir = pengajuan_.tanggal_akhir
+				else:
+					akhir = 0
+				
+				selisih = akhir-awal
+				extra_context.update({'title': 'Proses Pengajuan'})
+				extra_context.update({'letak_pemasangan': letak_})
+				extra_context.update({'selisih': selisih.days})
+				extra_context.update({ 'pengajuan': pengajuan_ })
+				extra_context.update({ 'syarat': syarat })
+				extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+			extra_context.update({ 'created_at': pengajuan_.created_at })
+		template = loader.get_template("front-end/include/formulir_reklame/cetak_bukti_pendaftaran.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilReklameAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-reklame-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_reklame_asli), name='cetak_reklame_asli'),
 			url(r'^view-pengajuan-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_reklame), name='view_pengajuan_reklame'),
+			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_reklame), name='cetak_bukti_admin_reklame'),
 			)
 		return my_urls + urls
 

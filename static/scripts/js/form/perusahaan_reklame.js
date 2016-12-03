@@ -47,7 +47,7 @@ function load_perusahaan_a(npwp_){
 	          	$('#no_telepon_perusahaan_load').val("");
 	          	$('#id_email_perusahaan').val("");
 	          	$('#id_fax_perusahaan').val("");
-	          	$('#id_negara_reklame').val("").prop('selected',true).trigger("chosen:updated");
+	          	$('#id_negara_reklame').val("1").prop('selected',true).trigger("chosen:updated");
 	          	$('#id_provinsi_reklame').val("").prop('selected',true).trigger("chosen:updated");
 	          	$('#id_kabupaten_reklame').val("").prop('selected',true).trigger("chosen:updated");
 	          	$('#id_kecamatan_reklame').val("").prop('selected',true).trigger("chosen:updated");
@@ -267,3 +267,5 @@ function load_alamat(){
 	$('#alamat_perusahaan_load').val(alamat);
 }
 
+$('#id_negara_reklame').val('1').prop('selected',true).trigger("chosen:updated");
+  load_provinsi_reklame('1')

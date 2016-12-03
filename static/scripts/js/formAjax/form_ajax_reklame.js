@@ -13,10 +13,17 @@ $("#form-upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
         percent_gambar_konstruksi_pemasangan_reklame.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
-    	btn_gambar_konstruksi_pemasangan_reklame.hide();
-    	percent_gambar_konstruksi_pemasangan_reklame.show();
-        var percentVal = percentComplete + '%';
-        percent_gambar_konstruksi_pemasangan_reklame.html(percentVal);
+        var form = $("#form-upload_gambar_konstruksi_pemasangan_reklame");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
+            btn_gambar_konstruksi_pemasangan_reklame.hide();
+            percent_gambar_konstruksi_pemasangan_reklame.show();
+            var percentVal = percentComplete + '%';
+            percent_gambar_konstruksi_pemasangan_reklame.html(percentVal);
+        }
     },
 	success: function (response){
         var elem_ = $("#form-upload_gambar_konstruksi_pemasangan_reklame")[0].id
@@ -24,7 +31,7 @@ $("#form-upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
     	respon = $.parseJSON(response)
     	if(respon.success){
         	toastr["success"](respon.pesan)
-        	$('#checkbox_gambar_konstruksi_pemasangan_reklame').prop('checked', true);	
+        	$('#checkbox-gambar_konstruksi_pemasangan_reklame').prop('checked', true);	
         	var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -32,7 +39,7 @@ $("#form-upload_gambar_konstruksi_pemasangan_reklame").ajaxForm({
             }  										
     	}
     	else{
-    		$('#checkbox_gambar_konstruksi_pemasangan_reklame').prop('checked', false);
+    		$('#checkbox-gambar_konstruksi_pemasangan_reklame').prop('checked', false);
         	var a = Object.keys(respon);
         	for (var i = 0; i < a.length; i++){
         		var field = a[i].replace("_", " ").capitalize();
@@ -58,10 +65,17 @@ $("#form-upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
         percent_gambar_foto_lokasi_pemasangan_reklame.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_gambar_foto_lokasi_pemasangan_reklame");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_gambar_foto_lokasi_pemasangan_reklame.hide();
         percent_gambar_foto_lokasi_pemasangan_reklame.show();
         var percentVal = percentComplete + '%';
         percent_gambar_foto_lokasi_pemasangan_reklame.html(percentVal);
+        }
     },
     success: function (response){
         var elem_ = $("#form-upload_gambar_foto_lokasi_pemasangan_reklame")[0].id
@@ -69,7 +83,7 @@ $("#form-upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_gambar_foto_lokasi_pemasangan_reklame').prop('checked', true);   
+            $('#checkbox-gambar_foto_lokasi_pemasangan_reklame').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -77,7 +91,7 @@ $("#form-upload_gambar_foto_lokasi_pemasangan_reklame").ajaxForm({
             }                                                
         }
         else{
-            $('#checkbox_gambar_foto_lokasi_pemasangan_reklame').prop('checked', false);
+            $('#checkbox-gambar_foto_lokasi_pemasangan_reklame').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -103,10 +117,17 @@ $("#form-upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
         percent_gambar_denah_lokasi_pemasangan_reklame.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_gambar_denah_lokasi_pemasangan_reklame");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_gambar_denah_lokasi_pemasangan_reklame.hide();
         percent_gambar_denah_lokasi_pemasangan_reklame.show();
         var percentVal = percentComplete + '%';
         percent_gambar_denah_lokasi_pemasangan_reklame.html(percentVal);
+        }
     },
     success: function (response){
         var elem_ = $("#form-upload_gambar_denah_lokasi_pemasangan_reklame")[0].id
@@ -114,7 +135,7 @@ $("#form-upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_gambar_denah_lokasi_pemasangan_reklame').prop('checked', true);   
+            $('#checkbox-gambar_denah_lokasi_pemasangan_reklame').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -122,7 +143,7 @@ $("#form-upload_gambar_denah_lokasi_pemasangan_reklame").ajaxForm({
             }                                                  
         }
         else{
-            $('#checkbox_gambar_denah_lokasi_pemasangan_reklame').prop('checked', false);
+            $('#checkbox-gambar_denah_lokasi_pemasangan_reklame').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -147,10 +168,17 @@ $("#form-upload_surat_ketetapan_pajak_daerah").ajaxForm({
         percent_surat_ketetapan_pajak_daerah.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_surat_ketetapan_pajak_daerah");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_surat_ketetapan_pajak_daerah.hide();
         percent_surat_ketetapan_pajak_daerah.show();
         var percentVal = percentComplete + '%';
         percent_surat_ketetapan_pajak_daerah.html(percentVal);
+        }
     },
     success: function (response){
         var elem_ = $("#form-upload_surat_ketetapan_pajak_daerah")[0].id
@@ -158,7 +186,7 @@ $("#form-upload_surat_ketetapan_pajak_daerah").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_surat_ketetapan_pajak_daerah').prop('checked', true);   
+            $('#checkbox-surat_ketetapan_pajak_daerah').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -166,7 +194,7 @@ $("#form-upload_surat_ketetapan_pajak_daerah").ajaxForm({
             }                                                 
         }
         else{
-            $('#checkbox_surat_ketetapan_pajak_daerah').prop('checked', false);
+            $('#checkbox-surat_ketetapan_pajak_daerah').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -192,10 +220,17 @@ $("#form-upload_surat_setoran_pajak_daerah").ajaxForm({
         percent_surat_setoran_pajak_daerah.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_surat_setoran_pajak_daerah");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_surat_setoran_pajak_daerah.hide();
         percent_surat_setoran_pajak_daerah.show();
         var percentVal = percentComplete + '%';
         percent_surat_setoran_pajak_daerah.html(percentVal);
+        }
     },
     success: function (response){
         var elem_ = $("#form-upload_surat_setoran_pajak_daerah")[0].id
@@ -203,7 +238,7 @@ $("#form-upload_surat_setoran_pajak_daerah").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_surat_setoran_pajak_daerah').prop('checked', true);   
+            $('#checkbox-surat_setoran_pajak_daerah').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -211,7 +246,7 @@ $("#form-upload_surat_setoran_pajak_daerah").ajaxForm({
             }                                             
         }
         else{
-            $('#checkbox_surat_setoran_pajak_daerah').prop('checked', false);
+            $('#checkbox-surat_setoran_pajak_daerah').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -237,10 +272,17 @@ $("#form-upload_rekomendasi_satpol_pp").ajaxForm({
         percent_rekomendasi_satpol_pp.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_rekomendasi_satpol_pp");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_rekomendasi_satpol_pp.hide();
         percent_rekomendasi_satpol_pp.show();
         var percentVal = percentComplete + '%';
         percent_rekomendasi_satpol_pp.html(percentVal);
+        }
     },
     success: function (response){
         var elem_ = $("#form-upload_rekomendasi_satpol_pp")[0].id
@@ -248,7 +290,7 @@ $("#form-upload_rekomendasi_satpol_pp").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_rekomendasi_satpol_pp').prop('checked', true);   
+            $('#checkbox-rekomendasi_satpol_pp').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -256,7 +298,7 @@ $("#form-upload_rekomendasi_satpol_pp").ajaxForm({
             }                                              
         }
         else{
-            $('#checkbox_rekomendasi_satpol_pp').prop('checked', false);
+            $('#checkbox-rekomendasi_satpol_pp').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -281,10 +323,17 @@ $("#form-upload_berita_acara_perusahaan").ajaxForm({
         percent_berita_acara_perusahaan.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_berita_acara_perusahaan");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_berita_acara_perusahaan.hide();
         percent_berita_acara_perusahaan.show();
         var percentVal = percentComplete + '%';
         percent_berita_acara_perusahaan.html(percentVal);
+    }
     },
     success: function (response){
         var elem_ = $("#form-upload_berita_acara_perusahaan")[0].id
@@ -292,7 +341,7 @@ $("#form-upload_berita_acara_perusahaan").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_berita_acara_perusahaan').prop('checked', true);   
+            $('#checkbox-berita_acara_perusahaan').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -300,7 +349,7 @@ $("#form-upload_berita_acara_perusahaan").ajaxForm({
             }                                           
         }
         else{
-            $('#checkbox_berita_acara_perusahaan').prop('checked', false);
+            $('#checkbox-berita_acara_perusahaan').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -326,10 +375,17 @@ $("#form-upload_surat_perjanjian").ajaxForm({
         percent_surat_perjanjian.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_surat_perjanjian");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_surat_perjanjian.hide();
         percent_surat_perjanjian.show();
         var percentVal = percentComplete + '%';
         percent_surat_perjanjian.html(percentVal);
+    }
     },
     success: function (response){
         var elem_ = $("#form-upload_surat_perjanjian")[0].id
@@ -337,7 +393,7 @@ $("#form-upload_surat_perjanjian").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_surat_perjanjian').prop('checked', true);   
+            $('#checkbox-surat_perjanjian').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -345,7 +401,7 @@ $("#form-upload_surat_perjanjian").ajaxForm({
             }                                               
         }
         else{
-            $('#checkbox_surat_perjanjian').prop('checked', false);
+            $('#checkbox-surat_perjanjian').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
@@ -370,10 +426,17 @@ $("#form-upload_berkas_tambahan").ajaxForm({
         percent_tambahan.html(percentVal);
     },
     uploadProgress: function(event, position, total, percentComplete) {
+        var form = $("#form-upload_berkas_tambahan");
+        form.parsley().validate();
+        if (!form.parsley().isValid()) {
+          return false;
+        }
+        else{  
         btn_tambahan.hide();
         percent_tambahan.show();
         var percentVal = percentComplete + '%';
         percent_tambahan.html(percentVal);
+        }
     },
     success: function (response){
         var elem_ = $("#form-upload_berkas_tambahan")[0].id
@@ -381,7 +444,7 @@ $("#form-upload_berkas_tambahan").ajaxForm({
         respon = $.parseJSON(response)
         if(respon.success){
             toastr["success"](respon.pesan)
-            $('#checkbox_surat_perjanjian').prop('checked', true);   
+            $('#checkbox-surat_perjanjian').prop('checked', true);   
             var percentVal = '100%';
             $('#percent-'+split_).html(percentVal);
             if ($.cookie('id_pengajuan') !== undefined){
@@ -389,7 +452,7 @@ $("#form-upload_berkas_tambahan").ajaxForm({
             }                                               
         }
         else{
-            $('#checkbox_surat_perjanjian').prop('checked', false);
+            $('#checkbox-surat_perjanjian').prop('checked', false);
             var a = Object.keys(respon);
             for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ").capitalize();
