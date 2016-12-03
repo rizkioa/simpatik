@@ -184,60 +184,57 @@
 	        	
 	        	<center>
 	        		<font style="font-size: 25px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
-	        		<font style="font-size: 20px"><i>(  )</i></font><br>
 	        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
 	        	</center>
 	        	<div id="qrcodeTable" style="float: right;">
 	        	</div>
 	        	<table width="100%" border="1" frame="box" rules="rows">
 	        		<tr>
-	        			<td width="5%">1</td>
-	        			<td width="40%"><b>Nama Perusahaan/Instansi</b></td>
-	        			<td width="5%">:</td>
-	        			<td width="50%">{{ perusahaan.nama_perusahaan }}</td>
+	        			<td style="width: 297px;"><b>1. Nama Perusahaan/Instansi</b></td>
+	        			<td>:</td>
+	        			<td  colspan="2">{{ perusahaan.nama_perusahaan }}</td>
 	        		</tr>
 	        		<tr>
-	        			<td width="5%">2</td>
-	        			<td><b>Nama dan Alamat tempat usaha</b></td>
+	        			<td><b>2. Nama dan Alamat tempat usaha</b></td>
 	        			<td>:</td>
-	        			<td>{{ pemohon.nama_lengkap }} ({{ pemohon.jabatan_pemohon }})</td>
+	        			<td  colspan="2">{{ pemohon.nama_lengkap }} ({{ pemohon.jabatan_pemohon }})</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Dasar pertimbangan pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td></td>
+	        			<td colspan="2"></td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Dasar hukum pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td></td>
+	        			<td colspan="2"></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>a. Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b></td>
-	        			<td><b>b. Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></td>
+	        			<td colspan="4"><p><b>a. Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b><br>
+	        			<b>b. Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></p></td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
 	        			<td>:</td>
-	        			<td>{{pengajuan.jenis_reklame.jenis_reklame}}/{{pengajuan.judul_reklame}}</td>
+	        			<td colspan="2">{{pengajuan.jenis_reklame.jenis_reklame}}/{{pengajuan.judul_reklame}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
 	        			<td>:</td>
-	        			<td>{{pengajuan.panjang}}x{{pengajuan.lebar}}x{{pengajuan.sisi}}</td>
+	        			<td colspan="2">{{pengajuan.panjang}}x{{pengajuan.lebar}}x{{pengajuan.sisi}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td>{{jumlah_lama}}</td>
+	        			<td colspan="2">{{jumlah_lama}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Letak pemasangan</b></td>
 	        			<td>:</td>
-	        			<td>{{pengajuan.letak_pemasangan}}</td>
+	        			<td colspan="2">{{pengajuan.letak_pemasangan}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td colspan="3"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :<br>
+	        			<td colspan="4"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :<br>
 											1. Tidak bertentangan dengan kepentingan umum : kesusilaan, keindahan, kesopanan, ketertiban umum dan keamanan. <br>
 											2. Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.<br>
 											3. Tidak mengganggu ketertiban lalu lintas.<br>

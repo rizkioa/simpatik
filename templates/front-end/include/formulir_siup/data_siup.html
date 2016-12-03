@@ -98,9 +98,6 @@
         <label class="col-sm-2 control-label text-left"><strong>Kegiatan usaha (KBLI)</strong></label>
         <div class="col-sm-10">
             <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="kbli" required="" data-parsley-trigger="change" id="id_kbli">
-                {% for val in kbli_list %}
-                  <option value="{{val.id}}">{{val.kode_kbli}} - {{val.nama_kbli}}</option>
-                {% endfor %}
             </select>
         </div>
     </div>

@@ -6,9 +6,9 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open('simpatik').then(cache => {
       return cache.addAll([
-        'http://simpatik.kedirikab.go.id/',
+        '/',
         // IMG
-        'http://simpatik.kedirikab.go.id/static/images/kabkediri.png',
+        '/static/images/kabkediri.png',
         '/static/images/SIMPATIK.ico',
         '/static/images/alur.png',
         // JS

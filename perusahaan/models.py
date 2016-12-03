@@ -24,7 +24,7 @@ class KBLI(MetaAtribut):
 		return dict(id=self.id, nama_kbli=self.nama_kbli, kode_kbli=self.kode_kbli)
 
 	def as_option(self):
-		return "<option value='"+str(self.id)+"'>"+str(self.kode_kbli)+str(self.nama_kbli)+"</option>"
+		return "<option value='"+str(self.id)+"'>"+str(self.kode_kbli)+" - "+str(self.nama_kbli)+"</option>"
 
 	def as_dict(self):
 		return {
