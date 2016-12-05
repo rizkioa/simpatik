@@ -326,7 +326,7 @@ class PaketPekerjaan(models.Model):
 	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
 	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU') 
 	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
-	nilai_paket_pekerjaan = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
+	nilai_paket_pekerjaan = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.nama_paket_pekerjaan), str(self.detil_iujk))

@@ -259,7 +259,7 @@ def penanggung_jawab_save_bu(request):
 			form_ = DataAnggotaForm(request.POST)
 			if form_.is_valid():
 				# ext = os.path.splitext(berkas_.name)[1]
-				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				valid_extensions = ['.pdf', '.jpg', '.png']
 				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
 					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
 						if os.path.splitext(request.FILES.get('berkas_pernyataan').name)[1] in valid_extensions:
@@ -353,7 +353,7 @@ def penanggung_jawab_teknik_save_bu(request):
 		if request.COOKIES['id_pengajuan'] != '0':
 			form_ = DataAnggotaForm(request.POST)
 			if form_.is_valid():
-				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				valid_extensions = ['.pdf', '.jpg', '.png']
 				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
 					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
 						if os.path.splitext(request.FILES.get('ijazah_sma').name)[1] in valid_extensions:
@@ -427,7 +427,7 @@ def penanggung_jawab_non_teknik_save_bu(request):
 		if request.COOKIES['id_pengajuan'] != '0':
 			form_ = DataAnggotaForm(request.POST)
 			if form_.is_valid():
-				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				valid_extensions = ['.pdf', '.jpg', '.png']
 				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
 					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
 						if os.path.splitext(request.FILES.get('ijazah_sma').name)[1] in valid_extensions:
@@ -822,7 +822,7 @@ def upload_npwp_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.jpg', '.png']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)

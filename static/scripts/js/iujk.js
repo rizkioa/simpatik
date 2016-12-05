@@ -78,7 +78,7 @@ function penanggung_jawab_save(btn_){
         }
       });
     }else{
-      toastr["warning"]("Silhkan Lengkapi Form")
+      toastr["warning"]("Silakan Lengkapi Form")
     }
   btn_.html('<i class="fa fa-arrow-right"></i> Simpan')
   btn_.attr('disabled',false)
@@ -200,7 +200,7 @@ function penanggung_jawab_teknik_save(btn_){
       }
     });
   }else{
-    toastr["warning"]("Sialhkan Lengkapi Form")
+    toastr["warning"]("Silakan Lengkapi Form")
   }
 
   btn_.html('<i class="fa fa-arrow-right"></i> Simpan')
@@ -278,7 +278,7 @@ function penanggung_jawab_non_teknik_save(btn_){
       }
     });
   }else{
-    toastr["warning"]("Silahkan Lengkapi Form")
+    toastr["warning"]("Silakan Lengkapi Form")
   }
 
   btn_.html('<i class="fa fa-arrow-right"></i> Simpan')
