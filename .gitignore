@@ -1,4 +1,5 @@
 *.pyc
+*.fuse*
 files/
 venv/
 .idea/
@@ -10,3 +11,4 @@ kepegawaian/migrations/
 izin/migrations/
 perusahaan/migrations/
 pembangunan/migrations/
+
