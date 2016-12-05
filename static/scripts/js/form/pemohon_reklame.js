@@ -55,7 +55,7 @@ function load_pemohon(ktp_){
                 $('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
                 $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
                 $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
-                load_kabupaten(respon.data.provinsi)
+                $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
                 $('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon'></span>")
                 $('#checkbox_berkas_foto').prop('checked', 0)
                 $('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon'></span>")

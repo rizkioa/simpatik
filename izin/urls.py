@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^ajax-load-berkas-siup/(?P<id_pengajuan>[0-9]+)$', siup_view.ajax_load_berkas_siup, name='ajax_load_berkas_siup'),
     url(r'^ajax-delete-berkas-upload/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iujk_views.ajax_delete_berkas, name='ajax_delete_berkas'),
 
-    
+    url(r'^option-kbli/$', views.option_kbli, name='option_kbli'),
     url(r'^cek-izin-terdaftar/(?P<id_izin_>[0-9./]+)$', views.cek_izin_terdaftar, name='cek_izin_terdaftar'),
 
     url(r'^layanan/siup$', layanan_view.layanan_siup, name='layanan_siup'),

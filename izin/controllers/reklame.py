@@ -25,7 +25,7 @@ def formulir_reklame(request):
 		jenis_legalitas_list = JenisLegalitas.objects.all()
 		reklame_jenis_list = JenisReklame.objects.all()
 
-		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
@@ -120,6 +120,7 @@ def formulir_reklame(request):
 		response = HttpResponse(template.render(ec))
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "0":
+				pengajuan_ = DetilReklame.objects.get(id=request.COOKIES['id_pengajuan'])
 				if pengajuan_.pemohon:
 					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
 				if pengajuan_.perusahaan:

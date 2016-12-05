@@ -46,7 +46,7 @@
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email|default_if_none:"-" }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
@@ -95,7 +95,7 @@
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email|default_if_none:"-" }}</span></td>
     </tr>
   </table>
   <br>
@@ -201,7 +201,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_foto" disabled><i></i>
+              <input type="checkbox" id="checkbox-foto" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -211,7 +211,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_ktp" disabled><i></i>
+              <input type="checkbox" id="checkbox-ktp" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -221,7 +221,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_npwp_pribadi" disabled><i></i>
+              <input type="checkbox" id="checkbox-npwp_pribadi" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -231,7 +231,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_npwp_perusahaan" disabled><i></i>
+              <input type="checkbox" id="checkbox-npwp_perusahaan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -241,7 +241,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_akta_pendirian" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pendirian" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -251,7 +251,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_akta_pembaruan" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pembaruan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -261,7 +261,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_pendukung" disabled><i></i>
+              <input type="checkbox" id="checkbox-pendukung" disabled><i></i>
             </label>
           </td>
         </tr>

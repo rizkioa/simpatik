@@ -36,7 +36,6 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
-			
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -69,7 +68,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = base64.b64encode(str(pengajuan_.id))
+			encode_pengajuan_id = (str(pengajuan_.id))
 			extra_context.update({'pengajuan_id': encode_pengajuan_id})
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
@@ -106,7 +105,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 
 	def cetak_reklame_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
-		id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
+		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
@@ -203,7 +202,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(DetilReklameAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^cetak-reklame-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_reklame_asli), name='cetak_reklame_asli'),
+			url(r'^cetak-reklame-asli/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_reklame_asli), name='cetak_reklame_asli'),
 			url(r'^view-pengajuan-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_reklame), name='view_pengajuan_reklame'),
 			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_reklame), name='cetak_bukti_admin_reklame'),
 			)
