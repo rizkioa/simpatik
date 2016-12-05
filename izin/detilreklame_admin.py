@@ -188,6 +188,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				
 				selisih = akhir-awal
 				extra_context.update({'title': 'Proses Pengajuan'})
+				extra_context.update({'ukuran': ukuran_})
 				extra_context.update({'letak_pemasangan': letak_})
 				extra_context.update({'selisih': selisih.days})
 				extra_context.update({ 'pengajuan': pengajuan_ })

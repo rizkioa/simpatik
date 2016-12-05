@@ -2,6 +2,7 @@
 files/
 venv/
 .idea/
+.gitignore
 simpdu/settings.py
 
 accounts/migrations/

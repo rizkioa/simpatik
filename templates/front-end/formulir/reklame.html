@@ -216,9 +216,6 @@
 
       $(document).ready(function() {
 
-
-          // id_pengajuan_ = $.cookie("id_pengajuan");
-          // alert(id_pengajuan_)
           /* +++++++++++++++++++ untuk confirmasi dialog sebelum halaman di reload +++++++++*/
           window.onbeforeunload = function ref() {
             var r = confirm( "Do you want to leave?" );
@@ -413,15 +410,6 @@
         
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ != undefined){
-          
-          // $.removeCookie('id_pengajuan', { path: '/' });
-          // $.removeCookie('id_perusahaan', { path: '/' });
-          // $.removeCookie('id_pemohon', { path: '/' });
-          // $.removeCookie('nomor_ktp', { path: '/' });
-          // $.removeCookie('nomor_paspor', { path: '/' });
-          // $.removeCookie('id_kelompok_izin', { path: '/' });
-          // $.removeCookie('id_legalitas', { path: '/' });
-          // $.removeCookie('id_legalitas_perubahan', { path: '/' });
           $.ajax({
             url: '{% url 'reklame_done' %}',
             success: function(response) {
@@ -435,54 +423,6 @@
         }
       }
     };
-
-    // document.querySelector('#alert').onclick = function(){
-    //     var pengajuan_cookie = $.cookie('id_pengajuan'); 
-    //     var pemohon_cookie = $.cookie('id_pemohon'); 
-    //     var perusahaan_cookie = $.cookie('id_perusahaan'); 
-    //     if (pengajuan_cookie === ""){
-    //         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-    //         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-    //         $(tab_index).tab('show');
-    //     }
-    //       else if(pemohon_cookie === ""){
-    //         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-    //         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-    //         $(tab_index).tab('show');
-    //       }
-    //       else if(perusahaan_cookie === ""){
-    //         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-    //         tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-    //         $(tab_index).tab('show');
-    //       }
-    //       else{
-    //         swal({
-    //           showConfirmButton: false,
-    //           type: 'success',
-    //           title: 'Pendaftaran Berhasil Tersimpan',
-    //           timer: 2000
-    //         })
-    //     id_pengajuan_ = $.cookie("id_pengajuan");
-    //     if (id_pengajuan_ !== ""){
-    //       window.location.replace("/layanan/reklame/formulir/cetak/"+id_pengajuan_);
-    //         $.ajax({
-    //           url: '{% url 'reklame_done' %}',
-    //           success: function(response) {
-    //             respon = $.parseJSON(response)
-    //             if(respon.success){
-    //               toastr["success"](respon.pesan)
-    //             }
-    //           }
-    //         });
-    //       }
-    //         // $.removeCookie('id_pengajuan', { path: '/' });
-    //         // $.removeCookie('id_perusahaan', { path: '/' });
-    //         // $.removeCookie('id_pemohon', { path: '/' });
-    //         // $.removeCookie('nomor_ktp', { path: '/' });
-    //         // $.removeCookie('nomor_paspor', { path: '/' });
-    //         // $.removeCookie('id_kelompok_izin', { path: '/' });
-    //       }
-    //   };
 
       $.ajaxSetup({
       timeout: 20000, // Microseconds, for the laughs. Guaranteed timeout.
