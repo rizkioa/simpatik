@@ -7,6 +7,7 @@ from izin.detiltdp_admin import DetilTDPAdmin
 from izin.detilsiup_admin import DetilSIUPAdmin
 from izin.detiliujk_admin import DetilIUJKAdmin
 from izin.detilreklame_admin import DetilReklameAdmin
+from izin.imbreklame_admin import DetilIMBPapanReklameAdmin
 from izin.izin_admin import IzinAdmin
 from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
 from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan

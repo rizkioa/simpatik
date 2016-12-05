@@ -1,7 +1,9 @@
 *.pyc
+*.fuse*
 files/
 venv/
 .idea/
+.gitignore
 simpdu/settings.py
 
 accounts/migrations/
@@ -10,3 +12,4 @@ kepegawaian/migrations/
 izin/migrations/
 perusahaan/migrations/
 pembangunan/migrations/
+

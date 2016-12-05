@@ -17,7 +17,7 @@ from decimal import Decimal
 from django.shortcuts import get_object_or_404
 import datetime
 from izin import models as app_models
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna
@@ -81,6 +81,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilReklame')
 		elif k.id == 25:
 			objects_ = getattr(app_models, 'DetilTDP')
+		elif k.id == 1:
+			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
 
 		if request.user.is_anonymous():
 			created_by = p.id
@@ -171,6 +173,9 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
+					elif k.id == 1:
+						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+						
 					if objects_:
 						try:
 							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
