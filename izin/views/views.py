@@ -812,7 +812,7 @@ def option_kbli(request):
     select = request.POST.get('select')
     select = eval(select)
     kbli = request.POST.get('kbli')
-    kbli_list = KBLI.objects.filter(Q(nama_kbli__contains=kbli) | Q(kode_kbli__contains=kbli))
+    kbli_list = KBLI.objects.filter(Q(nama_kbli__icontains=kbli) | Q(kode_kbli__icontains=kbli))
     if len(select) > 0:
         kbli_list = kbli_list.exclude(id__in=select)
     kbli_list = kbli_list.extra(where=["CHAR_LENGTH(kode_kbli) = 5"])
