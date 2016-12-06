@@ -122,6 +122,7 @@ def formulir_siup(request):
 		extra_context.update({'kelembagaan_list': kelembagaan_list})
 		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
+		extra_context.update({'has_permission': True })
 
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
@@ -178,10 +179,11 @@ def formulir_siup(request):
 						response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
 					if pengajuan_.perusahaan:
 						response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
-					if legalitas_pendirian:
-						response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
-					if legalitas_perubahan:
-						response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+					if pengajuan_.perusahaan:
+						if legalitas_pendirian:
+							response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+						if legalitas_perubahan:
+							response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
 					if ktp_:
 						response.set_cookie(key='nomor_ktp', value=ktp_)
 				except ObjectDoesNotExist:
