@@ -6,7 +6,6 @@ function load_perusahaan_a(npwp_){
 		url: __base_url__+'/load-perusahaan/'+npwp_,
 		data: { csrfmiddlewaretoken: csrf_token },
 		success: function (data) {
-  			$(".tab-content").mLoading('hide');
   			respon = $.parseJSON(data)
     		if(respon.success){
 	          	// load_provinsi1(respon.data.negara)
@@ -61,7 +60,7 @@ function load_perusahaan_a(npwp_){
 	              	
 	              	if(respon.data.legalitas_perubahan_nama_notaris !== ""){
 	              		// ++++++ legalitas perubahan ++++++++
-	              		$('#form-akta_perubahan').hide()
+	              		$('#form-akta_perubahan').show()
 		              	$('#switch_akta_perubahan_disabled').prop( "checked", true );
 					    $(".akta_perubahan_disable").prop('disabled', false)
 					    $('#id_nama_notaris_perubahan').val(respon.data.legalitas_perubahan_nama_notaris);
@@ -100,8 +99,9 @@ function load_perusahaan_a(npwp_){
               	$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan'></span>");
               	$('#checkbox_berkas_akta_pembaruan').prop('checked', 0)
 	        }
-      
+      		$(".tab-content").mLoading('hide');
     	},
+
 	    error: function(data) {
 	      toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
 	      $(".tab-content").mLoading('hide');
@@ -111,53 +111,54 @@ function load_perusahaan_a(npwp_){
 
 function load_kecamatan1(id_kabupaten){
 	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-	$( "#id_kecamatan_chosen1" ).mask('loading')
-	$( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
+	$( "#id_kecamatan1_chosen" ).mLoading();
+	// $( "#id_kecamatan1_chosen .loadmask-msg" ).css('top', '2px')
 	$.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten: 1083 }, // get the form data
         type: 'POST', // GET or POST
         // url: '{% url 'admin:option_kecamatan' %}', // the file to call
         url: __base_url__+'/admin/master/kecamatan/option/',
         success: function(response) { // on success..
-          elem = $( "#id_kecamatan1" )
-          elem.html(response);
-          make_disabled(elem, false)
-          $( "#id_kecamatan_chosen1" ).unmask()
-          $( "#id_kecamatan1" ).change(function(){
+          	elem = $( "#id_kecamatan1" )
+          	elem.html(response);
+          	make_disabled(elem, false)
+          	$( "#id_kecamatan1_chosen" ).mLoading('hide');
+          	$( "#id_kecamatan1" ).change(function(){
             $this = $(this)
             
             id_kecamatan1 = $(this).val()
             if(id_kecamatan1.length > 0){
-              load_desa1(id_kecamatan1)
-            }else{
-              elem = $( "#id_desa1" )
-              make_disabled(elem, true)
+              	load_desa1(id_kecamatan1)
+            }
+            else{
+         	 	elem = $( "#id_desa1" )
+              	make_disabled(elem, true)
             }
           })
         },
         error: function(data) {                
-          toast_server_error()
+          	toast_server_error()
         }
     });
 }
 
 function load_desa1(id_kecamatan){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    $( "#id_desa_chosen1" ).mask('loading')
-	$( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
+    $( "#id_desa1_chosen" ).mLoading();
+	// $( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
 	$.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
         type: 'POST', // GET or POST
         // url: '{% url 'admin:option_desa' %}', // the file to call
         url: __base_url__+'/admin/master/desa/option/',
         success: function(response) { // on success..
-          elem = $( "#id_desa1" )
-          elem.html(response);
-          make_disabled(elem, false)
-          $( "#id_desa_chosen1" ).unmask()
-          $( "#id_desa1" ).change(function(){
-              $this = $(this)
-          })
+          	elem = $( "#id_desa1" )
+          	elem.html(response);
+          	make_disabled(elem, false)
+          	$( "#id_desa1_chosen" ).mLoading('hide');
+          	$( "#id_desa1" ).change(function(){
+              	$this = $(this)
+          	})
         },
         error: function(data) {                
           toast_server_error()
