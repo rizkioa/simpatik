@@ -54,12 +54,12 @@
 				},
 
 				onNext: function(tab, navigation, index) {
-					return false;
+					return true;
 
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return false;
+					return true;
 				}
 			});
 		});
@@ -139,6 +139,9 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
+
+			    id_pengajuan_ = $.cookie("id_pengajuan");
+			    if (id_pengajuan_ != undefined){
 		        $.ajax({
 		        	url: '{% url 'reklame_done' %}',
 		        	success: function(response) {
@@ -146,9 +149,10 @@
 		        		if(respon.success){
 		        			toastr["success"](respon.pesan)
 		        		}
+		      		window.location.replace('{% url 'admin:izin_detilreklame_changelist'  %}view-pengajuan-reklame/'+id_pengajuan_);
 		        	}
 	        	});
-		      	window.location.replace('{% url 'admin:izinterdaftar' %}');
+	        	}
 		      	$.removeCookie('id_pengajuan', { path: '/' });
 		      	$.removeCookie('id_perusahaan', { path: '/' });
 		      	$.removeCookie('id_pemohon', { path: '/' });

@@ -1,4 +1,4 @@
-<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'reklame_imbreklame_save' %}">
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_imbreklame_save' %}">
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -8,29 +8,29 @@
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Jenis Papan Reklame</label>
+      <label for="jenis_papan_reklame" class="col-sm-2 control-label">Jenis Papan Reklame</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" name="jenis_papan_reklame" id="id_jenis_papan_reklame" required="">
       </div>
     </div>
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Ukuran</label>
       <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Lebar</label>
+        <label for="lebar" class="col-sm-2 control-label">Lebar</label>
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01">
+            <input type="text" class="form-control" name="lebar" id="id_lebar">
           </div>
-        <label for="input01" class="col-sm-2 control-label">Tinggi</label>
+        <label for="tinggi" class="col-sm-2 control-label">Tinggi</label>
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01">
+            <input type="text" class="form-control" name="tinggi" id="id_tinggi">
           </div>
       </div>
     </div>
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Lokasi Pemasangan</label>
       <div class="col-sm-7">
-        <textarea class="form-control" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda"></textarea>
+        <textarea class="form-control" rows="5" required="" name="lokasi_pasang" id="id_lokasi_pasang" placeholder="Isi Lokasi Pasang Papan Reklame"></textarea>
       </div>
     </div>
 
@@ -46,7 +46,7 @@
     <div class="form-group" id="kecamatan3">
       <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
       <div class="col-sm-5">
-        <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+        <select id="id_kecamatan_imb_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
           <option value>-- Pilih Kecamatan --</option>
           {% if kecamatan %}
             {% for k in kecamatan %}
@@ -60,7 +60,7 @@
     <div class="form-group" id="desa3">
       <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_data_reklame" required="" data-parsley-trigger="change">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_imb_reklame" required="" data-parsley-trigger="change">
         </select>
       </div>
     </div>
@@ -70,28 +70,28 @@
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Sebelah Utara</label>
+      <label for="batas_utara" class="col-sm-2 control-label">Sebelah Utara</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" name="batas_utara" id="id_batas_utara">
       </div>
     </div>
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Sebelah Timur</label>
+      <label for="batas_timur" class="col-sm-2 control-label">Sebelah Timur</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" name="batas_timur" id="id_batas_timur">
       </div>
     </div>
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Sebelah Selatan</label>
+      <label for="batas_selatan" class="col-sm-2 control-label">Sebelah Selatan</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" name="batas_selatan" id="id_batas_selatan">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Sebelah Barat</label>
+      <label for="batas_barat" class="col-sm-2 control-label">Sebelah Barat</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
+        <input type="text" class="form-control" name="batas_barat" id="id_batas_barat">
       </div>
     </div>
 </form>

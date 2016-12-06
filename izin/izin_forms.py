@@ -134,4 +134,4 @@ class PengajuanIMBReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilIMBPapanReklame
-		fields = '__all__'
+		fields = ('jenis_papan_reklame','lebar','tinggi','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat')

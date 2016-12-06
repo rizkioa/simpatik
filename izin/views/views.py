@@ -312,20 +312,6 @@ def formulir_imb_perumahan(request, extra_context={}):
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
 
-def formulir_imb_reklame(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    return render(request, "front-end/formulir/imb_reklame.html", extra_context)
 
 def formulir_tdp_cv(request, extra_context={}):
     negara = Negara.objects.all()
@@ -667,15 +653,6 @@ def cetak_bukti_pendaftaran_imb_perumahan(request, extra_context={}):
     syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
     extra_context.update({'syarat': syarat})
     return render(request, "front-end/include/formulir_imb_perumahan/cetak_bukti_pendaftaran.html", extra_context)
-
-def cetak_imb_reklame(request, extra_context={}):
-    return render(request, "front-end/include/formulir_imb_reklame/cetak.html", extra_context)
-
-def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
-    extra_context.update({'syarat': syarat})
-    return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
-
 
 def cetak_tdp_pt(request, extra_context={}):
     return render(request, "front-end/include/formulir_tdp_pt/cetak.html", extra_context)

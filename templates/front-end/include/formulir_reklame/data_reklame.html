@@ -6,17 +6,12 @@
         <hr class="style14">
       </div>
     </div>
-
+    <input name="jenis_reklame" id="id_jenis_reklame" value="2" hidden="">
     <div class="form-group">
       <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="jenis_reklame" required="" data-parsley-trigger="change" id="id_jenis_reklame">
-          <option value>-- Jenis Reklame --</option>
-          {% if reklame_jenis_list %}
-            {% for j in reklame_jenis_list %}
-              <option id="id_jenis_reklame" value="{{ j.id }}">{{ j.jenis_reklame }}</option>
-            {% endfor %}
-          {% endif %}
+        <select class="form-control chosen-select mb-10" name="jenis_reklame" disabled=""data-parsley-trigger="change" id="id_jenis_reklame">
+          <option value="2">Insidentil</option>
         </select>
       </div>
     </div>

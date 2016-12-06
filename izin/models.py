@@ -439,6 +439,7 @@ class RincianPerusahaan(models.Model):
 	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
 class DetilIMBPapanReklame(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='imbreklame_perusahaan', blank=True, null=True)
 	jenis_papan_reklame = models.CharField(max_length=255, verbose_name='Jenis Papan Reklame')
 	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
 	tinggi = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tinggi')
@@ -456,7 +457,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'Detil IMB Papan Reklame'
 		verbose_name_plural = 'Detil IMB Papan Reklame'
-		
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 

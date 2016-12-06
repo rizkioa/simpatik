@@ -86,7 +86,7 @@
             </a>
           </div>
           <div class="col-md-3">
-            <a href="{% url 'layanan_reklame' %}">
+            <a href="#" data-toggle="modal" data-target="#reklame">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
@@ -295,6 +295,45 @@
   </div>
 </div>
 
+<div class="modal fade" id="reklame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Izin Pemasangan Reklame</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_reklame' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Pemasangan Reklame Isidentil</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_imb_reklame' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Pemasangan Reklame Permanen & IMB - Papan Reklame</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="imb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -330,7 +369,7 @@
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
-                  <p class="text-center text-strong pa">IMB - Papan Reklame</p>
+                  <p class="text-center text-strong pa">Izin Pemasangan Reklame Permanen & IMB - Papan Reklame</p>
                 </div>
               </div>
             </div>
