@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
+import json
 
 from izin.detiltdp_admin import DetilTDPAdmin
 from izin.detilsiup_admin import DetilSIUPAdmin
@@ -9,12 +10,16 @@ from izin.detiliujk_admin import DetilIUJKAdmin
 from izin.detilreklame_admin import DetilReklameAdmin
 from izin.izin_admin import IzinAdmin
 from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey
 from izin.pemohon_admin import PemohonAdmin
 
 from master.models import JenisPemohon
 
-# import json
+from izin.izin_forms import SurveyForm
+from izin.utils import get_nomor_pengajuan
+
+
+
 
 # from perusahaan.models import Perusahaan
 
@@ -26,9 +31,106 @@ from master.models import JenisPemohon
 admin.site.register(JenisPemohon)
 admin.site.register(SKIzin)
 admin.site.register(Riwayat)
+
+
 # admin.site.register(DetilIUJK)
 admin.site.register(AnggotaBadanUsaha)
 admin.site.register(Pemohon, PemohonAdmin)
+
+class SurveyAdmin(admin.ModelAdmin):
+	list_display = ('no_survey','pengajuan')
+
+	def save_survey_ajax(self, request):
+		frm = SurveyForm(request.POST)
+		if frm.is_valid():
+			p = frm.save(commit=False)
+			p.no_survey = get_nomor_pengajuan('PEMBANGUNAN')
+			p.pengajuan_id = request.POST.get('pengajuan_id')
+			p.kelompok_jenis_izin_id = request.POST.get('kelompok_jenis_izin_id')
+			p.save()
+			data = {'success': True, 
+			'pesan': 'Data Survey Berhasil Disimpan.',
+			
+			}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+		else:
+			data = frm.errors.as_json()
+			response = HttpResponse(data)
+
+		return response
+
+	def delete_survey_ajax(self, request):
+		id_survey = request.POST.get('id')
+		if id_survey:
+			try:
+				survey = Survey.objects.get(id=id_survey)
+				data = {'success': True, 
+				'pesan': 'Data Survey '+str(survey.skpd)+' Berhasil Dihapus.',
+				
+				}
+				survey.delete()
+				
+			except Survey.DoesNotExist:
+				data = {'success': False, 
+				'pesan': 'Survey Tidak ditemukan.',
+				}
+		else:
+			data = {'success': False, 
+			'pesan': 'Survey Tidak Ada.',
+			}
+
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+		return response
+
+	def send_survey(self, request):
+		id_pengajuan = request.POST.get('id')
+		if id_pengajuan:
+			try:
+				survey = Survey.objects.filter(pengajuan__id=id_pengajuan)
+				pengajuan = DetilIUJK.objects.get(id=id_pengajuan)
+				# print survey
+				for s in survey:
+					s.status = 4
+					s.save()
+					# print "ok"
+				pengajuan.status = 8
+				pengajuan.save()
+
+				
+
+				data = {'success': True, 
+				'pesan': 'Survey berhasil dikirim',
+				}
+
+			except Survey.DoesNotExist:
+				data = {'success': False, 
+				'pesan': 'Survey Tidak ditemukan.',
+				}
+		else:
+			data = {'success': False, 
+			'pesan': 'Pengajuan Tidak Terdaftar.',
+			}
+
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+		return response
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(SurveyAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^survey-save-ajax/$', self.save_survey_ajax, name="save_survey_ajax" ),
+			url(r'^survey-delete-ajax/$', self.delete_survey_ajax, name="delete_survey_ajax" ),
+			url(r'^survey-sending/$', self.send_survey, name="send_survey" ),
+			)
+		return my_urls + urls
+
+admin.site.register(Survey, SurveyAdmin)
+
 
 class JenisPeraturanAdmin(admin.ModelAdmin):
 	list_display = ('jenis_peraturan','keterangan')
@@ -77,6 +179,7 @@ admin.site.register(JenisIzin, JenisIzinAdmin)
 
 class SyaratAdmin(admin.ModelAdmin):
 	list_display = ('syarat', 'keterangan')
+	list_filter = ('jenis_izin', )
 	search_fields = ('syarat', 'keterangan')
 
 	def li(self, request, id_kelompok_jenis_izin):

@@ -5,19 +5,24 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 
 from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat
+from izin.utils import formatrupiah, JENIS_PERMOHONAN
 from accounts.models import NomorIdentitasPengguna
-from izin.utils import formatrupiah
+from kepegawaian.models import UnitKerja
 
 
 class DetilIUJKAdmin(admin.ModelAdmin):
 
 	
 	
-	def view_pengajuan_siup(self, request, id_pengajuan_izin_):
+	def view_pengajuan_iujk(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
+			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
+			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
+
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all() })
 			
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -81,11 +86,22 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_bukti_admin_iujk(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
+			extra_context.update({'pengajuan': pengajuan_ })
+		template = loader.get_template("front-end/include/formulir_siup/cetak_bukti_pendaftaran_admin.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIUJKAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^view-pengajuan-iujk/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_iujk'),
+			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_iujk), name='cetak_bukti_admin_iujk'),
+			url(r'^view-pengajuan-iujk/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_iujk), name='view_pengajuan_iujk'),
 			)
 		return my_urls + urls
 

@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -341,7 +341,7 @@ class PaketPekerjaan(models.Model):
 			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
 			'klasifikasi_usaha': self.klasifikasi_usaha,
 			'tahun': self.tahun,
-			'nilai_paket_pekerjaan': str(self.nilai_paket_pekerjaan),
+			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
 
 	class Meta:
@@ -437,6 +437,29 @@ class RincianPerusahaan(models.Model):
 	model_disetor = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Disetor Rp.', null=True, blank=True)
 	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
 	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
+
+
+class Survey(MetaAtribut):
+	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)
+	pengajuan = models.ForeignKey(DetilIUJK, related_name='survey_pengajuan', verbose_name='Pengajuan')
+	skpd = models.ForeignKey("kepegawaian.UnitKerja", related_name="survey_skpd", verbose_name='SKPD')
+	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name="Kelompk Jenis Izin")
+	permohonan = models.CharField(verbose_name='Permohonan', choices=JENIS_PERMOHONAN, max_length=100,)
+	tanggal_survey = models.DateField(verbose_name='Tanggal Survey')
+	deadline_survey = models.DateField(verbose_name='Deadline Survey')
+	keterangan_tambahan = models.CharField(verbose_name='Keterangan Tambahan',  max_length=255, blank=True, null=True)
+	no_berita_acara = models.CharField(verbose_name='Nomor Berita Acara', max_length=255, blank=True, null=True)
+	tanggal_berita_acara_dibuat = models.DateField(verbose_name='Tanggal Berita Acara Dibuat', blank=True, null=True)
+	tanggal_berita_acara_diverifkasi = models.DateField(verbose_name='Tanggal Berita Acara Diverifikasi', blank=True, null=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.no_survey))
+
+	class Meta:
+		verbose_name = 'Survey'
+		verbose_name_plural = 'Survey'
+
+
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')

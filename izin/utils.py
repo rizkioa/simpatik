@@ -4,6 +4,12 @@ JENIS_IZIN = (
 	('Izin Pembangunan', 'IZIN PEMBANGUNAN'),
 )
 
+
+JENIS_PERMOHONAN = (
+	('Rekomendasi', 'Rekomendasi'),
+	('Berita Acara', 'Berita Acara'),
+)
+
 import datetime
 
 def get_tahun_choices(sejak):
@@ -167,3 +173,25 @@ def detil_pengajuan_siup_view(request, id_pengajuan_izin_, extra_context = {}):
 	template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_siup.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
+
+
+from django.db import IntegrityError
+def insert_riwayat(obj_sk_id = None, id_pengajuan_= None, user_= None, keterangan_= None):
+	from izin.models import Riwayat
+	if id_pengajuan_ is not None:
+		riwayat_ = Riwayat(
+			pengajuan_izin_id = id_pengajuan_,
+			created_by_id = user_,
+			keterangan = keterangan_
+		)
+
+		if obj_sk_ is not None:
+			riwayat_.sk_izin_id = obj_sk_id
+
+		try:
+			riwayat_.save()
+			return True
+		except IntegrityError:
+			return False
+	else:
+		return False

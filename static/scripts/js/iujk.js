@@ -1,3 +1,104 @@
+// *********** SURVEY ***********
+function survey_save(elem_){
+  var btn_ = $('#button-'+elem_)
+  btn_.html('Tunggu...')
+  btn_.attr('disabled',true)
+  var frm = $("#form-"+elem_);
+  // console.log(frm.serialize())
+  frm.parsley().validate();
+  if (frm.parsley().isValid()) {
+    frm.ajaxSubmit({
+        method: 'POST',
+        data: frm.serialize(),
+        url: frm.attr('action'),
+        success: function(response){
+          resp = $.parseJSON(response)
+          console.log(resp)
+
+          if (resp.success){
+            location.reload();
+          }else{
+            var a = Object.keys(respon);
+            for (var i = 0; i < a.length; i++){
+              var field = a[i].replace("_", " ");
+              toastr["error"](field+", "+respon[a[i]][0]['message'])
+              $("#"+a[i]+"").addClass("has-error");
+            }
+          }
+          // btn_.html('<i class="fa fa-arrow-right"></i> Simpan')
+          // btn_.attr('disabled',false)
+        }
+    })
+  }else{
+    btn_.html('<i class="fa fa-arrow-right"></i> Simpan')
+    btn_.attr('disabled',false)
+    toastr["warning"]("Silakan Lengkapi Form")
+  }
+}
+
+function survey_delete(elem_){
+  var btn_ = $('#delete-'+elem_)
+  btn_.html('Tunggu...')
+  btn_.attr('disabled',true)
+  var ids = [];
+  // var ch = $('#tabel_penanggung_jawab').find('tbody input[type=checkbox]');
+  var ch = $('#tabel_survey').find('tbody input[type=checkbox]');
+  ch.each(function () {
+      if ($(this).is(":checked")) {
+          ids.push($(this).val());
+      }
+  });
+
+   if (ids.length) {
+      for(var i=0; i < ids.length; i++){
+        // LOOP AJAX DELETE
+        $.ajax({
+          method: 'POST',
+          data: {id : ids[i], csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+          url: __base_url__+'/admin/izin/survey/survey-delete-ajax/',
+          success: function(response){
+            respon = $.parseJSON(response)
+            if(respon.success){
+              toastr["success"](respon.pesan)
+              $('#'+respon.id).remove()
+              location.reload();
+              // console.log($('#'+respon.id).remove());
+            }else{
+              toastr["error"](respon.pesan)
+            }
+          },error: function(response){
+            toast_server_error()
+          }
+        });
+      }
+      // btn_.html('Hapus <i class="fa fa-trash"></i>')
+      // btn_.attr('disabled',false)
+   }else {
+        toastr["warning"]("Anda belum memilih Data Survey")
+    }
+}
+
+function kirim_survey(id_pengajuan){
+  $.ajax({
+    method: 'POST',
+    data: {id : id_pengajuan, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+    url: __base_url__+'/admin/izin/survey/survey-sending/',
+    success: function(response){
+      respon = $.parseJSON(response)
+      if(respon.success){
+        toastr["success"](respon.pesan)
+        location.reload();
+        // console.log($('#'+respon.id).remove());
+      }else{
+        toastr["error"](respon.pesan)
+      }
+    },error: function(response){
+      toast_server_error()
+    }
+  });
+}
+//************* END *********** 
+
 function show_modal_dataanggota_add(elem_){
   // var elem_ = $('#penanggung_jawab')
   elem_.modal('show');
@@ -15,6 +116,7 @@ function penanggung_jawab_cancel(){
   $('#progresuploaddirektur').attr('data-percentage','0%');
 	elem_.modal('hide');
 }
+
 
 function penanggung_jawab_save(btn_){
   btn_.html("Tunggu...")

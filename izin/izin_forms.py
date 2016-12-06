@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, Survey
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -129,3 +129,9 @@ class UploadBerkasPenolakanIzinForm(forms.ModelForm):
 	class Meta:
 		model = Berkas
 		fields = ('berkas',)
+
+
+class SurveyForm(forms.ModelForm):
+	class Meta:
+		model = Survey
+		fields = ('skpd', 'permohonan', 'tanggal_survey', 'deadline_survey')

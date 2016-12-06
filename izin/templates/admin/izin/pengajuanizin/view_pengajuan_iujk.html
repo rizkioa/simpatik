@@ -229,9 +229,9 @@
 			<div class="tile-body">
 				<center>
 					<!-- <a class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir</a> -->
-					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_iujk' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
 
-					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin_iujk' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 					
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
@@ -384,57 +384,42 @@
 								</div>
 							</div>
 
-							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px; display: none">
-								<form>
+							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>SURVEY</h4>
+										<table class="table table-bordered" id="tabel_survey">
+											<thead>
+												<tr>
+												  <th>&nbsp;</th>
+												  <th>SKPD</th>
+												  <th>Permohonan</th>
+												  <th>Tgl Survey</th>
+												  <th>Deadline Survey</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for i in survey_pengajuan %}
+													<tr id="{{ i.id }}">
+														<td><input type="checkbox" value="{{ i.id }}" id="chkbox"></input></td>
+														<td>{{ i.skpd }}</td>
+														<td>{{ i.permohonan }}</td>
+														<td>{{ i.tanggal_survey|date:"d-m-Y" }}</td>
+														<td>{{ i.deadline_survey|date:"d-m-Y" }}</td>
+													</tr>
+												{% endfor %}
+											</tbody> 
+										</table>
 										<br>
-										<div class="panel panel-default" style="color: black">
-									      	<div class="panel-heading">SKPD Surveyor</div>
-									      	<div class="panel-body">
-									      		<div class="form-group">
-												    <label for="input01">SKPD </label>
-												    <select class="form-control chosen-select">
-												    	<option>Pilih SKPD</option>
-											      	</select>
-											  	</div>
-
-											  	<div class="form-group">
-												    <label for="input01">Permohonan </label>
-												    <select class="form-control chosen-select mb-10">
-												    	<option>Pilih</option>
-											      	</select>
-											  	</div>
-
-											  	<div class="form-group">
-											      	<label>Tanggal Survey </label>
-											        <div class="input-group datepicker" data-format="L">
-											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-											          <span class="input-group-addon">
-											            <span class="fa fa-calendar"></span>
-											          </span>
-											        </div>
-											    </div>
-
-											    <div class="form-group">
-											      	<label>Deadline Survey </label>
-											        <div class="input-group datepicker" data-format="L">
-											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-											          <span class="input-group-addon">
-											            <span class="fa fa-calendar"></span>
-											          </span>
-											        </div>
-											    </div>
-									      	</div>
-									    </div>
+										<button class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10" onclick="tambah_skpd_survey()">Tambah SKPD Survey <i class="fa fa-plus"></i></button>
+										<button class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id='delete-survey' onclick="survey_delete('survey')">Hapus <i class="fa fa-trash"></i></button>
+										<br>
 									</div>
 
 									<div class="panel-footer">
 										<center>
-											<button type="button" class="btn btn-success mb-10"><i class="icon-plus"></i> Buat Jadwal Survey</button>
+											<button type="button" onclick="kirim_survey({{ pengajuan.id }})" class="btn btn-success mb-10"><i class="icon-plus"></i> Buat Jadwal Survey</button>
 										</center>
 									</div>
-								</form>
 							</div>
 
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
@@ -460,6 +445,44 @@
 										</center>
 									</div>
 								</form>
+							</div>
+						{% endif %}
+						{% if status == 8 %}
+							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<h4>SURVEY</h4>
+										<table class="table table-bordered" id="tabel_survey">
+											<thead>
+												<tr>
+												  <th>SKPD</th>
+												  <th>Penandatanganan</th>
+												  <th>Dokumen</th>
+												  <th>Status</th>
+												  <th>Tanggal Survey</th>
+												  <th>Hasil Survey</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for i in survey_pengajuan %}
+													<tr>
+														<td>{{ i.skpd }}</td>
+														<td>{{ i.skpd }}</td>
+														<td>{{ i.permohonan }}</td>
+														<td>{{ i.status }}</td>
+														<td>{{ i.tanggal_survey|date:"d-m-Y" }}</td>
+														<td><i class="fa fa-plus"></i></td>
+													</tr>
+												{% endfor %}
+											</tbody> 
+										</table>
+										<br>
+									</div>
+
+									<div class="panel-footer">
+										<center>
+										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+									</center>
+									</div>
 							</div>
 						{% endif %}
 					</div>
@@ -1048,9 +1071,16 @@
 	<script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
 	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
 	<script src="{% static "scripts/js/iujk.js" %}"></script>
 	<script>
         $(window).load(function(){
+
+        	$(".chosen-2").chosen({
+			    // disable_search_threshold: 10,
+			    no_results_text: "Maaf, Data Tidak Ditemukan!",
+			    width: "100%"
+			  });
 
             $('.mix-grid').mixItUp();
 
@@ -1108,6 +1138,14 @@
 
         	load_konfirmasi({{ pengajuan.id }});
         }
+
+        function tambah_skpd_survey(){
+        	$('#button-survey').html('<i class="fa fa-arrow-right"></i> Simpan')
+  			$('#button-survey').attr('disabled',false)
+        	$("#tambah_skpd_survey").modal('show');
+        }
+
+
     </script>
     <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
@@ -1123,6 +1161,65 @@
 		      	</div>
 		      	<div class="modal-footer">
 		      		<button onclick="edit_skizin({{ pengajuan.id }}, '_submit_edit_skizin')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
+	<div class="modal fade" id="tambah_skpd_survey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Tambah SKPD Survey</h3>
+		      	</div>
+		      	<div class="modal-body">
+                    <form role="form" method="POST" action="{% url 'admin:save_survey_ajax' %}" id="form-survey" data-parsley-validate novalidate>
+					{% csrf_token %}
+					<input type="hidden" name="pengajuan_id" value="{{pengajuan.id}}"></input>
+					<input type="hidden" name="kelompok_jenis_izin_id" value="{{pengajuan.kelompok_jenis_izin.id}}"></input>
+				      	<div class="form-group">
+						    <label for="input01"><span style="color: black">SKPD</span> </label>
+						    <select class="form-control chosen-2" name="skpd" required="" data-parsley-trigger="change">
+						    	<option value="">Pilih SKPD</option>
+						    	{% for s in skpd_list %}
+						    		<option value="{{ s.id }}">{{ s.nama_unit_kerja }}</option>
+						    	{% endfor %}
+					      	</select>
+					  	</div>
+
+					  	<div class="form-group">
+						    <label for="input01"><span style="color: black">Permohonan </span> </label>
+						    <select class="form-control chosen-2 mb-10" name="permohonan" required="" data-parsley-trigger="change">
+						    	<option value="">Pilih</option>
+						    	{% for j in jenis_permohonan %}
+						    		<option value="{{ j.0}}">{{ j.1 }}</option>
+						    	{% endfor %}
+					      	</select>
+					  	</div>
+
+					  	<div class="form-group">
+					      	<label><span style="color: black">Tanggal Survey</span> </label>
+					        <div class="input-group datepicker" data-format="L">
+					          <input type="text" class="form-control" placeholder="dd-mm-yyyy" required="" name="tanggal_survey" data-parsley-trigger="change">
+					          <span class="input-group-addon">
+					            <span class="fa fa-calendar"></span>
+					          </span>
+					        </div>
+					    </div>
+
+					    <div class="form-group">
+					      	<label><span style="color: black">Deadline Survey</span> </label>
+					        <div class="input-group datepicker" data-format="L">
+					          <input type="text" class="form-control" placeholder="dd-mm-yyyy" data-parsley-trigger="change" required="" name="deadline_survey">
+					          <span class="input-group-addon">
+					            <span class="fa fa-calendar"></span>
+					          </span>
+					        </div>
+					    </div>
+				    </form>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="survey_save('survey')" id="button-survey" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
                     <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
                 </div>
 		    </div>
