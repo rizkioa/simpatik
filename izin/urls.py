@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view
 from django.conf.urls.static import static
+from izin.views.imb import imb_reklame
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -66,7 +67,7 @@ urlpatterns = [
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
     url(r'^layanan/imb-umum/formulir$', views.formulir_imb_umum, name='formulir_imb_umum'),
     url(r'^layanan/imb-perumahan/formulir$', views.formulir_imb_perumahan, name='formulir_imb_perumahan'),
-    url(r'^layanan/imb-reklame/formulir$', views.formulir_imb_reklame, name='formulir_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir$', imb_reklame.formulir_imb_reklame, name='formulir_imb_reklame'),
     url(r'^layanan/tdp-cv/formulir$', views.formulir_tdp_cv, name='formulir_tdp_cv'),
     url(r'^layanan/tdp-firma/formulir$', views.formulir_tdp_firma, name='formulir_tdp_firma'),
     url(r'^layanan/tdp-perorangan/formulir$', views.formulir_tdp_perorangan, name='formulir_tdp_perorangan'),
@@ -110,8 +111,8 @@ urlpatterns = [
     url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
 
     #cetak IMB Reklame
-    url(r'^layanan/imb-reklame/formulir/cetak$', views.cetak_imb_reklame, name='cetak_imb_reklame'),
-    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak$', imb_reklame.cetak_imb_reklame, name='cetak_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', imb_reklame.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
     
     #cetak TDP PT
     url(r'^layanan/tdp-pt/formulir/cetak$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
@@ -166,7 +167,6 @@ urlpatterns = [
     url(r'^ajax-delete-berkas-reklame-upload/(?P<id_berkas>[0-9]+)$', reklame_view.ajax_delete_berkas_reklame, name='ajax_delete_berkas_reklame'),
     url(r'^layanan/reklame/save/$', reklame_view.reklame_done , name='reklame_done'),
 
-
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK
@@ -196,4 +196,10 @@ urlpatterns = [
     url(r'^layanan/tdp-pt/data-kegiatan-perusahaan/save/$', tdp_view.tdp_data_kegiatan_pt_cookie, name='tdp_pt_data_kegiatan_perusahaan_save'),
     url(r'^layanan/tdp-pt/legalitas-perusahaan/save/$', tdp_view.tdp_legalitas_pt_cookie, name='tdp_pt_legalitas_perusahaan_save'),
     # +++++++ end ajax save tdp pt +++++++
+
+    # ++++++++++++++++++++++++ for ajax IMB reklame ++++++++++++++++++++++
+
+    url(r'^layanan/imbreklame/save/$', imb_reklame.reklame_imbreklame_save_cookie, name='reklame_imbreklame_save'),
+
+    # ++++++++++++++++++++++++ end for ajax IMB reklame ++++++++++++++++++++++
     ]

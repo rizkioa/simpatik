@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, Survey
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -135,3 +135,9 @@ class SurveyForm(forms.ModelForm):
 	class Meta:
 		model = Survey
 		fields = ('skpd', 'permohonan', 'tanggal_survey', 'deadline_survey')
+
+class PengajuanIMBReklameForm(forms.ModelForm):
+	"""docstring for PengajuanSiupForm"""
+	class Meta:
+		model = DetilIMBPapanReklame
+		fields = '__all__'
