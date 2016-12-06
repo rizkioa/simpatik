@@ -246,7 +246,7 @@ class DetilSIUP(PengajuanIzin):
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
 	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
 	# produk_utama = models.ManyToManyField(ProdukUtama, related_name='barang_jasa_siup', verbose_name='Barang / Jasa Dagangan Utama')
-	produk_utama = models.CharField(max_length=255,null=True, blank=True, verbose_name='Barang / Jasa Dagang Utama')
+	produk_utama = models.TextField(null=True, blank=True, verbose_name='Barang / Jasa Dagang Utama')
 	bentuk_kegiatan_usaha = models.ForeignKey(BentukKegiatanUsaha, related_name='bentuk_kegiatan_usaha_siup', blank=True, null=True, verbose_name='Kegiatan Usaha')
 	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_siup', blank=True, null=True, verbose_name='Jenis Penanaman Modal')	
 	kekayaan_bersih = models.CharField(verbose_name='Kekayaan Bersih Perusahaan', null=True, blank=True, max_length=255, help_text='Tidak termasuk tanah dan bangunan tempat usaha')
