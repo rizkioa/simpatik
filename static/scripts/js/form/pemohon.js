@@ -6,7 +6,6 @@ function load_pemohon(ktp_){
 		url: __base_url__+'/load-pemohon/'+ktp_,
 		data: { csrfmiddlewaretoken: csrf_token },
 		success: function (data) {
-			$(".tab-content").mLoading('hide');
 			respon = $.parseJSON(data)
 			if(respon.success === true){
 				load_provinsi(respon.data.negara)
@@ -30,18 +29,7 @@ function load_pemohon(ktp_){
 					$('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
 					$('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
                     // alert(respon.data.desa)
-					if (respon.data.foto_url !== ''){
-	              		$('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.foto_url+"'>"+respon.data.foto_nama+"</a></span>")
-	              		$('#checkbox_berkas_foto').prop('checked', 1)
-	          		}
-	              	if (respon.data.ktp_url !== ''){
-	              		$('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.ktp_url+"'>"+respon.data.ktp_nama+"</a></span>")
-	              		$('#checkbox_berkas_ktp').prop('checked', 1)
-	          	  	}
-	              	if (respon.data.npwp_pribadi_url !== ''){
-	              		$('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_pribadi_url+"'>"+respon.data.npwp_pribadi_nama+"</a></span>");
-	              		$('#checkbox_berkas_npwp_pribadi').prop('checked', 1)
-	              	}
+					
 				}, 1000);
 			}
 			else{
@@ -61,13 +49,16 @@ function load_pemohon(ktp_){
                     $('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
                 }
 				
-				$('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon'></span>")
-          		$('#checkbox_berkas_foto').prop('checked', 0)
-              	$('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon'></span>")
-              	$('#checkbox_berkas_ktp').prop('checked', 0)
-              	$('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi'></span>")
-              	$('#checkbox_berkas_npwp_pribadi').prop('checked', 0)
+				$('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
+                load_provinsi('1')
+                load_kabupaten('1')
+                load_kecamatan('1083')
+                setTimeout(function(){
+                    $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
+                    $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
+                }, 1000);
 			}
+            $(".tab-content").mLoading('hide');
 		},
 		error: function(data) {
 	  		toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
@@ -86,8 +77,8 @@ function make_disabled(elem_, dis_){
 
 function load_provinsi(id_negara){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    // $( "#id_provinsi_chosen" ).mask('loading')
-    $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
+    $( "#id_provinsi_chosen" ).mLoading();
+    // $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
         type: 'POST', // GET or POST
@@ -98,6 +89,7 @@ function load_provinsi(id_negara){
             elem.html(response);
             make_disabled(elem, false)
             // $( "#id_provinsi_chosen" ).unmask()
+            $( "#id_provinsi_chosen" ).mLoading('hide');
             $( "#id_provinsi" ).change(function(){
                 $this = $(this)
                 id_provinsi = $(this).val()
@@ -136,7 +128,7 @@ $( "#id_negara" ).change(function(){
 })
 function load_kabupaten(id_provinsi){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    // $( "#id_kabupaten_chosen" ).mask('loading')
+    $( "#id_kabupaten_chosen" ).mLoading();
     $( "#id_kabupaten_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
@@ -147,7 +139,7 @@ function load_kabupaten(id_provinsi){
             elem = $( "#id_kabupaten" )
             elem.html(response);
             make_disabled(elem, false)
-            // $( "#id_kabupaten_chosen" ).unmask()
+            $( "#id_kabupaten_chosen" ).mLoading('hide');
             $( "#id_kabupaten" ).change(function(){
                 $this = $(this)
                 id_kabupaten = $(this).val()
@@ -166,7 +158,7 @@ function load_kabupaten(id_provinsi){
 }
 function load_kecamatan(id_kabupaten){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    // $( "#id_kecamatan_chosen" ).mask('loading')
+    $( "#id_kecamatan_chosen" ).mLoading();
     $( "#id_kecamatan_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
@@ -177,7 +169,7 @@ function load_kecamatan(id_kabupaten){
             elem = $( "#id_kecamatan" )
             elem.html(response);
             make_disabled(elem, false)
-            // $( "#id_kecamatan_chosen" ).unmask()
+            $( "#id_kecamatan_chosen" ).mLoading('hide');
             $( "#id_kecamatan" ).change(function(){
                 $this = $(this)
                 
@@ -197,7 +189,7 @@ function load_kecamatan(id_kabupaten){
 }
 function load_desa(id_kecamatan){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    // $( "#id_desa_chosen" ).mask('loading')
+    $( "#id_desa_chosen" ).mLoading();
     $( "#id_desa_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
         data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
@@ -208,7 +200,7 @@ function load_desa(id_kecamatan){
             elem = $( "#id_desa" )
             elem.html(response);
             make_disabled(elem, false)
-            // $( "#id_desa_chosen" ).unmask()
+            $( "#id_desa_chosen" ).mLoading('hide');
             $( "#id_desa" ).change(function(){
                 $this = $(this)
             })

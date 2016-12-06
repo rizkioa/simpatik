@@ -16,7 +16,6 @@
 	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
 	<script src="{% static 'scripts/js/main.js' %}"></script>
-	<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
@@ -167,9 +166,9 @@
 			});
 		});
 		// Function to capitalize for string
-		String.prototype.capitalize = function() {
-		    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-		};
+		// String.prototype.capitalize = function() {
+		//     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+		// };
 
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
@@ -316,6 +315,35 @@
 	    		$('#id_bentuk_kegiatan_usaha').val(5).prop('selected',true).trigger("chosen:updated");
 	    	}
 	    })
+
+	    $.fn.outerHTML = function(){
+
+          // IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
+          return (!this.length) ? this : (this[0].outerHTML || (
+            function(el){
+                var div = document.createElement('div');
+                div.appendChild(el.cloneNode(true));
+                var contents = div.innerHTML;
+                div = null;
+                return contents;
+          })(this[0]));
+
+      }
+
+      function set_chosen_element(chosenEl){
+          $chosenEl = $(chosenEl)
+          if ($chosenEl.length > 0) {             
+              $chosenEl.each(function() {
+                var element = $(this);
+                element.on('chosen:ready', function(e, chosen) {
+                  var width = element.css("width");
+                  element.next().find('.chosen-choices').addClass('form-control');
+                  element.next().css("width", width);
+                  element.next().find('.search-field input').css("width", "125px");
+                }).chosen();                
+              });
+          }
+      }
 	</script>
 	
 	<script type="text/javascript">
@@ -494,7 +522,6 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">

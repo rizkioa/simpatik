@@ -1378,7 +1378,7 @@ def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
 					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
+			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IUJK")
 
 			extra_context.update({ 'pengajuan': pengajuan_ })
 
@@ -1387,7 +1387,7 @@ def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
 			extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
 			extra_context.update({ 'created_at': pengajuan_.created_at })
 			
-			response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+			response = loader.get_template("front-end/include/formulir_iujk/cetak_bukti_pendaftaran.html")
 		else:
 			response = HttpResponseRedirect(url_)
 			return response
@@ -1395,6 +1395,6 @@ def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
 		response = HttpResponseRedirect(url_)
 		return response	
 
-	template = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+	template = loader.get_template("front-end/include/formulir_iujk/cetak_bukti_pendaftaran.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))

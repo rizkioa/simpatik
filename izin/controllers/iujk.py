@@ -38,6 +38,7 @@ def IUJKWizard(request, extra_context={}):
 
 				try:
 					pengajuan_ = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+					
 					if pengajuan_.pemohon:
 						if pengajuan_.pemohon.desa:
 							alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
