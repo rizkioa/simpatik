@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -326,7 +326,7 @@ class PaketPekerjaan(models.Model):
 	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
 	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU') 
 	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
-	nilai_paket_pekerjaan = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
+	nilai_paket_pekerjaan = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.nama_paket_pekerjaan), str(self.detil_iujk))
@@ -341,7 +341,7 @@ class PaketPekerjaan(models.Model):
 			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
 			'klasifikasi_usaha': self.klasifikasi_usaha,
 			'tahun': self.tahun,
-			'nilai_paket_pekerjaan': str(self.nilai_paket_pekerjaan),
+			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
 
 	class Meta:
@@ -438,6 +438,46 @@ class RincianPerusahaan(models.Model):
 	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
 	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
+class Survey(MetaAtribut):
+	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)
+	pengajuan = models.ForeignKey(DetilIUJK, related_name='survey_pengajuan', verbose_name='Pengajuan')
+	skpd = models.ForeignKey("kepegawaian.UnitKerja", related_name="survey_skpd", verbose_name='SKPD')
+	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name="Kelompk Jenis Izin")
+	permohonan = models.CharField(verbose_name='Permohonan', choices=JENIS_PERMOHONAN, max_length=100,)
+	tanggal_survey = models.DateField(verbose_name='Tanggal Survey')
+	deadline_survey = models.DateField(verbose_name='Deadline Survey')
+	keterangan_tambahan = models.CharField(verbose_name='Keterangan Tambahan',  max_length=255, blank=True, null=True)
+	no_berita_acara = models.CharField(verbose_name='Nomor Berita Acara', max_length=255, blank=True, null=True)
+	tanggal_berita_acara_dibuat = models.DateField(verbose_name='Tanggal Berita Acara Dibuat', blank=True, null=True)
+	tanggal_berita_acara_diverifkasi = models.DateField(verbose_name='Tanggal Berita Acara Diverifikasi', blank=True, null=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.no_survey))
+
+	class Meta:
+		verbose_name = 'Survey'
+		verbose_name_plural = 'Survey'
+
+
+class DetilIMBPapanReklame(PengajuanIzin):
+	jenis_papan_reklame = models.CharField(max_length=255, verbose_name='Jenis Papan Reklame')
+	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
+	tinggi = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tinggi')
+	lokasi_pasang = models.CharField(max_length=255, blank=True, null=True, verbose_name='Lokasi Pasang')
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
+
+	def __unicode__(self):
+		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil IMB Papan Reklame'
+		verbose_name_plural = 'Detil IMB Papan Reklame'
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
@@ -485,24 +525,6 @@ class RincianPerusahaan(models.Model):
 # 		ordering = ['id']
 # 		verbose_name = 'Jenis Kegiatan Pembangunan'
 # 		verbose_name_plural = 'Jenis Kegiatan pembangunan'
-
-# class DetilIMBPapanReklame(models.Model):
-# 	jenis_papan_reklame = models.CharField(max_length=255, verbose_name='Jenis Papan Reklame')
-# 	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar')
-# 	tinggi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Tinggi')
-# 	lokasi_pasang = models.CharField(max_length=255, blank=True, null=True, verbose_name='Lokasi Pasang')
-# 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
-# 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
-# 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
-# 	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.jenis_papan_reklame)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Detil IMB Papan Reklame'
-# 		verbose_name_plural = 'Detil IMB Papan Reklame'
 
 # class JenisGangguan(models.Model):
 # 	jenis_gangguan = models.CharField(max_length=255,null=True, blank=True,verbose_name='Jenis Gangguan')

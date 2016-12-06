@@ -259,7 +259,7 @@ def penanggung_jawab_save_bu(request):
 			form_ = DataAnggotaForm(request.POST)
 			if form_.is_valid():
 				# ext = os.path.splitext(berkas_.name)[1]
-				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				valid_extensions = ['.pdf', '.jpg', '.png']
 				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
 					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
 						if os.path.splitext(request.FILES.get('berkas_pernyataan').name)[1] in valid_extensions:
@@ -353,7 +353,7 @@ def penanggung_jawab_teknik_save_bu(request):
 		if request.COOKIES['id_pengajuan'] != '0':
 			form_ = DataAnggotaForm(request.POST)
 			if form_.is_valid():
-				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				valid_extensions = ['.pdf', '.jpg', '.png']
 				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
 					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
 						if os.path.splitext(request.FILES.get('ijazah_sma').name)[1] in valid_extensions:
@@ -427,7 +427,7 @@ def penanggung_jawab_non_teknik_save_bu(request):
 		if request.COOKIES['id_pengajuan'] != '0':
 			form_ = DataAnggotaForm(request.POST)
 			if form_.is_valid():
-				valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+				valid_extensions = ['.pdf', '.jpg', '.png']
 				if os.path.splitext(request.FILES.get('berkas_foto').name)[1] in valid_extensions:
 					if os.path.splitext(request.FILES.get('berkas_ktp').name)[1] in valid_extensions:
 						if os.path.splitext(request.FILES.get('ijazah_sma').name)[1] in valid_extensions:
@@ -822,7 +822,7 @@ def upload_npwp_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.jpg', '.png']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -1378,7 +1378,7 @@ def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
 					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
+			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IUJK")
 
 			extra_context.update({ 'pengajuan': pengajuan_ })
 
@@ -1387,7 +1387,7 @@ def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
 			extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
 			extra_context.update({ 'created_at': pengajuan_.created_at })
 			
-			response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+			response = loader.get_template("front-end/include/formulir_iujk/cetak_bukti_pendaftaran.html")
 		else:
 			response = HttpResponseRedirect(url_)
 			return response
@@ -1395,6 +1395,6 @@ def cetak_bukti_pendaftaran_iujk(request, id_pengajuan_):
 		response = HttpResponseRedirect(url_)
 		return response	
 
-	template = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+	template = loader.get_template("front-end/include/formulir_iujk/cetak_bukti_pendaftaran.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))

@@ -3,6 +3,7 @@ from accounts.utils import STATUS, get_status_color
 # from accounts.models import Account
 from datetime import datetime
 
+
 # Create your models here.
 
 
@@ -48,6 +49,7 @@ class MetaAtribut(models.Model):
 
 	class Meta:
 		abstract = True
+
 
 class AtributTambahan(models.Model):
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)

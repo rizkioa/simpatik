@@ -48,6 +48,7 @@ def add_wizard_siup(request):
 				# response.set_cookie(key='id_kelompok_izin', value=id_kelompok_)
 			# else:
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
+			# print(kode_izin_)
 			try:
 				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_)
 				if len(id_kelompok_list) > 1:
@@ -74,6 +75,7 @@ def add_wizard_siup(request):
 				url_ = reverse('admin:izin_proses_tdp_pt')
 			else:
 				url_ = "#"
+
 			response = HttpResponseRedirect(url_) # Redirect to url
 			if id_kelompok_:
 				response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser
