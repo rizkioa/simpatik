@@ -1,3 +1,7 @@
+import json
+import base64
+from izin.utils import terbilang_, terbilang, formatrupiah
+from django.db.models import Q
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
 from django.http import HttpResponse
@@ -12,10 +16,7 @@ from izin.controllers.reklame import formulir_reklame
 from izin.controllers.tdp import formulir_tdp_pt
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
-import json
-import base64
-from izin.utils import terbilang_, terbilang, formatrupiah
-from django.db.models import Q
+
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -484,7 +485,7 @@ class IzinAdmin(admin.ModelAdmin):
 			if pengajuan_.kekayaan_bersih:
 				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
 				extra_context.update({'terbilang': str(terbilang_) })
-				extra_context.update({ 'kekayaan_bersih': formatrupiah(pengajuan_.kekayaan_bersih) })
+				extra_context.update({ 'kekayaan_bersih': pengajuan_.kekayaan_bersih })
 			# try:
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:
