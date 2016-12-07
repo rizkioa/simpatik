@@ -86,7 +86,7 @@ def formatrupiah(uang):
 	i = int(uang)
 	y = str(i)
 	if len(y) <= 3 :
-		return 'Rp ' + y     
+		return y     
 	else :
 		p = y[-3:]
 		q = y[:-3]

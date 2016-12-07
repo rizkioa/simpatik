@@ -73,6 +73,7 @@
 # 	return render(request, "front_end/tambah.html", extra_context)
 
 from izin.models import DetilSIUP
+from izin.utils import formatrupiah
 
 def editkekayaan():
     a = DetilSIUP.objects.all()
@@ -80,7 +81,7 @@ def editkekayaan():
         for b in a:
             if b.kekayaan_bersih:
                 o = b.kekayaan_bersih.split('.')
-                b.kekayaan_bersih = o[0]
+                b.kekayaan_bersih = formatrupiah(o[0])
                 b.save()
                 print b.kekayaan_bersih
             else:
@@ -95,7 +96,7 @@ def editsaham():
         for b in a:
             if b.total_nilai_saham:
                 o = b.total_nilai_saham.split('.')
-                b.total_nilai_saham = o[0]
+                b.total_nilai_saham = formatrupiah(o[0])
                 b.save()
                 print b.total_nilai_saham
             else:
