@@ -454,23 +454,23 @@
 										<table class="table table-bordered" id="tabel_survey">
 											<thead>
 												<tr>
-												  <th>SKPD</th>
-												  <th>Penandatanganan</th>
-												  <th>Dokumen</th>
-												  <th>Status</th>
-												  <th>Tanggal Survey</th>
-												  <th>Hasil Survey</th>
+												  <th align="center">SKPD</th>
+												  <th align="center">Penandatanganan</th>
+												  <th align="center">Dokumen</th>
+												  <th align="center">Status</th>
+												  <th align="center">Tanggal Survey</th>
+												  <th align="center">Hasil Survey</th>
 												</tr>
 											</thead>
 											<tbody>
 												{% for i in survey_pengajuan %}
 													<tr>
-														<td>{{ i.skpd }}</td>
-														<td>{{ i.skpd }}</td>
-														<td>{{ i.permohonan }}</td>
-														<td>{{ i.status }}</td>
-														<td>{{ i.tanggal_survey|date:"d-m-Y" }}</td>
-														<td><i class="fa fa-plus"></i></td>
+														<td align="center">{{ i.skpd }}</td>
+														<td align="center"></td>
+														<td align="center">{{ i.permohonan }}</td>
+														<td align="center">{{ i.status|status }}</td>
+														<td align="center">{{ i.tanggal_survey|date:"d-m-Y" }}</td>
+														<td align="center">{{ i.status|hasil }}</td>
 													</tr>
 												{% endfor %}
 											</tbody> 
