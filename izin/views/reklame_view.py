@@ -14,8 +14,7 @@ from django.views.decorators.http import require_POST
 def reklame_detilreklame_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			print request.COOKIES['id_pengajuan']
-			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilReklame.objects.get_or_create(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
 			if detilReklame.is_valid():
 				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']

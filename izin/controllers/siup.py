@@ -63,9 +63,11 @@ def add_wizard_siup(request):
 				msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
 				messages.warning(request, msg_, extra_tags='safe')
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
-			# print "kelompok"+id_kelompok_list.kode
 
-			if kode_izin_ == "Reklame":
+
+			if id_kelompok_list.kode == "503.03.01/":
+				url_ = "#"
+			elif id_kelompok_list.kode == "503.03.02/":
 				url_ = reverse('admin:izin_proses_reklame')
 			elif id_kelompok_list.kode == "503.08/":
 				url_ = reverse('admin:izin_proses_siup')

@@ -460,6 +460,7 @@ class Survey(MetaAtribut):
 
 
 class DetilIMBPapanReklame(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='imbreklame_perusahaan', blank=True, null=True)
 	jenis_papan_reklame = models.CharField(max_length=255, verbose_name='Jenis Papan Reklame')
 	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
 	tinggi = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tinggi')
