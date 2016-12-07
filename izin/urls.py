@@ -160,7 +160,7 @@ urlpatterns = [
     # End
     # 
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
-    url(r'^layanan/reklame/detilreklame/isidentil/save/$', reklame_view.reklame_detilreklame_isidentil_save_cookie, name='reklame_detilreklame_isidentil_save'),
+    url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
     url(r'^layanan/reklame/detilreklame/permanen/save/$', reklame_view.reklame_detilreklame_permanen_save_cookie, name='reklame_detilreklame_permanen_save'),
 
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),

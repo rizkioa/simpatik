@@ -496,7 +496,7 @@ function form_upload_dokumen(elem_){
           var percentVal = '100%';
           $('#percent-'+split_).html(percentVal);
           if ($.cookie('id_pengajuan') != ''){
-            load_berkas($.cookie('id_pengajuan'))
+            load_berkas_imb_reklame($.cookie('id_pengajuan'))
           }                  
       }
       else{
