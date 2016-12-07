@@ -265,14 +265,16 @@ def siup_detilsiup_save_cookie(request):
 			# kekayaan = unicode(request.POST.get('kekayaan_bersih', Decimal(0.00)).replace(".", ""))
 			kekayaan_ = request.POST.get('kekayaan_bersih')
 			if kekayaan_ == '':
-				kekayaan = Decimal(0.00)
-			else:
-				kekayaan = kekayaan_.replace(".", "")
+				# kekayaan = Decimal(0.00)
+				kekayaan = '0' 
+			# else:
+				# kekayaan = kekayaan_.replace(".", "")
 			tos = request.POST.get('total_nilai_saham')
 			if tos == '':
-				total_saham = Decimal(0.00)
-			else:
-				total_saham = tos.replace(".", "")
+				# total_saham = Decimal(0.00)
+				total_saham = '0'
+			# else:
+				# total_saham = tos.replace(".", "")
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
 				try:
