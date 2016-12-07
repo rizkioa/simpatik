@@ -4,14 +4,14 @@ import os
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from master.models import Berkas
-from izin.models import DetilReklame, PengajuanIzin
+from izin.models import DetilReklame, PengajuanIzin,JenisPermohonanIzin
 from izin.izin_forms import UploadBerkasPendukungForm
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
-def reklame_detilreklame_save_cookie(request):
+def reklame_detilreklame_isidentil_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = DetilReklame.objects.get_or_create(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
@@ -50,6 +50,60 @@ def reklame_detilreklame_save_cookie(request):
 		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
 		data = json.dumps(data)
 	response = HttpResponse(data)
+	return response
+
+def reklame_detilreklame_permanen_save_cookie(request):
+	if 'id_pengajuan' in request.COOKIES.keys() or 'jenis_permohonan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '' or request.COOKIES['jenis_permohonan'] != '':
+			jenis_pengajuan_ = JenisPermohonanIzin.objects.get(jenis_permohonan_izin=request.COOKIES['id_jenis_pengajuan'])
+			id_jenis_pengajuan_ = jenis_pengajuan_.id
+
+			if request.user.is_anonymous():
+				created_by = request.COOKIES['id_pemohon']
+			else:
+				created_by =  request.user.id
+			if request.COOKIES['id_pengajuan_reklame'] != '':
+				pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan_reklame'])
+			else:	
+				pengajuan_ = DetilReklame.objects.create(status=11,pemohon_id=request.COOKIES['id_pemohon'],kelompok_jenis_izin_id=14,jenis_permohonan_id=id_jenis_pengajuan_,created_by_id=created_by)
+			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
+			if detilReklame.is_valid():
+				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+				pengajuan_.save()
+				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
+				if pengajuan_.tanggal_mulai:
+					awal = pengajuan_.tanggal_mulai
+				else:
+					awal = 0
+				if pengajuan_.tanggal_akhir:
+					akhir = pengajuan_.tanggal_akhir
+				else:
+					akhir = 0
+				
+				selisih = akhir-awal
+				data = {'success': True,
+						'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
+						'data': [
+						{'jenis_reklame': pengajuan_.jenis_reklame.jenis_reklame},
+						{'judul_reklame': pengajuan_.judul_reklame},
+						{'ukuran': ukuran_},
+						{'letak_pemasangan': letak_},
+						{'selisih': selisih.days}]}
+				data = json.dumps(data)
+				response = HttpResponse(json.dumps(data))
+				response.set_cookie(key='id_pengajuan_reklame', value=pengajuan_.id)
+			else:
+				data = detilReklame.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
 	return response
 
 def reklame_upload_berkas_pendukung(request):

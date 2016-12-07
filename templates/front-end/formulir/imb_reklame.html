@@ -36,7 +36,7 @@
 {% block pageheader %}
 <div class="pageheader">
     <h2>Surat Mendirikan Bangunan
-    <span>Berikut adalah info pendaftaran perizinan IMB-Reklame Kabupaten Kediri.</span>
+    <span>Berikut adalah info pendaftaran perizinan Reklame dan IMB-Reklame Kabupaten Kediri.</span>
   </h2>
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -191,7 +191,8 @@
               if($current == 5){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas(id_pengajuan)
+                id_pengajuan_reklame = parseInt($.cookie('id_pengajuan_reklame'))
+                load_berkas(id_pengajuan_reklame)
                 load_berkas_imb_reklame(id_pengajuan)
                 
               }
@@ -366,7 +367,7 @@
                   for (var i = 0; i < a.length; i++){
                     // console.log(a[i]);
                     // console.log(respon[a[i]]);
-                    var field = a[i].replace("_", " ").capitalize();
+                    var field = a[i].replace("_", " ");
                     toastr["error"](field+", "+respon[a[i]][0]['message'])
                     $("#"+a[i]+"").addClass("has-error");
                     // console.log($("#"+a[i]+"").addClass("parsley-error"));

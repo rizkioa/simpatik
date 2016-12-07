@@ -145,6 +145,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		response.set_cookie(key='id_pemohon', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
 		response.set_cookie(key='nomor_paspor', value=paspor_)
+		response.set_cookie(key='id_jenis_pengajuan', value=jenis_permohonan_)
 	else:
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		response = HttpResponse(data)

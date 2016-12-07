@@ -112,10 +112,13 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
-		list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
-		if func_view.__name__ == 'izinterdaftar':
+		if request.user.is_superuser:
+			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+		elif not request.user.is_superuser:
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+		elif func_view.__name__ == 'izinterdaftar':
 			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan', 'get_status_proses', 'linkdetilizin')
-		if func_view.__name__ == 'semua_pengajuan':
+		elif func_view.__name__ == 'semua_pengajuan':
 			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran', 'linkdetilizin')
 		# else:
 			# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses')
@@ -192,38 +195,38 @@ class IzinAdmin(admin.ModelAdmin):
 		return obj.created_at
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
-	def get_no_pengajuan(self, obj):
-		no_pengajuan = mark_safe("""
-			<a href="%s" target="_blank"> %s </a>
-			""" % ("#", obj.no_pengajuan ))
-		split_ = obj.no_pengajuan.split('/')
-		# print split_
-		no_pengajuan = mark_safe("""
-				<span>%s</span>
-				""" % ( obj.no_pengajuan ))
-		if split_[0] == 'SIUP':
-			# if request.user.is_superuser:
-			# 	no_pengajuan = mark_safe("""
-			# 	<a href="%s" target="_blank"> %s </a>
-			# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
-			# else:
-			no_pengajuan
-		elif split_[0] == 'Reklame':
-			# if request.user.is_superuser:
-			# 	no_pengajuan = mark_safe("""
-			# 	<a href="%s" target="_blank"> %s </a>
-			# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
-			# else:
-			no_pengajuan
-		elif split_[0] == 'TDP':
-			# if request.user.is_superuser:
-			# 	no_pengajuan = mark_safe("""
-			# 	<a href="%s" target="_blank"> %s </a>
-			# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
-			# else:
-			no_pengajuan
-		return no_pengajuan
-	get_no_pengajuan.short_description = "No. Pengajuan"
+	# def get_no_pengajuan(self, obj):
+	# 	no_pengajuan = mark_safe("""
+	# 		<a href="%s" target="_blank"> %s </a>
+	# 		""" % ("#", obj.no_pengajuan ))
+	# 	split_ = obj.no_pengajuan
+	# 	# print split_
+	# 	no_pengajuan = mark_safe("""
+	# 			<span>%s</span>
+	# 			""" % ( obj.no_pengajuan ))
+	# 	if split_[0] == 'SIUP':
+	# 		# if request.user.is_superuser:
+	# 		# 	no_pengajuan = mark_safe("""
+	# 		# 	<a href="%s" target="_blank"> %s </a>
+	# 		# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+	# 		# else:
+	# 		no_pengajuan
+	# 	elif split_[0] == 'Reklame':
+	# 		# if request.user.is_superuser:
+	# 		# 	no_pengajuan = mark_safe("""
+	# 		# 	<a href="%s" target="_blank"> %s </a>
+	# 		# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+	# 		# else:
+	# 		no_pengajuan
+	# 	elif split_[0] == 'TDP':
+	# 		# if request.user.is_superuser:
+	# 		# 	no_pengajuan = mark_safe("""
+	# 		# 	<a href="%s" target="_blank"> %s </a>
+	# 		# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
+	# 		# else:
+	# 		no_pengajuan
+	# 	return no_pengajuan
+	# get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def linkdetilizin(self, obj):
 		link_ = '#'
@@ -234,6 +237,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "IUJK":
 			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.06/":
+			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
 				""" % link_ )
@@ -250,6 +255,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "IUJK":
 			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.06/":
+			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
