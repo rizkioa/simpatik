@@ -124,9 +124,9 @@ def formulir_siup(request, extra_context={}):
                     if pengajuan_.jenis_penanaman_modal:
                         extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
                     if pengajuan_.kekayaan_bersih:
-                        extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
+                        extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
                     if pengajuan_.total_nilai_saham:
-                        extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+                        extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
                     if pengajuan_.presentase_saham_nasional:
                         extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
                     if pengajuan_.presentase_saham_asing:
@@ -312,20 +312,6 @@ def formulir_imb_perumahan(request, extra_context={}):
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
 
-def formulir_imb_reklame(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    return render(request, "front-end/formulir/imb_reklame.html", extra_context)
 
 def formulir_tdp_cv(request, extra_context={}):
     negara = Negara.objects.all()
@@ -496,8 +482,8 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
             #   legalitas_ = [l.as_json() for l in Legalitas.objects.filter(id__in=legalitas_list)]
             # legalitas_ = "kosong"
             extra_context.update({ 'pengajuan': pengajuan_ })
-            extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
-            extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+            extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+            extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
             extra_context.update({ 'syarat': syarat })
             # extra_context.update({ 'legalitas': legalitas_ })
             if pengajuan_.kelembagaan:
@@ -668,15 +654,6 @@ def cetak_bukti_pendaftaran_imb_perumahan(request, extra_context={}):
     extra_context.update({'syarat': syarat})
     return render(request, "front-end/include/formulir_imb_perumahan/cetak_bukti_pendaftaran.html", extra_context)
 
-def cetak_imb_reklame(request, extra_context={}):
-    return render(request, "front-end/include/formulir_imb_reklame/cetak.html", extra_context)
-
-def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
-    extra_context.update({'syarat': syarat})
-    return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
-
-
 def cetak_tdp_pt(request, extra_context={}):
     return render(request, "front-end/include/formulir_tdp_pt/cetak.html", extra_context)
 
@@ -812,7 +789,7 @@ def option_kbli(request):
     select = request.POST.get('select')
     select = eval(select)
     kbli = request.POST.get('kbli')
-    kbli_list = KBLI.objects.filter(Q(nama_kbli__contains=kbli) | Q(kode_kbli__contains=kbli))
+    kbli_list = KBLI.objects.filter(Q(nama_kbli__icontains=kbli) | Q(kode_kbli__icontains=kbli))
     if len(select) > 0:
         kbli_list = kbli_list.exclude(id__in=select)
     kbli_list = kbli_list.extra(where=["CHAR_LENGTH(kode_kbli) = 5"])

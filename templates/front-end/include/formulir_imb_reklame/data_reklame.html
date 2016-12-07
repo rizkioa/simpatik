@@ -1,4 +1,4 @@
-<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'reklame_detilreklame_isidentil_save' %}" data-parsley-validate novalidate>
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'reklame_detilreklame_permanen_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -6,12 +6,12 @@
         <hr class="style14">
       </div>
     </div>
-    <input name="jenis_reklame" id="id_jenis_reklame" value="2" hidden="">
+    <input name="jenis_reklame" id="id_jenis_reklame" value="1" hidden="">
     <div class="form-group">
       <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="jenis_reklame" disabled=""data-parsley-trigger="change" id="id_jenis_reklame">
-          <option value="2">Insidentil</option>
+        <select class="form-control chosen-select mb-10" disabled="" data-parsley-trigger="change" id="id_jenis_reklame">
+          <option value="1">Permanen</option>
         </select>
       </div>
     </div>

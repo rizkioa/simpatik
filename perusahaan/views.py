@@ -1,17 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from perusahaan.forms import AktaNotarisForm
-from perusahaan.models import KBLI
+# from django.shortcuts import render
+# from django.http import HttpResponse
+# from perusahaan.forms import AktaNotarisForm
+# from perusahaan.models import KBLI
 
-# Create your views here.
-def index(request):
-    if request.method == 'POST':
-        aktaform = AktaNotarisForm(request.POST)
-        if aktaform.is_valid():
-            return HttpResponseRedirect('/suwun/')
-    else:
-        aktaform = AktaNotarisForm()
-    return render(request, 'index.html', {'aktaform': aktaform})
+# # Create your views here.
+# def index(request):
+#     if request.method == 'POST':
+#         aktaform = AktaNotarisForm(request.POST)
+#         if aktaform.is_valid():
+#             return HttpResponseRedirect('/suwun/')
+#     else:
+#         aktaform = AktaNotarisForm()
+#     return render(request, 'index.html', {'aktaform': aktaform})
 
 # def index(request, extra_context={}):
 	
@@ -71,4 +71,36 @@ def index(request):
 # 		form= Siswaform()
 # 	extra_context.update({'form':form})
 # 	return render(request, "front_end/tambah.html", extra_context)
+
+from izin.models import DetilSIUP
+from izin.utils import formatrupiah
+
+def editkekayaan():
+    a = DetilSIUP.objects.all()
+    try:
+        for b in a:
+            if b.kekayaan_bersih:
+                o = b.kekayaan_bersih.split('.')
+                b.kekayaan_bersih = formatrupiah(o[0])
+                b.save()
+                print b.kekayaan_bersih
+            else:
+                print "kosong"
+    except AttributeError:
+        print 'error'
+
+
+def editsaham():
+    a = DetilSIUP.objects.all()
+    try:
+        for b in a:
+            if b.total_nilai_saham:
+                o = b.total_nilai_saham.split('.')
+                b.total_nilai_saham = formatrupiah(o[0])
+                b.save()
+                print b.total_nilai_saham
+            else:
+                print "kosong"
+    except AttributeError:
+        print 'error'
 

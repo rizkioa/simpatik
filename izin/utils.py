@@ -86,7 +86,7 @@ def formatrupiah(uang):
 	i = int(uang)
 	y = str(i)
 	if len(y) <= 3 :
-		return 'Rp ' + y     
+		return y     
 	else :
 		p = y[-3:]
 		q = y[:-3]
@@ -149,12 +149,12 @@ def detil_pengajuan_siup_view(request, id_pengajuan_izin_, extra_context = {}):
 		extra_context.update({'banyak': banyak})
 		syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
 		extra_context.update({'syarat': syarat_})
-		kekayaan_bersih = int(pengajuan_.kekayaan_bersih)
-		extra_context.update({'kekayaan_bersih': formatrupiah(kekayaan_bersih)})
-		total_nilai_saham = int(pengajuan_.total_nilai_saham)
-		extra_context.update({'total_nilai_saham': formatrupiah(total_nilai_saham)})
+		kekayaan_bersih = pengajuan_.kekayaan_bersih
+		extra_context.update({'kekayaan_bersih': kekayaan_bersih})
+		total_nilai_saham = pengajuan_.total_nilai_saham
+		extra_context.update({'total_nilai_saham': total_nilai_saham})
 
-		riwayat_penolakan = Riwayat.objects.filter(pengajuan_izin_id=1043, pengajuan_izin__status=7).last()
+		riwayat_penolakan = Riwayat.objects.filter(pengajuan_izin_id=pengajuan_.id, pengajuan_izin__status=7).last()
 		extra_context.update({'riwayat_penolakan': riwayat_penolakan })
 
 		try:

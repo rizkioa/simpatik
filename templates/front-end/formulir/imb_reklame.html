@@ -25,7 +25,7 @@
       .onoffswitch.labeled .onoffswitch-switch {
         right: 34px;
       }
-  </style>
+ </style>
   <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
@@ -36,7 +36,7 @@
 {% block pageheader %}
 <div class="pageheader">
     <h2>Surat Mendirikan Bangunan
-    <span>Berikut adalah info pendaftaran perizinan IMB-Reklame Kabupaten Kediri.</span>
+    <span>Berikut adalah info pendaftaran perizinan Reklame dan IMB-Reklame Kabupaten Kediri.</span>
   </h2>
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -62,9 +62,10 @@
   <ul class="nav nav-tabs nav-justified">
     <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
     <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data IMB Konstruksi Lain</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Reklame</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Data IMB Konstruksi Lain</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
   </ul>
 
 {% endblock %}
@@ -74,22 +75,24 @@
       <!-- Identitas pemohon --> 
       {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
     </div>
-
     <div class="tab-pane" id="tab2">
       <!-- Identitas perusahaan -->
       {% include 'front-end/include/formulir_imb_reklame/identitas_perusahaan.html' %}
     </div>
-
     <div class="tab-pane" id="tab3">
+      <!-- Legalitas perusahaan -->
+      {% include 'front-end/include/formulir_imb_reklame/data_reklame.html' %}
+    </div>
+    <div class="tab-pane" id="tab4">
       <!-- Legalitas perusahaan -->
       {% include 'front-end/include/formulir_imb_reklame/data_imb_konstruksi_lain.html' %}
     </div>
-    <div class="tab-pane" id="tab4">
+    <div class="tab-pane" id="tab5">
       <!-- Dokumen upload -->
       {% include 'front-end/include/formulir_imb_reklame/upload_dokumen.html' %}
     </div>
 
-    <div class="tab-pane" id="tab5">
+    <div class="tab-pane" id="tab6">
       <!-- Konfirmasi -->
       {% include 'front-end/include/formulir_imb_reklame/konfirmasi.html' %}
     </div>
@@ -185,10 +188,12 @@
                   })
                 }
               }else{
-              if($current == 4){
+              if($current == 5){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas(id_pengajuan)
+                id_pengajuan_reklame = parseInt($.cookie('id_pengajuan_reklame'))
+                load_berkas(id_pengajuan_reklame)
+                load_berkas_imb_reklame(id_pengajuan)
                 
               }
                 $('#rootwizard').find('.pager .next').show();
@@ -202,7 +207,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return false;
+              return true;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -211,7 +216,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });
@@ -260,10 +265,10 @@
             }
           });
           
-          $('#percent_berkas_foto').hide()
-          $('#percent_berkas_ktp').hide()
-          $('#percent_berkas_npwp_pribadi').hide()
-          $('#percent_berkas_npwp_perusahaan').hide()
+          $('#percent-ktp_paspor').hide()
+          $('#percent-rencana_teknis_kontruksi_bangunan_reklame').hide()
+          $('#percent-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya').hide()
+          $('#percent-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah').hide()
           $('#percent_berkas_akta_pendirian').hide()
           $('#percent_berkas_akta_perubahan').hide()
           $('#percent_berkas_pendukung').hide()
@@ -362,7 +367,7 @@
                   for (var i = 0; i < a.length; i++){
                     // console.log(a[i]);
                     // console.log(respon[a[i]]);
-                    var field = a[i].replace("_", " ").capitalize();
+                    var field = a[i].replace("_", " ");
                     toastr["error"](field+", "+respon[a[i]][0]['message'])
                     $("#"+a[i]+"").addClass("has-error");
                     // console.log($("#"+a[i]+"").addClass("parsley-error"));
@@ -455,11 +460,17 @@
             }
           });
 
+          $('#percent-ktp_paspor').hide()
+          $('#percent-rencana_teknis_kontruksi_bangunan_reklame').hide()
+          $('#percent-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya').hide()
+          $('#percent-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah').hide()
           $('#percent-gambar_konstruksi_pemasangan_reklame').hide()
           $('#percent-gambar_foto_lokasi_pemasangan_reklame').hide()
           $('#percent-gambar_denah_lokasi_pemasangan_reklame').hide()
           $('#percent-surat_ketetapan_pajak_daerah').hide()
           $('#percent-surat_setoran_pajak_daerah').hide()
+          $('#percent-surat_ketetapan_pajak_daerah_imb').hide()
+          $('#percent-surat_setoran_pajak_daerah_imb').hide()
           $('#percent-rekomendasi_satpol_pp').hide()
           $('#percent-berita_acara_perusahaan').hide()
           $('#percent-surat_perjanjian').hide()

@@ -1,8 +1,13 @@
+import json
+import base64
+from izin.utils import terbilang_, terbilang, formatrupiah
+from django.db.models import Q
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
+from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat
 from kepegawaian.models import Pegawai
@@ -11,10 +16,7 @@ from izin.controllers.reklame import formulir_reklame
 from izin.controllers.tdp import formulir_tdp_pt
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
-import json
-import base64
-from izin.utils import terbilang_, terbilang, formatrupiah
-from django.db.models import Q
+
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -111,10 +113,13 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
-		list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
-		if func_view.__name__ == 'izinterdaftar':
+		if request.user.is_superuser:
+			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+		elif not request.user.is_superuser:
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+		elif func_view.__name__ == 'izinterdaftar':
 			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan', 'get_status_proses', 'linkdetilizin')
-		if func_view.__name__ == 'semua_pengajuan':
+		elif func_view.__name__ == 'semua_pengajuan':
 			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran', 'linkdetilizin')
 		# else:
 			# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses')
@@ -191,38 +196,38 @@ class IzinAdmin(admin.ModelAdmin):
 		return obj.created_at
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
-	def get_no_pengajuan(self, obj):
-		no_pengajuan = mark_safe("""
-			<a href="%s" target="_blank"> %s </a>
-			""" % ("#", obj.no_pengajuan ))
-		split_ = obj.no_pengajuan.split('/')
-		# print split_
-		no_pengajuan = mark_safe("""
-				<span>%s</span>
-				""" % ( obj.no_pengajuan ))
-		if split_[0] == 'SIUP':
-			# if request.user.is_superuser:
-			# 	no_pengajuan = mark_safe("""
-			# 	<a href="%s" target="_blank"> %s </a>
-			# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
-			# else:
-			no_pengajuan
-		elif split_[0] == 'Reklame':
-			# if request.user.is_superuser:
-			# 	no_pengajuan = mark_safe("""
-			# 	<a href="%s" target="_blank"> %s </a>
-			# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
-			# else:
-			no_pengajuan
-		elif split_[0] == 'TDP':
-			# if request.user.is_superuser:
-			# 	no_pengajuan = mark_safe("""
-			# 	<a href="%s" target="_blank"> %s </a>
-			# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
-			# else:
-			no_pengajuan
-		return no_pengajuan
-	get_no_pengajuan.short_description = "No. Pengajuan"
+	# def get_no_pengajuan(self, obj):
+	# 	no_pengajuan = mark_safe("""
+	# 		<a href="%s" target="_blank"> %s </a>
+	# 		""" % ("#", obj.no_pengajuan ))
+	# 	split_ = obj.no_pengajuan
+	# 	# print split_
+	# 	no_pengajuan = mark_safe("""
+	# 			<span>%s</span>
+	# 			""" % ( obj.no_pengajuan ))
+	# 	if split_[0] == 'SIUP':
+	# 		# if request.user.is_superuser:
+	# 		# 	no_pengajuan = mark_safe("""
+	# 		# 	<a href="%s" target="_blank"> %s </a>
+	# 		# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+	# 		# else:
+	# 		no_pengajuan
+	# 	elif split_[0] == 'Reklame':
+	# 		# if request.user.is_superuser:
+	# 		# 	no_pengajuan = mark_safe("""
+	# 		# 	<a href="%s" target="_blank"> %s </a>
+	# 		# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+	# 		# else:
+	# 		no_pengajuan
+	# 	elif split_[0] == 'TDP':
+	# 		# if request.user.is_superuser:
+	# 		# 	no_pengajuan = mark_safe("""
+	# 		# 	<a href="%s" target="_blank"> %s </a>
+	# 		# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
+	# 		# else:
+	# 		no_pengajuan
+	# 	return no_pengajuan
+	# get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def linkdetilizin(self, obj):
 		link_ = '#'
@@ -233,6 +238,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "IUJK":
 			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.06/":
+			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
 				""" % link_ )
@@ -249,6 +256,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "IUJK":
 			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.06/":
+			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -476,7 +485,7 @@ class IzinAdmin(admin.ModelAdmin):
 			if pengajuan_.kekayaan_bersih:
 				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
 				extra_context.update({'terbilang': str(terbilang_) })
-				extra_context.update({ 'kekayaan_bersih': formatrupiah(pengajuan_.kekayaan_bersih) })
+				extra_context.update({ 'kekayaan_bersih': pengajuan_.kekayaan_bersih })
 			# try:
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:
@@ -753,23 +762,30 @@ class IzinAdmin(admin.ModelAdmin):
 					elif request.POST.get('aksi') == '_submit_penomoran':
 						obj_skizin.status = 10
 						obj_skizin.save()
-						kode_izin_ =  obj.kelompok_jenis_izin.kode
-						nomor_urut_ = request.POST.get('kode_izin')
-						tahun_ = request.POST.get('tahun')
-						obj.no_izin = kode_izin_+nomor_urut_+"/418.71/"+tahun_
-						obj.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Registered (Izin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "SKIzin berhasil di register.",
-							"redirect": '',
-						}
+						try:
+							kode_izin_ =  obj.kelompok_jenis_izin.kode
+							nomor_urut_ = request.POST.get('kode_izin')
+							tahun_ = request.POST.get('tahun')
+							obj.no_izin = kode_izin_+nomor_urut_+"/418.71/"+tahun_
+							obj.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Registered (Izin)"
+							)
+							riwayat_.save()
+							response = {
+								"success": True,
+								"pesan": "SKIzin berhasil di register.",
+								"redirect": '',
+							}
+						except IntegrityError:
+							response = {
+								"success": False,
+								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+								"redirect": '',
+							}
 					elif request.POST.get('aksi') == '_submit_cetak_izin':
 						obj_skizin.status = 2
 						obj_skizin.save()

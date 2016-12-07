@@ -344,7 +344,7 @@
                 <li class="dropdown nav-profile">
                     <a href class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ user.get_foto }}" alt="" class="img-circle size-30x30">
-                        <span>{% block welcome-msg %}{% firstof user.get_short_name user.get_username %}{% endblock %}<i class="fa fa-angle-down"></i></span>
+                        <span>{% block welcome-msg %}{% firstof user.nama_lengkap user.get_username user.nama_lengkap %}{% endblock %}<i class="fa fa-angle-down"></i></span>
                     </a>
                     {% block userlinks %}
                     <ul class="dropdown-menu animated littleFadeInRight" role="menu">

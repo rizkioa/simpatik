@@ -63,9 +63,11 @@ def add_wizard_siup(request):
 				msg_ = "Kode Izin tidak diketahui. Silahkan setting kode izin di <a href='%s'> Link ini</a>" % reverse('admin:izin_jenisizin_changelist')
 				messages.warning(request, msg_, extra_tags='safe')
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
-			# print "kelompok"+id_kelompok_list.kode
 
-			if kode_izin_ == "Reklame":
+
+			if id_kelompok_list.kode == "503.03.01/":
+				url_ = "#"
+			elif id_kelompok_list.kode == "503.03.02/":
 				url_ = reverse('admin:izin_proses_reklame')
 			elif id_kelompok_list.kode == "503.08/":
 				url_ = reverse('admin:izin_proses_siup')
@@ -124,6 +126,7 @@ def formulir_siup(request):
 		extra_context.update({'kelembagaan_list': kelembagaan_list})
 		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
+		extra_context.update({'has_permission': True })
 
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
@@ -161,9 +164,9 @@ def formulir_siup(request):
 					if pengajuan_.jenis_penanaman_modal:
 						extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
 					if pengajuan_.kekayaan_bersih:
-						extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
+						extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
 					if pengajuan_.total_nilai_saham:
-						extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+						extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
 					if pengajuan_.presentase_saham_nasional:
 						extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
 					if pengajuan_.presentase_saham_asing:
@@ -180,10 +183,11 @@ def formulir_siup(request):
 						response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
 					if pengajuan_.perusahaan:
 						response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
-					if legalitas_pendirian:
-						response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
-					if legalitas_perubahan:
-						response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
+					if pengajuan_.perusahaan:
+						if legalitas_pendirian:
+							response.set_cookie(key='id_legalitas', value=legalitas_pendirian.id)
+						if legalitas_perubahan:
+							response.set_cookie(key='id_legalitas_perubahan', value=legalitas_perubahan.id)
 					if ktp_:
 						response.set_cookie(key='nomor_ktp', value=ktp_)
 				except ObjectDoesNotExist:

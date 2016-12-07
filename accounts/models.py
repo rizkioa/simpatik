@@ -171,7 +171,7 @@ class HakAkses(Group):
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
 	def __unicode__(self):
-		return u'%s - %s' % (self.keterangan)
+		return u'%s' % (self.keterangan)
 
 	class Meta:
 		ordering = ['id']

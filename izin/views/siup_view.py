@@ -145,6 +145,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		response.set_cookie(key='id_pemohon', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
 		response.set_cookie(key='nomor_paspor', value=paspor_)
+		response.set_cookie(key='id_jenis_pengajuan', value=jenis_permohonan_)
 	else:
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		response = HttpResponse(data)
@@ -260,19 +261,21 @@ def siup_identitas_perusahan_save_cookie(request):
 def siup_detilsiup_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
 			# kekayaan = unicode(request.POST.get('kekayaan_bersih', Decimal(0.00)).replace(".", ""))
 			kekayaan_ = request.POST.get('kekayaan_bersih')
 			if kekayaan_ == '':
-				kekayaan = Decimal(0.00)
-			else:
-				kekayaan = kekayaan_.replace(".", "")
+				# kekayaan = Decimal(0.00)
+				kekayaan = '0' 
+			# else:
+				# kekayaan = kekayaan_.replace(".", "")
 			tos = request.POST.get('total_nilai_saham')
 			if tos == '':
-				total_saham = Decimal(0.00)
-			else:
-				total_saham = tos.replace(".", "")
+				# total_saham = Decimal(0.00)
+				total_saham = '0'
+			# else:
+				# total_saham = tos.replace(".", "")
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
 				try:
@@ -289,8 +292,10 @@ def siup_detilsiup_save_cookie(request):
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
 					nama_kbli = []
+					print kbli_list
 					for kbli in kbli_list:
 						kbli_obj = KBLI.objects.get(id=kbli)
+						print kbli_obj
 						pengajuan_.kbli.add(kbli_obj)
 						
 						nama_kbli.append(kbli_obj.nama_kbli)			
@@ -486,7 +491,7 @@ def siup_upload_berkas_foto_pemohon(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-						 	valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
+						 	valid_extensions = ['.jpg', '.jpeg', '.png']
 						 	if not ext in valid_extensions:
 						 		data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
