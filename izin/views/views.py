@@ -124,9 +124,9 @@ def formulir_siup(request, extra_context={}):
                     if pengajuan_.jenis_penanaman_modal:
                         extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
                     if pengajuan_.kekayaan_bersih:
-                        extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
+                        extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
                     if pengajuan_.total_nilai_saham:
-                        extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+                        extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
                     if pengajuan_.presentase_saham_nasional:
                         extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
                     if pengajuan_.presentase_saham_asing:
@@ -496,8 +496,8 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
             #   legalitas_ = [l.as_json() for l in Legalitas.objects.filter(id__in=legalitas_list)]
             # legalitas_ = "kosong"
             extra_context.update({ 'pengajuan': pengajuan_ })
-            extra_context.update({ 'kekayaan_bersih_konfirmasi': formatrupiah(pengajuan_.kekayaan_bersih) })
-            extra_context.update({ 'total_nilai_saham_konfirmasi': formatrupiah(pengajuan_.total_nilai_saham) })
+            extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+            extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
             extra_context.update({ 'syarat': syarat })
             # extra_context.update({ 'legalitas': legalitas_ })
             if pengajuan_.kelembagaan:
