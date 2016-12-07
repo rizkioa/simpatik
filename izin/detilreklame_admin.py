@@ -31,6 +31,44 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
+	def get_readonly_fields(self, request, obj=None):
+		rf = ('verified_by', 'verified_at', 'created_by', 'created_at', 'updated_at')
+		if obj:
+			if not request.user.is_superuser:
+				rf = rf+('status',)
+		return rf
+
+	def get_fieldsets(self, request, obj = None):
+		if obj or request.user.is_superuser:
+			add_fieldsets = (
+				(None, {
+					'classes': ('wide',),
+					'fields': ('pemohon',)
+					}
+				),
+				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
+				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
+				
+				('Detail Reklame', {'fields': ('perusahaan','jenis_reklame','judul_reklame','panjang','lebar','sisi','letak_pemasangan','desa',('tanggal_mulai','tanggal_akhir'),'lt','lg') }),
+				
+				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
+
+				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
+			)
+		else:
+			add_fieldsets = (
+				(None, {
+					'classes': ('wide',),
+					'fields': ('pemohon',)
+					}
+				),
+				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
+				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
+				('Detail IMB Papan Reklame', {'fields': ('jenis_papan_reklame','lebar','tinggi','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat') }),
+				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
+			)
+		return add_fieldsets
+
 	def view_pengajuan_reklame(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:

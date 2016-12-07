@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse, resolve
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
+from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat
 from kepegawaian.models import Pegawai
@@ -757,23 +758,30 @@ class IzinAdmin(admin.ModelAdmin):
 					elif request.POST.get('aksi') == '_submit_penomoran':
 						obj_skizin.status = 10
 						obj_skizin.save()
-						kode_izin_ =  obj.kelompok_jenis_izin.kode
-						nomor_urut_ = request.POST.get('kode_izin')
-						tahun_ = request.POST.get('tahun')
-						obj.no_izin = kode_izin_+nomor_urut_+"/418.71/"+tahun_
-						obj.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Registered (Izin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "SKIzin berhasil di register.",
-							"redirect": '',
-						}
+						try:
+							kode_izin_ =  obj.kelompok_jenis_izin.kode
+							nomor_urut_ = request.POST.get('kode_izin')
+							tahun_ = request.POST.get('tahun')
+							obj.no_izin = kode_izin_+nomor_urut_+"/418.71/"+tahun_
+							obj.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Registered (Izin)"
+							)
+							riwayat_.save()
+							response = {
+								"success": True,
+								"pesan": "SKIzin berhasil di register.",
+								"redirect": '',
+							}
+						except IntegrityError:
+							response = {
+								"success": False,
+								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+								"redirect": '',
+							}
 					elif request.POST.get('aksi') == '_submit_cetak_izin':
 						obj_skizin.status = 2
 						obj_skizin.save()

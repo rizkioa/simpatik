@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}">
+<form method="POST" name="step6" role="form" >
   {% csrf_token %}
   <h3>KOMFIRMASI DATA</h3>
   <hr class="style14">
@@ -227,7 +227,38 @@
     </div>
   </div>
   <br>
-  <h4><u>#3. DATA IMB KONSTRUKSI LAIN</u></h4>
+
+  <h4><u>#3. DATA REKLAME</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Reklame</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="jenis_reklame_konfirmasi" >{{ pengajuan_.jenis_reklame.jenis_reklame }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama / Judul Reklame</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="judul_reklame_konfirmasi">{{ pengajuan_.judul_reklame }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Ukuran, Panjang x Ukuran x Muka/Sisi</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="ukuran_konfirmasi">{{ ukuran }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Waktu / Lama Pemasangan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="selisih_konfirmasi" >{{ selisih }}</span> Hari</td>
+    </tr>
+    <tr>
+      <td width="25%">Letak Pemasangan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="letak_pemasangan_konfirmasi" >{{ letak }}</span></td>
+    </tr>
+  </table>
+
+  <br>
+  <h4><u>#4. DATA IMB KONSTRUKSI LAIN</u></h4>
   <div class="row">
     <div class="col-md-3">
       <span>Jenis Papan Reklame</span>
@@ -310,7 +341,109 @@
     </div>
   </div>
   <br>
-  <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN</u></h4>
+  <h4><u>#5. Upload Dokumen Persyaratan Izin Reklame</u></h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr align="center">
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+           Gambar Kontruksi Pemasangan Reklame
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-gambar_konstruksi_pemasangan_reklame" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Gambar Foto Lokasi Pemasangan Reklame
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-gambar_foto_lokasi_pemasangan_reklame" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Gambar Denah Lokasi Pemasangan Rekalame
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-gambar_denah_lokasi_pemasangan_reklame" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Ketetapan Pajak Daerah (SKPD)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-surat_ketetapan_pajak_daerah" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Setoran Pajak Daerah (SSPD)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-surat_setoran_pajak_daerah" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rekomendasi dari Kanto SATPOL PP
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-rekomendasi_satpol_pp" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Berita Acara Perusahaan(BAP) Tim Perizinan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-berita_acara_perusahaan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Perjanjian Kesepakatan dengan pemilik rumah, tembok, pagar atau perkarangan bagi reklame tempel/melekat
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-surat_perjanjian" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Berkas Tambahan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-berkas_tambahan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <h4><u>#6. UPLOAD DOKUMEN PERSYARATAN IMB PAPAN REKLAME</u></h4>
   <table class="table table-bordered">
       <thead>
         <tr >
@@ -325,7 +458,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input id="checkbox-ktp_paspor" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -335,7 +468,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input id="checkbox-rencana_teknis_kontruksi_bangunan_reklame" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -345,7 +478,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input id="checkbox-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -355,7 +488,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input id="checkbox-surat_ketetapan_pajak_daerah_imb" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -365,7 +498,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input id="checkbox-surat_setoran_pajak_daerah_imb" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -375,7 +508,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input id="checkbox-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>

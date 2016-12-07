@@ -235,6 +235,30 @@ function load_desa_data_reklame(id_kecamatan_data_reklame){
     });
 }
 
+function load_desa_imb_reklame(id_kecamatan_imb_reklame){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    // $( "#id_desa_reklame_chosen" ).mask('loading')
+    $( "#id_desa_imb_reklame_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan_data_reklame }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_desa' %}', // the file to call
+        url: __base_url__+'/admin/master/desa/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_desa_imb_reklame" )
+            elem.html(response);
+            make_disabled(elem, false)
+            // $( "#id_desa_reklame_chosen" ).unmask()
+            $( "#id_desa_imb_reklame" ).change(function(){
+                $this = $(this)
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+
 $( "#id_kecamatan_data_reklame" ).change(function(){
     $this = $(this)
     id_kecamatan_data_reklame = $(this).val()
@@ -243,6 +267,17 @@ $( "#id_kecamatan_data_reklame" ).change(function(){
         make_disabled($( "#load_desa_data_reklame" ), true)
     }else{
         make_disabled($( "#load_desa_data_reklame" ), true)
+    }
+})
+
+$( "#id_kecamatan_imb_reklame" ).change(function(){
+    $this = $(this)
+    id_kecamatan_imb_reklame = $(this).val()
+    if(id_kecamatan_imb_reklame.length > 0){
+        load_desa_imb_reklame(id_kecamatan_imb_reklame)
+        make_disabled($( "#load_desa_imb_reklame" ), true)
+    }else{
+        make_disabled($( "#load_desa_imb_reklame" ), true)
     }
 })
 
