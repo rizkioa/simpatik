@@ -41,6 +41,7 @@ JENIS_ANGGOTA_BADAN_USAHA = (
 )
 
 def terbilang_(bil):
+	# bil = nilai.replace(".", "")
 	satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
 	n = int(bil)
@@ -150,9 +151,9 @@ def detil_pengajuan_siup_view(request, id_pengajuan_izin_, extra_context = {}):
 		syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
 		extra_context.update({'syarat': syarat_})
 		kekayaan_bersih = pengajuan_.kekayaan_bersih
-		extra_context.update({'kekayaan_bersih': kekayaan_bersih})
+		extra_context.update({'kekayaan_bersih': "Rp "+str(kekayaan_bersih)})
 		total_nilai_saham = pengajuan_.total_nilai_saham
-		extra_context.update({'total_nilai_saham': total_nilai_saham})
+		extra_context.update({'total_nilai_saham': "Rp "+str(total_nilai_saham)})
 
 		riwayat_penolakan = Riwayat.objects.filter(pengajuan_izin_id=pengajuan_.id, pengajuan_izin__status=7).last()
 		extra_context.update({'riwayat_penolakan': riwayat_penolakan })

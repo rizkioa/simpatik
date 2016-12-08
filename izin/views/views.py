@@ -124,9 +124,9 @@ def formulir_siup(request, extra_context={}):
                     if pengajuan_.jenis_penanaman_modal:
                         extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
                     if pengajuan_.kekayaan_bersih:
-                        extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+                        extra_context.update({ 'kekayaan_bersih_konfirmasi': "Rp "+str(pengajuan_.kekayaan_bersih) })
                     if pengajuan_.total_nilai_saham:
-                        extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+                        extra_context.update({ 'total_nilai_saham_konfirmasi': "Rp "+str(pengajuan_.total_nilai_saham) })
                     if pengajuan_.presentase_saham_nasional:
                         extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
                     if pengajuan_.presentase_saham_asing:
@@ -272,12 +272,9 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'negara': negara})
     provinsi = Provinsi.objects.all()
     extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
     kecamatan = Kecamatan.objects.all()
     extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
+    
     jenis_pemohon = JenisPemohon.objects.all()
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     return render(request, "front-end/formulir/tdp_pt.html", extra_context)

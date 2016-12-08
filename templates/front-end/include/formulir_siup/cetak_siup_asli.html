@@ -177,13 +177,22 @@
 			}
 		}
 
-		table tr:last-child td:first-child {
+		.isi{
+			font-size: 14px;
+		}
+
+		.images{
+			width: 3cm;
+    		height: 4cm;
+		}
+
+		/*table tr:last-child td:first-child {
 		    border-bottom-left-radius: 10px;
 		}
 
 		table tr:last-child td:last-child {
 		    border-bottom-right-radius: 10px;
-		}
+		}*/
 		@media print { body { display: none !important; } }
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1%}
@@ -242,77 +251,81 @@
 			        	<center>
 			        		<font style="font-size: 22px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
 			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</i></font><br>
-			        		<font style="font-size: 22px">Nomor : {% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}Tidak Ada{% endif %}</font><br>
+			        		<font style="font-size: 20px">Nomor : {% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}Tidak Ada{% endif %}</font><br>
 			        	</center>
 			        </div>
-			        <div class="col-2">
+			        <div class="col-2" style="padding-left: 0px;">
 			        	<div id="qrcodeTable" >
 			        	</div>
 			        </div>
 	        	</div>
-	        	<table width="100%" frame="box" rules="rows" style="border: 2px solid #999;">
+	        	<table class="isi" width="100%" frame="box" rules="rows" >
 	        		<tr>
-	        			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
-	        			<td width="5%">:</td>
-	        			<td width="50%">{{ perusahaan.nama_perusahaan.upper }}</td>
+	        			<td width="45%" valign="top"><b>NAMA PERUSAHAAN</b></td>
+	        			<td width="5%" valign="top">:</td>
+	        			<td width="50%" valign="top"><b>{{ perusahaan.nama_perusahaan.upper }}</b></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
-	        			<td>:</td>
-	        			<td>{{ pemohon.nama_lengkap.upper }} ({{ pemohon.jenis_pemohon.jenis_pemohon.upper }})</td>
+	        			<td valign="top"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top"><b>{{ pemohon.nama_lengkap.upper }} ({{ pemohon.jenis_pemohon.jenis_pemohon.upper }})</b></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>ALAMAT PERUSAHAAN</b></td>
-	        			<td>:</td>
-	        			<td>{{ alamat_perusahaan.upper }}</td>
+	        			<td valign="top"><b>ALAMAT PERUSAHAAN</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top">{{ alamat_perusahaan.upper }}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>NPWP</b></td>
-	        			<td>:</td>
-	        			<td>{{ perusahaan.npwp }}</td>
+	        			<td valign="top"><b>NPWP</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top">{{ perusahaan.npwp }}</td>
+	        		</tr>
+	        		<!-- <tr>
+	        			<td valign="top"><b>NOMOR TELEPON</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top">{{ perusahaan.telepon }} {% if perusahaan.fax %} FAX : {{ perusahaan.fax }}{% endif %}</td>
+	        		</tr> -->
+	        		<tr>
+	        			<td valign="top"><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top"><b>{{ kekayaan_bersih }},-</b><br>({{terbilang.upper}} RUPIAH)</td>
+	        		</tr>
+	        		<tr style="border-bottom-width: 3px;">
+	        			<td valign="top"><b>KELEMBAGAAN</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top"><b>{{ kelembagaan }}</b></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>NOMOR TELEPON</b></td>
-	        			<td>:</td>
-	        			<td>{{ perusahaan.telepon }} {% if perusahaan.fax %} FAX : {{ perusahaan.fax }}{% endif %}</td>
+	        			<td valign="top"><b>KEGIATAN USAHA (KBLI/*)</b></td>
+	        			<td valign="top">:</td>
+	        			<td valign="top">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
-	        			<td>:</td>
-	        			<td>{{ kekayaan_bersih }},-<br>({{terbilang.upper}} RUPIAH)</td>
-	        		</tr>
-	        		<tr>
-	        			<td><b>KELEMBAGAAN</b></td>
-	        			<td>:</td>
-	        			<td>{{ kelembagaan }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td><b>KEGIATAN USAHA (KBLI/*)</b></td>
-	        			<td>:</td>
-	        			<td>{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
-	        		</tr>
-	        		<tr>
-	        			<td><b>BARANG/JASA DAGANGAN UTAMA</b></td>
-	        			<td>:</td>
+	        			<td valign="top"><b>BARANG/JASA DAGANGAN UTAMA</b></td>
+	        			<td valign="top">:</td>
 	        			<!-- <td>{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %}</td> -->
 	        			<!-- <td>{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }}{% if not forloop.last %}, {% endif %} 
 	        			{% endfor %} {% if pengajuan.produk_utama %}({{pengajuan.produk_utama.upper }}) {% endif %}</td> -->
-	        			<td>{{pengajuan.produk_utama.upper }}</td>
+	        			<td valign="top" align="justify">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</td>
 	        		</tr>
 	        		<tr>
-	        			<td colspan="3"><b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTARKAN ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b></td>
+	        			<td colspan="3" align="justify"><b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTARKAN ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b></td>
 	        		</tr>
 	        	</table>
 	        	<br>
 	        	<div style="float: left; width: 50%">
-	        		<div style="padding-left: 50%;">
-	        			<img src="{{ foto.berkas.url }}" width="194px" height="291px">
+	        		<div style="padding-left: 70%;padding-top: 46px;">
+	        			{% if foto.berkas.url %}
+	        			<img class="images" src="{{ foto.berkas.url }}" width="194px" height="291px">
+	        			{% else %}
+	        			<img class="images" src="{% static 'images/no-avatar.jpg' %}">
+	        			{% endif %}
 	        		</div>
 	        	</div>
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 0%;" align="center">
-	                    <font size="4pt">Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-M-Y" }}</font>
+	                    {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
 	                    <br>
 	                    {% if skizin.nama_pejabat %}
 		                    <br>{{skizin.jabatan_pejabat}}
@@ -323,8 +336,8 @@
 		                    <br>
 		                    <br>
 		                    <u><b>{{ skizin.nama_pejabat }}</b></u><br>
-		                    <i>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</i><br>
-		                    <i>NIP: {{skizin.nip_pejabat}}</i>
+		                    <span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
+		                    <span>NIP: {{skizin.nip_pejabat}}</span>
 		                {% endif %}
 	                </p>
 	            </div>
@@ -343,9 +356,10 @@
 	    {% if pengajuan.no_izin %}
 		    jQuery('#qrcodeTable').qrcode({
 				text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
-				width 	: 100,
-				height 	: 100,
+				width 	: 110,
+				height 	: 110,
 			});
+			// jQuery('#qrcodeTable').qrcode("http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}");
 		{% endif %}
 
 		$(window).load(function(){

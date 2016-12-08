@@ -487,9 +487,11 @@ class IzinAdmin(admin.ModelAdmin):
 			kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
 			extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
-				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
+				kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
+				# print kekayaan_
+				terbilang_ = terbilang(int(kekayaan_))
 				extra_context.update({'terbilang': str(terbilang_) })
-				extra_context.update({ 'kekayaan_bersih': pengajuan_.kekayaan_bersih })
+				extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
 			# try:
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:

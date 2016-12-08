@@ -144,14 +144,13 @@
 
     <ul class="pager wizard">
       <li class="previous"><a class="btn btn-default">Kembali</a></li>
-      <li class="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+      <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
       <li class="next finish" style="display:none;">
         <button onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
           <i class="fa fa-arrow-right"></i>
           <span>Selesai</span>
         </button>
       </li>
-      </form>
     </ul>
   </div>
   <br>
@@ -181,38 +180,27 @@
   <script src="{% static 'scripts/js/form/form_tdp_pt.js' %}"></script>
   <script>
       $(window).load(function(){
-
           $('#rootwizard').bootstrapWizard({
-              onTabShow: function(tab, navigation, index) {
-                  var $total = navigation.find('li').length;
-                  var $current = index+1;
-                  if($current >= $total) {
-                      $('#rootwizard').find('.pager .next').hide();
-                      $('#rootwizard').find('.pager .finish').show();
-                      $('#rootwizard').find('.pager .finish').removeClass('disabled');
-                  } else {
-                      $('#rootwizard').find('.pager .next').show();
-                      $('#rootwizard').find('.pager .finish').hide();
-                  }
-
-              },
-
-              onNext: function(tab, navigation, index) {
-                  return false;
-
-              },
-
-              onTabClick: function(tab, navigation, index) {
-
-                  /*var form = $('form[name="step'+ (index+1) +'"]');
-                  form.parsley().validate();
-
-                  if (!form.parsley().isValid()) {
-                      return false;
-                  }*/
-                  return true;
+            onTabShow: function(tab, navigation, index) {
+              var $total = navigation.find('li').length;
+              var $current = index+1;
+              if($current >= $total) {
+                $('#rootwizard').find('.pager .next').hide();
+                $('#rootwizard').find('.pager .finish').show();
+                $('#rootwizard').find('.pager .finish').removeClass('disabled');
+              } else {
+                $('#rootwizard').find('.pager .next').show();
+                $('#rootwizard').find('.pager .finish').hide();
               }
+            },
 
+            onNext: function(tab, navigation, index) {
+              return false;
+            },
+
+            onTabClick: function(tab, navigation, index) {
+              return true;
+            }
           });
 
           function next_tab(btn){
@@ -228,27 +216,27 @@
                 data: frm.serialize(),
                 success: function (response){
                   respon = $.parseJSON(response)
-                        $(btn).removeAttr('disabled')
-                        if(respon.success){
-                          toastr["success"](respon.pesan)
-                          for (var i = 0; i < respon.data.length; i++){
-                            var key = Object.keys(respon.data[i]); // Mencari key json
-                            var val = respon.data[i][key[0]]
-                            var id = "#"+key[0]+"_konfirmasi"
-                            $(id).text(val);
-                          }
+                  $(btn).removeAttr('disabled')
+                  if(respon.success){
+                    toastr["success"](respon.pesan)
+                    for (var i = 0; i < respon.data.length; i++){
+                      var key = Object.keys(respon.data[i]); // Mencari key json
+                      var val = respon.data[i][key[0]]
+                      var id = "#"+key[0]+"_konfirmasi"
+                      $(id).text(val);
+                    }
                     $(".tab-content").mLoading('hide');
                     tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
                     $(tab_index).tab('show')
-                        }else{
-                          var a = Object.keys(respon);
-                          for (var i = 0; i < a.length; i++){
-                            var field = a[i].replace("_", " ").capitalize();
-                            toastr["error"](field+", "+respon[a[i]][0]['message'])
-                            $("#"+a[i]+"").addClass("has-error");
-                          }
-                          $(".tab-content").mLoading('hide');
-                        }
+                  }else{
+                    var a = Object.keys(respon);
+                    for (var i = 0; i < a.length; i++){
+                      var field = a[i].replace("_", " ").capitalize();
+                      toastr["error"](field+", "+respon[a[i]][0]['message'])
+                      $("#"+a[i]+"").addClass("has-error");
+                    }
+                    $(".tab-content").mLoading('hide');
+                  }
                 },
                 error: function(response){
                   $(".tab-content").mLoading('hide');
@@ -264,60 +252,59 @@
             var pemohon_cookie = $.cookie('id_pemohon'); 
             var perusahaan_cookie = $.cookie('id_perusahaan'); 
             if (pengajuan_cookie === ""){
-                toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-                tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-                $(tab_index).tab('show');
+              toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+              tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+              $(tab_index).tab('show');
             }
-              else if(pemohon_cookie === ""){
-                toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-                tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-                $(tab_index).tab('show');
-              }
-              else if(perusahaan_cookie === ""){
-                toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-                tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-                $(tab_index).tab('show');
-              }
-              else{
-                swal({
-                  showConfirmButton: false,
-                  type: 'success',
-                  title: 'Pendaftaran Berhasil Tersimpan',
-                  timer: 2000
-                })
-                $.ajax({
-                  url: '{% url 'siup_done' %}',
-                  success: function(response) {
-                    respon = $.parseJSON(response)
-                    if(respon.success){
-                      toastr["success"](respon.pesan)
-                    }
+            else if(pemohon_cookie === ""){
+              toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+              tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+              $(tab_index).tab('show');
+            }
+            else if(perusahaan_cookie === ""){
+              toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+              tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+              $(tab_index).tab('show');
+            }
+            else{
+              swal({
+                showConfirmButton: false,
+                type: 'success',
+                title: 'Pendaftaran Berhasil Tersimpan',
+                timer: 2000
+              })
+              $.ajax({
+                url: '{% url 'siup_done' %}',
+                success: function(response) {
+                  respon = $.parseJSON(response)
+                  if(respon.success){
+                    toastr["success"](respon.pesan)
                   }
-                });
-                window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
-                $.removeCookie('id_pengajuan', { path: '/' });
-                $.removeCookie('id_perusahaan', { path: '/' });
-                $.removeCookie('id_pemohon', { path: '/' });
-                $.removeCookie('nomor_ktp', { path: '/' });
-                $.removeCookie('nomor_paspor', { path: '/' });
-                $.removeCookie('id_kelompok_izin', { path: '/' });
-              }
+                }
+              });
+              window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+              $.removeCookie('id_pengajuan', { path: '/' });
+              $.removeCookie('id_perusahaan', { path: '/' });
+              $.removeCookie('id_pemohon', { path: '/' });
+              $.removeCookie('nomor_ktp', { path: '/' });
+              $.removeCookie('nomor_paspor', { path: '/' });
+              $.removeCookie('id_kelompok_izin', { path: '/' });
+            }
           };
-
       });
 
       $(document).ready(function() {
           window.onbeforeunload = function ref() {
-              var r = confirm( "Do you want to leave?" );
-              if (r == true) {
-                  
-              }
-              else {
-                  return false;
-              }
-            };
+            var r = confirm( "Do you want to leave?" );
+            if (r == true) {
+                
+            }
+            else {
+                return false;
+            }
+          };
 
-            if ($.cookie('id_pengajuan') === undefined){
+          if ($.cookie('id_pengajuan') === undefined){
             $.cookie('id_pengajuan', "0", {path:"/"});
           }
           if ($.cookie('id_pemohon') === undefined){
@@ -326,6 +313,7 @@
           if ($.cookie('id_perusahaan') === undefined){
             $.cookie('id_perusahaan', "0", {path:"/"});
           }
+            
           pengajuan = $.cookie('id_pengajuan')
           if (pengajuan !== '0'){
             {% include 'front-end/load_pengajuan.html' %}
@@ -447,48 +435,47 @@
             }
             // ++++++++ end legalitas ++++++++
           }
-        })
+      });
 
-        function load_perusahaan_induk(npwp_){
-          $(".tab-content").mLoading();
-          // csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-          $.ajax({
-            type: 'GET',
-            url: __base_url__+'/load-perusahaan/'+npwp_,
-            // data: { csrfmiddlewaretoken: csrf_token },
-            success: function (data) {
-                $(".tab-content").mLoading('hide');
-                respon_induk = $.parseJSON(data)
-                if(respon_induk.success){
-                      load_kabupaten3(respon_induk.data.provinsi)
-                      load_kecamatan3(respon_induk.data.kabupaten)
-                      load_desa3(respon_induk.data.kecamatan)
-                      
-                        $('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
-                        $('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
-                      setTimeout(function(){
-                          $('#id_provinsi3').val(respon_induk.data.provinsi).prop('selected',true).trigger("chosen:updated");
-                          $('#id_kabupaten3').val(respon_induk.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-                          $('#id_kecamatan3').val(respon_induk.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-                          $('#id_desa3').val(respon_induk.data.desa).prop('selected',true).trigger("chosen:updated");
-                          
-                      }, 3000);
-                }
-                  else{
-                      $('#id_nama_perusahaan_induk').val("");
-                      $('#id_alamat_perusahaan_induk').val("");
-                      $('#id_provinsi3').val("").prop('selected',true).trigger("chosen:updated");
-                      $('#id_kabupaten3').val("").prop('selected',true).trigger("chosen:updated");
-                      $('#id_kecamatan3').val("").prop('selected',true).trigger("chosen:updated");
-                      $('#id_desa3').val("").prop('selected',true).trigger("chosen:updated");
-                  }
-              },
-              error: function(data) {
-                toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
-                $(".tab-content").mLoading('hide');
+      function load_perusahaan_induk(npwp_){
+        $(".tab-content").mLoading();
+        // csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/load-perusahaan/'+npwp_,
+          // data: { csrfmiddlewaretoken: csrf_token },
+          success: function (data) {
+              $(".tab-content").mLoading('hide');
+              respon_induk = $.parseJSON(data)
+              if(respon_induk.success){
+                load_kabupaten3(respon_induk.data.provinsi)
+                load_kecamatan3(respon_induk.data.kabupaten)
+                load_desa3(respon_induk.data.kecamatan)
+                    
+                $('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
+                $('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
+                setTimeout(function(){
+                  $('#id_provinsi3').val(respon_induk.data.provinsi).prop('selected',true).trigger("chosen:updated");
+                  $('#id_kabupaten3').val(respon_induk.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+                  $('#id_kecamatan3').val(respon_induk.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+                  $('#id_desa3').val(respon_induk.data.desa).prop('selected',true).trigger("chosen:updated");
+                }, 3000);
               }
-          });
-        }
+              else{
+                $('#id_nama_perusahaan_induk').val("");
+                $('#id_alamat_perusahaan_induk').val("");
+                $('#id_provinsi3').val("").prop('selected',true).trigger("chosen:updated");
+                $('#id_kabupaten3').val("").prop('selected',true).trigger("chosen:updated");
+                $('#id_kecamatan3').val("").prop('selected',true).trigger("chosen:updated");
+                $('#id_desa3').val("").prop('selected',true).trigger("chosen:updated");
+              }
+            },
+            error: function(data) {
+              toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+              $(".tab-content").mLoading('hide');
+            }
+        });
+      }
   </script>
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}
