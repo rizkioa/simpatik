@@ -212,7 +212,7 @@
 						<a data-toggle="modal" data-target="#detail_reklame" class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Detail Pengajuan</span></a>
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-red btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Berkas Pengajuan</span></a>
 						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
-						<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_reklame' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+						<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_imb_reklame' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 					{% endif %}
 					</div>
 				</div>
@@ -225,7 +225,7 @@
 		<section class="tile">
 			<div class="tile-body">
 				<center>
-<!-- 					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a> -->
+					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>

@@ -149,7 +149,7 @@
 		        		if(respon.success){
 		        			toastr["success"](respon.pesan)
 		        		}
-		      		window.location.replace('{% url 'admin:izin_detilreklame_changelist'  %}');
+		      		window.location.replace('{% url 'admin:izin_detilreklame_changelist'  %}/view-pengajuan-reklame/'+id_pengajuan_);
 		        	}
 	        	});
 	        	}

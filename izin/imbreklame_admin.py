@@ -101,13 +101,14 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			
+			pengajuan_id = pengajuan_.id
+			print pengajuan_id
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = (str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+			# encode_pengajuan_id = (str(pengajuan_.id))
+			extra_context.update({'pengajuan_id': pengajuan_id })
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++

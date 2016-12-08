@@ -552,12 +552,6 @@ def cetak_reklame(request,id_pengajuan_):
 	else:
 		response = HttpResponseRedirect(url_)
 		return response
-	# else:
-	# 	response = HttpResponseRedirect(url_)
-	# 	return response		 
-
-	# pengajuan_list = PengajuanIzin.objects.filter(id=request.COOKIES['id_pengajuan'])
-	# extra_context.update({'pengajuan_list': pengajuan_list})
 	template = loader.get_template("front-end/include/formulir_reklame/cetak.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
