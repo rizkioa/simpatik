@@ -44,7 +44,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon',)
+					'fields': ('pemohon','perusahaan')
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
@@ -58,7 +58,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon',)
+					'fields': ('pemohon','perusahaan')
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
@@ -68,6 +68,82 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			)
 		return add_fieldsets
 
+
+	def view_pengajuan_imb_reklame(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
+				extra_context.update({'nomor_identitas': nomor_identitas_ })
+				try:
+					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					extra_context.update({'cookie_file_ktp': ktp_.berkas })
+				except ObjectDoesNotExist:
+					pass
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
+				extra_context.update({'perusahaan': pengajuan_.perusahaan})
+
+				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
+				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
+				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+
+			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'created_at': pengajuan_.created_at})
+			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'pengajuan': pengajuan_})
+			encode_pengajuan_id = (str(pengajuan_.id))
+			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+			#+++++++++++++ page logout ++++++++++
+			extra_context.update({'has_permission': True })
+			#+++++++++++++ end page logout ++++++++++
+
+			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
+			# print lama_pemasangan
+			banyak = len(DetilIMBPapanReklame.objects.all())
+			extra_context.update({'banyak': banyak})
+			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
+			extra_context.update({'syarat': syarat_})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
+				if riwayat_:
+					extra_context.update({'riwayat': riwayat_ })
+			except ObjectDoesNotExist:
+				pass
+		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_reklame.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(DetilIMBPapanReklameAdmin, self).get_urls()
+		my_urls = patterns('',
+
+			url(r'^view-pengajuan-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_reklame), name='view_pengajuan_imb_reklame'),
+
+			)
+		return my_urls + urls
 
 admin.site.register(DetilIMBPapanReklame, DetilIMBPapanReklameAdmin)
 

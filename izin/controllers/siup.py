@@ -65,10 +65,10 @@ def add_wizard_siup(request):
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
 
-			if id_kelompok_list.kode == "503.03.01/":
-				url_ = "#"
-			elif id_kelompok_list.kode == "503.03.02/":
+			if kode_izin_ == "Reklame":
 				url_ = reverse('admin:izin_proses_reklame')
+			elif id_kelompok_list.kode == "503.03.02/":
+				url_ = "#"
 			elif id_kelompok_list.kode == "503.08/":
 				url_ = reverse('admin:izin_proses_siup')
 			elif id_kelompok_list.kode == "IUJK":

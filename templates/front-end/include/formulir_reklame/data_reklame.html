@@ -10,8 +10,13 @@
     <div class="form-group">
       <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="jenis_reklame" disabled=""data-parsley-trigger="change" id="id_jenis_reklame">
-          <option value="2">Insidentil</option>
+        <select class="form-control chosen-select mb-10" name="jenis_reklame" data-parsley-trigger="change" id="id_jenis_reklame">
+          <option value>-- Pilih Jenis Izin Reklame --</option>
+          {% if reklame_jenis_list %}
+          {% for k in reklame_jenis_list %}
+          <option value="{{ k.id }}">{{ k.jenis_reklame }}</option>
+          {% endfor %}
+          {% endif %}
         </select>
       </div>
     </div>

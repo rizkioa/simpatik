@@ -54,12 +54,12 @@
 				},
 
 				onNext: function(tab, navigation, index) {
-					return true;
+					return false;
 
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return true;
+					return false;
 				}
 			});
 		});
@@ -149,7 +149,7 @@
 		        		if(respon.success){
 		        			toastr["success"](respon.pesan)
 		        		}
-		      		window.location.replace('{% url 'admin:izin_detilreklame_changelist'  %}view-pengajuan-reklame/'+id_pengajuan_);
+		      		window.location.replace('{% url 'admin:izin_detilreklame_changelist'  %}');
 		        	}
 	        	});
 	        	}

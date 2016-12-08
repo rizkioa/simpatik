@@ -243,7 +243,7 @@ class FileField(models.FileField):
 		super(FileField, self).save_form_data(instance, data)
 
 class Berkas(AtributTambahan):
-	nama_berkas = models.CharField("Nama Berkas", max_length=100)
+	nama_berkas = models.CharField("Nama Berkas", max_length=200)
 	berkas = FileField(upload_to=path_and_rename, max_length=255)
 	no_berkas = models.CharField("Nomor Berkas", max_length=30, blank=True, null=True, help_text="Masukkan Nomor Surat / Berkas jika ada.")
 
