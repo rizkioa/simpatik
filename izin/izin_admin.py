@@ -140,7 +140,7 @@ class IzinAdmin(admin.ModelAdmin):
 		if func_view.__name__ == 'izinterdaftar':
 			pengajuan_ = qs.filter(status=1)
 		elif func_view.__name__ == 'semua_pengajuan':
-			pengajuan_ = qs.filter(~Q(status=11))
+			pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 		elif func_view.__name__ == 'verifikasi':
 			if request.user.groups.filter(name='Operator'):
 				pengajuan_ = qs.filter(status=6)
@@ -148,6 +148,8 @@ class IzinAdmin(admin.ModelAdmin):
 				pengajuan_ = qs.filter(status=4)
 			elif request.user.groups.filter(name='Pembuat Surat'):
 				pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+			else:
+				pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 
 		elif func_view.__name__ == 'verifikasi_skizin':
 			id_pengajuan_list = []
@@ -197,38 +199,38 @@ class IzinAdmin(admin.ModelAdmin):
 		return obj.created_at
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
-	# def get_no_pengajuan(self, obj):
-	# 	no_pengajuan = mark_safe("""
-	# 		<a href="%s" target="_blank"> %s </a>
-	# 		""" % ("#", obj.no_pengajuan ))
-	# 	split_ = obj.no_pengajuan
-	# 	# print split_
-	# 	no_pengajuan = mark_safe("""
-	# 			<span>%s</span>
-	# 			""" % ( obj.no_pengajuan ))
-	# 	if split_[0] == 'SIUP':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	elif split_[0] == 'Reklame':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	elif split_[0] == 'TDP':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	return no_pengajuan
-	# get_no_pengajuan.short_description = "No. Pengajuan"
+	def get_no_pengajuan(self, obj):
+		# no_pengajuan = mark_safe("""
+		# 	<a href="%s" target="_blank"> %s </a>
+		# 	""" % ("#", obj.no_pengajuan ))
+		split_ = obj.no_pengajuan
+		# print split_
+		no_pengajuan = mark_safe("""
+				<span>%s</span>
+				""" % ( obj.no_pengajuan ))
+		# if split_[0] == 'SIUP':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			# no_pengajuan
+		# elif split_[0] == 'Reklame':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			# no_pengajuan
+		# elif split_[0] == 'TDP':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			# no_pengajuan
+		return no_pengajuan
+	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def linkdetilizin(self, obj):
 		link_ = '#'
@@ -484,9 +486,11 @@ class IzinAdmin(admin.ModelAdmin):
 			kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
 			extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
-				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
+				kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
+				# print kekayaan_
+				terbilang_ = terbilang(int(kekayaan_))
 				extra_context.update({'terbilang': str(terbilang_) })
-				extra_context.update({ 'kekayaan_bersih': pengajuan_.kekayaan_bersih })
+				extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
 			# try:
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:

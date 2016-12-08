@@ -164,9 +164,9 @@ def formulir_siup(request):
 					if pengajuan_.jenis_penanaman_modal:
 						extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
 					if pengajuan_.kekayaan_bersih:
-						extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+						extra_context.update({ 'kekayaan_bersih_konfirmasi': "Rp "+str(pengajuan_.kekayaan_bersih) })
 					if pengajuan_.total_nilai_saham:
-						extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+						extra_context.update({ 'total_nilai_saham_konfirmasi': "Rp "+str(pengajuan_.total_nilai_saham) })
 					if pengajuan_.presentase_saham_nasional:
 						extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
 					if pengajuan_.presentase_saham_asing:

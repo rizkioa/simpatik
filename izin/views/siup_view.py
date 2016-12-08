@@ -315,9 +315,9 @@ def siup_detilsiup_save_cookie(request):
 						'pesan': 'Detail SIUP berhasil disimpan. Proses Selanjutnya.', 
 						'data': [
 							{'bentuk_kegiatan_usaha': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha},
-							{'kekayaan_bersih': formatrupiah(pengajuan_.kekayaan_bersih)},
+							{'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih)},
 							{'status_penanaman_modal': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal },
-							{'total_nilai_saham': formatrupiah(pengajuan_.total_nilai_saham)},
+							{'total_nilai_saham': "Rp "+str(pengajuan_.total_nilai_saham)},
 							{'presentase_saham_nasional': str(pengajuan_.presentase_saham_nasional)+" %"},
 							{'presentase_saham_asing': str(pengajuan_.presentase_saham_asing)+" %"},
 							{'kelembagaan': pengajuan_.kelembagaan.kelembagaan},
