@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Alpha | Responsive Admin Dashboard Template</title>
+        <title>404 | SIMPATIK</title>
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <meta charset="UTF-8">
@@ -19,6 +19,12 @@
         <!-- Theme Styles -->
         <link href="{% static 'error/alpha.min.css' %}" rel="stylesheet" type="text/css"/>
         <link href="{% static 'error/custom.css' %}" rel="stylesheet" type="text/css"/>
+        <script type="text/javascript">
+            lokasi = document.createElement("a");
+            lokasi.href = location.href;
+            window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
+            // alert(__base_url__)
+        </script>
             
             
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -78,7 +84,7 @@
                         <span>404</span>
                     </h1>
                     <span class="text-white">Oops! Something went wrong</span><br>
-                    <a class="btn-floating btn-large waves-effect waves-light teal lighten-2 m-t-lg" href="index-2.html">
+                    <a class="btn-floating btn-large waves-effect waves-light teal lighten-2 m-t-lg" href="#" onclick="link();">
                         <i class="large material-icons">home</i>
                     </a>
                 </div>
@@ -91,6 +97,14 @@
         <script src="{% static 'error/materialPreloader.min.js' %}"></script>
         <script src="{% static 'error/jquery.blockui.js' %}"></script>
         <script src="{% static 'error/alpha.min.js' %}"></script>
-        
+        <script type="text/javascript">
+            function link() {
+                {% if user.is_authenticated %}
+                    window.location.href = __base_url__+'/admin';
+                {% else %}
+                    window.location.href = __base_url__;
+                {% endif %}
+            }
+        </script>
     </body>
 </html>
