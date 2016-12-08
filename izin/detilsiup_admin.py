@@ -104,8 +104,8 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		pengajuan_selesai = len(PengajuanIzin.objects.filter(status=1))
 		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1) and ~Q(status=6) and ~Q(status=11)))
 		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
-		pengajuan_siup = len(DetilSIUP.objects.filter(created_at__year=tahun_sekarang and ~Q(status=11)))
-		pengajuan_reklame = len(DetilReklame.objects.filter(created_at__year=tahun_sekarang and ~Q(status=11)))
+		pengajuan_siup = len(DetilSIUP.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
+		pengajuan_reklame = len(DetilReklame.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
 		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_reklame': pengajuan_reklame }
 		return HttpResponse(json.dumps(data))
 
