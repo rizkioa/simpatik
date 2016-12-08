@@ -147,6 +147,8 @@ class IzinAdmin(admin.ModelAdmin):
 				pengajuan_ = qs.filter(status=4)
 			elif request.user.groups.filter(name='Pembuat Surat'):
 				pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+			else:
+				pengajuan_ = qs.filter(~Q(status=11))
 
 		elif func_view.__name__ == 'verifikasi_skizin':
 			id_pengajuan_list = []
