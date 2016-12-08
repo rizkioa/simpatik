@@ -139,7 +139,7 @@ class IzinAdmin(admin.ModelAdmin):
 		if func_view.__name__ == 'izinterdaftar':
 			pengajuan_ = qs.filter(status=1)
 		elif func_view.__name__ == 'semua_pengajuan':
-			pengajuan_ = qs.filter(~Q(status=11))
+			pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 		elif func_view.__name__ == 'verifikasi':
 			if request.user.groups.filter(name='Operator'):
 				pengajuan_ = qs.filter(status=6)
@@ -148,7 +148,7 @@ class IzinAdmin(admin.ModelAdmin):
 			elif request.user.groups.filter(name='Pembuat Surat'):
 				pengajuan_ = qs.filter(skizin__isnull=True, status=2)
 			else:
-				pengajuan_ = qs.filter(~Q(status=11))
+				pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 
 		elif func_view.__name__ == 'verifikasi_skizin':
 			id_pengajuan_list = []
@@ -207,27 +207,27 @@ class IzinAdmin(admin.ModelAdmin):
 		no_pengajuan = mark_safe("""
 				<span>%s</span>
 				""" % ( obj.no_pengajuan ))
-		if split_[0] == 'SIUP':
+		# if split_[0] == 'SIUP':
 			# if request.user.is_superuser:
 			# 	no_pengajuan = mark_safe("""
 			# 	<a href="%s" target="_blank"> %s </a>
 			# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
 			# else:
-			no_pengajuan
-		elif split_[0] == 'Reklame':
+			# no_pengajuan
+		# elif split_[0] == 'Reklame':
 			# if request.user.is_superuser:
 			# 	no_pengajuan = mark_safe("""
 			# 	<a href="%s" target="_blank"> %s </a>
 			# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
 			# else:
-			no_pengajuan
-		elif split_[0] == 'TDP':
+			# no_pengajuan
+		# elif split_[0] == 'TDP':
 			# if request.user.is_superuser:
 			# 	no_pengajuan = mark_safe("""
 			# 	<a href="%s" target="_blank"> %s </a>
 			# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
 			# else:
-			no_pengajuan
+			# no_pengajuan
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
