@@ -198,38 +198,38 @@ class IzinAdmin(admin.ModelAdmin):
 		return obj.created_at
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
-	# def get_no_pengajuan(self, obj):
-	# 	no_pengajuan = mark_safe("""
-	# 		<a href="%s" target="_blank"> %s </a>
-	# 		""" % ("#", obj.no_pengajuan ))
-	# 	split_ = obj.no_pengajuan
-	# 	# print split_
-	# 	no_pengajuan = mark_safe("""
-	# 			<span>%s</span>
-	# 			""" % ( obj.no_pengajuan ))
-	# 	if split_[0] == 'SIUP':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	elif split_[0] == 'Reklame':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	elif split_[0] == 'TDP':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	return no_pengajuan
-	# get_no_pengajuan.short_description = "No. Pengajuan"
+	def get_no_pengajuan(self, obj):
+		# no_pengajuan = mark_safe("""
+		# 	<a href="%s" target="_blank"> %s </a>
+		# 	""" % ("#", obj.no_pengajuan ))
+		split_ = obj.no_pengajuan
+		# print split_
+		no_pengajuan = mark_safe("""
+				<span>%s</span>
+				""" % ( obj.no_pengajuan ))
+		if split_[0] == 'SIUP':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			no_pengajuan
+		elif split_[0] == 'Reklame':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			no_pengajuan
+		elif split_[0] == 'TDP':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			no_pengajuan
+		return no_pengajuan
+	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def linkdetilizin(self, obj):
 		link_ = '#'
