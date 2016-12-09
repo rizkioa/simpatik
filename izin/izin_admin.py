@@ -13,6 +13,7 @@ from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, Det
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
+from izin.controllers.imb_reklame import formulir_imb_reklame
 from izin.controllers.tdp import formulir_tdp_pt
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
@@ -925,6 +926,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^option/kelompokizin/$', self.admin_site.admin_view(self.option_kelompokjenisizin), name='option_kelompokjenisizin'),
 			url(r'^wizard/add/proses/siup/$', self.admin_site.admin_view(formulir_siup), name='izin_proses_siup'),
 			url(r'^wizard/add/proses/reklame/$', self.admin_site.admin_view(formulir_reklame), name='izin_proses_reklame'),
+			url(r'^wizard/add/proses/imb-reklame/$', self.admin_site.admin_view(formulir_imb_reklame), name='izin_proses_imb_reklame'),
 			url(r'^wizard/add/proses/tdp-pt/$', self.admin_site.admin_view(formulir_tdp_pt), name='izin_proses_tdp_pt'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),

@@ -99,15 +99,16 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-
+			letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			
+			pengajuan_id = pengajuan_.id
+			extra_context.update({'letak_pemasangan': letak_})
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = (str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+			# encode_pengajuan_id = (str(pengajuan_.id))
+			extra_context.update({'pengajuan_id': pengajuan_id })
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++
@@ -135,11 +136,60 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_sk_imb_reklame(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
+		print id_pengajuan_izin_
+		if id_pengajuan_izin_:
+			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
+
+			extra_context.update({'ukuran': ukuran_})
+			extra_context.update({'letak_pemasangan': letak_})
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'pengajuan': pengajuan_ })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+			except ObjectDoesNotExist:
+				pass
+
+		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIMBPapanReklameAdmin, self).get_urls()
 		my_urls = patterns('',
-
+			url(r'^cetak-sk-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_imb_reklame), name='cetak_sk_imb_reklame'),
 			url(r'^view-pengajuan-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_reklame), name='view_pengajuan_imb_reklame'),
 
 			)
