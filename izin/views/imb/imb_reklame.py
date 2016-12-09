@@ -257,34 +257,6 @@ def imbreklame_upload_berkas_pendukung(request):
       response = HttpResponse(data)
   return response
 
-def imbreklame_done(request):
-  if 'id_pengajuan' in request.COOKIES.keys():
-      if request.COOKIES['id_pengajuan'] != '':
-          pengajuan_ = DetilIMBPapanReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-          pengajuan_.status = 6
-          pengajuan_.save()
-                    
-          data = {'success': True, 'pesan': 'Proses Selesai.' }
-          response = HttpResponse(json.dumps(data))
-          response.delete_cookie(key='id_pengajuan') # set cookie 
-          response.delete_cookie(key='id_perusahaan') # set cookie    
-          response.delete_cookie(key='nomor_ktp') # set cookie    
-          response.delete_cookie(key='nomor_paspor') # set cookie 
-          response.delete_cookie(key='id_pemohon') # set cookie   
-          response.delete_cookie(key='id_kelompok_izin') # set cookie
-          response.delete_cookie(key='id_legalitas') # set cookie
-          response.delete_cookie(key='id_legalitas_perubahan') # set cookie
-      else:
-          data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-          data = json.dumps(data)
-          response = HttpResponse(data)
-  else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
-  return response
-
-
 def ajax_load_berkas_imbreklame(request, id_pengajuan):
   url_berkas = []
   id_elemen = []
