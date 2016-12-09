@@ -10,6 +10,18 @@ JENIS_PERMOHONAN = (
 	('Berita Acara', 'Berita Acara'),
 )
 
+STATUS_HAK_TANAH = (
+	('Hak Milik', 'Hak Milik'),
+	('Hak Guna', 'Hak Guna'),
+	('Milik', 'Milik'),
+	('Yang dikuasai', 'Yang dikuasai'),
+)
+
+KEPEMILIKAN_TANAH = (
+	('Sendiri', 'Sendiri'),
+	('Orang Tua', 'Orang Tua'),
+	('Pihak Lain', 'Pihak Lain'),
+)
 import datetime
 
 def get_tahun_choices(sejak):

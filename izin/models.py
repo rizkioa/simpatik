@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut,ParameterBangunan
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN,STATUS_HAK_TANAH,KEPEMILIKAN_TANAH
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -482,6 +482,29 @@ class DetilIMBPapanReklame(PengajuanIzin):
 		verbose_name = 'Detil IMB Papan Reklame'
 		verbose_name_plural = 'Detil IMB Papan Reklame'
 
+class DetilIMB(PengajuanIzin):
+	bangunan = models.CharField(verbose_name="Bangunan", max_length=150)
+	luas_bangunan = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Bangunan')
+	jumlah_bangunan = models.IntegerField(verbose_name="Jumlah Bangunan", null=True, blank=True)
+	luas_tanah = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Tanah')
+	no_surat_tanah = models.CharField(max_length=255, verbose_name='No Surat Tanah')
+	tanggal_surat_tanah = models.DateField(verbose_name='Tanggal Surat Tanah ')
+	lokasi = models.CharField(verbose_name="Lokasi", max_length=150)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	status_hak_tanah = models.CharField(verbose_name='Status Hak Tanah', choices=STATUS_HAK_TANAH, max_length=20,)
+	kepemilikan_tanah = models.CharField(verbose_name='Kepemilikan Tanah', choices=KEPEMILIKAN_TANAH, max_length=20,)
+	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
+	luas_bangunan_lama = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Bangunan Yang Sudah Ada')
+	no_imb_lama = models.CharField(max_length=255, verbose_name='No. IMB Bangunan Yang Sudah Ada', null=True, blank=True)
+	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
+	def __unicode__(self):
+		return "%s" % (self.bangunan)
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil IMB'
+		verbose_name_plural = 'Detil IMB'
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
@@ -503,19 +526,6 @@ class DetilIMBPapanReklame(PengajuanIzin):
 # 		ordering = ['id']
 # 		verbose_name = 'Jenis Bangunan'
 # 		verbose_name_plural = 'Jenis Bangunan'
-
-# class ParameterBangunan(models.Model):
-# 	parameter = models.CharField(max_length=255,null=True, blank=True, verbose_name='Parameter')
-# 	detil_parameter = models.CharField(max_length=255, blank=True, null=True, verbose_name='Detil Parameter')
-# 	nilai = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Nilai', null=True, blank=True)
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.parameter)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Parameter Bangunan'
-# 		verbose_name_plural = 'Parameter Bangunan'
 
 # class JenisKegiatanPembangunan(models.Model):
 # 	jenis_kegiatan_pembangunan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Kegiatan Pembangunan')
@@ -620,24 +630,6 @@ class DetilIMBPapanReklame(PengajuanIzin):
 # 		verbose_name = 'Jenis Tanah'
 # 		verbose_name_plural = 'Jenis Tanah'
 
-# class DetilIMBGedung(models.Model):
-# 	izin = models.ForeignKey(Izin, verbose_name='Izin')
-# 	status_tanah = models.ForeignKey(StatusHakTanah, verbose_name='Status Hak Tanah')
-# 	kepemilikan_tanah = models.ForeignKey(KepemilikkanTanah, verbose_name='Kepemilikan Tanah')
-# 	jenis_tanah = models.ForeignKey(JenisTanah, verbose_name='JenisTanah')
-# 	luas_bangunan = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Bangunan')
-# 	unit = models.IntegerField(verbose_name='Unit')
-# 	luas_tanah = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Tanah')
-# 	no_surat_tanah = models.CharField(max_length=255, verbose_name='No Surat Tanah')
-# 	tanggal_surat_tanah = models.DateField()
-
-# 	def __unicode__(self):
-# 		return "%s" % (self.luas_bangunan)
-
-# 	class Meta:
-# 		ordering = ['id']
-# 		verbose_name = 'Detil IMB Gedung'
-# 		verbose_name_plural = 'Detil IMB Gedung'
 
 # class CeklisSyaratIzin(models.Model):
 # 	izin = models.ForeignKey(Izin, verbose_name='Izin')
