@@ -151,7 +151,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -160,7 +160,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return true;
+            return false;
           }
         });
       });
@@ -362,7 +362,7 @@
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ != undefined){
           $.ajax({
-            url: '{% url 'imb_reklame_done' %}',
+            url: '{% url 'imb_reklame_done ' %}',
             success: function(response) {
               respon = $.parseJSON(response)
               if(respon.success){
