@@ -21,8 +21,8 @@ import json
 import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
-from izin.models import PengajuanIzin, DetilIMBPapanReklame
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
+from izin.models import PengajuanIzin, DetilIMBPapanReklame,Pemohon
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,PengajuanIMBReklameForm,UploadBerkasKTPForm
 from accounts.models import NomorIdentitasPengguna
@@ -40,16 +40,90 @@ def formulir_imb_reklame(request, extra_context={}):
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
     else:
         return HttpResponseRedirect(reverse('layanan'))
-
     return render(request, "front-end/formulir/imb_reklame.html", extra_context)
 
-def cetak_imb_reklame(request, extra_context={}):
-    return render(request, "front-end/include/formulir_imb_reklame/cetak.html", extra_context)
+def cetak_imb_reklame(request, id_pengajuan_):
+      extra_context = {}
+      url_ = reverse('formulir_reklame')
+      if id_pengajuan_:
+        pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_)
+        if pengajuan_.perusahaan != '':
+          alamat_ = ""
+          alamat_perusahaan_ = ""
+          if pengajuan_.pemohon:
+            if pengajuan_.pemohon.desa:
+              alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_pemohon': alamat_ })
+            extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
-def cetak_bukti_pendaftaran_imb_reklame(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB") 
-    extra_context.update({'syarat': syarat})
-    return render(request, "front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html", extra_context)
+          if pengajuan_.perusahaan:
+            if pengajuan_.perusahaan.desa:
+              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+            extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+
+          extra_context.update({ 'pengajuan': pengajuan_ })
+          pengajuan_id = base64.b64encode(str(pengajuan_.id))
+          extra_context.update({ 'pengajuan_id': pengajuan_id })
+
+          riwayat = Riwayat.objects.filter(pengajuan_izin=pengajuan_)
+          if riwayat:
+            extra_context.update({ 'riwayat': riwayat })
+            extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+            extra_context.update({ 'created_at': pengajuan_.created_at })
+          response = loader.get_template("front-end/include/formulir_reklame/cetak.html")
+        else:
+          response = HttpResponseRedirect(url_)
+          return response
+      else:
+        response = HttpResponseRedirect(url_)
+        return response
+      template = loader.get_template("front-end/include/formulir_imb_reklame/cetak.html")
+      ec = RequestContext(request, extra_context)
+      return HttpResponse(template.render(ec))
+
+def cetak_bukti_pendaftaran_imb_reklame(request,id_pengajuan_):
+  extra_context = {}
+  if id_pengajuan_:
+    pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_)
+    if pengajuan_.perusahaan != '':
+      alamat_ = ""
+      alamat_perusahaan_ = ""
+      if pengajuan_.pemohon:
+        if pengajuan_.pemohon.desa:
+          alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+          extra_context.update({ 'alamat_pemohon': alamat_ })
+        extra_context.update({ 'pemohon': pengajuan_.pemohon })
+        paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+        ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+        extra_context.update({ 'paspor': paspor_ })
+        extra_context.update({ 'ktp': ktp_ })
+      if pengajuan_.perusahaan:
+        if pengajuan_.perusahaan.desa:
+          alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+          extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+        extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+        syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
+      letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+      ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M , Tinggi = "+str(int(pengajuan_.tinggi))+" M"
+      
+      extra_context.update({'letak_pemasangan': letak_})
+      extra_context.update({'ukuran': ukuran_})
+      extra_context.update({ 'pengajuan': pengajuan_ })
+      extra_context.update({ 'syarat': syarat })
+      extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+      extra_context.update({ 'created_at': pengajuan_.created_at })
+      response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+    else:
+      response = HttpResponseRedirect(url_)
+      return response
+  else:
+    response = HttpResponseRedirect(url_)
+    return response 
+
+  template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_bukti_pendaftaran.html")
+  ec = RequestContext(request, extra_context)
+  return HttpResponse(template.render(ec))
 
 def reklame_imbreklame_save_cookie(request):
     if 'id_pengajuan' in request.COOKIES.keys():
@@ -60,12 +134,16 @@ def reklame_imbreklame_save_cookie(request):
                 pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
                 pengajuan_.save()
                 letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-                ukuran_ = str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.tinggi))        
+                ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"        
                 data = {'success': True,
                         'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
                         'data': [
                         {'jenis_papan_reklame': pengajuan_.jenis_papan_reklame},
                         {'ukuran': ukuran_},
+                        {'batas_utara': pengajuan_.batas_utara},
+                        {'batas_timur': pengajuan_.batas_timur},
+                        {'batas_selatan': pengajuan_.batas_selatan},
+                        {'batas_barat': pengajuan_.batas_barat},
                         {'letak_pemasangan': letak_}]}
                 data = json.dumps(data)
                 response = HttpResponse(json.dumps(data))
@@ -79,6 +157,32 @@ def reklame_imbreklame_save_cookie(request):
         data = json.dumps(data)
     response = HttpResponse(data)
     return response
+
+def imb_reklame_done(request):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+      pengajuan_ = DetilIMBPapanReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      pengajuan_.status = 6
+      pengajuan_.save()
+      data = {'success': True, 'pesan': 'Proses Selesai.' }
+      response = HttpResponse(json.dumps(data))
+      response.delete_cookie(key='id_pengajuan') # set cookie 
+      response.delete_cookie(key='id_perusahaan') # set cookie  
+      response.delete_cookie(key='nomor_ktp') # set cookie  
+      response.delete_cookie(key='nomor_paspor') # set cookie 
+      response.delete_cookie(key='id_pemohon') # set cookie 
+      response.delete_cookie(key='id_kelompok_izin') # set cookie
+      response.delete_cookie(key='id_legalitas') # set cookie
+      response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
 
 def imbreklame_upload_berkas_pendukung(request):
   if 'id_pengajuan' in request.COOKIES.keys() or 'id_pemohon' in request.COOKIES.keys():
@@ -153,34 +257,6 @@ def imbreklame_upload_berkas_pendukung(request):
       response = HttpResponse(data)
   return response
 
-def imbreklame_done(request):
-  if 'id_pengajuan' in request.COOKIES.keys():
-      if request.COOKIES['id_pengajuan'] != '':
-          pengajuan_ = DetilIMBPapanReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-          pengajuan_.status = 6
-          pengajuan_.save()
-                    
-          data = {'success': True, 'pesan': 'Proses Selesai.' }
-          response = HttpResponse(json.dumps(data))
-          response.delete_cookie(key='id_pengajuan') # set cookie 
-          response.delete_cookie(key='id_perusahaan') # set cookie    
-          response.delete_cookie(key='nomor_ktp') # set cookie    
-          response.delete_cookie(key='nomor_paspor') # set cookie 
-          response.delete_cookie(key='id_pemohon') # set cookie   
-          response.delete_cookie(key='id_kelompok_izin') # set cookie
-          response.delete_cookie(key='id_legalitas') # set cookie
-          response.delete_cookie(key='id_legalitas_perubahan') # set cookie
-      else:
-          data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-          data = json.dumps(data)
-          response = HttpResponse(data)
-  else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
-  return response
-
-
 def ajax_load_berkas_imbreklame(request, id_pengajuan):
   url_berkas = []
   id_elemen = []
@@ -248,9 +324,23 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
 def ajax_delete_berkas_imbreklame(request, id_berkas):
   if id_berkas:
       try:
+        if request.COOKIES['nomor_ktp'] != '':
+          p = Pemohon.objects.get(username = request.COOKIES['nomor_ktp'])
+          ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
+          nomr_ktp = ktp_.nomor
+          jenis_nomor = ktp_.jenis_identitas.id
+
           b = Berkas.objects.get(id=id_berkas)
           data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
           b.delete()
+        try:
+          i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+        except ObjectDoesNotExist:
+          i, created = NomorIdentitasPengguna.objects.get_or_create(
+                nomor = nomr_ktp,
+                jenis_identitas_id=jenis_nomor, # untuk KTP harusnya membutuhkan kode lagi
+                user_id=p.id,
+                )
       except ObjectDoesNotExist:  
           data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
             

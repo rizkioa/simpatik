@@ -26,18 +26,7 @@ function load_perusahaan_a(npwp_){
 			  	setTimeout(function(){
 			  		$('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
 	              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-	              	if (respon.data.npwp_perusahaan_url !== ''){
-	              		$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_perusahaan_url+"'>"+respon.data.npwp_perusahaan_nama+"</a></span>")
-	              		$('#checkbox_berkas_npwp_perusahaan').prop('checked', 1)
-	              	}
-	              	if (respon.data.legalitas_pendirian_url !== ''){
-	              		$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_pendirian_url+"'>"+respon.data.legalitas_pendirian_nama+"</a></span>")
-	              		$('#checkbox_berkas_akta_pendirian').prop('checked', 1)
-	              	}
-	              	if (respon.data.legalitas_perubahan_url !== ''){
-	              		$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_perubahan_url+"'>"+respon.data.legalitas_perubahan_nama+"</a></span>")
-	              		$('#checkbox_berkas_akta_pembaruan').prop('checked', 1)
-	              	}
+	              	
 
 	              	if (respon.data.legalitas_pendirian_nama_notaris !== ""){
 	              		// +++++++ legalitas pendirian ++++++++

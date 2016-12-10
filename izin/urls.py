@@ -107,12 +107,12 @@ urlpatterns = [
     url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_umum, name='cetak_bukti_pendaftaran_imb_umum'),
 
     #cetak IMB Perumahan
-    url(r'^layanan/imb-perumahan/formulir/cetak$', views.cetak_imb_perumahan, name='cetak_imb_perumahan'),
-    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak/$', views.cetak_imb_perumahan, name='cetak_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran/$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
 
     #cetak IMB Reklame
-    url(r'^layanan/imb-reklame/formulir/cetak$', imb_reklame.cetak_imb_reklame, name='cetak_imb_reklame'),
-    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', imb_reklame.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_reklame.cetak_imb_reklame, name='cetak_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', imb_reklame.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
     
     #cetak TDP PT
     url(r'^layanan/tdp-pt/formulir/cetak$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
@@ -204,6 +204,8 @@ urlpatterns = [
     url(r'^layanan/imbreklame/save/$', imb_reklame.reklame_imbreklame_save_cookie, name='reklame_imbreklame_save'),
     url(r'^imbreklame/berkas/save/$', imb_reklame.imbreklame_upload_berkas_pendukung, name='reklame_imbreklame_berkaspendukung'),
     url(r'^ajax-load-berkas-imb-reklame/(?P<id_pengajuan>[0-9]+)$', imb_reklame.ajax_load_berkas_imbreklame, name='ajax_load_berkas_imbreklame'),
+    url(r'^ajax-delete-berkas-imb-reklame-upload/(?P<id_berkas>[0-9]+)$', imb_reklame.ajax_delete_berkas_imbreklame, name='ajax_delete_berkas_imbreklame'),
+    url(r'^layanan/imb-reklame/save/$', imb_reklame.imb_reklame_done , name='imb_reklame_done'),
 
     # ++++++++++++++++++++++++ end for ajax IMB reklame ++++++++++++++++++++++
     ]
