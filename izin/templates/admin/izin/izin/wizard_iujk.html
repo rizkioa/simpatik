@@ -25,23 +25,44 @@
 	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
 	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
-	<script src="{% static "scripts/js/iujk.js" %}"></script>
+	
 	<script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
 	<script src="{% static "scripts/js/vendor/countTo/jquery.countTo.js" %}"></script>
+
+	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+  	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+  	<script src="{% static "scripts/js/iujk.js" %}"></script>
 
 
 	<script type="text/javascript">
 	$(window).load(function(){
 		$('#percent-sertifikat').hide()
-        $('#percent_kartu_teknis_bu').hide()
-        $('#percent_pernyataan_pengikat').hide()
-        $('#percent_pernyataan').hide()
-        $('#percent_npwp').hide()
-        $('#percent_keterangan_domisili').hide()
-        $('#percent_denah_lokasi').hide()
-        $('#percent_foto_papan').hide()
-        $('#percent_akta_pendirian').hide()
-        $('#percent_akta_perubahan').hide();
+        $('#percent-kartu_teknis_bu').hide()
+        $('#percent-pernyataan_pengikat').hide()
+        $('#percent-pernyataan').hide()
+        $('#percent-npwp').hide()
+        $('#percent-keterangan_domisili').hide()
+        $('#percent-denah_lokasi').hide()
+        $('#percent-foto_papan').hide()
+        $('#percent-akta_pendirian').hide()
+        $('#percent-akta_perubahan').hide();
+        $('#parsley-id-multiple-chkbox').remove();
+
+        if ($.cookie('id_pengajuan') === undefined){
+			$.cookie('id_pengajuan', "0", {path:"/"});
+		}
+		if ($.cookie('id_pemohon') === undefined){
+			$.cookie('id_pemohon', "0", {path:"/"});
+		}
+		if ($.cookie('id_perusahaan') === undefined){
+			$.cookie('id_perusahaan', "0", {path:"/"});
+		}
+		if ($.cookie('id_legalitas') === undefined){
+        	$.cookie('id_legalitas', "0", {path:"/"});
+        }
+        if ($.cookie('id_legalitas_perubahan') === undefined){
+        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+        }
         
 		$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
 		$(".npwp").mask("99.999.999.9-999.999");
@@ -66,7 +87,49 @@
 					$('#rootwizard').find('.pager .next').hide();
 					$('#rootwizard').find('.pager .finish').show();
 					$('#rootwizard').find('.pager .finish').removeClass('disabled');
+					id_pengajuan = parseInt($.cookie('id_pengajuan'))
+					load_konfirmasi(id_pengajuan);
 				} else {
+					// 
+					if($current == 6){
+						// alert("OK")
+						id_pengajuan = parseInt($.cookie('id_pengajuan'))
+						load_berkas(id_pengajuan)
+
+					}
+					if($current == 1){
+						ktp = '{{ktp}}'
+						if( ktp != '' ){
+							$('#id_ktp').val('{{ ktp.nomor }}')
+					    	$('#id_paspor').val('{{ paspor.nomor }}')
+					    	$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+					    	$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+					    	
+				  			load_pemohon('{{ ktp.nomor }}')
+				          	if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+				          		$('#switch_pemohon_disabled').prop( "checked", true );
+				          		setTimeout(function(){
+				          			$('.kuasa_disable').prop('disabled', false);
+					          		$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+					          		$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+					          		$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+				          		}, 1000);
+				          	}
+						}
+						
+					}
+					if($current == 2){
+						npwp = '{{perusahaan_konfirmasi.npwp}}'
+						if (npwp != ''){
+							$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+							// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	setTimeout(function(){
+				          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	}, 3000);
+						}
+						
+					}
+					
 					$('#rootwizard').find('.pager .next').show();
 					$('#rootwizard').find('.pager .finish').hide();
 				}
@@ -109,21 +172,27 @@
 			};
 
 			$('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+			$('#btn-akta_pendirian').hide()
 			  $("#switch_akta_pendirian_disabled").change(function() {
 				if ($(this).is(':checked')) {
+				  $('#btn-akta_pendirian').show()
 				  $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
 				}
 				else {
+				  $('#btn-akta_pendirian').hide()
 				  $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
 				}
 			});
 
 			$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+			$('#btn-akta_perubahan').hide()
 			$("#switch_akta_perubahan_disabled").change(function() {
 			  if ($(this).is(':checked')) {
+			  	$('#btn-akta_perubahan').hide()
 				$('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
 			  }
 			  else {
+			  	$('#btn-akta_perubahan').show()
 				$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
 			  }
 			});
@@ -138,24 +207,7 @@
 			  }
 			});
 
-			$('#percent_berkas_foto').hide()
-			$('#percent_berkas_ktp').hide()
-			$('#percent_berkas_npwp_pribadi').hide()
-			$('#percent_berkas_npwp_perusahaan').hide()
-			$('#percent_berkas_akta_pendirian').hide()
-			$('#percent_berkas_akta_perubahan').hide()
-			$('#percent_berkas_pendukung').hide()
-			$('#konfirmasi_legalitas_perubahan').hide();
-
-			if ($.cookie('id_pengajuan') === undefined){
-				$.cookie('id_pengajuan', "0", {path:"/"});
-			}
-			if ($.cookie('id_pemohon') === undefined){
-				$.cookie('id_pemohon', "0", {path:"/"});
-			}
-			if ($.cookie('id_perusahaan') === undefined){
-				$.cookie('id_perusahaan', "0", {path:"/"});
-			}
+			
 
 			$( "#alert" ).prop( "disabled", true );
 			$('#checkbox_siup_done').change(function() {
@@ -167,6 +219,7 @@
 				  $( "#alert" ).prop( "disabled", true );
 				}
 			});
+
 			if($('#switch_akta_perubahan_disabled').is(':checked')){
 				$('#konfirmasi_legalitas_perubahan').show();
 			}
@@ -186,142 +239,7 @@
 			elem_.prop( "disabled", dis_);
 			elem_.trigger("chosen:updated");
 		}
-		function load_provinsi(id_negara){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_provinsi_chosen" ).mask('loading')
-			$( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_provinsi' %}', // the file to call
-				success: function(response) { // on success..
-					elem = $( "#id_provinsi" )
-					elem.html(response);
-					make_disabled(elem, false)
-					$( "#id_provinsi_chosen" ).unmask()
-					$( "#id_provinsi" ).change(function(){
-						$this = $(this)
-
-						id_provinsi = $(this).val()
-						if(id_provinsi.length > 0){
-							load_kabupaten(id_provinsi)
-						}else{
-							elem = $( "#id_kabupaten" )
-							make_disabled(elem, true)
-						}
-					})
-				},
-				error: function(data) {                
-					toast_server_error()
-				}
-			});
-		}
-
-		make_disabled($( "#id_provinsi" ), true)
-		make_disabled($( "#id_kabupaten" ), true)
-		make_disabled($( "#id_kecamatan" ), true)
-		make_disabled($( "#id_desa" ), true)
-
-		$( "#id_negara" ).change(function(){
-			$this = $(this)
-
-			id_negara = $(this).val()
-			if(id_negara.length > 0){
-				load_provinsi(id_negara)
-			}else{
-				elem = $( "#id_provinsi" )
-				make_disabled(elem, true)
-				make_disabled($( "#id_provinsi" ), true)
-				make_disabled($( "#id_kabupaten" ), true)
-				make_disabled($( "#id_kecamatan" ), true)
-				make_disabled($( "#id_desa" ), true)
-			}
-		})
-
-		function load_kabupaten(id_provinsi){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_kabupaten_chosen" ).mask('loading')
-			$( "#id_kabupaten_chosen .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_kabupaten' %}', // the file to call
-				success: function(response) { // on success..
-					elem = $( "#id_kabupaten" )
-					elem.html(response);
-					make_disabled(elem, false)
-					$( "#id_kabupaten_chosen" ).unmask()
-					$( "#id_kabupaten" ).change(function(){
-						$this = $(this)
-
-						id_kabupaten = $(this).val()
-						if(id_kabupaten.length > 0){
-							load_kecamatan(id_kabupaten)
-						}else{
-							elem = $( "#id_kecamatan" )
-							make_disabled(elem, true)
-						}
-					})
-				},
-				error: function(data) {                
-					toast_server_error()
-				}
-			});
-		}
-
-		function load_kecamatan(id_kabupaten){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_kecamatan_chosen" ).mask('loading')
-			$( "#id_kecamatan_chosen .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_kecamatan' %}', // the file to call
-				success: function(response) { // on success..
-					elem = $( "#id_kecamatan" )
-					elem.html(response);
-					make_disabled(elem, false)
-					$( "#id_kecamatan_chosen" ).unmask()
-					$( "#id_kecamatan" ).change(function(){
-						$this = $(this)
-						
-						id_kecamatan = $(this).val()
-						if(id_kecamatan.length > 0){
-							load_desa(id_kecamatan)
-						}else{
-							elem = $( "#id_desa" )
-							make_disabled(elem, true)
-						}
-					})
-				},
-				error: function(data) {                
-					toast_server_error()
-				}
-			});
-		}
-
-		function load_desa(id_kecamatan){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_desa_chosen" ).mask('loading')
-			$( "#id_desa_chosen .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_desa' %}', // the file to call
-				success: function(response) { // on success..
-					elem = $( "#id_desa" )
-					elem.html(response);
-					make_disabled(elem, false)
-					$( "#id_desa_chosen" ).unmask()
-					$( "#id_desa" ).change(function(){
-						$this = $(this)
-					})
-				},
-				error: function(data) {                
-					toast_server_error()
-				}
-			});
-		}
+		
 		// Function to capitalize for string
 		// String.prototype.capitalize = function() {
 		// 	return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
@@ -330,6 +248,8 @@
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 			var frm = $('form[name="step'+ index +'"]');
+			console.log(frm.parsley())
+			console.log(frm)
 			frm.parsley().validate();
 			if (frm.parsley().isValid()) {
 				// $( ".tab-content #tab"+index ).mask('loading')
@@ -393,273 +313,48 @@
 		}
 
 		document.querySelector('#alert').onclick = function(){
-		// swal("Good job!", "You clicked the button!", "success");
-			var pengajuan_cookie = $.cookie('id_pengajuan'); 
-			var pemohon_cookie = $.cookie('id_pemohon'); 
-			var perusahaan_cookie = $.cookie('id_perusahaan'); 
-			if (pengajuan_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-				$(tab_index).tab('show');
-			}
-			else if(pemohon_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-				$(tab_index).tab('show');
-			}
-			else if(perusahaan_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-				tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-				$(tab_index).tab('show');
-			}
-			else{
-				swal({
-				  showConfirmButton: false,
-				  type: 'success',
-				  title: 'Pendaftaran Berhasil Tersimpan',
-				  timer: 2000
-				})
-			
-				window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
-				$.removeCookie('id_pengajuan', { path: '/' });
-				$.removeCookie('id_perusahaan', { path: '/' });
-				$.removeCookie('id_pemohon', { path: '/' });
-				$.removeCookie('nomor_ktp', { path: '/' });
-				$.removeCookie('nomor_paspor', { path: '/' });
-			}
-		};
+	    // swal("Good job!", "You clicked the button!", "success");
+		    var pengajuan_cookie = $.cookie('id_pengajuan'); 
+		    var pemohon_cookie = $.cookie('id_pemohon'); 
+		    var perusahaan_cookie = $.cookie('id_perusahaan'); 
+		    if (pengajuan_cookie === ""){
+		       	toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+		        $(tab_index).tab('show');
+		   	}
+	      	else if(pemohon_cookie === ""){
+		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+		        $(tab_index).tab('show');
+	      	}
+	      	else if(perusahaan_cookie === ""){
+		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+		        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+		        $(tab_index).tab('show');
+	      	}
+	      	else{
+		        swal({
+		          showConfirmButton: false,
+		          type: 'success',
+		          title: 'Pendaftaran Berhasil Tersimpan',
+		          timer: 2000
+		        })
+		        
+		      	window.location.href = '{% url 'admin:verifikasi' %}';
+		      	$.ajax({
+		        	url: '{% url 'iujk_done' %}',
+		        	success: function(response) {
+		        		respon = $.parseJSON(response)
+		        		if(respon.success){
+		        			toastr["success"](respon.pesan)
+		        		}
+		        	}
+	        	});
+	      	}
+    	};
 	</script>
 	<!-- load data if exists -->
-	<script type="text/javascript">
-		function load_pemohon(ktp_){
-		  // $( "#rootwizard" ).mask('loading')
-		  $(".tab-content").mLoading();
-		  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-		  $.ajax({
-			type: 'POST',
-			url: __base_url__+'/load-pemohon/'+ktp_,
-			data: { csrfmiddlewaretoken: csrf_token },
-			success: function (data) {
-			  $(".tab-content").mLoading('hide');
-			  respon = $.parseJSON(data)
-				if(respon.success){
-				  // toastr["success"](respon.pesan);
-				  
-				  load_provinsi(respon.data.negara)
-				  load_kabupaten(respon.data.provinsi)
-				  load_kecamatan(respon.data.kabupaten)
-				  load_desa(respon.data.kecamatan)
-				  $('#id_nama_lengkap').val(respon.data.nama_lengkap);
-				  $('#alamat_pemohon_load').val(respon.data.alamat);
-				  $('#no_telepon_pemohon_load').val(respon.data.telephone);
-				  $('#hp_load').val(respon.data.hp);
-				  $('#email_pemohon_load').val(respon.data.email);
-				  $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
-				  $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-				  $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-				  $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-				  $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
-				  $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-				  $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-				}
-				// else{
-				//   toastr["info"](respon.pesan);
-				// }
-			},
-			error: function(data) {
-			  toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
-			  $(".tab-content").mLoading('hide');
-			}
-		  });
-		}
 
-		function load_perusahaan_a(npwp_){
-		  // $( "#rootwizard" ).mask('loading')
-		  $(".tab-content").mLoading();
-		  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-		  $.ajax({
-			type: 'POST',
-			url: __base_url__+'/load-perusahaan/'+npwp_,
-			data: { csrfmiddlewaretoken: csrf_token },
-			success: function (data) {
-			  $(".tab-content").mLoading('hide');
-			  respon = $.parseJSON(data)
-				if(respon.success){
-				  // toastr["success"](respon.pesan);
-				  load_provinsi1(respon.data.negara)
-				  load_kabupaten1(respon.data.provinsi)
-				  load_kecamatan1(respon.data.kabupaten)
-				  load_desa1(respon.data.kecamatan)
-				  $('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
-				  $('#alamat_perusahaan_load').val(respon.data.alamat);
-				  $('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
-				  $('#no_telepon_perusahaan_load').val(respon.data.telepon);
-				  $('#id_email_perusahaan').val(respon.data.email);
-				  $('#id_fax_perusahaan').val(respon.data.fax)
-
-				  $('#id_negara1').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-				  $('#id_provinsi1').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-				  $('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-				  $('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-				  $('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-				}
-				// else{
-				//   toastr["info"](respon.pesan);
-				// }
-			  
-			},
-			error: function(data) {
-			  toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
-			  $(".tab-content").mLoading('hide');
-			}
-		  });
-		}
-		function load_alamat(){
-			var alamat = $('#alamat_pemohon_load').val();
-			$('#alamat_perusahaan_load').val(alamat);
-		}
-
-		function load_no_telepon(){
-			var no = $('#no_telepon_pemohon_load').val();
-			$('#no_telepon_perusahaan_load').val(no);
-		}
-		function load_provinsi1(id_negara){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_provinsi_chosen1" ).mask('loading')
-			$( "#id_provinsi_chosen1.loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_provinsi' %}', // the file to call
-				success: function(response) { // on success..
-				  elem = $( "#id_provinsi1" )
-				  elem.html(response);
-				  make_disabled(elem, false)
-				  $( "#id_provinsi_chosen1" ).unmask()
-				  $( "#id_provinsi1" ).change(function(){
-					$this = $(this)
-
-					id_provinsi1 = $(this).val()
-					if(id_provinsi1.length > 0){
-					  load_kabupaten1(id_provinsi1)
-					}else{
-					  elem = $( "#id_kabupaten1" )
-					  make_disabled(elem, true)
-					}
-				  })
-				},
-				error: function(data) {                
-				  toast_server_error()
-				}
-			});
-		}
-
-		make_disabled($( "#id_provinsi1" ), true)
-		make_disabled($( "#id_kabupaten1" ), true)
-		make_disabled($( "#id_kecamatan1" ), true)
-		make_disabled($( "#id_desa1" ), true)
-
-		$( "#id_negara1" ).change(function(){
-			$this = $(this)
-
-			id_negara1 = $(this).val()
-			if(id_negara1.length > 0){
-				load_provinsi1(id_negara1)
-			}else{
-				elem = $( "#id_provinsi1" )
-				make_disabled(elem, true)
-				make_disabled($( "#id_provinsi1" ), true)
-				make_disabled($( "#id_kabupaten1" ), true)
-				make_disabled($( "#id_kecamatan1" ), true)
-				make_disabled($( "#id_desa1" ), true)
-			}
-		})
-
-		function load_kabupaten1(id_provinsi){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_kabupaten_chosen1" ).mask('loading')
-			$( "#id_kabupaten_chosen1 .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_kabupaten' %}', // the file to call
-				success: function(response) { // on success..
-				  elem = $( "#id_kabupaten1" )
-				  elem.html(response);
-				  make_disabled(elem, false)
-				  $( "#id_kabupaten_chosen1" ).unmask()
-				  $( "#id_kabupaten1" ).change(function(){
-					$this = $(this)
-
-					id_kabupaten1 = $(this).val()
-					if(id_kabupaten1.length > 0){
-					  load_kecamatan1(id_kabupaten1)
-					}else{
-					  elem = $( "#id_kecamatan1" )
-					  make_disabled(elem, true)
-					}
-				  })
-				},
-				error: function(data) {                
-				  toast_server_error()
-				}
-			});
-		}
-
-		function load_kecamatan1(id_kabupaten){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_kecamatan_chosen1" ).mask('loading')
-			$( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_kecamatan' %}', // the file to call
-				success: function(response) { // on success..
-				  elem = $( "#id_kecamatan1" )
-				  elem.html(response);
-				  make_disabled(elem, false)
-				  $( "#id_kecamatan_chosen1" ).unmask()
-				  $( "#id_kecamatan1" ).change(function(){
-					$this = $(this)
-					
-					id_kecamatan1 = $(this).val()
-					if(id_kecamatan1.length > 0){
-					  load_desa1(id_kecamatan1)
-					}else{
-					  elem = $( "#id_desa1" )
-					  make_disabled(elem, true)
-					}
-				  })
-				},
-				error: function(data) {                
-				  toast_server_error()
-				}
-			});
-		}
-
-		function load_desa1(id_kecamatan){
-			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-			$( "#id_desa_chosen1" ).mask('loading')
-			$( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
-			$.ajax({ // create an AJAX call...
-				data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
-				type: 'POST', // GET or POST
-				url: '{% url 'admin:option_desa' %}', // the file to call
-				success: function(response) { // on success..
-				  elem = $( "#id_desa1" )
-				  elem.html(response);
-				  make_disabled(elem, false)
-				  $( "#id_desa_chosen1" ).unmask()
-				  $( "#id_desa1" ).change(function(){
-					  $this = $(this)
-				  })
-				},
-				error: function(data) {                
-				  toast_server_error()
-				}
-			});
-		}
-	</script>
 	<!-- Modal Form -->
 	<script type="text/javascript">
 
@@ -813,8 +508,8 @@
 							var cell5 = row.insertCell(4);
 							cell5.innerHTML = resp.data[4].nilai_paket_pekerjaan
 
-							var cell6 = row.insertCell(5);
-							cell6.innerHTML = '<a href="#" onclick="show_modal_edit(\''+resp.data[0].id+'\',\''+resp.data[1].klasifikasi_usaha+'\',\''+resp.data[2].nama_paket_pekerjaan+'\',\''+resp.data[3].tahun+'\',\''+resp.data[5].nilai_str+'\')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>'
+							// var cell6 = row.insertCell(5);
+							// cell6.innerHTML = '<a href="#" onclick="show_modal_edit(\''+resp.data[0].id+'\',\''+resp.data[1].klasifikasi_usaha+'\',\''+resp.data[2].nama_paket_pekerjaan+'\',\''+resp.data[3].tahun+'\',\''+resp.data[5].nilai_str+'\')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>'
 
 							toastr["success"](resp.pesan)
 
@@ -829,7 +524,8 @@
 						}else{
 							var a = Object.keys(resp);
 							for (var i = 0; i < a.length; i++){
-								var field = a[i].split("_").join(" ").capitalize();
+								// var field = a[i].split("_").join(" ").capitalize();
+								var field = a[i].split("_").join(" ");
 								toastr["error"](field+", "+resp[a[i]][0]['message'])
 								$("#"+a[i]+"").addClass("has-error");
 							}
@@ -966,7 +662,7 @@
 
 	<div class="tab-pane" id="tab7">
 	  <!-- Konfirmasi -->
-	  
+	  {% include 'front-end/include/formulir_iujk/konfirmasi.html' %}
 	</div>
 
 	<ul class="pager wizard">

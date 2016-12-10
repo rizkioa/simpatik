@@ -45,7 +45,11 @@
 	        height: 257mm;
 	        /*outline: 2cm #FFEAEA solid;*/
 	    }
-	    
+	    @-moz-document url-prefix() {
+	        .subpage {
+	            height:  340mm;
+	        }
+	    }   
 	    @page {
 	        size: F4;
 	        margin: 0;
@@ -164,10 +168,10 @@
 	        			<td>
 	        				<center>
 	        					<p>
-	        						<font style="font-size: 30px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>SEKRETARIAT DAERAH</b></font><br>
-	        						<font>Jalan Soekarno Hatta Nomor I Telepon 689901 - 689905<br>
-	        						Website : <u>www.kedirikab.go.id</u></font><br>
-	        						<font style="font-size: 25px;">KEDIRI</font>
+	        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>BADAN PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
+	        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
+	        						Email : bpmp2tsp@kedirikab.go.id   Website : kedirikab.go.id</font><br>
+	        						<font style="font-size: 20px;">KEDIRI</font>
 	        					</p>
 	        				</center>
 	        			</td>
@@ -183,61 +187,62 @@
 	        	</div> -->
 	        	
 	        	<center>
-	        		<font style="font-size: 25px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
-	        		<font style="font-size: 20px"><i>(  )</i></font><br>
-	        		<font style="font-size: 23px">Nomor : {{ pengajuan.no_izin }}</font><br>
+	        		<font style="font-size: 20px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
+	        		<font style="font-size: 18px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
 	        	</center>
-	        	<div id="qrcodeTable" style="float: right;">
-	        	</div>
-	        	<table width="100%" border="1" frame="box" rules="rows">
+	        	<table width="100%" border="0" frame="box" rules="rows">
 	        		<tr>
-	        			<td width="5%">1</td>
-	        			<td width="40%"><b>Nama Perusahaan/Instansi</b></td>
-	        			<td width="5%">:</td>
-	        			<td width="50%">{{ perusahaan.nama_perusahaan }}</td>
+	        			<td style="width: 297px;"><b>1. Nama Perusahaan/Instansi</b></td>
+	        			<td>:</td>
+	        			<td  colspan="2">{{ perusahaan.nama_perusahaan }}</td>
 	        		</tr>
 	        		<tr>
-	        			<td width="5%">2</td>
-	        			<td><b>Nama dan Alamat tempat usaha</b></td>
+	        			<td><b>2. Nama dan Alamat tempat usaha</b></td>
 	        			<td>:</td>
-	        			<td>{{ pemohon.nama_lengkap }} ({{ pemohon.jabatan_pemohon }})</td>
+	        			<td  colspan="2">{{ pemohon.nama_lengkap|default_if_none:"-" }} 
+	        			{% if pemohon.jabatan_pemohon %}
+	        			({{ pemohon.jabatan_pemohon }})
+	        			{% else %}
+	        			
+	        			{% endif %}
+	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Dasar pertimbangan pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td></td>
+	        			<td colspan="2"></td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Dasar hukum pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td></td>
+	        			<td colspan="2"></td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>a. Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b></td>
-	        			<td><b>b. Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></td>
+	        			<td colspan="4"><p><b>a. Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b><br>
+	        			<b>b. Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></p></td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
 	        			<td>:</td>
-	        			<td>{{pengajuan.jenis_reklame.jenis_reklame}}/{{pengajuan.judul_reklame}}</td>
+	        			<td colspan="2">{{pengajuan.jenis_reklame.jenis_reklame}} / {{pengajuan.judul_reklame}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
 	        			<td>:</td>
-	        			<td>{{pengajuan.panjang}}x{{pengajuan.lebar}}x{{pengajuan.sisi}}</td>
+	        			<td colspan="2">{{pengajuan.panjang}}x{{pengajuan.lebar}}x{{pengajuan.sisi}} / {{pengajuan.jumlah|default_if_none:"-"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td>{{jumlah_lama}}</td>
+	        			<td colspan="2">{{jumlah_lama}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Letak pemasangan</b></td>
 	        			<td>:</td>
-	        			<td>{{pengajuan.letak_pemasangan}}</td>
+	        			<td colspan="2">{{pengajuan.letak_pemasangan}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td colspan="3"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :<br>
+	        			<td colspan="4"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :<br>
 											1. Tidak bertentangan dengan kepentingan umum : kesusilaan, keindahan, kesopanan, ketertiban umum dan keamanan. <br>
 											2. Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.<br>
 											3. Tidak mengganggu ketertiban lalu lintas.<br>
@@ -250,47 +255,41 @@
 	        		</tr>
 	        	</table>
 	        	<br>
-	        	<!-- <div style="float: left; width: 50%">
-	        		<div style="padding-left: 10%;">
-	        			
-	        		</div>
-	        	</div> -->
+	        	<div style="">
+	        	</div>
 	        	<table width="100%" border="0" class="font">
 	        		<tr>
-	        			<td width="50%">Tembusan : 
+	        			<td>
+	        			<table border="0">
+	  						<tr>
+	  							<td>
+	  							<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+	  							</td>
+	  						</tr>
+	  						<tr>
+	  							<td>Tembusan :<br> 
 								Yth. 	Sdr. Anggota Tim Perizinan	    
-									Pemasangan Reklame Kab. Kediri           
-						</td>
+									Pemasangan Reklame Kab. Kediri  
+								</td>
+	  						</tr>
+	  					</table>
+	        			</td>
+
 	        			<td width="50%">
 	        				<p style="font-size:17px; padding-left: 20%;" align="center">
-			                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
-			                    KEPALA BPM-P2TSP KAB. KEDIRI
-			                    <br>
+			                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
+			                    KEPALA BPM-P2TSP <br>KAB. KEDIRI
 			                    <br>
 			                    <br>
 			                    <br>
 			                    <br>
 			                    <u><b>{{ nama_kepala_dinas }}</b></u><br>
-			                    <i>Pembina Tk.l</i><br>
-			                    <i>NIP: {{nip_kepala_dinas}}</i>
+			                    Pembina Tk.l<br>
+			                    NIP: {{nip_kepala_dinas}}
 			                </p>
 	        			</td>
 	        		</tr>
 	        	</table>
-	        	<!-- <div style="float: right; width: 50%">
-		        	<p style="font-size:17px; padding-left: 20%;" align="center">
-	                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font>
-	                    KEPALA BPM-P2TSP KAB. KEDIRI
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <br>
-	                    <u><b>{{ nama_kepala_dinas }}</b></u><br>
-	                    <i>Pembina Tk.l</i><br>
-	                    <i>NIP: {{nip_kepala_dinas}}</i>
-	                </p>
-	            </div> -->
 	        </div>    
 	    </div>
 	</div>
@@ -305,8 +304,8 @@
 	    }
 	    jQuery('#qrcodeTable').qrcode({
 			text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
-			width 	: 100,
-			height 	: 100,
+			width 	: 80,
+			height 	: 80,
 		});	
 	</script>
 </body>

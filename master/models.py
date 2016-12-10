@@ -3,7 +3,10 @@ from accounts.utils import STATUS, get_status_color
 # from accounts.models import Account
 from datetime import datetime
 
+
 # Create your models here.
+
+
 
 class JenisReklame(models.Model):
 	jenis_reklame = models.CharField(max_length=255, verbose_name='Jenis Reklame')
@@ -17,8 +20,39 @@ class JenisReklame(models.Model):
 		verbose_name = 'Jenis Reklame'
 		verbose_name_plural = 'Jenis Reklame'
 
+class MetaAtribut(models.Model):
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
+	# created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	created_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+	created_at = models.DateTimeField(editable=False)
+	# verified_by = models.ForeignKey("accounts.Account", related_name="verify_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_verify_by_user", verbose_name="Diverifikasi Oleh", blank=True, null=True)
+	verified_at = models.DateTimeField(editable=False, blank=True, null=True)
+	# rejected_by = models.ForeignKey("accounts.Account", related_name="rejected_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_rejected_by_user", verbose_name="Dibatalkan Oleh", blank=True, null=True)
+	rejected_at = models.DateTimeField(editable=False, blank=True, null=True)
+
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def get_color_status(self):
+		return get_status_color(self)
+		
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		if not self.id:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+		return super(MetaAtribut, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.status))
+
+	class Meta:
+		abstract = True
+
+
 class AtributTambahan(models.Model):
-	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=11)
+	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
 
 	created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
 	created_at = models.DateTimeField(editable=False)
@@ -81,7 +115,7 @@ class Settings(models.Model):
 class Negara(models.Model):
 	nama_negara = models.CharField(max_length=40, verbose_name="Negara")
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
-	code = models.CharField(max_length=10, blank=True, null=True, verbose_name="Kode Negara")
+	kode = models.CharField(max_length=10, blank=True, null=True, verbose_name="Kode Negara")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
@@ -99,6 +133,7 @@ class Provinsi(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
 
 	def as_json(self):
 		return dict(id=self.id, nama_provinsi=self.nama_provinsi, negara=self.negara.nama_negara, keterangan=self.keterangan)
@@ -121,6 +156,7 @@ class Kabupaten(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_kabupaten)+"</option>"
@@ -143,6 +179,8 @@ class Kecamatan(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
+
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_kecamatan)+"</option>"
@@ -162,6 +200,8 @@ class Desa(models.Model):
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
+	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
+	
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_desa)+"</option>"
@@ -175,6 +215,20 @@ class Desa(models.Model):
 		verbose_name_plural = "Desa / Kelurahan"
 
 # END OF ALAMAT LOKASI #
+
+class ParameterBangunan(models.Model):
+	parameter = models.CharField(max_length=255,null=True, blank=True, verbose_name='Parameter')
+	detil_parameter = models.CharField(max_length=255, blank=True, null=True, verbose_name='Detil Parameter')
+	nilai = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Nilai', null=True, blank=True)
+
+	def __unicode__(self):
+		return "%s" % (self.parameter)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Parameter Bangunan'
+		verbose_name_plural = 'Parameter Bangunan'
+
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 import os, re
@@ -203,7 +257,7 @@ class FileField(models.FileField):
 		super(FileField, self).save_form_data(instance, data)
 
 class Berkas(AtributTambahan):
-	nama_berkas = models.CharField("Nama Berkas", max_length=100)
+	nama_berkas = models.CharField("Nama Berkas", max_length=200)
 	berkas = FileField(upload_to=path_and_rename, max_length=255)
 	no_berkas = models.CharField("Nomor Berkas", max_length=30, blank=True, null=True, help_text="Masukkan Nomor Surat / Berkas jika ada.")
 
@@ -213,6 +267,12 @@ class Berkas(AtributTambahan):
 		if self.berkas:
 			return settings.MEDIA_URL+str(self.berkas)
 		return "#"
+
+	def as_dict(self):
+		return {
+			'nama_berkas': self.nama_berkas,
+			'berkas': self.get_file_url(),
+		}
 
 	def __unicode__(self):
 		return self.nama_berkas

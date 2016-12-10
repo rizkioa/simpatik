@@ -1,5 +1,5 @@
 from django.db import models
-from master.models import Desa, AtributTambahan, Berkas
+from master.models import Desa, AtributTambahan, Berkas, MetaAtribut
 from accounts.utils import STATUS
 # from perusahaan.utils import AKTA, KEDUDUKAN
 # from accounts.models import IdentitasPribadi
@@ -11,7 +11,7 @@ from accounts.models import IdentitasPribadi
 
 # Create your models here.
 
-class KBLI(models.Model):
+class KBLI(MetaAtribut):
 	kode_kbli = models.CharField(max_length=15, verbose_name='Kode KBLI')
 	nama_kbli = models.CharField(max_length=255, verbose_name='Nama KBLI')
 	versi = models.CharField(max_length=255, null=True, blank=True, verbose_name='Versi')
@@ -22,6 +22,9 @@ class KBLI(models.Model):
 
 	def as_json(self):
 		return dict(id=self.id, nama_kbli=self.nama_kbli, kode_kbli=self.kode_kbli)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.kode_kbli)+" - "+str(self.nama_kbli)+"</option>"
 
 	def as_dict(self):
 		return {
@@ -59,23 +62,23 @@ class Kelembagaan(models.Model):
 		verbose_name = 'Kelembagaan'
 		verbose_name_plural = 'Kelembagaan'
 
-class ProdukUtama(models.Model):
-	barang_jasa_utama = models.CharField(max_length=255, verbose_name='Barang / Jasa Utama')
-	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+# class ProdukUtama(models.Model):
+# 	barang_jasa_utama = models.CharField(max_length=255, verbose_name='Barang / Jasa Utama')
+# 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
-	def __unicode__(self):
-		return "%s" % (self.barang_jasa_utama)
+# 	def __unicode__(self):
+# 		return "%s" % (self.barang_jasa_utama)
 
-	def as_dict(self):
-		return {
-			# "id": self.id,
-			"barang_jasa_utama": self.barang_jasa_utama,
-		}
+# 	def as_dict(self):
+# 		return {
+# 			# "id": self.id,
+# 			"barang_jasa_utama": self.barang_jasa_utama,
+# 		}
 
-	class Meta:
-		ordering = ['id']
-		verbose_name = 'Produk Utama'
-		verbose_name_plural = 'Produk Utama'
+# 	class Meta:
+# 		ordering = ['id']
+# 		verbose_name = 'Produk Utama'
+# 		verbose_name_plural = 'Produk Utama'
 
 class JenisPenanamanModal(models.Model):
 	jenis_penanaman_modal = models.CharField(max_length=255, verbose_name='Jenis Penanaman Modal')
@@ -163,13 +166,28 @@ class Legalitas(AtributTambahan):
 	jenis_legalitas = models.ForeignKey(JenisLegalitas, related_name='jenis_legalitas_perusahaan', blank=True, null=True)
 	alamat = models.CharField(max_length=255, null=True, blank=True)
 	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
-	nomor_pengesahan = models.CharField("Nomor Pengesahan", max_length=30, blank=True, null=True)
+	nomor_akta = models.CharField("Nomor Akta", max_length=255, blank=True, null=True)
+	tanggal_akta = models.DateField("Tanggal Akta", blank=True, null=True)
+	nomor_pengesahan = models.CharField("Nomor Pengesahan", max_length=255, blank=True, null=True)
 	tanggal_pengesahan = models.DateField("Tanggal Pengesahan", blank=True, null=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", blank=True, null=True)
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name="Keterangan")
 
 	def __unicode__ (self):
 		return "%s" % (str(self.jenis_legalitas))
+
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"jenis_legalitas": self.jenis_legalitas.jenis_legalitas,
+			"nama_notaris": self.nama_notaris,
+			"alamat": self.alamat,
+			"telephone": self.telephone,
+			"nomor_akta": self.nomor_akta,
+			"tanggal_akta": self.tanggal_akta.strftime('%d-%m-%Y'),
+			"nomor_pengesahan": self.nomor_pengesahan,
+			"tanggal_pengesahan": self.tanggal_pengesahan.strftime('%d-%m-%Y'),			
+		}
 
 	class Meta:
 		ordering = ['id']

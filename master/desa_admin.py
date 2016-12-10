@@ -18,7 +18,7 @@ def get_desa(request):
 	return desa_list
 
 class DesaAdmin(admin.ModelAdmin):
-	list_display = ('nama_desa','kecamatan','keterangan')
+	list_display = ('kode', 'nama_desa','kecamatan','keterangan')
 	list_filter = ('kecamatan__kabupaten','kecamatan')
 	search_fields = ('nama_desa', 'keterangan')
 

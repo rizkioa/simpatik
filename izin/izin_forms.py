@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -33,7 +33,7 @@ class PemohonForm(forms.ModelForm):
 
 	class Meta:
 		model = Pemohon
-		fields = ('jabatan_pemohon', 'jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
+		fields = ( 'jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None
@@ -59,13 +59,13 @@ class PengajuanReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilReklame
-		fields = ('jenis_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan', 'desa', 'tanggal_mulai', 'tanggal_akhir')
+		fields = ('jenis_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi','jumlah', 'letak_pemasangan', 'desa', 'tanggal_mulai', 'tanggal_akhir')
 
 class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
 	class Meta:
 		model = Legalitas
-		fields = ('nama_notaris','jenis_legalitas','alamat','telephone','nomor_pengesahan','tanggal_pengesahan')
+		fields = ('nama_notaris','alamat','telephone','nomor_pengesahan','tanggal_pengesahan', 'nomor_akta', 'tanggal_akta')
 
 class LegalitasPerusahaanPerubahanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""
@@ -129,3 +129,15 @@ class UploadBerkasPenolakanIzinForm(forms.ModelForm):
 	class Meta:
 		model = Berkas
 		fields = ('berkas',)
+
+
+class SurveyForm(forms.ModelForm):
+	class Meta:
+		model = Survey
+		fields = ('skpd', 'permohonan', 'tanggal_survey', 'deadline_survey')
+
+class PengajuanIMBReklameForm(forms.ModelForm):
+	"""docstring for PengajuanSiupForm"""
+	class Meta:
+		model = DetilIMBPapanReklame
+		fields = ('jenis_papan_reklame','lebar','tinggi','jumlah','klasifikasi_jalan','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat')

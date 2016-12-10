@@ -4,137 +4,108 @@
   <hr class="style14" style="height:2px">
 </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_foto" action="{% url 'siup_upload_berkas_foto_pemohon' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_foto_pemohon' %}" data-parsley-validate novalidate id="form-foto">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left"><strong>File Foto</strong></label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="load_foto_pemohon"></span>
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_foto"></div >
-          <div class="percent" id="percent_berkas_foto">0%</div>
-        </div> -->
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berkas_foto" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_foto" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-foto">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-foto" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-foto" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-foto"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_ktp" action="{% url 'siup_upload_berkas_ktp_pemohon' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_ktp_pemohon' %}" data-parsley-validate novalidate id="form-ktp">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left"><strong>File KTP/Paspor</strong></label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="load_ktp_pemohon"></span>
-        
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_ktp"></div >
-          <div class="percent" id="percent_berkas_ktp">0%</div>
-        </div> -->
-        <label class="help-text">(Dirut/pemilik/pengurus/penanggungjawab)</label>
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berkas_ktp" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-ktp">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <label class="help-text">(Dirut/pemilik/pengurus/penanggungjawab)</label>
+        </div>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ktp"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_npwp_pribadi" action="{% url 'siup_upload_berkas_npwp_pribadi' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_npwp_pribadi' %}" data-parsley-validate novalidate id="form-npwp_pribadi">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left"><strong>File NPWP Pribadi</strong></label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="load_npwp_pribadi"></span>
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_npwp_pribadi"></div >
-          <div class="percent" id="percent_berkas_npwp_pribadi">0%</div>
-        </div> -->
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berkas_npwp_pribadi" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_npwp_pribadi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-npwp_pribadi">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-npwp_pribadi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp_pribadi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-npwp_pribadi"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_npwp_perusahaan" action="{% url 'siup_upload_berkas_npwp_perusahaan' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_npwp_perusahaan' %}" data-parsley-validate novalidate id="form-npwp_perusahaan">
   {% csrf_token %}
     <div class="form-group" id="berkas">
       <label class="col-sm-3 control-label text-left"><strong>File NPWP Perusahaan</strong></label>
-      <div class="col-sm-5">
-        <input type="file" name="berkas" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="load_npwp_perusahaan"></span>
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_npwp_perusahaan"></div >
-          <div class="percent" id="percent_berkas_npwp_perusahaan">0%</div>
-        </div> -->
-      </div>
-      <div class="col-sm-4">
-        <button id="button_berkas_npwp_perusahaan" type="submit" class="btn btn-success mb-10 start_upload_npwp_perusahaan"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-npwp_perusahaan">
+        <div class="col-sm-5">
+          <input type="file" name="berkas" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-npwp_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-npwp_perusahaan"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_akta_pendirian" action="{% url 'siup_upload_berkas_akta_pendirian' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_pendirian' %}" data-parsley-validate novalidate id="form-akta_pendirian">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left"><strong>File Akta Pendirian</strong></label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle akta_pendirian_disable" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-        <span id="load_akta_pendirian"></span>
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_akta_pendirian"></div >
-          <div class="percent" id="percent_berkas_akta_pendirian">0%</div>
-        </div> -->
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berkas_akta_pendirian" type="submit" class="btn btn-success mb-10 akta_pendirian_disable"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_akta_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-akta_pendirian">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle akta_pendirian_disable" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-akta_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_pendirian"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_akta_perubahan" action="{% url 'siup_upload_berkas_akta_perubahan' %}">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_perubahan' %}" id="form-akta_perubahan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left">File Akta Perubahan (jika ada)</label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle akta_perubahan_disable" data-buttonText="Browse" data-iconName="fa fa-inbox">
-        <span id="load_akta_perubahan"></span>
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_akta_perubahan"></div>
-          <div class="percent" id="percent_berkas_akta_perubahan">0%</div>
-        </div> -->
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berkas_akta_perubahan" type="submit" class="btn btn-success mb-10 akta_perubahan_disable"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_akta_perubahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-akta_perubahan">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle akta_perubahan_disable" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-akta_perubahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_perubahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_perubahan"></span>
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form_berkas_pendukung" action="{% url 'siup_upload_berkas_pendukung' %}">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-pendukung">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label text-left">File Pendukung lainnya (jika ada)</label>
-      <div class="col-sm-5">
-        <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-        <span id="load_berkas_tambahan"></span>
-        <!-- <div class="progress">
-          <div class="bar" id="bar_berkas_pendukung"></div >
-          <div class="percent" id="percent_berkas_pendukung">0%</div>
-        </div> -->
-      </div>
-      <div class="col-sm-4">
-        <button id="btn_berkas_pendukung" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-        <a id="percent_berkas_pendukung" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-      </div>
+      <span id="field-pendukung">
+        <div class="col-sm-5">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-pendukung" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-pendukung" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-pendukung"></span>
     </div>
   </form>

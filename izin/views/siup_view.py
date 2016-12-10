@@ -4,27 +4,25 @@ from sqlite3 import OperationalError
 import os
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
 from izin.utils import get_nomor_pengajuan
-from accounts.models import NomorIdentitasPengguna
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
-from master.models import Berkas
-from perusahaan.models import Legalitas, KBLI, ProdukUtama
-
+from izin.utils import formatrupiah
 try:
 	from django.utils.encoding import force_text
 except ImportError:
 	from django.utils.encoding import force_unicode as force_text
-
 from django.utils.translation import ugettext_lazy as _
-
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-from perusahaan.models import Perusahaan
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
 import datetime
 from izin import models as app_models
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from perusahaan.models import Legalitas, KBLI, Perusahaan
+from accounts.models import NomorIdentitasPengguna
+from master.models import Berkas
+
 
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
@@ -35,7 +33,6 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
-	# print Pemohon.objects.get(username = request.POST.get('ktp'))
 	try:
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
@@ -84,9 +81,9 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilReklame')
 		elif k.id == 25:
 			objects_ = getattr(app_models, 'DetilTDP')
+		elif k.id == 1:
+			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
 
-		# print "sesuatu"
-		# print request.user.id
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
@@ -126,12 +123,14 @@ def siup_identitas_pemohon_save_cookie(request):
 		if pemohon.cleaned_data['email']:
 			email_ = pemohon.cleaned_data['email']
 
+		alamat_ = str(pengajuan.pemohon.alamat)+", DESA "+str(pengajuan.pemohon.desa.nama_desa)+", KEC. "+str(pengajuan.pemohon.desa.kecamatan.nama_kecamatan)+", "+str(pengajuan.pemohon.desa.kecamatan.kabupaten.nama_kabupaten)
+
 		data = {'success': True, 'pesan': 'Identitas Pemohon berhasil tersimpan. Proses Selanjutnya.' ,'data': [
 			{'nama_lengkap': pemohon.cleaned_data['nama_lengkap']},
 			{'jenis_permohonan': jenis_permohonan_},
 			{'jenis_pemohon': jenis_ },
 			{'nomor_ktp': ktp_},
-			{'alamat': pemohon.cleaned_data['alamat']},
+			{'alamat': alamat_},
 			{'telephone': pemohon.cleaned_data['telephone']},
 			{'hp': pemohon.cleaned_data['hp']},
 			{'email': email_ },
@@ -142,26 +141,21 @@ def siup_identitas_pemohon_save_cookie(request):
 			{'telephone_kuasa': telephone_kuasa}
 			]}
 		response = HttpResponse(json.dumps(data))	
-
 		response.set_cookie(key='id_pengajuan', value=pengajuan.id)
 		response.set_cookie(key='id_pemohon', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
 		response.set_cookie(key='nomor_paspor', value=paspor_)
-			
+		response.set_cookie(key='id_jenis_pengajuan', value=jenis_permohonan_)
 	else:
-		# print "error"
-		# print pemohon.errors
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
 		response = HttpResponse(data)
 	return response
 
 def siup_identitas_perusahan_save_cookie(request):
-	# print request.COOKIES # Untuk Tes cookies
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 			try:
-				# print "try"
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
 				if perusahaan.is_valid():
@@ -180,6 +174,9 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
+					elif k.id == 1:
+						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+						
 					if objects_:
 						try:
 							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -188,8 +185,10 @@ def siup_identitas_perusahan_save_cookie(request):
 							pengajuan = objects_(perusahaan=per)
 						pengajuan.save()
 
-
-					alamat_ = str(get_perusahaan.alamat_perusahaan)+" "+str(get_perusahaan.desa)+", Kec. "+str(get_perusahaan.desa.kecamatan)+", Kab./Kota "+str(get_perusahaan.desa.kecamatan.kabupaten)
+					email_ = ""
+					if get_perusahaan.email:
+						email_ = get_perusahaan.email
+					alamat_ = str(get_perusahaan.alamat_perusahaan)+", DESA "+str(get_perusahaan.desa)+", KEC. "+str(get_perusahaan.desa.kecamatan)+", "+str(get_perusahaan.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 					{'npwp_perusahaan': get_perusahaan.npwp},
 					{'nama_perusahaan': get_perusahaan.nama_perusahaan},
@@ -197,7 +196,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					{'kode_pos_perusahaan': get_perusahaan.kode_pos},
 					{'telepon_perusahaan': get_perusahaan.telepon},
 					{'fax_perusahaan': get_perusahaan.fax},
-					{'email_perusahaan': get_perusahaan.email}
+					{'email_perusahaan': email_}
 					]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
@@ -230,7 +229,10 @@ def siup_identitas_perusahan_save_cookie(request):
 						except ObjectDoesNotExist:
 							pengajuan = objects_(perusahaan=p)
 						pengajuan.save()
-					alamat_ = str(p.alamat_perusahaan)+" "+str(p.desa)+", Kec. "+str(p.desa.kecamatan)+", Kab./Kota "+str(p.desa.kecamatan.kabupaten)
+					email_ = ""
+					if p.email:
+						email_ = p.email
+					alamat_ = str(p.alamat_perusahaan)+", DESA "+str(p.desa)+", KEC. "+str(p.desa.kecamatan)+", "+str(p.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
 						{'npwp_perusahaan': p.npwp},
 						{'nama_perusahaan': p.nama_perusahaan},
@@ -238,7 +240,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						{'kode_pos_perusahaan': p.kode_pos},
 						{'telepon_perusahaan': p.telepon},
 						{'fax_perusahaan': p.fax},
-						{'email_perusahaan': p.email}
+						{'email_perusahaan': email_}
 						]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
@@ -259,22 +261,21 @@ def siup_identitas_perusahan_save_cookie(request):
 def siup_detilsiup_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
 			# kekayaan = unicode(request.POST.get('kekayaan_bersih', Decimal(0.00)).replace(".", ""))
 			kekayaan_ = request.POST.get('kekayaan_bersih')
 			if kekayaan_ == '':
-				kekayaan = Decimal(0.00)
-			else:
-				kekayaan = kekayaan_.replace(".", "")
+				# kekayaan = Decimal(0.00)
+				kekayaan = '0' 
+			# else:
+				# kekayaan = kekayaan_.replace(".", "")
 			tos = request.POST.get('total_nilai_saham')
 			if tos == '':
-				total_saham = Decimal(0.00)
-			else:
-				total_saham = tos.replace(".", "")
-			# print type(total_saham)
-			# print type(kekayaan)
-			# print type(request.POST.get('total_nilai_saham'))
+				# total_saham = Decimal(0.00)
+				total_saham = '0'
+			# else:
+				# total_saham = tos.replace(".", "")
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
 				try:
@@ -286,13 +287,23 @@ def siup_detilsiup_save_cookie(request):
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
 					# pengajuan_.presentase_saham_asing = request.POST.get('presentase_saham_asing', Decimal('0.00'))
-					detilSIUP.save()
-					pengajuan_.save()
+					
 					# print "kbli"+kbli_list
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
+					nama_kbli = []
+					print kbli_list
 					for kbli in kbli_list:
-						pengajuan_.kbli.add(KBLI.objects.get(id=kbli))
+						kbli_obj = KBLI.objects.get(id=kbli)
+						print kbli_obj
+						pengajuan_.kbli.add(kbli_obj)
+						
+						nama_kbli.append(kbli_obj.nama_kbli)			
+					if len(nama_kbli) > 1:
+						pengajuan_.produk_utama = ",".join(nama_kbli)
+					detilSIUP.save()
+					pengajuan_.save()
+
 					# for produk_utama in produk_utama_list:
 					# 	pengajuan_.produk_utama.add(ProdukUtama.objects.get(id=produk_utama))
 					#++++++++++++++++ end multi select manytomany ++++++++
@@ -304,9 +315,9 @@ def siup_detilsiup_save_cookie(request):
 						'pesan': 'Detail SIUP berhasil disimpan. Proses Selanjutnya.', 
 						'data': [
 							{'bentuk_kegiatan_usaha': pengajuan_.bentuk_kegiatan_usaha.kegiatan_usaha},
-							{'kekayaan_bersih': str(pengajuan_.kekayaan_bersih)},
+							{'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih)},
 							{'status_penanaman_modal': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal },
-							{'total_nilai_saham': str(pengajuan_.total_nilai_saham)},
+							{'total_nilai_saham': "Rp "+str(pengajuan_.total_nilai_saham)},
 							{'presentase_saham_nasional': str(pengajuan_.presentase_saham_nasional)+" %"},
 							{'presentase_saham_asing': str(pengajuan_.presentase_saham_asing)+" %"},
 							{'kelembagaan': pengajuan_.kelembagaan.kelembagaan},
@@ -350,6 +361,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 						if form.is_valid():
 							f = form.save(commit=False)
 							f.perusahaan_id = request.COOKIES['id_perusahaan']
+							f.jenis_legalitas_id = 1
 							if request.user.is_authenticated():
 								f.created_by_id = request.user.id
 							else:
@@ -390,6 +402,8 @@ def siup_legalitas_perusahaan_save_cookie(request):
 									legalitas.jenis_legalitas_id = 2
 									legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
 									legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
+									legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
+									legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 									legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
 									legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
 									legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
@@ -477,7 +491,7 @@ def siup_upload_berkas_foto_pemohon(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-						 	valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						 	valid_extensions = ['.jpg', '.jpeg', '.png']
 						 	if not ext in valid_extensions:
 						 		data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -539,7 +553,7 @@ def siup_upload_berkas_ktp_pemohon(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -597,7 +611,7 @@ def siup_upload_berkas_npwp_pribadi(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -660,7 +674,7 @@ def siup_upload_berkas_npwp_perusahaan(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -722,7 +736,7 @@ def siup_upload_berkas_akta_pendirian(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -784,7 +798,7 @@ def siup_upload_berkas_akta_perubahan(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -846,7 +860,7 @@ def siup_upload_berkas_pendukung(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -897,7 +911,9 @@ def siup_done(request):
 			pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
-			
+					
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
 			response.delete_cookie(key='id_pengajuan') # set cookie	
 			response.delete_cookie(key='id_perusahaan') # set cookie	
 			response.delete_cookie(key='nomor_ktp') # set cookie	
@@ -906,9 +922,6 @@ def siup_done(request):
 			response.delete_cookie(key='id_kelompok_izin') # set cookie
 			response.delete_cookie(key='id_legalitas') # set cookie
 			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
-
-			data = {'success': True, 'pesan': 'Proses Selesai.' }
-			response = HttpResponse(json.dumps(data))
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
 			data = json.dumps(data)
@@ -1059,6 +1072,120 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_nama = str(legalitas_perubahan.berkas.nama_berkas)
 		
 		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'npwp_perusahaan_url': npwp_perusahaan_url, 'npwp_perusahaan_nama': npwp_perusahaan_nama, 'legalitas_pendirian_url': legalitas_pendirian_url, 'legalitas_pendirian_nama': legalitas_pendirian_nama, 'legalitas_perubahan_url': legalitas_perubahan_url, 'legalitas_perubahan_nama': legalitas_perubahan_nama }}
+
+		legalitas_pendirian_nama_notaris = ""
+		legalitas_pendirian_alamat = ""
+		legalitas_pendirian_telephone = ""
+		legalitas_pendirian_no_akta = ""
+		legalitas_pendirian_tanggal_akta = ""
+		legalitas_pendirian_no_pengesahan = ""
+		legalitas_pendirian_tanggal_pengesahan = ""
+		legalitas_pendirian = perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
+		if legalitas_pendirian:
+			legalitas_pendirian_nama_notaris = legalitas_pendirian.nama_notaris
+			legalitas_pendirian_alamat = legalitas_pendirian.alamat
+			legalitas_pendirian_telephone = legalitas_pendirian.telephone
+			legalitas_pendirian_no_akta = legalitas_pendirian.nomor_akta
+			legalitas_pendirian_tanggal_akta = legalitas_pendirian.tanggal_akta.strftime('%d-%m-%Y')
+			legalitas_pendirian_no_pengesahan = legalitas_pendirian.nomor_pengesahan
+			legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
+		legalitas_perubahan_nama_notaris = ""
+		legalitas_perubahan_alamat = ""
+		legalitas_perubahan_telephone = ""
+		legalitas_perubahan_no_akta = ""
+		legalitas_perubahan_tanggal_akta = ""
+		legalitas_perubahan_no_pengesahan = ""
+		legalitas_perubahan_tanggal_pengesahan = ""
+		legalitas_perubahan = perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
+		if legalitas_perubahan:
+			legalitas_perubahan_nama_notaris = legalitas_perubahan.nama_notaris
+			legalitas_perubahan_alamat = legalitas_perubahan.alamat
+			legalitas_perubahan_telephone = legalitas_perubahan.telephone
+			legalitas_perubahan_no_akta = legalitas_perubahan.nomor_akta
+			legalitas_perubahan_tanggal_akta = legalitas_perubahan.tanggal_akta.strftime('%d-%m-%Y')
+			legalitas_perubahan_no_pengesahan = legalitas_perubahan.nomor_pengesahan
+			legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
+		
+		data = {'success': True, 'pesan': 'Load data berhasil.', 
+		'data': 
+		{'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan}}
+
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
+
+def ajax_load_berkas_siup(request, id_pengajuan):
+	from master.models import Berkas
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			siup = DetilSIUP.objects.get(id=id_pengajuan)
+			p = siup.perusahaan
+			pemohon = siup.pemohon
+			berkas_ = siup.berkas_tambahan.all()
+			legalitas_pendirian = p.legalitas_set.filter(jenis_legalitas__id=1).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+
+			foto = pemohon.berkas_foto.last()
+			if foto:
+				url_berkas.append(foto.berkas.url)
+				id_elemen.append('foto')
+				nm_berkas.append(foto.nama_berkas)
+				id_berkas.append(foto.id)
+
+			nomor_ktp = request.COOKIES['nomor_ktp']
+			if nomor_ktp:
+				ktp_ = Berkas.objects.filter(nama_berkas="Berkas KTP Pemohon "+str(nomor_ktp)).last()
+				if ktp_:
+					url_berkas.append(ktp_.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp_.nama_berkas)
+					id_berkas.append(ktp_.id)
+
+			npwp_pribadi = pemohon.berkas_npwp
+			if npwp_pribadi:
+				url_berkas.append(npwp_pribadi.berkas.url)
+				id_elemen.append('npwp_pribadi')
+				nm_berkas.append(npwp_pribadi.nama_berkas)
+				id_berkas.append(npwp_pribadi.id)
+
+			npwp_perusahaan = p.berkas_npwp
+			if npwp_perusahaan:
+				url_berkas.append(npwp_perusahaan.berkas.url)
+				id_elemen.append('npwp_perusahaan')
+				nm_berkas.append(npwp_perusahaan.nama_berkas)
+				id_berkas.append(npwp_perusahaan.id)
+
+			# print legalitas_pendirian
+			if legalitas_pendirian:
+				if legalitas_pendirian.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_pendirian.berkas.berkas.url)
+					id_elemen.append('akta_pendirian')
+					nm_berkas.append(legalitas_pendirian.berkas.nama_berkas)
+					id_berkas.append(legalitas_pendirian.berkas.id)
+
+			if legalitas_perubahan:
+				if legalitas_perubahan.berkas:
+					# print legalitas_pendirian.berkas
+					url_berkas.append(legalitas_perubahan.berkas.berkas.url)
+					id_elemen.append('akta_perubahan')
+					nm_berkas.append(legalitas_perubahan.berkas.nama_berkas)
+					id_berkas.append(legalitas_perubahan.berkas.id)
+
+			if berkas_:
+				pendukung = berkas_.last()
+				if pendukung:
+					url_berkas.append(pendukung.berkas.url)
+					id_elemen.append('pendukung')
+					nm_berkas.append(pendukung.nama_berkas)
+					id_berkas.append(pendukung.id)
+
+			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }		
+	response = HttpResponse(json.dumps(data))
+	return response

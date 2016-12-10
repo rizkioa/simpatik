@@ -1,0 +1,35 @@
+//++++ legalitas pendirian +++
+if ('{{legalitas_pendirian}}' !== "None"){
+  $('#switch_akta_pendirian_disabled').prop( "checked", true );
+  $('#btn-akta_pendirian').show()
+  setTimeout(function(){
+    $('.akta_pendirian_disable').prop('disabled', false);
+    $('#id_nama_notaris_legalitas_pendirian').val('{{ legalitas_pendirian.nama_notaris }}');
+    $('#id_alamat_legalitas_pendirian').val('{{ legalitas_pendirian.alamat }}');
+    $('#id_telp_legalitas_pendirian').val('{{ legalitas_pendirian.telephone }}');
+    $('#id_nomor_akta_legalitas_pendirian').val('{{legalitas_pendirian.nomor_akta}}');
+    $('#id_tanggal_akta_legalitas_pendirian').val('{{legalitas_pendirian.tanggal_akta|date:"d-m-Y"}}');
+    $('#id_nomor_pengesahan_legalitas_pendirian').val('{{ legalitas_pendirian.nomor_pengesahan }}');
+    $('#id_tanggal_pengesahan_legalitas_pendirian').val('{{ legalitas_pendirian.tanggal_pengesahan|date:"d-m-Y" }}')
+
+  }, 2000);
+}
+//++++ end legalitas pendirian +++
+//++++ legalitas perubahan +++
+if ('{{ legalitas_perubahan }}' !== "None"){
+  // alert("{{legalitas_perubahan.jenis_legalitas}}")
+  $('#switch_akta_perubahan_disabled').prop( "checked", true );
+  $('#btn-akta_perubahan').show()
+  setTimeout(function(){
+    $(".akta_perubahan_disable").prop('disabled', false)
+    $('#id_nama_notaris_perubahan').val('{{ legalitas_perubahan.nama_notaris }}');
+    $('#id_alamat_notaris_perubahan').val('{{ legalitas_perubahan.alamat }}');
+    $('#id_telephone_notaris_perubahan').val('{{ legalitas_perubahan.telephone }}');
+    $('#id_nomor_akta_perubahan').val('{{legalitas_perubahan.nomor_akta}}');
+    $('#id_tanggal_akta_perubahan').val('{{legalitas_perubahan.tanggal_akta|date:"d-m-Y"}}');
+    $('#id_nomor_pengesahan_perubahan').val('{{ legalitas_perubahan.nomor_pengesahan }}');
+    $('#id_tanggal_pengesahan_perubahan').val('{{ legalitas_perubahan.tanggal_pengesahan|date:"d-m-Y" }}')
+
+  }, 3000);
+}
+//++++ end legalitas pendirian +++

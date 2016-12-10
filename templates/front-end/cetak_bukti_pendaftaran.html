@@ -223,7 +223,7 @@
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.nomor_identitas }}</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>
@@ -411,17 +411,13 @@
                 {% else %}
                 <br>
                 {% endif %}
-                <br>
-                <br>
                 <p style="font-size: 12px;text-indent: 30px;">
                     Demikian Surat permohonan SIUP ini kami buat dengan sebenarnya dan apabila di kemudian hari ternyata data/informasi dan keterangan tersebut tidak benar, maka kami menyatakan bersedia dibatalkan SIUP yang telah kami miliki dan dituntut sesuani dengan kententuan peraturan perundang-undangan.
                 </p>
-                <br>
-                <br>
                 <p align="center" style="font-size:13px;padding-left:75%">
                     Kediri,.......................
                     <br>
-                    Nama dan Tanga tangan
+                    Nama dan Tanda tangan
                     <br>
                     Pemilik
                     <br>
@@ -430,17 +426,16 @@
                     <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
                     <br>
                     <br>
-                    <br>
                     <u class="font"><b>{{ pemohon.nama_lengkap }}</b></u>
                 </p>
-                <br>
                 <h5>Syarat SIUP:</h5>
                 <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
                             <td width="5%">No</td>
-                            <td width="80%">Syarat</td>
-                            <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -450,22 +445,30 @@
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ s.syarat }}</td>
                                 <td align="center"><input type="checkbox"></td>
+                                <td align="center"><input type="checkbox"></td>
                             </tr>
                             {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
                 <br>
-                <br>
-                <br>
+                <table border="0" width="100%" style="font-size: 15px;">
+                    <tr>
+                        <td width="48%" >
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                        <td width="2%">
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                    </tr>
+                </table>
                 
-                <!-- <ol class="font">
-                    {% if syarat %}
-                        {% for s in syarat %}
-                            <li>{{ s.syarat }}</li>
-                        {% endfor %}
-                    {% endif %}
-                </ol> -->
                 <hr>
                 <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
                 <br>

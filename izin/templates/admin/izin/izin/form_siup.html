@@ -87,21 +87,24 @@
 
     	$( "#id_jenis_izin" ).change(function(){
 	        id_jenis = $(this).val()
-			if(id_jenis.length > 0){
+            if(id_jenis.length > 0){
                 load_option(id_jenis, $( "#id_nama_izin" ), $( "#id_nama_izin_chosen" ), '{% url 'admin:option_namaizin' %}')
 	        }else{
                 make_disabled($( "#id_nama_izin" ), true)
 	        	make_disabled($( "#id_kelompok_jenis_izin" ), true)
+
                 $( ".field-id_kelompok_jenis_izin" ).css('display', 'none')
 	        }
 		})
 
         $( "#id_nama_izin" ).change(function(){
             id_jenis = $(this).val()
-            
-            if(id_jenis.length > 0){
-                load_kelompok(id_jenis, $( "#id_kelompok_jenis_izin" ), $( "#id_kelompok_jenis_izin_chosen" ), '{% url 'admin:option_kelompokjenisizin' %}')
-               
+            if (id_jenis == "Reklame"){
+                make_disabled($( "#id_kelompok_jenis_izin" ), true)
+            }
+
+            else if(id_jenis.length > 0){
+             load_kelompok(id_jenis, $( "#id_kelompok_jenis_izin" ), $( "#id_kelompok_jenis_izin_chosen" ), '{% url 'admin:option_kelompokjenisizin' %}')
             }else{
                 make_disabled($( "#id_kelompok_jenis_izin" ), true)
                 $( ".field-id_kelompok_jenis_izin" ).css('display', 'none')

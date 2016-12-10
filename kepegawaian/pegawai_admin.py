@@ -16,6 +16,8 @@ from django.core.urlresolvers import resolve, reverse
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 
+
+
 class ItemInlineFormSet(BaseInlineFormSet):
 	def clean(self):
 		c_ = super(ItemInlineFormSet, self).clean()
@@ -69,9 +71,10 @@ class NomorIdentitasInline(admin.StackedInline):
 
 class PegawaiAdmin(admin.ModelAdmin):
 	# form = PegawaiForm
-	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as', 'username', 'password',)
+	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as')
 	list_filter = ('groups__name', )
 	inlines = [NomorIdentitasInline,]
+	search_fields = ('username', 'nama_lengkap')
 
 	def login_as(self, obj):
 		str_aksi = ""
@@ -85,7 +88,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 
 	def jenis_pegawai(self, obj):
 		groups = obj.groups.all()
-		return ", ".join(str(g.name) for g in groups)
+		return ", ".join(str(g.hakakses.keterangan) if hasattr(g, 'hakakses') else str(g.name) for g in groups)
 	jenis_pegawai.short_description = 'Jenis Pegawai'
 
 	def option_pegawai(self, request):		
@@ -119,7 +122,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 	def get_fieldsets(self, request, obj = None):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		if func_view.__name__ == self.change_view.__name__:
-			field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email')
+			field = (('gelar_depan', 'nama_lengkap', 'gelar_belakang'), ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email')
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),

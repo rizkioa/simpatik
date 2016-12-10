@@ -12,7 +12,7 @@
   </table>
   <br>
   <h4><u>#1. IDENTITAS PEMOHON</u></h4>
-  <table width="100%" border="0">
+  <table width="100%" border="0" id="id_table_pemohon_komfirmasi">
     <tr>
       <td width="25%">Jenis Pemohon</td>
       <td width="5%">:</td>
@@ -46,7 +46,7 @@
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email|default_if_none:"-" }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
@@ -95,7 +95,7 @@
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email|default_if_none:"-" }}</span></td>
     </tr>
   </table>
   <br>
@@ -165,39 +165,21 @@
   <br>
   <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
   <div class="table-responsive">
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="legalitas_table">
         <thead>
           <tr>
             <th>Jenis Akta dan Pengesahan</th>
             <th>Nama Notaris</th>
             <th>Alamat Notaris</th>
             <th>Telp. Notaris</th>
+            <th>No. Akta</th>
+            <th>Tgl Akta</th>
             <th>No. Pengesahan</th>
             <th>Tgl Pengesahan</th>
           </tr>
         </thead>
         <tbody>
-          {% if pengajuan_.legalitas.last %}
-            {% for p in pengajuan_.legalitas.all %}
-            <tr>
-              <td><span id='jenis_legalitas_konfirmasi'>{{ p.jenis_legalitas }}</span></td>
-              <td><span id='nama_notaris_konfirmasi'>{{ p.nama_notaris }}</span></td>
-              <td><span id='alamat_notaris_konfirmasi'>{{ p.alamat }}</span></td>
-              <td><span id='telephone_notaris_konfirmasi'>{{ p.telephone }}</span></td>
-              <td><span id='nomor_pengesahaan_konfirmasi'>{{ p.nomor_pengesahan }}</span></td>
-              <td><span id='tanggal_pengesahan_konfirmasi'>{{ p.tanggal_pengesahan|date:"d-m-Y" }}</span></td>
-            </tr>
-            {% endfor %}
-          {% else %}
-            <tr>
-              <td><span id='jenis_legalitas_konfirmasi'></span></td>
-              <td><span id='nama_notaris_konfirmasi'></span></td>
-              <td><span id='alamat_notaris_konfirmasi'></span></td>
-              <td><span id='telephone_notaris_konfirmasi'></span></td>
-              <td><span id='nomor_pengesahaan_konfirmasi'></span></td>
-              <td><span id='tanggal_pengesahan_konfirmasi'></span></td>
-            </tr>
-          {% endif %}
+          
         </tbody>
     </table>
   </div>
@@ -219,7 +201,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_foto" disabled><i></i>
+              <input type="checkbox" id="checkbox-foto" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -229,7 +211,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_ktp" disabled><i></i>
+              <input type="checkbox" id="checkbox-ktp" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -239,7 +221,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_npwp_pribadi" disabled><i></i>
+              <input type="checkbox" id="checkbox-npwp_pribadi" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -249,7 +231,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_npwp_perusahaan" disabled><i></i>
+              <input type="checkbox" id="checkbox-npwp_perusahaan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -259,7 +241,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_akta_pendirian" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pendirian" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -269,7 +251,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_akta_pembaruan" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pembaruan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -279,7 +261,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox_berkas_pendukung" disabled><i></i>
+              <input type="checkbox" id="checkbox-pendukung" disabled><i></i>
             </label>
           </td>
         </tr>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, ProdukUtama, Legalitas, JenisLegalitas, BentukKerjasama, StatusPerusahaan, KedudukanKegiatanUsaha, JenisPengecer
+from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, Legalitas, JenisLegalitas, BentukKerjasama, StatusPerusahaan, KedudukanKegiatanUsaha, JenisPengecer
 from perusahaan.perusahaan_admin import PerusahaanAdmin
 from django.http import HttpResponseRedirect, HttpResponse
 import json
@@ -144,11 +144,11 @@ admin.site.register(Kelembagaan, KelembagaanAdmin)
 
 # admin.site.register(AktaNotaris, AktaNotarisAdmin)
 
-class ProdukUtamaAdmin(admin.ModelAdmin):
-	list_display = ('barang_jasa_utama', 'keterangan')
-	list_filter = ('barang_jasa_utama',)
+# class ProdukUtamaAdmin(admin.ModelAdmin):
+# 	list_display = ('barang_jasa_utama', 'keterangan')
+# 	list_filter = ('barang_jasa_utama',)
 
-admin.site.register(ProdukUtama, ProdukUtamaAdmin)
+# admin.site.register(ProdukUtama, ProdukUtamaAdmin)
 
 # class MesinHullerAdmin(admin.ModelAdmin):
 # 	list_display = ('jenis','mesin_huller')

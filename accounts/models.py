@@ -84,6 +84,9 @@ class IdentitasPribadi(AtributTambahan):
 	kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
 
 	pekerjaan = models.CharField(max_length=255, blank=True, null=True)
+
+	gelar_depan = models.CharField(max_length=100, null=True, blank=True, verbose_name='Gelar Depan')
+	gelar_belakang = models.CharField(max_length=100, null=True, blank=True, verbose_name='Gelar Belakang')
 	
 	keterangan = models.CharField(max_length=255, blank=True, null=True)
 
@@ -163,3 +166,14 @@ class NomorIdentitasPengguna(models.Model):
 		verbose_name = 'Nomor Identitas Pengguna'
 		verbose_name_plural = 'Nomor Identitas Pengguna'
 
+from django.contrib.auth.models import Group
+class HakAkses(Group):
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return u'%s' % (self.keterangan)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Hak Akses'
+		verbose_name_plural = 'Hak Akses'

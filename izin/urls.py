@@ -1,12 +1,28 @@
-from django.conf.urls import patterns, url
+from django.conf import settings
+from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view
+from django.conf.urls.static import static
+from izin.views.imb import imb_reklame
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': reverse_lazy('frontindex')}, name='frontlogout'),
     url(r'^$', views.frontindex, name='frontindex'),
+
     url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kbli, name='ajax_konfirmasi_kbli'),
+    url(r'^ajax-konfirmasi-kuasa/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_kuasa_pemohon, name='ajax_kuasa_pemohon'),
+    url(r'^ajax-konfirmasi-legalitas/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_legalitas_konfirmasi, name='ajax_legalitas_konfirmasi'),
+    url(r'^ajax-konfirmasi-paket-pekerjaan/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_nama_paket_pekerjaan, name='ajax_konfirmasi_nama_paket_pekerjaan'),
+    url(r'^ajax-konfirmasi-anggota-badan-direktur/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_direktur, name='ajax_konfirmasi_anggota_badan_direktur'),
+    url(r'^ajax-konfirmasi-anggota-badan-teknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_teknik, name='ajax_konfirmasi_anggota_badan_teknik'),
+    url(r'^ajax-konfirmasi-anggota-badan-nonteknik/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_anggota_badan_non_teknik, name='ajax_konfirmasi_anggota_badan_non_teknik'),
+    url(r'^ajax-load-berkas/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_load_berkas, name='ajax_load_berkas'),
+    url(r'^ajax-load-berkas-siup/(?P<id_pengajuan>[0-9]+)$', siup_view.ajax_load_berkas_siup, name='ajax_load_berkas_siup'),
+    url(r'^ajax-delete-berkas-upload/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iujk_views.ajax_delete_berkas, name='ajax_delete_berkas'),
+
+    url(r'^option-kbli/$', views.option_kbli, name='option_kbli'),
+    url(r'^cek-izin-terdaftar/(?P<id_izin_>[0-9./]+)$', views.cek_izin_terdaftar, name='cek_izin_terdaftar'),
 
     url(r'^layanan/siup$', layanan_view.layanan_siup, name='layanan_siup'),
     url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),
@@ -51,7 +67,7 @@ urlpatterns = [
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
     url(r'^layanan/imb-umum/formulir$', views.formulir_imb_umum, name='formulir_imb_umum'),
     url(r'^layanan/imb-perumahan/formulir$', views.formulir_imb_perumahan, name='formulir_imb_perumahan'),
-    url(r'^layanan/imb-reklame/formulir$', views.formulir_imb_reklame, name='formulir_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir$', imb_reklame.formulir_imb_reklame, name='formulir_imb_reklame'),
     url(r'^layanan/tdp-cv/formulir$', views.formulir_tdp_cv, name='formulir_tdp_cv'),
     url(r'^layanan/tdp-firma/formulir$', views.formulir_tdp_firma, name='formulir_tdp_firma'),
     url(r'^layanan/tdp-perorangan/formulir$', views.formulir_tdp_perorangan, name='formulir_tdp_perorangan'),
@@ -59,8 +75,12 @@ urlpatterns = [
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
 
     #cetak SIUP
-    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_permohonan, name='cetak_permohonan'),
-    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9A-Za-z_\-]+)$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
+    url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
+
+    #cetak IUJK
+    # url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/iujk/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', iujk_views.cetak_bukti_pendaftaran_iujk, name='cetak_bukti_pendaftaran_iujk'),
 
     #cetak HO Baru
     url(r'^layanan/ho-pemohonan-baru/formulir/cetak$', views.cetak_ho_perpanjang, name='cetak_ho_perpanjang'),
@@ -75,8 +95,8 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     
     #cetak reklame
-    url(r'^layanan/reklame/formulir/cetak$', views.cetak_reklame, name='cetak_reklame'),
-    url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
+    url(r'^layanan/reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_reklame, name='cetak_reklame'),
+    url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
     
     #cetak Pemakaian Kekayaan
     url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),
@@ -87,12 +107,12 @@ urlpatterns = [
     url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_umum, name='cetak_bukti_pendaftaran_imb_umum'),
 
     #cetak IMB Perumahan
-    url(r'^layanan/imb-perumahan/formulir/cetak$', views.cetak_imb_perumahan, name='cetak_imb_perumahan'),
-    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak/$', views.cetak_imb_perumahan, name='cetak_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran/$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
 
     #cetak IMB Reklame
-    url(r'^layanan/imb-reklame/formulir/cetak$', views.cetak_imb_reklame, name='cetak_imb_reklame'),
-    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_reklame.cetak_imb_reklame, name='cetak_imb_reklame'),
+    url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', imb_reklame.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
     
     #cetak TDP PT
     url(r'^layanan/tdp-pt/formulir/cetak$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
@@ -141,8 +161,14 @@ urlpatterns = [
     # 
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
+    url(r'^layanan/reklame/detilreklame/permanen/save/$', reklame_view.reklame_detilreklame_permanen_save_cookie, name='reklame_detilreklame_permanen_save'),
+
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
+    url(r'^ajax-load-berkas-reklame/(?P<id_pengajuan>[0-9]+)$', reklame_view.ajax_load_berkas_reklame, name='ajax_load_berkas_reklame'),
+    url(r'^ajax-delete-berkas-reklame-upload/(?P<id_berkas>[0-9]+)$', reklame_view.ajax_delete_berkas_reklame, name='ajax_delete_berkas_reklame'),
+    url(r'^layanan/reklame/save/$', reklame_view.reklame_done , name='reklame_done'),
+
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK
@@ -156,11 +182,30 @@ urlpatterns = [
     url(r'^layanan/iujk/penanggungjawabnonteknik/save/$', iujk_views.penanggung_jawab_non_teknik_save_bu, name='penanggung_jawab_non_teknik_save_bu'),
     url(r'^layanan/iujk/penanggungjawab/next/$', iujk_views.penanggung_jawab_next, name='penanggung_jawab_next'),
     url(r'^layanan/iujk/uploaddokumen/sertifikat/$', iujk_views.upload_sertifikat_badan_usaha, name='upload_sertifikat_badan_usaha'),
-    # END
-
+    url(r'^layanan/iujk/uploaddokumen/kartu-teknis-badan-usaha/$', iujk_views.upload_kartu_teknis_badan_usaha, name='upload_kartu_teknis_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/pernyataan-pengikat-badan-usaha/$', iujk_views.upload_pernyataan_pengikat_badan_usaha, name='upload_pernyataan_pengikat_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/pernyataan-badan-usaha/$', iujk_views.upload_pernyataan_badan_usaha, name='upload_pernyataan_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/npwp-badan-usaha/$', iujk_views.upload_npwp_badan_usaha, name='upload_npwp_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/keterangan-domisili-badan-usaha/$', iujk_views.upload_keterangan_domisili_badan_usaha, name='upload_keterangan_domisili_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/denah-lokasi-badan-usaha/$', iujk_views.upload_denah_lokasi_badan_usaha, name='upload_denah_lokasi_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/foto-papan-badan-usaha/$', iujk_views.upload_foto_papan_badan_usaha, name='upload_foto_papan_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/akta-pendirian-badan-usaha/$', iujk_views.upload_akta_pendirian_badan_usaha, name='upload_akta_pendirian_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/akta-perubahan-badan-usaha/$', iujk_views.upload_akta_perubahan_badan_usaha, name='upload_akta_perubahan_badan_usaha'),
+    url(r'^layanan/iujk/uploaddokumen/next/$', iujk_views.upload_berkas_next, name='upload_berkas_next'),
+    url(r'^layanan/iujk/save/$', iujk_views.iujk_done , name='iujk_done'),
     # +++++++ ajax save tdp pt +++++++
     url(r'^layanan/tdp-pt/data-umum-perusahaan/save/$', tdp_view.tdp_data_umum_perusahaan_cookie, name='tdp_pt_data_umum_perusahaan_save'),
     url(r'^layanan/tdp-pt/data-kegiatan-perusahaan/save/$', tdp_view.tdp_data_kegiatan_pt_cookie, name='tdp_pt_data_kegiatan_perusahaan_save'),
     url(r'^layanan/tdp-pt/legalitas-perusahaan/save/$', tdp_view.tdp_legalitas_pt_cookie, name='tdp_pt_legalitas_perusahaan_save'),
     # +++++++ end ajax save tdp pt +++++++
+
+    # ++++++++++++++++++++++++ for ajax IMB reklame ++++++++++++++++++++++
+
+    url(r'^layanan/imbreklame/save/$', imb_reklame.reklame_imbreklame_save_cookie, name='reklame_imbreklame_save'),
+    url(r'^imbreklame/berkas/save/$', imb_reklame.imbreklame_upload_berkas_pendukung, name='reklame_imbreklame_berkaspendukung'),
+    url(r'^ajax-load-berkas-imb-reklame/(?P<id_pengajuan>[0-9]+)$', imb_reklame.ajax_load_berkas_imbreklame, name='ajax_load_berkas_imbreklame'),
+    url(r'^ajax-delete-berkas-imb-reklame-upload/(?P<id_berkas>[0-9]+)$', imb_reklame.ajax_delete_berkas_imbreklame, name='ajax_delete_berkas_imbreklame'),
+    url(r'^layanan/imb-reklame/save/$', imb_reklame.imb_reklame_done , name='imb_reklame_done'),
+
+    # ++++++++++++++++++++++++ end for ajax IMB reklame ++++++++++++++++++++++
     ]
