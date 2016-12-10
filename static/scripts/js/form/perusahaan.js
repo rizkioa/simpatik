@@ -114,7 +114,7 @@ function load_kecamatan1(id_kabupaten){
 	$( "#id_kecamatan1_chosen" ).mLoading();
 	// $( "#id_kecamatan1_chosen .loadmask-msg" ).css('top', '2px')
 	$.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kabupaten: 1083 }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
         type: 'POST', // GET or POST
         // url: '{% url 'admin:option_kecamatan' %}', // the file to call
         url: __base_url__+'/admin/master/kecamatan/option/',

@@ -71,7 +71,6 @@ def formulir_siup(request, extra_context={}):
         kecamatan_perusahaan = Kecamatan.objects.filter(kabupaten_id=1083)
         extra_context.update({'kecamatan_perusahaan': kecamatan_perusahaan})
 
-
         jenis_pemohon = JenisPemohon.objects.all()
         jenis_legalitas_list = JenisLegalitas.objects.all()
         bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
@@ -268,15 +267,21 @@ def formulir_kekayaan(request, extra_context={}):
     return render(request, "front-end/formulir/kekayaan.html", extra_context)
 
 def formulir_tdp_pt(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        negara = Negara.objects.all()
+        extra_context.update({'negara': negara})
+        provinsi = Provinsi.objects.all()
+        extra_context.update({'provinsi': provinsi})
+        kecamatan = Kecamatan.objects.all()
+        extra_context.update({'kecamatan': kecamatan})
+        
+        jenis_pemohon = JenisPemohon.objects.all()
+        extra_context.update({'jenis_pemohon': jenis_pemohon})
+
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_pt.html", extra_context)
 
 def formulir_imb_umum(request, extra_context={}):

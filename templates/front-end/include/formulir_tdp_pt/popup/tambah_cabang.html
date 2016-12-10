@@ -18,52 +18,32 @@
               <textarea class="form-control" rows="5" name=""></textarea>
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group" id="provinsi-5">
             <label for="input01" class="col-sm-3 control-label"><strong>Provinsi</strong></label>
             <div class="col-sm-3">
-              <select class="form-control chosen-select">
-                <option value>-- Pilih Provinsi --</option>
-                {% if provinsi %}
-                {% for p in provinsi %}
-                <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
-                {% endfor %}
-                {% endif %}
+              <select class="form-control chosen-select" id="id_provinsi-5">
+                
               </select>
             </div>
 
             <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong></label>
             <div class="col-sm-3">
-              <select class="form-control chosen-select">
-                <option value>-- Pilih Kota/Kabupaten --</option>
-                {% if kabupaten %}
-                {% for k in kabupaten %}
-                <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
-                {% endfor %}
-                {% endif %}
+              <select class="form-control chosen-select" id="id_kabupaten-5">
+                
               </select>
             </div>
           </div>
           <div class="form-group">
             <label for="input01" class="col-sm-3 control-label"><strong>Kecamatan</strong></label>
             <div class="col-sm-3">
-              <select class="form-control chosen-select">
-                <option value>-- Pilih Kecamatan --</option>
-                {% if kecamatan %}
-                {% for k in kecamatan %}
-                <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
-                {% endfor %}
-                {% endif %}
+              <select class="form-control chosen-select" id="id_kecamatan-5">
+                
               </select>
             </div>
             <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
             <div class="col-sm-3">
-              <select class="form-control chosen-select mb-10">
-                <option value>-- Pilih Kelurahan/Desa --</option>
-                {% if desa %}
-                {% for d in desa %}
-                <option value="{{ d.id }}">{{ d.nama_desa }}</option>
-                {% endfor %}
-                {% endif %}
+              <select class="form-control chosen-select mb-10" id="id_desa-5">
+
               </select>
             </div>
           </div>
