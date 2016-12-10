@@ -331,6 +331,7 @@
           if ($.cookie('id_perusahaan') === undefined){
             $.cookie('id_perusahaan', "0", {path:"/"});
           }
+
             
           pengajuan = $.cookie('id_pengajuan')
           if (pengajuan !== '0'){
@@ -339,6 +340,13 @@
             $('#id_paspor').val('{{paspor}}');
             load_pemohon('{{ktp}}');
 
+            $('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
+            $('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+
+            $.cookie('nomor_ktp', '{{ktp}}' , { path: '/' })
+            $.cookie('nomor_paspor', '{{paspor}}' , { path: '/' })
+            $.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: '/' })
+            $.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: '/' })
             $.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: '/' })
 
             $('#no_tdp_induk').val('{{pengajuan_.nomor_tdp_kantor_pusat|default_if_none:""}}')
