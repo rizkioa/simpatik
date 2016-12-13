@@ -142,6 +142,7 @@ class KelompokJenisIzin(models.Model):
 	kelompok_jenis_izin = models.CharField(max_length=100, verbose_name='Kelompok Jenis Izin')
 	biaya = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'), verbose_name='Biaya')
 	standart_waktu = models.PositiveSmallIntegerField(verbose_name='Standar Waktu (Berapa Hari?)', null=True, blank=True,)
+	masa_berlaku = models.PositiveSmallIntegerField(verbose_name='Masa Berlaku (Berapa Tahun?)', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
 	def __unicode__(self):
@@ -374,7 +375,6 @@ class AnggotaBadanUsaha(models.Model):
 
 class DetilTDP(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdp_perusahaan', blank=True, null=True)
-	
 	# Data Umum Perusahaan PT
 	status_perusahaan = models.ForeignKey(StatusPerusahaan, related_name='status_perusahaan_tdp', verbose_name='Status Perusahaan', blank=True, null=True)
 	jenis_badan_usaha = models.ForeignKey(JenisBadanUsaha, related_name='jenis_badan_usaha_tdp', verbose_name='Jenis Badan Usaha', blank=True, null=True)
@@ -430,6 +430,14 @@ class DetilTDP(PengajuanIzin):
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Detil TDP'
 		verbose_name_plural = 'Detil TDP'
+
+class IzinLain(AtributTambahan):
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, related_name='izin_lain_pengajuan_izin', verbose_name='Izin Lain')
+	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
+	no_izin = models.CharField(max_length=255, verbose_name='nomor izin', blank=True, null=True)
+	dikeluarkan_oleh = models.CharField(max_length=255, verbose_name='dikeluarkan oleh', blank=True, null=True)
+	tanggal_dikeluarkan = models.DateField(verbose_name='Tanggal Dikeluarkan', blank=True, null=True)
+	masa_berlaku = models.PositiveSmallIntegerField(verbose_name='Masa Berlaku (Berapa Tahun?)', null=True, blank=True)
 
 class RincianPerusahaan(models.Model):
 	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')

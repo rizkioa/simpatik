@@ -298,6 +298,8 @@ def formulir_tdp_pt(request, extra_context={}):
                 extra_context.update({ 'ktp': ktp_ })
                 paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
                 extra_context.update({ 'paspor': paspor_ })
+            # if pengajuan_.perusahaan:
+            #     perusahaan_cabang = Perusahaan.objects.filter(id=)
     jenis_perusahaan = JenisPerusahaan.objects.all()
     extra_context.update({'jenis_perusahaan': jenis_perusahaan})
     if 'id_kelompok_izin' in request.COOKIES.keys():
