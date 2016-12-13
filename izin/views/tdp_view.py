@@ -36,6 +36,8 @@ def tdp_data_umum_perusahaan_cookie(request):
 					except ObjectDoesNotExist:
 						per = Perusahaan(npwp=npwp, nama_perusahaan=nama, alamat_perusahaan=alamat, desa_id=desa)
 						per.save(force_insert=True)
+					print per.id
+					print per.npwp
 					try:
 						per_cabang = Perusahaan.objects.get(id=perusahaan_cabang)
 						per_cabang.perusahaan_induk_id = per.id
@@ -254,14 +256,14 @@ def load_data_umum_perusahaan(request, pengajuan_id):
 			nasabah_utama_bank_1 = pengajuan_.nasabah_utama_bank_1
 			nasabah_utama_bank_2 = pengajuan_.nasabah_utama_bank_2
 			jenis_penanaman_modal = pengajuan_.jenis_penanaman_modal.id
-			tanggal_pendirian = pengajuan_.tanggal_pendirian
-			tanggal_mulai_kegiatan = pengajuan_.tanggal_mulai_kegiatan
+			tanggal_pendirian = pengajuan_.tanggal_pendirian.strftime('%d-%m-%Y')
+			tanggal_mulai_kegiatan = pengajuan_.tanggal_mulai_kegiatan.strftime('%d-%m-%Y')
 			nomor_tdp_kantor_pusat = pengajuan_.nomor_tdp_kantor_pusat
 			alamat_unit_produksi = pengajuan_.alamat_unit_produksi
-			desa = pengajuan_.desa_unit_prosuksi.id
-			kecamatan = pengajuan_.desa_unit_prosuksi.kecamatan.id
-			kabupaten = pengajuan_.desa_unit_prosuksi.kecamatan.kabupaten.id
-			provinsi = pengajuan_.desa_unit_prosuksi.kecamatan.kabupaten.provinsi.id
+			desa = pengajuan_.desa_unit_produksi.id
+			kecamatan = pengajuan_.desa_unit_produksi.kecamatan.id
+			kabupaten = pengajuan_.desa_unit_produksi.kecamatan.kabupaten.id
+			provinsi = pengajuan_.desa_unit_produksi.kecamatan.kabupaten.provinsi.id
 			merek_dagang = pengajuan_.merek_dagang
 			no_merek_dagang = pengajuan_.merek_dagang
 			pemegang_hak_cipta = pengajuan_.pemegang_hak_cipta

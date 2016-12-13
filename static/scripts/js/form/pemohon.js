@@ -1,70 +1,71 @@
 function load_pemohon(ktp_){
-	$(".tab-content").mLoading();
-	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-	$.ajax({
-		type: 'POST',
-		url: __base_url__+'/load-pemohon/'+ktp_,
-		data: { csrfmiddlewaretoken: csrf_token },
-		success: function (data) {
-			respon = $.parseJSON(data)
-			if(respon.success === true){
-				load_provinsi(respon.data.negara)
-				load_kabupaten(respon.data.provinsi)
-				load_kecamatan(respon.data.kabupaten)
-				load_desa(respon.data.kecamatan)
-				
-				$('#id_paspor').val(respon.data.paspor);
-				// $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
-				$('#id_nama_lengkap').val(respon.data.nama_lengkap);
-				$('#alamat_pemohon_load').val(respon.data.alamat);
-				$('#no_telepon_pemohon_load').val(respon.data.telephone);
-				$('#hp_load').val(respon.data.hp);
-				$('#email_pemohon_load').val(respon.data.email);
-				$('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
-				$('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-                setTimeout(function(){
-					$('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-					$('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-					$('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
-					$('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-					$('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-                    // alert(respon.data.desa)
-					
-				}, 1000);
-			}
-			else{
-				$('#id_nama_lengkap').val("");
-                $('#id_paspor').val("");
-				$('#alamat_pemohon_load').val("");
-				$('#no_telepon_pemohon_load').val("");
-				$('#hp_load').val("");
-				$('#email_pemohon_load').val("");
-				$('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
-				$('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
-                if ($.cookie('id_pemohon') === "0"){
-                    $('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_kabupaten').val("").prop('selected',true).trigger("chosen:updated")
-                    $('#id_kecamatan').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
+    if (ktp_ !== ""){
+        $(".tab-content").mLoading();
+        csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        $.ajax({
+            type: 'POST',
+            url: __base_url__+'/load-pemohon/'+ktp_,
+            data: { csrfmiddlewaretoken: csrf_token },
+            success: function (data) {
+                respon = $.parseJSON(data)
+                if(respon.success === true){
+                    load_provinsi(respon.data.negara)
+                    load_kabupaten(respon.data.provinsi)
+                    load_kecamatan(respon.data.kabupaten)
+                    load_desa(respon.data.kecamatan)
+                    
+                    $('#id_paspor').val(respon.data.paspor);
+                    // $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
+                    $('#id_nama_lengkap').val(respon.data.nama_lengkap);
+                    $('#alamat_pemohon_load').val(respon.data.alamat);
+                    $('#no_telepon_pemohon_load').val(respon.data.telephone);
+                    $('#hp_load').val(respon.data.hp);
+                    $('#email_pemohon_load').val(respon.data.email);
+                    $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
+                    $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
+                    setTimeout(function(){
+                        $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
+                        $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+                        $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
+                        $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+                        $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+                        
+                    }, 1000);
                 }
-				
-				$('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
-                load_provinsi('1')
-                load_kabupaten('1')
-                load_kecamatan('1083')
-                setTimeout(function(){
-                    $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
-                    $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
-                }, 1000);
-			}
-            $(".tab-content").mLoading('hide');
-		},
-		error: function(data) {
-	  		toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
-	  		$(".tab-content").mLoading('hide');
-		}
-	});
+                else{
+                    $('#id_nama_lengkap').val("");
+                    $('#id_paspor').val("");
+                    $('#alamat_pemohon_load').val("");
+                    $('#no_telepon_pemohon_load').val("");
+                    $('#hp_load').val("");
+                    $('#email_pemohon_load').val("");
+                    $('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+                    $('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+                    if ($.cookie('id_pemohon') === "0"){
+                        $('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
+                        $('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
+                        $('#id_kabupaten').val("").prop('selected',true).trigger("chosen:updated")
+                        $('#id_kecamatan').val("").prop('selected',true).trigger("chosen:updated");
+                        $('#id_desa').val("").prop('selected',true).trigger("chosen:updated");
+                    }
+                    
+                    $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
+                    load_provinsi('1')
+                    load_kabupaten('1')
+                    load_kecamatan('1083')
+                    setTimeout(function(){
+                        $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
+                        $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
+                    }, 1000);
+                }
+                $(".tab-content").mLoading('hide');
+            },
+            error: function(data) {
+                toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+                $(".tab-content").mLoading('hide');
+            }
+        });
+    }
 }
 
 function make_disabled(elem_, dis_){
