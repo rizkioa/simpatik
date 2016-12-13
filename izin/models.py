@@ -386,6 +386,7 @@ class DetilTDP(PengajuanIzin):
 	jenis_penanaman_modal = models.ForeignKey(JenisPenanamanModal, related_name='jenis_penanaman_modal_tdp', blank=True, null=True, verbose_name='Jenis Penanaman Modal')
 	tanggal_pendirian = models.DateField(verbose_name='Tanggal Pendirian', null=True, blank=True)
 	tanggal_mulai_kegiatan = models.DateField(verbose_name='Tanggal Mulai Kegiatan', null=True, blank=True)
+	jangka_waktu_berdiri = models.PositiveSmallIntegerField(verbose_name='Jangka Waktu Berdiri (Berapa Tahun?)', null=True, blank=True)
 
 	# Jika bukan kantor pusat
 	nomor_tdp_kantor_pusat = models.CharField(max_length=150, verbose_name='No. TDP Kantor Pusat', null=True, blank=True)

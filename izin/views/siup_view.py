@@ -203,6 +203,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					response.set_cookie(key='id_perusahaan', value=get_perusahaan.id)
 				else:
 					data = perusahaan.errors.as_json()
+					response = HttpResponse(data)
 			except Perusahaan.DoesNotExist:
 				print "except"
 				perusahaan = PerusahaanForm(request.POST) 
