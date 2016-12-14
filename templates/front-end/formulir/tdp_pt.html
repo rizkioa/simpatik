@@ -328,32 +328,38 @@
             }
           };
 
+          var pathname = "/";
+
           if ($.cookie('id_pengajuan') === undefined){
-            $.cookie('id_pengajuan', "0", {path:"/"});
+            $.cookie('id_pengajuan', "0", {path:pathname});
           }
           if ($.cookie('id_pemohon') === undefined){
-            $.cookie('id_pemohon', "0", {path:"/"});
+            $.cookie('id_pemohon', "0", {path:pathname});
           }
           if ($.cookie('id_perusahaan') === undefined){
-            $.cookie('id_perusahaan', "0", {path:"/"});
+            $.cookie('id_perusahaan', "0", {path:pathname});
           }
 
+          // $('.path_name').val(pathname)
             
           pengajuan = $.cookie('id_pengajuan')
           if (pengajuan !== '0'){
-            // alert($.cookie('nomor_ktp'))
             $('#id_ktp').val('{{ktp}}');
             $('#id_paspor').val('{{paspor}}');
             load_pemohon('{{ktp}}');
 
             $('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
             $('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+            $('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
 
-            $.cookie('nomor_ktp', '{{ktp}}' , { path: '/' })
-            $.cookie('nomor_paspor', '{{paspor}}' , { path: '/' })
-            $.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: '/' })
-            $.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: '/' })
-            $.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: '/' })
+            $.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
+            $.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
+            $.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
+            $.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
+            $.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
+            $.cookie('id_perusahaan_induk', '{{ pengajuan_.perusahaan.perusahaan_induk.id  }}' , { path: pathname})
+            $.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
+            $.cookie('npwp_perusahaan_induk', '{{ pengajuan_.perusahaan.perusahaan_induk.npwp  }}' , { path: pathname})
 
             $('#no_tdp_induk').val('{{pengajuan_.nomor_tdp_kantor_pusat|default_if_none:""}}')
           }
@@ -424,10 +430,17 @@
                   
                 setTimeout(function(){
                   $('#id_provinsi-4').val(respon_data_umum.data.provinsi).prop('disabled', false).trigger("chosen:updated");
+                }, 1000);
+                setTimeout(function(){
                   $('#id_kabupaten-4').val(respon_data_umum.data.kabupaten).prop('disabled', false).trigger("chosen:updated");
-                  $('#id_kecamatan-4').val(respon_data_umum.data.kecamatan).prop('disabled', false).trigger("chosen:updated");
-                  $('#id_desa-4').val(respon_data_umum.data.desa).prop('disabled', false).trigger("chosen:updated");
-                }, 2000);
+                }, 1100);
+                setTimeout(function(){
+                    $('#id_kecamatan-4').val(respon_data_umum.data.kecamatan).prop('disabled', false).trigger("chosen:updated");
+                }, 1200);
+                setTimeout(function(){
+                    $('#id_desa-4').val(respon_data_umum.data.desa).prop('disabled', false).trigger("chosen:updated");
+                }, 1300);
+                
 
                 $('#id_jumlah_bank').val(respon_data_umum.data.jumlah_bank);
                 $('#id_nasabah_utama_bank_1').val(respon_data_umum.data.nasabah_utama_bank_1);

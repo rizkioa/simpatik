@@ -1,34 +1,36 @@
-from django.http import HttpResponse
-import json
-from sqlite3 import OperationalError
 import os
-from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
-from izin.utils import get_nomor_pengajuan
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from django.db import IntegrityError
-from izin.utils import formatrupiah
+import json
+import datetime
+from decimal import Decimal
+from sqlite3 import OperationalError
+
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 try:
 	from django.utils.encoding import force_text
 except ImportError:
 	from django.utils.encoding import force_unicode as force_text
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from decimal import Decimal
-from django.shortcuts import get_object_or_404
-import datetime
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.db import IntegrityError
+
+from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
+from izin.utils import get_nomor_pengajuan
+from izin.utils import formatrupiah
+
 from izin import models as app_models
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna
 from master.models import Berkas
 
-
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
-    max_age = 365 * 24 * 60 * 60  #one year
+	max_age = 365 * 24 * 60 * 60  #one year
   else:
-    max_age = days_expire * 24 * 60 * 60 
+	max_age = days_expire * 24 * 60 * 60 
   expires = datetime.datetime.strftime(datetime.datetime.utcnow() + datetime.timedelta(seconds=max_age), "%a, %d-%b-%Y %H:%M:%S GMT")
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
@@ -54,9 +56,10 @@ def siup_identitas_pemohon_save_cookie(request):
 		p = pemohon.save(commit=False)
 		p.username = ktp_
 		p.save()
+		print paspor_
 		if ktp_:
 			try:
-				i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+				i = NomorIdentitasPengguna.objects.get(nomor = ktp_, jenis_identitas_id=1, user_id=p.id)
 			except ObjectDoesNotExist:
 				i, created = NomorIdentitasPengguna.objects.get_or_create(
 							nomor = ktp_,
@@ -64,14 +67,19 @@ def siup_identitas_pemohon_save_cookie(request):
 							user_id=p.id,
 							)
 		if paspor_:
+			print "if paspor"
 			try:
-				i = NomorIdentitasPengguna.objects.get(nomor = paspor_)
+				i = NomorIdentitasPengguna.objects.get(nomor = paspor_, jenis_identitas_id=2, user_id=p.id)
+				print "try"
 			except ObjectDoesNotExist:
+				print "except"
 				i, created = NomorIdentitasPengguna.objects.get_or_create(
 							nomor = paspor_,
 							jenis_identitas_id=2,
 							user_id=p.id,
 							)
+
+		i.save()
 
 		if k.kode == "503.08/":
 			objects_ = getattr(app_models, 'DetilSIUP')
@@ -130,6 +138,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			{'jenis_permohonan': jenis_permohonan_},
 			{'jenis_pemohon': jenis_ },
 			{'nomor_ktp': ktp_},
+			{'nomor_paspor': paspor_},
 			{'alamat': alamat_},
 			{'telephone': pemohon.cleaned_data['telephone']},
 			{'hp': pemohon.cleaned_data['hp']},
@@ -140,6 +149,9 @@ def siup_identitas_pemohon_save_cookie(request):
 			{'no_identitas_kuasa': no_identitas_kuasa},
 			{'telephone_kuasa': telephone_kuasa}
 			]}
+		# domain_name =  request.get_full_path()
+		# path_name =  request.META['HTTP_HOST']
+		# path_name = request.POST.get('path_name', '/')
 		response = HttpResponse(json.dumps(data))	
 		response.set_cookie(key='id_pengajuan', value=pengajuan.id)
 		response.set_cookie(key='id_pemohon', value=p.id)
@@ -268,11 +280,11 @@ def siup_detilsiup_save_cookie(request):
 			kekayaan_ = request.POST.get('kekayaan_bersih')
 			if kekayaan_ == '':
 				# kekayaan = Decimal(0.00)
-				kekayaan = '0' 
+				kekayaan_ = '0' 
 			# else:
 				# kekayaan = kekayaan_.replace(".", "")
-			tos = request.POST.get('total_nilai_saham')
-			if tos == '':
+			total_saham = request.POST.get('total_nilai_saham')
+			if total_saham == '':
 				# total_saham = Decimal(0.00)
 				total_saham = '0'
 			# else:
@@ -280,7 +292,7 @@ def siup_detilsiup_save_cookie(request):
 			if detilSIUP.is_valid():
 				# print request.COOKIES['id_perusahaan']
 				try:
-					pengajuan_.kekayaan_bersih = kekayaan
+					pengajuan_.kekayaan_bersih = kekayaan_
 					pengajuan_.total_nilai_saham = total_saham
 					# detilSIUP.save()
 					kbli_list = request.POST.getlist('kbli')
@@ -293,7 +305,7 @@ def siup_detilsiup_save_cookie(request):
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
 					nama_kbli = []
-					print kbli_list
+					# print kbli_list
 					for kbli in kbli_list:
 						kbli_obj = KBLI.objects.get(id=kbli)
 						print kbli_obj
@@ -492,9 +504,9 @@ def siup_upload_berkas_foto_pemohon(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-						 	valid_extensions = ['.jpg', '.jpeg', '.png']
-						 	if not ext in valid_extensions:
-						 		data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							valid_extensions = ['.jpg', '.jpeg', '.png']
+							if not ext in valid_extensions:
+								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
 								response = HttpResponse(data)
 							else:
@@ -988,24 +1000,7 @@ def load_pemohon(request, ktp_):
 				provinsi = pemohon.desa.kecamatan.kabupaten.provinsi.id
 			if pemohon.desa.kecamatan.kabupaten.provinsi.negara:
 				negara = pemohon.desa.kecamatan.kabupaten.provinsi.negara.id
-			foto = pemohon.berkas_foto.all().last()
-			foto_url = ""
-			foto_nama = ""
-			if foto:
-				foto_url = str(foto.berkas.url)
-				foto_nama = str(foto.nama_berkas)
-			npwp_pribadi_nama = ""
-			npwp_pribadi_url = ""
-			if pemohon.berkas_npwp:
-				npwp_pribadi_url = str(pemohon.berkas_npwp.berkas.url)
-				npwp_pribadi_nama = str(pemohon.berkas_npwp.nama_berkas)
-			ktp_nama = ""
-			ktp_url = ""
-			ktp_ = NomorIdentitasPengguna.objects.get(user_id=pemohon.id, jenis_identitas_id=1)
-			if ktp_.berkas:
-				ktp_url = str(ktp_.berkas.berkas.url)
-				ktp_nama = str(ktp_.berkas.nama_berkas)
-			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'foto_url': foto_url, 'foto_nama': foto_nama, 'ktp_nama': ktp_nama, 'ktp_url': ktp_url, 'npwp_pribadi_url': npwp_pribadi_url, 'npwp_pribadi_nama': npwp_pribadi_nama }}
+			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))

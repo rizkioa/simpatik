@@ -291,15 +291,20 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '0':
-            pengajuan_ = DetilTDP.objects.filter(id=request.COOKIES['id_pengajuan']).last()
-            extra_context.update({'pengajuan_': pengajuan_})
-            if pengajuan_.pemohon:
-                ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
-                extra_context.update({ 'ktp': ktp_ })
-                paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
-                extra_context.update({ 'paspor': paspor_ })
-            # if pengajuan_.perusahaan:
-            #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            try:
+                pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
+
     jenis_perusahaan = JenisPerusahaan.objects.all()
     extra_context.update({'jenis_perusahaan': jenis_perusahaan})
     if 'id_kelompok_izin' in request.COOKIES.keys():

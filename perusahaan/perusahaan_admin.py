@@ -82,7 +82,7 @@ class PerusahaanAdmin(admin.ModelAdmin):
 
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
-		list_display = ('nama_perusahaan', 'alamat_perusahaan', 'telepon', 'fax','email',)
+		list_display = ('nama_perusahaan', 'npwp', 'alamat_perusahaan', 'telepon', 'fax','email',)
 		if func_view.__name__ == 'perusahaan_terdaftar':
 			list_display = ('npwp', 'nama_perusahaan', 'get_alamat', 'created_at')
 		return list_display
