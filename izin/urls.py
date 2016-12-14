@@ -207,7 +207,7 @@ urlpatterns = [
     url(r'^imbreklame/berkas/save/$', imb_reklame.imbreklame_upload_berkas_pendukung, name='reklame_imbreklame_berkaspendukung'),
     url(r'^ajax-load-berkas-imb-reklame/(?P<id_pengajuan>[0-9]+)$', imb_reklame.ajax_load_berkas_imbreklame, name='ajax_load_berkas_imbreklame'),
     url(r'^ajax-delete-berkas-imb-reklame-upload/(?P<id_berkas>[0-9]+)$', imb_reklame.ajax_delete_berkas_imbreklame, name='ajax_delete_berkas_imbreklame'),
-    url(r'^layanan/imb-reklame/save/$', imb_reklame.imb_reklame_done , name='imb_reklame_done'),
+    url(r'^layanan/imbreklame/selesai/$', imb_reklame.imb_reklame_done , name='imb_reklame_done'),
 
     # ++++++++++++++++++++++++ end for ajax IMB reklame ++++++++++++++++++++++
     ]
