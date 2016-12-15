@@ -1,7 +1,7 @@
-import json
+import json,decimal
 import time
 import base64
-
+from decimal import *
 from functools import wraps
 from datetime import datetime
 
@@ -18,7 +18,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 
 from izin.utils import formatrupiah
@@ -310,35 +310,6 @@ def formulir_tdp_pt(request, extra_context={}):
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_pt.html", extra_context)
 
-def formulir_imb_umum(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    return render(request, "front-end/formulir/imb_umum.html", extra_context)
-
-def formulir_imb_perumahan(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
 
 def formulir_tdp_cv(request, extra_context={}):
     negara = Negara.objects.all()
@@ -816,3 +787,21 @@ def option_kbli(request):
     kbli_list = kbli_list.extra(where=["CHAR_LENGTH(kode_kbli) = 5"])
     pilihan = '<option></option>'
     return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in kbli_list)));
+
+def decimal_default(obj):
+    if isinstance(obj, decimal.Decimal):
+        return float(obj)
+    raise TypeError
+
+def get_nilai_parameter(request):     
+    id_parameter = request.POST.get('id_parameter', None)
+    parameter = int(id_parameter)
+    if parameter == 0:
+        get_nilai = 0
+    else:
+        parameter = ParameterBangunan.objects.get(id=parameter)
+        get_nilai = parameter.nilai
+        
+    return  HttpResponse(json.dumps(decimal.Decimal(get_nilai),default=decimal_default))
+
+        
