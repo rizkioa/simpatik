@@ -9,10 +9,25 @@ function load_pemohon(ktp_){
             success: function (data) {
                 respon = $.parseJSON(data)
                 if(respon.success === true){
+                    setTimeout(function(){
+                        $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
+                    }, 500);
                     load_provinsi(respon.data.negara)
+                    setTimeout(function(){
+                        $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+                    }, 500);
                     load_kabupaten(respon.data.provinsi)
+                    setTimeout(function(){
+                        $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
+                    }, 500);
                     load_kecamatan(respon.data.kabupaten)
+                    setTimeout(function(){
+                        $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+                    }, 500);
                     load_desa(respon.data.kecamatan)
+                    setTimeout(function(){
+                        $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+                    }, 500);
                     
                     $('#id_paspor').val(respon.data.paspor);
                     // $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
@@ -23,14 +38,7 @@ function load_pemohon(ktp_){
                     $('#email_pemohon_load').val(respon.data.email);
                     $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
                     $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-                    setTimeout(function(){
-                        $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-                        $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-                        $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
-                        $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-                        $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-                        
-                    }, 1000);
+                    
                 }
                 else{
                     $('#id_nama_lengkap').val("");
