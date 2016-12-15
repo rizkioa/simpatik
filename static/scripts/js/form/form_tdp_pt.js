@@ -146,7 +146,7 @@ $( "#id_provinsi-5" ).change(function(){
 
 function load_provinsi_(id_negara, elem_){
     var elem_ = elem_
-    console.log(elem_)
+    // console.log(elem_)
     var split_ = elem_.split('-')[1]
     $('#id_provinsi-'+split_+'_chosen').mLoading();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
