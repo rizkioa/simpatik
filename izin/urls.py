@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^$', views.frontindex, name='frontindex'),
 
     url(r'^ajax-load-data-umum-perusahaan-tdp/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_umum_perusahaan, name='load_data_umum_perusahaan'),
+    url(r'^ajax-load-data-kegiatan-perusahaan-tdp/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_kegiatan_perusahaan, name='load_data_kegiatan_perusahaan'),
     
     url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kbli, name='ajax_konfirmasi_kbli'),
     url(r'^ajax-konfirmasi-kuasa/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_kuasa_pemohon, name='ajax_kuasa_pemohon'),
