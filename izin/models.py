@@ -416,8 +416,8 @@ class DetilTDP(PengajuanIzin):
 	satuan_kapasitas_mesin_terpasang = models.CharField(max_length=100, verbose_name='Satuan', blank=True, null=True)
 	kapasitas_produksi_per_tahun = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Kapasitas Produksi Per Tahun', null=True, blank=True)
 	satuan_kapasitas_produksi_per_tahun = models.CharField(max_length=100, verbose_name='Satuan', blank=True, null=True)
-	prosentase_kandungan_produk_lokal = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Prosentase Kandungan Produk Lokal', null=True, blank=True)
-	prosentase_kandungan_produk_import = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Prosentase Kandungan Produk Import', null=True, blank=True)
+	presentase_kandungan_produk_lokal = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Prosentase Kandungan Produk Lokal', null=True, blank=True)
+	presentase_kandungan_produk_import = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Prosentase Kandungan Produk Import', null=True, blank=True)
 	jenis_pengecer = models.ForeignKey(JenisPengecer, verbose_name='Jenis Pengecer', null=True, blank=True)
 	kedudukan_kegiatan_usaha = models.ForeignKey(KedudukanKegiatanUsaha, verbose_name='Kedudukan dalam mata rantai kegiatan usaha', null=True, blank=True)
 	jenis_perusahaan = models.ForeignKey(JenisPerusahaan, verbose_name='Jenis Perusahaan', null=True, blank=True)
@@ -442,9 +442,9 @@ class IzinLain(AtributTambahan):
 
 class RincianPerusahaan(models.Model):
 	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')
-	model_dasar = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Dasar Rp.')
-	model_ditempatkan = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
-	model_disetor = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Disetor Rp.', null=True, blank=True)
+	modal_dasar = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Dasar Rp.')
+	modal_ditempatkan = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
+	modal_disetor = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Disetor Rp.', null=True, blank=True)
 	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
 	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
