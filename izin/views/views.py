@@ -1,24 +1,26 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.contrib.admin import site
-from functools import wraps
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import available_attrs
-from django.core.exceptions import ObjectDoesNotExist
-
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas
-from izin.models import PengajuanIzin, DetilSIUP,DetilReklame
-from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from django.db.models import Q
-from django.template import RequestContext, loader
 import json
-from django.utils.decorators import method_decorator
 import time
-from datetime import datetime
 import base64
+
+from functools import wraps
+from datetime import datetime
+
+from django.db.models import Q
+from django.shortcuts import render
+from django.contrib.admin import site
+from django.core.urlresolvers import reverse
+from django.template import RequestContext, loader
+from django.utils.decorators import available_attrs
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseRedirect
+
+from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
+
 from izin.utils import formatrupiah
 
 def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
@@ -274,9 +276,38 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'provinsi': provinsi})
     kecamatan = Kecamatan.objects.all()
     extra_context.update({'kecamatan': kecamatan})
-    
     jenis_pemohon = JenisPemohon.objects.all()
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    jenis_badan_usaha = JenisBadanUsaha.objects.all()
+    extra_context.update({'jenis_badan_usaha': jenis_badan_usaha})
+    status_perusahaan = StatusPerusahaan.objects.all()
+    extra_context.update({'status_perusahaan': status_perusahaan})
+    jenis_penanaman_modal = JenisPenanamanModal.objects.all()
+    extra_context.update({'jenis_penanaman_modal': jenis_penanaman_modal})
+    bentuk_kerjasama = BentukKerjasama.objects.all()
+    extra_context.update({'bentuk_kerjasama': bentuk_kerjasama})
+    jenis_pengecer = JenisPengecer.objects.all()
+    extra_context.update({'jenis_pengecer': jenis_pengecer})
+    kedudukan_kegiatan_usaha = KedudukanKegiatanUsaha.objects.all()
+    extra_context.update({'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha})
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0':
+            pengajuan_ = DetilTDP.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+            extra_context.update({'pengajuan_': pengajuan_})
+            if pengajuan_.pemohon:
+                ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                extra_context.update({ 'ktp': ktp_ })
+                paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                extra_context.update({ 'paspor': paspor_ })
+            # if pengajuan_.perusahaan:
+            #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+    jenis_perusahaan = JenisPerusahaan.objects.all()
+    extra_context.update({'jenis_perusahaan': jenis_perusahaan})
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_pt.html", extra_context)
 
 def formulir_imb_umum(request, extra_context={}):
@@ -308,7 +339,6 @@ def formulir_imb_perumahan(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
-
 
 def formulir_tdp_cv(request, extra_context={}):
     negara = Negara.objects.all()

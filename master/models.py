@@ -215,6 +215,20 @@ class Desa(models.Model):
 		verbose_name_plural = "Desa / Kelurahan"
 
 # END OF ALAMAT LOKASI #
+
+class ParameterBangunan(models.Model):
+	parameter = models.CharField(max_length=255,null=True, blank=True, verbose_name='Parameter')
+	detil_parameter = models.CharField(max_length=255, blank=True, null=True, verbose_name='Detil Parameter')
+	nilai = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Nilai', null=True, blank=True)
+
+	def __unicode__(self):
+		return "%s" % (self.parameter)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Parameter Bangunan'
+		verbose_name_plural = 'Parameter Bangunan'
+
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 import os, re
