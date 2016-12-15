@@ -1,7 +1,8 @@
 import json
 import datetime
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
+from django.core.exceptions import ObjectDoesNotExist
+
 from izin.models import DetilTDP, RincianPerusahaan
 from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm
 from perusahaan.models import Legalitas, Perusahaan
@@ -26,6 +27,7 @@ def tdp_data_umum_perusahaan_cookie(request):
 					alamat = request.POST.get('alamat_perusahaan_induk')
 					desa = request.POST.get('desa_perusahaan_induk')
 					perusahaan_cabang = request.COOKIES.get('id_perusahaan')
+					print npwp
 					try:
 						per = Perusahaan.objects.get(npwp=npwp)
 						per.perusahaan_induk_id = request.COOKIES['id_perusahaan_induk']
