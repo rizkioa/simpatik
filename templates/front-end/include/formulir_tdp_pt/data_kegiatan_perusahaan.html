@@ -165,11 +165,11 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="presentase">
       <label  class="col-sm-3 control-label">c. Kandungan Komponen produk : lokal</label>
       <div class="col-sm-2">
-        <div class="input-group">
-          <input type="text" class="form-control" id="id_presentase_kandungan_produk_lokal" name="presentase_kandungan_produk_lokal">
+        <div class="input-group presentase">
+          <input type="text" class="form-control" id="id_presentase_kandungan_produk_lokal" name="presentase_kandungan_produk_lokal" onchange="total_n_a();">
           <!-- <label>%,</label> -->
           <span class="input-group-addon">%</span>
         </div>
@@ -177,8 +177,8 @@
 
       <label  class="col-sm-1 control-label">Impor :</label>
       <div class="col-sm-2">
-        <div class="input-group">
-          <input type="text" class="form-control" id="id_presentase_kandungan_produk_import" name="presentase_kandungan_produk_import">
+        <div class="input-group presentase">
+          <input type="text" class="form-control" id="id_presentase_kandungan_produk_import" name="presentase_kandungan_produk_import" onchange="total_n_a();">
           <!-- <label>%</label> -->
           <span class="input-group-addon">%</span>
         </div>
