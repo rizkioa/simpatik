@@ -168,9 +168,9 @@ def layanan_imb_perumahan(request, extra_context={}):
 	extra_context.update({'title_short': "IMB - Perumahan"})
 	extra_context.update({'link_formulir': reverse("formulir_imb_perumahan") })
 	extra_context.update({'id_jenis_izin': "1" })
-	extra_context.update({'id_kelompok_jenis_izin': "1" })
+	extra_context.update({'id_kelompok_jenis_izin': "11" })
 	response = render(request, "front-end/layanan/imb_perumahan.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value="1")
+	response.set_cookie(key='id_kelompok_izin', value="11")
 	return response
 
 def layanan_reklame(request, extra_context={}):

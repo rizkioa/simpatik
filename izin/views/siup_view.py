@@ -92,7 +92,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.id == 1:
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-		elif k.id == 2:
+		elif k.id == 2 or k.id == 11 :
 			objects_ = getattr(app_models, 'DetilIMB')
 		if request.user.is_anonymous():
 			created_by = p.id

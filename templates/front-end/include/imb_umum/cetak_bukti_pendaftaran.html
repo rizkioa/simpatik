@@ -148,53 +148,53 @@
                     </table>
                 </div>
                 <table width="100%" border="0" class="font">
-                   <tr>
-                       <td width="25%">Jenis Pengajuan</td>
-                       <td width="5%">:</td>
-                       <td width="70%">Baru</td>
-                   </tr>
+                    <tr>
+                        <td width="25%">Jenis Pemohon</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
+                    </tr>
                </table>
                 <p style="font-size:13px; padding-left:5%;">Yang bertanda tanggan di bawah ini</p>
                 <table width="100%" border="0" class="font">
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">350001010010101001</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>
                         <td width="10%">:</td>
-                        <td width="65%">Hartato</td>
+                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ pemohon.telephone }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. HP</td>
                         <td width="10%">:</td>
-                        <td width="65%">085736662908</td>
+                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Indonesia</td>
+                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pekerjaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Swasta</td>
+                        <td width="65%">{{ pemohon.pekerjaan }}</td>
                     </tr>
                 </table>
 
@@ -203,37 +203,42 @@
                     <tr>
                         <td width="25%">Nama Bangunan</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{pengajuan.bangunan|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Luas Bangunan</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{pengajuan.luas_bangunan|default_if_none:"-"}} <span>M&sup2;</span></td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Jumlah Bangunan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{pengajuan.jumlah_bangunan|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Lokasi Pembangunan</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{letak_pembangunan}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Luas Tanah</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{pengajuan.luas_tanah|default_if_none:"-"}} <span>M&sup2;</span></td>
                     </tr>
                     <tr>
                         <td width="25%">Status Hak Tanah</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{pengajuan.status_hak_tanah|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Surat Tanah</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{pengajuan.no_surat_tanah|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Tgl. Surat Tanah</td>
                         <td width="5%">:</td>
-                        <td width="75%"></td>
+                        <td width="75%">{{pengajuan.tanggal_surat_tanah|default_if_none:"-"}}</td>
                     </tr>
                 </table>
                 <br>
@@ -244,17 +249,17 @@
                     <tr>
                         <td width="25%">Luas bangunan yang sudah ada</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.luas_bangunan_lama|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. IMB</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.no_imb_lama|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Tgl. IMB</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.tanggal_imb_lama|default_if_none:"-"}}</td>
                     </tr>
                 </table>
                 <br>
@@ -282,8 +287,8 @@
                     <tbody>
                         <tr>
                             <td><b>Kegiatan Pembangunan Gedung</b></td>
-                            <td>Pembanguna Bangunan Gedung Baru</td>
-                            <td>1.00</td>
+                            <td>{{nama_fungsi_bangunan}}</td>
+                            <td>{{nilai_fungsi_bangunan}}</td>
                         </tr>
                         <tr>
                             <td><b>Parameter Bangunan Gedung</b></td>
@@ -292,43 +297,43 @@
                         </tr>
                         <tr>
                             <td>Fungsi Bangunan</td>
-                            <td>Hunian</td>
-                            <td>0.50</td>
+                            <td>{{kegiatan_pembangunan}}</td>
+                            <td>{{nilai_kegiatan_pembangunan}}</td>
                         </tr>
                         <tr>
                             <td>Tingkat Kompleksitas (0.25)</td>
-                            <td>Sederhana</td>
-                            <td>0.40</td>
+                            <td>{{kompleksitas_bangunan}}</td>
+                            <td>{{nilai_kompleksitas_bangunan}}</td>
                         </tr>
                         <tr>
                             <td>Tingkat Permanensi (0.20)</td>
-                            <td>Permanen</td>
-                            <td>1.00</td>
+                            <td>{{permanensi_bangunan}}</td>
+                            <td>{{nilai_permanensi_bangunan}}</td>
                         </tr>
                         <tr>
                             <td>Ketinggian Bangunan (0.10)</td>
-                            <td>1 s/d 2 lantai</td>
-                            <td>0.40</td>
+                            <td>{{ketinggian_bangunan}}</td>
+                            <td>{{nilai_ketinggian_bangunan}}</td>
                         </tr>
                         <tr>
                             <td>Lokasi Bangunan (0.15)</td>
-                            <td>Tepi Jalan Desa</td>
-                            <td>0.40</td>
+                            <td>{{letak_bangunan}}</td>
+                            <td>{{nilai_letak_bangunan}}</td>
                         </tr>
                         <tr>
                             <td>Kepemilikan  bangunan(0.05)</td>
-                            <td>Perorangan</td>
-                            <td>0.70</td>
+                            <td>{{kepemilikan_bangunan}}</td>
+                            <td>{{nilai_kepemilikan_bangunan}}</td>
                         </tr>
                         <tr>
                             <td>Lama Penggunan Bangunan</td>
-                            <td> > 3thn</td>
-                            <td>1.00</td>
+                            <td>{{lama_penggunaan_bangunan}}</td>
+                            <td>{{nilai_lama_penggunaan_bangunan}}</td>
                         </tr>
                         <tr>
-                            <td><b>TOTAL BOBOT</b></td>
+                            <td><b>PERKIRAAN BIAYA</b></td>
                             <td></td>
-                            <td></td>
+                            <td>Rp. {{total_biaya}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -345,7 +350,7 @@
                     <br>
                     <br>
                     <br>
-                    <u class="font"><b>HARTATO</b></u>
+                    <u class="font"><b>{{ pemohon.nama_lengkap }}</b></u>
                 </p>
                 <br>
                 <p align="center" style="font-size:15px"> MENGETHUI DAN MENYETUJUI</p>
@@ -387,7 +392,7 @@
         <div class="page">
             <div class="subpage">
             <h5>Syarat IMB:</h5>
-                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
                             <td width="5%">No</td>

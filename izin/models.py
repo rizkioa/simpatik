@@ -5,7 +5,7 @@ from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, D
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN,STATUS_HAK_TANAH,KEPEMILIKAN_TANAH
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN,STATUS_HAK_TANAH,KEPEMILIKAN_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA
 
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
@@ -493,9 +493,9 @@ class DetilIMBPapanReklame(PengajuanIzin):
 
 class DetilIMB(PengajuanIzin):
 	bangunan = models.CharField(verbose_name="Bangunan", max_length=150)
-	luas_bangunan = models.DecimalField(max_digits=5, decimal_places=2, default=0,verbose_name='Luas Bangunan')
+	luas_bangunan = models.DecimalField(max_digits=6, decimal_places=2, default=0,verbose_name='Luas Bangunan')
 	jumlah_bangunan = models.IntegerField(verbose_name="Jumlah Bangunan", null=True, blank=True)
-	luas_tanah = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Luas Tanah')
+	luas_tanah = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Luas Tanah')
 	no_surat_tanah = models.CharField(max_length=255, verbose_name='No Surat Tanah')
 	tanggal_surat_tanah = models.DateField(verbose_name='Tanggal Surat Tanah', null=True, blank=True)
 	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)
@@ -503,7 +503,11 @@ class DetilIMB(PengajuanIzin):
 	status_hak_tanah = models.CharField(verbose_name='Status Hak Tanah', choices=STATUS_HAK_TANAH, max_length=20, null=True, blank=True)
 	kepemilikan_tanah = models.CharField(verbose_name='Kepemilikan Tanah', choices=KEPEMILIKAN_TANAH, max_length=20, null=True, blank=True)
 	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
-	luas_bangunan_lama = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True,verbose_name='Luas Bangunan Yang Sudah Ada')
+	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=KLASIFIKASI_JALAN, max_length=19, null=True, blank=True)
+	ruang_milik_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Milik Jalan', choices=RUMIJA, null=True, blank=True)
+	ruang_pengawasan_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Pengawasan Jalan', choices=RUWASJA, null=True, blank=True)
+	total_biaya = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Biaya')
+	luas_bangunan_lama = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True,verbose_name='Luas Bangunan Yang Sudah Ada')
 	no_imb_lama = models.CharField(max_length=255, verbose_name='No. IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	def __unicode__(self):
