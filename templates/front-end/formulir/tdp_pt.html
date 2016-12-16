@@ -509,6 +509,8 @@
                 $('#id_omset_per_tahun').val(respon_data_kegiatan.data.omset_per_tahun);
                 $('#id_total_aset').val(respon_data_kegiatan.data.total_aset);
                 $('#id_jumlah_karyawan_wni').val(respon_data_kegiatan.data.jumlah_karyawan_wni);
+                $('#id_jumlah_karyawan_wna').val(respon_data_kegiatan.data.jumlah_karyawan_wna);
+                $('#id_total_wni_wna').val(respon_data_kegiatan.data.jumlah_karyawan_wni+respon_data_kegiatan.data.jumlah_karyawan_wna);
                 $('#id_kapasitas_mesin_terpasang').val(respon_data_kegiatan.data.kapasitas_mesin_terpasang);
                 $('#id_satuan_kapasitas_mesin_terpasang').val(respon_data_kegiatan.data.satuan_kapasitas_mesin_terpasang);
                 $('#id_kapasitas_produksi_per_tahun').val(respon_data_kegiatan.data.kapasitas_produksi_per_tahun);
@@ -518,7 +520,7 @@
                 $('#id_kedudukan_kegiatan_usaha').val(respon_data_kegiatan.data.kedudukan_kegiatan_usaha).prop('disabled', false).trigger("chosen:updated");
                 $('#id_jenis_pengecer').val(respon_data_kegiatan.data.jenis_pengecer).prop('disabled', false).trigger("chosen:updated");
                 $('#id_jenis_perusahaan').val(respon_data_kegiatan.data.jenis_perusahaan).prop('disabled', false).trigger("chosen:updated");
-                $('#id_model_dasar').val(respon_data_kegiatan.data.modal_dasar);
+                $('#id_modal_dasar').val(respon_data_kegiatan.data.modal_dasar);
                 $('#id_modal_ditempatkan').val(respon_data_kegiatan.data.modal_ditempatkan);
                 $('#id_modal_disetor').val(respon_data_kegiatan.data.modal_disetor);
                 $('#id_banyaknya_saham').val(respon_data_kegiatan.data.banyaknya_saham);
@@ -541,6 +543,22 @@
         var total = wni+wna;
         $('#id_total_wni_wna').val(total);
       }
+
+      function total_n_a(){
+        var nasional = parseFloat($('#id_presentase_kandungan_produk_lokal').val())
+        var asing = parseFloat($('#id_presentase_kandungan_produk_import').val())
+        var total_a_n = nasional+asing
+        if (total_a_n.toFixed(2) > 100.00){
+          $('.presentase').addClass('has-error')
+          $('<div class="form-group"><span class="col-sm-12 help-block mb-0 error-presentase"><center><font color="red">Jumlah persen kandungan produk lokal dan import tidak boleh melebihi 100%.</font></center></span></div>').insertAfter('#presentase')
+        }
+        else{
+          $('.presentase').removeClass('has-error')
+          $('.error-presentase').remove()
+        }
+      }
+
+      $('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
   </script>
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}
