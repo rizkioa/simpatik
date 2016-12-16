@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
-  <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
   {% block customstyle %}
     <style type="text/css">
@@ -72,13 +71,11 @@
       <li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
       <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
       <li class="next finish" style="display:none;">
-      <button type="submit" class="btn btn-success pull-right" id="alert">
-        <i class="fa fa-arrow-right"></i>
-        <span>Selesai</span>
-      </button>
-      </form>
+        <button type="submit" class="btn btn-success pull-right" id="alert">
+          <i class="fa fa-arrow-right"></i>
+          <span>Selesai</span>
+        </button>
       </li>
-      </form>
     </ul>
   </div>
   <br>
@@ -99,6 +96,7 @@
 <script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
 <script>
 	
 
