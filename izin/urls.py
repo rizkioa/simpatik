@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view
 from django.conf.urls.static import static
-from izin.views.imb import imb_reklame
+from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -68,8 +68,6 @@ urlpatterns = [
     url(r'^layanan/reklame/formulir$', views.formulir_reklame, name='formulir_reklame'),
     url(r'^layanan/pemakaian-kekayaan/formulir$', views.formulir_kekayaan, name='formulir_kekayaan'),
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
-    url(r'^layanan/imb-umum/formulir$', views.formulir_imb_umum, name='formulir_imb_umum'),
-    url(r'^layanan/imb-perumahan/formulir$', views.formulir_imb_perumahan, name='formulir_imb_perumahan'),
     url(r'^layanan/imb-reklame/formulir$', imb_reklame.formulir_imb_reklame, name='formulir_imb_reklame'),
     url(r'^layanan/tdp-cv/formulir$', views.formulir_tdp_cv, name='formulir_tdp_cv'),
     url(r'^layanan/tdp-firma/formulir$', views.formulir_tdp_firma, name='formulir_tdp_firma'),
@@ -211,4 +209,19 @@ urlpatterns = [
     url(r'^layanan/imbreklame/selesai/$', imb_reklame.imb_reklame_done , name='imb_reklame_done'),
 
     # ++++++++++++++++++++++++ end for ajax IMB reklame ++++++++++++++++++++++
+
+
+    # ++++++++++++++++++++++++ for ajax IMB UMUM ++++++++++++++++++++++
+
+    url(r'^layanan/imb-umum/formulir$', imb_umum.formulir_imb_umum, name='formulir_imb_umum'),
+    url(r'^layanan/imbumum/save/$', imb_umum.imbumum_save_cookie, name='imbumum_save'),
+    url(r'^layanan/parameterbangunan/save/$', imb_umum.parameter_bangunan_save_cookie, name='parameter_bangunan_save'),
+
+     # ++++++++++++++++++++++++ end for ajax IMB UMUM ++++++++++++++++++++++
+
+     # ++++++++++++++++++++++++ for ajax IMB PERUMAHAN ++++++++++++++++++++++
+
+    url(r'^layanan/imb-perumahan/formulir$', imb_perumahan.formulir_imb_perumahan, name='formulir_imb_perumahan'),
+     # ++++++++++++++++++++++++ end for ajax IMB PERUMAHAN ++++++++++++++++++++++
+    url(r'^get-nilai-parameter$', views.get_nilai_parameter, name='get_nilai_parameter')
     ]

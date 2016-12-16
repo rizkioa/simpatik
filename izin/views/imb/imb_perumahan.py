@@ -20,7 +20,7 @@ import time
 import json
 import os
 
-from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
+from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, DetilIMB,Pemohon
 from izin.utils import STATUS_HAK_TANAH
@@ -28,27 +28,11 @@ from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,DetilIMBForm,ParameterBangunanForm
 from accounts.models import NomorIdentitasPengguna
 
-def formulir_imb_umum(request, extra_context={}):
+def formulir_imb_perumahan(request, extra_context={}):
 	negara = Negara.objects.all()
 	kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 	jenis_pemohon = JenisPemohon.objects.all()
-	kegiatan_pembangunan = ParameterBangunan.objects.filter(parameter="Kegiatan Pembangunan Gedung")
-	fungsi_bangunan = ParameterBangunan.objects.filter(parameter="Fungsi Bangunan")
-	kompleksitas_bangunan = ParameterBangunan.objects.filter(parameter="Tingkat Kompleksitas")
-	permanensi_bangunan = ParameterBangunan.objects.filter(parameter="Tingkat Permanensi")
-	ketinggian_bangunan = ParameterBangunan.objects.filter(parameter="Ketinggian Bangunan")
-	lokasi_bangunan = ParameterBangunan.objects.filter(parameter="Lokasi Bangunan")
-	kepemilikan_bangunan = ParameterBangunan.objects.filter(parameter="Kepemilikan Bangunan")
-	lama_penggunaan_bangunan = ParameterBangunan.objects.filter(parameter="Lama Penggunaan Bangunan")
 
-	extra_context.update({'fungsi_bangunan': fungsi_bangunan })
-	extra_context.update({'kompleksitas_bangunan': kompleksitas_bangunan })
-	extra_context.update({'permanensi_bangunan': permanensi_bangunan })
-	extra_context.update({'ketinggian_bangunan': ketinggian_bangunan })
-	extra_context.update({'lokasi_bangunan': lokasi_bangunan })
-	extra_context.update({'kepemilikan_bangunan': kepemilikan_bangunan })
-	extra_context.update({'lama_penggunaan_bangunan': lama_penggunaan_bangunan })
-	extra_context.update({'kegiatan_pembangunan': kegiatan_pembangunan })
 	extra_context.update({'status_hak_tanah': STATUS_HAK_TANAH })
 	extra_context.update({'negara': negara})
 	extra_context.update({'kecamatan': kecamatan})
@@ -58,7 +42,7 @@ def formulir_imb_umum(request, extra_context={}):
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 	else:
 		return HttpResponseRedirect(reverse('layanan'))
-	return render(request, "front-end/formulir/imb_umum.html", extra_context)
+	return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
 
 def cetak_imb_umum(request, id_pengajuan_):
 	  extra_context = {}
@@ -147,8 +131,10 @@ def imbumum_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = DetilIMB.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			print pengajuan_
 			IMBUmum = DetilIMBForm(request.POST, instance=pengajuan_)
 			if IMBUmum.is_valid():
+				print "Valid"
 				pengajuan_.pemohon_id  = request.COOKIES['id_pemohon']
 				pengajuan_.save()
 				letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
@@ -163,36 +149,6 @@ def imbumum_save_cookie(request):
 				response = HttpResponse(json.dumps(data))
 			else:
 				data = IMBUmum.errors.as_json()
-		else:
-			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-			data = json.dumps(data)
-	else:
-		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-		data = json.dumps(data)
-	response = HttpResponse(data)
-	return response
-
-def parameter_bangunan_save_cookie(request):
-	if 'id_pengajuan' in request.COOKIES.keys():
-		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilIMB.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-			IMBParameterBangunan = ParameterBangunanForm(request.POST, instance=pengajuan_)
-			parameter = request.POST.getlist('parameter_bangunan')
-			if IMBParameterBangunan.is_valid():
-				if pengajuan_.parameter_bangunan.exists():
-					pengajuan_.parameter_bangunan.clear() 
-					for i in parameter:
-						pengajuan_.parameter_bangunan.add(i)
-				else:
-					for i in parameter:
-						pengajuan_.parameter_bangunan.add(i) 
-				data = {'success': True,
-						'pesan': 'Data IMB UMUM berhasil disimpan. Proses Selanjutnya.',
-						'data': ['']}
-				data = json.dumps(data)
-				response = HttpResponse(json.dumps(data))
-			else:
-				data = IMBParameterBangunan.errors.as_json()
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)

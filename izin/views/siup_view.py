@@ -21,7 +21,8 @@ from izin.utils import get_nomor_pengajuan
 from izin.utils import formatrupiah
 
 from izin import models as app_models
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna
 from master.models import Berkas
@@ -91,7 +92,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.id == 1:
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-
+		elif k.id == 2:
+			objects_ = getattr(app_models, 'DetilIMB')
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
@@ -188,6 +190,8 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.id == 1:
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+					elif k.id == 2:
+						objects_ = getattr(app_models, 'DetilIMB')
 						
 					if objects_:
 						try:
