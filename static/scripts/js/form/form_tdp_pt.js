@@ -145,8 +145,9 @@ $( "#id_provinsi-5" ).change(function(){
 })
 
 function load_provinsi_(id_negara, elem_){
+    id_negara = parseInt(id_negara)
     var elem_ = elem_
-    console.log(elem_)
+    // console.log(elem_)
     var split_ = elem_.split('-')[1]
     $('#id_provinsi-'+split_+'_chosen').mLoading();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
@@ -177,6 +178,7 @@ function load_provinsi_(id_negara, elem_){
 }
 
 function load_kabupaten_(id_provinsi, elem_){
+    id_provinsi = parseInt(id_provinsi)
     var split_ = elem_.split('-')[1]
     $('#id_kabupaten-'+split_+'_chosen').mLoading();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
@@ -208,6 +210,7 @@ function load_kabupaten_(id_provinsi, elem_){
 
 
 function load_kecamatan_(id_kabupaten, elem_){
+    id_kabupaten = parseInt(id_kabupaten)
     var split_ = elem_.split('-')[1]
     $('#id_kecamatan-'+split_+'_chosen').mLoading();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
@@ -238,6 +241,7 @@ function load_kecamatan_(id_kabupaten, elem_){
 }
 
 function load_desa_(id_kecamatan, elem_){
+    id_kecamatan = parseInt(id_kecamatan)
     var split_ = elem_.split('-')[1]
     $('#id_desa-'+split_+'_chosen').mLoading();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();

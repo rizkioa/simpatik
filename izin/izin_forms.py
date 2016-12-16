@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -141,3 +141,15 @@ class PengajuanIMBReklameForm(forms.ModelForm):
 	class Meta:
 		model = DetilIMBPapanReklame
 		fields = ('jenis_papan_reklame','lebar','tinggi','jumlah','klasifikasi_jalan','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat')
+
+class DetilIMBForm(forms.ModelForm):
+
+	class Meta:
+		model = DetilIMB
+		fields = ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama')
+
+class ParameterBangunanForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = DetilIMB
+		fields = ('parameter_bangunan',)

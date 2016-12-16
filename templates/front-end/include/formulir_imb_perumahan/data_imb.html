@@ -1,57 +1,57 @@
-<form method="POST" name="step2" role="form" class="form-horizontal">
-  {% csrf_token %}   
-    <div class="row">
-      <div class="col-md-12">
-        <h3>Data IMB</h3>
-        <hr class="style14">
-      </div>
-    </div>
+<form method="POST" action="{% url 'imbumum_save' %}" data-parsley-validate novalidate name="step2" role="form" class="form-horizontal">
+  {% csrf_token %}
+    <h3>DATA IMB</h3>
+    <hr class="style14" >
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Bangunan</label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="id_bangunan" name="bangunan">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Luas Bangunan</label>
-      <div class="form-group">
-        <div class="col-sm-2">
-          <input type="text" class="form-control" id="input01"><span class="help-block mb-0">M2</span>
+      <label for="input01" class="col-sm-2 control-label">Luas bangunan</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="form-control" id="id_luas_bangunan" name="luas_bangunan">
+          <span class="input-group-addon">
+            <span>M&sup2;</span>
+          </span>
         </div>
-         <label for="input01" class="col-sm-2 control-label">Jumlah Bangunan</label>
-        <div class="col-sm-2">
-          <input type="text" class="form-control" id="input01"><span class="help-block mb-0">Unit</span>
+      </div>
+
+      <label for="input01" class="col-sm-2 control-label">Jumlah bangunan</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="form-control" id="id_jumlah_bangunan" name="jumlah_bangunan">
+          <span class="input-group-addon">
+            <span>Unit</span>
+          </span>
         </div>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Lokasi Pembangunan</label>
-      <div class="col-sm-7">
-        <textarea class="form-control" rows="5" name="lokasi_pembangunan" placeholder="Isi Alamat Lokasi Pembangunan"></textarea>
+      <label for="input01" class="col-sm-2 control-label">Lokasi pembangunan</label>
+      <div class="col-sm-10">
+        <textarea class="form-control" rows="5" id="id_lokasi" name="lokasi" ></textarea>
       </div>
     </div>
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kota/Kabupaten --</option>
-          {% if kabupaten %}
-          {% for k in kabupaten %}
-          <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
-          {% endfor %}
-          {% endif %}
+        <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+          <option value="1">Kabupaten Kediri</option>
         </select>
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kecamatan</label>
+    <div class="form-group" id="kecamatan3">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
+        <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
           <option value>-- Pilih Kecamatan --</option>
           {% if kecamatan %}
           {% for k in kecamatan %}
@@ -62,77 +62,87 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+    <div class="form-group" id="desa3">
+      <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
       <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kelurahan/Desa --</option>
-          {% if desa %}
-          {% for d in desa %}
-          <option value="{{ d.id }}">{{ d.nama_desa }}</option>
-          {% endfor %}
-          {% endif %}
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_data_reklame" required="" data-parsley-trigger="change">
         </select>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Status hak tanah</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">No. Surat tanah</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
-
-  <div class="form-group">
-    <label for="input01" class="col-sm-2 control-label"><strong>Tgl. Surat tanah</strong> </label>
+    <label for="input01" class="col-sm-2 control-label">Luas tanah</label>
     <div class="col-sm-3">
-      <div class="input-group datepicker w-360" data-format="L">
-        <input type="text" class="form-control" name="tanggal_lahir">
-        <span class="input-group-btn">
-          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-        </span>
-      </div>
+        <div class="input-group">
+            <input type="text" class="form-control" id="id_luas_tanah" name="luas_tanah">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
     </div>
   </div>
+
   <div class="form-group">
-    <span class="tambahan"><u>Perluasan/Penambahan Bangunan</u></span></br>
-    <span class="tambahan">Isi jika perluasan/penambahan bangunan</span>
+        <label for="input01" class="col-sm-2 control-label">Status hak tanah</label>
+        <div class="col-sm-5">
+          <select class="form-control chosen-select mb-10">
+            <option>-- Pilih Status hak tanah --</option>
+            {% for j in status_hak_tanah %}
+             <option value="{{j.0}}">{{j.1}}</option>
+            {% endfor %}
+          </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+    <label for="input01" class="col-sm-2 control-label">No. Surat Tanah</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="id_no_surat_tanah" name="no_surat_tanah">
+    </div>
   </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Luas bangunan yang sudah ada</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
+  <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal surat tanah</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control" id="id_tanggal_surat_tanah" name="tanggal_surat_tanah">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
       </div>
     </div>
 
+    <br>
+    <h5><u><strong>Perluasan / Penambahan Bangunan</strong></u></h5>
+    <h5>Isi jika perluasan / penambahan bangunan</h5>
+
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">No. IMB</label>
-      <div class="col-sm-5">
-        <input type="text" class="form-control" id="input01">
-      </div>
+    <label for="input01" class="col-sm-2 control-label">Luas bangunan yg sudah ada</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+            <input type="text" class="form-control" id="id_luas_bangunan_lama" name="luas_bangunan_lama">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
     </div>
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Tgl. IMB</strong> </label>
-      <div class="col-sm-3">
-        <div class="input-group datepicker w-360" data-format="L">
-          <input type="text" class="form-control" name="tanggal_lahir">
-          <span class="input-group-btn">
-            <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+  </div>
+
+  <div class="form-group">
+    <label for="input01" class="col-sm-2 control-label">No IMB</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="id_no_imb_lama" name="no_imb_lama">
+    </div>
+  </div>
+
+  <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal IMB</label>
+      <div class="col-sm-4">
+        <div class="input-group datepicker" data-format="L">
+          <input type="text" class="form-control" id="id_tanggal_imb_lama" name="tanggal_imb_lama">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
           </span>
         </div>
       </div>

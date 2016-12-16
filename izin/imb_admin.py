@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilIMBPapanReklame, Syarat, SKIzin, Riwayat
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,8 +10,9 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
 
-class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
-	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
+class DetilIMBAdmin(admin.ModelAdmin):
+	# list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
+	list_display = ('id',)
 	search_fields = ('no_izin', 'pemohon__nama_lengkap')
 
 	def get_kelompok_jenis_izin(self, obj):
@@ -27,7 +28,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		if split_[0] == 'IMB Reklame':
 			no_pengajuan = mark_safe("""
 				<a href="%s" target="_blank"> %s </a>
-				""" % (reverse('admin:izin_detilimbpapanreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+				""" % (reverse('admin:izin_detilimb_change', args=(obj.id,)), obj.no_pengajuan ))
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
@@ -44,12 +45,12 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon','perusahaan')
+					'fields': ('pemohon',)
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB Papan Reklame', {'fields': ('jenis_papan_reklame','lebar','tinggi','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat') }),
+				('Detail IMB', {'fields': ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -58,22 +59,22 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon','perusahaan')
+					'fields': ('pemohon',)
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB Papan Reklame', {'fields': ('jenis_papan_reklame','lebar','tinggi','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat') }),
+				('Detail IMB', {'fields': ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
 
 
-	def view_pengajuan_imb_reklame(self, request, id_pengajuan_izin_):
+	def view_pengajuan_imb_umum(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -99,7 +100,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-			letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
 			extra_context.update({'letak_pemasangan': letak_})
@@ -115,7 +116,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 
 			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
 			# print lama_pemasangan
-			banyak = len(DetilIMBPapanReklame.objects.all())
+			banyak = len(DetilIMB.objects.all())
 			extra_context.update({'banyak': banyak})
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
 			extra_context.update({'syarat': syarat_})
@@ -136,12 +137,12 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_imb_reklame(self, request, id_pengajuan_izin_):
+	def cetak_sk_imb_umum(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		print id_pengajuan_izin_
 		if id_pengajuan_izin_:
-			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -154,13 +155,9 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
-			letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
-			jumlah_ = str(int(pengajuan_.jumlah))
-			klasifikasi_ = pengajuan_.klasifikasi_jalan
+			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
-			extra_context.update({'jumlah': jumlah_ })
-			extra_context.update({'klasifikasi_jalan': klasifikasi_ })
 			extra_context.update({'ukuran': ukuran_})
 			extra_context.update({'letak_pemasangan': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
@@ -191,15 +188,15 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
-		urls = super(DetilIMBPapanReklameAdmin, self).get_urls()
+		urls = super(DetilIMBAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^cetak-sk-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_imb_reklame), name='cetak_sk_imb_reklame'),
-			url(r'^view-pengajuan-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_reklame), name='view_pengajuan_imb_reklame'),
+			url(r'^cetak-sk-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_imb_umum), name='cetak_sk_imb_umum'),
+			url(r'^view-pengajuan-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_umum), name='view_pengajuan_imb_umum'),
 
 			)
 		return my_urls + urls
 
-admin.site.register(DetilIMBPapanReklame, DetilIMBPapanReklameAdmin)
+admin.site.register(DetilIMB, DetilIMBAdmin)
 
 
 

@@ -27,7 +27,7 @@ def tdp_data_umum_perusahaan_cookie(request):
 					alamat = request.POST.get('alamat_perusahaan_induk')
 					desa = request.POST.get('desa_perusahaan_induk')
 					perusahaan_cabang = request.COOKIES.get('id_perusahaan')
-					print npwp
+					# print npwp
 					try:
 						per = Perusahaan.objects.get(npwp=npwp)
 						per.perusahaan_induk_id = request.COOKIES['id_perusahaan_induk']
@@ -38,8 +38,8 @@ def tdp_data_umum_perusahaan_cookie(request):
 					except ObjectDoesNotExist:
 						per = Perusahaan(npwp=npwp, nama_perusahaan=nama, alamat_perusahaan=alamat, desa_id=desa)
 						per.save(force_insert=True)
-					print per.id
-					print per.npwp
+					# print per.id
+					# print per.npwp
 					try:
 						per_cabang = Perusahaan.objects.get(id=perusahaan_cabang)
 						per_cabang.perusahaan_induk_id = per.id
@@ -251,30 +251,79 @@ def load_data_umum_perusahaan(request, pengajuan_id):
 	if pengajuan_id:
 		pengajuan_ = DetilTDP.objects.filter(id=pengajuan_id).last()
 		if pengajuan_:
-			status_perusahaan = pengajuan_.status_perusahaan.id
-			jenis_badan_usaha = pengajuan_.jenis_badan_usaha.id
-			bentuk_kerjasama = pengajuan_.bentuk_kerjasama.id
-			jumlah_bank = pengajuan_.jumlah_bank
-			nasabah_utama_bank_1 = pengajuan_.nasabah_utama_bank_1
-			nasabah_utama_bank_2 = pengajuan_.nasabah_utama_bank_2
-			jenis_penanaman_modal = pengajuan_.jenis_penanaman_modal.id
-			tanggal_pendirian = pengajuan_.tanggal_pendirian.strftime('%d-%m-%Y')
-			tanggal_mulai_kegiatan = pengajuan_.tanggal_mulai_kegiatan.strftime('%d-%m-%Y')
-			nomor_tdp_kantor_pusat = pengajuan_.nomor_tdp_kantor_pusat
-			alamat_unit_produksi = pengajuan_.alamat_unit_produksi
-			desa = pengajuan_.desa_unit_produksi.id
-			kecamatan = pengajuan_.desa_unit_produksi.kecamatan.id
-			kabupaten = pengajuan_.desa_unit_produksi.kecamatan.kabupaten.id
-			provinsi = pengajuan_.desa_unit_produksi.kecamatan.kabupaten.provinsi.id
-			merek_dagang = pengajuan_.merek_dagang
-			no_merek_dagang = pengajuan_.merek_dagang
-			pemegang_hak_cipta = pengajuan_.pemegang_hak_cipta
-			no_hak_cipta = pengajuan_.pemegang_hak_cipta
-			pemegang_hak_paten = pengajuan_.pemegang_hak_paten
-			no_hak_paten = pengajuan_.no_hak_paten
+			status_perusahaan = "0"
+			if pengajuan_.status_perusahaan:
+				status_perusahaan = pengajuan_.status_perusahaan.id
+			jenis_badan_usaha = "0"
+			if pengajuan_.jenis_badan_usaha:
+				jenis_badan_usaha = pengajuan_.jenis_badan_usaha.id
+			bentuk_kerjasama = "0"
+			if pengajuan_.bentuk_kerjasama:
+				bentuk_kerjasama = pengajuan_.bentuk_kerjasama.id
+			jumlah_bank = ""
+			if pengajuan_.jumlah_bank:
+				jumlah_bank = pengajuan_.jumlah_bank
+			nasabah_utama_bank_1 = ""
+			if pengajuan_.nasabah_utama_bank_1:
+				nasabah_utama_bank_1 = pengajuan_.nasabah_utama_bank_1
+			nasabah_utama_bank_2 = ""
+			if pengajuan_.nasabah_utama_bank_2:
+				nasabah_utama_bank_2 = pengajuan_.nasabah_utama_bank_2
+			jenis_penanaman_modal = "0"
+			if pengajuan_.jenis_penanaman_modal:
+				jenis_penanaman_modal = pengajuan_.jenis_penanaman_modal.id
+			tanggal_pendirian = ""
+			if pengajuan_.tanggal_pendirian:
+				tanggal_pendirian = pengajuan_.tanggal_pendirian.strftime('%d-%m-%Y')
+			tanggal_mulai_kegiatan = ""
+			if pengajuan_.tanggal_mulai_kegiatan:
+				tanggal_mulai_kegiatan = pengajuan_.tanggal_mulai_kegiatan.strftime('%d-%m-%Y')
+			jangka_waktu_berdiri = ""
+			if pengajuan_.jangka_waktu_berdiri:
+				jangka_waktu_berdiri = pengajuan_.jangka_waktu_berdiri
+			nomor_tdp_kantor_pusat = ""
+			if pengajuan_.nomor_tdp_kantor_pusat:
+				nomor_tdp_kantor_pusat = pengajuan_.nomor_tdp_kantor_pusat
+			alamat_unit_produksi = ""
+			if pengajuan_.alamat_unit_produksi:
+				alamat_unit_produksi = pengajuan_.alamat_unit_produksi
+			desa = "0"
+			kecamatan = "0"
+			kabupaten = "0"
+			provinsi = "0"
+			if pengajuan_.desa_unit_produksi:
+				desa = pengajuan_.desa_unit_produksi.id
+				print desa
+				if pengajuan_.desa_unit_produksi.kecamatan:
+					kecamatan = pengajuan_.desa_unit_produksi.kecamatan.id
+					print kecamatan
+					if pengajuan_.desa_unit_produksi.kecamatan.kabupaten:
+						kabupaten = pengajuan_.desa_unit_produksi.kecamatan.kabupaten.id
+						print kabupaten
+						if pengajuan_.desa_unit_produksi.kecamatan.kabupaten.provinsi:
+							provinsi = pengajuan_.desa_unit_produksi.kecamatan.kabupaten.provinsi.id
+							print provinsi
+			merek_dagang = ""
+			if pengajuan_.merek_dagang:
+				merek_dagang = pengajuan_.merek_dagang
+			no_merek_dagang = ""
+			if pengajuan_.no_merek_dagang:
+				no_merek_dagang = pengajuan_.no_merek_dagang
+			pemegang_hak_cipta = ""
+			if pengajuan_.pemegang_hak_cipta:
+				pemegang_hak_cipta = pengajuan_.pemegang_hak_cipta
+			no_hak_cipta = ""
+			if pengajuan_.pemegang_hak_cipta:
+				no_hak_cipta = pengajuan_.pemegang_hak_cipta
+			pemegang_hak_paten = ""
+			if pengajuan_.pemegang_hak_paten:
+				pemegang_hak_paten = pengajuan_.pemegang_hak_paten
+			no_hak_paten = ""
+			if pengajuan_.no_hak_paten:
+				no_hak_paten = pengajuan_.no_hak_paten
 
 			data = {'success': True, 'pesan': 'Load data umum perusahan', 'data':{
-			'status_perusahaan': status_perusahaan, 'jenis_badan_usaha': jenis_badan_usaha, 'bentuk_kerjasama': bentuk_kerjasama, 'jumlah_bank': jumlah_bank, 'nasabah_utama_bank_1': nasabah_utama_bank_1, 'nasabah_utama_bank_2': nasabah_utama_bank_2, 'jenis_penanaman_modal': jenis_penanaman_modal, 'tanggal_pendirian': tanggal_pendirian, 'tanggal_mulai_kegiatan': tanggal_mulai_kegiatan, 'nomor_tdp_kantor_pusat': nomor_tdp_kantor_pusat, 'alamat_unit_produksi': alamat_unit_produksi, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'merek_dagang': merek_dagang,'no_merek_dagang': no_merek_dagang, 'pemegang_hak_cipta': pemegang_hak_cipta, 'no_hak_cipta': no_hak_cipta, 'pemegang_hak_paten': pemegang_hak_paten, 'no_hak_paten': no_hak_paten
+			'status_perusahaan': status_perusahaan, 'jenis_badan_usaha': jenis_badan_usaha, 'bentuk_kerjasama': bentuk_kerjasama, 'jumlah_bank': jumlah_bank, 'nasabah_utama_bank_1': nasabah_utama_bank_1, 'nasabah_utama_bank_2': nasabah_utama_bank_2, 'jenis_penanaman_modal': jenis_penanaman_modal, 'tanggal_pendirian': tanggal_pendirian, 'tanggal_mulai_kegiatan': tanggal_mulai_kegiatan, 'jangka_waktu_berdiri': jangka_waktu_berdiri, 'nomor_tdp_kantor_pusat': nomor_tdp_kantor_pusat, 'alamat_unit_produksi': alamat_unit_produksi, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'merek_dagang': merek_dagang,'no_merek_dagang': no_merek_dagang, 'pemegang_hak_cipta': pemegang_hak_cipta, 'no_hak_cipta': no_hak_cipta, 'pemegang_hak_paten': pemegang_hak_paten, 'no_hak_paten': no_hak_paten
 			}}
 		else:
 			data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
@@ -282,3 +331,89 @@ def load_data_umum_perusahaan(request, pengajuan_id):
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
 
+def load_data_kegiatan_perusahaan(request, pengajuan_id):
+	if pengajuan_id:
+		pengajuan_ = DetilTDP.objects.filter(id=pengajuan_id).last()
+		if pengajuan_:
+			kegiatan_usaha_pokok = ""
+			if pengajuan_.kegiatan_usaha_pokok:
+				kegiatan_usaha_pokok = pengajuan_.kegiatan_usaha_pokok
+			kegiatan_usaha_lain_1 = ""
+			if pengajuan_.kegiatan_usaha_lain_1:
+				kegiatan_usaha_lain_1 = pengajuan_.kegiatan_usaha_lain_1
+			kegiatan_usaha_lain_2 = ""
+			if pengajuan_.kegiatan_usaha_lain_2:
+				kegiatan_usaha_lain_2 = pengajuan_.kegiatan_usaha_lain_2
+			komoditi_produk_pokok = ""
+			if pengajuan_.komoditi_produk_pokok:
+				komoditi_produk_pokok = pengajuan_.komoditi_produk_pokok
+			komoditi_produk_lain_1 = ""
+			if pengajuan_.komoditi_produk_lain_1:
+				komoditi_produk_lain_1 = pengajuan_.komoditi_produk_lain_1
+			komoditi_produk_lain_2 = ""
+			if pengajuan_.komoditi_produk_lain_2:
+				komoditi_produk_lain_2 = pengajuan_.komoditi_produk_lain_2
+			omset_per_tahun = ""
+			if pengajuan_.omset_per_tahun:
+				omset_per_tahun = int(pengajuan_.omset_per_tahun)
+			total_aset = ""
+			if pengajuan_.total_aset:
+				total_aset = int(pengajuan_.total_aset)
+			jumlah_karyawan_wni = ""
+			if pengajuan_.jumlah_karyawan_wni:
+				jumlah_karyawan_wni = pengajuan_.jumlah_karyawan_wni
+			jumlah_karyawan_wna = ""
+			if pengajuan_.jumlah_karyawan_wna:
+				jumlah_karyawan_wna = pengajuan_.jumlah_karyawan_wna
+			kapasitas_mesin_terpasang = ""
+			if pengajuan_.kapasitas_mesin_terpasang:
+				kapasitas_mesin_terpasang = int(pengajuan_.kapasitas_mesin_terpasang)
+			satuan_kapasitas_mesin_terpasang = ""
+			if pengajuan_.satuan_kapasitas_mesin_terpasang:
+				satuan_kapasitas_mesin_terpasang = pengajuan_.satuan_kapasitas_mesin_terpasang
+			kapasitas_produksi_per_tahun = ""
+			if pengajuan_.kapasitas_produksi_per_tahun:
+				kapasitas_produksi_per_tahun = int(pengajuan_.kapasitas_produksi_per_tahun)
+			satuan_kapasitas_produksi_per_tahun = ""
+			if pengajuan_.satuan_kapasitas_produksi_per_tahun:
+				satuan_kapasitas_produksi_per_tahun = pengajuan_.satuan_kapasitas_produksi_per_tahun
+			presentase_kandungan_produk_lokal = ""
+			if pengajuan_.presentase_kandungan_produk_lokal:
+				presentase_kandungan_produk_lokal = int(pengajuan_.presentase_kandungan_produk_lokal)
+			presentase_kandungan_produk_import = ""
+			if pengajuan_.presentase_kandungan_produk_import:
+				presentase_kandungan_produk_import = int(pengajuan_.presentase_kandungan_produk_import)
+			jenis_pengecer = "0"
+			if pengajuan_.jenis_pengecer:
+				jenis_pengecer = pengajuan_.jenis_pengecer.id
+			kedudukan_kegiatan_usaha = "0"
+			if pengajuan_.kedudukan_kegiatan_usaha:
+				kedudukan_kegiatan_usaha = pengajuan_.kedudukan_kegiatan_usaha.id
+			jenis_perusahaan = "0"
+			if pengajuan_.jenis_perusahaan:
+				jenis_perusahaan = pengajuan_.jenis_perusahaan.id
+
+			# +++++ Rincian Perusahaan ++++++++++++
+			rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
+			modal_dasar = ""
+			if rincian_.modal_dasar:
+				modal_dasar = int(rincian_.modal_dasar)
+			modal_ditempatkan = ""
+			if rincian_.modal_ditempatkan:
+				modal_ditempatkan = int(rincian_.modal_ditempatkan)
+			modal_disetor = ""
+			if rincian_.modal_disetor:
+				modal_disetor = int(rincian_.modal_disetor)
+			banyaknya_saham = ""
+			if rincian_.banyaknya_saham:
+				banyaknya_saham = rincian_.banyaknya_saham
+			nilai_nominal_per_saham = ""
+			if rincian_.nilai_nominal_per_saham:
+				nilai_nominal_per_saham = int(rincian_.nilai_nominal_per_saham)
+
+			data = {'success': True, 'pesan': 'Load data kegiatan perusahan', 'data':{'kegiatan_usaha_pokok': kegiatan_usaha_pokok, 'kegiatan_usaha_lain_1': kegiatan_usaha_lain_1, 'kegiatan_usaha_lain_2': kegiatan_usaha_lain_2, 'komoditi_produk_pokok': komoditi_produk_pokok, 'komoditi_produk_lain_1': komoditi_produk_lain_1, 'komoditi_produk_lain_2': komoditi_produk_lain_2, 'omset_per_tahun': omset_per_tahun, 'total_aset': total_aset, 'jumlah_karyawan_wni': jumlah_karyawan_wni, 'jumlah_karyawan_wna': jumlah_karyawan_wna, 'kapasitas_mesin_terpasang': kapasitas_mesin_terpasang, 'satuan_kapasitas_mesin_terpasang': satuan_kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'satuan_kapasitas_produksi_per_tahun': satuan_kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal': presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'jenis_perusahaan': jenis_perusahaan, 'modal_dasar': modal_dasar, 'modal_ditempatkan': modal_ditempatkan, 'modal_disetor': modal_disetor, 'banyaknya_saham': banyaknya_saham, 'nilai_nominal_per_saham': nilai_nominal_per_saham}}
+		else:
+			data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
+	else:
+		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
+	return HttpResponse(json.dumps(data))

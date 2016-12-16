@@ -106,7 +106,11 @@ def cetak_bukti_pendaftaran_imb_reklame(request,id_pengajuan_):
         syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
       letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
       ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M , Tinggi = "+str(int(pengajuan_.tinggi))+" M"
+      jumlah_ = str(int(pengajuan_.jumlah))
+      klasifikasi_ = pengajuan_.klasifikasi_jalan
       
+      extra_context.update({'jumlah': jumlah_ })
+      extra_context.update({'klasifikasi_jalan': klasifikasi_ })
       extra_context.update({'letak_pemasangan': letak_})
       extra_context.update({'ukuran': ukuran_})
       extra_context.update({ 'pengajuan': pengajuan_ })
@@ -134,12 +138,17 @@ def reklame_imbreklame_save_cookie(request):
                 pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
                 pengajuan_.save()
                 letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-                ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"        
+                ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"
+                jumlah_ = str(int(pengajuan_.jumlah))
+                klasifikasi_ = pengajuan_.klasifikasi_jalan
+ 
                 data = {'success': True,
-                        'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
+                        'pesan': 'Data IMB Reklame berhasil disimpan. Proses Selanjutnya.',
                         'data': [
                         {'jenis_papan_reklame': pengajuan_.jenis_papan_reklame},
                         {'ukuran': ukuran_},
+                        {'jumlah': jumlah_ },
+                        {'klasifikasi_jalan': klasifikasi_ },
                         {'batas_utara': pengajuan_.batas_utara},
                         {'batas_timur': pengajuan_.batas_timur},
                         {'batas_selatan': pengajuan_.batas_selatan},
