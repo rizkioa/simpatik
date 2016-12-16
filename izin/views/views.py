@@ -73,7 +73,6 @@ def formulir_siup(request, extra_context={}):
         kecamatan_perusahaan = Kecamatan.objects.filter(kabupaten_id=1083)
         extra_context.update({'kecamatan_perusahaan': kecamatan_perusahaan})
 
-
         jenis_pemohon = JenisPemohon.objects.all()
         jenis_legalitas_list = JenisLegalitas.objects.all()
         bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()

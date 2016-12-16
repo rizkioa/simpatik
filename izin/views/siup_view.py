@@ -68,12 +68,12 @@ def siup_identitas_pemohon_save_cookie(request):
 							user_id=p.id,
 							)
 		if paspor_:
-			print "if paspor"
+			# print "if paspor"
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = paspor_, jenis_identitas_id=2, user_id=p.id)
-				print "try"
+				# print "try"
 			except ObjectDoesNotExist:
-				print "except"
+				# print "except"
 				i, created = NomorIdentitasPengguna.objects.get_or_create(
 							nomor = paspor_,
 							jenis_identitas_id=2,

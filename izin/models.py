@@ -408,8 +408,8 @@ class DetilTDP(PengajuanIzin):
 	komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
 	komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
 	komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
-	omset_per_tahun = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
-	total_aset = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
+	omset_per_tahun = models.CharField(max_length=100, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
+	total_aset = models.CharField(max_length=100, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
 	jumlah_karyawan_wni = models.IntegerField(verbose_name='Jumlah Karyawan WNI', default=0)
 	jumlah_karyawan_wna = models.IntegerField(verbose_name='Jumlah Karyawan WNA', default=0)
 	kapasitas_mesin_terpasang = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Kapasitas Mesin Terpasang', null=True, blank=True)
@@ -442,11 +442,11 @@ class IzinLain(AtributTambahan):
 
 class RincianPerusahaan(models.Model):
 	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')
-	modal_dasar = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Dasar Rp.')
-	modal_ditempatkan = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
-	modal_disetor = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Disetor Rp.', null=True, blank=True)
+	modal_dasar = models.CharField(max_length=100, verbose_name='Modal Dasar Rp.', null=True, blank=True)
+	modal_ditempatkan = models.CharField(max_length=100, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
+	modal_disetor = models.CharField(max_length=100, verbose_name='Modal Disetor Rp.', null=True, blank=True)
 	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
-	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
+	nilai_nominal_per_saham = models.CharField(max_length=100, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
 class Survey(MetaAtribut):
 	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)
