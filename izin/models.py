@@ -440,6 +440,15 @@ class IzinLain(AtributTambahan):
 	tanggal_dikeluarkan = models.DateField(verbose_name='Tanggal Dikeluarkan', blank=True, null=True)
 	masa_berlaku = models.PositiveSmallIntegerField(verbose_name='Masa Berlaku (Berapa Tahun?)', null=True, blank=True)
 
+	def as_json(self):
+		return dict(
+			id=self.id, id_jenis_izin=self.kelompok_jenis_izin.id ,nama_jenis_izin=self.kelompok_jenis_izin.kelompok_jenis_izin, no_izin=self.no_izin, dikeluarkan_oleh=self.dikeluarkan_oleh, tanggal_dikeluarkan=self.tanggal_dikeluarkan.strftime('%d-%m-%Y'), masa_berlaku=self.masa_berlaku )
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Izin Lain'
+		verbose_name_plural = 'Izin Lain'
+
 class RincianPerusahaan(models.Model):
 	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')
 	modal_dasar = models.CharField(max_length=100, verbose_name='Modal Dasar Rp.', null=True, blank=True)

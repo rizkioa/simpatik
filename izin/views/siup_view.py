@@ -1053,25 +1053,6 @@ def load_perusahaan(request, npwp_):
 			provinsi = perusahaan.desa.kecamatan.kabupaten.provinsi.id
 		if perusahaan.desa.kecamatan.kabupaten.provinsi.negara:
 			negara = perusahaan.desa.kecamatan.kabupaten.provinsi.negara.id
-		npwp_perusahaan_nama = ""
-		npwp_perusahaan_url = ""
-		if perusahaan.berkas_npwp:
-			npwp_perusahaan_url = str(perusahaan.berkas_npwp.berkas.url)
-			npwp_perusahaan_nama = str(perusahaan.berkas_npwp.nama_berkas)
-		legalitas_pendirian_url = ""
-		legalitas_pendirian_nama = ""
-		legalitas_pendirian = perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
-		if legalitas_pendirian:
-			legalitas_pendirian_url = str(legalitas_pendirian.berkas.berkas.url)
-			legalitas_pendirian_nama = str(legalitas_pendirian.berkas.nama_berkas)
-		legalitas_perubahan_url = ""
-		legalitas_perubahan_nama = ""
-		legalitas_perubahan = perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
-		if legalitas_perubahan:
-			legalitas_perubahan_url =  str(legalitas_perubahan.berkas.berkas.url)
-			legalitas_perubahan_nama = str(legalitas_perubahan.berkas.nama_berkas)
-		
-		data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'npwp_perusahaan_url': npwp_perusahaan_url, 'npwp_perusahaan_nama': npwp_perusahaan_nama, 'legalitas_pendirian_url': legalitas_pendirian_url, 'legalitas_pendirian_nama': legalitas_pendirian_nama, 'legalitas_perubahan_url': legalitas_perubahan_url, 'legalitas_perubahan_nama': legalitas_perubahan_nama }}
 
 		legalitas_pendirian_nama_notaris = ""
 		legalitas_pendirian_alamat = ""
@@ -1105,10 +1086,37 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_tanggal_akta = legalitas_perubahan.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_perubahan_no_pengesahan = legalitas_perubahan.nomor_pengesahan
 			legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
-		
+		# Legalitas Pengesahaan Menteri Hukum dan HAM
+		legalitas_3 = perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+		legalitas_3_no_pengesahaan = ""
+		legalitas_3_tanggal_pengesahaan = ""
+		if legalitas_3:
+			legalitas_3_no_pengesahaan = legalitas_3.nomor_pengesahan
+			legalitas_3_tanggal_pengesahaan = legalitas_3.tanggal_pengesahan.strftime('%d-%m-%Y')
+		# Legalitas Persetujuan Menteri Hukum dan HAM Atas Perubahan Anggaran Dasar
+		legalitas_4 = perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+		legalitas_4_no_pengesahaan = ""
+		legalitas_4_tanggal_pengesahaan = ""
+		if legalitas_4:
+			legalitas_4_no_pengesahaan = legalitas_4.nomor_pengesahan
+			legalitas_4_tanggal_pengesahaan = legalitas_4.tanggal_pengesahan.strftime('%d-%m-%Y')
+		# Legalitas Penerimaan Laporan Perubahan Anggaran Dasar
+		legalitas_6 = perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+		legalitas_6_no_pengesahaan = ""
+		legalitas_6_tanggal_pengesahaan = ""
+		if legalitas_6:
+			legalitas_6_no_pengesahaan = legalitas_6.nomor_pengesahan
+			legalitas_6_tanggal_pengesahaan = legalitas_6.tanggal_pengesahan.strftime('%d-%m-%Y')
+		# Legalitas Penerimaan Pemberitahuan Perubahan Direksi/ Komisaris
+		legalitas_7 = perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+		legalitas_7_no_pengesahaan = ""
+		legalitas_7_tanggal_pengesahaan = ""
+		if legalitas_7:
+			legalitas_7_no_pengesahaan = legalitas_7.nomor_pengesahan
+			legalitas_7_tanggal_pengesahaan = legalitas_7.tanggal_pengesahan.strftime('%d-%m-%Y')
 		data = {'success': True, 'pesan': 'Load data berhasil.', 
 		'data': 
-		{'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan}}
+		{'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan, 'legalitas_3_no_pengesahaan': legalitas_3_no_pengesahaan, 'legalitas_3_tanggal_pengesahaan': legalitas_3_tanggal_pengesahaan, 'legalitas_4_no_pengesahaan': legalitas_4_no_pengesahaan, 'legalitas_4_tanggal_pengesahaan': legalitas_4_tanggal_pengesahaan, 'legalitas_6_no_pengesahaan': legalitas_6_no_pengesahaan, 'legalitas_6_tanggal_pengesahaan': legalitas_6_tanggal_pengesahaan, 'legalitas_7_no_pengesahaan': legalitas_7_no_pengesahaan, 'legalitas_7_tanggal_pengesahaan': legalitas_7_tanggal_pengesahaan,}}
 
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }

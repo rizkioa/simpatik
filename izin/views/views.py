@@ -289,6 +289,8 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'jenis_pengecer': jenis_pengecer})
     kedudukan_kegiatan_usaha = KedudukanKegiatanUsaha.objects.all()
     extra_context.update({'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha})
+    kelompok_jenis_izin = KelompokJenisIzin.objects.all()
+    extra_context.update({'kelompok_jenis_izin': kelompok_jenis_izin})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '0':
             try:

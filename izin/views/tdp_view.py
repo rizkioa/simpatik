@@ -3,14 +3,14 @@ import datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
-from izin.models import DetilTDP, RincianPerusahaan
-from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm
+from izin.models import DetilTDP, RincianPerusahaan, IzinLain
+from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm, IzinLainForm
 from perusahaan.models import Legalitas, Perusahaan
 
 def tdp_data_umum_perusahaan_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 			data_umum_form = DataUmumPerusahaanPTForm(request.POST, instance=pengajuan_)
 			onoffkantorcabang = request.POST.get('onoffkantorcabang')
 			onoffunitproduksi = request.POST.get('onoffunitproduksi')
@@ -75,7 +75,7 @@ def tdp_data_umum_perusahaan_cookie(request):
 def tdp_data_kegiatan_pt_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 			data_kegiatan_form = DataKegiatanPTForm(request.POST, instance=pengajuan_)
 			if data_kegiatan_form.is_valid():
 				p = data_kegiatan_form.save(commit=False)
@@ -109,13 +109,15 @@ def tdp_data_kegiatan_pt_cookie(request):
 def tdp_legalitas_pt_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 			if 'id_perusahaan' in request.COOKIES.keys():
 				if request.COOKIES['id_perusahaan'] != '':
 					perusahaan = request.COOKIES['id_perusahaan']
 					nama_notaris_pendirian = request.POST.get('nama_notaris_pendirian')
 					alamat_pendirian = request.POST.get('alamat_pendirian')
 					telephone_pendirian = request.POST.get('telephone_pendirian')
+					nomor_akta_pendirian = request.POST.get('nomor_akta_pendirian')
+					tanggal_akta_pendirian = datetime.datetime.strptime(request.POST.get('tanggal_akta_pendirian'), '%d-%m-%Y').strftime('%Y-%m-%d')
 					nomor_pengesahan_pendirian = request.POST.get('nomor_pengesahan_pendirian')
 					tanggal_pengesahan_pendirian = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pendirian'), '%d-%m-%Y').strftime('%Y-%m-%d')
 					# save legalitas pendirian
@@ -127,13 +129,15 @@ def tdp_legalitas_pt_cookie(request):
 							legalitas_pendirian.nama_notaris = nama_notaris_pendirian
 							legalitas_pendirian.alamat = alamat_pendirian
 							legalitas_pendirian.telephone = telephone_pendirian
+							legalitas_pendirian.nomor_akta = nomor_akta_pendirian
+							legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
 							legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
 							legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
 							legalitas_pendirian.save()
 						else:
 							pass
 					except ObjectDoesNotExist:
-						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_pengesahan=nomor_pengesahan_pendirian, tanggal_pengesahan=tanggal_pengesahan_pendirian)
+						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian, nomor_pengesahan=nomor_pengesahan_pendirian, tanggal_pengesahan=tanggal_pengesahan_pendirian)
 						legalitas_pendirian.save(force_insert=True)
 					# +++++++ save akta perubahan ++++
 					onoffaktaperubahan = request.POST.get('onoffaktaperubahan')
@@ -141,19 +145,24 @@ def tdp_legalitas_pt_cookie(request):
 						nama_notaris_perubahan = request.POST.get('nama_notaris_akta_perubahan')
 						alamat_perubahan = request.POST.get('alamat_akta_perubahan')
 						telephone_perubahan = request.POST.get('telephone_akta_perubahan')
+						nomor_akta_perubahan = request.POST.get('nomor_akta_perubahan')
+						tanggal_akta_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						nomor_pengesahan_perubahan = request.POST.get('nomor_pengesahan_akta_perubahan')
 						tanggal_pengesahan_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						try:
 							legalitas_perubahan = Legalitas.objects.get(perusahaan_id=perusahaan, jenis_legalitas_id=2)
 							legalitas_perubahan.jenis_legalitas_id = 2
+							legalitas_perubahan.perusahaan_id = perusahaan
 							legalitas_perubahan.nama_notaris = nama_notaris_perubahan
 							legalitas_perubahan.alamat = alamat_perubahan
 							legalitas_perubahan.telephone = telephone_perubahan
+							legalitas_perubahan.nomor_akta = nomor_akta_perubahan
+							legalitas_perubahan.tanggal_akta = tanggal_akta_perubahan
 							legalitas_perubahan.nomor_pengesahan = nomor_pengesahan_perubahan
 							legalitas_perubahan.tanggal_pengesahan = tanggal_pengesahan_perubahan
 							legalitas_perubahan.save()
 						except ObjectDoesNotExist:
-							legalitas_perubahan = Legalitas(perusahaan_id=perusahaan, jenis_legalitas_id=2,  nama_notaris=nama_notaris_perubahan, alamat=alamat_perubahan, telephone=telephone_perubahan, nomor_pengesahan=nomor_pengesahan_perubahan, tanggal_pengesahan=tanggal_pengesahan_perubahan)
+							legalitas_perubahan = Legalitas(perusahaan_id=perusahaan, jenis_legalitas_id=2,  nama_notaris=nama_notaris_perubahan, alamat=alamat_perubahan, telephone=telephone_perubahan, nomor_akta=nomor_akta_perubahan, tanggal_akta=tanggal_akta_perubahan, nomor_pengesahan=nomor_pengesahan_perubahan, tanggal_pengesahan=tanggal_pengesahan_perubahan)
 							legalitas_perubahan.save(force_insert=True)
 					# +++++++ end save akta perubahan ++++
 					# +++++++ save pengesahan menteri +++++
@@ -376,10 +385,10 @@ def load_data_kegiatan_perusahaan(request, pengajuan_id):
 				satuan_kapasitas_produksi_per_tahun = pengajuan_.satuan_kapasitas_produksi_per_tahun
 			presentase_kandungan_produk_lokal = ""
 			if pengajuan_.presentase_kandungan_produk_lokal:
-				presentase_kandungan_produk_lokal = int(pengajuan_.presentase_kandungan_produk_lokal)
+				presentase_kandungan_produk_lokal = str(pengajuan_.presentase_kandungan_produk_lokal)
 			presentase_kandungan_produk_import = ""
 			if pengajuan_.presentase_kandungan_produk_import:
-				presentase_kandungan_produk_import = int(pengajuan_.presentase_kandungan_produk_import)
+				presentase_kandungan_produk_import = str(pengajuan_.presentase_kandungan_produk_import)
 			jenis_pengecer = "0"
 			if pengajuan_.jenis_pengecer:
 				jenis_pengecer = pengajuan_.jenis_pengecer.id
@@ -415,3 +424,68 @@ def load_data_kegiatan_perusahaan(request, pengajuan_id):
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
+
+def tdp_izin_lain_cookie(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+				izin_lain_form = IzinLainForm(request.POST)
+				if izin_lain_form.is_valid():
+					i = izin_lain_form.save(commit=False)
+					i.pengajuan_izin_id = pengajuan_.id
+					i.save()
+					data = {'success': True, 'pesan': 'IzinLain disimpan. Proses Selanjutnya.', 'data': [{'id':i.id}, {'jenis_izin':i.kelompok_jenis_izin.kelompok_jenis_izin}, {'no_izin':i.no_izin}, {'dikeluarkan_oleh':i.dikeluarkan_oleh}, {'tanggal_dikeluarkan':i.tanggal_dikeluarkan.strftime('%d-%m-%Y')}, {'masa_berlaku':i.masa_berlaku}]}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+				else:
+					data = izin_lain_form.errors.as_json()
+					response = HttpResponse(data)
+			except ObjectDoesNotExist:
+				data = {'Terjadi Kesalahan': [{'message': 'Data tidak ditemukan.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data tidak ditemukan.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data tidak ditemukan.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def load_tdp_izin_lain(request, pengajuan_id):
+	if pengajuan_id:
+		i = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_id)
+		if len(i) > 0:
+			data = [ob.as_json() for ob in i]
+			response = HttpResponse(json.dumps(data), content_type="application/json")
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data tidak ditemukan.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def edit_tdp_izin_lain(request, pengajuan_id):
+	if pengajuan_id:
+		try:
+			i = IzinLain.objects.get(id=pengajuan_id)
+
+			kelompok_jenis_izin = i.kelompok_jenis_izin.id
+			no_izin = i.no_izin
+			dikeluarkan_oleh = i.dikeluarkan_oleh
+			tanggal_dikeluarkan = i.tanggal_dikeluarkan.strftime('%d-%m-%Y')
+			masa_berlaku = i.masa_berlaku
+			data = {'data':{'jenis_izin':kelompok_jenis_izin, 'no_izin':no_izin, 'dikeluarkan_oleh': dikeluarkan_oleh, 'tanggal_dikeluarkan': tanggal_dikeluarkan, 'masa_berlaku': masa_berlaku}}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+		except ObjectDoesNotExist:
+			data = {'Terjadi Kesalahan': [{'message': 'Data tidak ditemukan.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data tidak ditemukan.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
