@@ -152,4 +152,10 @@ class ParameterBangunanForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
 	class Meta:
 		model = DetilIMB
-		fields = ('parameter_bangunan',)
+		fields = ('parameter_bangunan','total_biaya')
+
+class IdentifikasiJalanForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = DetilIMB
+		fields = ('klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan')

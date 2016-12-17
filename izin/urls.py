@@ -108,12 +108,12 @@ urlpatterns = [
     url(r'^layanan/pemakaian-kekayaan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_kekayaan, name='cetak_bukti_pendaftaran_kekayaan'),
 
     #cetak IMB Umum
-    url(r'^layanan/imb-umum/formulir/cetak$', views.cetak_imb_umum, name='cetak_imb_umum'),
-    url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_imb_umum, name='cetak_bukti_pendaftaran_imb_umum'),
+    url(r'^layanan/imb-umum/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_umum.cetak_imb_umum, name='cetak_imb_umum'),
+    url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', imb_umum.cetak_bukti_pendaftaran_imb_umum, name='cetak_bukti_pendaftaran_imb_umum'),
 
     #cetak IMB Perumahan
-    url(r'^layanan/imb-perumahan/formulir/cetak/$', views.cetak_imb_perumahan, name='cetak_imb_perumahan'),
-    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran/$', views.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_perumahan.cetak_imb_perumahan, name='cetak_imb_perumahan'),
+    url(r'^layanan/imb-perumahan/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', imb_perumahan.cetak_bukti_pendaftaran_imb_perumahan, name='cetak_bukti_pendaftaran_imb_perumahan'),
 
     #cetak IMB Reklame
     url(r'^layanan/imb-reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_reklame.cetak_imb_reklame, name='cetak_imb_reklame'),
@@ -218,14 +218,23 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax IMB UMUM ++++++++++++++++++++++
 
     url(r'^layanan/imb-umum/formulir$', imb_umum.formulir_imb_umum, name='formulir_imb_umum'),
-    url(r'^layanan/imbumum/save/$', imb_umum.imbumum_save_cookie, name='imbumum_save'),
+    url(r'^layanan/imbumum/save/$', imb_umum.imb_save_cookie, name='imb_save'),
     url(r'^layanan/parameterbangunan/save/$', imb_umum.parameter_bangunan_save_cookie, name='parameter_bangunan_save'),
+    url(r'^imbumum/berkas/save/$', imb_umum.imbumum_upload_berkas_pendukung, name='reklame_imbumum_berkaspendukung'),
+    url(r'^ajax-load-berkas-imb-umum/(?P<id_pengajuan>[0-9]+)$', imb_umum.ajax_load_berkas_imbumum, name='ajax_load_berkas_imbumum'),
+    url(r'^ajax-delete-berkas-imb-umum-upload/(?P<id_berkas>[0-9]+)$', imb_umum.ajax_delete_berkas_imbumum, name='ajax_delete_berkas_imbumum'),
+    url(r'^layanan/imbumum/selesai/$', imb_umum.imb_done , name='imb_done'),
+    url(r'^layanan/imbumum/konfirmasi/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_konfirmasi_imb , name='load_konfirmasi_imb'),
 
      # ++++++++++++++++++++++++ end for ajax IMB UMUM ++++++++++++++++++++++
 
      # ++++++++++++++++++++++++ for ajax IMB PERUMAHAN ++++++++++++++++++++++
 
     url(r'^layanan/imb-perumahan/formulir$', imb_perumahan.formulir_imb_perumahan, name='formulir_imb_perumahan'),
+    url(r'^layanan/identifikasijalan/save/$', imb_perumahan.identifikasi_jalan_save_cookie, name='identifikasi_jalan_save'),
+    url(r'^imbperumahan/berkas/save/$', imb_perumahan.imbperumahan_upload_berkas_pendukung, name='imbperumahan_upload_berkas_pendukung'),
+    url(r'^ajax-load-berkas-imb-perumahan/(?P<id_pengajuan>[0-9]+)$', imb_perumahan.ajax_load_berkas_imbperumahan, name='ajax_load_berkas_imbperumahan'),
+
      # ++++++++++++++++++++++++ end for ajax IMB PERUMAHAN ++++++++++++++++++++++
     url(r'^get-nilai-parameter$', views.get_nilai_parameter, name='get_nilai_parameter')
     ]

@@ -62,9 +62,9 @@
   <ul class="nav nav-tabs nav-justified">
     <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
     <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Data IMB</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Identifikasi Bangunan</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Identifikasi Bangunan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
   </ul>
 
 {% endblock %}
@@ -117,6 +117,8 @@
                 $('#rootwizard').find('.pager .next').hide();
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_konfirmasi_imb(id_pengajuan)
                   $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
                     success: function (response){
@@ -135,11 +137,11 @@
                 }
               else{
               if($current == 4){
-                // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_imb_reklame(id_pengajuan)
-                
+                load_berkas_imb_umum(id_pengajuan)
+               
               }
+              
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
               }
@@ -151,7 +153,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -160,7 +162,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return true;
+            return false;
           }
         });
       });
@@ -208,14 +210,14 @@
               $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
             }
           });
-          
           $('#percent-ktp_paspor').hide()
-          $('#percent-rencana_teknis_kontruksi_bangunan_reklame').hide()
-          $('#percent-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya').hide()
-          $('#percent-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah').hide()
-          $('#percent_berkas_akta_pendirian').hide()
-          $('#percent_berkas_akta_perubahan').hide()
-          $('#percent_berkas_pendukung').hide()
+          $('#percent-surat_kepemilikan_tanah').hide()
+          $('#percent-npwp').hide()
+          $('#percent-cetak_biru_bangunan').hide()
+          $('#percent-surat_persetujuan').hide()
+          $('#percent-surat_persetujuan_rekomendasi_fkub').hide()
+          $('#percent-rekomendasi_instansi_teknis').hide()
+          $('#percent-berkas_pendukung').hide()
           // $.removeCookie('id_pengajuan', { path: '/' });`
           // 
           if ($.cookie('id_pengajuan') === undefined){
@@ -362,13 +364,13 @@
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ != undefined){
           $.ajax({
-             url: '{% url 'imb_reklame_done' %}',
+             url: '{% url 'imb_done' %}',
             success: function(response) {
               respon = $.parseJSON(response)
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/imb-reklame/formulir/cetak/"+id_pengajuan_);
+              window.location.replace("/layanan/imb-umum/formulir/cetak/"+id_pengajuan_);
             }
           });
         }
@@ -403,13 +405,13 @@
               $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
             }
           });
-
           $('#percent-ktp_paspor').hide()
-          $('#percent-rencana_teknis_kontruksi_bangunan_reklame').hide()
-          $('#percent-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya').hide()
-          $('#percent-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah').hide()
-          $('#percent-surat_ketetapan_pajak_daerah_imb').hide()
-          $('#percent-surat_setoran_pajak_daerah_imb').hide()
+          $('#percent-surat_kepemilikan_tanah').hide()
+          $('#percent-npwp').hide()
+          $('#percent-cetak_biru_bangunan').hide()
+          $('#percent-surat_persetujuan').hide()
+          $('#percent-surat_persetujuan_rekomendasi_fkub').hide()
+          $('#percent-rekomendasi_instansi_teknis').hide()
           $('#konfirmasi_legalitas_perubahan').hide();
 
           if ($.cookie('id_pengajuan') === undefined){
@@ -661,30 +663,35 @@
     });
   })  
 
-function totalbiaya(){
-  var kegiatan_bangunan =  $('#id_bobot_kegiatan_pembangunan').val()
-  var fungsi_bangunan =  $('#id_bobot_fungsi_bangunan').val()
-  var kompleksitas_bangunan =  $('#id_bobot_tingkat_kompleksitas').val()
-  var permanensi_bangunan =  $('#id_bobot_tingkat_permanensi').val()
-  var ketinggian_bangunan =  $('#id_bobot_ketinggian_bangunan').val()
-  var lokasi_bangunan =  $('#id_bobot_lokasi_bangunan').val()
-  var kepemilikan_bangunan =  $('#id_bobot_kepemilikan_bangunan').val()
-  var lama_bangunan =  $('#id_bobot_lama_penggunaan_bangunan').val()
-  var indeks = ((kompleksitas_bangunan*0.25)+(permanensi_bangunan*0.20)+(lokasi_bangunan*0.15)+(ketinggian_bangunan*0.10)+(kepemilikan_bangunan*0.05))
-  var indeks_terintegrasi = (fungsi_bangunan*indeks)
-  var luas_bangunan = $('#id_luas_bangunan').val()
-  var biaya = luas_bangunan * indeks_terintegrasi * kegiatan_bangunan * 8000 * lama_bangunan 
-  $('#total').val(biaya.toFixed(2))
-}
-  // $(function() {
-  //   $('#id_imb_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-  //   })
-  // $(function() {
-  //   $('#id_imb_data_reklame').on('keydown', '#id_lebar', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-  //   })
-  // $(function() {
-  //   $('#id_imb_data_reklame').on('keydown', '#id_tinggi', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-  //   })
-    </script>
+  function totalbiaya(){
+    var kegiatan_bangunan =  $('#id_bobot_kegiatan_pembangunan').val()
+    var fungsi_bangunan =  $('#id_bobot_fungsi_bangunan').val()
+    var kompleksitas_bangunan =  $('#id_bobot_tingkat_kompleksitas').val()
+    var permanensi_bangunan =  $('#id_bobot_tingkat_permanensi').val()
+    var ketinggian_bangunan =  $('#id_bobot_ketinggian_bangunan').val()
+    var lokasi_bangunan =  $('#id_bobot_lokasi_bangunan').val()
+    var kepemilikan_bangunan =  $('#id_bobot_kepemilikan_bangunan').val()
+    var lama_bangunan =  $('#id_bobot_lama_penggunaan_bangunan').val()
+    var indeks = ((kompleksitas_bangunan*0.25)+(permanensi_bangunan*0.20)+(lokasi_bangunan*0.15)+(ketinggian_bangunan*0.10)+(kepemilikan_bangunan*0.05))
+    var indeks_terintegrasi = (fungsi_bangunan*indeks)
+    var luas_bangunan = $('#id_luas_bangunan').val()
+    var biaya = luas_bangunan * indeks_terintegrasi * kegiatan_bangunan * 8000 * lama_bangunan 
+    $('#total').val(biaya.toFixed(2))
+    $('#id_total_biaya').val(biaya.toFixed(2))
+  }
+    $(function() {
+      $('#id_imb_data_umum').on('keydown', '#id_luas_bangunan', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+      })
+    $(function() {
+      $('#id_imb_data_umum').on('keydown', '#id_jumlah_bangunan', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+      })
+    $(function() {
+      $('#id_imb_data_umum').on('keydown', '#id_luas_tanah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+      })
+
+
+
+
+      </script>
 
 {% endblock %}

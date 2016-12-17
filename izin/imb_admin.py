@@ -50,7 +50,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB', {'fields': ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
+				('Detail IMB', {'fields': ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -64,7 +64,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB', {'fields': ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
+				('Detail IMB', {'fields': ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
