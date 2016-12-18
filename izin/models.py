@@ -510,13 +510,30 @@ class DetilIMB(PengajuanIzin):
 	luas_bangunan_lama = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True,verbose_name='Luas Bangunan Yang Sudah Ada')
 	no_imb_lama = models.CharField(max_length=255, verbose_name='No. IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
+
 	def __unicode__(self):
-		return "%s" % (self.bangunan)
+		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
+
+class InformasiKekayaanDaerah(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
+	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
+	panjang = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Panjang')
+	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
+
+	def __unicode__(self):
+		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Informasi Kekayaan Daerah'
+		verbose_name_plural = 'Informasi Kekayaan Daerah'
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
