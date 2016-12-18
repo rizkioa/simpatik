@@ -1,5 +1,5 @@
 from django import forms
-from izin.models import DetilTDP, RincianPerusahaan
+from izin.models import DetilTDP, RincianPerusahaan, IzinLain
 from perusahaan.models import Legalitas, DataPimpinan, PemegangSaham
 
 class DataUmumPerusahaanPTForm(forms.ModelForm):
@@ -36,3 +36,8 @@ class PemegangSahamForm(forms.ModelForm):
 	class Meta:
 		model = PemegangSaham
 		fields = ('nama_lengkap', 'alamat', 'telephone', 'kewarganegaraan', 'npwp', 'jumlah_saham_dimiliki', 'jumlah_saham_disetor')
+
+class IzinLainForm(forms.ModelForm):
+	class Meta:
+		model = IzinLain
+		fields = ('kelompok_jenis_izin', 'no_izin', 'dikeluarkan_oleh', 'tanggal_dikeluarkan', 'masa_berlaku')

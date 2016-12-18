@@ -30,13 +30,13 @@ $("#switch_stap3_bagi_unit_disabled").change(function() {
   }
 });
 
-$('.stap5_akta_perubahan').prop('disabled', true).trigger("chosen:updated");
-$("#switch_stap5_akta_perubahan_disabled").change(function() {
+$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+$("#switch_akta_perubahan_disabled").change(function() {
   if ($(this).is(':checked')) {
-    $('.stap5_akta_perubahan').prop('disabled', false).trigger("chosen:updated");
+    $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
   }
   else {
-    $('.stap5_akta_perubahan').prop('disabled', true).trigger("chosen:updated");
+    $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
   }
 });
 

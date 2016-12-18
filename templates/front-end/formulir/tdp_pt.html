@@ -207,6 +207,9 @@
               if ($current === 4){
                 load_data_kegiatan_perusahaan($.cookie('id_pengajuan'))
               }
+              if ($current ===6){
+                load_data_izin_lain($.cookie('id_pengajuan'))
+              }
               if ($current == 7) {
                 load_provinsi_(1, '#id_provinsi-5')
               }
@@ -229,6 +232,7 @@
             }
           });
       });
+
       function next_tab(btn){
         var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
         var frm = $('form[name="step'+ index +'"]');
@@ -565,6 +569,93 @@
       }
 
       $('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
+
+      function save_izin_lain(){
+        var jenis_izin = $('#izin_lain_jenis_izin').val()
+        var no_izin = $('#izin_lain_no_izin').val()
+        var di_keluarkan = $('#izin_lain_dikeluarkan').val()
+        var tanggal = $('#izin_lain_tanggal_keluar').val()
+        var masa_berlaku = $('#izin_lain_masa_berlaku').val()
+        $.ajax({
+          method: 'POST',
+          data: {kelompok_jenis_izin:jenis_izin, no_izin:no_izin, dikeluarkan_oleh:di_keluarkan, tanggal_dikeluarkan:tanggal, masa_berlaku:masa_berlaku, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+          url: __base_url__+'/ajax-save-izin-lain-tdp/',
+          success: function(response){
+            resp = $.parseJSON(response)
+            if (resp.success){
+              // row = '<tr><td>'+resp.data[1].jenis_izin+'</td>'
+              // row += '<td>'+resp.data[2].no_izin+'</td>'
+              // row += '<td>'+resp.data[3].dikeluarkan_oleh+'</td>'
+              // row += '<td>'+resp.data[4].tanggal_dikeluarkan+'</td>'
+              // row += '<td>'+resp.data[5].masa_berlaku+'</td>'
+              // row += '<td>'+resp.data[0].id+'</td>'
+              // row += '</tr>'
+              // $('#table_izin_lain > tbody').prepend(row);
+              load_data_izin_lain($.cookie('id_pengajuan'))
+              toastr["success"](resp.pesan)
+              $('#legalitas_lain_modal').modal('hide')
+            }
+            else{
+              var a = Object.keys(respon);
+              for (var i = 0; i < a.length; i++){
+                var field = a[i].replace("_", " ");
+                toastr["error"](field+", "+respon[a[i]][0]['message'])
+                $("#"+a[i]+"").addClass("has-error");
+              }
+            }
+          }
+        });
+      }
+
+      function load_data_izin_lain(pengajuan_id){
+        if (pengajuan_id !== ""){
+          $('#table_izin_lain > tbody').mLoading();
+          $.ajax({
+            type: 'GET',
+            url: __base_url__+'/ajax-load-data-izin-lain-tdp/'+pengajuan_id,
+            success: function (data) {
+              // respon_ = $.parseJSON(results)
+              a = data.length
+              if (data){
+                for (var i = 0; i < a; i++){
+                  id = data[i].id
+                  id_jenis_izin = data[i].id_jenis_izin
+                  nama_jenis_izin = data[i].nama_jenis_izin
+                  no_izin = data[i].no_izin
+                  dikeluarkan_oleh = data[i].dikeluarkan_oleh
+                  tanggal_dikeluarkan = data[i].tanggal_dikeluarkan
+                  masa_berlaku = data[i].masa_berlaku
+                  row = '<tr><td>'+nama_jenis_izin+'</td>'
+                  row += '<td>'+no_izin+'</td>'
+                  row += '<td>'+dikeluarkan_oleh+'</td>'
+                  row += '<td>'+tanggal_dikeluarkan+'</td>'
+                  row += '<td>'+masa_berlaku+'</td>'
+                  row += '<td><button onclick="edit_izin_lain($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 edit_izin_lain" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 delete_izin_lain" value="'+id+'" type="button"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+                  row += '</tr>'
+                  $('#table_izin_lain > tbody').prepend(row);
+                }
+              }
+            }
+          });
+          $('#table_izin_lain > tbody').mLoading('hide');
+        }
+      }
+
+      function edit_izin_lain(val_){
+        $('#legalitas_lain_modal').modal('show')
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-edit-izin-lain-tdp/'+val_,
+          success: function (data) {
+            resp = $.parseJSON(data)
+            $('#izin_lain_jenis_izin').val(resp.data.jenis_izin).prop('disabled', false).trigger("chosen:updated");
+            $('#izin_lain_no_izin').val(resp.data.no_izin);
+            $('#izin_lain_dikeluarkan').val(resp.data.dikeluarkan_oleh);
+            $('#izin_lain_tanggal_keluar').val(resp.data.tanggal_dikeluarkan);
+            $('#izin_lain_masa_berlaku').val(resp.data.masa_berlaku);
+          }
+        });
+      }
   </script>
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}
