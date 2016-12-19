@@ -32,6 +32,26 @@ KLASIFIKASI_JALAN = (
 	('Strategis', 'Strategis'),
 )
 
+JENIS_LOKASI_USAHA = (
+	('Jalan Nasional','Jalan Nasional'),
+	('Jalan Provinsi','Jalan Provinsi'),
+	('Jalan Kabupaten','Jalan Kabupaten'),
+	('Jalan Strategis','Jalan Strategis'),
+	('Jalan Desa','Jalan Desa'),
+)
+
+JENIS_BANGUNAN = (
+	('Permanen','Permanen'),
+	('Semi Permanen','Semi Permanen'),
+	('Darurat','Darurat'),
+)
+
+JENIS_GANGGUAN = (
+	('Padat','Padat'),
+	('Cair','Cair'),
+	('Kebisingan','Kebisingan'),
+	('Getaran','Getaran'),
+)
 RUMIJA = (
 	(30, 30),
 	(25, 25),

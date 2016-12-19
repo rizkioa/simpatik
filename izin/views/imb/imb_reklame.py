@@ -23,6 +23,7 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, DetilIMBPapanReklame,Pemohon
+from izin.utils import KLASIFIKASI_JALAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,PengajuanIMBReklameForm,UploadBerkasKTPForm
 from accounts.models import NomorIdentitasPengguna
@@ -32,6 +33,7 @@ def formulir_imb_reklame(request, extra_context={}):
     negara = Negara.objects.all()
     kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 
+    extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
@@ -135,6 +137,7 @@ def reklame_imbreklame_save_cookie(request):
             pengajuan_ = DetilIMBPapanReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
             IMBReklame = PengajuanIMBReklameForm(request.POST, instance=pengajuan_)
             if IMBReklame.is_valid():
+                pengajuan_.klasifikasi_jalan  = request.POST.get('klasifikasi_jalan')
                 pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
                 pengajuan_.save()
                 letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
 
@@ -32,8 +32,9 @@ urlpatterns = [
     url(r'^cek-izin-terdaftar/(?P<id_izin_>[0-9./]+)$', views.cek_izin_terdaftar, name='cek_izin_terdaftar'),
 
     url(r'^layanan/siup$', layanan_view.layanan_siup, name='layanan_siup'),
-    url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),
-    url(r'^layanan/ho-daftar-ulang$', layanan_view.layanan_ho_daftar_ulang, name='layanan_ho_daftar_ulang'),
+    url(r'^layanan/ho$', layanan_view.layanan_ho, name='layanan_ho'),
+    # url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),
+    # url(r'^layanan/ho-daftar-ulang$', layanan_view.layanan_ho_daftar_ulang, name='layanan_ho_daftar_ulang'),
     url(r'^layanan/sipa-sumur-bor$', layanan_view.layanan_sipa_sumur_bor, name='layanan_sipa_sumur_bor'),
     url(r'^layanan/sipa-sumur-pasak$', layanan_view.layanan_sipa_sumur_pasak, name='layanan_sipa_sumur_pasak'),
     url(r'^layanan/izin-pertambangan$', layanan_view.layanan_pertambangan, name='layanan_pertambangan'),
@@ -66,8 +67,7 @@ urlpatterns = [
     url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),
-    url(r'^layanan/ho-pemohonan-baru/formulir$', views.formulir_ho_pemohonan_baru, name='formulir_ho_pemohonan_baru'),
-    url(r'^layanan/ho-daftar-ulang/formulir$', views.formulir_ho_daftar_ulang, name='formulir_ho_daftar_ulang'),
+    # url(r'^layanan/ho-daftar-ulang/formulir$', views.formulir_ho_daftar_ulang, name='formulir_ho_daftar_ulang'),
     url(r'^layanan/penggilingan-padi-&-huller/formulir$', views.formulir_huller, name='formulir_huller'),
     url(r'^layanan/reklame/formulir$', views.formulir_reklame, name='formulir_reklame'),
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
@@ -241,7 +241,11 @@ urlpatterns = [
     url(r'^pemakaian-kekayaan-daerah/berkas/save/$', informasi_kekayaan_daerah.informasi_kekayaan_daerah_upload_berkas_pendukung, name='informasi_kekayaan_daerah_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-pemakaian-kekayaan-daerah/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.ajax_load_berkas_informasi_kekayaan_daerah, name='ajax_load_berkas_informasi_kekayaan_daerah'),
     url(r'^layanan/pemakaian-kekayaan-daerah/konfirmasi/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_konfirmasi_informasi_kekayaan_daerah , name='load_konfirmasi_informasi_kekayaan_daerah'),
-
-
     # ++++++++++++++++++++++++ end for ajax Informasi Kekayaan Daerah  ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax Detil HO ++++++++++++++++++++++
+    url(r'^layanan/ho/formulir$', detilho_view.formulir_ho, name='formulir_ho'),
+    url(r'^layanan/ho/save/$', detilho_view.detilho_save_cookie, name='detilho_save'),
+    
+    # ++++++++++++++++++++++++ end for ajax Detil HO  ++++++++++++++++++++++
     ]
