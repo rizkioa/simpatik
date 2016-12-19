@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -159,3 +159,8 @@ class IdentifikasiJalanForm(forms.ModelForm):
 	class Meta:
 		model = DetilIMB
 		fields = ('klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan')
+
+class InformasiKekayaanDaerahForm(forms.ModelForm):
+	class Meta:
+		model = InformasiKekayaanDaerah
+		fields = ('lokasi','desa','lebar','panjang','penggunaan')

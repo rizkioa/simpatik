@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
 
@@ -70,7 +70,6 @@ urlpatterns = [
     url(r'^layanan/ho-daftar-ulang/formulir$', views.formulir_ho_daftar_ulang, name='formulir_ho_daftar_ulang'),
     url(r'^layanan/penggilingan-padi-&-huller/formulir$', views.formulir_huller, name='formulir_huller'),
     url(r'^layanan/reklame/formulir$', views.formulir_reklame, name='formulir_reklame'),
-    url(r'^layanan/pemakaian-kekayaan/formulir$', views.formulir_kekayaan, name='formulir_kekayaan'),
     url(r'^layanan/tdp-pt/formulir$', views.formulir_tdp_pt, name='formulir_tdp_pt'),
     url(r'^layanan/imb-reklame/formulir$', imb_reklame.formulir_imb_reklame, name='formulir_imb_reklame'),
     url(r'^layanan/tdp-cv/formulir$', views.formulir_tdp_cv, name='formulir_tdp_cv'),
@@ -104,8 +103,8 @@ urlpatterns = [
     url(r'^layanan/reklame/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran_reklame, name='cetak_bukti_pendaftaran_reklame'),
     
     #cetak Pemakaian Kekayaan
-    url(r'^layanan/pemakaian-kekayaan/formulir/cetak$', views.cetak_kekayaan, name='cetak_kekayaan'),
-    url(r'^layanan/pemakaian-kekayaan/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_kekayaan, name='cetak_bukti_pendaftaran_kekayaan'),
+    url(r'^layanan/pemakaian-kekayaan/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', informasi_kekayaan_daerah.cetak_informasi_kekayaan_daerah, name='cetak_informasi_kekayaan_daerah'),
+    url(r'^layanan/pemakaian-kekayaan/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', informasi_kekayaan_daerah.cetak_bukti_pendaftaran_informasi_kekayaan_daerah, name='cetak_bukti_pendaftaran_informasi_kekayaan_daerah'),
 
     #cetak IMB Umum
     url(r'^layanan/imb-umum/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_umum.cetak_imb_umum, name='cetak_imb_umum'),
@@ -225,16 +224,24 @@ urlpatterns = [
     url(r'^ajax-delete-berkas-imb-umum-upload/(?P<id_berkas>[0-9]+)$', imb_umum.ajax_delete_berkas_imbumum, name='ajax_delete_berkas_imbumum'),
     url(r'^layanan/imbumum/selesai/$', imb_umum.imb_done , name='imb_done'),
     url(r'^layanan/imbumum/konfirmasi/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_konfirmasi_imb , name='load_konfirmasi_imb'),
-
      # ++++++++++++++++++++++++ end for ajax IMB UMUM ++++++++++++++++++++++
 
      # ++++++++++++++++++++++++ for ajax IMB PERUMAHAN ++++++++++++++++++++++
-
     url(r'^layanan/imb-perumahan/formulir$', imb_perumahan.formulir_imb_perumahan, name='formulir_imb_perumahan'),
     url(r'^layanan/identifikasijalan/save/$', imb_perumahan.identifikasi_jalan_save_cookie, name='identifikasi_jalan_save'),
     url(r'^imbperumahan/berkas/save/$', imb_perumahan.imbperumahan_upload_berkas_pendukung, name='imbperumahan_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-imb-perumahan/(?P<id_pengajuan>[0-9]+)$', imb_perumahan.ajax_load_berkas_imbperumahan, name='ajax_load_berkas_imbperumahan'),
-
      # ++++++++++++++++++++++++ end for ajax IMB PERUMAHAN ++++++++++++++++++++++
-    url(r'^get-nilai-parameter$', views.get_nilai_parameter, name='get_nilai_parameter')
+    url(r'^get-nilai-parameter$', views.get_nilai_parameter, name='get_nilai_parameter'),
+    
+    # ++++++++++++++++++++++++ for ajax Informasi Kekayaan Daerah ++++++++++++++++++++++
+    url(r'^layanan/pemakaian-kekayaan/formulir$', informasi_kekayaan_daerah.formulir_kekayaan, name='formulir_kekayaan'),
+    url(r'^layanan/pemakaian-kekayaan-daerah/save/$', informasi_kekayaan_daerah.informasi_kekayaan_daerah_save_cookie, name='informasi_kekayaan_daerah_save'),
+    url(r'^layanan/pemakaian-kekayaan-daerah/selesai/$', informasi_kekayaan_daerah.kekayaan_done , name='kekayaan_done'),
+    url(r'^pemakaian-kekayaan-daerah/berkas/save/$', informasi_kekayaan_daerah.informasi_kekayaan_daerah_upload_berkas_pendukung, name='informasi_kekayaan_daerah_upload_berkas_pendukung'),
+    url(r'^ajax-load-berkas-pemakaian-kekayaan-daerah/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.ajax_load_berkas_informasi_kekayaan_daerah, name='ajax_load_berkas_informasi_kekayaan_daerah'),
+    url(r'^layanan/pemakaian-kekayaan-daerah/konfirmasi/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_konfirmasi_informasi_kekayaan_daerah , name='load_konfirmasi_informasi_kekayaan_daerah'),
+
+
+    # ++++++++++++++++++++++++ end for ajax Informasi Kekayaan Daerah  ++++++++++++++++++++++
     ]
