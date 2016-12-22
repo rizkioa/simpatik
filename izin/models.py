@@ -571,6 +571,32 @@ class DetilHO(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'Detil HO'
 		verbose_name_plural = 'Detil HO'
+
+class InformasiTanah(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasitanah_perusahaan', blank=True, null=True)
+	no_surat_kuasa =  models.CharField(max_length=30, verbose_name='No. Surat Kuasa', null=True, blank=True)
+	tanggal_surat_kuasa = models.DateField(verbose_name='Tanggal Surat Kuasa', null=True, blank=True)
+	alamat = models.CharField(max_length=100,null=True, blank=True, verbose_name='Alamat')
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	luas = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas')
+	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20, null=True, blank=True)
+	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
+	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
+	atas_nama_sertifikat_petak =  models.CharField(max_length=30, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
+	no_persil =  models.CharField(max_length=30, verbose_name='No. Persil', null=True, blank=True)
+	klas_persil= models.CharField(max_length=30, verbose_name='Klas Persil', null=True, blank=True)
+	atas_nama_persil=  models.CharField(max_length=30, verbose_name='Atas Nama Persil', null=True, blank=True)
+	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
+	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
+
+	def __unicode__(self):
+		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Informasi Tanah'
+		verbose_name_plural = 'Informasi Tanah'
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 

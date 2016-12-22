@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
 
@@ -33,6 +33,8 @@ urlpatterns = [
 
     url(r'^layanan/siup$', layanan_view.layanan_siup, name='layanan_siup'),
     url(r'^layanan/ho$', layanan_view.layanan_ho, name='layanan_ho'),
+    url(r'^layanan/izin-lokasi$', layanan_view.layanan_izin_lokasi, name='layanan_izin_lokasi'),
+    url(r'^layanan/ippt-rumah$', layanan_view.layanan_ippt_rumah, name='layanan_ippt_rumah'),
     # url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),
     # url(r'^layanan/ho-daftar-ulang$', layanan_view.layanan_ho_daftar_ulang, name='layanan_ho_daftar_ulang'),
     url(r'^layanan/sipa-sumur-bor$', layanan_view.layanan_sipa_sumur_bor, name='layanan_sipa_sumur_bor'),
@@ -86,13 +88,19 @@ urlpatterns = [
     # url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
     url(r'^layanan/iujk/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', iujk_views.cetak_bukti_pendaftaran_iujk, name='cetak_bukti_pendaftaran_iujk'),
 
-    #cetak HO Baru
-    url(r'^layanan/ho-pemohonan-baru/formulir/cetak$', views.cetak_ho_perpanjang, name='cetak_ho_perpanjang'),
-    url(r'^layanan/ho-pemohonan-baru/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_baru, name='cetak_bukti_pendaftaran_ho_baru'),
-    
+    #cetak HO
+    url(r'^layanan/ho/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', detilho_view.cetak_gangguan_ho, name='cetak_ho_perpanjang'),
+    url(r'^layanan/ho/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', detilho_view.cetak_bukti_pendaftaran_gangguan_ho, name='cetak_bukti_pendaftaran_ho_baru'),
+
+    #cetak Izin Lokasi
+    url(r'^layanan/izin-lokasi/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_izin_lokasi, name='cetak_izin_lokasi'),
+    url(r'^layanan/izin-lokasi/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_bukti_pendaftaran_izin_lokasi, name='cetak_bukti_pendaftaran_izin_lokasi'),
+
+
+
     #cetak HO Perpanjang
-    url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
-    url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
+    # url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
+    # url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
     
     #cetak Penggilingan padi
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak$', views.cetak_huller, name='cetak_huller'),
@@ -246,6 +254,23 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax Detil HO ++++++++++++++++++++++
     url(r'^layanan/ho/formulir$', detilho_view.formulir_ho, name='formulir_ho'),
     url(r'^layanan/ho/save/$', detilho_view.detilho_save_cookie, name='detilho_save'),
-    
+    url(r'^layanan/ho/konfirmasi/(?P<id_pengajuan>[0-9]+)$', detilho_view.load_konfirmasi_detilho , name='load_konfirmasi_detilho'),
+    url(r'^ho/berkas/save/$', detilho_view.detilho_upload_berkas_pendukung, name='detilho_upload_berkas_pendukung'),
+    url(r'^ajax-load-berkas-ho/(?P<id_pengajuan>[0-9]+)$', detilho_view.ajax_load_berkas_detilho, name='ajax_load_berkas_detilho'),
+    url(r'^layanan/ho/selesai/$', detilho_view.detilho_done , name='detilho_done'),
     # ++++++++++++++++++++++++ end for ajax Detil HO  ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax Izin Lokasi ++++++++++++++++++++++
+    url(r'^layanan/izin-lokasi/formulir$', izin_lokasi.formulir_izin_lokasi, name='formulir_izin_lokasi'),
+    url(r'^layanan/izin-lokasi/save/$', izin_lokasi.informasitanah_save_cookie, name='informasitanah_save'),
+    url(r'^izin-lokasi/berkas/save/$', izin_lokasi.izinlokasi_upload_berkas_pendukung, name='izinlokasi_upload_berkas_pendukung'),
+    url(r'^ajax-load-berkas-izin-lokasi/(?P<id_pengajuan>[0-9]+)$', izin_lokasi.ajax_load_berkas_izinlokasi, name='ajax_load_berkas_izinlokasi'),
+    url(r'^layanan/izin-lokasi/konfirmasi/(?P<id_pengajuan>[0-9]+)$', izin_lokasi.load_konfirmasi_izin_lokasi , name='load_konfirmasi_izin_lokasi'),
+    url(r'^layanan/izin-lokasi/selesai/$', izin_lokasi.izinlokasi_done , name='izinlokasi_done'),
+    # ++++++++++++++++++++++++ end for ajax Izin Lokasi   ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
+    url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
+    # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
+
     ]

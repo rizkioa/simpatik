@@ -25,7 +25,7 @@
       .onoffswitch.labeled .onoffswitch-switch {
         right: 34px;
       }
-  </style>
+ </style>
   <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
   <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
@@ -34,10 +34,9 @@
   <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
 {% endblock %}
 
-
 {% block pageheader %}
-  <h2>Surat Izin Pemakaian Kekayaan
-      <span>Berikut adalah info pendaftaran perizinan Pemakaian Kekayaan Kabupaten Kediri.</span>
+  <h2>Surat Izin Perubahan Penggunaan Tanah (IPPT)
+      <span>Berikut adalah info pendaftaran perizinan Izin Perubahan Penggunaan Tanah (IPPT) Kabupaten Kediri.</span>
     </h2>
     <div class="page-bar">
       <ul class="page-breadcrumb">
@@ -48,10 +47,10 @@
           <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
         </li>
         <li>
-          <a href="#">Pemakaian Kekayaan</a>
+          <a href="#">Izin Perubahan Penggunaan Tanah (IPPT) - Rumah</a>
         </li>
         <li>
-          <a href="#">Formulir Pemakaian Kekayaan</a>
+          <a href="#">Formulir IPPT - Rumah</a>
         </li>
       </ul>
     </div>
@@ -61,7 +60,7 @@
   <ul class="nav nav-tabs nav-justified">
     <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
     <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Informasi Kekayaan Daerah</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Informasi Tanah</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
     <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
     <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
   </ul>
@@ -75,24 +74,23 @@
 
   <div class="tab-pane" id="tab2">
     <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_kekayaan/identitas_perusahaan.html' %}
+    {% include 'front-end/include/formulir_izin_lokasi/identitas_perusahaan.html' %}
   </div>
 
   <div class="tab-pane" id="tab3">
-    <!-- Informasi Kekayaan Daerah -->
-    {% include 'front-end/include/formulir_kekayaan/info_kekayaan_daerah.html' %}
+    <!-- Data Kegiatan Gangguan -->
+    {% include 'front-end/include/formulir_izin_lokasi/informasi_tanah.html' %}
   </div>
 
   <div class="tab-pane" id="tab4">
-    <!-- Dokumen upload -->
-    {% include 'front-end/include/formulir_kekayaan/upload_dokumen.html' %}
+    <!-- Upload Dokumen -->
+    {% include 'front-end/include/formulir_izin_lokasi/upload_dokumen.html' %}
   </div>
 
   <div class="tab-pane" id="tab5">
-    <!-- konfirmasi -->
-    {% include 'front-end/include/formulir_kekayaan/konfirmasi.html' %}
+    <!-- Konfirmasi -->
+    {% include 'front-end/include/formulir_izin_lokasi/konfirmasi.html' %}
   </div>
-
 {% endblock %}
 
 {% block extratools %}
@@ -120,7 +118,7 @@
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_konfirmasi_informasi_kekayaan(id_pengajuan)
+                load_konfirmasi_izin_lokasi(id_pengajuan)
                 if (id_pengajuan > 0){
                   $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
@@ -142,7 +140,7 @@
               if($current == 4){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_informasi_kekayaan_daerah(id_pengajuan)
+                load_berkas_izin_lokasi(id_pengajuan)
                 
               }
                 $('#rootwizard').find('.pager .next').show();
@@ -318,7 +316,7 @@
                     // console.log(respon[a[i]]);
                     // var field = a[i].replace("_", " ").capitalize();
                     // toastr["error"](field+", "+respon[a[i]][0]['message'])
-                    // $("#"+a[i]+"").addClass("has-error");
+                    $("#"+a[i]+"").addClass("has-error");
                     // console.log($("#"+a[i]+"").addClass("parsley-error"));
                   }
                   // $( ".tab-content #tab"+index ).unmask()
@@ -367,13 +365,13 @@
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ != undefined){
           $.ajax({
-            url: '{% url 'kekayaan_done' %}',
+            url: '{% url 'izinlokasi_done' %}',
             success: function(response) {
               respon = $.parseJSON(response)
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/pemakaian-kekayaan/formulir/cetak/"+id_pengajuan_);
+              window.location.replace("/layanan/izin-lokasi/formulir/cetak/"+id_pengajuan_);
             }
           });
         }
@@ -409,9 +407,12 @@
             }
           });
 
-          $('#percent-upload_gambar_ktp').hide()
-          $('#percent-upload_gambar_surat_lunas_retribusi').hide()
-          $('#percent-upload_gambar_rekomendasi_dinas_terkait').hide()
+          $('#percent-bukti_kepemilikan_tanah').hide()
+          $('#percent-sketsa_lokasi_tanah').hide()
+          $('#percent-gambar_rencana_penggunaan_tanah').hide()
+          $('#percent-sertifikat_tanah').hide()
+          $('#percent-akta_jual_beli').hide()
+          $('#percent-rekomendasi_bupati').hide()
           $('#konfirmasi_legalitas_perubahan').hide();
 
           if ($.cookie('id_pengajuan') === undefined){

@@ -17,6 +17,7 @@ from izin.controllers.imb_reklame import formulir_imb_reklame
 from izin.controllers.imb_umum import formulir_imb_umum
 from izin.controllers.imb_perumahan import formulir_imb_perumahan
 from izin.controllers.tdp import formulir_tdp_pt
+from izin.controllers.izin_gangguan import formulir_izin_gangguan
 from izin.controllers.penggunaan_kekayaan_daerah import formulir_informasi_kekayaan_daerah
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
@@ -252,6 +253,10 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_imb_perumahan', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.06.01/":
 			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
+		elif jenis_izin_ == "503.02/":
+			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})	
+		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.id == 38:
+			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
 				""" % link_ )
@@ -276,6 +281,10 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_imb_umum', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.06.01/":
 			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
+		elif jenis_izin_ == "503.02/":
+			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.id == 38:
+			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -942,6 +951,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/imb-perumahan/$', self.admin_site.admin_view(formulir_imb_perumahan), name='izin_proses_imb_perumahan'),
 			url(r'^wizard/add/proses/tdp-pt/$', self.admin_site.admin_view(formulir_tdp_pt), name='izin_proses_tdp_pt'),
 			url(r'^wizard/add/proses/pemakaian-kekayaan-daerah/$', self.admin_site.admin_view(formulir_informasi_kekayaan_daerah), name='izin_proses_pemakaian_kekayaan_daerah'),
+			url(r'^wizard/add/proses/izin-gangguan/$', self.admin_site.admin_view(formulir_izin_gangguan), name='izin_proses_gangguan'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),

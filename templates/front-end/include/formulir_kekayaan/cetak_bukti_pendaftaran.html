@@ -114,7 +114,7 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : ISKD/1001/0802/2016<br>
+                                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
                                 <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
                             </td>
                         </tr>
@@ -144,7 +144,7 @@
                     <tr>
                         <td width="25%">Jenis Pengajuan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Baru</td>
+                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
                     </tr>
                 </table>
                 <h5><u>IDENTITAS PEMOHON</u></h5>
@@ -152,7 +152,7 @@
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
+                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>

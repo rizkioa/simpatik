@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilHO, Syarat, SKIzin, Riwayat
+from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,8 +10,8 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
 
-class DetilHOAdmin(admin.ModelAdmin):
-	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
+class InformasiTanahAdmin(admin.ModelAdmin):
+	list_display = ('id','get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
 	search_fields = ('no_izin', 'pemohon__nama_lengkap')
 
 	def get_kelompok_jenis_izin(self, obj):
@@ -24,10 +24,10 @@ class DetilHOAdmin(admin.ModelAdmin):
 			""" % ("#", obj.no_pengajuan ))
 		split_ = obj.no_pengajuan.split('/')
 		# print split_
-		if split_[0] == 'HO':
+		if split_[0] == 'ITNH':
 			no_pengajuan = mark_safe("""
 				<a href="%s" target="_blank"> %s </a>
-				""" % (reverse('admin:izin_detilho_change', args=(obj.id,)), obj.no_pengajuan ))
+				""" % (reverse('admin:izin_informasitanah_change', args=(obj.id,)), obj.no_pengajuan ))
 		return no_pengajuan
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
@@ -44,12 +44,12 @@ class DetilHOAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon','perusahaan')
+					'fields': ('pemohon','perusahaan',)
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail HO', {'fields': ('perkiraan_modal','tujuan_gangguan','alamat','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan') }),
+				('Detail Informasi Tanah', {'fields': ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -58,21 +58,21 @@ class DetilHOAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon','perusahaan')
+					'fields': ('pemohon',)
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail HO', {'fields': ('perkiraan_modal','tujuan_gangguan','alamat','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan') }),
+				('Detail Informasi Tanah', {'fields': ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
 
-	def view_pengajuan_izin_gangguan(self, request, id_pengajuan_izin_):
+	def view_pengajuan_izin_lokasi(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilHO.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -114,7 +114,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 
 			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
 			# print lama_pemasangan
-			banyak = len(DetilHO.objects.all())
+			banyak = len(InformasiTanah.objects.all())
 			extra_context.update({'banyak': banyak})
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
 			extra_context.update({'syarat': syarat_})
@@ -131,16 +131,16 @@ class DetilHOAdmin(admin.ModelAdmin):
 					extra_context.update({'riwayat': riwayat_ })
 			except ObjectDoesNotExist:
 				pass
-		template = loader.get_template("admin/izin/pengajuanizin/view_izin_gangguan.html")
+		template = loader.get_template("admin/izin/pengajuanizin/view_izin_lokasi.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_gangguan(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_lokasi(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
-			pengajuan_ = DetilHO.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -190,12 +190,12 @@ class DetilHOAdmin(admin.ModelAdmin):
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
-		urls = super(DetilHOAdmin, self).get_urls()
+		urls = super(InformasiTanahAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^cetak-sk-izin-gangguan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_gangguan), name='cetak_sk_izin_gangguan'),
-			url(r'^view-pengajuan-izin-gangguan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_gangguan), name='view_pengajuan_izin_gangguan'),
+			url(r'^cetak-sk-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
+			url(r'^view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_lokasi), name='view_pengajuan_izin_lokasi'),
 
 			)
 		return my_urls + urls
 
-admin.site.register(DetilHO, DetilHOAdmin)
+admin.site.register(InformasiTanah, InformasiTanahAdmin)

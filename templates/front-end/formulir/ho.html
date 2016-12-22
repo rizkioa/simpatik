@@ -100,7 +100,7 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
-  <script src="{% static 'scripts/js/formAjax/form_informasi_kekayaan.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
@@ -118,7 +118,7 @@
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_konfirmasi_informasi_kekayaan(id_pengajuan)
+                load_konfirmasi_detilho(id_pengajuan)
                 if (id_pengajuan > 0){
                   $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
@@ -140,7 +140,7 @@
               if($current == 4){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_informasi_kekayaan_daerah(id_pengajuan)
+                load_berkas_detilho(id_pengajuan)
                 
               }
                 $('#rootwizard').find('.pager .next').show();
@@ -154,7 +154,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -163,7 +163,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return true;
+            return false;
           }
         });
       });
@@ -315,7 +315,7 @@
                     // console.log(a[i]);
                     // console.log(respon[a[i]]);
                     // var field = a[i].replace("_", " ").capitalize();
-                    toastr["error"](field+", "+respon[a[i]][0]['message'])
+                    // toastr["error"](field+", "+respon[a[i]][0]['message'])
                     $("#"+a[i]+"").addClass("has-error");
                     // console.log($("#"+a[i]+"").addClass("parsley-error"));
                   }
@@ -365,13 +365,13 @@
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ != undefined){
           $.ajax({
-            url: '{% url 'kekayaan_done' %}',
+            url: '{% url 'detilho_done' %}',
             success: function(response) {
               respon = $.parseJSON(response)
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/pemakaian-kekayaan/formulir/cetak/"+id_pengajuan_);
+              window.location.replace("/layanan/ho/formulir/cetak/"+id_pengajuan_);
             }
           });
         }
@@ -407,9 +407,13 @@
             }
           });
 
+          $('#percent-file_izin_mendirikan_bangunan').hide()
+          $('#percent-kepemilikan_tanah').hide()
+          $('#percent-cetak_biru').hide()
           $('#percent-upload_gambar_ktp').hide()
-          $('#percent-upload_gambar_surat_lunas_retribusi').hide()
-          $('#percent-upload_gambar_rekomendasi_dinas_terkait').hide()
+          $('#percent-file_npwp_pribadi').hide()
+          $('#percent-file_npwp_perusahaan').hide()
+          $('#percent-file_surat_kuasa').hide()
           $('#konfirmasi_legalitas_perubahan').hide();
 
           if ($.cookie('id_pengajuan') === undefined){

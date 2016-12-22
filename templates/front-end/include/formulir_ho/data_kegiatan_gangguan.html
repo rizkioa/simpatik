@@ -158,6 +158,18 @@
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Jenis Gangguan/Limbah</label>
       <div class="col-sm-5">
+        <select id="id_jenis_gangguan" name="jenis_gangguan" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
+          <option value>-- Pilih jenis bangunan --</option>
+          {% for jb in jenis_gangguan_list %}
+          <option value="{{ jb.0 }}">{{ jb.1 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis Lokasi Usaha</label>
+      <div class="col-sm-5">
         <select id="id_jenis_lokasi_usaha" name="jenis_lokasi_usaha" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
           <option value>-- Pilih jenis limbah/gangguan --</option>
           {% for jgl in jenis_lokasi_usaha_list %}
@@ -168,24 +180,12 @@
     </div>
 
     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Jenis Lokasi Usaha</label>
+      <label for="input01" class="col-sm-2 control-label">Jenis Bangunan</label>
       <div class="col-sm-5">
         <select id="id_jenis_bangunan" name="jenis_bangunan" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
           <option value>-- Pilih jenis lokasi usaha --</option>
           {% for jlu in jenis_bangunan_list %}
           <option value="{{ jlu.0 }}">{{ jlu.1 }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Jenis Bangunan</label>
-      <div class="col-sm-5">
-        <select id="id_jenis_gangguan" name="jenis_gangguan" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
-          <option value>-- Pilih jenis bangunan --</option>
-          {% for jb in jenis_gangguan_list %}
-          <option value="{{ jb.0 }}">{{ jb.1 }}</option>
           {% endfor %}
         </select>
       </div>

@@ -573,13 +573,6 @@ def cetak_bukti_pendaftaran_reklame(request, id_pengajuan_):
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
 
-def cetak_ho_perpanjang(request, extra_context={}):
-    return render(request, "front-end/include/formulir_ho_baru/cetak_perpanjang.html", extra_context)
-
-def cetak_bukti_pendaftaran_ho_perpanjang(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HO")
-    extra_context.update({'syarat': syarat})
-    return render(request, "front-end/include/formulir_ho_baru/cetak_bukti_perpanjangan.html", extra_context)
 
 def cetak_huller(request, extra_context={}):
     return render(request, "front-end/include/formulir_huller/cetak.html", extra_context)

@@ -22,19 +22,15 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, DetilHO,Pemohon
-from izin.utils import JENIS_LOKASI_USAHA,JENIS_BANGUNAN,JENIS_GANGGUAN
+from izin.models import PengajuanIzin, InformasiTanah,Pemohon
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.izin_forms import UploadBerkasPendukungForm,DetilHOForm
+from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm
 
-def formulir_ho(request, extra_context={}):
+def formulir_izin_lokasi(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
     negara = Negara.objects.all()
     kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 
-    extra_context.update({'jenis_lokasi_usaha_list': JENIS_LOKASI_USAHA})
-    extra_context.update({'jenis_bangunan_list': JENIS_BANGUNAN})
-    extra_context.update({'jenis_gangguan_list': JENIS_GANGGUAN})
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
@@ -43,14 +39,14 @@ def formulir_ho(request, extra_context={}):
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
     else:
         return HttpResponseRedirect(reverse('layanan'))
-    return render(request, "front-end/formulir/ho.html", extra_context)
+    return render(request, "front-end/formulir/izin_lokasi.html", extra_context)
 
-def detilho_save_cookie(request):
+def informasitanah_save_cookie(request):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
-            pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-            detilHO = DetilHOForm(request.POST, instance=pengajuan_)
-            if detilHO.is_valid():
+            pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+            informasitanah = InformasiTanahForm(request.POST, instance=pengajuan_)
+            if informasitanah.is_valid():
                 pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
                 pengajuan_.save()
                 data = {'success': True,
@@ -59,7 +55,7 @@ def detilho_save_cookie(request):
                 data = json.dumps(data)
                 response = HttpResponse(json.dumps(data))
             else:
-                data = detilHO.errors.as_json()
+                data = informasitanah.errors.as_json()
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
@@ -69,10 +65,10 @@ def detilho_save_cookie(request):
     response = HttpResponse(data)
     return response
 
-def detilho_done(request):
+def izinlokasi_done(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
-      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
       pengajuan_.status = 6
       pengajuan_.save()
       data = {'success': True, 'pesan': 'Proses Selesai.' }
@@ -95,66 +91,7 @@ def detilho_done(request):
     response = HttpResponse(data)
   return response
 
-def load_konfirmasi_detilho(request,id_pengajuan):
-  if 'id_pengajuan' in request.COOKIES.keys():
-    if request.COOKIES['id_pengajuan'] != '':
-      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      perkiraan_modal = str(pengajuan_.perkiraan_modal)
-      tujuan_gangguan = pengajuan_.tujuan_gangguan
-      alamat = pengajuan_.alamat
-      desa = str(pengajuan_.desa)
-      kecamatan = str(pengajuan_.desa.kecamatan)
-      kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
-      bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
-      proses_produksi = pengajuan_.proses_produksi
-      jenis_produksi = pengajuan_.jenis_produksi
-      kapasitas_produksi = pengajuan_.kapasitas_produksi
-      jumlah_tenaga_kerja = str(pengajuan_.jumlah_tenaga_kerja)
-      jumlah_mesin = str(pengajuan_.jumlah_mesin)
-      merk_mesin = pengajuan_.merk_mesin
-      daya = pengajuan_.daya
-      kekuatan = pengajuan_.kekuatan
-      luas_ruang_tempat_usaha = str(pengajuan_.luas_ruang_tempat_usaha)
-      luas_lahan_usaha = str(pengajuan_.luas_lahan_usaha)
-      jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
-      jenis_bangunan = pengajuan_.jenis_bangunan
-      jenis_gangguan = pengajuan_.jenis_gangguan
-
-      data = {'success': True,
-          'data': [
-          {'perkiraan_modal': perkiraan_modal},
-          {'tujuan_gangguan': tujuan_gangguan},
-          {'alamat_ho': alamat},
-          {'desa': desa},
-          {'kecamatan': kecamatan},
-          {'kabupaten': kabupaten},
-          {'bahan_baku_dan_penolong': bahan_baku_dan_penolong},
-          {'proses_produksi': proses_produksi},
-          {'jenis_produksi': jenis_produksi},
-          {'kapasitas_produksi': kapasitas_produksi},
-          {'jumlah_tenaga_kerja': jumlah_tenaga_kerja},
-          {'jumlah_mesin': jumlah_mesin},
-          {'merk_mesin': merk_mesin},
-          {'daya': daya},
-          {'kekuatan': kekuatan},
-          {'luas_ruang_tempat_usaha': luas_ruang_tempat_usaha},
-          {'luas_lahan_usaha': luas_lahan_usaha},
-          {'jenis_lokasi_usaha': jenis_lokasi_usaha},
-          {'jenis_bangunan': jenis_bangunan},
-          {'jenis_gangguan': jenis_gangguan}]}
-      response = HttpResponse(json.dumps(data))
-    else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
-  else:
-    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-    data = json.dumps(data)
-    response = HttpResponse(data)
-  return response
-
-
-def detilho_upload_berkas_pendukung(request):
+def izinlokasi_upload_berkas_pendukung(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
       form = UploadBerkasPendukungForm(request.POST, request.FILES)
@@ -171,26 +108,23 @@ def detilho_upload_berkas_pendukung(request):
                 p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
                 berkas = form.save(commit=False)
                 if request.POST.get('aksi') == "1":
-                  berkas.nama_berkas = "File Izin Mendirikan Bangunan (IMB)"+p.no_pengajuan
-                  berkas.keterangan = "File Izin Mendirikan Bangunan (IMB)"
+                  berkas.nama_berkas = "Bukti Kepemilikan Tanah"+p.no_pengajuan
+                  berkas.keterangan = "Bukti Kepemilikan Tanah"
                 elif request.POST.get('aksi') == "2":
-                  berkas.nama_berkas = "Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)"+p.no_pengajuan
-                  berkas.keterangan = "Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)"
+                  berkas.nama_berkas = "Sketsa Lokasi Tanah Yang Dimohonkan"+p.no_pengajuan
+                  berkas.keterangan = "Sketsa Lokasi Tanah Yang Dimohonkan"
                 elif request.POST.get('aksi') == "3":
-                  berkas.nama_berkas = "File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi"+p.no_pengajuan
-                  berkas.keterangan = "File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi"
+                  berkas.nama_berkas = "Gambar/Denah Rencana Penggunaan Tanah"+p.no_pengajuan
+                  berkas.keterangan = "Gambar/Denah Rencana Penggunaan Tanah"
                 elif request.POST.get('aksi') == "4":
-                  berkas.nama_berkas = "File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan
-                  berkas.keterangan = "File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"
+                  berkas.nama_berkas = "Sertifikat Tanah"+p.no_pengajuan
+                  berkas.keterangan = "Sertifikat Tanah"
                 elif request.POST.get('aksi') == "5":
-                  berkas.nama_berkas = "File NPWP Pribadi"+p.no_pengajuan
-                  berkas.keterangan = "File NPWP Pribadi"
-                elif request.POST.get('aksi') == "6":
-                  berkas.nama_berkas = "File NPWP Perusahaan"+p.no_pengajuan
-                  berkas.keterangan = "File NPWP Perusahaan"
+                  berkas.nama_berkas = "Akta Jual Beli"+p.no_pengajuan
+                  berkas.keterangan = "Akta Jual Beli"
                 else:
-                  berkas.nama_berkas = "File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum"+p.no_pengajuan
-                  berkas.keterangan = "File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum"
+                  berkas.nama_berkas = "Rekomendasi Bupati/Izinizin lain yang diperoleh"+p.no_pengajuan
+                  berkas.keterangan = "Rekomendasi Bupati/Izinizin lain yang diperoleh"
                   
                 if request.user.is_authenticated():
                   berkas.created_by_id = request.user.id
@@ -226,7 +160,7 @@ def detilho_upload_berkas_pendukung(request):
     response = HttpResponse(data)
   return response
 
-def ajax_load_berkas_detilho(request, id_pengajuan):
+def ajax_load_berkas_izinlokasi(request, id_pengajuan):
   url_berkas = []
   id_elemen = []
   nm_berkas =[]
@@ -235,61 +169,53 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
     try:
       p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
 
-      file_izin_mendirikan_bangunan = Berkas.objects.filter(nama_berkas="File Izin Mendirikan Bangunan (IMB)"+p.no_pengajuan)
-      if file_izin_mendirikan_bangunan.exists():
-        file_izin_mendirikan_bangunan = file_izin_mendirikan_bangunan.last()
-        url_berkas.append(file_izin_mendirikan_bangunan.berkas.url)
-        id_elemen.append('file_izin_mendirikan_bangunan')
-        nm_berkas.append("File Izin Mendirikan Bangunan (IMB)"+p.no_pengajuan)
-        id_berkas.append(file_izin_mendirikan_bangunan.id)
+      bukti_kepemilikan_tanah = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah"+p.no_pengajuan)
+      if bukti_kepemilikan_tanah.exists():
+        bukti_kepemilikan_tanah = bukti_kepemilikan_tanah.last()
+        url_berkas.append(bukti_kepemilikan_tanah.berkas.url)
+        id_elemen.append('bukti_kepemilikan_tanah')
+        nm_berkas.append("Bukti Kepemilikan Tanah"+p.no_pengajuan)
+        id_berkas.append(bukti_kepemilikan_tanah.id)
 
-      kepemilikan_tanah = Berkas.objects.filter(nama_berkas="Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)"+p.no_pengajuan)
-      if kepemilikan_tanah.exists():
-        kepemilikan_tanah = kepemilikan_tanah.last()
-        url_berkas.append(kepemilikan_tanah.berkas.url)
-        id_elemen.append('kepemilikan_tanah')
-        nm_berkas.append("Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)"+p.no_pengajuan)
-        id_berkas.append(kepemilikan_tanah.id)
+      sketsa_lokasi_tanah = Berkas.objects.filter(nama_berkas="Sketsa Lokasi Tanah Yang Dimohonkan"+p.no_pengajuan)
+      if sketsa_lokasi_tanah.exists():
+        sketsa_lokasi_tanah = sketsa_lokasi_tanah.last()
+        url_berkas.append(sketsa_lokasi_tanah.berkas.url)
+        id_elemen.append('sketsa_lokasi_tanah')
+        nm_berkas.append("Sketsa Lokasi Tanah Yang Dimohonkan"+p.no_pengajuan)
+        id_berkas.append(sketsa_lokasi_tanah.id)
 
-      cetak_biru = Berkas.objects.filter(nama_berkas="File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi"+p.no_pengajuan)
-      if cetak_biru.exists():
-        cetak_biru = cetak_biru.last()
-        url_berkas.append(cetak_biru.berkas.url)
-        id_elemen.append('cetak_biru')
-        nm_berkas.append("File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi"+p.no_pengajuan)
-        id_berkas.append(cetak_biru.id)
+      gambar_rencana_penggunaan_tanah = Berkas.objects.filter(nama_berkas="Gambar/Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
+      if gambar_rencana_penggunaan_tanah.exists():
+        gambar_rencana_penggunaan_tanah = gambar_rencana_penggunaan_tanah.last()
+        url_berkas.append(gambar_rencana_penggunaan_tanah.berkas.url)
+        id_elemen.append('gambar_rencana_penggunaan_tanah')
+        nm_berkas.append("Gambar/Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
+        id_berkas.append(gambar_rencana_penggunaan_tanah.id)
 
-      upload_gambar_ktp = Berkas.objects.filter(nama_berkas="File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
-      if upload_gambar_ktp.exists():
-        upload_gambar_ktp = upload_gambar_ktp.last()
-        url_berkas.append(upload_gambar_ktp.berkas.url)
-        id_elemen.append('upload_gambar_ktp')
-        nm_berkas.append("File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
-        id_berkas.append(upload_gambar_ktp.id)
+      sertifikat_tanah = Berkas.objects.filter(nama_berkas="Sertifikat Tanah"+p.no_pengajuan)
+      if sertifikat_tanah.exists():
+        sertifikat_tanah = sertifikat_tanah.last()
+        url_berkas.append(sertifikat_tanah.berkas.url)
+        id_elemen.append('sertifikat_tanah')
+        nm_berkas.append("Sertifikat Tanah"+p.no_pengajuan)
+        id_berkas.append(sertifikat_tanah.id)
 
-      file_npwp_pribadi = Berkas.objects.filter(nama_berkas="File NPWP Pribadi"+p.no_pengajuan)
-      if file_npwp_pribadi.exists():
-        file_npwp_pribadi = file_npwp_pribadi.last()
-        url_berkas.append(file_npwp_pribadi.berkas.url)
-        id_elemen.append('file_npwp_pribadi')
-        nm_berkas.append("File NPWP Pribadi"+p.no_pengajuan)
-        id_berkas.append(file_npwp_pribadi.id)
+      akta_jual_beli = Berkas.objects.filter(nama_berkas="Akta Jual Beli"+p.no_pengajuan)
+      if akta_jual_beli.exists():
+        akta_jual_beli = akta_jual_beli.last()
+        url_berkas.append(akta_jual_beli.berkas.url)
+        id_elemen.append('akta_jual_beli')
+        nm_berkas.append("Akta Jual Beli"+p.no_pengajuan)
+        id_berkas.append(akta_jual_beli.id)
 
-      file_npwp_perusahaan = Berkas.objects.filter(nama_berkas="File NPWP Perusahaan"+p.no_pengajuan)
-      if file_npwp_perusahaan.exists():
-        file_npwp_perusahaan = file_npwp_perusahaan.last()
-        url_berkas.append(file_npwp_perusahaan.berkas.url)
-        id_elemen.append('file_npwp_perusahaan')
-        nm_berkas.append("File NPWP Perusahaan"+p.no_pengajuan)
-        id_berkas.append(file_npwp_perusahaan.id)
-
-      file_surat_kuasa = Berkas.objects.filter(nama_berkas="File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum"+p.no_pengajuan)
-      if file_surat_kuasa.exists():
-        file_surat_kuasa = file_surat_kuasa.last()
-        url_berkas.append(file_surat_kuasa.berkas.url)
-        id_elemen.append('file_surat_kuasa')
-        nm_berkas.append("File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum"+p.no_pengajuan)
-        id_berkas.append(file_surat_kuasa.id)
+      rekomendasi_bupati = Berkas.objects.filter(nama_berkas="Rekomendasi Bupati/Izinizin lain yang diperoleh"+p.no_pengajuan)
+      if rekomendasi_bupati.exists():
+        rekomendasi_bupati = rekomendasi_bupati.last()
+        url_berkas.append(rekomendasi_bupati.berkas.url)
+        id_elemen.append('rekomendasi_bupati')
+        nm_berkas.append("Rekomendasi Bupati/Izinizin lain yang diperoleh"+p.no_pengajuan)
+        id_berkas.append(rekomendasi_bupati.id)
 
       data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
     except ObjectDoesNotExist:
@@ -299,11 +225,62 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
   response = HttpResponse(json.dumps(data))
   return response
 
-def cetak_gangguan_ho(request, id_pengajuan_):
+def load_konfirmasi_izin_lokasi(request,id_pengajuan):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+      pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      no_surat_kuasa = pengajuan_.no_surat_kuasa
+      tanggal_surat_kuasa = str(pengajuan_.tanggal_surat_kuasa)
+      alamat = pengajuan_.alamat
+      desa = str(pengajuan_.desa)
+      kecamatan = str(pengajuan_.desa.kecamatan)
+      kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
+      luas = str(pengajuan_.luas)
+      status_tanah = pengajuan_.status_tanah
+      no_sertifikat_petak = pengajuan_.no_sertifikat_petak
+      luas_sertifikat_petak = str(pengajuan_.luas_sertifikat_petak)
+      atas_nama_sertifikat_petak = pengajuan_.atas_nama_sertifikat_petak
+      no_persil = pengajuan_.no_persil
+      klas_persil = pengajuan_.klas_persil
+      atas_nama_persil = pengajuan_.atas_nama_persil
+      penggunaan_sekarang = pengajuan_.penggunaan_sekarang
+      rencana_penggunaan = pengajuan_.rencana_penggunaan
+
+      data = {'success': True,
+          'data': [
+          {'no_surat_kuasa': no_surat_kuasa},
+          {'tanggal_surat_kuasa': tanggal_surat_kuasa},
+          {'alamat_informasi_tanah': alamat},
+          {'desa': desa},
+          {'kecamatan': kecamatan},
+          {'kabupaten': kabupaten},
+          {'luas': luas},
+          {'status_tanah': status_tanah},
+          {'no_sertifikat_petak': no_sertifikat_petak},
+          {'luas_sertifikat_petak': luas_sertifikat_petak},
+          {'atas_nama_sertifikat_petak': atas_nama_sertifikat_petak},
+          {'no_persil': no_persil},
+          {'klas_persil': klas_persil},
+          {'atas_nama_persil': atas_nama_persil},
+          {'penggunaan_sekarang': penggunaan_sekarang},
+          {'rencana_penggunaan': rencana_penggunaan}]}
+      response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
+
+def cetak_izin_lokasi(request, id_pengajuan_):
       extra_context = {}
       url_ = reverse('formulir_reklame')
       if id_pengajuan_:
-        pengajuan_ = DetilHO.objects.get(id=id_pengajuan_)
+        pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_)
         if pengajuan_.perusahaan != '':
           alamat_ = ""
           alamat_perusahaan_ = ""
@@ -328,21 +305,21 @@ def cetak_gangguan_ho(request, id_pengajuan_):
             extra_context.update({ 'riwayat': riwayat })
             extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
             extra_context.update({ 'created_at': pengajuan_.created_at })
-          response = loader.get_template("front-end/include/formulir_ho/cetak.html")
+          response = loader.get_template("front-end/include/formulir_izin_lokasi/cetak.html")
         else:
           response = HttpResponseRedirect(url_)
           return response
       else:
         response = HttpResponseRedirect(url_)
         return response
-      template = loader.get_template("front-end/include/formulir_ho/cetak.html")
+      template = loader.get_template("front-end/include/formulir_izin_lokasi/cetak.html")
       ec = RequestContext(request, extra_context)
       return HttpResponse(template.render(ec))
 
-def cetak_bukti_pendaftaran_gangguan_ho(request,id_pengajuan_):
+def cetak_bukti_pendaftaran_izin_lokasi(request,id_pengajuan_):
   extra_context = {}
   if id_pengajuan_:
-    pengajuan_ = DetilHO.objects.get(id=id_pengajuan_)
+    pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_)
     if pengajuan_.perusahaan != '':
       alamat_ = ""
       alamat_perusahaan_ = ""
@@ -360,7 +337,7 @@ def cetak_bukti_pendaftaran_gangguan_ho(request,id_pengajuan_):
           alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
           extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
         extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-        syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HO")
+        syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IL")
       letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 
       extra_context.update({'letak_': letak_})
@@ -376,6 +353,6 @@ def cetak_bukti_pendaftaran_gangguan_ho(request,id_pengajuan_):
     response = HttpResponseRedirect(url_)
     return response 
 
-  template = loader.get_template("front-end/include/formulir_ho/cetak_bukti_pendaftaran.html")
+  template = loader.get_template("front-end/include/formulir_izin_lokasi/cetak_bukti_pendaftaran.html")
   ec = RequestContext(request, extra_context)
   return HttpResponse(template.render(ec))
