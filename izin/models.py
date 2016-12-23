@@ -256,7 +256,7 @@ class DetilSIUP(PengajuanIzin):
 	jenis_pengajuan = models.IntegerField(verbose_name="Jenis Pengajuan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil SIUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -279,7 +279,7 @@ class DetilReklame(PengajuanIzin):
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -315,7 +315,7 @@ class DetilIUJK(PengajuanIzin):
 	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK)
 
 	def __unicode__(self):
-		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.jenis_iujk))
+		return u'Detil IUJK %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.jenis_iujk))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -424,7 +424,7 @@ class DetilTDP(PengajuanIzin):
 	# masih sampe tab4 TDP PT
 
 	def __unicode__(self):
-		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
+		return u'Detil TDP %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -492,7 +492,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil IMB Papan Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
@@ -520,7 +520,7 @@ class DetilIMB(PengajuanIzin):
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
@@ -536,7 +536,7 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil Informasi Kekayaan Daerah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
@@ -565,7 +565,7 @@ class DetilHO(PengajuanIzin):
 	jenis_gangguan = models.CharField(verbose_name='Jenis Gangguan', choices=JENIS_GANGGUAN, max_length=20,null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil HO %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
@@ -590,12 +590,87 @@ class InformasiTanah(PengajuanIzin):
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
 		verbose_name = 'Informasi Tanah'
 		verbose_name_plural = 'Informasi Tanah'
+
+class DetilHuller(PengajuanIzin):
+	perusahaan = models.ForeignKey('perusahaan.Perusahaan', related_name='detilhuller_perusahaan', blank=True, null=True)
+	
+	pemilik_badan_usaha = models.BooleanField() #Pemilik perorangan atau badan usaha, jika badan usaha wajib upload akta
+	
+	pemilik_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
+	pemilik_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
+	pemilik_desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	pemilik_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
+	pemilik_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
+
+	pengusaha_badan_usaha = models.BooleanField() #Pengusaha perorangan atau badan usaha, jika badan usaha wajib upload akta
+	pengusaha_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
+	pengusaha_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
+	pengusaha_desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	pengusaha_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
+	pengusaha_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
+
+	hubungan_pemilik_pengusaha = models.CharField(max_length=50, verbose_name='Hubungan kerjasama antara Pengusaha dengan Pemilik Perusahaan', null=True, blank=True)
+	kapasitas_potensial_giling_beras_per_jam = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Jam')
+	kapasitas_potensial_giling_beras_per_tahun = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Tahun')
+
+	def __unicode__(self):
+		return u'Detil Huller %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Huller'
+		verbose_name_plural = 'Huller'
+
+class JenisMesin(MetaAtribut):
+	jenis_mesin = models.CharField(max_length=200, verbose_name='Jenis Mesin')
+	keterangan = models.CharField(max_length=255,blank=True, null=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_mesin),)
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Jenis Mesin'
+		verbose_name_plural = 'Jenis Mesin'
+
+# Parameter / Property untuk Mesin Huller Value ada di mesin perusahaan
+class MesinHuller(MetaAtribut):
+	jenis_mesin = models.ForeignKey(JenisMesin, verbose_name="Jenis Mesin")
+	mesin_huller = models.CharField(max_length=200, verbose_name='Mesin Huller')
+	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.jenis_mesin), str(self.mesin_huller))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Mesin Huller'
+		verbose_name_plural = 'Mesin Huller'
+
+class MesinPerusahaan(MetaAtribut):
+	detil_huller = models.ForeignKey(DetilHuller, verbose_name="Detil Huller")
+	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
+
+	type_model = models.CharField(max_length=255, verbose_name='Type / Model', blank=True, null=True)
+	pk = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
+	buatan = models.CharField(max_length=255, verbose_name='Buatan / Merk', blank=True, null=True)
+	jumlah_unit = models.IntegerField(verbose_name="Jumlah Unit", null=True, blank=True)
+	# selain penggerak tambah kapasitas
+	kapasitas = models.IntegerField(verbose_name="Kapasitas", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.mesin_huller), str(self.detil_huller))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Mesin Perusahaan'
+		verbose_name_plural = 'Mesin Perusahaan'	
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
