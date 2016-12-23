@@ -656,11 +656,12 @@ class MesinHuller(MetaAtribut):
 class MesinPerusahaan(MetaAtribut):
 	detil_huller = models.ForeignKey(DetilHuller, verbose_name="Detil Huller")
 	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
+
 	type_model = models.CharField(max_length=255, verbose_name='Type / Model', blank=True, null=True)
 	pk = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
 	buatan = models.CharField(max_length=255, verbose_name='Buatan / Merk', blank=True, null=True)
 	jumlah_unit = models.IntegerField(verbose_name="Jumlah Unit", null=True, blank=True)
-	jenis_lainnya = models.CharField(max_length=255, verbose_name='Jenis Lainnya', blank=True, null=True)
+	# selain penggerak tambah kapasitas
 	kapasitas = models.IntegerField(verbose_name="Kapasitas", null=True, blank=True)
 
 	def __unicode__(self):
