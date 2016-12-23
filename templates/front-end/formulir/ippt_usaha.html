@@ -1,34 +1,136 @@
-{% extends "admin/base_site.html" %}
-{% load i18n admin_static %}
-
-{% block title %}
-	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% extends "front-end/formulir/formulir_izin.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block customstyle %}
+  {{ block.super }}
+  <style type="text/css">
+    .tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+        background-color: #22beef;
+        color: aliceblue;
+      }
+      .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+        background-color: #616f77;
+      }
+      .tab-wizard .nav-tabs > li:before {
+        background-color: #333;
+      }
+      .onoffswitch.labeled .onoffswitch-inner:before {
+        content: "Ya";
+      }
+      .onoffswitch.labeled .onoffswitch-inner:after {
+        content: "Tidak";
+      }
+      .onoffswitch.labeled {
+        width: 59px;
+      }
+      .onoffswitch.labeled .onoffswitch-switch {
+        right: 34px;
+      }
+ </style>
+  <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+  <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+  <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+  <!-- CSS adjustments for browsers with JavaScript disabled -->
+  <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+  <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
 {% endblock %}
 
-{% block icotitle %}<i class="icon-book-open"></i>&nbsp;{% endblock %}
-
-{% block content_title %}
-	{{ title }}
+{% block pageheader %}
+  <h2>Surat Izin Perubahan Penggunaan Tanah (IPPT)
+      <span>Berikut adalah info pendaftaran perizinan Izin Perubahan Penggunaan Tanah (IPPT) Kabupaten Kediri.</span>
+    </h2>
+    <div class="page-bar">
+      <ul class="page-breadcrumb">
+        <li>
+          <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+        </li>
+        <li>
+          <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+        </li>
+        <li>
+          <a href="#">Izin Perubahan Penggunaan Tanah (IPPT) - Usaha</a>
+        </li>
+        <li>
+          <a href="#">Formulir IPPT - Usaha</a>
+        </li>
+      </ul>
+    </div>
 {% endblock %}
 
-{% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
-	<script src="{% static "scripts/js/main.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/filestyle/bootstrap-filestyle.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
-	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+{% block rootwizard %}
+  <ul class="nav nav-tabs nav-justified">
+    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">6</span></a></li>
+    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+    <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
+    <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
+    <li><a disabled href="#tab10" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">10</span></a></li>
+  </ul>
+{% endblock %}
+
+{% block tab-content %}
+  <div class="tab-pane" id="tab1">
+    <!-- Identitas perusahaan -->
+    {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab2">
+    <!-- Identitas perusahaan -->
+    {% include 'front-end/include/formulir_ippt_usaha/identitas_perusahaan.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab3">
+    <!-- Data Kegiatan Gangguan -->
+    {% include 'front-end/include/formulir_ippt_usaha/legalitas_perusahaan.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab4">
+    <!-- Upload Dokumen -->
+    {% include 'front-end/include/formulir_ippt_usaha/informasi_tanah.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab5">
+    <!-- Konfirmasi -->
+    {% include 'front-end/include/formulir_ippt_usaha/konfirmasi.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab6">
+    <!-- Identitas perusahaan -->
+    {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab7">
+    <!-- Identitas perusahaan -->
+    {% include 'front-end/include/formulir_ippt_usaha/identitas_perusahaan.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab8">
+    <!-- Data Kegiatan Gangguan -->
+    {% include 'front-end/include/formulir_ippt_usaha/informasi_tanah.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab9">
+    <!-- Upload Dokumen -->
+    {% include 'front-end/include/formulir_ippt_usaha/upload_dokumen.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab10">
+    <!-- Konfirmasi -->
+    {% include 'front-end/include/formulir_ippt_usaha/konfirmasi.html' %}
+  </div>
+{% endblock %}
+
+{% block extratools %}
+  {{ block.super }}
   <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
   <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
-  <script src="{% static 'scripts/js/formAjax/form_informasi_kekayaan.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
@@ -46,7 +148,7 @@
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_konfirmasi_informasi_kekayaan(id_pengajuan)
+                load_konfirmasi_izin_lokasi(id_pengajuan)
                 if (id_pengajuan > 0){
                   $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
@@ -68,7 +170,7 @@
               if($current == 4){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_informasi_kekayaan_daerah(id_pengajuan)
+                load_berkas_izin_lokasi(id_pengajuan)
                 
               }
                 $('#rootwizard').find('.pager .next').show();
@@ -82,7 +184,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return false;
+              return true;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -91,7 +193,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });
@@ -243,7 +345,7 @@
                     // console.log(a[i]);
                     // console.log(respon[a[i]]);
                     // var field = a[i].replace("_", " ").capitalize();
-                    toastr["error"](field+", "+respon[a[i]][0]['message'])
+                    // toastr["error"](field+", "+respon[a[i]][0]['message'])
                     $("#"+a[i]+"").addClass("has-error");
                     // console.log($("#"+a[i]+"").addClass("parsley-error"));
                   }
@@ -293,13 +395,13 @@
         id_pengajuan_ = $.cookie("id_pengajuan");
         if (id_pengajuan_ != undefined){
           $.ajax({
-            url: '{% url 'kekayaan_done' %}',
+            url: '{% url 'izinlokasi_done' %}',
             success: function(response) {
               respon = $.parseJSON(response)
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace('{% url 'admin:izin_informasikekayaandaerah_changelist' %}view-pengajuan-pemakaian-kekayaan-daerah/'+id_pengajuan_);
+              window.location.replace("/layanan/izin-lokasi/formulir/cetak/"+id_pengajuan_);
             }
           });
         }
@@ -335,9 +437,12 @@
             }
           });
 
-          $('#percent-upload_gambar_ktp').hide()
-          $('#percent-upload_gambar_surat_lunas_retribusi').hide()
-          $('#percent-upload_gambar_rekomendasi_dinas_terkait').hide()
+          $('#percent-bukti_kepemilikan_tanah').hide()
+          $('#percent-sketsa_lokasi_tanah').hide()
+          $('#percent-gambar_rencana_penggunaan_tanah').hide()
+          $('#percent-sertifikat_tanah').hide()
+          $('#percent-akta_jual_beli').hide()
+          $('#percent-rekomendasi_bupati').hide()
           $('#konfirmasi_legalitas_perubahan').hide();
 
           if ($.cookie('id_pengajuan') === undefined){
@@ -395,151 +500,5 @@
   //   })
 
     </script>
-{% endblock %}
 
-{% block extrastyle %}
-	{{ block.super }}
-	
-	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
-	<!-- CSS adjustments for browsers with JavaScript disabled -->
-	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
-	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
-{% endblock %}
-
-{% block custom_style %}
-	<style type="text/css">
-		/*@media only screen and (max-width: 1280px){
-			.hidden_title{
-			   display: none !important;
-			}
-			.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
-			  padding-bottom: 24px
-			}
-			.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
-			  padding-bottom: 24px;
-			}
-			
-		}
-		@media only screen and (max-width: 844px){
-		  .hidden_title{
-			display: block !important;
-		  }
-		}*/
-		.checkbox-custom-alt input:checked + i {
-		    background-color: transparent;
-		    border-color: #FEF7F7;
-		    color: #FCFAFA;
-		}
-		label{
-			color: black;
-		}
-		h4,h3{
-			color: black;
-			font-weight: bold;
-		}
-		table{
-			color: black;
-		}
-
-		.chosen-container{
-			min-width: 400px;
-		}
-		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
-        	background-color: #22beef;
-        	color: aliceblue;
-		}
-		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
-			background-color: #616f77;
-		}
-		.tab-wizard .nav-tabs > li:before {
-			background-color: #333;
-		}
-		.onoffswitch.labeled .onoffswitch-inner:before {
-			content: "Ya";
-		}
-		.onoffswitch.labeled .onoffswitch-inner:after {
-			content: "Tidak";
-		}
-		.onoffswitch.labeled {
-			width: 59px;
-		}
-		.onoffswitch.labeled .onoffswitch-switch {
-			right: 34px;
-		}
-		hr.style14 { 
-	        border: 0; 
-	        height: 1px; 
-	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
-      	}
-      	.checkbox-custom-alt input[disabled] + i {
-	        border-color: #0e0d0d;
-	        background-color: #fbf6f6;
-      	}
-      	.checkbox-custom-alt input[disabled] + i::before {
-	        background-color: transparent;
-	        color: #0c0c0c;
-      	}
-	</style>
-{% endblock %}
-
-{% block content %}
-<div id="rootwizard" class="tab-container tab-wizard">
-  	<ul class="nav nav-tabs nav-justified">
-	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-	    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-	    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-	    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-	    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-  	</ul>
-  	<div class="tab-content">
-		  <div class="tab-pane" id="tab1">
-		    <!-- Identitas perusahaan -->
-		    {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
-		  </div>
-
-		  <div class="tab-pane" id="tab2">
-		    <!-- Identitas perusahaan -->
-		    {% include 'front-end/include/formulir_kekayaan/identitas_perusahaan.html' %}
-		  </div>
-
-		  <div class="tab-pane" id="tab3">
-		    <!-- Informasi Kekayaan Daerah -->
-		    {% include 'front-end/include/formulir_kekayaan/info_kekayaan_daerah.html' %}
-		  </div>
-
-		  <div class="tab-pane" id="tab4">
-		    <!-- Dokumen upload -->
-		    {% include 'front-end/include/formulir_kekayaan/upload_dokumen.html' %}
-		  </div>
-
-		  <div class="tab-pane" id="tab5">
-		    <!-- konfirmasi -->
-		    {% include 'front-end/include/formulir_kekayaan/konfirmasi.html' %}
-		  </div>
-		<ul class="pager wizard">
-		  	<li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
-		  	<li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
-		  	<li class="next finish" style="display:none;">
-				<button type="submit" class="btn btn-success pull-right" id="alert">
-			  		<i class="fa fa-arrow-right"></i>
-			  		<span>Selesai</span>
-				</button>
-			</form>
-		  	</li>
-		</ul>
-  	</div>
-  <br>
-  <br>
-  <br>
-</div>
 {% endblock %}

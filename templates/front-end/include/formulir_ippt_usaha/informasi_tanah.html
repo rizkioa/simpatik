@@ -1,6 +1,6 @@
 <form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'informasitanah_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}
-      <h3>Informasi Tanah</h3>
+    <h3>Informasi Tanah</h3>
     <hr class="style14">
 
     <div class="row">
@@ -133,12 +133,47 @@
         </div>
       </div>
     </div>
-     <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Penggunaan Sekarang</label>
-      <div class="col-sm-7">
-        <textarea class="form-control" rows="5" id="id_penggunaan_sekarang" name="penggunaan_sekarang" placeholder="Isi penggunaan sekarang" required="" data-parsley-trigger="change"></textarea>
+
+    <div class="row">
+      <label class="col-sm-2 control-label">Penggunaan Sekarang</label> 
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Sawah</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Tegal</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Tanah Kosong</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
+
      <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Rencana Penggunaan</label>
       <div class="col-sm-7">

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
 
@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^layanan/ho$', layanan_view.layanan_ho, name='layanan_ho'),
     url(r'^layanan/izin-lokasi$', layanan_view.layanan_izin_lokasi, name='layanan_izin_lokasi'),
     url(r'^layanan/ippt-rumah$', layanan_view.layanan_ippt_rumah, name='layanan_ippt_rumah'),
+    url(r'^layanan/ippt-usaha$', layanan_view.layanan_ippt_usaha, name='layanan_ippt_usaha'),
     # url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),
     # url(r'^layanan/ho-daftar-ulang$', layanan_view.layanan_ho_daftar_ulang, name='layanan_ho_daftar_ulang'),
     url(r'^layanan/sipa-sumur-bor$', layanan_view.layanan_sipa_sumur_bor, name='layanan_sipa_sumur_bor'),
@@ -271,6 +272,10 @@ urlpatterns = [
 
     # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
     url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
+    # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
+    url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
     ]
