@@ -22,6 +22,53 @@ KEPEMILIKAN_TANAH = (
 	('Orang Tua', 'Orang Tua'),
 	('Pihak Lain', 'Pihak Lain'),
 )
+
+KLASIFIKASI_JALAN = (
+	('Arteri', 'Arteri'),
+	('Kolektor Primer', 'Kolektor Primer'),
+	('Lokal Primer', 'Lokal Primer'),
+	('Kolektor Sekunder', 'Kolektor Sekunder'),
+	('Lokal Sekunder', 'Lokal Sekunder'),
+	('Strategis', 'Strategis'),
+)
+
+JENIS_LOKASI_USAHA = (
+	('Jalan Nasional','Jalan Nasional'),
+	('Jalan Provinsi','Jalan Provinsi'),
+	('Jalan Kabupaten','Jalan Kabupaten'),
+	('Jalan Strategis','Jalan Strategis'),
+	('Jalan Desa','Jalan Desa'),
+)
+
+JENIS_BANGUNAN = (
+	('Permanen','Permanen'),
+	('Semi Permanen','Semi Permanen'),
+	('Darurat','Darurat'),
+)
+
+JENIS_GANGGUAN = (
+	('Padat','Padat'),
+	('Cair','Cair'),
+	('Kebisingan','Kebisingan'),
+	('Getaran','Getaran'),
+)
+RUMIJA = (
+	(30, 30),
+	(25, 25),
+	(22, 22),
+	(15, 15),
+	(11, 11),
+)
+
+RUWASJA = (
+	(36, 36),
+	(20, 20),
+	(10, 10),
+	(7, 7),
+	(5, 5),
+	(3, 3),
+)
+
 import datetime
 
 def get_tahun_choices(sejak):

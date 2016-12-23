@@ -31,6 +31,7 @@
             lokasi.href = location.href;
             window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
             // alert(__base_url__)
+            var pathname = window.location.pathname;
         </script>
         {% block extrastyle %}
         {% endblock %}
@@ -104,8 +105,8 @@
         </div>
         {% block extratools %}
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-        <!-- <script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script> -->
-        <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script>
+        <script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+        <!-- <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script> -->
         <!-- <script src="{% static 'scripts/js/vendor/jquery/jquery-3.1.1.min.js' %}"></script> -->
         <script src="{% static 'scripts/js/vendor/bootstrap/bootstrap.min.js' %}"></script>
         <script src="{% static 'scripts/js/vendor/jRespond/jRespond.min.js' %}"></script>

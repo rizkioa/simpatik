@@ -1,0 +1,148 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'informasitanah_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+    <h3>DATA KEGIATAN GANGGUAN</h3>
+    <hr class="style14">
+
+    <div class="row">
+      <label class="col-sm-2 control-label">Surat Kuasa</label> 
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+        <div class="col-sm-3">
+          <input type="text" id="id_no_surat_kuasa" name="no_surat_kuasa" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+       <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
+        <div class="col-sm-3">
+            <div class="input-group datepicker w-360 tanggal-awal"> 
+              <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_surat_kuasa" name="tanggal_surat_kuasa" style="width: 170px;">
+              <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+              </span>
+            </div>
+        </div>
+    </div>
+
+    </div>
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" id="id_alamat" name="alamat" placeholder="Isi alamat lengkap" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+      <div class="col-sm-5">
+        <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+          <option value="1">Kabupaten Kediri</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="kecamatan3">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
+      <div class="col-sm-5">
+        <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kecamatan --</option>
+          {% if kecamatan %}
+          {% for k in kecamatan %}
+          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="desa3">
+      <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_data_reklame" required="" data-parsley-trigger="change">
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Status Tanah</label>
+      <div class="col-sm-4">
+        <input class="form-control" required="" name="status_tanah" id="id_status_tanah"></input>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Luas</label>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
+          <span class="input-group-addon">
+            <span>M&sup2;</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label class="col-sm-2 control-label">Sertifikat/Petok D</label> 
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_no_sertifikat_petak" name="no_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+       <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Luas</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-sm-2 control-label">Persil</label> 
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_no_persil" name="no_persil" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+       <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Klas</label>
+        <div class="col-sm-4">
+          <input type="text" id="id_klas_persil" name="klas_persil" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+      <label for="input01" class="col-sm-2 control-label"></label>
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_atas_nama_persil" name="atas_nama_persil" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+    </div>
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Penggunaan Sekarang</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" id="id_penggunaan_sekarang" name="penggunaan_sekarang" placeholder="Isi penggunaan sekarang" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Rencana Penggunaan</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" id="id_rencana_penggunaan" name="rencana_penggunaan" placeholder="Isi rencana penggunaan" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+</form>

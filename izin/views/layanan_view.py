@@ -17,28 +17,52 @@ def layanan_siup(request, extra_context={}):
 	response.set_cookie(key='id_kelompok_izin', value="17")
 	return response
 
-def layanan_ho_baru(request, extra_context={}):
+def layanan_ho(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=12)
 	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Izin Gangguan (HO) - Permohonan Baru"})
-	extra_context.update({'title_short': "HO - Permohonan Baru"})
-	extra_context.update({'link_formulir': reverse("formulir_ho_pemohonan_baru") })
+	extra_context.update({'title_long': "Izin Gangguan (HO)"})
+	extra_context.update({'title_short': "HO"})
+	extra_context.update({'link_formulir': reverse("formulir_ho") })
 	extra_context.update({'id_jenis_izin': "2" })
 	extra_context.update({'id_kelompok_jenis_izin': "12" })
 	response = render(request, "front-end/layanan/ho_baru.html", extra_context)
 	response.set_cookie(key='id_kelompok_izin', value="12")
 	return response
 
-def layanan_ho_daftar_ulang(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=13)
+def layanan_izin_lokasi(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, id=37)
 	extra_context.update({'kelompok': kelompok})
-	extra_context.update({'title_long': "Izin Gangguan (HO) - Daftar Ulang"})
-	extra_context.update({'title_short': "HO - Daftar Ulang"})
-	extra_context.update({'link_formulir': reverse("formulir_ho_daftar_ulang") })
-	extra_context.update({'id_jenis_izin': "2" })
-	extra_context.update({'id_kelompok_jenis_izin': "13" })
-	response = render(request, "front-end/layanan/ho_daftar_ulang.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value="13")
+	extra_context.update({'title_long': "Izin Lokasi"})
+	extra_context.update({'title_short': "Izin Lokasi"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_lokasi") })
+	extra_context.update({'id_jenis_izin': "14" })
+	extra_context.update({'id_kelompok_jenis_izin': "37" })
+	response = render(request, "front-end/layanan/izin_lokasi.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="37")
+	return response
+
+# def layanan_ho_daftar_ulang(request, extra_context={}):
+# 	kelompok = get_object_or_404(KelompokJenisIzin, id=13)
+# 	extra_context.update({'kelompok': kelompok})
+# 	extra_context.update({'title_long': "Izin Gangguan (HO) - Daftar Ulang"})
+# 	extra_context.update({'title_short': "HO - Daftar Ulang"})
+# 	extra_context.update({'link_formulir': reverse("formulir_ho_daftar_ulang") })
+# 	extra_context.update({'id_jenis_izin': "2" })
+# 	extra_context.update({'id_kelompok_jenis_izin': "13" })
+# 	response = render(request, "front-end/layanan/ho_daftar_ulang.html", extra_context)
+# 	response.set_cookie(key='id_kelompok_izin', value="13")
+# 	return response
+
+def layanan_ippt_rumah(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, id=38)
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Perubahan Penggunaan Tanah (IPPT) - Rumah"})
+	extra_context.update({'title_short': "Izin Perubahan Penggunaan Tanah (IPPT) - Rumah"})
+	extra_context.update({'link_formulir': reverse("formulir_ippt_rumah") })
+	extra_context.update({'id_jenis_izin': "15" })
+	extra_context.update({'id_kelompok_jenis_izin': "28" })
+	response = render(request, "front-end/layanan/ippt_rumah.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="38")
 	return response
 
 def layanan_tdp_pt(request, extra_context={}):
@@ -168,9 +192,9 @@ def layanan_imb_perumahan(request, extra_context={}):
 	extra_context.update({'title_short': "IMB - Perumahan"})
 	extra_context.update({'link_formulir': reverse("formulir_imb_perumahan") })
 	extra_context.update({'id_jenis_izin': "1" })
-	extra_context.update({'id_kelompok_jenis_izin': "1" })
+	extra_context.update({'id_kelompok_jenis_izin': "11" })
 	response = render(request, "front-end/layanan/imb_perumahan.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value="1")
+	response.set_cookie(key='id_kelompok_izin', value="11")
 	return response
 
 def layanan_reklame(request, extra_context={}):

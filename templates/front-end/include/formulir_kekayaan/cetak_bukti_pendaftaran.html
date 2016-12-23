@@ -114,8 +114,8 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : ISKD/1001/0802/2016<br>
-                                <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
+                                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
@@ -144,7 +144,7 @@
                     <tr>
                         <td width="25%">Jenis Pengajuan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Baru</td>
+                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
                     </tr>
                 </table>
                 <h5><u>IDENTITAS PEMOHON</u></h5>
@@ -152,47 +152,47 @@
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
                         <td width="10%">:</td>
-                        <td width="65%">Pemilik</td>
+                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">350001010010101001</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>
                         <td width="10%">:</td>
-                        <td width="65%">Hartato</td>
+                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ pemohon.telephone }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. HP</td>
                         <td width="10%">:</td>
-                        <td width="65%">085736662908</td>
+                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Indonesia</td>
+                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pekerjaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Swasta</td>
+                        <td width="65%">{{ pemohon.pekerjaan }}</td>
                     </tr>
                 </table>
                 <h5><u>IDENTITAS PERUSAHAAN</u></h5>
@@ -200,37 +200,37 @@
                     <tr>
                         <td width="25%">NPWP</td>
                         <td width="10%">:</td>
-                        <td width="65%">1234567890</td>
+                        <td width="65%">{{ perusahaan.npwp }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">UD. MAKMUR JAYA</td>
+                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
                         <td width="10%">:</td>
-                        <td width="65%"></td>
+                        <td width="65%">{{ perusahaan.kode_pos }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">087895172617</td>
+                        <td width="65%">{{ perusahaan.telepon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Fax</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ perusahaan.fax }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
                     </tr>
                 </table>
                 <br>
@@ -243,7 +243,7 @@
                 <br>
                 <hr>
                 <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> 
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                 </i>
             </div>    
@@ -255,27 +255,27 @@
                     <tr>
                         <td width="30%">Lokasi</td>
                         <td width="10%">:</td>
-                        <td width="65%">_____________________</td>
+                        <td width="65%">{{letak_}}</td>
                     </tr>
                     <tr>
                         <td width="30%">Ukuran</td>
-                        <td width="10%">:</td>
-                        <td width="60%">____M</td>
+                        <td width="10%"></td>
+                        <td width="60%"></td>
                     </tr>
                     <tr>
                         <td width="30%">Panjang</td>
                         <td width="10%">:</td>
-                        <td width="60%">_____M</td>
+                        <td width="60%">{{pengajuan.panjang|default_if_none:"-"}} M</td>
                     </tr>
                     <tr>
                         <td width="30%">Lebar</td>
                         <td width="10%">:</td>
-                        <td width="60%">_____M</td>
+                        <td width="60%">{{pengajuan.lebar|default_if_none:"-"}} M</td>
                     </tr>
                     <tr>
                         <td width="30%">Penggunaan</td>
                         <td width="10%">:</td>
-                        <td width="60%">_________________</td>
+                        <td width="60%">{{pengajuan.penggunaan|default_if_none:"-"}}</td>
                     </tr>
                 </table>
                 <p style="font-size:13px">Demikian permohonan ini saya buat, dan saya sanggup mentaati semua Peraturan Perundangan - udangan yang berlaku dan tidak akan memulai melaksanakan sesuatu usaha, sebelum Izin tertulis ditetapkan</p>
@@ -290,7 +290,7 @@
                     <br>
                     <br>
                     <br>
-                    <u class="font"><b>HARTATO</b></u>
+                    <u class="font"><b>{{ pemohon.nama_lengkap }}</b></u>
                 </p>
                 <p align="center" style="font-size:14px">
                     MENGENTAHUI DAN MENYETUJUI
@@ -326,7 +326,7 @@
                 <br>
                 <hr class="style14">
                 <h5>Syarat Izin Sewa Kekayaan Daerah:</h5>
-                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
                             <td width="5%">No</td>
@@ -352,15 +352,8 @@
                 <br>
                 <br>
                 <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
                 <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
             </div>    
         </div>
     </div>

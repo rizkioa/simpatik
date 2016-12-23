@@ -5,12 +5,18 @@
         <h3 class="modal-title custom-font">Tambah Kantor Cabang/Pembantu/Perwakilan</h3>
       </div>
       <div class="modal-body">
-        <form method="POST" role="form" class="form-horizontal">
+        <form method="POST" role="form" class="form-horizontal" id="id_form_izin_lain" action="{% url 'tdp_izin_lain_cookie' %}" data-parsley-validate novalidate>
+          {% csrf_token %}
           <div class="form-group">
             <label for="input01" class="col-sm-2 control-label">Jenis Izin</label>
             <div class="col-sm-7">
-              <select class="form-control chosen-select mb-10 " id="izin_lain_jenis_izin">
-                <option>-- Pilih Izin --</option>
+              <select class="form-control chosen-select mb-10 " id="izin_lain_jenis_izin" name="kelompok_jenis_izin" required="">
+                <option value>-- Pilih Izin --</option>
+                {% if kelompok_jenis_izin %}
+                  {% for k in kelompok_jenis_izin %}
+                    <option value="{{k.id}}">{{k.kelompok_jenis_izin}}</option>
+                  {% endfor %}
+                {% endif %}
               </select>
             </div>
           </div>
@@ -18,14 +24,14 @@
           <div class="form-group">
             <label for="input01" class="col-sm-2 control-label">No. Izin</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control " id="izin_lain_no_izin">
+              <input type="text" class="form-control " id="izin_lain_no_izin" name="no_izin" required="">
             </div>
           </div>
 
           <div class="form-group">
             <label for="input01" class="col-sm-2 control-label">Dikeluarkan oleh</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control " id="izin_lain_dikeluarkan">
+              <input type="text" class="form-control " id="izin_lain_dikeluarkan" name="dikeluarkan_oleh" required="">
             </div>
           </div>
 
@@ -33,7 +39,7 @@
             <label for="input01" class="col-sm-2 control-label">Tanggal Dikeluarkan</label>
             <div class="col-sm-5">
               <div class="input-group datepicker w-360 mt-10" data-format="L">
-                <input type="text" class="form-control " id="izin_lain_tanggal_keluar">
+                <input type="text" class="form-control " id="izin_lain_tanggal_keluar" name="tanggal_dikeluarkan" required="">
                 <span class="input-group-addon">
                   <span class="fa fa-calendar"></span>
                 </span>
@@ -45,17 +51,18 @@
             <label for="input01" class="col-sm-2 control-label">Masa Berlaku</label>
             <div class="col-sm-4">
               <div class="input-group">
-                <input type="text" class="form-control " id="izin_lain_masa_berlaku">
+                <input type="text" class="form-control " id="izin_lain_masa_berlaku" name="masa_berlaku" required="">
                 <span class="input-group-addon">Tahun</span>
               </div>
             </div>
           </div>
-        </form>
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+        <button type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c" onclick="save_izin_lain();">Simpan</button>
         <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
       </div>
+      </form>
     </div>
   </div>
 </div>

@@ -39,7 +39,7 @@
             </a>
           </div>
           <div class="col-md-3">
-            <a href="#" data-toggle="modal" data-target="#ho">
+            <a href="{% url 'layanan_ho' %}" data-toggle="modal">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
                   <div class="col-xs-12">
@@ -133,6 +133,28 @@
             </a>
           </div>
           <div class="col-md-3">
+            <a href="{% url 'layanan_izin_lokasi' %}" data-toggle="modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Lokasi</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#ippt">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Perubahan Pemakaian Tanah (IPPT)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+<!--           <div class="col-md-3">
             <a href="#" data-toggle="modal" data-target="#modal">
               <div class="panel panel-darkgray col_sm_12 border_tambah">
                 <div class="panel-body">
@@ -142,7 +164,7 @@
                 </div>
               </div>
             </a>
-          </div>
+          </div> -->
         </div>
     </section>
   </div>
@@ -384,7 +406,45 @@
   </div>
 </div>
 
-<div class="modal fade" id="ho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="ippt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Izin Perubahan Pemakaian Tanah (IPPT)</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_ippt_rumah' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IPPT - Rumah</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="#">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IPPT - Usaha</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="modal fade" id="ho" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -393,7 +453,7 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-md-4">
-            <a href="{% url 'layanan_ho_baru' %}">
+            <a href="#">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -404,7 +464,7 @@
             </a>
           </div>
           <div class="col-md-4">
-            <a href="{% url 'layanan_ho_daftar_ulang' %}">
+            <a href="#">
             <div class="panel panel-darkgray col_sm_12 border_tambah">
               <div class="panel-body">
                 <div class="col-xs-12">
@@ -421,9 +481,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -504,5 +564,5 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 {% endblock %}

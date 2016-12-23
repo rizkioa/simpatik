@@ -1,0 +1,309 @@
+<form method="POST" name="step5" role="form">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }}{% if paspor %} / {{ paspor }}{% endif %}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_pemohon_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
+    </tr>
+  </table>
+  <br>
+
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+    </tr>
+  </table>
+
+  <br>
+  <h4><u>#3. Data Kegiata Gangguan</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Rencana Perkiraan Modal</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp. <span id='perkiraan_modal_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Tujuan Gangguan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='tujuan_gangguan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%"><h5><u>Lokasi</u></h5></td>
+      <td width="5%"></td>
+      <td width="70%"></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_ho_konfirmasi'></span></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Desa / Kelurahan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='desa_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kecamatan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kecamatan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kabupaten / Kota</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kabupaten_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%"><h5><u>Dalam Kegiatan Perusahaan</u></h5></td>
+      <td width="5%"></td>
+      <td width="70%"></td>
+    </tr>
+    <tr>
+      <td width="25%">Bahan Baku dan Penolong</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='bahan_baku_dan_penolong_konfirmasi'></span></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Proses Produksi</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='proses_produksi_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Produksi</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_produksi_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kapasitas Produksi</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kapasitas_produksi_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jumlah Tenaga Kerja</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jumlah_tenaga_kerja_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jumlah Mesin</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jumlah_mesin_konfirmasi'></span></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Merk Mesin</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='merk_mesin_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Daya</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='daya_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kekuatan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kekuatan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Luas Ruang Tempat Usaha/Bangunan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='luas_ruang_tempat_usaha_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Luas Lahan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='luas_lahan_usaha_konfirmasi'></span></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Gangguan/Limbah</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_gangguan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Lokasi Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_lokasi_usaha_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Bangunan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_bangunan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+
+  <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN</u></h4>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Izin Mendirikan Bangunan(IMB) sesuai peruntukan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-file_izin_mendirikan_bangunan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Izin Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah
+            (Sertifikat / Akte Jual Beli / Petok D / Surat Keterangan Status Tanah)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-kepemilikan_tanah" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rencana Teknis Bangunan Gedung
+            (Denah Bangunan & Site Plan & Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang mebidangi
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-cetak_biru" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            KTP / Paspor
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-upload_gambar_ktp" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            NPWP Pribadi
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-file_npwp_pribadi" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            NPWP Perusahaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-file_npwp_perusahaan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Surat Kuasa bagi yang Mewakili Perusahaan / Badan Hukum
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-file_surat_kuasa" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt checkbox-custom-lg" style="color: white;">
+        <input id="checkbox_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
+</form>
