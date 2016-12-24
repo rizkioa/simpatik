@@ -19,7 +19,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan
 
 from izin.utils import formatrupiah
 
@@ -291,6 +291,10 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha})
     kelompok_jenis_izin = KelompokJenisIzin.objects.all()
     extra_context.update({'kelompok_jenis_izin': kelompok_jenis_izin})
+    jenis_kedudukan = JenisKedudukan.objects.all()
+    extra_context.update({'jenis_kedudukan': jenis_kedudukan})
+    bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+    extra_context.update({'kegiatan_usaha': bentuk_kegiatan_usaha_list})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '0':
             try:

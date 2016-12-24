@@ -212,6 +212,45 @@
               }
               if ($current == 7) {
                 load_provinsi_(1, '#id_provinsi-5')
+                load_data_pemegang_saham($.cookie('id_pengajuan'))
+                load_data_pimpinan_perusahaan($.cookie('id_pengajuan'))
+                load_data_perusahaan_cabang($.cookie('id_pengajuan'))
+              }
+              if ($current === 8){
+                load_berkas($.cookie('id_pengajuan'))
+                var f = 'form-'
+                frm1 = $('#'+f+'surat_keputusan');
+                frm2 = $('#'+f+'ijin_usaha');
+                frm3 = $('#'+f+'ktp');
+                frm4 = $('#'+f+'npwp_perusahaan');
+                frm5 = $('#'+f+'akta_pendirian');
+                frm6 = $('#'+f+'akta_perubahan');
+                frm7 = $('#'+f+'akta_pengesahaan_menteri');
+                frm8 = $('#'+f+'akta_persetujuan_menteri');
+                frm9 = $('#'+f+'akta_penerimaan_laporan');
+                frm10 = $('#'+f+'akta_penerimaan_pemberitahuan');
+                frm11 = $('#'+f+'sertifikat_asli_tdp');
+                  // frm.parsley().validate();
+                $('#next >').on('click', function() {
+                  frm1.parsley().validate();
+                  frm2.parsley().validate();
+                  frm3.parsley().validate();
+                  frm4.parsley().validate();
+                  frm5.parsley().validate();
+                  frm6.parsley().validate();
+                  frm7.parsley().validate();
+                  frm8.parsley().validate();
+                  frm9.parsley().validate();
+                  frm10.parsley().validate();
+                  // frm11.parsley().validate();
+                  if (!frm1.parsley().isValid() || !!frm2.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate() || !frm7.parsley().validate() || !frm8.parsley().validate() || !frm9.parsley().validate() || !frm10.parsley().validate()){
+                    setTimeout(function(){
+                      toastr["warning"]("Terjadi kesalahan, lengkapi data yang kurang.")
+                      tab_index = '#rootwizard a[href="#tab'+(8)+'"]';
+                      $(tab_index).tab('show');
+                    }, 1000);
+                  }
+                });
               }
               if($current >= $total) {
                 $('#rootwizard').find('.pager .next').hide();
@@ -391,7 +430,7 @@
               $.cookie('npwp_perusahaan_induk', '0' , { path: pathname})
             }
 
-            $('#no_tdp_induk').val('{{pengajuan_.nomor_tdp_kantor_pusat|default_if_none:""}}')
+            
           }
 
       });
@@ -411,6 +450,7 @@
                   
                   $('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
                   $('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
+                  $('#no_tdp_induk').val(respon_induk.data.nomor_tdp)
                   load_kabupaten_(respon_induk.data.provinsi, '#id_kabupaten-3')
                   load_kecamatan_(respon_induk.data.kabupaten, '#id_kecamatan-3')
                   load_desa_(respon_induk.data.kecamatan, '#id_desa-3')
@@ -571,6 +611,7 @@
       $('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
 
       function save_izin_lain(){
+        var id = $('#id_input_izin_lain').val()
         var jenis_izin = $('#izin_lain_jenis_izin').val()
         var no_izin = $('#izin_lain_no_izin').val()
         var di_keluarkan = $('#izin_lain_dikeluarkan').val()
@@ -578,7 +619,7 @@
         var masa_berlaku = $('#izin_lain_masa_berlaku').val()
         $.ajax({
           method: 'POST',
-          data: {kelompok_jenis_izin:jenis_izin, no_izin:no_izin, dikeluarkan_oleh:di_keluarkan, tanggal_dikeluarkan:tanggal, masa_berlaku:masa_berlaku, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+          data: {id:id, kelompok_jenis_izin:jenis_izin, no_izin:no_izin, dikeluarkan_oleh:di_keluarkan, tanggal_dikeluarkan:tanggal, masa_berlaku:masa_berlaku, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
           url: __base_url__+'/ajax-save-izin-lain-tdp/',
           success: function(response){
             resp = $.parseJSON(response)
@@ -596,48 +637,71 @@
               $('#legalitas_lain_modal').modal('hide')
             }
             else{
-              var a = Object.keys(respon);
+              var a = Object.keys(resp);
               for (var i = 0; i < a.length; i++){
                 var field = a[i].replace("_", " ");
-                toastr["error"](field+", "+respon[a[i]][0]['message'])
+                toastr["error"](field+", "+resp[a[i]][0]['message'])
                 $("#"+a[i]+"").addClass("has-error");
               }
+              // toastr["error"](resp.pesan)
             }
           }
+          // error: function(response){
+          //   toastr["error"]("Terjadi kesalahan server.")
+          // }
         });
       }
 
       function load_data_izin_lain(pengajuan_id){
         if (pengajuan_id !== ""){
-          $('#table_izin_lain > tbody').mLoading();
+          $('#table_izin_lain').mLoading();
           $.ajax({
             type: 'GET',
             url: __base_url__+'/ajax-load-data-izin-lain-tdp/'+pengajuan_id,
             success: function (data) {
-              // respon_ = $.parseJSON(results)
+              // resp = $.parseJSON(data)
+              tablekosong = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+              $('#table_izin_lain > tbody').html(tablekosong)
               a = data.length
-              if (data){
-                for (var i = 0; i < a; i++){
-                  id = data[i].id
-                  id_jenis_izin = data[i].id_jenis_izin
-                  nama_jenis_izin = data[i].nama_jenis_izin
-                  no_izin = data[i].no_izin
-                  dikeluarkan_oleh = data[i].dikeluarkan_oleh
-                  tanggal_dikeluarkan = data[i].tanggal_dikeluarkan
-                  masa_berlaku = data[i].masa_berlaku
-                  row = '<tr><td>'+nama_jenis_izin+'</td>'
-                  row += '<td>'+no_izin+'</td>'
-                  row += '<td>'+dikeluarkan_oleh+'</td>'
-                  row += '<td>'+tanggal_dikeluarkan+'</td>'
-                  row += '<td>'+masa_berlaku+'</td>'
-                  row += '<td><button onclick="edit_izin_lain($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 edit_izin_lain" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 delete_izin_lain" value="'+id+'" type="button"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
-                  row += '</tr>'
-                  $('#table_izin_lain > tbody').prepend(row);
+              // console.log(a)
+              if(a === 0){
+                $('#table_izin_lain > tbody > tr:first').remove()
+                table = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+                $('#table_izin_lain > tbody').prepend(table)
+              }
+              else{
+                $('#table_izin_lain > tbody > tr:first').remove()
+                b = data.reverse()
+                $('#switch_stap6_lainnya_disabled').prop( "checked", true );
+                $('.stap6_lainnya').prop('disabled', false);
+                if (data){
+                  for (var i = 0; i < a; i++){
+                    id = b[i].id
+                    id_jenis_izin = b[i].id_jenis_izin
+                    nama_jenis_izin = b[i].nama_jenis_izin
+                    no_izin = b[i].no_izin
+                    dikeluarkan_oleh = b[i].dikeluarkan_oleh
+                    tanggal_dikeluarkan = b[i].tanggal_dikeluarkan
+                    masa_berlaku = b[i].masa_berlaku
+                    no = a
+                    if (a > 1){
+                      no = a-i
+                    }
+                    row = '<tr><td>'+no+'</td>'
+                    row += '<td>'+nama_jenis_izin+'</td>'
+                    row += '<td>'+no_izin+'</td>'
+                    row += '<td>'+dikeluarkan_oleh+'</td>'
+                    row += '<td>'+tanggal_dikeluarkan+'</td>'
+                    row += '<td>'+masa_berlaku+'</td>'
+                    row += '<td><button onclick="edit_izin_lain($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 edit_izin_lain" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 delete_izin_lain" value="'+id+'" type="button" onclick="delete_izin_lain($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+                    row += '</tr>'
+                    $('#table_izin_lain > tbody').prepend(row);
+                  }
                 }
               }
             }
           });
-          $('#table_izin_lain > tbody').mLoading('hide');
+          $('#table_izin_lain').mLoading('hide');
         }
       }
 
@@ -648,6 +712,7 @@
           url: __base_url__+'/ajax-edit-izin-lain-tdp/'+val_,
           success: function (data) {
             resp = $.parseJSON(data)
+            $('#id_input_izin_lain').val(val_)
             $('#izin_lain_jenis_izin').val(resp.data.jenis_izin).prop('disabled', false).trigger("chosen:updated");
             $('#izin_lain_no_izin').val(resp.data.no_izin);
             $('#izin_lain_dikeluarkan').val(resp.data.dikeluarkan_oleh);
@@ -656,6 +721,189 @@
           }
         });
       }
+
+      function delete_izin_lain(val_){
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-delete-izin-lain-tdp/'+val_,
+          success: function (data) {
+            resp = $.parseJSON(data)
+            if (resp.success){
+              toastr["success"](resp.pesan)
+              load_data_izin_lain($.cookie('id_pengajuan'))
+            }
+            else{
+              toastr["error"](resp.pesan)
+            }
+          }
+        });
+      }
+
+      function add_izin_lain(){
+        $('#id_input_izin_lain').val("0");
+        $('#izin_lain_jenis_izin').val("").prop('disabled', false).trigger("chosen:updated");
+        $('#izin_lain_no_izin').val("");
+        $('#izin_lain_dikeluarkan').val("");
+        $('#izin_lain_tanggal_keluar').val("");
+        $('#izin_lain_masa_berlaku').val("");
+      }
+
+      function save_pemegang_saham(){
+        var id = $('#id_pemegang_saham').val()
+        var nama_lengkap = $('#nama_lengkap_pemegang_saham').val()
+        var alamat = $('#alamat_pemegang_saham').val()
+        var no_telp = $('#no_telp_pemegang_saham').val()
+        var kewarganegaraan = $('#kewarganegaraan_pemegang_saham').val()
+        var npwp = $('#npwp_pemegang_saham').val()
+        var dimiliki = $('#jumlah_dimiliki_pemegang_saham').val()
+        var disetor = $('#jumlah_disetor_pemegang_saham').val()
+        $.ajax({
+          method: 'POST',
+          data: {id:id, nama_lengkap:nama_lengkap, alamat:alamat, telephone:no_telp, kewarganegaraan:kewarganegaraan, npwp:npwp, jumlah_saham_dimiliki:dimiliki, jumlah_saham_disetor:disetor, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+          url: __base_url__+'/ajax-save-pemegang-saham/',
+          success: function(response){
+            resp = $.parseJSON(response)
+            if (resp.success){
+              toastr["success"](resp.pesan)
+              $('#create_pemegang_saham').modal('hide')
+              load_data_pemegang_saham($.cookie('id_pengajuan'))
+            }
+            else{
+              var a = Object.keys(resp);
+              for (var i = 0; i < a.length; i++){
+                var field = a[i].replace("_", " ");
+                console.log(a[i][0]['message'])
+                toastr["error"](field+", "+resp[a[i]][0]['message'])
+              //   $("#"+a[i]+"").addClass("has-error");
+              }
+            }
+          } 
+        });
+      }
+
+      function load_data_pemegang_saham(pengajuan_id){
+        if (pengajuan_id !== ""){
+          $('#table_pemegang_saham').mLoading();
+          $.ajax({
+            type: 'GET',
+            url: __base_url__+'/ajax-load-data-pemegang-saham/'+pengajuan_id,
+            success: function (data) {
+              a = data.length
+              
+              // resp = $.parseJSON(data)
+              tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+              $('#table_pemegang_saham > tbody').html(tablekosong)
+
+              if(a === 0){
+                $('#table_pemegang_saham > tbody > tr:first').remove()
+                table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+                $('#table_pemegang_saham > tbody').prepend(table)
+              }
+              else{
+                b = data.reverse()
+                $('#table_pemegang_saham > tbody > tr:first').remove()
+                // console.log(data)
+                for (var i = 0; i < a; i++){
+                  id = b[i].id
+                  nama_lengkap = b[i].nama_lengkap
+                  alamat = b[i].alamat
+                  telephone = b[i].telephone
+                  kewarganegaraan = b[i].kewarganegaraan
+                  npwp = b[i].npwp
+                  dimiliki = b[i].jumlah_saham_dimiliki
+                  disetor = b[i].jumlah_saham_disetor
+                  no = a
+                  if (a > 1){
+                    no = a-i
+                  }
+                  // console.log(no)
+                  row = '<tr>'
+                  row += '<td>'+no+'</td>'
+                  row += '<td>'+nama_lengkap+'</td>'
+                  row += '<td>'+alamat+'</td>'
+                  row += '<td>'+telephone+'</td>'
+                  row += '<td>'+kewarganegaraan+'</td>'
+                  row += '<td>'+npwp+'</td>'
+                  row += '<td>'+dimiliki+'</td>'
+                  row += '<td>'+disetor+'</td>'
+                  row += '<td><button onclick="edit_pemegang_saham($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_pemegang_saham($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+                  row += '</tr>'
+                  $('#table_pemegang_saham > tbody').prepend(row);
+                }
+              }
+            },
+            error: function(data) {
+              toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+            }
+          });
+          
+          $('#table_pemegang_saham').mLoading('hide');
+        }
+      }
+
+      function edit_pemegang_saham(val_){
+        $('#create_pemegang_saham').modal('show')
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-edit-pemegang-saham/'+val_,
+          success: function (data) {
+            resp = $.parseJSON(data)
+            $('#id_pemegang_saham').val(val_)
+            $('#nama_lengkap_pemegang_saham').val(resp.data.nama_lengkap)
+            $('#alamat_pemegang_saham').val(resp.data.alamat)
+            $('#no_telp_pemegang_saham').val(resp.data.telephone)
+            $('#kewarganegaraan_pemegang_saham').val(resp.data.kewarganegaraan).prop('disabled', false).trigger("chosen:updated");
+            $('#npwp_pemegang_saham').val(resp.data.npwp)
+            $('#jumlah_dimiliki_pemegang_saham').val(resp.data.dimiliki)
+            $('#jumlah_disetor_pemegang_saham').val(resp.data.disetor)
+          }
+        });
+      }
+
+      function delete_pemegang_saham(val_){
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-delete-pemegang-saham/'+val_,
+          success: function (data) {
+            resp = $.parseJSON(data)
+            if (resp.success){
+              toastr["success"](resp.pesan)
+              load_data_pemegang_saham($.cookie('id_pengajuan'))
+            }
+            else{
+              toastr["error"](resp.pesan)
+            }
+          }
+        });
+      }
+
+      function add_pemegang_saham(){
+        $('#id_pemegang_saham').val("0")
+        $('#nama_lengkap_pemegang_saham').val("")
+        $('#alamat_pemegang_saham').val("")
+        $('#no_telp_pemegang_saham').val("")
+        $('#kewarganegaraan_pemegang_saham').val("").prop('disabled', false).trigger("chosen:updated");
+        $('#npwp_pemegang_saham').val("")
+        $('#jumlah_dimiliki_pemegang_saham').val("")
+        $('#jumlah_disetor_pemegang_saham').val("")
+      }
+
+      $(window).load(function() {
+        var p = 'percent-'
+        $('#'+p+'surat_keputusan').hide()
+        $('#'+p+'ijin_usaha').hide()
+        $('#'+p+'ktp').hide()
+        $('#'+p+'npwp_perusahaan').hide()
+        $('#'+p+'akta_pendirian').hide()
+        $('#'+p+'akta_perubahan').hide()
+        $('#'+p+'akta_pengesahaan_menteri').hide()
+        $('#'+p+'akta_persetujuan_menteri').hide()
+        $('#'+p+'akta_penerimaan_laporan').hide()
+        $('#'+p+'akta_penerimaan_pemberitahuan').hide()
+        $('#'+p+'sertifikat_asli_tdp').hide()
+        $('#'+p+'berkas_tambahan').hide()
+      });
+      
   </script>
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
   {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}

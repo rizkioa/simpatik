@@ -1,6 +1,7 @@
 from django import forms
 from izin.models import DetilTDP, RincianPerusahaan, IzinLain
-from perusahaan.models import Legalitas, DataPimpinan, PemegangSaham
+from perusahaan.models import Legalitas, DataPimpinan, PemegangSaham, Perusahaan
+from master.models import Berkas
 
 class DataUmumPerusahaanPTForm(forms.ModelForm):
 	class Meta:
@@ -30,7 +31,10 @@ class LegalitasForm(forms.ModelForm):
 class DataPimpinanForm(forms.ModelForm):
 	class Meta:
 		model = DataPimpinan
-		fields = ('nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'telephone', 'hp', 'email', 'kewarganegaraan', 'tanggal_menduduki_jabatan', 'jumlah_saham_dimiliki', 'jumlah_saham_disetor', 'kedudukan_diperusahaan_lain', 'nama_perusahaan_lain', 'alamat_perusahaan_lain', 'kode_pos_perusahaan_lain', 'telepon_perusahaan_lain', 'tanggal_menduduki_jabatan_perusahaan_lain')
+		fields = ('kedudukan', 'nama_lengkap', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'telephone', 'hp', 'email', 'kewarganegaraan', 'tanggal_menduduki_jabatan', 'jumlah_saham_dimiliki', 'jumlah_saham_disetor', 'kedudukan_diperusahaan_lain', 'nama_perusahaan_lain', 'alamat_perusahaan_lain', 'kode_pos_perusahaan_lain', 'telepon_perusahaan_lain', 'tanggal_menduduki_jabatan_perusahaan_lain')
+
+	def clean_email(self):
+		return self.cleaned_data['email'] or None
 
 class PemegangSahamForm(forms.ModelForm):
 	class Meta:
@@ -41,3 +45,13 @@ class IzinLainForm(forms.ModelForm):
 	class Meta:
 		model = IzinLain
 		fields = ('kelompok_jenis_izin', 'no_izin', 'dikeluarkan_oleh', 'tanggal_dikeluarkan', 'masa_berlaku')
+
+class PerusahaanCabangForm(forms.ModelForm):
+	class Meta:
+		model = Perusahaan
+		fields = ('nomor_tdp', 'nama_perusahaan', 'alamat_perusahaan', 'desa', 'kode_pos', 'telepon', 'fax', 'status_perusahaan', 'kegiatan_usaha')
+
+class BerkasForm(forms.ModelForm):
+	class Meta:
+		model = Berkas
+		fields = ('berkas',)

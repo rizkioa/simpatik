@@ -32,6 +32,7 @@ function load_perusahaan_a(npwp_){
 		              	if (respon.data.legalitas_pendirian_nama_notaris !== ""){
 		              		// +++++++ legalitas pendirian ++++++++
 		              		$('#form-akta_pendirian').show()
+		              		$.cookie("id_legalitas", respon.data.legalitas_pendirian_id, { path: '/' })
 		              		$('#switch_akta_pendirian_disabled').prop( "checked", true );
 						    $('.akta_pendirian_disable').prop('disabled', false);
 						    $('#id_nama_notaris_legalitas_pendirian').val(respon.data.legalitas_pendirian_nama_notaris);
@@ -46,10 +47,12 @@ function load_perusahaan_a(npwp_){
 		              	else{
 		              		$('#switch_akta_pendirian_disabled').prop( "checked", false );
 		              		$('#form-akta_pendirian').hide()
+		              		$.cookie("id_legalitas", "0", { path: '/' })
 		              	}
 		              	
 		              	if(respon.data.legalitas_perubahan_nama_notaris !== ""){
 		              		// ++++++ legalitas perubahan ++++++++
+		              		$.cookie("id_legalitas_perubahan", respon.data.legalitas_perubahan_id, { path: '/' })
 		              		$('#form-akta_perubahan').show()
 			              	$('#switch_akta_perubahan_disabled').prop( "checked", true );
 						    $(".akta_perubahan_disable").prop('disabled', false)
@@ -65,6 +68,7 @@ function load_perusahaan_a(npwp_){
 		              	else{
 		              		$('#switch_akta_perubahan_disabled').prop( "checked", false );
 		              		$('#form-akta_perubahan').hide()
+		              		$.cookie("id_legalitas_perubahan", "0", { path: '/' })
 		              	}
 
 		              	if(respon.data.legalitas_3_no_pengesahaan !== ""){
@@ -125,6 +129,8 @@ function load_perusahaan_a(npwp_){
 		          	// $('#id_kabupaten1').val("").prop('selected',true).trigger("chosen:updated");
 		          	$('#id_kecamatan1').val("").prop('selected',true).trigger("chosen:updated");
 		          	$('#id_desa1').val("").prop('selected',true).trigger("chosen:updated");
+		          	$.cookie("id_legalitas", "0", { path: '/' })
+		          	$.cookie("id_legalitas_perubahan", "0", { path: '/' })
 		        }
 	      		$(".tab-content").mLoading('hide');
 	    	},
