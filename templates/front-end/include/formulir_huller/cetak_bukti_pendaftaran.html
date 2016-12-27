@@ -522,12 +522,13 @@
                 <br>
                 <hr class="style14">
                 <h5>Syarat HO:</h5>
-                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
                             <td width="5%">No</td>
-                            <td width="80%">Syarat</td>
-                            <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -536,6 +537,7 @@
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ s.syarat }}</td>
+                                <td align="center"><input type="checkbox"></td>
                                 <td align="center"><input type="checkbox"></td>
                             </tr>
                             {% endfor %}

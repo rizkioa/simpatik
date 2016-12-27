@@ -96,7 +96,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 		elif k.kode == "503.02/":
 			objects_ = getattr(app_models, 'DetilHO')
-		elif k.kode == "503.07/" or k.id == 38:
+		elif k.kode == "503.07/" or k.kode == "IPPT":
 			objects_ = getattr(app_models, 'InformasiTanah')
 		elif k.id == 15:
 			objects_ = getattr(app_models, 'DetilHuller')
