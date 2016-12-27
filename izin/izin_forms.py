@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -175,3 +175,9 @@ class InformasiTanahForm(forms.ModelForm):
 	class Meta:
 		model = InformasiTanah
 		fields = ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil','penggunaan_sekarang','rencana_penggunaan')
+
+class DetilHullerForm(object):
+	"""docstring for DetilHullerForm"""
+	class Meta:
+		model = DetilHuller
+		fields = ('pemilik_badan_usaha','pemilik_nama_perorangan','pemilik_alamat','pemilik_desa','pemilik_kewarganegaraan','pemilik_nama_badan_usaha','pengusaha_badan_usaha','pengusaha_nama_perorangan','pengusaha_alamat','pengusaha_desa','pengusaha_kewarganegaraan','pengusaha_nama_badan_usaha','hubungan_pemilik_pengusaha',)

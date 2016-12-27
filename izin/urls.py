@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha,huller
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
 
@@ -278,4 +278,7 @@ urlpatterns = [
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
+    # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
+    url(r'^layanan/penggilingan-padi-&-huller/save$', huller.detil_huller_save_cookie, name='detil_huller_save_cookie'),
+    # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
     ]

@@ -600,18 +600,18 @@ class InformasiTanah(PengajuanIzin):
 class DetilHuller(PengajuanIzin):
 	perusahaan = models.ForeignKey('perusahaan.Perusahaan', related_name='detilhuller_perusahaan', blank=True, null=True)
 	
-	pemilik_badan_usaha = models.BooleanField() #Pemilik perorangan atau badan usaha, jika badan usaha wajib upload akta
+	pemilik_badan_usaha = models.BooleanField(default=False) #Pemilik perorangan atau badan usaha, jika badan usaha wajib upload akta
 	
 	pemilik_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
 	pemilik_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
-	pemilik_desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	pemilik_desa = models.ForeignKey(Desa, verbose_name='Desa', related_name='pemilik_desa',null=True, blank=True)
 	pemilik_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
 	pemilik_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
 
-	pengusaha_badan_usaha = models.BooleanField() #Pengusaha perorangan atau badan usaha, jika badan usaha wajib upload akta
+	pengusaha_badan_usaha = models.BooleanField(default=False) #Pengusaha perorangan atau badan usaha, jika badan usaha wajib upload akta
 	pengusaha_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
 	pengusaha_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
-	pengusaha_desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	pengusaha_desa = models.ForeignKey(Desa, verbose_name='Desa', related_name='pengusaha_desa',null=True, blank=True)
 	pengusaha_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
 	pengusaha_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
 
@@ -658,7 +658,7 @@ class MesinPerusahaan(MetaAtribut):
 	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
 
 	type_model = models.CharField(max_length=255, verbose_name='Type / Model', blank=True, null=True)
-	pk = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
+	pk_mesin	 = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
 	buatan = models.CharField(max_length=255, verbose_name='Buatan / Merk', blank=True, null=True)
 	jumlah_unit = models.IntegerField(verbose_name="Jumlah Unit", null=True, blank=True)
 	# selain penggerak tambah kapasitas

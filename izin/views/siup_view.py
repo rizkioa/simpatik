@@ -21,7 +21,7 @@ from izin.utils import get_nomor_pengajuan
 from izin.utils import formatrupiah
 
 from izin import models as app_models
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna
@@ -40,8 +40,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
 	except ObjectDoesNotExist:
-		pemohon = PemohonForm(request.POST)
-				
+		pemohon = PemohonForm(request.POST)		
 	if pemohon.is_valid():
 		# Untuk Nomor Identitas
 		ktp_ = request.POST.get('ktp', None)
@@ -99,6 +98,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilHO')
 		elif k.kode == "503.07/" or k.id == 38:
 			objects_ = getattr(app_models, 'InformasiTanah')
+		elif k.id == 15:
+			objects_ = getattr(app_models, 'DetilHuller')
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
@@ -201,6 +202,8 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilHO')
 					elif k.kode == "503.07/" or k.id == 38:
 						objects_ = getattr(app_models, 'InformasiTanah')
+					elif k.id == 15:
+						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
 						try:
 							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -254,6 +257,8 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilHO')
 					elif k.kode == "503.07/" or k.id == 38:
 						objects_ = getattr(app_models, 'InformasiTanah')
+					elif k.id == 15:
+						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
 						try:
 							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
