@@ -91,6 +91,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def survey(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def verifikasi_skizin(self, request, extra_context={}):
 		self.request = request
 		izin = KelompokJenisIzin.objects.all()
@@ -148,6 +154,8 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(status=1)
 		elif func_view.__name__ == 'semua_pengajuan':
 			pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
+		elif func_view.__name__ == 'survey':
+			pengajuan_ = qs.filter(status=8)
 		elif func_view.__name__ == 'verifikasi':
 			if request.user.groups.filter(name='Operator'):
 				pengajuan_ = qs.filter(status=6)
@@ -964,6 +972,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^create-skizin/$', self.admin_site.admin_view(self.create_skizin), name='create_skizin'),
 			url(r'^cetak-siup-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_siup_asli), name='cetak_siup_asli'),
 			url(r'^verifikasi/$', self.admin_site.admin_view(self.verifikasi), name='verifikasi'),
+			url(r'^survey/$', self.admin_site.admin_view(self.survey), name='survey'),
 			url(r'^semua-pengajuan/$', self.admin_site.admin_view(self.semua_pengajuan), name='semua_pengajuan'),
 			url(r'^penomoran-skizin/$', self.admin_site.admin_view(self.penomoran_skizin), name='penomoran_skizin'),
 			url(r'^stemple-skizin/$', self.admin_site.admin_view(self.stemple_izin), name='stemple_izin'),
