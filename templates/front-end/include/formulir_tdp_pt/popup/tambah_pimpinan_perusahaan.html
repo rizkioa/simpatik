@@ -5,32 +5,36 @@
         <h3 class="modal-title custom-font">Tambah Pimpinan Perusahaan</h3>
       </div>
       <div class="modal-body">
-        <form role="form" class="form-horizontal">
+        <form role="form" class="form-horizontal" id="form_pimpinan_perusahaan" action="{% url 'data_pimpinan_save' %}">
+          <input type="hidden" id="id_data_pimpinan">
+          {% csrf_token %}
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>Kedudukan dalam Perusahaan</strong></label>
+            <label  class="col-sm-3 control-label"><strong>Kedudukan dalam Perusahaan</strong></label>
             <div class="col-sm-7">
-              <select class="form-control chosen-select mb-10">
+              <select class="form-control chosen-select mb-10" id="kedudukan_data_pimpinan">
                 <option>-- Pilih Kedudukan dalam Perusahaan --</option>
-                <option>Dirut / Dir Cabang / Penanggung</option>
-                <option>Direktur</option>
-                <option>Komisaris</option>
+                {% if jenis_kedudukan %}
+                  {% for j in jenis_kedudukan %}
+                    <option value="{{j.id}}">{{j.kedudukan_pimpinan}}</option>
+                  {% endfor %}
+                {% endif %}
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>Nama Lengkap</strong></label>
+            <label  class="col-sm-3 control-label"><strong>Nama Lengkap</strong></label>
             <div class="col-sm-7">
-              <input type="text" class="form-control" id="input01">
+              <input type="text" class="form-control" id="nama_lengkap_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>Tempat / Tgl Lahir</strong></label>
+            <label  class="col-sm-3 control-label"><strong>Tempat / Tgl Lahir</strong></label>
             <div class="col-sm-3">
-              <input type="text" class="form-control" id="input01">
+              <input type="text" class="form-control" id="tempat_lahir_data_pimpinan">
             </div>
-            <div class="col-sm-3">
-              <div class="input-group datepicker" data-format="L">
-                <input type="text" class="form-control">
+            <div class="col-sm-4">
+              <div class="input-group datepicker" data-format="L" >
+                <input type="text" class="form-control" id="tanggal_lahir_data_pimpinan">
                 <span class="input-group-addon">
                   <span class="fa fa-calendar"></span>
                 </span>
@@ -38,44 +42,44 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>Alamat</strong></label>
+            <label  class="col-sm-3 control-label"><strong>Alamat</strong></label>
             <div class="col-sm-7">
-              <textarea class="form-control" rows="5" name=""></textarea>
+              <textarea class="form-control" rows="5" id="alamat_data_pimpinan"></textarea>
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Telepon</label>
+            <label  class="col-sm-3 control-label">Telepon</label>
             <div class="col-sm-5">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" id="telephone_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>No. HP</strong></label>
+            <label  class="col-sm-3 control-label"><strong>No. HP</strong></label>
             <div class="col-sm-5">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" id="hp_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Email</label>
+            <label  class="col-sm-3 control-label">Email</label>
             <div class="col-sm-5">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" id="email_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Kewarganegaraan</label>
+            <label  class="col-sm-3 control-label">Kewarganegaraan</label>
             <div class="col-sm-7">
-              <select class="form-control chosen-select mb-10">
-                <option>-- Pilih Kewarganegaraan --</option>
-                <option>Indonesia</option>
-                <option>Asing</option>
+              <select class="form-control chosen-select mb-10" id="kewarganegaraan_data_pimpinan">
+                <option value>-- Pilih Kewarganegaraan --</option>
+                <option value="WNI">WNI</option>
+                <option value="WNA">WNA</option>
               </select>
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>Tgl. mulai menduduki jabatan</strong></label>
-            <div class="col-sm-3">
+            <label  class="col-sm-3 control-label"><strong>Tgl. mulai menduduki jabatan</strong></label>
+            <div class="col-sm-5">
               <div class="input-group datepicker" data-format="L">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" id="tanggal_menduduki_jabatan_data_pimpinan">
                 <span class="input-group-addon">
                   <span class="fa fa-calendar"></span>
                 </span>
@@ -84,70 +88,268 @@
           </div>
           <h5><u>Bila sebagai Pemegang Saham (Khusus Komisaris / Direktur)</u></h5>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Jumlah saham yang dimiliki</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 control-label">Jumlah saham yang dimiliki</label>
+            <div class="col-sm-5">
               <div class="input-group">
-                <input type="text" class="form-control" id="input01">
+                <input type="text" class="form-control" id="jumlah_saham_dimiliki_data_pimpinan">
                 <span class="input-group-addon">Lembar</span>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Jumlah modal disetor</label>
-            <div class="col-sm-4">
+            <label  class="col-sm-3 control-label">Jumlah modal disetor</label>
+            <div class="col-sm-5">
               <div class="input-group">
                 <span class="input-group-addon">Rp.</span>
-                <input type="text" class="form-control" id="input01">
+                <input type="text" class="form-control" id="jumlah_saham_disetor_data_pimpinan">
               </div>
             </div>
           </div>
           <h5><u>Bila Memiliki Kedudukan di Perusahaan Lain</u></h5>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Kedudukan dalam Perusahaan lain</label>
+            <label  class="col-sm-3 control-label">Kedudukan dalam Perusahaan lain</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" id="kedudukan_diperusahaan_lain_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Nama Perusahaan</label>
+            <label  class="col-sm-3 control-label">Nama Perusahaan</label>
             <div class="col-sm-7">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" id="nama_perusahaan_lain_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Alamat</label>
+            <label  class="col-sm-3 control-label">Alamat</label>
             <div class="col-sm-7">
-              <textarea class="form-control" rows="5" name=""></textarea>
+              <textarea class="form-control" rows="5" id="alamat_perusahaan_lain_data_pimpinan"></textarea>
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">Kode Pos</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control">
+            <label  class="col-sm-3 control-label">Kode Pos</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="kode_pos_perusahaan_lain_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label">No.Telp</label>
-            <div class="col-sm-3">
-              <input type="text" class="form-control">
+            <label  class="col-sm-3 control-label">No.Telp</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="telepon_perusahaan_lain_data_pimpinan">
             </div>
           </div>
           <div class="form-group">
-            <label for="input01" class="col-sm-3 control-label"><strong>Tgl. mulai menduduki jabatan</strong></label>
-            <div class="col-sm-3">
+            <label  class="col-sm-3 control-label"><strong>Tgl. mulai menduduki jabatan</strong></label>
+            <div class="col-sm-5">
               <div class="input-group datepicker" data-format="L">
-                <input type="text" class="form-control">
+                <input type="text" class="form-control" id="tanggal_menduduki_jabatan_perusahaan_lain_data_pimpinan">
                 <span class="input-group-addon">
                   <span class="fa fa-calendar"></span>
                 </span>
               </div>
             </div>
           </div>
-        </form>
+        
       </div>
       <div class="modal-footer">
-        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+        <button onclick="save_data_pimpinan();" id="modal_save_data_pimpinan" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+        <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
       </div>
+      </form>
     </div>
   </div>
-</div>
+</div> 
+<script type="text/javascript">
+  function save_data_pimpinan(){
+        // alert('sesuatu')
+        var id = $('#id_data_pimpinan').val()
+        var kedudukan = $('#kedudukan_data_pimpinan').val()
+        var nama_lengkap = $('#nama_lengkap_data_pimpinan').val()
+        var tempat_lahir = $('#tempat_lahir_data_pimpinan').val()
+        var tanggal_lahir = $('#tanggal_lahir_data_pimpinan').val()
+        var alamat = $('#alamat_data_pimpinan').val()
+        var telephone = $('#telephone_data_pimpinan').val()
+        var hp = $('#hp_data_pimpinan').val()
+        var email = $('#email_data_pimpinan').val()
+        var kewarganegaraan = $('#kewarganegaraan_data_pimpinan').val()
+        var tanggal_menduduki = $('#tanggal_menduduki_jabatan_data_pimpinan').val()
+        var dimiliki = $('#jumlah_saham_dimiliki_data_pimpinan').val()
+        var disetor = $('#jumlah_saham_disetor_data_pimpinan').val()
+        var kedudukan_lain = $('#kedudukan_diperusahaan_lain_data_pimpinan').val()
+        var nama_perusahaan = $('#nama_perusahaan_lain_data_pimpinan').val()
+        var alamat_lain = $('#alamat_perusahaan_lain_data_pimpinan').val()
+        var kode_pos_lain = $('#kode_pos_perusahaan_lain_data_pimpinan').val()
+        var telephone_lain = $('#telepon_perusahaan_lain_data_pimpinan').val()
+        var tanggal_menduduki_lain = $('#tanggal_menduduki_jabatan_perusahaan_lain_data_pimpinan').val()
+
+        $.ajax({
+          method: 'POST',
+          data: {id:id, kedudukan:kedudukan, nama_lengkap:nama_lengkap, tempat_lahir:tempat_lahir, tanggal_lahir:tanggal_lahir, alamat:alamat, telephone:telephone, hp:hp, email:email, kewarganegaraan:kewarganegaraan, tanggal_menduduki_jabatan:tanggal_menduduki, jumlah_saham_dimiliki:dimiliki, jumlah_saham_disetor:disetor, kedudukan_diperusahaan_lain:kedudukan_lain, nama_perusahaan_lain:nama_perusahaan, alamat_perusahaan_lain:alamat_lain, kode_pos_perusahaan_lain:kode_pos_lain, telepon_perusahaan_lain:telephone_lain, tanggal_menduduki_jabatan_perusahaan_lain:tanggal_menduduki_lain, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+          url: __base_url__+'/ajax-save-data-pimpinan/', 
+          success: function(response){
+            // alert('ajax')
+            // console.log('masuk ajax')
+            resp = $.parseJSON(response)
+            if (resp.success){
+              // console.log('masuk if')
+              toastr["success"](resp.pesan)
+              $('#create_pimpinan').modal('hide')
+              load_data_pimpinan_perusahaan($.cookie('id_pengajuan'))
+            }
+            else{
+              // console.log('masuk else')
+              // toastr["error"](resp.pesan)
+              
+              var a = Object.keys(resp);
+              for (var i = 0; i < a.length; i++){
+                var field = a[i].replace("_", " ");
+                console.log(a[i][0]['message'])
+                toastr["error"](field+", "+resp[a[i]][0]['message'])
+              //   $("#"+a[i]+"").addClass("has-error");
+              }
+            }
+          }         
+        });
+      }
+
+      function load_data_pimpinan_perusahaan(pengajuan_id){
+
+        if (pengajuan_id !== ""){
+          tablekosong = '<tr><td colspan="19" align="center">Kosong/Tidak ada...!!!</td></tr>'
+              $('#table_data_pimpinan > tbody').html(tablekosong)
+          $('#table_data_pimpinan').mLoading();
+          $.ajax({
+            type: 'GET',
+            url: __base_url__+'/ajax-load-data-data-pimpinan/'+pengajuan_id,
+            success: function (data) {
+              a = data.length
+              if(a === 0){
+                $('#table_data_pimpinan > tbody > tr:first').remove()
+                table = '<tr><td colspan="19" align="center">Kosong/Tidak ada...!!!</td></tr>'
+                $('#table_data_pimpinan > tbody').prepend(table)
+              }
+              else{
+                b = data.reverse()
+                $('#table_data_pimpinan > tbody > tr:first').remove()
+                // console.log(data)
+                for (var i = 0; i < a; i++){
+                  id = b[i].id
+                  nama_lengkap = b[i].nama_lengkap
+                  tempat_lahir = b[i].tempat_lahir
+                  tanggal_lahir = b[i].tanggal_lahir
+                  alamat = b[i].alamat
+                  hp = b[i].hp
+                  email = b[i].email
+                  telephone = b[i].telephone
+                  kewarganegaraan = b[i].kewarganegaraan
+                  kedudukan = b[i].kedudukan
+                  tanggal_menduduki_jabatan = b[i].tanggal_menduduki_jabatan
+                  jumlah_saham_dimiliki = b[i].jumlah_saham_dimiliki
+                  jumlah_saham_disetor = b[i].jumlah_saham_disetor
+                  kedudukan_diperusahaan_lain = b[i].kedudukan_diperusahaan_lain
+                  nama_perusahaan_lain = b[i].nama_perusahaan_lain
+                  alamat_perusahaan_lain = b[i].alamat_perusahaan_lain
+                  kode_pos_perusahaan_lain = b[i].kode_pos_perusahaan_lain
+                  telepon_perusahaan_lain = b[i].telepon_perusahaan_lain
+                  tanggal_menduduki_jabatan_perusahaan_lain = b[i].tanggal_menduduki_jabatan_perusahaan_lain
+                  no = a
+                  if (a > 1){
+                    no = a-i
+                  }
+                  row = '<tr>'
+                  row += '<td>'+no+'</td>'
+                  row += '<td>'+kedudukan+'</td>'
+                  row += '<td>'+nama_lengkap+'</td>'
+                  row += '<td>'+tempat_lahir+', '+tanggal_lahir+'</td>'
+                  row += '<td>'+alamat+'</td>'
+                  row += '<td>'+telephone+'</td>'
+                  row += '<td>'+hp+'</td>'
+                  row += '<td>'+email+'</td>'
+                  row += '<td>'+kewarganegaraan+'</td>'
+                  row += '<td>'+tanggal_menduduki_jabatan+'</td>'
+                  row += '<td>'+jumlah_saham_dimiliki+'</td>'
+                  row += '<td>'+jumlah_saham_disetor+'</td>'
+                  row += '<td>'+kedudukan_diperusahaan_lain+'</td>'
+                  row += '<td>'+nama_perusahaan_lain+'</td>'
+                  row += '<td>'+alamat_perusahaan_lain+'</td>'
+                  row += '<td>'+kode_pos_perusahaan_lain+'</td>'
+                  row += '<td>'+telepon_perusahaan_lain+'</td>'
+                  row += '<td>'+tanggal_menduduki_jabatan_perusahaan_lain+'</td>'
+                  row += '<td><button onclick="edit_data_pimpinan($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_data_pimpinan($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+                  row += '</tr>'
+                  $('#table_data_pimpinan > tbody').prepend(row)
+                }
+              }
+            }
+          });
+          $('#table_data_pimpinan').mLoading('hide');
+        }
+      }
+
+      function add_data_pimpinan(){
+        $('#id_data_pimpinan').val("0")
+        $('#kedudukan_data_pimpinan').val("").prop('disabled', false).trigger("chosen:updated");
+        $('#nama_lengkap_data_pimpinan').val("")
+        $('#tempat_lahir_data_pimpinan').val("")
+        $('#tanggal_lahir_data_pimpinan').val("")
+        $('#alamat_data_pimpinan').val("")
+        $('#telephone_data_pimpinan').val("")
+        $('#hp_data_pimpinan').val("")
+        $('#email_data_pimpinan').val("")
+        $('#kewarganegaraan_data_pimpinan').val("").prop('disabled', false).trigger("chosen:updated");
+        $('#tanggal_menduduki_jabatan_data_pimpinan').val("")
+        $('#jumlah_saham_dimiliki_data_pimpinan').val("")
+        $('#jumlah_saham_disetor_data_pimpinan').val("")
+        $('#kedudukan_diperusahaan_lain_data_pimpinan').val("")
+        $('#nama_perusahaan_lain_data_pimpinan').val("")
+        $('#alamat_perusahaan_lain_data_pimpinan').val("")
+        $('#kode_pos_perusahaan_lain_data_pimpinan').val("")
+        $('#telepon_perusahaan_lain_data_pimpinan').val("")
+        $('#tanggal_menduduki_jabatan_perusahaan_lain_data_pimpinan').val("")
+      }
+
+      function edit_data_pimpinan(val_){
+        $('#create_pimpinan').modal('show')
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-edit-data-pimpinan/'+val_,
+          success: function (data) {
+            resp = $.parseJSON(data)
+            $('#id_data_pimpinan').val(val_)
+            $('#kedudukan_data_pimpinan').val(resp.data.kedudukan).prop('disabled', false).trigger("chosen:updated");
+            $('#nama_lengkap_data_pimpinan').val(resp.data.nama_lengkap)
+            $('#tempat_lahir_data_pimpinan').val(resp.data.tempat_lahir)
+            $('#tanggal_lahir_data_pimpinan').val(resp.data.tanggal_lahir)
+            $('#alamat_data_pimpinan').val(resp.data.alamat)
+            $('#telephone_data_pimpinan').val(resp.data.telephone)
+            $('#hp_data_pimpinan').val(resp.data.hp)
+            $('#email_data_pimpinan').val(resp.data.email)
+            $('#kewarganegaraan_data_pimpinan').val(resp.data.kewarganegaraan).prop('disabled', false).trigger("chosen:updated");
+            $('#tanggal_menduduki_jabatan_data_pimpinan').val(resp.data.tanggal_menduduki_jabatan)
+            $('#jumlah_saham_dimiliki_data_pimpinan').val(resp.data.dimiliki)
+            $('#jumlah_saham_disetor_data_pimpinan').val(resp.data.disetor)
+            $('#kedudukan_diperusahaan_lain_data_pimpinan').val(resp.data.kedudukan_diperusahaan_lain)
+            $('#nama_perusahaan_lain_data_pimpinan').val(resp.data.nama_perusahaan_lain)
+            $('#alamat_perusahaan_lain_data_pimpinan').val(resp.data.alamat_perusahaan_lain)
+            $('#kode_pos_perusahaan_lain_data_pimpinan').val(resp.data.kode_pos_perusahaan_lain)
+            $('#telepon_perusahaan_lain_data_pimpinan').val(resp.data.telepon_perusahaan_lain)
+            $('#tanggal_menduduki_jabatan_perusahaan_lain_data_pimpinan').val(resp.data.tanggal_menduduki_jabatan_perusahaan_lain)
+          }
+        });
+      }
+
+      function delete_data_pimpinan(val_){
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-delete-data-pimpinan/'+val_,
+          success: function (data) {
+            resp = $.parseJSON(data)
+            if (resp.success){
+              toastr["success"](resp.pesan)
+              load_data_pimpinan_perusahaan($.cookie('id_pengajuan'))
+            }
+            else{
+              toastr["error"](resp.pesan)
+            }
+          }
+        });
+      }
+</script>

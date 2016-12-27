@@ -388,7 +388,7 @@ class DetilTDP(PengajuanIzin):
 	jangka_waktu_berdiri = models.PositiveSmallIntegerField(verbose_name='Jangka Waktu Berdiri (Berapa Tahun?)', null=True, blank=True)
 
 	# Jika bukan kantor pusat
-	nomor_tdp_kantor_pusat = models.CharField(max_length=150, verbose_name='No. TDP Kantor Pusat', null=True, blank=True)
+	# nomor_tdp_kantor_pusat = models.CharField(max_length=150, verbose_name='No. TDP Kantor Pusat', null=True, blank=True)
 	# Jika memiliki unit produksi
 	alamat_unit_produksi = models.CharField(max_length=255,  verbose_name='Alamat Unit Produksi', null=True, blank=True)
 	desa_unit_produksi = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)

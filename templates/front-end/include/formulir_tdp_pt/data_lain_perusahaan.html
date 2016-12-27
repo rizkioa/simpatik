@@ -1,4 +1,4 @@
-<form method="POST" name="step7" role="form" class="form-horizontal">
+<form method="POST" name="step7" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
 {% csrf_token %}
     <h3>DATA LAIN PERUSAHAAN</h3>
     <hr class="style14">
@@ -11,7 +11,7 @@
     <div class="row">
     	<div class="col-md-12">
     		<div class="table-responsive">
-		    	<table class="table">
+		    	<table class="table table-striped" id="table_data_pimpinan">
 		    		<thead>
 		    			<tr>
 		    				<th>No</th>
@@ -19,8 +19,9 @@
 		    				<th>Nama Lengkap</th>
 		    				<th>Tempat & Tgl Lahir</th>
 		    				<th>Alamat Tetap</th>
-		    				<th>Kode Pos</th>
 		    				<th>No. Telepon</th>
+		    				<th>No. Hp</th>
+		    				<th>Email</th>
 		    				<th>Kewarganegaraan</th>
 		    				<th>Tgl Mulai Menduduki Jabatan</th>
 		    				<th>(Khusus Komisaris / Direktur) Jumlah saham yang memiliki (lembar)</th>
@@ -35,47 +36,26 @@
 		    			</tr>
 		    		</thead>
 		    		<tbody>
-		    			<tr>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    			</tr>
 		    		</tbody>
 		    	</table>
 		    </div>
     	</div>
     </div>
 
-	<a data-toggle="modal" data-target="#create_pimpinan" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pimpinan Perusahaan</a>
+	<a onclick="add_data_pimpinan()" data-toggle="modal" data-target="#create_pimpinan" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pimpinan Perusahaan</a>
 
     <h4><u>PEMEGANG SAHAM</u></h4>
     <div class="row">
     	<div class="col-md-12">
     		<div class="table-responsive">
-		    	<table class="table">
+		    	<table class="table table-striped" id="table_pemegang_saham">
 		    		<thead>
 		    			<tr>
 		    				<th>No.</th>
 		    				<th>Nama lengkap</th>
-		    				<th>Tempat & Tgl. lahir</th>
+		    				<!-- <th>Tempat & Tgl. lahir</th> -->
 		    				<th>Alamat Tetap</th>
-		    				<th>Kode Pos</th>
+		    				<!-- <th>Kode Pos</th> -->
 		    				<th>No. Telp</th>
 		    				<th>Kewarganegaraan</th>
 		    				<th>NPWP</th>
@@ -85,33 +65,20 @@
 		    			</tr>
 		    		</thead>
 		    		<tbody>
-		    			<tr>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    			</tr>
 		    		</tbody>
 		    	</table>
 		    </div>
 		</div>
 	</div>
 
-	<a data-toggle="modal" data-target="#create_pemegang_saham" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pemegang Saham</a>
+	<a onclick="add_pemegang_saham()" data-toggle="modal" data-target="#create_pemegang_saham" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pemegang Saham</a>
 
 	<h4><u>KATEGORI PERUSAHAAN (Kantor Tunggal tidak perlu mengisi)</u></h4>
 	<h5>Apabila pendaftaran ini dilakukan oleh Kantor Pusat/Induk, agar disebutkan Kantor Cabang/Kantor Pembantu/ Perwakilan</h5>
 	<div class="row">
     	<div class="col-md-12">
     		<div class="table-responsive">
-		    	<table class="table">
+		    	<table class="table table-striped" id="table_perusahaan_cabang">
 		    		<thead>
 		    			<tr>
 		    				<th>No.</th>
@@ -128,24 +95,11 @@
 		    			</tr>
 		    		</thead>
 		    		<tbody>
-		    			<tr>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    			</tr>
 		    		</tbody>
 		    	</table>
 		    </div>
 		</div>
 	</div>
 
-	<a data-toggle="modal" data-target="#create_cabang" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kantor Cabang/Pembantu/Perwakilan</a>
+	<a onclick="add_perusahaan_cabang();" data-toggle="modal" data-target="#create_cabang" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kantor Cabang/Pembantu/Perwakilan</a>
 </form>

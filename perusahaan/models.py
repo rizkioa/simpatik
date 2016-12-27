@@ -122,6 +122,8 @@ class Perusahaan(AtributTambahan):
 	perusahaan_induk = models.ForeignKey('Perusahaan', related_name='izin_perusahaan_induk', blank=True, null=True) # contoh: Jika cabang, pusat nya dimasukkan juga
 	perusahaan_lama = models.ForeignKey('Perusahaan', related_name='izin_perusahaan_lama', blank=True, null=True) # contoh: pengembangan CV ke PT
 
+	nomor_tdp = models.CharField(max_length=100, verbose_name="Nomor TDP", null=True, blank=True)
+
 	nama_perusahaan = models.CharField(max_length=100, verbose_name='Nama Perusahaan')
 	nama_grup = models.CharField(max_length=100, verbose_name='Nama Grup Perusahaan', blank=True, null=True)
 	alamat_perusahaan = models.CharField(max_length=255,  verbose_name='Alamat Perusahaan')
@@ -135,10 +137,17 @@ class Perusahaan(AtributTambahan):
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_perusahaan', blank=True, null=True)
 	penanggung_jawab = models.ForeignKey('izin.Pemohon', related_name='penanggung_jawab_perusahaan', blank=True, null=True)
+
+	# Untuk masalah penambahan perusahaan cabang perlu ini
+	status_perusahaan = models.CharField(max_length=100, verbose_name="Status Perusahaan", null=True, blank=True)
+	kegiatan_usaha = models.CharField(max_length=100, verbose_name="Kegiatan Usaha", null=True, blank=True)
+
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
+	def as_json(self):
+		return dict(id=self.id, nomor_tdp=self.nomor_tdp, nama_perusahaan=self.nama_perusahaan, alamat_perusahaan=self.alamat_perusahaan, desa=self.desa.id, kecamatan=self.desa.kecamatan.id, kabupaten=self.desa.kecamatan.kabupaten.id, provinsi=self.desa.kecamatan.kabupaten.provinsi.id, kode_pos=self.kode_pos, telepon=self.telepon, fax=self.fax, email=self.email, npwp=self.npwp, status_perusahaan=self.status_perusahaan, kegiatan_usaha=self.kegiatan_usaha, nama_kabupaten=self.desa.kecamatan.kabupaten.nama_kabupaten, nama_provinsi=self.desa.kecamatan.kabupaten.provinsi.nama_provinsi)
 
 	def __unicode__ (self):
 		return "%s" % (self.nama_perusahaan)
@@ -188,6 +197,24 @@ class Legalitas(AtributTambahan):
 			"nomor_pengesahan": self.nomor_pengesahan,
 			"tanggal_pengesahan": self.tanggal_pengesahan.strftime('%d-%m-%Y'),			
 		}
+
+	def as_json(self):
+		tanggal_akta = ''
+		if self.tanggal_akta:
+			tanggal_akta = self.tanggal_akta.strftime('%d-%m-%Y')
+		tanggal_pengesahan = ''
+		if self.tanggal_pengesahan:
+			tanggal_pengesahan = self.tanggal_pengesahan.strftime('%d-%m-%Y')
+		alamat = '-'
+		if self.alamat:
+			alamat = self.alamat
+		telephone = '-'
+		if self.telephone:
+			telephone = self.telephone
+		nomor_akta = '-'
+		if self.nomor_akta:
+			nomor_akta = self.nomor_akta
+		return dict(jenis_legalitas=self.jenis_legalitas.jenis_legalitas, nama_notaris=self.nama_notaris, alamat=alamat, telephone=telephone, nomor_akta=nomor_akta, tanggal_akta=tanggal_akta, nomor_pengesahan=self.nomor_pengesahan, tanggal_pengesahan=tanggal_pengesahan)
 
 	class Meta:
 		ordering = ['id']
@@ -257,7 +284,7 @@ class JenisKedudukan(models.Model):
 
 class DataPimpinan(IdentitasPribadi):
 	"""docstring for Data Pimpinan"""
-	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
+	# perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan')
 	kedudukan = models.ForeignKey(JenisKedudukan, verbose_name='Jenis Kedudukan')
 	detil_tdp = models.ForeignKey('izin.DetilTDP', verbose_name='Detil TDP')
 	tanggal_menduduki_jabatan = models.DateField(verbose_name='Tanggal Menduduki Jabatan')
@@ -274,6 +301,9 @@ class DataPimpinan(IdentitasPribadi):
 	def __unicode__(self):
 		return "%s" % (self.kedudukan)
 
+	def as_json(self):
+		return dict(id=self.id, nama_lengkap=self.nama_lengkap, tempat_lahir=self.tempat_lahir, tanggal_lahir=self.tanggal_lahir.strftime('%d-%m-%Y'), alamat=self.alamat, telephone=self.telephone, hp=self.hp, email=self.email if self.email else "-", kewarganegaraan=self.kewarganegaraan, kedudukan=self.kedudukan.kedudukan_pimpinan, tanggal_menduduki_jabatan=self.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'), jumlah_saham_dimiliki=int(self.jumlah_saham_dimiliki), jumlah_saham_disetor=int(self.jumlah_saham_disetor), kedudukan_diperusahaan_lain=self.kedudukan_diperusahaan_lain, nama_perusahaan_lain=self.nama_perusahaan_lain, alamat_perusahaan_lain=self.alamat_perusahaan_lain, kode_pos_perusahaan_lain=self.kode_pos_perusahaan_lain, telepon_perusahaan_lain=self.telepon_perusahaan_lain, tanggal_menduduki_jabatan_perusahaan_lain=self.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y') if self.tanggal_menduduki_jabatan_perusahaan_lain else "-")
+
 	class Meta:
 		ordering = ['id']
 		verbose_name = 'Data Pimpinan'
@@ -281,12 +311,17 @@ class DataPimpinan(IdentitasPribadi):
 
 class PemegangSaham(IdentitasPribadi):
 	"""docstring for Pemegang Saham"""
+	pengajuan_izin = models.ForeignKey('izin.PengajuanIzin', related_name='pengajuan_izin_pemegang_saham', verbose_name='Izin Pemegang Saham ')
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
 	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
 	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
 
 	def __unicode__(self):
 		return "%s" % (self.npwp)
+
+	def as_json(self):
+		return dict(
+			id=self.id, nama_lengkap=self.nama_lengkap, alamat=self.alamat, telephone=self.telephone, kewarganegaraan=self.kewarganegaraan, npwp=self.npwp, jumlah_saham_dimiliki=int(self.jumlah_saham_dimiliki), jumlah_saham_disetor=int(self.jumlah_saham_disetor))
 
 	class Meta:
 		ordering = ['id']

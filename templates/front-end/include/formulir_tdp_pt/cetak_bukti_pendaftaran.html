@@ -4,15 +4,10 @@
 <head>
 	<title>Cetak Bukti Pendaftaran</title>
 </head>
-<!--[if ]>
-<style>
-.page{
-    min-height: 309mm;
-}
-</style>
-<![endif]-->
 <style type="text/css">
-    
+    hr.style18 {
+        border-top: 3px double #8c8b8b;
+    }
     hr.style14 { 
         border: 0; 
         height: 1px; 
@@ -54,7 +49,7 @@
     }
     
     @page {
-        size: A4;
+        size: F4;
         margin: 0;
     }
     @media print {
@@ -86,7 +81,7 @@
     }
 
     table {
-    border-collapse: collapse;
+        border-collapse: collapse;
 	}
 
 	.ceklist {
@@ -96,8 +91,62 @@
         font-size: 12px;
         font-family: "Open Sans", Helvetica, Arial, sans-serif;
     }
+
+    .style2 {
+        border-top: 3px double #8c8b8b;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+    .tables  tr  td {
+        padding: 3px;
+        text-align: left;
+        border: 2px solid #ddd;
+        /*border-radius:10px;*/
+    }
+
+    .syarat tr  td{
+        padding: 1px;
+    }
+    
+    .tables tr:nth-child(even){background-color: #f2f2f2}
 </style>
 <body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
     <div class="book">
         <div class="page">
             <div class="subpage">
@@ -114,8 +163,8 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : TDP-Pt/1001/0802/2016<br>
-                                <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
+                                <h5>No. Pengajuan Izin : {{no_pengajuan}}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-m-Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
@@ -151,7 +200,7 @@
                     <tr>
                         <td width="25%">Jenis Pengajuan</td>
                         <td width="5%">:</td>
-                        <td width="70%">Baru</td>
+                        <td width="70%">{{ pengajuan_.jenis_permohonan }}</td>
                     </tr>
                 </table>
 
@@ -160,7 +209,7 @@
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
                         <td width="10%">:</td>
-                        <td width="65%">Pemilik</td>
+                        <td width="65%">{{pengajuan_.pemohon.jenis_pemohon}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
@@ -170,37 +219,37 @@
                     <tr>
                         <td width="25%">Nama</td>
                         <td width="10%">:</td>
-                        <td width="65%">Hartato</td>
+                        <td width="65%">{{pengajuan_.pemohon.nama_lengkap}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{alamat_pemohon}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{pengajuan_.pemohon.telephone}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. HP</td>
                         <td width="10%">:</td>
-                        <td width="65%">085736662908</td>
+                        <td width="65%">{{pengajuan_.pemohon.hp}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{pengajuan_.pemohon.email|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Indonesia</td>
+                        <td width="65%">{{pengajuan_.pemohon.kewarganegaraan}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pekerjaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Wiraswasta</td>
+                        <td width="65%">{{pengajuan_.pemohon.pekerjaan}}</td>
                     </tr>
                 </table>
 
@@ -209,37 +258,37 @@
                     <tr>
                         <td width="25%">NPWP</td>
                         <td width="10%">:</td>
-                        <td width="65%">1234567890</td>
+                        <td width="65%">{{pengajuan_.perusahaan.npwp}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">UD. MAKMUR JAYA</td>
+                        <td width="65%">{{pengajuan_.perusahaan.nama_perusahaan}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{alamat_perusahaan}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
                         <td width="10%">:</td>
-                        <td width="65%"></td>
+                        <td width="65%">{{pengajuan_.perusahaan.kode_pos}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">087895172617</td>
+                        <td width="65%">{{pengajuan_.perusahaan.telepon}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Fax</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{pengajuan_.perusahaan.fax}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{pengajuan_.perusahaan.email|default_if_none:"-"}}</td>
                     </tr>
                 </table>
 
@@ -248,33 +297,33 @@
                     <tr>
                         <td width="25%">Jenis Badan Usaha</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan_.jenis_badan_usaha|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Status Perusahaan</td>
                         <td width="5%">:</td>
-                        <td width="70%">Kantor Tunggal</td>
+                        <td width="70%">{{pengajuan_.status_perusahaan|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Jumlah Bank dimana Perusahaan ini menjadi nasabah</td>
                         <td width="5%">:</td>
-                        <td width="70%">3</td>
+                        <td width="70%">{{pengajuan_.jumlah_bank}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nasabah Utama Bank 1.</td>
                         <td width="5%">:</td>
-                        <td width="70%">BRI</td>
+                        <td width="70%">{{pengajuan_.nasabah_utama_bank_1}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nasabah Utama Bank 2.</td>
                         <td width="5%">:</td>
-                        <td width="70%">BCA</td>
+                        <td width="70%">{{pengajuan_.nasabah_utama_bank_2}}</td>
                     </tr>
                 </table>
                 <br>
-                <hr>
+                <hr class="style18">
                 <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> 
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                 </i>
             </div>    
@@ -285,57 +334,57 @@
                     <tr>
                         <td width="25%">Status Penanaman Modal</td>
                         <td width="5%">:</td>
-                        <td width="70%">Lain-lain</td>
+                        <td width="70%">{{pengajuan_.jenis_penanaman_modal}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Tanggal Pendirian</td>
                         <td width="5%">:</td>
-                        <td width="70%">07/09/2009</td>
+                        <td width="70%">{{pengajuan_.tanggal_pendirian|date:'d-m-Y'}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Tanggal Mulai Kegiatan</td>
                         <td width="5%">:</td>
-                        <td width="70%">10/09/2009</td>
+                        <td width="70%">{{pengajuan_.tanggal_mulai_kegiatan|date:'d-m-Y'}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Jangka Waktu Pendirian Perusahaan</td>
                         <td width="5%">:</td>
-                        <td width="70%">7 Tahun</td>
+                        <td width="70%">{{pengajuan_.jangka_waktu_berdiri}} Tahun</td>
                     </tr>
                     <tr>
                         <td width="25%">Bentuk Kerjasama</td>
                         <td width="5%">:</td>
-                        <td width="70%">Tidak Ada</td>
+                        <td width="70%">{{pengajuan_.bentuk_kerjasama|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Merk Dagang(jika ada)</td>
                         <td width="5%">:</td>
-                        <td width="70%">-</td>
+                        <td width="70%">{{pengajuan_.merek_dagang}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Merk Dagang</td>
                         <td width="5%">:</td>
-                        <td width="70%">-</td>
+                        <td width="70%">{{pengajuan_.no_merek_dagang}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pemegang Hak Cipta(jika ada)</td>
                         <td width="5%">:</td>
-                        <td width="70%">-</td>
+                        <td width="70%">{{pengajuan_.pemegang_hak_cipta}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Hak Cipta</td>
                         <td width="5%">:</td>
-                        <td width="70%">-</td>
+                        <td width="70%">{{pengajuan_.no_hak_cipta}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pemegang Hak Paten(jika ada)</td>
                         <td width="5%">:</td>
-                        <td width="70%">-</td>
+                        <td width="70%">{{pengajuan_.pemegang_hak_paten}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Hak Paten</td>
                         <td width="5%">:</td>
-                        <td width="70%">-</td>
+                        <td width="70%">{{pengajuan_.no_hak_paten}}</td>
                     </tr>
                 </table>
 
@@ -351,43 +400,43 @@
                         <td width="2%"></td>
                         <td width="23%">Kegiatan Usaha Pokok</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan_.kegiatan_usaha_pokok}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">Kegiatan Usaha Lain</td>
                         <td width="5%">:</td>
-                        <td width="70%">a.</td>
+                        <td width="70%">a. {{pengajuan_.kegiatan_usaha_lain_1}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">Kegiatan Usaha Lain</td>
                         <td width="5%">:</td>
-                        <td width="70%">b.</td>
+                        <td width="70%">b. {{pengajuan_.kegiatan_usaha_lain_2}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">Komoditi / Produk Pokok</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan_.komoditi_produk_pokok}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">Komoditi / Produk Lain</td>
                         <td width="5%">:</td>
-                        <td width="70%">a.</td>
+                        <td width="70%">a. {{pengajuan_.komoditi_produk_lain_1}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">Komoditi / Produk Lain</td>
                         <td width="5%">:</td>
-                        <td width="70%">b.</td>
+                        <td width="70%">b. {{pengajuan_.komoditi_produk_lain_2}}</td>
                     </tr>
                     <tr>
                         <td width="2%">B.</td>
-                        <td width="23%">Omset Perusahaan Per Tahun(setelah perusahaan beroperasi)Rp.</td>
+                        <td width="23%">Omset Perusahaan Per Tahun(setelah perusahaan beroperasi)</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">Rp {{pengajuan_.omset_per_tahun}},-</td>
                     </tr>
                     <tr>
                         <td width="2%">C.</td>
@@ -397,39 +446,39 @@
                     </tr>
                     <tr>
                         <td width="2%"></td>
-                        <td width="23%">1.Modal Dasar Rp.</td>
+                        <td width="23%">1.Modal Dasar</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">Rp {{rincian_perusahaan.modal_dasar|default_if_none:"-"}},-</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
-                        <td width="23%">2.Modal ditempatkan Rp.</td>
+                        <td width="23%">2.Modal ditempatkan</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">Rp {{rincian_perusahaan.modal_ditempatkan|default_if_none:"-"}},-</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
-                        <td width="23%">3.Modal disetor Rp.</td>
+                        <td width="23%">3.Modal disetor</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">Rp {{rincian_perusahaan.modal_disetor|default_if_none:"-"}},-</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
-                        <td width="23%">4.Banyaknya Saham(lembar)</td>
+                        <td width="23%">4.Banyaknya Saham</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{rincian_perusahaan.banyaknya_saham|default_if_none:"-"}} Lembar</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
-                        <td width="23%">5.Nilai nominal per saham Rp.</td>
+                        <td width="23%">5.Nilai nominal per saham</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">Rp {{rincian_perusahaan.nilai_nominal_per_saham|default_if_none:"-"}},-</td>
                     </tr>
                     <tr>
                         <td width="2%">D.</td>
-                        <td width="23%">Total Asset(setelah perusahaan beroperasi)Rp.</td>
+                        <td width="23%">Total Asset<br>(setelah perusahaan beroperasi)</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">Rp {{ pengajuan_.total_aset}},-</td>
                     </tr>
                     <tr>
                         <td width="2%">E.</td>
@@ -441,189 +490,335 @@
                         <td width="2%"></td>
                         <td width="23%">WNI</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan_.jumlah_karyawan_wni}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">WNA</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan_.jumlah_karyawan_wna}}</td>
                     </tr>
                     <tr>
                         <td width="2%"></td>
                         <td width="23%">Total</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan_.jumlah_karyawan_wni}}+{{pengajuan_.jumlah_karyawan_wna}}</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top">F.</td>
+                        <td width="23%" valign="top" colspan="3">Kedudukan dalam mata rantai kegiatan usaha</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top"></td>
+                        <td width="23%" valign="top" colspan="3">Jika Produsen, untuk perusahaan yang menggunakan mesin:</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top">a.</td>
+                        <td width="23%" valign="top">Kapasitas terpasang</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">{{pengajuan_.kapasitas_mesin_terpasang}}, satuan: {{pengajuan_.satuan_kapasitas_mesin_terpasang}}</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top">b.</td>
+                        <td width="23%" valign="top">Kapasitas prosukdi per tahun</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">{{pengajuan_.kapasitas_produksi_per_tahun}}, satuan: {{pengajuan_.satuan_kapasitas_produksi_per_tahun}}</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top">c.</td>
+                        <td width="23%" valign="top" colspan="3">Kandungan Komponen produk</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top"></td>
+                        <td width="23%" valign="top" align="right"> lokal</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">{{pengajuan_.presentase_kandungan_produk_lokal}} %</td>
+                    </tr>
+                    <tr>
+                        <td width="2%" valign="top"></td>
+                        <td width="23%" valign="top" align="right"> impor</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">{{pengajuan_.presentase_kandungan_produk_import}} %</td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td width="2%" valign="top"></td>
+                        <td width="23%" valign="top">Jika Pengecer, jenis usaha</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">{{pengajuan_.jenis_pengecer.jenis_pengecer}}</td>
                     </tr>
                 </table>
 
-                <p style="font-size:13px">Jenis Perusahaan</p>
-                <h5>LEGILITAS PERUSAHAAN</h5>
-                <table width="100%" border="1" class="font" style="border:2px">
-                    <tr>
-                        <td>Jenis Akta dan Pengesahan</td>
-                        <td>Nama Notaris</td>
-                        <td>Alamat Notaris</td>
-                        <td>Telp. Notaris</td>
-                        <td>No.Akta</td>
-                        <td>Tgl. Akta</td>
-                        <td>No. Pengesahan</td>
-                        <td>Tgl. Pengesahan</td>
-                    </tr>
-                    <tr>
-                        <td>Akta Pendirian</td>
-                        <td>Hasanuddi,S.H.</td>
-                        <td>Jl. Mekar Asri No.2 Kediri</td>
-                        <td>0354567929</td>
-                        <td>9</td>
-                        <td>10/09/2009</td>
-                        <td>123/ABS/2009</td>
-                        <td>16/09/2009</td>
-                    </tr>
-                </table>
-
-                <h5>IZIN-IZIN DAN LEGALITAS LAINNYA</h5>
-                <p style="font-size:13px">-Tidak Ada-</p>
-
-               
+                <p style="font-size:13px">Jenis Perusahaan : {{pengajuan_.jenis_perusahaan.jenis_perusahaan}}</p>
+                
                 <br>
                 <br>
-                <br>
-                <br>
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <hr class="style18">
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
             </div>    
         </div>
 
         <div class="page">
             <div class="subpage">
 
+                <h5>LEGILITAS PERUSAHAAN</h5>
+                <table width="100%" class="font tables" border="1" style="border:2px;padding: 1px;">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Jenis Akta dan Pengesahan</td>
+                            <td>Nama Notaris</td>
+                            <td>Alamat Notaris</td>
+                            <td>Telp. Notaris</td>
+                            <td>No.Akta</td>
+                            <td>Tgl. Akta</td>
+                            <td>No. Pengesahan</td>
+                            <td>Tgl. Pengesahan</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if legalitas %}
+                            {% for l in legalitas %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{l.jenis_legalitas}}</td>
+                                    <td>{{l.nama_notaris|default_if_none:"-"}}</td>
+                                    <td>{{l.alamat|default_if_none:"-"}}</td>
+                                    <td>{{l.telephone|default_if_none:"-"}}</td>
+                                    <td>{{l.nomor_akta|default_if_none:"-"}}</td>
+                                    <td>{{l.tanggal_akta|date:'d-m-Y'|default_if_none:"-"}}</td>
+                                    <td>{{l.nomor_pengesahan}}</td>
+                                    <td>{{l.tanggal_pengesahan|date:'d-m-Y'}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>                    
+                </table>
+
+                <h5>IZIN-IZIN DAN LEGALITAS LAINNYA</h5>
+                <table width="100%" class="font tables" border="1" style="border:2px;padding: 1px;">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Jenis Izin</td>
+                            <td>Nomor Izin</td>
+                            <td>Dikeluarkan Oleh</td
+                            >
+                            <td>Tanggal Dikeluarkan</td>
+                            <td>Masa Berlaku</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if izin_lain %}
+                            {% for i in izin_lain %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{i.kelompok_jenis_izin.kelompok_jenis_izin}}</td>
+                                    <td>{{i.no_izin}}</td>
+                                    <td>{{i.dikeluarkan_oleh}}</td>
+                                    <td>{{i.tanggal_dikeluarkan}}</td>
+                                    <td>{{i.masa_berlaku}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                        <p style="font-size:13px">--Tidak ada --</p>
+                        {% endif %}
+                    </tbody>
+                </table>
+
                 <h5>DATA LAIN PERUSAHAAN</h5>
                 <h6>DATA PEMPINAN PERUSAHAAN</h6>
                 <p style="font-size:13px">Jumlah Pimpinan Perusahaan: Dirut / Dir Cabang / Pananggung Jawab: 0 Direktur: 0 Komisaris: 0</p>
-                <table width="100%" border="1" class="font" style="border:2px">
-                    <tr>
-                        <td>No.</td>
-                        <td>Kedudukan dalam Perusahaan</td>
-                        <td>Nama Lengkap</td>
-                        <td>Tempat & Tgl. Lahir</td>
-                        <td>Alamat Tetap</td>
-                        <td>Kode Pos</td>
-                        <td>No. Telepon</td>
-                        <td>Kewarganegaraan</td>
-                        <td>Tgl. Mulai Menduduki Jabatan</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Direktur</td>
-                        <td>Hartato</td>
-                        <td>Kediri, 01/01/1960</td>
-                        <td>Jl. Erlangga No. 2 Kab. Kediri</td>
-                        <td>64100</td>
-                        <td>08123123123</td>
-                        <td>Indonesia</td>
-                        <td>09/09/2009</td>
-                    </tr>
-                </table>
-                <br>
-                <table width="100%" border="100%" class="font" style="border:2px">
-                    <tr>
-                        <td>(Khusus Komisaris / Direktur) Jumlah Saham yang dimiliki (lembar)</td>
-                        <td>Kedudukan dalam Perusahaan</td>
-                        <td>Kedudukan dalam perusahaan lain</td>
-                        <td>Nama Perusahaan</td>
-                        <td>Alamat Perusahaan</td>
-                        <td>Kode Pos</td>
-                        <td>No. Telepon</td>
-                        <td>Tgl. Mulai Menduduki Jabatan</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-
-                <h5>PEMEGANG SAHAM</h5>
-                <table class="font" border="1" style="border:2px" width="100%">
-                    <tr>
-                      <td>No.</td>
-                      <td>Nama Lengkap</td>
-                      <td>Tempat & Tgl. Lahir</td>
-                      <td>Alamat Tetap</td>
-                      <td>Kode Pos</td>
-                      <td>No. Telpon</td>
-                      <td>Kewarganegaraan</td>
-                      <td>NPWP</td>
-                      <td>Jumlah Saham yang dimiliki (Lembar)</td>
-                      <td>Jumlah modal disetor (Rp.)</td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-                </table>
-
-                <h5>KATEGORI PERUSAHAAN(Kantor Tunggal tidak perlu mengisi)</h5>
-                <p style="font-size:13px">Apabila pendaftaran ini dilakukan oleh Kantor Pusat/Induk, agar disebutkan setiap Kantor Cabang/Kantor Pembantu/Perwakilan</p>
-                <table width="100%" class="font" border="1" style="border:2px solid #ddd">
-                    <tr>
-                        <td>No.</td>
-                        <td>Nama Perusahaan</td>
-                        <td>Alamat Perusahaan</td>
-                        <td>Nomor TDP</td>
-                        <td>Kabupaten/Kot</td>
-                        <td>Propinsi</td>
-                        <td>Kode Pos</td>
-                        <td>No. Telpon</td>
-                        <td>Status Perusahaan</td>
-                        <td>Jenis Kegiatan Usaha</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </table>
-                <p style="font-size:13px">Demikian formulir pendaftaran perusahaan diisi dengan sebenarnya dan apabila di kemudian hari keteranga tersebut tidak benar, maka kami bersedia dituntut sesuai peraturan perudang-undangan yang berlaku.</p>
-                <br>
-                <hr class="style14">
-                <h5>Syarat TDP BUl:</h5>
-                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                <table width="100%" border="1" class="font tables" style="border:2px">
                     <thead>
                         <tr>
-                            <td width="5%">No</td>
+                            <td>No.</td>
+                            <td>Kedudukan dalam Perusahaan</td>
+                            <td>Nama Lengkap</td>
+                            <td>Tempat & Tgl. Lahir</td>
+                            <td>Alamat Tetap</td>
+                            <!-- <td>Kode Pos</td> -->
+                            <td>No. Telepon</td>
+                            <td>Kewarganegaraan</td>
+                            <td>Tgl. Mulai Menduduki Jabatan</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if data_pimpinan %}
+                            {% for d in data_pimpinan %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{d.kedudukan}}</td>
+                                    <td>{{d.nama_lengkap}}</td>
+                                    <td>{{d.tempat_lahir}}/ {{d.tanggal_lahir|date:'d-m-Y'}}</td>
+                                    <td>{{d.alamat}}</td>
+                                    <td>{{d.telephone}}</td>
+                                    <td>{{d.kewarganegaraan}}</td>
+                                    <td>{{d.tanggal_menduduki_jabatan|date:'d-m-Y'}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <br>
+                <table width="100%" border="100%" class="font tables" style="border:2px">
+                    <thead>
+                        <tr>
+                            <td>(Khusus Komisaris / Direktur) Jumlah Saham yang dimiliki (lembar)</td>
+                            <td>(Khusus Komisaris / Direktur) Jumlah Saham yang disetor (lembar)</td>
+                            <td>Kedudukan dalam perusahaan lain</td>
+                            <td>Nama Perusahaan</td>
+                            <td>Alamat Perusahaan</td>
+                            <td>Kode Pos</td>
+                            <td>No. Telepon</td>
+                            <td>Tgl. Mulai Menduduki Jabatan</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if data_pimpinan %}
+                            {% for d in data_pimpinan %}
+                                <tr>
+                                    <td>{{d.jumlah_saham_dimiliki}}</td>
+                                    <td>{{d.jumlah_saham_disetor}}</td>
+                                    <td>{{d.kedudukan_diperusahaan_lain}}</td>
+                                    <td>{{d.nama_perusahaan_lain}}</td>
+                                    <td>{{d.alamat_perusahaan_lain}}</td>
+                                    <td>{{d.kode_pos_perusahaan_lain}}</td>
+                                    <td>{{d.telepon_perusahaan_lain}}</td>
+                                    <td>{{d.tanggal_menduduki_jabatan_perusahaan_lain}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                <h6>PEMEGANG SAHAM</h6>
+                <table class="font tables" border="1" style="border:2px" width="100%">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Nama Lengkap</td>
+                            <!-- <td>Tempat & Tgl. Lahir</td> -->
+                            <td>Alamat</td>
+                            <!-- <td>Kode Pos</td> -->
+                            <td>No. Telpon</td>
+                            <td>Kewarganegaraan</td>
+                            <td>NPWP</td>
+                            <td>Jumlah Saham yang dimiliki (Lembar)</td>
+                            <td>Jumlah modal disetor (Rp.)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if pemegang_saham %}
+                            {% for p in pemegang_saham %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{p.nama_lengkap}}</td>
+                                    <!-- <td>{{p.tempat_lahir}}/ {{p.tanggal_lahir}}</td> -->
+                                    <td>{{p.alamat}}</td>
+                                    <td>{{p.telephone}}</td>
+                                    <td>{{p.kewarganegaraan}}</td>
+                                    <td>{{p.npwp}}</td>
+                                    <td>{{p.jumlah_saham_dimiliki}}</td>
+                                    <td>{{p.jumlah_saham_disetor}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+
+                
+                
+                <br>
+                <br>
+                <br>
+                <br>
+                <hr class="style18">
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>    
+        </div>
+
+        <div class="page">
+            <div class="subpage">
+                {% if perusahaan_cabang %}
+                    <h6>PERUSAHAAN CABANG</h6>
+                    <table width="100%" class="font tables" border="1" style="border:2px;">
+                        <thead>
+                            <tr>
+                                <td>No.</td>
+                                <td>Nama Perusahaan</td>
+                                <td>Alamat Perusahaan</td>
+                                <td>Nomor TDP</td>
+                                <td>Kabupaten/Kota</td>
+                                <td>Propinsi</td>
+                                <td>Kode Pos</td>
+                                <td>No. Telpon</td>
+                                <td>Status Perusahaan</td>
+                                <td>Jenis Kegiatan Usaha</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if perusahaan_cabang %}
+                                {% for p in perusahaan_cabang %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{p.nama_perusahaan}}</td>
+                                        <td>{{p.alamat}}</td>
+                                        <td>{{p.nomor_tdp}}</td>
+                                        <td>{{p.desa.kecamatan.kabupaten.nama_kabupaten}}</td>
+                                        <td>{{p.desa.kecamatan.kabupaten.provinsi.nama_provinsi}}</td>
+                                        <td>{{p.kode_pos}}</td>
+                                        <td>{{p.telepon}}</td>
+                                        <td>{{p.status_perusahaan}}</td>
+                                        <td>{{p.kegiatan_usaha}}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                {% endif %}
+
+                <p style="font-size:13px">Demikian formulir pendaftaran perusahaan diisi dengan sebenarnya dan apabila di kemudian hari keteranga tersebut tidak benar, maka kami bersedia dituntut sesuai peraturan perudang-undangan yang berlaku.</p>
+                <p align="center" style="font-size:13px;padding-left:75%">
+                    Kediri,.......................
+                    <br>
+                    Nama dan Tanda tangan
+                    <br>
+                    Pemilik
+                    <br>
+                    {{ pengajuan_.perusahaan.nama_perusahaan }}
+                    <br>
+                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+                    <br>
+                    <br>
+                    <br>
+                    <u class="font"><b>{{ pengajuan_.pemohon.nama_lengkap }}</b></u>
+                </p>
+                <hr class="style14">
+                <h5>Syarat TDP PT:</h5>
+                <table class="font tables syarat" width="100%" border="1" style="border:2px;">
+                    <thead>
+                        <tr>
+                            <td width="5%" style="text-align:center;">No</td>
                             <td width="80%">Syarat</td>
-                            <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                            <td align="center" width="15%">Kelengkapan (diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (diisi Petugas 2)</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% if syarat %}
                             {% for s in syarat %}
                             <tr>
-                                <td>{{ forloop.counter }}</td>
+                                <td style="text-align:center;">{{ forloop.counter }}</td>
                                 <td>{{ s.syarat }}</td>
-                                <td align="center"><input type="checkbox"></td>
+                                <td><p align="center"><input type="checkbox"></p></td>
+                                <td><p align="center"><input type="checkbox"></p></td>
                             </tr>
                             {% endfor %}
                         {% endif %}
@@ -646,26 +841,27 @@
                                 (...........................................)
                             </p>
                         </td>
-                        <td width="25%"><p align="center" style="font-size:13px;">
-                                Kediri,.......................
-                                <br>
-                                Petugas 2
-                                <br>
-                                Cap BPM
-                                <br>
-                                <br>
-                                <br>
-                                (...........................................)
-                            </p></td>
+                        <td width="25%">
+                            <p align="center" style="font-size:13px;">
+                            Kediri,.......................
+                            <br>
+                            Petugas 2
+                            <br>
+                            Cap BPM
+                            <br>
+                            <br>
+                            <br>
+                            (...........................................)
+                            </p>
+                        </td>
                     </tr>
                 </table>
-                <br>
-                <br>
-                <br>
-                <br>
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
-            </div>    
+                <hr class="style18">
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>
         </div>
     </div>
 </body>
