@@ -11,12 +11,14 @@ urlpatterns = [
     url(r'^$', views.frontindex, name='frontindex'),
 
     url(r'^ajax-load-data-umum-perusahaan-tdp/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_umum_perusahaan, name='load_data_umum_perusahaan'),
+    url(r'^ajax-load-data-konfirmasi-tdp/(?P<pengajuan_id>[0-9]+)$', tdp_view.ajax_konfirmasi_tdp, name='ajax_konfirmasi_tdp'),
     url(r'^ajax-load-data-kegiatan-perusahaan-tdp/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_kegiatan_perusahaan, name='load_data_kegiatan_perusahaan'),
     url(r'^ajax-load-data-izin-lain-tdp/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_tdp_izin_lain, name='load_tdp_izin_lain'),
     url(r'^ajax-load-data-pemegang-saham/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_pemegang_saham, name='load_pemegang_saham'),
     url(r'^ajax-load-berkas-tdp/(?P<id_pengajuan>[0-9]+)$', tdp_view.ajax_load_berkas_tdp, name='ajax_load_berkas_tdp'),
     url(r'^ajax-load-data-data-pimpinan/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_pimpinan, name='load_data_pimpinan'),
     url(r'^ajax-load-data-perusahaan-cabang/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_perusahaan_cabang, name='load_perusahaan_cabang'),
+    url(r'^ajax-load-data-legalitas-perusahaan-tdp/(?P<perusahaan_id>[0-9]+)$', tdp_view.load_legalitas_perusahaan_tdp, name='load_legalitas_perusahaan_tdp'),
     url(r'^ajax-edit-izin-lain-tdp/(?P<izin_lain_id>[0-9]+)$', tdp_view.edit_tdp_izin_lain, name='edit_tdp_izin_lain'),
     url(r'^ajax-delete-izin-lain-tdp/(?P<izin_lain_id>[0-9]+)$', tdp_view.delete_tdp_izin_lain, name='delete_tdp_izin_lain'),
     url(r'^ajax-delete-pemegang-saham/(?P<pemegang_saham_id>[0-9]+)$', tdp_view.delete_pemegang_saham, name='delete_pemegang_saham'),
@@ -136,8 +138,8 @@ urlpatterns = [
     url(r'^layanan/imb-reklame/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', imb_reklame.cetak_bukti_pendaftaran_imb_reklame, name='cetak_bukti_pendaftaran_imb_reklame'),
     
     #cetak TDP PT
-    url(r'^layanan/tdp-pt/formulir/cetak$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
-    url(r'^layanan/tdp-pt/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_pt, name='cetak_bukti_pendaftaran_tdp_pt'),
+    url(r'^layanan/tdp-pt/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_pt, name='cetak_tdp_pt'),
+    url(r'^layanan/tdp-pt/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_pt, name='cetak_bukti_pendaftaran_tdp_pt'),
     
     #cetak TDP CV
     url(r'^layanan/tdp-cv/formulir/cetak$', views.cetak_tdp_cv, name='cetak_tdp_cv'),

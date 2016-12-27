@@ -198,6 +198,24 @@ class Legalitas(AtributTambahan):
 			"tanggal_pengesahan": self.tanggal_pengesahan.strftime('%d-%m-%Y'),			
 		}
 
+	def as_json(self):
+		tanggal_akta = ''
+		if self.tanggal_akta:
+			tanggal_akta = self.tanggal_akta.strftime('%d-%m-%Y')
+		tanggal_pengesahan = ''
+		if self.tanggal_pengesahan:
+			tanggal_pengesahan = self.tanggal_pengesahan.strftime('%d-%m-%Y')
+		alamat = '-'
+		if self.alamat:
+			alamat = self.alamat
+		telephone = '-'
+		if self.telephone:
+			telephone = self.telephone
+		nomor_akta = '-'
+		if self.nomor_akta:
+			nomor_akta = self.nomor_akta
+		return dict(jenis_legalitas=self.jenis_legalitas.jenis_legalitas, nama_notaris=self.nama_notaris, alamat=alamat, telephone=telephone, nomor_akta=nomor_akta, tanggal_akta=tanggal_akta, nomor_pengesahan=self.nomor_pengesahan, tanggal_pengesahan=tanggal_pengesahan)
+
 	class Meta:
 		ordering = ['id']
 		verbose_name = 'Legalitas'
