@@ -30,15 +30,15 @@ def layanan_ho(request, extra_context={}):
 	return response
 
 def layanan_izin_lokasi(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=37)
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="503.07/")
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Lokasi"})
 	extra_context.update({'title_short': "Izin Lokasi"})
 	extra_context.update({'link_formulir': reverse("formulir_izin_lokasi") })
 	extra_context.update({'id_jenis_izin': "14" })
-	extra_context.update({'id_kelompok_jenis_izin': "37" })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
 	response = render(request, "front-end/layanan/izin_lokasi.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value="37")
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
 	return response
 
 # def layanan_ho_daftar_ulang(request, extra_context={}):
