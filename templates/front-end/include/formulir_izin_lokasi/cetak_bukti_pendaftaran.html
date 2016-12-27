@@ -1,0 +1,450 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak Bukti Pendaftaran</title>
+</head>
+<!--[if ]>
+<style>
+.page{
+    min-height: 309mm;
+}
+</style>
+<![endif]-->
+<style type="text/css">
+    
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+	body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+        padding: 0.5cm;
+        /*border: 5px red solid;*/
+        height: 257mm;
+        /*outline: 2cm #FFEAEA solid;*/
+    }
+    
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .title, .tabel{
+		border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+    	margin-top: 0px;
+    }
+    .tabel{
+    	padding-top: 0px;
+    	padding-bottom: 10px;
+    }
+
+    table {
+    border-collapse: collapse;
+	}
+
+	.ceklist {
+	    border: 1px solid black;
+	}
+    .font {
+        font-size: 12px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+</style>
+<body>
+    <div class="book">
+        <div class="page">
+            <div class="subpage">
+            	<div class="title">
+                    <div class="tabel">
+                        <table>
+                            <tr>
+                                <td width="15%"><img src="{% static 'images/SIMPATIK.png' %}" width="50px"></td>
+                                <td>
+                                    <h3 style="font-size: 25px;line-height: 10px;padding-top: 10px;">SIMPATIK</h3><p style="line-height:1px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    {% if pengajuan.kelompok_jenis_izin.id == 37 %}
+                    <h4 align="center"><u>PERMOHONAN SURAT IZIN LOKASI</u></h4>
+                    {% else %}
+                    <h4 align="center"><u>PERMOHONAN SURAT IZIN PERUBAHAN PENGGUNAAN TANAH (IPPT) UNTUK RUMAH TINGGAL</u></h4>
+                    {% endif%}
+                    <p align="left" style="font-size:13px;padding-left:75%">
+                        Kepada
+                        <br>
+                        Yth. Bupati Kediri
+                    </p>
+                    <p align="left" style="font-size:13px;padding-left:75%">
+                        Lewat
+                        <br>
+                        Yth. Kepala BPM-P2TSP Kab. Kediri
+                        <br>
+                        di
+                        <br>
+                        KEDIRI
+                    </p>
+                </div>
+                <p style="font-size:13px">Yang Bertandatangan dibawah ini: </p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Nomor KTP/Paspor</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ alamat_pemohon }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. HP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kewarganegaraan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Pekerjaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.pekerjaan }}</td>
+                    </tr>
+                </table>
+                <p style="font-size:13px">Dalam hal ini bertindak untuk dan atas nama sendiri/selaku kuasa dari :</p>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">NPWP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.npwp }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ alamat_perusahaan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kode Pos</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.kode_pos }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.telepon }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Fax</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.fax }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
+                    </tr>
+                 
+                    <tr>
+                      <td width="25%"><p style="font-size:13px">Berdasarkan</p><br><u>Surat Kuasa</u></td>
+                      <td width="10%"></td>
+                      <td width="65%"></td>
+                    </tr>
+                    <tr>
+                      <td width="25%">No.</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.no_surat_kuasa|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Tanggal</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.tanggal_surat_kuasa|date:"d-m-Y"|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                <p style="font-size:13px">Mengajukan permohonan Izin Perubahan Penggunaan Tanah (IPPT) atas lokasi tanah yang terletak di</p>
+                <table class="font" width="100%">
+                    <tr>
+                      <td width="25%"><u>Lokasi</u></td>
+                      <td width="10%"></td>
+                      <td width="65%"></td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Alamat</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.alamat|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Desa / Kelurahan</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.desa|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Kecamatan</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.desa.kecamatan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Kabupaten / Kota</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.desa.kecamatan.kabupaten|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Luas Tanah</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.luas|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Status Tanah</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.status_tanah|default_if_none:"-"}}</td>
+                    </tr>
+                    </table> 
+                 <br>
+                 <hr>        
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>    
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div class="page">
+            <div class="subpage">
+                <table class="font" width="100%">
+                    <tr>
+                      <td width="25%"><u>Sertifikan/Petok D</u></td>
+                      <td width="10%"></td>
+                      <td width="65%"></td>
+                    </tr>
+                    <tr>
+                      <td width="25%">No.</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.no_sertifikat_petak|default_if_none:"-"}}</span></td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Luas</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.luas_sertifikat_petak|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Atas Nama</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.atas_nama_sertifikat_petak|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%"><u>Persil</u></td>
+                      <td width="10%"></td>
+                      <td width="65%"></td>
+                    </tr>
+                    <tr>
+                      <td width="25%">No.</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.no_persil|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Klas</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.klas_persil|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Atas Nama</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.atas_nama_persil|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Penggunaan Sekarang</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.penggunaan_sekarang|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Rencana Penggunaan</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.rencana_penggunaan|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                {% if pengajuan.kelompok_jenis_izin.id == 37 %}
+                    <h5>Syarat Izin Lokasi:</h5>
+                    <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
+                        <thead>
+                            <tr>
+                                <td width="5%">No</td>
+                                <td width="80%">Syarat</td>
+                                <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if syarat %}
+                                {% for s in syarat %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ s.syarat }}</td>
+                                    <td align="center"><input type="checkbox"></td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <table width="100%">
+                        <tr>
+                            <td width="25%"></td>
+                            <td width="25%"></td>
+                            <td width="25%">
+                                <p align="center" style="font-size:13px;">
+                                    Kediri,.......................
+                                    <br>
+                                    Petugas 1
+                                    <br>
+                                    Cap BPM
+                                    <br>
+                                    <br>
+                                    <br>
+                                    (...........................................)
+                                </p>
+                            </td>
+                            <td width="25%"><p align="center" style="font-size:13px;">
+                                    Kediri,.......................
+                                    <br>
+                                    Petugas 2
+                                    <br>
+                                    Cap BPM
+                                    <br>
+                                    <br>
+                                    <br>
+                                    (...........................................)
+                                </p></td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                {% else %}
+                    <h5>Syarat IPPT - Rumah Tinggal:</h5>
+                    <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
+                        <thead>
+                            <tr>
+                                <td width="5%">No</td>
+                                <td width="80%">Syarat</td>
+                                <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if syarat %}
+                                {% for s in syarat %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ s.syarat }}</td>
+                                    <td align="center"><input type="checkbox"></td>
+                                </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <table border="0" width="100%" style="font-size: 15px;">
+                        <tr>
+                            <td width="48%" >
+                                
+                            </td>
+                            <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                                <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                            </td>
+                            <td width="2%">
+                                
+                            </td>
+                            <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                                <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                {% endif%}
+            </div>    
+        </div>
+    </div>
+</body>
+</html>

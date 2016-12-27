@@ -254,7 +254,7 @@
                     <tr>
                         <td width="25%">Jenis Pengajuan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Baru</td>
+                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
                     </tr>
                 </table>
                 <h5 style="padding-top: -2px;"><u>IDENTITAS PEMOHON</u></h5>
@@ -262,7 +262,7 @@
                     <tr>
                         <td width="25%">Jenis Pemohon</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
+                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
@@ -358,9 +358,19 @@
                         <td width="70%">{{ukuran|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
+                        <td width="25%">Jumlah</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{jumlah|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
                         <td width="25%">Lokasi Pemasangan</td>
                         <td width="5%">:</td>
                         <td width="70%">{{letak_pemasangan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Klasifikasi Jalan</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{klasifikasi_jalan|default_if_none:"-"}}</td>
                     </tr>
                 </table>
 

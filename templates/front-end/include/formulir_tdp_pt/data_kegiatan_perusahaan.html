@@ -47,56 +47,70 @@
     </div>
     
 	<div class="form-group">
-		<label  class="col-sm-6 control-label text-left">
+		<label  class="col-sm-5 control-label text-left">
 			<h4>B. Omset Perusahaan Per Tahun (setelah perusahan beroperasi)</h4>
 		</label>
 		<div class="col-sm-4" style="padding-top: 16px;">
       <div class="input-group">
         <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control" id="id_omset_per_tahun" name="omset_per_tahun" required="" data-parsley-trigger="change">
+        <input type="text" class="form-control rupiah" id="id_omset_per_tahun" name="omset_per_tahun" required="" data-parsley-trigger="change">
       </div>
     </div>
 	</div>
 
 	<h4>C. Modal dan Saham</h4>
 	<div class="form-group">
-      <label  class="col-sm-2 control-label">1. Modal Dasar Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="id_modal_dasar" name="modal_dasar" required="" data-parsley-trigger="change">
+      <label  class="col-sm-2 control-label">1. Modal Dasar</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <span class="input-group-addon">Rp.</span>
+          <input type="text" class="form-control rupiah" id="id_modal_dasar" name="modal_dasar" required="" data-parsley-trigger="change">
+        </div>
       </div>
 
       <label  class="col-sm-2 control-label">4. Banyaknya saham (lembar)</label>
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <input type="text" class="form-control" id="id_banyaknya_saham" name="banyaknya_saham" required="" data-parsley-trigger="change">
       </div>
     </div>
 
     <div class="form-group">
-      <label  class="col-sm-2 control-label">2. Modal ditempatkan Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" name="modal_ditempatkan" id="id_modal_ditempatkan" required="" data-parsley-trigger="change">
+      <label  class="col-sm-2 control-label">2. Modal ditempatkan</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <span class="input-group-addon">Rp.</span>
+          <input type="text" class="form-control rupiah" name="modal_ditempatkan" id="id_modal_ditempatkan" required="" data-parsley-trigger="change">
+        </div>
       </div>
 
-      <label  class="col-sm-2 control-label">5. Nilai nominal per saham Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" name="nilai_nominal_per_saham" id="id_nilai_nominal_per_saham" required="" data-parsley-trigger="change">
+      <label  class="col-sm-2 control-label">5. Nilai nominal per saham</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <span class="input-group-addon">Rp.</span>
+          <input type="text" class="form-control rupiah" name="nilai_nominal_per_saham" id="id_nilai_nominal_per_saham" required="" data-parsley-trigger="change">
+        </div>
       </div>
     </div>
     
     <div class="form-group">
-      <label  class="col-sm-2 control-label">3. Modal disetor Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" name="modal_disetor" id="id_modal_disetor" required="" data-parsley-trigger="change">
+      <label  class="col-sm-2 control-label">3. Modal disetor</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <span class="input-group-addon">Rp.</span>
+          <input type="text" class="form-control rupiah" name="modal_disetor" id="id_modal_disetor" required="" data-parsley-trigger="change">
+        </div>
       </div>
     </div>
 
     <div class="form-group">
-		<label  class="col-sm-5 control-label text-left">
+		<label  class="col-sm-4 control-label text-left">
 			<h4>D. Total Asset (setelah perusahaan beroperasi) </h4>
 		</label>
-		<div class="col-sm-3 input-group" style="padding-top: 16px;">
-		  <span class="input-group-addon">Rp.</span>
-    	<input type="text" class="form-control" id="id_total_aset" name="total_aset">
+		<div class="col-sm-3" style="padding-top: 16px;">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" id="id_total_aset" name="total_aset">
+      </div>
     </div>
 	</div>
 
@@ -143,44 +157,45 @@
 
     <div class="form-group">
       <label  class="col-sm-3 control-label">a. Kapasitas terpasang</label>
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <input type="text" class="form-control" id="id_kapasitas_mesin_terpasang" name="kapasitas_mesin_terpasang">
       </div>
 
-      <label  class="col-sm-1 control-label">satuan :</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="id_satuan_kapasitas_mesin_terpasang" name="satuan_kapasitas_mesin_terpasang">
+      <div class="col-sm-3">
+        <div class="input-group">
+          <span class="input-group-addon">satuan :</span>
+          <input type="text" class="form-control" id="id_satuan_kapasitas_mesin_terpasang" name="satuan_kapasitas_mesin_terpasang">
+        </div>
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-3 control-label">b. Kapasitas prosuksi per tahun</label>
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <input type="text" class="form-control" id="id_kapasitas_produksi_per_tahun" name="kapasitas_produksi_per_tahun">
       </div>
 
-      <label  class="col-sm-1 control-label">satuan :</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="id_satuan_kapasitas_produksi_per_tahun" name="satuan_kapasitas_produksi_per_tahun">
+      <div class="col-sm-3">
+        <div class="input-group">
+          <span class="input-group-addon">satuan :</span>
+          <input type="text" class="form-control" id="id_satuan_kapasitas_produksi_per_tahun" name="satuan_kapasitas_produksi_per_tahun">
+        </div>
       </div>
     </div>
 
-    <div class="form-group">
-      <label  class="col-sm-3 control-label">c. Kandungan Komponen produk : lokal</label>
-      <div class="col-sm-2">
-        <div class="input-group">
-          <input type="text" class="form-control" id="id_presentase_kandungan_produk_lokal" name="presentase_kandungan_produk_lokal">
-          <!-- <label>%,</label> -->
-          <span class="input-group-addon">%</span>
+    <div class="form-group" id="presentase">
+      <label  class="col-sm-3 control-label">c. Kandungan Komponen produk :</label>
+      <div class="col-sm-3">
+        <div class="input-group presentase">
+          <span class="input-group-addon">lokal</span>
+          <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_kandungan_produk_lokal" name="presentase_kandungan_produk_lokal" onchange="total_n_a();" value="0">
         </div>
       </div>
 
-      <label  class="col-sm-1 control-label">Impor :</label>
-      <div class="col-sm-2">
-        <div class="input-group">
-          <input type="text" class="form-control" id="id_presentase_kandungan_produk_import" name="presentase_kandungan_produk_import">
-          <!-- <label>%</label> -->
-          <span class="input-group-addon">%</span>
+      <div class="col-sm-3">
+        <div class="input-group presentase">
+          <span class="input-group-addon">Impor </span>
+          <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_kandungan_produk_import" name="presentase_kandungan_produk_import" onchange="total_n_a();" value="0">
         </div>
       </div>
     </div>

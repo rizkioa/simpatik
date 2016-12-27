@@ -119,6 +119,13 @@ class Negara(models.Model):
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
+
+	def as_json(self):
+		return dict(id=self.id, nama_negara=self.nama_negara, keterangan=self.keterangan)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_negara)+"</option>"
+
 	def __unicode__(self):
 		return "%s" % (self.nama_negara,)
 

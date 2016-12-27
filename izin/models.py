@@ -5,8 +5,7 @@ from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, D
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN,STATUS_HAK_TANAH,KEPEMILIKAN_TANAH
-
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN,STATUS_HAK_TANAH,KEPEMILIKAN_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA,JENIS_BANGUNAN,JENIS_GANGGUAN
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
 # from django.utils.deconstruct import deconstructible
@@ -257,7 +256,7 @@ class DetilSIUP(PengajuanIzin):
 	jenis_pengajuan = models.IntegerField(verbose_name="Jenis Pengajuan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil SIUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -280,7 +279,7 @@ class DetilReklame(PengajuanIzin):
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -316,7 +315,7 @@ class DetilIUJK(PengajuanIzin):
 	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK)
 
 	def __unicode__(self):
-		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.jenis_iujk))
+		return u'Detil IUJK %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.jenis_iujk))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -389,7 +388,7 @@ class DetilTDP(PengajuanIzin):
 	jangka_waktu_berdiri = models.PositiveSmallIntegerField(verbose_name='Jangka Waktu Berdiri (Berapa Tahun?)', null=True, blank=True)
 
 	# Jika bukan kantor pusat
-	nomor_tdp_kantor_pusat = models.CharField(max_length=150, verbose_name='No. TDP Kantor Pusat', null=True, blank=True)
+	# nomor_tdp_kantor_pusat = models.CharField(max_length=150, verbose_name='No. TDP Kantor Pusat', null=True, blank=True)
 	# Jika memiliki unit produksi
 	alamat_unit_produksi = models.CharField(max_length=255,  verbose_name='Alamat Unit Produksi', null=True, blank=True)
 	desa_unit_produksi = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
@@ -408,8 +407,8 @@ class DetilTDP(PengajuanIzin):
 	komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
 	komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
 	komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
-	omset_per_tahun = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
-	total_aset = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
+	omset_per_tahun = models.CharField(max_length=100, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
+	total_aset = models.CharField(max_length=100, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
 	jumlah_karyawan_wni = models.IntegerField(verbose_name='Jumlah Karyawan WNI', default=0)
 	jumlah_karyawan_wna = models.IntegerField(verbose_name='Jumlah Karyawan WNA', default=0)
 	kapasitas_mesin_terpasang = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Kapasitas Mesin Terpasang', null=True, blank=True)
@@ -425,7 +424,7 @@ class DetilTDP(PengajuanIzin):
 	# masih sampe tab4 TDP PT
 
 	def __unicode__(self):
-		return u'Detil %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
+		return u'Detil TDP %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -440,13 +439,22 @@ class IzinLain(AtributTambahan):
 	tanggal_dikeluarkan = models.DateField(verbose_name='Tanggal Dikeluarkan', blank=True, null=True)
 	masa_berlaku = models.PositiveSmallIntegerField(verbose_name='Masa Berlaku (Berapa Tahun?)', null=True, blank=True)
 
+	def as_json(self):
+		return dict(
+			id=self.id, id_jenis_izin=self.kelompok_jenis_izin.id ,nama_jenis_izin=self.kelompok_jenis_izin.kelompok_jenis_izin, no_izin=self.no_izin, dikeluarkan_oleh=self.dikeluarkan_oleh, tanggal_dikeluarkan=self.tanggal_dikeluarkan.strftime('%d-%m-%Y'), masa_berlaku=self.masa_berlaku )
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Izin Lain'
+		verbose_name_plural = 'Izin Lain'
+
 class RincianPerusahaan(models.Model):
 	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')
-	modal_dasar = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Dasar Rp.')
-	modal_ditempatkan = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
-	modal_disetor = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Modal Disetor Rp.', null=True, blank=True)
+	modal_dasar = models.CharField(max_length=100, verbose_name='Modal Dasar Rp.', null=True, blank=True)
+	modal_ditempatkan = models.CharField(max_length=100, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
+	modal_disetor = models.CharField(max_length=100, verbose_name='Modal Disetor Rp.', null=True, blank=True)
 	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
-	nilai_nominal_per_saham = models.DecimalField(max_digits=15, decimal_places=2, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
+	nilai_nominal_per_saham = models.CharField(max_length=100, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
 class Survey(MetaAtribut):
 	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)
@@ -477,14 +485,14 @@ class DetilIMBPapanReklame(PengajuanIzin):
 	lokasi_pasang = models.CharField(max_length=255, blank=True, null=True, verbose_name='Lokasi Pasang')
 	jumlah = models.IntegerField(verbose_name="Jumlah", null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	klasifikasi_jalan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Klasifikasi Jalan')
+	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=KLASIFIKASI_JALAN, max_length=19, null=True, blank=True)
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
 	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
 
 	def __unicode__(self):
-		return u'Detil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'Detil IMB Papan Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
@@ -493,26 +501,176 @@ class DetilIMBPapanReklame(PengajuanIzin):
 
 class DetilIMB(PengajuanIzin):
 	bangunan = models.CharField(verbose_name="Bangunan", max_length=150)
-	luas_bangunan = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Bangunan')
+	luas_bangunan = models.DecimalField(max_digits=6, decimal_places=2, default=0,verbose_name='Luas Bangunan')
 	jumlah_bangunan = models.IntegerField(verbose_name="Jumlah Bangunan", null=True, blank=True)
-	luas_tanah = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Tanah')
+	luas_tanah = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Luas Tanah')
 	no_surat_tanah = models.CharField(max_length=255, verbose_name='No Surat Tanah')
-	tanggal_surat_tanah = models.DateField(verbose_name='Tanggal Surat Tanah ')
-	lokasi = models.CharField(verbose_name="Lokasi", max_length=150)
+	tanggal_surat_tanah = models.DateField(verbose_name='Tanggal Surat Tanah', null=True, blank=True)
+	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	status_hak_tanah = models.CharField(verbose_name='Status Hak Tanah', choices=STATUS_HAK_TANAH, max_length=20,)
-	kepemilikan_tanah = models.CharField(verbose_name='Kepemilikan Tanah', choices=KEPEMILIKAN_TANAH, max_length=20,)
+	status_hak_tanah = models.CharField(verbose_name='Status Hak Tanah', choices=STATUS_HAK_TANAH, max_length=20, null=True, blank=True)
+	kepemilikan_tanah = models.CharField(verbose_name='Kepemilikan Tanah', choices=KEPEMILIKAN_TANAH, max_length=20, null=True, blank=True)
 	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
-	luas_bangunan_lama = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Luas Bangunan Yang Sudah Ada')
+	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=KLASIFIKASI_JALAN, max_length=19, null=True, blank=True)
+	ruang_milik_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Milik Jalan', choices=RUMIJA, null=True, blank=True)
+	ruang_pengawasan_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Pengawasan Jalan', choices=RUWASJA, null=True, blank=True)
+	total_biaya = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Biaya')
+	luas_bangunan_lama = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True,verbose_name='Luas Bangunan Yang Sudah Ada')
 	no_imb_lama = models.CharField(max_length=255, verbose_name='No. IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
+
 	def __unicode__(self):
-		return "%s" % (self.bangunan)
+		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		ordering = ['-status']
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
+
+class InformasiKekayaanDaerah(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
+	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
+	panjang = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Panjang')
+	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
+
+	def __unicode__(self):
+		return u'Detil Informasi Kekayaan Daerah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Informasi Kekayaan Daerah'
+		verbose_name_plural = 'Informasi Kekayaan Daerah'
+
+class DetilHO(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='detilho_perusahaan', blank=True, null=True)
+	perkiraan_modal = models.DecimalField(max_digits=12, decimal_places=2,null=True, blank=True, verbose_name='Perkiraan Modal')
+	tujuan_gangguan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Tujuan')
+	alamat = models.CharField(max_length=255,null=True, blank=True, verbose_name='Alamat')
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	bahan_baku_dan_penolong = models.CharField(max_length=200,null=True, blank=True, verbose_name='Bahan Baku dan Penolong')
+	proses_produksi = models.CharField(max_length=200,null=True, blank=True, verbose_name='Proses Produksi')
+	jenis_produksi = models.CharField(max_length=200,null=True, blank=True, verbose_name='Jenis Produksi')
+	kapasitas_produksi = models.CharField(max_length=200,null=True, blank=True, verbose_name='Kapasitas Produksi')
+	jumlah_tenaga_kerja = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Jumlah Tenaga Kerja')
+	jumlah_mesin = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Jumlah Mesin')
+	merk_mesin = models.CharField(max_length=150,null=True, blank=True, verbose_name='Merk Mesin')
+	daya = models.CharField(max_length=100,null=True, blank=True, verbose_name='Daya')
+	kekuatan = models.CharField(max_length=100,null=True, blank=True, verbose_name='Kekuatan')
+	luas_ruang_tempat_usaha = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Ruang Tempat Usaha/Bangunan')
+	luas_lahan_usaha = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Lahan Usaha')
+	jenis_lokasi_usaha = models.CharField(verbose_name='Jenis Lokasi Usaha', choices=JENIS_LOKASI_USAHA, max_length=20,null=True, blank=True)
+	jenis_bangunan = models.CharField(verbose_name='Jenis Bangunan', choices=JENIS_BANGUNAN, max_length=20,null=True, blank=True)
+	jenis_gangguan = models.CharField(verbose_name='Jenis Gangguan', choices=JENIS_GANGGUAN, max_length=20,null=True, blank=True)
+
+	def __unicode__(self):
+		return u'Detil HO %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil HO'
+		verbose_name_plural = 'Detil HO'
+
+class InformasiTanah(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasitanah_perusahaan', blank=True, null=True)
+	no_surat_kuasa =  models.CharField(max_length=30, verbose_name='No. Surat Kuasa', null=True, blank=True)
+	tanggal_surat_kuasa = models.DateField(verbose_name='Tanggal Surat Kuasa', null=True, blank=True)
+	alamat = models.CharField(max_length=100,null=True, blank=True, verbose_name='Alamat')
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	luas = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas')
+	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20, null=True, blank=True)
+	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
+	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
+	atas_nama_sertifikat_petak =  models.CharField(max_length=30, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
+	no_persil =  models.CharField(max_length=30, verbose_name='No. Persil', null=True, blank=True)
+	klas_persil= models.CharField(max_length=30, verbose_name='Klas Persil', null=True, blank=True)
+	atas_nama_persil=  models.CharField(max_length=30, verbose_name='Atas Nama Persil', null=True, blank=True)
+	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
+	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
+
+	def __unicode__(self):
+		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Informasi Tanah'
+		verbose_name_plural = 'Informasi Tanah'
+
+class DetilHuller(PengajuanIzin):
+	perusahaan = models.ForeignKey('perusahaan.Perusahaan', related_name='detilhuller_perusahaan', blank=True, null=True)
+	
+	pemilik_badan_usaha = models.BooleanField(default=False) #Pemilik perorangan atau badan usaha, jika badan usaha wajib upload akta
+	
+	pemilik_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
+	pemilik_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
+	pemilik_desa = models.ForeignKey(Desa, verbose_name='Desa', related_name='pemilik_desa',null=True, blank=True)
+	pemilik_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
+	pemilik_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
+
+	pengusaha_badan_usaha = models.BooleanField(default=False) #Pengusaha perorangan atau badan usaha, jika badan usaha wajib upload akta
+	pengusaha_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
+	pengusaha_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
+	pengusaha_desa = models.ForeignKey(Desa, verbose_name='Desa', related_name='pengusaha_desa',null=True, blank=True)
+	pengusaha_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
+	pengusaha_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
+
+	hubungan_pemilik_pengusaha = models.CharField(max_length=50, verbose_name='Hubungan kerjasama antara Pengusaha dengan Pemilik Perusahaan', null=True, blank=True)
+	kapasitas_potensial_giling_beras_per_jam = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Jam')
+	kapasitas_potensial_giling_beras_per_tahun = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Tahun')
+
+	def __unicode__(self):
+		return u'Detil Huller %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Huller'
+		verbose_name_plural = 'Huller'
+
+class JenisMesin(MetaAtribut):
+	jenis_mesin = models.CharField(max_length=200, verbose_name='Jenis Mesin')
+	keterangan = models.CharField(max_length=255,blank=True, null=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_mesin),)
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Jenis Mesin'
+		verbose_name_plural = 'Jenis Mesin'
+
+# Parameter / Property untuk Mesin Huller Value ada di mesin perusahaan
+class MesinHuller(MetaAtribut):
+	jenis_mesin = models.ForeignKey(JenisMesin, verbose_name="Jenis Mesin")
+	mesin_huller = models.CharField(max_length=200, verbose_name='Mesin Huller')
+	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Keterangan')
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.jenis_mesin), str(self.mesin_huller))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Mesin Huller'
+		verbose_name_plural = 'Mesin Huller'
+
+class MesinPerusahaan(MetaAtribut):
+	detil_huller = models.ForeignKey(DetilHuller, verbose_name="Detil Huller")
+	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
+
+	type_model = models.CharField(max_length=255, verbose_name='Type / Model', blank=True, null=True)
+	pk_mesin	 = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
+	buatan = models.CharField(max_length=255, verbose_name='Buatan / Merk', blank=True, null=True)
+	jumlah_unit = models.IntegerField(verbose_name="Jumlah Unit", null=True, blank=True)
+	# selain penggerak tambah kapasitas
+	kapasitas = models.IntegerField(verbose_name="Kapasitas", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s - %s' % (str(self.mesin_huller), str(self.detil_huller))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Mesin Perusahaan'
+		verbose_name_plural = 'Mesin Perusahaan'	
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')

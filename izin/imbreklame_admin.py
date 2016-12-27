@@ -139,7 +139,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 	def cetak_sk_imb_reklame(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
-		print id_pengajuan_izin_
+		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -156,7 +156,11 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
+			jumlah_ = str(int(pengajuan_.jumlah))
+			klasifikasi_ = pengajuan_.klasifikasi_jalan
 
+			extra_context.update({'jumlah': jumlah_ })
+			extra_context.update({'klasifikasi_jalan': klasifikasi_ })
 			extra_context.update({'ukuran': ukuran_})
 			extra_context.update({'letak_pemasangan': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()

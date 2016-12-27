@@ -1,5 +1,5 @@
 from django.contrib import admin
-from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, Legalitas, JenisLegalitas, BentukKerjasama, StatusPerusahaan, KedudukanKegiatanUsaha, JenisPengecer
+from perusahaan.models import JenisPerusahaan, KBLI, JenisPenanamanModal, JenisBadanUsaha, Perusahaan, BentukKegiatanUsaha, Kelembagaan, Legalitas, JenisLegalitas, BentukKerjasama, StatusPerusahaan, KedudukanKegiatanUsaha, JenisPengecer, JenisKedudukan
 from perusahaan.perusahaan_admin import PerusahaanAdmin
 from django.http import HttpResponseRedirect, HttpResponse
 import json
@@ -12,33 +12,39 @@ from django.forms.formsets import formset_factory, BaseFormSet
 
 # Register your models here.
 
-admin.site.register(JenisPenanamanModal)
-
 class JenisLegalitasAdmin(admin.ModelAdmin):
 	list_display = ('jenis_legalitas','keterangan')
-
-admin.site.register(JenisLegalitas, JenisLegalitasAdmin)
 
 class LegalitasAdmin(admin.ModelAdmin):
 	list_display = ('perusahaan','jenis_legalitas')
 	# search_fields = ('jenis_perusahaan',)
 
-admin.site.register(Legalitas, LegalitasAdmin)
-
 class JenisPerusahaanAdmin(admin.ModelAdmin):
 	list_display = ('jenis_perusahaan',)
 	search_fields = ('jenis_perusahaan',)
-
-admin.site.register(JenisPerusahaan, JenisPerusahaanAdmin)
 
 class KBLIAdmin(admin.ModelAdmin):
 	list_display = ('kode_kbli','nama_kbli', 'versi')
 	search_fields = ('nama_kbli',)
 
+class KelembagaanAdmin(admin.ModelAdmin):
+	list_display = ('kelembagaan','keterangan')
+	search_fields = ('kelembagaan',)
+
+admin.site.register(BentukKegiatanUsaha)
+admin.site.register(JenisBadanUsaha)
+admin.site.register(BentukKerjasama)
+admin.site.register(StatusPerusahaan)
+admin.site.register(KedudukanKegiatanUsaha)
+admin.site.register(JenisPengecer)
+admin.site.register(JenisKedudukan)
+admin.site.register(JenisPenanamanModal)
+admin.site.register(JenisLegalitas, JenisLegalitasAdmin)
+admin.site.register(Legalitas, LegalitasAdmin)
+admin.site.register(JenisPerusahaan, JenisPerusahaanAdmin)
 admin.site.register(KBLI, KBLIAdmin)
-
 admin.site.register(Perusahaan, PerusahaanAdmin)
-
+admin.site.register(Kelembagaan, KelembagaanAdmin)
 
 # class DataPimpinanAdmin(admin.ModelAdmin):
 # 	list_display = ('nama_lengkap','perusahaan','kedudukan','tanggal_menduduki_jabatan','kedudukan_diperusahaan_lain','nama_perusahaan_lain')
@@ -60,12 +66,6 @@ admin.site.register(Perusahaan, PerusahaanAdmin)
 # 	ordering = ('id',)
 
 # admin.site.register(DataRincianPerusahaan, DataRincianPerusahaanAdmin)
-
-class KelembagaanAdmin(admin.ModelAdmin):
-	list_display = ('kelembagaan','keterangan')
-	search_fields = ('kelembagaan',)
-
-admin.site.register(Kelembagaan, KelembagaanAdmin)
 
 # class PemegangSahamaLainAdmin(admin.ModelAdmin):
 # 	list_display = ('perusahaan','npwp','jumlah_saham_dimiliki','jumlah_modal_disetor')
@@ -164,10 +164,3 @@ admin.site.register(Kelembagaan, KelembagaanAdmin)
 # 	list_display = ('perusahaan','modal', 'nilai')
 
 # admin.site.register(NilaiModal, NilaiModalAdmin)
-
-admin.site.register(BentukKegiatanUsaha)
-admin.site.register(JenisBadanUsaha)
-admin.site.register(BentukKerjasama)
-admin.site.register(StatusPerusahaan)
-admin.site.register(KedudukanKegiatanUsaha)
-admin.site.register(JenisPengecer)

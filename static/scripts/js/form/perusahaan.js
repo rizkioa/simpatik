@@ -13,7 +13,10 @@ function load_perusahaan_a(npwp_){
 		          	// load_kabupaten1(respon.data.provinsi)
 		          	// load_kecamatan1(respon.data.kabupaten)
 		          	load_desa1(respon.data.kecamatan)
-		          	
+		          	setTimeout(function(){
+			          	$('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+		              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+		            }, 1000);
 	              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
 	              	$('#alamat_perusahaan_load').val(respon.data.alamat_perusahaan);
 	              	$('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
@@ -25,13 +28,11 @@ function load_perusahaan_a(npwp_){
 	              	// $('#id_kabupaten1').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
 	              	$('#switch_akta_pendirian_disabled').prop( "checked", true );
 				  	setTimeout(function(){
-				  		$('#id_kecamatan1').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-		              	$('#id_desa1').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-		              	
 
 		              	if (respon.data.legalitas_pendirian_nama_notaris !== ""){
 		              		// +++++++ legalitas pendirian ++++++++
 		              		$('#form-akta_pendirian').show()
+		              		$.cookie("id_legalitas", respon.data.legalitas_pendirian_id, { path: '/' })
 		              		$('#switch_akta_pendirian_disabled').prop( "checked", true );
 						    $('.akta_pendirian_disable').prop('disabled', false);
 						    $('#id_nama_notaris_legalitas_pendirian').val(respon.data.legalitas_pendirian_nama_notaris);
@@ -46,10 +47,12 @@ function load_perusahaan_a(npwp_){
 		              	else{
 		              		$('#switch_akta_pendirian_disabled').prop( "checked", false );
 		              		$('#form-akta_pendirian').hide()
+		              		$.cookie("id_legalitas", "0", { path: '/' })
 		              	}
 		              	
 		              	if(respon.data.legalitas_perubahan_nama_notaris !== ""){
 		              		// ++++++ legalitas perubahan ++++++++
+		              		$.cookie("id_legalitas_perubahan", respon.data.legalitas_perubahan_id, { path: '/' })
 		              		$('#form-akta_perubahan').show()
 			              	$('#switch_akta_perubahan_disabled').prop( "checked", true );
 						    $(".akta_perubahan_disable").prop('disabled', false)
@@ -65,7 +68,51 @@ function load_perusahaan_a(npwp_){
 		              	else{
 		              		$('#switch_akta_perubahan_disabled').prop( "checked", false );
 		              		$('#form-akta_perubahan').hide()
+		              		$.cookie("id_legalitas_perubahan", "0", { path: '/' })
+		              	}
 
+		              	if(respon.data.legalitas_3_no_pengesahaan !== ""){
+		              		$('.stap5_pengesahan_menteri').prop('disabled', false)
+		              		$('#switch_stap5_pengesahan_menteri_disabled').prop( "checked", true );
+		              		$('#id_nomor_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_no_pengesahaan)
+		              		$('#id_tanggal_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_tanggal_pengesahaan)
+		              	}
+		              	else{
+		              		$('.stap5_pengesahan_menteri').prop('disabled', true)
+		              		$('#switch_stap5_pengesahan_menteri_disabled').prop( "checked", false );
+		              	}
+
+		              	if(respon.data.legalitas_4_no_pengesahaan !== ""){
+		              		$('.stap5_persetujuan_menteri').prop('disabled', false)
+		              		$('#switch_stap5_persetujuan_menteri_disabled').prop( "checked", true );
+		              		$('#id_nomor_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_no_pengesahaan)
+		              		$('#id_tanggal_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_tanggal_pengesahaan)
+		              	}
+		              	else{
+		              		$('.stap5_persetujuan_menteri').prop('disabled', true)
+		              		$('#switch_stap5_persetujuan_menteri_disabled').prop( "checked", false );
+		              	}
+
+		              	if(respon.data.legalitas_6_no_pengesahaan !== ""){
+		              		$('.stap5_penerima_laporan').prop('disabled', false)
+		              		$('#switch_stap5_penerima_laporan_disabled').prop( "checked", true );
+		              		$('#id_nomor_pengesahan_penerima_laporan').val(respon.data.legalitas_6_no_pengesahaan)
+		              		$('#id_tanggal_pengesahaan_penerima_laporan').val(respon.data.legalitas_6_tanggal_pengesahaan)
+		              	}
+		              	else{
+		              		$('.stap5_penerima_laporan').prop('disabled', true)
+		              		$('#switch_stap5_penerima_laporan_disabled').prop( "checked", false );
+		              	}
+
+		              	if(respon.data.legalitas_7_no_pengesahaan !== ""){
+		              		$('.stap5_penerima_pemberitahuan').prop('disabled', false)
+		              		$('#switch_stap5_penerima_pemberitahuan_disabled').prop( "checked", true );
+		              		$('#id_nomor_pengesahan_penerimaan_pemberitahuan').val(respon.data.legalitas_7_no_pengesahaan)
+		              		$('#id_tanggal_pengesahan_penerimaan_pemberitahuan').val(respon.data.legalitas_7_tanggal_pengesahaan)
+		              	}
+		              	else{
+		              		$('.stap5_penerima_pemberitahuan').prop('disabled', true)
+		              		$('#switch_stap5_penerima_pemberitahuan_disabled').prop( "checked", false );
 		              	}
 		              	
 				  	}, 2000);
@@ -82,12 +129,8 @@ function load_perusahaan_a(npwp_){
 		          	// $('#id_kabupaten1').val("").prop('selected',true).trigger("chosen:updated");
 		          	$('#id_kecamatan1').val("").prop('selected',true).trigger("chosen:updated");
 		          	$('#id_desa1').val("").prop('selected',true).trigger("chosen:updated");
-		          	$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan'></span>");
-	              	$('#checkbox_berkas_npwp_perusahaan').prop('checked', 0)
-	              	$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian'></span>");
-	              	$('#checkbox_berkas_akta_pendirian').prop('checked', 0)
-	              	$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan'></span>");
-	              	$('#checkbox_berkas_akta_pembaruan').prop('checked', 0)
+		          	$.cookie("id_legalitas", "0", { path: '/' })
+		          	$.cookie("id_legalitas_perubahan", "0", { path: '/' })
 		        }
 	      		$(".tab-content").mLoading('hide');
 	    	},

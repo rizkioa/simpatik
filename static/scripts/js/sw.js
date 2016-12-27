@@ -14,7 +14,7 @@ self.addEventListener('install', e => {
         // JS
         '/static/scripts/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js',
         '/static/scripts/js/vendor/wow/wow.js',
-        '/static/scripts/js/vendor/jquery/jquery-1.11.2.min.js',
+        '/static/scripts/js/vendor/jquery/jquery-2.1.1.min.js',
         '/static/scripts/js/vendor/bootstrap/bootstrap.min.js',
         '/static/scripts/js/vendor/jRespond/jRespond.min.js',
         '/static/scripts/js/vendor/slimscroll/jquery.slimscroll.min.js',
