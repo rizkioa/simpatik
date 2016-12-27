@@ -213,7 +213,10 @@ class DetilReklameAdmin(admin.ModelAdmin):
 						extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 					extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 					syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
-				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				if pengajuan_.desa:
+					letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				else:
+					letak_ = pengajuan_.letak_pemasangan
 				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
 				if pengajuan_.tanggal_mulai:
 					awal = pengajuan_.tanggal_mulai
@@ -228,7 +231,10 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({'title': 'Proses Pengajuan'})
 				extra_context.update({'ukuran': ukuran_})
 				extra_context.update({'letak_pemasangan': letak_})
-				extra_context.update({'selisih': selisih.days})
+				if pengajuan_.tanggal_mulai:
+					extra_context.update({'selisih': selisih.days})
+				else:
+					extra_context.update({'selisih': selisih})
 				extra_context.update({ 'pengajuan': pengajuan_ })
 				extra_context.update({ 'syarat': syarat })
 				extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
