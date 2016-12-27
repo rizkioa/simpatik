@@ -139,7 +139,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 	def cetak_sk_imb_reklame(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
-		print id_pengajuan_izin_
+		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""

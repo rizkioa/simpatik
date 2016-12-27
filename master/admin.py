@@ -125,7 +125,25 @@ class LogEntryAdmin(admin.ModelAdmin):
 		
 admin.site.register(LogEntry, LogEntryAdmin)
 
-admin.site.register(Negara)
+class NegaraAdmin(admin.ModelAdmin):
+	list_display = ('nama_negara', 'keterangan','kode',)
+	list_filter = ('nama_negara','keterangan','kode')
+	search_fields = ('nama_negara','keterangan','kode')
+
+	def option_negara(self, request):		
+		negara_list = Negara.objects.all()
+		pilihan = "<option></option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in negara_list)));
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(NegaraAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^option/$', self.option_negara, name='option_negara'),
+			)
+		return my_urls + urls
+
+admin.site.register(Negara,NegaraAdmin)
 admin.site.register(Provinsi, ProvinsiAdmin)
 admin.site.register(Kabupaten, KabupatenAdmin)
 admin.site.register(Kecamatan, KecamatanAdmin)

@@ -9,9 +9,13 @@ from izin.detilsiup_admin import DetilSIUPAdmin
 from izin.detiliujk_admin import DetilIUJKAdmin
 from izin.detilreklame_admin import DetilReklameAdmin
 from izin.imbreklame_admin import DetilIMBPapanReklameAdmin
-from izin.imb_admin import DetilIMB
-from izin.izin_admin import IzinAdmin
+from izin.imb_admin import DetilIMBAdmin
+from izin.informasikekayaan_admin import InformasiKekayaanDaerahAdmin
+from izin.detilho_admin import DetilHOAdmin
+from izin.izin_admin import IzinAdmin 
+from izin.informasitanah_admin import InformasiTanahAdmin 
 from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
+from izin.huller_admin import DetilHullerAdmin
 from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey
 from izin.pemohon_admin import PemohonAdmin
 

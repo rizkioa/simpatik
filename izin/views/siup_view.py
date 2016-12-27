@@ -21,7 +21,7 @@ from izin.utils import get_nomor_pengajuan
 from izin.utils import formatrupiah
 
 from izin import models as app_models
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna
@@ -40,8 +40,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
 	except ObjectDoesNotExist:
-		pemohon = PemohonForm(request.POST)
-
+		pemohon = PemohonForm(request.POST)		
 	if pemohon.is_valid():
 		# Untuk Nomor Identitas
 		ktp_ = request.POST.get('ktp', None)
@@ -57,7 +56,6 @@ def siup_identitas_pemohon_save_cookie(request):
 		p = pemohon.save(commit=False)
 		p.username = ktp_
 		p.save()
-		print paspor_
 		if ktp_:
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_, jenis_identitas_id=1, user_id=p.id)
@@ -94,6 +92,14 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
 		elif k.id == 2 or k.id == 11 :
 			objects_ = getattr(app_models, 'DetilIMB')
+		elif k.kode == "503.06.01/":
+			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
+		elif k.kode == "503.02/":
+			objects_ = getattr(app_models, 'DetilHO')
+		elif k.kode == "503.07/" or k.id == 38:
+			objects_ = getattr(app_models, 'InformasiTanah')
+		elif k.id == 15:
+			objects_ = getattr(app_models, 'DetilHuller')
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
@@ -190,9 +196,14 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.id == 1:
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-					elif k.id == 2:
-						objects_ = getattr(app_models, 'DetilIMB')
-						
+					elif k.kode == "503.06.01/":
+						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
+					elif k.kode == "503.02/":
+						objects_ = getattr(app_models, 'DetilHO')
+					elif k.kode == "503.07/" or k.id == 38:
+						objects_ = getattr(app_models, 'InformasiTanah')
+					elif k.id == 15:
+						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
 						try:
 							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -221,7 +232,6 @@ def siup_identitas_perusahan_save_cookie(request):
 					data = perusahaan.errors.as_json()
 					response = HttpResponse(data)
 			except Perusahaan.DoesNotExist:
-				print "except"
 				perusahaan = PerusahaanForm(request.POST) 
 				if perusahaan.is_valid():
 					p = perusahaan.save(commit=False)
@@ -239,6 +249,16 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
+					elif k.id == 1:
+						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+					elif k.kode == "503.06.01/":
+						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
+					elif k.kode == "503.02/":
+						objects_ = getattr(app_models, 'DetilHO')
+					elif k.kode == "503.07/" or k.id == 38:
+						objects_ = getattr(app_models, 'InformasiTanah')
+					elif k.id == 15:
+						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
 						try:
 							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -312,7 +332,7 @@ def siup_detilsiup_save_cookie(request):
 					# print kbli_list
 					for kbli in kbli_list:
 						kbli_obj = KBLI.objects.get(id=kbli)
-						print kbli_obj
+						# print kbli_obj
 						pengajuan_.kbli.add(kbli_obj)
 						
 						nama_kbli.append(kbli_obj.nama_kbli)			

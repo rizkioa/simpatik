@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal"  %}">
+<form method="POST" name="step4" role="form" class="form-horizontal"  %}">
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -323,62 +323,75 @@
             <input type="text" class="form-control" id="input01" required="" name="jumlah_kualitas">
           </div>
         </div>
-
-        Lainnya
-        <div class="form-group">
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="nama_lainya">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_lainnya">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_lainnya">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_lainnya">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_lainnya">
-          </div>
-        </div>
-        
-        <a href="#">Tambah lainnya</a>
+       
+        <a href="#" data-toggle="modal" data-target="#ippt">Tambah lainnya</a>
       </div>
     </div>
-
-    <table border="0">
-      <tr>
-        <td>Kapasitas Potensial Giling keseluruhan Mesin Memproduksi Beras</td>
-        <td> &nbsp : &nbsp</td>
-        <td><div class="col-sm-15">
-          <div class="input-group">
-            <input type="text" class="form-control" required="" name="kapitas_jam">
-            <span class="input-group-addon">
-              <span>Ton setara Beras per-jam</span>
-           </span>
-          </div>
-        </div></td>
-      </tr>
-      <tr>
-        <td>&nbsp</td>
-        <td>&nbsp</td>
-        <td>&nbsp</td>
-        <td>&nbsp</td>
-      </tr>
-      <tr>
-        <td></td>
-        <td> &nbsp : &nbsp</td>
-        <<td><div class="col-sm-15">
-          <div class="input-group">
-            <input type="text" class="form-control" required="" name="kapitas_tahun">
-            <span class="input-group-addon">
-              <span>Ton setara Beras per-tahun</span>
-           </span>
-          </div>
-        </div></td>
-      </tr>
-    </table>
-
-
+  
+      <table border="0">
+        <tr>
+          <td>Kapasitas Potensial Giling keseluruhan Mesin Memproduksi Beras</td>
+          <td> &nbsp : &nbsp</td>
+          <td><div class="col-sm-15">
+            <div class="input-group">
+              <input type="text" class="form-control" required="" name="kapitas_jam">
+              <span class="input-group-addon">
+                <span>Ton setara Beras per-jam</span>
+             </span>
+            </div>
+          </div></td>
+        </tr>
+        <tr>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+          <td>&nbsp</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td> &nbsp : &nbsp</td>
+          <td><div class="col-sm-15">
+            <div class="input-group">
+              <input type="text" class="form-control" required="" name="kapitas_tahun">
+              <span class="input-group-addon">
+                <span>Ton setara Beras per-tahun</span>
+             </span>
+            </div>
+          </div></td>
+        </tr>
+      </table>
 </form>
+
+<div class="modal fade" id="ippt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Mesin Lainnya</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="form-group">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="nama_lainya">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_lainnya">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_lainnya">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan_lainnya">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_lainnya">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>

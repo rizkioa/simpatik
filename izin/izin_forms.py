@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -159,3 +159,25 @@ class IdentifikasiJalanForm(forms.ModelForm):
 	class Meta:
 		model = DetilIMB
 		fields = ('klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan')
+
+class InformasiKekayaanDaerahForm(forms.ModelForm):
+	class Meta:
+		model = InformasiKekayaanDaerah
+		fields = ('lokasi','desa','lebar','panjang','penggunaan')
+
+class DetilHOForm(forms.ModelForm):
+	class Meta:
+		model = DetilHO
+		fields = ('perkiraan_modal','tujuan_gangguan','alamat','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan')
+
+class InformasiTanahForm(forms.ModelForm):
+	"""docstring for InformasiTanahForm"""
+	class Meta:
+		model = InformasiTanah
+		fields = ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil','penggunaan_sekarang','rencana_penggunaan')
+
+class DetilHullerForm(object):
+	"""docstring for DetilHullerForm"""
+	class Meta:
+		model = DetilHuller
+		fields = ('pemilik_badan_usaha','pemilik_nama_perorangan','pemilik_alamat','pemilik_desa','pemilik_kewarganegaraan','pemilik_nama_badan_usaha','pengusaha_badan_usaha','pengusaha_nama_perorangan','pengusaha_alamat','pengusaha_desa','pengusaha_kewarganegaraan','pengusaha_nama_badan_usaha','hubungan_pemilik_pengusaha',)

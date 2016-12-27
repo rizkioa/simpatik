@@ -1,0 +1,145 @@
+{% load i18n admin_static %}
+
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+</form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-file_izin_mendirikan_bangunan" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="1">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Izin Mendirikan Bangunan (IMB)</strong></label>
+        <span id="field-file_izin_mendirikan_bangunan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-file_izin_mendirikan_bangunan" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-file_izin_mendirikan_bangunan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-file_izin_mendirikan_bangunan"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-kepemilikan_tanah" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="2">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)</strong></label>
+        <span id="field-kepemilikan_tanah">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>                    
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-kepemilikan_tanah" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-kepemilikan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-kepemilikan_tanah"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-cetak_biru" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="3">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi</strong></label>
+        <span id="field-cetak_biru">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>                    
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-cetak_biru" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-cetak_biru" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-cetak_biru"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-upload_gambar_ktp" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="4">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)</strong> </label>
+        <span id="field-upload_gambar_ktp">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-upload_gambar_ktp" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-upload_gambar_ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-upload_gambar_ktp"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-file_npwp_pribadi" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="5">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File NPWP Pribadi</strong></label>
+        <span id="field-file_npwp_pribadi">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-file_npwp_pribadi" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-file_npwp_pribadi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-file_npwp_pribadi"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-file_npwp_perusahaan" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="6">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File NPWP Perusahaan</strong></label>
+        <span id="field-file_npwp_perusahaan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-file_npwp_perusahaan" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-file_npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-file_npwp_perusahaan"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-file_surat_kuasa" action="{% url 'detilho_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="7">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum</strong></label>
+        <span id="field-file_surat_kuasa">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-file_surat_kuasa" onclick="form_upload_dokumen_detilho($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-file_surat_kuasa" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-file_surat_kuasa"></span>
+      </div>
+    </form>

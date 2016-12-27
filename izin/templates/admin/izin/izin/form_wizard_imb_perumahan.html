@@ -298,7 +298,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/imb-perumahan/formulir/cetak/"+id_pengajuan_);
+              window.location.replace('{% url 'admin:izin_detilimb_changelist' %}/view-pengajuan-imb-perumahan/'+id_pengajuan_);
             }
           });
         }
