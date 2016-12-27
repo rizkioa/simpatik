@@ -1114,6 +1114,14 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			perusahaan_ = pengajuan_.perusahaan
 			
 			jenis_pengajuan = pengajuan_.jenis_permohonan.jenis_permohonan_izin
+			nama_kuasa = ""
+			no_identitas_kuasa = ""
+			telephone_kuasa = ""
+			if pengajuan_.nama_kuasa:
+				nama_kuasa = pengajuan_.nama_kuasa
+				no_identitas_kuasa = pengajuan_.no_identitas_kuasa
+				telephone_kuasa = pengajuan_.telephone_kuasa
+			data_kuasa = {'kuasa': {'nama_kuasa':nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa':telephone_kuasa}}
 			if pemohon_:
 				ktp_ = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_ktp'], jenis_identitas_id=1).last()
 				paspor_ = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_paspor'], jenis_identitas_id=2).last()
@@ -1198,7 +1206,7 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				nilai_nominal_per_saham = rincian_.nilai_nominal_per_saham
 			data_rincian_perusahaan = {'rincian':{'modal_dasar':modal_dasar, 'modal_ditempatkan':modal_ditempatkan, 'modal_disetor':modal_disetor, 'banyaknya_saham':banyaknya_saham, 'nilai_nominal_per_saham':nilai_nominal_per_saham}}
 			# ###### end data kegiatan perusahaan ######
-			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon,data_perusahaan,data_umum_perusahaan,data_kegiatan_perusahaan,data_rincian_perusahaan
+			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon,data_perusahaan,data_umum_perusahaan,data_kegiatan_perusahaan,data_rincian_perusahaan,data_kuasa
 			response = HttpResponse(json.dumps(data))
 			return response
 

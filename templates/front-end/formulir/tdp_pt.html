@@ -272,7 +272,7 @@
             },
 
             onTabClick: function(tab, navigation, index) {
-              return true;
+              return false;
             }
           });
       });
@@ -513,19 +513,19 @@
                     load_provinsi_(1, '#id_provinsi-4');
                     setTimeout(function(){
                       $('#id_provinsi-4').val(respon_data_umum.data.provinsi).prop('disabled', false).trigger("chosen:updated");
-                    }, 500);
+                    }, 1000);
                     load_kabupaten_(respon_data_umum.data.provinsi, '#id_kabupaten-4');
                     setTimeout(function(){
                       $('#id_kabupaten-4').val(respon_data_umum.data.kabupaten).prop('disabled', false).trigger("chosen:updated");
-                    }, 500);
-                    load_kecamatan_(respon_data_umum.data.kecamatan, '#id_kecamatan-4');
+                    }, 1000);
+                    load_kecamatan_(respon_data_umum.data.kabupaten, '#id_kecamatan-4');
                     setTimeout(function(){
                       $('#id_kecamatan-4').val(respon_data_umum.data.kecamatan).prop('disabled', false).trigger("chosen:updated");
-                    }, 500);
-                    load_desa_(respon_data_umum.data.desa, '#id_desa-4');
+                    }, 1000);
+                    load_desa_(respon_data_umum.data.kecamatan, '#id_desa-4');
                     setTimeout(function(){
                       $('#id_desa-4').val(respon_data_umum.data.desa).prop('disabled', false).trigger("chosen:updated");
-                    }, 500);
+                    }, 1000);
                   }
 
                   $('#id_jumlah_bank').val(respon_data_umum.data.jumlah_bank);
@@ -936,7 +936,6 @@
           success: function (data) {
             resp = $.parseJSON(data)
             if (resp[0].success){
-              // console.log(resp)
               // Pemohon
               $('#jenis_permohonan_konfirmasi').html(resp[1].pemohon.jenis_pengajuan)
               $('#jenis_pemohon_konfirmasi').html(resp[1].pemohon.jenis_pemohon)
@@ -951,6 +950,10 @@
               
               $('#kewarganegaraan_konfirmasi').html(resp[1].pemohon.kewarganegaraan_pemohon)
               $('#pekerjaan_konfirmasi').html(resp[1].pemohon.pekerjaan_pemohon)
+              // kuasa
+              if (resp[6].kuasa.nama_kuasa !== ''){
+                $('<h5><u>KUASA</u></h5><table width="100%" border="0"><tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+resp[6].kuasa.nama_kuasa+'</td></tr><tr><td width="25%">No Identitas </td><td width="5%">:</td><td width="70%">'+resp[6].kuasa.no_identitas_kuasa+'</td></tr><tr><td width="25%">Telephone </td><td width="5%">:</td><td width="70%">'+resp[6].kuasa.telephone_kuasa+'</td></tr></table>').insertAfter('#table_pemohon_konfirmasi')
+              }
               // Perusahaan
               $('#npwp_konfirmasi').html(resp[2].perusahaan.npwp_perusahaan)
               $('#nama_perusahaan_konfirmasi').html(resp[2].perusahaan.nama_perusahaan)

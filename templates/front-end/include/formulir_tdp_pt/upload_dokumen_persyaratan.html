@@ -85,7 +85,7 @@
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_perubahan' %}" data-parsley-validate novalidate id="form-akta_perubahan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label">File Akta Perubahan (jika ada)</label>
+      <label class="col-sm-3 control-label">File Akta Perubahan</label>
       <span id="field-akta_perubahan">
         <div class="col-sm-5">
           <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change" name="berkas">
