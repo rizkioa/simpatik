@@ -200,7 +200,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -209,7 +209,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return true;
+            return false;
           }
         });
       });
@@ -568,6 +568,16 @@
               $('#checkbox_berkas_tambahan').prop('checked', 1)
             }
       }
+
+  $(function() {
+    $('#id_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+    })
+  $(function() {
+    $('#id_data_reklame').on('keydown', '#id_panjang', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+    })
+  $(function() {
+    $('#id_data_reklame').on('keydown', '#id_lebar', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+    })
     </script>
 
 {% endblock %}

@@ -11,10 +11,10 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.http import require_POST
 
-def reklame_detilreklame_isidentil_save_cookie(request):
+def reklame_detilreklame_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilReklame.objects.get_or_create(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
 			if detilReklame.is_valid():
 				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
@@ -194,7 +194,6 @@ def reklame_done(request):
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
-					
 			data = {'success': True, 'pesan': 'Proses Selesai.' }
 			response = HttpResponse(json.dumps(data))
 			response.delete_cookie(key='id_pengajuan') # set cookie	

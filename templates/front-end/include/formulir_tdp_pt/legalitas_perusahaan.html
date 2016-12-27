@@ -15,28 +15,47 @@
     <div class="form-group">
       <label  class="col-sm-2 control-label">Nama Notaris</label>
       <div class="col-sm-7">
-        <input type="text" class="form-control" id="id_nama_notaris_pendirian" name="nama_notaris_pendirian" required="" data-parsley-trigger="change">
+        <input type="text" class="form-control" id="id_nama_notaris_legalitas_pendirian" name="nama_notaris_pendirian" required="" data-parsley-trigger="change">
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-2 control-label">Alamat Notaris</label>
       <div class="col-sm-7">
-        <textarea class="form-control" rows="5" name="alamat_pendirian" id="id_alamat_pendirian"></textarea>
+        <textarea class="form-control" rows="5" name="alamat_pendirian" id="id_alamat_legalitas_pendirian"></textarea>
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-2 control-label">Telp Notaris</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" name="telephone_pendirian" id="id_telephone_pendirian">
+        <input type="text" class="form-control" name="telephone_pendirian" id="id_telp_legalitas_pendirian">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label  class="col-sm-2 control-label">No. Akta</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="id_nomor_akta_legalitas_pendirian" name="nomor_akta_pendirian">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label  class="col-sm-2 control-label">Tanggal Akta</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control" name="tanggal_akta_pendirian" id="id_tanggal_akta_legalitas_pendirian">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-2 control-label">No. Pengesahan</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control" id="id_nomor_pengesahan_pendirian" name="nomor_pengesahan_pendirian">
+        <input type="text" class="form-control" id="id_nomor_pengesahan_legalitas_pendirian" name="nomor_pengesahan_pendirian">
       </div>
     </div>
 
@@ -44,7 +63,7 @@
       <label  class="col-sm-2 control-label">Tanggal Pengesahan</label>
       <div class="col-sm-5">
         <div class="input-group datepicker w-360 mt-10" data-format="L">
-          <input type="text" class="form-control" name="tanggal_pengesahan_pendirian" id="id_tanggal_pengesahan_pendirian">
+          <input type="text" class="form-control" name="tanggal_pengesahan_pendirian" id="id_tanggal_pengesahan_legalitas_pendirian">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>
@@ -56,8 +75,8 @@
       <h4 class="custom-font col-sm-3"><strong>B. Akta Perubahan Terakhir</strong></h4> 
       <div class="col-sm-7" style="padding-bottom: 10px; padding-top: 8px;">
         <div class="onoffswitch labeled greensea inline-block">
-          <input type="checkbox" name="onoffaktaperubahan" class="onoffswitch-checkbox" id="switch_stap5_akta_perubahan_disabled" >
-          <label class="onoffswitch-label" for="switch_stap5_akta_perubahan_disabled">
+          <input type="checkbox" name="onoffaktaperubahan" class="onoffswitch-checkbox" id="switch_akta_perubahan_disabled" >
+          <label class="onoffswitch-label" for="switch_akta_perubahan_disabled">
               <span class="onoffswitch-inner"></span>
               <span class="onoffswitch-switch"></span>
           </label>
@@ -77,28 +96,47 @@
     <div class="form-group">
       <label  class="col-sm-2 control-label">Nama Notaris</label>
       <div class="col-sm-7">
-        <input type="text" class="form-control stap5_akta_perubahan" id="id_nama_notaris_akta_perubahan" name="nama_notaris_akta_perubahan">
+        <input type="text" class="form-control akta_perubahan_disable" id="id_nama_notaris_perubahan" name="nama_notaris_akta_perubahan">
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-2 control-label">Alamat Notaris</label>
       <div class="col-sm-7">
-        <textarea class="form-control stap5_akta_perubahan" rows="5" id="id_alamat_akta_perubahan" name="alamat_akta_perubahan"></textarea>
+        <textarea class="form-control akta_perubahan_disable" rows="5" id="id_alamat_notaris_perubahan" name="alamat_akta_perubahan"></textarea>
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-2 control-label">Telp Notaris</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control stap5_akta_perubahan" id="id_telephone_akta_perubahan" name="telephone_akta_perubahan">
+        <input type="text" class="form-control akta_perubahan_disable" id="id_telephone_notaris_perubahan" name="telephone_akta_perubahan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label  class="col-sm-2 control-label">No. Akta</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control akta_perubahan_disable" id="id_nomor_akta_perubahan" name="nomor_akta_perubahan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label  class="col-sm-2 control-label">Tanggal Akta</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control akta_perubahan_disable" id="id_tanggal_akta_perubahan" name="tanggal_akta_perubahan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
       </div>
     </div>
 
     <div class="form-group">
       <label  class="col-sm-2 control-label">No. Pengesahan</label>
       <div class="col-sm-5">
-        <input type="text" class="form-control stap5_akta_perubahan" id="id_nomor_pengesahan_akta_perubahan" name="nomor_pengesahan_akta_perubahan">
+        <input type="text" class="form-control akta_perubahan_disable" id="id_nomor_pengesahan_perubahan" name="nomor_pengesahan_akta_perubahan">
       </div>
     </div>
 
@@ -106,7 +144,7 @@
       <label  class="col-sm-2 control-label">Tanggal Pengesahan</label>
       <div class="col-sm-5">
         <div class="input-group datepicker w-360 mt-10" data-format="L">
-          <input type="text" class="form-control stap5_akta_perubahan" id="id_tanggal_pengesahan_akta_perubahan" name="tanggal_pengesahan_akta_perubahan">
+          <input type="text" class="form-control akta_perubahan_disable" id="id_tanggal_pengesahan_perubahan" name="tanggal_pengesahan_akta_perubahan">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>

@@ -1178,7 +1178,7 @@
 		      		<br>
                     <div class="form-group">
                         <label for="username">Barang / Jasa Perdagangan Utama: </label>
-                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{% if pengajuan.produk_utama %}{{ pengajuan.produk_utama }}{% endif %}</textarea>
+                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</textarea>
                     </div>
 		      	</div>
 		      	<div class="modal-footer">

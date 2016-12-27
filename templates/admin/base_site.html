@@ -32,6 +32,8 @@
     <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
     <script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
     <script type="text/javascript">
+        var pathname = window.location.pathname;
+        
         function toast_server_error(msg_){
             toastr.options = {
               "closeButton": true,
@@ -65,7 +67,7 @@
         $(document).ready(function() {
 
             if ($.cookie('id_notify') === undefined){
-                $.cookie("id_notify", "0", {path:"/"});
+                $.cookie("id_notify", "0", {path:pathname});
             }
 
             function total_izin(){
@@ -167,8 +169,10 @@
                                     total_skizin()
                                     total_izin()
                                     $.cookie("id_notify", respon.total, {path:"/"});
-                                    notification()
-                                    $('#sound_alert')[0].play();
+                                    if (pathname === '/admin'){
+                                        notification()
+                                        $('#sound_alert')[0].play();
+                                    }
                                 }
                             }
                         }
@@ -179,8 +183,6 @@
             // if ( $.cookie('id_notify') > 0){
             setInterval(notify , 20000);
             // }
-            
-            
         })
     </script>
     {% block extrajs_site %}

@@ -496,7 +496,9 @@ function form_upload_dokumen(elem_){
           var percentVal = '100%';
           $('#percent-'+split_).html(percentVal);
           if ($.cookie('id_pengajuan') != ''){
-            load_berkas($.cookie('id_pengajuan'))
+            load_berkas_imb_reklame($.cookie('id_pengajuan'))
+            load_berkas_imb_umum($.cookie('id_pengajuan'))
+            load_berkas_imb_perumahan($.cookie('id_pengajuan'))
           }                  
       }
       else{
@@ -567,16 +569,69 @@ function load_berkas_imb_reklame(id_pengajuan){
         if (respon.success) {
           len = respon.berkas.length
           for (var i = 0; i < len; i++) {
-            // console.log(respon.berkas[i])
-            // console.log(respon.elemen[i])
-            // console.log(respon.id_berkas[i])
-            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\', '+id_pengajuan+');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
+            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_imb_reklame_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\', '+id_pengajuan+');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
             // console.log(url)
             $('#load-'+respon.elemen[i]).html(url)
             $('#field-'+respon.elemen[i]).hide()
             $('#checkbox-'+respon.elemen[i]).prop('checked', true); 
             img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'
             // console.log(img)
+            $('#btn-load-'+respon.elemen[i]).popover({
+              trigger: "hover",
+              html: true,
+              content: img,
+            });
+          }
+        }
+      }
+    });
+  }
+  $(".tab-content").mLoading('hide');
+}
+
+function load_berkas_imb_umum(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/ajax-load-berkas-imb-umum/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success) {
+          len = respon.berkas.length
+          for (var i = 0; i < len; i++) {
+            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_imb_reklame_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\', '+id_pengajuan+');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
+            $('#load-'+respon.elemen[i]).html(url)
+            $('#field-'+respon.elemen[i]).hide()
+            $('#checkbox-'+respon.elemen[i]).prop('checked', true); 
+            img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'
+            $('#btn-load-'+respon.elemen[i]).popover({
+              trigger: "hover",
+              html: true,
+              content: img,
+            });
+          }
+        }
+      }
+    });
+  }
+  $(".tab-content").mLoading('hide');
+}
+
+function load_berkas_imb_perumahan(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/ajax-load-berkas-imb-perumahan/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success) {
+          len = respon.berkas.length
+          for (var i = 0; i < len; i++) {
+            url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_imb_reklame_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\', '+id_pengajuan+');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
+            $('#load-'+respon.elemen[i]).html(url)
+            $('#field-'+respon.elemen[i]).hide()
+            $('#checkbox-'+respon.elemen[i]).prop('checked', true); 
+            img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'
             $('#btn-load-'+respon.elemen[i]).popover({
               trigger: "hover",
               html: true,
@@ -613,5 +668,55 @@ function delete_berkas_upload(id, elemen, id_pengajuan){
     }
   })
   $(".tab-content").mLoading('hide');
+}
+
+function delete_berkas_imb_reklame_upload(id, elemen, id_pengajuan){
+  // $('#field-'+elemen).show()
+  $(".tab-content").mLoading();
+  $.ajax({
+    url: __base_url__+'/ajax-delete-berkas-imb-reklame-upload/'+id,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success) {
+          toastr["success"](respon.pesan)
+            $('#field-'+elemen).show()
+            $('#load-'+elemen).html('')
+            $('#checkbox-'+elemen).prop('checked', false); 
+            $('#percent-'+elemen).hide()
+            $('#btn-'+elemen).show()
+            $('#field-'+elemen).find('.id_berkas').filestyle("clear")
+          // load_berkas(id_perusahaan)
+        }
+      },
+      error: function(response){
+      toast_server_error()
+    }
+  })
+  $(".tab-content").mLoading('hide');
+}
+
+
+function load_konfirmasi_imb(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/layanan/imbumum/konfirmasi/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success){
+            var total = respon.data.length;
+            for (var i = 0; i < total; i++){
+            var key = Object.keys(respon.data[i]); // Mencari key json
+            var val = respon.data[i][key[0]] // mencari value json
+            var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+            $(id).text(val);
+            }
+        }
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
 }
 

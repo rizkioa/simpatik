@@ -10,6 +10,65 @@ JENIS_PERMOHONAN = (
 	('Berita Acara', 'Berita Acara'),
 )
 
+STATUS_HAK_TANAH = (
+	('Hak Milik', 'Hak Milik'),
+	('Hak Guna', 'Hak Guna'),
+	('Milik', 'Milik'),
+	('Yang dikuasai', 'Yang dikuasai'),
+)
+
+KEPEMILIKAN_TANAH = (
+	('Sendiri', 'Sendiri'),
+	('Orang Tua', 'Orang Tua'),
+	('Pihak Lain', 'Pihak Lain'),
+)
+
+KLASIFIKASI_JALAN = (
+	('Arteri', 'Arteri'),
+	('Kolektor Primer', 'Kolektor Primer'),
+	('Lokal Primer', 'Lokal Primer'),
+	('Kolektor Sekunder', 'Kolektor Sekunder'),
+	('Lokal Sekunder', 'Lokal Sekunder'),
+	('Strategis', 'Strategis'),
+)
+
+JENIS_LOKASI_USAHA = (
+	('Jalan Nasional','Jalan Nasional'),
+	('Jalan Provinsi','Jalan Provinsi'),
+	('Jalan Kabupaten','Jalan Kabupaten'),
+	('Jalan Strategis','Jalan Strategis'),
+	('Jalan Desa','Jalan Desa'),
+)
+
+JENIS_BANGUNAN = (
+	('Permanen','Permanen'),
+	('Semi Permanen','Semi Permanen'),
+	('Darurat','Darurat'),
+)
+
+JENIS_GANGGUAN = (
+	('Padat','Padat'),
+	('Cair','Cair'),
+	('Kebisingan','Kebisingan'),
+	('Getaran','Getaran'),
+)
+RUMIJA = (
+	(30, 30),
+	(25, 25),
+	(22, 22),
+	(15, 15),
+	(11, 11),
+)
+
+RUWASJA = (
+	(36, 36),
+	(20, 20),
+	(10, 10),
+	(7, 7),
+	(5, 5),
+	(3, 3),
+)
+
 import datetime
 
 def get_tahun_choices(sejak):
@@ -41,6 +100,7 @@ JENIS_ANGGOTA_BADAN_USAHA = (
 )
 
 def terbilang_(bil):
+	# bil = nilai.replace(".", "")
 	satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
 	n = int(bil)
@@ -150,9 +210,9 @@ def detil_pengajuan_siup_view(request, id_pengajuan_izin_, extra_context = {}):
 		syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
 		extra_context.update({'syarat': syarat_})
 		kekayaan_bersih = pengajuan_.kekayaan_bersih
-		extra_context.update({'kekayaan_bersih': kekayaan_bersih})
+		extra_context.update({'kekayaan_bersih': "Rp "+str(kekayaan_bersih)})
 		total_nilai_saham = pengajuan_.total_nilai_saham
-		extra_context.update({'total_nilai_saham': total_nilai_saham})
+		extra_context.update({'total_nilai_saham': "Rp "+str(total_nilai_saham)})
 
 		riwayat_penolakan = Riwayat.objects.filter(pengajuan_izin_id=pengajuan_.id, pengajuan_izin__status=7).last()
 		extra_context.update({'riwayat_penolakan': riwayat_penolakan })

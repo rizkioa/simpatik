@@ -1,75 +1,132 @@
-<form method="POST" name="step4" role="form" class="form-horizontal">
+{% load i18n admin_static %}
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
-  	<h3>UPLOAD DOKUMEN PERSYARATAN</h3>
-  	<hr class="style14">
-
-  	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left"><strong>Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akte Jual Beli / Petok D / Surat Keterangan Status Tanah)</strong></label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left"><strong>KTP/Paspor</strong></label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left"><strong>NPWP</strong></label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left"><strong>(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Teknis yang membidangi</strong></label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left"><strong>Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan di atas tanah yang bukan miliknya</strong></label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left">Surat Persetujuan/Rekomendasi dari FKUB (Forum Komunikasi Umat Beragam) bagi bangunan fungsu keragaman</label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
-
-	<div class="form-group">
-	    <label class="col-sm-5 control-label text-left"><strong>Rekomendasi dati Teknis sesuai kegiatan/bangunan yang dimohonkan</strong></label>
-	    <div class="col-sm-5">
-	      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-	    </div>
-	    <div class="col-sm-1">
-	      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-	    </div>
-	</div>
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
 </form>
+
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_kepemilikan_tanah" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+	{% csrf_token %}
+	 <input type="hidden" name="aksi" value="1">
+	  	<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akte Jual Beli / Petok D / Surat Keterangan Status Tanah)</strong></label>
+		    <span id="field-surat_kepemilikan_tanah">
+			    <div class="col-sm-5">
+           			<input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">   
+			    </div>
+			    <div class="col-sm-4">
+		            <button href="#" id="btn-surat_kepemilikan_tanah" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+		            <a id="percent-surat_kepemilikan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+			    </div>
+		    </span>
+		    <span class="col-sm-6" id="load-surat_kepemilikan_tanah"></span>
+		</div>
+	</form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-ktp_paspor" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="2">
+      <div class="form-group">
+         <label class="col-sm-3 control-label"><strong>KTP/PASPOR</strong></label>
+        <span id="field-ktp_paspor">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-ktp_paspor" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-ktp_paspor" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-ktp_paspor"></span>
+      </div>
+    </form>
+
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-npwp" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="3">
+		<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>NPWP</strong></label>
+		    <span id="field-npwp">
+			    <div class="col-sm-5">
+	            	<input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
+			    </div>
+			    <div class="col-sm-4">
+		            <button href="#" id="btn-npwp" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+		            <a id="percent-npwp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+			    </div>
+		    </span>
+		    <span class="col-sm-6" id="load-npwp"></span>
+		</div>
+	</form>
+	
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-cetak_biru_bangunan" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+	{% csrf_token %}
+	<input type="hidden" name="aksi" value="4">
+		<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Teknis yang membidangi</strong></label>
+		    <span id="field-cetak_biru_bangunan">
+			    <div class="col-sm-5">
+			      <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
+			    </div>
+			    <div class="col-sm-4">
+		            <button href="#" id="btn-cetak_biru_bangunan" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+		            <a id="percent-cetak_biru_bangunan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+			    </div>
+		    </span>
+		    <span class="col-sm-6" id="load-cetak_biru_bangunan"></span>
+		</div>
+	</form>
+
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_persetujuan" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+	{% csrf_token %}
+	<input type="hidden" name="aksi" value="5">
+		<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan di atas tanah yang bukan miliknya</strong></label>
+		    <span id="field-surat_persetujuan">
+			    <div class="col-sm-5">
+			   		<input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
+			    </div>
+			    <div class="col-sm-4">
+					<button href="#" id="btn-surat_persetujuan" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+					<a id="percent-surat_persetujuan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+			    </div>
+		    </span>
+		    <span class="col-sm-6" id="load-surat_persetujuan"></span>
+		</div>
+	</form>
+
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_persetujuan_rekomendasi_fkub" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+	{% csrf_token %}
+	<input type="hidden" name="aksi" value="6">
+		<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>Surat Persetujuan/Rekomendasi dari FKUB (Forum Komunikasi Umat Beragam) bagi bangunan fungsi keagamaan</strong></label>
+		    <span id="field-surat_persetujuan_rekomendasi_fkub">
+		    <div class="col-sm-5">
+		    	<input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+		    </div>
+		    <div class="col-sm-4">
+				<button href="#" id="btn-surat_persetujuan_rekomendasi_fkub" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+				<a id="percent-surat_persetujuan_rekomendasi_fkub" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+		    </div>
+		    </span>
+		    <span class="col-sm-6" id="load-surat_persetujuan_rekomendasi_fkub"></span>
+		</div>
+	</form>
+
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rekomendasi_instansi_teknis" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+	{% csrf_token %}
+	<input type="hidden" name="aksi" value="7">
+		<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>Rekomendasi dari Instansi Teknis sesuai kegiatan/bangunan yang dimohonkan</strong></label>
+		    <span id="field-rekomendasi_instansi_teknis">
+			    <div class="col-sm-5">
+			      <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+			    </div>
+			    <div class="col-sm-4">
+					<button href="#" id="btn-rekomendasi_instansi_teknis" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+					<a id="percent-rekomendasi_instansi_teknis" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+			    </div>
+		   	</span>
+		   	 <span class="col-sm-6" id="load-rekomendasi_instansi_teknis"></span>
+		</div>
+	</form>

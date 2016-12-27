@@ -119,6 +119,13 @@ class Negara(models.Model):
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 
+
+	def as_json(self):
+		return dict(id=self.id, nama_negara=self.nama_negara, keterangan=self.keterangan)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_negara)+"</option>"
+
 	def __unicode__(self):
 		return "%s" % (self.nama_negara,)
 
@@ -215,6 +222,20 @@ class Desa(models.Model):
 		verbose_name_plural = "Desa / Kelurahan"
 
 # END OF ALAMAT LOKASI #
+
+class ParameterBangunan(models.Model):
+	parameter = models.CharField(max_length=255,null=True, blank=True, verbose_name='Parameter')
+	detil_parameter = models.CharField(max_length=255, blank=True, null=True, verbose_name='Detil Parameter')
+	nilai = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Nilai', null=True, blank=True)
+
+	def __unicode__(self):
+		return "%s" % (self.parameter)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Parameter Bangunan'
+		verbose_name_plural = 'Parameter Bangunan'
+
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 import os, re
@@ -243,7 +264,7 @@ class FileField(models.FileField):
 		super(FileField, self).save_form_data(instance, data)
 
 class Berkas(AtributTambahan):
-	nama_berkas = models.CharField("Nama Berkas", max_length=100)
+	nama_berkas = models.CharField("Nama Berkas", max_length=200)
 	berkas = FileField(upload_to=path_and_rename, max_length=255)
 	no_berkas = models.CharField("Nomor Berkas", max_length=30, blank=True, null=True, help_text="Masukkan Nomor Surat / Berkas jika ada.")
 

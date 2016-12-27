@@ -65,16 +65,28 @@ def add_wizard_siup(request):
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
 
-			if id_kelompok_list.kode == "503.03.01/":
-				url_ = "#"
-			elif id_kelompok_list.kode == "503.03.02/":
+			if kode_izin_ == "Reklame":
 				url_ = reverse('admin:izin_proses_reklame')
+			elif id_kelompok_list.kode == "503.01.06/":
+				url_ = reverse('admin:izin_proses_imb_reklame')
+			elif id_kelompok_list.kode == "503.01.05/":
+				url_ = reverse('admin:izin_proses_imb_umum')
+			elif id_kelompok_list.kode == "503.01.04/":
+				url_ = reverse('admin:izin_proses_imb_perumahan')
+			elif id_kelompok_list.kode == "503.06.01/":
+				url_ = reverse('admin:izin_proses_pemakaian_kekayaan_daerah')
 			elif id_kelompok_list.kode == "503.08/":
 				url_ = reverse('admin:izin_proses_siup')
 			elif id_kelompok_list.kode == "IUJK":
 				url_ = reverse('admin:izin_iujk')
 			elif id_kelompok_list.id == 25:
 				url_ = reverse('admin:izin_proses_tdp_pt')
+			elif id_kelompok_list.kode == "503.02/":
+				url_ = reverse('admin:izin_proses_gangguan') 
+			elif id_kelompok_list.kode == "503.07/":
+				url_ = reverse('admin:izin_proses_lokasi') 
+			elif id_kelompok_list.id == 38:
+				url_ = reverse('admin:izin_proses_ippt_rumah')
 			else:
 				url_ = "#"
 
@@ -164,9 +176,9 @@ def formulir_siup(request):
 					if pengajuan_.jenis_penanaman_modal:
 						extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
 					if pengajuan_.kekayaan_bersih:
-						extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+						extra_context.update({ 'kekayaan_bersih_konfirmasi': "Rp "+str(pengajuan_.kekayaan_bersih) })
 					if pengajuan_.total_nilai_saham:
-						extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+						extra_context.update({ 'total_nilai_saham_konfirmasi': "Rp "+str(pengajuan_.total_nilai_saham) })
 					if pengajuan_.presentase_saham_nasional:
 						extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
 					if pengajuan_.presentase_saham_asing:

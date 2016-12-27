@@ -1,24 +1,26 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.contrib.admin import site
-from functools import wraps
-from django.views.decorators.cache import cache_page
-from django.utils.decorators import available_attrs
-from django.core.exceptions import ObjectDoesNotExist
-
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas
-from izin.models import PengajuanIzin, DetilSIUP,DetilReklame
-from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from django.db.models import Q
-from django.template import RequestContext, loader
-import json
-from django.utils.decorators import method_decorator
+import json,decimal
 import time
-from datetime import datetime
 import base64
+from decimal import *
+from functools import wraps
+from datetime import datetime
+
+from django.db.models import Q
+from django.shortcuts import render
+from django.contrib.admin import site
+from django.core.urlresolvers import reverse
+from django.template import RequestContext, loader
+from django.utils.decorators import available_attrs
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, HttpResponseRedirect
+
+from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
+
 from izin.utils import formatrupiah
 
 def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
@@ -70,7 +72,6 @@ def formulir_siup(request, extra_context={}):
 
         kecamatan_perusahaan = Kecamatan.objects.filter(kabupaten_id=1083)
         extra_context.update({'kecamatan_perusahaan': kecamatan_perusahaan})
-
 
         jenis_pemohon = JenisPemohon.objects.all()
         jenis_legalitas_list = JenisLegalitas.objects.all()
@@ -124,9 +125,9 @@ def formulir_siup(request, extra_context={}):
                     if pengajuan_.jenis_penanaman_modal:
                         extra_context.update({ 'status_penanaman_modal_konfirmasi': pengajuan_.jenis_penanaman_modal.jenis_penanaman_modal })
                     if pengajuan_.kekayaan_bersih:
-                        extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
+                        extra_context.update({ 'kekayaan_bersih_konfirmasi': "Rp "+str(pengajuan_.kekayaan_bersih) })
                     if pengajuan_.total_nilai_saham:
-                        extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
+                        extra_context.update({ 'total_nilai_saham_konfirmasi': "Rp "+str(pengajuan_.total_nilai_saham) })
                     if pengajuan_.presentase_saham_nasional:
                         extra_context.update({ 'presentase_saham_nasional_konfirmasi': str(pengajuan_.presentase_saham_nasional)+" %" })
                     if pengajuan_.presentase_saham_asing:
@@ -163,45 +164,25 @@ def formulir_siup(request, extra_context={}):
     else:
         return HttpResponseRedirect(reverse('layanan'))
 
-def formulir_ho_pemohonan_baru(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    if 'id_kelompok_izin' in request.COOKIES.keys():
-        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
-        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-    else:
-        return HttpResponseRedirect(reverse('layanan'))
-    return render(request, "front-end/formulir/ho_baru.html", extra_context)
-
-def formulir_ho_daftar_ulang(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    if 'id_kelompok_izin' in request.COOKIES.keys():
-        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
-        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-    else:
-        return HttpResponseRedirect(reverse('layanan'))
-    return render(request, "front-end/formulir/ho_baru.html", extra_context)
+# def formulir_ho_daftar_ulang(request, extra_context={}):
+#     negara = Negara.objects.all()
+#     extra_context.update({'negara': negara})
+#     provinsi = Provinsi.objects.all()
+#     extra_context.update({'provinsi': provinsi})
+#     kabupaten = Kabupaten.objects.all()
+#     extra_context.update({'kabupaten': kabupaten})
+#     kecamatan = Kecamatan.objects.all()
+#     extra_context.update({'kecamatan': kecamatan})
+#     desa = Desa.objects.all()
+#     extra_context.update({'desa': desa})
+#     jenis_pemohon = JenisPemohon.objects.all()
+#     extra_context.update({'jenis_pemohon': jenis_pemohon})
+#     if 'id_kelompok_izin' in request.COOKIES.keys():
+#         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+#         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+#     else:
+#         return HttpResponseRedirect(reverse('layanan'))
+#     return render(request, "front-end/formulir/ho_baru.html", extra_context)
 
 def formulir_huller(request, extra_context={}):
     negara = Negara.objects.all()
@@ -247,70 +228,54 @@ def formulir_reklame(request, extra_context={}):
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/reklame.html", extra_context)
 
-def formulir_kekayaan(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    if 'id_kelompok_izin' in request.COOKIES.keys():
-        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
-        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-    else:
-        return HttpResponseRedirect(reverse('layanan'))
-    return render(request, "front-end/formulir/kekayaan.html", extra_context)
 
 def formulir_tdp_pt(request, extra_context={}):
     negara = Negara.objects.all()
     extra_context.update({'negara': negara})
     provinsi = Provinsi.objects.all()
     extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
     kecamatan = Kecamatan.objects.all()
     extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
     jenis_pemohon = JenisPemohon.objects.all()
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    jenis_badan_usaha = JenisBadanUsaha.objects.all()
+    extra_context.update({'jenis_badan_usaha': jenis_badan_usaha})
+    status_perusahaan = StatusPerusahaan.objects.all()
+    extra_context.update({'status_perusahaan': status_perusahaan})
+    jenis_penanaman_modal = JenisPenanamanModal.objects.all()
+    extra_context.update({'jenis_penanaman_modal': jenis_penanaman_modal})
+    bentuk_kerjasama = BentukKerjasama.objects.all()
+    extra_context.update({'bentuk_kerjasama': bentuk_kerjasama})
+    jenis_pengecer = JenisPengecer.objects.all()
+    extra_context.update({'jenis_pengecer': jenis_pengecer})
+    kedudukan_kegiatan_usaha = KedudukanKegiatanUsaha.objects.all()
+    extra_context.update({'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha})
+    kelompok_jenis_izin = KelompokJenisIzin.objects.all()
+    extra_context.update({'kelompok_jenis_izin': kelompok_jenis_izin})
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0':
+            try:
+                pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
+
+    jenis_perusahaan = JenisPerusahaan.objects.all()
+    extra_context.update({'jenis_perusahaan': jenis_perusahaan})
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_pt.html", extra_context)
-
-def formulir_imb_umum(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    return render(request, "front-end/formulir/imb_umum.html", extra_context)
-
-def formulir_imb_perumahan(request, extra_context={}):
-    negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
-    provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
-    kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
-    jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    return render(request, "front-end/formulir/imb_perumahan.html", extra_context)
 
 
 def formulir_tdp_cv(request, extra_context={}):
@@ -552,12 +517,6 @@ def cetak_reklame(request,id_pengajuan_):
 	else:
 		response = HttpResponseRedirect(url_)
 		return response
-	# else:
-	# 	response = HttpResponseRedirect(url_)
-	# 	return response		 
-
-	# pengajuan_list = PengajuanIzin.objects.filter(id=request.COOKIES['id_pengajuan'])
-	# extra_context.update({'pengajuan_list': pengajuan_list})
 	template = loader.get_template("front-end/include/formulir_reklame/cetak.html")
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
@@ -614,13 +573,6 @@ def cetak_bukti_pendaftaran_reklame(request, id_pengajuan_):
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
 
-def cetak_ho_perpanjang(request, extra_context={}):
-    return render(request, "front-end/include/formulir_ho_baru/cetak_perpanjang.html", extra_context)
-
-def cetak_bukti_pendaftaran_ho_perpanjang(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HO")
-    extra_context.update({'syarat': syarat})
-    return render(request, "front-end/include/formulir_ho_baru/cetak_bukti_perpanjangan.html", extra_context)
 
 def cetak_huller(request, extra_context={}):
     return render(request, "front-end/include/formulir_huller/cetak.html", extra_context)
@@ -795,3 +747,21 @@ def option_kbli(request):
     kbli_list = kbli_list.extra(where=["CHAR_LENGTH(kode_kbli) = 5"])
     pilihan = '<option></option>'
     return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in kbli_list)));
+
+def decimal_default(obj):
+    if isinstance(obj, decimal.Decimal):
+        return float(obj)
+    raise TypeError
+
+def get_nilai_parameter(request):     
+    id_parameter = request.POST.get('id_parameter', None)
+    parameter = int(id_parameter)
+    if parameter == 0:
+        get_nilai = 0
+    else:
+        parameter = ParameterBangunan.objects.get(id=parameter)
+        get_nilai = parameter.nilai
+        
+    return  HttpResponse(json.dumps(decimal.Decimal(get_nilai),default=decimal_default))
+
+        

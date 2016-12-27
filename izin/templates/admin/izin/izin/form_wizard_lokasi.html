@@ -1,0 +1,548 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% endblock %}
+
+{% block icotitle %}<i class="icon-book-open"></i>&nbsp;{% endblock %}
+
+{% block content_title %}
+	{{ title }}
+{% endblock %}
+
+{% block extrajs_site %}
+	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
+	<script src="{% static "scripts/js/main.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/filestyle/bootstrap-filestyle.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
+	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+  <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+  <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
+  <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
+  <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
+  <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
+  <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+  <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+  <script type="text/javascript">
+      $(window).load(function(){
+        $('#rootwizard').bootstrapWizard({
+          onTabShow: function(tab, navigation, index) {
+              var $total = navigation.find('li').length;
+              var $current = index+1;
+              if($current >= $total) {
+                $('#rootwizard').find('.pager .next').hide();
+                $('#rootwizard').find('.pager .finish').show();
+                $('#rootwizard').find('.pager .finish').removeClass('disabled');
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_konfirmasi_izin_lokasi(id_pengajuan)
+                if (id_pengajuan > 0){
+                  $.ajax({
+                    url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
+                    success: function (response){
+                        respon = $.parseJSON(response)
+                        if (respon.success){
+                          $("<br><br><table border='0' width='100%'><tr><td colspan='3'><h3 class='custom-font'>Data Kuasa</h3></td></tr><tr><td width='25%'>Nama Kuasa</td><td width='5%'>:</td><td width='70%'>"+respon.nama_kuasa+"</td></tr><tr><td>No Identitas Kuasa</td><td>:</td><td>"+respon.no_identitas_kuasa+"</td></tr><tr><td>Telpon Kuasa</td><td>:</td><td>"+respon.telephone_kuasa+"</td></tr></table>").insertAfter("#id_table_pemohon_komfirmasi");
+                        }
+                        else{
+                          $('<br>').insertAfter("#id_table_pemohon_komfirmasi");
+                                  }
+                      }
+                      // error: function(response){
+                      //   $('<br>').insertAfter("#id_table_pemohon_komfirmasi");
+                      // }
+                  })
+                }
+              }else{
+              if($current == 4){
+                // alert("OK")
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_berkas_izin_lokasi(id_pengajuan)
+                
+              }
+                $('#rootwizard').find('.pager .next').show();
+                $('#rootwizard').find('.pager .finish').hide();
+              }
+          },
+
+          onNext: function(tab, navigation, index) {
+              // var form = $('form[name="step'+ index +'"]');
+              // form.parsley().validate();
+              // if (!form.parsley().isValid()) {
+              //     return false;
+              // }
+              return false;
+          },
+
+          onTabClick: function(tab, navigation, index) {
+            // var form = $('form[name="step'+ (index+1) +'"]');
+            // form.parsley().validate();
+            // if (!form.parsley().isValid()) {
+            //     return false;
+            // }
+            return false;
+          }
+        });
+      });
+
+      $(document).ready(function() {
+
+          /* +++++++++++++++++++ untuk confirmasi dialog sebelum halaman di reload +++++++++*/
+          window.onbeforeunload = function ref() {
+            var r = confirm( "Do you want to leave?" );
+            if (r == true) {
+                
+            }
+            else {
+                return false;
+            }
+          };
+          /* +++++++++++++++++++ end untuk confirmasi dialog sebelum halaman di reload +++++++++*/
+          
+          $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+            $("#switch_akta_pendirian_disabled").change(function() {
+              if ($(this).is(':checked')) {
+                $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
+              }
+              else {
+                $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+              }
+            });
+
+          $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+          $("#switch_akta_perubahan_disabled").change(function() {
+            if ($(this).is(':checked')) {
+              $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
+            }
+            else {
+              $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+            }
+          });
+
+          $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+          $("#switch_pemohon_disabled").change(function() {
+            if ($(this).is(':checked')) {
+              $('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+            }
+            else {
+              $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+            }
+          });
+          
+          $('#percent_berkas_foto').hide()
+          $('#percent_berkas_ktp').hide()
+          $('#percent_berkas_npwp_pribadi').hide()
+          $('#percent_berkas_npwp_perusahaan').hide()
+          $('#percent_berkas_akta_pendirian').hide()
+          $('#percent_berkas_akta_perubahan').hide()
+          $('#percent_berkas_pendukung').hide()
+          // $.removeCookie('id_pengajuan', { path: '/' });`
+          // 
+          if ($.cookie('id_pengajuan') === undefined){
+            $.cookie('id_pengajuan', "0", {path:"/"});
+          }
+          if ($.cookie('id_pemohon') === undefined){
+            $.cookie('id_pemohon', "0", {path:"/"});
+          }
+          if ($.cookie('id_perusahaan') === undefined){
+            $.cookie('id_perusahaan', "0", {path:"/"});
+          }
+          if ($.cookie('id_legalitas') === undefined){
+            $.cookie('id_legalitas', "0", {path:"/"});
+          }
+          if ($.cookie('id_legalitas_perubahan') === undefined){
+            $.cookie('id_legalitas_perubahan', "0", {path:"/"});
+          }
+
+          $( "#alert" ).prop( "disabled", true );
+          $('#checkbox_siup_done').change(function() {
+            if ($(this).is(':checked')) {
+              $( "#alert" ).prop( "disabled", false );
+              window.onbeforeunload = null;
+            }
+            else{
+              $( "#alert" ).prop( "disabled", true );
+            }
+          });
+          if($('#switch_akta_perubahan_disabled').is(':checked')){
+            $('#konfirmasi_legalitas_perubahan').show();
+          }
+          else{
+            $('#konfirmasi_legalitas_perubahan').hide();
+          }
+        });
+
+    function next_tab(btn){
+      var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+      var frm = $('form[name="step'+ index +'"]');
+      frm.parsley().validate();
+        if (frm.parsley().isValid()) {
+          // $(".tab-content #tab"+index).mask('loading')
+          $(".tab-content").mLoading();
+          $(btn).attr('disabled', 'disabled')
+          $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (response){
+              respon = $.parseJSON(response)
+                $(btn).removeAttr('disabled')
+                // alert(respon);
+                // console.log(respon.success);
+                if(respon.success){
+                  toastr["success"](respon.pesan)
+                  // console.log(respon.data)
+                  // console.log(respon.data.length)
+                  // $.cookie("keys", "value"); set cookie
+                    
+                  for (var i = 0; i < respon.data.length; i++){
+                    var key = Object.keys(respon.data[i]); // Mencari key json
+                    // console.log(key[0]);
+                    // if (key[0]= "status_upload") {
+                    //   $("#npwp_perusahaan").hide(1000)
+
+                    // }else{
+                    var val = respon.data[i][key[0]] // mencari value json
+                      // console.log(key[0]+"_konfirmasi");
+                    var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+                    $(id).text(val);
+                    // }
+                    // untuk sementara
+                    if(key[0] === "jenis_legalitas_perubahan"){
+                      $('#konfirmasi_legalitas_perubahan').hide();
+                    }
+                    else{
+                      $('#konfirmasi_legalitas_perubahan').show();
+                    }
+                  }
+                  // $( ".tab-content #tab"+index ).unmask()
+                  $(".tab-content").mLoading('hide');
+                  tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+                  $(tab_index).tab('show')
+                }
+                else{
+                  // console.log("error")
+                  // console.log(respon);
+                  // console.log(typeof respon);
+                  var a = Object.keys(respon);
+                  // console.log(respon['nama_lengkap'][0]['message']);
+                  // console.log(a.length);
+                  for (var i = 0; i < a.length; i++){
+                    // console.log(a[i]);
+                    // console.log(respon[a[i]]);
+                    // var field = a[i].replace("_", " ").capitalize();
+                    // toastr["error"](field+", "+respon[a[i]][0]['message'])
+                    $("#"+a[i]+"").addClass("has-error");
+                    // console.log($("#"+a[i]+"").addClass("parsley-error"));
+                  }
+                  // $( ".tab-content #tab"+index ).unmask()
+                  $(".tab-content").mLoading('hide');
+                }
+            },
+            error: function(response){
+              // alert(response)
+              // $( ".tab-content #tab"+index ).unmask()
+              $(".tab-content").mLoading('hide');
+              $(btn).removeAttr('disabled')
+              toastr["error"]("Terjadi kesalahan pada koneksi server.")
+            }
+        });
+      }
+    };
+
+
+    document.querySelector('#alert').onclick = function(){
+      // swal("Good job!", "You clicked the button!", "success");
+      var pengajuan_cookie = $.cookie('id_pengajuan'); 
+      var pemohon_cookie = $.cookie('id_pemohon'); 
+      var perusahaan_cookie = $.cookie('id_perusahaan'); 
+      if (pengajuan_cookie === ""){
+        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+        $(tab_index).tab('show');
+      }
+      else if(pemohon_cookie === ""){
+        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+        $(tab_index).tab('show');
+      }else if(perusahaan_cookie === ""){
+        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+        $(tab_index).tab('show');
+      }
+      else{
+        swal({
+          showConfirmButton: false,
+          type: 'success',
+          title: 'Pendaftaran Berhasil Tersimpan',
+          timer: 2000
+        })
+        
+        id_pengajuan_ = $.cookie("id_pengajuan");
+        if (id_pengajuan_ != undefined){
+          $.ajax({
+            url: '{% url 'izinlokasi_done' %}',
+            success: function(response) {
+              respon = $.parseJSON(response)
+              if(respon.success){
+                toastr["success"](respon.pesan)
+              }
+              window.location.replace('{% url 'admin:izin_informasitanah_changelist' %}view-pengajuan-izin/'+id_pengajuan_);
+            }
+          });
+        }
+      }
+    };
+
+      $.ajaxSetup({
+      timeout: 20000, // Microseconds, for the laughs. Guaranteed timeout.
+      error: function(request, status, maybe_an_exception_object) {
+      if(status == 'timeout')
+      alert("Jaringan Internet anda terputus!");
+      }
+    });
+
+      $(document).ready(function() {
+        window.onbeforeunload = function ref() {
+              var r = confirm( "Do you want to leave?" );
+              if (r == true) {
+                  
+              }
+              else {
+                  return false;
+              }
+            };
+        
+          $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+          $("#switch_pemohon_disabled").change(function() {
+            if ($(this).is(':checked')) {
+              $('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+            }
+            else {
+              $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+            }
+          });
+
+          $('#percent-bukti_kepemilikan_tanah').hide()
+          $('#percent-sketsa_lokasi_tanah').hide()
+          $('#percent-gambar_rencana_penggunaan_tanah').hide()
+          $('#percent-sertifikat_tanah').hide()
+          $('#percent-akta_jual_beli').hide()
+          $('#percent-rekomendasi_bupati').hide()
+          $('#konfirmasi_legalitas_perubahan').hide();
+
+          if ($.cookie('id_pengajuan') === undefined){
+            $.cookie('id_pengajuan', "0", {path:"/"});
+          }
+          if ($.cookie('id_pemohon') === undefined){
+            $.cookie('id_pemohon', "0", {path:"/"});
+          }
+          if ($.cookie('id_perusahaan') === undefined){
+            $.cookie('id_perusahaan', "0", {path:"/"});
+          }
+
+          $( "#alert" ).prop( "disabled", true );
+          $('#checkbox_done').change(function() {
+              if ($(this).is(':checked')) {
+                $( "#alert" ).prop( "disabled", false );
+                window.onbeforeunload = null;
+              }
+              else{
+                $( "#alert" ).prop( "disabled", true );
+              }
+            });
+      });
+
+      if ('{{pengajuan_}}'){
+        
+            {% include 'front-end/load_pengajuan.html' %}
+
+            $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
+            $('#id_judul_reklame').val('{{ pengajuan_.judul_reklame }}');
+            $('#id_panjang').val('{{ panjang }}');
+            $('#id_lebar').val('{{ lebar }}');
+            $('#id_sisi').val('{{ sisi }}');
+            $('#id_tanggal_mulai').val('{{ pengajuan_.tanggal_mulai|date:'d-m-Y' }}');
+            $('#id_tanggal_akhir').val('{{ pengajuan_.tanggal_akhir|date:'d-m-Y' }}');
+            $('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
+            $('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
+            load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
+            setTimeout(function(){
+              $('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+
+            $('a[data-toggle="tooltip"]').tooltip({
+          animated: 'fade',
+          placement: 'bottom',
+          html: true
+      });
+      }
+
+  // $(function() {
+  //   $('#id_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+  //   })
+  // $(function() {
+  //   $('#id_data_reklame').on('keydown', '#id_panjang', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+  //   })
+
+    </script>
+{% endblock %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+	<!-- CSS adjustments for browsers with JavaScript disabled -->
+	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">
+		/*@media only screen and (max-width: 1280px){
+			.hidden_title{
+			   display: none !important;
+			}
+			.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+			  padding-bottom: 24px
+			}
+			.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			  padding-bottom: 24px;
+			}
+			
+		}
+		@media only screen and (max-width: 844px){
+		  .hidden_title{
+			display: block !important;
+		  }
+		}*/
+		.checkbox-custom-alt input:checked + i {
+		    background-color: transparent;
+		    border-color: #FEF7F7;
+		    color: #FCFAFA;
+		}
+		label{
+			color: black;
+		}
+		h4,h3{
+			color: black;
+			font-weight: bold;
+		}
+		table{
+			color: black;
+		}
+
+		.chosen-container{
+			min-width: 400px;
+		}
+		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+        	background-color: #22beef;
+        	color: aliceblue;
+		}
+		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			background-color: #616f77;
+		}
+		.tab-wizard .nav-tabs > li:before {
+			background-color: #333;
+		}
+		.onoffswitch.labeled .onoffswitch-inner:before {
+			content: "Ya";
+		}
+		.onoffswitch.labeled .onoffswitch-inner:after {
+			content: "Tidak";
+		}
+		.onoffswitch.labeled {
+			width: 59px;
+		}
+		.onoffswitch.labeled .onoffswitch-switch {
+			right: 34px;
+		}
+		hr.style14 { 
+	        border: 0; 
+	        height: 1px; 
+	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      	}
+      	.checkbox-custom-alt input[disabled] + i {
+	        border-color: #0e0d0d;
+	        background-color: #fbf6f6;
+      	}
+      	.checkbox-custom-alt input[disabled] + i::before {
+	        background-color: transparent;
+	        color: #0c0c0c;
+      	}
+	</style>
+{% endblock %}
+
+{% block content %}
+<div id="rootwizard" class="tab-container tab-wizard">
+  	<ul class="nav nav-tabs nav-justified">
+	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+	    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+	    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+	    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+  	</ul>
+  	<div class="tab-content">
+      <div class="tab-pane" id="tab1">
+        <!-- Identitas perusahaan -->
+        {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab2">
+        <!-- Identitas perusahaan -->
+        {% include 'front-end/include/formulir_izin_lokasi/identitas_perusahaan.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab3">
+        <!-- Data Kegiatan Gangguan -->
+        {% include 'front-end/include/formulir_izin_lokasi/informasi_tanah.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab4">
+        <!-- Upload Dokumen -->
+        {% include 'front-end/include/formulir_izin_lokasi/upload_dokumen.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab5">
+        <!-- Konfirmasi -->
+        {% include 'front-end/include/formulir_izin_lokasi/konfirmasi.html' %}
+      </div>
+		<ul class="pager wizard">
+		  	<li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
+		  	<li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+		  	<li class="next finish" style="display:none;">
+				<button type="submit" class="btn btn-success pull-right" id="alert">
+			  		<i class="fa fa-arrow-right"></i>
+			  		<span>Selesai</span>
+				</button>
+			</form>
+		  	</li>
+		</ul>
+  	</div>
+  <br>
+  <br>
+  <br>
+</div>
+{% endblock %}

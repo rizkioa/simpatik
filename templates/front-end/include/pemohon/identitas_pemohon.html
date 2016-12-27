@@ -1,5 +1,6 @@
 <form method="POST" name="step1" role="form" class="form-horizontal form-pemohon" action="{% url 'siup_pemohon_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}
+  <!-- <input type="hidden" name="path_name" class="path_name"> -->
   <div class="form-group">
     <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pengajuan</strong> </label>
     <div class="col-sm-5">
@@ -70,7 +71,7 @@
     </div>
   </div>
 
-  <div class="form-group" id="negara">
+    <div class="form-group" id="negara">
     <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
     <div class="col-sm-5">
       <select class="form-control chosen-select mb-10" name="negara" id="id_negara" required="" data-parsley-trigger="change">

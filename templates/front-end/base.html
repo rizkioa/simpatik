@@ -25,11 +25,13 @@
         <link rel="stylesheet" href="{% static 'styles/css/mainfront.css' %}">
         <script src="{% static 'scripts/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
         <link rel="stylesheet" href="{% static 'styles/css/mobile-frontend.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/simple-line-icons.css' %}">
         <script type="text/javascript">
             lokasi = document.createElement("a");
             lokasi.href = location.href;
             window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
             // alert(__base_url__)
+            var pathname = window.location.pathname;
         </script>
         {% block extrastyle %}
         {% endblock %}
@@ -103,8 +105,8 @@
         </div>
         {% block extratools %}
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
-        <!-- <script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script> -->
-        <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script>
+        <script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+        <!-- <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script> -->
         <!-- <script src="{% static 'scripts/js/vendor/jquery/jquery-3.1.1.min.js' %}"></script> -->
         <script src="{% static 'scripts/js/vendor/bootstrap/bootstrap.min.js' %}"></script>
         <script src="{% static 'scripts/js/vendor/jRespond/jRespond.min.js' %}"></script>

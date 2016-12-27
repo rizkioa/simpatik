@@ -13,7 +13,15 @@ from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, Det
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
+from izin.controllers.imb_reklame import formulir_imb_reklame
+from izin.controllers.imb_umum import formulir_imb_umum
+from izin.controllers.imb_perumahan import formulir_imb_perumahan
 from izin.controllers.tdp import formulir_tdp_pt
+from izin.controllers.izin_gangguan import formulir_izin_gangguan
+from izin.controllers.penggunaan_kekayaan_daerah import formulir_informasi_kekayaan_daerah
+from izin.controllers.izin_lokasi import formulir_izin_lokasi 
+from izin.controllers.ippt_rumah import formulir_ippt_rumah 
+
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 
@@ -139,7 +147,7 @@ class IzinAdmin(admin.ModelAdmin):
 		if func_view.__name__ == 'izinterdaftar':
 			pengajuan_ = qs.filter(status=1)
 		elif func_view.__name__ == 'semua_pengajuan':
-			pengajuan_ = qs.filter(~Q(status=11))
+			pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 		elif func_view.__name__ == 'verifikasi':
 			if request.user.groups.filter(name='Operator'):
 				pengajuan_ = qs.filter(status=6)
@@ -147,6 +155,8 @@ class IzinAdmin(admin.ModelAdmin):
 				pengajuan_ = qs.filter(status=4)
 			elif request.user.groups.filter(name='Pembuat Surat'):
 				pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+			else:
+				pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 
 		elif func_view.__name__ == 'verifikasi_skizin':
 			id_pengajuan_list = []
@@ -196,38 +206,38 @@ class IzinAdmin(admin.ModelAdmin):
 		return obj.created_at
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
-	# def get_no_pengajuan(self, obj):
-	# 	no_pengajuan = mark_safe("""
-	# 		<a href="%s" target="_blank"> %s </a>
-	# 		""" % ("#", obj.no_pengajuan ))
-	# 	split_ = obj.no_pengajuan
-	# 	# print split_
-	# 	no_pengajuan = mark_safe("""
-	# 			<span>%s</span>
-	# 			""" % ( obj.no_pengajuan ))
-	# 	if split_[0] == 'SIUP':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	elif split_[0] == 'Reklame':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	elif split_[0] == 'TDP':
-	# 		# if request.user.is_superuser:
-	# 		# 	no_pengajuan = mark_safe("""
-	# 		# 	<a href="%s" target="_blank"> %s </a>
-	# 		# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
-	# 		# else:
-	# 		no_pengajuan
-	# 	return no_pengajuan
-	# get_no_pengajuan.short_description = "No. Pengajuan"
+	def get_no_pengajuan(self, obj):
+		# no_pengajuan = mark_safe("""
+		# 	<a href="%s" target="_blank"> %s </a>
+		# 	""" % ("#", obj.no_pengajuan ))
+		split_ = obj.no_pengajuan
+		# print split_
+		no_pengajuan = mark_safe("""
+				<span>%s</span>
+				""" % ( obj.no_pengajuan ))
+		# if split_[0] == 'SIUP':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detilsiup_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			# no_pengajuan
+		# elif split_[0] == 'Reklame':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detilreklame_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			# no_pengajuan
+		# elif split_[0] == 'TDP':
+			# if request.user.is_superuser:
+			# 	no_pengajuan = mark_safe("""
+			# 	<a href="%s" target="_blank"> %s </a>
+			# 	""" % (reverse('admin:izin_detiltdp_change', args=(obj.id,)), obj.no_pengajuan ))
+			# else:
+			# no_pengajuan
+		return no_pengajuan
+	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def linkdetilizin(self, obj):
 		link_ = '#'
@@ -240,6 +250,16 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.01.06/":
 			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.05/":
+			link_ = reverse('admin:view_pengajuan_imb_umum', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.04/":
+			link_ = reverse('admin:view_pengajuan_imb_perumahan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.06.01/":
+			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
+		elif jenis_izin_ == "503.02/":
+			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})	
+		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.id == 38:
+			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
 				""" % link_ )
@@ -258,6 +278,16 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.01.06/":
 			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.04/":
+			link_ = reverse('admin:view_pengajuan_imb_perumahan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.01.05/":
+			link_ = reverse('admin:view_pengajuan_imb_umum', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.06.01/":
+			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
+		elif jenis_izin_ == "503.02/":
+			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.id == 38:
+			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -483,9 +513,11 @@ class IzinAdmin(admin.ModelAdmin):
 			kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
 			extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
-				terbilang_ = terbilang(pengajuan_.kekayaan_bersih)
+				kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
+				# print kekayaan_
+				terbilang_ = terbilang(int(kekayaan_))
 				extra_context.update({'terbilang': str(terbilang_) })
-				extra_context.update({ 'kekayaan_bersih': pengajuan_.kekayaan_bersih })
+				extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
 			# try:
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:
@@ -692,7 +724,7 @@ class IzinAdmin(admin.ModelAdmin):
 				elif request.POST.get('aksi') == '_submit_edit_skizin':
 					try:
 						detilsiup = DetilSIUP.objects.get(id=id_pengajuan_izin)
-						print request.POST.get('produk_utama')
+						# print request.POST.get('produk_utama')
 						detilsiup.produk_utama = request.POST.get('produk_utama')
 						detilsiup.save()
 						response = {
@@ -917,7 +949,14 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^option/kelompokizin/$', self.admin_site.admin_view(self.option_kelompokjenisizin), name='option_kelompokjenisizin'),
 			url(r'^wizard/add/proses/siup/$', self.admin_site.admin_view(formulir_siup), name='izin_proses_siup'),
 			url(r'^wizard/add/proses/reklame/$', self.admin_site.admin_view(formulir_reklame), name='izin_proses_reklame'),
+			url(r'^wizard/add/proses/imb-reklame/$', self.admin_site.admin_view(formulir_imb_reklame), name='izin_proses_imb_reklame'),
+			url(r'^wizard/add/proses/imb-umum/$', self.admin_site.admin_view(formulir_imb_umum), name='izin_proses_imb_umum'),
+			url(r'^wizard/add/proses/imb-perumahan/$', self.admin_site.admin_view(formulir_imb_perumahan), name='izin_proses_imb_perumahan'),
 			url(r'^wizard/add/proses/tdp-pt/$', self.admin_site.admin_view(formulir_tdp_pt), name='izin_proses_tdp_pt'),
+			url(r'^wizard/add/proses/pemakaian-kekayaan-daerah/$', self.admin_site.admin_view(formulir_informasi_kekayaan_daerah), name='izin_proses_pemakaian_kekayaan_daerah'),
+			url(r'^wizard/add/proses/izin-gangguan/$', self.admin_site.admin_view(formulir_izin_gangguan), name='izin_proses_gangguan'),
+			url(r'^wizard/add/proses/izin-lokasi/$', self.admin_site.admin_view(formulir_izin_lokasi), name='izin_proses_lokasi'),
+			url(r'^wizard/add/proses/ippt-rumah/$', self.admin_site.admin_view(formulir_ippt_rumah), name='izin_proses_ippt_rumah'),
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),

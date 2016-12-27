@@ -240,7 +240,7 @@ function load_desa_imb_reklame(id_kecamatan_imb_reklame){
     // $( "#id_desa_reklame_chosen" ).mask('loading')
     $( "#id_desa_imb_reklame_chosen .loadmask-msg" ).css('top', '2px')
     $.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan_data_reklame }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan_imb_reklame }, // get the form data
         type: 'POST', // GET or POST
         // url: '{% url 'admin:option_desa' %}', // the file to call
         url: __base_url__+'/admin/master/desa/option/',

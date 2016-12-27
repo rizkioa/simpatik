@@ -1,8 +1,8 @@
 {% load i18n admin_static staticfiles widgets %}
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-	<title>Cetak Bukti Pendaftaran</title>
+    <title>Cetak Bukti Pendaftaran</title>
 </head>
 <!--[if ]>
 <style>
@@ -11,6 +11,7 @@
 }
 </style>
 <![endif]-->
+
 <style type="text/css">
     
     hr.style14 { 
@@ -24,7 +25,7 @@
     * {
       font-family: "Open Sans", Helvetica, Arial, sans-serif;
     }
-	body {
+    body {
         width: 100%;
         height: 100%;
         margin: 0;
@@ -36,6 +37,7 @@
         box-sizing: border-box;
         -moz-box-sizing: border-box;
     }
+
     .page {
         width: 210mm;
         min-height: 297mm;
@@ -46,13 +48,18 @@
         background: white;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
+
     .subpage {
         padding: 0.5cm;
-        /*border: 5px red solid;*/
-        height: 257mm;
-        /*outline: 2cm #FFEAEA solid;*/
+        height: 307mm;
     }
-    
+
+    @-moz-document url-prefix() {
+        .subpage {
+            height: 334mm;
+        }
+    }   
+
     @page {
         size: A4;
         margin: 0;
@@ -75,33 +82,113 @@
     }
 
     .title, .tabel{
-		border-bottom: 1px solid #7d7d7d;
+        border-bottom: 1px solid #7d7d7d;
     }
     .title h3{
-    	margin-top: 0px;
+        margin-top: 0px;
     }
     .tabel{
-    	padding-top: 0px;
-    	padding-bottom: 10px;
+        padding-top: 0px;
+        padding-bottom: 10px;
     }
 
     table {
     border-collapse: collapse;
-	}
+    }
 
-	.ceklist {
-	    border: 1px solid black;
-	}
+    .ceklist {
+        border: 1px solid black;
+    }
     .font {
         font-size: 12px;
         font-family: "Open Sans", Helvetica, Arial, sans-serif;
     }
+
+    
+    .style2 {
+        border-top: 3px double #8c8b8b;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+    th, td {
+        padding: 0px;
+    }
 </style>
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'scripts/js/print/print.css' %}"> -->
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'scripts/js/print/css/print-preview.css' %}"> -->
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'scripts/js/print/screen.css' %}"> -->
+<!-- <script src="{% static 'scripts/js/print/jquery.tools.min.js' %}"></script>
+<script src="{% static 'scripts/js/print/jquery.print-preview.js' %}"></script> -->
+<!-- <script type="text/javascript">
+    $(function() {
+        /*
+         * Initialise example carousel
+         */
+        $("#feature > div").scrollable({interval: 3000}).autoscroll();
+        
+        /*
+         * Initialise print preview plugin
+         */
+        // Add link for print preview and intialise
+        // $('#aside').prepend('<a class="print-preview">Print this page</a>');
+        // $('a.print-preview').printPreview();
+        
+        // Add keybinding (not recommended for production use)
+        // $(document).bind('keydown', function(e) {
+        //     var code = (e.keyCode ? e.keyCode : e.which);
+        //     if (code == 80 && !$('#print-modal').length) {
+        //         $.printPreview.loadPrintPreview();
+        //         return false;
+        //     }            
+        // });
+        $(document).ready(function() {
+            $.printPreview.loadPrintPreview();
+            return false;
+        })
+        
+    });
+</script> -->
 <body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
     <div class="book">
         <div class="page">
             <div class="subpage">
-            	<div class="title">
+                <div class="title">
                     <div class="tabel">
                         <table>
                             <tr>
@@ -114,143 +201,176 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : IMB/1001/0802/2016<br>
-                                <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
+                                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div>
-                    <h4 align="center"><u>FOMULIR IZIN MENDIRIKAN BANGUNAN (IMB) PAPAP REKLAME</u></h4>
-                    <table width="100%" border="0">
-                        <tr>
-                            <td width="10%"><p style="font-size:13px">Perihal :<br><br><br></p></td>
-                            <td width="40%">
-                                <p style="font-size:13px">Fomulir Izin Mendirikan<br> Bangunan (IMB) Papan Reklame<br> (Bando Jalan dan Papan  Bertiang)
-                                </p>
-                            </td>
-                            <td width="50%">
-                                <p align="left" style="font-size:13px;padding-left:25%">
-                                    Kepada
-                                    <br>
-                                    Yth. Bupati Kediri
-                                    <b></b>
-                                    Lewat
-                                    <br>
-                                    Yth. Kepala BPM-P2TSP Kab. Kediri
-                                    <br>
-                                    di
-                                    <br>
-                                    KEDIRI
-                                </p>
-                            </td>
-                        </tr>
-                    </table>
+
+                </div>
+                <div>
+                    <h4 align="center"><u>FORMULIR IZIN MENDIRIKAN BANGUNAN ( I M B ) PAPAN REKLAME</u></h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="font">
+                            <tr>
+                                <td>
+                                    <table width="500" class="left">
+                                        <tr>
+                                            Perihal : Formulir izin mendirikan <br>bangunan (IMB) Papan Reklame<br>(Bando Jalan dan papan Bertiang)
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table width="200">
+                                        <tr>
+                                            <td>Kepada</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 15px;">Yth. Bupati Kediri</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lewat</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 15px;">Yth. Kepala BPM-P2TSP Kab. Kediri</td>
+                                        </tr>
+                                        <tr>
+                                            <td>di.</td>
+                                        </tr>
+                                        <tr>
+                                            <td><p style="text-indent:3em;"><b><u>K E D I R I</u></b> </p></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 </div>
                 <table width="100%" border="0" class="font">
-                   <tr>
-                       <td width="25%">Jenis Pengajuan</td>
-                       <td width="5%">:</td>
-                       <td width="70%">Baru</td>
-                   </tr>
-               </table>
-                <p style="font-size:13px; padding-left:5%;">Yang bertanda tanggan di bawah ini</p>
+                    <tr>
+                        <td width="25%">Jenis Pengajuan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
+                    </tr>
+                </table>
+                <h5 style="padding-top: -2px;"><u>IDENTITAS PEMOHON</u></h5>
                 <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pemohon</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
+                    </tr>
                     <tr>
                         <td width="25%">Nomor KTP/Paspor</td>
                         <td width="10%">:</td>
-                        <td width="65%">350001010010101001</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama</td>
                         <td width="10%">:</td>
-                        <td width="65%">Hartato</td>
+                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_pemohon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ pemohon.telephone }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. HP</td>
                         <td width="10%">:</td>
-                        <td width="65%">085736662908</td>
+                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kewarganegaraan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Indonesia</td>
+                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Pekerjaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Swasta</td>
+                        <td width="65%">{{ pemohon.pekerjaan }}</td>
                     </tr>
+                </table>
+                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
+                <table class="font" width="100%">
                     <tr>
-                        <td width="25%">NPWP Perusahaan</td>
+                        <td width="25%">NPWP</td>
                         <td width="10%">:</td>
-                        <td width="65%">123456789655000</td>
+                        <td width="65%">{{ perusahaan.npwp }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">UD. MAKMUR JAYA</td>
+                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                        <td width="65%">{{ alamat_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ perusahaan.kode_pos }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">081234123412</td>
+                        <td width="65%">{{ perusahaan.telepon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Fax</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{{ perusahaan.fax }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">-</td>
+                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
                     </tr>
                 </table>
-                <br>
-                <p style="font-size:13px">Berdasarkan Peraturan Daerah Kabupaten Kediri Nomor 4 Tahun 29012 tentang Retribusi Izin Mendirikan Bangunan, Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 29011 tentang Bangunan Gedung di Kabupaten Kediri</p>
-
-                <p style="font-size:13px; padding-left:5%">Bersama ini Mengajukan Izin Mendirikan Bangunan (IMB) Papan Reklame :</p>
+                <p style="font-size: 12px;text-indent: 30px;"> Berdasarkan Peraturan Daerah Kabupaten Kediri Nomor 4 Tahun 2012 tentang Retribusi Izin Mendirikan Bangunan, Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 2012 Tentang Bangunan Gedung di Kabupaten Kediri
+                </p>
+                <p style="font-size: 12px;text-indent: 30px;">Bersama ini mengajukan Izin Mendirikan Bangunan (IMB) Papan Reklame : </p>
                 <table width="100%" class="font">
                     <tr>
                         <td width="25%">Jenis Papan Reklame</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.jenis_papan_reklame|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Ukuran</td>
                         <td width="5%">:</td>
-                        <td width="70%">Lebar = ....M, Luas = ....M</td>
+                        <td width="70%">{{ukuran|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Jumlah</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{jumlah|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Lokasi Pemasangan</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{letak_pemasangan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Klasifikasi Jalan</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{klasifikasi_jalan|default_if_none:"-"}}</td>
                     </tr>
                 </table>
 
@@ -259,61 +379,83 @@
                     <tr>
                         <td width="25%">Batas Utara</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.batas_utara|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Batas Timur</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.batas_timur|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Batas Selatan</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.batas_selatan|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Batas Barat</td>
                         <td width="5%">:</td>
-                        <td width="70%"></td>
+                        <td width="70%">{{pengajuan.batas_barat|default_if_none:"-"}}</td>
                     </tr>
-                </table>
+                </table>    
                 <br>
-                <br>
-                
+                    <p style="font-size: 12px;text-indent: 30px;">
+                        Demikian permohonan ini kami buat dan kami bersedia memenuhi semua kewajiban sesuai peraturan yang berlaku atas perkenan izinnya di sampaikan terima kasih
+                    </p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="font">
+                            <tr>
+                                <td>
+                                    <table width="500" class="left">
+                                        <tr>
+                                            <td>Tembusan :</td>
+                                        </tr>
+                                        <tr>
+                                        <td>Yth. <b><u>Tim Perizinan Reklame</u></b></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td>
+                                    <table width="200">
+                                        <tr>
+                                            <td>Kediri,...................................</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-left: 40px;"">Hormat Kami</td>
+                                        </tr>
+                                        <tr>
+                                            <td><br><font style="padding-left: 30px;" color="blue">cap perusahaan & </font><font style="padding-left: 30px;" color="blue">materai Rp. 6000</font><br></td>
+                                        </tr>
+               
+                                        <tr>
+                                            <td><br></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p style="text-indent:3em;padding-left: 20px;"><b><u>{{pemohon.nama_lengkap}}</u></b> </p></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <hr>
                 <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> 
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                 </i>
             </div>    
         </div>
         <div class="page">
-            <div class="subpage">
-                <p style="font-size:13px;">Demikian pemohonan ini saya buat, saya sanggup mentaati semua Peraturan Perudang-udangan yang berlaku dan tidak akan memulai melaksanakan suatu usaha, sebelum Izin tertulis ditetapkan </p>
-
-                
-                <br>
-                <p align="center" style="font-size:13px;padding-left:75%">
-                    Kediri,.......................
-                    <br>
-                    Hormat Kami
-                    <br>
-                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
-                    <br>
-                    <br>
-                    <br>
-                    <u class="font"><b>HARTATO</b></u>
-                </p>
-                <br>
-
-                <hr class="style14">
-                <h5>Syarat IMB:</h5>
-                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+            <div class="subpage">            
+                <h5>Syarat Izin Pemasangan Reklame:</h5>
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
                             <td width="5%">No</td>
-                            <td width="80%">Syarat</td>
-                            <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -323,50 +465,37 @@
                                 <td>{{ forloop.counter }}</td>
                                 <td>{{ s.syarat }}</td>
                                 <td align="center"><input type="checkbox"></td>
+                                <td align="center"><input type="checkbox"></td>
                             </tr>
                             {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
-                <table width="100%">
+                <br>
+                <table border="0" width="100%" style="font-size: 15px;">
                     <tr>
-                        <td width="25%"></td>
-                        <td width="25%"></td>
-                        <td width="25%">
-                            <p align="center" style="font-size:13px;">
-                                Kediri,.......................
-                                <br>
-                                Petugas 1
-                                <br>
-                                <font color="blue"> Cap BPM </font>
-                                <br>
-                                <br>
-                                <br>
-                                (...........................................)
-                            </p>
+                        <td width="48%" >
+                            
                         </td>
-                        <td width="25%"><p align="center" style="font-size:13px;">
-                                Kediri,.......................
-                                <br>
-                                Petugas 2
-                                <br>
-                                <font color="blue"> Cap BPM </font>
-                                <br>
-                                <br>
-                                <br>
-                                (...........................................)
-                            </p></td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                        <td width="2%">
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
+                        </td>
                     </tr>
                 </table>
-
                 
-                <br><br><br><br><br><br><br><br><br><br><br><br>
                 <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <br>
+                <br>
+                <br>
             </div>    
         </div>
-
-        
     </div>
 </body>
 </html>
