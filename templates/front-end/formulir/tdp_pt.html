@@ -176,12 +176,13 @@
   <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
   <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
   <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
   <script src="{% static 'scripts/js/form/form_tdp_pt.js' %}"></script>
-  <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+  
   <script>
       $(window).load(function(){
           $('#rootwizard').bootstrapWizard({
@@ -350,23 +351,21 @@
             title: 'Pendaftaran Berhasil Tersimpan',
             timer: 2000
           })
+          pengajuan_id = $.cookie('id_pengajuan')
+          if ($.cookie('id_pengajuan') === undefined){
+            pengajuan_id = 0
+          }
+          window.location.replace(__base_url__+'/layanan/tdp-pt/formulir/cetak/'+pengajuan_id);
           $.ajax({
-            url: '{% url 'siup_done' %}',
+            url: '{% url 'tdp_pt_done' %}',
             success: function(response) {
               respon = $.parseJSON(response)
               if(respon.success){
                 toastr["success"](respon.pesan)
+                
               }
             }
           });
-          pengajuan_id = $.cookie('id_pengajuan')
-          window.location.replace('{% url 'cetak_tdp_pt' pengajuan_id %}');
-          // $.removeCookie('id_pengajuan', { path: '/' });
-          // $.removeCookie('id_perusahaan', { path: '/' });
-          // $.removeCookie('id_pemohon', { path: '/' });
-          // $.removeCookie('nomor_ktp', { path: '/' });
-          // $.removeCookie('nomor_paspor', { path: '/' });
-          // $.removeCookie('id_kelompok_izin', { path: '/' });
         }
       };
 
