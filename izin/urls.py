@@ -228,6 +228,7 @@ urlpatterns = [
     url(r'^layanan/tdp-pt/data-umum-perusahaan/save/$', tdp_view.tdp_data_umum_perusahaan_cookie, name='tdp_pt_data_umum_perusahaan_save'),
     url(r'^layanan/tdp-pt/data-kegiatan-perusahaan/save/$', tdp_view.tdp_data_kegiatan_pt_cookie, name='tdp_pt_data_kegiatan_perusahaan_save'),
     url(r'^layanan/tdp-pt/legalitas-perusahaan/save/$', tdp_view.tdp_legalitas_pt_cookie, name='tdp_pt_legalitas_perusahaan_save'),
+    url(r'^layanan/tdp-pt/done/$', tdp_view.tdp_pt_done, name='tdp_pt_done'),
     # +++++++ end ajax save tdp pt +++++++
 
     # ++++++++++++++++++++++++ for ajax IMB reklame ++++++++++++++++++++++

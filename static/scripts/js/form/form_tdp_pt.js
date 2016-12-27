@@ -31,52 +31,82 @@ $("#switch_stap3_bagi_unit_disabled").change(function() {
 });
 
 $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+$('#form-akta_perubahan').hide()
+$('#tr-akta_perubahan').hide()
 $("#switch_akta_perubahan_disabled").change(function() {
   if ($(this).is(':checked')) {
+    $('#form-akta_perubahan').show()
+    $('#tr-akta_perubahan').show()
     $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
   }
   else {
     $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+    $('#form-akta_perubahan').hide()
+    $('#tr-akta_perubahan').hide()
   }
 });
 
 $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
+$('#form-akta_pengesahaan_menteri').hide()
+$('#tr-akta_pengesahaan_menteri').hide()
 $("#switch_stap5_pengesahan_menteri_disabled").change(function() {
   if ($(this).is(':checked')) {
     $('.stap5_pengesahan_menteri').prop('disabled', false).trigger("chosen:updated");
+    $('#form-akta_pengesahaan_menteri').show()
+    $('#tr-akta_pengesahaan_menteri').show()
   }
   else {
     $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
+    $('#form-akta_pengesahaan_menteri').hide()
+    $('#tr-akta_pengesahaan_menteri').hide()
   }
 });
 
 $('.stap5_persetujuan_menteri').prop('disabled', true).trigger("chosen:updated");
+$('#form-akta_persetujuan_menteri').hide()
+$('#tr-akta_persetujuan_menteri').hide()
 $("#switch_stap5_persetujuan_menteri_disabled").change(function() {
   if ($(this).is(':checked')) {
     $('.stap5_persetujuan_menteri').prop('disabled', false).trigger("chosen:updated");
+    $('#form-akta_persetujuan_menteri').show()
+    $('#tr-akta_persetujuan_menteri').show()
   }
   else {
     $('.stap5_persetujuan_menteri').prop('disabled', true).trigger("chosen:updated");
+    $('#form-akta_persetujuan_menteri').hide()
+    $('#tr-akta_persetujuan_menteri').hide()
   }
 });
 
 $('.stap5_penerima_laporan').prop('disabled', true).trigger("chosen:updated");
+$('#form-akta_penerimaan_laporan').hide()
+$('#tr-akta_penerimaan_laporan').hide()
 $("#switch_stap5_penerima_laporan_disabled").change(function() {
   if ($(this).is(':checked')) {
     $('.stap5_penerima_laporan').prop('disabled', false).trigger("chosen:updated");
+    $('#form-akta_penerimaan_laporan').show()
+    $('#tr-akta_penerimaan_laporan').show()
   }
   else {
     $('.stap5_penerima_laporan').prop('disabled', true).trigger("chosen:updated");
+    $('#form-akta_penerimaan_laporan').hide()
+    $('#tr-akta_penerimaan_laporan').hide()
   }
 });
 
 $('.stap5_penerima_pemberitahuan').prop('disabled', true).trigger("chosen:updated");
+$('#form-akta_penerimaan_pemberitahuan').hide()
+$('#tr-akta_penerimaan_pemberitahuan').hide()
 $("#switch_stap5_penerima_pemberitahuan_disabled").change(function() {
   if ($(this).is(':checked')) {
     $('.stap5_penerima_pemberitahuan').prop('disabled', false).trigger("chosen:updated");
+    $('#form-akta_penerimaan_pemberitahuan').show()
+    $('#tr-akta_penerimaan_pemberitahuan').show()
   }
   else {
     $('.stap5_penerima_pemberitahuan').prop('disabled', true).trigger("chosen:updated");
+    $('#form-akta_penerimaan_pemberitahuan').hide()
+    $('#tr-akta_penerimaan_pemberitahuan').hide()
   }
 });
 
