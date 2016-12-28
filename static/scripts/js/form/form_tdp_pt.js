@@ -125,15 +125,15 @@ $("#switch_stap5_penerima_pemberitahuan_disabled").change(function() {
   }
 });
 
-$('.stap6_lainnya').prop('disabled', true).trigger("chosen:updated");
-$("#switch_stap6_lainnya_disabled").change(function() {
-  if ($(this).is(':checked')) {
-    $('.stap6_lainnya').prop('disabled', false).trigger("chosen:updated");
-  }
-  else {
-    $('.stap6_lainnya').prop('disabled', true).trigger("chosen:updated");
-  }
-});
+// $('.stap6_lainnya').prop('disabled', true).trigger("chosen:updated");
+// $("#switch_stap6_lainnya_disabled").change(function() {
+//   if ($(this).is(':checked')) {
+//     $('.stap6_lainnya').prop('disabled', false).trigger("chosen:updated");
+//   }
+//   else {
+//     $('.stap6_lainnya').prop('disabled', true).trigger("chosen:updated");
+//   }
+// });
 
 //++++++++ load wilayah ++++++++++
 // 33333
