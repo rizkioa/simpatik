@@ -337,15 +337,18 @@ def cetak_bukti_pendaftaran_izin_lokasi(request,id_pengajuan_):
           alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
           extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
         extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-        syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IL")
-      letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+        syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IL")
+        extra_context.update({ 'syarat': syarat_ })
+      if pengajuan_.desa:
+        letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+      else:
+        letak_ = pengajuan_.alamat
 
       extra_context.update({'letak_': letak_})
       extra_context.update({ 'pengajuan': pengajuan_ })
-      extra_context.update({ 'syarat': syarat })
       extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
       extra_context.update({ 'created_at': pengajuan_.created_at })
-      response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+      response = loader.get_template("front-end/include/formulir_izin_lokasi/cetak_bukti_pendaftaran.html")
     else:
       response = HttpResponseRedirect(url_)
       return response

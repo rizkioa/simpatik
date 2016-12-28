@@ -98,7 +98,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-			letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			if pengajuan_.desa:
+				letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			else:
+				letak_ = pengajuan_.alamat
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
 			extra_context.update({'letak': letak_})
