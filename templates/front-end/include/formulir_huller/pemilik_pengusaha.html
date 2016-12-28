@@ -1,4 +1,4 @@
-<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'detil_huller_save_cookie' %}">
+<form method="POST" name="step3" id="id_data_huller" role="form" class="form-horizontal" action="{% url 'detil_huller_save_cookie' %}" data-parsley-validate novalidate>
 {% csrf_token %}
     <h3>IZIN-IZIN DAN LEGALITAS LAINNYA</h3>
     <hr class="style14">
@@ -13,14 +13,14 @@
     </div>
 
     <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
-		 <input type="radio" name="pemilik_badan_usaha" value="radio1" id="id_perorangan_form" >
+		 <input type="radio" name="pemilik_badan_usaha" checked="" value="false" id="id_perorangan_form" >
   		<label for="id_perorangan_form">Perorangan</label>
 	</label>
 	<div class="row">
 		<div class="form-group">
 		    <label for="input01" class="col-sm-2 control-label"><strong>Nama Lengkap</strong> </label>
 		    <div class="col-sm-7">
-		      <input type="text" class="form-control" name="pemilik_nama_perorangan"  id="id_pemilik_nama_perorangan">
+		      <input type="text" class="form-control" name="pemilik_nama_perorangan" id="id_pemilik_nama_perorangan">
 		    </div>
 		</div>
 	</div>
@@ -76,7 +76,6 @@
 	    <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
 	    <div class="col-sm-5">
 	      <select class="form-control chosen-select mb-10 pemilik_disable" name="pemilik_desa" id="id_desa_perorangan" data-parsley-trigger="change">
-
 	      </select>
 	    </div>
 	</div>
@@ -93,7 +92,7 @@
 	  </div>
 
     <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">		
-  		<input type="radio" name="pemilik_badan_usaha" value="radio2" id="id_badan_hukum_perorangan_form"><label for="id_badan_hukum_perorangan_form">Badan Hukum</label> 
+  		<input type="radio" name="pemilik_badan_usaha" id="id_badan_hukum_perorangan_form" value="true"><label for="id_badan_hukum_perorangan_form">Badan Hukum</label> 
 	</label>
 
 	<div class="row">
@@ -115,7 +114,7 @@
     </div>
 
     <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
-		<input type="radio" name="pengusaha_badan_usaha" class="radio_pengusaha_disabled" value="Enabled" id="id_pengusaha_badan_usaha"><i></i> Perorangan
+		<input type="radio" name="pengusaha_badan_usaha" checked="" value="false"class="radio_pengusaha_disabled" value="Enabled" id="id_pengusaha_badan_usaha"><i></i> Perorangan
 	</label>
 
 	<div class="row">
@@ -186,7 +185,6 @@
   <div class="form-group">
     <label class="col-sm-2 control-label"><strong>Kewarganegraan</strong></label>
     <div class="col-sm-4">
-<!--       <input id="pengusaha_kewarganegaraan" class="form-control" name="kewarganegaraan" type="text" data-parsley-trigger="change"> -->
       <select id="pengusaha_kewarganegaraan" class="form-control chosen-select mb-10" name="pengusaha_kewarganegaraan" data-parsley-trigger="change">
         <option value>-- Pilih Kewarganegaraan --</option>
         <option value="WNI">WNI</option>
@@ -196,7 +194,7 @@
   </div>
 
     <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
-		<input type="radio" name="pengusaha_badan_usaha" class="radio_pengusaha_disabled" value="Disabled" id="switch_badan_hukum_pengusaha"><i></i> Badan Hukum
+		<input type="radio" name="pengusaha_badan_usaha" value="true" class="radio_pengusaha_disabled" value="Disabled" id="switch_badan_hukum_pengusaha"><i></i> Badan Hukum
 	</label>
 
 	<div class="row">

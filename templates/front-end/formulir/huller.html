@@ -177,6 +177,7 @@
     function next_tab(btn){
       var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
       var frm = $('form[name="step'+ index +'"]');
+      alert(frm.serialize())
       frm.parsley().validate();
         if (frm.parsley().isValid()) {
           // $(".tab-content #tab"+index).mask('loading')
@@ -287,6 +288,9 @@
         form_pemohon_kuasa_make_disabled();
       }
     })
+
+  make_disabled($('#nama_badan_hukum_pemilik'), true)
+  make_disabled($('#nama_badan_hukum_pengusaha'), true)
 
     $("#id_perorangan_form").change(function(){
       if($(this).is(':checked')){

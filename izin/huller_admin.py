@@ -59,7 +59,7 @@ class DetilHullerAdmin(admin.ModelAdmin):
 			add_fieldsets = (
 				(None, {
 					'classes': ('wide',),
-					'fields': ('pemohon',)
+					'fields': ('pemohon','perusahaan',)
 					}
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),

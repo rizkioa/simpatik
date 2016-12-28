@@ -602,22 +602,22 @@ class DetilHuller(PengajuanIzin):
 	
 	pemilik_badan_usaha = models.BooleanField(default=False) #Pemilik perorangan atau badan usaha, jika badan usaha wajib upload akta
 	
-	pemilik_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
-	pemilik_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
-	pemilik_desa = models.ForeignKey(Desa, verbose_name='Desa', related_name='pemilik_desa',null=True, blank=True)
+	pemilik_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap Perorangan', null=True, blank=True)
+	pemilik_alamat = models.CharField(max_length=255, verbose_name='Alamat Perorangan', null=True, blank=True)
+	pemilik_desa = models.ForeignKey(Desa, verbose_name='Desa Perorangan', related_name='pemilik_desa',null=True, blank=True)
 	pemilik_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
-	pemilik_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
+	pemilik_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha Perorangan', null=True, blank=True)
 
 	pengusaha_badan_usaha = models.BooleanField(default=False) #Pengusaha perorangan atau badan usaha, jika badan usaha wajib upload akta
-	pengusaha_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap', null=True, blank=True)
-	pengusaha_alamat = models.CharField(max_length=255, verbose_name='Alamat', null=True, blank=True)
-	pengusaha_desa = models.ForeignKey(Desa, verbose_name='Desa', related_name='pengusaha_desa',null=True, blank=True)
+	pengusaha_nama_perorangan = models.CharField(max_length=50, verbose_name='Nama Lengkap Pengusaha', null=True, blank=True)
+	pengusaha_alamat = models.CharField(max_length=255, verbose_name='Alamat Pengusaha', null=True, blank=True)
+	pengusaha_desa = models.ForeignKey(Desa, verbose_name='Desa Pengusaha', related_name='pengusaha_desa',null=True, blank=True)
 	pengusaha_kewarganegaraan = models.CharField(max_length=100, null=True, blank=True)
-	pengusaha_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha', null=True, blank=True)
+	pengusaha_nama_badan_usaha = models.CharField(max_length=50, verbose_name='Nama Badan Usaha Pengusaha', null=True, blank=True)
 
 	hubungan_pemilik_pengusaha = models.CharField(max_length=50, verbose_name='Hubungan kerjasama antara Pengusaha dengan Pemilik Perusahaan', null=True, blank=True)
-	kapasitas_potensial_giling_beras_per_jam = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Jam')
-	kapasitas_potensial_giling_beras_per_tahun = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Tahun')
+	kapasitas_potensial_giling_beras_per_jam = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Jam')
+	kapasitas_potensial_giling_beras_per_tahun = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Kapasitas Potensial Giling Keseluruhan Mesin memproduksi Beras per Tahun')
 
 	def __unicode__(self):
 		return u'Detil Huller %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
