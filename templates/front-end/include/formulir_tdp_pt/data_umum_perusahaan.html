@@ -8,16 +8,11 @@
 	    <div class="col-sm-4">
 	      <select class="form-control chosen-select mb-10" disabled="">
           <option value>Persero Terbatas (PT)</option>
-	        <!-- {% if jenis_badan_usaha %}
-            {% for j in jenis_badan_usaha %}
-              <option value="{{j.id}}">{{j.jenis_badan_usaha}}</option>
-            {% endfor %}
-          {% endif %} -->
 	      </select>
 	    </div>
 	 </div>
 
-	 <div class="form-group">
+	 <div class="form-group" id="id_status_perusahaan_">
 	    <label for="id_status_perusahaan" class="col-sm-2 control-label"><strong>Status Perusahaan</strong></label>
 	    <div class="col-sm-4">
 	      <select class="form-control chosen-select mb-10" name="status_perusahaan" id="id_status_perusahaan">
@@ -168,28 +163,28 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_jumlah_bank_">
     <label for="input01" class="col-sm-4 control-label text-left"><strong>Jumlah bank dimana perusahaan ini menjadi nasabah</strong></label>
     <div class="col-sm-2">
-      <input type="text" class="form-control" name="jumlah_bank" id="id_jumlah_bank">
+      <input type="text" class="form-control" name="jumlah_bank" id="id_jumlah_bank" value="0">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_nasabah_utama_bank_1_">
     <label for="input01" class="col-sm-2 control-label"><strong>Nasabah Utama Bank 1.</strong></label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="nasabah_utama_bank_1" id="id_nasabah_utama_bank_1" required="" data-parsley-trigger="change">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_nasabah_utama_bank_2_">
     <label for="input01" class="col-sm-2 control-label">(isi jika ada) 2.</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="nasabah_utama_bank_2" id="id_nasabah_utama_bank_2">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_jenis_penanaman_modal_">
     <label for="input01" class="col-sm-2 control-label"><strong>Status Penanaman Modal</strong></label>
     <div class="col-sm-4">
       <select class="form-control chosen-select mb-10" name="jenis_penanaman_modal" id="id_jenis_penanaman_modal" required="" data-parsley-trigger="change">
@@ -203,7 +198,7 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_tanggal_pendirian_">
     <label for="input01" class="col-sm-2 control-label"><strong>Tanggal Pendirian</strong></label>
     <div class="col-sm-5">
       <div class="input-group datepicker w-360 mt-10" data-format="L">
@@ -215,7 +210,7 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_tanggal_mulai_kegiatan_">
       <label for="input01" class="col-sm-2 control-label"><strong>Tanggal mulai kegiatan</strong></label>
       <div class="col-sm-5">
         <div class="input-group datepicker w-360 mt-10" data-format="L">
@@ -227,7 +222,7 @@
       </div>
   </div>
 
-	<div class="form-group">
+	<div class="form-group" id="id_jangka_waktu_berdiri_">
 		<label class="col-sm-3 control-label text-left">Jangka waktu berdirinya perusahaan</label>
 		<div class="col-sm-2">
       <div class="input-group">
@@ -237,7 +232,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group" id="id_bentuk_kerjasama_">
     <label for="input01" class="col-sm-2 control-label"><strong>Bentuk Kerjasama</strong></label>
     <div class="col-sm-4">
       <select class="form-control chosen-select mb-10" name="bentuk_kerjasama" id="id_bentuk_kerjasama" required="" data-parsley-trigger="change">
@@ -251,42 +246,42 @@
     </div>
 	 </div>
 
-	<div class="form-group">
+	<div class="form-group" id="id_merek_dagang_">
     <label for="input01" class="col-sm-2 control-label">Merk dagang (jika ada)</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="merek_dagang" id="id_merek_dagang">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_no_merek_dagang_">
     <label for="input01" class="col-sm-2 control-label">No. Merk Dagang</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="no_merek_dagang" id="id_no_merek_dagang">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_pemegang_hak_cipta_">
     <label for="input01" class="col-sm-2 control-label">Pemegang hak cipta (jika ada)</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="pemegang_hak_cipta" id="id_pemegang_hak_cipta">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_no_hak_cipta_">
     <label for="input01" class="col-sm-2 control-label">No. Hak cipta</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="no_hak_cipta" id="id_no_hak_cipta">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_pemegang_hak_paten_">
     <label for="input01" class="col-sm-2 control-label">Pemegang hak paten (jika ada)</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="pemegang_hak_paten" id="id_pemegang_hak_paten">
     </div>
   </div>
 
-  <div class="form-group">
+  <div class="form-group" id="id_no_hak_paten_">
     <label for="input01" class="col-sm-2 control-label">No. Hak paten</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" name="no_hak_paten" id="id_no_hak_paten">

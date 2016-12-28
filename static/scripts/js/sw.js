@@ -56,6 +56,7 @@ self.addEventListener('install', e => {
         '/static/styles/css/mobile-frontend.css',
         '/static/styles/css/vendor/color-background.css',
         '/static/scripts/js/mloading/jquery.mloading.css',
+        'http://fonts.googleapis.com/css?family=Dosis:300,700|Ubuntu+Mono|Lato:300,400,700,300italic,400italic&subset=latin,latin-ext',
         // PAGES
         '/layanan/',
         '/layanan/siup',
