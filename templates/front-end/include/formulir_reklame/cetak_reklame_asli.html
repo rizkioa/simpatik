@@ -42,12 +42,12 @@
 	    .subpage {
 	        padding: 0.5cm;
 	        /*border: 5px red solid;*/
-	        height: 257mm;
+	        height: 350mm;
 	        /*outline: 2cm #FFEAEA solid;*/
 	    }
 	    @-moz-document url-prefix() {
 	        .subpage {
-	            height:  340mm;
+	            height:  378mm;
 	        }
 	    }   
 	    @page {
@@ -217,9 +217,20 @@
 	        			<td>:</td>
 	        			<td colspan="2"></td>
 	        		</tr>
+	        			<b> </b></p>
 	        		<tr>
-	        			<td colspan="4"><p><b>a. Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b><br>
-	        			<b>b. Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></p></td>
+	        			<td colspan="4">
+	        				<table border="0">
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>a.</b></td>
+	        						<td><b>Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>b.</b></td>
+	        						<td><b>Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></td>
+	        					</tr>
+	        				</table>
+	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
@@ -239,19 +250,51 @@
 	        		<tr>
 	        			<td><b>Letak pemasangan</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.letak_pemasangan}}</td>
+	        			<td colspan="2">{{pengajuan.letak_pemasangan|default_if_none:"-"}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td colspan="4"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :<br>
-											1. Tidak bertentangan dengan kepentingan umum : kesusilaan, keindahan, kesopanan, ketertiban umum dan keamanan. <br>
-											2. Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.<br>
-											3. Tidak mengganggu ketertiban lalu lintas.<br>
-											4. Pemasangan reklame tempel pada tembok-tembok/dinding-dinding rumah, kantor, toko harus memperoleh izin terlebih dahulu dari penguasa rumah, kantor, toko dan sebagainya.<br>
-											5. Pemasangan reklame spanduk dan banner dilarang merusak pohon (antara lain dengan menancapkan paku) dan dilarang ditalikan pada tiang listrik.<br>
-											6. Kerusakan dan semua akibat yang ditimbulkan atas pemasangan reklame, harus diperbaiki, ditanggung oleh dan atas biaya pemasang/pemilik reklame.<br>
-											7. Reklame yang sudah terpasang dapat dicabut/ dibongkar, apabila tempat-tempat tersebut diperlukan oleh pemerintah atau untuk kepentingan umum/sosial. Biaya pembongkaran papan Reklame dimaksud menjadi tanggung jawab Pemohon.<br>
-											8. Setelah habis masa pemasangan, reklame harus segera dibongkar kecuali jika diperpanjang waktu pemasangannya setelah terlebih dahulu menyelesaikan segala persyaratannya.<br>
-											9. Pelanggaran atas ketentuan dalam pemasangan reklame akan dikenakan sanksi sesuai dengan peraturan yang berlaku..</b></td>
+	        			<td colspan="4">
+	        				<table border="0">
+	        					<tr>
+	        						<td colspan="2"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>1. </b></td>
+	        						<td><b>Tidak bertentangan dengan kepentingan umum : kesusilaan,keindahan, kesopanan,ketertiban umum dan keamanan.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>2. </b></td>
+	        						<td><b>Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>3. </b></td>
+	        						<td><b>Tidak mengganggu ketertiban lalu lintas.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>4. </b></td>
+	        						<td><b>Pemasangan reklame tempel pada tembok-tembok/dinding-dinding rumah, kantor, toko harus memperoleh izin terlebih dahulu dari penguasa rumah, kantor, toko dan sebagainya.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>5. </b></td>
+	        						<td><b>Pemasangan reklame spanduk dan banner dilarang merusak pohon (antara lain dengan menancapkan paku) dan dilarang ditalikan pada tiang listrik.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>6. </b></td>
+	        						<td><b>Kerusakan dan semua akibat yang ditimbulkan atas pemasangan reklame, harus diperbaiki, ditanggung oleh dan atas biaya pemasang/pemilik reklame.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>7. </b></td>
+	        						<td><b>Reklame yang sudah terpasang dapat dicabut/ dibongkar, apabila tempat-tempat tersebut diperlukan oleh pemerintah atau untuk kepentingan umum/sosial. Biaya pembongkaran papan Reklame dimaksud menjadi tanggung jawab Pemohon.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>8. </b></td>
+	        						<td><b>Setelah habis masa pemasangan, reklame harus segera dibongkar kecuali jika diperpanjang waktu pemasangannya setelah terlebih dahulu menyelesaikan segala persyaratannya.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>9. </b></td>
+	        						<td><b>Pelanggaran atas ketentuan dalam pemasangan reklame akan dikenakan sanksi sesuai dengan peraturan yang berlaku.</b></td>
+	        					</tr>
+	        				</table>
 	        		</tr>
 	        	</table>
 	        	<br>

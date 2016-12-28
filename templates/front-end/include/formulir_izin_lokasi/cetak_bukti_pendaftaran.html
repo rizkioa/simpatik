@@ -121,7 +121,7 @@
                     </table>
                 </div>
                 <div>
-                    {% if pengajuan.kelompok_jenis_izin.id == 37 %}
+                    {% if pengajuan.kelompok_jenis_izin.kode == "IL" %}
                     <h4 align="center"><u>PERMOHONAN SURAT IZIN LOKASI</u></h4>
                     {% else %}
                     <h4 align="center"><u>PERMOHONAN SURAT IZIN PERUBAHAN PENGGUNAAN TANAH (IPPT) UNTUK RUMAH TINGGAL</u></h4>
@@ -408,8 +408,9 @@
                         <thead>
                             <tr>
                                 <td width="5%">No</td>
-                                <td width="80%">Syarat</td>
-                                <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                                <td width="650%">Syarat</td>
+                                <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                                <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -418,6 +419,7 @@
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ s.syarat }}</td>
+                                    <td align="center"><input type="checkbox"></td>
                                     <td align="center"><input type="checkbox"></td>
                                 </tr>
                                 {% endfor %}

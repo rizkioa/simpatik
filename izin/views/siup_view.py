@@ -88,15 +88,15 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilReklame')
 		elif k.id == 25:
 			objects_ = getattr(app_models, 'DetilTDP')
-		elif k.id == 1:
+		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-		elif k.id == 2 or k.id == 11 :
+		elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
 			objects_ = getattr(app_models, 'DetilIMB')
 		elif k.kode == "503.06.01/":
 			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 		elif k.kode == "503.02/":
 			objects_ = getattr(app_models, 'DetilHO')
-		elif k.kode == "503.07/" or k.id == 38:
+		elif k.kode == "503.07/" or k.kode == "IPPT":
 			objects_ = getattr(app_models, 'InformasiTanah')
 		elif k.id == 15:
 			objects_ = getattr(app_models, 'DetilHuller')
@@ -194,13 +194,15 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.id == 1:
+					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+					elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
+						objects_ = getattr(app_models, 'DetilIMB')
 					elif k.kode == "503.06.01/":
 						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 					elif k.kode == "503.02/":
 						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.id == 38:
+					elif k.kode == "503.07/" or k.kode == "IPPT":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					elif k.id == 15:
 						objects_ = getattr(app_models, 'DetilHuller')
@@ -249,13 +251,15 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.id == 1:
+					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+					elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
+						objects_ = getattr(app_models, 'DetilIMB')
 					elif k.kode == "503.06.01/":
 						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 					elif k.kode == "503.02/":
 						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.id == 38:
+					elif k.kode == "503.07/" or k.kode == "IPPT":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					elif k.id == 15:
 						objects_ = getattr(app_models, 'DetilHuller')
