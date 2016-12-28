@@ -88,15 +88,15 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilReklame')
 		elif k.id == 25:
 			objects_ = getattr(app_models, 'DetilTDP')
-		elif k.id == 1:
+		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-		elif k.id == 2 or k.id == 11 :
+		elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
 			objects_ = getattr(app_models, 'DetilIMB')
 		elif k.kode == "503.06.01/":
 			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 		elif k.kode == "503.02/":
 			objects_ = getattr(app_models, 'DetilHO')
-		elif k.kode == "503.07/" or k.id == 38:
+		elif k.kode == "503.07/" or k.kode == "IPPT":
 			objects_ = getattr(app_models, 'InformasiTanah')
 		elif k.id == 15:
 			objects_ = getattr(app_models, 'DetilHuller')
@@ -194,13 +194,15 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.id == 1:
+					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+					elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
+						objects_ = getattr(app_models, 'DetilIMB')
 					elif k.kode == "503.06.01/":
 						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 					elif k.kode == "503.02/":
 						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.id == 38:
+					elif k.kode == "503.07/" or k.kode == "IPPT":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					elif k.id == 15:
 						objects_ = getattr(app_models, 'DetilHuller')
@@ -249,13 +251,15 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilReklame')
 					elif k.id == 25:
 						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.id == 1:
+					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+					elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
+						objects_ = getattr(app_models, 'DetilIMB')
 					elif k.kode == "503.06.01/":
 						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 					elif k.kode == "503.02/":
 						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.id == 38:
+					elif k.kode == "503.07/" or k.kode == "IPPT":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					elif k.id == 15:
 						objects_ = getattr(app_models, 'DetilHuller')
@@ -718,8 +722,13 @@ def siup_upload_berkas_npwp_perusahaan(request):
 								response = HttpResponse(data)
 							else:
 								try:
-									d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 									p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+									kode = request.POST.get('kode', None)
+									if kode == 'NPWP Perusahaan TDP':
+										d = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+									else:
+										d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+									
 									berkas = form.save(commit=False)
 									berkas.nama_berkas = "NPWP Perusahaan "+p.nama_perusahaan
 									berkas.keterangan = "npwp perusahaan"
@@ -1050,7 +1059,10 @@ def load_perusahaan(request, npwp_):
 		telepon = ""
 		fax = ""
 		email = ""
+		nomor_tdp = ""
 
+		if perusahaan.nomor_tdp:
+			nomor_tdp = perusahaan.nomor_tdp
 		if perusahaan.nama_perusahaan:
 			nama_perusahaan = perusahaan.nama_perusahaan
 		if perusahaan.alamat_perusahaan:
@@ -1074,6 +1086,7 @@ def load_perusahaan(request, npwp_):
 		if perusahaan.desa.kecamatan.kabupaten.provinsi.negara:
 			negara = perusahaan.desa.kecamatan.kabupaten.provinsi.negara.id
 
+		legalitas_pendirian_id = ""
 		legalitas_pendirian_nama_notaris = ""
 		legalitas_pendirian_alamat = ""
 		legalitas_pendirian_telephone = ""
@@ -1083,6 +1096,7 @@ def load_perusahaan(request, npwp_):
 		legalitas_pendirian_tanggal_pengesahan = ""
 		legalitas_pendirian = perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
 		if legalitas_pendirian:
+			legalitas_pendirian_id = legalitas_pendirian.id
 			legalitas_pendirian_nama_notaris = legalitas_pendirian.nama_notaris
 			legalitas_pendirian_alamat = legalitas_pendirian.alamat
 			legalitas_pendirian_telephone = legalitas_pendirian.telephone
@@ -1090,6 +1104,7 @@ def load_perusahaan(request, npwp_):
 			legalitas_pendirian_tanggal_akta = legalitas_pendirian.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_pendirian_no_pengesahan = legalitas_pendirian.nomor_pengesahan
 			legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
+		legalitas_perubahan_id = ""
 		legalitas_perubahan_nama_notaris = ""
 		legalitas_perubahan_alamat = ""
 		legalitas_perubahan_telephone = ""
@@ -1099,6 +1114,7 @@ def load_perusahaan(request, npwp_):
 		legalitas_perubahan_tanggal_pengesahan = ""
 		legalitas_perubahan = perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
 		if legalitas_perubahan:
+			legalitas_perubahan_id = legalitas_perubahan.id
 			legalitas_perubahan_nama_notaris = legalitas_perubahan.nama_notaris
 			legalitas_perubahan_alamat = legalitas_perubahan.alamat
 			legalitas_perubahan_telephone = legalitas_perubahan.telephone
@@ -1136,7 +1152,7 @@ def load_perusahaan(request, npwp_):
 			legalitas_7_tanggal_pengesahaan = legalitas_7.tanggal_pengesahan.strftime('%d-%m-%Y')
 		data = {'success': True, 'pesan': 'Load data berhasil.', 
 		'data': 
-		{'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan, 'legalitas_3_no_pengesahaan': legalitas_3_no_pengesahaan, 'legalitas_3_tanggal_pengesahaan': legalitas_3_tanggal_pengesahaan, 'legalitas_4_no_pengesahaan': legalitas_4_no_pengesahaan, 'legalitas_4_tanggal_pengesahaan': legalitas_4_tanggal_pengesahaan, 'legalitas_6_no_pengesahaan': legalitas_6_no_pengesahaan, 'legalitas_6_tanggal_pengesahaan': legalitas_6_tanggal_pengesahaan, 'legalitas_7_no_pengesahaan': legalitas_7_no_pengesahaan, 'legalitas_7_tanggal_pengesahaan': legalitas_7_tanggal_pengesahaan,}}
+		{'nomor_tdp':nomor_tdp, 'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_id': legalitas_pendirian_id, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_id': legalitas_perubahan_id, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan, 'legalitas_3_no_pengesahaan': legalitas_3_no_pengesahaan, 'legalitas_3_tanggal_pengesahaan': legalitas_3_tanggal_pengesahaan, 'legalitas_4_no_pengesahaan': legalitas_4_no_pengesahaan, 'legalitas_4_tanggal_pengesahaan': legalitas_4_tanggal_pengesahaan, 'legalitas_6_no_pengesahaan': legalitas_6_no_pengesahaan, 'legalitas_6_tanggal_pengesahaan': legalitas_6_tanggal_pengesahaan, 'legalitas_7_no_pengesahaan': legalitas_7_no_pengesahaan, 'legalitas_7_tanggal_pengesahaan': legalitas_7_tanggal_pengesahaan,}}
 
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }

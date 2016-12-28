@@ -41,7 +41,7 @@
               <div class="panel-header">
                 <div class="row">
                   <div class="col-sm-12">
-                    <h2 class="text-center">No. Pengajuan Izin : TDP-PT/1001/0802/2016</h2>
+                    <h2 class="text-center">No. Pengajuan Izin : {{ no_pengajuan|default_if_none:"-" }}</h2>
                     <hr class="style14">
                   </div>
                 </div>
@@ -51,39 +51,39 @@
                   <tr>
                     <td style="width: 24%;">Jenis Izin</td>
                     <td style="width: 5%;">:</td>
-                    <td>TDP PT</td>
+                    <td>{{ jenis_izin|default_if_none:"-" }}</td>
                   </tr>
                   <tr>
                     <td>Nama Pemohon</td>
                     <td>:</td>
-                    <td>Hartanto</td>
+                    <td>{{nama_pemohon|default_if_none:"-"}}</td>
                   </tr>
                   <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>Jln. Erlangga No.2 ,Kel. Sukorejo, Kec. Ngasem, Kab. Kediri, Jawa Timur</td>
+                    <td>{{alamat_pemohon|default_if_none:"-"}}</td>
                   </tr>
                   <tr>
                     <td>Perusahaan</td>
                     <td>:</td>
-                    <td>CV. Makmur Jaya</td>
+                    <td>{{nama_perusahaan|default_if_none:"-"}}</td>
                   </tr>
                   <tr>
                     <td>Alamat Perusahaan</td>
                     <td>:</td>
-                    <td>Jln. Erlangga No.2 ,Kel. Sukorejo, Kec. Ngasem, Kab. Kediri, Jawa Timur</td>
+                    <td>{{alamat_perusahaan|default_if_none:"-"}}</td>
                   </tr>
                   <tr>
                     <td>Dibuat tanggal</td>
                     <td>:</td>
-                    <td>3 September 2016</td>
+                    <td>{{ created_at|date:"d-m-Y" }} {{ created_at|time:"H:i" }}</td>
                   </tr>
                 </table>
                 <br>
-                <h4><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h4>
+                <h4><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-m-Y" }}</font></h4>
                 <div class="row">
                   <div class="col-md-6 col-md-offset-3" align="center">
-                    <a href="{% url 'cetak_bukti_pendaftaran_tdp_pt' %}" target="_blank" class="btn btn-primary btn-lg btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-print"></i> <span>Cetak Formulir Pengajuan</span></a>
+                    <a href="{% url 'cetak_bukti_pendaftaran_tdp_pt' id %}" target="_blank" class="btn btn-primary btn-lg btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-print"></i> <span>Cetak Formulir Pengajuan</span></a>
                   </div>
                 </div>
               </div>

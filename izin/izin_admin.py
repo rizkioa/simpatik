@@ -29,7 +29,7 @@ from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanFor
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 	list_filter = ('kelompok_jenis_izin',)
-	search_fields = ('no_izin', 'pemohon__nama_lengkap')
+	search_fields = ('no_izin', 'pemohon__nama_lengkap', 'no_pengajuan')
 
 	def changelist_view(self, request, extra_context={}):
 		self.request = request

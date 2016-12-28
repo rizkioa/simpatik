@@ -17,9 +17,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, RincianPerusahaan, IzinLain
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
 from izin.utils import formatrupiah
 
@@ -252,6 +252,10 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha})
     kelompok_jenis_izin = KelompokJenisIzin.objects.all()
     extra_context.update({'kelompok_jenis_izin': kelompok_jenis_izin})
+    jenis_kedudukan = JenisKedudukan.objects.all()
+    extra_context.update({'jenis_kedudukan': jenis_kedudukan})
+    bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+    extra_context.update({'kegiatan_usaha': bentuk_kegiatan_usaha_list})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '0':
             try:
@@ -606,12 +610,50 @@ def cetak_bukti_pendaftaran_imb_perumahan(request, extra_context={}):
     extra_context.update({'syarat': syarat})
     return render(request, "front-end/include/formulir_imb_perumahan/cetak_bukti_pendaftaran.html", extra_context)
 
-def cetak_tdp_pt(request, extra_context={}):
+def cetak_tdp_pt(request, id_pengajuan_):
+    extra_context = {}
+    if id_pengajuan_:
+        pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_)
+        if pengajuan_:
+            no_pengajuan = pengajuan_.no_pengajuan
+            jenis_izin = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
+            pemohon_ = pengajuan_.pemohon
+            if pemohon_:
+                nama_pemohon = pemohon_.nama_lengkap
+                alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
+            perusahaan_ = pengajuan_.perusahaan
+            if perusahaan_:
+                nama_perusahaan = perusahaan_.nama_perusahaan
+                alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
+            tanggal_dibuat = pengajuan_.created_at
+            extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'nama_perusahaan':nama_perusahaan, 'alamat_perusahaan':alamat_perusahaan, 'created_at':tanggal_dibuat, 'id':pengajuan_.id})
     return render(request, "front-end/include/formulir_tdp_pt/cetak.html", extra_context)
 
-def cetak_bukti_pendaftaran_tdp_pt(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
-    extra_context.update({'syarat': syarat})
+def cetak_bukti_pendaftaran_tdp_pt(request, id_pengajuan_):
+    extra_context = {}
+    if id_pengajuan_:
+        pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_)
+        if pengajuan_:
+            no_pengajuan = pengajuan_.no_pengajuan
+            jenis_izin = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
+            pemohon_ = pengajuan_.pemohon
+            if pemohon_:
+                nama_pemohon = pemohon_.nama_lengkap
+                alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
+            perusahaan_ = pengajuan_.perusahaan
+            if perusahaan_:
+                nama_perusahaan = perusahaan_.nama_perusahaan
+                alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
+            tanggal_dibuat = pengajuan_.created_at
+            legalitas_ = pengajuan_.perusahaan.legalitas_set.all()
+            rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
+            izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
+            data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
+            pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
+            perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=pengajuan_.perusahaan.id)
+            # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
+            syarat_ = Syarat.objects.filter(jenis_izin_id=25)
+            extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'nama_perusahaan':nama_perusahaan, 'alamat_perusahaan':alamat_perusahaan, 'created_at':tanggal_dibuat, 'id':pengajuan_.id, 'pengajuan_':pengajuan_, 'legalitas':legalitas_, 'rincian_perusahaan':rincian_perusahaan_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'syarat':syarat_})
     return render(request, "front-end/include/formulir_tdp_pt/cetak_bukti_pendaftaran.html", extra_context)
 
 def cetak_tdp_cv(request, extra_context={}):

@@ -1343,7 +1343,6 @@ def ajax_delete_berkas(request, id_berkas, kode):
 		else:
 			pass
 
-
 		try:
 			b = Berkas.objects.get(id=id_berkas)
 			data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }

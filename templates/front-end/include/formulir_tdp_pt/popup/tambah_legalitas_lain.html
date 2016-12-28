@@ -7,6 +7,7 @@
       <div class="modal-body">
         <form method="POST" role="form" class="form-horizontal" id="id_form_izin_lain" action="{% url 'tdp_izin_lain_cookie' %}" data-parsley-validate novalidate>
           {% csrf_token %}
+          <input type="hidden" name="text" id="id_input_izin_lain">
           <div class="form-group">
             <label for="input01" class="col-sm-2 control-label">Jenis Izin</label>
             <div class="col-sm-7">
