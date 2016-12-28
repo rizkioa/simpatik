@@ -125,6 +125,15 @@ class CustomMenu(Menu):
                     url=reverse('admin:verifikasi'),  
                 )
             ]
+        if request.user.groups.filter(name="Cek Lokasi").exists():
+
+            menu_utama.children += [
+                items.MenuItem(
+                        title='Daftar Survey',
+                        icon='fa fa-edit',
+                        url=reverse('admin:survey'),
+                    ),
+            ]
 
 
         if request.user.groups.filter(name="Kabid").exists():

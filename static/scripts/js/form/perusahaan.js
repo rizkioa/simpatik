@@ -54,6 +54,7 @@ function load_perusahaan_a(npwp_){
 		              		// ++++++ legalitas perubahan ++++++++
 		              		$.cookie("id_legalitas_perubahan", respon.data.legalitas_perubahan_id, { path: '/' })
 		              		$('#form-akta_perubahan').show()
+		              		$('#field-akta_perubahan .berkas_kosong').prop('required',false);
 			              	$('#switch_akta_perubahan_disabled').prop( "checked", true );
 						    $(".akta_perubahan_disable").prop('disabled', false)
 						    $('#id_nama_notaris_perubahan').val(respon.data.legalitas_perubahan_nama_notaris);
@@ -72,6 +73,7 @@ function load_perusahaan_a(npwp_){
 		              	}
 
 		              	if(respon.data.legalitas_3_no_pengesahaan !== ""){
+		              		$('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
 		              		$('#form-akta_pengesahaan_menteri').show()
 		              		$('#tr-akta_perubahan').show()
 		              		$('.stap5_pengesahan_menteri').prop('disabled', false)
@@ -87,6 +89,7 @@ function load_perusahaan_a(npwp_){
 		              	}
 
 		              	if(respon.data.legalitas_4_no_pengesahaan !== ""){
+		              		$('#field-akta_persetujuan_menteri .berkas_kosong').prop('required',false);
 		              		$('#form-akta_persetujuan_menteri').show()
 		              		$('#tr-akta_pengesahaan_menteri').show()
 		              		$('.stap5_persetujuan_menteri').prop('disabled', false)
@@ -102,6 +105,7 @@ function load_perusahaan_a(npwp_){
 		              	}
 
 		              	if(respon.data.legalitas_6_no_pengesahaan !== ""){
+		              		$('#field-akta_penerimaan_laporan .berkas_kosong').prop('required',false);
 		              		$('#form-akta_penerimaan_laporan').show()
 		              		$('#tr-akta_persetujuan_menteri').show()
 		              		$('.stap5_penerima_laporan').prop('disabled', false)
@@ -116,6 +120,7 @@ function load_perusahaan_a(npwp_){
 		              	}
 
 		              	if(respon.data.legalitas_7_no_pengesahaan !== ""){
+		              		$('#field-akta_penerimaan_pemberitahuan .berkas_kosong').prop('required',false);
 		              		$('#form-akta_penerimaan_pemberitahuan').show()
 		              		$('#tr-akta_penerimaan_laporan').show()
 		              		$('.stap5_penerima_pemberitahuan').prop('disabled', false)

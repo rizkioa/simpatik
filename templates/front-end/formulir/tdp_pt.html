@@ -236,18 +236,19 @@
                 frm11 = $('#'+f+'sertifikat_asli_tdp');
                   // frm.parsley().validate();
                 $('#next >').on('click', function() {
-                  frm1.parsley().validate();
-                  frm2.parsley().validate();
-                  frm3.parsley().validate();
-                  frm4.parsley().validate();
-                  frm5.parsley().validate();
-                  frm6.parsley().validate();
-                  frm7.parsley().validate();
-                  frm8.parsley().validate();
-                  frm9.parsley().validate();
-                  frm10.parsley().validate();
-                  // frm11.parsley().validate();
-                  if (!frm1.parsley().isValid() || !!frm2.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate() || !frm7.parsley().validate() || !frm8.parsley().validate() || !frm9.parsley().validate() || !frm10.parsley().validate()){
+                //   frm1.parsley().validate();
+                //   frm2.parsley().validate();
+                //   frm3.parsley().validate();
+                //   frm4.parsley().validate();
+                //   frm5.parsley().validate();
+                //   frm6.parsley().validate();
+                //   frm7.parsley().validate();
+                //   frm8.parsley().validate();
+                //   frm9.parsley().validate();
+                //   frm10.parsley().validate();
+                //   // frm11.parsley().validate();
+                  if (!frm1.parsley().isValid() || !frm2.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate() || !frm7.parsley().validate() || !frm8.parsley().validate() || !frm9.parsley().validate() || !frm10.parsley().validate()){
+                  // if (!frm1.parsley().isValid()){
                     setTimeout(function(){
                       toastr["warning"]("Terjadi kesalahan, lengkapi data yang kurang.")
                       tab_index = '#rootwizard a[href="#tab'+(8)+'"]';
@@ -272,7 +273,7 @@
             },
 
             onTabClick: function(tab, navigation, index) {
-              return false;
+              return true;
             }
           });
       });
@@ -305,12 +306,16 @@
                   }
                   else{
                     var a = Object.keys(respon);
-                    console.log(a)
+                    // console.log(a)
                     for (var i = 0; i < a.length; i++){
-                      var field = a[i].replace("_", " ").capitalize();
-                      console.log(field)
-                      toastr["error"](field+", "+respon[a[i]][0]['message'])
+                      // console.log(a[i].replace("_", " ").charAt(0).toUpperCase())
+                      var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+                      var field = c + a[i].replace("_", " ").slice(1)
+                      // console.log(field)
+                      toastr["error"](field+" "+respon[a[i]][0]['message'])
                       $("#"+a[i]+"").addClass("has-error");
+                      $("#id_"+a[i]+"_").addClass("has-error");
+                      // console.log("id_"+a[i])
                       // toastr["warning"]("error")
                     }
                   }
@@ -444,10 +449,7 @@
               $.cookie('id_perusahaan_induk', '0' , { path: pathname})
               $.cookie('npwp_perusahaan_induk', '0' , { path: pathname})
             }
-
-            
           }
-
       });
 
       function load_perusahaan_induk(npwp_){

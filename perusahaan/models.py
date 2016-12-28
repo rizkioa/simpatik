@@ -311,7 +311,7 @@ class DataPimpinan(IdentitasPribadi):
 
 class PemegangSaham(IdentitasPribadi):
 	"""docstring for Pemegang Saham"""
-	pengajuan_izin = models.ForeignKey('izin.PengajuanIzin', related_name='pengajuan_izin_pemegang_saham', verbose_name='Izin Pemegang Saham ')
+	pengajuan_izin = models.ForeignKey('izin.PengajuanIzin', related_name='pengajuan_izin_pemegang_saham', verbose_name='Izin Pemegang Saham ', null=True)
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
 	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
 	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
