@@ -33,13 +33,16 @@ $("#switch_stap3_bagi_unit_disabled").change(function() {
 $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_perubahan').hide()
 $('#tr-akta_perubahan').hide()
+$('#field-akta_perubahan .berkas_kosong').prop('required',false);
 $("#switch_akta_perubahan_disabled").change(function() {
   if ($(this).is(':checked')) {
+    $('#field-akta_perubahan .berkas_kosong').prop('required',true);
     $('#form-akta_perubahan').show()
     $('#tr-akta_perubahan').show()
     $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
   }
   else {
+    $('#field-akta_perubahan .berkas_kosong').prop('required',false);
     $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
     $('#form-akta_perubahan').hide()
     $('#tr-akta_perubahan').hide()
@@ -49,13 +52,16 @@ $("#switch_akta_perubahan_disabled").change(function() {
 $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_pengesahaan_menteri').hide()
 $('#tr-akta_pengesahaan_menteri').hide()
+$('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
 $("#switch_stap5_pengesahan_menteri_disabled").change(function() {
   if ($(this).is(':checked')) {
+    $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',true);
     $('.stap5_pengesahan_menteri').prop('disabled', false).trigger("chosen:updated");
     $('#form-akta_pengesahaan_menteri').show()
     $('#tr-akta_pengesahaan_menteri').show()
   }
   else {
+    $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
     $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
     $('#form-akta_pengesahaan_menteri').hide()
     $('#tr-akta_pengesahaan_menteri').hide()
@@ -65,13 +71,16 @@ $("#switch_stap5_pengesahan_menteri_disabled").change(function() {
 $('.stap5_persetujuan_menteri').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_persetujuan_menteri').hide()
 $('#tr-akta_persetujuan_menteri').hide()
+$('#field-akta_persetujuan_menteri .berkas_kosong').prop('required',false);
 $("#switch_stap5_persetujuan_menteri_disabled").change(function() {
   if ($(this).is(':checked')) {
+    $('#field-akta_persetujuan_menteri .berkas_kosong').prop('required',true);
     $('.stap5_persetujuan_menteri').prop('disabled', false).trigger("chosen:updated");
     $('#form-akta_persetujuan_menteri').show()
     $('#tr-akta_persetujuan_menteri').show()
   }
   else {
+    $('#field-akta_persetujuan_menteri .berkas_kosong').prop('required',false);
     $('.stap5_persetujuan_menteri').prop('disabled', true).trigger("chosen:updated");
     $('#form-akta_persetujuan_menteri').hide()
     $('#tr-akta_persetujuan_menteri').hide()
@@ -81,13 +90,16 @@ $("#switch_stap5_persetujuan_menteri_disabled").change(function() {
 $('.stap5_penerima_laporan').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_penerimaan_laporan').hide()
 $('#tr-akta_penerimaan_laporan').hide()
+$('#field-akta_penerimaan_laporan .berkas_kosong').prop('required',false);
 $("#switch_stap5_penerima_laporan_disabled").change(function() {
   if ($(this).is(':checked')) {
+    $('#field-akta_penerimaan_laporan .berkas_kosong').prop('required',true);
     $('.stap5_penerima_laporan').prop('disabled', false).trigger("chosen:updated");
     $('#form-akta_penerimaan_laporan').show()
     $('#tr-akta_penerimaan_laporan').show()
   }
   else {
+    $('#field-akta_penerimaan_laporan .berkas_kosong').prop('required',false);
     $('.stap5_penerima_laporan').prop('disabled', true).trigger("chosen:updated");
     $('#form-akta_penerimaan_laporan').hide()
     $('#tr-akta_penerimaan_laporan').hide()
@@ -97,13 +109,16 @@ $("#switch_stap5_penerima_laporan_disabled").change(function() {
 $('.stap5_penerima_pemberitahuan').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_penerimaan_pemberitahuan').hide()
 $('#tr-akta_penerimaan_pemberitahuan').hide()
+$('#field-akta_penerimaan_pemberitahuan .berkas_kosong').prop('required',false);
 $("#switch_stap5_penerima_pemberitahuan_disabled").change(function() {
   if ($(this).is(':checked')) {
+    $('#field-akta_penerimaan_pemberitahuan .berkas_kosong').prop('required',true);
     $('.stap5_penerima_pemberitahuan').prop('disabled', false).trigger("chosen:updated");
     $('#form-akta_penerimaan_pemberitahuan').show()
     $('#tr-akta_penerimaan_pemberitahuan').show()
   }
   else {
+    $('#field-akta_penerimaan_pemberitahuan .berkas_kosong').prop('required',false);
     $('.stap5_penerima_pemberitahuan').prop('disabled', true).trigger("chosen:updated");
     $('#form-akta_penerimaan_pemberitahuan').hide()
     $('#tr-akta_penerimaan_pemberitahuan').hide()
@@ -382,6 +397,7 @@ function load_berkas(id_pengajuan){
             url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
             // console.log(url)
             $('#load-'+respon.elemen[i]).html(url)
+            $('#field-'+respon.elemen[i]+' .berkas_kosong').prop('required',false);
             $('#field-'+respon.elemen[i]).hide()
             $('#checkbox-'+respon.elemen[i]).prop('checked', true); 
             img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'
@@ -412,6 +428,7 @@ function delete_berkas_upload(id, elemen){
           $('#form-'+elemen)[0].reset() 
           $('#percent-'+elemen).hide()
           $('#btn-'+elemen).show()
+          $('#field-'+elemen+' .berkas_kosong').prop('required',true);
           $('#field-'+elemen).show()
           $('#load-'+elemen).html('')
           $('#checkbox-'+elemen).prop('checked', false)
