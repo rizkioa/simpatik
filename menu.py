@@ -98,6 +98,11 @@ class CustomMenu(Menu):
                             icon='icon-globe',
                             url=reverse("admin:perusahaan_terdaftar"),
                         ),
+                        items.MenuItem(
+                            title='Daftar Survey',
+                            icon='fa fa-edit',
+                            url=reverse('admin:survey'),
+                        ),
                     ]
                 )
 
@@ -125,15 +130,11 @@ class CustomMenu(Menu):
                     url=reverse('admin:verifikasi'),  
                 )
             ]
-        if request.user.groups.filter(name="Cek Lokasi").exists():
+        # if request.user.groups.filter(name="Cek Lokasi").exists():
 
-            menu_utama.children += [
-                items.MenuItem(
-                        title='Daftar Survey',
-                        icon='fa fa-edit',
-                        url=reverse('admin:survey'),
-                    ),
-            ]
+        #     menu_utama.children += [
+                
+        #     ]
 
 
         if request.user.groups.filter(name="Kabid").exists():
