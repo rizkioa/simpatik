@@ -49,7 +49,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
 				
-				('Detail Reklame', {'fields': ('perusahaan','jenis_reklame','judul_reklame','panjang','lebar','sisi','letak_pemasangan','desa',('tanggal_mulai','tanggal_akhir'),'lt','lg') }),
+				('Detail Reklame', {'fields': ('perusahaan','jenis_reklame','judul_reklame','jumlah','panjang','lebar','sisi','letak_pemasangan','desa',('tanggal_mulai','tanggal_akhir'),'lt','lg') }),
 				
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
@@ -64,7 +64,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB Papan Reklame', {'fields': ('jenis_papan_reklame','lebar','tinggi','lokasi_pasang','desa','batas_utara','batas_timur','batas_selatan','batas_barat') }),
+				('Detail Reklame', {'fields': ('perusahaan','jenis_reklame','judul_reklame','jumlah','panjang','lebar','sisi','letak_pemasangan','desa',('tanggal_mulai','tanggal_akhir'),'lt','lg') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
