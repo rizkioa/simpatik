@@ -30,3 +30,6 @@ from django.test import TestCase
 a = "[2, 8, 2, 5, 7]"
 print a
 print eval(a)
+
+# import drest
+# drest.api.TastyPieAPI("http://simpatik.kedirikab.go.id:8889/api/v1/")

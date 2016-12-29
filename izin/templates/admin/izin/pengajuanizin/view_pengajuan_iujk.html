@@ -454,34 +454,37 @@
 										<table class="table table-bordered" id="tabel_survey">
 											<thead>
 												<tr>
-												  <th>SKPD</th>
-												  <th>Penandatanganan</th>
-												  <th>Dokumen</th>
-												  <th>Status</th>
-												  <th>Tanggal Survey</th>
-												  <th>Hasil Survey</th>
+												  <th align="center">SKPD</th>
+												  <th align="center">Status</th>
+												  <th align="center">Tanggal Survey</th>
+												  <th align="center">Hasil Survey</th>
 												</tr>
 											</thead>
 											<tbody>
 												{% for i in survey_pengajuan %}
 													<tr>
-														<td>{{ i.skpd }}</td>
-														<td>{{ i.skpd }}</td>
-														<td>{{ i.permohonan }}</td>
-														<td>{{ i.status }}</td>
-														<td>{{ i.tanggal_survey|date:"d-m-Y" }}</td>
-														<td><i class="fa fa-plus"></i></td>
+														<td align="center">{{ i.skpd }}</td>
+														<td align="center">{{ i.status|hasil|safe }}</td>
+														<td align="center">{{ i.tanggal_survey|date:"d-m-Y" }}</td>
+														<td align="center">{{i.id}}</td>
 													</tr>
 												{% endfor %}
 											</tbody> 
 										</table>
 										<br>
-									</div>
 
+									</div>
+									<div class="panel-body">
+										<h4>MENERUSKAN PENGAJUAN KE KEPALA BPM-P2T</h4>
+										<br>
+										<label class="checkbox checkbox-custom-alt">
+									        <input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala BPM-P2T untuk ditindaklanjuti.
+								      	</label>
+									</div>
 									<div class="panel-footer">
 										<center>
 										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
-									</center>
+										</center>
 									</div>
 							</div>
 						{% endif %}
@@ -983,6 +986,31 @@
 		// 	$('#minimize_7').hide()
 		// 	$('#minimize_8').hide()
 		})
+
+		function load_rekomendasi_pembangunan(id_survey){
+			// api/v1/rekomendasi/?survey_iujk=9
+			var url = 'api/v1/'
+			$.ajax({ // create an AJAX call...
+				data : {api_url: url, id:id_survey},
+			    type: 'GET', // GET or POST
+			    // url: 'http://simpatik.kedirikab.go.id:8889/api/v1/rekomendasi/', // the file to call
+			    url: '{% url 'admin:get_rekom'%}',
+			    success: function(response) { // on success..
+					respon = $.parseJSON(response)
+					console.log(respon)
+					// total_data = response.meta.total_count
+					// console.log(respon.pesan[0].rekomendasi)
+					$("#myModal .modal-title").text('Isi Rekomendasi');
+					$("#myModal .modal-body").html(respon.pesan[0].rekomendasi);
+					$("#myModal").modal();
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			      	// window.location.href= "";
+			    }
+			});
+		}
+
 		$('.button-tolak').prop( "disabled", true );
 		$('.alasan').keyup(function() {
             if ($(this).val() !== "") {
@@ -1431,6 +1459,27 @@
 		    </div>
 		</div>
 	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" role="dialog">
+		<div class="modal-dialog">
+
+		  <!-- Modal content-->
+		  <div class="modal-content">
+		    <div class="modal-header">
+		      <button type="button" class="close" data-dismiss="modal">&times;</button>
+		      <h4 class="modal-title"></h4>
+		    </div>
+		    <div class="modal-body">
+		      ..
+		    </div>
+		    <div class="modal-footer">
+		      <button type="button" class="btn btn.-default" data-dismiss="modal">Close</button>
+		    </div>
+		  </div>
+		  
+		</div>
+	</div>
+
 
 	<div class="modal fade" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" style="width: 80%;">

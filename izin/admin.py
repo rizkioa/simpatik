@@ -24,6 +24,8 @@ from master.models import JenisPemohon
 from izin.izin_forms import SurveyForm
 from izin.utils import get_nomor_pengajuan
 
+from pembangunan.views import get_rekomendasi_pembangunan
+
 
 
 
@@ -105,10 +107,16 @@ class SurveyAdmin(admin.ModelAdmin):
 					s.status = 4
 					s.save()
 					# print "ok"
+
+					riwayat_ = Riwayat(
+						pengajuan_izin_id = id_pengajuan,
+						created_by_id = request.user.id,
+						keterangan = "Kabid Mengajukan Survey Ke SKPD"
+					)
+					riwayat_.save()
+
 				pengajuan.status = 8
 				pengajuan.save()
-
-				
 
 				data = {'success': True, 
 				'pesan': 'Survey berhasil dikirim',
@@ -132,9 +140,10 @@ class SurveyAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(SurveyAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^survey-save-ajax/$', self.save_survey_ajax, name="save_survey_ajax" ),
-			url(r'^survey-delete-ajax/$', self.delete_survey_ajax, name="delete_survey_ajax" ),
-			url(r'^survey-sending/$', self.send_survey, name="send_survey" ),
+			url(r'^survey-save-ajax/$', self.admin_site.admin_view(self.save_survey_ajax), name="save_survey_ajax" ),
+			url(r'^survey-delete-ajax/$', self.admin_site.admin_view(self.delete_survey_ajax), name="delete_survey_ajax" ),
+			url(r'^survey-sending/$', self.admin_site.admin_view(self.send_survey), name="send_survey" ),
+			url(r'^get-rekom/$', self.admin_site.admin_view(get_rekomendasi_pembangunan), name="get_rekom" ),
 			)
 		return my_urls + urls
 
