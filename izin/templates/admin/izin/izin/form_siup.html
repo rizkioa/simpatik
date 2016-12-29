@@ -102,6 +102,9 @@
             if (id_jenis == "Reklame"){
                 make_disabled($( "#id_kelompok_jenis_izin" ), true)
             }
+            else if (id_jenis == "HO"){
+                make_disabled($( "#id_kelompok_jenis_izin" ), true)
+            }
 
             else if(id_jenis.length > 0){
              load_kelompok(id_jenis, $( "#id_kelompok_jenis_izin" ), $( "#id_kelompok_jenis_izin_chosen" ), '{% url 'admin:option_kelompokjenisizin' %}')

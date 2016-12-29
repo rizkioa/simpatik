@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -182,3 +182,14 @@ class DetilHullerForm(forms.ModelForm):
 		model = DetilHuller
 		fields = ('pemilik_badan_usaha','pemilik_nama_perorangan','pemilik_alamat','pemilik_desa','pemilik_kewarganegaraan','pemilik_nama_badan_usaha','hubungan_pemilik_pengusaha','pengusaha_badan_usaha','pengusaha_nama_perorangan','pengusaha_alamat','pengusaha_desa','pengusaha_kewarganegaraan','pengusaha_nama_badan_usaha')
 
+class MesinHullerForm(forms.ModelForm):
+	"""docstring for MesinHullerForm"""
+	class Meta:
+		model = MesinHuller
+		fields = ('jenis_mesin','mesin_huller','keterangan')
+
+class MesinPerusahaanForm(forms.ModelForm):
+	"""docstring for MesinPerusahaanForm"""
+	class Meta:
+		model = MesinPerusahaan
+		fields = ('detil_huller','mesin_huller','type_model','pk_mesin','buatan','jumlah_unit','kapasitas')
