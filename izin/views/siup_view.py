@@ -24,8 +24,9 @@ from izin import models as app_models
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
-from accounts.models import NomorIdentitasPengguna
+from accounts.models import NomorIdentitasPengguna, Account
 from master.models import Berkas
+from django.db import connection
 
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:
@@ -55,7 +56,23 @@ def siup_identitas_pemohon_save_cookie(request):
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
 		p = pemohon.save(commit=False)
 		p.username = ktp_
-		p.save()
+		try:
+			p.save()
+		except IntegrityError:
+			try:
+				akun = Account.objects.get(username=ktp_)
+				if not hasattr(akun, 'pemohon'):
+					cursor = connection.cursor()
+					cursor.execute('INSERT INTO izin_pemohon (account_ptr_id) values (%s)', (akun.id,))
+					akun = Account.objects.get(username=ktp_)
+					if hasattr(akun, 'pemohon'):
+						p = akun.pemohon
+					else:
+						data = {'success': False, 'pesan': 'Nomor Identitas KTP pemohon bermasalah.'}
+						return HttpResponse(json.dumps(data))
+			except Account.DoesNotExist:
+				data = {'success': False, 'pesan': 'Nomor Identitas KTP pemohon bermasalah.'}
+				return HttpResponse(json.dumps(data))
 		if ktp_:
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = ktp_, jenis_identitas_id=1, user_id=p.id)
