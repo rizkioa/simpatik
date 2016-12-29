@@ -63,7 +63,7 @@ def siup_identitas_pemohon_save_cookie(request):
 				akun = Account.objects.get(username=ktp_)
 				if not hasattr(akun, 'pemohon'):
 					cursor = connection.cursor()
-					cursor.execute('INSERT INTO izin_pemohon (account_ptr_id) values (%s)', (akun.id,))
+					cursor.execute('INSERT INTO izin_pemohon (account_ptr_id, jenis_pemohon_id) values (%s, %s)', (akun.id, jenis_permohonan_))
 					akun = Account.objects.get(username=ktp_)
 					if hasattr(akun, 'pemohon'):
 						p = akun.pemohon
