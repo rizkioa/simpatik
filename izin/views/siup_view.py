@@ -54,6 +54,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
 		telephone_kuasa = request.POST.get('telephone_kuasa', None)
+
 		p = pemohon.save(commit=False)
 		p.username = ktp_
 		try:
@@ -66,7 +67,10 @@ def siup_identitas_pemohon_save_cookie(request):
 					cursor.execute('INSERT INTO izin_pemohon (account_ptr_id, jenis_pemohon_id) values (%s, %s)', (akun.id, jenis_permohonan_))
 					akun = Account.objects.get(username=ktp_)
 					if hasattr(akun, 'pemohon'):
-						p = akun.pemohon
+						pemohon = PemohonForm(request.POST)
+						p = pemohon.save(commit=False)
+						p.username = ktp_
+						p.save()
 					else:
 						data = {'success': False, 'pesan': 'Nomor Identitas KTP pemohon bermasalah.'}
 						return HttpResponse(json.dumps(data))
