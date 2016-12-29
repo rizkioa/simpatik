@@ -1,4 +1,4 @@
-<form method="POST" name="step4" role="form" class="form-horizontal"  %}">
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
@@ -6,75 +6,79 @@
         <hr class="style14">
       </div>
     </div>
-
+</form>
     <!-- Montor Penggerak -->
     <div class="panel panel-darkgray">
       <div class="panel-body">
-
-        <div class="form-group">
-          <div class="col-sm-6">
-            <label for="input01" class="col-sm-7 control-label">Type / Model</label>
-            <label for="input01" class="col-sm-3 control-label">PK</label>
+        <form method="POST" id="montor_bensin" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+          <div class="form-group">
+            <div class="col-sm-6">
+              <label for="input01" class="col-sm-7 control-label">Type / Model</label>
+              <label for="input01" class="col-sm-3 control-label">PK</label>
+            </div>
+            <div class="col-sm-4">
+              <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+              <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+            </div>
           </div>
-          <div class="col-sm-4">
-            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
-            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Montor Bensin</label>
+            <input type="hidden" id="id_montor_bensin" name="mesin_huller" value="Motor Bensin">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_type_model" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_pk_mesin" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_buatan" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_jumlah_unit" required="" name="jumlah_unit">
+            </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Montor Bensin</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_montor_bensin">
+        </form>
+        <form method="POST"  id="montor_diesel" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Montor Diesel</label>
+            <input type="hidden" id="id_montor_diesel" name="mesin_huller" value="Montor Diesel">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_montor_bensin">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_montor_bensin">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_montor_bensin">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Montor Diesel</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_montor_diesel">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_montor_diesel">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_montor_diesel">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_montor_diesel">
-          </div>
-        </div>
-
+        </form>
+        <form method="POST"  id="diesel_generating_set" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
         <div class="form-group">
           <label for="input01" class="col-sm-2 control-label">Diesel Generating Set</label>
+          <input type="hidden" id="id_montor_diesel" name="mesin_huller" value="Diesel Generating Set">
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_diesel_generating">
+            <input type="text" class="form-control" id="input01" required="" name="type_model">
           </div>
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_diesel_generating">
+            <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
           </div>
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_diesel_generating">
+            <input type="text" class="form-control" id="input01" required="" name="buatan">
           </div>
           <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_diesel_generating">
+            <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
           </div>
         </div>
-
+        </form>
       </div>
     </div>
 
     <!-- Mesin Pecah Kulit / Pengupas Gabah -->
-
+<!-- 
     <div class="panel panel-darkgray">
       <div class="panel-body">
 
@@ -131,10 +135,10 @@
 
       </div>
     </div>
-
+ -->
     <!-- Mesin Pemisah Gabah -->
 
-    <div class="panel panel-darkgray">
+<!--     <div class="panel panel-darkgray">
       <div class="panel-body">
 
         Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Per-jam
@@ -208,10 +212,10 @@
         </div>
         
       </div>
-    </div> 
+    </div>  -->
 
     <!-- Mesin Penyosoh Beras -->
-    <div class="panel panel-darkgray">
+<!--     <div class="panel panel-darkgray">
       <div class="panel-body">
 
         Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Sosoh / Putih Per-jam
@@ -266,10 +270,10 @@
         </div>
         
       </div>
-    </div>  
+    </div>   -->
 
     <!-- Mesin Lain-lain -->
-    <div class="panel panel-darkgray">
+<!--     <div class="panel panel-darkgray">
       <div class="panel-body">
 
         Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Sosoh / Putih Per-jam
@@ -396,8 +400,7 @@
             </div>
           </div></td>
         </tr>
-      </table>
-</form>
+      </table> -->
 
 <div class="modal fade" id="ippt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
