@@ -822,9 +822,9 @@ def upload_npwp_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.jpg', '.png']
+						valid_extensions = ['.jpg', '.png', 'pdf']
 						if not ext in valid_extensions:
-							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png.'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 						else:
@@ -990,9 +990,9 @@ def upload_foto_papan_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.jpg', '.png']
 						if not ext in valid_extensions:
-							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh jpg, png.'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 						else:
