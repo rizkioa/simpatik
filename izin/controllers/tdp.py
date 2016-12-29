@@ -15,7 +15,6 @@ def formulir_tdp_pt(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-		extra_context.update({'negara': negara})
 		extra_context.update({'title': 'TDP PT Baru'})
 		negara = Negara.objects.all()
 		extra_context.update({'negara': negara})
