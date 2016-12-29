@@ -298,5 +298,7 @@ urlpatterns = [
 
     # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
     url(r'^layanan/penggilingan-padi-&-huller/save$', huller.detil_huller_save_cookie, name='detil_huller_save_cookie'),
+    url(r'^layanan/penggilingan-padi-&-huller/mesin-perusahaan/save$', huller.mesin_perusahaan_save_cookie, name='mesin_perusahaan_save'),
+
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
     ]

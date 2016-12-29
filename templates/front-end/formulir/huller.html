@@ -138,11 +138,21 @@
                 }
               }else{
               if($current == 4){
-                // alert("OK")
-                id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_izin_lokasi(id_pengajuan)
+                var frm = $('form[name="montor_penggerak"]');
+                for (var i = 0; i < frm.length; i++){      
+                  var obj = $('form[id="'+frm[i].id+'"]');
+                  var bor = obj.serializeArray();
+                    var display2 = {};
+                  for (var a = 0; a < bor.length; a++){ 
+                    display2[bor[a].name] = bor[a].value;
+                  } 
+                  var j = JSON.stringify(display2);
+                  alert(j)
+                }
+
                 
               }
+
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
               }
@@ -177,7 +187,6 @@
     function next_tab(btn){
       var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
       var frm = $('form[name="step'+ index +'"]');
-      alert(frm.serialize())
       frm.parsley().validate();
         if (frm.parsley().isValid()) {
           // $(".tab-content #tab"+index).mask('loading')
