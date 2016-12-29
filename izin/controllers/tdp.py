@@ -24,6 +24,8 @@ def formulir_tdp_pt(request):
 		extra_context.update({'kecamatan': kecamatan})
 		jenis_pemohon = JenisPemohon.objects.all()
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
+		jenis_perusahaan = JenisPerusahaan.objects.all()
+		extra_context.update({'jenis_perusahaan': jenis_perusahaan})
 		jenis_badan_usaha = JenisBadanUsaha.objects.all()
 		extra_context.update({'jenis_badan_usaha': jenis_badan_usaha})
 		status_perusahaan = StatusPerusahaan.objects.all()
