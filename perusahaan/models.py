@@ -288,8 +288,8 @@ class DataPimpinan(IdentitasPribadi):
 	kedudukan = models.ForeignKey(JenisKedudukan, verbose_name='Jenis Kedudukan')
 	detil_tdp = models.ForeignKey('izin.DetilTDP', verbose_name='Detil TDP')
 	tanggal_menduduki_jabatan = models.DateField(verbose_name='Tanggal Menduduki Jabatan')
-	jumlah_saham_dimiliki = models.CharField(max_length=255, verbose_name='Jumlah Saham Dimiliki')
-	jumlah_saham_disetor = models.CharField(max_length=255, verbose_name='Jumlah Saham Disetor')
+	jumlah_saham_dimiliki = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jumlah Saham Dimiliki')
+	jumlah_saham_disetor = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jumlah Saham Disetor')
 
 	kedudukan_diperusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Kedudukan Di Perusahaan Lain')
 	nama_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nama Perusahaan Lain')
