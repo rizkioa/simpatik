@@ -8,7 +8,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, resolve
 
 from accounts.models import NomorIdentitasPengguna
-from izin.models import DetilTDP, Syarat, SKIzin, Riwayat
+from izin.models import DetilTDP, Syarat, SKIzin, Riwayat, IzinLain
+from perusahaan.models import DataPimpinan, PemegangSaham, Perusahaan
 
 class DetilTDPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin')
@@ -45,8 +46,12 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
 				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
 				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
-				
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status})
+				legalitas_ = perusahaan_.legalitas_set.all()
+				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
+				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
+				pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
+				perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=perusahaan_.id)
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:

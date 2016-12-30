@@ -1124,8 +1124,8 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				telephone_kuasa = pengajuan_.telephone_kuasa
 			data_kuasa = {'kuasa': {'nama_kuasa':nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa':telephone_kuasa}}
 			if pemohon_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_ktp'], jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_paspor'], jenis_identitas_id=2).last()
+				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
+				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
 				jenis_pemohon = pemohon_.jenis_pemohon.jenis_pemohon
 				nama_lengkap_pemohon = pemohon_.nama_lengkap
 				alamat_lengkap_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
