@@ -128,19 +128,19 @@ def tdp_legalitas_pt_cookie(request):
 					# save legalitas pendirian
 					try:
 						legalitas_pendirian = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=1)
-						if legalitas_pendirian.jenis_legalitas_id == 1:
-							legalitas_pendirian.jenis_legalitas_id=1
-							legalitas_pendirian.perusahaan_id = perusahaan
-							legalitas_pendirian.nama_notaris = nama_notaris_pendirian
-							legalitas_pendirian.alamat = alamat_pendirian
-							legalitas_pendirian.telephone = telephone_pendirian
-							legalitas_pendirian.nomor_akta = nomor_akta_pendirian
-							legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
-							legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
-							legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
-							legalitas_pendirian.save()
-						else:
-							pass
+						# if legalitas_pendirian.jenis_legalitas_id == 1:
+						legalitas_pendirian.jenis_legalitas_id=1
+						legalitas_pendirian.perusahaan_id = perusahaan_id
+						legalitas_pendirian.nama_notaris = nama_notaris_pendirian
+						legalitas_pendirian.alamat = alamat_pendirian
+						legalitas_pendirian.telephone = telephone_pendirian
+						legalitas_pendirian.nomor_akta = nomor_akta_pendirian
+						legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
+						legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
+						legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
+						legalitas_pendirian.save()
+						# else:
+						# 	pass
 					except ObjectDoesNotExist:
 						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian, nomor_pengesahan=nomor_pengesahan_pendirian, tanggal_pengesahan=tanggal_pengesahan_pendirian)
 						legalitas_pendirian.save(force_insert=True)
