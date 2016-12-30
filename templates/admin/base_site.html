@@ -32,6 +32,8 @@
     <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
     <script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
     <script type="text/javascript">
+        $('#sidebarCharts').hide()
+        $('.panel .charts .panel-default').hide()
         var pathname = window.location.pathname;
         
         function toast_server_error(msg_){
