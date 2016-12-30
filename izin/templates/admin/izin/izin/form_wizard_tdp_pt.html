@@ -17,7 +17,6 @@
 	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
-	<script src="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
@@ -122,15 +121,11 @@
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return false;
+					return true;
 				}
 			});
 		});
 
-		// Function to capitalize for string
-		String.prototype.capitalize = function() {
-		    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-		};
 
 		function next_tab(btn){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
@@ -232,6 +227,8 @@
 	                return false;
 	            }
           	};
+
+          	$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
 
           	var pathname = "/";
 
@@ -471,7 +468,7 @@
         }
   	}
 
-  	$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
+  	
 
   	function save_izin_lain(){
         var id = $('#id_input_izin_lain').val()
