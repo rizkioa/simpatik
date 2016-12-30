@@ -4,7 +4,7 @@ import os
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from master.models import Berkas
-from izin.models import DetilReklame, PengajuanIzin,JenisPermohonanIzin
+from izin.models import DetilReklame, PengajuanIzin,JenisPermohonanIzin,KelompokJenisIzin
 from izin.izin_forms import UploadBerkasPendukungForm
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -14,11 +14,17 @@ from django.views.decorators.http import require_POST
 def reklame_detilreklame_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
+			kelompok_izin = KelompokJenisIzin.objects.get(kode="503.03.01/")
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
 			if detilReklame.is_valid():
-				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-				pengajuan_.save()
+				if pengajuan_.jenis_reklame.jenis_reklame == "Permanen":
+					pengajuan_.kelompok_jenis_izin = kelompok_izin
+					pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+					pengajuan_.save()
+				else:
+					pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+					pengajuan_.save()
 				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
 				if pengajuan_.tanggal_mulai:
