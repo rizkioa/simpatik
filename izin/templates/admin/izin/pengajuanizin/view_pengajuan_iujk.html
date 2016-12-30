@@ -466,7 +466,7 @@
 														<td align="center">{{ i.skpd }}</td>
 														<td align="center">{{ i.status|hasil|safe }}</td>
 														<td align="center">{{ i.tanggal_survey|date:"d-m-Y" }}</td>
-														<td align="center">{{i.id}}</td>
+														<td align="center"><a href="#" onclick="load_rekomendasi_pembangunan({{i.id}}); return false" class="btn btn-success">lihat</a></td>
 													</tr>
 												{% endfor %}
 											</tbody> 
@@ -997,12 +997,17 @@
 			    url: '{% url 'admin:get_rekom'%}',
 			    success: function(response) { // on success..
 					respon = $.parseJSON(response)
-					console.log(respon)
+					// console.log(respon)
 					// total_data = response.meta.total_count
 					// console.log(respon.pesan[0].rekomendasi)
-					$("#myModal .modal-title").text('Isi Rekomendasi');
-					$("#myModal .modal-body").html(respon.pesan[0].rekomendasi);
-					$("#myModal").modal();
+					if (respon.success){
+						$("#myModal .modal-title").text('Isi Rekomendasi');
+						$("#myModal .modal-body").html(respon.pesan[0].rekomendasi);
+						$("#myModal").modal();
+					}else{
+						toastr["error"](respon.pesan)
+					}
+					
 			    },
 			    error: function(data) {                
 			      	toast_server_error()

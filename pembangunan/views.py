@@ -20,9 +20,9 @@ def get_rekomendasi_pembangunan(request):
 						except KeyError:
 							data = {'success': False, 'pesan': 'Object Tidak Diketahui.' }
 			except drest.exc.dRestAPIError :
-				data = {'success': False, 'pesan': '[APIError] Koneksi Server error 1.' }
+				data = {'success': False, 'pesan': '[APIError] Koneksi Server Pembangunan error 1.' }
 		except drest.exc.dRestRequestError :
-			data = {'success': False, 'pesan': '[RequestError] Koneksi Server error 2.' }
+			data = {'success': False, 'pesan': '[RequestError] Koneksi Server Pembangunan error 2.' }
 	except Exception, e:
 		data = {'success': False, 'pesan': '[Exception] Error: '+str(e)+'.' }
 
