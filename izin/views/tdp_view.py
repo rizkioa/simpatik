@@ -128,19 +128,19 @@ def tdp_legalitas_pt_cookie(request):
 					# save legalitas pendirian
 					try:
 						legalitas_pendirian = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=1)
-						if legalitas_pendirian.jenis_legalitas_id == 1:
-							legalitas_pendirian.jenis_legalitas_id=1
-							legalitas_pendirian.perusahaan_id = perusahaan
-							legalitas_pendirian.nama_notaris = nama_notaris_pendirian
-							legalitas_pendirian.alamat = alamat_pendirian
-							legalitas_pendirian.telephone = telephone_pendirian
-							legalitas_pendirian.nomor_akta = nomor_akta_pendirian
-							legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
-							legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
-							legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
-							legalitas_pendirian.save()
-						else:
-							pass
+						# if legalitas_pendirian.jenis_legalitas_id == 1:
+						legalitas_pendirian.jenis_legalitas_id=1
+						legalitas_pendirian.perusahaan_id = perusahaan_id
+						legalitas_pendirian.nama_notaris = nama_notaris_pendirian
+						legalitas_pendirian.alamat = alamat_pendirian
+						legalitas_pendirian.telephone = telephone_pendirian
+						legalitas_pendirian.nomor_akta = nomor_akta_pendirian
+						legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
+						legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
+						legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
+						legalitas_pendirian.save()
+						# else:
+						# 	pass
 					except ObjectDoesNotExist:
 						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian, nomor_pengesahan=nomor_pengesahan_pendirian, tanggal_pengesahan=tanggal_pengesahan_pendirian)
 						legalitas_pendirian.save(force_insert=True)
@@ -581,7 +581,7 @@ def edit_pemegang_saham(request, pemegang_saham_id):
 	if pemegang_saham_id:
 		try:
 			i = PemegangSaham.objects.get(id=pemegang_saham_id)
-			data = {'data':{'id':i.id, 'nama_lengkap':i.nama_lengkap, 'alamat':i.alamat, 'telephone':i.telephone, 'kewarganegaraan':i.kewarganegaraan, 'npwp':i.npwp, 'dimiliki':int(i.jumlah_saham_dimiliki), 'disetor':int(i.jumlah_saham_disetor)}}
+			data = {'data':{'id':i.id, 'nama_lengkap':i.nama_lengkap, 'alamat':i.alamat, 'telephone':i.telephone, 'kewarganegaraan':i.kewarganegaraan, 'npwp':i.npwp, 'dimiliki':i.jumlah_saham_dimiliki, 'disetor':i.jumlah_saham_disetor}}
 			data = json.dumps(data)
 			response = HttpResponse(data)
 		except ObjectDoesNotExist:
@@ -664,7 +664,7 @@ def edit_data_pimpinan(request, data_pimpinan_id):
 	if data_pimpinan_id:
 		try:
 			i = DataPimpinan.objects.get(id=data_pimpinan_id)
-			data = {'data':{'id':i.id, 'kedudukan': i.kedudukan.id, 'nama_lengkap':i.nama_lengkap, 'tempat_lahir': i.tempat_lahir, 'tanggal_lahir': i.tanggal_lahir.strftime('%d-%m-%Y'), 'alamat':i.alamat, 'telephone':i.telephone, 'hp':i.hp, 'email': i.email ,'kewarganegaraan':i.kewarganegaraan, 'tanggal_menduduki_jabatan': i.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'),  'dimiliki':int(i.jumlah_saham_dimiliki), 'disetor':int(i.jumlah_saham_disetor), 'kedudukan_diperusahaan_lain': i.kedudukan_diperusahaan_lain, 'nama_perusahaan_lain': i.nama_perusahaan_lain, 'alamat_perusahaan_lain': i.alamat_perusahaan_lain, 'kode_pos_perusahaan_lain': i.kode_pos_perusahaan_lain, 'telepon_perusahaan_lain': i.telepon_perusahaan_lain, 'tanggal_menduduki_jabatan_perusahaan_lain': i.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y')}}
+			data = {'data':{'id':i.id, 'kedudukan': i.kedudukan.id, 'nama_lengkap':i.nama_lengkap, 'tempat_lahir': i.tempat_lahir, 'tanggal_lahir': i.tanggal_lahir.strftime('%d-%m-%Y'), 'alamat':i.alamat, 'telephone':i.telephone, 'hp':i.hp, 'email': i.email ,'kewarganegaraan':i.kewarganegaraan, 'tanggal_menduduki_jabatan': i.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'),  'dimiliki':i.jumlah_saham_dimiliki, 'disetor':i.jumlah_saham_disetor, 'kedudukan_diperusahaan_lain': i.kedudukan_diperusahaan_lain, 'nama_perusahaan_lain': i.nama_perusahaan_lain, 'alamat_perusahaan_lain': i.alamat_perusahaan_lain, 'kode_pos_perusahaan_lain': i.kode_pos_perusahaan_lain, 'telepon_perusahaan_lain': i.telepon_perusahaan_lain, 'tanggal_menduduki_jabatan_perusahaan_lain': i.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y')}}
 			data = json.dumps(data)
 			response = HttpResponse(data)
 		except ObjectDoesNotExist:
@@ -1124,8 +1124,8 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				telephone_kuasa = pengajuan_.telephone_kuasa
 			data_kuasa = {'kuasa': {'nama_kuasa':nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa':telephone_kuasa}}
 			if pemohon_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_ktp'], jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_paspor'], jenis_identitas_id=2).last()
+				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
+				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
 				jenis_pemohon = pemohon_.jenis_pemohon.jenis_pemohon
 				nama_lengkap_pemohon = pemohon_.nama_lengkap
 				alamat_lengkap_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)

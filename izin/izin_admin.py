@@ -296,6 +296,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.id == 38:
 			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.id == 25:
+			link_ = reverse('admin:view_pengajuan_tdp_pt', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -820,6 +822,41 @@ class IzinAdmin(admin.ModelAdmin):
 								"pesan": "SKIzin berhasil di register.",
 								"redirect": '',
 							}
+						except IntegrityError:
+							response = {
+								"success": False,
+								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+								"redirect": '',
+							}
+					elif request.POST.get('aksi') == '_submit_penomoran_tdp':
+						obj_skizin.status = 10
+						obj_skizin.save()
+						try:
+							nomor = request.POST.get('nomor')
+							if nomor:
+								obj.no_izin = nomor
+								obj.save()
+								riwayat_ = Riwayat(
+									sk_izin_id = obj_skizin.id ,
+									pengajuan_izin_id = id_pengajuan_izin,
+									created_by_id = request.user.id,
+									keterangan = "Registered (Izin)"
+								)
+								riwayat_.save()
+								response = {
+									"success": True,
+									"pesan": "SKIzin berhasil di register.",
+									"redirect": '',
+								}
+							
+							else:
+								response = {
+									"success": False,
+									"pesan": "Nomor Kosong.",
+									"redirect": '',
+								}
+							
+							
 						except IntegrityError:
 							response = {
 								"success": False,

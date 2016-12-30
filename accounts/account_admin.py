@@ -107,38 +107,38 @@ class AccountAdmin(UserAdmin):
 		from django.contrib.admin.forms import AdminPasswordChangeForm
 		from django.contrib.auth.views import password_change
 		
-		if request.user.is_admin:
-			url = reverse('admin:password_change_done', current_app=admin.site.name)
-			defaults = {
-				'current_app': admin.site.name,
-				'post_change_redirect': url,
-				'extra_context': dict(admin.site.each_context(request), **(extra_context or {})),
-			}
-			defaults['password_change_form'] = AdminPasswordChangeForm
-			if admin.site.password_change_template is not None:
-				defaults['template_name'] = admin.site.password_change_template
-			return password_change(request, **defaults)
-		else:
-			post_change_redirect = reverse('admin:password_change_done', current_app=usersite.name)
-			from accounts.forms import CustomPasswordChangeForm
-			if request.method == "POST":
-				form = CustomPasswordChangeForm(user=request.user, data=request.POST)
-				if form.is_valid():
-					form.save()
-					update_session_auth_hash(request, form.user)
-					return HttpResponseRedirect(post_change_redirect)
-			else:
-				form = CustomPasswordChangeForm(user=request.user)
-			context = {
-				'form': form,
-				'title': _('Password change'),
-			}
-			context.update(dict(usersite.each_context(request), **(extra_context or {})))
-			request.current_app = usersite.name
-			if admin.site.password_change_template is not None:
-				return TemplateResponse(request, usersite.password_change_template, context)
-			else:
-				return TemplateResponse(request, "registration/password_change_form.html", context)
+		# if request.user.is_admin:
+		url = reverse('admin:password_change_done', current_app=admin.site.name)
+		defaults = {
+			'current_app': admin.site.name,
+			'post_change_redirect': url,
+			'extra_context': dict(admin.site.each_context(request), **(extra_context or {})),
+		}
+		defaults['password_change_form'] = AdminPasswordChangeForm
+		if admin.site.password_change_template is not None:
+			defaults['template_name'] = admin.site.password_change_template
+		return password_change(request, **defaults)
+		# else:
+		# 	post_change_redirect = reverse('admin:password_change_done', current_app=usersite.name)
+		# 	from accounts.forms import CustomPasswordChangeForm
+		# 	if request.method == "POST":
+		# 		form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+		# 		if form.is_valid():
+		# 			form.save()
+		# 			update_session_auth_hash(request, form.user)
+		# 			return HttpResponseRedirect(post_change_redirect)
+		# 	else:
+		# 		form = CustomPasswordChangeForm(user=request.user)
+		# 	context = {
+		# 		'form': form,
+		# 		'title': ('Password change'),
+		# 	}
+		# 	context.update(dict(usersite.each_context(request), **(extra_context or {})))
+		# 	request.current_app = usersite.name
+		# 	if admin.site.password_change_template is not None:
+		# 		return TemplateResponse(request, usersite.password_change_template, context)
+		# 	else:
+		# 		return TemplateResponse(request, "registration/password_change_form.html", context)
 
 	def get_form(self, request, obj=None, **kwargs):
 		form = super(AccountAdmin, self).get_form(request, obj, **kwargs)

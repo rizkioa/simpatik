@@ -269,10 +269,10 @@ def penanggung_jawab_save_bu(request):
 								da_.jenis_anggota_badan = 'Direktur / Penanggung Jawab Badan Usaha'
 								da_.save()
 
-								da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
-								da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
-								da_.berkas_tambahan.create(nama_berkas="Berkas Pernyataan bukan PNS/TNI/POLRI "+da_.nama, berkas=request.FILES.get('berkas_pernyataan'))
-								da_.berkas_tambahan.create(nama_berkas="Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
+								da_.berkas_tambahan.create(nama_berkas="Direktur / Penanggung Jawab Badan Usaha, Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+								da_.berkas_tambahan.create(nama_berkas="Direktur / Penanggung Jawab Badan Usaha, Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+								da_.berkas_tambahan.create(nama_berkas="Direktur / Penanggung Jawab Badan Usaha, Berkas Pernyataan bukan PNS/TNI/POLRI "+da_.nama, berkas=request.FILES.get('berkas_pernyataan'))
+								da_.berkas_tambahan.create(nama_berkas="Direktur / Penanggung Jawab Badan Usaha, Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
 								
 								# berkas_ = ", ".join(str(row.nama_berkas) for row in da_.berkas_tambahan.all().order_by('id'))
 								# print request.META['HTTP_REFERER']
@@ -365,11 +365,11 @@ def penanggung_jawab_teknik_save_bu(request):
 									da_.save()
 
 
-									da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
-									da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
-									da_.berkas_tambahan.create(nama_berkas="Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
-									da_.berkas_tambahan.create(nama_berkas="Berkas SKA/SKT "+da_.nama, berkas=request.FILES.get('ska_skt'))
-									da_.berkas_tambahan.create(nama_berkas="Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
+									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
+									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas SKA/SKT "+da_.nama, berkas=request.FILES.get('ska_skt'))
+									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
 									
 									# berkas_ = ", ".join(str(row.nama_berkas) for row in da_.berkas_tambahan.all().order_by('id'))
 									# print request.META['HTTP_REFERER']
@@ -436,9 +436,9 @@ def penanggung_jawab_non_teknik_save_bu(request):
 							da_.jenis_anggota_badan = 'Tenaga Non Teknik'
 							da_.save()
 
-							da_.berkas_tambahan.create(nama_berkas="Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
-							da_.berkas_tambahan.create(nama_berkas="Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
-							da_.berkas_tambahan.create(nama_berkas="Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
+							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
+							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
+							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
 
 							berkas_ = ", ".join(str(row.berkas.url) for row in da_.berkas_tambahan.all().order_by('id'))
 
@@ -822,9 +822,9 @@ def upload_npwp_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.jpg', '.png']
+						valid_extensions = ['.jpg', '.png', 'pdf']
 						if not ext in valid_extensions:
-							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png.'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 						else:
@@ -990,9 +990,9 @@ def upload_foto_papan_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.jpg', '.png']
 						if not ext in valid_extensions:
-							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh jpg, png.'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 						else:

@@ -59,7 +59,7 @@ def is_readonlypassword(field):
 
 @register.filter(name='joinby')
 def joinby(value, arg):
-    return arg.join(value)
+	return arg.join(value)
 
 @register.filter('extension')
 def get_extension(value_):
@@ -72,6 +72,22 @@ def InList(value, list_):
 		return True
 	return False
 
-@register.filter(name='split')
-def split(value, arg):
-    return value.split('Taufan Budiman')
+@register.filter(name='status')
+def status(value):
+	string = ''
+	# print type(value)
+	if value == 4:
+		string = "Belum Disurvey"
+	else:
+		string = "Telah Disurvey"
+	return string
+
+@register.filter(name='hasil')
+def hasil(value):
+	string = '-'
+	# print type(value)
+	if value == 1:
+		string = '<i class="fa fa-check"></i>'
+	elif value == 3:
+		string = '<i class="fa fa-times-circle"></i>'
+	return string

@@ -32,7 +32,7 @@ class PerusahaanAdmin(admin.ModelAdmin):
 				}),
 
 			(None, {
-				'fields': ('penanaman_modal', 'status_perusahaan', 'kerjasama','badan_usaha')
+				'fields': ('penanaman_modal', 'status_perusahaan', 'kerjasama','badan_usaha', 'berkas_npwp')
 				}),	
 
 			(None, {

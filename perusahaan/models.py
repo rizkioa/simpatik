@@ -288,10 +288,10 @@ class DataPimpinan(IdentitasPribadi):
 	kedudukan = models.ForeignKey(JenisKedudukan, verbose_name='Jenis Kedudukan')
 	detil_tdp = models.ForeignKey('izin.DetilTDP', verbose_name='Detil TDP')
 	tanggal_menduduki_jabatan = models.DateField(verbose_name='Tanggal Menduduki Jabatan')
-	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
-	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
+	jumlah_saham_dimiliki = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jumlah Saham Dimiliki')
+	jumlah_saham_disetor = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jumlah Saham Disetor')
 
-	kedudukan_diperusahaan_lain = models.CharField(max_length=255, verbose_name='Kedudukan Di Perusahaan Lain')
+	kedudukan_diperusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Kedudukan Di Perusahaan Lain')
 	nama_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Nama Perusahaan Lain')
 	alamat_perusahaan_lain = models.CharField(max_length=255, blank=True, null=True, verbose_name='Alamat Perusahaan Lain')
 	kode_pos_perusahaan_lain = models.IntegerField(blank=True, null=True, verbose_name='Kode Pos Perusahaan Lain')
@@ -302,7 +302,7 @@ class DataPimpinan(IdentitasPribadi):
 		return "%s" % (self.kedudukan)
 
 	def as_json(self):
-		return dict(id=self.id, nama_lengkap=self.nama_lengkap, tempat_lahir=self.tempat_lahir, tanggal_lahir=self.tanggal_lahir.strftime('%d-%m-%Y'), alamat=self.alamat, telephone=self.telephone, hp=self.hp, email=self.email if self.email else "-", kewarganegaraan=self.kewarganegaraan, kedudukan=self.kedudukan.kedudukan_pimpinan, tanggal_menduduki_jabatan=self.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'), jumlah_saham_dimiliki=int(self.jumlah_saham_dimiliki), jumlah_saham_disetor=int(self.jumlah_saham_disetor), kedudukan_diperusahaan_lain=self.kedudukan_diperusahaan_lain, nama_perusahaan_lain=self.nama_perusahaan_lain, alamat_perusahaan_lain=self.alamat_perusahaan_lain, kode_pos_perusahaan_lain=self.kode_pos_perusahaan_lain, telepon_perusahaan_lain=self.telepon_perusahaan_lain, tanggal_menduduki_jabatan_perusahaan_lain=self.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y') if self.tanggal_menduduki_jabatan_perusahaan_lain else "-")
+		return dict(id=self.id, nama_lengkap=self.nama_lengkap, tempat_lahir=self.tempat_lahir, tanggal_lahir=self.tanggal_lahir.strftime('%d-%m-%Y'), alamat=self.alamat, telephone=self.telephone, hp=self.hp, email=self.email if self.email else "-", kewarganegaraan=self.kewarganegaraan, kedudukan=self.kedudukan.kedudukan_pimpinan, tanggal_menduduki_jabatan=self.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'), jumlah_saham_dimiliki=self.jumlah_saham_dimiliki, jumlah_saham_disetor=self.jumlah_saham_disetor, kedudukan_diperusahaan_lain=self.kedudukan_diperusahaan_lain, nama_perusahaan_lain=self.nama_perusahaan_lain, alamat_perusahaan_lain=self.alamat_perusahaan_lain, kode_pos_perusahaan_lain=self.kode_pos_perusahaan_lain, telepon_perusahaan_lain=self.telepon_perusahaan_lain, tanggal_menduduki_jabatan_perusahaan_lain=self.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y') if self.tanggal_menduduki_jabatan_perusahaan_lain else "-")
 
 	class Meta:
 		ordering = ['id']
@@ -313,15 +313,15 @@ class PemegangSaham(IdentitasPribadi):
 	"""docstring for Pemegang Saham"""
 	pengajuan_izin = models.ForeignKey('izin.PengajuanIzin', related_name='pengajuan_izin_pemegang_saham', verbose_name='Izin Pemegang Saham ', null=True)
 	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
-	jumlah_saham_dimiliki = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Dimiliki')
-	jumlah_saham_disetor = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Jumlah Saham Disetor')
+	jumlah_saham_dimiliki = models.CharField(max_length=255, verbose_name='Jumlah Saham Dimiliki')
+	jumlah_saham_disetor = models.CharField(max_length=255, verbose_name='Jumlah Saham Disetor')
 
 	def __unicode__(self):
 		return "%s" % (self.npwp)
 
 	def as_json(self):
 		return dict(
-			id=self.id, nama_lengkap=self.nama_lengkap, alamat=self.alamat, telephone=self.telephone, kewarganegaraan=self.kewarganegaraan, npwp=self.npwp, jumlah_saham_dimiliki=int(self.jumlah_saham_dimiliki), jumlah_saham_disetor=int(self.jumlah_saham_disetor))
+			id=self.id, nama_lengkap=self.nama_lengkap, alamat=self.alamat, telephone=self.telephone, kewarganegaraan=self.kewarganegaraan, npwp=self.npwp, jumlah_saham_dimiliki=self.jumlah_saham_dimiliki, jumlah_saham_disetor=self.jumlah_saham_disetor)
 
 	class Meta:
 		ordering = ['id']
