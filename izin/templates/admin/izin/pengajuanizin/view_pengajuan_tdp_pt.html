@@ -231,7 +231,7 @@
 		<section class="tile">
 			<div class="tile-body">
 				<center>
-					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_pt' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
@@ -768,20 +768,7 @@
 					    	<br>
 						    <div class="form-group">
 					      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
-					      		<label>{{ pengajuan.kelompok_jenis_izin.kode }}</label>
-					      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
-					      		<label>/418.71/</label>
-					      		<select class="form-control chosen-select" id="penomoran_tahun" style="width: 200px;">
-							    	<option value="2016">2016</option>
-							    	<option value="2015">2015</option>
-							    	<option value="2014">2014</option>
-							    	<option value="2013">2013</option>
-							    	<option value="2012">2012</option>
-							    	<option value="2011">2011</option>
-							    	<option value="2010">2010</option>
-							    	<option value="2009">2009</option>
-							    	<option value="2008">2008</option>
-						      	</select>
+					      		<input id="penomoran_kode_izin_tdp" type="text" class="form-control">
 						    </div>
 					  	</center>
             		</form>
@@ -814,7 +801,7 @@
             	{% if skizin_status == 9 %}
 				<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 					<center>
-						<a onclick="penomoran_izin({{ pengajuan.id }}, '_submit_penomoran')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+						<a onclick="penomoran_izin_tdp({{ pengajuan.id }}, '_submit_penomoran_tdp')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 					</center>
 				</div>
 				{% endif %}
@@ -974,6 +961,32 @@
 		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 			$.ajax({ // create an AJAX call...
 			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi }, // get the form data
+			    type: 'POST', // GET or POST
+			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+			    success: function(response) { // on success..
+			        respon = $.parseJSON(response)
+			        if(respon.success){
+			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			          	toastr["success"](respon.pesan);
+			          	window.location.href= "";
+
+
+			      	}
+			      	else{
+		              	toastr["error"](respon.pesan)
+		            }
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			    }
+			});
+		}
+
+		function penomoran_izin_tdp(id_pengajuan_izin, aksi){
+			var nomor = $('#penomoran_kode_izin_tdp').val()
+		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+			$.ajax({ // create an AJAX call...
+			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi, nomor:nomor }, // get the form data
 			    type: 'POST', // GET or POST
 			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 			    success: function(response) { // on success..

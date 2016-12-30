@@ -832,6 +832,41 @@ class IzinAdmin(admin.ModelAdmin):
 								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
 								"redirect": '',
 							}
+					elif request.POST.get('aksi') == '_submit_penomoran_tdp':
+						obj_skizin.status = 10
+						obj_skizin.save()
+						try:
+							nomor = request.POST.get('nomor')
+							if nomor:
+								obj.no_izin = nomor
+								obj.save()
+								riwayat_ = Riwayat(
+									sk_izin_id = obj_skizin.id ,
+									pengajuan_izin_id = id_pengajuan_izin,
+									created_by_id = request.user.id,
+									keterangan = "Registered (Izin)"
+								)
+								riwayat_.save()
+								response = {
+									"success": True,
+									"pesan": "SKIzin berhasil di register.",
+									"redirect": '',
+								}
+							
+							else:
+								response = {
+									"success": False,
+									"pesan": "Nomor Kosong.",
+									"redirect": '',
+								}
+							
+							
+						except IntegrityError:
+							response = {
+								"success": False,
+								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+								"redirect": '',
+							}
 					elif request.POST.get('aksi') == '_submit_cetak_izin':
 						obj_skizin.status = 2
 						obj_skizin.save()
