@@ -11,6 +11,7 @@
     <div class="panel panel-darkgray">
       <div class="panel-body">
         <form method="POST" id="montor_bensin" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %}   
           <div class="form-group">
             <div class="col-sm-6">
               <label for="input01" class="col-sm-7 control-label">Type / Model</label>
@@ -23,30 +24,92 @@
           </div>
           <div class="form-group">
             <label for="input01" class="col-sm-2 control-label">Montor Bensin</label>
-            <input type="hidden" id="id_montor_bensin" name="mesin_huller" value="Motor Bensin">
+            <input type="hidden" id="id_montor_bensin" name="nama_mesin" value="Motor Bensin">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="id_type_model" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_motor_bensin" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="id_pk_mesin" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_motor_bensin" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="id_buatan" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_motor_bensin" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="id_jumlah_unit" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_motor_bensin" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
         <form method="POST"  id="montor_diesel" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %}   
           <div class="form-group">
             <label for="input01" class="col-sm-2 control-label">Montor Diesel</label>
-            <input type="hidden" id="id_montor_diesel" name="mesin_huller" value="Montor Diesel">
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Motor Diesel">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_type_model_motor_diesel" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_pk_mesin_motor_diesel" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_buatan_motor_diesel" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="id_jumlah_unit_motor_diesel" required="" name="jumlah_unit">
+            </div>
+          </div>
+        </form>
+        <form method="POST"  id="diesel_generating_set" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %}   
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Diesel Generating Set</label>
+          <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Diesel Generating Set">
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="id_type_model_diesel_generating" required="" name="type_model">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="id_pk_mesin_diesel_generating" required="" name="pk_mesin">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="id_buatan_diesel_generating" required="" name="buatan">
+          </div>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" id="id_jumlah_unit_diesel_generating" required="" name="jumlah_unit">
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Mesin Pecah Kulit / Pengupas Gabah -->
+
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+
+        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Gabah Pecah Kulit Per-jam
+        <form method="POST" id="rubber_roll" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <div class="col-sm-8">
+              <label for="input01" class="col-sm-5 control-label">Type / Model</label>
+              <label for="input01" class="col-sm-3 control-label">PK</label>
+              <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
+            </div>
+            <div class="col-sm-4">
+              <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+              <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Rubber Roll / Roll Karet</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Rubber Roll / Roll Karet">
             <div class="col-sm-2">
               <input type="text" class="form-control" id="input01" required="" name="type_model">
             </div>
             <div class="col-sm-2">
               <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
               <input type="text" class="form-control" id="input01" required="" name="buatan">
@@ -56,319 +119,288 @@
             </div>
           </div>
         </form>
-        <form method="POST"  id="diesel_generating_set" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Diesel Generating Set</label>
-          <input type="hidden" id="id_montor_diesel" name="mesin_huller" value="Diesel Generating Set">
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_model">
+        <form method="POST" id="flash_type_banting" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Flash Type / Type Banting</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Flash Type / Type Banting">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
-          </div>
-        </div>
         </form>
       </div>
     </div>
 
-    <!-- Mesin Pecah Kulit / Pengupas Gabah -->
-<!-- 
+    <!-- Mesin Pemisah Gabah -->
+
+    <div class="panel panel-darkgray">
+      <div class="panel-body">
+        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Per-jam
+        <form method="POST" id="gedogan" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <div class="col-sm-8">
+              <label for="input01" class="col-sm-5 control-label">Type / Model</label>
+              <label for="input01" class="col-sm-3 control-label">PK</label>
+              <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
+            </div>
+            <div class="col-sm-4">
+              <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+              <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Gedogan</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Gedogan">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
+          </div>
+        </form>
+        <form method="POST" id="dimple_plate" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Dimple Plate</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Dimple Plate">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
+          </div>
+        </form>
+        <form method="POST" id="screen" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Screen</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Screen">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div> 
+          </div>
+        </form>
+      </div>
+    </div> 
+
+    <!-- Mesin Penyosoh Beras -->
     <div class="panel panel-darkgray">
       <div class="panel-body">
 
-        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Gabah Pecah Kulit Per-jam
-        <div class="form-group">
-          <div class="col-sm-8">
-            <label for="input01" class="col-sm-5 control-label">Type / Model</label>
-            <label for="input01" class="col-sm-3 control-label">PK</label>
-            <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
-          </div>
-          <div class="col-sm-4">
-            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
-            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Rubber Roll / Roll Karet</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_rubber_roll">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_rubber_roll">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_rubber_roll">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_rubber_roll">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_rubber_roll">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Flash Type / Type Banting</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_flash_type">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_flash_type">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_flash_type">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_flash_type">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_flash_type">
-          </div>
-        </div>
-
-      </div>
-    </div>
- -->
-    <!-- Mesin Pemisah Gabah -->
-
-<!--     <div class="panel panel-darkgray">
-      <div class="panel-body">
-
-        Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Per-jam
-        <div class="form-group">
-          <div class="col-sm-8">
-            <label for="input01" class="col-sm-5 control-label">Type / Model</label>
-            <label for="input01" class="col-sm-3 control-label">PK</label>
-            <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
-          </div>
-          <div class="col-sm-4">
-            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
-            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Gedogan</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_gedogan">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_gedogan">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_gedogan">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_gedogan">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_gedogan">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Dimple Plate</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_dimple_plate">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_dimple_plate">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_dimple_plate">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_dimple_plate">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_dimple_plate">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Screen</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_screen">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_screen">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_screen">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_screen">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_screen">
-          </div> 
-        </div>
-        
-      </div>
-    </div>  -->
-
-    <!-- Mesin Penyosoh Beras -->
-<!--     <div class="panel panel-darkgray">
-      <div class="panel-body">
-
         Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Sosoh / Putih Per-jam
-        <div class="form-group">
-          <div class="col-sm-8">
-            <label for="input01" class="col-sm-5 control-label">Type / Model</label>
-            <label for="input01" class="col-sm-3 control-label">PK</label>
-            <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
+        <form method="POST" id="mesin_slip_horisontal" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <div class="col-sm-8">
+              <label for="input01" class="col-sm-5 control-label">Type / Model</label>
+              <label for="input01" class="col-sm-3 control-label">PK</label>
+              <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
+            </div>
+            <div class="col-sm-4">
+              <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+              <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+            </div>
           </div>
-          <div class="col-sm-4">
-            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
-            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Mesin Slip Horizontal</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Mesin Slip Horizontal">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Mesin Slip Horizontal</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_slip_horizontal">
+        </form>
+        <form method="POST" id="mesin_slip_vertikal" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Mesin Slip Vertikal</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Mesin Slip Vertikal">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_slip_horizontal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_slip_horizontal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_slip_horizontal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_slip_horizontal">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Mesin Slip Vertikal</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_slip_vertikal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_slip_vertikal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_slip_vertikal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_slip_vertikal">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_slip_vertikal">
-          </div>
-        </div>
-        
+        </form>
       </div>
-    </div>   -->
+    </div>  
 
     <!-- Mesin Lain-lain -->
-<!--     <div class="panel panel-darkgray">
+    <div class="panel panel-darkgray">
       <div class="panel-body">
 
         Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Sosoh / Putih Per-jam
-        <div class="form-group">
-          <div class="col-sm-8">
-            <label for="input01" class="col-sm-5 control-label">Type / Model</label>
-            <label for="input01" class="col-sm-3 control-label">PK</label>
-            <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
+        <form method="POST" id="paddy_cleaner" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <div class="col-sm-8">
+              <label for="input01" class="col-sm-5 control-label">Type / Model</label>
+              <label for="input01" class="col-sm-3 control-label">PK</label>
+              <label for="input01" class="col-sm-3 control-label">Kapasitas</label>
+            </div>
+            <div class="col-sm-4">
+              <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
+              <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+            </div>
           </div>
-          <div class="col-sm-4">
-            <label for="input01" class="col-sm-4 control-label">Buatan / Merk</label>
-            <label for="input01" class="col-sm-6 control-label">Jumlah Unit</label>
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Paddy Cleaner / Pembersih Gabah (Blower)</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Paddy Cleaner / Pembersih Gabah (Blower)">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Paddy Cleaner / Pembersih Gabah (Blower)</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_paddy_cleaner">
+        </form>
+        <form method="POST" id="mesin_polish" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Mesin Polis Brushe</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Mesin Polis Brushe">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_paddy_cleaner">
+        </form>
+        <form method="POST" id="grader_mesin" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Grader / Mesin Pemisah</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Grader / Mesin Pemisah">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_paddy_cleaner">
+        </form>
+        <form method="POST" id="kualitas" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'mesin_perusahaan_save' %}">
+        {% csrf_token %} 
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Kualitas</label>
+            <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Kualitas">
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="type_model">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="buatan">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+            </div>
           </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_paddy_cleaner">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_paddy_cleaner">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Mesin Polis Brushe</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_mesin_polis">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_mesin_polis">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_mesin_polis">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_mesin_polis">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_mesin_polis">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Grader / Mesin Pemisah</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_grader">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_grader">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_grader">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_grader">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_grader">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Kualitas</label>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="type_kualitas">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="pk_kualitas">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="kapasitas_kualitas">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="buatan_kualitas">
-          </div>
-          <div class="col-sm-2">
-            <input type="text" class="form-control" id="input01" required="" name="jumlah_kualitas">
-          </div>
-        </div>
-       
+        </form>
         <a href="#" data-toggle="modal" data-target="#ippt">Tambah lainnya</a>
       </div>
     </div>
-  
+<!--   
       <table border="0">
         <tr>
           <td>Kapasitas Potensial Giling keseluruhan Mesin Memproduksi Beras</td>

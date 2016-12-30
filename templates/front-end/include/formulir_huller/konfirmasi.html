@@ -15,96 +15,89 @@
     <tr>
       <td width="25%">Jenis Pemohon</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.jenis_pemohon}}</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
     </tr>
     <tr>
-      <td width="25%">Nomor KTP/Pastor</td>
+      <td width="25%">Nomor KTP/Paspor</td>
       <td width="5%">:</td>
-      <td width="70%">{{ request.COOKIES.ktp }}</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }}{% if paspor %} / {{ paspor }}{% endif %}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.nama_lengkap}}</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat tempat tinggal</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.alamat}}</td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_pemohon_konfirmasi }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.telephone}}</td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.HP</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.hp}}</td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.email}}</td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kewarganegaraan</td>
       <td width="5%">:</td>
-      <td width="70%">{{request.COOKIES.kewarganegaraan}}</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Pekerjaan</td>
       <td width="5%">:</td>
-      <td width="70%">Swasta</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
     </tr>
   </table>
   <br>
+
   <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
   <table width="100%" border="0">
     <tr>
       <td width="25%">NPWP</td>
       <td width="5%">:</td>
-      <td width="70%">12345678974</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
     </tr>
     <tr>
       <td width="25%">Nama Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">UD. Maju Mundur</td>
-    </tr>
-    <tr>
-      <td width="25%">Bentuk Kegiatan Usaha</td>
-      <td width="5%">:</td>
-      <td width="70%">Mikro</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
     </tr>
     <tr>
       <td width="25%">Alamat Perusahaan</td>
       <td width="5%">:</td>
-      <td width="70%">Jl.Erlangga no 02, Kel. Sukorejo, Kec. Ngasem, Kab.Kediri, Jawa Timur</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
     </tr>
     <tr>
       <td width="25%">Kode Pos</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Telp</td>
       <td width="5%">:</td>
-      <td width="70%">082123981923</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
     </tr>
     <tr>
       <td width="25%">No.Fax</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
     </tr>
     <tr>
       <td width="25%">E-mail</td>
       <td width="5%">:</td>
-      <td width="70%">-</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
     </tr>
   </table>
-
-  
-  
   <br>
   <h4><u>#3. Pemilik dan Pengusaha</u></h4>
   <h5><u>Pemilik</u></h5>
@@ -371,7 +364,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox-keputusan_izin_gangguan"  disabled><i></i>
             </label>
           </td>
         </tr>
@@ -381,7 +374,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pendirian_perusahaan"  disabled><i></i>
             </label>
           </td>
         </tr>
@@ -391,7 +384,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox-file_ktp_paspor" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -401,7 +394,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox-file_ktp_4x6" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -411,7 +404,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" checked="" disabled><i></i>
+              <input type="checkbox" id="checkbox-denah_bangunan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -421,7 +414,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" id="checkbox-rekomendasi_dinas_pertanian" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -431,7 +424,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" id="checkbox-struktur_organisasi_pemilik" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -441,7 +434,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" id="checkbox-struktur_organisasi_pengusaha" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -451,7 +444,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pendirian_perusahaan_pemilik_badan_usaha" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -461,7 +454,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled><i></i>
+              <input type="checkbox" id="checkbox-akta_pendirian_perusahaan_pengusaha_badan_usaha" disabled><i></i>
             </label>
           </td>
         </tr>
