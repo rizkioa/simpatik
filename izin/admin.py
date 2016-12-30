@@ -16,6 +16,7 @@ from izin.izin_admin import IzinAdmin
 from izin.informasitanah_admin import InformasiTanahAdmin 
 from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
 from izin.huller_admin import DetilHullerAdmin
+from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
 from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan
 from izin.pemohon_admin import PemohonAdmin
 
@@ -41,7 +42,6 @@ admin.site.register(SKIzin)
 admin.site.register(Riwayat)
 admin.site.register(JenisMesin)
 admin.site.register(MesinHuller)
-admin.site.register(MesinPerusahaan)
 
 
 # admin.site.register(DetilIUJK)

@@ -299,6 +299,8 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
     url(r'^layanan/penggilingan-padi-&-huller/save$', huller.detil_huller_save_cookie, name='detil_huller_save_cookie'),
     url(r'^layanan/penggilingan-padi-&-huller/mesin-perusahaan/save$', huller.mesin_perusahaan_save_cookie, name='mesin_perusahaan_save'),
-
+    url(r'^penggilingan-padi-&-huller/berkas/save/$', huller.detilhuller_upload_berkas_pendukung, name='detilhuller_upload_berkas_pendukung'),
+    url(r'^ajax-load-berkas-penggilingan-padi-&-huller/(?P<id_pengajuan>[0-9]+)$', huller.ajax_load_berkas_detilhuller, name='ajax_load_berkas_detilhuller'),
+    url(r'^layanan/penggilingan-padi-&-huller/konfirmasi/(?P<id_pengajuan>[0-9]+)$', huller.load_konfirmasi_detilhuller , name='load_konfirmasi_detilhuller'),
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
     ]

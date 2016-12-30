@@ -1,104 +1,208 @@
-<form method="POST" name="step5" role="form" class="form-horizontal"  %}">
+{% load i18n admin_static %}
+
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14">
-  <div class="form-group">
-    <label class="col-sm-3 control-label"><strong>Keputusan Izin Gangguan (HO)</strong></label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+</form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label"><strong> Akta Pendirian Perusahaan</strong></label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-keputusan_izin_gangguan" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="1">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Keputusan Izin Gangguan (HO)</strong></label>
+        <span id="field-keputusan_izin_gangguan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-keputusan_izin_gangguan" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-keputusan_izin_gangguan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-keputusan_izin_gangguan"></span>
+      </div>
+  </form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label"><strong>File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)</strong> </label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_pendirian_perusahaan" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="2">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Akta Pendirian Perusahaan</strong></label>
+        <span id="field-akta_pendirian_perusahaan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-akta_pendirian_perusahaan" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-akta_pendirian_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-akta_pendirian_perusahaan"></span>
+      </div>
+  </form>
 
-  <div class="form-group">
-    <label class="col-sm-3 control-label"><strong> Foto 4x6cm</strong></label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-file_ktp_paspor" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="3">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)</strong> </label>
+        <span id="field-file_ktp_paspor">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-file_ktp_paspor" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-file_ktp_paspor" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-file_ktp_paspor"></span>
+      </div>
+  </form>
 
-  <div class="form-group">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-file_ktp_4x6" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="4">
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Foto 4x6cm</strong></label>
+        <span id="field-file_ktp_4x6">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-file_ktp_4x6" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-file_ktp_4x6" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-file_ktp_4x6"></span>
+      </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-denah_bangunan" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate> 
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="5">
+    <div class="form-group">
     <label class="col-sm-3 control-label"><strong>Denah Bangunan dan Tata Letak Bangunan</strong></label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
+        <span id="field-denah_bangunan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-denah_bangunan" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-denah_bangunan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-denah_bangunan"></span>
+      </div>
+  </form>
 
-  <div class="form-group">
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rekomendasi_dinas_pertanian" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate> 
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="6">
+    <div class="form-group">
     <label class="col-sm-3 control-label"><strong>Rekomendasi dari Dinas Pertanian Kabupaten Kediri</strong></label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>  
+        <span id="field-rekomendasi_dinas_pertanian">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-rekomendasi_dinas_pertanian" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-rekomendasi_dinas_pertanian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-rekomendasi_dinas_pertanian"></span>
+      </div>
+  </form>
 
-  <div class="form-group">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-struktur_organisasi_pemilik" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate> 
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="7">
+    <div class="form-group">
     <label class="col-sm-3 control-label">Struktur Organisasi Pemilik jika berupa badan usaha</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>   
+        <span id="field-struktur_organisasi_pemilik">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-struktur_organisasi_pemilik" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-struktur_organisasi_pemilik" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-struktur_organisasi_pemilik"></span>
+      </div>
+  </form>
 
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-struktur_organisasi_pengusaha" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate> 
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="8">
   <div class="form-group">
     <label class="col-sm-3 control-label">Struktur Organisasi Pengusaha jika berupa badan usaha</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>   
+        <span id="field-struktur_organisasi_pengusaha">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-struktur_organisasi_pengusaha" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-struktur_organisasi_pengusaha" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-struktur_organisasi_pengusaha"></span>
+      </div>
+  </form> 
 
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_pendirian_perusahaan_pemilik_badan_usaha" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate> 
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="9">
   <div class="form-group">
     <label class="col-sm-3 control-label">Akta Pendirian Perusahaan Pemilik jika berupa badan usaha</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>     
+        <span id="field-akta_pendirian_perusahaan_pemilik_badan_usaha">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-akta_pendirian_perusahaan_pemilik_badan_usaha" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-akta_pendirian_perusahaan_pemilik_badan_usaha" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-akta_pendirian_perusahaan_pemilik_badan_usaha"></span>
+      </div>
+  </form> 
 
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_pendirian_perusahaan_pengusaha_badan_usaha" action="{% url 'detilhuller_upload_berkas_pendukung' %}" data-parsley-validate novalidate> 
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="10">
   <div class="form-group">
     <label class="col-sm-3 control-label">Akta Pendirian Perusahaan Pengusaha jika berupa badan usaha</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>  
-</form>
+        <span id="field-akta_pendirian_perusahaan_pengusaha_badan_usaha">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <span id="berkas_1"></span>
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-akta_pendirian_perusahaan_pengusaha_badan_usaha" onclick="form_upload_dokumen_detil_huller($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-akta_pendirian_perusahaan_pengusaha_badan_usaha" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-akta_pendirian_perusahaan_pengusaha_badan_usaha"></span>
+      </div>
+  </form>
