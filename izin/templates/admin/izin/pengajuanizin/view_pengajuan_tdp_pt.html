@@ -11,7 +11,6 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.min.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}">
-	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		.label-color{
 			color: white;
@@ -106,7 +105,7 @@
 	<div class="col-lg-12">
 		<section class="tile">
 			<div class="tile-header dvd dvd-btm">
-                <h1 class="custom-font"> {{ title }} {{ pengajuan.id }}</h1>
+                <h1 class="custom-font"> {{ title }} </h1>
                 <ul class="controls">
                     <li class="dropdown">
                         <a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
@@ -173,7 +172,7 @@
 											<tr>
 												<td>Perusahaan</td>
 												<td>:</td>
-												<td>{{ perusahaan }}</td>
+												<td>{{ pengajuan.perusahaan }}</td>
 											</tr>
 										</table>
 									</div>
@@ -210,13 +209,11 @@
 		    <div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 				<div class="row">
 					<div class="col-md-12" align="center">
-						<a onclick="get_load_detail_pengajuan(); return false;" data-toggle="modal" data-target="#detail_iujk" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-list"></i> <span>Lihat Detail Pengajuan</span></a>
-
-						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class=" icon-folder"></i> <span>Lihat Berkas Pengajuan</span></a>
-
+						<a data-toggle="modal" data-target="#detail_tdp_pt" class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Detail Pengajuan</span></a>
+						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-red btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Berkas Pengajuan</span></a>
 						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
-							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_iujk' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
-						{% endif %}
+						<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_reklame' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+					{% endif %}
 					</div>
 				</div>
 			</div>
@@ -228,18 +225,15 @@
 		<section class="tile">
 			<div class="tile-body">
 				<center>
-					<!-- <a class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir</a> -->
-					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_iujk' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
-					<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin_iujk' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
-					
-					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+					{% endif %}
+					{% if skizin_status == 1 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 
-					{% if skizin_status == 1  or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
-					{% endif %}
 				</center>
 			</div>
 		</section>
@@ -385,41 +379,56 @@
 							</div>
 
 							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
+								<form>
 									<div class="panel-body">
 										<h4>SURVEY</h4>
-										<table class="table table-bordered" id="tabel_survey">
-											<thead>
-												<tr>
-												  <th>&nbsp;</th>
-												  <th>SKPD</th>
-												  <th>Permohonan</th>
-												  <th>Tgl Survey</th>
-												  <th>Deadline Survey</th>
-												</tr>
-											</thead>
-											<tbody>
-												{% for i in survey_pengajuan %}
-													<tr id="{{ i.id }}">
-														<td><input type="checkbox" value="{{ i.id }}" id="chkbox"></input></td>
-														<td>{{ i.skpd }}</td>
-														<td>{{ i.permohonan }}</td>
-														<td>{{ i.tanggal_survey|date:"d-m-Y" }}</td>
-														<td>{{ i.deadline_survey|date:"d-m-Y" }}</td>
-													</tr>
-												{% endfor %}
-											</tbody> 
-										</table>
 										<br>
-										<button class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10" onclick="tambah_skpd_survey()">Tambah SKPD Survey <i class="fa fa-plus"></i></button>
-										<button class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id='delete-survey' onclick="survey_delete('survey')">Hapus <i class="fa fa-trash"></i></button>
-										<br>
+										<div class="panel panel-default" style="color: black">
+									      	<div class="panel-heading">SKPD Surveyor</div>
+									      	<div class="panel-body">
+									      		<div class="form-group">
+												    <label for="input01">SKPD </label>
+												    <select class="form-control chosen-select">
+												    	<option>Pilih SKPD</option>
+											      	</select>
+											  	</div>
+
+											  	<div class="form-group">
+												    <label for="input01">Permohonan </label>
+												    <select class="form-control chosen-select mb-10">
+												    	<option>Pilih</option>
+											      	</select>
+											  	</div>
+
+											  	<div class="form-group">
+											      	<label>Tanggal Survey </label>
+											        <div class="input-group datepicker" data-format="L">
+											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
+											          <span class="input-group-addon">
+											            <span class="fa fa-calendar"></span>
+											          </span>
+											        </div>
+											    </div>
+
+											    <div class="form-group">
+											      	<label>Deadline Survey </label>
+											        <div class="input-group datepicker" data-format="L">
+											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
+											          <span class="input-group-addon">
+											            <span class="fa fa-calendar"></span>
+											          </span>
+											        </div>
+											    </div>
+									      	</div>
+									    </div>
 									</div>
 
 									<div class="panel-footer">
 										<center>
-											<button type="button" onclick="kirim_survey({{ pengajuan.id }})" class="btn btn-success mb-10"><i class="icon-plus"></i> Buat Jadwal Survey</button>
+											<button type="button" class="btn btn-success mb-10"><i class="icon-plus"></i> Buat Jadwal Survey</button>
 										</center>
 									</div>
+								</form>
 							</div>
 
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
@@ -447,47 +456,6 @@
 								</form>
 							</div>
 						{% endif %}
-						{% if status == 8 %}
-							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
-									<div class="panel-body">
-										<h4>SURVEY</h4>
-										<table class="table table-bordered" id="tabel_survey">
-											<thead>
-												<tr>
-												  <th align="center">SKPD</th>
-												  <th align="center">Status</th>
-												  <th align="center">Tanggal Survey</th>
-												  <th align="center">Hasil Survey</th>
-												</tr>
-											</thead>
-											<tbody>
-												{% for i in survey_pengajuan %}
-													<tr>
-														<td align="center">{{ i.skpd }}</td>
-														<td align="center">{{ i.status|hasil|safe }}</td>
-														<td align="center">{{ i.tanggal_survey|date:"d-m-Y" }}</td>
-														<td align="center"><a href="#" onclick="load_rekomendasi_pembangunan({{i.id}}); return false" class="btn btn-success">lihat</a></td>
-													</tr>
-												{% endfor %}
-											</tbody> 
-										</table>
-										<br>
-
-									</div>
-									<div class="panel-body">
-										<h4>MENERUSKAN PENGAJUAN KE KEPALA BPM-P2T</h4>
-										<br>
-										<label class="checkbox checkbox-custom-alt">
-									        <input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala BPM-P2T untuk ditindaklanjuti.
-								      	</label>
-									</div>
-									<div class="panel-footer">
-										<center>
-										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
-										</center>
-									</div>
-							</div>
-						{% endif %}
 					</div>
 	            </div>
 			</section>
@@ -495,7 +463,7 @@
 	</div>
 {% endif %}
 
-{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
+<!-- {% if request.user|has_group:'Kasir' or request.user.is_superuser %}
 	<div class="row">
 		<div class="col-lg-12">
 			<section class="tile">
@@ -553,7 +521,7 @@
 			</section>
 		</div>
 	</div>
-{% endif %}
+{% endif %} -->
 
 {% if request.user|has_group:'Pembuat Surat' or request.user.is_superuser %}
 	<div class="row">
@@ -572,12 +540,12 @@
 	            </div>
 	            <div id="minimize_4">
 	            	<div class="tile-body">
-						<div class="panel-body" id="id_panel_pembuat_surat">
+						<div class="panel-body">
 						{% if skizin == None %}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Preview Draf</span></a><br>
-						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
-						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-settings"></i> <span>Generate Draf</span></a>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<!-- <a style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Edit Draf</span></a><br> -->
+						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 						    </center>
 						</div>
 						{% endif %}
@@ -895,7 +863,7 @@
 			<div class="col-lg-12">
 				<section class="tile">
 					<div class="tile-header dvd dvd-btm">
-		                <h1 class="custom-font" align="center"> Izin Selesai</h1>
+		                <h1 class="custom-font" align="center"> Izin Selsai</h1>
 		                <ul class="controls">
 		                    <li>
 		                        <a role="button" tabindex="0" class="tile-toggle">
@@ -913,7 +881,7 @@
 									<div class="panel-body">
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-									        <input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala BPM-P2TSP dan menyatakan proses pengajuan ini selesai.
+									        <input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala BPM-P2TSP dan menyatakan proses pengajuan ini selsai.
 								      	</label>
 									</div>
 								</div>
@@ -950,8 +918,7 @@
 	<div class="col-lg-12">
 		<section class="tile">
 			<div class="tile-body">
-				<!-- {% url 'admin:izin_pengajuanizin_changelist' %} -->
-				<a href="#" onclick="window.close()" class="btn btn-primary btn-ef btn-ef-3 btn-ef-3a">
+				<a href="{% url 'admin:izin_pengajuanizin_changelist' %}" class="btn btn-primary btn-ef btn-ef-3 btn-ef-3a">
 					<i class="fa fa-arrow-circle-left"></i>
 					Kembali
 				</a>
@@ -986,36 +953,6 @@
 		// 	$('#minimize_7').hide()
 		// 	$('#minimize_8').hide()
 		})
-
-		function load_rekomendasi_pembangunan(id_survey){
-			// api/v1/rekomendasi/?survey_iujk=9
-			var url = 'api/v1/'
-			$.ajax({ // create an AJAX call...
-				data : {api_url: url, id:id_survey},
-			    type: 'GET', // GET or POST
-			    // url: 'http://simpatik.kedirikab.go.id:8889/api/v1/rekomendasi/', // the file to call
-			    url: '{% url 'admin:get_rekom'%}',
-			    success: function(response) { // on success..
-					respon = $.parseJSON(response)
-					// console.log(respon)
-					// total_data = response.meta.total_count
-					// console.log(respon.pesan[0].rekomendasi)
-					if (respon.success){
-						$("#myModal .modal-title").text('Isi Rekomendasi');
-						$("#myModal .modal-body").html(respon.pesan[0].rekomendasi);
-						$("#myModal").modal();
-					}else{
-						toastr["error"](respon.pesan)
-					}
-					
-			    },
-			    error: function(data) {                
-			      	toast_server_error()
-			      	// window.location.href= "";
-			    }
-			});
-		}
-
 		$('.button-tolak').prop( "disabled", true );
 		$('.alasan').keyup(function() {
             if ($(this).val() !== "") {
@@ -1026,73 +963,30 @@
             }
           });
 
-		function cetak_izin(id_detil_siup, aksi){
+		function cetak_izin(id_pengajuan_izin, aksi){
 			
 		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 			$.ajax({ // create an AJAX call...
-			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi }, // get the form data
+			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi }, // get the form data
 			    type: 'POST', // GET or POST
 			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	// openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
-			        	// window.open('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}', '_blank')
-			        	open_skprint()
-			          	toastr["success"](respon.pesan)
+			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
+
+
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
-		              	window.location.href= "";
 		            }
 			    },
 			    error: function(data) {                
 			      	toast_server_error()
-			      	window.location.href= "";
 			    }
 			});
-		}
-		function edit_skizin(id_detil_siup, aksi){
-			
-		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-		  	produk_utama = $('#produk_utama_edit').val();
-			$.ajax({ // create an AJAX call...
-			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, produk_utama: produk_utama }, // get the form data
-			    type: 'POST', // GET or POST
-			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
-			    success: function(response) { // on success..
-			        respon = $.parseJSON(response)
-			        if(respon.success){
-			        	// openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan_id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
-			        	// open_skprint()
-			        	// create_skizin({{ pengajuan.id }})
-			        	// $str = '<div class="alert alert-success alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><strong>Warning!</strong> This is the dismissable alert dialog.</div>';
-			        	// $('#id_panel_pembuat_surat > center').prepend(row);
-			          	// toastr["success"](respon.pesan)
-			          	create_skizin({{ pengajuan.id }})
-			          	$('#edit_skizin').hide()
-			          	$('.modal-backdrop').hide()
-			          	// window.location.href= "";
-			      	}
-			      	else{
-		              	toastr["error"](respon.pesan)
-		              	$('#edit_skizin').hide()
-			          	$('.modal-backdrop').hide()
-			          	window.location.href= "";
-		            }
-			    },
-			    error: function(data) {                
-			      	toast_server_error()
-			      	$('#edit_skizin').hide()
-		          	$('.modal-backdrop').hide()
-		          	window.location.href= "";
-			    }
-			});
-		}
-		function open_skprint(){
-			// window.open('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}', '_blank');
-			openPopupCenter('/admin/izin/pengajuanizin/cetak-siup-asli/{{ pengajuan.id }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)
 		}
 	</script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
@@ -1102,18 +996,8 @@
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script>
-	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
-	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
-	<script src="{% static "scripts/js/iujk.js" %}"></script>
 	<script>
         $(window).load(function(){
-
-        	$(".chosen-2").chosen({
-			    // disable_search_threshold: 10,
-			    no_results_text: "Maaf, Data Tidak Ditemukan!",
-			    width: "100%"
-			  });
 
             $('.mix-grid').mixItUp();
 
@@ -1166,103 +1050,269 @@
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         }
-
-        function get_load_detail_pengajuan(){
-
-        	load_konfirmasi({{ pengajuan.id }});
-        }
-
-        function tambah_skpd_survey(){
-        	$('#button-survey').html('<i class="fa fa-arrow-right"></i> Simpan')
-  			$('#button-survey').attr('disabled',false)
-        	$("#tambah_skpd_survey").modal('show');
-        }
-
-
     </script>
-    <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+{% endblock %}
+
+{% block extracontent %}
+    {{ block.super }}
+	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
+		        	<h3 class="modal-title custom-font">Berkas</h3>
 		      	</div>
 		      	<div class="modal-body">
-                    <div class="form-group">
-                        <label for="username">Barang / Jasa Perdagangan Utama: </label>
-                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{{ pengajuan.produk_utama }}</textarea>
+                    <div class="row mix-grid">
+                        <div class="gallery" data-lightbox="gallery">
+                        	{% if pengajuan.berkas_tambahan.all %}
+	                        	{% for a in pengajuan.berkas_tambahan.all %}
+	                            	<div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+		                                <div class="img-container">
+		                                	<div class="img-responsi" angle='0'>
+		                                		{% with a.berkas.name|extension|stringformat:"s" as ext %}
+			                                		{% if ext|InList:'.pdf, .PDF' %}
+				                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+														</div>
+													{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
+													<div class="imageloaderImage" style="background-image: url({{a.berkas.url}});">			
+													</div>
+													{% endif %}
+					  							{% endwith %}
+		                                	</div>
+		                                    
+		                                    <div class="img-details">
+		                                        <h4 class="custom-font ng-binding">{{ a.nama_berkas }}</h4>
+		                                        <div class="img-controls">
+		                                            {% with a.berkas.name|extension|stringformat:"s" as ext %}
+		                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
+				                                            <a href="{{ a.berkas.url }}" target="_blank" class="img-link">
+				                                                <i class="fa fa-link"></i>
+				                                            </a>
+				                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+				                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="img-link">
+				                                                <i class="fa fa-link"></i>
+				                                            </a>
+				                                        {% endif %}
+		                                            {% endwith %}
+		                                        </div>
+		                                    </div>
+		                                </div>
+	                            	</div>
+	                            {% endfor %}
+                            {% endif %}
+                            {% if cookie_file_foto %}
+                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+                            	<div class="img-container">
+                                	<div class="img-responsi" angle='0'>
+                                		{% with cookie_file_foto.berkas.name|extension|stringformat:"s" as ext %}
+                                			{% if ext|InList:'.pdf, .PDF' %}
+		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+												</div>
+											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+												<div class="imageloaderImage" style="background-image: url({{cookie_file_foto.berkas.url}});">			
+												</div>
+											{% endif %}
+                                		{% endwith %}
+                                	</div>
+                                	<div class="img-details">
+                                        <h4 class="custom-font ng-binding">{{ cookie_file_foto.nama_berkas }}</h4>
+                                        <div class="img-controls">
+                                            {% with cookie_file_foto.berkas.name|extension|stringformat:"s" as ext %}
+                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+		                                            <a href="{{ cookie_file_foto.berkas.url }}" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ cookie_file_foto.berkas }}&embedded=true" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if cookie_file_ktp %}
+                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+                            	<div class="img-container">
+                                	<div class="img-responsi" angle='0'>
+                                		{% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
+                                			{% if ext|InList:'.pdf, .PDF' %}
+		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+												</div>
+											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+												<div class="imageloaderImage" style="background-image: url({{cookie_file_ktp.berkas.url}});">			
+												</div>
+											{% endif %}
+                                		{% endwith %}
+                                	</div>
+                                	<div class="img-details">
+                                        <h4 class="custom-font ng-binding">{{ cookie_file_ktp.nama_berkas }}</h4>
+                                        <div class="img-controls">
+                                            {% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
+                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+		                                            <a href="{{ cookie_file_ktp.berkas.url }}" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ cookie_file_ktp.berkas }}&embedded=true" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if pemohon.berkas_npwp %}
+                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+                            	<div class="img-container">
+                                	<div class="img-responsi" angle='0'>
+                                		{% with pemohon.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
+                                			{% if ext|InList:'.pdf, .PDF' %}
+		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+												</div>
+											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+												<div class="imageloaderImage" style="background-image: url({{pemohon.berkas_npwp.berkas.url}});">			
+												</div>
+											{% endif %}
+                                		{% endwith %}
+                                	</div>
+                                	<div class="img-details">
+                                        <h4 class="custom-font ng-binding">{{ pemohon.berkas_npwp.nama_berkas }}</h4>
+                                        <div class="img-controls">
+                                            {% with pemohon.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
+                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+		                                            <a href="{{ pemohon.berkas_npwp.berkas.url }}" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ pemohon.berkas_npwp.berkas }}&embedded=true" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if perusahaan.berkas_npwp %}
+                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+                            	<div class="img-container">
+                                	<div class="img-responsi" angle='0'>
+                                		{% with perusahaan.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
+                                			{% if ext|InList:'.pdf, .PDF' %}
+		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+												</div>
+											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+												<div class="imageloaderImage" style="background-image: url({{perusahaan.berkas_npwp.berkas.url}});">			
+												</div>
+											{% endif %}
+                                		{% endwith %}
+                                	</div>
+                                	<div class="img-details">
+                                        <h4 class="custom-font ng-binding">{{ perusahaan.berkas_npwp.nama_berkas }}</h4>
+                                        <div class="img-controls">
+                                            {% with perusahaan.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
+                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+		                                            <a href="{{ perusahaan.berkas_npwp.berkas.url }}" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ perusahaan.berkas_npwp.berkas }}&embedded=true" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if legalitas_pendirian.berkas %}
+                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+                            	<div class="img-container">
+                                	<div class="img-responsi" angle='0'>
+                                		{% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                			{% if ext|InList:'.pdf, .PDF' %}
+		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+												</div>
+											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+												<div class="imageloaderImage" style="background-image: url({{legalitas_pendirian.berkas.berkas.url}});">
+												</div>
+											{% endif %}
+                                		{% endwith %}
+                                	</div>
+                                	<div class="img-details">
+                                        <h4 class="custom-font ng-binding">{{ legalitas_pendirian.berkas.nama_berkas }}</h4>
+                                        <div class="img-controls">
+                                            {% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+		                                            <a href="{{ legalitas_pendirian.berkas.berkas.url }}" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_pendirian.berkas.berkas }}&embedded=true" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% if legalitas_perubahan.berkas %}
+                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
+                            	<div class="img-container">
+                                	<div class="img-responsi" angle='0'>
+                                		{% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                			{% if ext|InList:'.pdf, .PDF' %}
+		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
+												</div>
+											{% elif ext|InList:'.jpg, .JPG, .png, .PNG' %}
+												<div class="imageloaderImage" style="background-image: url({{legalitas_perubahan.berkas.berkas.url}});">
+												</div>
+											{% endif %}
+                                		{% endwith %}
+                                	</div>
+                                	<div class="img-details">
+                                        <h4 class="custom-font ng-binding">{{ legalitas_perubahan.berkas.nama_berkas }}</h4>
+                                        <div class="img-controls">
+                                            {% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                            	{% if ext|InList:'.jpg, .png, .JPG, .PNG' %}
+		                                            <a href="{{ legalitas_perubahan.berkas.berkas.url }}" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_perubahan.berkas.berkas }}&embedded=true" target="_blank" class="img-link">
+		                                                <i class="fa fa-link"></i>
+		                                            </a>
+		                                        {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
-		      	</div>
+                </div>
 		      	<div class="modal-footer">
-		      		<button onclick="edit_skizin({{ pengajuan.id }}, '_submit_edit_skizin')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
                     <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
                 </div>
 		    </div>
 		</div>
 	</div>
-	<div class="modal fade" id="tambah_skpd_survey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+	<div class="modal fade " id="detail_tdp_pt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Tambah SKPD Survey</h3>
-		      	</div>
-		      	<div class="modal-body">
-                    <form role="form" method="POST" action="{% url 'admin:save_survey_ajax' %}" id="form-survey" data-parsley-validate novalidate>
-					{% csrf_token %}
-					<input type="hidden" name="pengajuan_id" value="{{pengajuan.id}}"></input>
-					<input type="hidden" name="kelompok_jenis_izin_id" value="{{pengajuan.kelompok_jenis_izin.id}}"></input>
-				      	<div class="form-group">
-						    <label for="input01"><span style="color: black">SKPD</span> </label>
-						    <select class="form-control chosen-2" name="skpd" required="" data-parsley-trigger="change">
-						    	<option value="">Pilih SKPD</option>
-						    	{% for s in skpd_list %}
-						    		<option value="{{ s.id }}">{{ s.nama_unit_kerja }}</option>
-						    	{% endfor %}
-					      	</select>
-					  	</div>
-
-					  	<div class="form-group">
-						    <label for="input01"><span style="color: black">Permohonan </span> </label>
-						    <select class="form-control chosen-2 mb-10" name="permohonan" required="" data-parsley-trigger="change">
-						    	<option value="">Pilih</option>
-						    	{% for j in jenis_permohonan %}
-						    		<option value="{{ j.0}}">{{ j.1 }}</option>
-						    	{% endfor %}
-					      	</select>
-					  	</div>
-
-					  	<div class="form-group">
-					      	<label><span style="color: black">Tanggal Survey</span> </label>
-					        <div class="input-group datepicker" data-format="L">
-					          <input type="text" class="form-control" placeholder="dd-mm-yyyy" required="" name="tanggal_survey" data-parsley-trigger="change">
-					          <span class="input-group-addon">
-					            <span class="fa fa-calendar"></span>
-					          </span>
-					        </div>
-					    </div>
-
-					    <div class="form-group">
-					      	<label><span style="color: black">Deadline Survey</span> </label>
-					        <div class="input-group datepicker" data-format="L">
-					          <input type="text" class="form-control" placeholder="dd-mm-yyyy" data-parsley-trigger="change" required="" name="deadline_survey">
-					          <span class="input-group-addon">
-					            <span class="fa fa-calendar"></span>
-					          </span>
-					        </div>
-					    </div>
-				    </form>
-		      	</div>
-		      	<div class="modal-footer">
-		      		<button onclick="survey_save('survey')" id="button-survey" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
-                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-                </div>
-		    </div>
-		</div>
-	</div>
-	<div class="modal fade" id="detail_iujk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Detail IUJK</h3>
+		        	<h3 class="modal-title custom-font">Detail TDP PT</h3>
 		      	</div>
 		      	<div class="modal-body">
 		      		<table width="100%" border="0">
@@ -1278,17 +1328,17 @@
 					    <tr>
 					      <td width="25%">Jenis Pemohon</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
+					      <td width="70%">{{ pengajuan.pemohon.jenis_pemohon }}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nomor KTP/Paspor</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ ktp }} {% if paspor %}/ {{ paspor }}{% endif %}</td>
+					      <td width="70%">{{ ktp }} / {{paspor}}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nama</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon }} ({{ pemohon.jenis_pemohon }})</td>
+					      <td width="70%">{{ pemohon }}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Alamat tempat tinggal</td>
@@ -1357,386 +1407,17 @@
 					    <tr>
 					      <td width="25%">E-mail</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='email_konfirmasi'>{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</span></td>
+					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
 					    </tr>
 				    </table>
 				    <br>
-				    <h4><u>#3. Klasifikasi Pekerjaan</u></h4>
-					  <div class="table-responsive">
-					  <strong>Jenis IUJK </strong> : <span id="jenis_iujk_konfirmasi"></span>
-					    <table class="table table-bordered" id="tabel_klasifikasi_pekerjaan-konfirmasi">
-					        <thead>
-					           <tr>
-					              <th>Klasifikasi/Sub Klasifikasi Usaha Yang diinginkan</th>
-					              <th>Nama Paket 10 Tahun Terakhir</th>
-					              <th>Tahun Pelaksanaan</th>
-					              <th>Nilai Paket Pekerjaan</th>
-					            </tr>
-					        </thead>
-					        <tbody>
-					          
-					        </tbody>
-					    </table>
-					  </div>
+				    
 				    <br>
-				    <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
-				    <div class="table-responsive">
-					    <table class="table table-bordered">
-					        <thead>
-					          	<tr>
-					            	<th>Jenis Akta dan Pengesahan</th>
-					            	<th>Nama Notaris</th>
-					            	<th>Alamat Notaris</th>
-					            	<th>Telp. Notaris</th>
-					            	<th>No. Pengesahan</th>
-					            	<th>Tgl Pengesahan</th>
-					          	</tr>
-					        </thead>
-					        <tbody>
-						        {% for l in pengajuan.legalitas.all %}
-						          	<tr>
-							            <td><span>{{ l.jenis_legalitas.jenis_legalitas }}</span></td>
-							            <td><span>{{ l.nama_notaris }}</span></td>
-							            <td><span>{{ l.alamat }}</span></td>
-							            <td><span>{{ l.telephone }}</span></td>
-							            <td><span>{{ l.nomor_pengesahan }}</span></td>
-							            <td><span>{{ l.tanggal_pengesahan }}</span></td>
-						          	</tr>
-					          	{% endfor %}
-					        </tbody>
-					    </table>
-				    </div>
-				    <br>
-				    <h4><u>#5. Data Anggota Badan</u></h4>
-					  <div class="table-responsive">
-					    <strong>Direktur / Penanggung Jawab Badan Usaha</strong>
-					    <table class="table table-bordered" id="tabel_penanggung_jawab-konfirmasi">
-					        <thead>
-					          <tr>
-					            <th>Nama</th>
-					            <th>File Foto 4X6 </th>
-					            <th>KTP</th>
-					            <th>Surat Pernyataan Bukan PNS/TNI/POLRI</th>
-					            <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
-					          </tr>
-					        </thead>
-					        <tbody>           
-					          
-					        </tbody>
-					    </table>
-					    <br>
-					    <strong>Penanggung Jawab Teknik Badan Usaha</strong>
-					    <table class="table table-bordered" id="tabel_penanggung_jawab_teknik-konfirmasi">
-					        <thead>
-					          <tr>
-					            <th>Nama</th>
-					            <th>File Foto 4X6 </th>
-					            <th>KTP</th>
-					            <th>Ijazah SMA</th>
-					            <th>SKA/SKT</th>
-					            <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-
-					        </tbody>
-					    </table>
-					    <br>
-					    <strong>Tenaga Non Teknik</strong>
-					    <table class="table table-bordered" id="tabel_penanggung_jawab_non_teknik-konfirmasi">
-					        <thead>
-					          <tr>
-					            <th>Nama</th>
-					            <th>File Foto 4X6 </th>
-					            <th>KTP</th>
-					            <th>Ijazah SMA</th>
-					          </tr>
-					        </thead>
-					        <tbody>
-
-					        </tbody>
-					    </table>
-					  </div>
-		      	</div>
+				</div>
 		      	<div class="modal-footer">
 			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
 			    </div>
 		    </div>
 		</div>
 	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" role="dialog">
-		<div class="modal-dialog">
-
-		  <!-- Modal content-->
-		  <div class="modal-content">
-		    <div class="modal-header">
-		      <button type="button" class="close" data-dismiss="modal">&times;</button>
-		      <h4 class="modal-title"></h4>
-		    </div>
-		    <div class="modal-body">
-		      ..
-		    </div>
-		    <div class="modal-footer">
-		      <button type="button" class="btn btn.-default" data-dismiss="modal">Close</button>
-		    </div>
-		  </div>
-		  
-		</div>
-	</div>
-
-
-	<div class="modal fade" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" style="width: 80%;">
-		    <div class="modal-content">
-		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Berkas</h3>
-		      	</div>
-		      	<div class="modal-body" style="padding-right: 32px;">
-                    <div class="row mix-grid">
-                        <div class="gallery" data-lightbox="gallery">
-                        	{% if pengajuan.berkas_tambahan.all %}
-	                        	{% for a in pengajuan.berkas_tambahan.all %}
-	                            	<div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-		                                <div class="img-container">
-		                                	<div class="img-responsi" angle='0'>
-		                                		{% with a.berkas.name|extension|stringformat:"s" as ext %}
-			                                		{% if ext|InList:'.pdf, .PDF' %}
-				                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-														</div>
-													{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-													<div class="imageloaderImage" style="background-image: url({{a.berkas.url}});">			
-													</div>
-													{% endif %}
-					  							{% endwith %}
-		                                	</div>
-		                                    
-		                                    <div class="img-details">
-		                                        <h4 class="custom-font ng-binding">{{ a.nama_berkas }}</h4>
-		                                        <div class="img-controls">
-		                                            {% with a.berkas.name|extension|stringformat:"s" as ext %}
-		                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-				                                            <a href="{{ a.berkas.url }}" target="_blank" class="img-link">
-				                                                <i class="fa fa-link"></i>
-				                                            </a>
-				                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-				                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="img-link">
-				                                                <i class="fa fa-link"></i>
-				                                            </a>
-				                                        {% endif %}
-		                                            {% endwith %}
-		                                        </div>
-		                                    </div>
-		                                </div>
-	                            	</div>
-	                            {% endfor %}
-                            {% endif %}
-                            {% if cookie_file_foto %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-                            	<div class="img-container">
-                                	<div class="img-responsi" angle='0'>
-                                		{% with cookie_file_foto.berkas.name|extension|stringformat:"s" as ext %}
-                                			{% if ext|InList:'.pdf, .PDF' %}
-		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-												</div>
-											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{cookie_file_foto.berkas.url}});">			
-												</div>
-											{% endif %}
-                                		{% endwith %}
-                                	</div>
-                                	<div class="img-details">
-                                        <h4 class="custom-font ng-binding">{{ cookie_file_foto.nama_berkas }}</h4>
-                                        <div class="img-controls">
-                                            {% with cookie_file_foto.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-		                                            <a href="{{ cookie_file_foto.berkas.url }}" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ cookie_file_foto.berkas }}&embedded=true" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% endif %}
-                                            {% endwith %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if cookie_file_ktp %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-                            	<div class="img-container">
-                                	<div class="img-responsi" angle='0'>
-                                		{% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
-                                			{% if ext|InList:'.pdf, .PDF' %}
-		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-												</div>
-											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{cookie_file_ktp.berkas.url}});">			
-												</div>
-											{% endif %}
-                                		{% endwith %}
-                                	</div>
-                                	<div class="img-details">
-                                        <h4 class="custom-font ng-binding">{{ cookie_file_ktp.nama_berkas }}</h4>
-                                        <div class="img-controls">
-                                            {% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-		                                            <a href="{{ cookie_file_ktp.berkas.url }}" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ cookie_file_ktp.berkas }}&embedded=true" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% endif %}
-                                            {% endwith %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if pemohon.berkas_npwp %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-                            	<div class="img-container">
-                                	<div class="img-responsi" angle='0'>
-                                		{% with pemohon.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                			{% if ext|InList:'.pdf, .PDF' %}
-		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-												</div>
-											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{pemohon.berkas_npwp.berkas.url}});">			
-												</div>
-											{% endif %}
-                                		{% endwith %}
-                                	</div>
-                                	<div class="img-details">
-                                        <h4 class="custom-font ng-binding">{{ pemohon.berkas_npwp.nama_berkas }}</h4>
-                                        <div class="img-controls">
-                                            {% with pemohon.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-		                                            <a href="{{ pemohon.berkas_npwp.berkas.url }}" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ pemohon.berkas_npwp.berkas }}&embedded=true" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% endif %}
-                                            {% endwith %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if perusahaan.berkas_npwp %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-                            	<div class="img-container">
-                                	<div class="img-responsi" angle='0'>
-                                		{% with perusahaan.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                			{% if ext|InList:'.pdf, .PDF' %}
-		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-												</div>
-											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{perusahaan.berkas_npwp.berkas.url}});">			
-												</div>
-											{% endif %}
-                                		{% endwith %}
-                                	</div>
-                                	<div class="img-details">
-                                        <h4 class="custom-font ng-binding">{{ perusahaan.berkas_npwp.nama_berkas }}</h4>
-                                        <div class="img-controls">
-                                            {% with perusahaan.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-		                                            <a href="{{ perusahaan.berkas_npwp.berkas.url }}" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ perusahaan.berkas_npwp.berkas }}&embedded=true" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% endif %}
-                                            {% endwith %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if legalitas_pendirian.berkas %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-                            	<div class="img-container">
-                                	<div class="img-responsi" angle='0'>
-                                		{% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                			{% if ext|InList:'.pdf, .PDF' %}
-		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-												</div>
-											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{legalitas_pendirian.berkas.berkas.url}});">
-												</div>
-											{% endif %}
-                                		{% endwith %}
-                                	</div>
-                                	<div class="img-details">
-                                        <h4 class="custom-font ng-binding">{{ legalitas_pendirian.berkas.nama_berkas }}</h4>
-                                        <div class="img-controls">
-                                            {% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-		                                            <a href="{{ legalitas_pendirian.berkas.berkas.url }}" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_pendirian.berkas.berkas }}&embedded=true" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% endif %}
-                                            {% endwith %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                            {% if legalitas_perubahan.berkas %}
-                            <div class="col-md-3 col-sm-4 mb-20 mix mix_all">
-                            	<div class="img-container">
-                                	<div class="img-responsi" angle='0'>
-                                		{% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                			{% if ext|InList:'.pdf, .PDF' %}
-		                                		<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
-												</div>
-											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{legalitas_perubahan.berkas.berkas.url}});">
-												</div>
-											{% endif %}
-                                		{% endwith %}
-                                	</div>
-                                	<div class="img-details">
-                                        <h4 class="custom-font ng-binding">{{ legalitas_perubahan.berkas.nama_berkas }}</h4>
-                                        <div class="img-controls">
-                                            {% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-		                                            <a href="{{ legalitas_perubahan.berkas.berkas.url }}" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_perubahan.berkas.berkas }}&embedded=true" target="_blank" class="img-link">
-		                                                <i class="fa fa-link"></i>
-		                                            </a>
-		                                        {% endif %}
-                                            {% endwith %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-		      	</div>
-		      	<div class="modal-footer">
-                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-                </div>
-		    </div>
-		</div>
-	</div>
-
 {% endblock %}
