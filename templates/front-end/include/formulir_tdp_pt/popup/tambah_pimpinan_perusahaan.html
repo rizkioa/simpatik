@@ -101,7 +101,7 @@
             <div class="col-sm-5">
               <div class="input-group">
                 <span class="input-group-addon">Rp.</span>
-                <input type="text" class="form-control" id="jumlah_saham_disetor_data_pimpinan">
+                <input type="text" class="form-control rupiah" id="jumlah_saham_disetor_data_pimpinan">
               </div>
             </div>
           </div>
@@ -158,6 +158,7 @@
   </div>
 </div> 
 <script type="text/javascript">
+  $('#jumlah_saham_disetor_data_pimpinan').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
   function save_data_pimpinan(){
         // alert('sesuatu')
         var id = $('#id_data_pimpinan').val()
@@ -265,8 +266,8 @@
                   row += '<td>'+email+'</td>'
                   row += '<td>'+kewarganegaraan+'</td>'
                   row += '<td>'+tanggal_menduduki_jabatan+'</td>'
-                  row += '<td>'+jumlah_saham_dimiliki+'</td>'
-                  row += '<td>'+jumlah_saham_disetor+'</td>'
+                  row += '<td>'+jumlah_saham_dimiliki+' lembar</td>'
+                  row += '<td> Rp '+jumlah_saham_disetor+',-</td>'
                   row += '<td>'+kedudukan_diperusahaan_lain+'</td>'
                   row += '<td>'+nama_perusahaan_lain+'</td>'
                   row += '<td>'+alamat_perusahaan_lain+'</td>'

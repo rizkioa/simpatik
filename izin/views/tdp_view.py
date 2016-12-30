@@ -581,7 +581,7 @@ def edit_pemegang_saham(request, pemegang_saham_id):
 	if pemegang_saham_id:
 		try:
 			i = PemegangSaham.objects.get(id=pemegang_saham_id)
-			data = {'data':{'id':i.id, 'nama_lengkap':i.nama_lengkap, 'alamat':i.alamat, 'telephone':i.telephone, 'kewarganegaraan':i.kewarganegaraan, 'npwp':i.npwp, 'dimiliki':int(i.jumlah_saham_dimiliki), 'disetor':int(i.jumlah_saham_disetor)}}
+			data = {'data':{'id':i.id, 'nama_lengkap':i.nama_lengkap, 'alamat':i.alamat, 'telephone':i.telephone, 'kewarganegaraan':i.kewarganegaraan, 'npwp':i.npwp, 'dimiliki':i.jumlah_saham_dimiliki, 'disetor':i.jumlah_saham_disetor}}
 			data = json.dumps(data)
 			response = HttpResponse(data)
 		except ObjectDoesNotExist:
@@ -664,7 +664,7 @@ def edit_data_pimpinan(request, data_pimpinan_id):
 	if data_pimpinan_id:
 		try:
 			i = DataPimpinan.objects.get(id=data_pimpinan_id)
-			data = {'data':{'id':i.id, 'kedudukan': i.kedudukan.id, 'nama_lengkap':i.nama_lengkap, 'tempat_lahir': i.tempat_lahir, 'tanggal_lahir': i.tanggal_lahir.strftime('%d-%m-%Y'), 'alamat':i.alamat, 'telephone':i.telephone, 'hp':i.hp, 'email': i.email ,'kewarganegaraan':i.kewarganegaraan, 'tanggal_menduduki_jabatan': i.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'),  'dimiliki':int(i.jumlah_saham_dimiliki), 'disetor':int(i.jumlah_saham_disetor), 'kedudukan_diperusahaan_lain': i.kedudukan_diperusahaan_lain, 'nama_perusahaan_lain': i.nama_perusahaan_lain, 'alamat_perusahaan_lain': i.alamat_perusahaan_lain, 'kode_pos_perusahaan_lain': i.kode_pos_perusahaan_lain, 'telepon_perusahaan_lain': i.telepon_perusahaan_lain, 'tanggal_menduduki_jabatan_perusahaan_lain': i.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y')}}
+			data = {'data':{'id':i.id, 'kedudukan': i.kedudukan.id, 'nama_lengkap':i.nama_lengkap, 'tempat_lahir': i.tempat_lahir, 'tanggal_lahir': i.tanggal_lahir.strftime('%d-%m-%Y'), 'alamat':i.alamat, 'telephone':i.telephone, 'hp':i.hp, 'email': i.email ,'kewarganegaraan':i.kewarganegaraan, 'tanggal_menduduki_jabatan': i.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'),  'dimiliki':i.jumlah_saham_dimiliki, 'disetor':i.jumlah_saham_disetor, 'kedudukan_diperusahaan_lain': i.kedudukan_diperusahaan_lain, 'nama_perusahaan_lain': i.nama_perusahaan_lain, 'alamat_perusahaan_lain': i.alamat_perusahaan_lain, 'kode_pos_perusahaan_lain': i.kode_pos_perusahaan_lain, 'telepon_perusahaan_lain': i.telepon_perusahaan_lain, 'tanggal_menduduki_jabatan_perusahaan_lain': i.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y')}}
 			data = json.dumps(data)
 			response = HttpResponse(data)
 		except ObjectDoesNotExist:
