@@ -1198,8 +1198,8 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			jumlah_karyawan_wni = pengajuan_.jumlah_karyawan_wni
 			jumlah_karyawan_wna = pengajuan_.jumlah_karyawan_wna
 			total_karyawan = jumlah_karyawan_wni+jumlah_karyawan_wna
-			kapasitas_mesin_terpasang = str(int(pengajuan_.kapasitas_mesin_terpasang))+", satuan: "+str(pengajuan_.satuan_kapasitas_mesin_terpasang)
-			kapasitas_produksi_per_tahun = str(int(pengajuan_.kapasitas_produksi_per_tahun))+", satuan: "+str(pengajuan_.satuan_kapasitas_produksi_per_tahun)
+			kapasitas_mesin_terpasang = int(pengajuan_.kapasitas_mesin_terpasang)+", satuan: "+str(pengajuan_.satuan_kapasitas_mesin_terpasang)
+			kapasitas_produksi_per_tahun = int(pengajuan_.kapasitas_produksi_per_tahun)+", satuan: "+str(pengajuan_.satuan_kapasitas_produksi_per_tahun)
 			presentase_kandungan_produk_lokal = int(pengajuan_.presentase_kandungan_produk_lokal)
 			presentase_kandungan_produk_import = int(pengajuan_.presentase_kandungan_produk_import)
 			jenis_pengecer = pengajuan_.jenis_pengecer.jenis_pengecer
