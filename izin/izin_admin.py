@@ -1028,9 +1028,7 @@ class IzinAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 	def suit_cell_attributes(self, obj, column):
-		if column in ['button_cetak_pendaftaran']:
-			return {'class': 'text-center'}
-		elif column in ['linkdetilizin']:
+		if column in ['button_cetak_pendaftaran', 'linkdetilizin']:
 			return {'class': 'text-center'}
 		else:
 			return None
