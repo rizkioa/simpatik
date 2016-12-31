@@ -190,6 +190,8 @@ class MesinHullerForm(forms.ModelForm):
 
 class MesinPerusahaanForm(forms.ModelForm):
 	"""docstring for MesinPerusahaanForm"""
+	detil_huller = forms.ModelChoiceField(label="Detil Huller", queryset=DetilHuller.objects.none(), required=False )
+	mesin_huller = forms.ModelChoiceField(label="Mesin Huller", queryset=MesinHuller.objects.none(), required=False )
 	class Meta:
 		model = MesinPerusahaan
 		fields = ('detil_huller','mesin_huller','type_model','pk_mesin','buatan','jumlah_unit','kapasitas')
