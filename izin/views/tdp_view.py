@@ -1212,8 +1212,12 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			if pengajuan_.satuan_kapasitas_produksi_per_tahun:
 				satuan_kapasitas_produksi_per_tahun_ = str(pengajuan_.satuan_kapasitas_produksi_per_tahun)
 			kapasitas_produksi_per_tahun = kapasitas_produksi_per_tahun_+", satuan: "+satuan_kapasitas_produksi_per_tahun_
-			presentase_kandungan_produk_lokal = int(pengajuan_.presentase_kandungan_produk_lokal)
-			presentase_kandungan_produk_import = int(pengajuan_.presentase_kandungan_produk_import)
+			presentase_kandungan_produk_lokal = ""
+			if pengajuan_.presentase_kandungan_produk_lokal:
+				presentase_kandungan_produk_lokal = int(pengajuan_.presentase_kandungan_produk_lokal)
+			presentase_kandungan_produk_import = ""
+			if pengajuan_.presentase_kandungan_produk_import:
+				presentase_kandungan_produk_import = int(pengajuan_.presentase_kandungan_produk_import)
 			jenis_pengecer = pengajuan_.jenis_pengecer.jenis_pengecer
 			jenis_perusahaan = pengajuan_.jenis_perusahaan.jenis_perusahaan
 			kedudukan_kegiatan_usaha = pengajuan_.kedudukan_kegiatan_usaha.kedudukan_kegiatan_usaha
