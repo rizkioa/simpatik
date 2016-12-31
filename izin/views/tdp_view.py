@@ -1218,19 +1218,35 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			presentase_kandungan_produk_import = ""
 			if pengajuan_.presentase_kandungan_produk_import:
 				presentase_kandungan_produk_import = int(pengajuan_.presentase_kandungan_produk_import)
-			jenis_pengecer = pengajuan_.jenis_pengecer.jenis_pengecer
-			jenis_perusahaan = pengajuan_.jenis_perusahaan.jenis_perusahaan
-			kedudukan_kegiatan_usaha = pengajuan_.kedudukan_kegiatan_usaha.kedudukan_kegiatan_usaha
+			jenis_pengecer = ""
+			if pengajuan_.jenis_pengecer.jenis_pengecer:
+				jenis_pengecer = pengajuan_.jenis_pengecer.jenis_pengecer
+			jenis_perusahaan = ""
+			if pengajuan_.jenis_perusahaan.jenis_perusahaan:
+				jenis_perusahaan = pengajuan_.jenis_perusahaan.jenis_perusahaan
+			kedudukan_kegiatan_usaha = ""
+			if pengajuan_.kedudukan_kegiatan_usaha.kedudukan_kegiatan_usaha:
+				kedudukan_kegiatan_usaha = pengajuan_.kedudukan_kegiatan_usaha.kedudukan_kegiatan_usaha
 
 			data_kegiatan_perusahaan = {'dkp': {'kegiatan_usaha_pokok':kegiatan_usaha_pokok, 'kegiatan_usaha_lain_1':kegiatan_usaha_lain_1, 'kegiatan_usaha_lain_2':kegiatan_usaha_lain_2, 'komoditi_produk_pokok':komoditi_produk_pokok, 'komoditi_produk_lain_1':komoditi_produk_lain_1, 'komoditi_produk_lain_2':komoditi_produk_lain_2, 'omset_per_tahun':omset_per_tahun, 'total_aset':total_aset, 'jumlah_karyawan_wni':jumlah_karyawan_wni, 'jumlah_karyawan_wna':jumlah_karyawan_wna, 'total_karyawan':total_karyawan, 'kapasitas_mesin_terpasang':kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal':presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer':jenis_pengecer, 'jenis_perusahaan':jenis_perusahaan, 'kedudukan_kegiatan_usaha':kedudukan_kegiatan_usaha}}
 
 			rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
+			modal_dasar = ""
+			modal_ditempatkan = ""
+			modal_disetor = ""
+			banyaknya_saham = ""
+			nilai_nominal_per_saham = ""
 			if rincian_:
-				modal_dasar = rincian_.modal_dasar
-				modal_ditempatkan = rincian_.modal_ditempatkan
-				modal_disetor = rincian_.modal_disetor
-				banyaknya_saham = rincian_.banyaknya_saham
-				nilai_nominal_per_saham = rincian_.nilai_nominal_per_saham
+				if rincian_.modal_dasar:
+					modal_dasar = rincian_.modal_dasar
+				if rincian_.modal_ditempatkan:
+					modal_ditempatkan = rincian_.modal_ditempatkan
+				if rincian_.modal_disetor:
+					modal_disetor = rincian_.modal_disetor
+				if rincian_.banyaknya_saham:
+					banyaknya_saham = rincian_.banyaknya_saham
+				if rincian_.nilai_nominal_per_saham:
+					nilai_nominal_per_saham = rincian_.nilai_nominal_per_saham
 			data_rincian_perusahaan = {'rincian':{'modal_dasar':modal_dasar, 'modal_ditempatkan':modal_ditempatkan, 'modal_disetor':modal_disetor, 'banyaknya_saham':banyaknya_saham, 'nilai_nominal_per_saham':nilai_nominal_per_saham}}
 			# ###### end data kegiatan perusahaan ######
 			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon,data_perusahaan,data_umum_perusahaan,data_kegiatan_perusahaan,data_rincian_perusahaan,data_kuasa
