@@ -256,6 +256,8 @@ def formulir_tdp_pt(request, extra_context={}):
     extra_context.update({'jenis_kedudukan': jenis_kedudukan})
     bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
     extra_context.update({'kegiatan_usaha': bentuk_kegiatan_usaha_list})
+    jenis_perusahaan = JenisPerusahaan.objects.all()
+    extra_context.update({'jenis_perusahaan': jenis_perusahaan})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '0':
             try:
@@ -272,8 +274,7 @@ def formulir_tdp_pt(request, extra_context={}):
             except ObjectDoesNotExist:
                 extra_context.update({'pengajuan_id': '0'})
 
-    jenis_perusahaan = JenisPerusahaan.objects.all()
-    extra_context.update({'jenis_perusahaan': jenis_perusahaan})
+    
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
@@ -284,17 +285,45 @@ def formulir_tdp_pt(request, extra_context={}):
 
 def formulir_tdp_cv(request, extra_context={}):
     negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
     provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
     kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
-    kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
     jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
+    bentuk_kerjasama = BentukKerjasama.objects.all()
+    status_perusahaan = StatusPerusahaan.objects.all()
+    jenis_penanaman_modal = JenisPenanamanModal.objects.all()
+    kecamatan = Kecamatan.objects.all()
+    jenis_kedudukan = JenisKedudukan.objects.all()
+    jenis_pengecer = JenisPengecer.objects.all()
+    jenis_perusahaan = JenisPerusahaan.objects.all()
+    kedudukan_kegiatan_usaha = KedudukanKegiatanUsaha.objects.all()
+    kelompok_jenis_izin = KelompokJenisIzin.objects.all()
+    bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+    extra_context.update({'negara': negara, 'jenis_pemohon':jenis_pemohon, 'bentuk_kerjasama':bentuk_kerjasama, 'status_perusahaan':status_perusahaan, 'jenis_penanaman_modal':jenis_penanaman_modal, 'jenis_kedudukan':jenis_kedudukan, 'jenis_pengecer':jenis_pengecer, 'jenis_perusahaan':jenis_perusahaan, 'kedudukan_kegiatan_usaha':kedudukan_kegiatan_usaha, 'kelompok_jenis_izin':kelompok_jenis_izin, 'kegiatan_usaha':bentuk_kegiatan_usaha_list})
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0':
+            try:
+                pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    if paspor_:
+                        paspor_ = paspor_
+                    else:
+                        paspor_ = '0'
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
+
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_cv.html", extra_context)
 
 def formulir_tdp_firma(request, extra_context={}):

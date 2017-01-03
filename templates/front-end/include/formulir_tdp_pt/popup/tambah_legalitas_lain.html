@@ -67,3 +67,142 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  function save_izin_lain(){
+    var id = $('#id_input_izin_lain').val()
+    var jenis_izin = $('#izin_lain_jenis_izin').val()
+    var no_izin = $('#izin_lain_no_izin').val()
+    var di_keluarkan = $('#izin_lain_dikeluarkan').val()
+    var tanggal = $('#izin_lain_tanggal_keluar').val()
+    var masa_berlaku = $('#izin_lain_masa_berlaku').val()
+    $.ajax({
+      method: 'POST',
+      data: {id:id, kelompok_jenis_izin:jenis_izin, no_izin:no_izin, dikeluarkan_oleh:di_keluarkan, tanggal_dikeluarkan:tanggal, masa_berlaku:masa_berlaku, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+      url: __base_url__+'/ajax-save-izin-lain-tdp/',
+      success: function(response){
+        resp = $.parseJSON(response)
+        if (resp.success){
+          load_data_izin_lain($.cookie('id_pengajuan'))
+          toastr["success"](resp.pesan)
+          $('#legalitas_lain_modal').modal('hide')
+        }
+        else{
+          var a = Object.keys(resp);
+          for (var i = 0; i < a.length; i++){
+            var field = a[i].replace("_", " ");
+            toastr["error"](field+", "+resp[a[i]][0]['message'])
+            $("#"+a[i]+"").addClass("has-error");
+          }
+        }
+      },
+      error: function(response){
+        toastr["error"]("Terjadi kesalahan server.")
+      }
+    });
+  }
+
+  function load_data_izin_lain(pengajuan_id){
+    if (pengajuan_id !== ""){
+      $('#table_izin_lain').mLoading();
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/ajax-load-data-izin-lain-tdp/'+pengajuan_id,
+        success: function (data) {
+          // resp = $.parseJSON(data)
+          tablekosong = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#table_izin_lain > tbody').html(tablekosong)
+          a = data.length
+          // console.log(a)
+          if(a === 0){
+            $('#table_izin_lain > tbody > tr:first').remove()
+            table = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+            $('#table_izin_lain > tbody').prepend(table)
+          }
+          else{
+            $('#table_izin_lain > tbody > tr:first').remove()
+            b = data.reverse()
+            $('#switch_stap6_lainnya_disabled').prop( "checked", true );
+            $('.stap6_lainnya').prop('disabled', false);
+            if (data){
+              for (var i = 0; i < a; i++){
+                id = b[i].id
+                id_jenis_izin = b[i].id_jenis_izin
+                nama_jenis_izin = b[i].nama_jenis_izin
+                no_izin = b[i].no_izin
+                dikeluarkan_oleh = b[i].dikeluarkan_oleh
+                tanggal_dikeluarkan = b[i].tanggal_dikeluarkan
+                masa_berlaku = b[i].masa_berlaku
+                no = a
+                if (a > 1){
+                  no = a-i
+                }
+                row = '<tr><td>'+no+'</td>'
+                row += '<td>'+nama_jenis_izin+'</td>'
+                row += '<td>'+no_izin+'</td>'
+                row += '<td>'+dikeluarkan_oleh+'</td>'
+                row += '<td>'+tanggal_dikeluarkan+'</td>'
+                row += '<td>'+masa_berlaku+'</td>'
+                row += '<td><button onclick="edit_izin_lain($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 edit_izin_lain" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10 delete_izin_lain" value="'+id+'" type="button" onclick="delete_izin_lain($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+                row += '</tr>'
+                $('#table_izin_lain > tbody').prepend(row);
+              }
+            }
+          }
+        },
+        error: function(response){
+          toastr["error"]("Terjadi kesalahan server.")
+        }
+      });
+      $('#table_izin_lain').mLoading('hide');
+    }
+  }
+
+  function edit_izin_lain(val_){
+    $('#legalitas_lain_modal').modal('show')
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ajax-edit-izin-lain-tdp/'+val_,
+      success: function (data) {
+        resp = $.parseJSON(data)
+        $('#id_input_izin_lain').val(val_)
+        $('#izin_lain_jenis_izin').val(resp.data.jenis_izin).prop('disabled', false).trigger("chosen:updated");
+        $('#izin_lain_no_izin').val(resp.data.no_izin);
+        $('#izin_lain_dikeluarkan').val(resp.data.dikeluarkan_oleh);
+        $('#izin_lain_tanggal_keluar').val(resp.data.tanggal_dikeluarkan);
+        $('#izin_lain_masa_berlaku').val(resp.data.masa_berlaku);
+      },
+      error: function(response){
+        toastr["error"]("Terjadi kesalahan server.")
+      }
+    });
+  }
+
+  function delete_izin_lain(val_){
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ajax-delete-izin-lain-tdp/'+val_,
+      success: function (data) {
+        resp = $.parseJSON(data)
+        if (resp.success){
+          toastr["success"](resp.pesan)
+          load_data_izin_lain($.cookie('id_pengajuan'))
+        }
+        else{
+          toastr["error"](resp.pesan)
+        }
+      },
+      error: function(response){
+        toastr["error"]("Terjadi kesalahan server.")
+      }
+    });
+  }
+
+  function add_izin_lain(){
+    $('#id_input_izin_lain').val("0");
+    $('#izin_lain_jenis_izin').val("").prop('disabled', false).trigger("chosen:updated");
+    $('#izin_lain_no_izin').val("");
+    $('#izin_lain_dikeluarkan').val("");
+    $('#izin_lain_tanggal_keluar').val("");
+    $('#izin_lain_masa_berlaku').val("");
+  }
+</script>
