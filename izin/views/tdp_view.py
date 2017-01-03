@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.models import DetilTDP, RincianPerusahaan, IzinLain, PengajuanIzin
 from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm, IzinLainForm, PemegangSahamForm, DataPimpinanForm, PerusahaanCabangForm, BerkasForm
-from perusahaan.models import Legalitas, Perusahaan, PemegangSaham, DataPimpinan
+from perusahaan.models import Legalitas, Perusahaan, PemegangSaham, DataPimpinan, KBLI
 from master.models import Berkas
 
 def tdp_data_umum_perusahaan_cookie(request):
@@ -20,7 +20,11 @@ def tdp_data_umum_perusahaan_cookie(request):
 			no_tdp = request.POST.get('no_tdp')
 			if data_umum_form.is_valid():
 				p = data_umum_form.save(commit=False)
-				p.jenis_badan_usaha_id = 1
+				jbu = request.POST.get('jenis_badan_usaha')
+				if jbu == 2:
+					p.jenis_badan_usaha_id = 2
+				else:
+					p.jenis_badan_usaha_id = 1
 				# if onoffkantorcabang == 'on':
 				# 	p.nomor_tdp_kantor_pusat = no_tdp
 				p.save()
@@ -83,6 +87,14 @@ def tdp_data_kegiatan_pt_cookie(request):
 			data_kegiatan_form = DataKegiatanPTForm(request.POST, instance=pengajuan_)
 			if data_kegiatan_form.is_valid():
 				p = data_kegiatan_form.save(commit=False)
+				kegiatan_usaha = request.POST.getlist('kegiatan_usaha_pokok')
+				nama_kbli = []
+				for kbli in kegiatan_usaha:
+					kbli_obj = KBLI.objects.get(id=kbli)
+					p.kegiatan_usaha_pokok.add(kbli_obj)
+					nama_kbli.append(kbli_obj.nama_kbli)			
+				if len(nama_kbli) > 1:
+					p.produk_utama = ",".join(nama_kbli)
 				p.save()
 				try:
 					rincian_ = RincianPerusahaan.objects.get(detil_tdp_id=p.id)
@@ -350,15 +362,19 @@ def load_data_kegiatan_perusahaan(request, pengajuan_id):
 	if pengajuan_id:
 		pengajuan_ = DetilTDP.objects.filter(id=pengajuan_id).last()
 		if pengajuan_:
-			kegiatan_usaha_pokok = ""
-			if pengajuan_.kegiatan_usaha_pokok:
-				kegiatan_usaha_pokok = pengajuan_.kegiatan_usaha_pokok
-			kegiatan_usaha_lain_1 = ""
-			if pengajuan_.kegiatan_usaha_lain_1:
-				kegiatan_usaha_lain_1 = pengajuan_.kegiatan_usaha_lain_1
-			kegiatan_usaha_lain_2 = ""
-			if pengajuan_.kegiatan_usaha_lain_2:
-				kegiatan_usaha_lain_2 = pengajuan_.kegiatan_usaha_lain_2
+			# kegiatan_usaha_pokok = ""
+			# if pengajuan_.kegiatan_usaha_pokok:
+			# 	kegiatan_usaha_pokok = pengajuan_.kegiatan_usaha_pokok
+			# kegiatan_usaha_lain_1 = ""
+			# if pengajuan_.kegiatan_usaha_lain_1:
+			# 	kegiatan_usaha_lain_1 = pengajuan_.kegiatan_usaha_lain_1
+			# kegiatan_usaha_lain_2 = ""
+			# if pengajuan_.kegiatan_usaha_lain_2:
+			# 	kegiatan_usaha_lain_2 = pengajuan_.kegiatan_usaha_lain_2
+			kbli_list = pengajuan_.kegiatan_usaha_pokok.all()
+			kbli_json = [k.as_json() for k in KBLI.objects.filter(id__in=kbli_list)]
+			# print kbli_list
+			# print kbli_json
 			komoditi_produk_pokok = ""
 			if pengajuan_.komoditi_produk_pokok:
 				komoditi_produk_pokok = pengajuan_.komoditi_produk_pokok
@@ -427,7 +443,7 @@ def load_data_kegiatan_perusahaan(request, pengajuan_id):
 				if rincian_.nilai_nominal_per_saham:
 					nilai_nominal_per_saham = rincian_.nilai_nominal_per_saham
 
-			data = {'success': True, 'pesan': 'Load data kegiatan perusahaan', 'data':{'kegiatan_usaha_pokok': kegiatan_usaha_pokok, 'kegiatan_usaha_lain_1': kegiatan_usaha_lain_1, 'kegiatan_usaha_lain_2': kegiatan_usaha_lain_2, 'komoditi_produk_pokok': komoditi_produk_pokok, 'komoditi_produk_lain_1': komoditi_produk_lain_1, 'komoditi_produk_lain_2': komoditi_produk_lain_2, 'omset_per_tahun': omset_per_tahun, 'total_aset': total_aset, 'jumlah_karyawan_wni': jumlah_karyawan_wni, 'jumlah_karyawan_wna': jumlah_karyawan_wna, 'kapasitas_mesin_terpasang': kapasitas_mesin_terpasang, 'satuan_kapasitas_mesin_terpasang': satuan_kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'satuan_kapasitas_produksi_per_tahun': satuan_kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal': presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'jenis_perusahaan': jenis_perusahaan, 'modal_dasar': modal_dasar, 'modal_ditempatkan': modal_ditempatkan, 'modal_disetor': modal_disetor, 'banyaknya_saham': banyaknya_saham, 'nilai_nominal_per_saham': nilai_nominal_per_saham}}
+			data = {'success': True, 'pesan': 'Load data kegiatan perusahaan', 'data':{ 'kbli_json':kbli_json, 'komoditi_produk_pokok': komoditi_produk_pokok, 'komoditi_produk_lain_1': komoditi_produk_lain_1, 'komoditi_produk_lain_2': komoditi_produk_lain_2, 'omset_per_tahun': omset_per_tahun, 'total_aset': total_aset, 'jumlah_karyawan_wni': jumlah_karyawan_wni, 'jumlah_karyawan_wna': jumlah_karyawan_wna, 'kapasitas_mesin_terpasang': kapasitas_mesin_terpasang, 'satuan_kapasitas_mesin_terpasang': satuan_kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'satuan_kapasitas_produksi_per_tahun': satuan_kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal': presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'jenis_perusahaan': jenis_perusahaan, 'modal_dasar': modal_dasar, 'modal_ditempatkan': modal_ditempatkan, 'modal_disetor': modal_disetor, 'banyaknya_saham': banyaknya_saham, 'nilai_nominal_per_saham': nilai_nominal_per_saham}}
 		else:
 			data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	else:
@@ -664,7 +680,10 @@ def edit_data_pimpinan(request, data_pimpinan_id):
 	if data_pimpinan_id:
 		try:
 			i = DataPimpinan.objects.get(id=data_pimpinan_id)
-			data = {'data':{'id':i.id, 'kedudukan': i.kedudukan.id, 'nama_lengkap':i.nama_lengkap, 'tempat_lahir': i.tempat_lahir, 'tanggal_lahir': i.tanggal_lahir.strftime('%d-%m-%Y'), 'alamat':i.alamat, 'telephone':i.telephone, 'hp':i.hp, 'email': i.email ,'kewarganegaraan':i.kewarganegaraan, 'tanggal_menduduki_jabatan': i.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'),  'dimiliki':i.jumlah_saham_dimiliki, 'disetor':i.jumlah_saham_disetor, 'kedudukan_diperusahaan_lain': i.kedudukan_diperusahaan_lain, 'nama_perusahaan_lain': i.nama_perusahaan_lain, 'alamat_perusahaan_lain': i.alamat_perusahaan_lain, 'kode_pos_perusahaan_lain': i.kode_pos_perusahaan_lain, 'telepon_perusahaan_lain': i.telepon_perusahaan_lain, 'tanggal_menduduki_jabatan_perusahaan_lain': i.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y')}}
+			tanggal_menduduki_jabatan_perusahaan_lain = ''
+			if i.tanggal_menduduki_jabatan_perusahaan_lain:
+				tanggal_menduduki_jabatan_perusahaan_lain = i.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y')
+			data = {'data':{'id':i.id, 'kedudukan': i.kedudukan.id, 'nama_lengkap':i.nama_lengkap, 'tempat_lahir': i.tempat_lahir, 'tanggal_lahir': i.tanggal_lahir.strftime('%d-%m-%Y'), 'alamat':i.alamat, 'telephone':i.telephone, 'hp':i.hp, 'email': i.email ,'kewarganegaraan':i.kewarganegaraan, 'tanggal_menduduki_jabatan': i.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'),  'dimiliki':i.jumlah_saham_dimiliki, 'disetor':i.jumlah_saham_disetor, 'kedudukan_diperusahaan_lain': i.kedudukan_diperusahaan_lain, 'nama_perusahaan_lain': i.nama_perusahaan_lain, 'alamat_perusahaan_lain': i.alamat_perusahaan_lain, 'kode_pos_perusahaan_lain': i.kode_pos_perusahaan_lain, 'telepon_perusahaan_lain': i.telepon_perusahaan_lain, 'tanggal_menduduki_jabatan_perusahaan_lain': tanggal_menduduki_jabatan_perusahaan_lain}}
 			data = json.dumps(data)
 			response = HttpResponse(data)
 		except ObjectDoesNotExist:
@@ -707,6 +726,7 @@ def data_perusahaan_cabang_save(request):
 						if perusahaan_cabang_form.is_valid():
 							i = perusahaan_cabang_form.save(commit=False)
 							i.perusahaan_induk_id = perusahaan_.id
+							i.npwp = None
 							i.save()
 							data = {'success': True, 'pesan': 'Data Perusahaan Cabang berhasil disimpan.'}
 							data = json.dumps(data)
@@ -1187,9 +1207,14 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			# #### end data umum perusahaan ####
 
 			# ###### data kegiatan perusahaan ######
-			kegiatan_usaha_pokok = pengajuan_.kegiatan_usaha_pokok
-			kegiatan_usaha_lain_1 = pengajuan_.kegiatan_usaha_lain_1
-			kegiatan_usaha_lain_2 = pengajuan_.kegiatan_usaha_lain_2
+			# kegiatan_usaha_pokok = pengajuan_.kegiatan_usaha_pokok
+			# kegiatan_usaha_lain_1 = pengajuan_.kegiatan_usaha_lain_1
+			# kegiatan_usaha_lain_2 = pengajuan_.kegiatan_usaha_lain_2
+			kbli_list = []
+			if pengajuan_.kegiatan_usaha_pokok:
+				kbli_list = pengajuan_.kegiatan_usaha_pokok.all()
+				kbli_json = [k.as_json() for k in KBLI.objects.filter(id__in=kbli_list)]
+
 			komoditi_produk_pokok = pengajuan_.komoditi_produk_pokok
 			komoditi_produk_lain_1 = pengajuan_.komoditi_produk_lain_1
 			komoditi_produk_lain_2 = pengajuan_.komoditi_produk_lain_2
@@ -1228,7 +1253,7 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			if pengajuan_.kedudukan_kegiatan_usaha:
 				kedudukan_kegiatan_usaha = pengajuan_.kedudukan_kegiatan_usaha.kedudukan_kegiatan_usaha
 
-			data_kegiatan_perusahaan = {'dkp': {'kegiatan_usaha_pokok':kegiatan_usaha_pokok, 'kegiatan_usaha_lain_1':kegiatan_usaha_lain_1, 'kegiatan_usaha_lain_2':kegiatan_usaha_lain_2, 'komoditi_produk_pokok':komoditi_produk_pokok, 'komoditi_produk_lain_1':komoditi_produk_lain_1, 'komoditi_produk_lain_2':komoditi_produk_lain_2, 'omset_per_tahun':omset_per_tahun, 'total_aset':total_aset, 'jumlah_karyawan_wni':jumlah_karyawan_wni, 'jumlah_karyawan_wna':jumlah_karyawan_wna, 'total_karyawan':total_karyawan, 'kapasitas_mesin_terpasang':kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal':presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer':jenis_pengecer, 'jenis_perusahaan':jenis_perusahaan, 'kedudukan_kegiatan_usaha':kedudukan_kegiatan_usaha}}
+			data_kegiatan_perusahaan = {'dkp': {'komoditi_produk_pokok':komoditi_produk_pokok, 'komoditi_produk_lain_1':komoditi_produk_lain_1, 'komoditi_produk_lain_2':komoditi_produk_lain_2, 'omset_per_tahun':omset_per_tahun, 'total_aset':total_aset, 'jumlah_karyawan_wni':jumlah_karyawan_wni, 'jumlah_karyawan_wna':jumlah_karyawan_wna, 'total_karyawan':total_karyawan, 'kapasitas_mesin_terpasang':kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal':presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer':jenis_pengecer, 'jenis_perusahaan':jenis_perusahaan, 'kedudukan_kegiatan_usaha':kedudukan_kegiatan_usaha, 'kbli_json':kbli_json}}
 
 			rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
 			modal_dasar = ""
