@@ -9,7 +9,7 @@ from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
-from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat
+from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
@@ -701,7 +701,9 @@ class IzinAdmin(admin.ModelAdmin):
 		try:
 			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
 			# and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem')
-			if request.POST.get('aksi', None):
+			print request.POST.get('aksi')
+			if request.POST.get('aksi'):
+				print 'masuk'
 				if request.POST.get('aksi') == '_submit_operator':
 					# print "operator"
 					obj.status = 4
@@ -733,10 +735,13 @@ class IzinAdmin(admin.ModelAdmin):
 					}
 				elif request.POST.get('aksi') == '_submit_edit_skizin':
 					try:
-						detilsiup = DetilSIUP.objects.get(id=id_pengajuan_izin)
+						if request.POST.get('tdp_pt') == 'TDP PT':
+							p = DetilTDP.objects.get(id=id_pengajuan_izin)
+						else:
+							p = DetilSIUP.objects.get(id=id_pengajuan_izin)
 						# print request.POST.get('produk_utama')
-						detilsiup.produk_utama = request.POST.get('produk_utama')
-						detilsiup.save()
+						p.produk_utama = request.POST.get('produk_utama')
+						p.save()
 						response = {
 							"success": True,
 							"pesan": "Barang / Jasa Perdagangan Utama berhasil di edit.",
@@ -746,6 +751,31 @@ class IzinAdmin(admin.ModelAdmin):
 						response = {
 							"success": False,
 							"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+							"redirect": '',
+						}
+				elif request.POST.get('aksi') == '_submit_edit_status_pusat':
+					status_pusat = request.POST.get('status_pusat')
+					if status_pusat:
+						try:
+							p = DetilTDP.objects.get(id=id_pengajuan_izin)
+							print status_pusat
+							p.status_waralaba = status_pusat
+							p.save()
+							response = {
+								"success": True,
+								"pesan": "Status Pusat berhasil diedit.",
+								"redirect": '',
+							}
+						except ObjectDoesNotExist:
+							response = {
+								"success": False,
+								"pesan": "Status Pusat gagal diedit.",
+								"redirect": '',
+							}
+					else:
+						response = {
+							"success": False,
+							"pesan": "Inputan Status Pusat kosong.",
 							"redirect": '',
 						}				
 				else:
@@ -828,6 +858,7 @@ class IzinAdmin(admin.ModelAdmin):
 								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
 								"redirect": '',
 							}
+					
 					elif request.POST.get('aksi') == '_submit_penomoran_tdp':
 						obj_skizin.status = 10
 						obj_skizin.save()

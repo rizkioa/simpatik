@@ -423,6 +423,7 @@ class DetilTDP(PengajuanIzin):
 	jenis_pengecer = models.ForeignKey(JenisPengecer, verbose_name='Jenis Pengecer', null=True, blank=True)
 	kedudukan_kegiatan_usaha = models.ForeignKey(KedudukanKegiatanUsaha, verbose_name='Kedudukan dalam mata rantai kegiatan usaha', null=True, blank=True)
 	jenis_perusahaan = models.ForeignKey(JenisPerusahaan, verbose_name='Jenis Perusahaan', null=True, blank=True)
+	status_waralaba = models.CharField(max_length=255, verbose_name='Status Waralaba', null=True, blank=True, default='BUKAN WARALABA')
 
 	# masih sampe tab4 TDP PT
 
