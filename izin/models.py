@@ -407,9 +407,9 @@ class DetilTDP(PengajuanIzin):
 
 	# kegiatan_usaha_lain_1 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (1)', blank=True, null=True)
 	# kegiatan_usaha_lain_2 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (2)', blank=True, null=True)
-	komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
-	komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
-	komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
+	# komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
+	# komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
+	# komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
 	omset_per_tahun = models.CharField(max_length=100, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
 	total_aset = models.CharField(max_length=100, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
 	jumlah_karyawan_wni = models.IntegerField(verbose_name='Jumlah Karyawan WNI', default=0)

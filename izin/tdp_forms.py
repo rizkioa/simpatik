@@ -16,7 +16,7 @@ class DataUmumPerusahaanPTForm(forms.ModelForm):
 class DataKegiatanPTForm(forms.ModelForm):
 	class Meta:
 		model = DetilTDP
-		fields = ('kegiatan_usaha_pokok', 'komoditi_produk_pokok', 'komoditi_produk_lain_1', 'komoditi_produk_lain_2', 'omset_per_tahun', 'total_aset', 'jumlah_karyawan_wni', 'jumlah_karyawan_wna', 'kapasitas_mesin_terpasang', 'satuan_kapasitas_mesin_terpasang', 'kapasitas_produksi_per_tahun', 'satuan_kapasitas_produksi_per_tahun', 'presentase_kandungan_produk_lokal', 'presentase_kandungan_produk_import', 'jenis_pengecer', 'kedudukan_kegiatan_usaha', 'jenis_perusahaan') 
+		fields = ('kegiatan_usaha_pokok', 'omset_per_tahun', 'total_aset', 'jumlah_karyawan_wni', 'jumlah_karyawan_wna', 'kapasitas_mesin_terpasang', 'satuan_kapasitas_mesin_terpasang', 'kapasitas_produksi_per_tahun', 'satuan_kapasitas_produksi_per_tahun', 'presentase_kandungan_produk_lokal', 'presentase_kandungan_produk_import', 'jenis_pengecer', 'kedudukan_kegiatan_usaha', 'jenis_perusahaan') 
 
 class RincianPerusahaanForm(forms.ModelForm):
 	class Meta:
