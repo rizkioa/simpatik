@@ -69,6 +69,9 @@
   tr, th{
     color: black;
   }
+  #id_kegiatan_usaha_pokok_chosen .search-field input{
+    min-width: 125px;
+  }
 </style>
 {% endblock %}
 {% block section %}
@@ -231,7 +234,7 @@
                             elem.html(selected+response);
                             $( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading('hide');
                             $('select#id_kegiatan_usaha_pokok').trigger("chosen:updated");
-                            $('#id_kbli_chosen .search-field input').val(value_); 
+                            $('#id_kegiatan_usaha_pokok_chosen .search-field input').val(value_); 
                             // $(this).css("width,"+value_.length+"00px")
                             set_chosen_element($('select#id_kegiatan_usaha_pokok'))
                         },
@@ -631,19 +634,32 @@
                   // $('#id_kegiatan_usaha_lain_1').val(respon_data_kegiatan.data.kegiatan_usaha_lain_1);
                   // $('#id_kegiatan_usaha_lain_2').val(respon_data_kegiatan.data.kegiatan_usaha_lain_2);
                   // dilooping
+                  $('#id_kegiatan_usaha_pokok').find('option').remove()
+                  $("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
                   a = respon_data_kegiatan.data.kbli_json.length
                   for (var i = 0; i < a; i++){
                     $("#id_kegiatan_usaha_pokok").append('<option selected="selected" value="'+respon_data_kegiatan.data.kbli_json[i].id+'" >'+respon_data_kegiatan.data.kbli_json[i].kode_kbli+' - '+respon_data_kegiatan.data.kbli_json[i].nama_kbli+'</option>');
                   }
                   $("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
-                  $('#id_komoditi_produk_pokok').val(respon_data_kegiatan.data.komoditi_produk_pokok);
-                  $('#id_komoditi_produk_lain_1').val(respon_data_kegiatan.data.komoditi_produk_lain_1);
-                  $('#id_komoditi_produk_lain_2').val(respon_data_kegiatan.data.komoditi_produk_lain_2);
+                  // $('#id_komoditi_produk_pokok').val(respon_data_kegiatan.data.komoditi_produk_pokok);
+                  // $('#id_komoditi_produk_lain_1').val(respon_data_kegiatan.data.komoditi_produk_lain_1);
+                  // $('#id_komoditi_produk_lain_2').val(respon_data_kegiatan.data.komoditi_produk_lain_2);
                   $('#id_omset_per_tahun').val(respon_data_kegiatan.data.omset_per_tahun);
                   $('#id_total_aset').val(respon_data_kegiatan.data.total_aset);
-                  $('#id_jumlah_karyawan_wni').val(respon_data_kegiatan.data.jumlah_karyawan_wni);
-                  $('#id_jumlah_karyawan_wna').val(respon_data_kegiatan.data.jumlah_karyawan_wna);
-                  $('#id_total_wni_wna').val(respon_data_kegiatan.data.jumlah_karyawan_wni+respon_data_kegiatan.data.jumlah_karyawan_wna);
+
+                  wni = 0
+                  if(respon_data_kegiatan.data.jumlah_karyawan_wni > 0){
+                    wni = respon_data_kegiatan.data.jumlah_karyawan_wni
+                  }
+                  $('#id_jumlah_karyawan_wni').val(wni);
+                  wna = 0
+                  if (respon_data_kegiatan.data.jumlah_karyawan_wna > 0 ){
+                    wna = respon_data_kegiatan.data.jumlah_karyawan_wna
+                  }
+                  $('#id_jumlah_karyawan_wna').val(wna);
+                  
+                  $('#id_total_wni_wna').val(wni+wna);
+
                   $('#id_kapasitas_mesin_terpasang').val(respon_data_kegiatan.data.kapasitas_mesin_terpasang);
                   $('#id_satuan_kapasitas_mesin_terpasang').val(respon_data_kegiatan.data.satuan_kapasitas_mesin_terpasang);
                   $('#id_kapasitas_produksi_per_tahun').val(respon_data_kegiatan.data.kapasitas_produksi_per_tahun);
@@ -674,6 +690,7 @@
       function jumlah_karyawan(){
         var wni = parseInt($('#id_jumlah_karyawan_wni').val());
         var wna = parseInt($('#id_jumlah_karyawan_wna').val());
+
         var total = wni+wna;
         $('#id_total_wni_wna').val(total);
       }
@@ -694,9 +711,6 @@
 
       $('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
       
-
-      
-
       $(window).load(function() {
         var p = 'percent-'
         $('#'+p+'surat_keputusan').hide()

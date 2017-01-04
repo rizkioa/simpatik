@@ -19,7 +19,7 @@
     </div>
   </div>
 
-	<div class="form-group">
+	<!-- <div class="form-group">
     <label  class="col-sm-2 control-label"><strong>Komoditi/Produk Pokok</strong></label>
     <div class="col-sm-7">
       <input type="text" class="form-control" name="komoditi_produk_pokok" required="" data-parsley-trigger="change" id="id_komoditi_produk_pokok">
@@ -38,7 +38,7 @@
     <div class="col-sm-7">
       <input type="text" class="form-control" id="id_komoditi_produk_lain_2" name="komoditi_produk_lain_2">
     </div>
-  </div>
+  </div> -->
     
 	<div class="form-group">
 		<label  class="col-sm-5 control-label text-left">
@@ -47,14 +47,14 @@
 		<div class="col-sm-4" style="padding-top: 16px;">
       <div class="input-group">
         <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control rupiah" id="id_omset_per_tahun" name="omset_per_tahun" required="" data-parsley-trigger="change">
+        <input type="text" class="form-control rupiah" id="id_omset_per_tahun" name="omset_per_tahun">
       </div>
     </div>
 	</div>
 
 	<h4>C. Modal dan Saham</h4>
 	<div class="form-group">
-    <label  class="col-sm-2 control-label">1. Modal Dasar</label>
+    <label  class="col-sm-2 control-label"><strong>1. Modal Dasar</strong></label>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Rp.</span>
@@ -69,7 +69,7 @@
   </div>
 
   <div class="form-group">
-    <label  class="col-sm-2 control-label">2. Modal ditempatkan</label>
+    <label  class="col-sm-2 control-label"><strong>2. Modal ditempatkan</strong></label>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Rp.</span>
@@ -91,7 +91,7 @@
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control rupiah" name="modal_disetor" id="id_modal_disetor" required="" data-parsley-trigger="change">
+        <input type="text" class="form-control rupiah" name="modal_disetor" id="id_modal_disetor">
       </div>
     </div>
   </div>
@@ -132,7 +132,7 @@
     	<h4>F. Kedudukan dalam mata rantai kegiatan usaha</h4>
     </label>
     <div class="col-sm-3" style="padding-top: 14px;">
-      <select class="form-control chosen-select mb-10" name="kedudukan_kegiatan_usaha" id="id_kedudukan_kegiatan_usaha" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" name="kedudukan_kegiatan_usaha" id="id_kedudukan_kegiatan_usaha" >
         <option value>-- Pilih Kedudukan Kegiatan Usaha --</option>
         {% if kedudukan_kegiatan_usaha %}
           {% for k in kedudukan_kegiatan_usaha %}
@@ -216,7 +216,7 @@
     	Jenis Perusahaan
     </label>
     <div class="col-sm-3">
-      <select class="form-control chosen-select mb-10" name="jenis_perusahaan" id="id_jenis_perusahaan" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" name="jenis_perusahaan" id="id_jenis_perusahaan" >
       	<option value>-- Pilih Jenis Perusahaan --</option>
         {% if jenis_perusahaan %}
           {% for j in jenis_perusahaan %}
