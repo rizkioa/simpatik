@@ -263,8 +263,8 @@
 		        	<div class="col-8">
 			        	<center>
 			        		<font style="font-size: 22px"><b>TANDA DAFTAR PERUSAHAAN</b></font><br>
-			        		<font style="font-size: 17px"><i>PERSEROAN TERBATAS (PT)</i></font><br>
-			        		<font style="font-size: 12px">BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</font><br>
+			        		<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
+			        		<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br>
 			        	</center>
 			        </div>
 			        <div class="col-2 qrcode" style="padding-left: 0px;">
@@ -282,8 +282,8 @@
 	        			<td>BARU</td>
 	        		</tr>
 	        		<tr>
-	        			<td>8183912391823</td>
-	        			<td>SEPTEMABAR 234234</td>
+	        			<td>{{pengajuan.no_izin|default_if_none:'-'}}</td>
+	        			<td>{{masa_berlaku}}</td>
 	        			<td>PEMBAHARUAN KE</td>
 	        			<td>:</td>
 	        			<td>0</td>
@@ -305,7 +305,7 @@
 	        			<td>STATUS PUSAT :</td>
 	        		</tr>
 	        		<tr>
-	        			<td>BUKAN WARALABA</td>
+	        			<td><span style="color: red;">{{pengajuan.status_waralaba}}</span></td>
 	        		</tr>
 	        		<tr>
 	        			<td>NAMA PENGURUS / PENANGGUNGJAWAB</td>
@@ -360,19 +360,16 @@
 	        		</tr>
 	        		{% endif %}
 	        	</table>
+	        	<br>
 	        	<div style="float: left; width: 50%">
 	        		<div style="padding-left: 70%;padding-top: 46px;">
-	        			{% if foto.berkas.url %}
-	        			<img class="images" src="{{ foto.berkas.url }}" width="194px" height="291px">
-	        			{% else %}
-	        			<img class="images" src="{% static 'images/no-avatar.jpg' %}">
-	        			{% endif %}
+	        			
 	        		</div>
 	        	</div>
 	        	<div style="float: right; width: 50%">
 		        	<p style="font-size:17px; padding-left: 0%;" align="center">
 	                    {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
-	                    <br>
+	                    
 	                    {% if skizin.nama_pejabat %}
 		                    <br>Kepala BPM-P2TSP
 		                    <br>KABUPATEN KEDIRI
@@ -404,6 +401,7 @@
 		    var x=confirm('Are You sure want to exit:');
 		    if(x) window.close();
 	    }
+	    {% if pengajuan.no_izin %}
 	    	var logo = $(new Image()).attr('src', '{% static 'images/SIMPATIK.png' %}').get(0);
 		    $('#qrcodeTable').qrcode({
 		    	// render method: 'canvas', 'image' or 'div'
@@ -459,7 +457,7 @@
 
     			image: logo,
 			});
-			
+		{% endif %}
 
 		$(window).load(function(){
 			angka = parseInt("{{pengajuan.kekayaan_bersih}}")

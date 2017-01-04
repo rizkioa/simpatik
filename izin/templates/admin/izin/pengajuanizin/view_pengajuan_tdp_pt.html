@@ -150,7 +150,7 @@
 											<tr>
 												<td>Jenis Izin</td>
 												<td>:</td>
-												<td>{{ kelompok_jenis_izin }}</td>
+												<td>{{ pengajuan.kelompok_jenis_izin }}</td>
 											</tr>
 											<tr>
 												<td>Pemohon</td>
@@ -231,13 +231,22 @@
 		<section class="tile">
 			<div class="tile-body">
 				<center>
-					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_pt' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					{% if request.user|has_group:'Operator' or request.user.is_superuser or request.user|has_group:'Cetak' %}
 
-					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_pt' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+
+						{% if status != 6 and status != 11 and status != 4%}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+						{% endif %}
+
 					{% endif %}
-					{% if skizin_status == 1 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+
+					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+					{% endif %}
+
+					{% if skizin_status == 1  or skizin_status == 2 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 
 				</center>
@@ -549,8 +558,9 @@
 						<div class="panel-body">
 						{% if skizin == None %}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_reklame_asli' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
-						    	<!-- <a style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Edit Draf</span></a><br> -->
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
+						    	<a data-toggle="modal" data-target="#edit_status_pusat" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Status Pusat</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 						    </center>
 						</div>
@@ -768,7 +778,7 @@
 					    	<br>
 						    <div class="form-group">
 					      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
-					      		<input id="penomoran_kode_izin_tdp" type="text" class="form-control">
+					      		<input id="penomoran_kode_izin_tdp" type="text" class="form-control" style="width: 500px;">
 						    </div>
 					  	</center>
             		</form>
@@ -966,7 +976,7 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-pt-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
 
@@ -992,7 +1002,7 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-pt-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
 
@@ -1065,6 +1075,66 @@
             }
 
         });
+        function edit_skizin(id_detil_siup, aksi){
+        	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+		  	produk_utama = $('#produk_utama_edit').val();
+			$.ajax({ // create an AJAX call...
+			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, produk_utama: produk_utama , tdp_pt:'TDP PT'}, // get the form data
+			    type: 'POST', // GET or POST
+			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+			    success: function(response) { // on success..
+			        respon = $.parseJSON(response)
+			        if(respon.success){
+			          	toastr["info"](respon.pesan)
+			          	$('#edit_skizin').hide()
+			          	$('.modal-backdrop').hide()
+			          	window.location.href= "";
+			      	}
+			      	else{
+		              	toastr["error"](respon.pesan)
+		              	$('#edit_skizin').hide()
+			          	$('.modal-backdrop').hide()
+			          	// window.location.href= "";
+		            }
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			      	$('#edit_skizin').hide()
+		          	$('.modal-backdrop').hide()
+		          	// window.location.href= "";
+			    }
+			});
+		}
+		function edit_status_pusat(id_detil_siup, aksi){
+		  	status_pusat = $('#status_pusat_edit').val();
+		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+			$.ajax({ // create an AJAX call...
+			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, status_pusat: status_pusat , tdp_pt:'TDP PT'}, // get the form data
+			    type: 'POST', // GET or POST
+			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+			    success: function(response) { // on success..
+			        respon = $.parseJSON(response)
+			        if(respon.success){
+			          	toastr["info"](respon.pesan)
+			          	$('#edit_skizin').hide()
+			          	$('.modal-backdrop').hide()
+			          	window.location.href= "";
+			      	}
+			      	else{
+		              	toastr["error"](respon.pesan)
+		              	$('#edit_skizin').hide()
+			          	$('.modal-backdrop').hide()
+			          	window.location.href= "";
+		            }
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			      	$('#edit_skizin').hide()
+		          	$('.modal-backdrop').hide()
+		          	window.location.href= "";
+			    }
+			});
+		}
         function change_edit_pengajuan(){
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
@@ -1435,82 +1505,82 @@
 				    	<tr>
 				    		<td width="25%">Jenis Badan Usaha</td>
 				    		<td width="5%">:</td>
-				    		<td width="70%"></td>
+				    		<td width="70%">{{pengajuan.jenis_badan_usaha.jenis_badan_usaha}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Status Perusahaan</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.status_perusahaan.status_perusahaan}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Jumlah Bank Dimana Perusahaan ini menjadi Nasabah</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.jumlah_bank}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Nasabah Utama 1</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.nasabah_utama_bank_1}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Nasabah Utama 2</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.nasabah_utama_bank_2}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Status Penanaman Modal</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.jenis_penanaman_modal.jenis_penanaman_modal}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Tanggal Pendirian</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.tanggal_pendirian|date:'d-m-Y'}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Tanggal mulai kegiatan</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.tanggal_mulai_kegiatan|date:'d-m-Y' }}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Jangka Waktu Berdirinya Perusahaan</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.jangka_waktu_berdiri}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Bentuk Kerja Sama</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.bentuk_kerjasama.bentuk_kerjasama}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Merk Dagang</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.merek_dagang}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>No. Merk Dagang</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.no_merek_dagang}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Pemegang Hak Cipta</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.pemegang_hak_cipta}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>No. Hak Cipta</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.no_hak_cipta}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Pemegang Hak Paten</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.pemegang_hak_paten}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>No. Hak Paten</td>
 				    		<td>:</td>
-				    		<td></td>
+				    		<td>{{pengajuan.no_hak_paten}}</td>
 				    	</tr>
 				    </table>
 				    <br>
@@ -1523,40 +1593,15 @@
 						      <td></td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:1%" width="25%">Kegiatan Usaha Pokok</td>
-						      <td width="5%">:</td>
-						      <td width="70%"></td>
-						    </tr>
-						    <tr>
-						      <td style="padding-left:1%" width="25%">Kegiatan Usaha Lain. a</td>
-						      <td>:</td>
-						      <td></td>
-						    </tr>
-						    <tr>
-						      <td style="padding-left:1%" width="25%">Kegiatan Usaha Lain. b</td>
-						      <td>:</td>
-						      <td></td>
-						    </tr>
-						    <tr>
-						      <td style="padding-left:1%" width="25%">Komoditi / Produk Pokok</td>
-						      <td>:</td>
-						      <td></td>
-						    </tr>
-						    <tr>
-						      <td style="padding-left:1%" width="25%">Komoditi / Produk Lain. a</td>
-						      <td>:</td>
-						      <td></td>
-						    </tr>
-						    <tr>
-						      <td style="padding-left:1%" width="25%">Komoditi / Produk Lain. b</td>
-						      <td></td>
-						      <td></td>
+						      <td style="padding-left:1%" width="25%" valign="top">Kegiatan Usaha Pokok</td>
+						      <td width="5%" valign="top">:</td>
+						      <td width="70%" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</td>
 						    </tr>
 
 						    <tr>
 						      <td><i>B.Omset Perusahaan Per Tahun (setelah perusahaan beroperasi)</i></td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.omset_per_tahun}},-</td>
 						    </tr>
 						    
 						    <tr>
@@ -1592,7 +1637,7 @@
 						    <tr>
 						      <td><i>D. Total Asset (setelah perusahaan beroperasi)</i></td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.total_aset}},-</td>
 						    </tr>
 						    <tr>
 						      <td><i>E. Jumlah Karyawan </i></td>
@@ -1602,22 +1647,22 @@
 						    <tr>
 						      <td style="padding-left:1%" width="25%">WNI</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.jumlah_karyawan_wni}}</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">WNA</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.jumlah_karyawan_wna}}</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Total</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{jumlah_karyawan}} sdfsd</td>
 						    </tr>
 						     <tr>
 						      <td><i>F. Kedudukan dalam mata rantai kegiatan usaha</i></td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.kedudukan_kegiatan_usaha.kedudukan_kegiatan_usaha}}</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Jika Produsen, untuk perusahaan yang menggunakan mesin</td>
@@ -1627,32 +1672,32 @@
 						    <tr>
 						      <td style="padding-left:2%" width="25%">a. Kapasitas terpasang</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.kapasitas_mesin_terpasang}}, satuan : {{pengajuan.satuan_kapasitas_mesin_terpasang}}</td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:2%" width="25%">b. Kapasitas produksi per</td>
+						      <td style="padding-left:2%" width="25%">b. Kapasitas produksi per tahun</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.kapasitas_produksi_per_tahun}}, satuan : {{pengajuan.satuan_kapasitas_produksi_per_tahun}}</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:2%" width="25%">c. Kandungan Komponen produk lokal</td>
 						      <td>:</td>
-						      <td> %</td>
+						      <td>{{pengajuan.presentase_kandungan_produk_lokal}} %</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:2%" width="25%">d. Kandungan Komponen produk import</td>
 						      <td>:</td>
-						      <td> %</td>
+						      <td>{{pengajuan.presentase_kandungan_produk_import}} %</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Jika Pengecer, jenis usaha</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.jenis_pengecer.jenis_pengecer}}</td>
 						    </tr>
 						    <tr>
 						      <td>Jenis Perusahaan</td>
 						      <td>:</td>
-						      <td></td>
+						      <td>{{pengajuan.jenis_perusahaan|default_if_none:"-"}}</td>
 						    </tr>
 					  	</tbody>
 					</table>
@@ -1890,6 +1935,66 @@
 		      	<div class="modal-footer">
 			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
 			    </div>
+		    </div>
+		</div>
+	</div>
+	<!-- edit kbli -->
+	<div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
+		      	</div>
+		      	<div class="modal-body">
+		      		<table class="table table-striped" width="100%" border="1">
+		      			<thead>
+		      				<tr>
+		      					<td>Kode KBLI</td>
+		      					<td>Nama Kegiatan Usaha</td>
+		      				</tr>
+		      			</thead>
+		      			<tbody>
+		      				{% for kbli in pengajuan.kegiatan_usaha_pokok.all %}
+		      				<tr>
+		      					<td>{{ kbli.kode_kbli }}</td>
+		      					<td>{{ kbli.nama_kbli }}</td>
+		      				</tr>
+		      				{% endfor %}
+		      			</tbody>
+		      		</table>
+		      		<br>
+		      		<br>
+		      		<br>
+                    <div class="form-group">
+                        <label for="username">Barang / Jasa Perdagangan Utama: </label>
+                        <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</textarea>
+                    </div>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="edit_skizin({{ pengajuan.id }}, '_submit_edit_skizin')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
+	<!-- status pusat -->
+	<div class="modal fade" id="edit_status_pusat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Edit Status Pusat</h3>
+		      	</div>
+		      	<div class="modal-body">
+		      		<br>
+                    <div class="form-group">
+                        <label for="username">Status Pusat: </label>
+                        <textarea class="form-control" id="status_pusat_edit" rows="5" required="" data-parsley-trigger="change">{{pengajuan.status_waralaba}}</textarea>
+                    </div>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="edit_status_pusat({{ pengajuan.id }}, '_submit_edit_status_pusat')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
 		    </div>
 		</div>
 	</div>
