@@ -211,10 +211,10 @@
   </div>
 
   <div class="form-group" id="id_tanggal_mulai_kegiatan_">
-      <label for="input01" class="col-sm-2 control-label"><strong>Tanggal mulai kegiatan</strong></label>
+      <label for="input01" class="col-sm-2 control-label">Tanggal mulai kegiatan</label>
       <div class="col-sm-5">
         <div class="input-group datepicker w-360 mt-10" data-format="L">
-          <input type="text" class="form-control" id="id_tanggal_mulai_kegiatan" name="tanggal_mulai_kegiatan" required="" data-parsley-trigger="change">
+          <input type="text" class="form-control" id="id_tanggal_mulai_kegiatan" name="tanggal_mulai_kegiatan">
           <span class="input-group-addon">
             <span class="fa fa-calendar"></span>
           </span>
@@ -233,9 +233,9 @@
 	</div>
 
 	<div class="form-group" id="id_bentuk_kerjasama_">
-    <label for="input01" class="col-sm-2 control-label"><strong>Bentuk Kerjasama</strong></label>
+    <label for="input01" class="col-sm-2 control-label">Bentuk Kerjasama</label>
     <div class="col-sm-4">
-      <select class="form-control chosen-select mb-10" name="bentuk_kerjasama" id="id_bentuk_kerjasama" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" name="bentuk_kerjasama" id="id_bentuk_kerjasama">
         <option value>-- Pilih Bentuk Kerjasama --</option>
         {% if bentuk_kerjasama %}
           {% for b in bentuk_kerjasama %}

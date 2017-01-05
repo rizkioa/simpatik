@@ -107,7 +107,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilIUJK')
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
-		elif k.id == 25:
+		elif k.id in [25, 26]:
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -185,7 +185,10 @@ def siup_identitas_pemohon_save_cookie(request):
 		response.set_cookie(key='id_pengajuan', value=pengajuan.id)
 		response.set_cookie(key='id_pemohon', value=p.id)
 		response.set_cookie(key='nomor_ktp', value=ktp_)
-		response.set_cookie(key='nomor_paspor', value=paspor_)
+		if paspor_:
+			response.set_cookie(key='nomor_paspor', value=paspor_)
+		else:
+			response.set_cookie(key='nomor_paspor', value='0')
 		response.set_cookie(key='id_jenis_pengajuan', value=jenis_permohonan_)
 	else:
 		data = pemohon.errors.as_json() # untuk mengembalikan error form berupa json
@@ -213,7 +216,8 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.id == 25:
+					# elif k.id == 25 or k.id == 26:
+					elif k.id in [25, 26]:
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -431,7 +435,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 							f.save()
 							pengajuan_.legalitas.add(f)
 							if request.POST.get('onoffswitch') != 'on':
-								data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpanaaaa. Proses Selanjutnya.', 'data': [
+								data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
 									{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
 									{'nama_notaris': f.nama_notaris},
 									{'alamat_notaris': f.alamat},
@@ -474,16 +478,6 @@ def siup_legalitas_perusahaan_save_cookie(request):
 									else:
 										legalitas.created_by_id = request.COOKIES['id_pemohon']
 									legalitas.save()
-									# legalitas = Legalitas(
-									# 	created_by_id = created,	
-									# 	jenis_legalitas_id = 2,
-									# 	perusahaan_id = request.COOKIES['id_perusahaan'],
-									# 	nama_notaris=request.POST.get('nama_notaris_perubahan'), 
-									# 	alamat=request.POST.get('alamat_notaris_perubahan'), 
-									# 	telephone=request.POST.get('telephone_notaris_perubahan'), 
-									# 	nomor_pengesahan=request.POST.get('nomor_pengesahan_perubahan'), 
-									# 	tanggal_pengesahan=formperubahan.cleaned_data['tanggal_pengesahan_perubahan'])
-									# legalitas.save()
 									pengajuan_.legalitas.add(legalitas)
 									data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
 										# # legalitas perubahaan
@@ -501,10 +495,6 @@ def siup_legalitas_perusahaan_save_cookie(request):
 								else:
 									data = formperubahan.errors.as_json()
 									response = HttpResponse(data)
-						# else:
-						# 	data = {'Terjadi Kesalahan': [{'message': 'Data Perusahaan tidak ditemukan/data kosong'}]}
-						# 	data = json.dumps(data)
-						# 	response = HttpResponse(data)
 
 						else:
 							data = form.errors.as_json()

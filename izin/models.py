@@ -401,12 +401,15 @@ class DetilTDP(PengajuanIzin):
 	no_hak_paten = models.CharField(max_length=100, verbose_name='Nomor Hak Paten (Jika Ada)', blank=True, null=True)
 
 	# Data Kegiatan PT 
-	kegiatan_usaha_pokok = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Pokok', blank=True, null=True)
-	kegiatan_usaha_lain_1 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (1)', blank=True, null=True)
-	kegiatan_usaha_lain_2 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (2)', blank=True, null=True)
-	komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
-	komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
-	komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
+	# kegiatan_usaha_pokok = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Pokok', blank=True, null=True)
+	kegiatan_usaha_pokok = models.ManyToManyField(KBLI, related_name='kegiatan_usaha_pokok', verbose_name='Kegiatan Usaha Pokok', blank=True)
+	produk_utama = models.TextField(null=True, blank=True, verbose_name='Barang / Jasa Dagang Utama')
+
+	# kegiatan_usaha_lain_1 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (1)', blank=True, null=True)
+	# kegiatan_usaha_lain_2 = models.CharField(max_length=255, verbose_name='Kegiatan Usaha Lain (2)', blank=True, null=True)
+	# komoditi_produk_pokok = models.CharField(max_length=255, verbose_name='Komoditi / Produk Pokok', blank=True, null=True)
+	# komoditi_produk_lain_1 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (1)', blank=True, null=True)
+	# komoditi_produk_lain_2 = models.CharField(max_length=255, verbose_name='Komoditi / Produk Lain (2)', blank=True, null=True)
 	omset_per_tahun = models.CharField(max_length=100, verbose_name='Omset Perusahaan Per Tahun', null=True, blank=True)
 	total_aset = models.CharField(max_length=100, verbose_name='Total Aset (setelah perusahaan beroperasi)', null=True, blank=True)
 	jumlah_karyawan_wni = models.IntegerField(verbose_name='Jumlah Karyawan WNI', default=0)
@@ -420,6 +423,7 @@ class DetilTDP(PengajuanIzin):
 	jenis_pengecer = models.ForeignKey(JenisPengecer, verbose_name='Jenis Pengecer', null=True, blank=True)
 	kedudukan_kegiatan_usaha = models.ForeignKey(KedudukanKegiatanUsaha, verbose_name='Kedudukan dalam mata rantai kegiatan usaha', null=True, blank=True)
 	jenis_perusahaan = models.ForeignKey(JenisPerusahaan, verbose_name='Jenis Perusahaan', null=True, blank=True)
+	status_waralaba = models.CharField(max_length=255, verbose_name='Status Waralaba', null=True, blank=True, default='BUKAN WARALABA')
 
 	# masih sampe tab4 TDP PT
 

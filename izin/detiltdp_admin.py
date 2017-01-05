@@ -51,7 +51,15 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
 				pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=perusahaan_.id)
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_})
+				wni = 0
+				if pengajuan_.jumlah_karyawan_wni:
+					wni = pengajuan_.jumlah_karyawan_wni
+				wna = 0
+				if pengajuan_.jumlah_karyawan_wna:
+					wna = pengajuan_.jumlah_karyawan_wna
+				jumlah_karyawan = int(wni)+int(wna)
+				print jumlah_karyawan
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -63,12 +71,35 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_tdp_pt_asli(self, request, id_pengajuan_izin_):
+		from dateutil.relativedelta import relativedelta
+		extra_context = {}
+		if id_pengajuan_izin_:
+			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+			# print legalitas_1.tanggal_pengesahan
+			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+			
+			if skizin_:
+				extra_context.update({'skizin': skizin_ })
+			# masa_berlaku = 0
+			if skizin_:
+				masa_berlakua = skizin_.created_at + relativedelta(years=5)
+				masa_berlaku = masa_berlakua.strftime('%d-%B-%Y')
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
+		template = loader.get_template("front-end/include/formulir_tdp_pt/cetak_tdp_pt_asli.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilTDPAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^view-pengajuan-tdp-pt/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_tdp_pt), name='view_pengajuan_tdp_pt'),
+			url(r'^cetak-tdp-pt-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_tdp_pt_asli), name='cetak_tdp_pt_asli'),
 			)
 		return my_urls + urls
 

@@ -134,7 +134,7 @@ class Perusahaan(AtributTambahan):
 	telepon = models.CharField(max_length=50, verbose_name='Telepon')
 	fax = models.CharField(max_length=20, blank=True, null=True, verbose_name='Fax')
 	email = models.EmailField(max_length=50, blank=True, null=True, verbose_name='E-mail')
-	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True)
+	npwp = models.CharField(max_length=100, verbose_name='NPWP', unique=True, null=True, blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_perusahaan', blank=True, null=True)
 	penanggung_jawab = models.ForeignKey('izin.Pemohon', related_name='penanggung_jawab_perusahaan', blank=True, null=True)
 
@@ -302,7 +302,10 @@ class DataPimpinan(IdentitasPribadi):
 		return "%s" % (self.kedudukan)
 
 	def as_json(self):
-		return dict(id=self.id, nama_lengkap=self.nama_lengkap, tempat_lahir=self.tempat_lahir, tanggal_lahir=self.tanggal_lahir.strftime('%d-%m-%Y'), alamat=self.alamat, telephone=self.telephone, hp=self.hp, email=self.email if self.email else "-", kewarganegaraan=self.kewarganegaraan, kedudukan=self.kedudukan.kedudukan_pimpinan, tanggal_menduduki_jabatan=self.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'), jumlah_saham_dimiliki=self.jumlah_saham_dimiliki, jumlah_saham_disetor=self.jumlah_saham_disetor, kedudukan_diperusahaan_lain=self.kedudukan_diperusahaan_lain, nama_perusahaan_lain=self.nama_perusahaan_lain, alamat_perusahaan_lain=self.alamat_perusahaan_lain, kode_pos_perusahaan_lain=self.kode_pos_perusahaan_lain, telepon_perusahaan_lain=self.telepon_perusahaan_lain, tanggal_menduduki_jabatan_perusahaan_lain=self.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y') if self.tanggal_menduduki_jabatan_perusahaan_lain else "-")
+		kode_pos_perusahaan_lain = "-"
+		if self.kode_pos_perusahaan_lain:
+			kode_pos_perusahaan_lain = self.kode_pos_perusahaan_lain
+		return dict(id=self.id, nama_lengkap=self.nama_lengkap, tempat_lahir=self.tempat_lahir, tanggal_lahir=self.tanggal_lahir.strftime('%d-%m-%Y'), alamat=self.alamat, telephone=self.telephone, hp=self.hp, email=self.email if self.email else "-", kewarganegaraan=self.kewarganegaraan, kedudukan=self.kedudukan.kedudukan_pimpinan, tanggal_menduduki_jabatan=self.tanggal_menduduki_jabatan.strftime('%d-%m-%Y'), jumlah_saham_dimiliki=self.jumlah_saham_dimiliki, jumlah_saham_disetor=self.jumlah_saham_disetor, kedudukan_diperusahaan_lain=self.kedudukan_diperusahaan_lain, nama_perusahaan_lain=self.nama_perusahaan_lain, alamat_perusahaan_lain=self.alamat_perusahaan_lain, kode_pos_perusahaan_lain=kode_pos_perusahaan_lain, telepon_perusahaan_lain=self.telepon_perusahaan_lain, tanggal_menduduki_jabatan_perusahaan_lain=self.tanggal_menduduki_jabatan_perusahaan_lain.strftime('%d-%m-%Y') if self.tanggal_menduduki_jabatan_perusahaan_lain else "-")
 
 	class Meta:
 		ordering = ['id']
