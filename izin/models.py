@@ -662,7 +662,7 @@ class MesinPerusahaan(MetaAtribut):
 	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
 
 	type_model = models.CharField(max_length=255, verbose_name='Type / Model', blank=True, null=True)
-	pk_mesin	 = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
+	pk_mesin = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
 	buatan = models.CharField(max_length=255, verbose_name='Buatan / Merk', blank=True, null=True)
 	jumlah_unit = models.IntegerField(verbose_name="Jumlah Unit", null=True, blank=True)
 	# selain penggerak tambah kapasitas

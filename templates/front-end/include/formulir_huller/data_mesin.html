@@ -62,7 +62,7 @@
         {% csrf_token %}   
         <div class="form-group">
           <label for="input01" class="col-sm-2 control-label">Diesel Generating Set</label>
-          <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Diesel Generating Set">
+          <input type="hidden" id="id_generating_set" name="nama_mesin" value="Diesel Generating Set">
           <div class="col-sm-2">
             <input type="text" class="form-control" id="id_type_model_diesel_generating" required="" name="type_model">
           </div>
@@ -81,7 +81,6 @@
     </div>
 
     <!-- Mesin Pecah Kulit / Pengupas Gabah -->
-
     <div class="panel panel-darkgray">
       <div class="panel-body">
 
@@ -103,19 +102,19 @@
             <label for="input01" class="col-sm-2 control-label">Rubber Roll / Roll Karet</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Rubber Roll / Roll Karet">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_rubber_roll" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_rubber_roll" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_rubber_roll" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_rubber_roll" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_rubber_roll" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -125,19 +124,19 @@
             <label for="input01" class="col-sm-2 control-label">Flash Type / Type Banting</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Flash Type / Type Banting">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_flash_type" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_flash_type" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_flash_type" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_flash_type" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_flash_type" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -145,7 +144,6 @@
     </div>
 
     <!-- Mesin Pemisah Gabah -->
-
     <div class="panel panel-darkgray">
       <div class="panel-body">
         Catatan : Kapasitas adalah Kapasitas Potensial alat dalam satuan Kwintal Beras Per-jam
@@ -167,19 +165,19 @@
             <label for="input01" class="col-sm-2 control-label">Gedogan</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Gedogan">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_gedogan" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_gedogan" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_gedogan" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_gedogan" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_gedogan" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -189,19 +187,19 @@
             <label for="input01" class="col-sm-2 control-label">Dimple Plate</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Dimple Plate">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_dimple_plate" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_dimple_plate" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_dimple_plate" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_dimple_plate" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_dimple_plate" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -211,19 +209,19 @@
             <label for="input01" class="col-sm-2 control-label">Screen</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Screen">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_screen" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_screen" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_screen" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_screen" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_screen" required="" name="jumlah_unit">
             </div> 
           </div>
         </form>
@@ -252,19 +250,19 @@
             <label for="input01" class="col-sm-2 control-label">Mesin Slip Horizontal</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Mesin Slip Horizontal">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_slip_horizontal" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_slip_horizontal" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_slip_horizontal" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_slip_horizontal" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_slip_horizontal" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -274,19 +272,19 @@
             <label for="input01" class="col-sm-2 control-label">Mesin Slip Vertikal</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Mesin Slip Vertikal">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_slip_vertikal" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_slip_vertikal" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_slip_vertikal" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_slip_vertikal" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_slip_vertikal" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -315,19 +313,19 @@
             <label for="input01" class="col-sm-2 control-label">Paddy Cleaner / Pembersih Gabah (Blower)</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Paddy Cleaner / Pembersih Gabah (Blower)">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_paddy_cleaner" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_paddy_cleaner" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_paddy_cleaner" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_paddy_cleaner" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_paddy_cleaner" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -337,19 +335,19 @@
             <label for="input01" class="col-sm-2 control-label">Mesin Polis Brushe</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Mesin Polis Brushe">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_polis_brushe" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_polis_brushe" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_polis_brushe" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_polis_brushe" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_polis_brushe" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -359,19 +357,19 @@
             <label for="input01" class="col-sm-2 control-label">Grader / Mesin Pemisah</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Grader / Mesin Pemisah">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_grader" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_grader" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_grader" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_grader" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_grader" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
@@ -381,33 +379,34 @@
             <label for="input01" class="col-sm-2 control-label">Kualitas</label>
             <input type="hidden" id="id_montor_diesel" name="nama_mesin" value="Kualitas">
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="type_model">
+              <input type="text" class="form-control" id="id_type_model_kualitas" required="" name="type_model">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="pk_mesin">
+              <input type="text" class="form-control" id="id_pk_mesin_kualitas" required="" name="pk_mesin">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="kapasitas">
+              <input type="text" class="form-control" id="id_kapasitas_mesin_kualitas" required="" name="kapasitas">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="buatan">
+              <input type="text" class="form-control" id="id_buatan_kualitas" required="" name="buatan">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="input01" required="" name="jumlah_unit">
+              <input type="text" class="form-control" id="id_jumlah_unit_kualitas" required="" name="jumlah_unit">
             </div>
           </div>
         </form>
-        <a href="#" data-toggle="modal" data-target="#ippt">Tambah lainnya</a>
-      </div>
+        <!-- <a href="#" data-toggle="modal" data-target="#ippt">Tambah lainnya</a> -->
+      </div> 
     </div>
-<!--   
+    <form method="POST" id="kapasitas_potensial" name="montor_penggerak" role="form" class="form-horizontal" action="{% url 'detil_huller_kapasitas_potensial_save' %}">
+        {% csrf_token %} 
       <table border="0">
         <tr>
           <td>Kapasitas Potensial Giling keseluruhan Mesin Memproduksi Beras</td>
           <td> &nbsp : &nbsp</td>
           <td><div class="col-sm-15">
             <div class="input-group">
-              <input type="text" class="form-control" required="" name="kapitas_jam">
+              <input type="text" class="form-control no_ktp" required="" id="id_kapasitas_potensial_giling_beras_per_jam" name="kapasitas_potensial_giling_beras_per_jam">
               <span class="input-group-addon">
                 <span>Ton setara Beras per-jam</span>
              </span>
@@ -425,16 +424,16 @@
           <td> &nbsp : &nbsp</td>
           <td><div class="col-sm-15">
             <div class="input-group">
-              <input type="text" class="form-control" required="" name="kapitas_tahun">
+              <input type="text" class="form-control no_ktp" required="" id="id_kapasitas_potensial_giling_beras_per_tahun" name="kapasitas_potensial_giling_beras_per_tahun">
               <span class="input-group-addon">
                 <span>Ton setara Beras per-tahun</span>
              </span>
             </div>
           </div></td>
         </tr>
-      </table> -->
-
-<div class="modal fade" id="ippt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      </table>
+    </form>
+<!-- <div class="modal fade" id="ippt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -466,4 +465,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
