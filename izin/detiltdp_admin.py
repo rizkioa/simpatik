@@ -73,9 +73,11 @@ class DetilTDPAdmin(admin.ModelAdmin):
 
 	def cetak_tdp_pt_asli(self, request, id_pengajuan_izin_):
 		from dateutil.relativedelta import relativedelta
+		from django.shortcuts import get_object_or_404
 		extra_context = {}
 		if id_pengajuan_izin_:
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get_object_or_404(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 			# print legalitas_1.tanggal_pengesahan
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
@@ -84,10 +86,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
-			# masa_berlaku = 0
+			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%B-%Y')
+				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_pt/cetak_tdp_pt_asli.html")
 		ec = RequestContext(request, extra_context)

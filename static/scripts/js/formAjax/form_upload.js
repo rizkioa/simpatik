@@ -437,3 +437,181 @@ function load_konfirmasi_detil_huller(id_pengajuan){
     })
     }
 }
+
+function load_true_false_detil_huller(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/layanan/penggilingan-padi-&-huller/true-false/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success){
+            var total = respon.data.length;
+            for (var i = 0; i < total; i++){
+            var key = Object.keys(respon.data[i]); 
+            var val = respon.data[i][key[0]] 
+            var nama_id = "#"+key; 
+            $(nama_id).prop('checked', val)
+          }
+
+          if($("#id_perorangan_form").is(':checked')){
+            make_disabled($('#id_pemilik_nama_perorangan'), false)
+            make_disabled($('#id_pemilik_alamat'), false)
+            make_disabled($('#id_negara_perorangan'), false)
+            make_disabled($('#id_provinsi_perorangan'), false)
+            make_disabled($('#id_kabupaten_perorangan'), false)
+            make_disabled($('#id_kecamatan_perorangan'), false)
+            make_disabled($('#id_desa_perorangan'), false) 
+            make_disabled($('#id_pemilik_kewarganegaraan'), false) 
+            make_disabled($('#nama_badan_hukum_pemilik'), true)
+
+            
+          }
+          if($("#id_badan_hukum_perorangan_form").is(':checked')){
+              make_disabled($('#id_pemilik_nama_perorangan'), true)
+              make_disabled($('#id_pemilik_alamat'), true)
+              make_disabled($('#id_negara_perorangan'), true)
+              make_disabled($('#id_provinsi_perorangan'), true)
+              make_disabled($('#id_kabupaten_perorangan'), true)
+              make_disabled($('#id_kecamatan_perorangan'), true)
+              make_disabled($('#id_desa_perorangan'), true)
+              make_disabled($('#id_pemilik_kewarganegaraan'), true) 
+              make_disabled($('#nama_badan_hukum_pemilik'), false)
+            }
+            if($("#id_pengusaha_badan_usaha").is(':checked')){
+              make_disabled($('#id_pengusaha_nama_perorangan'), false)
+              make_disabled($('#id_pengusaha_alamat'), false)
+              make_disabled($('#id_negara_pengusaha'), false)
+              make_disabled($('#id_provinsi_pengusaha'), false)
+              make_disabled($('#id_kabupaten_pengusaha'), false)
+              make_disabled($('#id_kecamatan_pengusaha'), false)
+              make_disabled($('#pengusaha_desa'), false) 
+              make_disabled($('#pengusaha_kewarganegaraan'), false) 
+              make_disabled($('#nama_badan_hukum_pengusaha'), true)
+
+            }
+            if ($("#switch_badan_hukum_pengusaha").is(':checked')){
+              make_disabled($('#id_pengusaha_nama_perorangan'), true)
+              make_disabled($('#id_pengusaha_alamat'), true)
+              make_disabled($('#id_negara_pengusaha'), true)
+              make_disabled($('#id_provinsi_pengusaha'), true)
+              make_disabled($('#id_kabupaten_pengusaha'), true)
+              make_disabled($('#id_kecamatan_pengusaha'), true)
+              make_disabled($('#pengusaha_desa'), true)
+              make_disabled($('#pengusaha_kewarganegaraan'), true) 
+              make_disabled($('#nama_badan_hukum_pengusaha'), false)
+            }
+          }
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
+function load_data_detil_huller(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/layanan/penggilingan-padi-&-huller/data/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)     
+        if (respon.success){
+            if($("#id_perorangan_form").is(':checked')){
+              load_negara("id_negara_perorangan",respon.data.id_negara_perorangan)
+              load_provinsi_huller("id_provinsi_perorangan",respon.data.id_negara_perorangan)
+              load_kabupaten_huller("id_kabupaten_perorangan",respon.data.id_provinsi_perorangan)
+              load_kecamatan_huller("id_kecamatan_perorangan",respon.data.id_kabupaten_perorangan)
+              load_desa_huller("id_desa_perorangan",respon.data.id_kecamatan_perorangan)
+              $('#id_pemilik_nama_perorangan').val(respon.data.id_pemilik_nama_perorangan)
+              $('#id_pemilik_alamat').val(respon.data.id_pemilik_alamat)
+              setTimeout(function(){
+              $('#id_negara_perorangan').val(respon.data.id_negara_perorangan).prop('selected',true).trigger("chosen:updated");
+              $('#id_provinsi_perorangan').val(respon.data.id_provinsi_perorangan).prop('selected',true).trigger("chosen:updated");
+              $('#id_kabupaten_perorangan').val(respon.data.id_kabupaten_perorangan).prop('selected',true).trigger("chosen:updated");
+              $('#id_kecamatan_perorangan').val(respon.data.id_kecamatan_perorangan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_perorangan').val(respon.data.id_desa_perorangan).prop('selected',true).trigger("chosen:updated");
+              $('#id_pemilik_kewarganegaraan').val(respon.data.id_pemilik_kewarganegaraan).prop('selected',true).trigger("chosen:updated");
+              }, 1000);
+            }
+            if ($("#id_badan_hukum_perorangan_form").is(':checked')){
+              $('#nama_badan_hukum_pemilik').val(respon.data.nama_badan_hukum_pemilik)
+            }
+            if($("#id_pengusaha_badan_usaha").is(':checked')){
+              load_negara("id_negara_pengusaha",respon.data.id_negara_pengusaha)
+              load_provinsi_huller("id_provinsi_pengusaha",respon.data.id_negara_pengusaha)
+              load_kabupaten_huller("id_kabupaten_pengusaha",respon.data.id_provinsi_pengusaha)
+              load_kecamatan_huller("id_kecamatan_pengusaha",respon.data.id_kabupaten_pengusaha)
+              load_desa_huller("pengusaha_desa",respon.data.id_kecamatan_pengusaha)
+              $('#id_pengusaha_nama_perorangan').val(respon.data.id_pengusaha_nama_perorangan)
+              $('#id_pengusaha_alamat').val(respon.data.id_pengusaha_alamat)
+              setTimeout(function(){
+              $('#id_negara_pengusaha').val(respon.data.id_negara_pengusaha).prop('selected',true).trigger("chosen:updated");
+              $('#id_provinsi_pengusaha').val(respon.data.id_provinsi_pengusaha).prop('selected',true).trigger("chosen:updated");
+              $('#id_kabupaten_pengusaha').val(respon.data.id_kabupaten_pengusaha).prop('selected',true).trigger("chosen:updated");
+              $('#id_kecamatan_pengusaha').val(respon.data.id_kecamatan_pengusaha).prop('selected',true).trigger("chosen:updated");
+              $('#pengusaha_desa').val(respon.data.pengusaha_desa).prop('selected',true).trigger("chosen:updated");
+              $('#pengusaha_kewarganegaraan').val(respon.data.pengusaha_kewarganegaraan).prop('selected',true).trigger("chosen:updated");
+              }, 1000);
+            }
+            if ($("#switch_badan_hukum_pengusaha").is(':checked')){
+              $('#nama_badan_hukum_pengusaha').val(respon.data.nama_badan_hukum_pengusaha)
+            }
+            $('#hubungan_pemilik_pengusaha').val(respon.data.hubungan_pemilik_pengusaha)
+          }
+                    
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
+function load_data_mesin_detil_huller(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success){
+            var total = respon.data.length;
+            for (var i = 0; i < total; i++){
+            var key = Object.keys(respon.data[i]); // Mencari key json
+            var val = respon.data[i][key[0]] // mencari value json
+            var id = "#"+key[0] // membuat variabel id untuk sett ke id masing2 komfirmasi
+            $(id).val(val);
+            }
+        }
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+function load_konfirmasi_data_mesin_detil_huller(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success){
+            var total = respon.data.length;
+            for (var i = 0; i < total; i++){
+            var key = Object.keys(respon.data[i]); // Mencari key json
+            var val = respon.data[i][key[0]] // mencari value json
+            var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+            $(id).text(val);
+            }
+        }
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}

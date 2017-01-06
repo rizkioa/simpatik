@@ -134,8 +134,8 @@ def tdp_legalitas_pt_cookie(request):
 					telephone_pendirian = request.POST.get('telephone_pendirian')
 					nomor_akta_pendirian = request.POST.get('nomor_akta_pendirian')
 					tanggal_akta_pendirian = datetime.datetime.strptime(request.POST.get('tanggal_akta_pendirian'), '%d-%m-%Y').strftime('%Y-%m-%d')
-					nomor_pengesahan_pendirian = request.POST.get('nomor_pengesahan_pendirian')
-					tanggal_pengesahan_pendirian = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pendirian'), '%d-%m-%Y').strftime('%Y-%m-%d')
+					# nomor_pengesahan_pendirian = request.POST.get('nomor_pengesahan_pendirian')
+					# tanggal_pengesahan_pendirian = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pendirian'), '%d-%m-%Y').strftime('%Y-%m-%d')
 					perusahaan_id = pengajuan_.perusahaan.id
 					# save legalitas pendirian
 					try:
@@ -148,13 +148,13 @@ def tdp_legalitas_pt_cookie(request):
 						legalitas_pendirian.telephone = telephone_pendirian
 						legalitas_pendirian.nomor_akta = nomor_akta_pendirian
 						legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
-						legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
-						legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
+						# legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
+						# legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
 						legalitas_pendirian.save()
 						# else:
 						# 	pass
 					except ObjectDoesNotExist:
-						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian, nomor_pengesahan=nomor_pengesahan_pendirian, tanggal_pengesahan=tanggal_pengesahan_pendirian)
+						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian)
 						legalitas_pendirian.save(force_insert=True)
 					# +++++++ save akta perubahan ++++
 					onoffaktaperubahan = request.POST.get('onoffaktaperubahan')
@@ -164,8 +164,8 @@ def tdp_legalitas_pt_cookie(request):
 						telephone_perubahan = request.POST.get('telephone_akta_perubahan')
 						nomor_akta_perubahan = request.POST.get('nomor_akta_perubahan')
 						tanggal_akta_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
-						nomor_pengesahan_perubahan = request.POST.get('nomor_pengesahan_akta_perubahan')
-						tanggal_pengesahan_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+						# nomor_pengesahan_perubahan = request.POST.get('nomor_pengesahan_akta_perubahan')
+						# tanggal_pengesahan_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						try:
 							legalitas_perubahan = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=2)
 							legalitas_perubahan.jenis_legalitas_id = 2
@@ -175,11 +175,11 @@ def tdp_legalitas_pt_cookie(request):
 							legalitas_perubahan.telephone = telephone_perubahan
 							legalitas_perubahan.nomor_akta = nomor_akta_perubahan
 							legalitas_perubahan.tanggal_akta = tanggal_akta_perubahan
-							legalitas_perubahan.nomor_pengesahan = nomor_pengesahan_perubahan
-							legalitas_perubahan.tanggal_pengesahan = tanggal_pengesahan_perubahan
+							# legalitas_perubahan.nomor_pengesahan = nomor_pengesahan_perubahan
+							# legalitas_perubahan.tanggal_pengesahan = tanggal_pengesahan_perubahan
 							legalitas_perubahan.save()
 						except ObjectDoesNotExist:
-							legalitas_perubahan = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=2,  nama_notaris=nama_notaris_perubahan, alamat=alamat_perubahan, telephone=telephone_perubahan, nomor_akta=nomor_akta_perubahan, tanggal_akta=tanggal_akta_perubahan, nomor_pengesahan=nomor_pengesahan_perubahan, tanggal_pengesahan=tanggal_pengesahan_perubahan)
+							legalitas_perubahan = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=2,  nama_notaris=nama_notaris_perubahan, alamat=alamat_perubahan, telephone=telephone_perubahan, nomor_akta=nomor_akta_perubahan, tanggal_akta=tanggal_akta_perubahan)
 							legalitas_perubahan.save(force_insert=True)
 					# +++++++ end save akta perubahan ++++
 					# +++++++ save pengesahan menteri +++++
@@ -827,29 +827,38 @@ def tdp_upload_surat_keputusan(request):
 							else:
 								try:
 									p = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
-									berkas = form.save(commit=False)
-									kode = request.POST.get('kode')
-									if kode == 'Surat Keputusan':
-										berkas.nama_berkas = "Surat Keputusan Pengesahan Badan Hukum "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia"
-									elif kode == 'Ijin Usaha':
-										berkas.nama_berkas = "Ijin Usaha/Ijin Teknis "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan"
-									elif kode == 'Sertifikat Asli TDP':
-										berkas.nama_berkas = "Sertifikat Asli TDP "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "Sertifikat Asli TDP"
-									if request.user.is_authenticated():
-										berkas.created_by_id = request.user.id
-									else:
-										berkas.created_by_id = request.COOKIES['id_pemohon']
-									berkas.save()
-									p.berkas_tambahan.add(berkas)
+									try:
+										perusahaan_ = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+										berkas = form.save(commit=False)
+										kode = request.POST.get('kode')
+										if kode == 'Surat Keputusan':
+											berkas.nama_berkas = "Surat Keputusan Pengesahan Badan Hukum "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia "+perusahaan_.npwp
+										elif kode == 'Ijin Usaha':
+											berkas.nama_berkas = "Ijin Usaha/Ijin Teknis "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan "+perusahaan_.npwp
+										elif kode == 'Sertifikat Asli TDP':
+											berkas.nama_berkas = "Sertifikat Asli TDP "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "Sertifikat Asli TDP "+perusahaan_.npwp
+										elif kode == 'Neraca Perusahaan':
+											berkas.nama_berkas = "Neraca Perusahaan "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "Neraca Perusahaan "+perusahaan_.npwp
+										if request.user.is_authenticated():
+											berkas.created_by_id = request.user.id
+										else:
+											berkas.created_by_id = request.COOKIES['id_pemohon']
+										berkas.save()
+										p.berkas_tambahan.add(berkas)
 
-									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-											{'status_upload': 'ok'},
-										]}
-									data = json.dumps(data)
-									response = HttpResponse(data)
+										data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+												{'status_upload': 'ok'},
+											]}
+										data = json.dumps(data)
+										response = HttpResponse(data)
+									except ObjectDoesNotExist:
+										data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
+										data = json.dumps(data)
+										response = HttpResponse(data)
 								except ObjectDoesNotExist:
 									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
 									data = json.dumps(data)
@@ -902,19 +911,19 @@ def tdp_upload_akta_legalitas(request):
 									if jenis_legalitas == '3':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 										berkas.nama_berkas = "Akta Pengesahan Menteri dan HAM "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "Akta Pengesahan Menteri dan HAM"
+										berkas.keterangan = "Akta Pengesahan Menteri dan HAM "+p.perusahaan.npwp
 									elif jenis_legalitas == '4':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 										berkas.nama_berkas = "Akta Persetujuan Menteri Hukum dan HAM Atas Perubahan Anggaran Dasar "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "Akta Persetujuan Menteri Hukum dan HAM Atas Perubahan Anggaran Dasar"
+										berkas.keterangan = "Akta Persetujuan Menteri Hukum dan HAM Atas Perubahan Anggaran Dasar "+p.perusahaan.npwp
 									elif jenis_legalitas == '6':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 										berkas.nama_berkas = "Akta Penerimaan Laporan Perubahan Anggaran Dasar "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "Akta Penerimaan Laporan Perubahan Anggaran Dasar"
+										berkas.keterangan = "Akta Penerimaan Laporan Perubahan Anggaran Dasar "+p.perusahaan.npwp
 									elif jenis_legalitas == '7':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=7).last()
 										berkas.nama_berkas = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "Akta Penerimaan Pemberitahuan Direksi/Komisaris"									
+										berkas.keterangan = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.npwp									
 									
 									if request.user.is_authenticated():
 										berkas.created_by_id = request.user.id
@@ -973,28 +982,35 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 			legalitas_7 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=7).last()
 
 			if berkas_:
-				surat_keputusan = berkas_.filter(keterangan='File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia').last()
+				neraca_perusahaan = berkas_.filter(keterangan='Neraca Perusahaan '+perusahaan_.npwp).last()
+				if neraca_perusahaan:
+					url_berkas.append(neraca_perusahaan.berkas.url)
+					id_elemen.append('neraca_perusahaan')
+					nm_berkas.append(neraca_perusahaan.nama_berkas)
+					id_berkas.append(neraca_perusahaan.id)
+
+				surat_keputusan = berkas_.filter(keterangan='File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia '+perusahaan_.npwp).last()
 				if surat_keputusan:
 					url_berkas.append(surat_keputusan.berkas.url)
 					id_elemen.append('surat_keputusan')
 					nm_berkas.append(surat_keputusan.nama_berkas)
 					id_berkas.append(surat_keputusan.id)
 
-				ijin_usaha = berkas_.filter(keterangan='File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan').last()
+				ijin_usaha = berkas_.filter(keterangan='File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan '+perusahaan_.npwp).last()
 				if ijin_usaha:
 					url_berkas.append(ijin_usaha.berkas.url)
 					id_elemen.append('ijin_usaha')
 					nm_berkas.append(ijin_usaha.nama_berkas)
 					id_berkas.append(ijin_usaha.id)
 
-				sertifikat_asli_tdp = berkas_.filter(keterangan='Sertifikat Asli TDP').last()
+				sertifikat_asli_tdp = berkas_.filter(keterangan='Sertifikat Asli TDP '+perusahaan_.npwp).last()
 				if sertifikat_asli_tdp:
 					url_berkas.append(sertifikat_asli_tdp.berkas.url)
 					id_elemen.append('sertifikat_asli_tdp')
 					nm_berkas.append(sertifikat_asli_tdp.nama_berkas)
 					id_berkas.append(sertifikat_asli_tdp.id)
 
-				pendukung = berkas_.filter(keterangan='pendukung').last()
+				pendukung = berkas_.filter(keterangan='pendukung '+perusahaan_.npwp).last()
 				if pendukung:
 					url_berkas.append(pendukung.berkas.url)
 					id_elemen.append('berkas_tambahan')
