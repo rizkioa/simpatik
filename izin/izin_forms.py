@@ -65,7 +65,7 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
 	class Meta:
 		model = Legalitas
-		fields = ('nama_notaris','alamat','telephone','nomor_pengesahan','tanggal_pengesahan', 'nomor_akta', 'tanggal_akta')
+		fields = ('nama_notaris','alamat','telephone', 'nomor_pengesahan','tanggal_pengesahan', 'nomor_akta', 'tanggal_akta')
 
 class LegalitasPerusahaanPerubahanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""

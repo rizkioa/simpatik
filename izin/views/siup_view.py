@@ -107,7 +107,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilIUJK')
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
-		elif k.id in [25, 26]:
+		# elif k.id in [25, 26]:
+		elif k.id == 25 or k.id == 26:
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -216,8 +217,8 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					# elif k.id == 25 or k.id == 26:
-					elif k.id in [25, 26]:
+					elif k.id == 25 or k.id == 26:
+					# elif k.id in [25, 26]:
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -413,98 +414,109 @@ def siup_legalitas_perusahaan_save_cookie(request):
 		if request.COOKIES['id_perusahaan'] != '':
 			if 'id_pengajuan' in request.COOKIES.keys():
 				if request.COOKIES['id_pengajuan'] != '':
-					pengajuan_ = DetilSIUP.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-					if request.POST.get('onoffswitch_pendirian') == 'on':
-						if request.COOKIES['id_legalitas'] == "":
-							form = LegalitasPerusahaanForm(request.POST)
-						else:
-							try:
-								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
-								form = LegalitasPerusahaanForm(request.POST, instance=l)
-							except ObjectDoesNotExist:
+					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+					if k.id == 26:
+						objects_ = getattr(app_models, 'DetilTDP')
+					else:
+						objects_ = getattr(app_models, 'DetilSIUP')
+					try:
+						pengajuan_ = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+						if request.POST.get('onoffswitch_pendirian') == 'on':
+							if request.COOKIES['id_legalitas'] == "":
 								form = LegalitasPerusahaanForm(request.POST)
-
-						if form.is_valid():
-							f = form.save(commit=False)
-							f.perusahaan_id = request.COOKIES['id_perusahaan']
-							f.jenis_legalitas_id = 1
-							if request.user.is_authenticated():
-								f.created_by_id = request.user.id
 							else:
-								f.created_by_id = request.COOKIES['id_pemohon']
-							f.save()
-							pengajuan_.legalitas.add(f)
-							if request.POST.get('onoffswitch') != 'on':
-								data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
-									{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
-									{'nama_notaris': f.nama_notaris},
-									{'alamat_notaris': f.alamat},
-									{'telephone_notaris': f.telephone},
-									{'nomor_pengesahaan': f.nomor_pengesahan},
-									{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
-									]}
-								data = json.dumps(data)
-								response = HttpResponse(data)
-								response.set_cookie(key='id_legalitas', value=f.id)
+								try:
+									l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+									form = LegalitasPerusahaanForm(request.POST, instance=l)
+								except ObjectDoesNotExist:
+									form = LegalitasPerusahaanForm(request.POST)
 
-							if request.POST.get('onoffswitch') == 'on':
-								# formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
-								if request.COOKIES['id_legalitas_perubahan'] == "":
-									formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+							if form.is_valid():
+								f = form.save(commit=False)
+								f.perusahaan_id = request.COOKIES['id_perusahaan']
+								f.jenis_legalitas_id = 1
+								if request.user.is_authenticated():
+									f.created_by_id = request.user.id
 								else:
-									try:
-										lp = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
-										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST, instance=lp)
-									except ObjectDoesNotExist:
-										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
-								
-								if formperubahan.is_valid():
-									if request.user.is_authenticated():
-										created = request.user.id
-									else:
-										created = request.COOKIES['id_pemohon']
-									legalitas = formperubahan.save(commit=False)
-									legalitas.perusahaan_id = request.COOKIES['id_perusahaan']
-									legalitas.jenis_legalitas_id = 2
-									legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
-									legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
-									legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
-									legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
-									legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
-									legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
-									legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
-									if request.user.is_authenticated():
-										legalitas.created_by_id = request.user.id
-									else:
-										legalitas.created_by_id = request.COOKIES['id_pemohon']
-									legalitas.save()
-									pengajuan_.legalitas.add(legalitas)
+									f.created_by_id = request.COOKIES['id_pemohon']
+								f.save()
+								pengajuan_.legalitas.add(f)
+								if request.POST.get('onoffswitch') != 'on':
 									data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
-										# # legalitas perubahaan
-										{'jenis_legalitas_perubahan': legalitas.jenis_legalitas.jenis_legalitas},
-										{'nama_notaris_perubahan': legalitas.nama_notaris},
-										{'alamat_notaris_perubahan': legalitas.alamat},
-										{'telephone_notaris_perubahan': legalitas.telephone},
-										{'nomor_pengesahaan_perubahan': legalitas.nomor_pengesahan},
-										{'tanggal_pengesahan_perubahan': str(legalitas.tanggal_pengesahan)}
+										{'jenis_legalitas': f.jenis_legalitas.jenis_legalitas},
+										{'nama_notaris': f.nama_notaris},
+										{'alamat_notaris': f.alamat},
+										{'telephone_notaris': f.telephone},
+										{'nomor_pengesahaan': f.nomor_pengesahan},
+										{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
 										]}
 									data = json.dumps(data)
 									response = HttpResponse(data)
-									response.set_cookie(key='id_legalitas_perubahan', value=legalitas.id)
 									response.set_cookie(key='id_legalitas', value=f.id)
-								else:
-									data = formperubahan.errors.as_json()
-									response = HttpResponse(data)
 
+								if request.POST.get('onoffswitch') == 'on':
+									# formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+									if request.COOKIES['id_legalitas_perubahan'] == "":
+										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+									else:
+										try:
+											lp = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
+											formperubahan = LegalitasPerusahaanPerubahanForm(request.POST, instance=lp)
+										except ObjectDoesNotExist:
+											formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+									
+									if formperubahan.is_valid():
+										if request.user.is_authenticated():
+											created = request.user.id
+										else:
+											created = request.COOKIES['id_pemohon']
+										legalitas = formperubahan.save(commit=False)
+										legalitas.perusahaan_id = request.COOKIES['id_perusahaan']
+										legalitas.jenis_legalitas_id = 2
+										legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
+										legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
+										legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
+										legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+										legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
+										legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
+										legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+										if request.user.is_authenticated():
+											legalitas.created_by_id = request.user.id
+										else:
+											legalitas.created_by_id = request.COOKIES['id_pemohon']
+										legalitas.save()
+										pengajuan_.legalitas.add(legalitas)
+										data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
+											# # legalitas perubahaan
+											{'jenis_legalitas_perubahan': legalitas.jenis_legalitas.jenis_legalitas},
+											{'nama_notaris_perubahan': legalitas.nama_notaris},
+											{'alamat_notaris_perubahan': legalitas.alamat},
+											{'telephone_notaris_perubahan': legalitas.telephone},
+											{'nomor_pengesahaan_perubahan': legalitas.nomor_pengesahan},
+											{'tanggal_pengesahan_perubahan': str(legalitas.tanggal_pengesahan)}
+											]}
+										data = json.dumps(data)
+										response = HttpResponse(data)
+										response.set_cookie(key='id_legalitas_perubahan', value=legalitas.id)
+										response.set_cookie(key='id_legalitas', value=f.id)
+									else:
+										data = formperubahan.errors.as_json()
+										response = HttpResponse(data)
+
+							else:
+								data = form.errors.as_json()
+								response = HttpResponse(data)
 						else:
-							data = form.errors.as_json()
+							pengajuan_.jenis_pengajuan = 1
+							pengajuan_.save()
+							data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': []}
+							data = json.dumps(data)
 							response = HttpResponse(data)
-					else:
-						pengajuan_.jenis_pengajuan = 1
-						pengajuan_.save()
-						data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': []}
+					except ObjectDoesNotExist:
+						data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 						data = json.dumps(data)
 						response = HttpResponse(data)
+
 				else:
 					data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 					data = json.dumps(data)
@@ -803,7 +815,7 @@ def siup_upload_berkas_akta_pendirian(request):
 									a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 									berkas = form.save(commit=False)
 									berkas.nama_berkas = "Berkas Akta Pendirian "+a.nama_perusahaan
-									berkas.keterangan = "akta pendirian"
+									berkas.keterangan = "akta pendirian "+a.npwp
 									if request.user.is_authenticated():
 										berkas.created_by_id = request.user.id
 									else:
@@ -865,7 +877,7 @@ def siup_upload_berkas_akta_perubahan(request):
 									a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 									berkas = form.save(commit=False)
 									berkas.nama_berkas = "Berkas Akta Perubahan "+a.nama_perusahaan
-									berkas.keterangan = "akta perubahan"
+									berkas.keterangan = "akta perubahan "+a.npwp
 									if request.user.is_authenticated():
 										berkas.created_by_id = request.user.id
 									else:
@@ -925,19 +937,23 @@ def siup_upload_berkas_pendukung(request):
 							else:
 								try:
 									p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
-									berkas = form.save(commit=False)
-									berkas.nama_berkas = "Berkas Pendukung "+p.pemohon.nama_lengkap
-									berkas.keterangan = "pendukung"
-									if request.user.is_authenticated():
-										berkas.created_by_id = request.user.id
-									else:
-										berkas.created_by_id = request.COOKIES['id_pemohon']
-									berkas.save()
-									p.berkas_tambahan.add(berkas)
+									try:
+										perusahaan_ = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+										berkas = form.save(commit=False)
+										berkas.nama_berkas = "Berkas Pendukung "+p.pemohon.nama_lengkap
+										berkas.keterangan = "pendukung "+perusahaan_.npwp
+										if request.user.is_authenticated():
+											berkas.created_by_id = request.user.id
+										else:
+											berkas.created_by_id = request.COOKIES['id_pemohon']
+										berkas.save()
+										p.berkas_tambahan.add(berkas)
 
-									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-											{'status_upload': 'ok'},
-										]}
+										data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+												{'status_upload': 'ok'},
+											]}
+									except ObjectDoesNotExist:
+										data = {'Terjadi Kesalahan': [{'message': 'Perusajaan tidak ada dalam daftar'}]}
 								except ObjectDoesNotExist:
 									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
 								data = json.dumps(data)

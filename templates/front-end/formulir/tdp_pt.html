@@ -206,10 +206,11 @@
                 if (perusahaan_induk !== '0'){
                   load_provinsi_(1, '#id_provinsi-3')
                   load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
-                  setTimeout(function(){
-                    load_data_umum_perusahaan($.cookie('id_pengajuan'))
-                  }, 1000);
+                  
                 }
+                setTimeout(function(){
+                  load_data_umum_perusahaan($.cookie('id_pengajuan'))
+                }, 1000);
                 
               }
               if ($current === 4){
@@ -308,7 +309,7 @@
             },
 
             onTabClick: function(tab, navigation, index) {
-              return true;
+              return false;
             }
           });
       });
@@ -543,8 +544,8 @@
                   }, 1000);
                 }
                 else{
-                  // $('#switch_data_umum_kantor_cabang_disabled').attr('checked', false);
-                  // $('.data_umum_kantor_cabang').prop('disabled', true).trigger("chosen:updated");
+                  $('#switch_data_umum_kantor_cabang_disabled').attr('checked', false);
+                  $('.data_umum_kantor_cabang').prop('disabled', true).trigger("chosen:updated");
                   // $('#id_nama_perusahaan_induk').val("");
                   // $('#id_alamat_perusahaan_induk').val("");
                   // $('#id_provinsi3').val("").prop('selected',true).trigger("chosen:updated");
@@ -690,7 +691,14 @@
       function jumlah_karyawan(){
         var wni = parseInt($('#id_jumlah_karyawan_wni').val());
         var wna = parseInt($('#id_jumlah_karyawan_wna').val());
-
+        if (!wni){
+          wni = 0;
+          $('#id_jumlah_karyawan_wni').val('0')
+        }
+        if (!wna){
+          wna = 0;
+          $('#id_jumlah_karyawan_wna').val('0')
+        }
         var total = wni+wna;
         $('#id_total_wni_wna').val(total);
       }
@@ -781,7 +789,7 @@
               $('#dup_pemegang_hak_paten').html(resp[3].dup.pemegang_hak_paten)
               $('#dup_no_hak_paten').html(resp[3].dup.no_hak_paten)
               // data kegiatan perusahaan
-              $('#dkp_kegiatan_usaha_pokok').append('<span></span>')
+              $('#dkp_kegiatan_usaha_pokok').html('<span></span>')
               a = resp[4].dkp.kbli_json.length
               for (var i = 0; i < a; i++){
                 str = resp[4].dkp.kbli_json[i].kode_kbli+' - '+resp[4].dkp.kbli_json[i].nama_kbli+'<br>'
