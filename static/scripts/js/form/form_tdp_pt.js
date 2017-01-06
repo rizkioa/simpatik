@@ -49,24 +49,24 @@ $("#switch_akta_perubahan_disabled").change(function() {
   }
 });
 
-$('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
-$('#form-akta_pengesahaan_menteri').hide()
-$('#tr-akta_pengesahaan_menteri').hide()
-$('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
-$("#switch_stap5_pengesahan_menteri_disabled").change(function() {
-  if ($(this).is(':checked')) {
-    $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',true);
-    $('.stap5_pengesahan_menteri').prop('disabled', false).trigger("chosen:updated");
-    $('#form-akta_pengesahaan_menteri').show()
-    $('#tr-akta_pengesahaan_menteri').show()
-  }
-  else {
-    $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
-    $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
-    $('#form-akta_pengesahaan_menteri').hide()
-    $('#tr-akta_pengesahaan_menteri').hide()
-  }
-});
+// $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
+// $('#form-akta_pengesahaan_menteri').hide()
+// $('#tr-akta_pengesahaan_menteri').hide()
+// $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
+// $("#switch_stap5_pengesahan_menteri_disabled").change(function() {
+//   if ($(this).is(':checked')) {
+//     $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',true);
+//     $('.stap5_pengesahan_menteri').prop('disabled', false).trigger("chosen:updated");
+//     $('#form-akta_pengesahaan_menteri').show()
+//     $('#tr-akta_pengesahaan_menteri').show()
+//   }
+//   else {
+//     $('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
+//     $('.stap5_pengesahan_menteri').prop('disabled', true).trigger("chosen:updated");
+//     $('#form-akta_pengesahaan_menteri').hide()
+//     $('#tr-akta_pengesahaan_menteri').hide()
+//   }
+// });
 
 $('.stap5_persetujuan_menteri').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_persetujuan_menteri').hide()
@@ -441,3 +441,17 @@ function delete_berkas_upload(id, elemen){
   $(".tab-content").mLoading('hide');
 }
 // **** END *****
+$('#id_modal_dasar').on('change', function(){
+  var modal_dasar = $(this).val();
+  var res = parseInt(modal_dasar.replace(/\./g, ''));
+  console.log(res)
+  console.log(jQuery.type(res))
+  if(res < 50000000){
+    $('#id_modal_dasar').addClass('parsley-error')
+    $(this).after('<div class="form-group"><span class="col-sm-12 help-block mb-0 error-modal-dasar" style="color:red;"><center>Modal Dasar minimal harus Rp 50.000.000,-.</center></span></div>')
+  }
+  else{
+    $('#id_modal_dasar').removeClass('parsley-error')
+    $('.error-modal-dasar').remove()
+  }
+})
