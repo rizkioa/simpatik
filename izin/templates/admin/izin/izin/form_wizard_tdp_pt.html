@@ -49,7 +49,7 @@
 	              	if ($current == 3){
 		                perusahaan_induk = $.cookie('npwp_perusahaan_induk')
 		                if (perusahaan_induk !== '0'){
-		                  load_provinsi_(1, '#id_provinsi-3')
+		                  // load_provinsi_(1, '#id_provinsi-3')
 		                  load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
 		                  
 		                }
@@ -319,6 +319,7 @@
 	                  $('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
 	                  $('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
 	                  $('#no_tdp_induk').val(respon_induk.data.nomor_tdp)
+	                  load_provinsi_(1, '#id_provinsi-3')
 	                  load_kabupaten_(respon_induk.data.provinsi, '#id_kabupaten-3')
 	                  load_kecamatan_(respon_induk.data.kabupaten, '#id_kecamatan-3')
 	                  load_desa_(respon_induk.data.kecamatan, '#id_desa-3')

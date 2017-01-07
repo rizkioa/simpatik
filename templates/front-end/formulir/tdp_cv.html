@@ -503,7 +503,7 @@
         if ($.cookie('id_pengajuan') === undefined){
           pengajuan_id = 0
         }
-        window.location.replace(__base_url__+'/layanan/tdp-pt/formulir/cetak/'+pengajuan_id);
+        window.location.replace(__base_url__+'/layanan/tdp-cv/formulir/cetak/'+pengajuan_id);
         $.ajax({
           url: '{% url 'tdp_pt_done' %}',
           success: function(response) {
