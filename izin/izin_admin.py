@@ -21,6 +21,7 @@ from izin.controllers.izin_gangguan import formulir_izin_gangguan
 from izin.controllers.penggunaan_kekayaan_daerah import formulir_informasi_kekayaan_daerah
 from izin.controllers.izin_lokasi import formulir_izin_lokasi 
 from izin.controllers.ippt_rumah import formulir_ippt_rumah 
+from izin.controllers.huller import formulir_detilhuller 
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
@@ -1037,6 +1038,8 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/izin-gangguan/$', self.admin_site.admin_view(formulir_izin_gangguan), name='izin_proses_gangguan'),
 			url(r'^wizard/add/proses/izin-lokasi/$', self.admin_site.admin_view(formulir_izin_lokasi), name='izin_proses_lokasi'),
 			url(r'^wizard/add/proses/ippt-rumah/$', self.admin_site.admin_view(formulir_ippt_rumah), name='izin_proses_ippt_rumah'),
+			url(r'^wizard/add/proses/penggilingan-padi-&-huller/$', self.admin_site.admin_view(formulir_detilhuller), name='izin_proses_huller'),
+
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),

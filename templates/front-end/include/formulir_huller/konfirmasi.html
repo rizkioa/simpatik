@@ -1,4 +1,4 @@
-<form method="POST" name="step6" role="form"  %}">
+<form method="POST" name="step6" role="form">
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
@@ -101,43 +101,19 @@
   <br>
   <h4><u>#3. Pemilik dan Pengusaha</u></h4>
   <h5><u>Pemilik</u></h5>
-  <table width="100%" border="0">
-    <tr>
-      <td width="25%">Jenis Pemilik</td>
-      <td width="5%">:</td>
-      <td width="70%">Perorangan</td>
-    </tr>
-    <tr>
-      <td width="25%">Nama Pemilik</td>
-      <td width="5%">:</td>
-      <td width="70%"> </td>
-    </tr>
-    <tr>
-      <td width="25%">Alamat Pemilik</td>
-      <td width="5%">:</td>
-      <td width="70%">Jl.</td>
-    </tr>
+  <table id="pemilik" width="100%" border="0">
+    <tbody>
+    </tbody>
   </table>
   <h5><u>Pengusaha</u></h5>
-  <table width="100%" border="0">
-    <tr>
-      <td width="25%">Jenis Pengusaha</td>
-      <td width="5%">:</td>
-      <td width="70%">Badan Usaha</td>
-    </tr>
-    <tr>
-      <td width="25%">Nama Badan Usaha Pengusaha</td>
-      <td width="5%">:</td>
-      <td width="70%"> </td>
-    </tr>
+  <table id="pengusaha" width="100%" border="0">
+    <tbody>
+    </tbody>
   </table>
   <br>
-  <table width="100%" border="0">
-    <tr>
-      <td width="25%">Hubungan Pemilik dengan Pengusaha :</td>
-      <td width="5%">:</td>
-      <td width="70%"></td>
-    </tr>
+  <table id="hubungan_pemilik_dan_pengusaha" width="100%" border="0">
+    <tbody>
+    </tbody>
   </table>
   
   
@@ -463,8 +439,9 @@
   <br>
   <section class="tile bg-greensea">
     <div class="tile-body">
-      <label class="checkbox checkbox-custom-alt">
-        <input type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      <label class="checkbox checkbox-custom-alt checkbox-custom-lg" style="color: white;">
+        <input id="checkbox_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
       </label>
     </div>
   </section>
+</form>

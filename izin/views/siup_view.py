@@ -120,7 +120,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilHO')
 		elif k.kode == "503.07/" or k.kode == "IPPT":
 			objects_ = getattr(app_models, 'InformasiTanah')
-		elif k.id == 15:
+		elif k.kode == "HULLER":
 			objects_ = getattr(app_models, 'DetilHuller')
 		if request.user.is_anonymous():
 			created_by = p.id
@@ -230,7 +230,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilHO')
 					elif k.kode == "503.07/" or k.kode == "IPPT":
 						objects_ = getattr(app_models, 'InformasiTanah')
-					elif k.id == 15:
+					elif k.kode == "HULLER":
 						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
 						try:
@@ -287,7 +287,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilHO')
 					elif k.kode == "503.07/" or k.kode == "IPPT":
 						objects_ = getattr(app_models, 'InformasiTanah')
-					elif k.id == 15:
+					elif k.kode == "HULLER":
 						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
 						try:
