@@ -150,8 +150,8 @@ urlpatterns = [
     url(r'^layanan/tdp-pt/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_pt, name='cetak_bukti_pendaftaran_tdp_pt'),
     
     #cetak TDP CV
-    url(r'^layanan/tdp-cv/formulir/cetak$', views.cetak_tdp_cv, name='cetak_tdp_cv'),
-    url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
+    url(r'^layanan/tdp-cv/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_cv, name='cetak_tdp_cv'),
+    url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
     
     #cetak TDP FIRMA
     url(r'^layanan/tdp-firma/formulir/cetak$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
