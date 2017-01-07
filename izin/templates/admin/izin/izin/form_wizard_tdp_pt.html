@@ -49,7 +49,7 @@
 	              	if ($current == 3){
 		                perusahaan_induk = $.cookie('npwp_perusahaan_induk')
 		                if (perusahaan_induk !== '0'){
-		                  load_provinsi_(1, '#id_provinsi-3')
+		                  // load_provinsi_(1, '#id_provinsi-3')
 		                  load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
 		                  
 		                }
@@ -319,6 +319,7 @@
 	                  $('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
 	                  $('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
 	                  $('#no_tdp_induk').val(respon_induk.data.nomor_tdp)
+	                  load_provinsi_(1, '#id_provinsi-3')
 	                  load_kabupaten_(respon_induk.data.provinsi, '#id_kabupaten-3')
 	                  load_kecamatan_(respon_induk.data.kabupaten, '#id_kecamatan-3')
 	                  load_desa_(respon_induk.data.kecamatan, '#id_desa-3')
@@ -420,14 +421,16 @@
 	                  // $('#id_kegiatan_usaha_pokok').val(respon_data_kegiatan.data.kegiatan_usaha_pokok);
 	                  // $('#id_kegiatan_usaha_lain_1').val(respon_data_kegiatan.data.kegiatan_usaha_lain_1);
 	                  // $('#id_kegiatan_usaha_lain_2').val(respon_data_kegiatan.data.kegiatan_usaha_lain_2);
+	                  $('#id_kegiatan_usaha_pokok').find('option').remove()
+              		  $("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
 	                  a = respon_data_kegiatan.data.kbli_json.length
 	                  for (var i = 0; i < a; i++){
 	                    $("#id_kegiatan_usaha_pokok").append('<option selected="selected" value="'+respon_data_kegiatan.data.kbli_json[i].id+'" >'+respon_data_kegiatan.data.kbli_json[i].kode_kbli+' - '+respon_data_kegiatan.data.kbli_json[i].nama_kbli+'</option>');
 	                  }
 	                  $("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
-	                  $('#id_komoditi_produk_pokok').val(respon_data_kegiatan.data.komoditi_produk_pokok);
-	                  $('#id_komoditi_produk_lain_1').val(respon_data_kegiatan.data.komoditi_produk_lain_1);
-	                  $('#id_komoditi_produk_lain_2').val(respon_data_kegiatan.data.komoditi_produk_lain_2);
+	                  // $('#id_komoditi_produk_pokok').val(respon_data_kegiatan.data.komoditi_produk_pokok);
+	                  // $('#id_komoditi_produk_lain_1').val(respon_data_kegiatan.data.komoditi_produk_lain_1);
+	                  // $('#id_komoditi_produk_lain_2').val(respon_data_kegiatan.data.komoditi_produk_lain_2);
 	                  $('#id_omset_per_tahun').val(respon_data_kegiatan.data.omset_per_tahun);
 	                  $('#id_total_aset').val(respon_data_kegiatan.data.total_aset);
 	                  $('#id_jumlah_karyawan_wni').val(respon_data_kegiatan.data.jumlah_karyawan_wni);
