@@ -134,7 +134,7 @@ class UploadBerkasPenolakanIzinForm(forms.ModelForm):
 class SurveyForm(forms.ModelForm):
 	class Meta:
 		model = Survey
-		fields = ('skpd', 'permohonan', 'tanggal_survey', 'deadline_survey')
+		fields = ('deadline_survey',)
 
 class PengajuanIMBReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""

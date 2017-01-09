@@ -255,3 +255,13 @@ def insert_riwayat(obj_sk_id = None, id_pengajuan_= None, user_= None, keteranga
 			return False
 	else:
 		return False
+
+def send_email_notifikasi(emailto, subject, html_content):
+	from django.core.mail import EmailMessage
+	from django.conf import settings
+
+	email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
+	email.content_subtype = "html"
+	res = email.send()
+
+	return res
