@@ -97,6 +97,7 @@ function kirim_survey(id_pengajuan){
     }
   });
 }
+
 //************* END *********** 
 
 function show_modal_dataanggota_add(elem_){

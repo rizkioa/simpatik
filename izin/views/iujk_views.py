@@ -524,7 +524,8 @@ def upload_berkas_next(request):
 		if request.COOKIES['id_pengajuan'] != '0':
 			try:
 				iujk = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
-				berkas_ = iujk.berkas_tambahan.all()
+				# berkas_ = iujk.berkas_tambahan.all()
+				berkas_ = Berkas.objects.filter(keterangan__contains=iujk.perusahaan.npwp)
 				p = iujk.perusahaan
 				b = berkas_.filter(nama_berkas="Sertifikat Badan Usaha "+p.nama_perusahaan)
 				if b.exists():
@@ -608,7 +609,7 @@ def upload_sertifikat_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Sertifikat Badan Usaha "+p.nama_perusahaan
-								berkas.keterangan = "sertifikat Badan Usaha"+p.nama_perusahaan
+								berkas.keterangan = "sertifikat Badan Usaha"+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -664,7 +665,7 @@ def upload_kartu_teknis_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Kartu Teknis Badan Usaha "+p.nama_perusahaan
-								berkas.keterangan = "Kartu Teknis Usaha"+p.nama_perusahaan
+								berkas.keterangan = "Kartu Teknis Usaha"+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -721,7 +722,7 @@ def upload_pernyataan_pengikat_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan
-								berkas.keterangan = "Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan
+								berkas.keterangan = "Surat Pernyataaan Pengikatan Diri PJT-BU "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -777,7 +778,7 @@ def upload_pernyataan_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan
-								berkas.keterangan = "Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan
+								berkas.keterangan = "Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -833,7 +834,7 @@ def upload_npwp_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "NPWP "+p.nama_perusahaan
-								berkas.keterangan = "NPWP "+p.nama_perusahaan
+								berkas.keterangan = "NPWP "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -889,7 +890,7 @@ def upload_keterangan_domisili_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan
-								berkas.keterangan = "Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan
+								berkas.keterangan = "Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -945,7 +946,7 @@ def upload_denah_lokasi_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan
-								berkas.keterangan = "Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan
+								berkas.keterangan = "Gambar denah lokasi/posisi badan usaha "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -1001,7 +1002,7 @@ def upload_foto_papan_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Gambar/foto papan nama badan usaha "+p.nama_perusahaan
-								berkas.keterangan = "Gambar/foto papan nama badan usaha "+p.nama_perusahaan
+								berkas.keterangan = "Gambar/foto papan nama badan usaha "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -1057,7 +1058,7 @@ def upload_akta_pendirian_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Akta Pendirian "+p.nama_perusahaan
-								berkas.keterangan = "Akta Pendirian "+p.nama_perusahaan
+								berkas.keterangan = "Akta Pendirian "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -1115,7 +1116,7 @@ def upload_akta_perubahan_badan_usaha(request):
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "Akta Perubahan "+p.nama_perusahaan
-								berkas.keterangan = "Akta Perubahan "+p.nama_perusahaan
+								berkas.keterangan = "Akta Perubahan "+p.npwp
 								if request.user.is_authenticated():
 									berkas.created_by_id = request.user.id
 								else:
@@ -1232,7 +1233,9 @@ def ajax_load_berkas(request, id_pengajuan):
 		try:
 			iujk = DetilIUJK.objects.get(id=id_pengajuan)
 			p = iujk.perusahaan
-			berkas_ = iujk.berkas_tambahan.all()
+			# berkas_ = iujk.berkas_tambahan.all()
+			# Cari berkas bedasarkan NPWP
+			berkas_ = Berkas.objects.filter(keterangan__contains=iujk.perusahaan.npwp)
 			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
 			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
 

@@ -463,9 +463,9 @@ class RincianPerusahaan(models.Model):
 class Survey(MetaAtribut):
 	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)
 	pengajuan = models.ForeignKey(DetilIUJK, related_name='survey_pengajuan', verbose_name='Pengajuan')
-	skpd = models.ForeignKey("kepegawaian.UnitKerja", related_name="survey_skpd", verbose_name='SKPD')
-	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name="Kelompk Jenis Izin")
-	permohonan = models.CharField(verbose_name='Permohonan', choices=JENIS_PERMOHONAN, max_length=100,)
+	skpd = models.ForeignKey("kepegawaian.UnitKerja", related_name="survey_skpd", verbose_name='SKPD', blank=True, null=True)
+	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name="Kelompk Jenis Izin", blank=True, null=True)
+	permohonan = models.CharField(verbose_name='Permohonan', choices=JENIS_PERMOHONAN, max_length=100,blank=True, null=True)
 	tanggal_survey = models.DateField(verbose_name='Tanggal Survey')
 	deadline_survey = models.DateField(verbose_name='Deadline Survey')
 	keterangan_tambahan = models.CharField(verbose_name='Keterangan Tambahan',  max_length=255, blank=True, null=True)
