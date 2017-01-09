@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import NomorIdentitasPengguna
-from izin.models import DetilTDP, RincianPerusahaan, IzinLain, PengajuanIzin
+from izin.models import DetilTDP, RincianPerusahaan, IzinLain, PengajuanIzin, KelompokJenisIzin
 from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm, IzinLainForm, PemegangSahamForm, DataPimpinanForm, PerusahaanCabangForm, BerkasForm
 from perusahaan.models import Legalitas, Perusahaan, PemegangSaham, DataPimpinan, KBLI
 from master.models import Berkas
@@ -20,11 +20,12 @@ def tdp_data_umum_perusahaan_cookie(request):
 			no_tdp = request.POST.get('no_tdp')
 			if data_umum_form.is_valid():
 				p = data_umum_form.save(commit=False)
-				jbu = request.POST.get('jenis_badan_usaha')
-				if jbu == 2:
-					p.jenis_badan_usaha_id = 2
-				else:
-					p.jenis_badan_usaha_id = 1
+				# jbu = request.POST.get('jenis_badan_usaha')
+				k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+				if k.id == 25:
+					p.nomor_tdp_kantor_pusat = 1
+				elif k.id == 26:
+					p.nomor_tdp_kantor_pusat = 2
 				# if onoffkantorcabang == 'on':
 				# 	p.nomor_tdp_kantor_pusat = no_tdp
 				p.save()
@@ -106,9 +107,9 @@ def tdp_data_kegiatan_pt_cookie(request):
 					rp = rincianperusahaan_form.save(commit=False)
 					rp.detil_tdp_id = p.id
 					rp.save()
-					data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
-					data = json.dumps(data)
-					response = HttpResponse(data)
+				data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
+				data = json.dumps(data)
+				response = HttpResponse(data)
 			else:
 				data = data_kegiatan_form.errors.as_json()
 				response = HttpResponse(data)

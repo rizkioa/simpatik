@@ -118,7 +118,7 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 		elif k.kode == "503.02/":
 			objects_ = getattr(app_models, 'DetilHO')
-		elif k.kode == "503.07/" or k.kode == "IPPT":
+		elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
 			objects_ = getattr(app_models, 'InformasiTanah')
 		elif k.kode == "HULLER":
 			objects_ = getattr(app_models, 'DetilHuller')
@@ -228,7 +228,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 					elif k.kode == "503.02/":
 						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.kode == "IPPT":
+					elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					elif k.kode == "HULLER":
 						objects_ = getattr(app_models, 'DetilHuller')
@@ -285,7 +285,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
 					elif k.kode == "503.02/":
 						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.kode == "IPPT":
+					elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					elif k.kode == "HULLER":
 						objects_ = getattr(app_models, 'DetilHuller')
@@ -417,6 +417,8 @@ def siup_legalitas_perusahaan_save_cookie(request):
 					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 					if k.id == 26:
 						objects_ = getattr(app_models, 'DetilTDP')
+					elif k.kode == "IPPT-Usaha":
+						objects_ = getattr(app_models, 'InformasiTanah')
 					else:
 						objects_ = getattr(app_models, 'DetilSIUP')
 					try:
