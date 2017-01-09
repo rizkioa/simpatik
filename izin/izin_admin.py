@@ -634,16 +634,6 @@ class IzinAdmin(admin.ModelAdmin):
 		}
 
 		return HttpResponse(json.dumps(response))
-		# return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in jenisizin_list)));
-
-		# pilihan = """
-		# <option value=1>SIUP</option>
-		# <option>HO</option>
-		# <option>SIPA</option>
-		# <option>Izin Pertambangan</option>
-		# <option>TDP</option>
-		# """
-		# return HttpResponse(mark_safe(pilihan));
 
 	def option_kelompokjenisizin(self, request):
 		kode_jenis_izin = request.POST.get('param', None)
