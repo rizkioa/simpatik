@@ -576,6 +576,7 @@ class DetilHO(PengajuanIzin):
 		verbose_name = 'Detil HO'
 		verbose_name_plural = 'Detil HO'
 
+
 class InformasiTanah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasitanah_perusahaan', blank=True, null=True)
 	no_surat_kuasa =  models.CharField(max_length=30, verbose_name='No. Surat Kuasa', null=True, blank=True)
@@ -592,6 +593,27 @@ class InformasiTanah(PengajuanIzin):
 	atas_nama_persil=  models.CharField(max_length=30, verbose_name='Atas Nama Persil', null=True, blank=True)
 	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
+	
+	batas_utara = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Bats Barat')
+	tanah_negara_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Negara Belum Dikuasai')
+	tanah_kas_desa_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Kas Desa Belum Dikuasai')
+	tanah_hak_pakai_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Pakai Belum Dikuasai')
+	tanah_hak_guna_bangunan_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Guna Bangunan Belum Dikuasai')
+	tanah_hak_milik_sertifikat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak MIlik Sertifikat Belum Dikuasai')
+	tanah_adat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Adat Belum Dikuasai')
+	pemegang_hak_semula_dari_tanah_belum_dikuasai = models.CharField(max_length=50,null=True, blank=True, verbose_name='Pemegang Hak Tanah Sebelum Dkuasai')
+	tanah_belum_dikuasai_melalui = models.CharField(max_length=100,null=True, blank=True, verbose_name='Tanah Belum Dikuasai Melalui')
+	tanah_negara_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
+	tanah_kas_desa_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Kas Desa Sudah Dikuasai')
+	tanah_hak_pakai_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Pakai Sudah Dikuasai')
+	tanah_hak_guna_bangunan_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Guna Bangunan Sudah Dikuasai')
+	tanah_hak_milik_sertifikat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak MIlik Sertifikat Sudah Dikuasai')
+	tanah_adat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Adat Sudah Dikuasai')
+	pemegang_hak_semula_dari_tanah_sudah_dikuasai = models.CharField(max_length=50,null=True, blank=True, verbose_name='Pemegang Hak Tanah Sesudah Dkuasai')
+	tanah_sudah_dikuasai_melalui = models.CharField(max_length=100,null=True, blank=True, verbose_name='Tanah Sudah Dikuasai Melalui')
 
 	def __unicode__(self):
 		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -600,6 +622,19 @@ class InformasiTanah(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'Informasi Tanah'
 		verbose_name_plural = 'Informasi Tanah'
+
+class PenggunaaTanahIPPTUsaha(MetaAtribut):
+	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
+	nama_penggunaan = models.CharField(max_length=20, verbose_name='Penggunaan Tanah', blank=True, null=True)
+	ukuran_penggunaan = models.IntegerField(verbose_name="Ukuran Penggunaan", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.nama_penggunaan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Penggunaan Tanah IPPT Usaha'
+		verbose_name_plural = 'Penggunaan Tanah IPPT Usaha'
 
 class DetilHuller(PengajuanIzin):
 	perusahaan = models.ForeignKey('perusahaan.Perusahaan', related_name='detilhuller_perusahaan', blank=True, null=True)
@@ -662,7 +697,7 @@ class MesinPerusahaan(MetaAtribut):
 	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
 
 	type_model = models.CharField(max_length=255, verbose_name='Type / Model', blank=True, null=True)
-	pk_mesin	 = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
+	pk_mesin = models.CharField(max_length=255, verbose_name='PK', blank=True, null=True)
 	buatan = models.CharField(max_length=255, verbose_name='Buatan / Merk', blank=True, null=True)
 	jumlah_unit = models.IntegerField(verbose_name="Jumlah Unit", null=True, blank=True)
 	# selain penggerak tambah kapasitas

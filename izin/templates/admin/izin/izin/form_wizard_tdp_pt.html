@@ -49,12 +49,13 @@
 	              	if ($current == 3){
 		                perusahaan_induk = $.cookie('npwp_perusahaan_induk')
 		                if (perusahaan_induk !== '0'){
-		                  load_provinsi_(1, '#id_provinsi-3')
+		                  // load_provinsi_(1, '#id_provinsi-3')
 		                  load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
-		                  setTimeout(function(){
-		                    load_data_umum_perusahaan($.cookie('id_pengajuan'))
-		                  }, 1000);
+		                  
 		                }
+		                setTimeout(function(){
+		                    load_data_umum_perusahaan($.cookie('id_pengajuan'))
+	                  	}, 1000);
 	              	}
 	              	if ($current === 4){
 		                load_data_kegiatan_perusahaan($.cookie('id_pengajuan'))
@@ -140,7 +141,7 @@
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return true;
+					return false;
 				}
 			});
 		});
@@ -211,7 +212,7 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
-		      	window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+		      	window.location.replace('{% url 'admin:verifikasi' %}');
 		        $.ajax({
 		        	url: '{% url 'tdp_pt_done' %}',
 		        	success: function(response) {
@@ -318,6 +319,7 @@
 	                  $('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
 	                  $('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
 	                  $('#no_tdp_induk').val(respon_induk.data.nomor_tdp)
+	                  load_provinsi_(1, '#id_provinsi-3')
 	                  load_kabupaten_(respon_induk.data.provinsi, '#id_kabupaten-3')
 	                  load_kecamatan_(respon_induk.data.kabupaten, '#id_kecamatan-3')
 	                  load_desa_(respon_induk.data.kecamatan, '#id_desa-3')
@@ -419,14 +421,16 @@
 	                  // $('#id_kegiatan_usaha_pokok').val(respon_data_kegiatan.data.kegiatan_usaha_pokok);
 	                  // $('#id_kegiatan_usaha_lain_1').val(respon_data_kegiatan.data.kegiatan_usaha_lain_1);
 	                  // $('#id_kegiatan_usaha_lain_2').val(respon_data_kegiatan.data.kegiatan_usaha_lain_2);
+	                  $('#id_kegiatan_usaha_pokok').find('option').remove()
+              		  $("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
 	                  a = respon_data_kegiatan.data.kbli_json.length
 	                  for (var i = 0; i < a; i++){
 	                    $("#id_kegiatan_usaha_pokok").append('<option selected="selected" value="'+respon_data_kegiatan.data.kbli_json[i].id+'" >'+respon_data_kegiatan.data.kbli_json[i].kode_kbli+' - '+respon_data_kegiatan.data.kbli_json[i].nama_kbli+'</option>');
 	                  }
 	                  $("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
-	                  $('#id_komoditi_produk_pokok').val(respon_data_kegiatan.data.komoditi_produk_pokok);
-	                  $('#id_komoditi_produk_lain_1').val(respon_data_kegiatan.data.komoditi_produk_lain_1);
-	                  $('#id_komoditi_produk_lain_2').val(respon_data_kegiatan.data.komoditi_produk_lain_2);
+	                  // $('#id_komoditi_produk_pokok').val(respon_data_kegiatan.data.komoditi_produk_pokok);
+	                  // $('#id_komoditi_produk_lain_1').val(respon_data_kegiatan.data.komoditi_produk_lain_1);
+	                  // $('#id_komoditi_produk_lain_2').val(respon_data_kegiatan.data.komoditi_produk_lain_2);
 	                  $('#id_omset_per_tahun').val(respon_data_kegiatan.data.omset_per_tahun);
 	                  $('#id_total_aset').val(respon_data_kegiatan.data.total_aset);
 	                  $('#id_jumlah_karyawan_wni').val(respon_data_kegiatan.data.jumlah_karyawan_wni);
@@ -493,11 +497,13 @@
 			var wni = parseInt($('#id_jumlah_karyawan_wni').val());
 			var wna = parseInt($('#id_jumlah_karyawan_wna').val());
 			if (!wni){
-				wni = 0
-			}
-			if (!wna){
-				wna = 0
-			}
+		        wni = 0;
+		        $('#id_jumlah_karyawan_wni').val('0')
+	      	}
+	      	if (!wna){
+		        wna = 0;
+		        $('#id_jumlah_karyawan_wna').val('0')
+	      	}
 			var total = wni+wna;
 			$('#id_total_wni_wna').val(total);
 		}
@@ -590,7 +596,7 @@
 	              // $('#dkp_kegiatan_usaha_pokok').html(resp[4].dkp.kegiatan_usaha_pokok)
 	              // $('#dkp_kegiatan_usaha1').html(resp[4].dkp.kegiatan_usaha_lain_1)
 	              // $('#dkp_kegiatan_usaha2').html(resp[4].dkp.kegiatan_usaha_lain_2)
-	              $('#dkp_kegiatan_usaha_pokok').append('<span></span>')
+	              $('#dkp_kegiatan_usaha_pokok').html('<span></span>')
 	              a = resp[4].dkp.kbli_json.length
 	              for (var i = 0; i < a; i++){
 	                str = resp[4].dkp.kbli_json[i].kode_kbli+' - '+resp[4].dkp.kbli_json[i].nama_kbli+'<br>'

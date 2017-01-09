@@ -170,7 +170,7 @@
                     </table>
                 </div>
                 <div>
-                    <h4 align="center"><u>FORMULIR PENDAFTARAN PERUSAHAAN PERSEROAN TERBATAS (PT)</u></h4>
+                    <h4 align="center"><u>{{formulir_judul}}</u></h4>
                     <table width="100%" border="0">
                         <tr>
                             <td width="10%"></td>
@@ -594,6 +594,10 @@
                                     <td>{{l.tanggal_pengesahan|date:'d-m-Y'}}</td>
                                 </tr>
                             {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="9" align="center">Kosong...!!!</td>
+                            </tr>
                         {% endif %}
                     </tbody>                    
                 </table>
@@ -624,7 +628,9 @@
                                 </tr>
                             {% endfor %}
                         {% else %}
-                        <p style="font-size:13px">--Tidak ada --</p>
+                            <tr>
+                                <td colspan="6" align="center">Kosong...!!!</td>
+                            </tr>
                         {% endif %}
                     </tbody>
                 </table>
@@ -660,6 +666,10 @@
                                     <td>{{d.tanggal_menduduki_jabatan|date:'d-m-Y'}}</td>
                                 </tr>
                             {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" align="center">Kosong...!!!</td>
+                            </tr>
                         {% endif %}
                     </tbody>
                 </table>
@@ -691,6 +701,10 @@
                                     <td>{{d.tanggal_menduduki_jabatan_perusahaan_lain}}</td>
                                 </tr>
                             {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" align="center">Kosong...!!!</td>
+                            </tr>
                         {% endif %}
                     </tbody>
                 </table>
@@ -726,12 +740,13 @@
                                     <td>{{p.jumlah_saham_disetor}}</td>
                                 </tr>
                             {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align:center;">Kosong...!!!</td>
+                            </tr>
                         {% endif %}
                     </tbody>
                 </table>
-
-                
-                
                 <br>
                 <br>
                 <br>
@@ -779,6 +794,10 @@
                                         <td>{{p.kegiatan_usaha}}</td>
                                     </tr>
                                 {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="10" style="text-align:center;">Kosong...!!!</td>
+                                </tr>
                             {% endif %}
                         </tbody>
                     </table>
@@ -801,7 +820,7 @@
                     <u class="font"><b>{{ pengajuan_.pemohon.nama_lengkap }}</b></u>
                 </p>
                 <hr class="style14">
-                <h5>Syarat TDP PT:</h5>
+                <h5>Syarat Pengajuan:</h5>
                 <table class="font tables syarat" width="100%" border="1" style="border:2px;">
                     <thead>
                         <tr>

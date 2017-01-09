@@ -65,7 +65,7 @@ class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
 	class Meta:
 		model = Legalitas
-		fields = ('nama_notaris','alamat','telephone','nomor_pengesahan','tanggal_pengesahan', 'nomor_akta', 'tanggal_akta')
+		fields = ('nama_notaris','alamat','telephone', 'nomor_pengesahan','tanggal_pengesahan', 'nomor_akta', 'tanggal_akta')
 
 class LegalitasPerusahaanPerubahanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerubahanPerusahaanForm"""
@@ -181,7 +181,12 @@ class DetilHullerForm(forms.ModelForm):
 	class Meta:
 		model = DetilHuller
 		fields = ('pemilik_badan_usaha','pemilik_nama_perorangan','pemilik_alamat','pemilik_desa','pemilik_kewarganegaraan','pemilik_nama_badan_usaha','hubungan_pemilik_pengusaha','pengusaha_badan_usaha','pengusaha_nama_perorangan','pengusaha_alamat','pengusaha_desa','pengusaha_kewarganegaraan','pengusaha_nama_badan_usaha')
-
+class DeilHllerKapaSitasPotensialForm(forms.ModelForm):
+	"""docstring for DeilHllerKapaSitasPotensialForm"""
+	class Meta:
+		model = DetilHuller
+		fields = ('kapasitas_potensial_giling_beras_per_jam','kapasitas_potensial_giling_beras_per_tahun')
+		
 class MesinHullerForm(forms.ModelForm):
 	"""docstring for MesinHullerForm"""
 	class Meta:
@@ -195,3 +200,5 @@ class MesinPerusahaanForm(forms.ModelForm):
 	class Meta:
 		model = MesinPerusahaan
 		fields = ('detil_huller','mesin_huller','type_model','pk_mesin','buatan','jumlah_unit','kapasitas')
+
+		

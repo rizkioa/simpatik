@@ -1,6 +1,6 @@
 <form method="POST" name="step3" id="id_data_huller" role="form" class="form-horizontal" action="{% url 'detil_huller_save_cookie' %}" data-parsley-validate novalidate>
 {% csrf_token %}
-    <h3>IZIN-IZIN DAN LEGALITAS LAINNYA</h3>
+    <h3>Pemilik Dan Pengusaha</h3>
     <hr class="style14">
     
     <!-- Pemilik -->
@@ -12,7 +12,7 @@
       <h5 class="custom-font col-sm-2"><strong>Jenis Pemilik</strong></h5> 
     </div>
 
-    <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">
 		 <input type="radio" name="pemilik_badan_usaha" checked="" value="false" id="id_perorangan_form" >
   		<label for="id_perorangan_form">Perorangan</label>
 	</label>
@@ -91,7 +91,7 @@
 	    </div>
 	  </div>
 
-    <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">		
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">		
   		<input type="radio" name="pemilik_badan_usaha" id="id_badan_hukum_perorangan_form" value="true"><label for="id_badan_hukum_perorangan_form">Badan Hukum</label> 
 	</label>
 
@@ -113,7 +113,7 @@
       <h5 class="custom-font col-sm-2"><strong>Jenis Pengusaha</strong></h5> 
     </div>
 
-    <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">
 		<input type="radio" name="pengusaha_badan_usaha" checked="" value="false"class="radio_pengusaha_disabled" value="Enabled" id="id_pengusaha_badan_usaha"><i></i> Perorangan
 	</label>
 
@@ -193,7 +193,7 @@
     </div>
   </div>
 
-    <label class="radio radio-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">
 		<input type="radio" name="pengusaha_badan_usaha" value="true" class="radio_pengusaha_disabled" value="Disabled" id="switch_badan_hukum_pengusaha"><i></i> Badan Hukum
 	</label>
 
@@ -209,7 +209,7 @@
 	<div class="row">
 		<div class="form-group">
 		    <div class="col-sm-12">
-		     <textarea class="form-control pemilik_disable" rows="5" name="hubungan_pemilik_pengusaha" id="id_pemilik_alamat"></textarea>
+		     <textarea class="form-control pemilik_disable" rows="5" required="" name="hubungan_pemilik_pengusaha" id="hubungan_pemilik_pengusaha"></textarea>
 		    </div>
 		</div>
 	</div>

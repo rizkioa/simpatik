@@ -122,8 +122,8 @@ urlpatterns = [
     # url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
     
     #cetak Penggilingan padi
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak$', views.cetak_huller, name='cetak_huller'),
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', huller.cetak_huller, name='cetak_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', huller.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     
     #cetak reklame
     url(r'^layanan/reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_reklame, name='cetak_reklame'),
@@ -150,8 +150,8 @@ urlpatterns = [
     url(r'^layanan/tdp-pt/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_pt, name='cetak_bukti_pendaftaran_tdp_pt'),
     
     #cetak TDP CV
-    url(r'^layanan/tdp-cv/formulir/cetak$', views.cetak_tdp_cv, name='cetak_tdp_cv'),
-    url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
+    url(r'^layanan/tdp-cv/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_cv, name='cetak_tdp_cv'),
+    url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
     
     #cetak TDP FIRMA
     url(r'^layanan/tdp-firma/formulir/cetak$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
@@ -299,8 +299,13 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
     url(r'^layanan/penggilingan-padi-&-huller/save$', huller.detil_huller_save_cookie, name='detil_huller_save_cookie'),
     url(r'^layanan/penggilingan-padi-&-huller/mesin-perusahaan/save$', huller.mesin_perusahaan_save_cookie, name='mesin_perusahaan_save'),
+    url(r'^layanan/penggilingan-padi-&-huller/kapasitas-potensial/save$', huller.detil_huller_kapasitas_potensial_save_cookie, name='detil_huller_kapasitas_potensial_save'),
     url(r'^penggilingan-padi-&-huller/berkas/save/$', huller.detilhuller_upload_berkas_pendukung, name='detilhuller_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-penggilingan-padi-&-huller/(?P<id_pengajuan>[0-9]+)$', huller.ajax_load_berkas_detilhuller, name='ajax_load_berkas_detilhuller'),
     url(r'^layanan/penggilingan-padi-&-huller/konfirmasi/(?P<id_pengajuan>[0-9]+)$', huller.load_konfirmasi_detilhuller , name='load_konfirmasi_detilhuller'),
+    url(r'^layanan/penggilingan-padi-&-huller/true-false/(?P<id_pengajuan>[0-9]+)$', huller.load_true_false_detilhuller , name='load_true_false_detilhuller'),
+    url(r'^layanan/penggilingan-padi-&-huller/data/(?P<id_pengajuan>[0-9]+)$', huller.load_data_detilhuller , name='load_data_detilhuller'),
+    url(r'^layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/(?P<id_pengajuan>[0-9]+)$', huller.load_data_mesin_detilhuller , name='load_data_mesin_detilhuller'),
+    url(r'^layanan/penggilingan-padi-&-huller/selesai/$', huller.detilhuller_done , name='detilhuller_done'),
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
     ]

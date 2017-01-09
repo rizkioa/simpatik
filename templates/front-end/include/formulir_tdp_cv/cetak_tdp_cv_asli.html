@@ -255,27 +255,6 @@
     		<tr>
     			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
     		</tr>
-    		<tr>
-    			<td colspan="4">PENGESAHAN MENTERI KEHAKIMAN</td>
-    		</tr>
-    		<tr>
-    			<td colspan="2">NOMOR : {{legalitas_1.nomor_pengesahan}}</td>
-    			<td colspan="2">TANGGAL : {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}</td>
-    		</tr>
-    		<tr>
-    			<td colspan="4">PERSETUJUAN MENTERI KEHAKIMAN ATAS AKTA PERUBAHAN ANGGARAN DASAR</td>
-    		</tr>
-    		<tr>
-    			<td colspan="2">NOMOR: {{legalitas_2.nomor_pengesahan}}</td>
-    			<td colspan="2">TANGGAL: {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}</td>
-    		</tr>
-    		<tr>
-    			<td colspan="4">PENERIMAAN LAPORAN PERUBAHAN ANGGARAN DASAR</td>
-    		</tr>
-    		<tr>
-    			<td colspan="2">NOMOR: {{legalitas_3.nomor_pengesahan}}</td>
-    			<td colspan="2">TANGGAL: {{legalitas_3.tanggal_pengesahan|date:'d-m-Y'}}</td>
-    		</tr>
     	</table>
     	<br>
     	<div style="float: left; width: 50%">

@@ -24,6 +24,12 @@ function make_disabled(elem_, dis_){
     update_related(elem_)
 }
 
+function make_required(elem_, dis_){
+    elem_.prop( "required", dis_);
+    // elem_.trigger("chosen:updated");
+    update_related(elem_)
+}
+
 function set_chosen_element(chosenEl){
     $chosenEl = $(chosenEl)
     if ($chosenEl.length > 0) {             
