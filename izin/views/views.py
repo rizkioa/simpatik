@@ -18,7 +18,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, RincianPerusahaan, IzinLain
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, RincianPerusahaan, IzinLain, Riwayat
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -339,17 +339,45 @@ def formulir_tdp_firma(request, extra_context={}):
 
 def formulir_tdp_perorangan(request, extra_context={}):
     negara = Negara.objects.all()
-    extra_context.update({'negara': negara})
     provinsi = Provinsi.objects.all()
-    extra_context.update({'provinsi': provinsi})
     kabupaten = Kabupaten.objects.all()
-    extra_context.update({'kabupaten': kabupaten})
     kecamatan = Kecamatan.objects.all()
-    extra_context.update({'kecamatan': kecamatan})
-    desa = Desa.objects.all()
-    extra_context.update({'desa': desa})
     jenis_pemohon = JenisPemohon.objects.all()
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
+    bentuk_kerjasama = BentukKerjasama.objects.all()
+    status_perusahaan = StatusPerusahaan.objects.all()
+    jenis_penanaman_modal = JenisPenanamanModal.objects.all()
+    jenis_kedudukan = JenisKedudukan.objects.all()
+    jenis_pengecer = JenisPengecer.objects.all()
+    jenis_perusahaan = JenisPerusahaan.objects.all()
+    kedudukan_kegiatan_usaha = KedudukanKegiatanUsaha.objects.all()
+    kelompok_jenis_izin = KelompokJenisIzin.objects.all()
+    bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+    extra_context.update({'jenis_pemohon': jenis_pemohon, 'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'bentuk_kerjasama':bentuk_kerjasama, 'status_perusahaan':status_perusahaan, 'jenis_penanaman_modal':jenis_penanaman_modal, 'jenis_kedudukan':jenis_kedudukan, 'jenis_pengecer':jenis_pengecer, 'jenis_perusahaan':jenis_perusahaan, 'kedudukan_kegiatan_usaha':kedudukan_kegiatan_usaha, 'kelompok_jenis_izin':kelompok_jenis_izin, 'kegiatan_usaha':bentuk_kegiatan_usaha_list})
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0':
+            try:
+                pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    if paspor_:
+                        paspor_ = paspor_
+                    else:
+                        paspor_ = '0'
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
+
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_po.html", extra_context)
 
 def formulir_tdp_koperasi(request, extra_context={}):
@@ -396,7 +424,7 @@ def identitas_pemohon(request, extra_context={}):
     data = {'success': True, 'pesan': 'Simpan data siswa berhasil.', 'id_siswa': siswa.id }
     return HttpResponse(json.dumps(data))
 
-from izin.models import Riwayat
+
 def cetak_permohonan(request, id_pengajuan_):
     # id_pengajuan_ = base64.b64decode(id_pengajuan_)
     extra_context = {}
@@ -712,7 +740,7 @@ def cetak_bukti_pendaftaran_tdp_cv(request, id_pengajuan_):
             pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
             perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=pengajuan_.perusahaan.id)
             # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
-            syarat_ = Syarat.objects.filter(jenis_izin_id=25)
+            syarat_ = Syarat.objects.filter(jenis_izin_id=26)
             extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'nama_perusahaan':nama_perusahaan, 'alamat_perusahaan':alamat_perusahaan, 'created_at':tanggal_dibuat, 'id':pengajuan_.id, 'pengajuan_':pengajuan_, 'legalitas':legalitas_, 'rincian_perusahaan':rincian_perusahaan_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'syarat':syarat_})
     return render(request, "front-end/include/formulir_tdp_pt/cetak_bukti_pendaftaran.html", extra_context)
 
@@ -724,13 +752,48 @@ def cetak_bukti_pendaftaran_tdp_firma(request, extra_context={}):
     extra_context.update({'syarat': syarat})
     return render(request, "front-end/include/formulir_tdp_firma/cetak_bukti_pendaftaran.html", extra_context)
 
-def cetak_tdp_po(request, extra_context={}):
+def cetak_tdp_po(request, id_pengajuan_):
+    extra_context = {}
+    if id_pengajuan_:
+        pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_)
+        pemohon_ = pengajuan_.pemohon
+        if pemohon_:
+            nama_pemohon = pemohon_.nama_lengkap
+            alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
+        perusahaan_ = pengajuan_.perusahaan
+        if perusahaan_:
+            nama_perusahaan = perusahaan_.nama_perusahaan
+            alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
+        extra_context.update({'pengajuan': pengajuan_, 'alamat_perusahaan': alamat_perusahaan, 'alamat_pemohon':alamat_pemohon})
     return render(request, "front-end/include/formulir_tdp_po/cetak.html", extra_context)
 
-def cetak_bukti_pendaftaran_tdp_po(request, extra_context={}):
-    syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="") 
-    extra_context.update({'syarat': syarat})
-    return render(request, "front-end/include/formulir_tdp_po/cetak_bukti_pendaftaran.html", extra_context)
+def cetak_bukti_pendaftaran_tdp_po(request, id_pengajuan_):
+    extra_context = {}
+    extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN PERUSAHAAN PERORANGAN (PO)'})
+    if id_pengajuan_:
+        pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_)
+        if pengajuan_:
+            no_pengajuan = pengajuan_.no_pengajuan
+            jenis_izin = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
+            pemohon_ = pengajuan_.pemohon
+            if pemohon_:
+                nama_pemohon = pemohon_.nama_lengkap
+                alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
+            perusahaan_ = pengajuan_.perusahaan
+            if perusahaan_:
+                nama_perusahaan = perusahaan_.nama_perusahaan
+                alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
+            tanggal_dibuat = pengajuan_.created_at
+            legalitas_ = pengajuan_.perusahaan.legalitas_set.all()
+            rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
+            izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
+            data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
+            pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
+            perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=pengajuan_.perusahaan.id)
+            # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
+            syarat_ = Syarat.objects.filter(jenis_izin_id=28)
+            extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'nama_perusahaan':nama_perusahaan, 'alamat_perusahaan':alamat_perusahaan, 'created_at':tanggal_dibuat, 'id':pengajuan_.id, 'pengajuan_':pengajuan_, 'legalitas':legalitas_, 'rincian_perusahaan':rincian_perusahaan_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'syarat':syarat_})
+    return render(request, "front-end/include/formulir_tdp_pt/cetak_bukti_pendaftaran.html", extra_context)
 
 def cetak_tdp_koperasi(request, extra_context={}):
     return render(request, "front-end/include/formulir_tdp_koperasi/cetak.html", extra_context)

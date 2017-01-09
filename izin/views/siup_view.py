@@ -108,7 +108,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
 		# elif k.id in [25, 26]:
-		elif k.id == 25 or k.id == 26:
+		elif k.id == 25 or k.id == 26 or k.id == 28:
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -217,7 +217,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.id == 25 or k.id == 26:
+					elif k.id == 25 or k.id == 26 or k.id == 28:
 					# elif k.id in [25, 26]:
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
@@ -685,25 +685,32 @@ def siup_upload_berkas_npwp_pribadi(request):
 							else:
 								try:
 									berkas = form.save(commit=False)
-									d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
-									p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
-									berkas.nama_berkas = "NPWP Pribadi "+p.nama_lengkap
-									berkas.keterangan = "npwp pribadi"
-									if request.user.is_authenticated():
-										berkas.created_by_id = request.user.id
+									kode = request.POST.get('kode')
+									if kode == 'NPWP PRIBADI TDP':
+										d = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 									else:
-										berkas.created_by_id = request.COOKIES['id_pemohon']
-									berkas.save()
-									p.berkas_npwp = berkas
-									p.save()
-									d.berkas_npwp_pemohon = berkas
-									d.save()
+										d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
+									try:
+										p = Pemohon.objects.get(id=request.COOKIES['id_pemohon'])
+										berkas.nama_berkas = "NPWP Pribadi "+p.nama_lengkap
+										berkas.keterangan = "npwp pribadi"
+										if request.user.is_authenticated():
+											berkas.created_by_id = request.user.id
+										else:
+											berkas.created_by_id = request.COOKIES['id_pemohon']
+										berkas.save()
+										p.berkas_npwp = berkas
+										p.save()
+										d.berkas_npwp_pemohon = berkas
+										d.save()
 
-									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-											{'status_upload': 'ok'},
-										]}
+										data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+												{'status_upload': 'ok'},
+											]}
+									except ObjectDoesNotExist:
+										data = {'Terjadi Kesalahan': [{'message': 'Pemohon tidak ada dalam daftar'}]}
 								except ObjectDoesNotExist:
-									data = {'Terjadi Kesalahan': [{'message': 'Pemohon tidak ada dalam daftar'}]}
+									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
 								data = json.dumps(data)
 								response = HttpResponse(data)
 						else:

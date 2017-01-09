@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import NomorIdentitasPengguna
-from izin.models import DetilTDP, RincianPerusahaan, IzinLain, PengajuanIzin
+from izin.models import DetilTDP, RincianPerusahaan, IzinLain, PengajuanIzin, KelompokJenisIzin
 from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm, IzinLainForm, PemegangSahamForm, DataPimpinanForm, PerusahaanCabangForm, BerkasForm
 from perusahaan.models import Legalitas, Perusahaan, PemegangSaham, DataPimpinan, KBLI
 from master.models import Berkas
@@ -20,11 +20,12 @@ def tdp_data_umum_perusahaan_cookie(request):
 			no_tdp = request.POST.get('no_tdp')
 			if data_umum_form.is_valid():
 				p = data_umum_form.save(commit=False)
-				jbu = request.POST.get('jenis_badan_usaha')
-				if jbu == 2:
-					p.jenis_badan_usaha_id = 2
-				else:
-					p.jenis_badan_usaha_id = 1
+				# jbu = request.POST.get('jenis_badan_usaha')
+				k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+				if k.id == 25:
+					p.nomor_tdp_kantor_pusat = 1
+				elif k.id == 26:
+					p.nomor_tdp_kantor_pusat = 2
 				# if onoffkantorcabang == 'on':
 				# 	p.nomor_tdp_kantor_pusat = no_tdp
 				p.save()
@@ -106,9 +107,9 @@ def tdp_data_kegiatan_pt_cookie(request):
 					rp = rincianperusahaan_form.save(commit=False)
 					rp.detil_tdp_id = p.id
 					rp.save()
-					data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
-					data = json.dumps(data)
-					response = HttpResponse(data)
+				data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
+				data = json.dumps(data)
+				response = HttpResponse(data)
 			else:
 				data = data_kegiatan_form.errors.as_json()
 				response = HttpResponse(data)
@@ -981,6 +982,14 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 			legalitas_6 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=6).last()
 			legalitas_7 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=7).last()
 
+			if pemohon_:
+				npwp_pribadi = pemohon_.berkas_npwp
+				if npwp_pribadi:
+					url_berkas.append(npwp_pribadi.berkas.url)
+					id_elemen.append('npwp_pribadi')
+					nm_berkas.append(npwp_pribadi.nama_berkas)
+					id_berkas.append(npwp_pribadi.id)
+
 			if berkas_:
 				neraca_perusahaan = berkas_.filter(keterangan='Neraca Perusahaan '+perusahaan_.npwp).last()
 				if neraca_perusahaan:
@@ -1195,8 +1204,12 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				email_perusahaan = perusahaan_.email
 			data_perusahaan = {'perusahaan': {'npwp_perusahaan':npwp_perusahaan, 'nama_perusahaan':nama_perusahaan, 'alamat_lengkap_perusahaan':alamat_lengkap_perusahaan, 'kode_pos_perusahaan':kode_pos_perusahaan, 'telephone_perusahaan':telephone_perusahaan, 'fax_perusahaan':fax_perusahaan, 'email_perusahaan':email_perusahaan}}
 			# #### data umum perusahaan ####
-			jenis_badan_usaha = pengajuan_.jenis_badan_usaha.jenis_badan_usaha
-			status_perusahaan = pengajuan_.status_perusahaan.status_perusahaan
+			jenis_badan_usaha = ""
+			if pengajuan_.jenis_badan_usaha:
+				jenis_badan_usaha = pengajuan_.jenis_badan_usaha.jenis_badan_usaha
+			status_perusahaan = ""
+			if pengajuan_.status_perusahaan:
+				status_perusahaan = pengajuan_.status_perusahaan.status_perusahaan
 			jumlah_bank = pengajuan_.jumlah_bank
 			nasabah_utama_bank_1 = pengajuan_.nasabah_utama_bank_1
 			nasabah_utama_bank_2 = pengajuan_.nasabah_utama_bank_2
