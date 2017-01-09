@@ -281,6 +281,7 @@ function load_berkas(id_pengajuan){
             // console.log(url)
             $('#load-'+respon.elemen[i]).html(url)
             $('#field-'+respon.elemen[i]+' .berkas_kosong').prop('required',false);
+            // $('#field-'+respon.elemen[i]+' .berkas_kosong').val(__base_url__+respon.berkas[i]);
             $('#field-'+respon.elemen[i]).hide()
             $('#checkbox-'+respon.elemen[i]).prop('checked', true); 
             img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'

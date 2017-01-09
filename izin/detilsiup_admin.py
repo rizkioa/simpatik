@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
-from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
+from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
 from perusahaan.models import Perusahaan, KBLI
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
@@ -106,7 +106,12 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
 		pengajuan_siup = len(DetilSIUP.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
 		pengajuan_reklame = len(DetilReklame.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_reklame': pengajuan_reklame }
+		pengajuan_tdp = len(DetilTDP.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
+		pengajuan_uijk = len(DetilIUJK.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
+		pengajuan_imb = len(DetilIMB.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
+		pengajuan_ho = len(DetilHO.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
+		pengajuan_huller = len(DetilHuller.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
+		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_reklame': pengajuan_reklame, 'pengajuan_tdp': pengajuan_tdp, 'pengajuan_uijk':pengajuan_uijk, 'pengajuan_imb':pengajuan_imb, 'pengajuan_ho':pengajuan_ho, 'pengajuan_huller':pengajuan_huller }
 		return HttpResponse(json.dumps(data))
 
 	def ajax_load_pengajuan_siup(self, request, id_pengajuan_):

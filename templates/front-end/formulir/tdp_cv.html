@@ -82,15 +82,15 @@
   
 <div id="rootwizard" class="tab-container tab-wizard">
   <ul class="nav nav-tabs nav-justified">
-    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">STAP #1</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">STAP #2</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">STAP #3</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">STAP #4 </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">STAP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">STAP #6</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
-    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">STAP #7</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
-    <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">STAP #8</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
-    <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">STAP #9</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
+    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">STEP #1</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">STEP #2</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">STEP #3</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">STEP #4 </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">STEP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">STEP #6</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">STEP #7</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+    <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">STEP #8</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
+    <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">STEP #9</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane" id="tab1"> 
@@ -243,20 +243,20 @@
                   load_berkas($.cookie('id_pengajuan'))
                   var f = 'form-'
                   frm1 = $('#'+f+'neraca_perusahaan');
-                  frm2 = $('#'+f+'ijin_usaha');
+                  // frm2 = $('#'+f+'ijin_usaha');
                   frm3 = $('#'+f+'ktp');
                   frm4 = $('#'+f+'npwp_perusahaan');
                   frm5 = $('#'+f+'akta_pendirian');
                   frm6 = $('#'+f+'akta_perubahan');
-                  $('#next >').on('click', function() {
-                    if (!frm1.parsley().isValid() || !frm2.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate()){
-                      setTimeout(function(){
-                        toastr["warning"]("Terjadi kesalahan, lengkapi data yang kurang.")
-                        tab_index = '#rootwizard a[href="#tab'+(8)+'"]';
-                        $(tab_index).tab('show');
-                      }, 1000);
-                    }
-                  })
+                  // $('#next >').on('click', function() {
+                  //   if (!frm1.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate()){
+                  //     setTimeout(function(){
+                  //       toastr["warning"]("Terjadi kesalahan, lengkapi data yang kurang.")
+                  //       tab_index = '#rootwizard a[href="#tab'+(8)+'"]';
+                  //       $(tab_index).tab('show');
+                  //     }, 1000);
+                  //   }
+                  // })
                 }
                 if($current >= $total) {
                     load_konfirmasi_tdp($.cookie('id_pengajuan'))
@@ -574,8 +574,8 @@
                 $('#id_status_perusahaan').val(respon_data_umum.data.status_perusahaan).prop('selected',true).trigger("chosen:updated");
                 // bagian unit produksi
                 if (respon_data_umum.data.alamat_unit_produksi !== ""){
-                  $('.stap3_bagian_unit').prop('disabled', false).trigger("chosen:updated");
-                  $('#switch_stap3_bagi_unit_disabled').attr('checked', 1)
+                  $('.STEP3_bagian_unit').prop('disabled', false).trigger("chosen:updated");
+                  $('#switch_STEP3_bagi_unit_disabled').attr('checked', 1)
                   $('#id_alamat_unit_produksi').val(respon_data_umum.data.alamat_unit_produksi);
                   load_provinsi_(1, '#id_provinsi-4');
                   setTimeout(function(){
@@ -851,8 +851,8 @@
             else{
               $('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
               b = data.reverse()
-              $('#switch_stap6_lainnya_disabled').prop( "checked", true );
-              $('.stap6_lainnya').prop('disabled', false);
+              $('#switch_STEP6_lainnya_disabled').prop( "checked", true );
+              $('.STEP6_lainnya').prop('disabled', false);
               if (data){
                 for (var i = 0; i < a; i++){
                   id = b[i].id
