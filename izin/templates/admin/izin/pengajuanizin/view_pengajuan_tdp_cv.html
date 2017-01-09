@@ -1420,7 +1420,7 @@
 					    <tr>
 					      <td width="25%">Nomor KTP/Paspor</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ ktp }} / {{paspor}}</td>
+					      <td width="70%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nama</td>
@@ -1528,7 +1528,7 @@
 				    	<tr>
 				    		<td>Status Penanaman Modal</td>
 				    		<td>:</td>
-				    		<td>{{pengajuan.jenis_penanaman_modal.jenis_penanaman_modal}}</td>
+				    		<td>{% if pengajuan.jenis_penanaman_modal %}{{pengajuan.jenis_penanaman_modal.jenis_penanaman_modal}}{% endif %}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Tanggal Pendirian</td>
@@ -1543,12 +1543,12 @@
 				    	<tr>
 				    		<td>Jangka Waktu Berdirinya Perusahaan</td>
 				    		<td>:</td>
-				    		<td>{{pengajuan.jangka_waktu_berdiri}}</td>
+				    		<td>{{pengajuan.jangka_waktu_berdiri|default_if_none:'-'}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Bentuk Kerja Sama</td>
 				    		<td>:</td>
-				    		<td>{{pengajuan.bentuk_kerjasama.bentuk_kerjasama}}</td>
+				    		<td>{% if pengajuan.bentuk_kerjasama %}{{pengajuan.bentuk_kerjasama.bentuk_kerjasama}}{% endif %}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Merk Dagang</td>

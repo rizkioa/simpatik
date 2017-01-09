@@ -302,7 +302,7 @@ class IzinAdmin(admin.ModelAdmin):
 		elif obj.kelompok_jenis_izin.id == 26:
 			link_ = reverse('admin:view_pengajuan_tdp_cv', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
-				<a href="%s" target="_blank" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
+				<a href="%s" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
 		if self.request.user.groups.filter(name='Operator'):
 			if obj.status == 4:

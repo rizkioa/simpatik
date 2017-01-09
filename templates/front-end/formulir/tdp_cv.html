@@ -108,7 +108,7 @@
     </div>
     <!-- Data kegiatan Perusahaan -->
     <div class="tab-pane" id="tab4">
-      {% include 'front-end/include/formulir_tdp_pt/data_kegiatan_perusahaan.html' %}
+      {% include 'front-end/include/formulir_tdp_cv/data_kegiatan_perusahaan.html' %}
     </div>
     <!-- Legalitas Perusahaan -->
     <div class="tab-pane" id="tab5">
@@ -315,7 +315,7 @@
     function next_tab(btn){
       var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
       var frm = $('form[name="step'+ index +'"]');
-      console.log(frm)
+      // console.log(frm)
       frm.parsley().validate();
       if (frm.parsley().isValid()) {
         $(".tab-content").mLoading();
