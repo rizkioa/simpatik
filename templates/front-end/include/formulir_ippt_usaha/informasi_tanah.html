@@ -110,6 +110,7 @@
         </div>
       </div>
     </div>
+
     <div class="row">
       <label class="col-sm-2 control-label">Persil</label> 
       <div class="form-group">
@@ -136,48 +137,256 @@
 
     <div class="row">
       <label class="col-sm-2 control-label">Penggunaan Sekarang</label> 
-
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Sawah</label>
-        <div class="col-sm-2">
-          <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
-            <span class="input-group-addon">
-              <span>M&sup2;</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <label for="input01" class="col-sm-2 control-label"></label>
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Tegal</label>
-        <div class="col-sm-2">
-          <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
-            <span class="input-group-addon">
-              <span>M&sup2;</span>
-            </span>
-          </div>
-        </div>
-      </div>
-      <label for="input01" class="col-sm-2 control-label"></label>
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Tanah Kosong</label>
-        <div class="col-sm-2">
-          <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_luas" name="luas" required="" data-parsley-trigger="change">
-            <span class="input-group-addon">
-              <span>M&sup2;</span>
-            </span>
-          </div>
-        </div>
-      </div>
+      <table id="id_penggunaan_tanah_ippt" class="table table-bordered" style="width: 600px;">
+        <thead>
+          <tr>
+            <td>Penggunaan Tanah</td>
+            <td>Ukuran Penggunaan</td>
+            <td>Aksi</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>&nbsp</td>
+            <td>&nbsp</td>
+            <td>&nbsp</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
      <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Rencana Penggunaan</label>
       <div class="col-sm-7">
         <textarea class="form-control" rows="5" id="id_rencana_penggunaan" name="rencana_penggunaan" placeholder="Isi rencana penggunaan" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><u><b>Batas-batas</b></u></label>
+    </div>
+
+    <div class="form-group">
+      <label for="batas_utara" class="col-sm-2 control-label">Sebelah Utara</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_utara" id="id_batas_utara">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="batas_timur" class="col-sm-2 control-label">Sebelah Timur</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_timur" id="id_batas_timur">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="batas_selatan" class="col-sm-2 control-label">Sebelah Selatan</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_selatan" id="id_batas_selatan">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="batas_barat" class="col-sm-2 control-label">Sebelah Barat</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_barat" id="id_batas_barat">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><b>Status tanah sekarang</b></label>
+    </div>
+    <div class="row">
+      <label class="col-sm-4 control-label">a. Tanah pihak lain yang belum dikuasi pemohon</label> 
+    </div>
+    <div class="row">
+       <label for="input01" class="col-sm-3 control-label">1. Status Tanah</label>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Negara</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Kas Desa</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Hak Pakai</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Hak Guna Bangunan</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Hak Milik Sertifikat</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Jumlah</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 48px;"><strong>2. Pemegang Hak Semula</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 87px;"><strong>3. Dikuasai melalui</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-sm-4 control-label">b. Tanah pihak lain dikuasi pemohon</label> 
+    </div>
+    <div class="row">
+       <label for="input01" class="col-sm-3 control-label">1. Status Tanah</label>
+    </div>
+    <div class="row">
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Negara</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Kas Desa</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Hak Pakai</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Hak Guna Bangunan</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Hak Milik Sertifikat</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label">Jumlah</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 48px;"><strong>2. Pemegang Hak Semula</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 87px;"><strong>3. Dikuasai melalui</strong></label>
+        <div class="col-sm-4">
+          <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+        </div>
       </div>
     </div>
 </form>
