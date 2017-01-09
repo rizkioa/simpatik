@@ -1,214 +1,233 @@
-<form method="POST" name="step4" role="form" class="form-horizontal">
-	{% csrf_token %}  
-	<h3>DATA KEGIATAN PERUSAHAAN</h3>
-	<hr class="style14">
-	<h4>A. Jenis Kegiatan Usaha</h4>
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'tdp_pt_data_kegiatan_perusahaan_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}  
+  <h3>DATA KEGIATAN PERUSAHAAN</h3>
+  <hr class="style14">
+  <h4>A. Jenis Kegiatan Usaha</h4>
 
-	<div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Kegiatan Usaha Pokok</strong></label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
-      </div>
+  <!-- <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Kegiatan Usaha Pokok</strong></label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" name="kegiatan_usaha_pokok" id="id_kegiatan_usaha_pokok" required="" data-parsley-trigger="change">
     </div>
+  </div> -->
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kegiatan Usaha Lain : a.</label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
-      </div>
+  <div class="form-group" id="id-kegiatan_usaha_pokok">
+    <label class="col-sm-2 control-label"><strong>Kegiatan Usaha (KBLI)</strong></label>
+    <div class="col-sm-10">
+      <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="kegiatan_usaha_pokok" required="" data-parsley-trigger="change" id="id_kegiatan_usaha_pokok">
+      </select>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">b.</label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
-      </div>
+  <!-- <div class="form-group">
+    <label  class="col-sm-2 control-label"><strong>Komoditi/Produk Pokok</strong></label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" name="komoditi_produk_pokok" required="" data-parsley-trigger="change" id="id_komoditi_produk_pokok">
     </div>
+  </div>
 
-	<div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Komoditi/Produk Pokok</strong></label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
-      </div>
+  <div class="form-group">
+    <label  class="col-sm-2 control-label">Komoditi/Produk Lain : a.</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="id_komoditi_produk_lain_1" name="komoditi_produk_lain_1">
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Komoditi/Produk Lain : a.</label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
-      </div>
+  <div class="form-group">
+    <label  class="col-sm-2 control-label">b.</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="id_komoditi_produk_lain_2" name="komoditi_produk_lain_2">
     </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">b.</label>
-      <div class="col-sm-7">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
+  </div> -->
     
-	<div class="form-group">
-		<label for="input01" class="col-sm-5 control-label text-left">
-			<h4>B. Omset Perusahaan Per Tahun (setelah perusahan beroperasi)</h4>
-		</label>
-		<div class="col-sm-2 input-group">
-			<span class="input-group-addon">Rp.</span>
-	    	<input type="text" class="form-control" id="input01">
-        </div>
-	</div>
-
-	<h4>C. Modal dan Saham</h4>
-	<div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">1. Modal Dasar Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
+  <div class="form-group">
+    <label  class="col-sm-5 control-label text-left">
+      <h4>B. Omset Perusahaan Per Tahun (setelah perusahan beroperasi)</h4>
+    </label>
+    <div class="col-sm-4" style="padding-top: 16px;">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" id="id_omset_per_tahun" name="omset_per_tahun">
       </div>
+    </div>
+  </div>
 
-      <label for="input01" class="col-sm-2 control-label">4. Banyaknya saham (lembar)</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
+  <h4>C. Modal dan Saham</h4>
+  <div class="form-group">
+    <label  class="col-sm-2 control-label"><strong>1. Modal Dasar</strong></label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" id="id_modal_dasar" name="modal_dasar" required="" data-parsley-trigger="change">
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">2. Modal ditempatkan Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
+    <label  class="col-sm-2 control-label">4. Banyaknya saham (lembar)</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="id_banyaknya_saham" name="banyaknya_saham">
+    </div>
+  </div>
 
-      <label for="input01" class="col-sm-2 control-label">5. Nilai nominal per saham Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
+  <div class="form-group">
+    <label  class="col-sm-2 control-label"><strong>2. Modal ditempatkan</strong></label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" name="modal_ditempatkan" id="id_modal_ditempatkan" required="" data-parsley-trigger="change">
       </div>
     </div>
+
+    <label  class="col-sm-2 control-label">5. Nilai nominal per saham</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" name="nilai_nominal_per_saham" id="id_nilai_nominal_per_saham" >
+      </div>
+    </div>
+  </div>
     
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">3. Modal disetor Rp.</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
+  <div class="form-group">
+    <label  class="col-sm-2 control-label">3. Modal disetor</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" name="modal_disetor" id="id_modal_disetor">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label  class="col-sm-4 control-label text-left">
+      <h4>D. Total Asset (setelah perusahaan beroperasi) </h4>
+    </label>
+    <div class="col-sm-3" style="padding-top: 16px;">
+      <div class="input-group">
+        <span class="input-group-addon">Rp.</span>
+        <input type="text" class="form-control rupiah" id="id_total_aset" name="total_aset">
+      </div>
+    </div>
+  </div>
+
+  <h4>E. Jumlah Karyawan</h4>
+
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">WNI</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="id_jumlah_karyawan_wni" name="jumlah_karyawan_wni" required="" data-parsley-trigger="change" value="0" oninput="jumlah_karyawan()">
+    </div>
+
+    <label  class="col-sm-1 control-label">WNA</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="id_jumlah_karyawan_wna" name="jumlah_karyawan_wna" required="" data-parsley-trigger="change" value="0" oninput="jumlah_karyawan()">
+    </div>
+
+    <label  class="col-sm-1 control-label">Total</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="id_total_wni_wna" value="0" disabled="">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label  class="col-sm-5 control-label text-left">
+      <h4>F. Kedudukan dalam mata rantai kegiatan usaha</h4>
+    </label>
+    <div class="col-sm-3" style="padding-top: 14px;">
+      <select class="form-control chosen-select mb-10" name="kedudukan_kegiatan_usaha" id="id_kedudukan_kegiatan_usaha" >
+        <option value>-- Pilih Kedudukan Kegiatan Usaha --</option>
+        {% if kedudukan_kegiatan_usaha %}
+          {% for k in kedudukan_kegiatan_usaha %}
+            <option value="{{k.id}}">{{k.kedudukan_kegiatan_usaha}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label  class="col-sm-12 pull-left">
+      Jika Produsen, untuk perusahaan yang menggunakan mesin agar mengisi data:
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label  class="col-sm-3 control-label">a. Kapasitas terpasang</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="id_kapasitas_mesin_terpasang" name="kapasitas_mesin_terpasang">
+    </div>
+
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">satuan :</span>
+        <input type="text" class="form-control" id="id_satuan_kapasitas_mesin_terpasang" name="satuan_kapasitas_mesin_terpasang">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label  class="col-sm-3 control-label">b. Kapasitas prosuksi per tahun</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="id_kapasitas_produksi_per_tahun" name="kapasitas_produksi_per_tahun">
+    </div>
+
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">satuan :</span>
+        <input type="text" class="form-control" id="id_satuan_kapasitas_produksi_per_tahun" name="satuan_kapasitas_produksi_per_tahun">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="presentase">
+    <label  class="col-sm-3 control-label">c. Kandungan Komponen produk :</label>
+    <div class="col-sm-3">
+      <div class="input-group presentase">
+        <span class="input-group-addon">lokal</span>
+        <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_kandungan_produk_lokal" name="presentase_kandungan_produk_lokal" onchange="total_n_a();" value="0">
       </div>
     </div>
 
-    <div class="form-group">
-		<label for="input01" class="col-sm-4 control-label text-left">
-			<h4>D. Total Asset (setelah perusahaan beroperasi) </h4>
-		</label>
-		<div class="col-sm-2 input-group">
-			<span class="input-group-addon">Rp.</span>
-	    	<input type="text" class="form-control" id="input01">
-        </div>
-	</div>
-
-	<h4>E. Jumlah Karyawan</h4>
-
-	<div class="form-group">
-      <label for="input01" class="col-sm-1 control-label">WNI</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-
-      <label for="input01" class="col-sm-1 control-label">WNA</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-
-      <label for="input01" class="col-sm-1 control-label">Total</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01" value="0" disabled="">
+    <div class="col-sm-3">
+      <div class="input-group presentase">
+        <span class="input-group-addon">Impor </span>
+        <input max="100" min="0" type="text" class="form-control touchspin" data-min='0' data-max="100" data-step="0.1" data-decimals="2" data-boostat="5" data-maxboostedstep="10" data-postfix="%" id="id_presentase_kandungan_produk_import" name="presentase_kandungan_produk_import" onchange="total_n_a();" value="0">
       </div>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-4 control-label text-left">
-      	<h4>F. Kedudukan dalam mata rantai kegiatan usaha</h4>
-      </label>
-      <div class="col-sm-3" style="padding-top: 14px;">
-        <select class="form-control chosen-select mb-10">
-          <option>Produsen</option>
-          <option>Sub Distributor</option>
-          <option>Eksportir</option>
-          <option>Distributor/ Wholesaler/ Grosir</option>
-          <option>Importir</option>
-          <option>Pengecer</option>
-          <option>Agen</option>
-        </select>
-      </div>
+  <div class="form-group">
+    <label  class="col-sm-3 control-label">
+      Jika Pengecer. sebutkan jenis usaha
+    </label>
+    <div class="col-sm-3">
+      <select class="form-control chosen-select mb-10" name="jenis_pengecer" id="id_jenis_pengecer">
+        <option value>-- Pilih Jenis Pengecer --</option>
+        {% if jenis_pengecer %}
+          {% for j in jenis_pengecer %}
+            <option value="{{j.id}}">{{j.jenis_pengecer}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-5 control-label">
-      	Jika Produsen, untuk perusahaan yang menggunakan mesin agar mengisi data:
-      </label>
+  <h4>DATA KHUSUS PERUSAHAAN</h4>
+  <div class="form-group">
+    <label  class="col-sm-2 control-label">
+      Jenis Perusahaan
+    </label>
+    <div class="col-sm-3">
+      <select class="form-control chosen-select mb-10" name="jenis_perusahaan" id="id_jenis_perusahaan" >
+        <option value>-- Pilih Jenis Perusahaan --</option>
+        {% if jenis_perusahaan %}
+          {% for j in jenis_perusahaan %}
+            <option value="{{j.id}}">{{j.jenis_perusahaan}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="input01" class="col-sm-3 control-label">a. Kapasitas terpasang</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-
-      <label for="input01" class="col-sm-1 control-label">satuan :</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-3 control-label">b. Kapasitas prosuksi per tahun</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-
-      <label for="input01" class="col-sm-1 control-label">satuan :</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-3 control-label">c. Kandungan Komponen produk : lokal</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-        <label>%,</label>
-      </div>
-
-      <label for="input01" class="col-sm-1 control-label">Impor :</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="input01">
-        <label>%</label>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-3 control-label">
-      	Jika Pengecer. sebutkan jenis usaha
-      </label>
-      <div class="col-sm-3">
-        <select class="form-control chosen-select mb-10">
-        	<option>Swalayan/ supermarket</option>
-        	<option>Toserba/ Department store</option>
-        	<option>Toko/kios lainnya</option>
-        </select>
-      </div>
-    </div>
-
-    <h4>DATA KHUSUS PERUSAHAAN</h4>
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">
-      	Jenis Perusahaan
-      </label>
-      <div class="col-sm-3">
-        <select class="form-control chosen-select mb-10">
-        	<option>swasta</option>
-        	<option>swasta tbk/ go public</option>
-        	<option>persero</option>
-        	<option>persero tbk/ go public</option>
-        	<option>perusahaan daerah</option>
-        	<option>perusahaan daerah tbk/ go public</option>
-        </select>
-      </div>
-    </div>
-
-    <br>
-    <br>
-    <br>
+  <br>
+  <br>
+  <br>
 </form>
