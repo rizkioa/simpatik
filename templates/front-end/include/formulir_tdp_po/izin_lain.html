@@ -1,68 +1,40 @@
-<form method="POST" name="step6" role="form" class="form-horizontal">
+<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
 {% csrf_token %}
     <h3>IZIN-IZIN DAN LEGALITAS LAINNYA</h3>
     <hr class="style14">
     
-    <label class="checkbox checkbox-custom-alt" style="margin-left: 12px; padding-bottom: 10px;">
-		<input type="checkbox" id="switch_izin_lain"><i></i> Ada
-	</label>
+    <!-- <div class="row"> 
+      <div class="col-sm-7" style="padding-bottom: 10px; padding-top: 8px;">
+        <div class="onoffswitch labeled greensea inline-block">
+          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_stap6_lainnya_disabled" >
+          <label class="onoffswitch-label" for="switch_stap6_lainnya_disabled">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+    </div> -->
 
-	<div class="panel panel-darkgray">
-		<div class="panel-body">
-			<div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label">Jenis Izin</label>
-		      <div class="col-sm-7">
-		        <select class="form-control chosen-select mb-10" id="izin_lain_jenis_izin">
-		          <option>-- Pilih Izin --</option>
-		        </select>
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label">No. Izin</label>
-		      <div class="col-sm-7">
-		        <input type="text" class="form-control" id="izin_lain_no_izin">
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label">Dikeluarkan oleh</label>
-		      <div class="col-sm-7">
-		        <input type="text" class="form-control" id="izin_lain_dikeluarkan">
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label">Tanggal Dikeluarkan</label>
-		      <div class="col-sm-5">
-		        <div class="input-group datepicker w-360 mt-10" data-format="L">
-		          <input type="text" class="form-control" id="izin_lain_tanggal_keluar">
-		          <span class="input-group-addon">
-		            <span class="fa fa-calendar"></span>
-		          </span>
-		        </div>
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label">Masa Berlaku</label>
-		      <div class="col-sm-4">
-		        <input type="text" class="form-control" id="izin_lain_masa_berlaku">
-		      </div>
-		      <label for="input01" class="col-sm-2 control-label text-left">Tahun</label>
-		    </div>
-		    
-		    <div class="form-group">
-		    	<div class="col-md-12">
-		    		<button type="button" class="btn btn-danger pull-right" id="izin_lain_simpan">Simpan</button>
-		    	</div>
-		    </div>
-		</div>
-	</div>
-
-	<div class="col-md-12">
-		<label>Tambah Izin Lainnya..</label>
-	</div>
+    <table class="table table-striped" id="table_izin_lain">
+	    <thead>
+	        <tr>
+	        	<th>No.</th>
+	            <th>Jenis Izin</th>
+	            <th>No. Izin</th>
+	            <th>Dikeluarkan oleh</th>
+	            <th>Tanggal keluar</th>
+	            <th>Masa berkalu</th>
+	            <th>Aksi</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    </tbody>
+	</table>
+	
+	<br>
+	<br>
+	<br>
+	<button onclick="add_izin_lain()" type="button" data-toggle="modal" data-target="#legalitas_lain_modal" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah izin lain...</button>
 
 	<br>
 	<br>

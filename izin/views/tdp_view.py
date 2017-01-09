@@ -982,6 +982,14 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 			legalitas_6 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=6).last()
 			legalitas_7 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=7).last()
 
+			if pemohon_:
+				npwp_pribadi = pemohon_.berkas_npwp
+				if npwp_pribadi:
+					url_berkas.append(npwp_pribadi.berkas.url)
+					id_elemen.append('npwp_pribadi')
+					nm_berkas.append(npwp_pribadi.nama_berkas)
+					id_berkas.append(npwp_pribadi.id)
+
 			if berkas_:
 				neraca_perusahaan = berkas_.filter(keterangan='Neraca Perusahaan '+perusahaan_.npwp).last()
 				if neraca_perusahaan:
@@ -1196,8 +1204,12 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				email_perusahaan = perusahaan_.email
 			data_perusahaan = {'perusahaan': {'npwp_perusahaan':npwp_perusahaan, 'nama_perusahaan':nama_perusahaan, 'alamat_lengkap_perusahaan':alamat_lengkap_perusahaan, 'kode_pos_perusahaan':kode_pos_perusahaan, 'telephone_perusahaan':telephone_perusahaan, 'fax_perusahaan':fax_perusahaan, 'email_perusahaan':email_perusahaan}}
 			# #### data umum perusahaan ####
-			jenis_badan_usaha = pengajuan_.jenis_badan_usaha.jenis_badan_usaha
-			status_perusahaan = pengajuan_.status_perusahaan.status_perusahaan
+			jenis_badan_usaha = ""
+			if pengajuan_.jenis_badan_usaha:
+				jenis_badan_usaha = pengajuan_.jenis_badan_usaha.jenis_badan_usaha
+			status_perusahaan = ""
+			if pengajuan_.status_perusahaan:
+				status_perusahaan = pengajuan_.status_perusahaan.status_perusahaan
 			jumlah_bank = pengajuan_.jumlah_bank
 			nasabah_utama_bank_1 = pengajuan_.nasabah_utama_bank_1
 			nasabah_utama_bank_2 = pengajuan_.nasabah_utama_bank_2
