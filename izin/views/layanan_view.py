@@ -54,27 +54,27 @@ def layanan_izin_lokasi(request, extra_context={}):
 # 	return response
 
 def layanan_ippt_rumah(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=38)
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IPPT-Rumah")
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Perubahan Penggunaan Tanah (IPPT) - Rumah"})
 	extra_context.update({'title_short': "Izin Perubahan Penggunaan Tanah (IPPT) - Rumah"})
 	extra_context.update({'link_formulir': reverse("formulir_ippt_rumah") })
 	extra_context.update({'id_jenis_izin': "15" })
-	extra_context.update({'id_kelompok_jenis_izin': "38" })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
 	response = render(request, "front-end/layanan/ippt_rumah.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value="38")
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
 	return response
 
 def layanan_ippt_usaha(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=39)
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IPPT-Usaha")
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Perubahan Penggunaan Tanah (IPPT) - Usaha"})
 	extra_context.update({'title_short': "Izin Perubahan Penggunaan Tanah (IPPT) - Usaha"})
 	extra_context.update({'link_formulir': reverse("formulir_ippt_usaha") })
 	extra_context.update({'id_jenis_izin': "15" })
-	extra_context.update({'id_kelompok_jenis_izin': "39" })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
 	response = render(request, "front-end/layanan/ippt_usaha.html", extra_context)
-	response.set_cookie(key='id_kelompok_izin', value="39")
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
 	return response
 
 def layanan_tdp_pt(request, extra_context={}):

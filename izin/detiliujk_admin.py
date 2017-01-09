@@ -4,10 +4,10 @@ from django.db.models import Q
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 
-from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat
+from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey
 from izin.utils import formatrupiah, JENIS_PERMOHONAN
 from accounts.models import NomorIdentitasPengguna
-from kepegawaian.models import UnitKerja
+from kepegawaian.models import UnitKerja, Pegawai
 
 
 class DetilIUJKAdmin(admin.ModelAdmin):
@@ -19,6 +19,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
+			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
 
@@ -52,6 +53,19 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.legalitas.filter(jenis_legalitas_id=2).last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+
+			if pengajuan_.status == 8:
+				try:
+					try:
+						s = Survey.objects.get(pengajuan=pengajuan_)
+					except Survey.MultipleObjectsReturned:
+						s = Survey.objects.filter(pengajuan=pengajuan_).last()
+						print s.survey_anggotatim.all()
+				except ObjectDoesNotExist:
+					s = ''
+
+				extra_context.update({'tim_teknis': s })
+				
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
@@ -82,6 +96,11 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 					extra_context.update({'riwayat': riwayat_ })
 			except ObjectDoesNotExist:
 				pass
+
+			# if request.POST:
+			# 	btn = request.POST.get('simpan')
+			# 	if btn == 'tambahkan_survey':
+			# 		pass
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_iujk.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))

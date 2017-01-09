@@ -94,22 +94,22 @@
 
   <div class="tab-pane" id="tab5">
     <!-- Konfirmasi -->
-    {% include 'front-end/include/formulir_ippt_usaha/konfirmasi.html' %}
+    {% include 'front-end/include/formulir_ippt_usaha/rencana_pembangunan.html' %}
   </div>
 
   <div class="tab-pane" id="tab6">
     <!-- Identitas perusahaan -->
-    {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+    {% include 'front-end/include/formulir_ippt_usaha/pembiayaan_dan_pemodalan.html' %}
   </div>
 
   <div class="tab-pane" id="tab7">
     <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_ippt_usaha/identitas_perusahaan.html' %}
+    {% include 'front-end/include/formulir_ippt_usaha/kebutuhan_lainnya.html' %}
   </div>
 
   <div class="tab-pane" id="tab8">
     <!-- Data Kegiatan Gangguan -->
-    {% include 'front-end/include/formulir_ippt_usaha/informasi_tanah.html' %}
+    {% include 'front-end/include/formulir_ippt_usaha/perumahan_dimiliki.html' %}
   </div>
 
   <div class="tab-pane" id="tab9">
@@ -167,7 +167,7 @@
                   })
                 }
               }else{
-              if($current == 4){
+              if($current == 9){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
@@ -502,3 +502,4 @@
     </script>
 
 {% endblock %}
+
