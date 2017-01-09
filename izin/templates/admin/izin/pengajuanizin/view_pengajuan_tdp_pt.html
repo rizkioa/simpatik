@@ -1496,7 +1496,7 @@
 					    <tr>
 					      <td width="25%">E-mail</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
+					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email|default_if_none:'-' }}</span></td>
 					    </tr>
 				    </table>
 				    <br>
@@ -1657,7 +1657,7 @@
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Total</td>
 						      <td>:</td>
-						      <td>{{jumlah_karyawan}} sdfsd</td>
+						      <td>{{jumlah_karyawan}}</td>
 						    </tr>
 						     <tr>
 						      <td><i>F. Kedudukan dalam mata rantai kegiatan usaha</i></td>
@@ -1672,22 +1672,22 @@
 						    <tr>
 						      <td style="padding-left:2%" width="25%">a. Kapasitas terpasang</td>
 						      <td>:</td>
-						      <td>{{pengajuan.kapasitas_mesin_terpasang}}, satuan : {{pengajuan.satuan_kapasitas_mesin_terpasang}}</td>
+						      <td>{{pengajuan.kapasitas_mesin_terpasang|default_if_none:'0'}}, satuan : {{pengajuan.satuan_kapasitas_mesin_terpasang}}</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:2%" width="25%">b. Kapasitas produksi per tahun</td>
 						      <td>:</td>
-						      <td>{{pengajuan.kapasitas_produksi_per_tahun}}, satuan : {{pengajuan.satuan_kapasitas_produksi_per_tahun}}</td>
+						      <td>{{pengajuan.kapasitas_produksi_per_tahun|default_if_none:'0'}}, satuan : {{pengajuan.satuan_kapasitas_produksi_per_tahun}}</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:2%" width="25%">c. Kandungan Komponen produk lokal</td>
 						      <td>:</td>
-						      <td>{{pengajuan.presentase_kandungan_produk_lokal}} %</td>
+						      <td>{{pengajuan.presentase_kandungan_produk_lokal|default_if_none:'0'}} %</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:2%" width="25%">d. Kandungan Komponen produk import</td>
 						      <td>:</td>
-						      <td>{{pengajuan.presentase_kandungan_produk_import}} %</td>
+						      <td>{{pengajuan.presentase_kandungan_produk_import|default_if_none:'0'}} %</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Jika Pengecer, jenis usaha</td>

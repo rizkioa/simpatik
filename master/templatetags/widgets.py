@@ -91,3 +91,14 @@ def hasil(value):
 	elif value == 3:
 		string = '<i class="fa fa-times-circle"></i>'
 	return string
+
+@register.filter(name='true_or_false')
+def true_false(args):
+	string = '<i class="fa fa-times-circle" style="color: red"></i>'
+	if args == True:
+		string = '<i class="fa fa-check-circle" style="color: green"></i>'
+	# elif arg == False:
+	# 	string = '<i class="fa fa-times-circle" style="color: red"></i>'
+
+
+	return string

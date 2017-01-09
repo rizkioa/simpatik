@@ -212,7 +212,7 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
-		      	window.location.replace('{% url 'admin:izin_pengajuanizin_changelist' %}');
+		      	window.location.replace('{% url 'admin:verifikasi' %}');
 		        $.ajax({
 		        	url: '{% url 'tdp_pt_done' %}',
 		        	success: function(response) {
