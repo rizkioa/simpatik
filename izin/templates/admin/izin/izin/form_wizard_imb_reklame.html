@@ -295,7 +295,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace('{% url 'admin:izin_detilimbpapanreklame_changelist' %}/view-pengajuan-imb-reklame/'+id_pengajuan_);
+              window.location.replace('{% url 'admin:verifikasi' %}');
             }
           });
         }

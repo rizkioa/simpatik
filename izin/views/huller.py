@@ -810,72 +810,87 @@ def cetak_huller(request, id_pengajuan_):
       return HttpResponse(template.render(ec))
 
 def cetak_bukti_pendaftaran_huller(request, id_pengajuan_):
-  extra_context = {}
-  if id_pengajuan_:
-    pengajuan_ = DetilHuller.objects.get(id=id_pengajuan_)
-    data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_)
-   
-    motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
-    motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
-    diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
-    rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
-    flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
-    gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
-    dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
-    screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
-    mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
-    mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
-    paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
-    mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
-    grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
-    kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
+    extra_context = {}
+    if id_pengajuan_:
+      pengajuan_ = DetilHuller.objects.get(id=id_pengajuan_)
+      data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_)
 
-    if pengajuan_.perusahaan != '':
-      alamat_ = ""
-      alamat_perusahaan_ = ""
-      if pengajuan_.pemohon:
-        if pengajuan_.pemohon.desa:
-          alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-          extra_context.update({ 'alamat_pemohon': alamat_ })
-        extra_context.update({ 'pemohon': pengajuan_.pemohon })
-        paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
-        ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
-        extra_context.update({ 'paspor': paspor_ })
-        extra_context.update({ 'ktp': ktp_ })
-      if pengajuan_.perusahaan:
-        if pengajuan_.perusahaan.desa:
-          alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-          extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
-        extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-        syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
+      try:
+        motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
+        motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
+        diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
+        rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
+        flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
+        gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
+        dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
+        screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
+        mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
+        mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
+        paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
+        mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
+        grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
+        kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
+      except ObjectDoesNotExist:
+        motor_bensin = ""
+        motor_diesel = ""
+        diesel_generating_set = ""
+        rubber_roll = ""
+        flash_type = ""
+        gedogan = ""
+        dimple_plate = ""
+        screen = ""
+        mesin_slip_horisontal = ""
+        mesin_slip_vertikal = ""
+        paddy_cleaner = ""
+        mesin_polis = ""
+        grader = ""
+        kualitas = ""
+      if pengajuan_.perusahaan != '':
+        alamat_ = ""
+        alamat_perusahaan_ = ""
+        if pengajuan_.pemohon:
+          if pengajuan_.pemohon.desa:
+            alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+            extra_context.update({ 'alamat_pemohon': alamat_ })
+          extra_context.update({ 'pemohon': pengajuan_.pemohon })
+          paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+          ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+          extra_context.update({ 'paspor': paspor_ })
+          extra_context.update({ 'ktp': ktp_ })
+        if pengajuan_.perusahaan:
+          if pengajuan_.perusahaan.desa:
+            alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+            extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+          extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+          syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
 
-      extra_context.update({ 'motor_bensin': motor_bensin })
-      extra_context.update({ 'motor_diesel': motor_diesel })
-      extra_context.update({ 'diesel_generating_set': diesel_generating_set })
-      extra_context.update({ 'rubber_roll': rubber_roll })
-      extra_context.update({ 'flash_type': flash_type })
-      extra_context.update({ 'gedogan': gedogan })
-      extra_context.update({ 'dimple_plate': dimple_plate })
-      extra_context.update({ 'screen': screen })
-      extra_context.update({ 'mesin_slip_horisontal': mesin_slip_horisontal })
-      extra_context.update({ 'mesin_slip_vertikal': mesin_slip_vertikal })
-      extra_context.update({ 'paddy_cleaner': paddy_cleaner })
-      extra_context.update({ 'mesin_polis': mesin_polis })
-      extra_context.update({ 'grader': grader })
-      extra_context.update({ 'kualitas': kualitas })
-      
-      extra_context.update({ 'pengajuan': pengajuan_ })
-      extra_context.update({ 'syarat': syarat })
-      extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
-      extra_context.update({ 'created_at': pengajuan_.created_at })
-      response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+        extra_context.update({ 'motor_bensin': motor_bensin })
+        extra_context.update({ 'motor_diesel': motor_diesel })
+        extra_context.update({ 'diesel_generating_set': diesel_generating_set })
+        extra_context.update({ 'rubber_roll': rubber_roll })
+        extra_context.update({ 'flash_type': flash_type })
+        extra_context.update({ 'gedogan': gedogan })
+        extra_context.update({ 'dimple_plate': dimple_plate })
+        extra_context.update({ 'screen': screen })
+        extra_context.update({ 'mesin_slip_horisontal': mesin_slip_horisontal })
+        extra_context.update({ 'mesin_slip_vertikal': mesin_slip_vertikal })
+        extra_context.update({ 'paddy_cleaner': paddy_cleaner })
+        extra_context.update({ 'mesin_polis': mesin_polis })
+        extra_context.update({ 'grader': grader })
+        extra_context.update({ 'kualitas': kualitas })
+        
+        extra_context.update({ 'pengajuan': pengajuan_ })
+        extra_context.update({ 'syarat': syarat })
+        extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+        extra_context.update({ 'created_at': pengajuan_.created_at })
+        response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+      else:
+        response = HttpResponseRedirect(url_)
+        return response
     else:
       response = HttpResponseRedirect(url_)
-      return response
-  else:
-    response = HttpResponseRedirect(url_)
-    return response 
+      return response 
 
-  template = loader.get_template("front-end/include/formulir_huller/cetak_bukti_pendaftaran.html")
-  ec = RequestContext(request, extra_context)
-  return HttpResponse(template.render(ec))
+    template = loader.get_template("front-end/include/formulir_huller/cetak_bukti_pendaftaran.html")
+    ec = RequestContext(request, extra_context)
+    return HttpResponse(template.render(ec))

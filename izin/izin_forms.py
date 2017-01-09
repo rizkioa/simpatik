@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller,PenggunaaTanahIPPTUsaha
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -200,5 +200,30 @@ class MesinPerusahaanForm(forms.ModelForm):
 	class Meta:
 		model = MesinPerusahaan
 		fields = ('detil_huller','mesin_huller','type_model','pk_mesin','buatan','jumlah_unit','kapasitas')
-
 		
+class InformasiTanahIPPTUsahaForm(forms.ModelForm):
+	"""docstring for InformasiTanahForm"""
+	class Meta:
+		model = InformasiTanah
+		fields = ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil','rencana_penggunaan','batas_utara','batas_timur','batas_selatan','batas_barat','tanah_negara_belum_dikuasai','tanah_kas_desa_belum_dikuasai','tanah_hak_pakai_belum_dikuasai','tanah_hak_guna_bangunan_belum_dikuasai','tanah_hak_milik_sertifikat_belum_dikuasai','tanah_adat_belum_dikuasai','pemegang_hak_semula_dari_tanah_belum_dikuasai','tanah_belum_dikuasai_melalui','tanah_negara_sudah_dikuasai','tanah_kas_desa_sudah_dikuasai','tanah_hak_pakai_sudah_dikuasai','tanah_hak_guna_bangunan_sudah_dikuasai','tanah_hak_milik_sertifikat_sudah_dikuasai','tanah_adat_sudah_dikuasai','pemegang_hak_semula_dari_tanah_sudah_dikuasai','tanah_sudah_dikuasai_melalui')
+
+class PenggunaaTanahIPPTUsahaForm(forms.ModelForm):
+	"""docstring for PenggunaaTanahIPPTUsahaForm"""
+	class Meta:
+		model = PenggunaaTanahIPPTUsaha
+		fields = ('nama_penggunaan','ukuran_penggunaan',)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

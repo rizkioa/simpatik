@@ -122,8 +122,8 @@ urlpatterns = [
     # url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
     
     #cetak Penggilingan padi
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', huller.cetak_huller, name='cetak_huller'),
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', huller.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', huller.cetak_huller, name='cetak_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', huller.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     
     #cetak reklame
     url(r'^layanan/reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_reklame, name='cetak_reklame'),

@@ -22,6 +22,7 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon
+from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahIPPTUsahaForm
 
 def formulir_ippt_usaha(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
