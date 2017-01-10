@@ -145,7 +145,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			extra_context.update({ 'pegawai' : pegawai })
 			extra_context.update({ 'qs' : queryset_ })
 			try:
-				status = queryset_.survey_anggotatim.get(pegawai_id=request.user.id)
+				status = queryset_.survey_iujk.get(pegawai_id=request.user.id)
 				status = status.koordinator
 			except ObjectDoesNotExist:
 				status = False
@@ -171,7 +171,7 @@ class SurveyAdmin(admin.ModelAdmin):
 							alamat_ = str(perusahaan.alamat_perusahaan)+", Ds. "+str(perusahaan.desa)+", Kec. "+str(perusahaan.desa.kecamatan)+", "+str(perusahaan.desa.kecamatan.kabupaten)
 							extra_context.update({ 'alamat_perusahaan': alamat_ })
 			# print queryset_.survey_rekomendiasi.all()
-			rekom = queryset_.survey_rekomendiasi.all()
+			rekom = queryset_.survey_rekomendiasi.filter(created_by=request.user)
 
 			if rekom.exists():
 				rekom = rekom.last()
@@ -223,6 +223,7 @@ class SurveyAdmin(admin.ModelAdmin):
 					d = form_detil.save(commit=False)
 					d.survey_iujk_id = queryset_.id
 
+
 					if rekom:
 						form = RekomendasiForm(request.POST, instance=rekom)
 					else:
@@ -231,7 +232,8 @@ class SurveyAdmin(admin.ModelAdmin):
 					if form.is_valid():
 						f = form.save(commit=False)
 						f.survey_iujk_id = queryset_.id
-						f.unit_kerja_id = 11
+						# f.unit_kerja_id = 11
+						f.created_by = request.user
 
 						form_berkas = BerkasForm(request.POST, request.FILES)
 						if form_berkas.is_valid():
@@ -250,26 +252,27 @@ class SurveyAdmin(admin.ModelAdmin):
 							sent_ = 0
 							if r.created_by:
 								emailto = r.created_by.email
-								# print emailto
+								print emailto
 								subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
 								html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
 								sent_ = send_email_notifikasi(emailto, subject, html_content)
-								# print sent_
+								print sent_
 							if sent_ == 1:
 								messages.success(request, "Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
 							else:
 								messages.success(request, "Berhasil Disimpan")
 
-							# d.save()
-							# f.save()
+							d.save()
+							f.save()
 							
-							# queryset_.save()
+							queryset_.save()
 							return HttpResponseRedirect(reverse('admin:survey_selesai'))
 						elif btn == 'draft':
 							d.status = 6
 							f.status = 6
-							# d.save()
-							# f.save()
+							d.save()
+							print "HALO"
+							f.save()
 							
 							# queryset_.save()
 							messages.success(request, "Berhasil Disimpan Sebagai Draft")
