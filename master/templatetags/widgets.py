@@ -102,3 +102,27 @@ def true_false(args):
 
 
 	return string
+
+
+@register.filter(name='get_rekomendasi')
+def get_rekomendasi(qs_, user_):
+	string = ''
+	query = qs_.survey_rekomendiasi.filter(created_by_id=user_, status=1)
+	
+	if query.exists():
+		query = query.last()
+		string = query.rekomendasi
+
+	return string
+
+@register.filter(name='get_berkas')
+def get_berkas(qs_, user_):
+	string = ''
+	query = qs_.survey_rekomendiasi.filter(created_by_id=user_, status=1)
+	
+	if query.exists():
+		query = query.last()
+		if query.berkas:
+			string = '<a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src=\''+str(query.berkas.get_file_url())+'\' width=\'200\' />" data-placement="top" class="btn btn-rounded btn-success btn-sm" href="'+str(query.berkas.get_file_url())+'" target="_blank"> <i class="fa fa-paperclip" ></i>'+str(query.berkas)+'</a>'
+
+	return string

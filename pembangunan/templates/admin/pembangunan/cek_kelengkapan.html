@@ -381,7 +381,7 @@
               </tr>
             </thead>
             <tbody>
-              {% for q in qs.survey_anggotatim.all %}
+              {% for q in qs.survey_iujk.all %}
                 <tr>
                   <td>{{q.pegawai.username}}</td>
                   <td>[{{q.pegawai.unit_kerja}}] {{q.pegawai}}</td>
@@ -425,16 +425,18 @@
                   <th scope="col" class="">SKPD</th>
                   <th scope="col" class="">NAMA</th>
                   <th scope="col" class="">Rekomendasi/Saran</th>
+                  <th scope="col" class="">Lampiran</th>
               </tr>
             </thead>
             <tbody>
-             {% for q in qs.survey_anggotatim.all %}
-                <tr>
-                  <td>{{q.pegawai.unit_kerja}}</td>
-                  <td>{{q.pegawai}} [{{q.pegawai.username}}]</td>
-                  <td></td>
-                </tr>
-              {% endfor %}
+            {% for q in qs.survey_iujk.all %}
+              <tr>
+                <td>{{q.pegawai.unit_kerja}}</td>
+                <td>{{q.pegawai}} ({{q.pegawai.username}})</td>
+                <td>{{qs|get_rekomendasi:q.pegawai.id|safe}}</td>
+                <td>{{qs|get_berkas:q.pegawai.id|safe}}</td>
+              </tr>
+            {% endfor %}
             </tbody>
           </table>
         </div>

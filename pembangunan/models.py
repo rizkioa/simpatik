@@ -11,7 +11,7 @@ from master.models import MetaAtribut, Berkas
 
 class AnggotaTim(models.Model):
 	"""docstring for AnggotaTim"""
-	survey_iujk = models.ForeignKey(Survey, verbose_name='Data Survey', related_name="survey_anggotatim")
+	survey_iujk = models.ForeignKey(Survey, verbose_name='Data Survey', related_name="survey_iujk")
 	pegawai = models.ForeignKey(Pegawai, verbose_name='Pegawai')
 	koordinator = models.BooleanField(default=False, verbose_name="Apakah Koordinator?")
 
