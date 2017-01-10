@@ -446,9 +446,7 @@
     <!-- /tile -->
   </div>
 </div>
-
-{# if qs.status != 1 and  user|has_group:"Admin Pembangunan" #}
-{% if qs.status != 1 and  status_user %}
+{% if qs.status != 1 and status_user and rekom.status != 1 %}
 <div class="row">
   <div class="col-md-12">
     <!-- tile -->
@@ -702,9 +700,33 @@
             </div>
           </div>
           <h3>REKOMENDASI</h3>
-            {{rekom.rekomendasi|safe}}
-            {% if rekom.berkas %}
-            <a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+            {% if user|has_group:"Tim Teknis" %}
+              {% if rekom.status != 1 %}
+                <form class="form_rekomendasi" role="form" action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form_rekomendasi.as_p}}
+                {% if rekom.berkas %}
+                <p><a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" data-placement="top" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+                </p>
+                {% else %}
+                {{form_berkas.as_p}}
+                {% endif %}
+                  <hr>
+                  <button name="simpan" value="draft" class="btn btn-rounded btn-info btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Simpan & Draft</button>
+                  <button name="simpan" value="submit" class="btn btn-rounded btn-success btn-sm simpan"><i class="fa fa-paper-plane"></i> Simpan & Kirim </button>
+                  
+                </form>
+              {% else %}
+                {{rekom.rekomendasi|safe}}
+                {% if rekom.berkas %}
+                  <a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+                {% endif %}
+              {% endif %}
+            {% else %}
+              {{rekom.rekomendasi|safe}}
+              {% if rekom.berkas %}
+                <a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+              {% endif %}
             {% endif %}
         </div>
         <!-- /tile body -->

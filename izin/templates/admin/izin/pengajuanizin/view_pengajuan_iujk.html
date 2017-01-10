@@ -451,23 +451,23 @@
 								</div>
 							</div>
 
-							<section class="tile" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
+							<section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;">
 
                                 <!-- tile header -->
                                 <div class="tile-header">
-                                    <h1 class="custom-font"><strong>Tambah Survey Izin </strong></h1>
+                                    <h1 class="custom-font" style="color: white"><strong>Tambah Survey Izin </strong></h1>
                                 </div>
                                 <!-- /tile header -->
 
                                 <!-- tile body -->
                                 <div class="tile-body">
-                                    <form class="form-horizontal" role="form" action="{% url 'admin:save_survey_ajax' %}" method="POST" id="form-survey" data-parsley-validate novalidate >
+                                    <form class="form-horizontal" role="form" action="{% url 'admin:save_survey_ajax' %}" method="POST" id="form-survey-baru" data-parsley-validate novalidate>
                                     {% csrf_token %}
 									<input type="hidden" name="pengajuan_id" value="{{pengajuan.id}}"></input>
                                         <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-2 control-label">Pilih Koordinator</label>
+                                            <label for="inputEmail3" class="col-sm-2 control-label" style="color: white">Pilih Koordinator</label>
                                             <div class="col-sm-10">
-                                                <select class="form-control chosen-2" name="pegawai" required="" data-parsley-trigger="change">
+                                                <select class="form-control chosen-2" style="color: white" name="pegawai" required="" data-parsley-trigger="change">
 											    	<option value="">Nama Koordinator</option>
 											    	{% for s in pegawai_list %}
 											    		<option value="{{ s.id }}">{{ s }} [{{s.unit_kerja}}]</option>
@@ -486,14 +486,42 @@
 										        </div>
                                             </div>
                                         </div>
+                                    </form>
                                         <hr>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
-                                                <button type="submit" name="simpan" value="tambahkan_survey" class="btn btn-rounded btn-success btn-sm">Tambahkan Survey</button>
+                                                <!-- <button type="submit" name="simpan" value="tambahkan_survey" class="btn btn-rounded btn-success btn-sm">Tambahkan Survey</button> -->
+                                                <button name="simpan" value="tambahkan_survey" onclick="lakukan_survey();return false;" class="btn btn-rounded btn-success btn-sm">Tambahkan Survey</button>
                                             </div>
                                         </div>
-                                    </form>
+                                    
                                 </div>
+                                <script type="text/javascript">
+                                	var options = { 
+								        success:   showResponse,
+								        url     :  '{% url 'admin:save_survey_ajax' %}',     // override for form's 'action' attribute 
+								        type    :  'post',        // 'get' or 'post', override for form's 'method' attribute 
+								    };
+
+								    function lakukan_survey(){
+								        // $('#form-survey-baru').ajaxSubmit(options); 
+								        alert("HALO COY");
+								    }
+
+								    function showResponse(responseText, statusText, xhr, $form)  { 
+								        response = $.parseJSON(responseText)
+								        // console.log(response)
+								        if(response.success){
+								          toastr["success"](response.pesan)
+								          location.reload();
+								        }else{
+								          var key = Object.keys(response); // Mencari key json
+								          var str = key[0]
+								          
+								          toastr["error"](key[0]+' '+response[key[0]][0]['message'])
+								        }
+								    }
+                                </script>
                                 <!-- /tile body -->
 
                             </section>

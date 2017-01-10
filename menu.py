@@ -141,6 +141,21 @@ class CustomMenu(Menu):
                 ),
             ]
 
+        if request.user.groups.filter(name="Tim Teknis").exists():
+             menu_utama.children += [
+                 items.MenuItem(
+                        title='Daftar Survey',
+                        icon='fa fa-file-text', 
+                        url=reverse('admin:izin_survey_changelist'),                        
+                    ),
+                    items.MenuItem(
+                        title='Daftar Laporan',
+                        icon='fa fa-file-text', 
+                        url=reverse('admin:survey_selesai'),                        
+                    ),
+             ]
+
+
 
         if request.user.groups.filter(name="Kabid").exists():
             menu_utama.children += [
