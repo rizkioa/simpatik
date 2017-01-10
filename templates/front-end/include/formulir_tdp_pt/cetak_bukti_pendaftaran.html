@@ -40,6 +40,7 @@
         border-radius: 5px;
         background: white;
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        position: relative;
     }
     .subpage {
         padding: 0.5cm;
@@ -136,6 +137,12 @@
     }
     
     .tables tr:nth-child(even){background-color: #f2f2f2}
+    .printfooter{
+        position: absolute;
+        bottom: 0;
+        width: 723px;
+        padding-bottom: 30px;
+    }
 </style>
 <body>
     <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
@@ -321,11 +328,14 @@
                     </tr>
                 </table>
                 <br>
-                <hr class="style18">
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
+                <div class="printfooter">
+                    <hr class="style18">
+                    <i class="font" align="right">
+                        <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                        <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                    </i>
+                </div>
+                
             </div>    
         </div>
         <div class="page">
@@ -502,7 +512,7 @@
                         <td width="2%"></td>
                         <td width="23%">Total</td>
                         <td width="5%">:</td>
-                        <td width="70%">{{pengajuan_.jumlah_karyawan_wni}}+{{pengajuan_.jumlah_karyawan_wna}}</td>
+                        <td width="70%">{{total_karyawan}}</td>
                     </tr>
                     <tr>
                         <td width="2%" valign="top">F.</td>
@@ -516,13 +526,13 @@
                         <td width="2%" valign="top">a.</td>
                         <td width="23%" valign="top">Kapasitas terpasang</td>
                         <td width="5%" valign="top">:</td>
-                        <td width="70%" valign="top">{{pengajuan_.kapasitas_mesin_terpasang}}, satuan: {{pengajuan_.satuan_kapasitas_mesin_terpasang}}</td>
+                        <td width="70%" valign="top">{{pengajuan_.kapasitas_mesin_terpasang|default_if_none:"-"}}, satuan: {{pengajuan_.satuan_kapasitas_mesin_terpasang}}</td>
                     </tr>
                     <tr>
                         <td width="2%" valign="top">b.</td>
                         <td width="23%" valign="top">Kapasitas prosukdi per tahun</td>
                         <td width="5%" valign="top">:</td>
-                        <td width="70%" valign="top">{{pengajuan_.kapasitas_produksi_per_tahun}}, satuan: {{pengajuan_.satuan_kapasitas_produksi_per_tahun}}</td>
+                        <td width="70%" valign="top">{{pengajuan_.kapasitas_produksi_per_tahun|default_if_none:"-"}}, satuan: {{pengajuan_.satuan_kapasitas_produksi_per_tahun}}</td>
                     </tr>
                     <tr>
                         <td width="2%" valign="top">c.</td>
@@ -532,13 +542,13 @@
                         <td width="2%" valign="top"></td>
                         <td width="23%" valign="top" align="right"> lokal</td>
                         <td width="5%" valign="top">:</td>
-                        <td width="70%" valign="top">{{pengajuan_.presentase_kandungan_produk_lokal}} %</td>
+                        <td width="70%" valign="top">{{pengajuan_.presentase_kandungan_produk_lokal|default_if_none:"-"}} %</td>
                     </tr>
                     <tr>
                         <td width="2%" valign="top"></td>
                         <td width="23%" valign="top" align="right"> impor</td>
                         <td width="5%" valign="top">:</td>
-                        <td width="70%" valign="top">{{pengajuan_.presentase_kandungan_produk_import}} %</td>
+                        <td width="70%" valign="top">{{pengajuan_.presentase_kandungan_produk_import|default_if_none:"-"}} %</td>
                     </tr>
                     <tr>
                     <tr>
@@ -553,11 +563,14 @@
                 
                 <br>
                 <br>
-                <hr class="style18">
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
+                
+                <div class="printfooter">
+                    <hr class="style18">
+                    <i class="font" align="right">
+                        <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                        <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                    </i>
+                </div>
             </div>    
         </div>
 
@@ -751,11 +764,13 @@
                 <br>
                 <br>
                 <br>
-                <hr class="style18">
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
+                <div class="printfooter">
+                    <hr class="style18">
+                    <i class="font" align="right">
+                        <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                        <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                    </i>
+                </div>
             </div>    
         </div>
 
@@ -875,11 +890,13 @@
                         </td>
                     </tr>
                 </table>
-                <hr class="style18">
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
+                <div class="printfooter">
+                    <hr class="style18">
+                    <i class="font" align="right">
+                        <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-M-Y" }}</font> 
+                        <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                    </i>
+                </div>
             </div>
         </div>
     </div>
