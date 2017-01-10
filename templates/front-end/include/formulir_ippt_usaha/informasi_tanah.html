@@ -147,14 +147,19 @@
             </tr>
           </thead>
           <tbody>
-
+          {% if penggunaan_tanah_list %}
+            {% for a in penggunaan_tanah_list %}
+              <tr id="{{a.id}}">
+                <td>{{a.nama_penggunaan}}</td>
+                <td>{{a.ukuran_penggunaan}}</td>
+                <td align='center'> <a href='#' id={{a.id}} class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowpenggunaantanah(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
           </tbody>
         </table>
       </div>
       <div class="form-group" style="width: 580px;padding-left: 249px;">
         <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" data-toggle="modal" data-target="#penggunaan_tanah_sekarang">Tambah Penggunaan Tanah<i class="fa fa-plus"></i></a>
-
-        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="direktur_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab'))">Hapus <i class="fa fa-trash"></i></a>
       </div>
     </div>
     <br>
@@ -400,30 +405,33 @@
           <h3 class="modal-title custom-font">Mesin Lainnya</h3>
       </div>
       <div class="modal-body">
-        <div class="row">
-            <div class="form-group">
-              <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
-              <div class="col-sm-4">
-                <input type="text" class="form-control" id="input01" required="" name="nama_lainya">
-              </div>
-            </div>
-        </div><br>
-        <div class="row">
-            <div class="form-group">
-              <label for="input01" class="col-sm-3 control-label">Ukuran Penggunaan Tanah</label>
-              <div class="col-sm-4">
-                <div class="input-group">
-                  <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
-                  <span class="input-group-addon">
-                    <span>M&sup2;</span>
-                  </span>
+        <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
+        {% csrf_token %}
+          <div class="row">
+              <div class="form-group">
+                <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="id_nama_penggunaan" required="" name="nama_penggunaan">
                 </div>
               </div>
-            </div>
-        </div>
+          </div><br>
+          <div class="row">
+              <div class="form-group">
+                <label for="input01" class="col-sm-3 control-label">Ukuran Penggunaan Tanah</label>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input type="text" class="form-control no_ktp" id="id_ukuran_penggunaan" name="ukuran_penggunaan" required="" data-parsley-trigger="change">
+                    <span class="input-group-addon">
+                      <span>M&sup2;</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="tugas_tambahan_dan_kreativitas(this)" >Simpan</a>
+        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
         <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
       </div>
     </div>

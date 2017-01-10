@@ -292,9 +292,12 @@ urlpatterns = [
     url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
-    # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
+    # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
-    # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
+    url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
+    url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),
+    
+    # ++++++++++++++++++++++++ end for ajax IPPT Usaha ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
     url(r'^layanan/penggilingan-padi-&-huller/save$', huller.detil_huller_save_cookie, name='detil_huller_save_cookie'),

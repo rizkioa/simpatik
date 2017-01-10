@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+;<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
   <h3>Rencana Pembangunan</h3>
   <hr class="style14">
@@ -9,25 +9,62 @@
 
   <div class="form-group">
   	<label class="col-sm-1 control-label">tipe</label>
-  	<div class="col-sm-1">
-  		<input type="text" id="id_tipe1" name="tipe1" class="form-control" required="" data-parsley-trigger="change">
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_tipe1" name="tipe1" class="form-control" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>/Gudang1</span>
+        </span>
+      </div>
+    </div>
+  	<div class="col-sm-2">
+      <div class="input-group">
+    		<input type="text" id="id_unit1" name="unit1" class="form-control" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>unit</span>
+        </span>
+      </div>
   	</div>
-  	<label class="col-sm-1 control-label">/ Gudang1</label>
   </div>
 
   <div class="form-group">
   	<label class="col-sm-1 control-label">tipe</label>
-  	<div class="col-sm-1">
-  		<input type="text" id="id_tipe11" name="tipe11" class="form-control" required="" data-parsley-trigger="change">
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_tipe11" name="tipe11" class="form-control" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>/Gudang11</span>
+        </span>
+      </div>
+    </div>
+  	<div class="col-sm-2">
+      <div class="input-group">
+    		<input type="text" id="id_unit11" name="unit11" class="form-control" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>unit</span>
+        </span>
+      </div>
   	</div>
-  	<label class="col-sm-1 control-label">/ Gudang11</label>
   </div>
 
   <div class="form-group">
   	<label class="col-sm-1 control-label">tipe</label>
-  	<div class="col-sm-1">
-  		<input type="text" id="id_tipe111" name="tipe111" class="form-control" required="" data-parsley-trigger="change">
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_tipe111" name="tipe111" class="form-control" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>/Gudang111</span>
+        </span>
+      </div>
+    </div>
+  	<div class="col-sm-2">
+      <div class="input-group">
+    		<input type="text" id="id_unit111" name="unit111" class="form-control" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>unit</span>
+        </span>
+      </div>
   	</div>
-  	<label class="col-sm-1 control-label">/ Gudang111</label>
   </div>
+
 </form>

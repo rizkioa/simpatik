@@ -697,3 +697,28 @@ function load_konfirmasi_data_mesin_detil_huller(id_pengajuan){
     })
     }
 }
+
+function load_penggunaan_tanah_sekarang(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/layanan/ippt-usaha/pengunaan-tanah-sekarang/load/'+id_pengajuan,
+      success: function (response){
+        respon = $.parseJSON(response)
+        if (respon.success){
+          console.log(respon)
+            // var total = respon.data.length;
+            // for (var i = 0; i < total; i++){
+            // var key = Object.keys(respon.data[i]); // Mencari key json
+            // var val = respon.data[i][key[0]] // mencari value json
+            // var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+            // $(id).text(val);
+            // }
+        }
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}

@@ -189,8 +189,7 @@ def load_data_detilhuller(request,id_pengajuan):
           pengusaha_kwarganegaraan = pengajuan_.pengusaha_kewarganegaraan
           pemilik_nama_badan_usaha = pengajuan_.pemilik_nama_badan_usaha
           data = {'success': True,
-                      'data': 
-                      {'id_pengusaha_nama_perorangan': pengusaha_nama_perorangan,'id_pengusaha_alamat': pengusaha_alamat,'pengusaha_desa': pengusaha_desa,'id_kecamatan_pengusaha': pengusaha_kecamatan,'id_kabupaten_pengusaha': pengusaha_kabupaten,'id_provinsi_pengusaha': pengusaha_provinsi,'id_negara_pengusaha': pengusaha_negara,'pengusaha_kewarganegaraan': pengusaha_kwarganegaraan,'nama_badan_hukum_pemilik': pemilik_nama_badan_usaha,'hubungan_pemilik_pengusaha': hubungan_pemilik_pengusaha}}
+                      'data':{'id_pengusaha_nama_perorangan': pengusaha_nama_perorangan,'id_pengusaha_alamat': pengusaha_alamat,'pengusaha_desa': pengusaha_desa,'id_kecamatan_pengusaha': pengusaha_kecamatan,'id_kabupaten_pengusaha': pengusaha_kabupaten,'id_provinsi_pengusaha': pengusaha_provinsi,'id_negara_pengusaha': pengusaha_negara,'pengusaha_kewarganegaraan': pengusaha_kwarganegaraan,'nama_badan_hukum_pemilik': pemilik_nama_badan_usaha,'hubungan_pemilik_pengusaha': hubungan_pemilik_pengusaha}}
       elif pemilik_badan_usaha == False and pengusaha_badan_usaha == True:
           pemilik_nama_perorangan = pengajuan_.pemilik_nama_perorangan
           pemilik_alamat = pengajuan_.pemilik_alamat
