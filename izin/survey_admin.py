@@ -145,7 +145,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			extra_context.update({ 'pegawai' : pegawai })
 			extra_context.update({ 'qs' : queryset_ })
 			try:
-				status = queryset_.survey_anggotatim.get(pegawai_id=request.user.id)
+				status = queryset_.survey_iujk.get(pegawai_id=request.user.id)
 				status = status.koordinator
 			except ObjectDoesNotExist:
 				status = False
@@ -171,7 +171,7 @@ class SurveyAdmin(admin.ModelAdmin):
 							alamat_ = str(perusahaan.alamat_perusahaan)+", Ds. "+str(perusahaan.desa)+", Kec. "+str(perusahaan.desa.kecamatan)+", "+str(perusahaan.desa.kecamatan.kabupaten)
 							extra_context.update({ 'alamat_perusahaan': alamat_ })
 			# print queryset_.survey_rekomendiasi.all()
-			rekom = queryset_.survey_rekomendiasi.all()
+			rekom = queryset_.survey_rekomendiasi.filter(created_by=request.user)
 
 			if rekom.exists():
 				rekom = rekom.last()
@@ -223,6 +223,7 @@ class SurveyAdmin(admin.ModelAdmin):
 					d = form_detil.save(commit=False)
 					d.survey_iujk_id = queryset_.id
 
+
 					if rekom:
 						form = RekomendasiForm(request.POST, instance=rekom)
 					else:
@@ -231,7 +232,11 @@ class SurveyAdmin(admin.ModelAdmin):
 					if form.is_valid():
 						f = form.save(commit=False)
 						f.survey_iujk_id = queryset_.id
-						f.unit_kerja_id = 11
+
+						get_pegawai_skpd = Pegawai.objects.get(pk=request.user.id)
+						f.unit_kerja = get_pegawai_skpd.unit_kerja
+
+						f.created_by = request.user
 
 						form_berkas = BerkasForm(request.POST, request.FILES)
 						if form_berkas.is_valid():
@@ -243,33 +248,36 @@ class SurveyAdmin(admin.ModelAdmin):
 							f.berkas = b
 
 						if btn == 'submit':
-							queryset_.status = 1
+							# queryset_.status = 1
 							d.status = 1
 							f.status = 1
 							r = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
 							sent_ = 0
 							if r.created_by:
 								emailto = r.created_by.email
-								# print emailto
+								print emailto
 								subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
 								html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
 								sent_ = send_email_notifikasi(emailto, subject, html_content)
-								# print sent_
+								print sent_
 							if sent_ == 1:
 								messages.success(request, "Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
 							else:
 								messages.success(request, "Berhasil Disimpan")
 
-							# d.save()
-							# f.save()
+							if status:
+								d.save()
+							f.save()
 							
-							# queryset_.save()
+							queryset_.save()
 							return HttpResponseRedirect(reverse('admin:survey_selesai'))
 						elif btn == 'draft':
 							d.status = 6
 							f.status = 6
-							# d.save()
-							# f.save()
+							if status:
+								d.save()
+							# print "HALO"
+							f.save()
 							
 							# queryset_.save()
 							messages.success(request, "Berhasil Disimpan Sebagai Draft")
@@ -345,7 +353,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			riwayat_ = Riwayat(
 						pengajuan_izin_id = pengajuan_id_,
 						created_by_id = request.user.id,
-						keterangan = "Mengirim Ke Tim Teknis "+str(at.pegawai),
+						keterangan = "Mengirim Ke Koordinator Tim Teknis "+str(at.pegawai),
 						alasan=''
 					)
 			riwayat_.save()
@@ -437,8 +445,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			try:
 				s = Survey.objects.get(pk=id_survey)
 				s.status = 8
-				s.save()
-				for n in s.survey_anggotatim.all():
+				
+				for n in s.survey_iujk.all():
 					subject = "Undangan Cek Lokasi Mas Bro"
 					html_content = "<p>Anda Diundang untuk melakukan survey dengan nomor Survey <strong>"+str(s.no_survey)+"</strong> dan nomor pengajuan izin <strong>"+str(s.pengajuan.no_pengajuan)+"</strong>, batas akhir survey tanggal "+str(s.deadline_survey)+". Berikut adalah Anggota Tim Teknis</p>"
 					html_content += '''<table border="1" style="border-collapse: collapse;" class="table table-striped table-bordered table-hover table-condensed">
@@ -461,7 +469,7 @@ class SurveyAdmin(admin.ModelAdmin):
 						print "sending "+str(n.pegawai.email)
 						sent_ = send_email_notifikasi(n.pegawai.email, subject, html_content)
 						print sent_
-
+				s.save()
 
 				data = {'success': True, 
 				'pesan': 'Survey berhasil dikirim',

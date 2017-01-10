@@ -23,8 +23,33 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
 
-			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all() })
-			
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
+
+			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
+			if queryset_.exists():
+				queryset_ = queryset_.last()
+				detilbap = queryset_.survey_detilbap.all()
+				if detilbap.exists():
+					detil = detilbap.last()
+					extra_context.update({'detilbap': detil })
+					data_bap = {
+						'bangunan_kantor': detil.bangunan_kantor,
+						'ruang_direktur': detil.ruang_direktur,
+						'ruang_staf': detil.ruang_staf,
+						'ruang_meja_kursi_derektur': detil.ruang_meja_kursi_derektur,
+						'ruang_meja_kursi_staff_administrasi': detil.ruang_meja_kursi_staff_administrasi,
+						'ruang_meja_kursi_staff_teknis': detil.ruang_meja_kursi_staff_teknis,
+						'komputer': detil.komputer,
+						'lemari': detil.lemari,
+						'papan_nama_klasifikasi_k1_k2': detil.papan_nama_klasifikasi_k1_k2,
+						'papan_nama_klasifikasi_mb': detil.papan_nama_klasifikasi_mb,
+						'papan_nama_ada_nama_perusahaan': detil.papan_nama_ada_nama_perusahaan,
+						'papan_nama_ada_telp': detil.papan_nama_ada_telp,
+						'papan_nama_ada_alamat': detil.papan_nama_ada_alamat,
+						'papan_nama_ada_npwp': detil.papan_nama_ada_npwp,
+						'papan_nama_ada_nama_anggota_asosiasi': detil.papan_nama_ada_nama_anggota_asosiasi
+						}
+				
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -60,7 +85,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 						s = Survey.objects.get(pengajuan=pengajuan_)
 					except Survey.MultipleObjectsReturned:
 						s = Survey.objects.filter(pengajuan=pengajuan_).last()
-						print s.survey_anggotatim.all()
+						print s.survey_iujk.all()
 				except ObjectDoesNotExist:
 					s = ''
 
