@@ -40,6 +40,7 @@ class UnitKerja(MPTTModel):
 	email = models.EmailField(max_length=50, null=True, blank=True)
 	alamat = models.CharField(max_length=255, null=True, blank=True)
 	kode_pos = models.CharField(max_length=50, null=True, blank=True)
+	url_simpatik = models.URLField(null=True, blank=True, verbose_name="URL simpatik", help_text="http://simpatik.kedirikab.go.id/")
 
 	def save(self, *args, **kwargs):
 		super(UnitKerja, self).save(*args, **kwargs)
