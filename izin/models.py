@@ -606,6 +606,7 @@ class InformasiTanah(PengajuanIzin):
 	tanah_adat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Adat Belum Dikuasai')
 	pemegang_hak_semula_dari_tanah_belum_dikuasai = models.CharField(max_length=50,null=True, blank=True, verbose_name='Pemegang Hak Tanah Sebelum Dkuasai')
 	tanah_belum_dikuasai_melalui = models.CharField(max_length=100,null=True, blank=True, verbose_name='Tanah Belum Dikuasai Melalui')
+	jumlah_tanah_belum_dikuasai = models.DecimalField(max_digits=7, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
 	tanah_negara_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
 	tanah_kas_desa_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Kas Desa Sudah Dikuasai')
 	tanah_hak_pakai_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Pakai Sudah Dikuasai')
@@ -614,6 +615,7 @@ class InformasiTanah(PengajuanIzin):
 	tanah_adat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Adat Sudah Dikuasai')
 	pemegang_hak_semula_dari_tanah_sudah_dikuasai = models.CharField(max_length=50,null=True, blank=True, verbose_name='Pemegang Hak Tanah Sesudah Dkuasai')
 	tanah_sudah_dikuasai_melalui = models.CharField(max_length=100,null=True, blank=True, verbose_name='Tanah Sudah Dikuasai Melalui')
+	jumlah_tanah_sudah_dikuasai = models.DecimalField(max_digits=7, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
 
 	def __unicode__(self):
 		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

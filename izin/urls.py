@@ -293,9 +293,12 @@ urlpatterns = [
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
+    url(r'^layanan/ippt-usaha/save/$', ippt_usaha.ippt_usaha_save_cookie, name='ippt_usaha_save'),
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),
+    url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/edit/(?P<id_penggunaan_tanah>[0-9]+)/$', ippt_usaha.edit_informasi_penggunaan_tanah_sekarang, name='edit_informasi_penggunaan_tanah_sekarang'),
+    
     
     # ++++++++++++++++++++++++ end for ajax IPPT Usaha ++++++++++++++++++++++
 
