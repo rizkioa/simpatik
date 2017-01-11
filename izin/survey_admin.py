@@ -447,7 +447,7 @@ class SurveyAdmin(admin.ModelAdmin):
 				s.status = 8
 				
 				for n in s.survey_iujk.all():
-					subject = "Undangan Cek Lokasi Mas Bro"
+					subject = "Undangan Cek Lokasi"
 					html_content = "<p>Anda Diundang untuk melakukan survey dengan nomor Survey <strong>"+str(s.no_survey)+"</strong> dan nomor pengajuan izin <strong>"+str(s.pengajuan.no_pengajuan)+"</strong>, batas akhir survey tanggal "+str(s.deadline_survey)+". Berikut adalah Anggota Tim Teknis</p>"
 					html_content += '''<table border="1" style="border-collapse: collapse;" class="table table-striped table-bordered table-hover table-condensed">
 									<thead>

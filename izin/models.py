@@ -322,6 +322,20 @@ class DetilIUJK(PengajuanIzin):
 		verbose_name = 'Detil IUJK'
 		verbose_name_plural = 'Detil IUJK'
 
+class Klasifikasi(models.Model):
+	"""docstring for Klasifikasi"""
+	klasifikasi = models.CharField(max_length=255, verbose_name="Klasifikasi")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
+
+class SubKlasifikasi(models.Model):
+	"""docstring for SubKlasifikasi"""
+	klasifikasi = models.ForeignKey(Klasifikasi, verbose_name="Klasifikasi")
+	kode = models.CharField(max_length=8, verbose_name="Kode")
+	subklasifikasi = models.CharField(max_length=255, verbose_name="Subklasifikasi")
+	keterangan = models.TextField(verbose_name="Keterangan", blank=True)
+		
+		
+
 class PaketPekerjaan(models.Model):
 	detil_iujk = models.ForeignKey(DetilIUJK, related_name='paket_pekerjaan_iujk', verbose_name='Detil IUJK')
 	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
