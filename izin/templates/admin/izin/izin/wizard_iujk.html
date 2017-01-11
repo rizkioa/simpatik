@@ -404,18 +404,32 @@
 
 
 		function show_modal_add(){
-			$("#modal_save_").attr('disabled',false)
-			$("#modal_save_").html('<i class="fa fa-arrow-right"></i> Simpan')
-			$("#modal_form").attr("action", "{% url 'iujk_paketpekerjaan_save' %}")
-
-			$('#modal_form').parsley().reset();
-			$('input[name="detil_iujk"]').val('')
-			$('input[name="klasifikasi_usaha"]').val('')
-			$('textarea[name="nama_paket_pekerjaan"]').val('')
-			$('select[name="tahun"]').val('')
-			$('input[name="nilai_paket_pekerjaan"]').val('')
-			$('#myModal2').modal('show');
+			if ($.cookie('id_pengajuan') === undefined){
+				toastr["error"]("Pengajuan Belum Terdaftar, Silahkan Melakukan Pengajuan Terlebih Dahulu")
+			}else{
+				$("#modal_save_").attr('disabled',false)
+				$("#modal_save_").html('<i class="fa fa-arrow-right"></i> Simpan')
+				$("#modal_form").attr("action", "{% url 'iujk_paketpekerjaan_save' %}")
+				load_klasifikasi($.cookie('id_pengajuan'))
+				$('#modal_form').parsley().reset();
+				$('input[name="detil_iujk"]').val('')
+				$('input[name="klasifikasi_usaha"]').val('')
+				$('textarea[name="nama_paket_pekerjaan"]').val('')
+				$('select[name="tahun"]').val('')
+				$('input[name="nilai_paket_pekerjaan"]').val('')
+				$('#myModal2').modal('show');
+			}
 		}
+
+		$('#klasifikasi').change(function() {
+			var val = $(this).val()
+			// alert(val);
+			if(val != ''){
+				load_subklasifikasi(val)
+			}else{
+				toastr["warning"]("Pilih Klasifikasi Terlebih Dahulu")
+			}
+		});
 
 		function show_modal_edit(id_, klasifikasi_, nama_paket_, tahun_, nilai_){
 			$("#modal_save_").attr('disabled',false)
@@ -461,6 +475,7 @@
 					url: frm.attr('action'),
 					success: function(response){
 						resp = $.parseJSON(response)
+						console.log(resp)
 						if (resp.success){
 
 							var table = document.getElementById('tabel_klasifikasi_pekerjaan');
@@ -492,16 +507,19 @@
 							cell1.appendChild(element1);
 
 							var cell2 = row.insertCell(1);
-							cell2.innerHTML = resp.data[1].klasifikasi_usaha
+							cell2.innerHTML = resp.data[1].klasifikasi
 
 							var cell3 = row.insertCell(2);
-							cell3.innerHTML = resp.data[2].nama_paket_pekerjaan
+							cell3.innerHTML = resp.data[2].subklasifikasi
 
 							var cell4 = row.insertCell(3);
-							cell4.innerHTML = resp.data[3].tahun
+							cell4.innerHTML = resp.data[3].nama_paket_pekerjaan
 
 							var cell5 = row.insertCell(4);
-							cell5.innerHTML = resp.data[4].nilai_paket_pekerjaan
+							cell5.innerHTML = resp.data[4].tahun
+
+							var cell6 = row.insertCell(5);
+							cell6.innerHTML = resp.data[5].nilai_paket_pekerjaan
 
 							// var cell6 = row.insertCell(5);
 							// cell6.innerHTML = '<a href="#" onclick="show_modal_edit(\''+resp.data[0].id+'\',\''+resp.data[1].klasifikasi_usaha+'\',\''+resp.data[2].nama_paket_pekerjaan+'\',\''+resp.data[3].tahun+'\',\''+resp.data[5].nilai_str+'\')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>'
@@ -617,13 +635,14 @@
 {% block content %}
 <div id="rootwizard" class="tab-container tab-wizard">
   <ul class="nav nav-tabs nav-justified">
-	<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-	<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-	<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Klasifikasi</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-	<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Legalitas </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-	<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Data Anggota </i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-	<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Upload</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
-	<li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+	<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+	<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+	<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+	<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step </i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+	<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+	<li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+	<li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
   </ul>
   <div class="tab-content">
 	<div class="tab-pane" id="tab1"> 
@@ -637,25 +656,30 @@
 
 	<div class="tab-pane" id="tab3">
 	  <!-- klasifikasi klasifikasi -->
-		{% include 'front-end/include/formulir_iujk/klasifikasi_pekerjaan.html' %}
+		{% include 'front-end/include/formulir_iujk/jenis_iujk.html' %}
 	</div>
 
 	<div class="tab-pane" id="tab4">
+	  <!-- klasifikasi klasifikasi -->
+		{% include 'front-end/include/formulir_iujk/klasifikasi_pekerjaan.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab5">
 	  <!-- legalitas perushaan -->
 	  {% include 'front-end/include/formulir_iujk/legalitas_perusahaan.html' %}
 	</div>
 
-	<div class="tab-pane" id="tab5">
+	<div class="tab-pane" id="tab6">
 	  <!-- Data anggota -->
 	  {% include 'front-end/include/formulir_iujk/data_anggota.html' %}
 	</div>
 
-	<div class="tab-pane" id="tab6">
+	<div class="tab-pane" id="tab7">
 	  <!-- Konfirmasi -->
 	  {% include 'front-end/include/formulir_iujk/upload_dokumen.html' %}
 	</div>
 
-	<div class="tab-pane" id="tab7">
+	<div class="tab-pane" id="tab8">
 	  <!-- Konfirmasi -->
 	  {% include 'front-end/include/formulir_iujk/konfirmasi.html' %}
 	</div>
@@ -698,10 +722,28 @@
 				<div class="panel-body">
 				<form name="form1" role="form" id="modal_form">
 				{% csrf_token %}
-					<div class="form-group">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for=""><strong>Klasifikasi </strong></label>
+							<select class="form-control mb-10" id="klasifikasi" name="klasifikasi" required data-parsley-trigger="change">
+							<option value>-- Ambil Data Klasifikasi --</option>
+							</select>
+						  </select>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for=""><strong>SubKlasifikasi </strong></label>
+							<select class="form-control mb-10" id="subklasifikasi" name="subklasifikasi" required data-parsley-trigger="change">
+							<option value>-- Pilih Klasifikasi Dulu --</option>
+							</select>
+						</div>
+
+					</div>
+
+					<!-- <div class="form-group">
 						<label for=""><strong>Klasifikasi/Sub Klasifikasi Usaha Yang Diinginkan</strong> <em>*) Lihat Klasifikasi/Sub Klasifikasi Usaha pada SBU</em></label>
 						<input type="text" name="klasifikasi_usaha" id="username" class="form-control" data-parsley-trigger="change" required="" >
-					</div>
+					</div> -->
 					<div class="form-group">
 						<label for=""><strong>Nama Paket Pekerjaan </strong> <em>*) Sesuaikan Klasifikasi/Sub Klasifikasi pekerjaan pada SBU dengan Klasifikasi/Sub Klasifikasi usaha</em></label>
 						<textarea class="form-control" name="nama_paket_pekerjaan" data-parsley-trigger="change" required=""></textarea>

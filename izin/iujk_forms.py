@@ -8,7 +8,7 @@ class PaketPekerjaanForm(forms.ModelForm):
 
 	class Meta:
 		model = PaketPekerjaan
-		fields = ('nama_paket_pekerjaan','klasifikasi_usaha','tahun','nilai_paket_pekerjaan')
+		fields = ('nama_paket_pekerjaan','subklasifikasi','tahun','nilai_paket_pekerjaan')
 
 
 class DetilIUJKForm(forms.ModelForm):

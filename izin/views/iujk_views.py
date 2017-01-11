@@ -5,15 +5,13 @@ from django.template import RequestContext, loader
 import json
 import os
 
-from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, Syarat
+from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, Syarat, Klasifikasi
 from izin.utils import formatrupiah
 from perusahaan.models import Perusahaan, Legalitas
 from master.models import Berkas
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.iujk_forms import PaketPekerjaanForm, DetilIUJKForm, DataAnggotaForm, BerkasFom
 from izin.izin_forms import LegalitasPerusahaanForm, LegalitasPerusahaanPerubahanForm
-
-
 
 def iujk_paketpekerjaan_save(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
@@ -24,11 +22,14 @@ def iujk_paketpekerjaan_save(request):
 				p.detil_iujk_id = request.COOKIES['id_pengajuan']
 				p.save()
 
+				print p.subklasifikasi
+				print p.subklasifikasi.klasifikasi
 				data = {'success': True, 
 				'pesan': 'Paket Pekerjaan Berhasil Disimpan.',
 				'data': [
 							{'id': p.id},
-							{'klasifikasi_usaha': p.klasifikasi_usaha},
+							{'klasifikasi': p.subklasifikasi.klasifikasi.klasifikasi},
+							{'subklasifikasi': p.subklasifikasi.subklasifikasi },
 							{'nama_paket_pekerjaan': p.nama_paket_pekerjaan},
 							{'tahun': p.tahun},
 							{'nilai_paket_pekerjaan': 'Rp. '+'{:,.2f}'.format(float(p.nilai_paket_pekerjaan))},
@@ -98,25 +99,45 @@ def iujk_detiliujk_save(request):
 			pengajuan_ = DetilIUJK.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			DetilIUJKForm_ = DetilIUJKForm(request.POST, instance=pengajuan_)
 			if DetilIUJKForm_.is_valid():
-				paket = PaketPekerjaan.objects.filter(detil_iujk_id=request.COOKIES['id_pengajuan'])
-				if len(paket) > 0 :
-					iujk = DetilIUJKForm_.save(commit=False)
-					iujk.perusahaan_id = request.COOKIES['id_perusahaan']
-					iujk.save()
-					data = {'success': True, 
-						'pesan': 'Data Paket Pekerjaan Berhasil Disimpan.',
-						'data': [
-							{'jenis_iujk': iujk.jenis_iujk }
-						]
-					}
-					data = json.dumps(data)
-					response = HttpResponse(data)
-				else:
-					data = {'Terjadi Kesalahan': [{'message': 'Paket Pekerjaan Kosong, Silahkan masukkkan Paket Pekerjaan'}]}
-					data = json.dumps(data)
-					response = HttpResponse(data)
+				iujk = DetilIUJKForm_.save(commit=False)
+				iujk.perusahaan_id = request.COOKIES['id_perusahaan']
+				iujk.save()
+				data = {'success': True, 
+					'pesan': 'Jenis IUJK Berhasil Disimpan.',
+					'data': [
+						{'jenis_iujk': iujk.jenis_iujk }
+					]
+				}
+				data = json.dumps(data)
+				response = HttpResponse(data)
 			else:
 				data = DetilIUJKForm_.errors.as_json()
+				response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+
+	return response
+
+def iujk_klasifikasi_paketpekerjaan_save(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			paket = PaketPekerjaan.objects.filter(detil_iujk_id=request.COOKIES['id_pengajuan'])
+			if len(paket) > 0 :
+				data = {'success': True, 
+					'pesan': 'Data Paket Pekerjaan Berhasil Disimpan.',
+					'data': []
+				}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+			else:
+				data = {'Terjadi Kesalahan': [{'message': 'Paket Pekerjaan Kosong, Silahkan masukkkan Paket Pekerjaan'}]}
+				data = json.dumps(data)
 				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}

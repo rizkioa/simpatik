@@ -324,22 +324,43 @@ class DetilIUJK(PengajuanIzin):
 
 class Klasifikasi(models.Model):
 	"""docstring for Klasifikasi"""
+	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK, null=True)
 	klasifikasi = models.CharField(max_length=255, verbose_name="Klasifikasi")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
 
-class SubKlasifikasi(models.Model):
+	def __unicode__(self):
+		return u'%s' % (self.klasifikasi, )
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.klasifikasi)+"</option>"
+
+	class Meta:
+		verbose_name = "Kalsifikasi IUJK"
+		verbose_name_plural = "Klasifikasi IUJK"
+
+class Subklasifikasi(models.Model):
 	"""docstring for SubKlasifikasi"""
 	klasifikasi = models.ForeignKey(Klasifikasi, verbose_name="Klasifikasi")
 	kode = models.CharField(max_length=8, verbose_name="Kode")
 	subklasifikasi = models.CharField(max_length=255, verbose_name="Subklasifikasi")
 	keterangan = models.TextField(verbose_name="Keterangan", blank=True)
 		
+	def __unicode__(self):
+		return u'%s' % (self.subklasifikasi)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.subklasifikasi)+"</option>"
+
+	class Meta:
+		verbose_name = "SubKalsifikasi IUJK"
+		verbose_name_plural = "SubKalsifikasi IUJK"
 		
 
 class PaketPekerjaan(models.Model):
 	detil_iujk = models.ForeignKey(DetilIUJK, related_name='paket_pekerjaan_iujk', verbose_name='Detil IUJK')
 	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
-	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU') 
+	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU')
+	subklasifikasi = models.ForeignKey(Subklasifikasi, related_name="subklasifikasi_paketpekerjaan", null=True, blank=True, verbose_name='SubKlasifikasi Usaha pada SBU')
 	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
 	nilai_paket_pekerjaan = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
 
@@ -353,8 +374,8 @@ class PaketPekerjaan(models.Model):
 
 	def as_dict(self):
 		return {
-			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
-			'klasifikasi_usaha': self.klasifikasi_usaha,
+			'klasifikasi': self.subklasifikasi.klasifikasi.klasifikasi,
+			'subklasifikasi': self.subklasifikasi.subklasifikasi,
 			'tahun': self.tahun,
 			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}

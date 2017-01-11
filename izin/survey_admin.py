@@ -457,7 +457,7 @@ class SurveyAdmin(admin.ModelAdmin):
 									  </tr>
 									</thead>'''
 					html_content += "<tbody>"
-					for p in s.survey_anggotatim.all():
+					for p in s.survey_iujk.all():
 						html_content += '''
 								<tr>
 								  <td>{0}</td>

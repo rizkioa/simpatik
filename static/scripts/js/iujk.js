@@ -1,3 +1,37 @@
+function load_klasifikasi(id_pengajuan){
+  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+  elem = $("#klasifikasi")
+  $.ajax({ // create an AJAX call...
+      data: { csrfmiddlewaretoken: csrf_token, pengajuan: id_pengajuan }, // get the form data
+      type: 'POST', // GET or POST
+      url: __base_url__+'/admin/izin/detiliujk/option-klasifikasi/',
+      success: function(response) { // on success..
+          console.log(response)
+          elem.html(response);
+      },
+      error: function(data) {                
+          toast_server_error()
+      }
+  });
+}
+
+function load_subklasifikasi(id_klasifikasi){
+  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+  elem = $("#subklasifikasi")
+  $.ajax({ // create an AJAX call...
+      data: { csrfmiddlewaretoken: csrf_token, klasifikasi: id_klasifikasi }, // get the form data
+      type: 'POST', // GET or POST
+      url: __base_url__+'/admin/izin/detiliujk/option-subklasifikasi/',
+      success: function(response) { // on success..
+          console.log(response)
+          elem.html(response);
+      },
+      error: function(data) {                
+          toast_server_error()
+      }
+  });
+}
+
 // *********** SURVEY ***********
 function survey_save(elem_){
   var btn_ = $('#button-'+elem_)
@@ -531,13 +565,13 @@ function load_konfirmasi(id_pengajuan){
           for (var i = 0; i < a; i++){
             // split = respon.berkas[i].split(",")
             // console.log(respon.berkas)
-            // console.log(respon.paket[i].nama_paket_pekerjaan)
-            // console.log(respon.paket[i].klasifikasi_usaha)
+            console.log(respon.paket[i].klasifikasi)
+            console.log(respon.paket[i].subklasifikasi)
             // console.log(respon.paket[i].tahun)
             // console.log(respon.paket[i].nilai_paket_pekerjaan)
             str = '<tr>'
-            str += '<td>'+respon.paket[i].nama_paket_pekerjaan+'</td>'
-            str += '<td>'+respon.paket[i].klasifikasi_usaha+'</td>'
+            str += '<td>'+respon.paket[i].klasifikasi+'</td>'
+            str += '<td>'+respon.paket[i].subklasifikasi+'</td>'
             str += '<td>'+respon.paket[i].tahun+'</td>'
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'
