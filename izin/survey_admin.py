@@ -14,7 +14,7 @@ from izin.models import Survey, DetilIUJK, Riwayat
 from izin.izin_forms import SurveyForm
 from izin.survey_form import RekomendasiForm, DetilForm, BerkasForm
 from izin.utils import get_nomor_pengajuan
-from kepegawaian.models import Pegawai
+from kepegawaian.models import Pegawai, UnitKerja
 from master.models import Kecamatan
 from perusahaan.models import Perusahaan
 from pembangunan.models import AnggotaTim
@@ -332,11 +332,14 @@ class SurveyAdmin(admin.ModelAdmin):
 	def save_survey_ajax(self, request):
 		frm = SurveyForm(request.POST)
 		pengajuan_id_ = request.POST.get('pengajuan_id')
+		id_unit_kerja = request.POST.get('id_unit_kerja')
+		unit_kerja = UnitKerja.objects.get(pk=id_unit_kerja)
 		if frm.is_valid():
 			p = frm.save(commit=False)
 			p.no_survey = get_nomor_pengajuan('PEMBANGUNAN')
 			p.pengajuan_id = pengajuan_id_
 			p.tanggal_survey = datetime.now()
+			p.skpd = unit_kerja
 			p.status = 4
 			# p.kelompok_jenis_izin_id = request.POST.get('kelompok_jenis_izin_id')
 			p.save()
@@ -359,9 +362,9 @@ class SurveyAdmin(admin.ModelAdmin):
 			riwayat_.save()
 
 			# SAVE PENGAJUAN
-			pengajuan = DetilIUJK.objects.get(id=pengajuan_id_)
-			pengajuan.status = 8
-			pengajuan.save()
+			# pengajuan = DetilIUJK.objects.get(id=pengajuan_id_)
+			# pengajuan.status = 8
+			# pengajuan.save()
 
 
 
@@ -407,11 +410,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			try:
 				survey = Survey.objects.filter(pengajuan__id=id_pengajuan)
 				pengajuan = DetilIUJK.objects.get(id=id_pengajuan)
-				# print survey
-				# survey = Survey(
-				# 	id=3, 
-				# 	name='Cheddar Talk', 
-				# 	tagline='Thoughts on cheese.')
+				
 				for s in survey:
 					s.status = 4
 					s.save()
@@ -470,6 +469,10 @@ class SurveyAdmin(admin.ModelAdmin):
 						sent_ = send_email_notifikasi(n.pegawai.email, subject, html_content)
 						print sent_
 				s.save()
+
+				pengajuan = DetilIUJK.objects.get(id=s.pengajuan.id)
+				pengajuan.status = 8
+				pengajuan.save()
 
 				data = {'success': True, 
 				'pesan': 'Survey berhasil dikirim',

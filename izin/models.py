@@ -376,6 +376,7 @@ class PaketPekerjaan(models.Model):
 		return {
 			'klasifikasi': self.subklasifikasi.klasifikasi.klasifikasi,
 			'subklasifikasi': self.subklasifikasi.subklasifikasi,
+			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
 			'tahun': self.tahun,
 			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
