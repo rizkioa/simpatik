@@ -299,7 +299,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace('{% url 'admin:izin_informasikekayaandaerah_changelist' %}view-pengajuan-pemakaian-kekayaan-daerah/'+id_pengajuan_);
+              window.location.replace('{% url 'admin:verifikasi' %}');
             }
           });
         }

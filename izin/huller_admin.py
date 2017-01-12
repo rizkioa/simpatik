@@ -76,6 +76,7 @@ class DetilHullerAdmin(admin.ModelAdmin):
 			pengajuan_ = DetilHuller.objects.get(id=id_pengajuan_izin_)
 			data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_izin_)
 
+		try:
 			motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
 			motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
 			diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
@@ -90,6 +91,21 @@ class DetilHullerAdmin(admin.ModelAdmin):
 			mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
 			grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
 			kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
+		except ObjectDoesNotExist:
+			motor_bensin = ""
+			motor_diesel = ""
+			diesel_generating_set = ""
+			rubber_roll = ""
+			flash_type = ""
+			gedogan = ""
+			dimple_plate = ""
+			screen = ""
+			mesin_slip_horisontal = ""
+			mesin_slip_vertikal = ""
+			paddy_cleaner = ""
+			mesin_polis = ""
+			grader = ""
+			kualitas = ""
 
 			alamat_ = ""
 			alamat_perusahaan_ = ""

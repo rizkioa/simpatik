@@ -417,12 +417,14 @@ def siup_legalitas_perusahaan_save_cookie(request):
 					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 					if k.id == 26 or k.id == 27:
 						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.kode == "IPPT-Usaha":
+					elif k.id == 39:
 						objects_ = getattr(app_models, 'InformasiTanah')
 					else:
-						objects_ = getattr(app_models, 'DetilSIUP')
+						objects_ = getattr(app_models, 'DetilSIUP')	
+					print objects_
 					try:
 						pengajuan_ = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+						print pengajuan_
 						if request.POST.get('onoffswitch_pendirian') == 'on':
 							if request.COOKIES['id_legalitas'] == "":
 								form = LegalitasPerusahaanForm(request.POST)

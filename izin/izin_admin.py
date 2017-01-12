@@ -11,7 +11,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from daterange_filter.filter import DateRangeFilter
 
-from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP
+from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
@@ -724,6 +724,14 @@ class IzinAdmin(admin.ModelAdmin):
 						created_by_id = request.user.id,
 						keterangan = "Kabid Verified (Pengajuan)"
 					)
+					# print Survey.objects.filter(pengajuan=obj)
+					s = Survey.objects.filter(pengajuan=obj)
+					# print s
+					if s.exists():
+						for i in s:
+							i.status = 1
+							i.save()
+
 					riwayat_.save()
 					response = {
 						"success": True,
