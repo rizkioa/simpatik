@@ -1,6 +1,6 @@
-<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'iujk_detiliujk_save' %}" data-parsley-validate novalidate>
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'iujk_klasifikasi_paketpekerjaan_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label for="input01" class="col-sm-2 control-label"><strong>Jenis IUJK</strong> </label>
     <div class="col-sm-5">
       <select class="form-control chosen-select mb-10" name="jenis_iujk" required="" data-parsley-trigger="change">
@@ -13,7 +13,7 @@
         {% endif %}
       </select>
     </div>
-  </div>
+  </div> -->
   <div class="form-group">
     <div class="col-sm-12">
       <div class="table-responsive">
@@ -21,7 +21,8 @@
             <thead>
               <tr>
                 <th>&nbsp;</th>
-                <th>Klasifikasi/Sub Klasifikasi Usaha Yang diinginkan</th>
+                <th>Klasifikasi</th>
+                <th>Sub Klasifikasi Usaha</th>
                 <th>Nama Paket 10 Tahun Terakhir</th>
                 <th>Tahun Pelaksanaan</th>
                 <th>Nilai Paket Pekerjaan</th>
@@ -33,10 +34,11 @@
                 {% for p in paketpekerjaan_list %}
                 <tr>
                   <td><input type="checkbox" name="chkbox[]" id="{{p.id}}" value="{{p.id}}"></input></td>
-                  <td>{{ p.klasifikasi_usaha }}</td>
+                  <td>{{ p.subklasifikasi.klasifikasi }}</td>
+                  <td>{{ p.subklasifikasi }}</td>
                   <td>{{ p.nama_paket_pekerjaan }}</td>
                   <td>{{ p.tahun }}</td>
-                  <td>{{ p.nilai_paket_pekerjaan }}</td>
+                  <td>{{ p.get_nilai_rupiah }}</td>
                   <!-- <td><a href="#" onclick="show_modal_edit('{{p.id}}','{{p.klasifikasi_usaha}}','{{p.nama_paket_pekerjaan}}','{{p.tahun}}','{{p.nilai_paket_pekerjaan}}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a></td> -->
                 </tr>
                 {% endfor %}

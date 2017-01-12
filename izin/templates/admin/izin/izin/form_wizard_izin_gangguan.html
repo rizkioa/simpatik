@@ -299,7 +299,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/ho/formulir/cetak/"+id_pengajuan_);
+             window.location.replace('{% url 'admin:verifikasi' %}');
             }
           });
         }

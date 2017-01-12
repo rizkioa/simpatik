@@ -171,8 +171,7 @@
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
-                
-              }
+              }              
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
               }
@@ -364,6 +363,79 @@
       }
     };
 
+    function penggunaan_tanah_sekarang_add(btn){
+        var frm = $('#id_form_pengggunaan_tanah_sekarang');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_penggunaan = res.data.id_penggunaan_tanah_sekarang
+                if ($('#id_penggunaan_tanah_ippt').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var nama_penggunaan_tanah = $("#id_nama_penggunaan").val()
+                var ukuran_penggunaan_tanah = $("#id_ukuran_penggunaan").val()
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_nama_penggunaan'>" + nama_penggunaan_tanah + "</td><td id='id_table_ukuran_penggunaan'>" + ukuran_penggunaan_tanah +"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowpenggunaantanah(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowpenggunaantanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_penggunaan_tanah_ippt","tbody");
+                $('#penggunaan_tanah_sekarang').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#penggunaan_tanah_sekarang').find('.btn-primary').attr('onclick','penggunaan_tanah_sekarang_add(this)')
+                $('#penggunaan_tanah_sekarang').find('.btn-success').text("Simpan")
+                $('#penggunaan_tanah_sekarang').find('#id_form_pengggunaan_tanah_sekarang').attr('action','/layanan/ippt-usaha/pengunaan-tanah-sekarang/save')
+                $("#id_form_pengggunaan_tanah_sekarang").resetForm()
+                $("#penggunaan_tanah_sekarang").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+    function deleteRowpenggunaantanah(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    $('#id_nama_penggunaan').clearFields()
+                    $('#id_ukuran_penggunaan').clearFields()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+    function editRowpenggunaantanah(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+        var nama_penggunaan = parent_tr.find('#id_table_nama_penggunaan').text();
+        var ukuran_penggunaan_tanah = parent_tr.find('#id_table_ukuran_penggunaan').text();
+
+        $('#penggunaan_tanah_sekarang').modal('show');
+        $('#penggunaan_tanah_sekarang').find('#id_nama_penggunaan').val(nama_penggunaan) 
+        $('#penggunaan_tanah_sekarang').find('#id_ukuran_penggunaan').val(ukuran_penggunaan_tanah)
+
+        $('#penggunaan_tanah_sekarang').find('.btn-success').attr('onclick','').unbind('click');
+        $('#penggunaan_tanah_sekarang').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#penggunaan_tanah_sekarang').find('.btn-primary').attr('id',id_button)
+        $('#penggunaan_tanah_sekarang').find('.btn-primary').text("Edit")
+        $('#penggunaan_tanah_sekarang').find('.btn-primary').attr('onclick','penggunaan_tanah_sekarang_add(this)')
+        $('#penggunaan_tanah_sekarang').find('#id_form_pengggunaan_tanah_sekarang').attr('action','/layanan/ippt-usaha/pengunaan-tanah-sekarang/edit/'+id_button+'/')        
+    }
+
+    function batalRowpenggunaantanah(btn){
+        $('#penggunaan_tanah_sekarang').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#penggunaan_tanah_sekarang').find('.btn-primary').attr('onclick','penggunaan_tanah_sekarang_add(this)')
+        $('#penggunaan_tanah_sekarang').find('.btn-success').text("Simpan")
+        $('#penggunaan_tanah_sekarang').find('#id_form_pengggunaan_tanah_sekarang').attr('action','/layanan/ippt-usaha/pengunaan-tanah-sekarang/save')
+        $("#id_form_pengggunaan_tanah_sekarang").resetForm()
+        $("#penggunaan_tanah_sekarang").modal('hide');
+    }
 
     document.querySelector('#alert').onclick = function(){
       // swal("Good job!", "You clicked the button!", "success");

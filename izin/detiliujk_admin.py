@@ -3,8 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template import RequestContext, loader
 from django.http import HttpResponse
+from django.utils.safestring import mark_safe
 
-from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey
+from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi
 from izin.utils import formatrupiah, JENIS_PERMOHONAN
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import UnitKerja, Pegawai
@@ -20,6 +21,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
+			extra_context.update({'pegawai_all' : Pegawai.objects.all() })
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
 
@@ -79,17 +81,17 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
-			if pengajuan_.status == 8:
+			# if pengajuan_.status == 8:
+			try:
 				try:
-					try:
-						s = Survey.objects.get(pengajuan=pengajuan_)
-					except Survey.MultipleObjectsReturned:
-						s = Survey.objects.filter(pengajuan=pengajuan_).last()
-						print s.survey_iujk.all()
-				except ObjectDoesNotExist:
-					s = ''
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					print s.survey_iujk.all()
+			except ObjectDoesNotExist:
+				s = ''
 
-				extra_context.update({'tim_teknis': s })
+			extra_context.update({'survey': s })
 				
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
@@ -140,13 +142,42 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def option_klasifikasi(self, request):
+		klasifikasi_list = Klasifikasi.objects.all()
+	
+		id_pengajuan = request.POST.get('pengajuan', None)	
+		if id_pengajuan and not id_pengajuan is "":
+			d = DetilIUJK.objects.get(pengajuanizin_ptr_id=id_pengajuan)
+			# print d.jenis_iujk
+			klasifikasi_list = klasifikasi_list.filter(jenis_iujk=d.jenis_iujk)
+		pilihan = "<option value=''>-- Pilih Klasifikasi --</option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in klasifikasi_list)));
+
+	def option_subklasifikasi(self, request):
+		subklasifikasi_list = Subklasifikasi.objects.all()
+	
+		klasifikasi = request.POST.get('klasifikasi', None)	
+		if klasifikasi and not klasifikasi is "":
+			subklasifikasi_list = subklasifikasi_list.filter(klasifikasi_id=klasifikasi)
+		pilihan = "<option value=''>-- Pilih Sub Klasifikasi --</option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in subklasifikasi_list)));
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIUJKAdmin, self).get_urls()
 		my_urls = patterns('',
+			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
+			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),
 			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_iujk), name='cetak_bukti_admin_iujk'),
 			url(r'^view-pengajuan-iujk/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_iujk), name='view_pengajuan_iujk'),
 			)
 		return my_urls + urls
 
 admin.site.register(DetilIUJK, DetilIUJKAdmin)
+
+
+
+admin.site.register(Klasifikasi)
+
+
+admin.site.register(Subklasifikasi)

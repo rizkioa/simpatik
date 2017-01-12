@@ -18,7 +18,7 @@ from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
 from izin.huller_admin import DetilHullerAdmin
 from izin.survey_admin import SurveyAdmin
 from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaaTanahIPPTUsaha
 from izin.pemohon_admin import PemohonAdmin
 
 from master.models import JenisPemohon
@@ -146,6 +146,7 @@ class KelompokJenisIzinAdmin(admin.ModelAdmin):
 admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
 
 admin.site.register(JenisPermohonanIzin)
+admin.site.register(PenggunaaTanahIPPTUsaha)
 
 
 # class DataPerubahanAdmin(admin.ModelAdmin):

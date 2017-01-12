@@ -91,6 +91,7 @@ JENIS_IUJK = (
 	('IUJK Pelaksana Kontruksi', 'IUJK Pelaksana Kontruksi'),
 	('IUJK Perencana Kontruksi', 'IUJK Perencana Kontruksi'),
 	('IUJK Pengawas Kontruksi', 'IUJK Pengawas Kontruksi'),
+	('IUJK Perencanaan dan Pengawasan Kontruksi', 'IUJK Perencanaan dan Pengawasan Kontruksi'),
 )
 
 JENIS_ANGGOTA_BADAN_USAHA = (
@@ -260,6 +261,20 @@ def send_email_notifikasi(emailto, subject, html_content):
 	from django.core.mail import EmailMessage
 	from django.conf import settings
 
+	email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
+	email.content_subtype = "html"
+	res = email.send()
+
+	return res
+
+def send_email(emailto, subject, objects_):
+	from django.core.mail import EmailMessage
+	from django.conf import settings
+	from django.template import Context
+	from django.template.loader import get_template
+
+	html_content = get_template('admin/izin/email_template.html').render(Context({'obj': objects_}))
+	
 	email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
 	email.content_subtype = "html"
 	res = email.send()

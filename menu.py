@@ -141,6 +141,21 @@ class CustomMenu(Menu):
                 ),
             ]
 
+        if request.user.groups.filter(name="Tim Teknis").exists():
+             menu_utama.children += [
+                 items.MenuItem(
+                        title='Daftar Survey',
+                        icon='fa fa-file-text', 
+                        url=reverse('admin:izin_survey_changelist'),                        
+                    ),
+                    items.MenuItem(
+                        title='Daftar Laporan',
+                        icon='fa fa-file-text', 
+                        url=reverse('admin:survey_selesai'),                        
+                    ),
+             ]
+
+
 
         if request.user.groups.filter(name="Kabid").exists():
             menu_utama.children += [
@@ -300,6 +315,16 @@ class CustomMenu(Menu):
                                 title='Jenis Permohonan Izin',
                                 icon='fa fa-file-text-o',
                                 url=reverse('admin:izin_jenispermohonanizin_changelist'),
+                            ),
+                            items.MenuItem(
+                                title='Klasifikasi IUJK',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_klasifikasi_changelist'),
+                            ),
+                            items.MenuItem(
+                                title='SubKlasifikasi IUJK',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_subklasifikasi_changelist'),
                             ),
                             # items.MenuItem(
                             #     title='KBLI',

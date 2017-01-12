@@ -14,7 +14,7 @@ from izin.models import Survey, DetilIUJK, Riwayat
 from izin.izin_forms import SurveyForm
 from izin.survey_form import RekomendasiForm, DetilForm, BerkasForm
 from izin.utils import get_nomor_pengajuan
-from kepegawaian.models import Pegawai
+from kepegawaian.models import Pegawai, UnitKerja
 from master.models import Kecamatan
 from perusahaan.models import Perusahaan
 from pembangunan.models import AnggotaTim
@@ -232,7 +232,10 @@ class SurveyAdmin(admin.ModelAdmin):
 					if form.is_valid():
 						f = form.save(commit=False)
 						f.survey_iujk_id = queryset_.id
-						# f.unit_kerja_id = 11
+
+						get_pegawai_skpd = Pegawai.objects.get(pk=request.user.id)
+						f.unit_kerja = get_pegawai_skpd.unit_kerja
+
 						f.created_by = request.user
 
 						form_berkas = BerkasForm(request.POST, request.FILES)
@@ -245,7 +248,7 @@ class SurveyAdmin(admin.ModelAdmin):
 							f.berkas = b
 
 						if btn == 'submit':
-							queryset_.status = 1
+							# queryset_.status = 1
 							d.status = 1
 							f.status = 1
 							r = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
@@ -262,7 +265,8 @@ class SurveyAdmin(admin.ModelAdmin):
 							else:
 								messages.success(request, "Berhasil Disimpan")
 
-							d.save()
+							if status:
+								d.save()
 							f.save()
 							
 							queryset_.save()
@@ -270,8 +274,9 @@ class SurveyAdmin(admin.ModelAdmin):
 						elif btn == 'draft':
 							d.status = 6
 							f.status = 6
-							d.save()
-							print "HALO"
+							if status:
+								d.save()
+							# print "HALO"
 							f.save()
 							
 							# queryset_.save()
@@ -327,11 +332,14 @@ class SurveyAdmin(admin.ModelAdmin):
 	def save_survey_ajax(self, request):
 		frm = SurveyForm(request.POST)
 		pengajuan_id_ = request.POST.get('pengajuan_id')
+		id_unit_kerja = request.POST.get('id_unit_kerja')
+		unit_kerja = UnitKerja.objects.get(pk=id_unit_kerja)
 		if frm.is_valid():
 			p = frm.save(commit=False)
 			p.no_survey = get_nomor_pengajuan('PEMBANGUNAN')
 			p.pengajuan_id = pengajuan_id_
 			p.tanggal_survey = datetime.now()
+			p.skpd = unit_kerja
 			p.status = 4
 			# p.kelompok_jenis_izin_id = request.POST.get('kelompok_jenis_izin_id')
 			p.save()
@@ -348,15 +356,15 @@ class SurveyAdmin(admin.ModelAdmin):
 			riwayat_ = Riwayat(
 						pengajuan_izin_id = pengajuan_id_,
 						created_by_id = request.user.id,
-						keterangan = "Mengirim Ke Tim Teknis "+str(at.pegawai),
+						keterangan = "Mengirim Ke Koordinator Tim Teknis "+str(at.pegawai),
 						alasan=''
 					)
 			riwayat_.save()
 
 			# SAVE PENGAJUAN
-			pengajuan = DetilIUJK.objects.get(id=pengajuan_id_)
-			pengajuan.status = 8
-			pengajuan.save()
+			# pengajuan = DetilIUJK.objects.get(id=pengajuan_id_)
+			# pengajuan.status = 8
+			# pengajuan.save()
 
 
 
@@ -402,11 +410,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			try:
 				survey = Survey.objects.filter(pengajuan__id=id_pengajuan)
 				pengajuan = DetilIUJK.objects.get(id=id_pengajuan)
-				# print survey
-				# survey = Survey(
-				# 	id=3, 
-				# 	name='Cheddar Talk', 
-				# 	tagline='Thoughts on cheese.')
+				
 				for s in survey:
 					s.status = 4
 					s.save()
@@ -440,9 +444,9 @@ class SurveyAdmin(admin.ModelAdmin):
 			try:
 				s = Survey.objects.get(pk=id_survey)
 				s.status = 8
-				s.save()
-				for n in s.survey_anggotatim.all():
-					subject = "Undangan Cek Lokasi Mas Bro"
+				
+				for n in s.survey_iujk.all():
+					subject = "Undangan Cek Lokasi"
 					html_content = "<p>Anda Diundang untuk melakukan survey dengan nomor Survey <strong>"+str(s.no_survey)+"</strong> dan nomor pengajuan izin <strong>"+str(s.pengajuan.no_pengajuan)+"</strong>, batas akhir survey tanggal "+str(s.deadline_survey)+". Berikut adalah Anggota Tim Teknis</p>"
 					html_content += '''<table border="1" style="border-collapse: collapse;" class="table table-striped table-bordered table-hover table-condensed">
 									<thead>
@@ -452,7 +456,7 @@ class SurveyAdmin(admin.ModelAdmin):
 									  </tr>
 									</thead>'''
 					html_content += "<tbody>"
-					for p in s.survey_anggotatim.all():
+					for p in s.survey_iujk.all():
 						html_content += '''
 								<tr>
 								  <td>{0}</td>
@@ -464,7 +468,11 @@ class SurveyAdmin(admin.ModelAdmin):
 						print "sending "+str(n.pegawai.email)
 						sent_ = send_email_notifikasi(n.pegawai.email, subject, html_content)
 						print sent_
+				s.save()
 
+				pengajuan = DetilIUJK.objects.get(id=s.pengajuan.id)
+				pengajuan.status = 8
+				pengajuan.save()
 
 				data = {'success': True, 
 				'pesan': 'Survey berhasil dikirim',

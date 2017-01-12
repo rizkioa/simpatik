@@ -79,6 +79,7 @@ urlpatterns = [
     url(r'^layanan/izin-usaha-dan-izin-usaha-perluasan-penanaman-modal$', layanan_view.layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal, name='layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal'),
     url(r'^layanan/izin-usaha-perubahan-penanaman-modal$', layanan_view.layanan_izin_usaha_perubahan_penanaman_modal, name='layanan_izin_usaha_perubahan_penanaman_modal'),
     url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
+    url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
 
     
     url(r'^404/', views.page_404, name='404'),
@@ -104,7 +105,7 @@ urlpatterns = [
     url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
 
     #cetak IUJK
-    # url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan_iujk, name='cetak_permohonan_iujk'),
     url(r'^layanan/iujk/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', iujk_views.cetak_bukti_pendaftaran_iujk, name='cetak_bukti_pendaftaran_iujk'),
 
     #cetak HO
@@ -122,8 +123,8 @@ urlpatterns = [
     # url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
     
     #cetak Penggilingan padi
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', huller.cetak_huller, name='cetak_huller'),
-    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', huller.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', huller.cetak_huller, name='cetak_huller'),
+    url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', huller.cetak_bukti_pendaftaran_huller, name='cetak_bukti_pendaftaran_huller'),
     
     #cetak reklame
     url(r'^layanan/reklame/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_reklame, name='cetak_reklame'),
@@ -154,8 +155,8 @@ urlpatterns = [
     url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
     
     #cetak TDP FIRMA
-    url(r'^layanan/tdp-firma/formulir/cetak$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
-    url(r'^layanan/tdp-firma/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_firma, name='cetak_bukti_pendaftaran_tdp_firma'),
+    url(r'^layanan/tdp-firma/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
+    url(r'^layanan/tdp-firma/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_firma, name='cetak_bukti_pendaftaran_tdp_firma'),
     
     #cetak TDP PO
     url(r'^layanan/tdp-perorangan/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_po, name='cetak_tdp_po'),
@@ -203,9 +204,11 @@ urlpatterns = [
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK
+    url(r'^layanan/iujk/formulir/$', views.formulir_iujk, name='formulir_iujk'),
     url(r'^layanan/iujk/paketpekerjaan/save/$', iujk_views.iujk_paketpekerjaan_save, name='iujk_paketpekerjaan_save'),
     url(r'^layanan/iujk/paketpekerjaan/edit/(?P<id_paket_>[0-9]+)$', iujk_views.iujk_paketpekerjaan_edit, name='iujk_paketpekerjaan_edit'),
     url(r'^layanan/iujk/detiliujk/save/$', iujk_views.iujk_detiliujk_save, name='iujk_detiliujk_save'),
+    url(r'^layanan/iujk/klasifikasi-paketpekerjaan/save/$', iujk_views.iujk_klasifikasi_paketpekerjaan_save, name='iujk_klasifikasi_paketpekerjaan_save'),
     url(r'^layanan/iujk/legalitasperusahaan/save/$', iujk_views.iujk_legalitas_perusahaan_save, name='iujk_legalitas_perusahaan_save'),
     url(r'^layanan/iujk/penanggungjawab/save/$', iujk_views.penanggung_jawab_save_bu, name='penanggung_jawab_save_bu'),
     url(r'^layanan/iujk/penanggungjawab/delete/$', iujk_views.penanggung_jawab_delete_bu, name='penanggung_jawab_delete_bu'),
@@ -292,9 +295,15 @@ urlpatterns = [
     url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
-    # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
+    # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
+    url(r'^layanan/ippt-usaha/save/$', ippt_usaha.ippt_usaha_save_cookie, name='ippt_usaha_save'),
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
-    # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
+    url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
+    url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),
+    url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/edit/(?P<id_penggunaan_tanah>[0-9]+)/$', ippt_usaha.edit_informasi_penggunaan_tanah_sekarang, name='edit_informasi_penggunaan_tanah_sekarang'),
+    
+    
+    # ++++++++++++++++++++++++ end for ajax IPPT Usaha ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
     url(r'^layanan/penggilingan-padi-&-huller/save$', huller.detil_huller_save_cookie, name='detil_huller_save_cookie'),
