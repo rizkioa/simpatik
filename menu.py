@@ -316,6 +316,16 @@ class CustomMenu(Menu):
                                 icon='fa fa-file-text-o',
                                 url=reverse('admin:izin_jenispermohonanizin_changelist'),
                             ),
+                            items.MenuItem(
+                                title='Klasifikasi IUJK',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_klasifikasi_changelist'),
+                            ),
+                            items.MenuItem(
+                                title='SubKlasifikasi IUJK',
+                                icon='fa fa-file-text-o',
+                                url=reverse('admin:izin_subklasifikasi_changelist'),
+                            ),
                             # items.MenuItem(
                             #     title='KBLI',
                             #     icon='fa fa-file-text-o',

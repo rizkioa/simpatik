@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^ajax-load-data-pemegang-saham/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_pemegang_saham, name='load_pemegang_saham'),
     url(r'^ajax-load-berkas-tdp/(?P<id_pengajuan>[0-9]+)$', tdp_view.ajax_load_berkas_tdp, name='ajax_load_berkas_tdp'),
     url(r'^ajax-load-data-data-pimpinan/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_pimpinan, name='load_data_pimpinan'),
+    url(r'^ajax-load-data-jumlah-data-pimpinan/(?P<pengajuan_id>[0-9]+)$', tdp_view.jumlah_data_pimpinan, name='jumlah_data_pimpinan'),
     url(r'^ajax-load-data-perusahaan-cabang/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_perusahaan_cabang, name='load_perusahaan_cabang'),
     url(r'^ajax-load-data-legalitas-perusahaan-tdp/(?P<perusahaan_id>[0-9]+)$', tdp_view.load_legalitas_perusahaan_tdp, name='load_legalitas_perusahaan_tdp'),
     url(r'^ajax-edit-izin-lain-tdp/(?P<izin_lain_id>[0-9]+)$', tdp_view.edit_tdp_izin_lain, name='edit_tdp_izin_lain'),
@@ -79,6 +80,7 @@ urlpatterns = [
     url(r'^layanan/izin-usaha-dan-izin-usaha-perluasan-penanaman-modal$', layanan_view.layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal, name='layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal'),
     url(r'^layanan/izin-usaha-perubahan-penanaman-modal$', layanan_view.layanan_izin_usaha_perubahan_penanaman_modal, name='layanan_izin_usaha_perubahan_penanaman_modal'),
     url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
+    url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
 
     
     url(r'^404/', views.page_404, name='404'),
@@ -104,7 +106,7 @@ urlpatterns = [
     url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
 
     #cetak IUJK
-    # url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan_iujk, name='cetak_permohonan_iujk'),
     url(r'^layanan/iujk/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', iujk_views.cetak_bukti_pendaftaran_iujk, name='cetak_bukti_pendaftaran_iujk'),
 
     #cetak HO
@@ -154,8 +156,8 @@ urlpatterns = [
     url(r'^layanan/tdp-cv/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_cv, name='cetak_bukti_pendaftaran_tdp_cv'),
     
     #cetak TDP FIRMA
-    url(r'^layanan/tdp-firma/formulir/cetak$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
-    url(r'^layanan/tdp-firma/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_firma, name='cetak_bukti_pendaftaran_tdp_firma'),
+    url(r'^layanan/tdp-firma/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_firma, name='cetak_tdp_firma'),
+    url(r'^layanan/tdp-firma/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_firma, name='cetak_bukti_pendaftaran_tdp_firma'),
     
     #cetak TDP PO
     url(r'^layanan/tdp-perorangan/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_po, name='cetak_tdp_po'),
@@ -203,9 +205,11 @@ urlpatterns = [
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK
+    url(r'^layanan/iujk/formulir/$', views.formulir_iujk, name='formulir_iujk'),
     url(r'^layanan/iujk/paketpekerjaan/save/$', iujk_views.iujk_paketpekerjaan_save, name='iujk_paketpekerjaan_save'),
     url(r'^layanan/iujk/paketpekerjaan/edit/(?P<id_paket_>[0-9]+)$', iujk_views.iujk_paketpekerjaan_edit, name='iujk_paketpekerjaan_edit'),
     url(r'^layanan/iujk/detiliujk/save/$', iujk_views.iujk_detiliujk_save, name='iujk_detiliujk_save'),
+    url(r'^layanan/iujk/klasifikasi-paketpekerjaan/save/$', iujk_views.iujk_klasifikasi_paketpekerjaan_save, name='iujk_klasifikasi_paketpekerjaan_save'),
     url(r'^layanan/iujk/legalitasperusahaan/save/$', iujk_views.iujk_legalitas_perusahaan_save, name='iujk_legalitas_perusahaan_save'),
     url(r'^layanan/iujk/penanggungjawab/save/$', iujk_views.penanggung_jawab_save_bu, name='penanggung_jawab_save_bu'),
     url(r'^layanan/iujk/penanggungjawab/delete/$', iujk_views.penanggung_jawab_delete_bu, name='penanggung_jawab_delete_bu'),

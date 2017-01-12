@@ -50,7 +50,7 @@ class AnggotaTimAdmin(admin.ModelAdmin):
 			response = HttpResponse(data)
 
 		return response
-	def delete_ajax(self, request, id_pengajuan_izin_, id_survey, id_anggota):
+	def delete_anggotatim(self, request, id_pengajuan_izin_, id_survey, id_anggota):
 		try:
 			get_anggota = AnggotaTim.objects.get(pk=id_anggota)
 			data = {'success': True, 'pesan': 'Anggota '+str(get_anggota.pegawai)+' berhasil Hapus.' }
@@ -60,13 +60,27 @@ class AnggotaTimAdmin(admin.ModelAdmin):
 
 		return HttpResponseRedirect(reverse('admin:cek_kelengkapan', args=[id_pengajuan_izin_, id_survey]))
 
+	def delete_ajax(self, request, id_anggota):
+		try:
+			get_anggota = AnggotaTim.objects.get(pk=id_anggota)
+			data = {'success': True, 'pesan': 'Anggota '+str(get_anggota.pegawai)+' berhasil Hapus.' }
+			get_anggota.delete()
+			data = json.dumps(data)
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': 'Anggota Tidak Ada Dalam Daftar' }
+			data = json.dumps(data)
+
+		response = HttpResponse(data)
+		return response
+
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(AnggotaTimAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^simpan-anggotatim/$', self.admin_site.admin_view(self.simpan_ajax), name='simpan_ajax'),
-			url(r'^hapus-anggotatim/(?P<id_pengajuan_izin_>[0-9]+)/(?P<id_survey>[0-9]+)/(?P<id_anggota>[0-9]+)$', self.admin_site.admin_view(self.delete_ajax), name='hapus_ajax'),
+			url(r'^hapus-anggotatim/(?P<id_pengajuan_izin_>[0-9]+)/(?P<id_survey>[0-9]+)/(?P<id_anggota>[0-9]+)$', self.admin_site.admin_view(self.delete_anggotatim), name='hapus_ajax'),
+			url(r'^hapus-anggotatim-ajax/(?P<id_anggota>[0-9]+)$', self.admin_site.admin_view(self.delete_ajax), name='hapus_anggotatim_ajax'),
 			)
 		return my_urls + urls
 		

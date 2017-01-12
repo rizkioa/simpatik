@@ -91,6 +91,7 @@ JENIS_IUJK = (
 	('IUJK Pelaksana Kontruksi', 'IUJK Pelaksana Kontruksi'),
 	('IUJK Perencana Kontruksi', 'IUJK Perencana Kontruksi'),
 	('IUJK Pengawas Kontruksi', 'IUJK Pengawas Kontruksi'),
+	('IUJK Perencanaan dan Pengawasan Kontruksi', 'IUJK Perencanaan dan Pengawasan Kontruksi'),
 )
 
 JENIS_ANGGOTA_BADAN_USAHA = (

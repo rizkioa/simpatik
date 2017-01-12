@@ -322,10 +322,45 @@ class DetilIUJK(PengajuanIzin):
 		verbose_name = 'Detil IUJK'
 		verbose_name_plural = 'Detil IUJK'
 
+class Klasifikasi(models.Model):
+	"""docstring for Klasifikasi"""
+	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK, null=True)
+	klasifikasi = models.CharField(max_length=255, verbose_name="Klasifikasi")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (self.klasifikasi, )
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.klasifikasi)+"</option>"
+
+	class Meta:
+		verbose_name = "Kalsifikasi IUJK"
+		verbose_name_plural = "Klasifikasi IUJK"
+
+class Subklasifikasi(models.Model):
+	"""docstring for SubKlasifikasi"""
+	klasifikasi = models.ForeignKey(Klasifikasi, verbose_name="Klasifikasi")
+	kode = models.CharField(max_length=8, verbose_name="Kode")
+	subklasifikasi = models.CharField(max_length=255, verbose_name="Subklasifikasi")
+	keterangan = models.TextField(verbose_name="Keterangan", blank=True)
+		
+	def __unicode__(self):
+		return u'%s' % (self.subklasifikasi)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.subklasifikasi)+"</option>"
+
+	class Meta:
+		verbose_name = "SubKalsifikasi IUJK"
+		verbose_name_plural = "SubKalsifikasi IUJK"
+		
+
 class PaketPekerjaan(models.Model):
 	detil_iujk = models.ForeignKey(DetilIUJK, related_name='paket_pekerjaan_iujk', verbose_name='Detil IUJK')
 	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
-	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU') 
+	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU')
+	subklasifikasi = models.ForeignKey(Subklasifikasi, related_name="subklasifikasi_paketpekerjaan", null=True, blank=True, verbose_name='SubKlasifikasi Usaha pada SBU')
 	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
 	nilai_paket_pekerjaan = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
 
@@ -339,8 +374,9 @@ class PaketPekerjaan(models.Model):
 
 	def as_dict(self):
 		return {
+			'klasifikasi': self.subklasifikasi.klasifikasi.klasifikasi,
+			'subklasifikasi': self.subklasifikasi.subklasifikasi,
 			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
-			'klasifikasi_usaha': self.klasifikasi_usaha,
 			'tahun': self.tahun,
 			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
@@ -435,6 +471,43 @@ class DetilTDP(PengajuanIzin):
 		verbose_name = 'Detil TDP'
 		verbose_name_plural = 'Detil TDP'
 
+class JenisKoperasi(models.Model):
+	jenis_koperasi = models.CharField(max_length=255, verbose_name='Jenis Koperasi')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Jenis Koperasi'
+		verbose_name_plural = 'Jenis Koperasi'
+
+class BentukKoperasi(models.Model):
+	bentuk_koperasi = models.CharField(max_length=255, verbose_name='Bentuk Koperasi')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Bentuk Koperasi'
+		verbose_name_plural = 'Bentuk Koperasi'
+
+class RincianKoperasi(models.Model):
+	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_koperasi_detil_tdp', verbose_name='Detil TDP')
+	jenis_koperasi = models.ForeignKey(JenisKoperasi, verbose_name='Jenis Koperasi')
+	bentuk_koperasi = models.ForeignKey(BentukKoperasi, verbose_name='Bentuk Koperasi')
+	modal_sendiri_simpanan_pokok = models.CharField(max_length=255, verbose_name='Modal Sendiri Simpan Pokok', null=True, blank=True)
+	modal_sendiri_simpanan_wajib = models.CharField(max_length=255, verbose_name='Modal Sendiri Simpan Wajib', null=True, blank=True)
+	modal_sendiri_dana_cadangan = models.CharField(max_length=255, verbose_name='Modal Sendiri Dana Cadangan', null=True, blank=True)
+	modal_sendiri_hibah = models.CharField(max_length=255, verbose_name='Modal Sendiri Hibah', null=True, blank=True)
+	modal_pinjaman_anggota = models.CharField(max_length=255, verbose_name='Modal Pinjaman Anggota', null=True, blank=True)
+	modal_pinjaman_koperasi_lain = models.CharField(max_length=255, verbose_name='Modal Pinjaman Koperasi Lain', null=True, blank=True)
+	modal_pinjaman_bank = models.CharField(max_length=255, verbose_name='Modal Pinjaman Bank', null=True, blank=True)
+	modal_pinjaman_lainnya = models.CharField(max_length=255, verbose_name='Modal Pinjaman Lainnya', null=True, blank=True)
+	jumlah_anggota = models.CharField(max_length=255, verbose_name='Jumlah Anggota', null=True, blank=True)
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Rincian Koperasi'
+		verbose_name_plural = 'Rincian Koperasi'
+
 class IzinLain(AtributTambahan):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, related_name='izin_lain_pengajuan_izin', verbose_name='Izin Lain')
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
@@ -459,6 +532,11 @@ class RincianPerusahaan(models.Model):
 	modal_disetor = models.CharField(max_length=100, verbose_name='Modal Disetor Rp.', null=True, blank=True)
 	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
 	nilai_nominal_per_saham = models.CharField(max_length=100, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Rincian Perusahaan'
+		verbose_name_plural = 'Rincian Perusahaan'
 
 class Survey(MetaAtribut):
 	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)

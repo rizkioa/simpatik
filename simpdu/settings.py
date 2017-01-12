@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'perusahaan',
     'izin',
     'raven.contrib.django.raven_compat',
+    'daterange_filter',
 )
 
 MIDDLEWARE_CLASSES = (
