@@ -677,6 +677,16 @@ def load_data_pimpinan(request, pengajuan_id):
 	# 	response = HttpResponse(data)
 	return response
 
+def jumlah_data_pimpinan(request, pengajuan_id):
+	if pengajuan_id:
+		dirut = len(DataPimpinan.objects.filter(detil_tdp_id=pengajuan_id, kedudukan_id=1))
+		direktur = len(DataPimpinan.objects.filter(detil_tdp_id=pengajuan_id, kedudukan_id=2))
+		komisaris = len(DataPimpinan.objects.filter(detil_tdp_id=pengajuan_id, kedudukan_id=3))
+		data = {'data':{'dirut':dirut, 'direktur':direktur, 'komisaris':komisaris}}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
 def edit_data_pimpinan(request, data_pimpinan_id):
 	if data_pimpinan_id:
 		try:

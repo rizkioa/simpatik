@@ -228,6 +228,7 @@
                 $('#table_data_pimpinan > tbody').prepend(table)
               }
               else{
+                load_jumlah_data_pimpinan_perusahaan(pengajuan_id)
                 b = data.reverse()
                 $('#table_data_pimpinan > tbody > tr:first').remove()
                 // console.log(data)
@@ -283,6 +284,22 @@
           });
           $('#table_data_pimpinan').mLoading('hide');
         }
+      }
+
+      function load_jumlah_data_pimpinan_perusahaan(pengajuan_id){
+        $.ajax({
+            type: 'GET',
+            url: __base_url__+'/ajax-load-data-jumlah-data-pimpinan/'+pengajuan_id,
+            success: function (data) {
+              respon = $.parseJSON(data)
+              // console.log(respon.data.direktur)
+              // console.log(data)
+              // alert(respon.data.jumlah_dirut)
+              $('#jumlah_dirut').text(respon.data.dirut)
+              $('#jumlah_direktur').text(respon.data.direktur)
+              $('#jumlah_komisaris').text(respon.data.komisaris)
+            }
+        });
       }
 
       function add_data_pimpinan(){

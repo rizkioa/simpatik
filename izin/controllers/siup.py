@@ -85,6 +85,8 @@ def add_wizard_siup(request):
 				url_ = reverse('admin:izin_proses_tdp_pt')
 			elif id_kelompok_list.id == 26:
 				url_ = reverse('admin:izin_proses_tdp_cv')
+			elif id_kelompok_list.id == 27:
+				url_ = reverse('admin:izin_proses_tdp_firma')
 			elif id_kelompok_list.id == 28:
 				url_ = reverse('admin:izin_proses_tdp_perorangan')
 			elif id_kelompok_list.kode == "503.07/":
@@ -124,7 +126,7 @@ def add_wizard_siup(request):
 def formulir_siup(request):
 	extra_context={}
 	if 'id_kelompok_izin' in request.COOKIES.keys():
-		extra_context.update({'title': 'SIUP Baru'})
+		extra_context.update({'title': 'SIUP'})
 		negara = Negara.objects.all()
 		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 		jenis_pemohon = JenisPemohon.objects.all()
