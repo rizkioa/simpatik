@@ -79,6 +79,7 @@ urlpatterns = [
     url(r'^layanan/izin-usaha-dan-izin-usaha-perluasan-penanaman-modal$', layanan_view.layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal, name='layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal'),
     url(r'^layanan/izin-usaha-perubahan-penanaman-modal$', layanan_view.layanan_izin_usaha_perubahan_penanaman_modal, name='layanan_izin_usaha_perubahan_penanaman_modal'),
     url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
+    url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
 
     
     url(r'^404/', views.page_404, name='404'),
@@ -104,7 +105,7 @@ urlpatterns = [
     url(r'^layanan/siup/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_bukti_pendaftaran, name='cetak_bukti_pendaftaran'),
 
     #cetak IUJK
-    # url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
+    url(r'^layanan/iujk/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan_iujk, name='cetak_permohonan_iujk'),
     url(r'^layanan/iujk/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', iujk_views.cetak_bukti_pendaftaran_iujk, name='cetak_bukti_pendaftaran_iujk'),
 
     #cetak HO
@@ -203,6 +204,7 @@ urlpatterns = [
     # ++++++++++++++++++++++++ end for ajax reklame ++++++++++++++++++++++
 
     # AJAX SAVE IUJK
+    url(r'^layanan/iujk/formulir/$', views.formulir_iujk, name='formulir_iujk'),
     url(r'^layanan/iujk/paketpekerjaan/save/$', iujk_views.iujk_paketpekerjaan_save, name='iujk_paketpekerjaan_save'),
     url(r'^layanan/iujk/paketpekerjaan/edit/(?P<id_paket_>[0-9]+)$', iujk_views.iujk_paketpekerjaan_edit, name='iujk_paketpekerjaan_edit'),
     url(r'^layanan/iujk/detiliujk/save/$', iujk_views.iujk_detiliujk_save, name='iujk_detiliujk_save'),
