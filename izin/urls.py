@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^ajax-load-data-pemegang-saham/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_pemegang_saham, name='load_pemegang_saham'),
     url(r'^ajax-load-berkas-tdp/(?P<id_pengajuan>[0-9]+)$', tdp_view.ajax_load_berkas_tdp, name='ajax_load_berkas_tdp'),
     url(r'^ajax-load-data-data-pimpinan/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_data_pimpinan, name='load_data_pimpinan'),
+    url(r'^ajax-load-data-jumlah-data-pimpinan/(?P<pengajuan_id>[0-9]+)$', tdp_view.jumlah_data_pimpinan, name='jumlah_data_pimpinan'),
     url(r'^ajax-load-data-perusahaan-cabang/(?P<pengajuan_id>[0-9]+)$', tdp_view.load_perusahaan_cabang, name='load_perusahaan_cabang'),
     url(r'^ajax-load-data-legalitas-perusahaan-tdp/(?P<perusahaan_id>[0-9]+)$', tdp_view.load_legalitas_perusahaan_tdp, name='load_legalitas_perusahaan_tdp'),
     url(r'^ajax-edit-izin-lain-tdp/(?P<izin_lain_id>[0-9]+)$', tdp_view.edit_tdp_izin_lain, name='edit_tdp_izin_lain'),

@@ -236,7 +236,7 @@
 
 						{% if request.user|has_group:'Operator' or request.user.is_superuser %}
 							{% if pengajuan.status == 6 %}
-							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_tdp_pt' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_tdp_cv' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 							{% endif %}
 						{% endif %}
 					</div>
@@ -252,7 +252,7 @@
 				<center>
 					{% if request.user|has_group:'Operator' or request.user.is_superuser or request.user|has_group:'Cetak' %}
 
-						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_po' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_pt' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
 
 						{% if status != 6 and status != 11 and status != 4%}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
@@ -261,11 +261,11 @@
 					{% endif %}
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_perorangan_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_cv_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 
 					{% if skizin_status == 1  or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_perorangan_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_cv_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 
 				</center>
@@ -577,7 +577,7 @@
 						<div class="panel-body">
 						{% if skizin == None %}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_perorangan_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_cv_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_status_pusat" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Status Pusat</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
@@ -995,11 +995,9 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-pt-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-cv-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
-
-
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
@@ -1021,7 +1019,7 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-pt-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-cv-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
 
@@ -1044,6 +1042,7 @@
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
 	<script>
+        
         function edit_skizin(id_detil_siup, aksi){
         	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 		  	produk_utama = $('#produk_utama_edit').val();
@@ -1211,7 +1210,7 @@
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Detail TDP PERORANGAN (PO)</h3>
+		        	<h3 class="modal-title custom-font">Detail TDP FIRMA</h3>
 		      	</div>
 		      	<div class="modal-body">
 		      		<table width="100%" border="0">
@@ -1232,7 +1231,7 @@
 					    <tr>
 					      <td width="25%">Nomor KTP/Paspor</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ ktp }} / {{paspor}}</td>
+					      <td width="70%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nama</td>
@@ -1340,7 +1339,7 @@
 				    	<tr>
 				    		<td>Status Penanaman Modal</td>
 				    		<td>:</td>
-				    		<td>{{pengajuan.jenis_penanaman_modal.jenis_penanaman_modal}}</td>
+				    		<td>{% if pengajuan.jenis_penanaman_modal %}{{pengajuan.jenis_penanaman_modal.jenis_penanaman_modal}}{% endif %}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Tanggal Pendirian</td>
@@ -1360,7 +1359,7 @@
 				    	<tr>
 				    		<td>Bentuk Kerja Sama</td>
 				    		<td>:</td>
-				    		<td>{{pengajuan.bentuk_kerjasama.bentuk_kerjasama}}</td>
+				    		<td>{% if pengajuan.bentuk_kerjasama %}{{pengajuan.bentuk_kerjasama.bentuk_kerjasama}}{% endif %}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Merk Dagang</td>
@@ -1513,7 +1512,7 @@
 					</table>
 					<br>
 					<br>
-					<!-- <h5><strong>LEGALITAS PERUSAHAAN</strong></h5>
+					<h5><strong>LEGALITAS PERUSAHAAN</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
@@ -1549,7 +1548,7 @@
 								{% endif %}
 							</tbody>
 						</table>
-					</div> -->
+					</div>
 					<br>
 					<br>
 					<h5><strong>IZIN-IZIN & LEGALITAS LAINNYA</strong></h5>
@@ -1663,7 +1662,7 @@
 							</tbody>
 						</table>
 					</div>
-					<!-- <h5><strong>PEMEGANG SAHAM</strong></h5>
+					<h5><strong>PEMEGANG SAHAM</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
@@ -1699,7 +1698,7 @@
 								{% endif %}
 							</tbody>
 						</table>
-					</div> -->
+					</div>
 					<h5><strong>PERUSAHAAN</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">
