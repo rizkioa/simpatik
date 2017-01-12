@@ -593,29 +593,71 @@ class InformasiTanah(PengajuanIzin):
 	atas_nama_persil=  models.CharField(max_length=30, verbose_name='Atas Nama Persil', null=True, blank=True)
 	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
-	
+	#Tambahan Informasi Tanah IPPT USAHA
 	batas_utara = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Selatan')
 	batas_barat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Bats Barat')
-	tanah_negara_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Negara Belum Dikuasai')
-	tanah_kas_desa_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Kas Desa Belum Dikuasai')
-	tanah_hak_pakai_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Pakai Belum Dikuasai')
-	tanah_hak_guna_bangunan_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Guna Bangunan Belum Dikuasai')
-	tanah_hak_milik_sertifikat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak MIlik Sertifikat Belum Dikuasai')
-	tanah_adat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Adat Belum Dikuasai')
+	tanah_negara_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Negara Belum Dikuasai')
+	tanah_kas_desa_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0,verbose_name='Tanah Kas Desa Belum Dikuasai')
+	tanah_hak_pakai_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Hak Pakai Belum Dikuasai')
+	tanah_hak_guna_bangunan_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0,verbose_name='Tanah Hak Guna Bangunan Belum Dikuasai')
+	tanah_hak_milik_sertifikat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Hak MIlik Sertifikat Belum Dikuasai')
+	tanah_adat_belum_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Adat Belum Dikuasai')
 	pemegang_hak_semula_dari_tanah_belum_dikuasai = models.CharField(max_length=50,null=True, blank=True, verbose_name='Pemegang Hak Tanah Sebelum Dkuasai')
 	tanah_belum_dikuasai_melalui = models.CharField(max_length=100,null=True, blank=True, verbose_name='Tanah Belum Dikuasai Melalui')
-	jumlah_tanah_belum_dikuasai = models.DecimalField(max_digits=7, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
-	tanah_negara_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
-	tanah_kas_desa_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Kas Desa Sudah Dikuasai')
-	tanah_hak_pakai_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Pakai Sudah Dikuasai')
-	tanah_hak_guna_bangunan_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak Guna Bangunan Sudah Dikuasai')
-	tanah_hak_milik_sertifikat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Hak MIlik Sertifikat Sudah Dikuasai')
-	tanah_adat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tanah Adat Sudah Dikuasai')
+	jumlah_tanah_belum_dikuasai = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name='Jumlah Tanah Negara Sudah Dikuasai')
+	tanah_negara_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Negara Sudah Dikuasai')
+	tanah_kas_desa_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Kas Desa Sudah Dikuasai')
+	tanah_hak_pakai_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Hak Pakai Sudah Dikuasai')
+	tanah_hak_guna_bangunan_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Hak Guna Bangunan Sudah Dikuasai')
+	tanah_hak_milik_sertifikat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Hak MIlik Sertifikat Sudah Dikuasai')
+	tanah_adat_sudah_dikuasai = models.DecimalField(max_digits=5, decimal_places=2, default=0, verbose_name='Tanah Adat Sudah Dikuasai')
 	pemegang_hak_semula_dari_tanah_sudah_dikuasai = models.CharField(max_length=50,null=True, blank=True, verbose_name='Pemegang Hak Tanah Sesudah Dkuasai')
 	tanah_sudah_dikuasai_melalui = models.CharField(max_length=100,null=True, blank=True, verbose_name='Tanah Sudah Dikuasai Melalui')
-	jumlah_tanah_sudah_dikuasai = models.DecimalField(max_digits=7, decimal_places=2,default=0, verbose_name='Tanah Negara Sudah Dikuasai')
+	jumlah_tanah_sudah_dikuasai = models.DecimalField(max_digits=7, decimal_places=2, default=0, verbose_name='Jumlah Tanah Negara Sudah Dikuasai')
+	#Rencana Pembangunan
+	tipe1 = models.CharField(max_length=20,null=True, blank=True, verbose_name='Tipe 1')
+	tipe2 = models.CharField(max_length=20,null=True, blank=True, verbose_name='Tipe 2')
+	tipe3 = models.CharField(max_length=20,null=True, blank=True, verbose_name='Tipe 3')
+	gudang1 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Gudang 1')
+	gudang2 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Gudang 2')
+	gudang3 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Gudang 3')
+	luas_tipe1 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Tipe 1')
+	luas_tipe2 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Tipe 2')
+	luas_tipe3 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Tipe 3')
+	luas_lapangan = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Lapangan')
+	luas_kantor = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Kantor')
+	luas_saluran = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Saluran')
+	luas_taman = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Taman')
+	pematangan_tanah_tahap1 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Pematangan Tanah Tahap 1')
+	pematangan_tanah_tahap2 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Pematangan Tanah Tahap 2')
+	pematangan_tanah_tahap3 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Pematangan Tanah Tahap 3')
+	pembangunan_gedung_tahap1 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Pembangunan Gedung Tahap 1')
+	pembangunan_gedung_tahap2 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Pembangunan Gedung Tahap 2')
+	pembangunan_gedung_tahap3 = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Pembangunan Gedung Tahap 3')
+	jangka_waktu_selesai = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Jangka Waktu Selesai')
+	#Rencana Pembiayaan & Pemodalan
+	modal_tetap_tanah = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Tetap Tanah')
+	modal_tetap_bangunan = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Tetap Bangunan')
+	modal_tetap_mesin = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Tetap Mesin - Mesin dan Peralatan')
+	modal_tetap_angkutan = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Tetap Alat-alat Angkutan')
+	modal_tetap_inventaris = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Tetap Alat-alat Kantor dan Inventaris')
+	modal_tetap_lainnya = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Tetap Lainnya')
+	modal_kerja_bahan = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Kerja Bahan Baku')
+	modal_kerja_gaji = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Kerja Gaji/Upah')
+	modal_kerja_alat_angkut = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Kerja Alat-alat Angkutan')
+	modal_kerja_lainnya = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Kerja Lainnya')
+	modal_dasar = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Dasar')
+	modal_ditetapkan = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Ditetapkan')
+	modal_disetor = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Disetor')
+	modal_bank_pemerintah = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Bank Pemerintah')
+	modal_bank_swasta = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Bank Swasta')
+	modal_lembaga_non_bank = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Lembaga Non Bank')
+	modal_pihak_ketiga = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Pihak Ketiga')
+	modal_pinjaman_luar_negeri = models.CharField(max_length=15, null=True, blank=True, verbose_name='Modal Pinjaman Luar Negeri')
+	saham_indonesia = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Saham Indonesia')
+	saham_asing = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Saham Asing')
 
 	def __unicode__(self):
 		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -625,7 +667,7 @@ class InformasiTanah(PengajuanIzin):
 		verbose_name = 'Informasi Tanah'
 		verbose_name_plural = 'Informasi Tanah'
 
-class PenggunaaTanahIPPTUsaha(MetaAtribut):
+class PenggunaanTanahIPPTUsaha(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	nama_penggunaan = models.CharField(max_length=20, verbose_name='Penggunaan Tanah', blank=True, null=True)
 	ukuran_penggunaan = models.IntegerField(verbose_name="Ukuran Penggunaan", null=True, blank=True)
@@ -637,6 +679,22 @@ class PenggunaaTanahIPPTUsaha(MetaAtribut):
 		ordering = ['-status']
 		verbose_name = 'Penggunaan Tanah IPPT Usaha'
 		verbose_name_plural = 'Penggunaan Tanah IPPT Usaha'
+
+class PerumahanYangDimilikiIPPTUsaha(MetaAtribut):
+	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
+	nama_perumahan = models.CharField(max_length=20, verbose_name='Nama Perumahan', blank=True, null=True)
+	luas_tanah = models.DecimalField(max_digits=5, decimal_places=2,default=0,verbose_name="Luas Tanah")
+	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20, null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa',null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.nama_perumahan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Perumahan Yang Sudah Dimiliki IPPT Usaha'
+		verbose_name_plural = 'Perumahan Yang Sudah Dimiliki IPPT Usaha'
+
 
 class DetilHuller(PengajuanIzin):
 	perusahaan = models.ForeignKey('perusahaan.Perusahaan', related_name='detilhuller_perusahaan', blank=True, null=True)

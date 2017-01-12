@@ -2,4 +2,90 @@
   {% csrf_token %}
   <h3>Perumahan yang Sudah Dimiliki Dalam Satu Wilayah Kota Kediri</h3>
   <hr class="style14">
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Perumahan Yang Dimiliki</label> 
+        <table id="id_perumahan_yang_dimiliki" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>Nama Perumahan</td>
+              <td>Luas Tanah</td>
+              <td>Status Tanah</td>
+              <td>Lokasi</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" data-toggle="modal" data-target="#perumahan_yang_dimiliki">Tambah Perumahan Yang Dimiliki<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
 </form>
+
+<div class="modal fade" id="perumahan_yang_dimiliki" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Perumahan Yang Dimiliki</h3>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="#" data-parsley-validate novalidate>
+        {% csrf_token %}
+		  <div class="form-group">
+		  	<label for="input01" class="col-sm-2 control-label">Nama Perumahan</label>
+		  	<div class="col-sm-7">
+		  		<input type="text" id="id_nama_perumahan" name="nama_perumahan" class="form-control" required="" data-parsley-trigger="">
+		  	</div>
+		  </div>
+
+		  <div class="form-group">
+		  	<label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>M&sup2;</span>
+		  			</span>
+		  		</div>
+		  	</div>
+		  </div>
+
+		  <div class="form-group">
+		  	<label for="input01" class="col-sm-2 control-label">Status Tanah</label>
+		  	<div class="col-sm-7">
+				<input type="text" id="id_status_tanah" name="status_tanah" class="form-control" required="" data-parsley-trigger="">
+		  	</div>
+		  </div>
+
+		  <div class="form-group">
+		  	<label for="input01" class="col-sm-2 control-label">Lokasi</label>
+		  	<label for="input01" class="col-sm-2 control-label">Kecamatan</label>
+		  	<div class="col-sm-3">
+				<select class="form-control chosen-select mb-10" name="kecamatan">
+		          <option value="1">Kecamatan</option>
+		        </select>
+		  	</div>
+		  </div>
+
+		  <div class="form-group">
+		  	<label for="input01" class="col-sm-4 control-label">Kel / Desa</label>
+		  	<div class="col-sm-3">
+		  		<select class="form-control chosen-select mb-10" name="desa">
+		  			<option value="1">Desa</option>
+		  		</select>
+		  	</div>
+		  </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
