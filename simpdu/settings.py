@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c^-$x(edvg3!dfpx^t0pf$*9n#v!#252dxgta-k+n)f*yf4&cd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'daterange_filter',
+    'ckeditor',
     'debug_toolbar',
     'mptt',
     'cas',
@@ -48,6 +50,7 @@ INSTALLED_APPS = (
     'kepegawaian',
     'perusahaan',
     'izin',
+    'pembangunan',
 )
 
 MIDDLEWARE_CLASSES = (
