@@ -650,7 +650,7 @@
 
                 <h5>DATA LAIN PERUSAHAAN</h5>
                 <h6>DATA PEMPINAN PERUSAHAAN</h6>
-                <p style="font-size:13px">Jumlah Pimpinan Perusahaan: Dirut / Dir Cabang / Pananggung Jawab: 0 Direktur: 0 Komisaris: 0</p>
+                <p style="font-size:13px">Jumlah Pimpinan Perusahaan: Dirut / Dir Cabang / Pananggung Jawab: {{jumlah_dirut}} Direktur: {{jumlah_direktur}} Komisaris: {{jumlah_komisaris}}</p>
                 <table width="100%" border="1" class="font tables" style="border:2px">
                     <thead>
                         <tr>
@@ -709,9 +709,9 @@
                                     <td>{{d.kedudukan_diperusahaan_lain}}</td>
                                     <td>{{d.nama_perusahaan_lain}}</td>
                                     <td>{{d.alamat_perusahaan_lain}}</td>
-                                    <td>{{d.kode_pos_perusahaan_lain}}</td>
+                                    <td>{{d.kode_pos_perusahaan_lain|default_if_none:'-'}}</td>
                                     <td>{{d.telepon_perusahaan_lain}}</td>
-                                    <td>{{d.tanggal_menduduki_jabatan_perusahaan_lain}}</td>
+                                    <td>{{d.tanggal_menduduki_jabatan_perusahaan_lain|date:'d-m-Y'}}</td>
                                 </tr>
                             {% endfor %}
                         {% else %}

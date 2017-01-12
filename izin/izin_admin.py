@@ -9,6 +9,8 @@ from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from daterange_filter.filter import DateRangeFilter
+
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey
 from kepegawaian.models import Pegawai
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
@@ -29,7 +31,7 @@ from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanFor
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
-	list_filter = ('kelompok_jenis_izin',)
+	list_filter = ('kelompok_jenis_izin', ('created_at', DateRangeFilter))
 	search_fields = ('no_izin', 'pemohon__nama_lengkap', 'no_pengajuan')
 
 	def changelist_view(self, request, extra_context={}):
@@ -301,6 +303,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_tdp_pt', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.id == 26:
 			link_ = reverse('admin:view_pengajuan_tdp_cv', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.id == 28:
+			link_ = reverse('admin:view_pengajuan_tdp_perorangan', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -1031,6 +1035,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/imb-perumahan/$', self.admin_site.admin_view(formulir_imb_perumahan), name='izin_proses_imb_perumahan'),
 			url(r'^wizard/add/proses/tdp-pt/$', self.admin_site.admin_view(formulir_tdp_pt), name='izin_proses_tdp_pt'),
 			url(r'^wizard/add/proses/tdp-cv/$', self.admin_site.admin_view(formulir_tdp_cv), name='izin_proses_tdp_cv'),
+			url(r'^wizard/add/proses/tdp-perorangan/$', self.admin_site.admin_view(formulir_tdp_perorangan), name='izin_proses_tdp_perorangan'),
 			url(r'^wizard/add/proses/pemakaian-kekayaan-daerah/$', self.admin_site.admin_view(formulir_informasi_kekayaan_daerah), name='izin_proses_pemakaian_kekayaan_daerah'),
 			url(r'^wizard/add/proses/izin-gangguan/$', self.admin_site.admin_view(formulir_izin_gangguan), name='izin_proses_gangguan'),
 			url(r'^wizard/add/proses/izin-lokasi/$', self.admin_site.admin_view(formulir_izin_lokasi), name='izin_proses_lokasi'),
