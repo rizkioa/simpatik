@@ -21,6 +21,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
+			extra_context.update({'pegawai_all' : Pegawai.objects.all() })
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
 
@@ -80,17 +81,17 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
-			if pengajuan_.status == 8:
+			# if pengajuan_.status == 8:
+			try:
 				try:
-					try:
-						s = Survey.objects.get(pengajuan=pengajuan_)
-					except Survey.MultipleObjectsReturned:
-						s = Survey.objects.filter(pengajuan=pengajuan_).last()
-						print s.survey_iujk.all()
-				except ObjectDoesNotExist:
-					s = ''
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					print s.survey_iujk.all()
+			except ObjectDoesNotExist:
+				s = ''
 
-				extra_context.update({'tim_teknis': s })
+			extra_context.update({'survey': s })
 				
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})

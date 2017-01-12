@@ -564,14 +564,15 @@ function load_konfirmasi(id_pengajuan){
           str = ""
           for (var i = 0; i < a; i++){
             // split = respon.berkas[i].split(",")
-            // console.log(respon.berkas)
-            console.log(respon.paket[i].klasifikasi)
-            console.log(respon.paket[i].subklasifikasi)
+            console.log(respon.paket[i])
+            // console.log(respon.paket[i].klasifikasi)
+            // console.log(respon.paket[i].subklasifikasi)
             // console.log(respon.paket[i].tahun)
             // console.log(respon.paket[i].nilai_paket_pekerjaan)
             str = '<tr>'
             str += '<td>'+respon.paket[i].klasifikasi+'</td>'
             str += '<td>'+respon.paket[i].subklasifikasi+'</td>'
+            str += '<td>'+respon.paket[i].nama_paket_pekerjaan+'</td>'
             str += '<td>'+respon.paket[i].tahun+'</td>'
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'
