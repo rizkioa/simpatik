@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'daterange_filter',
     'ckeditor',
     'debug_toolbar',
     'mptt',
