@@ -100,110 +100,66 @@
   </table>
 
   <br>
-  <h4><u>#3. INFORMASI TANAH</u></h4>
-  <table width="100%" border="0">
+  <h4><u>#3. LEGALITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="3">
     <tr>
-      <td width="25%"><h5><u>Surat Kuasa</u></h5></td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td>Jenis Akta dan Pengesahan</td>
+      <td>Nama Notaris</td>
+      <td>Alamat Notaris</td>
+      <td>telp. Notaris</td>
+      <td>No. Akta</td>
+      <td>Tgl. Akta</td>
+      <td>No. Pengesahan</td>
+      <td>Tgl. Pengesahan</td>
     </tr>
     <tr>
-      <td width="25%">No.</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='no_surat_kuasa_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Tanggal</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='tanggal_surat_kuasa_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%"><h5><u>Lokasi</u></h5></td>
-      <td width="5%"></td>
-      <td width="70%"></td>
-    </tr>
-    <tr>
-      <td width="25%">Alamat</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='alamat_informasi_tanah_konfirmasi'></span></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Desa / Kelurahan</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='desa_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Kecamatan</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='kecamatan_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Kabupaten / Kota</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='kabupaten_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Luas Tanah</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='luas_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Status Tanah</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='status_tanah_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%"><h5><u>Sertifikan/Petok D</u></h5></td>
-      <td width="5%"></td>
-      <td width="70%"></td>
-    </tr>
-    <tr>
-      <td width="25%">No.</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='no_sertifikat_petak_konfirmasi'></span></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Luas</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='luas_sertifikat_petak_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Atas Nama</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='atas_nama_sertifikat_petak_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%"><h5><u>Persil</u></h5></td>
-      <td width="5%"></td>
-      <td width="70%"></td>
-    </tr>
-    <tr>
-      <td width="25%">No.</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='no_persil_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Klas</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='klas_persil_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Atas Nama</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='atas_nama_persil_konfirmasi'></span></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Penggunaan Sekarang</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='penggunaan_sekarang_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Rencana Penggunaan</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='rencana_penggunaan_konfirmasi'></span></td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
     </tr>
   </table>
   <br>
+
+  <h4><u>#4. INFORMASI TANAH</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Surat Kuasa</td></tr>
+    <tr>
+      <td width="25%">No</td>
+      <td width="5%">:</td>
+      <td width="70%">--</td>
+    </tr>
+    <tr>
+      <td width="25%">Tgl</td>
+      <td width="5%">:</td>
+      <td width="70%">--</td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+    </tr>
+  </table>
 
   <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN</u></h4>
   <table class="table table-bordered">

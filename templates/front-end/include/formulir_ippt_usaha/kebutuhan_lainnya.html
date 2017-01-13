@@ -1,5 +1,369 @@
 <form method="POST" name="step7" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
-  <h3>Kebutuhan Lainnya</h3>
+  <h3>SUSUNAN TENAGA KERJA</h3>
   <hr class="style14">
+
+  <div class="form-group">
+  	<label for="input01" class="col-sm-2 control-label">Tenaga Ahli</label>
+  	<div class="col-sm-3">
+  		<div class="input-group">
+  			<input type="text" id="id_tenaga_ahli" name="tenaga_ahli" class="form-control" required="" data-parsley-trigger="">
+  			<span class="input-group-addon">
+  				<span>orang</span>
+  			</span>
+  		</div>
+  	</div>
+  </div>
+
+  <div class="form-group">
+  	<label for="input01" class="col-sm-2 control-label">Pegawai Tetap</label>
+  	<div class="col-sm-3">
+  		<div class="input-group">
+  			<input type="text" id="id_pegawai_tetap" name="pegawai_tetap" class="form-control" required="" data-parsley-trigger="">
+  			<span class="input-group-addon">
+  				<span>orang</span>
+  			</span>
+  		</div>
+  	</div>
+  </div>
+
+  <div class="form-group">
+  	<label for="input01" class="col-sm-2 control-label">Pegawai harian Tetap</label>
+  	<div class="col-sm-3">
+  		<div class="input-group">
+  			<input type="text" id="id_pegawai_harian_tetap" name="pegawai_harian_tetap" class="form-control" required="" data-parsley-trigger="">
+  			<span class="input-group-addon">
+  				<span>orang</span>
+  			</span>
+  		</div>
+  	</div>
+  </div>
+
+  <div class="form-group">
+  	<label for="input01" class="col-sm-2 control-label">Pegawai Harian Tidak Tetap</label>
+  	<div class="col-sm-3">
+  		<div class="input-group">
+  			<input type="text" id="id_pegawai_harian_tidak_tetap" name="pegawai_harian_tidak_tetap" class="form-control" required="" data-parsley-trigger="">
+  			<span class="input-group-addon">
+  				<span>orang</span>
+  			</span>
+  		</div>
+  	</div>
+  </div>
+
+  <h3>PRASARANA / UTILITAS</h3>
+  <hr class="style14">
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2"><b>1. Listrik</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Kebutuhan</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_kebutuhan" name="kebutuhan" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>kVA</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Jumlah yang dibutuhkan sehari - hari</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_jumlah_dibutuhkan_sehari" name="jumlah_dibutuhkan_sehari" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>kVA</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Jumlah daya yang dimiliki / genset</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_jumlah_daya_genset" name="jumlah_daya_genset" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>kVA</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Jumlah daya yang dibutuhkan dari PLN</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_jumlah_dibutuhkan_pln" name="jumlah_dibutuhkan_pln" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>kVA</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2"><b>2. Air</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">a. Jumlah Kebutuhan Air</label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Untuk keperluan rumah tangga</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_keperluan_rumah_tangga" name="keperluan_rumah_tangga" class="form-control" required="" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Untuk proses produksi</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_proses_produksi" name="proses_produksi" class="form-control" required="" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Untuk lain - lain</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_lain_lain" name="lain_lain" class="form-control" required="" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Jumlah kebutuhan air</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_jumlah_kebutuhan_air" name="jumlah_kebutuhan_air" class="form-control" required="" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">b. Kebutuhan minimal tiap hari</label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">PDAM</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_pdam" name="pdam" class="form-control" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Sumur / Sumber Air</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_sumber_air" name="sumber_air" class="form-control" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Sungai</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_sungai" name="sungai" class="form-control" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Jumlah Kebutuhan Air</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<input type="text" id="id_jumlah_kebutuhan_air2" name="jumlah_kebutuhan_air2" class="form-control" data-parsley-trigger="">
+	  			<span class="input-group-addon">
+	  				<span>Liter/hari</span>
+	  			</span>
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-3 control-label">c. Kualitas air yang dibutuhkan (analisi air lampirkan)</label>
+  	</div>
+    <div>
+      <label class="col-sm-1 control-label">: Terlampir</label>
+    </div>
+  </div>
+
+  <h3>TENAGA KERJA</h3>
+  <hr class="style14">
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2"><b>1. Asal Tenaga</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Indonesia</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_indonesia" name="indonesia" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>orang</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Asing</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_asing" name="asing" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>orang</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2"><b>2. Susunan Tenaga Kerja</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Pegawai Tetap</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_tenaga_kerja_tetap" name="tenaga_kerja_tetap" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>orang</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Pegawai Tidak Tetap</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_tenga_kerja_tidak_tetap" name="tenaga_kerja_tidak_tetap" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>orang</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Jumlah Tenaga Kerja</label>
+  		<div class="form-group">
+		  	<div class="col-sm-3">
+		  		<div class="input-group">
+		  			<input type="text" id="id_jumlah_tenaga_kerja" name="jumlah_tenaga_kerja" class="form-control" required="" data-parsley-trigger="">
+		  			<span class="input-group-addon">
+		  				<span>orang</span>
+		  			</span>
+		  		</div>
+		  	</div>
+	  	</div>
+  	</div>
+  </div>
+
 </form>

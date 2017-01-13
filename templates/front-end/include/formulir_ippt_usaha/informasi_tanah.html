@@ -214,7 +214,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Negara</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_negara_belum_dikuasai" name="tanah_negara_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-belum-dikuasai" id="id_tanah_negara_belum_dikuasai" name="tanah_negara_belum_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -225,7 +225,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Kas Desa</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_kas_desa_belum_dikuasai" name="tanah_kas_desa_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-belum-dikuasai" id="id_tanah_kas_desa_belum_dikuasai" name="tanah_kas_desa_belum_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -236,7 +236,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Hak Pakai</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_hak_pakai_belum_dikuasai" name="tanah_hak_pakai_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-belum-dikuasai" id="id_tanah_hak_pakai_belum_dikuasai" name="tanah_hak_pakai_belum_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -247,7 +247,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Hak Guna Bangunan</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_hak_guna_bangunan_belum_dikuasai" name="tanah_hak_guna_bangunan_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-belum-dikuasai" id="id_tanah_hak_guna_bangunan_belum_dikuasai" name="tanah_hak_guna_bangunan_belum_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -258,7 +258,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Hak Milik Sertifikat</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_hak_milik_sertifikat_belum_dikuasai" name="tanah_hak_milik_sertifikat_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-belum-dikuasai" id="id_tanah_hak_milik_sertifikat_belum_dikuasai" name="tanah_hak_milik_sertifikat_belum_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -269,7 +269,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_adat_belum_dikuasai" name="tanah_adat_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-belum-dikuasai" id="id_tanah_adat_belum_dikuasai" name="tanah_adat_belum_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -280,7 +280,8 @@
         <label for="input01" class="col-sm-4 control-label">Jumlah</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_jumlah_tanah_belum_dikuasai" name="jumlah_tanah_belum_dikuasai" data-parsley-trigger="change">
+            <input type="text" id="id_tanah_belum_dikuasai" class="form-control" data-parsley-trigger="change" disabled="">
+            <input type="hidden" id="id_jumlah_tanah_belum_dikuasai" name="jumlah_tanah_belum_dikuasai">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -288,15 +289,15 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="input01" class="col-sm-4 control-label" style="padding-right: 48px;"><strong>2. Pemegang Hak Semula</strong></label>
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 48px;">2. Pemegang Hak Semula</label>
         <div class="col-sm-4">
           <input type="text" id="id_pemegang_hak_semula_dari_tanah_belum_dikuasai" name="pemegang_hak_semula_dari_tanah_belum_dikuasai" class="form-control" data-parsley-trigger="change">
         </div>
       </div>
       <div class="form-group">
-        <label for="input01" class="col-sm-4 control-label" style="padding-right: 87px;"><strong>3. Dikuasai melalui</strong></label>
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 87px;">3. Dikuasai melalui</label>
         <div class="col-sm-4">
-          <input type="text" id="id_tanah_belum_dikuasai_melalui" name="tanah_belum_dikuasai_melalui" class="form-control" data-parsley-trigger="change">
+        <input type="text" id="id_tanah_belum_dikuasai_melalui" name="tanah_belum_dikuasai_melalui" class="form-control" data-parsley-trigger="change">
         </div>
       </div>
     </div>
@@ -311,7 +312,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Negara</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_negara_sudah_dikuasai" name="tanah_negara_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-sudah-dikuasai" id="id_tanah_negara_sudah_dikuasai" name="tanah_negara_sudah_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -322,7 +323,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Kas Desa</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_kas_desa_sudah_dikuasai" name="tanah_kas_desa_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-sudah-dikuasai" id="id_tanah_kas_desa_sudah_dikuasai" name="tanah_kas_desa_sudah_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -333,7 +334,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Hak Pakai</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_hak_pakai_sudah_dikuasai" name="tanah_hak_pakai_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-sudah-dikuasai" id="id_tanah_hak_pakai_sudah_dikuasai" name="tanah_hak_pakai_sudah_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -344,7 +345,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Hak Guna Bangunan</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_hak_guna_bangunan_sudah_dikuasai" name="tanah_hak_guna_bangunan_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-sudah-dikuasai" id="id_tanah_hak_guna_bangunan_sudah_dikuasai" name="tanah_hak_guna_bangunan_sudah_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -355,7 +356,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Hak Milik Sertifikat</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_hak_milik_sertifikat_sudah_dikuasai" name="tanah_hak_milik_sertifikat_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-sudah-dikuasai" id="id_tanah_hak_milik_sertifikat_sudah_dikuasai" name="tanah_hak_milik_sertifikat_sudah_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -366,7 +367,7 @@
         <label for="input01" class="col-sm-4 control-label">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_tanah_adat_sudah_dikuasai" name="tanah_adat_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp sum-tanah-sudah-dikuasai" id="id_tanah_adat_sudah_dikuasai" name="tanah_adat_sudah_dikuasai" data-parsley-trigger="change">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -377,7 +378,8 @@
         <label for="input01" class="col-sm-4 control-label">Jumlah</label>
         <div class="col-sm-2">
           <div class="input-group">
-            <input type="text" class="form-control no_ktp" id="id_jumlah_tanah_sudah_dikuasai" name="jumlah_tanah_sudah_dikuasai" data-parsley-trigger="change">
+            <input type="text" class="form-control no_ktp" id="id_tanah_sudah_dikuasai" data-parsley-trigger="change" disabled="">
+            <input type="hidden" id="id_jumlah_tanah_sudah_dikuasai" name="jumlah_tanah_sudah_dikuasai">
             <span class="input-group-addon">
               <span>M&sup2;</span>
             </span>
@@ -385,13 +387,13 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="input01" class="col-sm-4 control-label" style="padding-right: 48px;"><strong>2. Pemegang Hak Semula</strong></label>
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 48px;">2. Pemegang Hak Semula</label>
         <div class="col-sm-4">
           <input type="text" id="id_pemegang_hak_semula_dari_tanah_sudah_dikuasai" name="pemegang_hak_semula_dari_tanah_sudah_dikuasai" class="form-control" data-parsley-trigger="change">
         </div>
       </div>
       <div class="form-group">
-        <label for="input01" class="col-sm-4 control-label" style="padding-right: 87px;"><strong>3. Dikuasai melalui</strong></label>
+        <label for="input01" class="col-sm-4 control-label" style="padding-right: 87px;">3. Dikuasai melalui</label>
         <div class="col-sm-4">
           <input type="text" id="id_tanah_sudah_dikuasai_melalui" name="tanah_sudah_dikuasai_melalui" class="form-control" data-parsley-trigger="change">
         </div>

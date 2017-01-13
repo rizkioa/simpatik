@@ -22,8 +22,8 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, InformasiTanah,Pemohon,PenggunaaTanahIPPTUsaha
-from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahIPPTUsahaForm,PenggunaaTanahIPPTUsahaForm
+from izin.models import PengajuanIzin, InformasiTanah,Pemohon,PenggunaanTanahIPPTUsaha
+from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahIPPTUsahaForm,PenggunaanTanahIPPTUsahaForm,RencanaPembangunanIPPTUsahaForm,RencanaPembiayanDanPemodalanIPPTUsahaForm,PerumahanYangDimilikiIPPTUsahaForm
 
 def formulir_ippt_usaha(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -35,7 +35,7 @@ def formulir_ippt_usaha(request, extra_context={}):
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
-            penggunaan_tanah_list = PenggunaaTanahIPPTUsaha.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+            penggunaan_tanah_list = PenggunaanTanahIPPTUsaha.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
             extra_context.update({'penggunaan_tanah_list': penggunaan_tanah_list})
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
@@ -68,10 +68,58 @@ def ippt_usaha_save_cookie(request):
     response = HttpResponse(data)
     return response
 
+def ippt_usaha_rencana_pembangunan_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+            ippt_usaha_rencana_pembangunan = RencanaPembangunanIPPTUsahaForm(request.POST, instance=pengajuan_)
+            if ippt_usaha_rencana_pembangunan.is_valid():
+                p = ippt_usaha_rencana_pembangunan.save(commit=False)
+                p.save()
+                data = {'success': True,
+                        'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                        'data': ['']}
+                data = json.dumps(data)
+                response = HttpResponse(json.dumps(data))
+            else:
+                data = ippt_usaha_rencana_pembangunan.errors.as_json()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
+def ippt_usaha_rencana_pembiayaan_dan_pemodalan_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+            ippt_usaha_rencana_pembiayaan = RencanaPembiayanDanPemodalanIPPTUsahaForm(request.POST, instance=pengajuan_)
+            if ippt_usaha_rencana_pembiayaan.is_valid():
+                p = ippt_usaha_rencana_pembiayaan.save(commit=False)
+                p.save()
+                data = {'success': True,
+                        'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                        'data': ['']}
+                data = json.dumps(data)
+                response = HttpResponse(json.dumps(data))
+            else:
+                data = ippt_usaha_rencana_pembiayaan.errors.as_json()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
 def informasi_penggunaan_tanah_sekarang_save_cookie(request):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
-            penggunaan_tanah_sekarang = PenggunaaTanahIPPTUsahaForm(request.POST)
+            penggunaan_tanah_sekarang = PenggunaanTanahIPPTUsahaForm(request.POST)
             if request.method == 'POST':
                 if penggunaan_tanah_sekarang.is_valid():
                     p = penggunaan_tanah_sekarang.save(commit=False)
@@ -85,7 +133,7 @@ def informasi_penggunaan_tanah_sekarang_save_cookie(request):
                 else:
                     data = penggunaan_tanah_sekarang.errors.as_json()
             else:
-                penggunaan_tanah_sekarang = PenggunaaTanahIPPTUsahaForm()
+                penggunaan_tanah_sekarang = PenggunaanTanahIPPTUsahaForm()
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
@@ -98,8 +146,8 @@ def informasi_penggunaan_tanah_sekarang_save_cookie(request):
 def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
-            p = PenggunaaTanahIPPTUsaha.objects.get(id=id_penggunaan_tanah)
-            penggunaan_tanah_sekarang = PenggunaaTanahIPPTUsahaForm(request.POST,instance=p)
+            p = PenggunaanTanahIPPTUsaha.objects.get(id=id_penggunaan_tanah)
+            penggunaan_tanah_sekarang = PenggunaanTanahIPPTUsahaForm(request.POST,instance=p)
             if request.method == 'POST':
                 if penggunaan_tanah_sekarang.is_valid():
                     p = penggunaan_tanah_sekarang.save(commit=False)
@@ -113,7 +161,7 @@ def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
                 else:
                     data = penggunaan_tanah_sekarang.errors.as_json()
             else:
-                penggunaan_tanah_sekarang = PenggunaaTanahIPPTUsahaForm()
+                penggunaan_tanah_sekarang = PenggunaanTanahIPPTUsahaForm()
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
@@ -126,7 +174,81 @@ def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
 def delete_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
-        tag_to_delete = get_object_or_404(PenggunaaTanahIPPTUsaha, id=id_penggunaan_tanah)
+        tag_to_delete = get_object_or_404(PenggunaanTanahIPPTUsaha, id=id_penggunaan_tanah)
+        tag_to_delete.delete()
+        data = {'success': True,
+                'pesan': 'Data berhasil Dihapus.'}
+        response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
+
+def perumahan_yang_sudah_dimiliki_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            perumahan_yang_sudah_dimiliki = PerumahanYangDimilikiIPPTUsahaForm(request.POST)
+            if request.method == 'POST':
+                if perumahan_yang_sudah_dimiliki.is_valid():
+                    p = perumahan_yang_sudah_dimiliki.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_perumahan_yang_sudah_dimiliki':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(json.dumps(data))
+                else:
+                    data = perumahan_yang_sudah_dimiliki.errors.as_json()
+            else:
+                perumahan_yang_sudah_dimiliki = PerumahanYangDimilikiIPPTUsahaForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
+def edit_perumahan_yang_sudah_dimiliki(request,id_penggunaan_tanah):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            p = PenggunaanTanahIPPTUsaha.objects.get(id=id_penggunaan_tanah)
+            perumahan_yang_sudah_dimiliki = PerumahanYangDimilikiIPPTUsahaForm(request.POST,instance=p)
+            if request.method == 'POST':
+                if perumahan_yang_sudah_dimiliki.is_valid():
+                    p = perumahan_yang_sudah_dimiliki.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_perumahan_yang_sudah_dimiliki':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(json.dumps(data))
+                else:
+                    data = perumahan_yang_sudah_dimiliki.errors.as_json()
+            else:
+                perumahan_yang_sudah_dimiliki = PerumahanYangDimilikiIPPTUsahaForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
+def delete_perumahan_yang_sudah_dimiliki(request,id_penggunaan_tanah):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+        tag_to_delete = get_object_or_404(PenggunaanTanahIPPTUsaha, id=id_penggunaan_tanah)
         tag_to_delete.delete()
         data = {'success': True,
                 'pesan': 'Data berhasil Dihapus.'}

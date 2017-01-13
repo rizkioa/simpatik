@@ -13,63 +13,66 @@ from master.models import Berkas
 def tdp_data_umum_perusahaan_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
-			data_umum_form = DataUmumPerusahaanPTForm(request.POST, instance=pengajuan_)
-			onoffkantorcabang = request.POST.get('onoffkantorcabang')
-			onoffunitproduksi = request.POST.get('onoffunitproduksi')
-			no_tdp = request.POST.get('no_tdp')
-			if data_umum_form.is_valid():
-				p = data_umum_form.save(commit=False)
-				# jbu = request.POST.get('jenis_badan_usaha')
-				k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
-				if k.id == 25:
-					p.nomor_tdp_kantor_pusat = 1
-				elif k.id == 26:
-					p.nomor_tdp_kantor_pusat = 2
-				# if onoffkantorcabang == 'on':
-				# 	p.nomor_tdp_kantor_pusat = no_tdp
-				p.save()
-				if onoffkantorcabang == 'on':
-					npwp = request.POST.get('npwp_perusahaan_induk')
-					nama = request.POST.get('nama_perusahaan_induk')
-					alamat = request.POST.get('alamat_perusahaan_induk')
-					desa = request.POST.get('desa_perusahaan_induk')
-					perusahaan_cabang = request.COOKIES.get('id_perusahaan')
-					try:
-						per = Perusahaan.objects.get(npwp=npwp)
-						per.perusahaan_induk_id = request.COOKIES['id_perusahaan_induk']
-						per.nama_perusahaan = nama
-						per.alamat_perusahaan = alamat
-						per.desa_id = desa
-						per.nomor_tdp = no_tdp
-						per.save()
-					except ObjectDoesNotExist:
-						per = Perusahaan(npwp=npwp, nama_perusahaan=nama, alamat_perusahaan=alamat, desa_id=desa, nomor_tdp=no_tdp)
-						per.save(force_insert=True)
-					try:
-						per_cabang = Perusahaan.objects.get(id=perusahaan_cabang)
-						per_cabang.perusahaan_induk_id = per.id
-						per_cabang.save()
-					except ObjectDoesNotExist:
-						pass
-				if onoffunitproduksi == 'on':
-					alamat = request.POST.get('alamat_unit_produksi')
-					desa = request.POST.get('desa_unit_prosuksi')
-					try:
-						unit = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
-						unit.alamat_unit_produksi = alamat
-						unit.desa_unit_produksi_id = desa
-						unit.save()
-					except ObjectDoesNotExist:
-						pass
-				data = {'success': True, 'pesan': 'Data Umum Perusahaan berhasil tersimpan.', 'data': []}
-				data = json.dumps(data)
-				response = HttpResponse(data)
-				if onoffkantorcabang == 'on':
-					response.set_cookie(key='id_perusahaan_induk', value=per.id)
-					response.set_cookie(key='npwp_perusahaan_induk', value=per.npwp)
+			if 'id_kelompok_izin' in request.COOKIES.keys():
+				pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+				data_umum_form = DataUmumPerusahaanPTForm(request.POST, instance=pengajuan_)
+				onoffkantorcabang = request.POST.get('onoffkantorcabang')
+				onoffunitproduksi = request.POST.get('onoffunitproduksi')
+				no_tdp = request.POST.get('no_tdp')
+				if data_umum_form.is_valid():
+					p = data_umum_form.save(commit=False)
+					# jbu = request.POST.get('jenis_badan_usaha')
+					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+					# if k.id == 25:
+					p.jenis_badan_usaha_id = request.COOKIES['id_kelompok_izin']
+					# if onoffkantorcabang == 'on':
+					# 	p.nomor_tdp_kantor_pusat = no_tdp
+					p.save()
+					if onoffkantorcabang == 'on':
+						npwp = request.POST.get('npwp_perusahaan_induk')
+						nama = request.POST.get('nama_perusahaan_induk')
+						alamat = request.POST.get('alamat_perusahaan_induk')
+						desa = request.POST.get('desa_perusahaan_induk')
+						perusahaan_cabang = request.COOKIES.get('id_perusahaan')
+						try:
+							per = Perusahaan.objects.get(npwp=npwp)
+							per.perusahaan_induk_id = request.COOKIES['id_perusahaan_induk']
+							per.nama_perusahaan = nama
+							per.alamat_perusahaan = alamat
+							per.desa_id = desa
+							per.nomor_tdp = no_tdp
+							per.save()
+						except ObjectDoesNotExist:
+							per = Perusahaan(npwp=npwp, nama_perusahaan=nama, alamat_perusahaan=alamat, desa_id=desa, nomor_tdp=no_tdp)
+							per.save(force_insert=True)
+						try:
+							per_cabang = Perusahaan.objects.get(id=perusahaan_cabang)
+							per_cabang.perusahaan_induk_id = per.id
+							per_cabang.save()
+						except ObjectDoesNotExist:
+							pass
+					if onoffunitproduksi == 'on':
+						alamat = request.POST.get('alamat_unit_produksi')
+						desa = request.POST.get('desa_unit_prosuksi')
+						try:
+							unit = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+							unit.alamat_unit_produksi = alamat
+							unit.desa_unit_produksi_id = desa
+							unit.save()
+						except ObjectDoesNotExist:
+							pass
+					data = {'success': True, 'pesan': 'Data Umum Perusahaan berhasil tersimpan.', 'data': []}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+					if onoffkantorcabang == 'on':
+						response.set_cookie(key='id_perusahaan_induk', value=per.id)
+						response.set_cookie(key='npwp_perusahaan_induk', value=per.npwp)
+				else:
+					data = data_umum_form.errors.as_json()
+					response = HttpResponse(data)
 			else:
-				data = data_umum_form.errors.as_json()
+				data = {'Terjadi Kesalahan': [{'message': 'Data Kelompok Jenis Izin tidak ditemukan/data kosong'}]}
+				data = json.dumps(data)
 				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
@@ -839,21 +842,24 @@ def tdp_upload_surat_keputusan(request):
 								try:
 									p = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 									try:
-										perusahaan_ = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+										# perusahaan_ = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 										berkas = form.save(commit=False)
 										kode = request.POST.get('kode')
 										if kode == 'Surat Keputusan':
 											berkas.nama_berkas = "Surat Keputusan Pengesahan Badan Hukum "+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia "+perusahaan_.npwp
+											berkas.keterangan = "File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia "+p.perusahaan.npwp
 										elif kode == 'Ijin Usaha':
 											berkas.nama_berkas = "Ijin Usaha/Ijin Teknis "+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan "+perusahaan_.npwp
+											berkas.keterangan = "File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan "+p.perusahaan.npwp
 										elif kode == 'Sertifikat Asli TDP':
 											berkas.nama_berkas = "Sertifikat Asli TDP "+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "Sertifikat Asli TDP "+perusahaan_.npwp
+											berkas.keterangan = "Sertifikat Asli TDP "+p.perusahaan.npwp
 										elif kode == 'Neraca Perusahaan':
 											berkas.nama_berkas = "Neraca Perusahaan "+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "Neraca Perusahaan "+perusahaan_.npwp
+											berkas.keterangan = "Neraca Perusahaan "+p.perusahaan.npwp
+										elif kode == 'Akta PT':
+											berkas.nama_berkas = "Akta PT "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "Akta PT "+p.perusahaan.npwp
 										if request.user.is_authenticated():
 											berkas.created_by_id = request.user.id
 										else:
@@ -1001,6 +1007,13 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_berkas.append(npwp_pribadi.id)
 
 			if berkas_:
+				akta_pt = berkas_.filter(keterangan='Akta PT '+perusahaan_.npwp).last()
+				if akta_pt:
+					url_berkas.append(akta_pt.berkas.url)
+					id_elemen.append('akta_pt')
+					nm_berkas.append(akta_pt.nama_berkas)
+					id_berkas.append(akta_pt.id)
+
 				neraca_perusahaan = berkas_.filter(keterangan='Neraca Perusahaan '+perusahaan_.npwp).last()
 				if neraca_perusahaan:
 					url_berkas.append(neraca_perusahaan.berkas.url)

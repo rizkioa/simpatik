@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'daterange_filter',
     'ckeditor',
     'debug_toolbar',
     'mptt',
@@ -51,7 +52,6 @@ INSTALLED_APPS = (
     'izin',
     'pembangunan',
     'raven.contrib.django.raven_compat',
-    'daterange_filter',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -196,3 +196,12 @@ LOGIN_REDIRECT_URL = 'frontindex'
 HTMLVALIDATOR_ENABLED = True
 
 HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'mail.kedirikab.go.id'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'hariyanti@kedirikab.go.id'
+EMAIL_HOST_PASSWORD = 'kediri@4531'
+DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'

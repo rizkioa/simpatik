@@ -6,7 +6,7 @@ from master.models import Berkas
 class DataUmumPerusahaanPTForm(forms.ModelForm):
 	class Meta:
 		model = DetilTDP
-		fields = ('status_perusahaan', 'jenis_badan_usaha', 'bentuk_kerjasama', 'jumlah_bank', 'nasabah_utama_bank_1', 'nasabah_utama_bank_2', 'jenis_penanaman_modal', 'tanggal_pendirian', 'tanggal_mulai_kegiatan', 'jangka_waktu_berdiri', 'merek_dagang', 'no_merek_dagang', 'pemegang_hak_cipta', 'no_hak_cipta', 'pemegang_hak_paten' , 'no_hak_paten')
+		fields = ('status_perusahaan', 'bentuk_kerjasama', 'jumlah_bank', 'nasabah_utama_bank_1', 'nasabah_utama_bank_2', 'jenis_penanaman_modal', 'tanggal_pendirian', 'tanggal_mulai_kegiatan', 'jangka_waktu_berdiri', 'merek_dagang', 'no_merek_dagang', 'pemegang_hak_cipta', 'no_hak_cipta', 'pemegang_hak_paten' , 'no_hak_paten')
 
 # class DataUmumPerusahaanPTKantorCabangForm(forms.ModelForm):
 # 	class Meta:
