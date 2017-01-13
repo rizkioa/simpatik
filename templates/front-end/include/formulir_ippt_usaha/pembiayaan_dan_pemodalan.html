@@ -1,5 +1,465 @@
-<form method="POST" name="step6" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+<form method="POST" name="step6" role="form" class="form-horizontal" action="{% url 'ippt_usaha_rencana_pembiayaan_dan_pemodalan_save' %}">
   {% csrf_token %}
   <h3>Rencana Pembiayaan dan Pemodalan</h3>
   <hr class="style14">
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2 control-label"><b>1. Struktur biaya</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label"><strong>a. Modal Tetap</strong></label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Tanah</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_tanah" name="tanah" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Bangunan / Gedung</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_banguna_gedung" name="bangunan_gedung" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Mesin - mesin dan peralatan</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_mesin_peralatan" name="mesin_peralatan" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Alat - alat angkutan</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_alat-angkutan" name="alat_angkutan" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Alat - alat Kantor dan Investasi</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_alat_kantor" name="alat_kantor" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Lain - lain</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_lain_tetap" name="lain_tatap" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Jumlah Modal Tetap (a)</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_jumlah_modal_tetap" name="jumlah_modal_tetap" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label"><strong> b. Modal Kerja </strong></label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Bahan Baku</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_bahan_baku" name="bahan_baku" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Upah / Gaji</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_upah_gaji" name="upah_gaji" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Alat - alat angkutan</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_alat_angkutan" name="alat_angkutan" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Lain - lain</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_lain_kerja" name="lain_kerja" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Jumlah Modal Kerja (b)</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_jumlah_modal_kerja" name="jumlah_modal_kerja" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-3 control-label"><strong> c. Jumlah rencana biaya (a + b) </strong></label>
+  	</div>
+  	<div class="form-group">
+  		<div class="col-sm-2">
+  			<div class="input-group">
+  				<span class="input-group-addon">
+  					<span>Rp</span>
+  				</span>
+  				<input type="text" id="id_jumlah_rencana_biaya" name="jumlah_rencana_biaya" class="form-control" required="" data-parsley-trigger="">
+  			</div>
+  		</div>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2 control-label"><b>2. Sumber pembiayaan / investasi</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label"><strong>a. Modal Sendiri</strong></label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Modal Dasar</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_modal_dasar" name="modal_dasar" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Modal ditetapkan</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_modal_ditetapkan" name="modal_ditetapkan" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">Modal disetor</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_modal_disetor" name="modal_disetor" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label"><strong>b. Modal Pinjam</strong></label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">1) Pinjaman dalam Negeri</label>
+  	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:15%">
+  		<label class="col-sm-2 control-label">Bank Pemerintah</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_bank_pemerintah" name="bank_pemerintah" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:15%">
+  		<label class="col-sm-2 control-label">Bank Swasta</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_bank_swasta" name="bank_swasta" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:15%">
+  		<label class="col-sm-2 control-label">Lembaga Keuangan Non Bank</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_lembaga_keuangan" name="lembaga_keuangan" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:15%">
+  		<label class="col-sm-2 control-label">Pihak Ketiga</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_pihak_ketiga" name="pihak_ketiga" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:15%">
+  		<label class="col-sm-2 control-label">Jumlah Pinjaman Dalam Negeri</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_jumlah_pinjaman_dalam" name="jumlah_pinjaman_dalam" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:8%">
+  		<label class="col-sm-2 control-label">1) Pinjaman Luar Negeri</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_pinjaman_luar_negeri" name="pinjaman_luar_negeri" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-3 control-label"><strong>c. Jumlah Pembiayaan (Modal Sendiri + Modal Pinjaman)</strong></label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_jumlah_pembiayaan" name="jumlah_pembiayaan" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2 control-label"><b>3. Struktur Modal / Pemilikan Saham Perusahaan</b></label>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">a. indonesia</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_indonesia" name="indonesia" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">b. Domestik Asing</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_domestik_asing" name="domestik_asing" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
+  <div class="row">
+  	<div style="padding-left:3%">
+  		<label class="col-sm-2 control-label">Jumlah</label>
+  	</div>
+  	<div class="form-group">
+	  	<div class="col-sm-2">
+	  		<div class="input-group">
+	  			<span class="input-group-addon">
+	  				<span>Rp</span>
+	  			</span>
+	  			<input type="text" id="id_jumlah" name="jumlah" class="form-control" required="" data-parsley-trigger="">
+	  		</div>
+	  	</div>
+	</div>
+  </div>
+
 </form>

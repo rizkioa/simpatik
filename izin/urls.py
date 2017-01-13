@@ -298,6 +298,8 @@ urlpatterns = [
 
     # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
     url(r'^layanan/ippt-usaha/save/$', ippt_usaha.ippt_usaha_save_cookie, name='ippt_usaha_save'),
+    url(r'^layanan/ippt-usaha/rencana-pembangunan/save/$', ippt_usaha.ippt_usaha_rencana_pembangunan_save_cookie, name='ippt_usaha_rencana_pembangunan_save'),
+    url(r'^layanan/ippt-usaha/rencana-pembiayaan-dan-pemodalan/save/$', ippt_usaha.ippt_usaha_rencana_pembiayaan_dan_pemodalan_save_cookie, name='ippt_usaha_rencana_pembiayaan_dan_pemodalan_save'),
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),
