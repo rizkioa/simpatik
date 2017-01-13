@@ -81,13 +81,17 @@ def add_wizard_siup(request):
 				url_ = reverse('admin:izin_proses_siup')
 			elif id_kelompok_list.kode == "IUJK":
 				url_ = reverse('admin:izin_iujk')
-			elif id_kelompok_list.id == 25:
+			# elif id_kelompok_list.id == 25:
+			elif id_kelompok_list.kode == "TDP-PT":
 				url_ = reverse('admin:izin_proses_tdp_pt')
-			elif id_kelompok_list.id == 26:
+			# elif id_kelompok_list.id == 26:
+			elif id_kelompok_list.kode == "TDP-CV":
 				url_ = reverse('admin:izin_proses_tdp_cv')
-			elif id_kelompok_list.id == 27:
+			# elif id_kelompok_list.id == 27:
+			elif id_kelompok_list.kode == "TDP-FIRMA":
 				url_ = reverse('admin:izin_proses_tdp_firma')
-			elif id_kelompok_list.id == 28:
+			# elif id_kelompok_list.id == 28:
+			elif id_kelompok_list.kode == "TDP-PERORANGAN":
 				url_ = reverse('admin:izin_proses_tdp_perorangan')
 			elif id_kelompok_list.kode == "503.07/":
 				url_ = reverse('admin:izin_proses_lokasi') 

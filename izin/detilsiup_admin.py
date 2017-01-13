@@ -1,17 +1,21 @@
+import base64
+import json
+from datetime import date
+from django.db.models import Q
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
-from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
-from perusahaan.models import Perusahaan, KBLI
 from django.utils.safestring import mark_safe
 from django.http import HttpResponse
-import json
-from django.db.models import Q
-from datetime import date
-import base64
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
+from django.shortcuts import get_object_or_404
+
+from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
+from perusahaan.models import Perusahaan, KBLI
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import formatrupiah, detil_pengajuan_siup_view
+from izin import models as app_models
+
 
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -133,7 +137,14 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+			pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan_izin_)
+			k = pengajuan.kelompok_jenis_izin
+			if k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN":
+				objects_ = getattr(app_models, 'DetilTDP')
+			else:
+				objects_ = getattr(app_models, 'DetilSIUP')
+
+			pengajuan_ = get_object_or_404(objects_, id=id_pengajuan_izin_)
 			extra_context.update({'pengajuan': pengajuan_ })
 		template = loader.get_template("front-end/include/formulir_siup/cetak_bukti_pendaftaran_admin.html")
 		ec = RequestContext(request, extra_context)

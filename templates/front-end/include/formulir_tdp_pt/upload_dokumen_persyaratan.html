@@ -177,13 +177,29 @@
     </div>
   </form>
 
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-akta_pt">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">File Akta PT</label>
+      <span id="field-akta_pt">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Akta PT">
+          <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_pt" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pt" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_pt"></span>
+    </div>
+  </form>
+
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-berkas_tambahan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label">File Berkas Tambahan</label>
       <span id="field-berkas_tambahan">
         <div class="col-sm-5">
-          <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+          <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas[]">
         </div>
         <a href="#" id="btn-berkas_tambahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-berkas_tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
