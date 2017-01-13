@@ -22,9 +22,20 @@ def tdp_data_umum_perusahaan_cookie(request):
 				if data_umum_form.is_valid():
 					p = data_umum_form.save(commit=False)
 					# jbu = request.POST.get('jenis_badan_usaha')
-					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+					k = pengajuan_.kelompok_jenis_izin
 					# if k.id == 25:
-					p.jenis_badan_usaha_id = request.COOKIES['id_kelompok_izin']
+					if k.kode == "TDP-PT":
+						p.jenis_badan_usaha_id = 1
+					elif k.kode == "TDP-CV":
+						p.jenis_badan_usaha_id = 2
+					elif k.kode == "TDP-FIRMA":
+						p.jenis_badan_usaha_id = 3
+					elif k.kode == "TDP-PERORANGAN":
+						p.jenis_badan_usaha_id = 4
+					elif k.kode == "TDP-KOPERASI":
+						p.jenis_badan_usaha_id = 5
+					elif k.kode == "TDP-BUL":
+						p.jenis_badan_usaha_id = 6
 					# if onoffkantorcabang == 'on':
 					# 	p.nomor_tdp_kantor_pusat = no_tdp
 					p.save()
