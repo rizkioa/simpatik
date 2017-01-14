@@ -324,7 +324,7 @@ class DetilIUJK(PengajuanIzin):
 
 class Klasifikasi(models.Model):
 	"""docstring for Klasifikasi"""
-	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK, null=True)
+	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK, null=True, blank=True)
 	klasifikasi = models.CharField(max_length=255, verbose_name="Klasifikasi")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
 
