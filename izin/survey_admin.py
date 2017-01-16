@@ -337,7 +337,7 @@ class SurveyAdmin(admin.ModelAdmin):
 		# unit_kerja = UnitKerja.objects.get(pk=id_unit_kerja)
 		if frm.is_valid():
 			p = frm.save(commit=False)
-			p.no_survey = get_nomor_pengajuan('PEMBANGUNAN')
+			p.no_survey = get_nomor_pengajuan('SURVEY')
 			p.pengajuan_id = pengajuan_id_
 			p.tanggal_survey = datetime.now()
 			# p.skpd = unit_kerja
@@ -386,9 +386,17 @@ class SurveyAdmin(admin.ModelAdmin):
 			try:
 				survey = Survey.objects.get(id=id_survey)
 				data = {'success': True, 
-				'pesan': 'Data Survey '+str(survey.skpd)+' Berhasil Dihapus.',
+				'pesan': 'Data Survey '+str(survey)+' Berhasil Dihapus.',
 				
 				}
+				riwayat_ = Riwayat(
+						pengajuan_izin = survey.pengajuan,
+						created_by = request.user,
+						keterangan = "Survey Dibatalkan oleh "+str(request.user),
+						alasan=''
+					)
+				riwayat_.save()
+				
 				survey.delete()
 				
 			except Survey.DoesNotExist:
