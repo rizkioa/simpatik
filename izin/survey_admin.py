@@ -325,8 +325,11 @@ class SurveyAdmin(admin.ModelAdmin):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		qs = super(SurveyAdmin, self).get_queryset(request)
 		# print request.user.pegawai.unit_kerja
-		# if not request.user.is_superuser:
-		# 	qs = qs.filter(skpd=request.user.pegawai.unit_kerja)
+		if not request.user.is_superuser:
+			a = AnggotaTim.objects.filter(pegawai=request.user)
+			if a.exists():
+				a = a.values_list('survey_iujk')
+				qs = qs.filter(id__in=a)
 
 		if func_view.__name__ == 'surveyselesai':
 			qs = qs.filter(status=1)
