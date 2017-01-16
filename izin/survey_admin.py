@@ -39,7 +39,7 @@ class KecamatanFilter(admin.SimpleListFilter):
 
 class SurveyAdmin(admin.ModelAdmin):
 	# list_display = ('no_survey','get_pengajuan', 'get_pemohon' , 'get_perusahaan', 'get_perusahaan_lokasi' , 'deadline_survey', 'get_koordinator_survey','skpd' ,'get_aksi')
-	list_filter = ('pengajuan__perusahaan', KecamatanFilter,('deadline_survey', DateRangeFilter),('tanggal_survey', DateRangeFilter))
+	list_filter = (KecamatanFilter,('deadline_survey', DateRangeFilter),('tanggal_survey', DateRangeFilter))
 	search_fields = ('no_survey','pengajuan__no_pengajuan')
 
 	def get_list_display(self, request):
@@ -92,7 +92,8 @@ class SurveyAdmin(admin.ModelAdmin):
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def get_perusahaan(self, obj):
-		return obj.pengajuan.perusahaan
+		iujk = DetilIUJK.objects.get(pengajuan_ptr_id=obj.id)
+		return iujk.pengajuan.perusahaan
 	get_perusahaan.short_description = "Perusahaan"
 
 	def get_perusahaan_lokasi(self, obj):
@@ -332,14 +333,14 @@ class SurveyAdmin(admin.ModelAdmin):
 	def save_survey_ajax(self, request):
 		frm = SurveyForm(request.POST)
 		pengajuan_id_ = request.POST.get('pengajuan_id')
-		id_unit_kerja = request.POST.get('id_unit_kerja')
-		unit_kerja = UnitKerja.objects.get(pk=id_unit_kerja)
+		# id_unit_kerja = request.POST.get('id_unit_kerja')
+		# unit_kerja = UnitKerja.objects.get(pk=id_unit_kerja)
 		if frm.is_valid():
 			p = frm.save(commit=False)
 			p.no_survey = get_nomor_pengajuan('PEMBANGUNAN')
 			p.pengajuan_id = pengajuan_id_
 			p.tanggal_survey = datetime.now()
-			p.skpd = unit_kerja
+			# p.skpd = unit_kerja
 			p.status = 4
 			# p.kelompok_jenis_izin_id = request.POST.get('kelompok_jenis_izin_id')
 			p.save()

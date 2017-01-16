@@ -97,7 +97,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				s = ''
 
 			extra_context.update({'survey': s })
-			extra_context.update({'id_unit_kerja': 11})
+			extra_context.update({'id_unit_kerja': 11}) # 11 Untuk Pembangunan
 				
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
