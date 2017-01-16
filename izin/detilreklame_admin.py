@@ -73,6 +73,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
+			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -85,7 +86,10 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
 				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					try:
+						ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					except NomorIdentitasPengguna.MultipleObjectsReturned:
+						ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass

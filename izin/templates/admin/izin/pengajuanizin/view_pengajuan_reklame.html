@@ -12,9 +12,9 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}">
 	<style type="text/css">
-		.label-color{
+		/*.label-color{
 			color: white;
-		}
+		}*/
 		.style14 { 
 	        border: 0; 
 	        height: 1px; 
@@ -378,58 +378,9 @@
 								</div>
 							</div>
 
-							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
-								<form>
-									<div class="panel-body">
-										<h4>SURVEY</h4>
-										<br>
-										<div class="panel panel-default" style="color: black">
-									      	<div class="panel-heading">SKPD Surveyor</div>
-									      	<div class="panel-body">
-									      		<div class="form-group">
-												    <label for="input01">SKPD </label>
-												    <select class="form-control chosen-select">
-												    	<option>Pilih SKPD</option>
-											      	</select>
-											  	</div>
+							{% include "admin/izin/survey_1.html" %}
 
-											  	<div class="form-group">
-												    <label for="input01">Permohonan </label>
-												    <select class="form-control chosen-select mb-10">
-												    	<option>Pilih</option>
-											      	</select>
-											  	</div>
-
-											  	<div class="form-group">
-											      	<label>Tanggal Survey </label>
-											        <div class="input-group datepicker" data-format="L">
-											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-											          <span class="input-group-addon">
-											            <span class="fa fa-calendar"></span>
-											          </span>
-											        </div>
-											    </div>
-
-											    <div class="form-group">
-											      	<label>Deadline Survey </label>
-											        <div class="input-group datepicker" data-format="L">
-											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-											          <span class="input-group-addon">
-											            <span class="fa fa-calendar"></span>
-											          </span>
-											        </div>
-											    </div>
-									      	</div>
-									    </div>
-									</div>
-
-									<div class="panel-footer">
-										<center>
-											<button type="button" class="btn btn-success mb-10"><i class="icon-plus"></i> Buat Jadwal Survey</button>
-										</center>
-									</div>
-								</form>
-							</div>
+							
 
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
@@ -943,7 +894,11 @@
 	<!-- +++++++++++++++++++ end ajax verfikasi ++++++++++++++++ -->
 	<script>
 		$(document).ready(function() {
-			
+			$(".chosen-2").chosen({
+			    // disable_search_threshold: 10,
+			    no_results_text: "Maaf, Data Tidak Ditemukan!",
+			    width: "100%"
+			  });
 		// 	$('#minimize').hide()
 		// 	$('#minimize_2').hide()
 		// 	$('#minimize_3').hide()

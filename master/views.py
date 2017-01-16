@@ -1,8 +1,53 @@
 from django.shortcuts import render
 from master.models import Provinsi, Kabupaten, Kecamatan, Desa
+from izin.models import Klasifikasi, Subklasifikasi
 import csv
 
 # Create your views here.
+def import_klasifikasi():
+	f1 = file('files/import/klasifikasi.csv', 'r') # Data
+
+	c1 = csv.reader(f1) # Data 
+	row = 0 
+	for kl in c1:
+		row += 1
+		kode_ = kl[0]
+		nama_ = kl[1].upper()
+		print "Baris => "+str(row)
+
+		k, created = Klasifikasi.objects.get_or_create(klasifikasi=nama_)
+		k.klasifikasi = nama_
+		k.save()
+		print "simpan "+str(nama_)
+	print row
+	print "######################## DONE ########################"
+
+def import_subklasifikasi():
+	f1 = file('files/import/subklasifikasi.csv', 'r') # Data
+
+	c1 = csv.reader(f1) # Data 
+	row = 0
+	un = 0
+	for sb in c1:
+		row += 1
+		id_subklasifikasi_ = sb[0]
+		if id_subklasifikasi_ != '':
+			kode_ = sb[1]
+			subklasifikasi_ = sb[2].upper()
+			keterangan_ = sb[3]
+			print "Baris => "+str(row)
+
+			k, created = Subklasifikasi.objects.get_or_create(kode=kode_, klasifikasi_id=id_subklasifikasi_)
+			k.keterangan = keterangan_
+			k.subklasifikasi = subklasifikasi_
+			k.save()
+			print "simpan "+str(subklasifikasi_)+";  Kode : "+str(kode_)
+		else:
+			un += 1
+	print "Total Input => "+str(row)
+	print "Total ID KOSONG => "+str(un)
+	print "######################## DONE ########################"
+
 
 def import_provinsi():
 	f1 = file('files/import/provinces.csv', 'r') # Data

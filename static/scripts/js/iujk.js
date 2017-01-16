@@ -2,11 +2,11 @@ function load_klasifikasi(id_pengajuan){
   csrf_token = $("input[name='csrfmiddlewaretoken']").val();
   elem = $("#klasifikasi")
   $.ajax({ // create an AJAX call...
-      data: { csrfmiddlewaretoken: csrf_token, pengajuan: id_pengajuan }, // get the form data
+      data: { csrfmiddlewaretoken: csrf_token }, // get the form data
       type: 'POST', // GET or POST
       url: __base_url__+'/admin/izin/detiliujk/option-klasifikasi/',
       success: function(response) { // on success..
-          console.log(response)
+          // console.log(response)
           elem.html(response);
       },
       error: function(data) {                
@@ -23,7 +23,7 @@ function load_subklasifikasi(id_klasifikasi){
       type: 'POST', // GET or POST
       url: __base_url__+'/admin/izin/detiliujk/option-subklasifikasi/',
       success: function(response) { // on success..
-          console.log(response)
+          // console.log(response)
           elem.html(response);
       },
       error: function(data) {                
