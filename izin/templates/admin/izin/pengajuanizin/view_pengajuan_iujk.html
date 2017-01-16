@@ -1374,50 +1374,7 @@
 
 
     </script>
-    <div class="modal fade bs-sinkron-modal-lg" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title" id="myModalSinkronLabel"></h4>
-            </div>
-            <div class="modal-body">
-            <form class="form-horizontal" role="form" action="" method="POST" id="anggotatim">
-            {% csrf_token %}
-            <input type="hidden" id="id_survey_iujk" value="{{survey.id}}" name="survey_iujk"></input>
-              <div class="form-group">
-                <label  class="col-sm-2 control-label" for="Pengawai">Pegawai</label>
-                <div class="col-sm-10">
-                    <select class="form-control chosen-select" name="pegawai">
-                      <option>---Pilih Pegawai---</option>
-                      {% for p in pegawai_all %}
-                      <option value="{{p.id}}">[{{p.unit_kerja}}] {{p}} </option>
-                      {% endfor %}
-                    </select>
-                </div>
-              </div>
-              <!-- <div class="form-row form-group  field-koordinator">
-                <div class="checkbox-row">
-                  <label class=" col-sm-2 control-label" for="id_koordinator">Apakah Koordinator?</label>
-                  <div class="col-sm-10">
-                      <div class="onoffswitch greensea inline-block">
-                          <input class="onoffswitch-checkbox" id="id_koordinator" name="koordinator" type="checkbox">
-                          <label class="onoffswitch-label" for="id_koordinator">
-                              <span class="onoffswitch-inner"></span>
-                              <span class="onoffswitch-switch"></span>
-                          </label>
-                      </div>
-                  </div>
-                </div>
-              </div> -->
-            </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-success" onclick="save_anggota();return false;">Simpan dan Tambahkan Lagi</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal" >Selesai</button>
-              </div>
-            </div>
-        </div>
-    </div>
+    
     <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
