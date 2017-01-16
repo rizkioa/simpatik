@@ -894,7 +894,11 @@
 	<!-- +++++++++++++++++++ end ajax verfikasi ++++++++++++++++ -->
 	<script>
 		$(document).ready(function() {
-			
+			$(".chosen-2").chosen({
+			    // disable_search_threshold: 10,
+			    no_results_text: "Maaf, Data Tidak Ditemukan!",
+			    width: "100%"
+			  });
 		// 	$('#minimize').hide()
 		// 	$('#minimize_2').hide()
 		// 	$('#minimize_3').hide()
