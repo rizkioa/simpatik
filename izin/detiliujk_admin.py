@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template import RequestContext, loader
@@ -21,7 +22,11 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
-			extra_context.update({'pegawai_all' : Pegawai.objects.all() })
+			g = Group.objects.filter(name="Tim Teknis")
+			if g.exists():
+				g = g.last()
+			p = g.user_set.all()
+			extra_context.update({'pegawai_all' : p })
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
 
@@ -92,6 +97,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				s = ''
 
 			extra_context.update({'survey': s })
+			extra_context.update({'id_unit_kerja': 11})
 				
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})

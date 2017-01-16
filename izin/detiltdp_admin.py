@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 
 from accounts.models import NomorIdentitasPengguna
 from izin.models import DetilTDP, Syarat, SKIzin, Riwayat, IzinLain
-from perusahaan.models import DataPimpinan, PemegangSaham, Perusahaan
+from perusahaan.models import DataPimpinan, PemegangSaham, Perusahaan, Legalitas
 
 class DetilTDPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin')
@@ -37,7 +37,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
-			extra_context.update({'title': 'Proses Pengajuan Persatuan Terbatas (PT)'})
+			extra_context.update({'title': 'Proses Pengajuan Persero Terbatas (PT)'})
 			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -53,6 +53,12 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
 				pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=perusahaan_.id)
+				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
+				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				legalitas_4 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_6 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				legalitas_7 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=7).last()
 				wni = 0
 				if pengajuan_.jumlah_karyawan_wni:
 					wni = pengajuan_.jumlah_karyawan_wni
@@ -60,8 +66,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if pengajuan_.jumlah_karyawan_wna:
 					wna = pengajuan_.jumlah_karyawan_wna
 				jumlah_karyawan = int(wni)+int(wna)
-				print jumlah_karyawan
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
+				# print jumlah_karyawan
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian, 'legalitas_perubahan':legalitas_perubahan, 'legalitas_3':legalitas_3, 'legalitas_4':legalitas_4, 'legalitas_6':legalitas_6, 'legalitas_7':legalitas_7})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:

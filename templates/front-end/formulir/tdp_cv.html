@@ -833,96 +833,197 @@
         });
 
         $(".tab-content").mLoading('hide');
-      }
+    }
 
-      function load_data_izin_lain_konfirmasi(pengajuan_id){
-        $.ajax({
-          type: 'GET',
-          url: __base_url__+'/ajax-load-data-izin-lain-tdp/'+pengajuan_id,
-          success: function (data) {
-            tablekosong = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
-            $('#table_izin_lain_konfirmasi > tbody').html(tablekosong)
-            a = data.length
-            if(a === 0){
-              $('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
-              table = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
-              $('#table_izin_lain_konfirmasi > tbody').prepend(table)
-            }
-            else{
-              $('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
-              b = data.reverse()
-              $('#switch_STEP6_lainnya_disabled').prop( "checked", true );
-              $('.STEP6_lainnya').prop('disabled', false);
-              if (data){
-                for (var i = 0; i < a; i++){
-                  id = b[i].id
-                  id_jenis_izin = b[i].id_jenis_izin
-                  nama_jenis_izin = b[i].nama_jenis_izin
-                  no_izin = b[i].no_izin
-                  dikeluarkan_oleh = b[i].dikeluarkan_oleh
-                  tanggal_dikeluarkan = b[i].tanggal_dikeluarkan
-                  masa_berlaku = b[i].masa_berlaku
-                  no = a
-                  if (a > 1){
-                    no = a-i
-                  }
-                  row = '<tr><td>'+no+'</td>'
-                  row += '<td>'+nama_jenis_izin+'</td>'
-                  row += '<td>'+no_izin+'</td>'
-                  row += '<td>'+dikeluarkan_oleh+'</td>'
-                  row += '<td>'+tanggal_dikeluarkan+'</td>'
-                  row += '<td>'+masa_berlaku+'</td>'
-                  row += '</tr>'
-                  $('#table_izin_lain_konfirmasi > tbody').prepend(row);
-                }
-              }
-            }
-          },
-          error: function(data){
-            toastr["error"]("Terjadi kesalahan server.")
+    function load_data_izin_lain_konfirmasi(pengajuan_id){
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/ajax-load-data-izin-lain-tdp/'+pengajuan_id,
+        success: function (data) {
+          tablekosong = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#table_izin_lain_konfirmasi > tbody').html(tablekosong)
+          a = data.length
+          if(a === 0){
+            $('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
+            table = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+            $('#table_izin_lain_konfirmasi > tbody').prepend(table)
           }
-        });
-
-        $.ajax({
-          type: 'GET',
-          url: __base_url__+'/ajax-load-data-pemegang-saham/'+pengajuan_id,
-          success: function (data) {
-            a = data.length
-            tablekosong = '<tr><td colspan="8" align="center">Kosong/Tidak ada...!!!</td></tr>'
-            $('#table_pemegang_saham_konfirmasi > tbody').html(tablekosong)
-
-            if(a === 0){
-              $('#table_pemegang_saham_konfirmasi > tbody > tr:first').remove()
-              table = '<tr><td colspan="8" align="center">Kosong/Tidak ada...!!!</td></tr>'
-              $('#table_pemegang_saham_konfirmasi > tbody').prepend(table)
-            }
-            else{
-              b = data.reverse()
-              $('#table_pemegang_saham_konfirmasi > tbody > tr:first').remove()
+          else{
+            $('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
+            b = data.reverse()
+            $('#switch_STEP6_lainnya_disabled').prop( "checked", true );
+            $('.STEP6_lainnya').prop('disabled', false);
+            if (data){
               for (var i = 0; i < a; i++){
                 id = b[i].id
-                nama_lengkap = b[i].nama_lengkap
+                id_jenis_izin = b[i].id_jenis_izin
+                nama_jenis_izin = b[i].nama_jenis_izin
+                no_izin = b[i].no_izin
+                dikeluarkan_oleh = b[i].dikeluarkan_oleh
+                tanggal_dikeluarkan = b[i].tanggal_dikeluarkan
+                masa_berlaku = b[i].masa_berlaku
+                no = a
+                if (a > 1){
+                  no = a-i
+                }
+                row = '<tr><td>'+no+'</td>'
+                row += '<td>'+nama_jenis_izin+'</td>'
+                row += '<td>'+no_izin+'</td>'
+                row += '<td>'+dikeluarkan_oleh+'</td>'
+                row += '<td>'+tanggal_dikeluarkan+'</td>'
+                row += '<td>'+masa_berlaku+'</td>'
+                row += '</tr>'
+                $('#table_izin_lain_konfirmasi > tbody').prepend(row);
+              }
+            }
+          }
+        },
+        error: function(data){
+          toastr["error"]("Terjadi kesalahan server.")
+        }
+      });
+
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/ajax-load-data-pemegang-saham/'+pengajuan_id,
+        success: function (data) {
+          a = data.length
+          tablekosong = '<tr><td colspan="8" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#table_pemegang_saham_konfirmasi > tbody').html(tablekosong)
+
+          if(a === 0){
+            $('#table_pemegang_saham_konfirmasi > tbody > tr:first').remove()
+            table = '<tr><td colspan="8" align="center">Kosong/Tidak ada...!!!</td></tr>'
+            $('#table_pemegang_saham_konfirmasi > tbody').prepend(table)
+          }
+          else{
+            b = data.reverse()
+            $('#table_pemegang_saham_konfirmasi > tbody > tr:first').remove()
+            for (var i = 0; i < a; i++){
+              id = b[i].id
+              nama_lengkap = b[i].nama_lengkap
+              alamat = b[i].alamat
+              telephone = b[i].telephone
+              kewarganegaraan = b[i].kewarganegaraan
+              npwp = b[i].npwp
+              dimiliki = b[i].jumlah_saham_dimiliki
+              disetor = b[i].jumlah_saham_disetor
+              no = a
+              if (a > 1){
+                no = a-i
+              }
+              row = '<tr>'
+              row += '<td>'+no+'</td>'
+              row += '<td>'+nama_lengkap+'</td>'
+              row += '<td>'+alamat+'</td>'
+              row += '<td>'+telephone+'</td>'
+              row += '<td>'+kewarganegaraan+'</td>'
+              row += '<td>'+npwp+'</td>'
+              row += '<td>'+dimiliki+'</td>'
+              row += '<td>'+disetor+'</td>'
+              row += '</tr>'
+              $('#table_pemegang_saham_konfirmasi > tbody').prepend(row);
+            }
+          }
+        },
+        error: function(data) {
+          toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+        }
+      });
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/ajax-load-data-perusahaan-cabang/'+pengajuan_id,
+        success: function (data) {
+          a = data.length
+          if(a === 0){
+            $('#table_perusahaan_cabang_konfirmasi > tbody > tr:first').remove()
+            table = '<tr><td colspan="18" align="center">Kosong/Tidak ada...!!!</td></tr>'
+            $('#table_perusahaan_cabang_konfirmasi > tbody').prepend(table)
+          }
+          else{
+            b = data.reverse()
+            $('#table_perusahaan_cabang_konfirmasi > tbody > tr:first').remove()
+            for (var i = 0; i < a; i++){
+              id = b[i].id
+              no = a
+              if (a > 1){
+                no = a-i
+              }
+              nama = b[i].nama_perusahaan
+              alamat = b[i].alamat_perusahaan
+              no_tdp = b[i].nomor_tdp
+              nama_kabupaten = b[i].nama_kabupaten
+              nama_provinsi = b[i].nama_provinsi
+              kode_pos = b[i].kode_pos
+              telepon = b[i].telepon
+              status_perusahaan = b[i].status_perusahaan
+              kegiatan_usaha = b[i].kegiatan_usaha
+              row = '<tr>'
+              row += '<td>'+no+'</td>'
+              row += '<td>'+nama+'</td>'
+              row += '<td>'+alamat+'</td>'
+              row += '<td>'+no_tdp+'</td>'
+              row += '<td>'+nama_kabupaten+'</td>'
+              row += '<td>'+nama_provinsi+'</td>'
+              row += '<td>'+kode_pos+'</td>'
+              row += '<td>'+telepon+'</td>'
+              row += '<td>'+status_perusahaan+'</td>'
+              row += '<td>'+kegiatan_usaha+'</td>'
+              row += '</tr>'
+              $('#table_perusahaan_cabang_konfirmasi > tbody').prepend(row)
+            }
+          }
+        },
+        error: function(data) {
+          toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+        }
+      });
+    }
+
+    function load_data_legalitas_perusahaan_tdp(perusahaan_id){
+      if (perusahaan_id !== ""){
+        $('#table_legalitas_konfirmasi').mLoading();
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/ajax-load-data-legalitas-perusahaan-tdp/'+perusahaan_id,
+          success: function (data) {
+            a = data.length
+            tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+            $('#table_legalitas_konfirmasi > tbody').html(tablekosong)
+
+            if(a === 0){
+              $('#table_legalitas_konfirmasi > tbody > tr:first').remove()
+              table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+              $('#table_legalitas_konfirmasi > tbody').prepend(table)
+            }
+            else{
+              b = data.reverse()
+              $('#table_legalitas_konfirmasi > tbody > tr:first').remove()
+              for (var i = 0; i < a; i++){
+                jenis_legalitas = b[i].jenis_legalitas
+                nama_notaris = b[i].nama_notaris
                 alamat = b[i].alamat
                 telephone = b[i].telephone
-                kewarganegaraan = b[i].kewarganegaraan
-                npwp = b[i].npwp
-                dimiliki = b[i].jumlah_saham_dimiliki
-                disetor = b[i].jumlah_saham_disetor
+                nomor_akta = b[i].nomor_akta
+                tanggal_akta = b[i].tanggal_akta
+                nomor_pengesahan = b[i].nomor_pengesahan
+                tanggal_pengesahan = b[i].tanggal_pengesahan
                 no = a
                 if (a > 1){
                   no = a-i
                 }
                 row = '<tr>'
                 row += '<td>'+no+'</td>'
-                row += '<td>'+nama_lengkap+'</td>'
+                row += '<td>'+jenis_legalitas+'</td>'
+                row += '<td>'+nama_notaris+'</td>'
                 row += '<td>'+alamat+'</td>'
                 row += '<td>'+telephone+'</td>'
-                row += '<td>'+kewarganegaraan+'</td>'
-                row += '<td>'+npwp+'</td>'
-                row += '<td>'+dimiliki+'</td>'
-                row += '<td>'+disetor+'</td>'
+                row += '<td>'+nomor_akta+'</td>'
+                row += '<td>'+tanggal_akta+'</td>'
+                row += '<td>'+nomor_pengesahan+'</td>'
+                row += '<td>'+tanggal_pengesahan+'</td>'
                 row += '</tr>'
-                $('#table_pemegang_saham_konfirmasi > tbody').prepend(row);
+                $('#table_legalitas_konfirmasi > tbody').prepend(row);
               }
             }
           },
@@ -930,110 +1031,9 @@
             toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
           }
         });
-        $.ajax({
-          type: 'GET',
-          url: __base_url__+'/ajax-load-data-perusahaan-cabang/'+pengajuan_id,
-          success: function (data) {
-            a = data.length
-            if(a === 0){
-              $('#table_perusahaan_cabang_konfirmasi > tbody > tr:first').remove()
-              table = '<tr><td colspan="18" align="center">Kosong/Tidak ada...!!!</td></tr>'
-              $('#table_perusahaan_cabang_konfirmasi > tbody').prepend(table)
-            }
-            else{
-              b = data.reverse()
-              $('#table_perusahaan_cabang_konfirmasi > tbody > tr:first').remove()
-              for (var i = 0; i < a; i++){
-                id = b[i].id
-                no = a
-                if (a > 1){
-                  no = a-i
-                }
-                nama = b[i].nama_perusahaan
-                alamat = b[i].alamat_perusahaan
-                no_tdp = b[i].nomor_tdp
-                nama_kabupaten = b[i].nama_kabupaten
-                nama_provinsi = b[i].nama_provinsi
-                kode_pos = b[i].kode_pos
-                telepon = b[i].telepon
-                status_perusahaan = b[i].status_perusahaan
-                kegiatan_usaha = b[i].kegiatan_usaha
-                row = '<tr>'
-                row += '<td>'+no+'</td>'
-                row += '<td>'+nama+'</td>'
-                row += '<td>'+alamat+'</td>'
-                row += '<td>'+no_tdp+'</td>'
-                row += '<td>'+nama_kabupaten+'</td>'
-                row += '<td>'+nama_provinsi+'</td>'
-                row += '<td>'+kode_pos+'</td>'
-                row += '<td>'+telepon+'</td>'
-                row += '<td>'+status_perusahaan+'</td>'
-                row += '<td>'+kegiatan_usaha+'</td>'
-                row += '</tr>'
-                $('#table_perusahaan_cabang_konfirmasi > tbody').prepend(row)
-              }
-            }
-          },
-          error: function(data) {
-            toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
-          }
-        });
+        $('#table_legalitas_konfirmasi').mLoading('hide');
       }
-
-      function load_data_legalitas_perusahaan_tdp(perusahaan_id){
-        if (perusahaan_id !== ""){
-          $('#table_legalitas_konfirmasi').mLoading();
-          $.ajax({
-            type: 'GET',
-            url: __base_url__+'/ajax-load-data-legalitas-perusahaan-tdp/'+perusahaan_id,
-            success: function (data) {
-              a = data.length
-              tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
-              $('#table_legalitas_konfirmasi > tbody').html(tablekosong)
-
-              if(a === 0){
-                $('#table_legalitas_konfirmasi > tbody > tr:first').remove()
-                table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
-                $('#table_legalitas_konfirmasi > tbody').prepend(table)
-              }
-              else{
-                b = data.reverse()
-                $('#table_legalitas_konfirmasi > tbody > tr:first').remove()
-                for (var i = 0; i < a; i++){
-                  jenis_legalitas = b[i].jenis_legalitas
-                  nama_notaris = b[i].nama_notaris
-                  alamat = b[i].alamat
-                  telephone = b[i].telephone
-                  nomor_akta = b[i].nomor_akta
-                  tanggal_akta = b[i].tanggal_akta
-                  nomor_pengesahan = b[i].nomor_pengesahan
-                  tanggal_pengesahan = b[i].tanggal_pengesahan
-                  no = a
-                  if (a > 1){
-                    no = a-i
-                  }
-                  row = '<tr>'
-                  row += '<td>'+no+'</td>'
-                  row += '<td>'+jenis_legalitas+'</td>'
-                  row += '<td>'+nama_notaris+'</td>'
-                  row += '<td>'+alamat+'</td>'
-                  row += '<td>'+telephone+'</td>'
-                  row += '<td>'+nomor_akta+'</td>'
-                  row += '<td>'+tanggal_akta+'</td>'
-                  row += '<td>'+nomor_pengesahan+'</td>'
-                  row += '<td>'+tanggal_pengesahan+'</td>'
-                  row += '</tr>'
-                  $('#table_legalitas_konfirmasi > tbody').prepend(row);
-                }
-              }
-            },
-            error: function(data) {
-              toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
-            }
-          });
-          $('#table_legalitas_konfirmasi').mLoading('hide');
-        }
-      }
+    }
 </script>
 {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
 {% include 'front-end/include/formulir_tdp_pt/popup/tambah_pemegang_saham.html' %}
