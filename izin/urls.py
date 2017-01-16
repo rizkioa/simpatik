@@ -299,12 +299,20 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
     url(r'^layanan/ippt-usaha/save/$', ippt_usaha.ippt_usaha_save_cookie, name='ippt_usaha_save'),
     url(r'^layanan/ippt-usaha/rencana-pembangunan/save/$', ippt_usaha.ippt_usaha_rencana_pembangunan_save_cookie, name='ippt_usaha_rencana_pembangunan_save'),
+    url(r'^ippt-usaha/berkas/save/$', ippt_usaha.ipptusaha_upload_berkas_pendukung, name='ipptusaha_upload_berkas_pendukung'),
     url(r'^layanan/ippt-usaha/rencana-pembiayaan-dan-pemodalan/save/$', ippt_usaha.ippt_usaha_rencana_pembiayaan_dan_pemodalan_save_cookie, name='ippt_usaha_rencana_pembiayaan_dan_pemodalan_save'),
+    url(r'^layanan/ippt-usaha/kebutuhan-lainnya/save/$', ippt_usaha.ippt_usaha_kebutuhan_lainnya_save_cookie, name='ippt_usaha_kebutuhan_lainnya_save'),
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
+
+    #Penggunaan Tanah
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/edit/(?P<id_penggunaan_tanah>[0-9]+)/$', ippt_usaha.edit_informasi_penggunaan_tanah_sekarang, name='edit_informasi_penggunaan_tanah_sekarang'),
     
+    #Perumahan Yang Dimiliki
+    url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/save$', ippt_usaha.perumahan_yang_sudah_dimiliki_save_cookie, name='perumahan_yang_sudah_dimiliki_save'),
+    url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/delete/(?P<id_perumahan>[0-9]+)$', ippt_usaha.delete_perumahan_yang_sudah_dimiliki, name='delete_perumahan_yang_sudah_dimiliki'),
+    url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/edit/(?P<id_perumahan>[0-9]+)/$', ippt_usaha.edit_perumahan_yang_sudah_dimiliki, name='edit_perumahan_yang_sudah_dimiliki'),
     
     # ++++++++++++++++++++++++ end for ajax IPPT Usaha ++++++++++++++++++++++
 

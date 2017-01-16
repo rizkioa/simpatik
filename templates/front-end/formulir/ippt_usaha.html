@@ -170,7 +170,7 @@
               if($current == 9){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_izin_lokasi(id_pengajuan)
+                // load_berkas_izin_lokasi(id_pengajuan)
               }              
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
@@ -241,13 +241,21 @@
             }
           });
           
-          $('#percent_berkas_foto').hide()
-          $('#percent_berkas_ktp').hide()
-          $('#percent_berkas_npwp_pribadi').hide()
-          $('#percent_berkas_npwp_perusahaan').hide()
-          $('#percent_berkas_akta_pendirian').hide()
-          $('#percent_berkas_akta_perubahan').hide()
-          $('#percent_berkas_pendukung').hide()
+          $('#percent-ktp_paspor').hide()
+          $('#percent-kartu_keluarga').hide()
+          $('#percent-npwp_pribadi').hide()
+          $('#percent-npwp_perusahaan').hide()
+          $('#percent-bukti_kepemilikan_tanah').hide()
+          $('#percent-sketsa_tanah_yang_dimohon').hide()
+          $('#percent-gambar_rencana_penggunaan_tanah').hide()
+          $('#percent-sertifikat_rumah').hide()
+          $('#percent-akta_jual_beli').hide()
+          $('#percent-site_plan').hide()
+          $('#percent-sppt_tahun_terakhir').hide()
+          $('#percent-rekomendasi_bupati').hide()
+          $('#percent-rencana_jadwal_perencanaan').hide()
+          $('#percent-block_plan').hide()
+          $('#percent-analisis_air').hide()
           // $.removeCookie('id_pengajuan', { path: '/' });`
           // 
           if ($.cookie('id_pengajuan') === undefined){
@@ -437,6 +445,85 @@
         $("#penggunaan_tanah_sekarang").modal('hide');
     }
 
+    function perumahan_yang_dimiliki_sekarang_add(btn){
+        var frm = $('#id_form_perumahan_yang_dimiliki_sekarang');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_perumahan = res.data.id_perumahan_yang_sudah_dimiliki
+                if ($('#id_perumahan_yang_dimiliki').find('#'+id_perumahan+'')){
+                  $('#'+id_perumahan+'').remove()
+                }
+                var nama_perumahan = $("#id_nama_perumahan").val()
+                var luas_tanah = $("#id_luas_tanah").val()
+                var status_tanah = $("#id_status_tanah").val()
+                var rows = "";
+                    rows += "<tr id='"+id_perumahan+"'><td id='id_table_nama_perumahan'>" + nama_perumahan + "</td><td id='id_table_luas_tanah'>" + luas_tanah +"</td><td id='id_table_status_tanah'>" + luas_tanah +"</td><td align='center'> <a href='#' id='"+status_tanah+"' onclick='editRowperumahan_yang_dimiliki(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_perumahan+"' onclick='deleteRowperumahan_yang_dimiliki(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_perumahan_yang_dimiliki","tbody");
+                $('#perumahan_yang_dimiliki').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#perumahan_yang_dimiliki').find('.btn-primary').attr('onclick','penggunaan_tanah_sekarang_add(this)')
+                $('#perumahan_yang_dimiliki').find('.btn-success').text("Simpan")
+                $('#perumahan_yang_dimiliki').find('#id_form_perumahan_yang_dimiliki_sekarang').attr('action','/layanan/ippt-usaha/pengunaan-tanah-sekarang/save')
+                $("#id_form_perumahan_yang_dimiliki_sekarang").resetForm()
+                $("#perumahan_yang_dimiliki").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+    function deleteRowperumahan_yang_dimiliki(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    $('#id_nama_perumahan').clearFields()
+                    $('#id_luas_tanah').clearFields()
+                    $('#id_status_tanah').clearFields()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+    function editRowperumahan_yang_dimiliki(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+        var nama_perumahan = parent_tr.find('#id_table_nama_perumahan').text();
+        var luas_tanah = parent_tr.find('#id_table_luas_tanah').text();
+        var status_tanah = parent_tr.find('#id_table_status_tanah').text();
+
+        $('#perumahan_yang_dimiliki').modal('show');
+        $('#perumahan_yang_dimiliki').find('#id_nama_perumahan').val(nama_perumahan) 
+        $('#perumahan_yang_dimiliki').find('#id_luas_tanah').val(luas_tanah)
+        $('#perumahan_yang_dimiliki').find('#id_status_tanah').val(status_tanah)
+
+        $('#perumahan_yang_dimiliki').find('.btn-success').attr('onclick','').unbind('click');
+        $('#perumahan_yang_dimiliki').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#perumahan_yang_dimiliki').find('.btn-primary').attr('id',id_button)
+        $('#perumahan_yang_dimiliki').find('.btn-primary').text("Edit")
+        $('#perumahan_yang_dimiliki').find('.btn-primary').attr('onclick','perumahan_yang_dimiliki_sekarang_add(this)')
+        $('#perumahan_yang_dimiliki').find('#id_form_perumahan_yang_dimiliki_sekarang').attr('action','/layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/edit/'+id_button+'/')
+        $("#id_form_perumahan_yang_dimiliki_sekarang").resetForm()        
+    }
+
+    function batalRowperumahan_yang_dimiliki(btn){
+        $('#perumahan_yang_dimiliki').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#perumahan_yang_dimiliki').find('.btn-primary').attr('onclick','penggunaan_tanah_sekarang_add(this)')
+        $('#perumahan_yang_dimiliki').find('.btn-success').text("Simpan")
+        $('#perumahan_yang_dimiliki').find('#id_form_perumahan_yang_dimiliki_sekarang').attr('action','/layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/save')
+        $("#id_form_perumahan_yang_dimiliki_sekarang").resetForm()
+        $("#perumahan_yang_dimiliki").modal('hide');
+    }
+
     document.querySelector('#alert').onclick = function(){
       // swal("Good job!", "You clicked the button!", "success");
       var pengajuan_cookie = $.cookie('id_pengajuan'); 
@@ -487,6 +574,38 @@
       alert("Jaringan Internet anda terputus!");
       }
     });
+
+function load_desa_ippt_usaha(id_kecamatan_ippt_usaha){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val()
+    $( "#id_desa_ippt_usaha_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan_ippt_usaha }, // get the form data
+        type: 'POST', // GET or POST
+        url: __base_url__+'/admin/master/desa/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_desa_ippt_usaha" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_desa_ippt_usaha" ).change(function(){
+                $this = $(this)
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+$( "#id_kecamatan_ippt_usaha" ).change(function(){
+    $this = $(this)
+    id_kecamatan_ippt_usaha = $(this).val()
+    if(id_kecamatan_ippt_usaha.length > 0){
+        load_desa_ippt_usaha(id_kecamatan_ippt_usaha)
+        make_disabled($( "#id_desa_ippt_usaha" ), true)
+    }else{
+        make_disabled($( "#id_desa_ippt_usaha" ), true)
+    }
+})
+
 
       $(document).ready(function() {
         window.onbeforeunload = function ref() {
@@ -610,6 +729,304 @@ $(document).ready(function(){
               $("#id_jumlah_tanah_sudah_dikuasai").val(sum.toFixed(2));
             }
  
+  $(document).ready(function(){
+    $(".sum-perincian-tanah").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculateperinciantanah()
+                });
+            });
+        });
+            
+        function calculateperinciantanah(){
+            var sum=0;
+            $(".sum-perincian-tanah").each(
+            function(){
+                var vl = this.value.split(',').join('');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah_perincian_penggunaan_tanah").val(sum.toFixed(2));
+              // $("#id_jumlah_tanah_sudah_dikuasai").val(sum.toFixed(2));
+            }
+
+  $(document).ready(function(){
+    $(".sum-presentase-perincian-tanah").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculatepresentaseperinciantanah()
+                });
+            });
+        });
+            
+        function calculatepresentaseperinciantanah(){
+            var sum=0;
+            $(".sum-presentase-perincian-tanah").each(
+            function(){
+                var vl = this.value.split(',').join('');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_presentase_jumlah_perincian_penggunaan_tanah").val(sum.toFixed(2));
+              // $("#id_jumlah_tanah_sudah_dikuasai").val(sum.toFixed(2));
+            }
+ 
+function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return e(d)}
+
+   $(document).ready(function(){
+    $(".sum-modal-tetap").each(
+        function(){
+        $(this).keyup(
+            function(){
+            FormatCurrency(this)
+            calculatemodaltetap()
+            jumlahmodal()
+                });
+            });
+        });
+             
+        function calculatemodaltetap(){
+            var sum=0;
+            $(".sum-modal-tetap").each(
+            function(){
+                var vl = this.value.toString().replace(/\$|\./g,'');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_modal_tetap").val(toRp(sum));
+              $("#id_jumlah_modal_tetap").val(toRp(sum));
+            }
+
+   $(document).ready(function(){
+    $(".sum-modal-kerja").each(
+        function(){
+        $(this).keyup(
+            function(){
+            FormatCurrency(this)
+            calculatemodalkerja()
+            jumlahmodal()
+                });
+            });
+        });
+             
+        function calculatemodalkerja(){
+            var sum=0;
+            $(".sum-modal-kerja").each(
+            function(){
+                var vl = this.value.toString().replace(/\$|\./g,'');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_modal_kerja").val(toRp(sum));
+              $("#id_jumlah_modal_kerja").val(toRp(sum));
+            }
+
+          function jumlahmodal(){
+            var j = $("#id_jumlah_modal_tetap").val().toString().replace(/\$|\./g,'');            
+            var o = $("#id_jumlah_modal_kerja").val().toString().replace(/\$|\./g,'');
+            if (j == ''){
+              j = 0
+            }
+            if (o == ''){
+              o = 0
+            }
+            var b = parseFloat(j) + parseFloat(o)
+            var j = toRp(b)
+            $("#id_jumlah_rencana_biaya").val(j.toString())
+          }
+
+   $(document).ready(function(){
+    $(".sum-pembiayaan-dalam-negeri").each(
+        function(){
+        $(this).keyup(
+            function(){
+            FormatCurrency(this)
+            calculatemodaldalamnegeri()
+                });
+            });
+        });
+             
+        function calculatemodaldalamnegeri(){
+            var sum=0;
+            $(".sum-pembiayaan-dalam-negeri").each(
+            function(){
+                var vl = this.value.toString().replace(/\$|\./g,'');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah_pinjaman_dalam").val(toRp(sum));
+            }
+
+
+   $(document).ready(function(){
+    $(".sum-kepemilikan-saham").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculatekepemilikansaham()
+                });
+            });
+        });
+             
+        function calculatekepemilikansaham(){
+            var sum=0;
+            $(".sum-kepemilikan-saham").each(
+            function(){
+                var vl = this.value.toString().replace(/\$|\./g,'');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah").val(toRp(sum));
+            }
+
+   $(document).ready(function(){
+    $(".sum-jumlah-investasi").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculatejumlahinvestasi()
+                });
+            });
+        });
+             
+        function calculatejumlahinvestasi(){
+            var sum=0;
+            $(".sum-jumlah-investasi").each(
+            function(){
+                var vl = this.value.toString().replace(/\$|\./g,'');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah_investasi").val(toRp(sum));
+              $("#id_investasi").val(toRp(sum));
+            }
+
+          function FormatCurrency(objNum){
+             var num = objNum.value
+             var ent, dec;
+             if (num != '' && num != objNum.oldvalue)
+             {
+               num = HapusTitik(num);
+               if (isNaN(num))
+               {
+                 objNum.value = (objNum.oldvalue)?objNum.oldvalue:'';
+               } else {
+                 var ev = (navigator.appName.indexOf('Netscape') != -1)?Event:event;
+                 if (ev.keyCode == 190 || !isNaN(num.split('.')[1]))
+                 {
+                   alert(num.split('.')[1]);
+                   objNum.value = TambahTitik(num.split('.')[0])+'.'+num.split('.')[1];
+                 }
+                 else
+                 {
+                   objNum.value = TambahTitik(num.split('.')[0]);
+                 }
+                 objNum.oldvalue = objNum.value;
+               }
+             }
+          }
+          function HapusTitik(num){
+             return (num.replace(/\./g, ''));
+          }
+
+          function TambahTitik(num){
+             numArr=new String(num).split('').reverse();
+             for (i=3;i<numArr.length;i+=3)
+             {
+               numArr[i]+='.';
+             }
+             return numArr.reverse().join('');
+          } 
+                  
+          function formatCurrency(num) {
+             num = num.toString().replace(/\$|\./g,'');
+             if(isNaN(num))
+             num = "0";
+             sign = (num == (num = Math.abs(num)));
+             num = Math.floor(num*100+0.50000000001);
+             cents = num0;
+             num = Math.floor(num/100).toString();
+             for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+             num = num.substring(0,num.length-(4*i+3))+'.'+
+             num.substring(num.length-(4*i+3));
+             return (((sign)?'':'-') + num);
+          }
+
+   $(document).ready(function(){
+    $(".sum-jumlah-kebutuhan-air").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculatejumlahkebutuhanair()
+                });
+            });
+        });
+             
+        function calculatejumlahkebutuhanair(){
+            var sum=0;
+            $(".sum-jumlah-kebutuhan-air").each(
+            function(){
+                var vl = this.value.split(',').join('');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah_kebutuhan_air").val(sum.toFixed(2));
+            }
+
+   $(document).ready(function(){
+    $(".sum-kebutuhan-minimal-air").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculatejumlahminimalkebutuhanair()
+                });
+            });
+        });
+             
+        function calculatejumlahminimalkebutuhanair(){
+            var sum=0;
+            $(".sum-kebutuhan-minimal-air").each(
+            function(){
+                var vl = this.value.split(',').join('');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah_minimal_kebutuhan_air").val(sum.toFixed(2));
+            }
+
+   $(document).ready(function(){
+    $(".sum-tenaga-kerja").each(
+        function(){
+        $(this).keyup(
+            function(){
+            calculatejumlahtenagakerja()
+                });
+            });
+        });
+             
+        function calculatejumlahtenagakerja(){
+            var sum=0;
+            $(".sum-tenaga-kerja").each(
+            function(){
+                var vl = this.value.split(',').join('');
+                if(!isNaN(vl) && vl.length!=0){
+                    sum+=parseFloat(vl);
+                    }
+                }); 
+              $("#id_jumlah_tenaga_kerja").val(sum);
+            }
+
   // $(function() {
   //   $('#id_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
   //   })

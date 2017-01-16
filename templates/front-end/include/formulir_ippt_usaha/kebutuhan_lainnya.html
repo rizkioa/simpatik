@@ -1,4 +1,4 @@
-<form method="POST" name="step7" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+<form method="POST" name="step7" role="form" class="form-horizontal" action="{% url 'ippt_usaha_kebutuhan_lainnya_save' %}">
   {% csrf_token %}
   <h3>SUSUNAN TENAGA KERJA</h3>
   <hr class="style14">
@@ -7,7 +7,7 @@
   	<label for="input01" class="col-sm-2 control-label">Tenaga Ahli</label>
   	<div class="col-sm-3">
   		<div class="input-group">
-  			<input type="text" id="id_tenaga_ahli" name="tenaga_ahli" class="form-control" required="" data-parsley-trigger="">
+  			<input type="text" id="id_tenaga_ahli" name="tenaga_ahli" class="form-control no_ktp" required="" data-parsley-trigger="">
   			<span class="input-group-addon">
   				<span>orang</span>
   			</span>
@@ -19,7 +19,7 @@
   	<label for="input01" class="col-sm-2 control-label">Pegawai Tetap</label>
   	<div class="col-sm-3">
   		<div class="input-group">
-  			<input type="text" id="id_pegawai_tetap" name="pegawai_tetap" class="form-control" required="" data-parsley-trigger="">
+  			<input type="text" id="id_pegawai_tetap" name="pegawai_tetap" class="form-control no_ktp" required="" data-parsley-trigger="">
   			<span class="input-group-addon">
   				<span>orang</span>
   			</span>
@@ -31,7 +31,7 @@
   	<label for="input01" class="col-sm-2 control-label">Pegawai harian Tetap</label>
   	<div class="col-sm-3">
   		<div class="input-group">
-  			<input type="text" id="id_pegawai_harian_tetap" name="pegawai_harian_tetap" class="form-control" required="" data-parsley-trigger="">
+  			<input type="text" id="id_pegawai_harian_tetap" name="pegawai_harian_tetap" class="form-control no_ktp" required="" data-parsley-trigger="">
   			<span class="input-group-addon">
   				<span>orang</span>
   			</span>
@@ -43,7 +43,7 @@
   	<label for="input01" class="col-sm-2 control-label">Pegawai Harian Tidak Tetap</label>
   	<div class="col-sm-3">
   		<div class="input-group">
-  			<input type="text" id="id_pegawai_harian_tidak_tetap" name="pegawai_harian_tidak_tetap" class="form-control" required="" data-parsley-trigger="">
+  			<input type="text" id="id_pegawai_harian_tidak_tetap" name="pegawai_harian_tidak_tetap" class="form-control no_ktp" required="" data-parsley-trigger="">
   			<span class="input-group-addon">
   				<span>orang</span>
   			</span>
@@ -64,7 +64,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_kebutuhan" name="kebutuhan" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_kebutuhan_listrik" name="kebutuhan_listrik" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>kVA</span>
 		  			</span>
@@ -80,7 +80,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_jumlah_dibutuhkan_sehari" name="jumlah_dibutuhkan_sehari" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_kebutuhan_listrik_sehari_hari" name="kebutuhan_listrik_sehari_hari" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>kVA</span>
 		  			</span>
@@ -96,7 +96,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_jumlah_daya_genset" name="jumlah_daya_genset" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_jumlah_daya_genset" name="jumlah_daya_genset" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>kVA</span>
 		  			</span>
@@ -112,7 +112,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_jumlah_dibutuhkan_pln" name="jumlah_dibutuhkan_pln" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_jumlah_listrik_kebutuhan_dari_pln" name="jumlah_listrik_kebutuhan_dari_pln" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>kVA</span>
 		  			</span>
@@ -139,7 +139,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_keperluan_rumah_tangga" name="keperluan_rumah_tangga" class="form-control" required="" data-parsley-trigger="">
+	  			<input type="number" id="id_air_untuk_rumah_tangga" name="air_untuk_rumah_tangga" class="form-control sum-jumlah-kebutuhan-air" required="" data-parsley-trigger="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -155,7 +155,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_proses_produksi" name="proses_produksi" class="form-control" required="" data-parsley-trigger="">
+	  			<input type="number" id="id_air_untuk_produksi" name="air_untuk_produksi" class="form-control sum-jumlah-kebutuhan-air" required="" data-parsley-trigger="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -171,7 +171,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_lain_lain" name="lain_lain" class="form-control" required="" data-parsley-trigger="">
+	  			<input type="number" id="id_air_lainnya" name="air_lainnya" class="form-control sum-jumlah-kebutuhan-air" required="" data-parsley-trigger="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -187,7 +187,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_jumlah_kebutuhan_air" name="jumlah_kebutuhan_air" class="form-control" required="" data-parsley-trigger="">
+	  			<input type="text" id="id_jumlah_kebutuhan_air" class="form-control" required="" data-parsley-trigger="" disabled="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -209,7 +209,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_pdam" name="pdam" class="form-control" data-parsley-trigger="">
+	  			<input type="number" id="id_air_dari_pdam" name="air_dari_pdam" class="form-control sum-kebutuhan-minimal-air" data-parsley-trigger="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -225,7 +225,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_sumber_air" name="sumber_air" class="form-control" data-parsley-trigger="">
+	  			<input type="number" id="id_air_dari_sumber" name="air_dari_sumber" class="form-control sum-kebutuhan-minimal-air" data-parsley-trigger="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -241,7 +241,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_sungai" name="sungai" class="form-control" data-parsley-trigger="">
+	  			<input type="number" id="id_air_dari_sungai" name="air_dari_sungai" class="form-control sum-kebutuhan-minimal-air" data-parsley-trigger="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -257,7 +257,7 @@
   	<div class="form-group">
 	  	<div class="col-sm-2">
 	  		<div class="input-group">
-	  			<input type="text" id="id_jumlah_kebutuhan_air2" name="jumlah_kebutuhan_air2" class="form-control" data-parsley-trigger="">
+	  			<input type="text" id="id_jumlah_minimal_kebutuhan_air" class="form-control" data-parsley-trigger="" disabled="">
 	  			<span class="input-group-addon">
 	  				<span>Liter/hari</span>
 	  			</span>
@@ -288,7 +288,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_indonesia" name="indonesia" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_tenaga_kerja_wni" name="tenaga_kerja_wni" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>orang</span>
 		  			</span>
@@ -304,7 +304,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_asing" name="asing" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_tenaga_kerja_wna" name="tenaga_kerja_wna" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>orang</span>
 		  			</span>
@@ -324,7 +324,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_tenaga_kerja_tetap" name="tenaga_kerja_tetap" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_tenaga_kerja_tetap" name="tenaga_kerja_tetap" class="form-control no_ktp sum-tenaga-kerja" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>orang</span>
 		  			</span>
@@ -340,7 +340,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_tenga_kerja_tidak_tetap" name="tenaga_kerja_tidak_tetap" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_tenaga_kerja_tidak_tetap" name="tenaga_kerja_tidak_tetap" class="form-control no_ktp sum-tenaga-kerja" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>orang</span>
 		  			</span>
@@ -356,7 +356,7 @@
   		<div class="form-group">
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_jumlah_tenaga_kerja" name="jumlah_tenaga_kerja" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_jumlah_tenaga_kerja" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>orang</span>
 		  			</span>

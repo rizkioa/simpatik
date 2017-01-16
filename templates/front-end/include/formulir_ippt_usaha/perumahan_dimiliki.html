@@ -11,12 +11,19 @@
               <td>Nama Perumahan</td>
               <td>Luas Tanah</td>
               <td>Status Tanah</td>
-              <td>Lokasi</td>
               <td>Aksi</td>
             </tr>
           </thead>
           <tbody>
-
+          {% if perumahan_list %}
+            {% for a in perumahan_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_nama_perumahan">{{a.nama_perumahan}}</td>
+                <td id="id_table_luas_tanah">{{a.luas_tanah}}</td>
+                <td id="id_table_status_tanah">{{a.status_tanah}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowperumahan_yang_dimiliki(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowperumahan_yang_dimiliki(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
           </tbody>
         </table>
       </div>
@@ -33,7 +40,7 @@
           <h3 class="modal-title custom-font">Perumahan Yang Dimiliki</h3>
       </div>
       <div class="modal-body">
-        <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="#" data-parsley-validate novalidate>
+        <form method="POST" id="id_form_perumahan_yang_dimiliki_sekarang" name="form_perumahan_yang_dimiliki_sekarang" role="form" class="form-horizontal" action="{% url 'perumahan_yang_sudah_dimiliki_save' %}" data-parsley-validate novalidate>
         {% csrf_token %}
 		  <div class="form-group">
 		  	<label for="input01" class="col-sm-2 control-label">Nama Perumahan</label>
@@ -46,7 +53,7 @@
 		  	<label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
 		  	<div class="col-sm-3">
 		  		<div class="input-group">
-		  			<input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control" required="" data-parsley-trigger="">
+		  			<input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control no_ktp" required="" data-parsley-trigger="">
 		  			<span class="input-group-addon">
 		  				<span>M&sup2;</span>
 		  			</span>
@@ -61,29 +68,44 @@
 		  	</div>
 		  </div>
 
-		  <div class="form-group">
-		  	<label for="input01" class="col-sm-2 control-label">Lokasi</label>
-		  	<label for="input01" class="col-sm-2 control-label">Kecamatan</label>
-		  	<div class="col-sm-3">
-				<select class="form-control chosen-select mb-10" name="kecamatan">
-		          <option value="1">Kecamatan</option>
-		        </select>
-		  	</div>
-		  </div>
 
-		  <div class="form-group">
-		  	<label for="input01" class="col-sm-4 control-label">Kel / Desa</label>
-		  	<div class="col-sm-3">
-		  		<select class="form-control chosen-select mb-10" name="desa">
-		  			<option value="1">Desa</option>
-		  		</select>
-		  	</div>
-		  </div>
+		    <div class="form-group">
+			    <label for="input01" class="col-sm-2 control-label">Lokasi</label>
+			    <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+		    	<div class="col-sm-5">
+		        	<select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+		          		<option value="1">Kabupaten Kediri</option>
+		        	</select>
+		      	</div>
+		    </div>
+
+		    <div class="form-group">
+		      <label for="input01" class="col-sm-4 control-label"><strong>Kecamatan</strong></label>
+		      <div class="col-sm-5">
+		        <select id="id_kecamatan_ippt_usaha" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+		          <option value>-- Pilih Kecamatan --</option>
+		          {% if kecamatan %}
+		          {% for k in kecamatan %}
+		          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+		          {% endfor %}
+		          {% endif %}
+		        </select>
+		      </div>
+		    </div>
+
+		    <div class="form-group">
+		      <label class="col-sm-4 control-label"><strong>Kelurahan/Desa</strong></label>
+		      <div class="col-sm-5">
+		        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_ippt_usaha" required="" data-parsley-trigger="change">
+		        </select>
+		      </div>
+		    </div>
+
         </form>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
-        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="perumahan_yang_dimiliki_sekarang_add(this)" >Simpan</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowperumahan_yang_dimiliki(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
       </div>
     </div>
   </div>
