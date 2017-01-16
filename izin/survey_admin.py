@@ -92,7 +92,7 @@ class SurveyAdmin(admin.ModelAdmin):
 	get_no_pengajuan.short_description = "No. Pengajuan"
 
 	def get_perusahaan(self, obj):
-		iujk = DetilIUJK.objects.get(pengajuan_ptr_id=obj.id)
+		iujk = DetilIUJK.objects.get(id=obj.id)
 		return iujk.pengajuan.perusahaan
 	get_perusahaan.short_description = "Perusahaan"
 
@@ -129,176 +129,181 @@ class SurveyAdmin(admin.ModelAdmin):
 	def view_cek_kelengkapan_pengajuan(self, request, id_pengajuan_izin_, id_survey):
 		extra_context = {}
 		extra_context.update({'has_permission': True })
-		# print request.user
-		# queryset_ = self.get_queryset(request)
+
 		queryset_ = Survey.objects.filter(id=id_survey)
-		try:
-			queryset_ = queryset_.get(pengajuan__id=id_pengajuan_izin_)
 
+		if queryset_.exists():
+		# try:
+
+			queryset_ = queryset_.last()
 			pegawai = Pegawai.objects.all()
-			# if not request.user.is_superuser:
-			# 	get_pegawai_skpd = Pegawai.objects.get(pk=request.user.id)
-			# 	if get_pegawai_skpd.unit_kerja:
-			# 		pegawai = pegawai.filter(unit_kerja=get_pegawai_skpd.unit_kerja)
-			# 	else:
-			# 		pegawai = pegawai.filter(unit_kerja__nama_unit_kerja='PEMBANGUNAN')
 
-			extra_context.update({ 'pegawai' : pegawai })
-			extra_context.update({ 'qs' : queryset_ })
-			try:
-				status = queryset_.survey_iujk.get(pegawai_id=request.user.id)
-				status = status.koordinator
-			except ObjectDoesNotExist:
-				status = False
-			extra_context.update({ 'status_user': status })
-			# print queryset_
-			extra_context.update({ 'tanggal_survey': queryset_.tanggal_survey })
-			extra_context.update({ 'deadline_survey': queryset_.deadline_survey })
-			if queryset_.pengajuan:
-				extra_context.update({ 'pengajuan': queryset_.pengajuan })
+			get_iujk = DetilIUJK.objects.filter(id=id_pengajuan_izin_)
 
-				if queryset_.pengajuan.pemohon:
-					extra_context.update({ 'pemohon': queryset_.pengajuan.pemohon })
+			if get_iujk.exists():
+				get_iujk = get_iujk.last()
 
-					if queryset_.pengajuan.pemohon.desa:
-						pemohon = queryset_.pengajuan.pemohon
-						alamat_ = str(pemohon.alamat)+", Ds. "+str(pemohon.desa)+", Kec. "+str(pemohon.desa.kecamatan)+", "+str(pemohon.desa.kecamatan.kabupaten)
-						extra_context.update({ 'alamat': alamat_ })
+				extra_context.update({ 'pegawai' : pegawai })
+				extra_context.update({ 'qs' : queryset_ })
+				try:
+					status = queryset_.survey_iujk.get(pegawai_id=request.user.id)
+					status = status.koordinator
+				except ObjectDoesNotExist:
+					status = False
+				extra_context.update({ 'status_user': status })
+				# print queryset_
+				extra_context.update({ 'tanggal_survey': queryset_.tanggal_survey })
+				extra_context.update({ 'deadline_survey': queryset_.deadline_survey })
+				if queryset_.pengajuan:
+					extra_context.update({ 'pengajuan': queryset_.pengajuan })
 
-					if queryset_.pengajuan.perusahaan:
-						perusahaan = queryset_.pengajuan.perusahaan
-						extra_context.update({ 'perusahaan': perusahaan })
-						if perusahaan.desa:
-							alamat_ = str(perusahaan.alamat_perusahaan)+", Ds. "+str(perusahaan.desa)+", Kec. "+str(perusahaan.desa.kecamatan)+", "+str(perusahaan.desa.kecamatan.kabupaten)
-							extra_context.update({ 'alamat_perusahaan': alamat_ })
-			# print queryset_.survey_rekomendiasi.all()
-			rekom = queryset_.survey_rekomendiasi.filter(created_by=request.user)
+					if queryset_.pengajuan.pemohon:
+						extra_context.update({ 'pemohon': queryset_.pengajuan.pemohon })
 
-			if rekom.exists():
-				rekom = rekom.last()
-				extra_context.update({'rekom': rekom })
-				data_rekom = { 'rekomendasi': rekom.rekomendasi }
+						if queryset_.pengajuan.pemohon.desa:
+							pemohon = queryset_.pengajuan.pemohon
+							alamat_ = str(pemohon.alamat)+", Ds. "+str(pemohon.desa)+", Kec. "+str(pemohon.desa.kecamatan)+", "+str(pemohon.desa.kecamatan.kabupaten)
+							extra_context.update({ 'alamat': alamat_ })
 
-			detilbap = queryset_.survey_detilbap.all()
-			if detilbap.exists():
-				detil = detilbap.last()
-				extra_context.update({'detilbap': detil })
-				data_bap = {
-					'bangunan_kantor': detil.bangunan_kantor,
-					'ruang_direktur': detil.ruang_direktur,
-					'ruang_staf': detil.ruang_staf,
-					'ruang_meja_kursi_derektur': detil.ruang_meja_kursi_derektur,
-					'ruang_meja_kursi_staff_administrasi': detil.ruang_meja_kursi_staff_administrasi,
-					'ruang_meja_kursi_staff_teknis': detil.ruang_meja_kursi_staff_teknis,
-					'komputer': detil.komputer,
-					'lemari': detil.lemari,
-					'papan_nama_klasifikasi_k1_k2': detil.papan_nama_klasifikasi_k1_k2,
-					'papan_nama_klasifikasi_mb': detil.papan_nama_klasifikasi_mb,
-					'papan_nama_ada_nama_perusahaan': detil.papan_nama_ada_nama_perusahaan,
-					'papan_nama_ada_telp': detil.papan_nama_ada_telp,
-					'papan_nama_ada_alamat': detil.papan_nama_ada_alamat,
-					'papan_nama_ada_npwp': detil.papan_nama_ada_npwp,
-					'papan_nama_ada_nama_anggota_asosiasi': detil.papan_nama_ada_nama_anggota_asosiasi
-					}
+						if get_iujk.perusahaan:
+							perusahaan = get_iujk.perusahaan
+							extra_context.update({ 'perusahaan': perusahaan })
+							if perusahaan.desa:
+								alamat_ = str(perusahaan.alamat_perusahaan)+", Ds. "+str(perusahaan.desa)+", Kec. "+str(perusahaan.desa.kecamatan)+", "+str(perusahaan.desa.kecamatan.kabupaten)
+								extra_context.update({ 'alamat_perusahaan': alamat_ })
+				# print queryset_.survey_rekomendiasi.all()
+				rekom = queryset_.survey_rekomendiasi.filter(created_by=request.user)
+
+				if rekom.exists():
+					rekom = rekom.last()
+					extra_context.update({'rekom': rekom })
+					data_rekom = { 'rekomendasi': rekom.rekomendasi }
+
+				detilbap = queryset_.survey_detilbap.all()
+				if detilbap.exists():
+					detil = detilbap.last()
+					extra_context.update({'detilbap': detil })
+					data_bap = {
+						'bangunan_kantor': detil.bangunan_kantor,
+						'ruang_direktur': detil.ruang_direktur,
+						'ruang_staf': detil.ruang_staf,
+						'ruang_meja_kursi_derektur': detil.ruang_meja_kursi_derektur,
+						'ruang_meja_kursi_staff_administrasi': detil.ruang_meja_kursi_staff_administrasi,
+						'ruang_meja_kursi_staff_teknis': detil.ruang_meja_kursi_staff_teknis,
+						'komputer': detil.komputer,
+						'lemari': detil.lemari,
+						'papan_nama_klasifikasi_k1_k2': detil.papan_nama_klasifikasi_k1_k2,
+						'papan_nama_klasifikasi_mb': detil.papan_nama_klasifikasi_mb,
+						'papan_nama_ada_nama_perusahaan': detil.papan_nama_ada_nama_perusahaan,
+						'papan_nama_ada_telp': detil.papan_nama_ada_telp,
+						'papan_nama_ada_alamat': detil.papan_nama_ada_alamat,
+						'papan_nama_ada_npwp': detil.papan_nama_ada_npwp,
+						'papan_nama_ada_nama_anggota_asosiasi': detil.papan_nama_ada_nama_anggota_asosiasi
+						}
+					
+
+				try:
+					extra_context.update({'form_rekomendasi': RekomendasiForm(data_rekom) })
+				except UnboundLocalError, e:
+					extra_context.update({'form_rekomendasi': RekomendasiForm })
 				
-
-			try:
-				extra_context.update({'form_rekomendasi': RekomendasiForm(data_rekom) })
-			except UnboundLocalError, e:
-				extra_context.update({'form_rekomendasi': RekomendasiForm })
-			
-			try:
-				extra_context.update({'form_detil': DetilForm(data_bap) })
-			except UnboundLocalError, e:
-				extra_context.update({'form_detil': DetilForm })
-			
-			extra_context.update({'form_berkas': BerkasForm })
-			if request.POST:
-				btn = request.POST.get('simpan')
-				if detilbap:
-					form_detil = DetilForm(request.POST, instance=detil)
-				else:
-					form_detil = DetilForm(request.POST)
-
-				if form_detil.is_valid():
-					d = form_detil.save(commit=False)
-					d.survey_iujk_id = queryset_.id
-
-
-					if rekom:
-						form = RekomendasiForm(request.POST, instance=rekom)
+				try:
+					extra_context.update({'form_detil': DetilForm(data_bap) })
+				except UnboundLocalError, e:
+					extra_context.update({'form_detil': DetilForm })
+				
+				extra_context.update({'form_berkas': BerkasForm })
+				if request.POST:
+					btn = request.POST.get('simpan')
+					if detilbap:
+						form_detil = DetilForm(request.POST, instance=detil)
 					else:
-						form = RekomendasiForm(request.POST)
+						form_detil = DetilForm(request.POST)
 
-					if form.is_valid():
-						f = form.save(commit=False)
-						f.survey_iujk_id = queryset_.id
+					if form_detil.is_valid():
+						d = form_detil.save(commit=False)
+						d.survey_iujk_id = queryset_.id
 
-						get_pegawai_skpd = Pegawai.objects.get(pk=request.user.id)
-						f.unit_kerja = get_pegawai_skpd.unit_kerja
 
-						f.created_by = request.user
+						if rekom:
+							form = RekomendasiForm(request.POST, instance=rekom)
+						else:
+							form = RekomendasiForm(request.POST)
 
-						form_berkas = BerkasForm(request.POST, request.FILES)
-						if form_berkas.is_valid():
-							b = form_berkas.save(commit=False)
-							b.nama_berkas = 'Berkas Rekomendasi dgn No. Survey '+str(queryset_.no_survey)
-							b.keterangan = b.nama_berkas
-							b.save()
+						if form.is_valid():
+							f = form.save(commit=False)
+							f.survey_iujk_id = queryset_.id
 
-							f.berkas = b
+							get_pegawai_skpd = Pegawai.objects.get(pk=request.user.id)
+							f.unit_kerja = get_pegawai_skpd.unit_kerja
 
-						if btn == 'submit':
-							# queryset_.status = 1
-							d.status = 1
-							f.status = 1
-							r = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
-							sent_ = 0
-							if r.created_by:
-								emailto = r.created_by.email
-								print emailto
-								subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
-								html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
-								sent_ = send_email_notifikasi(emailto, subject, html_content)
-								print sent_
-							if sent_ == 1:
-								messages.success(request, "Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
-							else:
-								messages.success(request, "Berhasil Disimpan")
+							f.created_by = request.user
 
-							if status:
-								d.save()
-							f.save()
-							
-							queryset_.save()
-							return HttpResponseRedirect(reverse('admin:survey_selesai'))
-						elif btn == 'draft':
-							d.status = 6
-							f.status = 6
-							if status:
-								d.save()
-							# print "HALO"
-							f.save()
-							
-							# queryset_.save()
-							messages.success(request, "Berhasil Disimpan Sebagai Draft")
-							return HttpResponseRedirect(reverse('admin:izin_survey_changelist'))
+							form_berkas = BerkasForm(request.POST, request.FILES)
+							if form_berkas.is_valid():
+								b = form_berkas.save(commit=False)
+								b.nama_berkas = 'Berkas Rekomendasi dgn No. Survey '+str(queryset_.no_survey)
+								b.keterangan = b.nama_berkas
+								b.save()
+
+								f.berkas = b
+
+							if btn == 'submit':
+								# queryset_.status = 1
+								d.status = 1
+								f.status = 1
+								r = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
+								sent_ = 0
+								if r.created_by:
+									emailto = r.created_by.email
+									if emailto:
+										subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+										html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
+										sent_ = send_email_notifikasi(emailto, subject, html_content)
+										print sent_
+								if sent_ == 1:
+									messages.success(request, "Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
+								else:
+									messages.success(request, "Berhasil Disimpan")
+
+								if status:
+									d.save()
+								f.save()
+								
+								queryset_.save()
+								return HttpResponseRedirect(reverse('admin:survey_selesai'))
+							elif btn == 'draft':
+								d.status = 6
+								f.status = 6
+								if status:
+									d.save()
+								# print "HALO"
+								f.save()
+								
+								# queryset_.save()
+								messages.success(request, "Berhasil Disimpan Sebagai Draft")
+								return HttpResponseRedirect(reverse('admin:izin_survey_changelist'))
+						else:
+							# pass
+							messages.error(request, "Rekomendasi Tidak Boleh Kosong")
 					else:
 						# pass
-						messages.error(request, "Rekomendasi Tidak Boleh Kosong")
-				else:
-					# pass
-					messages.error(request, "Rekomendasi dan Detil BAP harus diisi")
-					# queryset_.update(status=1)
+						messages.error(request, "Rekomendasi dan Detil BAP harus diisi")
+						# queryset_.update(status=1)
 
-				return HttpResponseRedirect(reverse('admin:cek_kelengkapan', args=[id_pengajuan_izin_, id_survey]))
-				
+					return HttpResponseRedirect(reverse('admin:cek_kelengkapan', args=[id_pengajuan_izin_, id_survey]))
+					
 
 			# messages.error(request)
 			# return HttpResponseRedirect(reverse('admin:cek_kelengkapan', args=[id_pengajuan_izin_]))
 
+			else:
+				print "alsdjfhalks"
+				raise Http404
 
-		except ObjectDoesNotExist:
+		# except ObjectDoesNotExist:
+		else:
+			print "alsdjfhalks"
 			raise Http404
 
 		template = loader.get_template("admin/pembangunan/cek_kelengkapan.html")
@@ -396,7 +401,7 @@ class SurveyAdmin(admin.ModelAdmin):
 						alasan=''
 					)
 				riwayat_.save()
-				
+
 				survey.delete()
 				
 			except Survey.DoesNotExist:

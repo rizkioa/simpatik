@@ -21,7 +21,12 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
-			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
 			g = Group.objects.filter(name="Tim Teknis")
 			if g.exists():
 				g = g.last()
