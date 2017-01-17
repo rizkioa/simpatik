@@ -155,13 +155,14 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 	def option_klasifikasi(self, request):
 		klasifikasi_list = Klasifikasi.objects.all()
-	
+		
 		id_pengajuan = request.POST.get('pengajuan', None)	
 		if id_pengajuan and not id_pengajuan is "":
 			d = DetilIUJK.objects.get(pengajuanizin_ptr_id=id_pengajuan)
 			# print d.jenis_iujk
 			klasifikasi_list = klasifikasi_list.filter(jenis_iujk=d.jenis_iujk)
 		pilihan = "<option value=''>-- Pilih Klasifikasi --</option>"
+		print klasifikasi_list
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in klasifikasi_list)));
 
 	def option_subklasifikasi(self, request):

@@ -1,4 +1,4 @@
-function load_klasifikasi(id_pengajuan){
+function load_klasifikasi(){
   csrf_token = $("input[name='csrfmiddlewaretoken']").val();
   elem = $("#klasifikasi")
   $.ajax({ // create an AJAX call...
