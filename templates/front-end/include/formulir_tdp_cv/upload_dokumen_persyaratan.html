@@ -13,7 +13,7 @@
           <input type="hidden" name="kode" value="Neraca Perusahaan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-neraca_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-neraca_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-neraca_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-neraca_perusahaan"></span>
@@ -29,7 +29,7 @@
           <input type="hidden" name="kode" value="Ijin Usaha">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
         </div>
-        <a href="#" id="btn-ijin_usaha" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-ijin_usaha" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-ijin_usaha" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-ijin_usaha"></span>
@@ -44,7 +44,7 @@
         <div class="col-sm-5">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-ktp"></span>
@@ -60,7 +60,7 @@
           <input type="hidden" name="kode" value="NPWP Perusahaan TDP">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-npwp_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-npwp_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-npwp_perusahaan"></span>
@@ -75,7 +75,7 @@
         <div class="col-sm-5">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-akta_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-akta_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-akta_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-akta_pendirian"></span>
@@ -90,7 +90,7 @@
         <div class="col-sm-5">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-akta_perubahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-akta_perubahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-akta_perubahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-akta_perubahan"></span>
@@ -106,7 +106,7 @@
           <input type="hidden" name="kode" value="Sertifikat Asli TDP">
           <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
         </div>
-        <a href="#" id="btn-sertifikat_asli_tdp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-sertifikat_asli_tdp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-sertifikat_asli_tdp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-sertifikat_asli_tdp"></span>
@@ -121,7 +121,7 @@
         <div class="col-sm-5">
           <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
         </div>
-        <a href="#" id="btn-berkas_tambahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a href="#" id="btn-berkas_tambahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-berkas_tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-berkas_tambahan"></span>
