@@ -88,9 +88,9 @@ def get_nomor_pengajuan(kode_):
 	return nomor
 
 JENIS_IUJK = (
+	('IUJK Perencanaan Kontruksi', 'IUJK Perencanaan Kontruksi'),
 	('IUJK Pelaksana Kontruksi', 'IUJK Pelaksana Kontruksi'),
-	('IUJK Perencana Kontruksi', 'IUJK Perencana Kontruksi'),
-	('IUJK Pengawas Kontruksi', 'IUJK Pengawas Kontruksi'),
+	('IUJK Pengawasan Kontruksi', 'IUJK Pengawasan Kontruksi'),
 	('IUJK Perencanaan dan Pengawasan Kontruksi', 'IUJK Perencanaan dan Pengawasan Kontruksi'),
 )
 

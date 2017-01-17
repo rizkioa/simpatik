@@ -1,0 +1,234 @@
+{% load i18n admin_static widgets access %}
+{% if survey %}
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+        <!-- tile body -->
+        <div class="tile-body ">
+
+         <div class="col-md-12">
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Deadline Survey</label>
+				<div class="col-sm-4"> {{ survey_pengajuan.deadline_survey }}
+				</div>
+			</div>
+			
+		</div>
+          <table id="" class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+			      <th scope="col" class="">SKPD</th>
+			      <th scope="col" class="">NAMA</th>
+			      <th scope="col" class="">KOORDINATOR</th>
+			      <th scope="col" class="">Aksi</th>
+			  </tr>
+            </thead>
+            <tbody>
+              {% for q in survey.survey_iujk.all %}
+			    <tr>
+			      <td>{{q.pegawai.unit_kerja}}</td>
+			      <td>{{q.pegawai}} [{{q.pegawai.username}}]</td>
+			      <td>{{q.koordinator|true_or_false|safe}}</td>
+					{% if not q.koordinator %}
+					<td><button class="btn btn-rounded btn-red btn-xs" onclick="hapus_anggotatim({{q.id}}); return false;"><i class="fa fa-trash"></i> &nbsp;</button></td>
+					{% else %}
+					<td></td>
+					{% endif %}
+			    </tr>
+			  {% endfor %}
+            </tbody>
+          </table>
+          <br>
+          <button class="btn btn-rounded btn-warning btn-sm" onclick="tambah_tim(this); return false;"><i class="fa fa-plus"></i> Tambah Anggota Tim</button>
+          <button class="btn btn-rounded btn-success btn-sm" onclick="lakukan_survey(this); return false;"><i class="fa fa-paper-plane"></i> Lakukan Survey </button>
+          <button class="btn btn-rounded btn-red btn-sm" onclick="hapus_survey(this, {{survey.id}}); return false;"><i class="fa fa-trash"></i> Hapus Survey </button>
+
+        </div>
+    </section>
+    <script type="text/javascript">
+    	function tambah_tim(btn_) {
+	      // body...
+	      var $btn = $(btn_)
+	      $btn.attr('data-loading-text', 'Loading...')
+	      $btn.button('loading');
+	      $('.bs-sinkron-modal-lg').modal();
+	      $('#myModalSinkronLabel').html($btn.html());
+	      $('.bs-sinkron-modal-lg').on('hidden.bs.modal', function () {
+	        $btn.button('reset')
+	        location.href = window.location
+	      })
+	    }
+
+	    function lakukan_survey(btn_){
+	      var $btn = $(btn_)
+	      toastr["info"]("Proses pengiriman survey membutuhkan waktu cukup lama tergantung koneksi internet, harap sabar menunggu. Terimakasih")
+	      $btn.attr('data-loading-text', '<i class="fa fa-spinner fa-spin"></i> Proses pengiriman notifikasi...')
+	      $btn.button('loading')
+	      $.ajax({
+	        method: 'POST',
+	        data: {csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+	        url: "{% url 'admin:lakukan_survey' survey.id %}",
+	        success: function(response){
+	          respon = $.parseJSON(response)
+	          if(respon.success){
+	            toastr["success"](respon.pesan)
+	            location.reload();
+	            // console.log($('#'+respon.id).remove());
+	          }else if(respon.sending){
+	            toastr["info"](respon.pesan)
+	          }else if(respon.delivered){
+	            toastr["success"](respon.pesan)
+	          }else{
+	            toastr["error"](respon.pesan)
+	          }
+	        },error: function(response){
+	          toast_server_error()
+	        }
+	      });
+	    }
+
+	    function hapus_survey(btn, id_survey){
+	    	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+			$.ajax({ // create an AJAX call...
+			    data: { csrfmiddlewaretoken: csrf_token, id: id_survey }, // get the form data
+			    type: 'POST',
+			    url: '/admin/izin/survey/survey-delete-ajax/', // the file to call
+			    success: function(response) { // on success..
+			        respon = $.parseJSON(response)
+			        if(respon.success){
+			        	toastr["success"](respon.pesan)
+			        	location.href = window.location
+			      	}
+			      	else{
+		              	toastr["error"](respon.pesan)
+		              	location.href = window.location
+		            }
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			      	location.href = window.location
+			    }
+			});
+	    }
+
+	    var options = { 
+	        success:   showResponse,
+	        url     :  '{% url 'admin:simpan_ajax' %}',     // override for form's 'action' attribute 
+	        type    :  'post',        // 'get' or 'post', override for form's 'method' attribute 
+	    };
+
+	    function save_anggota(){
+	        $('#anggotatim').ajaxSubmit(options); 
+	    }
+
+	    function hapus_anggotatim(id){
+	        $.ajax({ // create an AJAX call...
+			    url: '/admin/pembangunan/anggotatim/hapus-anggotatim-ajax/'+id, // the file to call
+			    success: function(response) { // on success..
+			        respon = $.parseJSON(response)
+			        if(respon.success){
+			        	toastr["success"](respon.pesan)
+			        	location.href = window.location
+			      	}
+			      	else{
+		              	toastr["error"](respon.pesan)
+		              	location.href = window.location
+		            }
+			    },
+			    error: function(data) {                
+			      	toast_server_error()
+			      	location.href = window.location
+			    }
+			});
+	    }
+
+	    function showResponse(responseText, statusText, xhr, $form)  { 
+	        response = $.parseJSON(responseText)
+	        // console.log(response)
+	        if(response.success){
+	          toastr["success"](response.pesan)
+	          $('#id_koordinator').prop('checked', false)
+	        }else{
+	          var key = Object.keys(response); // Mencari key json
+	          var str = key[0]
+	          
+	          toastr["error"](key[0]+' '+response[key[0]][0]['message'])
+	        }
+	    }
+    </script>
+   </div>
+</div>
+{% else %}
+<section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;">
+
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1 class="custom-font" style="color: white"><strong>Tambah Survey Izin </strong></h1>
+    </div>
+    <!-- /tile header -->
+
+    <!-- tile body -->
+    <div class="tile-body">
+        <form class="form-horizontal" role="form" action="{% url 'admin:save_survey_ajax' %}" method="POST" id="form-survey-baru" data-parsley-validate novalidate>
+        {% csrf_token %}
+		<input type="hidden" name="pengajuan_id" value="{{pengajuan.id}}"></input>
+		<input type="hidden" name="id_unit_kerja" value="{{id_unit_kerja}}"></input>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label" style="color: white">Pilih Koordinator</label>
+                <div class="col-sm-10">
+                    <select class="form-control chosen-2" name="pegawai" required="" data-parsley-trigger="change">
+				    	<option value="">Nama Koordinator</option>
+				    	{% for s in pegawai_list %}
+				    		<option value="{{ s.id }}">{{ s }}</option>
+				    	{% endfor %}
+			      	</select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label" style="color: white">Deadline Survey</label>
+                <div class="col-sm-10">
+                    <div class="input-group datepicker" data-format="L">
+			          <input type="text" class="form-control" placeholder="dd-mm-yyyy" data-parsley-trigger="change" required="" name="deadline_survey">
+			          <span class="input-group-addon">
+			            <span class="fa fa-calendar"></span>
+			          </span>
+			        </div>
+                </div>
+            </div>
+        </form>
+        <hr>
+        <button name="simpan" value="tambahkan_survey" onclick="lakukan_survey();return false;" class="btn btn-rounded btn-success btn-sm col-sm-offset-2">Tambahkan Survey</button>
+        
+    </div>
+    
+    <script type="text/javascript">
+    	var options = { 
+	        success:   showResponse,
+	        url     :  '{% url 'admin:save_survey_ajax' %}',     // override for form's 'action' attribute 
+	        type    :  'post',        // 'get' or 'post', override for form's 'method' attribute 
+	    };
+
+	    function lakukan_survey(){
+	        $('#form-survey-baru').ajaxSubmit(options); 
+	    }
+
+	    function showResponse(responseText, statusText, xhr, $form)  { 
+	        response = $.parseJSON(responseText)
+	        // console.log(response)
+	        if(response.success){
+	          toastr["success"](response.pesan)
+	          location.reload();
+	        }else{
+	          var key = Object.keys(response); // Mencari key json
+	          var str = key[0]
+	          
+	          toastr["error"](key[0]+' '+response[key[0]][0]['message'])
+	        }
+	    }
+    </script>
+    <!-- /tile body -->
+
+</section>
+{% endif %}
+
