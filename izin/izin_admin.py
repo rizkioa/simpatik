@@ -307,6 +307,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_tdp_firma', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.id == 28:
 			link_ = reverse('admin:view_pengajuan_tdp_perorangan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "TDP-BUL":
+			link_ = reverse('admin:view_pengajuan_tdp_bul', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -1039,6 +1041,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/tdp-cv/$', self.admin_site.admin_view(formulir_tdp_cv), name='izin_proses_tdp_cv'),
 			url(r'^wizard/add/proses/tdp-firma/$', self.admin_site.admin_view(formulir_tdp_firma), name='izin_proses_tdp_firma'),
 			url(r'^wizard/add/proses/tdp-perorangan/$', self.admin_site.admin_view(formulir_tdp_perorangan), name='izin_proses_tdp_perorangan'),
+			url(r'^wizard/add/proses/tdp-bul/$', self.admin_site.admin_view(formulir_tdp_bul), name='izin_proses_tdp_bul'),
 			url(r'^wizard/add/proses/pemakaian-kekayaan-daerah/$', self.admin_site.admin_view(formulir_informasi_kekayaan_daerah), name='izin_proses_pemakaian_kekayaan_daerah'),
 			url(r'^wizard/add/proses/izin-gangguan/$', self.admin_site.admin_view(formulir_izin_gangguan), name='izin_proses_gangguan'),
 			url(r'^wizard/add/proses/izin-lokasi/$', self.admin_site.admin_view(formulir_izin_lokasi), name='izin_proses_lokasi'),

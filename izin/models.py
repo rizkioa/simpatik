@@ -530,7 +530,7 @@ class RincianPerusahaan(models.Model):
 	modal_dasar = models.CharField(max_length=100, verbose_name='Modal Dasar Rp.', null=True, blank=True)
 	modal_ditempatkan = models.CharField(max_length=100, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
 	modal_disetor = models.CharField(max_length=100, verbose_name='Modal Disetor Rp.', null=True, blank=True)
-	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0)
+	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0, null=True, blank=True)
 	nilai_nominal_per_saham = models.CharField(max_length=100, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
 	class Meta:
