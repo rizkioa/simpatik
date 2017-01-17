@@ -359,7 +359,7 @@
                     <tr>
                         <td width="25%">Jangka Waktu Pendirian Perusahaan</td>
                         <td width="5%">:</td>
-                        <td width="70%">{{pengajuan_.jangka_waktu_berdiri}} Tahun</td>
+                        <td width="70%">{{pengajuan_.jangka_waktu_berdiri|default_if_none:'-'}} Tahun</td>
                     </tr>
                     <tr>
                         <td width="25%">Bentuk Kerjasama</td>
@@ -408,11 +408,11 @@
                     </tr>
                     <tr>
                         <td width="2%"></td>
-                        <td width="23%">Kegiatan Usaha Pokok</td>
-                        <td width="5%">:</td>
-                        <td width="70%">{{pengajuan_.kegiatan_usaha_pokok}}</td>
+                        <td width="23%" valign="top">Kegiatan Usaha</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">{% if pengajuan_.kegiatan_usaha_pokok.all %}{% for k in pengajuan_.kegiatan_usaha_pokok.all %}{{k.kode_kbli}} - {{k.nama_kbli}}<br>{% endfor %}{% endif %}</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td width="2%"></td>
                         <td width="23%">Kegiatan Usaha Lain</td>
                         <td width="5%">:</td>
@@ -441,12 +441,12 @@
                         <td width="23%">Komoditi / Produk Lain</td>
                         <td width="5%">:</td>
                         <td width="70%">b. {{pengajuan_.komoditi_produk_lain_2}}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
-                        <td width="2%">B.</td>
-                        <td width="23%">Omset Perusahaan Per Tahun(setelah perusahaan beroperasi)</td>
-                        <td width="5%">:</td>
-                        <td width="70%">Rp {{pengajuan_.omset_per_tahun}},-</td>
+                        <td width="2%" valign="top">B.</td>
+                        <td width="23%" valign="top">Omset Perusahaan Per Tahun(setelah perusahaan beroperasi)</td>
+                        <td width="5%" valign="top">:</td>
+                        <td width="70%" valign="top">Rp {{pengajuan_.omset_per_tahun}},-</td>
                     </tr>
                     <tr>
                         <td width="2%">C.</td>

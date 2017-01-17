@@ -168,8 +168,8 @@ urlpatterns = [
     url(r'^layanan/tdp-koperasi/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_koperasi, name='cetak_bukti_pendaftaran_tdp_koperasi'),
     
     #cetak TDP Bul
-    url(r'^layanan/tdp-bul/formulir/cetak$', views.cetak_tdp_bul, name='cetak_tdp_bul'),
-    url(r'^layanan/tdp-bul/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
+    url(r'^layanan/tdp-bul/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_bul, name='cetak_tdp_bul'),
+    url(r'^layanan/tdp-bul/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
 
 
     # url for ajax siup

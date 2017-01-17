@@ -405,10 +405,10 @@ def load_data_kegiatan_perusahaan(request, pengajuan_id):
 			total_aset = ""
 			if pengajuan_.total_aset:
 				total_aset = pengajuan_.total_aset
-			jumlah_karyawan_wni = ""
+			jumlah_karyawan_wni = 0
 			if pengajuan_.jumlah_karyawan_wni:
 				jumlah_karyawan_wni = pengajuan_.jumlah_karyawan_wni
-			jumlah_karyawan_wna = ""
+			jumlah_karyawan_wna = 0
 			if pengajuan_.jumlah_karyawan_wna:
 				jumlah_karyawan_wna = pengajuan_.jumlah_karyawan_wna
 			kapasitas_mesin_terpasang = ""

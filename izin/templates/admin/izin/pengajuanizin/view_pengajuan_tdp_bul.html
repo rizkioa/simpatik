@@ -252,7 +252,7 @@
 				<center>
 					{% if request.user|has_group:'Operator' or request.user.is_superuser or request.user|has_group:'Cetak' %}
 
-						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_po' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_bul' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
 
 						
 						<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
@@ -261,11 +261,11 @@
 					{% endif %}
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_perorangan_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_bul_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 
 					{% if skizin_status == 1  or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_perorangan_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_bul_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 
 				</center>
@@ -577,7 +577,7 @@
 						<div class="panel-body">
 						{% if skizin == None %}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_perorangan_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_bul_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_status_pusat" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Status Pusat</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
@@ -995,7 +995,7 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-perorangan-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-bul-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
 
@@ -1021,11 +1021,9 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-perorangan-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-bul-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
-
-
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
@@ -1044,6 +1042,7 @@
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
 	<script>
+        
         function edit_skizin(id_detil_siup, aksi){
         	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 		  	produk_utama = $('#produk_utama_edit').val();
@@ -1108,8 +1107,8 @@
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         	setTimeout(function(){
-        		window.location.replace('{% url 'admin:izin_proses_tdp_po' %}');
-        	}, 1000);
+        		window.open('{% url 'admin:izin_proses_tdp_bul' %}', '_blank')
+    		}, 1000);
         }
     </script>
 {% endblock %}
@@ -1132,7 +1131,7 @@
 								    		<div class="img-responsi">
 		                                		{% if ext|InList:'.pdf, .PDF' %}
 									        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="">
-									        	{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
+									        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
 									        	{% endif %}
 								        	</div>	
@@ -1140,7 +1139,7 @@
 								        <div class="overlay">
 								           	<h2>{{ a.nama_berkas.upper }}</h2>
 								           	{% with a.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
 		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">
@@ -1151,31 +1150,7 @@
 								</div>
 							{% endfor %}
 						{% endif %}
-						{% if ktp %}
-							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-							    <div class="hovereffect">
-							    	{% with ktp.berkas.berkas.name|extension|stringformat:"s" as ext %}
-							    		<div class="img-responsi">
-	                                		{% if ext|InList:'.pdf, .PDF' %}
-								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ ktp.berkas.nama_berkas.upper }}">
-								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<img class="imageloaderImage" src="{{ktp.berkas.berkas.url}}" alt="{{ ktp.berkas.nama_berkas.upper }}">
-								        	{% endif %}
-								        </div>
-		  							{% endwith %}
-							        <div class="overlay">
-							           	<h2>{{ ktp.berkas.nama_berkas.upper }}</h2>
-							           	{% with ktp.berkas.berkas.name|extension|stringformat:"s" as ext %}
-                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-							           			<a class="info example-image-link" href="{{ktp.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
-							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
-	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ ktp.berkas.berkas }}&embedded=true" target="_blank" class="info">
-	                                        {% endif %}
-                                        {% endwith %}
-							        </div>
-							    </div>
-							</div>
-						{% endif %}
+						
 						{% if pemohon.berkas_npwp %}
 							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
 							    <div class="hovereffect">
@@ -1183,7 +1158,7 @@
 							    		<div class="img-responsi">
 	                                		{% if ext|InList:'.pdf, .PDF' %}
 								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ pemohon.berkas_npwp.nama_berkas.upper }}">
-								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 												<img class="imageloaderImage" src="{{pemohon.berkas_npwp.berkas.url}}" alt="{{ pemohon.berkas_npwp.nama_berkas.upper }}">
 								        	{% endif %}
 								        </div>
@@ -1191,16 +1166,193 @@
 							        <div class="overlay">
 							           	<h2>{{ pemohon.berkas_npwp.nama_berkas.upper }}</h2>
 							           	{% with pemohon.berkas_npwp.berkas.name|extension|stringformat:"s" as ext %}
-                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 							           			<a class="info example-image-link" href="{{pemohon.berkas_npwp.berkas.url}}" data-lightbox="example-1">link here</a>
 							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
-	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ pemohon.berkas_npwp.berkas }}&embedded=true" target="_blank" class="info">
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ pemohon.berkas_npwp.berkas }}&embedded=true" target="_blank" class="info">link here</a>
 	                                        {% endif %}
                                         {% endwith %}
 							        </div>
 							    </div>
 							</div>
 						{% endif %}
+						{% if legalitas_pendirian.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_pendirian.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_pendirian.berkas.berkas.url}}" alt="{{ legalitas_pendirian.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_pendirian.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_pendirian.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_pendirian.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_pendirian.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						{% if legalitas_perubahan.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_perubahan.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_perubahan.berkas.berkas.url}}" alt="{{ legalitas_perubahan.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_perubahan.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_perubahan.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_perubahan.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_perubahan.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						{% if legalitas_3.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_3.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_3.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_3.berkas.berkas.url}}" alt="{{ legalitas_3.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_3.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_3.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_3.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_3.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						{% if legalitas_4.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_4.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_4.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_4.berkas.berkas.url}}" alt="{{ legalitas_4.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_4.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_4.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_4.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_4.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						{% if legalitas_6.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_6.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_6.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_6.berkas.berkas.url}}" alt="{{ legalitas_6.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_6.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_6.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_6.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_6.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						
+						{% if legalitas_7.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_7.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_7.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_7.berkas.berkas.url}}" alt="{{ legalitas_7.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_7.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_7.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_7.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_7.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						{% if ktp.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with ktp.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ ktp.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{ktp.berkas.berkas.url}}" alt="{{ ktp.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ ktp.berkas.nama_berkas.upper }}</h2>
+							           	{% with ktp.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{ktp.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ ktp.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+						
 					</div>
                 </div>
 		      	<div class="modal-footer">
@@ -1214,7 +1366,7 @@
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Detail TDP PERORANGAN (PO)</h3>
+		        	<h3 class="modal-title custom-font">Detail TDP PT</h3>
 		      	</div>
 		      	<div class="modal-body">
 		      		<table width="100%" border="0">
@@ -1358,7 +1510,7 @@
 				    	<tr>
 				    		<td>Jangka Waktu Berdirinya Perusahaan</td>
 				    		<td>:</td>
-				    		<td>{{pengajuan.jangka_waktu_berdiri|default_if_none:'-'}}</td>
+				    		<td>{{pengajuan.jangka_waktu_berdiri}}</td>
 				    	</tr>
 				    	<tr>
 				    		<td>Bentuk Kerja Sama</td>
@@ -1516,7 +1668,7 @@
 					</table>
 					<br>
 					<br>
-					<!-- <h5><strong>LEGALITAS PERUSAHAAN</strong></h5>
+					<h5><strong>LEGALITAS PERUSAHAAN</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">
 							<thead>
@@ -1552,7 +1704,7 @@
 								{% endif %}
 							</tbody>
 						</table>
-					</div> -->
+					</div>
 					<br>
 					<br>
 					<h5><strong>IZIN-IZIN & LEGALITAS LAINNYA</strong></h5>
@@ -1666,43 +1818,7 @@
 							</tbody>
 						</table>
 					</div>
-					<!-- <h5><strong>PEMEGANG SAHAM</strong></h5>
-					<div class="table-responsive">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-						          	<th>No.</th>
-						          	<th>Nama lengkap</th>
-						          	<th>Alamat Tetap</th>
-						          	<th>No. Telp</th>
-						          	<th>Kewarganegaraan</th>
-						          	<th>NPWP</th>
-						          	<th>Jumlah saham yang dimiliki (lembar)</th>
-						          	<th>Jumlah modal disetor (Rp)</th>
-						        </tr>
-							</thead>
-							<tbody>
-								{% if pemegang_saham %}
-								{% for p in pemegang_saham %}
-								<tr>
-									<td>{{forloop.counter}}</td>
-									<td>{{p.nama_lengkap}}</td>
-									<td>{{p.alamat}}</td>
-									<td>{{p.telephone}}</td>
-									<td>{{p.kewarganegaraan}}</td>
-									<td>{{p.npwp}}</td>
-									<td>{{p.jumlah_saham_dimiliki}} Lembar</td>
-									<td>Rp {{p.jumlah_saham_disetor}},-</td>
-								</tr>
-								{% endfor %}
-								{% else %}
-								<tr>
-									<td colspan="8" align="center">Kosong...!!!</td>
-								</tr>
-								{% endif %}
-							</tbody>
-						</table>
-					</div> -->
+					
 					<h5><strong>PERUSAHAAN</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">

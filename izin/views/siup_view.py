@@ -108,7 +108,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
 		# elif k.id in [25, 26]:
-		elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN":
+		elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL":
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -217,7 +217,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN":
+					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL":
 					# elif k.id == 25 or k.id == 26 or k.id == 27 or k.id == 28:
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
@@ -275,7 +275,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN":
+					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL":
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -415,16 +415,16 @@ def siup_legalitas_perusahaan_save_cookie(request):
 			if 'id_pengajuan' in request.COOKIES.keys():
 				if request.COOKIES['id_pengajuan'] != '':
 					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
-					if k.id == 26 or k.id == 27:
+					if k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-BUL":
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.id == 39:
 						objects_ = getattr(app_models, 'InformasiTanah')
 					else:
 						objects_ = getattr(app_models, 'DetilSIUP')	
-					print objects_
+					# print objects_
 					try:
 						pengajuan_ = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
-						print pengajuan_
+						# print pengajuan_
 						if request.POST.get('onoffswitch_pendirian') == 'on':
 							if request.COOKIES['id_legalitas'] == "":
 								form = LegalitasPerusahaanForm(request.POST)
