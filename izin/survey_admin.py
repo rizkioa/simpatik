@@ -327,6 +327,7 @@ class SurveyAdmin(admin.ModelAdmin):
 		# print request.user.pegawai.unit_kerja
 		if not request.user.is_superuser:
 			a = AnggotaTim.objects.filter(pegawai=request.user)
+			# print "HALO"
 			if a.exists():
 				a = a.values_list('survey_iujk')
 				qs = qs.filter(id__in=a)
