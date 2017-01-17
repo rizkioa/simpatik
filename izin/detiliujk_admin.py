@@ -21,7 +21,12 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
-			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
 			g = Group.objects.filter(name="Tim Teknis")
 			if g.exists():
 				g = g.last()
@@ -150,13 +155,14 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 	def option_klasifikasi(self, request):
 		klasifikasi_list = Klasifikasi.objects.all()
-	
+		
 		id_pengajuan = request.POST.get('pengajuan', None)	
 		if id_pengajuan and not id_pengajuan is "":
 			d = DetilIUJK.objects.get(pengajuanizin_ptr_id=id_pengajuan)
 			# print d.jenis_iujk
 			klasifikasi_list = klasifikasi_list.filter(jenis_iujk=d.jenis_iujk)
 		pilihan = "<option value=''>-- Pilih Klasifikasi --</option>"
+		print klasifikasi_list
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in klasifikasi_list)));
 
 	def option_subklasifikasi(self, request):

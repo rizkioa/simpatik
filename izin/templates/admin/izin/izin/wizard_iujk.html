@@ -410,9 +410,11 @@
 				$("#modal_save_").attr('disabled',false)
 				$("#modal_save_").html('<i class="fa fa-arrow-right"></i> Simpan')
 				$("#modal_form").attr("action", "{% url 'iujk_paketpekerjaan_save' %}")
-				load_klasifikasi($.cookie('id_pengajuan'))
+				// load_klasifikasi($.cookie('id_pengajuan'))
+				load_klasifikasi()
 				$('#modal_form').parsley().reset();
 				$('input[name="detil_iujk"]').val('')
+				$("#subklasifikasi").html('<option value="">-- Pilih Sub Klasifikasi --</option>')
 				$('input[name="klasifikasi_usaha"]').val('')
 				$('textarea[name="nama_paket_pekerjaan"]').val('')
 				$('select[name="tahun"]').val('')
@@ -428,6 +430,7 @@
 				load_subklasifikasi(val)
 			}else{
 				toastr["warning"]("Pilih Klasifikasi Terlebih Dahulu")
+				$("#subklasifikasi").html('<option value="">-- Pilih Sub Klasifikasi --</option>')
 			}
 		});
 

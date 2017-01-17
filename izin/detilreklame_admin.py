@@ -105,6 +105,14 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			# UNTUK SURVEY
+			from django.contrib.auth.models import Group
+			g = Group.objects.filter(name="Tim Teknis")
+			if g.exists():
+				g = g.last()
+			p = g.user_set.all()
+			extra_context.update({'pegawai_all' : p })
+
 			try:
 				try:
 					s = Survey.objects.get(pengajuan=pengajuan_)
@@ -115,7 +123,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				s = ''
 
 			extra_context.update({'survey': s })
-			extra_context.update({'id_unit_kerja': 11}) # 11 Untuk Pembangunan
+			# END UNTUK SURVEY
 
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
