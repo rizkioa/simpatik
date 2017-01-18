@@ -965,7 +965,7 @@ class IzinAdmin(admin.ModelAdmin):
 		id_detil_siup = request.POST.get('id_pengajuan')
 		try:
 			obj = PengajuanIzin.objects.get(id=id_detil_siup)
-			if request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
+			if request.user.is_superuser or request.user.groups.filter(name='Admin Sistem') or request.user.groups.filter(name='Operator') or request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin'):
 				form = UploadBerkasPenolakanIzinForm(request.POST, request.FILES)
 				if request.method == "POST":
 					if request.FILES.get('berkas'):
