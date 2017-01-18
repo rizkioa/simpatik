@@ -114,6 +114,7 @@
             }
 
             .sidenav a {
+                font-family: "Dosis","Arial",sans-serif;
                 padding: 8px 8px 8px 32px;
                 text-decoration: none;
                 font-size: 20px;
@@ -190,9 +191,12 @@
                 </div>
             </section>
             {% if not request.path == "/" %}
-            <div id="footer" class="footer">
-                {% include 'front-end/footer.html' %}
-            </div>
+            <section id="footer" style="position: absolute;left: 0;right: 0;bottom: 0;">
+                <div class="footer">
+                    {% include 'front-end/footer.html' %}
+                </div>
+            </section>
+            
             {% endif %}
         </div>
         {% block extratools %}
