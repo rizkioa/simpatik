@@ -280,26 +280,7 @@
                       <td width="10%">:</td>
                       <td width="65%">{{pengajuan.desa|default_if_none:"-"}}</td>
                     </tr>
-                    <tr>
-                      <td width="25%">Kecamatan</td>
-                      <td width="10%">:</td>
-                      <td width="65%">{{pengajuan.desa.kecamatan|default_if_none:"-"}}</td>
-                    </tr>
-                    <tr>
-                      <td width="25%">Kabupaten / Kota</td>
-                      <td width="10%">:</td>
-                      <td width="65%">{{pengajuan.desa.kecamatan.kabupaten|default_if_none:"-"}}</td>
-                    </tr>
-                    <tr>
-                      <td width="25%">Luas Tanah</td>
-                      <td width="10%">:</td>
-                      <td width="65%">{{pengajuan.luas|default_if_none:"-"}}</td>
-                    </tr>
-                    <tr>
-                      <td width="25%">Status Tanah</td>
-                      <td width="10%">:</td>
-                      <td width="65%">{{pengajuan.status_tanah|default_if_none:"-"}}</td>
-                    </tr>
+
                     </table> 
                  <br>
                  <hr>        
@@ -320,6 +301,26 @@
         <div class="page">
             <div class="subpage">
                 <table class="font" width="100%">
+                    <tr>
+                      <td width="25%">Kecamatan</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.desa.kecamatan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Kabupaten / Kota</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.desa.kecamatan.kabupaten|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Luas Tanah</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.luas|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Status Tanah</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.status_tanah|default_if_none:"-"}}</td>
+                    </tr>
                     <tr>
                       <td width="25%"><u>Sertifikan/Petok D</u></td>
                       <td width="10%"></td>
@@ -364,7 +365,11 @@
                       <td width="25%">Penggunaan Tanah</td>
                       <td width="10%">:</td>
                       <td width="65%">
-                        <table width="100%" border="1" class="font">
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" width="80%" style="padding-left: 10%;">
+                        <table width="80%" border="1" class="font">
                             <thead>
                               <tr>
                                   <td>Penggunaan Tanah</td>
@@ -380,14 +385,602 @@
                               {% endfor %}
                             </tbody>
                         </table>
-                      </td>
+                        </td>
                     </tr>
                     <tr>
                       <td width="25%">Rencana Penggunaan</td>
                       <td width="10%">:</td>
                       <td width="65%">{{pengajuan.rencana_penggunaan|default_if_none:"-"}}</td>
                     </tr>
+                    <tr>
+                      <td width="25%">Batas - batas</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">Utara</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.batas_utara|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">Timur</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.batas_timur|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">Selatan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.batas_selatan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">Barat</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.batas_barat|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Status Tanah Sekarang</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.status_tanah|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">a. Tanah pihak lain yang belum dikuasai oleh pemohon</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">1. Status Tanah</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Negara</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_negara_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Kas Desa</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_kas_desa_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Hak Pakai</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_hak_pakai_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Hak Guna Bangunan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_hak_guna_bangunan_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Hak Milik Sertifikat</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_hak_milik_sertifikat_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_adat_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:7%" width="25%">Jumlah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.jumlah_tanah_belum_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">2. Pemegang Hak Semula</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pemegang_hak_semula_dari_tanah_belum_dikuasai|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">3. Dikuasai Melalui</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_belum_dikuasai_melalui|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">b. Tanah pihak lain dikuasai oleh pemohon</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">1. Status Tanah</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Negara</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_negara_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Kas Desa</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_kas_desa_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Hak Pakai</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_hak_pakai_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Hak Guna Bangunan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_hak_guna_bangunan_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Hak Milik Sertifikat</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_hak_milik_sertifikat_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_adat_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:7%" width="25%">Jumlah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.jumlah_tanah_sudah_dikuasai|default_if_none:"-"}} M&sup2;</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">2. Pemegang Hak Semula</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pemegang_hak_semula_dari_tanah_sudah_dikuasai|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:3%" width="25%">3. Dikuasai Melalui</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tanah_sudah_dikuasai_melalui|default_if_none:"-"}}</td>
+                    </tr>
                 </table>
+
+                <hr> 
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>
+        </div>
+        <div class="page">
+            <div class="subpage">
+                  <h5><u>RENCANA PEMBANGUNAN</u></h5>
+                  <p style="font-size:13px">(Disertai gambar / Sket Rencana Pemanfaatan Tanah</p>
+                  <table width="100%" border="0" class="font">
+                    <tr>
+                      <td width="25%">1. Perincian penggunaan tanah</td></tr>
+                    <tr>
+                      <td style="padding-left:2%" width="35%">a. Tipe
+                      {{pengajuan.tipe1|default_if_none:"-"}} / Gudang1 {{pengajuan.gudang1|default_if_none:"-"}} Unit</td>
+                      <td width="5%">:</td>
+                      <td width="55%">{{pengajuan.luas_tipe1|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_tipe1|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="35%">b. Tipe {{pengajuan.tipe2|default_if_none:"-"}} / Gudang2 {{pengajuan.gudang2|default_if_none:"-"}} Unit</td>
+                      <td width="5%">:</td>
+                      <td width="55%">{{pengajuan.luas_tipe2|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_tipe2|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Tipe {{pengajuan.tipe3|default_if_none:"-"}} / Gudang3 {{pengajuan.gudang3|default_if_none:"-"}} Unit</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.luas_tipe3|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_tipe3|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">d. Lapangan Halaman</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.luas_lapangan|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_lapangan|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">e. Kantor</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.luas_kantor|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_kantor|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">f. Saluran</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.luas_saluran|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_saluran|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">g. Taman</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.luas_taman|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_luas_taman|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:5%" width="25%">Jumlah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.jumlah_perincian_penggunaan_tanah|default_if_none:"-"}} M&sup2; ({{pengajuan.presentase_jumlah_perincian_penggunaan_tanah|default_if_none:"-"}} %)</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">2. Tahap - tahap pelaksanaan</td></tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Pematang tanah dan penyelesaian prasarana / lingkungan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tahap Pertama</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pematangan_tanah_tahap1|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tahap Kedua</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pematangan_tanah_tahap2|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tahap Ketiga</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pematangan_tanah_tahap3|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Pembangunan Gedung</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tahap Pertama</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pembangunan_gedung_tahap1|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tahap Kedua</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pembangunan_gedung_tahap2|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tahap Ketiga</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pembangunan_gedung_tahap3|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Jangka Waktu Penyelesaian Seluruhnya</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.jangka_waktu_selesai|floatformat:-2|default_if_none:"-"}} Bulan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">d. Rencana Jadwal Pelakasanaan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Terlampir</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">e. Block plan / Rencana Tapak</td>
+                      <td width="5%">:</td>
+                      <td width="70%">terlampir</td>
+                    </tr>
+                  </table>
+
+                  <h5><u>RENCANA PEMBIAYAAN DAN PERMODALAN</u></h5>
+                  <table width="100%" border="0" class="font">
+                    <tr>
+                      <td width="25%">1. Struktur biaya</td></tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Modal Tetap</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Tanah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_tetap_tanah|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Bangunan / Gedung</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_tetap_bangunan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Mesin - mesin dan peralatan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_tetap_mesin|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Alat- alat angkutan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_tetap_angkutan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Alat - alat kantor dan inventasi</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_tetap_inventaris|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Lain - lain</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_tetap_lainnya|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:6%" width="25%">Jumlah Modal Tetap (a)</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.jumlah_modal_tetap|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Modal Kerja</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Bahan Baku</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_kerja_bahan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Upah / Gaji</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_kerja_gaji|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Alat - alat angkutan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_kerja_alat_angkut|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Lain - lain</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_kerja_lainnya|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:6%" width="25%">Jumlah Modal Kerja (b)</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.jumlah_modal_kerja|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Jumlah Rencana Biaya (a+b)</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{jumlah_rencana_biaya}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">2. Sumber Pembiayaan / Investasi</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Modal Sendiri</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Modal Dasar</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_dasar|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Modal Ditetapkan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_ditetapkan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Modal Disetor</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_disetor|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                <hr> 
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>
+        </div>
+        <div class="page">
+            <div class="subpage">
+                <table width="100%" border="0" class="font">
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Modal Pinjam</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">1. Pinjaman Dalam Negeri</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:6%" width="25%">Bank Pemerintah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_bank_pemerintah|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:6%" width="25%">Bank Swasta</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_bank_swasta|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:6%" width="25%">Lembaga Keuangan Non Bank</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_lembaga_non_bank|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:6%" width="25%">Pihak Ketiga</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_pihak_ketiga|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Jumlah Modal Pinjaman</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{jumlah_pinjaman_dalam|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">2. Pinjaman Luar Negeri</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.modal_pinjaman_luar_negeri|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Jumlah Pembiayaan (Modal Sendiri + Modal Pinjaman</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Rp {{pengajuan.jumlah_investasi|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">3. Struktur modal / Pemilikan Saham Perusahaan</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Indonesia</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.saham_indonesia|default_if_none:"-"}} %</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Domestik Asing</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.saham_asing|default_if_none:"-"}} %</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Jumlah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{jumlah_saham|default_if_none:"-"}} %</td>
+                    </tr>
+                  </table>
+
+                  <h5><u>KEBUTUHAN LAINNYA</u></h4>
+                  <h6><u>SUSUNAN TENAGA KERJA</u></h6>
+                  <table width="100%" border="0" class="font">
+                    <tr>
+                      <td width="25%">1. Tenaga Ahli</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tenaga_ahli|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">2. Pegawai Tetap</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pegawai_tetap|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">3. Pegawai Harian Tetap</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pegawai_harian_tetap|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">4. Pegawai Harian Tidak Tetap</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.pegawai_harian_tidak_tetap|default_if_none:"-"}} Orang</td>
+                    </tr>
+                  </table>
+
+                  <h6><u>PRASARANA / UNTILITAS</u></h6>
+                  <table width="100%" border="0" class="font">
+                    <tr>
+                      <td width="25%">1. Listrik</td>
+                      <td width="5%"></td>
+                      <td width="70%"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Kebutuhan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.kebutuhan_listrik|default_if_none:"-"}} KVA</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Jumlah yang dibutuhkan sehari - hari</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.kebutuhan_listrik_sehari_hari|default_if_none:"-"}} KVA</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Jumlah Daya yang dimiliki / Genset</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.jumlah_daya_genset|default_if_none:"-"}} KVA</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Jumlah Daya yang dibutuhkan dari PLN</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.jumlah_listrik_kebutuhan_dari_pln|default_if_none:"-"}} KVA</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">2. Air</td>
+                      <td width="5%"></td>
+                      <td width="70%"></td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Jumlah Kebutuhan Air</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Untuk Keperluan Rumah Tanggan</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.air_untuk_rumah_tangga|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Untuk proses produksi</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.air_untuk_produksi|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Untuk lain - lain</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.air_lainnya|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Jumlah kebutuhan air</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{jumlah_kebutuhan_air|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Kebutuhan Minimal tiap hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">PDAM</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.air_dari_pdam|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Sumur / Sumber air</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.air_dari_sumber|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Sungai</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.air_dari_sungai|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Jumlah Kebutuhan Air</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{jumlah_minimal_kebutuhan_air|default_if_none:"-"}} Liter /hari</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">c. Kualitas air yang dibutuhkan ( analisa air )</td>
+                      <td width="5%">:</td>
+                      <td width="70%">Terlampir</td>
+                    </tr>
+                  </table>
+
+
+                  <br>
+                  <br>
+                  <hr>
+                    <i class="font" align="right">
+                        <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                        <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                    </i>
+            </div>
+        </div>
+        <div class="page">
+            <div class="subpage">
+        <h5><u>PERUMAHAN DIMILIKI</u></h5>
+                  <h6><u>TENAGA KERJA</u></h6>
+                  <table width="100%" border="0" class="font">
+                    <tr>
+                      <td width="25%">1. Asal Tenaga</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Indonesia</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tenaga_kerja_wni|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Asing</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tenaga_kerja_wna|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">2. Susunan Tenaga Kerja</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">a. Pegawai Tetap</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tenaga_kerja_tetap|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:2%" width="25%">b. Pegawai Tidak Tetap</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{pengajuan.tenaga_kerja_tidak_tetap|default_if_none:"-"}} Orang</td>
+                    </tr>
+                    <tr>
+                      <td style="padding-left:4%" width="25%">Jumlah</td>
+                      <td width="5%">:</td>
+                      <td width="70%">{{jumlah_tenaga_kerja|default_if_none:"-"}} Orang</td>
+                    </tr>
+                  </table>
+        <table width="100%" border="1" class="font">
+            <thead>
+                <tr>
+                <td>Nama Perusahaan</td>
+                <td>Luas Tanah (M&sup2;)</td>
+                <td>Status Tanah</td>
+                <td>Kelurahan</td>
+                <td>Kecamatan</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in perumahan_yang_dimiliki_list %}
+                <tr>
+                    <td>{{i.nama_perumahan}}</td>
+                    <td>{{i.luas_tanah}}</td>
+                    <td>{{i.status_tanah}}</td>
+                    <td>{{i.desa}}</td>
+                    <td>{{i.desa.kecamatan}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table> 
                 <br>
                 <br>
                 {% if pengajuan.kelompok_jenis_izin.id == 37 %}
@@ -445,7 +1038,7 @@
                     <hr>
                     <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
                 {% else %}
-                    <h5>Syarat IPPT - Rumah Tinggal:</h5>
+                    <h5>Syarat IPPT - Usaha:</h5>
                     <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                         <thead>
                             <tr>

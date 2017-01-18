@@ -2,6 +2,8 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from django.utils.safestring import mark_safe
 
+from .utils import KONDISI_LAHAN, JENIS_BANGUNAN, KLASIFIKASI_JALAN
+
 from izin.models import Survey
 from kepegawaian.models import Pegawai, UnitKerja
 from master.models import MetaAtribut, Berkas
@@ -68,3 +70,26 @@ class DetilBAP(MetaAtribut):
 		ordering = ['id']
 		verbose_name = 'Detil BAP'
 		verbose_name_plural = 'Detil BAP'
+
+
+class BAPReklameHO(MetaAtribut):
+	"""docstring for BAPReklameHO"""
+	survey = models.ForeignKey(Survey, verbose_name="Data Survey", related_name="survey_reklame_ho")
+	kondisi_lahan_usaha = models.IntegerField(verbose_name='Kondisi Lahan Usaha', choices=KONDISI_LAHAN, blank=True, null=True)
+	luas_tempat_usaha = models.IntegerField(verbose_name='Luas Tempat Usaha', blank=True, null=True)
+	jumlah_mesin = models.IntegerField(verbose_name='Jumlah Mesin', blank=True, null=True)
+	daya_kekuatan_mesin = models.IntegerField(verbose_name='Daya Kekuatan Mesin', blank=True, null=True)
+	jenis_bangunan = models.IntegerField(verbose_name='Kondisi Lahan Usaha', choices=JENIS_BANGUNAN, blank=True, null=True)
+	sebelah_utara = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
+	sebelah_timur = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
+	sebelah_selatan = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
+	sebelah_barat = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
+	klasifikasi_jalan = models.IntegerField(verbose_name='Kondisi Lahan Usaha', choices=KLASIFIKASI_JALAN, blank=True, null=True)
+		
+	def __unicode__(self):
+		return '%s' % self.survey
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Detil BAP Reklame/HO'
+		verbose_name_plural = 'Detil BAP Reklame/HO'
