@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilReklame, Syarat, SKIzin, Riwayat
+from izin.models import DetilReklame, Syarat, SKIzin, Riwayat, Survey
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -105,6 +105,26 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			# UNTUK SURVEY
+			from django.contrib.auth.models import Group
+			g = Group.objects.filter(name="Tim Teknis")
+			if g.exists():
+				g = g.last()
+			p = g.user_set.all()
+			extra_context.update({'pegawai_all' : p })
+
+			try:
+				try:
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					print s.survey_iujk.all()
+			except ObjectDoesNotExist:
+				s = ''
+
+			extra_context.update({'survey': s })
+			# END UNTUK SURVEY
+
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})

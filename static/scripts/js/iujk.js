@@ -1,12 +1,35 @@
-function load_klasifikasi(id_pengajuan){
+function load_pegawai(elemen) {
+  // body...
+  alert(elemen.value)
+  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+  elem = $("#id_pegawai")
+  $( "#anggotatim" ).mLoading();
+  // alert(elemen.value)
+  $.ajax({ // create an AJAX call...
+      data: { csrfmiddlewaretoken: csrf_token, unit_kerja: elemen.value }, // get the form data
+      type: 'POST', // GET or POST
+      url: __base_url__+'/admin/izin/detiliujk/option-pegawai/', // the file to call
+      success: function(response) { // on success..
+          console.log(response)
+          elem.html(response);
+          elem.trigger("chosen:updated");
+          $( "#anggotatim" ).mLoading('hide');
+      },
+      error: function(data) {                
+          toast_server_error()
+      }
+  });
+}
+
+function load_klasifikasi(){
   csrf_token = $("input[name='csrfmiddlewaretoken']").val();
   elem = $("#klasifikasi")
   $.ajax({ // create an AJAX call...
-      data: { csrfmiddlewaretoken: csrf_token, pengajuan: id_pengajuan }, // get the form data
+      data: { csrfmiddlewaretoken: csrf_token }, // get the form data
       type: 'POST', // GET or POST
       url: __base_url__+'/admin/izin/detiliujk/option-klasifikasi/',
       success: function(response) { // on success..
-          console.log(response)
+          // console.log(response)
           elem.html(response);
       },
       error: function(data) {                
@@ -23,7 +46,7 @@ function load_subklasifikasi(id_klasifikasi){
       type: 'POST', // GET or POST
       url: __base_url__+'/admin/izin/detiliujk/option-subklasifikasi/',
       success: function(response) { // on success..
-          console.log(response)
+          // console.log(response)
           elem.html(response);
       },
       error: function(data) {                

@@ -46,6 +46,42 @@ $( "#id_provinsi-3" ).change(function(){
     make_disabled($( "#id_desa-3" ), true)
 })
 
+// 44444444
+make_disabled($( "#id_kabupaten-4" ), true)
+make_disabled($( "#id_kecamatan-4" ), true)
+make_disabled($( "#id_desa-4" ), true)
+
+$( "#id_provinsi-4" ).change(function(){
+    $this = $(this)
+
+    id_provinsi = $(this).val()
+    if(id_provinsi.length > 0){
+        load_kabupaten_(id_provinsi, '#id_kabupaten-4')
+    }
+    make_disabled($( "#id_kabupaten-4" ), true)
+    make_disabled($( "#id_kecamatan-4" ), true)
+    make_disabled($( "#id_desa-4" ), true)
+
+})
+
+// 55555
+
+make_disabled($( "#id_kabupaten-5" ), true)
+make_disabled($( "#id_kecamatan-5" ), true)
+make_disabled($( "#id_desa-5" ), true)
+
+$( "#id_provinsi-5" ).change(function(){
+    $this = $(this)
+
+    id_provinsi = $(this).val()
+    if(id_provinsi.length > 0){
+        load_kabupaten_(id_provinsi, '#id_kabupaten-5')
+    }
+    make_disabled($( "#id_kabupaten-5" ), true)
+    make_disabled($( "#id_kecamatan-5" ), true)
+    make_disabled($( "#id_desa-5" ), true)
+})
+
 function load_provinsi_(id_negara, elem_){
     id_negara = parseInt(id_negara)
     var elem_ = elem_

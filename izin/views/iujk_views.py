@@ -388,7 +388,7 @@ def penanggung_jawab_teknik_save_bu(request):
 
 									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
 									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
-									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
+									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas Ijazah "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
 									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas SKA/SKT "+da_.nama, berkas=request.FILES.get('ska_skt'))
 									da_.berkas_tambahan.create(nama_berkas="Penanggung Jawab Teknik Badan Usaha, Berkas Tidak Merangkap/Bekerja Pada BU Lain "+da_.nama, berkas=request.FILES.get('berkas_merangkap'))
 									
@@ -407,23 +407,23 @@ def penanggung_jawab_teknik_save_bu(request):
 									data = json.dumps(data)
 									response = HttpResponse(data)
 								else:
-									data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan Tidak Merangkap format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+									data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan Tidak Merangkap format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 									data = json.dumps(data)
 									response = HttpResponse(data)
 							else:
-								data = {'Terjadi Kesalahan': [{'message': 'Berkas SKA/SKT format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+								data = {'Terjadi Kesalahan': [{'message': 'Berkas SKA/SKT format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 								data = json.dumps(data)
 								response = HttpResponse(data)
 						else:
-							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah SMA format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 					else:
-						data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 						data = json.dumps(data)
 						response = HttpResponse(data)
 				else:
-					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
 					
@@ -459,7 +459,7 @@ def penanggung_jawab_non_teknik_save_bu(request):
 
 							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas FOTO 4X6 "+da_.nama, berkas=request.FILES.get('berkas_foto'))
 							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas KTP "+da_.nama, berkas=request.FILES.get('berkas_ktp'))
-							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas Ijazah SMA "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
+							da_.berkas_tambahan.create(nama_berkas="Tenaga Non Teknik, Berkas Ijazah "+da_.nama, berkas=request.FILES.get('ijazah_sma'))
 
 							berkas_ = ", ".join(str(row.berkas.url) for row in da_.berkas_tambahan.all().order_by('id'))
 
@@ -475,7 +475,7 @@ def penanggung_jawab_non_teknik_save_bu(request):
 							response = HttpResponse(data)
 								
 						else:
-							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah SMA format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 					else:

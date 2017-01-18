@@ -236,7 +236,7 @@
 
 						{% if request.user|has_group:'Operator' or request.user.is_superuser %}
 							{% if pengajuan.status == 6 %}
-							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_tdp_pt' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+							<a onclick="change_edit_pengajuan()" href="#" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 							{% endif %}
 						{% endif %}
 					</div>
@@ -1108,6 +1108,9 @@
         function change_edit_pengajuan(){
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
+        	setTimeout(function(){
+        		window.location.replace('{% url 'admin:izin_proses_tdp_pt' %}');
+        	}, 1000);
         }
     </script>
 {% endblock %}

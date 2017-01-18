@@ -177,10 +177,10 @@
             <div class="form-group">
                 <label for="inputEmail3" class="col-sm-2 control-label" style="color: white">Pilih Koordinator</label>
                 <div class="col-sm-10">
-                    <select class="form-control chosen-2" style="color: white" name="pegawai" required="" data-parsley-trigger="change">
+                    <select class="form-control chosen-2" name="pegawai" required="" data-parsley-trigger="change">
 				    	<option value="">Nama Koordinator</option>
 				    	{% for s in pegawai_list %}
-				    		<option value="{{ s.id }}">{{ s }} [{{s.unit_kerja}}]</option>
+				    		<option value="{{ s.id }}">{{ s }}</option>
 				    	{% endfor %}
 			      	</select>
                 </div>
@@ -198,12 +198,7 @@
             </div>
         </form>
         <hr>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <!-- <button type="submit" name="simpan" value="tambahkan_survey" class="btn btn-rounded btn-success btn-sm">Tambahkan Survey</button> -->
-                <button name="simpan" value="tambahkan_survey" onclick="lakukan_survey();return false;" class="btn btn-rounded btn-success btn-sm">Tambahkan Survey</button>
-            </div>
-        </div>
+        <button name="simpan" value="tambahkan_survey" onclick="lakukan_survey();return false;" class="btn btn-rounded btn-success btn-sm col-sm-offset-2">Tambahkan Survey</button>
         
     </div>
     
@@ -236,3 +231,4 @@
 
 </section>
 {% endif %}
+
