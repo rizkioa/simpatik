@@ -148,7 +148,15 @@
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_konfirmasi_izin_lokasi(id_pengajuan)
+                // load_konfirmasi_izin_lokasi(id_pengajuan)
+                perusahaan_id = parseInt($.cookie('id_perusahaan'))
+                load_data_legalitas_perusahaan(perusahaan_id)
+                load_konfirmasi_informasi_tanah(id_pengajuan)
+                load_data_penggunaan_tanah(id_pengajuan)
+                load_konfirmasi_rencana_pembangunan(id_pengajuan)
+                load_konfirmasi_pembiayaan_dan_pemodalan(id_pengajuan)
+                load_konfirmasi_kebutuhan_lainnya(id_pengajuan)
+                load_data_perumahan_yang_dimiliki(id_pengajuan)
                 if (id_pengajuan > 0){
                   $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
@@ -167,11 +175,24 @@
                   })
                 }
               }else{
-              if($current == 9){
+              if ($current == 4) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_informasi_tanah(id_pengajuan)
+              }else if ($current == 5) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_rencana_pembangunan(id_pengajuan)
+              }else if ($current == 6) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_pembiayaan_dan_pemodalan(id_pengajuan)
+              }else if ($current == 7) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_kebutuhan_lainnya(id_pengajuan)
+              }
+              else if($current == 9){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                // load_berkas_izin_lokasi(id_pengajuan)
-              }              
+                load_berkas_ippt_usaha(id_pengajuan)
+              }             
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
               }
@@ -749,7 +770,7 @@ $(document).ready(function(){
                     }
                 }); 
               $("#id_jumlah_perincian_penggunaan_tanah").val(sum.toFixed(2));
-              // $("#id_jumlah_tanah_sudah_dikuasai").val(sum.toFixed(2));
+              $("#id_perincian_penggunaan_tanah").val(sum.toFixed(2));
             }
 
   $(document).ready(function(){
@@ -772,7 +793,7 @@ $(document).ready(function(){
                     }
                 }); 
               $("#id_presentase_jumlah_perincian_penggunaan_tanah").val(sum.toFixed(2));
-              // $("#id_jumlah_tanah_sudah_dikuasai").val(sum.toFixed(2));
+              $("#id_presentase_perincian_penggunaan_tanah").val(sum.toFixed(2));
             }
  
 function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return e(d)}
@@ -1026,6 +1047,154 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                 }); 
               $("#id_jumlah_tenaga_kerja").val(sum);
             }
+
+function load_data_legalitas_perusahaan(perusahaan_id){
+  if (perusahaan_id !== ""){
+    $('#table_legalitas_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ajax-load-data-legalitas-perusahaan-tdp/'+perusahaan_id,
+      success: function (data) {
+        a = data.length
+        tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        $('#table_legalitas_konfirmasi > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#table_legalitas_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#table_legalitas_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#table_legalitas_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            jenis_legalitas = b[i].jenis_legalitas
+            nama_notaris = b[i].nama_notaris
+            alamat = b[i].alamat
+            telephone = b[i].telephone
+            nomor_akta = b[i].nomor_akta
+            tanggal_akta = b[i].tanggal_akta
+            nomor_pengesahan = b[i].nomor_pengesahan
+            tanggal_pengesahan = b[i].tanggal_pengesahan
+            no = a
+            if (a > 1){
+              no = a-i
+            }
+            row = '<tr>'
+            row += '<td>'+no+'</td>'
+            row += '<td>'+jenis_legalitas+'</td>'
+            row += '<td>'+nama_notaris+'</td>'
+            row += '<td>'+alamat+'</td>'
+            row += '<td>'+telephone+'</td>'
+            row += '<td>'+nomor_akta+'</td>'
+            row += '<td>'+tanggal_akta+'</td>'
+            row += '<td>'+nomor_pengesahan+'</td>'
+            row += '<td>'+tanggal_pengesahan+'</td>'
+            row += '</tr>'
+            $('#table_legalitas_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#table_legalitas_konfirmasi').mLoading('hide');
+  }
+}
+
+function load_data_penggunaan_tanah(id_pengajuan){
+  if (id_pengajuan !== ""){
+    $('#id_penggunaan_tanah_ippt').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ippt-usaha/pengunaan-tanah-sekarang/load/'+perusahaan_id,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_penggunaan_tanah_ippt > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_penggunaan_tanah_ippt > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_penggunaan_tanah_ippt > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            nama_penggunaan = b[i].nama_penggunaan
+            ukuran_penggunaan = b[i].ukuran_penggunaan
+            no = a
+            if (a > 1){
+              no = a-i
+            }
+            row = '<tr>'
+            row += '<td>'+no+'</td>'
+            row += '<td>'+nama_penggunaan+'</td>'
+            row += '<td>'+ukuran_penggunaan+'</td>'
+            row += '</tr>'
+            $('#id_penggunaan_tanah_ippt > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_penggunaan_tanah_ippt').mLoading('hide');
+  }
+}
+
+function load_data_perumahan_yang_dimiliki(id_pengajuan){
+  if (id_pengajuan !== ""){
+    $('#id_table_perumahan_yang_dimiliki').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ippt-usaha/perumahan-yang-dimiliki-sekarang/load/'+perusahaan_id,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_table_perumahan_yang_dimiliki > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_table_perumahan_yang_dimiliki > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_table_perumahan_yang_dimiliki > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            nama_perumahan = b[i].nama_perumahan
+            luas_tanah = b[i].luas_tanah
+            status_tanah = b[i].status_tanah
+            desa = b[i].desa
+            kecamatan = b[i].kecamatan
+            // no = a
+            // if (a > 1){
+            //   no = a-i
+            // }
+            row = '<tr>'
+            // row += '<td>'+no+'</td>'
+            row += '<td>'+nama_perumahan+'</td>'
+            row += '<td>'+luas_tanah+'</td>'
+            row += '<td>'+status_tanah+'</td>'
+            row += '<td>'+desa+'</td>'
+            row += '<td>'+kecamatan+'</td>'
+            row += '</tr>'
+            $('#id_table_perumahan_yang_dimiliki > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_table_perumahan_yang_dimiliki').mLoading('hide');
+  }
+}
+
 
   // $(function() {
   //   $('#id_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});

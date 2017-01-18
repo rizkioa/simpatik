@@ -1,4 +1,4 @@
-{% load i18n admin_static %}
+  {% load i18n admin_static %}
 
 <form method="POST" name="step9" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
   {% csrf_token %}
@@ -6,7 +6,7 @@
   <hr class="style14">
 </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-ktp_paspor" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-ktp_paspor" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="1">
     <div class="form-group">
@@ -18,7 +18,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-ktp_paspor" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-ktp_paspor" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-ktp_paspor" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -26,7 +26,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-kartu_keluarga" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-kartu_keluarga" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="2">
     <div class="form-group">
@@ -37,7 +37,7 @@
             <span id="berkas_1"></span>                    
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-kartu_keluarga" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-kartu_keluarga" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-kartu_keluarga" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -45,7 +45,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-npwp_pribadi" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-npwp_pribadi" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="3">
     <div class="form-group">
@@ -56,7 +56,7 @@
             <span id="berkas_1"></span>                    
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-npwp_pribadi" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-npwp_pribadi" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-npwp_pribadi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -64,7 +64,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-npwp_perusahaan" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-npwp_perusahaan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="4">
       <div class="form-group">
@@ -76,7 +76,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-npwp_perusahaan" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-npwp_perusahaan" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -84,7 +84,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-bukti_kepemilikan_tanah" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-bukti_kepemilikan_tanah" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="5">
     <div class="form-group">
@@ -96,7 +96,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-bukti_kepemilikan_tanah" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-bukti_kepemilikan_tanah" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-bukti_kepemilikan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -104,7 +104,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sketsa_tanah_yang_dimohon" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sketsa_tanah_yang_dimohon" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="6">
     <div class="form-group">
@@ -116,7 +116,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-sketsa_tanah_yang_dimohon" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-sketsa_tanah_yang_dimohon" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-sketsa_tanah_yang_dimohon" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -124,7 +124,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-gambar_rencana_penggunaan_tanah" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-gambar_rencana_penggunaan_tanah" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="7">
     <div class="form-group">
@@ -136,7 +136,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-gambar_rencana_penggunaan_tanah" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-gambar_rencana_penggunaan_tanah" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-gambar_rencana_penggunaan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -144,7 +144,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sertifikat_rumah" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sertifikat_rumah" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="8">
     <div class="form-group">
@@ -156,7 +156,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-sertifikat_rumah" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-sertifikat_rumah" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-sertifikat_rumah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -164,7 +164,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_jual_beli" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_jual_beli" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="9">
     <div class="form-group">
@@ -176,7 +176,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-akta_jual_beli" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-akta_jual_beli" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-akta_jual_beli" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -184,7 +184,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-site_plan" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-site_plan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="10">
     <div class="form-group">
@@ -196,7 +196,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-site_plan" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-site_plan" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-site_plan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -204,7 +204,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sppt_tahun_terakhir" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sppt_tahun_terakhir" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="11">
     <div class="form-group">
@@ -216,7 +216,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-sppt_tahun_terakhir" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-sppt_tahun_terakhir" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-sppt_tahun_terakhir" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -224,7 +224,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rekomendasi_bupati" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rekomendasi_bupati" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="12">
     <div class="form-group">
@@ -236,7 +236,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-rekomendasi_bupati" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-rekomendasi_bupati" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-rekomendasi_bupati" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -244,7 +244,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rencana_jadwal_perencanaan" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rencana_jadwal_perencanaan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="13">
     <div class="form-group">
@@ -256,7 +256,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-rencana_jadwal_perencanaan" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-rencana_jadwal_perencanaan" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-rencana_jadwal_perencanaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -264,7 +264,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-block_plan" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-block_plan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="14">
     <div class="form-group">
@@ -276,7 +276,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-block_plan" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-block_plan" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-block_plan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>
@@ -284,7 +284,7 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-analisis_air" action="{% url 'izinlokasi_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-analisis_air" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
     <input type="hidden" name="aksi" value="15">
     <div class="form-group">
@@ -296,7 +296,7 @@
                                      
           </div>
           <div class="col-sm-4">
-            <button href="#" id="btn-analisis_air" onclick="form_upload_dokumen_izin_lokasi($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <button href="#" id="btn-analisis_air" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
             <a id="percent-analisis_air" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
           </div>
         </span>

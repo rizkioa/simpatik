@@ -789,6 +789,17 @@ class PenggunaanTanahIPPTUsaha(MetaAtribut):
 
 	def __unicode__(self):
 		return u'%s' % (str(self.nama_penggunaan))
+	
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"nama_penggunaan": self.nama_penggunaan,
+			"ukuran_penggunaan": self.ukuran_penggunaan,
+
+		}
+
+	def as_json(self):
+		return dict(nama_penggunaan=self.nama_penggunaan, ukuran_penggunaan=self.ukuran_penggunaan)
 
 	class Meta:
 		ordering = ['-status']
@@ -804,6 +815,23 @@ class PerumahanYangDimilikiIPPTUsaha(MetaAtribut):
 
 	def __unicode__(self):
 		return u'%s' % (str(self.nama_perumahan))
+
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"nama_perumahan": self.nama_perumahan,
+			"luas_tanah": str(self.luas_tanah),
+			"status_tanah": self.status_tanah,
+			"desa": str(self.desa),
+			"kecamatan": str(self.desa.kecamatan),
+
+		}
+
+	def as_json(self):
+		desa = str(self.desa)
+		kecamatan = str(self.desa.kecamatan)
+		luas_tanah = str(self.luas_tanah)
+		return dict(nama_perumahan=self.nama_perumahan, luas_tanah=luas_tanah,status_tanah= self.status_tanah,desa= desa,kecamatan= kecamatan)
 
 	class Meta:
 		ordering = ['-status']

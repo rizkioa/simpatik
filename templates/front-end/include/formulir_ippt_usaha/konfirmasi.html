@@ -101,27 +101,23 @@
 
   <br>
   <h4><u>#3. LEGALITAS PERUSAHAAN</u></h4>
-  <table width="100%" border="3">
-    <tr>
-      <td>Jenis Akta dan Pengesahan</td>
-      <td>Nama Notaris</td>
-      <td>Alamat Notaris</td>
-      <td>telp. Notaris</td>
-      <td>No. Akta</td>
-      <td>Tgl. Akta</td>
-      <td>No. Pengesahan</td>
-      <td>Tgl. Pengesahan</td>
-    </tr>
-    <tr>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
+  <table width="100%" border="3" id="table_legalitas_konfirmasi">
+    <thead>
+      <tr>
+        <td>No.</td>
+        <td>Jenis Akta dan Pengesahan</td>
+        <td>Nama Notaris</td>
+        <td>Alamat Notaris</td>
+        <td>Telp. Notaris</td>
+        <td>No. Akta</td>
+        <td>Tgl. Akta</td>
+        <td>No. Pengesahan</td>
+        <td>Tgl. Pengesahan</td>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
   </table>
   <br>
 
@@ -132,12 +128,12 @@
     <tr>
       <td width="25%">No</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_no_surat_kuasa_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Tgl</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanggal_surat_kuasa_konfirmasi"></td>
     </tr>
     <tr>
       <td width="25%">Lokasi</td>
@@ -145,27 +141,27 @@
     <tr>
       <td width="25%">Alamat</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_alamat_konfirmasi"></td>
     </tr>
     <tr>
       <td width="25%">Kabupaten</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="kabupaten_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Kecamatan</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="kecamatan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Kel / Desa</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="desa_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Luas Tanah</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_luas_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td width="25%">Sertifikat / Petok D</td>
@@ -173,17 +169,17 @@
     <tr>
       <td width="25%">No</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_no_sertifikat_petak_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Luas</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_luas_sertifikat_petak_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td width="25%">Atas Nama</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_atas_nama_sertifikat_petak_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Persil</td>
@@ -191,40 +187,40 @@
     <tr>
       <td width="25%">No.</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_no_persil_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Klas</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_klas_persil_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Atas Nama</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_atas_nama_persil_konfirmasi"></span></td>
     </tr>
-    <tr>
-      <td width="25%">Pengunaan Sekarang</td>
-    </tr>
-    <tr>
-      <td style="padding-left:3%" width="25%">Sawah</td>
-      <td width="5%">:</td>
-      <td width="70%">--</td>
-    </tr>
-    <tr>
-      <td style="padding-left:3%" width="25%">Tegal</td>
-      <td width="5%">:</td>
-      <td width="70%">--</td>
-    </tr>
-    <tr>
-      <td style="padding-left:3%" width="25%">Tanah Kosong</td>
-      <td width="5%">:</td>
-      <td width="70%">--</td>
-    </tr>
+    </table>
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Penggunaan Sekarang</label> 
+        <table id="id_penggunaan_tanah_ippt" border="3" style="width: 762px;">
+          <thead>
+            <tr>
+              <td align="center">No.</td>
+              <td align="center">Penggunaan Tanah</td>
+              <td align="center">Ukuran Penggunaan</td>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+   <table width="100%" border="0">
     <tr>
       <td width="25%">Rencana Penggunaan</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_rencana_penggunaan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Batas - batas</td>
@@ -232,27 +228,27 @@
     <tr>
       <td style="padding-left:3%" width="25%">Utara</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_batas_utara_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:3%" width="25%">Timur</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_batas_timur_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:3%" width="25%">Selatan</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_batas_selatan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:3%" width="25%">Barat</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_batas_barat_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">Status Tanah Sekarang</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_status_tanah_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">a. Tanah pihak lain yang belum dikuasai oleh pemohon</td>
@@ -263,47 +259,98 @@
     <tr>
       <td style="padding-left:5%" width="25%">Tanah Negara</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_negara_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:5%" width="25%">Tanah Kas Desa</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_kas_desa_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:5%" width="25%">Tanah Hak Pakai</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_hak_pakai_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:5%" width="25%">Tanah Hak Guna Bangunan</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_hak_guna_bangunan_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:5%" width="25%">Tanah Hak Milik Sertifikat</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_hak_milik_sertifikat_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:5%" width="25%">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_adat_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:7%" width="25%">Jumlah</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_jumlah_tanah_belum_dikuasai_konfirmasi"></span> M&sup2;</td>
     </tr>
     <tr>
       <td style="padding-left:3%" width="25%">2. Pemegang Hak Semula</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pemegang_hak_semula_dari_tanah_belum_dikuasai_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:3%" width="25%">3. Dikuasai Melalui</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_tanah_belum_dikuasai_melalui_konfirmasi"></span></td>
+    </tr>
+    <tr>
+      <td width="25%">b. Tanah pihak lain dikuasai oleh pemohon</td>
+    </tr>
+    <tr>
+      <td style="padding-left:3%" width="25%">1. Status Tanah</td>
+    </tr>
+    <tr>
+      <td style="padding-left:5%" width="25%">Tanah Negara</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_negara_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:5%" width="25%">Tanah Kas Desa</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_kas_desa_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:5%" width="25%">Tanah Hak Pakai</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_hak_pakai_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:5%" width="25%">Tanah Hak Guna Bangunan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_hak_guna_bangunan_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:5%" width="25%">Tanah Hak Milik Sertifikat</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_hak_milik_sertifikat_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:5%" width="25%">Tanah Yasan / Hak Milik Adat / Bekas Gogolan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_adat_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:7%" width="25%">Jumlah</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_tanah_sudah_dikuasai_konfirmasi"></span> M&sup2;</td>
+    </tr>
+    <tr>
+      <td style="padding-left:3%" width="25%">2. Pemegang Hak Semula</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_pemegang_hak_semula_dari_tanah_sudah_dikuasai_konfirmasi"></span></td>
+    </tr>
+    <tr>
+      <td style="padding-left:3%" width="25%">3. Dikuasai Melalui</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tanah_sudah_dikuasai_melalui_konfirmasi"></span></td>
     </tr>
   </table>
 
@@ -313,44 +360,44 @@
     <tr>
       <td width="25%">1. Perincian penggunaan tanah</td></tr>
     <tr>
-      <td style="padding-left:2%" width="25%">a. Tipe ... / Gudang1 ... Unit</td>
+      <td style="padding-left:2%" width="25%">a. Tipe <span id="id_tipe1_konfirmasi"></span> / Gudang1 <span id="id_gudang1_konfirmasi"></span> Unit</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_tipe1_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_tipe1_konfirmasi"></span> %)</td>
     </tr>
     <tr>
-      <td style="padding-left:2%" width="25%">b. Tipe ... / Gudang2 ... Unit</td>
+      <td style="padding-left:2%" width="25%">b. Tipe <span id="id_tipe2_konfirmasi"></span> / Gudang2 <span id="id_gudang2_konfirmasi"></span> Unit</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_tipe2_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_tipe2_konfirmasi"></span> %)</td>
     </tr>
     <tr>
-      <td style="padding-left:2%" width="25%">c. Tipe ... / Gudang3 ... Unit</td>
+      <td style="padding-left:2%" width="25%">c. Tipe <span id="id_tipe3_konfirmasi"></span> / Gudang3 <span id="id_gudang3_konfirmasi"></span> Unit</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_tipe3_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_tipe3_konfirmasi"></span> %)</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">d. Lapangan Halaman</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_lapangan_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_lapangan_konfirmasi"></span> %)</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">e. Kantor</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_kantor_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_kantor_konfirmasi"></span> %)</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">f. Saluran</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_saluran_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_saluran_konfirmasi"></span> %)</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">g. Taman</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_luas_taman_konfirmasi"></span> M&sup2; (<span id="id_presentase_luas_taman_konfirmasi"></span> %)</td>
     </tr>
     <tr>
       <td style="padding-left:5%" width="25%">Jumlah</td>
       <td width="5%">:</td>
-      <td width="70%">-- (--)</td>
+      <td width="70%"><span id="id_jumlah_perincian_penggunaan_tanah_konfirmasi"></span> M&sup2; (<span id="id_presentase_jumlah_perincian_penggunaan_tanah_konfirmasi"></span> %)</td>
     </tr>
     <tr>
       <td width="25%">2. Tahap - tahap pelaksanaan</td></tr>
@@ -360,17 +407,17 @@
     <tr>
       <td style="padding-left:4%" width="25%">Tahap Pertama</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pematangan_tanah_tahap1_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Tahap Kedua</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pematangan_tanah_tahap2_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Tahap Ketiga</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pematangan_tanah_tahap3_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Pembangunan Gedung</td>
@@ -378,22 +425,22 @@
     <tr>
       <td style="padding-left:4%" width="25%">Tahap Pertama</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pembangunan_gedung_tahap1_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Tahap Kedua</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pembangunan_gedung_tahap2_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Tahap Ketiga</td>
       <td width="5%">:</td>
-      <td width="70%">--</td>
+      <td width="70%"><span id="id_pembangunan_gedung_tahap3_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">c. Jangka Waktu Penyelesaian Seluruhnya</td>
       <td width="5%">:</td>
-      <td width="70%">--/td>
+      <td width="70%"><span id="id_jangka_waktu_selesai_konfirmasi"></span> Bulan</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">d. Rencana Jadwal Pelakasanaan</td>
@@ -417,37 +464,37 @@
     <tr>
       <td style="padding-left:4%" width="25%">Tanah</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_tetap_tanah_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Bangunan / Gedung</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_tetap_bangunan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Mesin - mesin dan peralatan</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_tetap_mesin_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Alat- alat angkutan</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_tetap_angkutan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Alat - alat kantor dan inventasi</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_tetap_inventaris_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Lain - lain</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_tetap_lainnya_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:6%" width="25%">Jumlah Modal Tetap (a)</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_jumlah_modal_tetap_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Modal Kerja</td>
@@ -455,32 +502,32 @@
     <tr>
       <td style="padding-left:4%" width="25%">Bahan Baku</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_kerja_bahan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Upah / Gaji</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_kerja_gaji_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Alat - alat angkutan</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_kerja_alat_angkut_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Lain - lain</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_modal_kerja_lainnya_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:6%" width="25%">Jumlah Modal Kerja (b)</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--</td>
+      <td width="70%">Rp <span id="id_jumlah_modal_kerja_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">c. Jumlah Rencana Biaya (a+b)</td>
       <td width="5%">:</td>
-      <td width="70%">Rp--/td>
+      <td width="70%">Rp <span id="id_jumlah_rencana_biaya_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">2. Sumber Pembiayaan / Investasi</td>
@@ -490,72 +537,77 @@
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Modal Dasar</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_dasar_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Modal Ditetapkan</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_ditetapkan_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Modal Disetor</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_disetor_konfirmasi"></span></td>
     </tr>
     <tr>
-      <td style="padding-left:2%" width="25%">a. Modal Pinjam</td>
+      <td style="padding-left:2%" width="25%">b. Modal Pinjam</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">1. Pinjaman Dalam Negeri</td>
     </tr>
     <tr>
       <td style="padding-left:6%" width="25%">Bank Pemerintah</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_bank_pemerintah_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:6%" width="25%">Bank Swasta</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_bank_swasta_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:6%" width="25%">Lembaga Keuangan Non Bank</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_lembaga_non_bank_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:6%" width="25%">Pihak Ketiga</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_pihak_ketiga_konfirmasi"></span></td>
+    </tr>
+    <tr>
+      <td style="padding-left:4%" width="25%">Jumlah Modal Pinjaman</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_jumlah_pinjaman_dalam_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">2. Pinjaman Luar Negeri</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_modal_pinjaman_luar_negeri_konfirmasi"></span></td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">c. Jumlah Pembiayaan (Modal Sendiri + Modal Pinjaman</td>
-      <td width="5%"></td>
-      <td width="70%">Rp--</td>
+      <td width="5%">:</td>
+      <td width="70%">Rp <span id="id_jumlah_investasi_konfirmasi"></span></td>
     </tr>
     <tr>
       <td width="25%">3. Struktur modal / Pemilikan Saham Perusahaan</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">a. Indonesia</td>
-      <td width="5%"></td>
-      <td width="70%">--</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_saham_indonesia_konfirmasi"></span> %</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Domestik Asing</td>
-      <td width="5%"></td>
-      <td width="70%">--</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_saham_asing_konfirmasi"></span> %</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Jumlah</td>
-      <td width="5%"></td>
-      <td width="70%">--</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_konfirmasi"></span> %</td>
     </tr>
   </table>
 
@@ -564,23 +616,23 @@
   <table width="100%" border="0">
     <tr>
       <td width="25%">1. Tenaga Ahli</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tenaga_ahli_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td width="25%">2. Pegawai Tetap</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_pegawai_tetap_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td width="25%">3. Pegawai Harian Tetap</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_pegawai_harian_tetap_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td width="25%">4. Pegawai Harian Tidak Tetap</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_pegawai_harian_tidak_tetap_konfirmasi"></span> Orang</td>
     </tr>
   </table>
 
@@ -593,23 +645,23 @@
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">a. Kebutuhan</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_kebutuhan_listrik_konfirmasi"></span> KVA</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Jumlah yang dibutuhkan sehari - hari</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_kebutuhan_listrik_sehari_hari_konfirmasi"></span> KVA</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">c. Jumlah Daya yang dimiliki / Genset</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_daya_genset_konfirmasi"></span> KVA</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">c. Jumlah Daya yang dibutuhkan dari PLN</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_listrik_kebutuhan_dari_pln_konfirmasi"></span> KVA</td>
     </tr>
     <tr>
       <td width="25%">2. Air</td>
@@ -621,56 +673,51 @@
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Untuk Keperluan Rumah Tanggan</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_air_untuk_rumah_tangga_konfirmasi_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Untuk proses produksi</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_air_untuk_produksi_konfirmasi_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Untuk lain - lain</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_air_lainnya_konfirmasi_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Jumlah kebutuhan air</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_kebutuhan_air_konfirmasi_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Kebutuhan Minimal tiap hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">PDAM</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_air_dari_pdam_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Sumur / Sumber air</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
-    </tr>
-    <tr>
-      <td style="padding-left:4%" width="25%">Untuk lain - lain</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_air_dari_sumber_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Sungai</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_air_dari_sungai_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Jumlah Kebutuhan Air</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_minimal_kebutuhan_air_konfirmasi"></span> Liter /hari</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">c. Kualitas air yang dibutuhkan ( analisa air )</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%">Terlampir</td>
     </tr>
   </table>
 
@@ -681,36 +728,37 @@
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">a. Indonesia</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tenaga_kerja_wni_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Asing</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tenaga_kerja_wna_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td width="25%">2. Susunan Tenaga Kerja</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">a. Pegawai Tetap</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tenaga_kerja_tetap_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td style="padding-left:2%" width="25%">b. Pegawai Tidak Tetap</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_tenaga_kerja_tidak_tetap_konfirmasi"></span> Orang</td>
     </tr>
     <tr>
       <td style="padding-left:4%" width="25%">Jumlah</td>
-      <td width="5%"></td>
-      <td width="70%"></td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="id_jumlah_tenaga_kerja_konfirmasi"></span> Orang</td>
     </tr>
   </table>
 
   <h4><u>#8. PERUMAHAN DIMILIKI</u></h4>
-  <table width="100%" border="1">
+  <table width="100%" border="1" id="id_table_perumahan_yang_dimiliki">
+  <thead>
     <tr>
       <td>Nama Perusahaan</td>
       <td>Luas Tanah (M2)</td>
@@ -718,16 +766,12 @@
       <td>Kelurahan</td>
       <td>Kecamatan</td>
     </tr>
-    <tr>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-    </tr>
+   </thead>
+    <tbody>
+    </tbody>
   </table>
 
-  <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN</u></h4>
+  <h4><u>#9. UPLOAD DOKUMEN PERSYARATAN</u></h4>
   <table class="table table-bordered">
       <thead>
         <tr >
@@ -736,6 +780,46 @@
         </tr>
       </thead>
       <tbody>
+        <tr align="center">
+          <td>
+            KTP / Identitas
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-ktp_paspor" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Kartu Keluarga
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-kartu_keluarga" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            NPWP Pribadi
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-npwp_pribadi" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            NPWP Perusahaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-npwp_perusahaan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
         <tr align="center">
           <td>
             Bukti Kepemilikan Tanah
@@ -748,17 +832,17 @@
         </tr>
         <tr align="center">
           <td>
-            Sketsa Lokasi Tanah Yang Dimohonkan
+            Sketsa lokasi Tanah
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input id="checkbox-sketsa_lokasi_tanah" type="checkbox" disabled><i></i>
+              <input id="checkbox-sketsa_tanah_yang_dimohon" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Gambar/Denah Rencana Penggunaan Tanah
+            Gambar / Denah Rencana Penggunaan Tanah 
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -772,13 +856,13 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input id="checkbox-sertifikat_tanah" type="checkbox" disabled><i></i>
+              <input id="checkbox-sertifikat_rumah" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Akta Jual Beli
+            Akta Jual Beli 
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -788,11 +872,61 @@
         </tr>
         <tr align="center">
           <td>
-            Rekomendasi Bupati/Izinizin lain yang diperoleh
+            Site Plan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-site_plan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            SPPT Tahunan Terakhir
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-sppt_tahun_terakhir" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rekomendasi Bupati / Izin-izin lain yang diperoleh
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
               <input id="checkbox-rekomendasi_bupati" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rencana Jadwal Pelaksanaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-rencana_jadwal_perencanaan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Block Plan / Rencana Tapak
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-block_plan" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Analisis Air
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-analisis_air" type="checkbox" disabled><i></i>
             </label>
           </td>
         </tr>
