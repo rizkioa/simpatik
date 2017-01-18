@@ -3,6 +3,12 @@
 {% block extrastyle %}
 {{ block.super }}
 <link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/font-responsive.css' %}">
+<style type="text/css">
+  .tile{
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+</style>
 {% endblock %}
 
 {% block section %}
