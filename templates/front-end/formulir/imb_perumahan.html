@@ -36,7 +36,7 @@
 {% block pageheader %}
 <div class="pageheader">
     <h2>Surat Mendirikan Bangunan
-    <span>Berikut adalah info pendaftaran perizinan Reklame dan IMB-Reklame Kabupaten Kediri.</span>
+    <span>Berikut adalah info pendaftaran perizinan Perumahan dan IMB-Perumahan Kabupaten Kediri.</span>
   </h2>
   <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -50,7 +50,7 @@
         <a href="#"> IMB</a>
       </li>
       <li>
-        <a href="#">Formulir IMB-Reklame</a>
+        <a href="#">Formulir IMB-Perumahan</a>
       </li>
     </ul>
   </div>
@@ -162,7 +162,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return false;
+              return true;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -171,7 +171,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });

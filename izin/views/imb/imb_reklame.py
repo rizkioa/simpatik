@@ -26,7 +26,6 @@ from izin.models import PengajuanIzin, DetilIMBPapanReklame,Pemohon
 from izin.utils import KLASIFIKASI_JALAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,PengajuanIMBReklameForm,UploadBerkasKTPForm
-from accounts.models import NomorIdentitasPengguna
 
 def formulir_imb_reklame(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
