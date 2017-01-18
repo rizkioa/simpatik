@@ -42,6 +42,7 @@ def formulir_imb_umum(request):
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
+		extra_context.update({'has_permission': True })
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

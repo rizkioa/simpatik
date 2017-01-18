@@ -39,6 +39,7 @@ def formulir_imb_reklame(request):
 		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
+		extra_context.update({'has_permission': True })
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

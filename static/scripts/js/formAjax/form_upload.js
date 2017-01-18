@@ -793,7 +793,9 @@ function load_data_informasi_tanah(id_pengajuan){
           $('#id_no_surat_kuasa').val(respon.data.id_no_surat_kuasa)
           $('#id_tanggal_surat_kuasa').val(respon.data.id_tanggal_surat_kuasa)
           $('#id_alamat').val(respon.data.id_alamat)
-          load_desa_data_reklame(respon.data.id_kecamatan)
+          if (respon.data.id_kecamatan != "") {
+            load_desa_data_reklame(respon.data.id_kecamatan)
+          }
           setTimeout(function(){
             $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
             $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
@@ -979,7 +981,7 @@ function load_data_kebutuhan_lainnya(id_pengajuan){
           $('#id_tenaga_kerja_wna').val(respon.data.id_tenaga_kerja_wna)
           $('#id_tenaga_kerja_tetap').val(respon.data.id_tenaga_kerja_tetap)
           $('#id_tenaga_kerja_tidak_tetap').val(respon.data.id_tenaga_kerja_tidak_tetap)
-          var jumlah_tenaga_kerja = parseFloat(respon.data.id_tenaga_kerja_tetap) + parseFloat(respon.data.id_tenaga_kerja_tidak_tetap)
+          var jumlah_tenaga_kerja = parseFloat(respon.data.id_tenaga_kerja_wni) + parseFloat(respon.data.id_tenaga_kerja_wna) + parseFloat(respon.data.id_tenaga_kerja_tetap) + parseFloat(respon.data.id_tenaga_kerja_tidak_tetap)
           $('#id_jumlah_tenaga_kerja').val(jumlah_tenaga_kerja)
 
           }      

@@ -293,12 +293,12 @@ def delete_perumahan_yang_sudah_dimiliki(request,id_perumahan):
 def ipptusaha_upload_berkas_pendukung(request):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '' or request.COOKIES['id_pemohon'] and request.COOKIES['nomor_ktp'] != '':
-            form_ktp = UploadBerkasKTPForm(request.POST, request.FILES)
+            # form_ktp = UploadBerkasKTPForm(request.POST, request.FILES)
             form = UploadBerkasPendukungForm(request.POST, request.FILES)
             berkas_ = request.FILES.get('berkas')
             if request.method == "POST":
                 if berkas_:
-                    if form.is_valid() or form_ktp.is_valid():
+                    if form.is_valid():
                         ext = os.path.splitext(berkas_.name)[1]
                         valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
                         if not ext in valid_extensions:
@@ -306,7 +306,9 @@ def ipptusaha_upload_berkas_pendukung(request):
                         else:
                             try:
                                 p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
+                                print p
                                 ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
+                                print ktp_
                                 berkas = form.save(commit=False)
                                 if request.POST.get('aksi') == "1":
                                     berkas.nama_berkas = "Berkas Foto KTP/PASPOR"+ktp_.nomor
@@ -358,10 +360,10 @@ def ipptusaha_upload_berkas_pendukung(request):
                                     berkas.created_by_id = request.user.id
                                 else:
                                     berkas.created_by_id = request.COOKIES['id_pemohon']
-                                    berkas.save()
-                                    p.berkas_tambahan.add(berkas)
-                                    ktp_.berkas_id = berkas.id
-                                    ktp_.save()
+                                berkas.save()
+                                p.berkas_tambahan.add(berkas)
+                                ktp_.berkas_id = berkas.id
+                                ktp_.save()
                                 data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
                                 {'status_upload': 'ok'},
                                 ]}
@@ -536,6 +538,9 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             else:
                 id_tanggal_surat_kuasa = ""
             id_alamat = pengajuan_.alamat
+            kabupaten = ""
+            kecamatan = ""
+            desa = ""
             if pengajuan_.desa:
                 kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
                 kecamatan = str(pengajuan_.desa.kecamatan)
@@ -566,8 +571,14 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             id_tanah_hak_guna_bangunan_belum_dikuasai = str(pengajuan_.tanah_hak_guna_bangunan_belum_dikuasai)
             id_tanah_hak_milik_sertifikat_belum_dikuasai = str(pengajuan_.tanah_hak_milik_sertifikat_belum_dikuasai)
             id_tanah_adat_belum_dikuasai = str(pengajuan_.tanah_adat_belum_dikuasai)
-            id_pemegang_hak_semula_dari_tanah_belum_dikuasai = str(pengajuan_.pemegang_hak_semula_dari_tanah_belum_dikuasai)
-            id_tanah_belum_dikuasai_melalui = str(pengajuan_.tanah_belum_dikuasai_melalui)
+            if pengajuan_.pemegang_hak_semula_dari_tanah_belum_dikuasai != None:
+                id_pemegang_hak_semula_dari_tanah_belum_dikuasai = str(pengajuan_.pemegang_hak_semula_dari_tanah_belum_dikuasai)
+            else:
+                id_pemegang_hak_semula_dari_tanah_belum_dikuasai = ""
+            if pengajuan_.tanah_belum_dikuasai_melalui != None:
+                id_tanah_belum_dikuasai_melalui = str(pengajuan_.tanah_belum_dikuasai_melalui)
+            else:
+                id_tanah_belum_dikuasai_melalui = ""
             id_jumlah_tanah_belum_dikuasai = str(pengajuan_.jumlah_tanah_belum_dikuasai)
             id_tanah_negara_sudah_dikuasai = str(pengajuan_.tanah_negara_sudah_dikuasai)
             id_tanah_kas_desa_sudah_dikuasai = str(pengajuan_.tanah_kas_desa_sudah_dikuasai)
@@ -576,8 +587,14 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             id_tanah_hak_guna_bangunan_sudah_dikuasai = str(pengajuan_.tanah_hak_guna_bangunan_sudah_dikuasai)
             id_tanah_hak_milik_sertifikat_sudah_dikuasai = str(pengajuan_.tanah_hak_milik_sertifikat_sudah_dikuasai)
             id_tanah_adat_sudah_dikuasai = str(pengajuan_.tanah_adat_sudah_dikuasai)
-            id_pemegang_hak_semula_dari_tanah_sudah_dikuasai = str(pengajuan_.pemegang_hak_semula_dari_tanah_sudah_dikuasai)
-            id_tanah_sudah_dikuasai_melalui = str(pengajuan_.tanah_sudah_dikuasai_melalui)
+            if pengajuan_.pemegang_hak_semula_dari_tanah_sudah_dikuasai != None:
+                id_pemegang_hak_semula_dari_tanah_sudah_dikuasai = str(pengajuan_.pemegang_hak_semula_dari_tanah_sudah_dikuasai)
+            else:
+                id_pemegang_hak_semula_dari_tanah_sudah_dikuasai = ""
+            if pengajuan_.tanah_sudah_dikuasai_melalui != None:
+                id_tanah_sudah_dikuasai_melalui = str(pengajuan_.tanah_sudah_dikuasai_melalui)
+            else:
+                id_tanah_sudah_dikuasai_melalui = ""            
             id_jumlah_tanah_sudah_dikuasai = str(pengajuan_.jumlah_tanah_sudah_dikuasai)
 
             data = {'success': True,'data': {
@@ -730,7 +747,11 @@ def load_data_pembiayaan_dan_pemodalan_ipptusaha(request,id_pengajuan):
             id_modal_kerja_lainnya = pengajuan_.modal_kerja_lainnya
             id_jumlah_modal_kerja = pengajuan_.jumlah_modal_kerja
 
-            id_jumlah_rencana_biaya = int(id_jumlah_modal_tetap.replace(".",""))+int(id_jumlah_modal_kerja.replace(".",""))
+            if id_jumlah_modal_tetap or id_jumlah_modal_kerja != None:
+                id_jumlah_rencana_biaya = int(id_jumlah_modal_tetap.replace(".",""))+int(id_jumlah_modal_kerja.replace(".",""))
+            else:
+                id_jumlah_rencana_biaya = 0
+
             id_modal_dasar = pengajuan_.modal_dasar
             id_modal_ditetapkan = pengajuan_.modal_ditetapkan
             id_modal_disetor = pengajuan_.modal_disetor
@@ -740,7 +761,10 @@ def load_data_pembiayaan_dan_pemodalan_ipptusaha(request,id_pengajuan):
             id_modal_lembaga_non_bank = pengajuan_.modal_lembaga_non_bank
             id_modal_pihak_ketiga = pengajuan_.modal_pihak_ketiga
 
-            id_jumlah_pinjaman_dalam = int(id_modal_bank_pemerintah.replace(".",""))+int(id_modal_bank_swasta.replace(".",""))+int(id_modal_lembaga_non_bank.replace(".",""))+int(id_modal_pihak_ketiga.replace(".",""))
+            if id_modal_bank_pemerintah or id_modal_bank_swasta or id_modal_lembaga_non_bank or id_modal_pihak_ketiga != None:
+                id_jumlah_pinjaman_dalam = int(id_modal_bank_pemerintah.replace(".",""))+int(id_modal_bank_swasta.replace(".",""))+int(id_modal_lembaga_non_bank.replace(".",""))+int(id_modal_pihak_ketiga.replace(".",""))
+            else:
+                id_jumlah_pinjaman_dalam = 0
 
             id_modal_pinjaman_luar_negeri = pengajuan_.modal_pinjaman_luar_negeri
             id_jumlah_investasi = pengajuan_.jumlah_investasi
@@ -908,6 +932,15 @@ def cetak_ippt_usaha(request, id_pengajuan_):
       ec = RequestContext(request, extra_context)
       return HttpResponse(template.render(ec))
 
+def formatrupiah(uang):
+    y = str(uang)
+    if len(y) <= 3 :
+        return y     
+    else :
+        p = y[-3:]
+        q = y[:-3]
+        return   formatrupiah(q) + '.' + p
+
 def cetak_bukti_pendaftaran_ippt_usaha(request,id_pengajuan_):
   extra_context = {}
   if id_pengajuan_:
@@ -924,11 +957,38 @@ def cetak_bukti_pendaftaran_ippt_usaha(request,id_pengajuan_):
         ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
         legalitas_list = pengajuan_.perusahaan.legalitas_set.all()
         penggunaan_tanah_list = pengajuan_.penggunaantanahipptusaha_set.all()
+        perumahan_yang_dimiliki_list = pengajuan_.perumahanyangdimilikiipptusaha_set.all()
+
+        if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != None:
+            jumlah_rencana_biaya = int(pengajuan_.jumlah_modal_tetap.replace(".",""))+int(pengajuan_.jumlah_modal_kerja.replace(".",""))
+        else:
+            jumlah_rencana_biaya = ""
+
+        if pengajuan_.modal_bank_pemerintah or pengajuan_.modal_bank_swasta or pengajuan_.modal_lembaga_non_bank or pengajuan_.modal_pihak_ketiga != None:
+            jumlah_pinjaman_dalam = int(pengajuan_.modal_bank_pemerintah.replace(".",""))+int(pengajuan_.modal_bank_swasta.replace(".",""))+int(pengajuan_.modal_lembaga_non_bank.replace(".",""))+int(pengajuan_.modal_pihak_ketiga.replace(".",""))
+        else:
+            jumlah_pinjaman_dalam = ""
+
+        jumlah_saham = str(pengajuan_.saham_indonesia + pengajuan_.saham_asing)
+        jumlah_kebutuhan_air = str(pengajuan_.air_untuk_rumah_tangga + pengajuan_.air_untuk_produksi + pengajuan_.air_lainnya)
+        jumlah_minimal_kebutuhan_air = str(pengajuan_.air_dari_pdam + pengajuan_.air_dari_sumber + pengajuan_.air_dari_sungai)
+
+        if pengajuan_.tenaga_kerja_wni or pengajuan_.tenaga_kerja_wna or pengajuan_.tenaga_kerja_tetap or pengajuan_.tenaga_kerja_tidak_tetap != None:
+            jumlah_tenaga_kerja = pengajuan_.tenaga_kerja_wni + pengajuan_.tenaga_kerja_wna + pengajuan_.tenaga_kerja_tetap + pengajuan_.tenaga_kerja_tidak_tetap
+        else:
+            jumlah_tenaga_kerja = ""
 
         extra_context.update({ 'paspor': paspor_ })
         extra_context.update({ 'ktp': ktp_ })
         extra_context.update({ 'legalitas_list': legalitas_list })
         extra_context.update({ 'penggunaan_tanah_list': penggunaan_tanah_list })
+        extra_context.update({ 'perumahan_yang_dimiliki_list': perumahan_yang_dimiliki_list })
+        extra_context.update({ 'jumlah_rencana_biaya': jumlah_rencana_biaya })
+        extra_context.update({ 'jumlah_pinjaman_dalam': formatrupiah(jumlah_pinjaman_dalam) })
+        extra_context.update({ 'jumlah_saham': jumlah_saham })
+        extra_context.update({ 'jumlah_kebutuhan_air': jumlah_kebutuhan_air })
+        extra_context.update({ 'jumlah_minimal_kebutuhan_air': jumlah_minimal_kebutuhan_air })
+        extra_context.update({ 'jumlah_tenaga_kerja': jumlah_tenaga_kerja })
       if pengajuan_.perusahaan:
         if pengajuan_.perusahaan.desa:
           alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
