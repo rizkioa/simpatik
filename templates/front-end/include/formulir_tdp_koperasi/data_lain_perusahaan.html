@@ -1,17 +1,17 @@
-<form method="POST" name="step7" role="form" class="form-horizontal">
+<form method="POST" name="step7" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
 {% csrf_token %}
     <h3>DATA LAIN PERUSAHAAN</h3>
     <hr class="style14">
 
     <h4><u>DATA PIMPINAN PERUSAHAAN</u></h4>
-    <h5>Jumlah Pimpinan Perusahaan : Dirut / Dir Cabang / Penanggung Jawab: 0
-    Direktur : 0  Komisaris : 0
+    <h5>Jumlah Pimpinan Perusahaan : Dirut / Dir Cabang / Penanggung Jawab: <span id="jumlah_dirut"></span>
+    Direktur : <span id="jumlah_direktur"></span>  Komisaris : <span id="jumlah_komisaris"></span>
     </h5>
 
     <div class="row">
     	<div class="col-md-12">
     		<div class="table-responsive">
-		    	<table class="table">
+		    	<table class="table table-striped" id="table_data_pimpinan">
 		    		<thead>
 		    			<tr>
 		    				<th>No</th>
@@ -19,8 +19,9 @@
 		    				<th>Nama Lengkap</th>
 		    				<th>Tempat & Tgl Lahir</th>
 		    				<th>Alamat Tetap</th>
-		    				<th>Kode Pos</th>
 		    				<th>No. Telepon</th>
+		    				<th>No. Hp</th>
+		    				<th>Email</th>
 		    				<th>Kewarganegaraan</th>
 		    				<th>Tgl Mulai Menduduki Jabatan</th>
 		    				<th>(Khusus Komisaris / Direktur) Jumlah saham yang memiliki (lembar)</th>
@@ -35,34 +36,11 @@
 		    			</tr>
 		    		</thead>
 		    		<tbody>
-		    			<tr>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    				<td></td>
-		    			</tr>
 		    		</tbody>
 		    	</table>
 		    </div>
     	</div>
     </div>
-    <a href="#">
-    	<label data-toggle="modal" data-target="#create_pimpinan"><i class="fa fa-plus-circle"></i>Tambah Pimpinan Perusahaan</label>
-	</a>
 
+	<a onclick="add_data_pimpinan()" data-toggle="modal" data-target="#create_pimpinan" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pimpinan Perusahaan</a>
 </form>
