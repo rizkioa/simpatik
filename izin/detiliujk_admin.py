@@ -21,17 +21,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
-			h = Group.objects.filter(name="Cek Lokasi")
-			if h.exists():
-				h = h.last()
-			h = h.user_set.all()
-			extra_context.update({'pegawai_list' : h })
-
-			g = Group.objects.filter(name="Tim Teknis")
-			if g.exists():
-				g = g.last()
-			p = g.user_set.all()
-			extra_context.update({'pegawai_all' : p })
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
 			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
 
@@ -92,6 +81,18 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
 			# if pengajuan_.status == 8:
+			# SURVEY
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
+			g = Group.objects.filter(name="Tim Teknis")
+			if g.exists():
+				g = g.last()
+			p = g.user_set.all()
+			extra_context.update({'pegawai_all' : p })
 			try:
 				try:
 					s = Survey.objects.get(pengajuan=pengajuan_)
@@ -102,8 +103,8 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				s = ''
 
 			extra_context.update({'survey': s })
-			extra_context.update({'id_unit_kerja': 11}) # 11 Untuk Pembangunan
-				
+			# extra_context.update({'id_unit_kerja': 11}) # 11 Untuk Pembangunan
+			# SURVEY	
 			
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
@@ -174,12 +175,22 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		pilihan = "<option value=''>-- Pilih Sub Klasifikasi --</option>"
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in subklasifikasi_list)));
 
+	def option_pegawai(self, request):
+		pegawai_list = Pegawai.objects.all()
+	
+		unit_kerja_id = request.POST.get('unit_kerja', None)	
+		if unit_kerja_id and not unit_kerja_id is "":
+			pegawai_list = pegawai_list.filter(unit_kerja_id=unit_kerja_id)
+		pilihan = "<option value=''>-- Pilih Pegawai --</option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in pegawai_list)));
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIUJKAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
 			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),
+			url(r'^option-pegawai/$', self.option_pegawai, name='option_pegawai'),
 			url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_iujk), name='cetak_bukti_admin_iujk'),
 			url(r'^view-pengajuan-iujk/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_iujk), name='view_pengajuan_iujk'),
 			)

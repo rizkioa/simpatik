@@ -407,23 +407,23 @@ def penanggung_jawab_teknik_save_bu(request):
 									data = json.dumps(data)
 									response = HttpResponse(data)
 								else:
-									data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan Tidak Merangkap format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+									data = {'Terjadi Kesalahan': [{'message': 'Berkas Pernyataan Tidak Merangkap format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 									data = json.dumps(data)
 									response = HttpResponse(data)
 							else:
-								data = {'Terjadi Kesalahan': [{'message': 'Berkas SKA/SKT format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+								data = {'Terjadi Kesalahan': [{'message': 'Berkas SKA/SKT format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 								data = json.dumps(data)
 								response = HttpResponse(data)
 						else:
-							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 							data = json.dumps(data)
 							response = HttpResponse(data)
 					else:
-						data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 						data = json.dumps(data)
 						response = HttpResponse(data)
 				else:
-					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
 					
