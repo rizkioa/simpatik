@@ -26,7 +26,6 @@ from izin.models import PengajuanIzin, DetilIMB,Pemohon
 from izin.utils import STATUS_HAK_TANAH
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasKTPForm,UploadBerkasPendukungForm,DetilIMBForm,ParameterBangunanForm
-from accounts.models import NomorIdentitasPengguna
 
 def formulir_imb_umum(request, extra_context={}):
 	negara = Negara.objects.all()

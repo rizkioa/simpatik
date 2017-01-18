@@ -117,7 +117,9 @@ urlpatterns = [
     url(r'^layanan/izin-lokasi/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_izin_lokasi, name='cetak_izin_lokasi'),
     url(r'^layanan/izin-lokasi/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_bukti_pendaftaran_izin_lokasi, name='cetak_bukti_pendaftaran_izin_lokasi'),
 
-
+    #cetak Izin IPPT Usaha
+    url(r'^layanan/ippt-usaha/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', ippt_usaha.cetak_ippt_usaha, name='cetak_ippt_usaha'),
+    url(r'^layanan/ippt-usaha/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', ippt_usaha.cetak_bukti_pendaftaran_ippt_usaha, name='cetak_bukti_pendaftaran_ippt_usaha'),
 
     #cetak HO Perpanjang
     # url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
@@ -299,12 +301,28 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
     url(r'^layanan/ippt-usaha/save/$', ippt_usaha.ippt_usaha_save_cookie, name='ippt_usaha_save'),
     url(r'^layanan/ippt-usaha/rencana-pembangunan/save/$', ippt_usaha.ippt_usaha_rencana_pembangunan_save_cookie, name='ippt_usaha_rencana_pembangunan_save'),
+    url(r'^ippt-usaha/berkas/save/$', ippt_usaha.ipptusaha_upload_berkas_pendukung, name='ipptusaha_upload_berkas_pendukung'),
+    url(r'^ajax-load-berkas-ippt-usaha/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.ajax_load_berkas_ipptusaha, name='ajax_load_berkas_ipptusaha'),
     url(r'^layanan/ippt-usaha/rencana-pembiayaan-dan-pemodalan/save/$', ippt_usaha.ippt_usaha_rencana_pembiayaan_dan_pemodalan_save_cookie, name='ippt_usaha_rencana_pembiayaan_dan_pemodalan_save'),
+    url(r'^ippt-usaha/informasi-tanah/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_informasi_tanah_ipptusaha, name='load_data_informasi_tanah_ipptusaha'),   
+    url(r'^ippt-usaha/rencana-pembangunan/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_rencana_pembangunan_ipptusaha, name='load_data_rencana_pembangunan_ipptusaha'), 
+    url(r'^ippt-usaha/pembiayaan-dan-pemodalan/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_pembiayaan_dan_pemodalan_ipptusaha, name='load_data_pembiayaan_dan_pemodalan_ipptusaha'),
+    url(r'^ippt-usaha/kebutuhan-lainnya/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_kebutuhan_lainnya_ipptusaha, name='load_data_kebutuhan_lainnya_ipptusaha'),
+    url(r'^layanan/ippt-usaha/kebutuhan-lainnya/save/$', ippt_usaha.ippt_usaha_kebutuhan_lainnya_save_cookie, name='ippt_usaha_kebutuhan_lainnya_save'),
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
+
+    #Penggunaan Tanah
+
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
+    url(r'^ippt-usaha/pengunaan-tanah-sekarang/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_penggunaan_tanah_ipptusaha, name='load_data_penggunaan_tanah_ipptusaha'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/edit/(?P<id_penggunaan_tanah>[0-9]+)/$', ippt_usaha.edit_informasi_penggunaan_tanah_sekarang, name='edit_informasi_penggunaan_tanah_sekarang'),
     
+    #Perumahan Yang Dimiliki
+    url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/save$', ippt_usaha.perumahan_yang_sudah_dimiliki_save_cookie, name='perumahan_yang_sudah_dimiliki_save'),
+    url(r'^ippt-usaha/perumahan-yang-dimiliki-sekarang/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_perumahan_yang_dimiliki_ipptusaha, name='load_data_perumahan_yang_dimiliki_ipptusaha'),
+    url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/delete/(?P<id_perumahan>[0-9]+)$', ippt_usaha.delete_perumahan_yang_sudah_dimiliki, name='delete_perumahan_yang_sudah_dimiliki'),
+    url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/edit/(?P<id_perumahan>[0-9]+)/$', ippt_usaha.edit_perumahan_yang_sudah_dimiliki, name='edit_perumahan_yang_sudah_dimiliki'),
     
     # ++++++++++++++++++++++++ end for ajax IPPT Usaha ++++++++++++++++++++++
 

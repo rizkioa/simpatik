@@ -245,6 +245,7 @@ def tdp_legalitas_pt_cookie(request):
 							legalitas_penerima_laporan = Legalitas(nomor_pengesahan=noppm3, tanggal_pengesahan=tglppm3, jenis_legalitas_id=6, perusahaan_id=perusahaan_id)
 							legalitas_penerima_laporan.save(force_insert=True)
 					# +++++++ end save penerima laporan +++++
+					# +++++++ save penerimaan pemberitahuan +++++
 					onoffpenerimaanpemberitahuan = request.POST.get('onoffpenerimaanpemberitahuan')
 					if onoffpenerimaanpemberitahuan == 'on':
 						noppm4 = request.POST.get('nomor_pengesahan_penerimaan_pemberitahuan')
@@ -259,9 +260,41 @@ def tdp_legalitas_pt_cookie(request):
 						except ObjectDoesNotExist:
 							legalitas_penerimaan_pemberitahuan = Legalitas(nomor_pengesahan=noppm4, tanggal_pengesahan=tglppm4, jenis_legalitas_id=7, perusahaan_id=perusahaan_id)
 							legalitas_penerimaan_pemberitahuan.save(force_insert=True)
-					# +++++++ save penerimaan pemberitahuan +++++
-
 					# +++++++ end save penerimaan pemberitahuan +++++
+
+					# +++++++ save pengesahan menteri koperasi ukm +++++++
+					onoffpengesahanmenterikoperasi = request.POST.get('onoffpengesahanmenterikoperasi')
+					if onoffpengesahanmenterikoperasi == 'on':
+						noppm5 = request.POST.get('nomor_pengesahan_pengesahan_menteri_koperasi')
+						tglppm5 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pengesahan_menteri_koperasi'), '%d-%m-%Y').strftime('%Y-%m-%d')
+						try:
+							legalitas_pengesahan_menteri_koperasi = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=8)
+							legalitas_pengesahan_menteri_koperasi.jenis_legalitas_id = 8
+							legalitas_pengesahan_menteri_koperasi.perusahaan_id = perusahaan_id
+							legalitas_pengesahan_menteri_koperasi.nomor_pengesahan = noppm5
+							legalitas_pengesahan_menteri_koperasi.tanggal_pengesahan = tglppm5
+							legalitas_pengesahan_menteri_koperasi.save()
+						except ObjectDoesNotExist:
+							legalitas_pengesahan_menteri_koperasi = Legalitas(nomor_pengesahan=noppm5, tanggal_pengesahan=tglppm5, jenis_legalitas_id=8, perusahaan_id=perusahaan_id)
+							legalitas_pengesahan_menteri_koperasi.save(force_insert=True)
+					# +++++++ end save pengesahan menteri koperasi ukm +++++++
+
+					# +++++++ save persetujuan menteri koperasi dan ukm atas akta perubahan +++++++
+					onoffpersetujuanmenterikoperasi = request.POST.get('onoffpersetujuanmenterikoperasi')
+					if onoffpersetujuanmenterikoperasi == 'on':
+						noppm6 = request.POST.get('nomor_pengesahan_persetujuan_menteri_koperasi')
+						tglppm6 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_persetujuan_menteri_koperasi'), '%d-%m-%Y').strftime('%Y-%m-%d')
+						try:
+							legalitas_persetujuan_menteri_koperasi = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=9)
+							legalitas_persetujuan_menteri_koperasi.jenis_legalitas_id = 9
+							legalitas_persetujuan_menteri_koperasi.perusahaan_id = perusahaan_id
+							legalitas_persetujuan_menteri_koperasi.nomor_pengesahan = noppm6
+							legalitas_persetujuan_menteri_koperasi.tanggal_pengesahan = tglppm6
+							legalitas_persetujuan_menteri_koperasi.save()
+						except ObjectDoesNotExist:
+							legalitas_persetujuan_menteri_koperasi = Legalitas(nomor_pengesahan=noppm6, tanggal_pengesahan=tglppm6, jenis_legalitas_id=9, perusahaan_id=perusahaan_id)
+							legalitas_persetujuan_menteri_koperasi.save(force_insert=True)
+					# +++++++ end save persetujuan menteri koperasi dan ukm atas akta perubahan +++++++
 
 					data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
 					data = json.dumps(data)
@@ -1002,12 +1035,12 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 			perusahaan_ = tdp.perusahaan
 			berkas_ = tdp.berkas_tambahan.all()
 			pemohon_ = tdp.pemohon
-			legalitas_1 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=1).last()
-			legalitas_2 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=2).last()
-			legalitas_3 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=3).last()
-			legalitas_4 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=4).last()
-			legalitas_6 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=6).last()
-			legalitas_7 = perusahaan_.legalitas_set.filter(jenis_legalitas__id=7).last()
+			legalitas_1 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=1).last()
+			legalitas_2 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=2).last()
+			legalitas_3 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=3).last()
+			legalitas_4 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=4).last()
+			legalitas_6 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=6).last()
+			legalitas_7 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=7).last()
 
 			if pemohon_:
 				npwp_pribadi = pemohon_.berkas_npwp
@@ -1143,32 +1176,32 @@ def ajax_delete_berkas_tdp(request, id_berkas, kode):
 			n.save()
 		elif kode == 'akta_pendirian':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas_id=2)).last()
 			legalitas_pendirian.berkas = None
 			legalitas_pendirian.save()
 		elif kode == 'akta_perubahan':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=2).last()
 			legalitas_perubahan.berkas = None
 			legalitas_perubahan.save()
 		elif kode == 'akta_pengesahaan_menteri':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=3).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=3).last()
 			legalitas_perubahan.berkas = None
 			legalitas_perubahan.save()
 		elif kode == 'akta_persetujuan_menteri':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=4).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_perubahan.berkas = None
 			legalitas_perubahan.save()
 		elif kode == 'akta_penerimaan_laporan':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=6).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=6).last()
 			legalitas_perubahan.berkas = None
 			legalitas_perubahan.save()
 		elif kode == 'akta_penerimaan_pemberitahuan':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=7).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=7).last()
 			legalitas_perubahan.berkas = None
 			legalitas_perubahan.save()
 		else:

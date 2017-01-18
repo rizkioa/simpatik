@@ -121,11 +121,7 @@
                     </table>
                 </div>
                 <div>
-                    {% if pengajuan.kelompok_jenis_izin.id == 37 %}
-                    <h4 align="center"><u>PERMOHONAN SURAT IZIN LOKASI</u></h4>
-                    {% else %}
-                    <h4 align="center"><u>PERMOHONAN SURAT IZIN PERUBAHAN PENGGUNAAN TANAH (IPPT) UNTUK RUMAH TINGGAL</u></h4>
-                    {% endif%}
+                    <h4 align="center"><u>PERMOHONAN SURAT IZIN PERUBAHAN PENGGUNAAN TANAH (IPPT) UNTUK USAHA</u></h4>
                     <p align="left" style="font-size:13px;padding-left:75%">
                         Kepada
                         <br>
@@ -134,7 +130,7 @@
                     <p align="left" style="font-size:13px;padding-left:75%">
                         Lewat
                         <br>
-                        Yth. Kepala BPM-P2TSP Kab. Kediri
+                        Yth. Kepala DPM-P2TSP Kab. Kediri
                         <br>
                         di
                         <br>
@@ -221,7 +217,36 @@
                         <td width="10%">:</td>
                         <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
                     </tr>
-                 
+                </table>
+                <table width="100%" border="1" class="font">
+                    <thead>
+                      <tr>
+                        <td>Jenis Akta dan Pengesahan</td>
+                        <td>Nama Notaris</td>
+                        <td>Alamat Notaris</td>
+                        <td>Telp. Notaris</td>
+                        <td>No. Akta</td>
+                        <td>Tgl. Akta</td>
+                        <td>No. Pengesahan</td>
+                        <td>Tgl. Pengesahan</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for n in legalitas_list %}
+                      <tr>
+                          <td>{{ n.jenis_legalitas.jenis_legalitas }}</td>
+                          <td>{{n.nama_notaris}}</td>
+                          <td>{{n.alamat}}</td>
+                          <td>{{n.telephone}}</td>
+                          <td>{{n.nomor_akta}}</td>
+                          <td>{{n.tanggal_akta|date:"d-m-Y"}}</td>
+                          <td>{{n.nomor_pengesahan}}</td>
+                          <td>{{n.tanggal_pengesahan|date:"d-m-Y"}}</td>        
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                <table class="font" width="100%">
                     <tr>
                       <td width="25%"><p style="font-size:13px">Berdasarkan</p><br><u>Surat Kuasa</u></td>
                       <td width="10%"></td>
@@ -336,9 +361,26 @@
                       <td width="65%">{{pengajuan.atas_nama_persil|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
-                      <td width="25%">Penggunaan Sekarang</td>
+                      <td width="25%">Penggunaan Tanah</td>
                       <td width="10%">:</td>
-                      <td width="65%">{{pengajuan.penggunaan_sekarang|default_if_none:"-"}}</td>
+                      <td width="65%">
+                        <table width="100%" border="1" class="font">
+                            <thead>
+                              <tr>
+                                  <td>Penggunaan Tanah</td>
+                                  <td>Ukuran Penggunaan</td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for j in penggunaan_tanah_list %}
+                              <tr>
+                                  <td>{{ j.nama_penggunaan }}</td>
+                                  <td>{{ j.ukuran_penggunaan}}</td>  
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                      </td>
                     </tr>
                     <tr>
                       <td width="25%">Rencana Penggunaan</td>

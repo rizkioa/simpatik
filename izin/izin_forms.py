@@ -203,6 +203,22 @@ class MesinPerusahaanForm(forms.ModelForm):
 		
 class InformasiTanahIPPTUsahaForm(forms.ModelForm):
 	"""docstring for InformasiTanahIPPTUsahaForm"""
+	tanah_negara_belum_dikuasai = forms.DecimalField(label="Tanah Negara Belum Dikuasai", required=False,)
+	tanah_kas_desa_belum_dikuasai = forms.DecimalField(label="Tanah Kas Desa Belum Dikuasai", required=False,)
+	tanah_hak_pakai_belum_dikuasai = forms.DecimalField(label="Tanah Hak Pakai Belum Dikuasai", required=False,)
+	tanah_hak_guna_bangunan_belum_dikuasai = forms.DecimalField(label="Tanah Hak Guna Bangunan Belum Dikuasai", required=False,)
+	tanah_hak_milik_sertifikat_belum_dikuasai = forms.DecimalField(label="Tanah Hak MIlik Sertifikat Belum Dikuasai", required=False,)
+	tanah_adat_belum_dikuasai = forms.DecimalField(label="Tanah Adat Belum Dikuasai", required=False,)
+
+	jumlah_tanah_belum_dikuasai = forms.DecimalField(label="Jumlah Tanah Negara Sudah Dikuasai", required=False,)
+	tanah_negara_sudah_dikuasai = forms.DecimalField(label="Tanah Negara Sudah Dikuasai", required=False,)
+	tanah_kas_desa_sudah_dikuasai = forms.DecimalField(label="Tanah Kas Desa Sudah Dikuasai", required=False,)
+	tanah_hak_pakai_sudah_dikuasai = forms.DecimalField(label="Tanah Hak Pakai Sudah Dikuasai", required=False,)
+	tanah_hak_guna_bangunan_sudah_dikuasai = forms.DecimalField(label="Tanah Hak Guna Bangunan Sudah Dikuasai", required=False,)
+	tanah_hak_milik_sertifikat_sudah_dikuasai = forms.DecimalField(label="Tanah Hak MIlik Sertifikat Sudah Dikuasai", required=False,)
+	tanah_adat_sudah_dikuasai = forms.DecimalField(label="Tanah Adat Sudah Dikuasai", required=False,)
+	jumlah_tanah_sudah_dikuasai = forms.DecimalField(label="Jumlah Tanah Negara Sudah Dikuasai", required=False,)
+
 	class Meta:
 		model = InformasiTanah
 		fields = ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil','rencana_penggunaan','batas_utara','batas_timur','batas_selatan','batas_barat','tanah_negara_belum_dikuasai','tanah_kas_desa_belum_dikuasai','tanah_hak_pakai_belum_dikuasai','tanah_hak_guna_bangunan_belum_dikuasai','tanah_hak_milik_sertifikat_belum_dikuasai','tanah_adat_belum_dikuasai','pemegang_hak_semula_dari_tanah_belum_dikuasai','tanah_belum_dikuasai_melalui','tanah_negara_sudah_dikuasai','tanah_kas_desa_sudah_dikuasai','tanah_hak_pakai_sudah_dikuasai','tanah_hak_guna_bangunan_sudah_dikuasai','tanah_hak_milik_sertifikat_sudah_dikuasai','tanah_adat_sudah_dikuasai','pemegang_hak_semula_dari_tanah_sudah_dikuasai','tanah_sudah_dikuasai_melalui','jumlah_tanah_belum_dikuasai','jumlah_tanah_sudah_dikuasai')
@@ -211,13 +227,20 @@ class RencanaPembangunanIPPTUsahaForm(forms.ModelForm):
 	"""docstring for RencanaPembangunanIPPTUsahaForm"""
 	class Meta:
 		model = InformasiTanah
-		fields = ('tipe1','tipe2','tipe3','gudang1','gudang2','gudang3','luas_tipe1','luas_tipe2','luas_tipe3','luas_lapangan','luas_kantor','luas_saluran','luas_taman','pematangan_tanah_tahap1','pematangan_tanah_tahap2','pematangan_tanah_tahap3','pembangunan_gedung_tahap1','pembangunan_gedung_tahap2','pembangunan_gedung_tahap3','jangka_waktu_selesai')
+		fields = ('tipe1','tipe2','tipe3','gudang1','gudang2','gudang3','luas_tipe1','luas_tipe2','luas_tipe3','luas_lapangan','luas_kantor','luas_saluran','luas_taman','presentase_luas_tipe1','presentase_luas_tipe2','presentase_luas_tipe3','presentase_luas_lapangan','presentase_luas_kantor','presentase_luas_saluran','presentase_luas_taman','presentase_jumlah_perincian_penggunaan_tanah','jumlah_perincian_penggunaan_tanah','pematangan_tanah_tahap1','pematangan_tanah_tahap2','pematangan_tanah_tahap3','pembangunan_gedung_tahap1','pembangunan_gedung_tahap2','pembangunan_gedung_tahap3','jangka_waktu_selesai')
 
 class RencanaPembiayanDanPemodalanIPPTUsahaForm(forms.ModelForm):
 	"""docstring for RencanaPembiayanDanPemodalanIPPTUsahaForm"""
 	class Meta:
 		model = InformasiTanah
-		fields = ('modal_tetap_tanah','modal_tetap_bangunan','modal_tetap_mesin','modal_tetap_angkutan','modal_tetap_inventaris','modal_tetap_lainnya','modal_kerja_bahan','modal_kerja_gaji','modal_kerja_alat_angkut','modal_kerja_lainnya','modal_dasar','modal_ditetapkan','modal_disetor','modal_bank_pemerintah','modal_bank_swasta','modal_lembaga_non_bank','modal_pihak_ketiga','modal_pinjaman_luar_negeri','saham_indonesia','saham_asing')
+		fields = ('modal_tetap_tanah','modal_tetap_bangunan','modal_tetap_mesin','modal_tetap_angkutan','modal_tetap_inventaris','modal_tetap_lainnya','jumlah_modal_tetap','modal_kerja_bahan','modal_kerja_gaji','modal_kerja_alat_angkut','modal_kerja_lainnya','jumlah_modal_kerja','modal_dasar','modal_ditetapkan','modal_disetor','modal_bank_pemerintah','modal_bank_swasta','modal_lembaga_non_bank','modal_pihak_ketiga','modal_pinjaman_luar_negeri','jumlah_investasi','saham_indonesia','saham_asing')
+
+class KebutuhanLainnyaIPPTUsahaForm(forms.ModelForm):
+	"""docstring for KebutuhanLainnyaIPPTUsahaForm"""
+	class Meta:
+		model = InformasiTanah
+		fields = ('tenaga_ahli','pegawai_tetap','pegawai_harian_tetap','pegawai_harian_tidak_tetap','kebutuhan_listrik','kebutuhan_listrik_sehari_hari','jumlah_daya_genset','jumlah_listrik_kebutuhan_dari_pln','air_untuk_rumah_tangga','air_untuk_produksi','air_lainnya','air_dari_pdam','air_dari_sumber','air_dari_sungai','tenaga_kerja_wni','tenaga_kerja_wna','tenaga_kerja_tetap','tenaga_kerja_tidak_tetap')
+
 
 class PenggunaanTanahIPPTUsahaForm(forms.ModelForm):
 	"""docstring for PenggunaanTanahIPPTUsahaForm"""
