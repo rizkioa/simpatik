@@ -196,7 +196,6 @@ def reklame_upload_dokumen_cookie(request):
 
 def reklame_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
-		print "OK"
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			print pengajuan_
