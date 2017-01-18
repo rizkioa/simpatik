@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django import forms
 import json
+from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 
 
@@ -83,12 +84,51 @@ class AnggotaTimAdmin(admin.ModelAdmin):
 			url(r'^hapus-anggotatim-ajax/(?P<id_anggota>[0-9]+)$', self.admin_site.admin_view(self.delete_ajax), name='hapus_anggotatim_ajax'),
 			)
 		return my_urls + urls
+
+
 		
 admin.site.register(AnggotaTim, AnggotaTimAdmin)
 
+class RekomendasiAdmin(admin.ModelAdmin):
+	list_display = ('get_rekomendasi',)
+
+	def get_rekomendasi(self, obj):
+		return mark_safe(obj.rekomendasi)
+	get_rekomendasi.short_description = "Rekomendasi"
+
+	def get_fieldsets(self, request, obj=None):
+		field_user = ()
+		field_admin = ('unit_kerja', 'survey_iujk','rekomendasi','keterangan','berkas','created_by',)
+
+		if obj:
+			if request.user.is_superuser:
+				add_fieldsets = (
+					(None, {
+						'classes': ('wide',),
+						'fields': field_admin
+						}),
+				)
+			else:
+				add_fieldsets = (
+					(None, {
+						'classes': ('wide',),
+						'fields': field_user
+						}),
+				)
+		else:
+			pass
+
+		return add_fieldsets
+
+	def get_queryset(self, request):
+		qs = super(RekomendasiAdmin, self).get_queryset(request)
+		if not request.user.is_superuser:
+			if request.user.groups.filter(name='Tim Teknis').exists():
+				print "ASEM"
+			qs = qs.filter(created_by=request.user)
+		return qs
 
 
 
-
-admin.site.register(Rekomendasi)
+admin.site.register(Rekomendasi,RekomendasiAdmin)
 admin.site.register(DetilBAP)

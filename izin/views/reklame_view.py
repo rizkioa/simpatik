@@ -198,6 +198,7 @@ def reklame_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			print pengajuan_
 			pengajuan_.status = 6
 			pengajuan_.save()
 			data = {'success': True, 'pesan': 'Proses Selesai.' }
