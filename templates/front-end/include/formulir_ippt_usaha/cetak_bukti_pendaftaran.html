@@ -924,7 +924,6 @@
         </div>
         <div class="page">
             <div class="subpage">
-        <h5><u>PERUMAHAN DIMILIKI</u></h5>
                   <h6><u>TENAGA KERJA</u></h6>
                   <table width="100%" border="0" class="font">
                     <tr>
@@ -959,28 +958,29 @@
                       <td width="70%">{{jumlah_tenaga_kerja|default_if_none:"-"}} Orang</td>
                     </tr>
                   </table>
-        <table width="100%" border="1" class="font">
-            <thead>
-                <tr>
-                <td>Nama Perusahaan</td>
-                <td>Luas Tanah (M&sup2;)</td>
-                <td>Status Tanah</td>
-                <td>Kelurahan</td>
-                <td>Kecamatan</td>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in perumahan_yang_dimiliki_list %}
-                <tr>
-                    <td>{{i.nama_perumahan}}</td>
-                    <td>{{i.luas_tanah}}</td>
-                    <td>{{i.status_tanah}}</td>
-                    <td>{{i.desa}}</td>
-                    <td>{{i.desa.kecamatan}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table> 
+                <h5><u>PERUMAHAN DIMILIKI</u></h5>
+                <table width="100%" border="1" class="font">
+                    <thead>
+                        <tr>
+                        <td>Nama Perusahaan</td>
+                        <td>Luas Tanah (M&sup2;)</td>
+                        <td>Status Tanah</td>
+                        <td>Kelurahan</td>
+                        <td>Kecamatan</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in perumahan_yang_dimiliki_list %}
+                        <tr>
+                            <td>{{i.nama_perumahan}}</td>
+                            <td>{{i.luas_tanah}}</td>
+                            <td>{{i.status_tanah}}</td>
+                            <td>{{i.desa}}</td>
+                            <td>{{i.desa.kecamatan}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
                 <br>
                 <br>
                 {% if pengajuan.kelompok_jenis_izin.id == 37 %}
