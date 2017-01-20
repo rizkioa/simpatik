@@ -21,6 +21,7 @@ def formulir_informasi_kekayaan_daerah(request):
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
+		extra_context.update({'has_permission': True })
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++

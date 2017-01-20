@@ -130,3 +130,12 @@ def get_berkas(qs_, user_):
 			string = '<a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src=\''+str(url)+str(query.berkas.get_file_url())+'\' width=\'200\' />" data-placement="top" class="btn btn-rounded btn-success btn-sm" href="'+str(query.unit_kerja.url_simpatik)+str(query.berkas.get_file_url())+'" target="_blank"> <i class="fa fa-paperclip" ></i>'+str(query.berkas)+'</a>'
 
 	return string
+@register.filter(name='formatrupiah')
+def formatrupiah(uang):
+	y = str(uang)
+	if len(y) <= 3 :
+		return y     
+	else :
+		p = y[-3:]
+		q = y[:-3]
+		return   formatrupiah(q) + '.' + p
