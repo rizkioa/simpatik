@@ -1,26 +1,3 @@
-function load_pegawai(elemen) {
-  // body...
-  alert(elemen.value)
-  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-  elem = $("#id_pegawai")
-  $( "#anggotatim" ).mLoading();
-  // alert(elemen.value)
-  $.ajax({ // create an AJAX call...
-      data: { csrfmiddlewaretoken: csrf_token, unit_kerja: elemen.value }, // get the form data
-      type: 'POST', // GET or POST
-      url: __base_url__+'/admin/izin/detiliujk/option-pegawai/', // the file to call
-      success: function(response) { // on success..
-          console.log(response)
-          elem.html(response);
-          elem.trigger("chosen:updated");
-          $( "#anggotatim" ).mLoading('hide');
-      },
-      error: function(data) {                
-          toast_server_error()
-      }
-  });
-}
-
 function load_klasifikasi(){
   csrf_token = $("input[name='csrfmiddlewaretoken']").val();
   elem = $("#klasifikasi")
