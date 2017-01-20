@@ -169,6 +169,53 @@ def reklame_imbreklame_save_cookie(request):
     response = HttpResponse(data)
     return response
 
+def load_data_reklame_imbreklame(request,id_pengajuan):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            pengajuan_ = DetilIMBPapanReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+            id_jenis_papan_reklame = pengajuan_.jenis_papan_reklame
+            id_lebar = str(pengajuan_.lebar)
+            id_tinggi = str(pengajuan_.tinggi)
+            id_lokasi_pasang = pengajuan_.lokasi_pasang
+            id_jumlah = str(pengajuan_.jumlah)
+            if desa:
+              id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+              id_desa = str(pengajuan_.desa.id)
+            else:
+              id_kecamatan = ""
+              id_desa = ""
+            id_klasifikasi_jalan = pengajuan_.klasifikasi_jalan
+            id_batas_utara = pengajuan_.batas_utara
+            id_batas_timur = pengajuan_.batas_timur
+            id_batas_selatan = pengajuan_.batas_selatan
+            id_batas_barat = pengajuan_.batas_barat
+
+            data = {'success': True,'data': {
+            'id_jenis_papan_reklame': id_jenis_papan_reklame,
+            'id_lebar': id_lebar,
+            'id_tinggi': id_tinggi,
+            'id_lokasi_pasang': id_lokasi_pasang,
+            'id_jumlah': id_jumlah,
+            'id_kecamatan': id_kecamatan,
+            'id_desa': id_desa,
+            'id_klasifikasi_jalan': id_klasifikasi_jalan,
+            'id_batas_utara': id_batas_utara,
+            'id_batas_timur': id_batas_timur,
+            'id_batas_selatan': id_batas_selatan,
+            'id_batas_barat': id_batas_barat,
+            }}
+            response = HttpResponse(json.dumps(data))
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+            data = json.dumps(data)
+            response = HttpResponse(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+        data = json.dumps(data)
+        response = HttpResponse(data)
+    return response
+
+
 def imb_reklame_done(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':

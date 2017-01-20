@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, JenisPemohon, JenisReklame,ParameterBangunan
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha
 
 def formulir_ippt_usaha(request):
 	extra_context={}
@@ -42,7 +42,10 @@ def formulir_ippt_usaha(request):
 						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
 						extra_context.update({ 'paspor': paspor_ })
 						extra_context.update({'cookie_file_ktp': ktp_.berkas })
-
+					penggunaan_tanah_list = PenggunaanTanahIPPTUsaha.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+					perumahan_list = PerumahanYangDimilikiIPPTUsaha.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+					extra_context.update({'penggunaan_tanah_list': penggunaan_tanah_list})
+					extra_context.update({'perumahan_list': perumahan_list})
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
