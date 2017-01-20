@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import NomorIdentitasPengguna
-from izin.models import DetilTDP, RincianPerusahaan, IzinLain, PengajuanIzin, KelompokJenisIzin
-from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, RincianPerusahaanForm, LegalitasForm, IzinLainForm, PemegangSahamForm, DataPimpinanForm, PerusahaanCabangForm, BerkasForm
+from izin.models import DetilTDP, IzinLain, PengajuanIzin, KelompokJenisIzin
+from izin.tdp_forms import DataUmumPerusahaanPTForm, DataKegiatanPTForm, LegalitasForm, IzinLainForm, PemegangSahamForm, DataPimpinanForm, PerusahaanCabangForm, BerkasForm, RincianPerusahaanForm, RincianKoperasiForm
 from perusahaan.models import Legalitas, Perusahaan, PemegangSaham, DataPimpinan, KBLI
 from master.models import Berkas
 
@@ -98,34 +98,64 @@ def tdp_data_umum_perusahaan_cookie(request):
 def tdp_data_kegiatan_pt_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
-			data_kegiatan_form = DataKegiatanPTForm(request.POST, instance=pengajuan_)
-			if data_kegiatan_form.is_valid():
-				p = data_kegiatan_form.save(commit=False)
-				kegiatan_usaha = request.POST.getlist('kegiatan_usaha_pokok')
-				nama_kbli = []
-				for kbli in kegiatan_usaha:
-					kbli_obj = KBLI.objects.get(id=kbli)
-					p.kegiatan_usaha_pokok.add(kbli_obj)
-					nama_kbli.append(kbli_obj.nama_kbli)			
-				if len(nama_kbli) > 1:
-					p.produk_utama = ",".join(nama_kbli)
-				p.save()
-				try:
-					rincian_ = RincianPerusahaan.objects.get(detil_tdp_id=p.id)
-					rincianperusahaan_form = RincianPerusahaanForm(request.POST, instance=rincian_)
-				except ObjectDoesNotExist:
-					rincianperusahaan_form = RincianPerusahaanForm(request.POST)
-				
-				if rincianperusahaan_form.is_valid():
-					rp = rincianperusahaan_form.save(commit=False)
-					rp.detil_tdp_id = p.id
-					rp.save()
-				data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
+			try:
+				pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+				data_kegiatan_form = DataKegiatanPTForm(request.POST, instance=pengajuan_)
+				if data_kegiatan_form.is_valid():
+					p = data_kegiatan_form.save(commit=False)
+					kegiatan_usaha = request.POST.getlist('kegiatan_usaha_pokok')
+					nama_kbli = []
+					for kbli in kegiatan_usaha:
+						kbli_obj = KBLI.objects.get(id=kbli)
+						p.kegiatan_usaha_pokok.add(kbli_obj)
+						nama_kbli.append(kbli_obj.nama_kbli)			
+					if len(nama_kbli) > 1:
+						p.produk_utama = ",".join(nama_kbli)
+					p.save()
+
+					# rincian perusahaan
+					# pengajuan_.modal_dasar = 
+					# pengajuan_.modal_ditempatkan = 
+					# pengajuan_.modal_disetor = 
+					# pengajuan_.banyaknya_saham = 
+					# pengajuan_.nilai_nominal_per_saham = 
+
+					# # rincian koperasi
+					# pengajuan_.jenis_koperasi = 
+					# pengajuan_.bentuk_koperasi = 
+					# pengajuan_.modal_sendiri_simpanan_pokok = 
+					# pengajuan_.modal_sendiri_simpanan_wajib = 
+					# pengajuan_.modal_sendiri_dana_cadangan = 
+					# pengajuan_.modal_sendiri_hibah = 
+					# pengajuan_.modal_pinjaman_anggota = 
+					# pengajuan_.modal_pinjaman_koperasi_lain = 
+					# pengajuan_.modal_pinjaman_bank = 
+					# pengajuan_.modal_pinjaman_lainnya = 
+					# pengajuan_.jumlah_anggota = 
+
+					
+					rincianperusahaan_form = RincianPerusahaanForm(request.POST, instance=pengajuan_)
+					
+					if rincianperusahaan_form.is_valid():
+						rp = rincianperusahaan_form.save(commit=False)
+						rp.save()
+
+					
+					rinciankoperasi_form = RincianKoperasiForm(request.POST, instance=pengajuan_)
+					
+					if rinciankoperasi_form.is_valid():
+						rk = rinciankoperasi_form.save(commit=False)
+						rk.save()
+						
+					data = {'success': True, 'pesan': 'Data Kegiatan Perusahaan, berhasil tersimpan.', 'data': []}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+				else:
+					data = data_kegiatan_form.errors.as_json()
+					response = HttpResponse(data)
+			except ObjectDoesNotExist:
+				data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 				data = json.dumps(data)
-				response = HttpResponse(data)
-			else:
-				data = data_kegiatan_form.errors.as_json()
 				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
@@ -473,25 +503,61 @@ def load_data_kegiatan_perusahaan(request, pengajuan_id):
 				jenis_perusahaan = pengajuan_.jenis_perusahaan.id
 
 			# +++++ Rincian Perusahaan ++++++++++++
-			rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
+			# rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
 			modal_dasar = ""
 			modal_ditempatkan = ""
 			modal_disetor = ""
 			banyaknya_saham = ""
 			nilai_nominal_per_saham = ""
-			if rincian_:
-				if rincian_.modal_dasar:
-					modal_dasar = rincian_.modal_dasar
-				if rincian_.modal_ditempatkan:
-					modal_ditempatkan = rincian_.modal_ditempatkan
-				if rincian_.modal_disetor:
-					modal_disetor = rincian_.modal_disetor
-				if rincian_.banyaknya_saham:
-					banyaknya_saham = rincian_.banyaknya_saham
-				if rincian_.nilai_nominal_per_saham:
-					nilai_nominal_per_saham = rincian_.nilai_nominal_per_saham
+			# if rincian_:
+			if pengajuan_.modal_dasar:
+				modal_dasar = pengajuan_.modal_dasar
+			if pengajuan_.modal_ditempatkan:
+				modal_ditempatkan = pengajuan_.modal_ditempatkan
+			if pengajuan_.modal_disetor:
+				modal_disetor = pengajuan_.modal_disetor
+			if pengajuan_.banyaknya_saham:
+				banyaknya_saham = pengajuan_.banyaknya_saham
+			if pengajuan_.nilai_nominal_per_saham:
+				nilai_nominal_per_saham = pengajuan_.nilai_nominal_per_saham
 
-			data = {'success': True, 'pesan': 'Load data kegiatan perusahaan', 'data':{ 'kbli_json':kbli_json, 'omset_per_tahun': omset_per_tahun, 'total_aset': total_aset, 'jumlah_karyawan_wni': jumlah_karyawan_wni, 'jumlah_karyawan_wna': jumlah_karyawan_wna, 'kapasitas_mesin_terpasang': kapasitas_mesin_terpasang, 'satuan_kapasitas_mesin_terpasang': satuan_kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'satuan_kapasitas_produksi_per_tahun': satuan_kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal': presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'jenis_perusahaan': jenis_perusahaan, 'modal_dasar': modal_dasar, 'modal_ditempatkan': modal_ditempatkan, 'modal_disetor': modal_disetor, 'banyaknya_saham': banyaknya_saham, 'nilai_nominal_per_saham': nilai_nominal_per_saham}}
+			# rincian koperasi
+			jenis_koperasi = ""
+			bentuk_koperasi = ""
+			modal_sendiri_simpanan_pokok = ""
+			modal_sendiri_simpanan_wajib = ""
+			modal_sendiri_dana_cadangan = ""
+			modal_sendiri_hibah = ""
+			modal_pinjaman_anggota = ""
+			modal_pinjaman_koperasi_lain = ""
+			modal_pinjaman_bank = ""
+			modal_pinjaman_lainnya = ""
+			jumlah_anggota = ""
+			if pengajuan_.jenis_koperasi:
+				jenis_koperasi = pengajuan_.jenis_koperasi.id
+			if pengajuan_.bentuk_koperasi:
+				bentuk_koperasi = pengajuan_.bentuk_koperasi.id
+			if pengajuan_.modal_sendiri_simpanan_pokok:
+				modal_sendiri_simpanan_pokok = pengajuan_.modal_sendiri_simpanan_pokok
+			if pengajuan_.modal_sendiri_simpanan_wajib:
+				modal_sendiri_simpanan_wajib = pengajuan_.modal_sendiri_simpanan_wajib
+			if pengajuan_.modal_sendiri_dana_cadangan:
+				modal_sendiri_dana_cadangan = pengajuan_.modal_sendiri_dana_cadangan
+			if pengajuan_.modal_sendiri_hibah:
+				modal_sendiri_hibah = pengajuan_.modal_sendiri_hibah
+			if pengajuan_.modal_pinjaman_anggota:
+				modal_pinjaman_anggota = pengajuan_.modal_pinjaman_anggota
+			if pengajuan_.modal_pinjaman_koperasi_lain:
+				modal_pinjaman_koperasi_lain = pengajuan_.modal_pinjaman_koperasi_lain
+			if pengajuan_.modal_pinjaman_bank:
+				modal_pinjaman_bank = pengajuan_.modal_pinjaman_bank
+			if pengajuan_.modal_pinjaman_lainnya:
+				modal_pinjaman_lainnya = pengajuan_.modal_pinjaman_lainnya
+			if pengajuan_.jumlah_anggota:
+				jumlah_anggota = pengajuan_.jumlah_anggota
+
+
+			data = {'success': True, 'pesan': 'Load data kegiatan perusahaan', 'data':{ 'kbli_json':kbli_json, 'omset_per_tahun': omset_per_tahun, 'total_aset': total_aset, 'jumlah_karyawan_wni': jumlah_karyawan_wni, 'jumlah_karyawan_wna': jumlah_karyawan_wna, 'kapasitas_mesin_terpasang': kapasitas_mesin_terpasang, 'satuan_kapasitas_mesin_terpasang': satuan_kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'satuan_kapasitas_produksi_per_tahun': satuan_kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal': presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'jenis_perusahaan': jenis_perusahaan, 'modal_dasar': modal_dasar, 'modal_ditempatkan': modal_ditempatkan, 'modal_disetor': modal_disetor, 'banyaknya_saham': banyaknya_saham, 'nilai_nominal_per_saham': nilai_nominal_per_saham, 'jenis_koperasi': jenis_koperasi, 'bentuk_koperasi': bentuk_koperasi, 'modal_sendiri_simpanan_pokok': modal_sendiri_simpanan_pokok, 'modal_sendiri_simpanan_wajib': modal_sendiri_simpanan_wajib, 'modal_sendiri_dana_cadangan': modal_sendiri_dana_cadangan,'modal_sendiri_hibah': modal_sendiri_hibah, 'modal_pinjaman_anggota': modal_pinjaman_anggota, 'modal_pinjaman_koperasi_lain': modal_pinjaman_koperasi_lain, 'modal_pinjaman_bank': modal_pinjaman_bank, 'modal_pinjaman_lainnya': modal_pinjaman_lainnya,'jumlah_anggota': jumlah_anggota}}
 		else:
 			data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	else:
@@ -1355,23 +1421,23 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 
 			data_kegiatan_perusahaan = {'dkp': { 'omset_per_tahun':omset_per_tahun, 'total_aset':total_aset, 'jumlah_karyawan_wni':jumlah_karyawan_wni, 'jumlah_karyawan_wna':jumlah_karyawan_wna, 'total_karyawan':total_karyawan, 'kapasitas_mesin_terpasang':kapasitas_mesin_terpasang, 'kapasitas_produksi_per_tahun': kapasitas_produksi_per_tahun, 'presentase_kandungan_produk_lokal':presentase_kandungan_produk_lokal, 'presentase_kandungan_produk_import': presentase_kandungan_produk_import, 'jenis_pengecer':jenis_pengecer, 'jenis_perusahaan':jenis_perusahaan, 'kedudukan_kegiatan_usaha':kedudukan_kegiatan_usaha, 'kbli_json':kbli_json}}
 
-			rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
+			# rincian_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_id).last()
 			modal_dasar = ""
 			modal_ditempatkan = ""
 			modal_disetor = ""
 			banyaknya_saham = ""
 			nilai_nominal_per_saham = ""
-			if rincian_:
-				if rincian_.modal_dasar:
-					modal_dasar = rincian_.modal_dasar
-				if rincian_.modal_ditempatkan:
-					modal_ditempatkan = rincian_.modal_ditempatkan
-				if rincian_.modal_disetor:
-					modal_disetor = rincian_.modal_disetor
-				if rincian_.banyaknya_saham:
-					banyaknya_saham = rincian_.banyaknya_saham
-				if rincian_.nilai_nominal_per_saham:
-					nilai_nominal_per_saham = rincian_.nilai_nominal_per_saham
+			# if rincian_:
+			if pengajuan_.modal_dasar:
+				modal_dasar = pengajuan_.modal_dasar
+			if pengajuan_.modal_ditempatkan:
+				modal_ditempatkan = pengajuan_.modal_ditempatkan
+			if pengajuan_.modal_disetor:
+				modal_disetor = pengajuan_.modal_disetor
+			if pengajuan_.banyaknya_saham:
+				banyaknya_saham = pengajuan_.banyaknya_saham
+			if pengajuan_.nilai_nominal_per_saham:
+				nilai_nominal_per_saham = pengajuan_.nilai_nominal_per_saham
 			data_rincian_perusahaan = {'rincian':{'modal_dasar':modal_dasar, 'modal_ditempatkan':modal_ditempatkan, 'modal_disetor':modal_disetor, 'banyaknya_saham':banyaknya_saham, 'nilai_nominal_per_saham':nilai_nominal_per_saham}}
 			# ###### end data kegiatan perusahaan ######
 			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon,data_perusahaan,data_umum_perusahaan,data_kegiatan_perusahaan,data_rincian_perusahaan,data_kuasa

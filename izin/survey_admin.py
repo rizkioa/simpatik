@@ -10,7 +10,7 @@ from datetime import datetime
 
 from daterange_filter.filter import DateRangeFilter
 
-from izin.models import Survey, DetilIUJK, Riwayat
+from izin.models import Survey, DetilIUJK, Riwayat, PengajuanIzin
 from izin.izin_forms import SurveyForm
 from izin.survey_form import RekomendasiForm, DetilForm, BerkasForm
 from izin.utils import get_nomor_pengajuan
@@ -108,10 +108,18 @@ class SurveyAdmin(admin.ModelAdmin):
 	def get_aksi(self, obj):
 		aksi = ''
 		status = obj.status
+		kode_ijin = obj.pengajuan.kelompok_jenis_izin.kode
+		print kode_ijin
+		reverse_ = "#"
 		if status == 4 or status == 8:
+			if kode_ijin == "IUJK":
+				reverse_ = reverse('admin:cek_kelengkapan', args=(obj.pengajuan.id, obj.id ))
+			elif kode_ijin == "503.03.01/": # REKLAME PERMANEN
+				reverse_ = reverse('admin:cek_kelengkapan_reklame_ho', args=(obj.id ))
+
 			aksi = mark_safe("""
 				<a href="%s" title='Proses'> %s </a>
-				""" % (reverse('admin:cek_kelengkapan', args=(obj.pengajuan.id, obj.id )), '<i class="fa fa-circle-o-notch"></i>' ))
+				""" % (reverse_, '<i class="fa fa-circle-o-notch"></i>' ))
 		if status == 1:
 			aksi = mark_safe("""
 				<a href="%s" title='Lihat'> %s </a>
@@ -125,6 +133,17 @@ class SurveyAdmin(admin.ModelAdmin):
 		extra_context.update({'kecamatan': Kecamatan.objects.filter(kabupaten__provinsi__kode='35', kabupaten__kode='06') })
 		extra_context.update({'perusahaan': Perusahaan.objects.all() })
 		return super(SurveyAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def view_cek_kelengkapan_pengajuan_reklame_ho(self, request, id_survey):
+		extra_context = {}
+		extra_context.update({'has_permission': True })
+
+		queryset_ = self.get_queryset(request)
+		print queryset_.filter(pk=id_survey)
+
+		template = loader.get_template("admin/pembangunan/cek_kelengkapan_reklame_ho.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
 
 	def view_cek_kelengkapan_pengajuan(self, request, id_pengajuan_izin_, id_survey):
 		extra_context = {}
@@ -298,12 +317,12 @@ class SurveyAdmin(admin.ModelAdmin):
 			# return HttpResponseRedirect(reverse('admin:cek_kelengkapan', args=[id_pengajuan_izin_]))
 
 			else:
-				print "alsdjfhalks"
+				# print "alsdjfhalks"
 				raise Http404
 
 		# except ObjectDoesNotExist:
 		else:
-			print "alsdjfhalks"
+			# print "alsdjfhalks"
 			raise Http404
 
 		template = loader.get_template("admin/pembangunan/cek_kelengkapan.html")
@@ -488,7 +507,7 @@ class SurveyAdmin(admin.ModelAdmin):
 						print sent_
 				s.save()
 
-				pengajuan = DetilIUJK.objects.get(id=s.pengajuan.id)
+				pengajuan = PengajuanIzin.objects.get(id=s.pengajuan.id)
 				pengajuan.status = 8
 				pengajuan.save()
 
@@ -519,6 +538,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-sending/$', self.send_survey, name="send_survey" ),
 			url(r'^do-survey/(?P<id_survey>[0-9]+)$', self.admin_site.admin_view(self.do_survey), name="lakukan_survey" ),
 			url(r'^survey-cek-kelengkapan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan, name="cek_kelengkapan" ),
+			url(r'^survey-cek-kelengkapan-reklame-ho/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_reklame_ho, name="cek_kelengkapan_reklame_ho" ),
 			url(r'^laporan-survey/$', self.admin_site.admin_view(self.surveyselesai), name='survey_selesai'),
 			)
 		return my_urls + urls

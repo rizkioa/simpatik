@@ -408,6 +408,24 @@ class AnggotaBadanUsaha(models.Model):
 		verbose_name = 'Anggota Badan Usaha'
 		verbose_name_plural = 'Anggota Badan Usaha'
 
+class JenisKoperasi(models.Model):
+	jenis_koperasi = models.CharField(max_length=255, verbose_name='Jenis Koperasi')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Jenis Koperasi'
+		verbose_name_plural = 'Jenis Koperasi'
+
+class BentukKoperasi(models.Model):
+	bentuk_koperasi = models.CharField(max_length=255, verbose_name='Bentuk Koperasi')
+	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Bentuk Koperasi'
+		verbose_name_plural = 'Bentuk Koperasi'
+
 class DetilTDP(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdp_perusahaan', blank=True, null=True)
 	# Data Umum Perusahaan PT
@@ -461,38 +479,16 @@ class DetilTDP(PengajuanIzin):
 	jenis_perusahaan = models.ForeignKey(JenisPerusahaan, verbose_name='Jenis Perusahaan', null=True, blank=True)
 	status_waralaba = models.CharField(max_length=255, verbose_name='Status Waralaba', null=True, blank=True, default='BUKAN WARALABA')
 
-	# masih sampe tab4 TDP PT
+	# rincian perusahaan
+	modal_dasar = models.CharField(max_length=100, verbose_name='Modal Dasar Rp.', null=True, blank=True)
+	modal_ditempatkan = models.CharField(max_length=100, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
+	modal_disetor = models.CharField(max_length=100, verbose_name='Modal Disetor Rp.', null=True, blank=True)
+	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0, null=True, blank=True)
+	nilai_nominal_per_saham = models.CharField(max_length=100, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
 
-	def __unicode__(self):
-		return u'Detil TDP %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
-
-	class Meta:
-		# ordering = ['-status', '-updated_at',]
-		verbose_name = 'Detil TDP'
-		verbose_name_plural = 'Detil TDP'
-
-class JenisKoperasi(models.Model):
-	jenis_koperasi = models.CharField(max_length=255, verbose_name='Jenis Koperasi')
-	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-
-	class Meta:
-		# ordering = ['-status', '-updated_at',]
-		verbose_name = 'Jenis Koperasi'
-		verbose_name_plural = 'Jenis Koperasi'
-
-class BentukKoperasi(models.Model):
-	bentuk_koperasi = models.CharField(max_length=255, verbose_name='Bentuk Koperasi')
-	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
-
-	class Meta:
-		# ordering = ['-status', '-updated_at',]
-		verbose_name = 'Bentuk Koperasi'
-		verbose_name_plural = 'Bentuk Koperasi'
-
-class RincianKoperasi(models.Model):
-	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_koperasi_detil_tdp', verbose_name='Detil TDP')
-	jenis_koperasi = models.ForeignKey(JenisKoperasi, verbose_name='Jenis Koperasi')
-	bentuk_koperasi = models.ForeignKey(BentukKoperasi, verbose_name='Bentuk Koperasi')
+	# rincian koperasi
+	jenis_koperasi = models.ForeignKey(JenisKoperasi, verbose_name='Jenis Koperasi', null=True, blank=True)
+	bentuk_koperasi = models.ForeignKey(BentukKoperasi, verbose_name='Bentuk Koperasi', null=True, blank=True)
 	modal_sendiri_simpanan_pokok = models.CharField(max_length=255, verbose_name='Modal Sendiri Simpan Pokok', null=True, blank=True)
 	modal_sendiri_simpanan_wajib = models.CharField(max_length=255, verbose_name='Modal Sendiri Simpan Wajib', null=True, blank=True)
 	modal_sendiri_dana_cadangan = models.CharField(max_length=255, verbose_name='Modal Sendiri Dana Cadangan', null=True, blank=True)
@@ -503,10 +499,13 @@ class RincianKoperasi(models.Model):
 	modal_pinjaman_lainnya = models.CharField(max_length=255, verbose_name='Modal Pinjaman Lainnya', null=True, blank=True)
 	jumlah_anggota = models.CharField(max_length=255, verbose_name='Jumlah Anggota', null=True, blank=True)
 
+	def __unicode__(self):
+		return u'Detil TDP %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
-		verbose_name = 'Rincian Koperasi'
-		verbose_name_plural = 'Rincian Koperasi'
+		verbose_name = 'Detil TDP'
+		verbose_name_plural = 'Detil TDP'
 
 class IzinLain(AtributTambahan):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, related_name='izin_lain_pengajuan_izin', verbose_name='Izin Lain')
@@ -524,19 +523,6 @@ class IzinLain(AtributTambahan):
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Izin Lain'
 		verbose_name_plural = 'Izin Lain'
-
-class RincianPerusahaan(models.Model):
-	detil_tdp = models.OneToOneField(DetilTDP, related_name='rincian_perusahaan_detil_tdp', verbose_name='Detil TDP')
-	modal_dasar = models.CharField(max_length=100, verbose_name='Modal Dasar Rp.', null=True, blank=True)
-	modal_ditempatkan = models.CharField(max_length=100, verbose_name='Modal Ditempatkan Rp.', null=True, blank=True)
-	modal_disetor = models.CharField(max_length=100, verbose_name='Modal Disetor Rp.', null=True, blank=True)
-	banyaknya_saham = models.IntegerField(verbose_name='Banyaknya Saham', default=0, null=True, blank=True)
-	nilai_nominal_per_saham = models.CharField(max_length=100, verbose_name='Nilai Nominal Per Saham', null=True, blank=True)
-
-	class Meta:
-		# ordering = ['-status', '-updated_at',]
-		verbose_name = 'Rincian Perusahaan'
-		verbose_name_plural = 'Rincian Perusahaan'
 
 class Survey(MetaAtribut):
 	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)

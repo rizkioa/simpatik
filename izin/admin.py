@@ -18,7 +18,7 @@ from izin.paketpekerjaan_admin import PaketPekerjaanAdmin
 from izin.huller_admin import DetilHullerAdmin
 from izin.survey_admin import SurveyAdmin
 from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi
 from izin.pemohon_admin import PemohonAdmin
 
 from master.models import JenisPemohon
@@ -28,16 +28,14 @@ from izin.utils import get_nomor_pengajuan
 
 from pembangunan.views import get_rekomendasi_pembangunan
 
-
-
-
 # from perusahaan.models import Perusahaan
 
 # from django.shortcuts import get_object_or_404
 # from django.core import serializers
 
 # Register your models here.
-
+admin.site.register(JenisKoperasi)
+admin.site.register(BentukKoperasi)
 admin.site.register(JenisPemohon)
 admin.site.register(SKIzin)
 admin.site.register(Riwayat)
