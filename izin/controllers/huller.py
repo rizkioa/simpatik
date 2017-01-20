@@ -23,6 +23,7 @@ def formulir_detilhuller(request):
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+		extra_context.update({'has_permission': True })
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

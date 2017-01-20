@@ -1,249 +1,29 @@
-{% extends "front-end/formulir/formulir_izin.html" %}
-{% load i18n admin_static staticfiles widgets %}
-{% block customstyle %}
-  {{ block.super }}
-  <style type="text/css">
-    .tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
-        background-color: #22beef;
-        color: aliceblue;
-      }
-      .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
-        background-color: #616f77;
-      }
-      .tab-wizard .nav-tabs > li:before {
-        background-color: #333;
-      }
-      .onoffswitch.labeled .onoffswitch-inner:before {
-        content: "Ya";
-      }
-      .onoffswitch.labeled .onoffswitch-inner:after {
-        content: "Tidak";
-      }
-      .onoffswitch.labeled {
-        width: 59px;
-      }
-      .onoffswitch.labeled .onoffswitch-switch {
-        right: 34px;
-      }
- </style>
-  <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
-  <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
-  <link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
-  <!-- CSS adjustments for browsers with JavaScript disabled -->
-  <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
-  <noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
 {% endblock %}
 
-{% block pageheader %}
-  <h2>Surat Izin Perubahan Penggunaan Tanah (IPPT)
-      <span>Berikut adalah info pendaftaran perizinan Izin Perubahan Penggunaan Tanah (IPPT) Kabupaten Kediri.</span>
-    </h2>
-    <div class="page-bar">
-      <ul class="page-breadcrumb">
-        <li>
-          <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
-        </li>
-        <li>
-          <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
-        </li>
-        <li>
-          <a href="#">Izin Perubahan Penggunaan Tanah (IPPT) - Usaha</a>
-        </li>
-        <li>
-          <a href="#">Formulir IPPT - Usaha</a>
-        </li>
-      </ul>
-    </div>
+{% block icotitle %}<i class="icon-book-open"></i>&nbsp;{% endblock %}
+
+{% block content_title %}
+	{{ title }}
 {% endblock %}
 
-{% block rootwizard %}
-  <ul class="nav nav-tabs nav-justified">
-    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">6</span></a></li>
-    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
-    <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
-    <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
-    <li><a disabled href="#tab10" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">10</span></a></li>
-  </ul>
-{% endblock %}
-
-{% block tab-content %}
-  <div class="tab-pane" id="tab1">
-    <!-- Identitas perusahaan -->
-    {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab2">
-    <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_ippt_usaha/identitas_perusahaan.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab3">
-    <!-- Data Kegiatan Gangguan -->
-    {% include 'front-end/include/formulir_ippt_usaha/legalitas_perusahaan.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab4">
-    <!-- Upload Dokumen -->
-    {% include 'front-end/include/formulir_ippt_usaha/informasi_tanah.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab5">
-    <!-- Konfirmasi -->
-    {% include 'front-end/include/formulir_ippt_usaha/rencana_pembangunan.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab6">
-    <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_ippt_usaha/pembiayaan_dan_pemodalan.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab7">
-    <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_ippt_usaha/kebutuhan_lainnya.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab8">
-    <!-- Data Kegiatan Gangguan -->
-    {% include 'front-end/include/formulir_ippt_usaha/perumahan_dimiliki.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab9">
-    <!-- Upload Dokumen -->
-    {% include 'front-end/include/formulir_ippt_usaha/upload_dokumen.html' %}
-  </div>
-
-  <div class="tab-pane" id="tab10">
-    <!-- Konfirmasi -->
-    {% include 'front-end/include/formulir_ippt_usaha/konfirmasi.html' %}
-  </div>
-
-
-  <div class="modal fade" id="penggunaan_tanah_sekarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title custom-font">Penggunaan Tanah Sekarang</h3>
-        </div>
-        <div class="modal-body">
-          <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
-          {% csrf_token %}
-            <div class="row">
-                <div class="form-group">
-                  <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
-                  <div class="col-sm-4">
-                    <input type="text" class="form-control" id="id_nama_penggunaan" required="" name="nama_penggunaan">
-                  </div>
-                </div>
-            </div><br>
-            <div class="row">
-                <div class="form-group">
-                  <label for="input01" class="col-sm-3 control-label">Ukuran Penggunaan Tanah</label>
-                  <div class="col-sm-4">
-                    <div class="input-group">
-                      <input type="text" class="form-control no_ktp" id="id_ukuran_penggunaan" name="ukuran_penggunaan" required="" data-parsley-trigger="change">
-                      <span class="input-group-addon">
-                        <span>M&sup2;</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
-          <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-<div class="modal fade" id="perumahan_yang_dimiliki" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h3 class="modal-title custom-font">Perumahan Yang Dimiliki</h3>
-      </div>
-      <div class="modal-body">
-        <form method="POST" id="id_form_perumahan_yang_dimiliki_sekarang" name="form_perumahan_yang_dimiliki_sekarang" role="form" class="form-horizontal" action="{% url 'perumahan_yang_sudah_dimiliki_save' %}" data-parsley-validate novalidate>
-        {% csrf_token %}
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Nama Perumahan</label>
-        <div class="col-sm-7">
-          <input type="text" id="id_nama_perumahan" name="nama_perumahan" class="form-control" required="" data-parsley-trigger="">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
-        <div class="col-sm-3">
-          <div class="input-group">
-            <input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control no_ktp" required="" data-parsley-trigger="">
-            <span class="input-group-addon">
-              <span>M&sup2;</span>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Status Tanah</label>
-        <div class="col-sm-7">
-        <input type="text" id="id_status_tanah" name="status_tanah" class="form-control" required="" data-parsley-trigger="">
-        </div>
-      </div>
-
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Lokasi</label>
-          <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
-          <div class="col-sm-5">
-              <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
-                  <option value="1">Kabupaten Kediri</option>
-              </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-4 control-label"><strong>Kecamatan</strong></label>
-          <div class="col-sm-5">
-            <select id="id_kecamatan_ippt_usaha" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
-              <option value>-- Pilih Kecamatan --</option>
-              {% if kecamatan %}
-              {% for k in kecamatan %}
-              <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
-              {% endfor %}
-              {% endif %}
-            </select>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="col-sm-4 control-label"><strong>Kelurahan/Desa</strong></label>
-          <div class="col-sm-5">
-            <select class="form-control chosen-select mb-10" name="desa" id="id_desa_ippt_usaha" required="" data-parsley-trigger="change">
-            </select>
-          </div>
-        </div>
-
-        </form>
-      </div>
-      <div class="modal-footer">
-        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="perumahan_yang_dimiliki_sekarang_add(this)" >Simpan</a>
-        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowperumahan_yang_dimiliki(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
-
-{% block extratools %}
-  {{ block.super }}
+{% block extrajs_site %}
+  <script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+  <script src="{% static 'scripts/js/main.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+  <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+  <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
   <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
@@ -700,7 +480,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/izin-lokasi/formulir/cetak/"+id_pengajuan_);
+              window.location.replace('{% url 'admin:verifikasi' %}');
             }
           });
         }
@@ -1323,5 +1103,302 @@ function load_data_perumahan_yang_dimiliki(id_pengajuan){
   //   })
 
     </script>
+{% endblock %}
 
+{% block extrastyle %}
+	{{ block.super }}
+	
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+	<!-- CSS adjustments for browsers with JavaScript disabled -->
+	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">
+		/*@media only screen and (max-width: 1280px){
+			.hidden_title{
+			   display: none !important;
+			}
+			.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+			  padding-bottom: 24px
+			}
+			.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			  padding-bottom: 24px;
+			}
+			
+		}
+		@media only screen and (max-width: 844px){
+		  .hidden_title{
+			display: block !important;
+		  }
+		}*/
+		.checkbox-custom-alt input:checked + i {
+		    background-color: transparent;
+		    border-color: #FEF7F7;
+		    color: #FCFAFA;
+		}
+		label{
+			color: black;
+		}
+		h4,h3{
+			color: black;
+			font-weight: bold;
+		}
+		table{
+			color: black;
+		}
+
+		.chosen-container{
+			min-width: 400px;
+		}
+		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+        	background-color: #22beef;
+        	color: aliceblue;
+		}
+		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			background-color: #616f77;
+		}
+		.tab-wizard .nav-tabs > li:before {
+			background-color: #333;
+		}
+		.onoffswitch.labeled .onoffswitch-inner:before {
+			content: "Ya";
+		}
+		.onoffswitch.labeled .onoffswitch-inner:after {
+			content: "Tidak";
+		}
+		.onoffswitch.labeled {
+			width: 59px;
+		}
+		.onoffswitch.labeled .onoffswitch-switch {
+			right: 34px;
+		}
+		hr.style14 { 
+	        border: 0; 
+	        height: 1px; 
+	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      	}
+      	.checkbox-custom-alt input[disabled] + i {
+	        border-color: #0e0d0d;
+	        background-color: #fbf6f6;
+      	}
+      	.checkbox-custom-alt input[disabled] + i::before {
+	        background-color: transparent;
+	        color: #0c0c0c;
+      	}
+	</style>
+{% endblock %}
+
+{% block content %}
+<div id="rootwizard" class="tab-container tab-wizard">
+    <ul class="nav nav-tabs nav-justified">
+      <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+      <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+      <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+      <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+      <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+      <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">6</span></a></li>
+      <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+      <li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
+      <li><a disabled href="#tab9" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">9</span></a></li>
+      <li><a disabled href="#tab10" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">10</span></a></li>
+    </ul>
+  	<div class="tab-content">
+      <div class="tab-pane" id="tab1">
+        <!-- Identitas perusahaan -->
+        {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab2">
+        <!-- Identitas perusahaan -->
+        {% include 'front-end/include/formulir_ippt_usaha/identitas_perusahaan.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab3">
+        <!-- Data Kegiatan Gangguan -->
+        {% include 'front-end/include/formulir_ippt_usaha/legalitas_perusahaan.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab4">
+        <!-- Upload Dokumen -->
+        {% include 'front-end/include/formulir_ippt_usaha/informasi_tanah.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab5">
+        <!-- Konfirmasi -->
+        {% include 'front-end/include/formulir_ippt_usaha/rencana_pembangunan.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab6">
+        <!-- Identitas perusahaan -->
+        {% include 'front-end/include/formulir_ippt_usaha/pembiayaan_dan_pemodalan.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab7">
+        <!-- Identitas perusahaan -->
+        {% include 'front-end/include/formulir_ippt_usaha/kebutuhan_lainnya.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab8">
+        <!-- Data Kegiatan Gangguan -->
+        {% include 'front-end/include/formulir_ippt_usaha/perumahan_dimiliki.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab9">
+        <!-- Upload Dokumen -->
+        {% include 'front-end/include/formulir_ippt_usaha/upload_dokumen.html' %}
+      </div>
+
+      <div class="tab-pane" id="tab10">
+        <!-- Konfirmasi -->
+        {% include 'front-end/include/formulir_ippt_usaha/konfirmasi.html' %}
+      </div>
+		<ul class="pager wizard">
+		  	<li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
+		  	<li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+		  	<li class="next finish" style="display:none;">
+				<button type="submit" class="btn btn-success pull-right" id="alert">
+			  		<i class="fa fa-arrow-right"></i>
+			  		<span>Selesai</span>
+				</button>
+			</form>
+		  	</li>
+		</ul>
+  	</div>
+  <br>
+  <br>
+  <br>
+</div>
+{% endblock %}
+
+{% block extracontent %}
+    {{ block.super }}
+<div class="modal fade" id="penggunaan_tanah_sekarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Penggunaan Tanah Sekarang</h3>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
+        {% csrf_token %}
+          <div class="row">
+              <div class="form-group">
+                <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
+                <div class="col-sm-4">
+                  <input type="text" class="form-control" id="id_nama_penggunaan" required="" name="nama_penggunaan">
+                </div>
+              </div>
+          </div><br>
+          <div class="row">
+              <div class="form-group">
+                <label for="input01" class="col-sm-3 control-label">Ukuran Penggunaan Tanah</label>
+                <div class="col-sm-4">
+                  <div class="input-group">
+                    <input type="text" class="form-control no_ktp" id="id_ukuran_penggunaan" name="ukuran_penggunaan" required="" data-parsley-trigger="change">
+                    <span class="input-group-addon">
+                      <span>M&sup2;</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="perumahan_yang_dimiliki" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Perumahan Yang Dimiliki</h3>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="id_form_perumahan_yang_dimiliki_sekarang" name="form_perumahan_yang_dimiliki_sekarang" role="form" class="form-horizontal" action="{% url 'perumahan_yang_sudah_dimiliki_save' %}" data-parsley-validate novalidate>
+        {% csrf_token %}
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Nama Perumahan</label>
+        <div class="col-sm-7">
+          <input type="text" id="id_nama_perumahan" name="nama_perumahan" class="form-control" required="" data-parsley-trigger="">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
+        <div class="col-sm-3">
+          <div class="input-group">
+            <input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control no_ktp" required="" data-parsley-trigger="">
+            <span class="input-group-addon">
+              <span>M&sup2;</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="input01" class="col-sm-2 control-label">Status Tanah</label>
+        <div class="col-sm-7">
+        <input type="text" id="id_status_tanah" name="status_tanah" class="form-control" required="" data-parsley-trigger="">
+        </div>
+      </div>
+
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Lokasi</label>
+          <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+          <div class="col-sm-5">
+              <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+                  <option value="1">Kabupaten Kediri</option>
+              </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-4 control-label"><strong>Kecamatan</strong></label>
+          <div class="col-sm-5">
+            <select id="id_kecamatan_ippt_usaha" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+              <option value>-- Pilih Kecamatan --</option>
+              {% if kecamatan %}
+              {% for k in kecamatan %}
+              <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+              {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label"><strong>Kelurahan/Desa</strong></label>
+          <div class="col-sm-5">
+            <select class="form-control chosen-select mb-10" name="desa" id="id_desa_ippt_usaha" required="" data-parsley-trigger="change">
+            </select>
+          </div>
+        </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="perumahan_yang_dimiliki_sekarang_add(this)" >Simpan</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowperumahan_yang_dimiliki(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

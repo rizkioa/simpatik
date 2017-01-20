@@ -154,6 +154,106 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def view_pengajuan_ippt_usaha(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			extra_context.update({'title': 'Proses Pengajuan'})
+			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
+				extra_context.update({'nomor_identitas': nomor_identitas_ })
+				try:
+					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					extra_context.update({'cookie_file_ktp': ktp_.berkas })
+				except ObjectDoesNotExist:
+					pass
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
+				extra_context.update({'perusahaan': pengajuan_.perusahaan})
+
+				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
+				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
+				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+			if pengajuan_.desa:
+				letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			else:
+				letak_ = pengajuan_.alamat
+			legalitas_list = pengajuan_.perusahaan.legalitas_set.all()
+			penggunaan_tanah_list = pengajuan_.penggunaantanahipptusaha_set.all()
+			perumahan_yang_dimiliki_list = pengajuan_.perumahanyangdimilikiipptusaha_set.all()
+
+			if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != None:
+				jumlah_rencana_biaya = int(pengajuan_.jumlah_modal_tetap.replace(".",""))+int(pengajuan_.jumlah_modal_kerja.replace(".",""))
+			else:
+				jumlah_rencana_biaya = ""
+
+			if pengajuan_.modal_bank_pemerintah or pengajuan_.modal_bank_swasta or pengajuan_.modal_lembaga_non_bank or pengajuan_.modal_pihak_ketiga != None:
+				jumlah_pinjaman_dalam = int(pengajuan_.modal_bank_pemerintah.replace(".",""))+int(pengajuan_.modal_bank_swasta.replace(".",""))+int(pengajuan_.modal_lembaga_non_bank.replace(".",""))+int(pengajuan_.modal_pihak_ketiga.replace(".",""))
+			else:
+				jumlah_pinjaman_dalam = ""
+
+			jumlah_saham = str(pengajuan_.saham_indonesia + pengajuan_.saham_asing)
+			jumlah_kebutuhan_air = str(pengajuan_.air_untuk_rumah_tangga + pengajuan_.air_untuk_produksi + pengajuan_.air_lainnya)
+			jumlah_minimal_kebutuhan_air = str(pengajuan_.air_dari_pdam + pengajuan_.air_dari_sumber + pengajuan_.air_dari_sungai)
+
+			if pengajuan_.tenaga_kerja_wni or pengajuan_.tenaga_kerja_wna or pengajuan_.tenaga_kerja_tetap or pengajuan_.tenaga_kerja_tidak_tetap != None:
+				jumlah_tenaga_kerja = pengajuan_.tenaga_kerja_wni + pengajuan_.tenaga_kerja_wna + pengajuan_.tenaga_kerja_tetap + pengajuan_.tenaga_kerja_tidak_tetap
+			else:
+				jumlah_tenaga_kerja = ""
+			pengajuan_id = pengajuan_.id
+			extra_context.update({ 'legalitas_list': legalitas_list })
+			extra_context.update({ 'penggunaan_tanah_list': penggunaan_tanah_list })
+			extra_context.update({ 'perumahan_yang_dimiliki_list': perumahan_yang_dimiliki_list })
+			extra_context.update({ 'jumlah_rencana_biaya': jumlah_rencana_biaya })
+			extra_context.update({ 'jumlah_pinjaman_dalam': jumlah_pinjaman_dalam })
+			extra_context.update({ 'jumlah_saham': jumlah_saham })
+			extra_context.update({ 'jumlah_kebutuhan_air': jumlah_kebutuhan_air })
+			extra_context.update({ 'jumlah_minimal_kebutuhan_air': jumlah_minimal_kebutuhan_air })
+			extra_context.update({ 'jumlah_tenaga_kerja': jumlah_tenaga_kerja })
+			extra_context.update({'letak': letak_})
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'created_at': pengajuan_.created_at})
+			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'pengajuan': pengajuan_})
+			# encode_pengajuan_id = (str(pengajuan_.id))
+			extra_context.update({'pengajuan_id': pengajuan_id })
+			#+++++++++++++ page logout ++++++++++
+			extra_context.update({'has_permission': True })
+			#+++++++++++++ end page logout ++++++++++
+
+			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
+			# print lama_pemasangan
+			banyak = len(InformasiTanah.objects.all())
+			extra_context.update({'banyak': banyak})
+			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
+			extra_context.update({'syarat': syarat_})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
+				if riwayat_:
+					extra_context.update({'riwayat': riwayat_ })
+			except ObjectDoesNotExist:
+				pass
+		template = loader.get_template("admin/izin/pengajuanizin/view_izin_ippt_usaha.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def cetak_sk_izin_lokasi(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
@@ -213,6 +313,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^cetak-sk-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
 			url(r'^view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_lokasi), name='view_pengajuan_izin_lokasi'),
+			url(r'^ippt-usaha/view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_ippt_usaha), name='view_pengajuan_ippt_usaha'),
 
 			)
 		return my_urls + urls

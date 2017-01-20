@@ -1,6 +1,6 @@
 from django.contrib import admin
 from izin.models import DetilReklame, Syarat, SKIzin, Riwayat, Survey
-from kepegawaian.models import Pegawai
+from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
@@ -107,6 +107,15 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			# UNTUK SURVEY
 			from django.contrib.auth.models import Group
+
+			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
+
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
 			g = Group.objects.filter(name="Tim Teknis")
 			if g.exists():
 				g = g.last()

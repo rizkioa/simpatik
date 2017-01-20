@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.min.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		/*.label-color{
 			color: white;
@@ -951,6 +952,8 @@
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+
 	<script>
         $(window).load(function(){
 
@@ -1010,6 +1013,7 @@
 
 {% block extracontent %}
     {{ block.super }}
+    
     <div class="modal fade bs-sinkron-modal-lg" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -1021,30 +1025,24 @@
             {% csrf_token %}
             <input type="hidden" id="id_survey_iujk" value="{{survey.id}}" name="survey_iujk"></input>
               <div class="form-group">
-                <label  class="col-sm-2 control-label" for="Pengawai">Pegawai</label>
+                <label  class="col-sm-2 control-label" for="skpd">SKPD</label>
                 <div class="col-sm-10">
-                    <select class="form-control chosen-select" name="pegawai">
-                      <option>---Pilih Pegawai---</option>
-                      {% for p in pegawai_all %}
-                      <option value="{{p.id}}">[{{p.unit_kerja}}] {{p}} </option>
+                    <select class="form-control chosen-select" name="skpd" onchange="load_pegawai(this); return false">
+                      <option>---Pilih SKPD---</option>
+                      {% for p in skpd_list %}
+                      <option value="{{p.id}}">{{p}} </option>
                       {% endfor %}
                     </select>
                 </div>
               </div>
-              <!-- <div class="form-row form-group  field-koordinator">
-                <div class="checkbox-row">
-                  <label class=" col-sm-2 control-label" for="id_koordinator">Apakah Koordinator?</label>
-                  <div class="col-sm-10">
-                      <div class="onoffswitch greensea inline-block">
-                          <input class="onoffswitch-checkbox" id="id_koordinator" name="koordinator" type="checkbox">
-                          <label class="onoffswitch-label" for="id_koordinator">
-                              <span class="onoffswitch-inner"></span>
-                              <span class="onoffswitch-switch"></span>
-                          </label>
-                      </div>
-                  </div>
+              <div class="form-group">
+                <label  class="col-sm-2 control-label" for="Pengawai">Pegawai</label>
+                <div class="col-sm-10">
+                    <select class="form-control chosen-select" name="pegawai" id="id_pegawai">
+                      <option>---Pilih Pegawai---</option>
+                    </select>
                 </div>
-              </div> -->
+              </div>
             </form>
             </div>
             <div class="modal-footer">
@@ -1054,6 +1052,7 @@
             </div>
         </div>
     </div>
+
 	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
@@ -1311,7 +1310,7 @@
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Detail REKLAME</h3>
+		        	<h3 class="modal-title custom-font">Detail Izin</h3>
 		      	</div>
 		      	<div class="modal-body">
 		      		<table width="100%" border="0">
