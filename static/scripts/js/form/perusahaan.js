@@ -72,14 +72,14 @@ function load_perusahaan_a(npwp_){
 		              		$.cookie("id_legalitas_perubahan", "0", { path: '/' })
 		              	}
 
-		              	if(respon.data.legalitas_3_no_pengesahaan !== ""){
+		              	if(respon.data.legalitas_3_no_pengesahan !== ""){
 		              		$('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
 		              		$('#form-akta_pengesahaan_menteri').show()
 		              		$('#tr-akta_perubahan').show()
 		              		$('.stap5_pengesahan_menteri').prop('disabled', false)
 		              		$('#switch_stap5_pengesahan_menteri_disabled').prop( "checked", true );
-		              		$('#id_nomor_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_no_pengesahaan)
-		              		$('#id_tanggal_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_tanggal_pengesahaan)
+		              		$('#id_nomor_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_no_pengesahan)
+		              		$('#id_tanggal_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_tanggal_pengesahan)
 		              	}
 		              	else{
 		              		$('#form-akta_pengesahaan_menteri').hide()
@@ -88,14 +88,14 @@ function load_perusahaan_a(npwp_){
 		              		$('#tr-akta_perubahan').hide()
 		              	}
 
-		              	if(respon.data.legalitas_4_no_pengesahaan !== ""){
+		              	if(respon.data.legalitas_4_no_pengesahan !== ""){
 		              		$('#field-akta_persetujuan_menteri .berkas_kosong').prop('required',false);
 		              		$('#form-akta_persetujuan_menteri').show()
 		              		$('#tr-akta_pengesahaan_menteri').show()
 		              		$('.stap5_persetujuan_menteri').prop('disabled', false)
 		              		$('#switch_stap5_persetujuan_menteri_disabled').prop( "checked", true );
-		              		$('#id_nomor_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_no_pengesahaan)
-		              		$('#id_tanggal_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_tanggal_pengesahaan)
+		              		$('#id_nomor_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_no_pengesahan)
+		              		$('#id_tanggal_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_tanggal_pengesahan)
 		              	}
 		              	else{
 		              		$('#form-akta_persetujuan_menteri').hide()
@@ -104,14 +104,14 @@ function load_perusahaan_a(npwp_){
 		              		$('#tr-akta_pengesahaan_menteri').hide()
 		              	}
 
-		              	if(respon.data.legalitas_6_no_pengesahaan !== ""){
+		              	if(respon.data.legalitas_6_no_pengesahan !== ""){
 		              		$('#field-akta_penerimaan_laporan .berkas_kosong').prop('required',false);
 		              		$('#form-akta_penerimaan_laporan').show()
 		              		$('#tr-akta_persetujuan_menteri').show()
 		              		$('.stap5_penerima_laporan').prop('disabled', false)
 		              		$('#switch_stap5_penerima_laporan_disabled').prop( "checked", true );
-		              		$('#id_nomor_pengesahan_penerima_laporan').val(respon.data.legalitas_6_no_pengesahaan)
-		              		$('#id_tanggal_pengesahaan_penerima_laporan').val(respon.data.legalitas_6_tanggal_pengesahaan)
+		              		$('#id_nomor_pengesahan_penerima_laporan').val(respon.data.legalitas_6_no_pengesahan)
+		              		$('#id_tanggal_pengesahaan_penerima_laporan').val(respon.data.legalitas_6_tanggal_pengesahan)
 		              	}
 		              	else{
 		              		$('#form-akta_penerimaan_laporan').hide()
@@ -119,20 +119,52 @@ function load_perusahaan_a(npwp_){
 		              		$('#switch_stap5_penerima_laporan_disabled').prop( "checked", false );
 		              	}
 
-		              	if(respon.data.legalitas_7_no_pengesahaan !== ""){
+		              	if(respon.data.legalitas_7_no_pengesahan !== ""){
 		              		$('#field-akta_penerimaan_pemberitahuan .berkas_kosong').prop('required',false);
 		              		$('#form-akta_penerimaan_pemberitahuan').show()
 		              		$('#tr-akta_penerimaan_laporan').show()
 		              		$('.stap5_penerima_pemberitahuan').prop('disabled', false)
 		              		$('#switch_stap5_penerima_pemberitahuan_disabled').prop( "checked", true );
-		              		$('#id_nomor_pengesahan_penerimaan_pemberitahuan').val(respon.data.legalitas_7_no_pengesahaan)
-		              		$('#id_tanggal_pengesahan_penerimaan_pemberitahuan').val(respon.data.legalitas_7_tanggal_pengesahaan)
+		              		$('#id_nomor_pengesahan_penerimaan_pemberitahuan').val(respon.data.legalitas_7_no_pengesahan)
+		              		$('#id_tanggal_pengesahan_penerimaan_pemberitahuan').val(respon.data.legalitas_7_tanggal_pengesahan)
 		              	}
 		              	else{
 		              		$('#form-akta_penerimaan_pemberitahuan').hide()
 		              		$('.stap5_penerima_pemberitahuan').prop('disabled', true)
 		              		$('#switch_stap5_penerima_pemberitahuan_disabled').prop( "checked", false );
 		              		$('#tr-akta_penerimaan_laporan').hide()
+		              	}
+
+		              	if(respon.data.legalitas_8_no_pengesahan !== ""){
+		              		$('#field-pengesahan_menteri_koperasi .berkas_kosong').prop('required',false);
+		              		$('#form-pengesahan_menteri_koperasi').show()
+		              		$('#tr-pengesahan_menteri_koperasi').show()
+		              		$('.stap5_pengesahan_menteri_koperasi').prop('disabled', false)
+		              		$('#switch_stap5_pengesahan_menteri_koperasi_disabled').prop( "checked", true );
+		              		$('#id_nomor_pengesahan_persetujuan_menteri').val(respon.data.legalitas_8_no_pengesahan)
+		              		$('#id_tanggal_pengesahan_pengesahan_menteri_koperasi').val(respon.data.legalitas_8_tanggal_pengesahan)
+		              	}
+		              	else{
+		              		$('#form-pengesahan_menteri_koperasi').hide()
+		              		$('.stap5_pengesahan_menteri_koperasi').prop('disabled', true)
+		              		$('#switch_stap5_pengesahan_menteri_koperasi_disabled').prop( "checked", false );
+		              		$('#tr-pengesahan_menteri_koperasi').hide()
+		              	}
+
+		              	if(respon.data.legalitas_9_no_pengesahaan !== ""){
+		              		$('#field-persetujuan_menteri_koperasi .berkas_kosong').prop('required',false);
+		              		$('#form-persetujuan_menteri_koperasi').show()
+		              		$('#tr-persetujuan_menteri_koperasi').show()
+		              		$('.stap5_persetujuan_menteri_koperasi').prop('disabled', false)
+		              		$('#switch_stap5_persetujuan_menteri_koperasi_disabled').prop( "checked", true );
+		              		$('#id_nomor_pengesahan_persetujuan_menteri_koperasi').val(respon.data.legalitas_8_no_pengesahan)
+		              		$('#id_tanggal_pengesahan_persetujuan_menteri_koperasi').val(respon.data.legalitas_8_tanggal_pengesahan)
+		              	}
+		              	else{
+		              		$('#form-persetujuan_menteri_koperasi').hide()
+		              		$('.stap5_persetujuan_menteri_koperasi').prop('disabled', true)
+		              		$('#switch_stap5_persetujuan_menteri_koperasi_disabled').prop( "checked", false );
+		              		$('#tr-persetujuan_menteri_koperasi').hide()
 		              	}
 		              	
 				  	}, 2000);
