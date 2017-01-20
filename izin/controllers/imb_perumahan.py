@@ -13,7 +13,7 @@ from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, P
 def formulir_imb_perumahan(request):
 	extra_context={}
 	if 'id_kelompok_izin' in request.COOKIES.keys():
-		extra_context.update({'title': 'Izin IMB UMUM'})
+		extra_context.update({'title': 'Izin IMB Perumahan'})
 		negara = Negara.objects.all()
 		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 		jenis_pemohon = JenisPemohon.objects.all()

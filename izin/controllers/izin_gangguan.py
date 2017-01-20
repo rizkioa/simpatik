@@ -28,7 +28,8 @@ def formulir_izin_gangguan(request):
 		extra_context.update({'jenis_lokasi_usaha_list': JENIS_LOKASI_USAHA})
 		extra_context.update({'jenis_bangunan_list': JENIS_BANGUNAN})
 		extra_context.update({'jenis_gangguan_list': JENIS_GANGGUAN})
-		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
@@ -65,12 +66,12 @@ def formulir_izin_gangguan(request):
 							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
 						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
-					ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M , Tinggi = "+str(int(pengajuan_.tinggi))+" M"
+					# ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M , Tinggi = "+str(int(pengajuan_.tinggi))+" M"
 
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
-					extra_context.update({ 'ukuran': ukuran_ })
+					# extra_context.update({ 'ukuran': ukuran_ })
 
 					if pengajuan_.desa:
 						letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
