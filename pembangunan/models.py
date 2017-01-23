@@ -80,10 +80,10 @@ class BAPReklameHO(MetaAtribut):
 	jumlah_mesin = models.IntegerField(verbose_name='Jumlah Mesin', blank=True, null=True)
 	daya_kekuatan_mesin = models.IntegerField(verbose_name='Daya Kekuatan Mesin', blank=True, null=True)
 	jenis_bangunan = models.IntegerField(verbose_name='Kondisi Lahan Usaha', choices=JENIS_BANGUNAN, blank=True, null=True)
-	sebelah_utara = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
-	sebelah_timur = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
-	sebelah_selatan = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
-	sebelah_barat = models.CharField(max_length=60, verbose_name="Sebelah Utara", blank=True, null=True)
+	sebelah_utara = models.CharField(max_length=254, verbose_name="Sebelah Utara", blank=True, null=True)
+	sebelah_timur = models.CharField(max_length=254, verbose_name="Sebelah Timur", blank=True, null=True)
+	sebelah_selatan = models.CharField(max_length=254, verbose_name="Sebelah Selatan", blank=True, null=True)
+	sebelah_barat = models.CharField(max_length=254, verbose_name="Sebelah Barat", blank=True, null=True)
 	klasifikasi_jalan = models.IntegerField(verbose_name='Kondisi Lahan Usaha', choices=KLASIFIKASI_JALAN, blank=True, null=True)
 		
 	def __unicode__(self):
