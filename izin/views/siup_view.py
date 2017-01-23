@@ -496,7 +496,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 											{'nama_notaris_perubahan': legalitas.nama_notaris},
 											{'alamat_notaris_perubahan': legalitas.alamat},
 											{'telephone_notaris_perubahan': legalitas.telephone},
-											{'nomor_pengesahaan_perubahan': legalitas.nomor_pengesahan},
+											{'nomor_pengesahan_perubahan': legalitas.nomor_pengesahan},
 											{'tanggal_pengesahan_perubahan': str(legalitas.tanggal_pengesahan)}
 											]}
 										data = json.dumps(data)
@@ -1141,7 +1141,8 @@ def load_perusahaan(request, npwp_):
 			legalitas_pendirian_no_akta = legalitas_pendirian.nomor_akta
 			legalitas_pendirian_tanggal_akta = legalitas_pendirian.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_pendirian_no_pengesahan = legalitas_pendirian.nomor_pengesahan
-			legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
+			if legalitas_pendirian.tanggal_pengesahan:
+				legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
 		legalitas_perubahan_id = ""
 		legalitas_perubahan_nama_notaris = ""
 		legalitas_perubahan_alamat = ""
@@ -1160,7 +1161,7 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_tanggal_akta = legalitas_perubahan.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_perubahan_no_pengesahan = legalitas_perubahan.nomor_pengesahan
 			legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
-		# Legalitas Pengesahaan Menteri Hukum dan HAM
+		# Legalitas Pengesahan Menteri Hukum dan HAM
 		legalitas_3 = perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 		legalitas_3_no_pengesahan = ""
 		legalitas_3_tanggal_pengesahan = ""
@@ -1194,7 +1195,7 @@ def load_perusahaan(request, npwp_):
 		if legalitas_8:
 			legalitas_8_no_pengesahan  = legalitas_8.nomor_pengesahan
 			legalitas_8_tanggal_pengesahan = legalitas_8.tanggal_pengesahan.strftime('%d-%m-%Y')
-		legalitas_9 = perusahaan.leglaitas_set.filter(jenis_legalitas_id=9).last()
+		legalitas_9 = perusahaan.legalitas_set.filter(jenis_legalitas_id=9).last()
 		legalitas_9_no_pengesahan = ""
 		legalitas_9_tanggal_pengesahan = ""
 		if legalitas_9:

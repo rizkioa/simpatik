@@ -263,7 +263,7 @@ def tdp_legalitas_pt_cookie(request):
 					onoffpenerimalaporan = request.POST.get('onoffpenerimalaporan')
 					if onoffpenerimalaporan == 'on':
 						noppm3 = request.POST.get('nomor_pengesahan_penerima_laporan')
-						tglppm3 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahaan_penerima_laporan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+						tglppm3 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_penerima_laporan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						try:
 							legalitas_penerima_laporan = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=6)
 							legalitas_penerima_laporan.jenis_legalitas_id = 6
@@ -970,6 +970,12 @@ def tdp_upload_surat_keputusan(request):
 										elif kode == 'Akta PT':
 											berkas.nama_berkas = "Akta PT "+p.perusahaan.nama_perusahaan
 											berkas.keterangan = "Akta PT "+p.perusahaan.npwp
+										elif kode == 'Susunan Pengurus':
+											berkas.nama_berkas = "Susunan Pengurus yang telah mendapatkan pengesahan "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "Susunan Pengurus yang telah mendapatkan pengesahan "+p.perusahaan.npwp
+										elif kode == "NPWP Koperasi":
+											berkas.nama_berkas = "NPWP Koperasi "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "NPWP Koperasi "+p.perusahaan.npwp
 										if request.user.is_authenticated():
 											berkas.created_by_id = request.user.id
 										else:
@@ -1032,7 +1038,7 @@ def tdp_upload_akta_legalitas(request):
 							else:
 								try:
 									jenis_legalitas = request.POST.get('jenis_legalitas')
-									print jenis_legalitas
+									# print jenis_legalitas
 									p = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 									berkas = form.save(commit=False)
 									if jenis_legalitas == '3':
@@ -1050,7 +1056,15 @@ def tdp_upload_akta_legalitas(request):
 									elif jenis_legalitas == '7':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=7).last()
 										berkas.nama_berkas = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.nama_perusahaan
-										berkas.keterangan = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.npwp									
+										berkas.keterangan = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.npwp
+									elif jenis_legalitas == '8':
+										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=8).last()
+										berkas.nama_berkas = "Akta Pengesahan Menteri Koperasi UKM "+p.perusahaan.nama_perusahaan
+										berkas.keterangan = "Akta Pengesahan Menteri Koperasi UKM "+p.perusahaan.npwp
+									elif jenis_legalitas == '9':
+										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=9).last()
+										berkas.nama_berkas = "Akta Persetujuan Menteri Koperasi dan UKM atas Akta Perubahan Anggaran Dasar "+p.perusahaan.nama_perusahaan
+										berkas.keterangan = "Akta Persetujuan Menteri Koperasi dan UKM atas Akta Perubahan Anggaran Dasar "+p.perusahaan.npwp
 									
 									if request.user.is_authenticated():
 										berkas.created_by_id = request.user.id
@@ -1107,6 +1121,8 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 			legalitas_4 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_6 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=6).last()
 			legalitas_7 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=7).last()
+			legalitas_8 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=8).last()
+			legalitas_9 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=9).last()
 
 			if pemohon_:
 				npwp_pribadi = pemohon_.berkas_npwp
@@ -1159,6 +1175,20 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					nm_berkas.append(pendukung.nama_berkas)
 					id_berkas.append(pendukung.id)
 
+				susunan_pengurus = berkas_.filter(keterangan='Susunan Pengurus yang telah mendapatkan pengesahan '+perusahaan_.npwp).last()
+				if susunan_pengurus:
+					url_berkas.append(susunan_pengurus.berkas.url)
+					id_elemen.append('susunan_pengurus')
+					nm_berkas.append(susunan_pengurus.nama_berkas)
+					id_berkas.append(susunan_pengurus.id)
+
+				npwp_koperasi = berkas_.filter(keterangan='NPWP Koperasi '+perusahaan_.npwp).last()
+				if npwp_koperasi:
+					url_berkas.append(npwp_koperasi.berkas.url)
+					id_elemen.append('npwp_koperasi')
+					nm_berkas.append(npwp_koperasi.nama_berkas)
+					id_berkas.append(npwp_koperasi.id)
+
 			if legalitas_1:
 				legalitas_1 = legalitas_1.berkas
 				if legalitas_1:
@@ -1179,7 +1209,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 				legalitas_3 = legalitas_3.berkas
 				if legalitas_3:
 					url_berkas.append(legalitas_3.berkas.url)
-					id_elemen.append('akta_pengesahaan_menteri')
+					id_elemen.append('akta_pengesahan_menteri')
 					nm_berkas.append(legalitas_3.nama_berkas)
 					id_berkas.append(legalitas_3.id)
 
@@ -1206,6 +1236,24 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_penerimaan_pemberitahuan')
 					nm_berkas.append(legalitas_7.nama_berkas)
 					id_berkas.append(legalitas_7.id)
+
+			if legalitas_8:
+				legalitas_8 = legalitas_8.berkas
+				if legalitas_8:
+					url_berkas.append(legalitas_8.berkas.url)
+					id_elemen.append('akta_pengesahan_menteri_koperasi')
+					nm_berkas.append(legalitas_8.nama_berkas)
+					id_berkas.append(legalitas_8.id)
+
+			if legalitas_9:
+				legalitas_9 = legalitas_9.berkas
+				if legalitas_9:
+					url_berkas.append(legalitas_9.berkas.url)
+					id_elemen.append('akta_persetujuan_menteri_koperasi')
+					nm_berkas.append(legalitas_9.nama_berkas)
+					id_berkas.append(legalitas_9.id)
+
+
 
 			nomor_ktp = request.COOKIES['nomor_ktp']
 			if nomor_ktp:
@@ -1250,7 +1298,7 @@ def ajax_delete_berkas_tdp(request, id_berkas, kode):
 			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=2).last()
 			legalitas_perubahan.berkas = None
 			legalitas_perubahan.save()
-		elif kode == 'akta_pengesahaan_menteri':
+		elif kode == 'akta_pengesahan_menteri':
 			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=3).last()
 			legalitas_perubahan.berkas = None
@@ -1438,7 +1486,43 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				banyaknya_saham = pengajuan_.banyaknya_saham
 			if pengajuan_.nilai_nominal_per_saham:
 				nilai_nominal_per_saham = pengajuan_.nilai_nominal_per_saham
-			data_rincian_perusahaan = {'rincian':{'modal_dasar':modal_dasar, 'modal_ditempatkan':modal_ditempatkan, 'modal_disetor':modal_disetor, 'banyaknya_saham':banyaknya_saham, 'nilai_nominal_per_saham':nilai_nominal_per_saham}}
+
+			# rincian koperasi
+			jenis_koperasi = ""
+			bentuk_koperasi = ""
+			modal_sendiri_simpanan_pokok = ""
+			modal_sendiri_simpanan_wajib = ""
+			modal_sendiri_dana_cadangan = ""
+			modal_sendiri_hibah = ""
+			modal_pinjaman_anggota = ""
+			modal_pinjaman_koperasi_lain = ""
+			modal_pinjaman_bank = ""
+			modal_pinjaman_lainnya = ""
+			jumlah_anggota = ""
+			if pengajuan_.jenis_koperasi:
+				jenis_koperasi = pengajuan_.jenis_koperasi.jenis_koperasi
+			if pengajuan_.bentuk_koperasi:
+				bentuk_koperasi = pengajuan_.bentuk_koperasi.bentuk_koperasi
+			if pengajuan_.modal_sendiri_simpanan_pokok:
+				modal_sendiri_simpanan_pokok = pengajuan_.modal_sendiri_simpanan_pokok
+			if pengajuan_.modal_sendiri_simpanan_wajib:
+				modal_sendiri_simpanan_wajib = pengajuan_.modal_sendiri_simpanan_wajib
+			if pengajuan_.modal_sendiri_dana_cadangan:
+				modal_sendiri_dana_cadangan = pengajuan_.modal_sendiri_dana_cadangan
+			if pengajuan_.modal_sendiri_hibah:
+				modal_sendiri_hibah = pengajuan_.modal_sendiri_hibah
+			if pengajuan_.modal_pinjaman_anggota:
+				modal_pinjaman_anggota = pengajuan_.modal_pinjaman_anggota
+			if pengajuan_.modal_pinjaman_koperasi_lain:
+				modal_pinjaman_koperasi_lain = pengajuan_.modal_pinjaman_koperasi_lain
+			if pengajuan_.modal_pinjaman_bank:
+				modal_pinjaman_bank = pengajuan_.modal_pinjaman_bank
+			if pengajuan_.modal_pinjaman_lainnya:
+				modal_pinjaman_lainnya = pengajuan_.modal_pinjaman_lainnya
+			if pengajuan_.jumlah_anggota:
+				jumlah_anggota = pengajuan_.jumlah_anggota
+
+			data_rincian_perusahaan = {'rincian':{'modal_dasar':modal_dasar, 'modal_ditempatkan':modal_ditempatkan, 'modal_disetor':modal_disetor, 'banyaknya_saham':banyaknya_saham, 'nilai_nominal_per_saham':nilai_nominal_per_saham, 'jenis_koperasi': jenis_koperasi, 'bentuk_koperasi': bentuk_koperasi, 'modal_sendiri_simpanan_pokok': modal_sendiri_simpanan_pokok, 'modal_sendiri_simpanan_wajib': modal_sendiri_simpanan_wajib, 'modal_sendiri_dana_cadangan': modal_sendiri_dana_cadangan,'modal_sendiri_hibah': modal_sendiri_hibah, 'modal_pinjaman_anggota': modal_pinjaman_anggota, 'modal_pinjaman_koperasi_lain': modal_pinjaman_koperasi_lain, 'modal_pinjaman_bank': modal_pinjaman_bank, 'modal_pinjaman_lainnya': modal_pinjaman_lainnya,'jumlah_anggota': jumlah_anggota}}
 			# ###### end data kegiatan perusahaan ######
 			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon,data_perusahaan,data_umum_perusahaan,data_kegiatan_perusahaan,data_rincian_perusahaan,data_kuasa
 			response = HttpResponse(json.dumps(data))

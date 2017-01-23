@@ -97,19 +97,19 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_akta_legalitas' %}" id="form-akta_pengesahaan_menteri">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_akta_legalitas' %}" id="form-akta_pengesahan_menteri">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label">File Akta Pengesahan Menteri dan HAM</label>
-      <span id="field-akta_pengesahaan_menteri">
+      <span id="field-akta_pengesahan_menteri">
         <div class="col-sm-5">
           <input type="hidden" name="jenis_legalitas" value="3">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-akta_pengesahaan_menteri" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-akta_pengesahaan_menteri" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-akta_pengesahan_menteri" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pengesahan_menteri" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-akta_pengesahaan_menteri"></span>
+      <span class="col-sm-6" id="load-akta_pengesahan_menteri"></span>
     </div>
   </form>
 

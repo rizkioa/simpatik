@@ -73,8 +73,8 @@ function load_perusahaan_a(npwp_){
 		              	}
 
 		              	if(respon.data.legalitas_3_no_pengesahan !== ""){
-		              		$('#field-akta_pengesahaan_menteri .berkas_kosong').prop('required',false);
-		              		$('#form-akta_pengesahaan_menteri').show()
+		              		$('#field-akta_pengesahan_menteri .berkas_kosong').prop('required',false);
+		              		$('#form-akta_pengesahan_menteri').show()
 		              		$('#tr-akta_perubahan').show()
 		              		$('.stap5_pengesahan_menteri').prop('disabled', false)
 		              		$('#switch_stap5_pengesahan_menteri_disabled').prop( "checked", true );
@@ -82,7 +82,7 @@ function load_perusahaan_a(npwp_){
 		              		$('#id_tanggal_pengesahan_pengesahan_menteri').val(respon.data.legalitas_3_tanggal_pengesahan)
 		              	}
 		              	else{
-		              		$('#form-akta_pengesahaan_menteri').hide()
+		              		$('#form-akta_pengesahan_menteri').hide()
 		              		$('.stap5_pengesahan_menteri').prop('disabled', true)
 		              		$('#switch_stap5_pengesahan_menteri_disabled').prop( "checked", false );
 		              		$('#tr-akta_perubahan').hide()
@@ -91,7 +91,7 @@ function load_perusahaan_a(npwp_){
 		              	if(respon.data.legalitas_4_no_pengesahan !== ""){
 		              		$('#field-akta_persetujuan_menteri .berkas_kosong').prop('required',false);
 		              		$('#form-akta_persetujuan_menteri').show()
-		              		$('#tr-akta_pengesahaan_menteri').show()
+		              		$('#tr-akta_pengesahan_menteri').show()
 		              		$('.stap5_persetujuan_menteri').prop('disabled', false)
 		              		$('#switch_stap5_persetujuan_menteri_disabled').prop( "checked", true );
 		              		$('#id_nomor_pengesahan_persetujuan_menteri').val(respon.data.legalitas_4_no_pengesahan)
@@ -101,7 +101,7 @@ function load_perusahaan_a(npwp_){
 		              		$('#form-akta_persetujuan_menteri').hide()
 		              		$('.stap5_persetujuan_menteri').prop('disabled', true)
 		              		$('#switch_stap5_persetujuan_menteri_disabled').prop( "checked", false );
-		              		$('#tr-akta_pengesahaan_menteri').hide()
+		              		$('#tr-akta_pengesahan_menteri').hide()
 		              	}
 
 		              	if(respon.data.legalitas_6_no_pengesahan !== ""){
@@ -111,7 +111,7 @@ function load_perusahaan_a(npwp_){
 		              		$('.stap5_penerima_laporan').prop('disabled', false)
 		              		$('#switch_stap5_penerima_laporan_disabled').prop( "checked", true );
 		              		$('#id_nomor_pengesahan_penerima_laporan').val(respon.data.legalitas_6_no_pengesahan)
-		              		$('#id_tanggal_pengesahaan_penerima_laporan').val(respon.data.legalitas_6_tanggal_pengesahan)
+		              		$('#id_tanggal_pengesahan_penerima_laporan').val(respon.data.legalitas_6_tanggal_pengesahan)
 		              	}
 		              	else{
 		              		$('#form-akta_penerimaan_laporan').hide()
@@ -136,35 +136,35 @@ function load_perusahaan_a(npwp_){
 		              	}
 
 		              	if(respon.data.legalitas_8_no_pengesahan !== ""){
-		              		$('#field-pengesahan_menteri_koperasi .berkas_kosong').prop('required',false);
-		              		$('#form-pengesahan_menteri_koperasi').show()
-		              		$('#tr-pengesahan_menteri_koperasi').show()
+		              		$('#field-akta_pengesahan_menteri_koperasi .berkas_kosong').prop('required',false);
+		              		$('#form-akta_pengesahan_menteri_koperasi').show()
+		              		$('#tr-akta_pengesahan_menteri_koperasi').show()
 		              		$('.stap5_pengesahan_menteri_koperasi').prop('disabled', false)
 		              		$('#switch_stap5_pengesahan_menteri_koperasi_disabled').prop( "checked", true );
 		              		$('#id_nomor_pengesahan_persetujuan_menteri').val(respon.data.legalitas_8_no_pengesahan)
 		              		$('#id_tanggal_pengesahan_pengesahan_menteri_koperasi').val(respon.data.legalitas_8_tanggal_pengesahan)
 		              	}
 		              	else{
-		              		$('#form-pengesahan_menteri_koperasi').hide()
+		              		$('#form-akta_pengesahan_menteri_koperasi').hide()
 		              		$('.stap5_pengesahan_menteri_koperasi').prop('disabled', true)
 		              		$('#switch_stap5_pengesahan_menteri_koperasi_disabled').prop( "checked", false );
-		              		$('#tr-pengesahan_menteri_koperasi').hide()
+		              		$('#tr-akta_pengesahan_menteri_koperasi').hide()
 		              	}
 
-		              	if(respon.data.legalitas_9_no_pengesahaan !== ""){
-		              		$('#field-persetujuan_menteri_koperasi .berkas_kosong').prop('required',false);
-		              		$('#form-persetujuan_menteri_koperasi').show()
-		              		$('#tr-persetujuan_menteri_koperasi').show()
+		              	if(respon.data.legalitas_9_no_pengesahan !== ""){
+		              		$('#field-akta_persetujuan_menteri_koperasi .berkas_kosong').prop('required',false);
+		              		$('#form-akta_persetujuan_menteri_koperasi').show()
+		              		$('#tr-akta_persetujuan_menteri_koperasi').show()
 		              		$('.stap5_persetujuan_menteri_koperasi').prop('disabled', false)
 		              		$('#switch_stap5_persetujuan_menteri_koperasi_disabled').prop( "checked", true );
 		              		$('#id_nomor_pengesahan_persetujuan_menteri_koperasi').val(respon.data.legalitas_8_no_pengesahan)
 		              		$('#id_tanggal_pengesahan_persetujuan_menteri_koperasi').val(respon.data.legalitas_8_tanggal_pengesahan)
 		              	}
 		              	else{
-		              		$('#form-persetujuan_menteri_koperasi').hide()
+		              		$('#form-akta_persetujuan_menteri_koperasi').hide()
 		              		$('.stap5_persetujuan_menteri_koperasi').prop('disabled', true)
 		              		$('#switch_stap5_persetujuan_menteri_koperasi_disabled').prop( "checked", false );
-		              		$('#tr-persetujuan_menteri_koperasi').hide()
+		              		$('#tr-akta_persetujuan_menteri_koperasi').hide()
 		              	}
 		              	
 				  	}, 2000);

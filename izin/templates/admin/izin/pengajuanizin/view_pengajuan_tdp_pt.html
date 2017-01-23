@@ -254,9 +254,9 @@
 
 						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_pt' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
 
-						{% if status != 6 and status != 11 and status != 4%}
+						
 						<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
-						{% endif %}
+						
 
 					{% endif %}
 
@@ -1144,7 +1144,7 @@
                                             	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">link here</a>
 		                                        {% endif %}
                                             {% endwith %}
 								        </div>
@@ -1579,27 +1579,27 @@
 						    <tr>
 						      <td style="padding-left:1%" width="25%">1. Modal Dasar</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.modal_dasar}},-</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">2. Modal ditempatkan</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.modal_ditempatkan}},-</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">3. Modal disetor Rp.</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.modal_disetor}},-</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Banyak Saham</td>
 						      <td>:</td>
-						      <td> Lembar</td>
+						      <td> {{pengajuan.banyak_saham}} Lembar</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Nilai Nominal per saham</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.nilai_nominal_per_saham}},-</td>
 						    </tr>
 						    <tr>
 						      <td><i>D. Total Asset (setelah perusahaan beroperasi)</i></td>
