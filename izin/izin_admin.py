@@ -1,5 +1,6 @@
 import json
 import base64
+import datetime
 from izin.utils import terbilang_, terbilang, formatrupiah
 from django.db.models import Q
 from django.contrib import admin
@@ -304,16 +305,18 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
 			link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})		
-		elif obj.kelompok_jenis_izin.id == 25:
+		elif obj.kelompok_jenis_izin.kode == "TDP-PT":
 			link_ = reverse('admin:view_pengajuan_tdp_pt', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.id == 26:
+		elif obj.kelompok_jenis_izin.kode == "TDP-CV":
 			link_ = reverse('admin:view_pengajuan_tdp_cv', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.id == 27:
+		elif obj.kelompok_jenis_izin.kode == "TDP-FIRMA":
 			link_ = reverse('admin:view_pengajuan_tdp_firma', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.id == 28:
+		elif obj.kelompok_jenis_izin.kode == "TDP-PERORANGAN":
 			link_ = reverse('admin:view_pengajuan_tdp_perorangan', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "TDP-BUL":
 			link_ = reverse('admin:view_pengajuan_tdp_bul', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "TDP-KOPERASI":
+			link_ = reverse('admin:view_pengajuan_tdp_koperasi', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -847,6 +850,7 @@ class IzinAdmin(admin.ModelAdmin):
 						}
 					elif request.POST.get('aksi') == '_submit_penomoran':
 						obj_skizin.status = 10
+
 						obj_skizin.save()
 						try:
 							kode_izin_ =  obj.kelompok_jenis_izin.kode
@@ -875,6 +879,7 @@ class IzinAdmin(admin.ModelAdmin):
 					
 					elif request.POST.get('aksi') == '_submit_penomoran_tdp':
 						obj_skizin.status = 10
+						obj_skizin.created_at = datetime.datetime.now()
 						obj_skizin.save()
 						try:
 							nomor = request.POST.get('nomor')
@@ -1046,6 +1051,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/tdp-cv/$', self.admin_site.admin_view(formulir_tdp_cv), name='izin_proses_tdp_cv'),
 			url(r'^wizard/add/proses/tdp-firma/$', self.admin_site.admin_view(formulir_tdp_firma), name='izin_proses_tdp_firma'),
 			url(r'^wizard/add/proses/tdp-perorangan/$', self.admin_site.admin_view(formulir_tdp_perorangan), name='izin_proses_tdp_perorangan'),
+			url(r'^wizard/add/proses/tdp-koperasi/$', self.admin_site.admin_view(formulir_tdp_koperasi), name='izin_proses_tdp_koperasi'),
 			url(r'^wizard/add/proses/tdp-bul/$', self.admin_site.admin_view(formulir_tdp_bul), name='izin_proses_tdp_bul'),
 			url(r'^wizard/add/proses/pemakaian-kekayaan-daerah/$', self.admin_site.admin_view(formulir_informasi_kekayaan_daerah), name='izin_proses_pemakaian_kekayaan_daerah'),
 			url(r'^wizard/add/proses/izin-gangguan/$', self.admin_site.admin_view(formulir_izin_gangguan), name='izin_proses_gangguan'),

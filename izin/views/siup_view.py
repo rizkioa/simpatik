@@ -108,7 +108,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
 		# elif k.id in [25, 26]:
-		elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL":
+		elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -217,7 +217,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL":
+					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
 					# elif k.id == 25 or k.id == 26 or k.id == 27 or k.id == 28:
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
@@ -275,7 +275,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilIUJK')
 					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL":
+					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "503.01.06/":
 						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
@@ -451,7 +451,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 										{'nama_notaris': f.nama_notaris},
 										{'alamat_notaris': f.alamat},
 										{'telephone_notaris': f.telephone},
-										{'nomor_pengesahaan': f.nomor_pengesahan},
+										{'nomor_pengesahan': f.nomor_pengesahan},
 										{'tanggal_pengesahan': str(f.tanggal_pengesahan)}
 										]}
 									data = json.dumps(data)
@@ -496,7 +496,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 											{'nama_notaris_perubahan': legalitas.nama_notaris},
 											{'alamat_notaris_perubahan': legalitas.alamat},
 											{'telephone_notaris_perubahan': legalitas.telephone},
-											{'nomor_pengesahaan_perubahan': legalitas.nomor_pengesahan},
+											{'nomor_pengesahan_perubahan': legalitas.nomor_pengesahan},
 											{'tanggal_pengesahan_perubahan': str(legalitas.tanggal_pengesahan)}
 											]}
 										data = json.dumps(data)
@@ -1141,7 +1141,8 @@ def load_perusahaan(request, npwp_):
 			legalitas_pendirian_no_akta = legalitas_pendirian.nomor_akta
 			legalitas_pendirian_tanggal_akta = legalitas_pendirian.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_pendirian_no_pengesahan = legalitas_pendirian.nomor_pengesahan
-			legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
+			if legalitas_pendirian.tanggal_pengesahan:
+				legalitas_pendirian_tanggal_pengesahan = legalitas_pendirian.tanggal_pengesahan.strftime('%d-%m-%Y')
 		legalitas_perubahan_id = ""
 		legalitas_perubahan_nama_notaris = ""
 		legalitas_perubahan_alamat = ""
@@ -1160,37 +1161,50 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_tanggal_akta = legalitas_perubahan.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_perubahan_no_pengesahan = legalitas_perubahan.nomor_pengesahan
 			legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
-		# Legalitas Pengesahaan Menteri Hukum dan HAM
+		# Legalitas Pengesahan Menteri Hukum dan HAM
 		legalitas_3 = perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-		legalitas_3_no_pengesahaan = ""
-		legalitas_3_tanggal_pengesahaan = ""
+		legalitas_3_no_pengesahan = ""
+		legalitas_3_tanggal_pengesahan = ""
 		if legalitas_3:
-			legalitas_3_no_pengesahaan = legalitas_3.nomor_pengesahan
-			legalitas_3_tanggal_pengesahaan = legalitas_3.tanggal_pengesahan.strftime('%d-%m-%Y')
+			legalitas_3_no_pengesahan = legalitas_3.nomor_pengesahan
+			legalitas_3_tanggal_pengesahan = legalitas_3.tanggal_pengesahan.strftime('%d-%m-%Y')
 		# Legalitas Persetujuan Menteri Hukum dan HAM Atas Perubahan Anggaran Dasar
 		legalitas_4 = perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-		legalitas_4_no_pengesahaan = ""
-		legalitas_4_tanggal_pengesahaan = ""
+		legalitas_4_no_pengesahan = ""
+		legalitas_4_tanggal_pengesahan = ""
 		if legalitas_4:
-			legalitas_4_no_pengesahaan = legalitas_4.nomor_pengesahan
-			legalitas_4_tanggal_pengesahaan = legalitas_4.tanggal_pengesahan.strftime('%d-%m-%Y')
+			legalitas_4_no_pengesahan = legalitas_4.nomor_pengesahan
+			legalitas_4_tanggal_pengesahan = legalitas_4.tanggal_pengesahan.strftime('%d-%m-%Y')
 		# Legalitas Penerimaan Laporan Perubahan Anggaran Dasar
 		legalitas_6 = perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-		legalitas_6_no_pengesahaan = ""
-		legalitas_6_tanggal_pengesahaan = ""
+		legalitas_6_no_pengesahan = ""
+		legalitas_6_tanggal_pengesahan = ""
 		if legalitas_6:
-			legalitas_6_no_pengesahaan = legalitas_6.nomor_pengesahan
-			legalitas_6_tanggal_pengesahaan = legalitas_6.tanggal_pengesahan.strftime('%d-%m-%Y')
+			legalitas_6_no_pengesahan = legalitas_6.nomor_pengesahan
+			legalitas_6_tanggal_pengesahan = legalitas_6.tanggal_pengesahan.strftime('%d-%m-%Y')
 		# Legalitas Penerimaan Pemberitahuan Perubahan Direksi/ Komisaris
-		legalitas_7 = perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-		legalitas_7_no_pengesahaan = ""
-		legalitas_7_tanggal_pengesahaan = ""
+		legalitas_7 = perusahaan.legalitas_set.filter(jenis_legalitas_id=7).last()
+		legalitas_7_no_pengesahan = ""
+		legalitas_7_tanggal_pengesahan = ""
 		if legalitas_7:
-			legalitas_7_no_pengesahaan = legalitas_7.nomor_pengesahan
-			legalitas_7_tanggal_pengesahaan = legalitas_7.tanggal_pengesahan.strftime('%d-%m-%Y')
+			legalitas_7_no_pengesahan = legalitas_7.nomor_pengesahan
+			legalitas_7_tanggal_pengesahan = legalitas_7.tanggal_pengesahan.strftime('%d-%m-%Y')
+		legalitas_8 = perusahaan.legalitas_set.filter(jenis_legalitas_id=8).last()
+		legalitas_8_no_pengesahan = ""
+		legalitas_8_tanggal_pengesahan = ""
+		if legalitas_8:
+			legalitas_8_no_pengesahan  = legalitas_8.nomor_pengesahan
+			legalitas_8_tanggal_pengesahan = legalitas_8.tanggal_pengesahan.strftime('%d-%m-%Y')
+		legalitas_9 = perusahaan.legalitas_set.filter(jenis_legalitas_id=9).last()
+		legalitas_9_no_pengesahan = ""
+		legalitas_9_tanggal_pengesahan = ""
+		if legalitas_9:
+			legalitas_9_no_pengesahan = legalitas_9.nomor_pengesahan
+			legalitas_9_tanggal_pengesahan = legalitas_9.tanggal_pengesahan.strftime('%d-%m-%Y')
+
 		data = {'success': True, 'pesan': 'Load data berhasil.', 
 		'data': 
-		{'nomor_tdp':nomor_tdp, 'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_id': legalitas_pendirian_id, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_id': legalitas_perubahan_id, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan, 'legalitas_3_no_pengesahaan': legalitas_3_no_pengesahaan, 'legalitas_3_tanggal_pengesahaan': legalitas_3_tanggal_pengesahaan, 'legalitas_4_no_pengesahaan': legalitas_4_no_pengesahaan, 'legalitas_4_tanggal_pengesahaan': legalitas_4_tanggal_pengesahaan, 'legalitas_6_no_pengesahaan': legalitas_6_no_pengesahaan, 'legalitas_6_tanggal_pengesahaan': legalitas_6_tanggal_pengesahaan, 'legalitas_7_no_pengesahaan': legalitas_7_no_pengesahaan, 'legalitas_7_tanggal_pengesahaan': legalitas_7_tanggal_pengesahaan,}}
+		{'nomor_tdp':nomor_tdp, 'nama_perusahaan': nama_perusahaan, 'alamat_perusahaan': alamat_perusahaan, 'kode_pos': kode_pos, 'telepon': telepon, 'fax': fax, 'email': email ,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara, 'legalitas_pendirian_id': legalitas_pendirian_id, 'legalitas_pendirian_nama_notaris': legalitas_pendirian_nama_notaris, 'legalitas_pendirian_alamat': legalitas_pendirian_alamat, 'legalitas_pendirian_telephone': legalitas_pendirian_telephone, 'legalitas_pendirian_no_akta':legalitas_pendirian_no_akta, 'legalitas_pendirian_tanggal_akta': legalitas_pendirian_tanggal_akta, 'legalitas_pendirian_no_pengesahan': legalitas_pendirian_no_pengesahan, 'legalitas_pendirian_tanggal_pengesahan': legalitas_pendirian_tanggal_pengesahan, 'legalitas_perubahan_id': legalitas_perubahan_id, 'legalitas_perubahan_nama_notaris': legalitas_perubahan_nama_notaris, 'legalitas_perubahan_alamat': legalitas_perubahan_alamat, 'legalitas_perubahan_telephone': legalitas_perubahan_telephone, 'legalitas_perubahan_no_akta': legalitas_perubahan_no_akta, 'legalitas_perubahan_tanggal_akta': legalitas_perubahan_tanggal_akta, 'legalitas_perubahan_no_pengesahan':legalitas_perubahan_no_pengesahan, 'legalitas_perubahan_tanggal_pengesahan':legalitas_perubahan_tanggal_pengesahan, 'legalitas_3_no_pengesahan': legalitas_3_no_pengesahan, 'legalitas_3_tanggal_pengesahan': legalitas_3_tanggal_pengesahan, 'legalitas_4_no_pengesahan': legalitas_4_no_pengesahan, 'legalitas_4_tanggal_pengesahan': legalitas_4_tanggal_pengesahan, 'legalitas_6_no_pengesahan': legalitas_6_no_pengesahan, 'legalitas_6_tanggal_pengesahan': legalitas_6_tanggal_pengesahan, 'legalitas_7_no_pengesahan': legalitas_7_no_pengesahan, 'legalitas_7_tanggal_pengesahan': legalitas_7_tanggal_pengesahan, 'legalitas_8_no_pengesahan': legalitas_8_no_pengesahan, 'legalitas_8_tanggal_pengesahan': legalitas_8_tanggal_pengesahan, 'legalitas_9_no_pengesahan': legalitas_9_no_pengesahan, 'legalitas_9_tanggal_pengesahan': legalitas_9_tanggal_pengesahan}}
 
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
@@ -1208,8 +1222,8 @@ def ajax_load_berkas_siup(request, id_pengajuan):
 			p = siup.perusahaan
 			pemohon = siup.pemohon
 			berkas_ = siup.berkas_tambahan.all()
-			legalitas_pendirian = p.legalitas_set.filter(jenis_legalitas__id=1).last()
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+			legalitas_pendirian = p.legalitas_set.filter(jenis_legalitas_id=1).last()
+			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=2).last()
 
 			foto = pemohon.berkas_foto.last()
 			if foto:

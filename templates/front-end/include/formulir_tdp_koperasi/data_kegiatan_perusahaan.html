@@ -19,6 +19,34 @@
     </div>
   </div>
 
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Jenis Koperasi</label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="jenis_koperasi" id="id_jenis_koperasi">
+        <option value>-- Pilih Jenis Koperasi --</option>
+        {% if jenis_koperasi %}
+          {% for j in jenis_koperasi %}
+            <option value="{{j.id}}">{{j.jenis_koperasi}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Bentuk Koperasi</label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="bentuk_koperasi" id="id_bentuk_koperasi">
+        <option value>-- Pilih Bentuk Koperasi --</option>
+        {% if bentuk_koperasi %}
+          {% for b in bentuk_koperasi %}
+            <option value="{{b.id}}">{{b.bentuk_koperasi}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+
   <!-- <div class="form-group">
     <label  class="col-sm-2 control-label"><strong>Komoditi/Produk Pokok</strong></label>
     <div class="col-sm-7">
@@ -52,49 +80,112 @@
     </div>
   </div>
 
-  <h4>C. Modal dan Saham</h4>
+  <h4>C. Modal</h4>
   <div class="form-group">
-    <label  class="col-sm-2 control-label"><strong>1. Modal Dasar</strong></label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control rupiah" id="id_modal_dasar" name="modal_dasar" required="" data-parsley-trigger="change">
+    <div class="col-md-6" style="padding-left: 10%;">
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-12">
+          <label>1. Modal Sendiri</label>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label"><strong>a. Simpanan Pokok</strong></label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_sendiri_simpanan_pokok" id="id_modal_sendiri_simpanan_pokok" required="" data-parsley-trigger="change">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label"><strong>b. Simpanan Wajib</strong></label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_sendiri_simpanan_wajib" id="id_modal_sendiri_simpanan_wajib" required="" data-parsley-trigger="change">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label">c. Dana Cadangan</label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_sendiri_dana_cadangan" id="id_modal_sendiri_dana_cadangan">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label">d. Hibah</label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_sendiri_hibah" id="id_modal_sendiri_hibah">
+          </div>
+        </div>
       </div>
     </div>
-
-    <label  class="col-sm-2 control-label">4. Banyaknya saham (lembar)</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="id_banyaknya_saham" name="banyaknya_saham" >
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label  class="col-sm-2 control-label"><strong>2. Modal ditempatkan</strong></label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control rupiah" name="modal_ditempatkan" id="id_modal_ditempatkan" required="" data-parsley-trigger="change">
+    <div class="col-md-6" style="padding-right: 10%;">
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-12">
+          <label>2. Modal Pinjaman</label>
+        </div>
       </div>
-    </div>
-
-    <label  class="col-sm-2 control-label">5. Nilai nominal per saham</label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control rupiah" name="nilai_nominal_per_saham" id="id_nilai_nominal_per_saham">
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label">a. Anggota</label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_pinjaman_anggota" id="id_modal_pinjaman_anggota">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label">b. Koperasi lain</label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_pinjaman_koperasi_lain" id="id_modal_pinjaman_koperasi_lain">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label">c. Bank</label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_pinjaman_bank" id="id_modal_pinjaman_bank">
+          </div>
+        </div>
+      </div>
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col-md-4">
+          <label class="control-label">d. Lainnya</label>
+        </div>
+        <div class="col-md-8">
+          <div class="input-group">
+            <span class="input-group-addon">Rp.</span>
+            <input type="text" class="form-control rupiah" name="modal_pinjaman_lainnya" id="id_modal_pinjaman_lainnya">
+          </div>
+        </div>
       </div>
     </div>
   </div>
     
-  <div class="form-group">
-    <label  class="col-sm-2 control-label">3. Modal disetor</label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Rp.</span>
-        <input type="text" class="form-control rupiah" name="modal_disetor" id="id_modal_disetor">
-      </div>
-    </div>
-  </div>
 
   <div class="form-group">
     <label  class="col-sm-4 control-label text-left">

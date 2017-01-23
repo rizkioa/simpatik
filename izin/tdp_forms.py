@@ -1,5 +1,5 @@
 from django import forms
-from izin.models import DetilTDP, RincianPerusahaan, IzinLain
+from izin.models import DetilTDP, IzinLain
 from perusahaan.models import Legalitas, DataPimpinan, PemegangSaham, Perusahaan
 from master.models import Berkas
 
@@ -8,20 +8,10 @@ class DataUmumPerusahaanPTForm(forms.ModelForm):
 		model = DetilTDP
 		fields = ('status_perusahaan', 'bentuk_kerjasama', 'jumlah_bank', 'nasabah_utama_bank_1', 'nasabah_utama_bank_2', 'jenis_penanaman_modal', 'tanggal_pendirian', 'tanggal_mulai_kegiatan', 'jangka_waktu_berdiri', 'merek_dagang', 'no_merek_dagang', 'pemegang_hak_cipta', 'no_hak_cipta', 'pemegang_hak_paten' , 'no_hak_paten')
 
-# class DataUmumPerusahaanPTKantorCabangForm(forms.ModelForm):
-# 	class Meta:
-# 		model = DetilTDP
-# 		fields = ('')
-
 class DataKegiatanPTForm(forms.ModelForm):
 	class Meta:
 		model = DetilTDP
 		fields = ('kegiatan_usaha_pokok', 'omset_per_tahun', 'total_aset', 'jumlah_karyawan_wni', 'jumlah_karyawan_wna', 'kapasitas_mesin_terpasang', 'satuan_kapasitas_mesin_terpasang', 'kapasitas_produksi_per_tahun', 'satuan_kapasitas_produksi_per_tahun', 'presentase_kandungan_produk_lokal', 'presentase_kandungan_produk_import', 'jenis_pengecer', 'kedudukan_kegiatan_usaha', 'jenis_perusahaan') 
-
-class RincianPerusahaanForm(forms.ModelForm):
-	class Meta:
-		model = RincianPerusahaan
-		fields = ('modal_dasar', 'modal_ditempatkan', 'modal_disetor', 'banyaknya_saham', 'nilai_nominal_per_saham')
 
 class LegalitasForm(forms.ModelForm):
 	class Meta:
@@ -52,8 +42,17 @@ class PerusahaanCabangForm(forms.ModelForm):
 		model = Perusahaan
 		fields = ('nomor_tdp', 'nama_perusahaan', 'alamat_perusahaan', 'desa', 'kode_pos', 'telepon', 'fax', 'status_perusahaan', 'kegiatan_usaha')
 
-
 class BerkasForm(forms.ModelForm):
 	class Meta:
 		model = Berkas
 		fields = ('berkas',)
+
+class RincianPerusahaanForm(forms.ModelForm):
+	class Meta:
+		model = DetilTDP
+		fields = ('modal_dasar', 'modal_ditempatkan', 'modal_disetor', 'banyaknya_saham', 'nilai_nominal_per_saham')
+
+class RincianKoperasiForm(forms.ModelForm):
+	class Meta:
+		model = DetilTDP
+		fields = ('modal_sendiri_simpanan_pokok', 'modal_sendiri_simpanan_wajib', 'modal_sendiri_dana_cadangan', 'modal_sendiri_hibah', 'modal_pinjaman_anggota', 'modal_pinjaman_koperasi_lain', 'modal_pinjaman_bank', 'modal_pinjaman_lainnya', 'jumlah_anggota', 'jenis_koperasi', 'bentuk_koperasi')

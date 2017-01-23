@@ -28,7 +28,7 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
-  <script src="{% static 'scripts/js/formAjax/form_detilho.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
@@ -82,7 +82,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -91,7 +91,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return true;
+            return false;
           }
         });
       });

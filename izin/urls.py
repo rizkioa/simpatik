@@ -166,8 +166,8 @@ urlpatterns = [
     url(r'^layanan/tdp-perorangan/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_po, name='cetak_bukti_pendaftaran_tdp_po'),
     
     #cetak TDP KOPERASI
-    url(r'^layanan/tdp-koperasi/formulir/cetak$', views.cetak_tdp_koperasi, name='cetak_tdp_koperasi'),
-    url(r'^layanan/tdp-koperasi/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_tdp_koperasi, name='cetak_bukti_pendaftaran_tdp_koperasi'),
+    url(r'^layanan/tdp-koperasi/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_koperasi, name='cetak_tdp_koperasi'),
+    url(r'^layanan/tdp-koperasi/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_koperasi, name='cetak_bukti_pendaftaran_tdp_koperasi'),
     
     #cetak TDP Bul
     url(r'^layanan/tdp-bul/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_bul, name='cetak_tdp_bul'),
@@ -240,6 +240,7 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax IMB reklame ++++++++++++++++++++++
 
     url(r'^layanan/imbreklame/save/$', imb_reklame.reklame_imbreklame_save_cookie, name='reklame_imbreklame_save'),
+    url(r'^imbreklame/load/(?P<id_pengajuan>[0-9]+)$', imb_reklame.load_data_reklame_imbreklame, name='load_data_reklame_imbreklame'),
     url(r'^imbreklame/berkas/save/$', imb_reklame.imbreklame_upload_berkas_pendukung, name='reklame_imbreklame_berkaspendukung'),
     url(r'^ajax-load-berkas-imb-reklame/(?P<id_pengajuan>[0-9]+)$', imb_reklame.ajax_load_berkas_imbreklame, name='ajax_load_berkas_imbreklame'),
     url(r'^ajax-delete-berkas-imb-reklame-upload/(?P<id_berkas>[0-9]+)$', imb_reklame.ajax_delete_berkas_imbreklame, name='ajax_delete_berkas_imbreklame'),
