@@ -252,7 +252,7 @@
 				<center>
 					{% if request.user|has_group:'Operator' or request.user.is_superuser or request.user|has_group:'Cetak' %}
 
-						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_bul' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
+						<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_tdp_koperasi' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Formulir Pendaftaran</a>
 
 						
 						<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
@@ -261,11 +261,15 @@
 					{% endif %}
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_bul_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_koperasi_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 
-					{% if skizin_status == 1  or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_bul_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+					{% if request.user|has_group:'Cetak' %}
+
+						{% if skizin_status == 1  or skizin_status == 2 %}
+							<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_koperasi_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+						{% endif %}
+
 					{% endif %}
 
 				</center>
@@ -577,7 +581,7 @@
 						<div class="panel-body">
 						{% if skizin == None %}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_bul_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_koperasi_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_status_pusat" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Status Pusat</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
@@ -995,7 +999,7 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-bul-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-koperasi-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
 
@@ -1021,9 +1025,11 @@
 			    success: function(response) { // on success..
 			        respon = $.parseJSON(response)
 			        if(respon.success){
-			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-bul-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			        	openPopupCenter('/admin/izin/detiltdp/cetak-tdp-koperasi-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
+
+
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
@@ -1107,8 +1113,8 @@
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         	setTimeout(function(){
-        		window.open('{% url 'admin:izin_proses_tdp_bul' %}', '_blank')
-    		}, 1000);
+        		window.location.replace('{% url 'admin:izin_proses_tdp_koperasi' %}');
+        	}, 1000);
         }
     </script>
 {% endblock %}
@@ -1142,7 +1148,7 @@
                                             	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">
+		                                        	<a class="info" href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank">link here</a>
 		                                        {% endif %}
                                             {% endwith %}
 								        </div>
@@ -1321,6 +1327,58 @@
 							           			<a class="info example-image-link" href="{{legalitas_7.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
 							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
 	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_7.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+
+						{% if legalitas_8.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_8.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_8.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_8.berkas.berkas.url}}" alt="{{ legalitas_8.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_8.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_8.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_8.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_8.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
+	                                        {% endif %}
+                                        {% endwith %}
+							        </div>
+							    </div>
+							</div>
+						{% endif %}
+
+						{% if legalitas_9.berkas %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+							    <div class="hovereffect">
+							    	{% with legalitas_9.berkas.berkas.name|extension|stringformat:"s" as ext %}
+							    		<div class="img-responsi">
+	                                		{% if ext|InList:'.pdf, .PDF' %}
+								        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="{{ legalitas_9.berkas.nama_berkas.upper }}">
+								        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+												<img class="imageloaderImage" src="{{legalitas_9.berkas.berkas.url}}" alt="{{ legalitas_9.berkas.nama_berkas.upper }}">
+								        	{% endif %}
+								        </div>
+		  							{% endwith %}
+							        <div class="overlay">
+							           	<h2>{{ legalitas_9.berkas.nama_berkas.upper }}</h2>
+							           	{% with legalitas_9.berkas.berkas.name|extension|stringformat:"s" as ext %}
+                                        	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' or ext|InList:'.jpeg' %}
+							           			<a class="info example-image-link" href="{{legalitas_9.berkas.berkas.url}}" data-lightbox="example-1">link here</a>
+							           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+	                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ legalitas_9.berkas.berkas }}&embedded=true" target="_blank" class="info">link here</a>
 	                                        {% endif %}
                                         {% endwith %}
 							        </div>
@@ -1570,34 +1628,55 @@
 						    </tr>
 						    
 						    <tr>
-						      <td><i>C. Modal dan Saham </i></td>
-						      <td>:</td>
-						      <td></td>
+						      <td><i>C. Modal </i></td>
+						      <td colspan="2">:</td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:1%" width="25%">1. Modal Dasar</td>
-						      <td>:</td>
-						      <td>Rp {{pengajuan.modal_dasar}},-</td>
+						      <td style="padding-left:1%" width="25%" colspan="3">1. Modal Sendiri</td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:1%" width="25%">2. Modal ditempatkan</td>
+						      <td style="padding-left:2%" width="25%">a. Simpanan Pokok</td>
 						      <td>:</td>
-						      <td>Rp {{pengajuan.modal_ditempatkan}},-</td>
+						      <td>Rp {{pengajuan.modal_sendiri_simpanan_pokok}} ,-</td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:1%" width="25%">3. Modal disetor Rp.</td>
+						      <td style="padding-left:2%" width="25%">b. Simpanan Wajib</td>
 						      <td>:</td>
-						      <td>Rp {{pengajuan.modal_disetor}},-</td>
+						      <td>Rp {{pengajuan.modal_sendiri_simpanan_wajib}} ,-</td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:1%" width="25%">Banyak Saham</td>
+						      <td style="padding-left:2%" width="25%">c. Dana Cadangan</td>
 						      <td>:</td>
-						      <td> {{pengajuan.banyak_saham}} Lembar</td>
+						      <td>Rp {{pengajuan.modal_sendiri_dana_cadangan}} ,-</td>
 						    </tr>
 						    <tr>
-						      <td style="padding-left:1%" width="25%">Nilai Nominal per saham</td>
+						      <td style="padding-left:2%" width="25%">c. Hibah</td>
 						      <td>:</td>
-						      <td>Rp {{pengajuan.nilai_nominal_per_saham}},-</td>
+						      <td>Rp {{pengajuan.modal_sendiri_hibah}} ,-</td>
+						    </tr>
+						    <tr>
+						      <td style="padding-left:1%" width="25%">2. Modal Pinjaman</td>
+						      <td colspan="2">:</td>
+						    </tr>
+						    <tr>
+						      <td style="padding-left:2%" width="25%">a. Anggota</td>
+						      <td>:</td>
+						      <td>Rp {{pengajuan.modal_pinjaman_anggota}} ,-</td>
+						    </tr>
+						    <tr>
+						      <td style="padding-left:2%" width="25%">b. Koperasi lain</td>
+						      <td>:</td>
+						      <td>Rp {{pengajuan.modal_pinjaman_koperasi_lain}} ,-</td>
+						    </tr>
+						    <tr>
+						      <td style="padding-left:2%" width="25%">c. Bank</td>
+						      <td>:</td>
+						      <td>Rp {{pengajuan.modal_pinjaman_bank}} ,-</td>
+						    </tr>
+						    <tr>
+						      <td style="padding-left:2%" width="25%">d. Pinjaman lainnya</td>
+						      <td>:</td>
+						      <td>Rp {{pengajuan.modal_pinjaman_lainnya}} ,-</td>
 						    </tr>
 						    <tr>
 						      <td><i>D. Total Asset (setelah perusahaan beroperasi)</i></td>
@@ -1818,7 +1897,43 @@
 							</tbody>
 						</table>
 					</div>
-					
+					<h5><strong>PEMEGANG SAHAM</strong></h5>
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+						          	<th>No.</th>
+						          	<th>Nama lengkap</th>
+						          	<th>Alamat Tetap</th>
+						          	<th>No. Telp</th>
+						          	<th>Kewarganegaraan</th>
+						          	<th>NPWP</th>
+						          	<th>Jumlah saham yang dimiliki (lembar)</th>
+						          	<th>Jumlah modal disetor (Rp)</th>
+						        </tr>
+							</thead>
+							<tbody>
+								{% if pemegang_saham %}
+								{% for p in pemegang_saham %}
+								<tr>
+									<td>{{forloop.counter}}</td>
+									<td>{{p.nama_lengkap}}</td>
+									<td>{{p.alamat}}</td>
+									<td>{{p.telephone}}</td>
+									<td>{{p.kewarganegaraan}}</td>
+									<td>{{p.npwp}}</td>
+									<td>{{p.jumlah_saham_dimiliki}} Lembar</td>
+									<td>Rp {{p.jumlah_saham_disetor}},-</td>
+								</tr>
+								{% endfor %}
+								{% else %}
+								<tr>
+									<td colspan="8" align="center">Kosong...!!!</td>
+								</tr>
+								{% endif %}
+							</tbody>
+						</table>
+					</div>
 					<h5><strong>PERUSAHAAN</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">

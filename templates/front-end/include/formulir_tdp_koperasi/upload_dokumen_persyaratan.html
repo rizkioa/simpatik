@@ -2,75 +2,192 @@
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14">
-  
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File Neraca Koperasi</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File Susunan Pengurus yang telah mendapatkan pengesahan</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File KTP/Paspor (Dirut/Pemilik/Pengurus/Penanggung jawab)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File NPWP Koperasi</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File Akta Pendirian Koperasi yang telah mendapatkan pengesahan</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-sm-3 control-label">File Sertifikat Asli TDP (bagi yang Daftar Ulang)</label>
-    <div class="col-sm-5">
-      <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox">
-    </div>
-    <div class="col-sm-1">
-      <a type="button" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</a>
-    </div>
-  </div>
-
 </form>
+  
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-neraca_perusahaan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Neraca Perusahaan</strong></label>
+      <span id="field-neraca_perusahaan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Neraca Perusahaan">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-neraca_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-neraca_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-neraca_perusahaan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-ijin_usaha">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan</label>
+      <span id="field-ijin_usaha">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Ijin Usaha">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-ijin_usaha" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ijin_usaha" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ijin_usaha"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-susunan_pengurus">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Susunan Pengurus yang telah mendapatkan pengesahan</strong></label>
+      <span id="field-susunan_pengurus">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Susunan Pengurus">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-susunan_pengurus" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-susunan_pengurus" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-susunan_pengurus"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_ktp_pemohon' %}" id="form-ktp">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File KTP/Paspor (Dirut/Pemilik/Pengurus/Penanggung jawab)</strong></label>
+      <span id="field-ktp">
+        <div class="col-sm-5">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ktp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-npwp_koperasi">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File NPWP Koperasi</strong></label>
+      <span id="field-npwp_koperasi">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="NPWP Koperasi">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-npwp_koperasi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp_koperasi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-npwp_koperasi"></span>
+    </div>
+  </form>
+
+  <!-- <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-akta_pendirian_koperasi">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Akta Pendirian Koperasi yang telah mendapatkan pengesahan</strong></label>
+      <span id="field-akta_pendirian_koperasi">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Akta Pendirian Koperasi">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_pendirian_koperasi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pendirian_koperasi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_pendirian_koperasi"></span>
+    </div>
+  </form> -->
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_pendirian' %}" id="form-akta_pendirian">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Akta Pendirian Koperasi yang telah mendapatkan pengesahan</strong></label>
+      <span id="field-akta_pendirian">
+        <div class="col-sm-5">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_pendirian"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_perubahan' %}" id="form-akta_perubahan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">File Akta Perubahan</label>
+      <span id="field-akta_perubahan">
+        <div class="col-sm-5">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_perubahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_perubahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_perubahan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_akta_legalitas' %}" id="form-akta_pengesahan_menteri_koperasi">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Akta Pengesahan Menteri Koperasi UKM</strong></label>
+      <span id="field-akta_pengesahan_menteri_koperasi">
+        <div class="col-sm-5">
+          <input type="hidden" name="jenis_legalitas" value="8">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_pengesahan_menteri_koperasi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pengesahan_menteri_koperasi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_pengesahan_menteri_koperasi"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_akta_legalitas' %}" id="form-akta_persetujuan_menteri_koperasi">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File Akta Persetujuan Menteri Koperasi dan UKM atas Akta Perubahan Anggaran Dasar</strong></label>
+      <span id="field-akta_persetujuan_menteri_koperasi">
+        <div class="col-sm-5">
+          <input type="hidden" name="jenis_legalitas" value="9">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_persetujuan_menteri_koperasi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_persetujuan_menteri_koperasi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_persetujuan_menteri_koperasi"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-sertifikat_asli_tdp">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">File Sertifikat Asli TDP (bagi yang Daftar Ulang)</label>
+      <span id="field-sertifikat_asli_tdp">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Sertifikat Asli TDP">
+          <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-sertifikat_asli_tdp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-sertifikat_asli_tdp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-sertifikat_asli_tdp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-berkas_tambahan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">File Berkas Tambahan</label>
+      <span id="field-berkas_tambahan">
+        <div class="col-sm-5">
+          <input type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-berkas_tambahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-berkas_tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-berkas_tambahan"></span>
+    </div>
+  </form>

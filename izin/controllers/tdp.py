@@ -219,6 +219,55 @@ def formulir_tdp_perorangan(request):
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
 		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
+def formulir_tdp_koperasi(request):
+	extra_context={}
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+		extra_context.update({'title': 'TDP KOPERASI'})
+		negara = Negara.objects.all()
+		provinsi = Provinsi.objects.all()
+		kecamatan = Kecamatan.objects.all()
+		jenis_pemohon = JenisPemohon.objects.all()
+		jenis_perusahaan = JenisPerusahaan.objects.all()
+		jenis_badan_usaha = JenisBadanUsaha.objects.all()
+		status_perusahaan = StatusPerusahaan.objects.all()
+		jenis_penanaman_modal = JenisPenanamanModal.objects.all()
+		bentuk_kerjasama = BentukKerjasama.objects.all()
+		jenis_pengecer = JenisPengecer.objects.all()
+		kedudukan_kegiatan_usaha = KedudukanKegiatanUsaha.objects.all()
+		kelompok_jenis_izin = KelompokJenisIzin.objects.all()
+		jenis_kedudukan = JenisKedudukan.objects.all()
+		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		extra_context.update({'negara': negara, 'provinsi': provinsi, 'kecamatan': kecamatan, 'jenis_pemohon': jenis_pemohon, 'jenis_perusahaan': jenis_perusahaan,  'kegiatan_usaha': bentuk_kegiatan_usaha_list, 'jenis_badan_usaha': jenis_badan_usaha, 'status_perusahaan': status_perusahaan, 'jenis_penanaman_modal': jenis_penanaman_modal, 'bentuk_kerjasama': bentuk_kerjasama, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'kelompok_jenis_izin': kelompok_jenis_izin, 'jenis_kedudukan': jenis_kedudukan })
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan']:
+				try:
+					pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+					extra_context.update({'pengajuan_': pengajuan_})
+					extra_context.update({'pengajuan_id': pengajuan_.id})
+					if pengajuan_.pemohon:
+						ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+						extra_context.update({ 'ktp': ktp_ })
+						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+						extra_context.update({ 'paspor': paspor_ })
+						template = loader.get_template("admin/izin/izin/form_wizard_tdp_koperasi.html")
+						ec = RequestContext(request, extra_context)
+						response = HttpResponse(template.render(ec))
+				except ObjectDoesNotExist:
+					extra_context.update({'pengajuan_id': '0'})
+					template = loader.get_template("admin/izin/izin/form_wizard_tdp_koperasi.html")
+					ec = RequestContext(request, extra_context)
+					response = HttpResponse(template.render(ec))
+		else:
+			template = loader.get_template("admin/izin/izin/form_wizard_tdp_koperasi.html")
+			ec = RequestContext(request, extra_context)
+			response = HttpResponse(template.render(ec))	
+		return response
+	else:
+		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
+		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
+
 def formulir_tdp_bul(request):
 	extra_context={}
 	if 'id_kelompok_izin' in request.COOKIES.keys():
