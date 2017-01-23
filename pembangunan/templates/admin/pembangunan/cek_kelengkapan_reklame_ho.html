@@ -103,4 +103,533 @@
 {% endblock %}
 
 {% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+
+        <!-- tile header -->
+        <div class="tile-header bg-slategray dvd dvd-btm">
+            <h1 class="custom-font"><strong>Keterangan</strong> Survey</h1>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+        <div class="row">
+          <div class="col-md-6 col-xs-12">
+            <p>Tanggal Permintaan Survey : {{ qs_survey.tanggal_survey }} </p>
+            <p>Deadline Survey : {{ qs_survey.deadline_survey }} </p>
+          </div>
+          <div class="col-md-6 col-xs-12">
+            <p>No. Survey : {{ qs_survey.no_survey }} </p>
+            <p>Tanggal Perubahan : {{ qs_survey.updated_at }} </p>
+          </div>
+        </div>
+        
+        </div>
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+
+        <!-- tile header -->
+        <div class="tile-header bg-slategray dvd dvd-btm">
+            <h1 class="custom-font"><strong>Detil</strong> Ringkas Pengajuan</h1>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="">
+                            Pengajuan (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" aria-expanded="true">
+                    <div class="panel-body">
+                        <p>Jenis Pengajuan : {{pengajuan.jenis_permohonan}}</p>
+                        <p>Kelompok Izin : {{pengajuan.kelompok_jenis_izin}}</p>
+                        <p>No. Pengajuan : {{pengajuan.no_pengajuan}}</p>      
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Pemohon (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                    <div class="panel-body">
+                        <p>Jenis Pemohon : {{pemohon.jenis_pemohon}}</p>
+                        <p>Nomor KTP/Passpor : {% for n in pemohon.nomoridentitaspengguna_set.all %} {{n.jenis_identitas}} {{n.nomor}} {% endfor %}</p>
+                        <p>Nama : {{pemohon.nama_lengkap}}</p>
+                        <p>Alamat : {{pemohon|get_alamat_lengkap:"pemohon"}}</p>
+                        <p>No. Telp : {{pemohon.telephone}}</p>
+                        <p>HP : {{pemohon.pemohon.hp}}</p>
+                        <p>Email : {{pemohon.email|default_if_none:""}}</p>
+                        <p>Kewarganegaraan : {{pemohon.kewarganegaraan}}</p>
+                        <p>pekerjaan : {{pemohon.pekerjaan}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Perusahaan (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
+                    <div class="panel-body">
+                        <p>NPWP Perusahaan : {{perusahaan.npwp}}</p>
+                        <p>Nama Perusahaan : {{perusahaan.nama_perusahaan}}</p>
+                        <p>Alamat Perusahaan : {{perusahaan|get_alamat_lengkap:"perusahaan"}}</p>
+                        <p>Kode POS : {{perusahaan.kode_pos}}</p>
+                        <p>No. Telp : {{perusahaan.telepon}}</p>
+                        <p>No. Fax : {{perusahaan.fax}}</p>
+                        <p>Email : {{perusahaan.email|default_if_none:""}}</p>
+                        <br>
+                        <p>Lokasi Survey : {{perusahaan|get_alamat_lengkap:"perusahaan"}}</p>      
+                    </div>
+                </div>
+            </div>
+
+            {% if pengajuan.legalitas.all %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Legalitas Perusahaan (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
+                    <div class="panel-body">
+                      <table id="" class="table table-striped table-bordered table-hover table-condensed">
+                        <thead>
+                          <tr>
+                            <th scope="col" class="">Jenis Akta</th>
+                            <th scope="col" class="">Nama Notaris</th>
+                            <th scope="col" class="">Alamat Notaris</th>
+                            <th scope="col" class="">Telp Notaris</th>
+                            <th scope="col" class="">No Akta</th>
+                            <th scope="col" class="">Tgl Akta</th>
+                            <th scope="col" class="">No. Pengesahan</th>
+                            <th scope="col" class="">Tgl. Pengesahan</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in pengajuan.legalitas.all %}
+                            <tr>
+                              <td>{{p.jenis_legalitas}}</td>
+                              <td>{{p.nama_notaris}}</td>
+                              <td>{{p.alamat}}</td>
+                              <td>{{p.nomor_akta}}</td>
+                              <td>{{p.tanggal_akta}}</td>
+                              <td>{{p.nomor_pengesahan}}</td>
+                              <td>{{p.tanggal_pengesahan}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+          {% endif %}
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+
+        <!-- tile header -->
+        <div class="tile-header bg-slategray dvd dvd-btm">
+            <h1 class="custom-font"><strong>Dokumen</strong> Upload</h1>
+        </div>
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+          <table id="" class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+            <tr>
+                <th scope="col" class="">Dokumen Persyaratan</th>
+                <th scope="col" class="">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr class="">
+                  <td class="">{{perusahaan.berkas_npwp}}</td>
+                  <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{perusahaan.berkas_npwp.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat</a></td>
+              </tr>
+              {% for k in pemohon.berkas.all %}
+                <tr class="">
+                    <td class="">{{k.jenis_identitas}}</td>
+                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{k.berkas.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
+                </tr>
+              {% endfor %}
+              {% for d in pengajuan.berkas_tambahan.all %}
+              <tr class="">
+                  <td class="">{{d.nama_berkas}}</td>
+                  <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{d.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
+              </tr>
+              {% endfor %}
+
+              {% for d in pengajuan.legalitas.all %}
+                {% for b in d.berkas_tambahan.all %}
+                <tr class="">
+                    <td class="">{{b.nama_berkas}}</td>
+                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{b.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
+                </tr>
+                {% endfor %}
+              {% endfor %}
+
+              {% for d in pengajuan.anggota_badan_iujk.all %}
+                {% for b in d.berkas_tambahan.all %}
+                <tr class="">
+                    <td class="">{{b.nama_berkas}}</td>
+                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{b.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
+                </tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+        <!-- tile header -->
+        <div class="tile-header bg-slategray dvd dvd-btm">
+            <h1 class="custom-font"><strong>Anggota </strong> Tim</h1>
+        </div>
+        <!-- /tile header -->
+        <!-- tile body -->
+        <div class="tile-body ">
+          <table id="" class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                  <th scope="col" class="">NIP</th>
+                  <th scope="col" class="">NAMA</th>
+                  <th scope="col" class="">KOORDINATOR</th>
+                  {% if qs_survey.status == 4 %}
+                  <th scope="col" class="">Aksi</th>
+                  {% endif %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for q in qs_survey.survey_iujk.all %}
+                <tr>
+                  <td>{{q.pegawai.username}}</td>
+                  <td>[{{q.pegawai.unit_kerja}}] {{q.pegawai}}</td>
+                  <td>{{q.koordinator|true_or_false|safe}}</td>
+                {% if qs_survey.status == 4 %}
+                    {% if not q.koordinator %}
+                    <td><a class="hapus_anggota" href="{% url 'admin:hapus_ajax' qs_survey.pengajuan.id qs_survey.id q.id %}" title="Hapus {{q.pegawai}}"><i class="fa fa-trash"></i> </a></td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <br>
+          {% if qs_survey.status == 4 and status_user %}
+          <button class="btn btn-rounded btn-warning btn-sm" onclick="tambah_tim(this); return false;"><i class="fa fa-plus"></i> Tambah Anggota Tim</button>
+          <button class="btn btn-rounded btn-success btn-sm" onclick="lakukan_survey(this); return false;"><i class="fa fa-paper-plane"></i> Lakukan Survey {{request.id_survey}}</button>
+          {% endif %}
+         <!--  <p class="text-center"><button type="submit" class="btn btn-rounded btn-warning btn-sm tugaskan"><i class="fa fa-play"></i> Tugaskan Survey</button> </p> -->
+          
+        </div>
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+        <!-- tile header -->
+        <div class="tile-header bg-slategray dvd dvd-btm">
+            <h1 class="custom-font"><strong>Pertimbangan </strong> dan <strong>Saran</strong></h1>
+        </div>
+        <!-- /tile header -->
+        <!-- tile body -->
+        <div class="tile-body ">
+          <table id="" class="table table-striped table-bordered table-hover table-condensed">
+            <thead>
+              <tr>
+                  <th scope="col" class="">SKPD</th>
+                  <th scope="col" class="">NAMA</th>
+                  <th scope="col" class="">Rekomendasi/Saran</th>
+                  <th scope="col" class="">Lampiran</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for q in qs_survey.survey_iujk.all %}
+              <tr>
+                <td>{{q.pegawai.unit_kerja}}</td>
+                <td>{{q.pegawai}} ({{q.pegawai.username}})</td>
+                <td>{{qs_survey|get_rekomendasi:q.pegawai.id|safe}}</td>
+                <td>{{qs_survey|get_berkas:q.pegawai.id|safe}}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+
+{% if qs_survey.status != 1 and status_user and rekom.status != 1 %}
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+        <!-- tile body -->
+        <div class="tile-body">
+          <h3>Laporan Survey</h3>
+           <form class="form_rekomendasi form-horizontal" role="form" action="" method="POST" enctype="multipart/form-data">
+           {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group {% if form_detil.kondisi_lahan_usaha.errors %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha</label>
+                    <div class="col-sm-9">
+                        {{ form_detil.kondisi_lahan_usaha|addcls:"form-control" }}
+                        <span class="help-block mb-0 has-error" >{{ form_detil.kondisi_lahan_usaha.errors.as_text }}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="id_luas_tempat_usaha">Luas Tempat Usaha</label>
+                    <div class="col-sm-9">
+                        {{ form_detil.luas_tempat_usaha|addcls:"form-control" }}
+                        <span class="help-block mb-0 has-error" >{{ form_detil.luas_tempat_usaha.errors.as_text }}</span>
+                    </div>
+                </div>
+                <div class="form-group {% if form_detil.jumlah_mesin.errors %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label" for="id_jumlah_mesin">Jumlah Mesin</label>
+                    <div class="col-sm-9">
+                        {{ form_detil.jumlah_mesin|addcls:"form-control" }}
+                        <span class="help-block mb-0 has-error" >{{ form_detil.jumlah_mesin.errors.as_text }}</span>
+                    </div>
+                </div>
+                <div class="form-group {% if form_detil.daya_kekuatan_mesin.errors %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label" for="id_daya_kekuatan_mesin">Daya Kekuatan Mesin</label>
+                    <div class="col-sm-9">
+                        {{ form_detil.daya_kekuatan_mesin|addcls:"form-control" }}
+                        <span class="help-block mb-0 has-error" >{{ form_detil.daya_kekuatan_mesin.errors.as_text }}</span>
+                    </div>
+                </div>
+                <div class="form-group {% if form_detil.jenis_bangunan.errors %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label" for="id_jenis_bangunan">Jenis Bangunan </label>
+                    <div class="col-sm-9">
+                        {{ form_detil.jenis_bangunan|addcls:"form-control" }}
+                        <span class="help-block mb-0 has-error" >{{ form_detil.jenis_bangunan.errors.as_text }}</span>
+                    </div>
+                </div>
+                <div class="form-group {% if form_detil.klasifikasi_jalan.errors %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label" for="id_klasifikasi_jalan">Klasifikasi Jalan</label>
+                    <div class="col-sm-9">
+                      {{ form_detil.klasifikasi_jalan|addcls:"form-control" }}
+                      <span class="help-block mb-0 has-error" >{{ form_detil.klasifikasi_jalan.errors.as_text }}</span>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title custom-font">Batas Lokasi Usaha</h3>
+                  </div>
+                  <div class="panel-body">
+                      <div class="form-group {% if form_detil.sebelah_utara.errors %} has-error {% endif %}">
+                        <label class="col-sm-3 control-label" for="id_sebelah_utara">Sebelah Utara</label>
+                        <div class="col-sm-9">
+                          {{ form_detil.sebelah_utara|addcls:"form-control" }}
+                          <span class="help-block mb-0 has-error" >{{ form_detil.sebelah_utara.errors.as_text }}</span>
+                        </div>
+                      </div>
+                      <div class="form-group {% if form_detil.sebelah_timur.errors %} has-error {% endif %}">
+                          <label class="col-sm-3 control-label" for="id_sebelah_timur">Sebelah Timur</label>
+                          <div class="col-sm-9">
+                            {{ form_detil.sebelah_timur|addcls:"form-control" }}
+                            <span class="help-block mb-0 has-error" >{{ form_detil.sebelah_timur.errors.as_text }}</span>
+                          </div>
+                      </div>
+                      <div class="form-group {% if form_detil.sebelah_selatan.errors %} has-error {% endif %}">
+                          <label class="col-sm-3 control-label" for="id_sebelah_selatan">Sebelah Selatan</label>
+                          <div class="col-sm-9">
+                            {{ form_detil.sebelah_selatan|addcls:"form-control" }}
+                            <span class="help-block mb-0 has-error" >{{ form_detil.sebelah_selatan.errors.as_text }}</span>
+                          </div>
+                      </div>
+                      <div class="form-group {% if form_detil.sebelah_barat.errors %} has-error {% endif %}">
+                          <label class="col-sm-3 control-label" for="id_sebelah_barat">Sebelah Barat</label>
+                          <div class="col-sm-9">
+                            {{ form_detil.sebelah_barat|addcls:"form-control" }}
+                            <span class="help-block mb-0 has-error" >{{ form_detil.sebelah_barat.errors.as_text }}</span>                            
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <h3>REKOMENDASI</h3>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group {% if form_rekomendasi.rekomendasi.errors %} has-error {% endif %}">
+                  <div class="col-sm-12">
+                    {{form_rekomendasi.rekomendasi}}
+                    <span class="help-block mb-0 has-error">{{form_rekomendasi.rekomendasi.errors.as_text}}</span> 
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {% if rekom.berkas %}
+              <p><a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+            </p>
+            {% else %}
+              {{form_berkas.as_p}}
+            {% endif %}
+           
+              <hr>
+              <button name="simpan" value="draft" class="btn btn-rounded btn-info btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Simpan & Draft</button>
+              <button name="simpan" value="submit" class="btn btn-rounded btn-success btn-sm simpan"><i class="fa  fa-paper-plane"></i> Simpan & Kirim </button>
+              
+            </form>
+        </div>
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="col-md-12">
+    <!-- tile -->
+    <section class="tile">
+        <!-- tile body -->
+        <div class="tile-body">
+          
+           <h3>Laporan Survey</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
+
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_luas_tempat_usaha">Luas Tempat Usaha : {{detilbap.luas_tempat_usaha}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_jumlah_mesin">Jumlah Mesin : {{detilbap.jumlah_mesin}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_daya_kekuatan_mesin">Daya Kekuatan Mesin : {{detilbap.daya_kekuatan_mesin}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_jenis_bangunan">Jenis Bangunan : {{detilbap.get_jenis_bangunan_display}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_sebelah_timur">Sebelah Timur : {{ detilbap.sebelah_timur}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_sebelah_selatan">Sebelah Selatan : {{detilbap.sebelah_selatan}}</label>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
+              </div>
+            </div>
+          </div>
+          <h3>REKOMENDASI</h3>
+            {% if user|has_group:"Tim Teknis" %}
+              {% if rekom.status != 1 %}
+                <form class="form_rekomendasi" role="form" action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form_rekomendasi.as_p}}
+                {% if rekom.berkas %}
+                  <p><a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" data-placement="top" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+                </p>
+                {% else %}
+                  {{form_berkas.as_p}}
+                {% endif %}
+                  <hr>
+                  <button name="simpan" value="draft" class="btn btn-rounded btn-info btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Simpan & Draft</button>
+                  <button name="simpan" value="submit" class="btn btn-rounded btn-success btn-sm simpan"><i class="fa fa-paper-plane"></i> Simpan & Kirim </button>
+                  
+                </form>
+              {% else %}
+                {{rekom.rekomendasi|safe}}
+                {% if rekom.berkas %}
+                  <a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+                {% endif %}
+              {% endif %}
+            {% else %}
+              {{rekom.rekomendasi|safe}}
+              {% if rekom.berkas %}
+                <a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
+              {% endif %}
+            {% endif %}
+        </div>
+        <!-- /tile body -->
+
+    </section>
+    <!-- /tile -->
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+
+{% block extrajs %}
+{{ block.super }}
+  <script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+  <script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %} " ></script>
+  <script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
+  <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+  <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 {% endblock %}

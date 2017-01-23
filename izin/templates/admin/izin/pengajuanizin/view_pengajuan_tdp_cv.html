@@ -1187,7 +1187,7 @@
                                             	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
 								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">
+		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">link here</a>
 		                                        {% endif %}
                                             {% endwith %}
 								        </div>
@@ -1622,27 +1622,27 @@
 						    <tr>
 						      <td style="padding-left:1%" width="25%">1. Modal Dasar</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.modal_dasar}},-</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">2. Modal ditempatkan</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.modal_ditempatkan}},-</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">3. Modal disetor Rp.</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.modal_disetor}},-</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Banyak Saham</td>
 						      <td>:</td>
-						      <td> Lembar</td>
+						      <td> {{pengajuan.banyak_saham}} Lembar</td>
 						    </tr>
 						    <tr>
 						      <td style="padding-left:1%" width="25%">Nilai Nominal per saham</td>
 						      <td>:</td>
-						      <td>Rp ,-</td>
+						      <td>Rp {{pengajuan.nilai_nominal_per_saham}},-</td>
 						    </tr>
 						    <tr>
 						      <td><i>D. Total Asset (setelah perusahaan beroperasi)</i></td>
