@@ -51,12 +51,12 @@
 
     .subpage {
         padding: 0.5cm;
-        height: 307mm;
+        height: 308mm;
     }
 
     @-moz-document url-prefix() {
         .subpage {
-            height: 334mm;
+            height: 338mm;
         }
     }   
 
@@ -64,7 +64,17 @@
         size: A4;
         margin: 0;
     }
-    @media print {
+    @media print {  
+      @page {
+        /*size: 297mm 210mm; /* landscape */
+        width: 210mm;
+        height: 297mm;
+        /* you can also specify margins here: */
+        margin: 20mm;
+        margin-right: 23mm; /* for compatibility with both A4 and Letter */
+      }
+    }
+/*    @media print {
         html, body {
             width: 210mm;
             height: 297mm;        
@@ -79,7 +89,7 @@
             background: initial;
             page-break-after: always;
         }
-    }
+    }*/
 
     .title, .tabel{
         border-bottom: 1px solid #7d7d7d;
@@ -131,6 +141,16 @@
         font-size: 16px;
         border-radius: 8px;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .page .footer{
+        width: 190mm;
+        /*position:absolute;*/
+        /*padding-top: 171mm;*/
+        position: relative;
+        margin-top: -2px; /* negative value of footer height */
+        height: 180px;
+        clear: both;
+
     }
     @media print {
       .hidden-print {
@@ -235,7 +255,7 @@
                                             <td>Lewat</td>
                                         </tr>
                                         <tr>
-                                            <td style="padding-left: 15px;">Yth. Kepala BPM-P2TSP Kab. Kediri</td>
+                                            <td style="padding-left: 15px;">Yth. Kepala DPM-P2TSP Kab. Kediri</td>
                                         </tr>
                                         <tr>
                                             <td>di.</td>
@@ -439,11 +459,10 @@
                         </table>
                     </div>
                 </div>
-                <hr>
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
+                <div class="footer">
+                    <hr>
+                    <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                </div>
             </div>    
         </div>
         <div class="page">
@@ -488,12 +507,10 @@
                         </td>
                     </tr>
                 </table>
-                
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
-                <br>
-                <br>
-                <br>
+                <div class="footer">
+                    <hr>
+                    <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                </div>
             </div>    
         </div>
     </div>

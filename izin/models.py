@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut,ParameterBangunan
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -586,6 +586,7 @@ class DetilIMB(PengajuanIzin):
 	luas_bangunan_lama = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True,verbose_name='Luas Bangunan Yang Sudah Ada')
 	no_imb_lama = models.CharField(max_length=255, verbose_name='No. IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
+	jenis_bangunan = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Jenis Bangunan",blank=True)
 
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

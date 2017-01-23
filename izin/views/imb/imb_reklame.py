@@ -178,7 +178,7 @@ def load_data_reklame_imbreklame(request,id_pengajuan):
             id_tinggi = str(pengajuan_.tinggi)
             id_lokasi_pasang = pengajuan_.lokasi_pasang
             id_jumlah = str(pengajuan_.jumlah)
-            if desa:
+            if pengajuan_.desa:
               id_kecamatan = str(pengajuan_.desa.kecamatan.id)
               id_desa = str(pengajuan_.desa.id)
             else:
@@ -232,6 +232,8 @@ def imb_reklame_done(request):
       response.delete_cookie(key='id_kelompok_izin') # set cookie
       response.delete_cookie(key='id_legalitas') # set cookie
       response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+      response.delete_cookie(key='npwp_perusahaan') # set cookie
+      
     else:
       data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
       data = json.dumps(data)

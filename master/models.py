@@ -236,6 +236,31 @@ class ParameterBangunan(models.Model):
 		verbose_name = 'Parameter Bangunan'
 		verbose_name_plural = 'Parameter Bangunan'
 
+class JenisKontruksi(MetaAtribut):
+	kode = models.CharField(verbose_name="Kode Jenis Kontruksi", max_length=10)
+	nama_jenis_kontruksi = models.CharField(verbose_name="Nama Jenis Kontruksi", max_length=50)
+
+	def __unicode__(self):
+		return u'Jenis Kontruksi %s - %s' % (str(self.kode), str(self.nama_jenis_kontruksi))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Jenis Kontruksi'
+		verbose_name_plural = 'Jenis Kontruksi'
+
+class BangunanJenisKontruksi(MetaAtribut):
+	jenis_kontruksi = models.ForeignKey(JenisKontruksi,verbose_name="Jenis Kontruksi")
+	kode = models.CharField(verbose_name="Kode Bangunan Jenis Kontruksi", max_length=10)
+	nama_bangunan = models.CharField(verbose_name="Nama Bangunan", max_length=50)
+
+	def __unicode__(self):
+		return u'Bangunan %s - %s' % (str(self.kode), str(self.nama_bangunan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Bangunan'
+		verbose_name_plural = 'Bangunan'
+
 from uuid import uuid4
 from django.utils.deconstruct import deconstructible
 import os, re

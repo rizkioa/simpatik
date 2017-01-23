@@ -152,6 +152,8 @@ admin.site.register(Settings)
 admin.site.register(JenisNomorIdentitas)
 admin.site.register(Berkas)
 admin.site.register(JenisReklame)
+admin.site.register(JenisKontruksi)
+admin.site.register(BangunanJenisKontruksi)
 
 class ParameterBangunanAdmin(admin.ModelAdmin):
 	list_display = ('parameter','detil_parameter','nilai')

@@ -256,6 +256,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					data = json.dumps(data)
 					response = HttpResponse(data)
 					response.set_cookie(key='id_perusahaan', value=get_perusahaan.id)
+					response.set_cookie(key='npwp_perusahaan', value=get_perusahaan.npwp)
 				else:
 					data = perusahaan.errors.as_json()
 					response = HttpResponse(data)
@@ -1194,7 +1195,7 @@ def load_perusahaan(request, npwp_):
 		if legalitas_8:
 			legalitas_8_no_pengesahan  = legalitas_8.nomor_pengesahan
 			legalitas_8_tanggal_pengesahan = legalitas_8.tanggal_pengesahan.strftime('%d-%m-%Y')
-		legalitas_9 = perusahaan.leglaitas_set.filter(jenis_legalitas_id=9).last()
+		legalitas_9 = perusahaan.legalitas_set.filter(jenis_legalitas_id=9).last()
 		legalitas_9_no_pengesahan = ""
 		legalitas_9_tanggal_pengesahan = ""
 		if legalitas_9:
