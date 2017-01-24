@@ -106,7 +106,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
                 $('#id_lama_penggunaan_bangunan').val(respon.data.lama_penggunaan_bangunan).prop('selected',true).trigger("chosen:updated");
                  $("#id_parameter_bangunan").css('display', 'block')
               }, 1000);
-          }else if ((respon.data.kode_kontruksi_bangunan == "BK2")||(respon.data.kode_kontruksi_bangunan == "BK19")) {
+          }else if ((respon.data.kode_kontruksi_bangunan == "BK2")||(respon.data.kode_kontruksi_bangunan == "BK17")) {
               load_bangunan(respon.data.id_kontruksi)
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");
@@ -185,7 +185,7 @@ function load_konfirmasi_data_identifikasi_bangunan_imb(id_pengajuan){
 
             $('#total_biaya_konfirmasi').text(respon.data.total_biaya)
             $(".field-konfirmasi_parameter_bangunan ").removeClass('hide')
-          }else if ((respon.data.kode_kontruksi_bangunan == "BK2")||(respon.data.kode_kontruksi_bangunan == "BK19")) {
+          }else if ((respon.data.kode_kontruksi_bangunan == "BK2")||(respon.data.kode_kontruksi_bangunan == "BK17")) {
                 $(".field-konfirmasi_panjang").css('display', 'block')
                 $('#id_kontruksi_konfirmasi').text(respon.data.id_kontruksi)
                 $('#id_jenis_bangunan_konfirmasi').text(respon.data.id_jenis_bangunan)
