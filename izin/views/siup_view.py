@@ -256,6 +256,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					data = json.dumps(data)
 					response = HttpResponse(data)
 					response.set_cookie(key='id_perusahaan', value=get_perusahaan.id)
+					response.set_cookie(key='npwp_perusahaan', value=get_perusahaan.npwp)
 				else:
 					data = perusahaan.errors.as_json()
 					response = HttpResponse(data)

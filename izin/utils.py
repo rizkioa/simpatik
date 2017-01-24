@@ -280,3 +280,23 @@ def send_email(emailto, subject, objects_):
 	res = email.send()
 
 	return res
+
+def get_kode_izin(obj_):
+	kode = ''
+	if obj_.pengajuan.kelompok_jenis_izin:
+		kode = obj_.pengajuan.kelompok_jenis_izin.kode
+	return kode
+
+def get_appmodels_based_kode_jenis(kode_ijin):
+	from izin import models as app_models
+	
+	objects_ = False
+
+	if kode_ijin == "IUJK":
+		objects_ = getattr(app_models, 'DetilIUJK')
+	elif kode_ijin == "503.03.01/": # REKLAME PERMANEN
+		objects_ = getattr(app_models, 'DetilReklame')
+	elif k.kode == "503.02/":
+		objects_ = getattr(app_models, 'DetilHO')
+
+	return objects_

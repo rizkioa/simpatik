@@ -130,6 +130,7 @@ def get_berkas(qs_, user_):
 			string = '<a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src=\''+str(url)+str(query.berkas.get_file_url())+'\' width=\'200\' />" data-placement="top" class="btn btn-rounded btn-success btn-sm" href="'+str(query.unit_kerja.url_simpatik)+str(query.berkas.get_file_url())+'" target="_blank"> <i class="fa fa-paperclip" ></i>'+str(query.berkas)+'</a>'
 
 	return string
+
 @register.filter(name='formatrupiah')
 def formatrupiah(uang):
 	y = str(uang)
@@ -139,3 +140,14 @@ def formatrupiah(uang):
 		p = y[-3:]
 		q = y[:-3]
 		return   formatrupiah(q) + '.' + p
+
+
+@register.filter()
+def get_alamat_lengkap(obj, filter):
+	if filter == 'perusahaan':
+		alamat_ = obj.alamat_perusahaan
+	elif filter == 'pemohon':
+		alamat_ = obj.alamat
+
+	alamat_ = str(alamat_)+", Ds. "+str(obj.desa)+", Kec. "+str(obj.desa.kecamatan)+", "+str(obj.desa.kecamatan.kabupaten)
+	return alamat_
