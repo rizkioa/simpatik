@@ -31,7 +31,7 @@ def formulir_imb_reklame(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
     negara = Negara.objects.all()
     kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
-
+    
     extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
@@ -233,7 +233,7 @@ def imb_reklame_done(request):
       response.delete_cookie(key='id_legalitas') # set cookie
       response.delete_cookie(key='id_legalitas_perubahan') # set cookie
       response.delete_cookie(key='npwp_perusahaan') # set cookie
-      
+
     else:
       data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
       data = json.dumps(data)

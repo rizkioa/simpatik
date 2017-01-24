@@ -153,7 +153,42 @@ admin.site.register(JenisNomorIdentitas)
 admin.site.register(Berkas)
 admin.site.register(JenisReklame)
 admin.site.register(JenisKontruksi)
-admin.site.register(BangunanJenisKontruksi)
+
+def get_jenis_bangunan(request):
+	bangunan_list = BangunanJenisKontruksi.objects.all()
+	
+	id_kontruksi = request.POST.get('id_kontruksi', None)	
+	if id_kontruksi and not id_kontruksi is "":
+		bangunan_list = bangunan_list.filter(jenis_kontruksi__id=id_kontruksi)
+	else:
+		bangunan_list = BangunanJenisKontruksi.objects.none()
+
+	return bangunan_list
+
+class BangunanJenisKontruksiAdmin(admin.ModelAdmin):
+	list_display = ('kode', 'nama_bangunan')
+	list_filter = ('kode','nama_bangunan')
+	search_fields = ('kode','nama_bangunan')
+
+	def option_jenis_bangunan(self, request):		
+		bangunan_list = get_jenis_bangunan(request)
+		pilihan = "<option></option>"
+		response = {
+			"count": len(bangunan_list),
+			"data": pilihan+"".join(x.as_option() for x in bangunan_list)
+		}
+
+		return HttpResponse(json.dumps(response))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(BangunanJenisKontruksiAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^option/$', self.option_jenis_bangunan, name='option_jenis_bangunan'),
+			)
+		return my_urls + urls
+
+admin.site.register(BangunanJenisKontruksi,BangunanJenisKontruksiAdmin)
 
 class ParameterBangunanAdmin(admin.ModelAdmin):
 	list_display = ('parameter','detil_parameter','nilai')

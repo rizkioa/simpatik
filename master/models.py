@@ -253,6 +253,9 @@ class BangunanJenisKontruksi(MetaAtribut):
 	kode = models.CharField(verbose_name="Kode Bangunan Jenis Kontruksi", max_length=10)
 	nama_bangunan = models.CharField(verbose_name="Nama Bangunan", max_length=50)
 
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_bangunan)+"</option>"
+		
 	def __unicode__(self):
 		return u'Bangunan %s - %s' % (str(self.kode), str(self.nama_bangunan))
 
