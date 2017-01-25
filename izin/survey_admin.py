@@ -133,10 +133,8 @@ class SurveyAdmin(admin.ModelAdmin):
 		if status == 4 or status == 8:
 			if kode_ijin == "IUJK":
 				reverse_ = reverse('admin:cek_kelengkapan', args=(obj.pengajuan.id, obj.id ))
-			elif kode_ijin == "503.03.01/":
+			elif kode_ijin == "503.03.01/" or kode_ijin == "503.02/": # Rerklame permanen dan HO
 				reverse_ = reverse('admin:cek_kelengkapan_reklame_ho', args=(obj.id, ))
-			elif k.kode == "503.02/":
-				reverse_ = reverse_
 
 			aksi = mark_safe("""
 				<a href="%s" title='Proses'> %s </a>
@@ -187,7 +185,6 @@ class SurveyAdmin(admin.ModelAdmin):
 			extra_context.update({ 'status_user': status })
 
 			rekom = queryset_.survey_rekomendiasi.filter(created_by=request.user)
-			# print rekom
 
 			if rekom.exists():
 				rekom = rekom.last()
@@ -196,7 +193,7 @@ class SurveyAdmin(admin.ModelAdmin):
 
 			detilbap = queryset_.survey_reklame_ho.all()
 			if detilbap.exists():
-				detil = detilbap.last()
+				detil = detilbap.first()
 				extra_context.update({'detilbap': detil })
 				data_bap = {
 					'kondisi_lahan_usaha':detil.kondisi_lahan_usaha,
@@ -245,7 +242,6 @@ class SurveyAdmin(admin.ModelAdmin):
 
 				if rekom:
 					form_rekom = RekomendasiForm(request.POST, instance=rekom, prefix="rekom")
-					# print form_rekom
 				else:
 					form_rekom = RekomendasiForm(request.POST, prefix="rekom")
 
@@ -259,10 +255,8 @@ class SurveyAdmin(admin.ModelAdmin):
 					b.save()
 
 				if btn == 'submit':
-					# if status:
-					# 	if form_detil.is_valid() and form_rekom.is_valid():
-					# else:					
-					# 	if form_rekom.is_valid():
+					# print form_rekom.has_changed()
+					# print form_detil.has_changed()
 					if form_detil.is_valid() and form_rekom.is_valid():
 
 						# DETIL BAP
@@ -300,6 +294,8 @@ class SurveyAdmin(admin.ModelAdmin):
 						extra_context.update({'form_rekomendasi': form_rekom })
 						messages.error(request, "Penyimpanan gagal, Perbaiki kesalahan dibawah.")
 				elif btn == 'draft':
+					# print form_rekom.has_changed()
+					# print form_detil.has_changed()
 					from pembangunan.models import Rekomendasi, BAPReklameHO
 					if rekom:
 						rekom.rekomendasi = request.POST.get('rekom-rekomendasi')
@@ -329,34 +325,37 @@ class SurveyAdmin(admin.ModelAdmin):
 					else:
 						klasifikasi = None
 
-					if detilbap:
-						detil.kondisi_lahan_usaha = kondisi
-						detil.luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha')
-						detil.jumlah_mesin = request.POST.get('BAP-jumlah_mesin')
-						detil.daya_kekuatan_mesin = request.POST.get('BAP-daya_kekuatan_mesin')
-						detil.jenis_bangunan = jenis
-						detil.sebelah_utara = request.POST.get('BAP-sebelah_utara')
-						detil.sebelah_timur = request.POST.get('BAP-sebelah_timur')
-						detil.sebelah_selatan = request.POST.get('BAP-sebelah_selatan')
-						detil.sebelah_barat = request.POST.get('BAP-sebelah_barat')
-						detil.klasifikasi_jalan = klasifikasi
-						detil.save()
-					else:
-						BAPReklameHO.objects.create(
-							survey = queryset_,
-							kondisi_lahan_usaha = kondisi,
-							luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha'),
-							jumlah_mesin = request.POST.get('BAP-jumlah_mesin'),
-							daya_kekuatan_mesin = request.POST.get('BAP-daya_kekuatan_mesin'),
-							jenis_bangunan = jenis, 
-							sebelah_utara = request.POST.get('BAP-sebelah_utara'),
-							sebelah_timur = request.POST.get('BAP-sebelah_timur'),
-							sebelah_selatan = request.POST.get('BAP-sebelah_selatan'),
-							sebelah_barat = request.POST.get('BAP-sebelah_barat'),
-							klasifikasi_jalan = klasifikasi,
-							created_by= request.user,
-							status = 6
-							)
+					# CEK APAKAH KOORDINATOR
+					if status : 
+						if detilbap:
+							print "MASUK SINI"
+							detil.kondisi_lahan_usaha = kondisi
+							detil.luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha')
+							detil.jumlah_mesin = request.POST.get('BAP-jumlah_mesin')
+							detil.daya_kekuatan_mesin = request.POST.get('BAP-daya_kekuatan_mesin')
+							detil.jenis_bangunan = jenis
+							detil.sebelah_utara = request.POST.get('BAP-sebelah_utara')
+							detil.sebelah_timur = request.POST.get('BAP-sebelah_timur')
+							detil.sebelah_selatan = request.POST.get('BAP-sebelah_selatan')
+							detil.sebelah_barat = request.POST.get('BAP-sebelah_barat')
+							detil.klasifikasi_jalan = klasifikasi
+							detil.save()
+						else:
+							BAPReklameHO.objects.create(
+								survey = queryset_,
+								kondisi_lahan_usaha = kondisi,
+								luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha'),
+								jumlah_mesin = request.POST.get('BAP-jumlah_mesin'),
+								daya_kekuatan_mesin = request.POST.get('BAP-daya_kekuatan_mesin'),
+								jenis_bangunan = jenis, 
+								sebelah_utara = request.POST.get('BAP-sebelah_utara'),
+								sebelah_timur = request.POST.get('BAP-sebelah_timur'),
+								sebelah_selatan = request.POST.get('BAP-sebelah_selatan'),
+								sebelah_barat = request.POST.get('BAP-sebelah_barat'),
+								klasifikasi_jalan = klasifikasi,
+								created_by= request.user,
+								status = 6
+								)
 
 					messages.success(request, str(queryset_.no_survey)+" Berhasil disimpan sebagai draft")
 					return HttpResponseRedirect(reverse('admin:cek_kelengkapan_reklame_ho', args=[queryset_.id]))
@@ -367,8 +366,6 @@ class SurveyAdmin(admin.ModelAdmin):
 			return HttpResponse(template.render(ec))
 		else:
 			raise Http404
-
-		
 
 	def view_cek_kelengkapan_pengajuan(self, request, id_pengajuan_izin_, id_survey):
 		extra_context = {}
@@ -615,7 +612,7 @@ class SurveyAdmin(admin.ModelAdmin):
 					)
 			riwayat_.save()
 
-			# SAVE PENGAJUAN
+			# SAVE PENGAJUAN TIDAK DI PAKAI
 			# pengajuan = DetilIUJK.objects.get(id=pengajuan_id_)
 			# pengajuan.status = 8
 			# pengajuan.save()
