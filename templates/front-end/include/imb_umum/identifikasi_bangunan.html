@@ -1,8 +1,39 @@
-<form method="POST" name="step3" action="{% url 'parameter_bangunan_save' %}" role="form" class="form-horizontal">
+<form method="POST" name="step3" id="id_jenis" role="form" class="form-horizontal" action="{% url 'jenis_bangunan_save' %}">
   {% csrf_token %}
-  	<h3>IDENTIFIKASI BANGUNAN</h3>
-  	<hr class="style14">
-
+    <h3>IDENTIFIKASI BANGUNAN</h3>
+    <hr class="style14">
+    <div class="form-group">
+        <label f class="col-sm-3 control-label text-left">Jenis Kontruksi</label>
+        <div class="col-sm-5">
+          <select required="" id="id_kontruksi" class="form-control chosen-select">
+            <option value="0" >-- Pilih Jenis Kontruksi --</option>
+            {% for j in jenis_kontruksi_list %}
+             <option value="{{ j.id }}">{{ j.nama_jenis_kontruksi }}</option>
+            {% endfor %}
+          </select>
+        </div>
+    </div>
+    <div class="form-group field-jenis_bangunan" style="display: none">
+        <label f class="col-sm-3 control-label text-left">Jenis Bangunan</label>
+        <div class="col-sm-5">
+          <select required="" id="id_jenis_bangunan" name="jenis_bangunan" class="form-control chosen-select">
+          </select>
+        </div>
+    </div>
+    <div class="form-group field-panjang_bangunan" style="display: none">
+      <label for="input01" class="col-sm-2 control-label">Panjang</label>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="form-control no_ktp" id="id_panjang" name="panjang">
+          <span class="input-group-addon">
+            <span>M&sup2;</span>
+          </span>
+        </div>
+      </div>
+    </div>
+</form>
+<form method="POST" id="id_parameter_bangunan" name="step3" action="{% url 'parameter_bangunan_save' %}" role="form" class="form-horizontal" style="display:none">
+  {% csrf_token %}
   	<div class="form-group">
         <label f class="col-sm-3 control-label text-left">A. Kegiatan Pembangunan Gedung</label>
         <div class="col-sm-5">
@@ -15,7 +46,7 @@
         </div>
         <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
 	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_kegiatan_pembangunan" class="form-control" >
+	        <input type="text" disabled="" id="id_bobot_kegiatan_pembangunan" class="form-control">
 	    </div>
     </div>
 
@@ -149,3 +180,4 @@
     </div>    
     <input type="text" hidden="" id="id_total_biaya" name="total_biaya">
 </form>
+

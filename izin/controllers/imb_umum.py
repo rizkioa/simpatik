@@ -5,8 +5,8 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
-from izin.utils import STATUS_HAK_TANAH
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame,ParameterBangunan
+from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame,ParameterBangunan,JenisKontruksi
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilIMB
 
 def formulir_imb_umum(request):
@@ -25,7 +25,12 @@ def formulir_imb_umum(request):
 		lokasi_bangunan = ParameterBangunan.objects.filter(parameter="Lokasi Bangunan")
 		kepemilikan_bangunan = ParameterBangunan.objects.filter(parameter="Kepemilikan Bangunan")
 		lama_penggunaan_bangunan = ParameterBangunan.objects.filter(parameter="Lama Penggunaan Bangunan")
+		jenis_kontruksi_list = JenisKontruksi.objects.all()
 
+		extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
+		extra_context.update({'rumija': RUMIJA })
+		extra_context.update({'ruwasja': RUWASJA })
+		extra_context.update({'jenis_kontruksi_list': jenis_kontruksi_list})
 		extra_context.update({'fungsi_bangunan': fungsi_bangunan })
 		extra_context.update({'kompleksitas_bangunan': kompleksitas_bangunan })
 		extra_context.update({'permanensi_bangunan': permanensi_bangunan })

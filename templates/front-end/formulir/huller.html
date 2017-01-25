@@ -715,29 +715,29 @@
                 });
           });
 
-          // if ('{{pengajuan_}}'){
+          if ('{{pengajuan_}}'){
             
-          //       {% include 'front-end/load_pengajuan.html' %}
+                {% include 'front-end/load_pengajuan.html' %}
 
-          //       $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
-          //       $('#id_judul_reklame').val('{{ pengajuan_.judul_reklame }}');
-          //       $('#id_panjang').val('{{ panjang }}');
-          //       $('#id_lebar').val('{{ lebar }}');
-          //       $('#id_sisi').val('{{ sisi }}');
-          //       $('#id_tanggal_mulai').val('{{ pengajuan_.tanggal_mulai|date:'d-m-Y' }}');
-          //       $('#id_tanggal_akhir').val('{{ pengajuan_.tanggal_akhir|date:'d-m-Y' }}');
-          //       $('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
-          //       $('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
-          //       load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
-          //       setTimeout(function(){
-          //         $('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
-          //       }, 1000);
+                $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
+                $('#id_judul_reklame').val('{{ pengajuan_.judul_reklame }}');
+                $('#id_panjang').val('{{ panjang }}');
+                $('#id_lebar').val('{{ lebar }}');
+                $('#id_sisi').val('{{ sisi }}');
+                $('#id_tanggal_mulai').val('{{ pengajuan_.tanggal_mulai|date:'d-m-Y' }}');
+                $('#id_tanggal_akhir').val('{{ pengajuan_.tanggal_akhir|date:'d-m-Y' }}');
+                $('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
+                $('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
+                load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
+                setTimeout(function(){
+                  $('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
+                }, 1000);
 
-          //       $('a[data-toggle="tooltip"]').tooltip({
-          //     animated: 'fade',
-          //     placement: 'bottom',
-          //     html: true
-          // });
+                $('a[data-toggle="tooltip"]').tooltip({
+              animated: 'fade',
+              placement: 'bottom',
+              html: true
+          });
           }
   </script>
 {% endblock %}

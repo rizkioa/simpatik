@@ -160,6 +160,13 @@ class IdentifikasiJalanForm(forms.ModelForm):
 		model = DetilIMB
 		fields = ('klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan')
 
+class JenisBangunanForm(forms.ModelForm):
+	"""docstring for JenisBangunanForm"""
+	panjang = forms.DecimalField(label="Panjang Bangunan", required=False,)
+	class Meta:
+		model = DetilIMB
+		fields = ('jenis_bangunan','panjang')
+
 class InformasiKekayaanDaerahForm(forms.ModelForm):
 	class Meta:
 		model = InformasiKekayaanDaerah

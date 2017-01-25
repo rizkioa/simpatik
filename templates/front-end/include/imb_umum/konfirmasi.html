@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form" class="form-horizontal">
+<form method="POST" name="step6" role="form" class="form-horizontal">
   {% csrf_token %}
   	<h3>KONFIRMASI DATA</h3>
   	<hr class="style14" style="height: 2px;">
@@ -198,8 +198,42 @@
 
 	<br>
 	<h4><u><strong>#3 IDENTIFIKASI BANGUNAN</strong></u></h4>
-	<div class="table-responsive">
-	    <table class="table table-bordered">
+	<div class="row">
+	    <div class="col-md-3">
+	      <span>Jenis Kontruksi</span>
+	    </div>
+	    <div class="col-md-1">
+	      <span class="pull-right">:</span>
+	    </div>
+	    <div class="col-md-8">
+	      <span  id='id_kontruksi_konfirmasi'></span>
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="col-md-3">
+	      <span>Jenis Bangunan</span>
+	    </div>
+	    <div class="col-md-1">
+	      <span class="pull-right">:</span>
+	    </div>
+	    <div class="col-md-8">
+	      <span  id='id_jenis_bangunan_konfirmasi'></span>
+	    </div>
+	</div>
+	<div class="row field-konfirmasi_panjang" style="display: none;">
+	    <div class="col-md-3">
+	      <span>Panjang Bangunan</span>
+	    </div>
+	    <div class="col-md-1">
+	      <span class="pull-right">:</span>
+	    </div>
+	    <div class="col-md-8">
+	      <span  id='id_panjang_konfirmasi'></span> M&sup2;
+	    </div>
+	</div>
+
+	<div class="row">
+	    <table width="100%" class="table table-bordered field-konfirmasi_parameter_bangunan hide">
 	        <thead>
 				<tr>
 					<th>Parameter</th>
