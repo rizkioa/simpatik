@@ -900,6 +900,158 @@ class MesinPerusahaan(MetaAtribut):
 		verbose_name = 'Mesin Perusahaan'
 		verbose_name_plural = 'Mesin Perusahaan'	
 
+# ++++++++++++ TDUP ++++++++++++
+class BidangUsahaPariwisata(models.Model):
+	bidang_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Bidang Usaha Pariwisata")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.bidang_usaha_pariwisata),)
+
+	class Meta:
+		verbose_name = 'Bidang Usaha Pariwisata'
+		verbose_name_plural = 'Bidang Usaha Pariwisata'
+
+class SubJenisBidangUsaha(models.Model):
+	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata")
+	nama_subjenis = models.CharField(max_length=255, verbose_name="Nama SubJenis")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.nama_subjenis),)
+
+	class Meta:
+		verbose_name = 'Sub Jenis Bidang Usaha'
+		verbose_name_plural = 'Sub Jenis Bidang Usaha'
+
+class DetilTDUP(PengajuanIzin):
+	sub_jenis_bidang_usaha = models.ManyToManyField(SubJenisBidangUsaha, verbose_name="Bidang Usaha Pariwisata")
+	nama_usaha = models.CharField(max_length=255, verbose_name="Nama Usaha", null=True, blank=True)
+	lokasi_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Lokasi Usaha Pariwisata", null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name="Desa")
+	telephone = models.CharField(max_length=255, verbose_name="Telephone", null=True, blank=True)
+	# Izin gangguan
+	nomor_izin_gangguan = models.CharField(max_length=255, verbose_name="Nomor Izin Gangguan")
+	tanggal_izin_gangguan = models.DateField(verbose_name="Tanggal Izin Gangguan")
+	# Dokumen Pengelolaan Lingkungan
+	nomor_dokumen_pengelolaan = models.CharField(max_length=255, verbose_name="Nomor Dokumen Pengelolaan Lingkungan")
+	tanggal_dokumen_pengelolaan = models.DateField(verbose_name="Tanggal Dokumen Pengelolaan Lingkungan")
+
+	def __unicode__(self):
+		return u'Detil TDUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'TDUP'
+		verbose_name_plural = 'TDUP'
+
+# class BUAkomodasi(models.Model):
+# 	hotel_bintang = models.BooleanField(default=False, verbose_name="Hotel Bintang")
+# 	hotel_non_bintang = models.BooleanField(default=False, verbose_name="Hotel Non Bintang")
+# 	bumi_perkemahan = models.BooleanField(default=False, verbose_name="Bumi Perkemahan")
+# 	persinggahan_karavan = models.BooleanField(default=False, verbose_name="Persinggahan Karavan")
+# 	villa = models.BooleanField(default=False, verbose_name="Villa")
+# 	pondok_wisata = models.BooleanField(defaul=False, verbose_name="Pondok Wisata")
+# 	motel = models.BooleanField(default=False, verbose_name="Motel")
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Akomodasi'
+# 		verbose_name_plural = 'Bidang Usaha Akomodasi'
+
+# class BUTirta(models.Model):
+# 	wisata_bahari = models.BooleanField(default=False, verbose_name="Wisata Bahari")
+# 	wisata_perahu_layar = models.BooleanField(default=False, verbose_name="Wisata Perahu Layar")
+# 	wisata_memancing = models.BooleanField(default=False, verbose_name="Wisata Memancing")
+# 	wisata_selancar = models.BooleanField(default=False, verbose_name="Wisata Selancar")
+# 	dermaga_bahari = models.BooleanField(default=False, verbose_name="Dermaga Bahari")
+# 	wisata_arum_jeram = models.BooleanField(default=False, verbose_name="Wisata Arum Jeram")
+# 	wisata_dayung = models.BooleanField(default=False, verbose_name="Wisata Dayung")
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Tirta'
+# 		verbose_name_plural = 'Bidang Usaha Tirta'
+
+# class BUHiburandanRekreasi(models.Model):
+# 	lapangan_golf = models.BooleanField(default=False, verbose_name="Lapangan Golf")
+# 	lapangan_bilyard = models.BooleanField(default=False, verbose_name="Lapangan Bilyard")
+# 	gelanggang_renang = models.BooleanField(default=False, verbose_name="Gelanggang Renang")
+# 	lapangan_tenis = models.BooleanField(default=False, verbose_name="Lapangan Tenis")
+# 	gelaggang_bowling = models.BooleanField(default=False, verbose_name="Gelanggang Bowling")
+# 	sanggar_tari = models.BooleanField(default=False, verbose_name="Sanggar Tari")
+# 	galeri_seni = models.BooleanField(default=False, verbose_name="Galeri Seni")
+# 	gedung_pertunjukan_seni = models.BooleanField(default=False, verbose_name="Gedung Pertunjukan Seni")
+# 	kelab_malam = models.BooleanField(default=False, verbose_name="Kelab Malam")
+# 	diskotik = models.BooleanField(default=False, verbose_name="Diskotik")
+# 	pub = models.BooleanField(default=False, verbose_name="Pub")
+# 	panti_pijat = models.BooleanField(default=False, verbose_name="Panti Pijat")
+# 	taman_rekreasi = models.BooleanField(default=False, verbose_name="Taman Rekreasi")
+# 	taman_bertema = models.BooleanField(default=False, verbose_name="Taman Bertema")
+# 	karaoke = models.BooleanField(default=False, verbose_name="karaoke")
+# 	jasa_impreasariat = models.BooleanField(default=False, verbose_name="Jasa Impreasariat")
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Hiburan dan Rekreasi'
+# 		verbose_name_plural = 'Bidang Usaha Hiburan dan Rekreasi'
+
+# class BUDayaTarikWisata(models.Model):
+# 	pengelolaan_pemandian = models.BooleanField(default=False, verbose_name="Pengelolaan pemandian air panas alami")
+# 	pengelolaan_gua = models.BooleanField(default=False, verbose_name="Pengelolaan Gua")
+# 	pengelolaan_peninggalan_sejarah = models.BooleanField(default=False, verbose_name="Pengelolaan peninggalan sejarah")
+# 	pengelolaan_museum = models.BooleanField(default=False, verbose_name="Pengelolaan Museum")
+# 	pengelolaan_pemukiman = models.BooleanField(default=False, verbose_name="Pengelolaan pemukiman")
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Tarik Wisata'
+# 		verbose_name_plural = 'Bidang Usaha Tarik Wisata'
+
+# class BUJasaPerjalananWisata(models.Model):
+# 	biro_perjalanan_wisata = models.BooleanField(default=False, verbose_name="Biro Perjalanan Wisata")
+# 	agen_perjalanan_wisata = models.BooleanField(default=False, verbose_name="Agen Perjalanan Wisata")
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Perjalanan Wisata'
+# 		verbose_name_plural = 'Bidang Usaha Perjalanan Wisata'
+
+# class BUTransportasiWisata(models.Model):
+# 	angkutan_jalan_wisata = models.BooleanField(default=False, verbose_name="Angkutan Jalan Wisata")
+# 	jumlah_unit_angkutan_jalan_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Jalan Wisata", null=True, blank=True)
+# 	kapasitas_angkutan_jalan_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Jalan Wisata", null=True, blank=True)
+# 	angkutan_kereta_api_wisata = models.BooleanField(default=False, verbose_name="Angkutan Kereta Api Wisata")
+# 	jumlah_unit_angkutan_kereta_api_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Kereta Api Wisata", null=True, blank=True)
+# 	kapasitas_angkutan_kereta_api_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Kereta Api Wisata", null=True, blank=True)
+# 	angkutan_sungai_dan_danau_wisata = models.BooleanField(default=False, verbose_name="Angkutan Sungai dan Danau Wisata")
+# 	jumlah_unit_angkutan_sungai_dan_danau_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Sungai dan Danau Wisata", null=True, blank=True)
+# 	kapasitas_angkutan_sungai_dan_danau_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Sungai dan Danau Wisata", null=True, blank=True)
+# 	angkutan_laut_domestik_wisata = models.BooleanField(default=False, verbose_name="Angkutan Laut Domestik Wisata")
+# 	jumlah_unit_angkutan_laut_domestik_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Laut Domestik Wisata", null=True, blank=True)
+# 	kapasitas_angkutan_laut_domestik_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Laut Domestik Wisata", null=True, blank=True)
+# 	angkutan_laut_internasional_wisata = models.BooleanField(default=False, verbose_name="Angkutan Laut Internasional Wisata")
+# 	jumlah_unit_angkutan_laut_internasional_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Laut Internasional Wisata", null=True, blank=True)
+# 	kapasitas_angkutan_laut_internasional_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Laut Internasional Wisata", null=True, blank=True)
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Transportasi Wisata'
+# 		verbose_name_plural = 'Bidang Usaha Transportasi Wisata'
+
+# class BUMakananMinuman(models.Model):
+# 	restoran = models.BooleanField(default=False, verbose_name="Restoran")
+# 	jumlah_kursi_restoran = models.IntegerField(verbose_name="Jumlah Kursi Restoran", null=True, blank=True)
+# 	rumah_makan = models.BooleanField(default=False, verbose_name="Rumah Makan")
+# 	jumlah_kursi_rumah_makan = models.IntegerField(verbose_name="Jumlah Kursi Rumah Makan", null=True, blank=True)
+# 	bar_atau_rumah_minum = models.BooleanField(default=False, verbose_name="Bar / Rumah Minum")
+# 	jumlah_kursi_bar_atau_rumah_minum = models.IntegerField(verbose_name="Jumlah Kursi Bar / Rumah Minum", null=True, blank=True)
+# 	kafe = models.BooleanField(default=False, verbose_name="Kafe")
+# 	jumlah_kursi_kafe = models.IntegerField(verbose_name="Jumlah Kursi Kafe", null=True, blank=True)
+# 	pusat_makanan = models.BooleanField(default=False, verbose_name="Pusat Makanan")
+# 	jumlah_kursi_pusat_makanan = models.IntegerField(verbose_name="Jumlah Kursi Pusat Makanan", null=True, blank=True)
+# 	jasa_boga = models.BooleanField(default=False, verbose_name="Jasa Boga")
+# 	jumlah_kursi_jasa_boga = models.IntegerField(verbose_name="Jumlah Kursi Jasa Boga", null=True, blank=True)
+
+# 	class Meta:
+# 		verbose_name = 'Bidang Usaha Makanan Minuman'
+# 		verbose_name_plural = 'Bidang Usaha Makanan Minuman'
+
+# ++++++++++++ TDUP ++++++++++++
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
