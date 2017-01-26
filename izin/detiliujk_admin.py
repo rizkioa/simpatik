@@ -88,11 +88,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			h = h.user_set.all()
 			extra_context.update({'pegawai_list' : h })
 
-			g = Group.objects.filter(name="Tim Teknis")
-			if g.exists():
-				g = g.last()
-			p = g.user_set.all()
-			extra_context.update({'pegawai_all' : p })
 			try:
 				try:
 					s = Survey.objects.get(pengajuan=pengajuan_)
@@ -180,7 +175,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 	
 		unit_kerja_id = request.POST.get('unit_kerja', None)	
 		if unit_kerja_id and not unit_kerja_id is "":
-			pegawai_list = pegawai_list.filter(unit_kerja_id=unit_kerja_id)
+			pegawai_list = pegawai_list.filter(unit_kerja_id=unit_kerja_id, groups__name="Tim Teknis")
 		pilihan = "<option value=''>-- Pilih Pegawai --</option>"
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in pegawai_list)));
 

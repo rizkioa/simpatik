@@ -104,7 +104,8 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
-			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+
 			# UNTUK SURVEY
 			from django.contrib.auth.models import Group
 
@@ -116,18 +117,14 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			h = h.user_set.all()
 			extra_context.update({'pegawai_list' : h })
 
-			g = Group.objects.filter(name="Tim Teknis")
-			if g.exists():
-				g = g.last()
-			p = g.user_set.all()
-			extra_context.update({'pegawai_all' : p })
-
 			try:
 				try:
 					s = Survey.objects.get(pengajuan=pengajuan_)
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
-					print s.survey_iujk.all()
+					# print s.survey_iujk.all()
+				print s.survey_reklame_ho.all()
+				extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 			except ObjectDoesNotExist:
 				s = ''
 

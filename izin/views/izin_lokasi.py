@@ -22,7 +22,7 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, InformasiTanah,Pemohon
+from izin.models import PengajuanIzin, InformasiTanah,Pemohon,SertifikatTanah
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm
 
@@ -39,6 +39,11 @@ def formulir_izin_lokasi(request, extra_context={}):
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
     else:
         return HttpResponseRedirect(reverse('layanan'))
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+          sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+          extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+
     return render(request, "front-end/formulir/izin_lokasi.html", extra_context)
 
 def informasitanah_save_cookie(request):

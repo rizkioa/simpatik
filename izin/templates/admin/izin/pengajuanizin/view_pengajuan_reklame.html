@@ -378,11 +378,176 @@
 									</center>
 								</div>
 							</div>
-
+							{{jenis_permohonan}}
 							{% include "admin/izin/survey_1.html" %}
 
 							
 
+							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
+								{% csrf_token %}
+									<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
+									<div class="panel-body">
+										<h4>MENOLAK PENGAJUAN</h4>
+										<br>
+										<div class="form-group">
+										    <label for="input01">Alasan </label>
+									      	<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+									  	</div>
+									  	<div class="form-group">
+										    <label for="input01">Lampiran </label>
+										    <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+										</div>
+									</div>
+
+									<div class="panel-footer">
+										<center>
+											<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
+										</center>
+									</div>
+								</form>
+							</div>
+						{% endif %}
+						{% if status == 8 %}
+							<!-- <section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;"> -->
+							<section class="tile">
+
+                                <!-- tile header -->
+                                <div class="tile-header">
+                                    <h1 class="custom-font"><strong>Survey Izin </strong></h1>
+                                </div>
+                                <!-- /tile header -->
+
+                                <!-- tile body -->
+                                <div class="tile-body">
+									<table id="" class="table table-striped table-bordered table-hover table-condensed">
+										<thead>
+										  <tr>
+										      <th scope="col" class="">SKPD</th>
+										      <th scope="col" class="">NAMA</th>
+										      <th scope="col" class="">KOORDINATOR</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  {% for q in survey.survey_iujk.all %}
+										    <tr>
+										      <td>{{q.pegawai.unit_kerja}}</td>
+										      <td>{{q.pegawai}} [{{q.pegawai.username}}]</td>
+										      <td>{{q.koordinator|true_or_false|safe}}</td>
+										    </tr>
+										  {% endfor %}
+										</tbody>
+									</table>
+                                </div>
+                                <!-- /tile body -->
+
+                            </section>
+                            <section class="tile">
+                            	<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Deadline Survey</label>
+										<div class="col-sm-4"> {{ survey.deadline_survey }}
+										</div>
+									</div>
+									
+								</div>
+                                <!-- tile header -->
+                                <div class="tile-header">
+                                    <h1 class="custom-font"><strong>Laporan Survey </strong></h1>
+                                </div>
+                                <!-- /tile header -->
+
+                                <!-- tile body -->
+                                <div class="tile-body">
+									<div class="row">
+							            <div class="col-md-6">
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
+
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_luas_tempat_usaha">Luas Tempat Usaha : {{detilbap.luas_tempat_usaha}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_jumlah_mesin">Jumlah Mesin : {{detilbap.jumlah_mesin}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_daya_kekuatan_mesin">Daya Kekuatan Mesin : {{detilbap.daya_kekuatan_mesin}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_jenis_bangunan">Jenis Bangunan : {{detilbap.get_jenis_bangunan_display}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
+							              </div>
+							            </div>
+							            <div class="col-md-6">
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_sebelah_timur">Sebelah Timur : {{ detilbap.sebelah_timur}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_sebelah_selatan">Sebelah Selatan : {{detilbap.sebelah_selatan}}</label>
+							              </div>
+							              <div class="form-group">
+							                <label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
+							              </div>
+							            </div>
+							          </div>
+                                </div>
+                                <!-- /tile body -->
+
+                            </section>
+                            <section class="tile">
+
+                                <!-- tile header -->
+                                <div class="tile-header">
+                                    <h1 class="custom-font"><strong>Pertimbangan Dan Saran </strong></h1>
+                                </div>
+                                <!-- /tile header -->
+
+                                <!-- tile body -->
+                                <div class="tile-body">
+									<table id="" class="table table-striped table-bordered table-hover table-condensed">
+										<thead>
+										  <tr>
+										      <th scope="col" class="">SKPD</th>
+										      <th scope="col" class="">NAMA</th>
+										      <th scope="col" class="">Rekomendasi/Saran</th>
+										      <th scope="col" class="">Lampiran</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  {% for q in survey.survey_iujk.all %}
+											<tr>
+												<td>{{q.pegawai.unit_kerja}}</td>
+												<td>{{q.pegawai}} ({{q.pegawai.username}})</td>
+												<td>{{survey|get_rekomendasi:q.pegawai.id|safe}}</td>
+												<td>{{survey|get_berkas:q.pegawai.id|safe}}</td>
+											</tr>
+										  {% endfor %}
+										</tbody>
+									</table>
+                                </div>
+                                <!-- /tile body -->
+
+                            </section>
+                            <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+								<div class="panel-body">
+									<h4>MENERUSKAN PENGAJUAN KE KEPALA BPM-P2T</h4>
+									<br>
+									<label class="checkbox checkbox-custom-alt">
+								        <input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala BPM-P2T untuk ditindaklanjuti.
+							      	</label>
+								</div>
+								<div class="panel-footer">
+									<center>
+										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+									</center>
+								</div>
+							</div>
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
 								{% csrf_token %}

@@ -59,10 +59,10 @@
 {% block rootwizard %}
   <ul class="nav nav-tabs nav-justified">
     <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Informasi Tanah</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+<!--     <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li> -->
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Informasi Tanah</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Upload Dokumen </i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
   </ul>
 {% endblock %}
 
@@ -72,22 +72,22 @@
     {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
   </div>
 
-  <div class="tab-pane" id="tab2">
+  <!-- <div class="tab-pane" id="tab2"> -->
     <!-- Identitas perusahaan -->
-    {% include 'front-end/include/formulir_izin_lokasi/identitas_perusahaan.html' %}
-  </div>
+    <!-- {% include 'front-end/include/formulir_izin_lokasi/identitas_perusahaan.html' %} -->
+  <!-- </div> -->
 
-  <div class="tab-pane" id="tab3">
+  <div class="tab-pane" id="tab2">
     <!-- Data Kegiatan Gangguan -->
     {% include 'front-end/include/formulir_izin_lokasi/informasi_tanah.html' %}
   </div>
 
-  <div class="tab-pane" id="tab4">
+  <div class="tab-pane" id="tab3">
     <!-- Upload Dokumen -->
     {% include 'front-end/include/formulir_izin_lokasi/upload_dokumen.html' %}
   </div>
 
-  <div class="tab-pane" id="tab5">
+  <div class="tab-pane" id="tab4">
     <!-- Konfirmasi -->
     {% include 'front-end/include/formulir_izin_lokasi/konfirmasi.html' %}
   </div>
@@ -101,6 +101,7 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
@@ -137,7 +138,7 @@
                   })
                 }
               }else{
-              if($current == 4){
+              if($current == 3){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)

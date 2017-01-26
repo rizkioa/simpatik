@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <div class="row">
+<!--     <div class="row">
       <label class="col-sm-2 control-label">Sertifikat/Petok D</label> 
       <div class="form-group">
         <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
@@ -109,27 +109,61 @@
           <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
         </div>
       </div>
+    </div> -->
+
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Sertifikat/Petok D</label> 
+        <table id="id_penggunaan_tanah_ippt" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No Sertifikat</td>
+              <td>Luas</td>
+              <td>Atas Nama</td>
+              <td>Tahun</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if sertifikat_tanah_list %}
+            {% for a in sertifikat_tanah_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+                <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+                <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+                <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d F Y"}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowpenggunaantanah(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowpenggunaantanah(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" data-toggle="modal" data-target="#sertifikat_tanah">Tambah Sertifikat Tanah<i class="fa fa-plus"></i></a>
+      </div>
     </div>
+    <br>
+    
     <div class="row">
       <label class="col-sm-2 control-label">Persil</label> 
       <div class="form-group">
         <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
         <div class="col-sm-4">
-          <input type="text" id="id_no_persil" name="no_persil" class="form-control" required="" data-parsley-trigger="change">
+          <input type="text" id="id_no_persil" name="no_persil" class="form-control" data-parsley-trigger="change">
         </div>
       </div>
        <label for="input01" class="col-sm-2 control-label"></label>
       <div class="form-group">
         <label for="input01" class="col-sm-2 control-label">Klas</label>
         <div class="col-sm-4">
-          <input type="text" id="id_klas_persil" name="klas_persil" class="form-control" required="" data-parsley-trigger="change">
+          <input type="text" id="id_klas_persil" name="klas_persil" class="form-control" data-parsley-trigger="change">
         </div>
       </div>
       <label for="input01" class="col-sm-2 control-label"></label>
       <div class="form-group">
         <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
         <div class="col-sm-4">
-          <input type="text" id="id_atas_nama_persil" name="atas_nama_persil" class="form-control" required="" data-parsley-trigger="change">
+          <input type="text" id="id_atas_nama_persil" name="atas_nama_persil" class="form-control" data-parsley-trigger="change">
         </div>
       </div>
     </div>
