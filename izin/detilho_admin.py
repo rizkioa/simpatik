@@ -84,7 +84,10 @@ class DetilHOAdmin(admin.ModelAdmin):
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
 				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					try:
+						ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+					except MultipleObjectsReturned:
+						ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).order_by('id').first()
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass

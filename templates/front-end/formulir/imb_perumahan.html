@@ -145,7 +145,13 @@
                   })
                 }
               else{
-              if($current == 5){
+              if ($current == 2) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_imb(id_pengajuan)
+              else if ($current == 4) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_identifikasi_jalan_imb(id_pengajuan)
+              }else if($current == 5){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_imb_perumahan(id_pengajuan)
                

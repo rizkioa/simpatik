@@ -91,6 +91,60 @@
     <!-- Konfirmasi -->
     {% include 'front-end/include/formulir_izin_lokasi/konfirmasi.html' %}
   </div>
+    <div class="modal fade" id="sertifikat_tanah" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">Sertifikat/Peto D</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
+            {% csrf_token %}
+              <div class="row">
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+                  <div class="col-sm-4">
+                    <input type="text" id="id_no_sertifikat_petak" name="no_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label">Luas</label>
+                  <div class="col-sm-2">
+                    <div class="input-group">
+                      <input type="text" class="form-control no_ktp" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+                      <span class="input-group-addon">
+                        <span>M&sup2;</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
+                  <div class="col-sm-4">
+                    <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
+                  <div class="col-sm-3">
+                      <div class="input-group datepicker w-360 tanggal-awal"> 
+                        <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_surat_kuasa" name="tanggal_surat_kuasa" style="width: 170px;">
+                        <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                        </span>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
 
 {% block extratools %}
@@ -154,7 +208,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return false;
+              return true;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -163,7 +217,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });
@@ -472,3 +526,4 @@
     </script>
 
 {% endblock %}
+
