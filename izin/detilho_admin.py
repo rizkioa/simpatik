@@ -2,7 +2,7 @@ from django.contrib import admin
 from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 import base64
