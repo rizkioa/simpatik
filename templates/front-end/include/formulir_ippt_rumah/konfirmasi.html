@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form">
+<form method="POST" name="step4" role="form">
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
@@ -60,63 +60,8 @@
   </table>
   <br>
 
-  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
-  <table width="100%" border="0">
-    <tr>
-      <td width="25%">NPWP</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
-    </tr>
-    <tr>
-      <td width="25%">Nama Perusahaan</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
-    </tr>
-    <tr>
-      <td width="25%">Alamat Perusahaan</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
-    </tr>
-    <tr>
-      <td width="25%">Kode Pos</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
-    </tr>
-    <tr>
-      <td width="25%">No.Telp</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
-    </tr>
-    <tr>
-      <td width="25%">No.Fax</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
-    </tr>
-    <tr>
-      <td width="25%">E-mail</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
-    </tr>
-  </table>
-
-  <br>
   <h4><u>#3. INFORMASI TANAH</u></h4>
   <table width="100%" border="0">
-    <tr>
-      <td width="25%"><h5><u>Surat Kuasa</u></h5></td>
-      <td width="5%"></td>
-      <td width="70%"></td>
-    </tr>
-    <tr>
-      <td width="25%">No.</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='no_surat_kuasa_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Tanggal</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='tanggal_surat_kuasa_konfirmasi'></span></td>
-    </tr>
     <tr>
       <td width="25%"><h5><u>Lokasi</u></h5></td>
       <td width="5%"></td>
@@ -157,30 +102,26 @@
       <td width="5%"></td>
       <td width="70%"></td>
     </tr>
-    </table>
-        <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
-          <thead>
-            <tr>
-              <td>No Sertifikat</td>
-              <td>Luas</td>
-              <td>Atas Nama</td>
-              <td>Tahun</td>
-            </tr>
-          </thead>
-          <tbody>
-          {% if sertifikat_tanah_list %}
-            {% for a in sertifikat_tanah_list %}
-              <tr id="{{a.id}}">
-                <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
-                <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
-                <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
-                <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
-              </tr>
-            {% endfor %}
-          {% endif %}
-          </tbody>
-        </table>
-    <table width="100%" border="0">
+    <tr>
+      <td width="25%">No.</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='no_sertifikat_petak_konfirmasi'></span></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Luas</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='luas_sertifikat_petak_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Atas Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='atas_nama_sertifikat_petak_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Tanggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='id_tanggal_sertifikat_konfirmasi'></span></td>
+    </tr>
     <tr>
       <td width="25%"><h5><u>Persil</u></h5></td>
       <td width="5%"></td>
