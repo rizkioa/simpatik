@@ -24,6 +24,7 @@
                 <th>Klasifikasi</th>
                 <th>Sub Klasifikasi Usaha</th>
                 <th>Nama Paket 10 Tahun Terakhir</th>
+                <th>Keterangan</th>
                 <th>Tahun Pelaksanaan</th>
                 <th>Nilai Paket Pekerjaan</th>
                 <!-- <th>Aksi</th> -->
@@ -37,7 +38,8 @@
                   <td>{{ p.subklasifikasi.klasifikasi }}</td>
                   <td>{{ p.subklasifikasi }}</td>
                   <td>{{ p.nama_paket_pekerjaan }}</td>
-                  <td>{{ p.tahun }}</td>
+                  <td>{{ p.keterangan|default_if_none:'' }}</td>
+                  <td>{{ p.tahun|default_if_none:'' }}</td>
                   <td>{{ p.get_nilai_rupiah }}</td>
                   <!-- <td><a href="#" onclick="show_modal_edit('{{p.id}}','{{p.klasifikasi_usaha}}','{{p.nama_paket_pekerjaan}}','{{p.tahun}}','{{p.nilai_paket_pekerjaan}}')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a></td> -->
                 </tr>
