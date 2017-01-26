@@ -1,6 +1,6 @@
 from django.contrib import admin
 from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey
-from kepegawaian.models import Pegawai
+from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from django.template import RequestContext, loader
