@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilHO, Syarat, SKIzin, Riwayat
+from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -107,6 +107,33 @@ class DetilHOAdmin(admin.ModelAdmin):
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
 			# encode_pengajuan_id = (str(pengajuan_.id))
+
+
+			# UNTUK SURVEY
+			from django.contrib.auth.models import Group
+
+			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
+
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
+			try:
+				try:
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					# print s.survey_iujk.all()
+				print s.survey_reklame_ho.all()
+				extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
+			except ObjectDoesNotExist:
+				s = ''
+
+			extra_context.update({'survey': s })
+			# END UNTUK SURVEY
+
 			extra_context.update({'pengajuan_id': pengajuan_id })
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
