@@ -79,17 +79,17 @@
 
   <div class="tab-pane" id="tab2">
     <!-- Data Kegiatan Gangguan -->
-    {% include 'front-end/include/formulir_izin_lokasi/informasi_tanah.html' %}
+    {% include 'front-end/include/formulir_ippt_rumah/informasi_tanah_ippt_rumah.html' %}
   </div>
 
   <div class="tab-pane" id="tab3">
     <!-- Upload Dokumen -->
-    {% include 'front-end/include/formulir_izin_lokasi/upload_dokumen.html' %}
+    {% include 'front-end/include/formulir_ippt_rumah/upload_dokumen.html' %}
   </div>
 
   <div class="tab-pane" id="tab4">
     <!-- Konfirmasi -->
-    {% include 'front-end/include/formulir_izin_lokasi/konfirmasi.html' %}
+    {% include 'front-end/include/formulir_ippt_rumah/konfirmasi.html' %}
   </div>
 {% endblock %}
 
@@ -372,7 +372,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace("/layanan/izin-lokasi/formulir/cetak/"+id_pengajuan_);
+              window.location.replace("/layanan/ippt-rumah/formulir/cetak/"+id_pengajuan_);
             }
           });
         }

@@ -112,18 +112,18 @@ urlpatterns = [
     #cetak HO
     url(r'^layanan/ho/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', detilho_view.cetak_gangguan_ho, name='cetak_ho_perpanjang'),
     url(r'^layanan/ho/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', detilho_view.cetak_bukti_pendaftaran_gangguan_ho, name='cetak_bukti_pendaftaran_ho_baru'),
-
-    #cetak Izin Lokasi
-    url(r'^layanan/izin-lokasi/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_izin_lokasi, name='cetak_izin_lokasi'),
-    url(r'^layanan/izin-lokasi/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_bukti_pendaftaran_izin_lokasi, name='cetak_bukti_pendaftaran_izin_lokasi'),
+   
+    #cetak Rumah
+    url(r'^layanan/ippt-rumah/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', ippt_rumah.cetak_ippt_rumah, name='cetak_ippt_rumah'),
+    url(r'^layanan/ippt-rumah/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', ippt_rumah.cetak_bukti_pendaftaran_ippt_rumah, name='cetak_bukti_pendaftaran_ippt_rumah'),
 
     #cetak Izin IPPT Usaha
     url(r'^layanan/ippt-usaha/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', ippt_usaha.cetak_ippt_usaha, name='cetak_ippt_usaha'),
     url(r'^layanan/ippt-usaha/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', ippt_usaha.cetak_bukti_pendaftaran_ippt_usaha, name='cetak_bukti_pendaftaran_ippt_usaha'),
 
-    #cetak HO Perpanjang
-    # url(r'^layanan/ho-daftar-ulang/formulir/cetak$', views.cetak_ho_baru, name='cetak_ho_baru'),
-    # url(r'^layanan/ho-daftar-ulang/formulir/cetak-bukti-pendaftaran$', views.cetak_bukti_pendaftaran_ho_perpanjang, name='cetak_bukti_pendaftaran_ho_perpanjang'),
+    #cetak Izin Lokasi
+    url(r'^layanan/izin-lokasi/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_izin_lokasi, name='cetak_izin_lokasi'),
+    url(r'^layanan/izin-lokasi/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', izin_lokasi.cetak_bukti_pendaftaran_izin_lokasi, name='cetak_bukti_pendaftaran_izin_lokasi'),
     
     #cetak Penggilingan padi
     url(r'^layanan/penggilingan-padi-&-huller/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', huller.cetak_huller, name='cetak_huller'),
@@ -297,6 +297,9 @@ urlpatterns = [
     url(r'^izin-lokasi/berkas/save/$', izin_lokasi.izinlokasi_upload_berkas_pendukung, name='izinlokasi_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-izin-lokasi/(?P<id_pengajuan>[0-9]+)$', izin_lokasi.ajax_load_berkas_izinlokasi, name='ajax_load_berkas_izinlokasi'),
     url(r'^layanan/izin-lokasi/konfirmasi/(?P<id_pengajuan>[0-9]+)$', izin_lokasi.load_konfirmasi_izin_lokasi , name='load_konfirmasi_izin_lokasi'),
+    url(r'^informasitanah/sertifikat-tanah/save/$', izin_lokasi.sertifikat_tanah_save_cookie, name='sertifikat_tanah_save'),
+    url(r'^informasitanah/sertifikat-tanah/edit/(?P<id_sertifikat_tanah>[0-9]+)/$', izin_lokasi.edit_sertifikat_tanah , name='edit_sertifikat_tanah'),
+    url(r'^informasitanah/sertifikat-tanah/delete/(?P<id_sertifikat_tanah>[0-9]+)$', izin_lokasi.delete_sertifikat_tanah , name='delete_sertifikat_tanah'),
     url(r'^layanan/izin-lokasi/selesai/$', izin_lokasi.izinlokasi_done , name='izinlokasi_done'),
     # ++++++++++++++++++++++++ end for ajax Izin Lokasi   ++++++++++++++++++++++
 

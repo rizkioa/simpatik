@@ -573,6 +573,7 @@ function load_konfirmasi(id_pengajuan){
             str += '<td>'+respon.paket[i].klasifikasi+'</td>'
             str += '<td>'+respon.paket[i].subklasifikasi+'</td>'
             str += '<td>'+respon.paket[i].nama_paket_pekerjaan+'</td>'
+            str += '<td>'+respon.paket[i].keterangan+'</td>'
             str += '<td>'+respon.paket[i].tahun+'</td>'
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'

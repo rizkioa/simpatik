@@ -98,7 +98,7 @@
               <h3 class="modal-title custom-font">Sertifikat/Peto D</h3>
           </div>
           <div class="modal-body">
-            <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
+            <form method="POST" id="id_sertifikat_tanah_form" name="sertifikat_tanah_form" role="form" class="form-horizontal" action="{% url 'sertifikat_tanah_save' %}"  data-parsley-validate novalidate>
             {% csrf_token %}
               <div class="row">
                 <div class="form-group">
@@ -128,7 +128,7 @@
                   <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
                   <div class="col-sm-3">
                       <div class="input-group datepicker w-360 tanggal-awal"> 
-                        <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_surat_kuasa" name="tanggal_surat_kuasa" style="width: 170px;">
+                        <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tahun_sertifikat" name="tahun_sertifikat" style="width: 170px;">
                         <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
                           <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
                         </span>
@@ -139,8 +139,8 @@
             </form>
           </div>
           <div class="modal-footer">
-            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
-            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="sertifikat_tanah_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowsertifikattanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
           </div>
         </div>
       </div>
@@ -387,6 +387,97 @@
         });
       }
     };
+
+    function tambah(btn){
+        $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
+        $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+        $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+        $("#id_sertifikat_tanah_form").resetForm()
+        $("#sertifikat_tanah").modal('show');
+    }
+
+    function sertifikat_tanah_add(btn){
+        var frm = $('#id_sertifikat_tanah_form');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_penggunaan = res.data.id_sertifikat_tanah
+                if ($('#id_sertifikat_tanah').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var id_no_sertifikat_petak = $("#id_no_sertifikat_petak").val()
+                var id_luas_sertifikat_petak = $("#id_luas_sertifikat_petak").val()
+                var id_atas_nama_sertifikat_petak = $("#id_atas_nama_sertifikat_petak").val()
+                var id_tahun_sertifikat = $("#id_tahun_sertifikat").val()
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowsertifikattanah(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_sertifikat_tanah","tbody");
+                $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
+                $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+                $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+                $("#id_sertifikat_tanah_form").resetForm()
+                $("#sertifikat_tanah").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+    function deleteRowsertifikattanah(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/informasitanah/sertifikat-tanah/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    $('#id_no_sertifikat_petak').clearFields()
+                    $('#id_luas_sertifikat_petak').clearFields()
+                    $('#id_atas_nama_sertifikat_petak').clearFields()
+                    $('#id_tahun_sertifikat').clearFields()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+    function editRowsertifikattanah(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+        var id_no_sertifikat_petak = parent_tr.find('#id_table_no_sertifikat_petak').text();
+        var id_luas_sertifikat_petak = parent_tr.find('#id_table_luas_sertifikat_petak').text();
+        var id_atas_nama_sertifikat_petak = parent_tr.find('#id_table_atas_nama_sertifikat_petak').text();
+        var id_tahun_sertifikat = parent_tr.find('#id_table_tahun_sertifikat').text();
+
+        $('#sertifikat_tanah').modal('show');
+        $('#sertifikat_tanah').find('#id_no_sertifikat_petak').val(id_no_sertifikat_petak) 
+        $('#sertifikat_tanah').find('#id_luas_sertifikat_petak').val(id_luas_sertifikat_petak)
+        $('#sertifikat_tanah').find('#id_atas_nama_sertifikat_petak').val(id_atas_nama_sertifikat_petak)
+        $('#sertifikat_tanah').find('#id_tahun_sertifikat').val(id_tahun_sertifikat)
+
+        $('#sertifikat_tanah').find('.btn-success').attr('onclick','').unbind('click');
+        $('#sertifikat_tanah').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#sertifikat_tanah').find('.btn-primary').attr('id',id_button)
+        $('#sertifikat_tanah').find('.btn-primary').text("Edit")
+        $('#sertifikat_tanah').find('.btn-primary').attr('onclick','sertifikat_tanah_add(this)')
+        $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/edit/'+id_button+'/')        
+    }
+
+    function batalRowsertifikattanah(btn){
+        $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#sertifikat_tanah').find('.btn-primary').attr('onclick','sertifikat_tanah_add(this)')
+        $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+        $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+        $("#id_sertifikat_tanah_form").resetForm()
+        $("#sertifikat_tanah").modal('hide');
+    }
 
 
     document.querySelector('#alert').onclick = function(){

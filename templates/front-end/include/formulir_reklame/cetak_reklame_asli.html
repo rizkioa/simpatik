@@ -210,7 +210,7 @@
 	        		<tr>
 	        			<td><b>Dasar pertimbangan pemberian izin</b></td>
 	        			<td>:</td>
-	        			<td colspan="2"></td>
+	        			<td colspan="2">Permohonan Per Tanggal {{ pengajuan.created_at|date:"d F Y" }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Dasar hukum pemberian izin</b></td>
@@ -240,7 +240,7 @@
 	        		<tr>
 	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.panjang}}x{{pengajuan.lebar}}x{{pengajuan.sisi}} / {{pengajuan.jumlah|default_if_none:"-"}}</td>
+	        			<td colspan="2">{{pengajuan.panjang|floatformat:-2}}x{{pengajuan.lebar|floatformat:-2}}x{{pengajuan.sisi|floatformat:-2}} / {{pengajuan.jumlah|floatformat:-2|default_if_none:"-"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
