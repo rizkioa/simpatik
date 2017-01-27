@@ -54,13 +54,20 @@ def ippt_usaha_save_cookie(request):
             pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
             ippt_usaha = InformasiTanahIPPTUsahaForm(request.POST, instance=pengajuan_)
             if ippt_usaha.is_valid():
-                pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-                pengajuan_.save()
-                data = {'success': True,
-                        'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                        'data': ['']}
-                data = json.dumps(data)
-                response = HttpResponse(json.dumps(data))
+                if 'id_perusahaan' in request.COOKIES.keys():
+                    if request.COOKIES['id_perusahaan'] != '0':
+                        pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+                        pengajuan_.save()
+                        data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': ['']}
+                        response = HttpResponse(json.dumps(data))
+                    else:
+                        ippt_usaha.save()
+                        data = {'success': True,
+                              'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                              'data': ['']}
+                        response = HttpResponse(json.dumps(data))
             else:
                 data = ippt_usaha.errors.as_json()
         else:

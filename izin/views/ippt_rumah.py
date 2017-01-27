@@ -22,6 +22,7 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon
+from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 
 def formulir_ippt_rumah(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -37,3 +38,143 @@ def formulir_ippt_rumah(request, extra_context={}):
     else:
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/ippt_rumah.html", extra_context)
+
+def load_konfirmasi_ippt_rumah(request,id_pengajuan):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+      pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      no_surat_kuasa = pengajuan_.no_surat_kuasa
+      tanggal_surat_kuasa = str(pengajuan_.tanggal_surat_kuasa)
+      alamat = pengajuan_.alamat
+      desa = str(pengajuan_.desa)
+      kecamatan = str(pengajuan_.desa.kecamatan)
+      kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
+      luas = str(pengajuan_.luas)
+      status_tanah = pengajuan_.status_tanah
+      no_sertifikat_petak = pengajuan_.no_sertifikat_petak
+      luas_sertifikat_petak = str(pengajuan_.luas_sertifikat_petak)
+      atas_nama_sertifikat_petak = pengajuan_.atas_nama_sertifikat_petak
+      if pengajuan_.tahun_sertifikat:
+        id_tanggal_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
+      else:
+        id_tanggal_sertifikat = " "
+      no_persil = pengajuan_.no_persil
+      klas_persil = pengajuan_.klas_persil
+      atas_nama_persil = pengajuan_.atas_nama_persil
+      penggunaan_sekarang = pengajuan_.penggunaan_sekarang
+      rencana_penggunaan = pengajuan_.rencana_penggunaan
+
+      data = {'success': True,
+          'data': [
+          {'no_surat_kuasa': no_surat_kuasa},
+          {'tanggal_surat_kuasa': tanggal_surat_kuasa},
+          {'alamat_informasi_tanah': alamat},
+          {'desa': desa},
+          {'kecamatan': kecamatan},
+          {'kabupaten': kabupaten},
+          {'luas': luas},
+          {'status_tanah': status_tanah},
+          {'no_sertifikat_petak': no_sertifikat_petak},
+          {'luas_sertifikat_petak': luas_sertifikat_petak},
+          {'atas_nama_sertifikat_petak': atas_nama_sertifikat_petak},
+          {'id_tanggal_sertifikat':id_tanggal_sertifikat},
+          {'no_persil': no_persil},
+          {'klas_persil': klas_persil},
+          {'atas_nama_persil': atas_nama_persil},
+          {'penggunaan_sekarang': penggunaan_sekarang},
+          {'rencana_penggunaan': rencana_penggunaan}]}
+      response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
+
+def cetak_ippt_rumah(request, id_pengajuan_):
+      extra_context = {}
+      url_ = reverse('formulir_reklame')
+      if id_pengajuan_:
+        pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_)
+        if pengajuan_.perusahaan != '':
+          alamat_ = ""
+          alamat_perusahaan_ = ""
+          if pengajuan_.pemohon:
+            if pengajuan_.pemohon.desa:
+              alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_pemohon': alamat_ })
+            extra_context.update({ 'pemohon': pengajuan_.pemohon })
+
+          if pengajuan_.perusahaan:
+            if pengajuan_.perusahaan.desa:
+              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+            extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+
+          extra_context.update({ 'pengajuan': pengajuan_ })
+          pengajuan_id = base64.b64encode(str(pengajuan_.id))
+          extra_context.update({ 'pengajuan_id': pengajuan_id })
+
+          riwayat = Riwayat.objects.filter(pengajuan_izin=pengajuan_)
+          if riwayat:
+            extra_context.update({ 'riwayat': riwayat })
+            extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+            extra_context.update({ 'created_at': pengajuan_.created_at })
+          response = loader.get_template("front-end/include/formulir_ippt_rumah/cetak.html")
+        else:
+          response = HttpResponseRedirect(url_)
+          return response
+      else:
+        response = HttpResponseRedirect(url_)
+        return response
+      template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak.html")
+      ec = RequestContext(request, extra_context)
+      return HttpResponse(template.render(ec))
+
+def cetak_bukti_pendaftaran_ippt_rumah(request,id_pengajuan_):
+  extra_context = {}
+  if id_pengajuan_:
+    pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_)
+    if pengajuan_.perusahaan != '':
+      alamat_ = ""
+      alamat_perusahaan_ = ""
+      if pengajuan_.pemohon:
+        if pengajuan_.pemohon.desa:
+          alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+          extra_context.update({ 'alamat_pemohon': alamat_ })
+        extra_context.update({ 'pemohon': pengajuan_.pemohon })
+        paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+        ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+        extra_context.update({ 'paspor': paspor_ })
+        extra_context.update({ 'ktp': ktp_ })
+      if pengajuan_.perusahaan:
+        if pengajuan_.perusahaan.desa:
+          alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+          extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+        extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+        syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IL")
+        extra_context.update({ 'syarat': syarat_ })
+      if pengajuan_.desa:
+        letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+      else:
+        letak_ = pengajuan_.alamat
+
+      extra_context.update({'letak_': letak_})
+      extra_context.update({ 'pengajuan': pengajuan_ })
+      extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+      extra_context.update({ 'created_at': pengajuan_.created_at })
+      response = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_bukti_pendaftaran.html")
+    else:
+      response = HttpResponseRedirect(url_)
+      return response
+  else:
+    response = HttpResponseRedirect(url_)
+    return response 
+
+  template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_bukti_pendaftaran.html")
+  ec = RequestContext(request, extra_context)
+  return HttpResponse(template.render(ec))

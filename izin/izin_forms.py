@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha,SertifikatTanah
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -179,9 +179,16 @@ class DetilHOForm(forms.ModelForm):
 
 class InformasiTanahForm(forms.ModelForm):
 	"""docstring for InformasiTanahForm"""
+	luas_sertifikat_petak = forms.DecimalField(label="Luas Sertifikat/Petok D", required=False,)
+
 	class Meta:
 		model = InformasiTanah
-		fields = ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','no_persil','klas_persil','atas_nama_persil','penggunaan_sekarang','rencana_penggunaan')
+		fields = ('no_surat_kuasa','tanggal_surat_kuasa','alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','penggunaan_sekarang','rencana_penggunaan')
+
+class SertifikatTanahForm(forms.ModelForm):
+	class Meta:
+		model = SertifikatTanah
+		fields = ('no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat')
 
 class DetilHullerForm(forms.ModelForm):
 	"""docstring for DetilHullerForm"""

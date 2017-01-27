@@ -15,6 +15,7 @@ from django.db.models import Q
 from datetime import datetime
 from django.conf import settings
 from django.views import generic
+from django.shortcuts import get_object_or_404
 import base64
 import time
 import json
@@ -22,9 +23,9 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, InformasiTanah,Pemohon
+from izin.models import PengajuanIzin, InformasiTanah,Pemohon,SertifikatTanah
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm
+from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm,SertifikatTanahForm
 
 def formulir_izin_lokasi(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -39,6 +40,11 @@ def formulir_izin_lokasi(request, extra_context={}):
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
     else:
         return HttpResponseRedirect(reverse('layanan'))
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+          sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+          extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+
     return render(request, "front-end/formulir/izin_lokasi.html", extra_context)
 
 def informasitanah_save_cookie(request):
@@ -47,15 +53,50 @@ def informasitanah_save_cookie(request):
             pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
             informasitanah = InformasiTanahForm(request.POST, instance=pengajuan_)
             if informasitanah.is_valid():
-                pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-                pengajuan_.save()
-                data = {'success': True,
-                        'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                        'data': ['']}
-                data = json.dumps(data)
-                response = HttpResponse(json.dumps(data))
+              if 'id_perusahaan' in request.COOKIES.keys():
+                if request.COOKIES['id_perusahaan'] != '0':
+                  pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+                  pengajuan_.save()
+                  data = {'success': True,
+                          'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                          'data': ['']}
+                  response = HttpResponse(json.dumps(data))
+                else:
+                  informasitanah.save()
+                  data = {'success': True,
+                          'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                          'data': ['']}
+                  response = HttpResponse(json.dumps(data))
             else:
-                data = informasitanah.errors.as_json()
+              data = informasitanah.errors.as_json()
+        else:
+          data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+          data = json.dumps(data)
+          response = HttpResponse(data)
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+    return response
+
+def sertifikat_tanah_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            sertifikat_tanah = SertifikatTanahForm(request.POST)
+            if request.method == 'POST':
+                if sertifikat_tanah.is_valid():
+                    p = sertifikat_tanah.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_sertifikat_tanah':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(json.dumps(data))
+                else:
+                    data = sertifikat_tanah.errors.as_json()
+            else:
+                sertifikat_tanah = SertifikatTanahForm()
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
@@ -65,6 +106,61 @@ def informasitanah_save_cookie(request):
     response = HttpResponse(data)
     return response
 
+def edit_sertifikat_tanah(request,id_sertifikat_tanah):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            p = SertifikatTanah.objects.get(id=id_sertifikat_tanah)
+            sertifikat_tanah = SertifikatTanahForm(request.POST,instance=p)
+            if request.method == 'POST':
+                if sertifikat_tanah.is_valid():
+                    p = sertifikat_tanah.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_sertifikat_tanah':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(json.dumps(data))
+                else:
+                    data = sertifikat_tanah.errors.as_json()
+            else:
+                sertifikat_tanah = SertifikatTanahForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
+def delete_sertifikat_tanah(request,id_sertifikat_tanah):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+        tag_to_delete = get_object_or_404(SertifikatTanah, id=id_sertifikat_tanah)
+        tag_to_delete.delete()
+        data = {'success': True,
+                'pesan': 'Data berhasil Dihapus.'}
+        response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
+def load_data_sertifikat_tanah(request,id_sertifikat_tanah):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            data = []
+            i = SertifikatTanah.objects.filter(informasi_tanah_id=request.COOKIES['id_pengajuan'])
+            data = [ob.as_json() for ob in i]
+            response = HttpResponse(json.dumps(data), content_type="application/json")
+    return response
+    
 def izinlokasi_done(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
@@ -240,6 +336,10 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
       no_sertifikat_petak = pengajuan_.no_sertifikat_petak
       luas_sertifikat_petak = str(pengajuan_.luas_sertifikat_petak)
       atas_nama_sertifikat_petak = pengajuan_.atas_nama_sertifikat_petak
+      if pengajuan_.tahun_sertifikat:
+        id_tanggal_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
+      else:
+        id_tanggal_sertifikat = " "
       no_persil = pengajuan_.no_persil
       klas_persil = pengajuan_.klas_persil
       atas_nama_persil = pengajuan_.atas_nama_persil
@@ -259,6 +359,7 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
           {'no_sertifikat_petak': no_sertifikat_petak},
           {'luas_sertifikat_petak': luas_sertifikat_petak},
           {'atas_nama_sertifikat_petak': atas_nama_sertifikat_petak},
+          {'id_tanggal_sertifikat':id_tanggal_sertifikat},
           {'no_persil': no_persil},
           {'klas_persil': klas_persil},
           {'atas_nama_persil': atas_nama_persil},
@@ -343,7 +444,8 @@ def cetak_bukti_pendaftaran_izin_lokasi(request,id_pengajuan_):
         letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
       else:
         letak_ = pengajuan_.alamat
-
+      sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=id_pengajuan_)
+      extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
       extra_context.update({'letak_': letak_})
       extra_context.update({ 'pengajuan': pengajuan_ })
       extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })

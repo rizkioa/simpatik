@@ -358,11 +358,12 @@ class Subklasifikasi(models.Model):
 
 class PaketPekerjaan(models.Model):
 	detil_iujk = models.ForeignKey(DetilIUJK, related_name='paket_pekerjaan_iujk', verbose_name='Detil IUJK')
-	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan') 
+	nama_paket_pekerjaan = models.CharField(max_length=255, verbose_name='Nama Paket Pekerjaan', null=True, blank=True) 
 	klasifikasi_usaha = models.CharField(max_length=255, null=True, blank=True, verbose_name='Klasifikasi / Sub Klasifikasi Usaha pada SBU')
 	subklasifikasi = models.ForeignKey(Subklasifikasi, related_name="subklasifikasi_paketpekerjaan", null=True, blank=True, verbose_name='SubKlasifikasi Usaha pada SBU')
-	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945))
-	nilai_paket_pekerjaan = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Nilai Paket Pekerjaan')
+	tahun = models.PositiveSmallIntegerField(choices=get_tahun_choices(1945), null=True, blank=True)
+	nilai_paket_pekerjaan = models.DecimalField(max_digits=20, decimal_places=2, verbose_name='Nilai Paket Pekerjaan', null=True, blank=True)
+	keterangan = models.TextField(verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.nama_paket_pekerjaan), str(self.detil_iujk))
@@ -377,6 +378,7 @@ class PaketPekerjaan(models.Model):
 			'klasifikasi': self.subklasifikasi.klasifikasi.klasifikasi,
 			'subklasifikasi': self.subklasifikasi.subklasifikasi,
 			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
+			'keterangan': self.keterangan,
 			'tahun': self.tahun,
 			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
@@ -654,6 +656,7 @@ class InformasiTanah(PengajuanIzin):
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
 	atas_nama_sertifikat_petak =  models.CharField(max_length=30, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
+	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
 	no_persil =  models.CharField(max_length=30, verbose_name='No. Persil', null=True, blank=True)
 	klas_persil= models.CharField(max_length=30, verbose_name='Klas Persil', null=True, blank=True)
 	atas_nama_persil=  models.CharField(max_length=30, verbose_name='Atas Nama Persil', null=True, blank=True)
@@ -769,6 +772,34 @@ class InformasiTanah(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'Informasi Tanah'
 		verbose_name_plural = 'Informasi Tanah'
+
+class SertifikatTanah(MetaAtribut):
+	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
+	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
+	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
+	atas_nama_sertifikat_petak =  models.CharField(max_length=30, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
+	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.no_sertifikat_petak))
+	
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"no_sertifikat_petak": self.no_sertifikat_petak,
+			"luas_sertifikat_petak": str(self.luas_sertifikat_petak),
+			"atas_nama_sertifikat_petak": self.atas_nama_sertifikat_petak,
+			"tahun_sertifikat": self.tahun_sertifikat.strftime("%d-%m-%Y"),
+
+		}
+
+	def as_json(self):
+		return dict(no_sertifikat_petak=self.no_sertifikat_petak, luas_sertifikat_petak=str(self.luas_sertifikat_petak),atas_nama_sertifikat_petak=self.atas_nama_sertifikat_petak, tahun_sertifikat=self.tahun_sertifikat.strftime("%d-%m-%Y"))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Sertifikat Tanah'
+		verbose_name_plural = 'Sertifikat Tanah'
 
 class PenggunaanTanahIPPTUsaha(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")

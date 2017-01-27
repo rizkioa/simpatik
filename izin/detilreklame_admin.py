@@ -104,7 +104,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 
-			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 
 			# UNTUK SURVEY
 			from django.contrib.auth.models import Group
