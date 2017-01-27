@@ -916,6 +916,7 @@ class BidangUsahaPariwisata(models.Model):
 
 class SubJenisBidangUsaha(models.Model):
 	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata")
+	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis")
 	nama_subjenis = models.CharField(max_length=255, verbose_name="Nama SubJenis")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
@@ -926,8 +927,33 @@ class SubJenisBidangUsaha(models.Model):
 		verbose_name = 'Sub Jenis Bidang Usaha'
 		verbose_name_plural = 'Sub Jenis Bidang Usaha'
 
+class RincianSubJenis(models.Model):
+	# transportasi wisata
+	jumlah_unit_angkutan_jalan_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Jalan Wisata", null=True, blank=True)
+	kapasitas_angkutan_jalan_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Jalan Wisata", null=True, blank=True)
+	jumlah_unit_angkutan_kereta_api_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Kereta Api Wisata", null=True, blank=True)
+	kapasitas_angkutan_kereta_api_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Kereta Api Wisata", null=True, blank=True)
+	jumlah_unit_angkutan_sungai_dan_danau_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Sungai dan Danau Wisata", null=True, blank=True)
+	kapasitas_angkutan_sungai_dan_danau_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Sungai dan Danau Wisata", null=True, blank=True)
+	jumlah_unit_angkutan_laut_domestik_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Laut Domestik Wisata", null=True, blank=True)
+	kapasitas_angkutan_laut_domestik_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Laut Domestik Wisata", null=True, blank=True)
+	jumlah_unit_angkutan_laut_internasional_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Laut Internasional Wisata", null=True, blank=True)
+	kapasitas_angkutan_laut_internasional_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Laut Internasional Wisata", null=True, blank=True)
+	# makanan minuman
+	jumlah_kursi_restoran = models.IntegerField(verbose_name="Jumlah Kursi Restoran", null=True, blank=True)
+	jumlah_kursi_rumah_makan = models.IntegerField(verbose_name="Jumlah Kursi Rumah Makan", null=True, blank=True)
+	jumlah_kursi_bar_atau_rumah_minum = models.IntegerField(verbose_name="Jumlah Kursi Bar / Rumah Minum", null=True, blank=True)
+	jumlah_kursi_kafe = models.IntegerField(verbose_name="Jumlah Kursi Kafe", null=True, blank=True)
+	jumlah_kursi_pusat_makanan = models.IntegerField(verbose_name="Jumlah Kursi Pusat Makanan", null=True, blank=True)
+	jumlah_kursi_jasa_boga = models.IntegerField(verbose_name="Jumlah Kursi Jasa Boga", null=True, blank=True)
+
+	class Meta:
+		verbose_name = 'Rincian Sub Jenis'
+		verbose_name_plural = 'Rincian Sub Jenis'
+
 class DetilTDUP(PengajuanIzin):
 	sub_jenis_bidang_usaha = models.ManyToManyField(SubJenisBidangUsaha, verbose_name="Bidang Usaha Pariwisata")
+	rincian_sub_jenis = models.OneToOneField(RincianSubJenis, verbose_name="Rincian Sub Jenis", null=True, blank=True)
 	nama_usaha = models.CharField(max_length=255, verbose_name="Nama Usaha", null=True, blank=True)
 	lokasi_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Lokasi Usaha Pariwisata", null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name="Desa")

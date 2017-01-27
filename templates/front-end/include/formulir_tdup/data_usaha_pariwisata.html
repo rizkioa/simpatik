@@ -2,4 +2,19 @@
 	{% csrf_token %}  
 	<h3>DATA USAHA PARIWISATA</h3>
 	<hr class="style14">
+
+	<div class="form-group" id="bidang_usaha_pariwisata">
+      <label class="col-sm-2 control-label text-left"><strong>Bidang Usaha Pariwisata</strong></label>
+      <div class="col-sm-4">
+        <select id="id_bidang_usaha_pariwisata" class="form-control chosen-select" required="" data-parsley-trigger="change" name="bidang_usaha_pariwisata">
+          <option value>-- Pilih Bentuk Kegiatan Usaha --</option>
+          {% for val in bentuk_kegiatan_usaha_list %}
+            <option value="{{ val.id }}">{{ val.kegiatan_usaha}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
 </form>
+<script type="text/javascript">
+	
+</script>
