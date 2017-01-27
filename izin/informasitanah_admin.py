@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat
+from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -107,6 +107,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass
+				sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah__id=id_pengajuan_izin_)
+				extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
 					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)

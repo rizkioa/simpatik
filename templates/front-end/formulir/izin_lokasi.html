@@ -195,7 +195,9 @@
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
-                
+              }else if($current == 5 ){
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_sertifikat_tanah(id_pengajuan)
               }
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
@@ -208,7 +210,7 @@
               // if (!form.parsley().isValid()) {
               //     return false;
               // }
-              return true;
+              return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -217,7 +219,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return true;
+            return false;
           }
         });
       });
@@ -312,7 +314,87 @@
     function next_tab(btn){
       var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
       var frm = $('form[name="step'+ index +'"]');
-      frm.parsley().validate();
+      if (index==2) {
+        frm.parsley().validate();
+        if (frm.parsley().isValid()==true) {
+          // $(".tab-content #tab"+index).mask('loading')
+          $(".tab-content").mLoading();
+          $(btn).attr('disabled', 'disabled')
+          $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function (response){
+              respon = $.parseJSON(response)
+                $(btn).removeAttr('disabled')
+                // alert(respon);
+                // console.log(respon.success);
+                if(respon.success){
+                  toastr["success"](respon.pesan)
+                  // console.log(respon.data)
+                  // console.log(respon.data.length)
+                  // $.cookie("keys", "value"); set cookie
+                    
+                  for (var i = 0; i < respon.data.length; i++){
+                    var key = Object.keys(respon.data[i]); // Mencari key json
+                    // console.log(key[0]);
+                    // if (key[0]= "status_upload") {
+                    //   $("#npwp_perusahaan").hide(1000)
+
+                    // }else{
+                    var val = respon.data[i][key[0]] // mencari value json
+                      // console.log(key[0]+"_konfirmasi");
+                    var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+                    $(id).text(val);
+                    // }
+                    // untuk sementara
+                    if(key[0] === "jenis_legalitas_perubahan"){
+                      $('#konfirmasi_legalitas_perubahan').hide();
+                    }
+                    else{
+                      $('#konfirmasi_legalitas_perubahan').show();
+                    }
+                  }
+                  // $( ".tab-content #tab"+index ).unmask()
+                  $(".tab-content").mLoading('hide');
+                  tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+                  $(tab_index).tab('show')
+                }
+                else{
+                  // console.log("error")
+                  // console.log(respon);
+                  // console.log(typeof respon);
+                  var a = Object.keys(respon);
+                  // console.log(respon['nama_lengkap'][0]['message']);
+                  // console.log(a.length);
+                  for (var i = 0; i < a.length; i++){
+                    // console.log(a[i]);
+                    // console.log(respon[a[i]]);
+                    // var field = a[i].replace("_", " ").capitalize();
+                    // toastr["error"](field+", "+respon[a[i]][0]['message'])
+                    $("#"+a[i]+"").addClass("has-error");
+                    // console.log($("#"+a[i]+"").addClass("parsley-error"));
+                  }
+                  // $( ".tab-content #tab"+index ).unmask()
+                  $(".tab-content").mLoading('hide');
+                }
+            },
+            error: function(response){
+              // alert(response)
+              // $( ".tab-content #tab"+index ).unmask()
+              $(".tab-content").mLoading('hide');
+              $(btn).removeAttr('disabled')
+              toastr["error"]("Terjadi kesalahan pada koneksi server.")
+            }
+        });
+        }else{
+            $(".tab-content").mLoading('hide');
+            tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+            $(tab_index).tab('show')
+        }
+      }else{
+        frm.parsley().validate();
         if (frm.parsley().isValid()) {
           // $(".tab-content #tab"+index).mask('loading')
           $(".tab-content").mLoading();
@@ -385,6 +467,7 @@
               toastr["error"]("Terjadi kesalahan pada koneksi server.")
             }
         });
+        }
       }
     };
 
@@ -606,6 +689,54 @@
           html: true
       });
       }
+
+function load_data_sertifikat_tanah(id_sertifikat_tanah){
+  if (id_sertifikat_tanah !== ""){
+    $('#id_sertifikat_tanah_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/informasitanah/sertifikat-tanah/load/'+id_sertifikat_tanah,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_sertifikat_tanah_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_sertifikat_tanah_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_sertifikat_tanah_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            no_sertifikat_petak = b[i].no_sertifikat_petak
+            luas_sertifikat_petak = b[i].luas_sertifikat_petak
+            atas_nama_sertifikat_petak = b[i].atas_nama_sertifikat_petak
+            tahun_sertifikat = b[i].tahun_sertifikat
+            // no = a
+            // if (a > 1){
+            //   no = a-i
+            // }
+            row = '<tr>'
+            // row += '<td>'+no+'</td>'
+            row += '<td>'+no_sertifikat_petak+'</td>'
+            row += '<td>'+luas_sertifikat_petak+'</td>'
+            row += '<td>'+atas_nama_sertifikat_petak+'</td>'
+            row += '<td>'+tahun_sertifikat+'</td>'
+            row += '</tr>'
+            $('#id_sertifikat_tanah_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
+  }
+}
+
 
   // $(function() {
   //   $('#id_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});

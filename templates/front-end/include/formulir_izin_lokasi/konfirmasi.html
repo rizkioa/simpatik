@@ -158,7 +158,7 @@
       <td width="70%"></td>
     </tr>
     </table>
-        <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
+        <table id="id_sertifikat_tanah_konfirmasi" class="table table-bordered" style="width: 762px;">
           <thead>
             <tr>
               <td>No Sertifikat</td>
@@ -168,16 +168,7 @@
             </tr>
           </thead>
           <tbody>
-          {% if sertifikat_tanah_list %}
-            {% for a in sertifikat_tanah_list %}
-              <tr id="{{a.id}}">
-                <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
-                <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
-                <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
-                <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
-              </tr>
-            {% endfor %}
-          {% endif %}
+
           </tbody>
         </table>
     <table width="100%" border="0">
