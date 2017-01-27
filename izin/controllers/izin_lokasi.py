@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, JenisPemohon, JenisReklame,ParameterBangunan
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah,SertifikatTanah
 
 def formulir_izin_lokasi(request):
 	extra_context={}
@@ -18,6 +18,10 @@ def formulir_izin_lokasi(request):
 		jenis_pemohon = JenisPemohon.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Un
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != '':
+			  sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+			  extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})

@@ -152,6 +152,15 @@ def delete_sertifikat_tanah(request,id_sertifikat_tanah):
     response = HttpResponse(data)
   return response
 
+def load_data_sertifikat_tanah(request,id_sertifikat_tanah):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            data = []
+            i = SertifikatTanah.objects.filter(informasi_tanah_id=request.COOKIES['id_pengajuan'])
+            data = [ob.as_json() for ob in i]
+            response = HttpResponse(json.dumps(data), content_type="application/json")
+    return response
+    
 def izinlokasi_done(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':

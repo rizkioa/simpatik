@@ -64,7 +64,6 @@ def add_wizard_siup(request):
 				messages.warning(request, msg_, extra_tags='safe')
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
-
 			if kode_izin_ == "Reklame":
 				url_ = reverse('admin:izin_proses_reklame')
 			elif id_kelompok_list.kode == "503.02/":

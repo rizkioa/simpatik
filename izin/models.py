@@ -787,14 +787,14 @@ class SertifikatTanah(MetaAtribut):
 		return {
 			# "id": self.id,
 			"no_sertifikat_petak": self.no_sertifikat_petak,
-			"luas_sertifikat_petak": self.luas_sertifikat_petak,
+			"luas_sertifikat_petak": str(self.luas_sertifikat_petak),
 			"atas_nama_sertifikat_petak": self.atas_nama_sertifikat_petak,
-			"tahun_sertifikat": self.tahun_sertifikat,
+			"tahun_sertifikat": self.tahun_sertifikat.strftime("%d-%m-%Y"),
 
 		}
 
 	def as_json(self):
-		return dict(no_sertifikat_petak=self.no_sertifikat_petak, luas_sertifikat_petak=self.luas_sertifikat_petak,atas_nama_sertifikat_petak=self.atas_nama_sertifikat_petak, tahun_sertifikat=self.tahun_sertifikat)
+		return dict(no_sertifikat_petak=self.no_sertifikat_petak, luas_sertifikat_petak=str(self.luas_sertifikat_petak),atas_nama_sertifikat_petak=self.atas_nama_sertifikat_petak, tahun_sertifikat=self.tahun_sertifikat.strftime("%d-%m-%Y"))
 
 	class Meta:
 		ordering = ['-status']

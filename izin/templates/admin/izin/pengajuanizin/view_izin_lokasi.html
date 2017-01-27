@@ -1462,6 +1462,37 @@
 						  <td width="5%">:</td>
 						  <td width="70%">{{pengajuan.status_tanah|default_if_none:"-"}}</td>
 						</tr>
+						{% if pengajuan.kelompok_jenis_izin.kode == "503.07/" %}
+						<tr>
+						  <td width="25%"><h5><u>Sertifikan/Petok D</u></h5></td>
+						  <td width="5%"></td>
+						  <td width="70%"></td>
+						</tr>
+				        <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
+				          <thead>
+				            <tr>
+				              <td>No Sertifikat</td>
+				              <td>Luas</td>
+				              <td>Atas Nama</td>
+				              <td>Tahun</td>
+				            </tr>
+				          </thead>
+				          <tbody>
+				          {% if sertifikat_tanah_list %}
+				            {% for a in sertifikat_tanah_list %}
+				              <tr id="{{a.id}}">
+				                <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+				                <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+				                <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+				                <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
+				              </tr>
+				            {% endfor %}
+				          {% endif %}
+				          </tbody>
+				        </table>
+				       </table>
+				       <table width="100%" border="0">
+						{% else %}
 						<tr>
 						  <td width="25%"><h5><u>Sertifikan/Petok D</u></h5></td>
 						  <td width="5%"></td>
@@ -1482,6 +1513,12 @@
 						  <td width="5%">:</td>
 						  <td width="70%">{{pengajuan.atas_nama_sertifikat_petak|default_if_none:"-"}}</td>
 						</tr>
+						<tr>
+						  <td width="25%">Tanggal</td>
+						  <td width="5%">:</td>
+						  <td width="70%">{{pengajuan.tahun_sertifikat|default_if_none:"-"}}</td>
+						</tr>
+						{% endif %}
 						<tr>
 						  <td width="25%"><h5><u>Persil</u></h5></td>
 						  <td width="5%"></td>
