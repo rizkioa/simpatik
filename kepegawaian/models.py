@@ -109,8 +109,8 @@ class Jabatan(models.Model):
 
 class Pegawai(Account):
 	unit_kerja = TreeForeignKey(UnitKerja, verbose_name='Unit Kerja')
-	bidang_struktural = TreeForeignKey(BidangStruktural, verbose_name='Bagian / Bidang / Seksi (Struktural)')
-	jabatan = models.ForeignKey(Jabatan, verbose_name='Jabatan')
+	bidang_struktural = TreeForeignKey(BidangStruktural, verbose_name='Bagian / Bidang / Seksi (Struktural)', blank=True, null=True)
+	jabatan = models.ForeignKey(Jabatan, verbose_name='Jabatan', blank=True, null=True)
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+" - "+str(self.username)+"</option>"

@@ -591,6 +591,9 @@ def formulir_tdp_bul(request, extra_context={}):
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdp_bul.html", extra_context)
 
+def formulir_tdup(request, extra_context={}):
+    return render(request, "front-end/formulir/tdup.html", extra_context)
+
 def identitas_pemohon(request, extra_context={}):
     nama_lengkap = request.POST.get("nama_lengkap", None)
     tempat_lahir = request.POST.get("tempat_lahir", None)
