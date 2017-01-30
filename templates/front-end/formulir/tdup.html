@@ -294,6 +294,14 @@
               set_chosen_element($('select#id_sub_jenis_bidang_usaha'))
             }
         })
+        $.ajax({
+          data: { csrfmiddlewaretoken: csrf_token, bidang_usaha: value_, select: select }, // get the form data
+          type: 'POST', // GET or POST
+          url: __base_url__+'/admin/izin/detiltdup/option-sub-jenis-bidang-usaha', // the file to call
+          success: function(response) {
+
+          }
+        })
       }
     </script>
 {% endblock %}
