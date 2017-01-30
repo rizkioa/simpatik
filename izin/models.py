@@ -958,6 +958,7 @@ class SubJenisBidangUsaha(models.Model):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_subjenis)+"</option>"
 
 	class Meta:
+		ordering = ['id']
 		verbose_name = 'Sub Jenis Bidang Usaha'
 		verbose_name_plural = 'Sub Jenis Bidang Usaha'
 
