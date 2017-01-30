@@ -163,7 +163,7 @@ class CustomMenu(Menu):
                     title='Pengajuan Masuk',
                     icon='icon-check',
                     css_classes='t', 
-                    url=reverse('admin:verifikasi'),                
+                    url=reverse('admin:verifikasi_kabid'),                
                 ),
                 items.MenuItem(
                     title='Draft SK',
