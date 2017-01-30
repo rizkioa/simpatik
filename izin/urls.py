@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha,huller
 from django.conf.urls.static import static
-from izin.views.imb import imb_reklame,imb_umum,imb_perumahan
+from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -272,6 +272,9 @@ urlpatterns = [
     url(r'^layanan/identifikasijalan/save/$', imb_perumahan.identifikasi_jalan_save_cookie, name='identifikasi_jalan_save'),
     url(r'^imbperumahan/berkas/save/$', imb_perumahan.imbperumahan_upload_berkas_pendukung, name='imbperumahan_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-imb-perumahan/(?P<id_pengajuan>[0-9]+)$', imb_perumahan.ajax_load_berkas_imbperumahan, name='ajax_load_berkas_imbperumahan'),
+    
+    url(r'^imb/sk/save/$', detil_sk_imb.detil_sk_imb_save, name='detil_sk_imb_save'),
+   
      # ++++++++++++++++++++++++ end for ajax IMB PERUMAHAN ++++++++++++++++++++++
     url(r'^get-nilai-parameter$', views.get_nilai_parameter, name='get_nilai_parameter'),
     
@@ -308,6 +311,8 @@ urlpatterns = [
 
     # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
     url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
+    url(r'^informasitanah/load/(?P<id_pengajuan>[0-9]+)$', ippt_rumah.load_informasi_tanah, name='load_informasi_tanah'),
+
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++

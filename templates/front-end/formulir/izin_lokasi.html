@@ -191,8 +191,10 @@
                   })
                 }
               }else{
-              if($current == 4){
-                // alert("OK")
+              if ($current == 3) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan)
+              }else if($current == 4){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
               }else if($current == 5 ){

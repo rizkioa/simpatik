@@ -94,6 +94,76 @@ def load_konfirmasi_ippt_rumah(request,id_pengajuan):
     response = HttpResponse(data)
   return response
 
+def load_informasi_tanah(request,id_pengajuan):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+      pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      if pengajuan_.kelompok_jenis_izin.kode == "IPPT-Rumah":
+        kode_izin = pengajuan_.kelompok_jenis_izin.kode
+        id_alamat = pengajuan_.alamat
+        if pengajuan_.desa:
+          id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+          id_desa = str(pengajuan_.desa.id)
+        else:
+          id_kecamatan = ""
+          id_desa = ""
+        id_luas = str(pengajuan_.luas)
+        id_status_tanah = pengajuan_.status_tanah
+        id_no_sertifikat_petak = pengajuan_.no_sertifikat_petak
+        id_luas_sertifikat_petak = str(pengajuan_.luas_sertifikat_petak)
+        id_atas_nama_sertifikat_petak = pengajuan_.atas_nama_sertifikat_petak
+
+        if pengajuan_.tahun_sertifikat:
+          id_tahun_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
+        else:
+          id_tahun_sertifikat = ""
+
+        id_no_persil = pengajuan_.no_persil
+        id_klas_persil = pengajuan_.klas_persil
+        id_atas_nama_persil = pengajuan_.atas_nama_persil
+        id_penggunaan_sekarang = pengajuan_.penggunaan_sekarang
+        id_rencana_penggunaan = pengajuan_.rencana_penggunaan
+
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
+
+      elif pengajuan_.kelompok_jenis_izin.kode == "503.07/":
+        kode_izin = pengajuan_.kelompok_jenis_izin.kode
+        id_no_surat_kuasa = pengajuan_.no_surat_kuasa
+        if pengajuan_.tanggal_surat_kuasa:
+          id_tanggal_surat_kuasa = pengajuan_.tanggal_surat_kuasa.strftime("%d-%m-%Y")
+        else:
+          id_tanggal_surat_kuasa = ""
+
+        id_alamat = pengajuan_.alamat
+        if pengajuan_.desa:
+          id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+          id_desa = str(pengajuan_.desa.id)
+        else:
+          id_kecamatan = ""
+          id_desa = ""
+        id_luas = str(pengajuan_.luas)
+        id_status_tanah = pengajuan_.status_tanah
+
+        id_no_persil = pengajuan_.no_persil
+        id_klas_persil = pengajuan_.klas_persil
+        id_atas_nama_persil = pengajuan_.atas_nama_persil
+        id_penggunaan_sekarang = pengajuan_.penggunaan_sekarang
+        id_rencana_penggunaan = pengajuan_.rencana_penggunaan
+
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_no_surat_kuasa':id_no_surat_kuasa,'id_tanggal_surat_kuasa':id_tanggal_surat_kuasa,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
+
+      else:
+        data = {'success': True,'data':{}}
+      response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
 
 def cetak_ippt_rumah(request, id_pengajuan_):
       extra_context = {}

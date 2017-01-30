@@ -168,7 +168,7 @@
 	        			<td>
 	        				<center>
 	        					<p>
-	        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>BADAN PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
+	        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
 	        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
 	        						Email : bpmp2tsp@kedirikab.go.id   Website : kedirikab.go.id</font><br>
 	        						<font style="font-size: 20x;">KEDIRI</font>
@@ -179,7 +179,7 @@
 	        	</table>
 	        	<hr class="style2">
 	        	<center>
-	        		<font style="font-size: 20px"><b>KEPUTUSAN KEPALA BADAN PENANAMAN MODAL <br>DAN
+	        		<font style="font-size: 20px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL <br>DAN
 					PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br>
 	        		<font style="font-size: 20px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
 	        	</center>
@@ -188,7 +188,7 @@
 						PEMBERIAN IZIN MENDIRIKAN BANGUNAN
 	        		</font><br>
 	        		<font>
-	        			KEPALA BADAN PENANAMAN MODAL DAN<br>
+	        			KEPALA DINAS PENANAMAN MODAL DAN<br>
 						PELAYANAN PERIZINAN TERPADU SATU PINTU,
 	        		</font>
 	        	</center>
@@ -197,22 +197,28 @@
 	        		<td style="vertical-align: top;padding-top: 20px;">Menimbang</td>
 	        		<td style="vertical-align: top;padding-top: 20px;">:</td>
 	        		<td style="vertical-align: top;padding-top: 20px;">a.</td>
-	        		<td style="width: 700px;"><p>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }}  perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk Papan Bertiang, yang terletak di {{letak_pemasangan|default_if_none:"-"}};</p></td>
+	        		<td style="width: 700px;"><p>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }}  perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk Papan Bertiang, yang terletak di {{letak_pemasangan|default_if_none:"-"}};</p>
+	        		</td>
 	        	</tr>
+
+	        	{% if sk_imb.sk_menimbang_a %}
 	        	<tr>
 	        		<td></td>
 	        		<td style="vertical-align: top;padding-top: 5px;"></td>
 	        		<td style="vertical-align: top;padding-top: 5px;">b.</td>
-	        		<td>bahwa sesuai Berita Acara Hasil Pemeriksaan Tim Pemberi Pertimbangan Perizinan Kabupaten Kediri yang memutuskan dan tidak keberatan untuk diproses perizinannya ;
+	        		<td>{{sk_imb.sk_menimbang_a}}
 	        		</td>
 	        	</tr>
+	        	{% endif %}
+	        	{% if sk_imb.sk_menimbang_b %}
 	        	<tr>
 	        		<td></td>
 	        		<td style="vertical-align: top;padding-top: 5px;"></td>
 	        		<td style="vertical-align: top;padding-top: 5px;">c.</td>
-	        		<td>bahwa berdasarkan pertimbangan sebagaimana dimaksud dalam huruf a dan huruf b, perlu menetapkan Keputusan Kepala Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu tentang Pemberian Izin Mendirikan Bangunan.
+	        		<td>{{sk_imb.sk_menimbang_b}}
 					</td>
 	        	</tr>
+	        	{% endif %}
 	        	<tr>
 	        		<td style="vertical-align: top;padding-top: 5px;">Mengingat</td>
 	        		<td style="vertical-align: top;padding-top: 5px;">:</td>
@@ -508,7 +514,7 @@
 	        				<p style="font-size:10px; padding-left: 20%;">
 			                    <font size="2pt">Ditetapkan  di  Kediri <br> 
 									pada tanggal</font><br></p>
-			                    <p style="font-size:10px;" align="center"> <font size="2pt">KEPALA BPM-P2TSP </font></p><br>
+			                    <p style="font-size:10px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
 			                    <br>
 			                    <br>
 			                    <br>
