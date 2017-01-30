@@ -202,7 +202,7 @@ def tdp_legalitas_pt_cookie(request):
 					# 	legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian)
 					# 	legalitas_pendirian.save(force_insert=True)
 					legalitas_pendirian = Legalitas.objects.filter(perusahaan_id=perusahaan_id, jenis_legalitas_id=1)
-					if legalitas_pendirian.exist():
+					if legalitas_pendirian.exists():
 						# diambil yang terakhir jika data lebih dari satu
 						legalitas_pendirian = legalitas_pendirian.last()
 						legalitas_pendirian.nama_notaris = nama_notaris_pendirian
