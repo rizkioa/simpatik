@@ -947,12 +947,15 @@ class BidangUsahaPariwisata(models.Model):
 
 class SubJenisBidangUsaha(models.Model):
 	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata")
-	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis")
+	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis", null=True, blank=True)
 	nama_subjenis = models.CharField(max_length=255, verbose_name="Nama SubJenis")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % (str(self.nama_subjenis),)
+
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_subjenis)+"</option>"
 
 	class Meta:
 		verbose_name = 'Sub Jenis Bidang Usaha'
