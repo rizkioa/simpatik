@@ -18,7 +18,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -592,6 +592,9 @@ def formulir_tdp_bul(request, extra_context={}):
     return render(request, "front-end/formulir/tdp_bul.html", extra_context)
 
 def formulir_tdup(request, extra_context={}):
+    bidang_usaha_pariwisata_list = BidangUsahaPariwisata.objects.all()
+    subjenisbidangusaha_list = SubJenisBidangUsaha.objects.all()
+    extra_context.update({'bidang_usaha_pariwisata': bidang_usaha_pariwisata_list})
     return render(request, "front-end/formulir/tdup.html", extra_context)
 
 def identitas_pemohon(request, extra_context={}):
