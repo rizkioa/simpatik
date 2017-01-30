@@ -599,6 +599,22 @@ class DetilIMB(PengajuanIzin):
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
 
+class DetilSkIMB(MetaAtribut):
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
+	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
+	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
+	sk_menetapkan_keenam_a = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM A.', null=True, blank=True)
+	sk_menetapkan_keenam_b = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM B.', null=True, blank=True)
+	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM C.', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'SK Detil IMB %s' % (str(self.id))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'SK Detil IMB'
+		verbose_name_plural = 'SK Detil IMB'
+
 class InformasiKekayaanDaerah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
 	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)

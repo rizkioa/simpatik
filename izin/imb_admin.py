@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilIMB, Syarat, SKIzin, Riwayat
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSkIMB
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -167,8 +167,13 @@ class DetilIMBAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
-
-		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_umum.html")
+			try:
+				sk_imb_ = DetilSkIMB.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+		template = loader.get_template("front-end/include/imb_umum/cetak_sk_imb_umum.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
@@ -270,8 +275,13 @@ class DetilIMBAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
-
-		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_umum.html")
+			try:
+				sk_imb_ = DetilSkIMB.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+		template = loader.get_template("front-end/include/formulir_imb_perumahan/cetak_sk_imb_perumahan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 

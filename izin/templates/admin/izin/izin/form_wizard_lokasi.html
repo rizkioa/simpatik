@@ -30,6 +30,7 @@
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
@@ -65,8 +66,10 @@
                   })
                 }
               }else{
-              if($current == 4){
-                // alert("OK")
+              if ($current == 3) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan)
+              }else if($current == 4){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
               }else if($current == 5 ){
@@ -541,7 +544,9 @@
       });
 
       if ('{{pengajuan_}}'){
-        
+          if ('{{pengajuan_.perusahaan.npwp}}' != 0 ) {
+            load_perusahaan_a('{{pengajuan_.perusahaan.npwp}}')
+          }
             {% include 'front-end/load_pengajuan.html' %}
 
             $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");

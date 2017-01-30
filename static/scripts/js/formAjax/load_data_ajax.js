@@ -12,7 +12,9 @@ function load_data_imbreklame(id_pengajuan){
             $('#id_jumlah').val(respon.data.id_jumlah)
 
             $('#id_lokasi_pasang').val(respon.data.id_lokasi_pasang)
+            if (respon.data.id_kecamatan != "") {
             load_desa_imb_reklame(respon.data.id_kecamatan)
+            }
             setTimeout(function(){
               $('#id_klasifikasi_jalan').val(respon.data.id_klasifikasi_jalan).prop('selected',true).trigger("chosen:updated");
               $('#id_kecamatan_imb_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
@@ -46,7 +48,7 @@ function load_data_imb(id_pengajuan){
             $('#id_bangunan').val(respon.data.nama_bangunan)
             $('#id_luas_bangunan').val(respon.data.luas_bangunan)
             $('#id_jumlah_bangunan').val(respon.data.jumlah_bangunan)
-            $('#id_lokasi').val(respon.data.luas_bangunan)
+            $('#id_lokasi').val(respon.data.id_lokasi)
             if (respon.data.id_kecamatan != "") {
               load_desa_data_reklame(respon.data.id_kecamatan)
             }
@@ -80,7 +82,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
-          if (respon.data.kode_kontruksi_bangunan == "BK1") {
+          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_izin == "503.01.04/")) {
             $('#id_bobot_kegiatan_pembangunan').val(respon.data.nilai_kegiatan_pembangunan)
             $('#id_bobot_fungsi_bangunan').val(respon.data.nilai_fungsi_bangunan)
             $('#id_bobot_tingkat_kompleksitas').val(respon.data.nilai_kompleksitas_bangunan)
@@ -92,7 +94,9 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
 
             $('#total').val(respon.data.total_biaya)
             $('#id_total_biaya').val(respon.data.total_biaya)
-              load_bangunan(respon.data.id_kontruksi)
+              if ((respon.data.id_kontruksi) != "") {
+                load_bangunan(respon.data.id_kontruksi)
+              }
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");
                 $('#id_jenis_bangunan').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
@@ -107,7 +111,9 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
                  $("#id_parameter_bangunan").css('display', 'block')
               }, 1000);
           }else if ((respon.data.kode_kontruksi_bangunan == "BK2")||(respon.data.kode_kontruksi_bangunan == "BK17")) {
-              load_bangunan(respon.data.id_kontruksi)
+              if ((respon.data.id_kontruksi) != "") {
+                load_bangunan(respon.data.id_kontruksi)
+              }
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");
                 $('#id_jenis_bangunan').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
@@ -116,7 +122,9 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
               }, 1000);
               $('#id_panjang').val(respon.data.id_panjang)
           }else{
-              load_bangunan(respon.data.id_kontruksi)
+              if ((respon.data.id_kontruksi) != "") {
+                load_bangunan(respon.data.id_kontruksi)
+              }
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");
                 $('#id_jenis_bangunan').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
@@ -161,7 +169,7 @@ function load_konfirmasi_data_identifikasi_bangunan_imb(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
-          if (respon.data.kode_kontruksi_bangunan == "BK1") {
+          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_izin == "503.01.04/")) {
             $('#id_kontruksi_konfirmasi').text(respon.data.id_kontruksi)
             $('#id_jenis_bangunan_konfirmasi').text(respon.data.id_jenis_bangunan)
 
@@ -195,6 +203,67 @@ function load_konfirmasi_data_identifikasi_bangunan_imb(id_pengajuan){
                 $('#id_jenis_bangunan_konfirmasi').text(respon.data.id_jenis_bangunan)
             }
           }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
+function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/informasitanah/load/'+id_pengajuan,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+          if (respon.data.kode_izin == "IPPT-Rumah"){
+            $('#id_alamat').val(respon.data.id_alamat)
+            $('#id_luas').val(respon.data.id_luas)
+            $('#id_status_tanah').val(respon.data.id_status_tanah)
+            $('#id_no_sertifikat_petak').val(respon.data.id_no_sertifikat_petak)
+            $('#id_luas_sertifikat_petak').val(respon.data.id_luas_sertifikat_petak)
+            $('#id_atas_nama_sertifikat_petak').val(respon.data.id_atas_nama_sertifikat_petak)
+            $('#id_tahun_sertifikat').val(respon.data.id_tahun_sertifikat)
+
+            $('#id_no_persil').val(respon.data.id_no_persil)
+            $('#id_klas_persil').val(respon.data.id_klas_persil)
+            $('#id_atas_nama_persil').val(respon.data.id_atas_nama_persil)
+            $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
+            $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
+                    
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+          } 
+          else if (respon.data.kode_izin == "503.07/") {
+            $('#id_no_surat_kuasa').val(respon.data.id_no_surat_kuasa)
+            $('#id_tanggal_surat_kuasa').val(respon.data.id_tanggal_surat_kuasa)
+            $('#id_alamat').val(respon.data.id_alamat)
+            $('#id_luas').val(respon.data.id_luas)
+            $('#id_status_tanah').val(respon.data.id_status_tanah)
+
+            $('#id_no_persil').val(respon.data.id_no_persil)
+            $('#id_klas_persil').val(respon.data.id_klas_persil)
+            $('#id_atas_nama_persil').val(respon.data.id_atas_nama_persil)
+            $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
+            $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
+                    
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+          }     
+        }
         },
         error: function(response){
         toast_server_error()
