@@ -2686,6 +2686,5 @@ class IzinAdmin(admin.ModelAdmin):
 		obj.create_by = request.user
 		obj.save()
 
-
 admin.site.register(PengajuanIzin, IzinAdmin)
 >>>>>>> f87256f2f26d980800c9605e30e52a146e5420a7
