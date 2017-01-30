@@ -1562,7 +1562,6 @@ from izin.controllers.ippt_usaha import formulir_ippt_usaha
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
 
-
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 	list_filter = ('kelompok_jenis_izin', ('created_at', DateRangeFilter))
