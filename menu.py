@@ -127,7 +127,7 @@ class CustomMenu(Menu):
                     title='Pengajuan Masuk',
                     icon='icon-check',
                     css_classes='t',
-                    url=reverse('admin:verifikasi'),  
+                    url=reverse('admin:verifikasi_operator'),  
                 )
             ]
         if request.user.groups.filter(name="Cek Lokasi").exists():
@@ -169,7 +169,7 @@ class CustomMenu(Menu):
                     title='Draft SK',
                     icon='icon-list',
                     css_classes='r', 
-                    url=reverse('admin:verifikasi_skizin'),                
+                    url=reverse('admin:verifikasi_skizin_kabid'),                
                 ),
             ]
 
@@ -179,7 +179,7 @@ class CustomMenu(Menu):
                     title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='t', 
-                    url=reverse('admin:verifikasi'),                
+                    url=reverse('admin:verifikasi_pembuat_surat'),                
                 ),
             ]
 
@@ -189,7 +189,7 @@ class CustomMenu(Menu):
                     title='Draft SK',
                     icon='fa fa-file-text',
                     css_classes='r', 
-                    url=reverse('admin:verifikasi_skizin'),                
+                    url=reverse('admin:verifikasi_skizin_kadin'),                
                 ),
             ]
 
@@ -209,7 +209,7 @@ class CustomMenu(Menu):
                     title='Cetak Izin',
                     icon='fa fa-file-text',
                     css_classes='r', 
-                    url=reverse('admin:verifikasi_skizin'),                
+                    url=reverse('admin:verifikasi_skizin_cetak'),                
                 ),
             ]
 
