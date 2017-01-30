@@ -262,17 +262,18 @@ def tdp_legalitas_pt_cookie(request):
 					# onoffpengesahanmenteri = request.POST.get('onoffpengesahanmenteri')
 					# if onoffpengesahanmenteri == 'on':
 					noppm1 = request.POST.get('nomor_pengesahan_pengesahan_menteri')
-					tglppm1 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pengesahan_menteri'), '%d-%m-%Y').strftime('%Y-%m-%d')
-					try:
-						legalitas_pengesahan_menteri = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=3)
-						legalitas_pengesahan_menteri.jenis_legalitas_id = 3
-						legalitas_pengesahan_menteri.perusahaan_id = perusahaan_id
-						legalitas_pengesahan_menteri.nomor_pengesahan = noppm1
-						legalitas_pengesahan_menteri.tanggal_pengesahan = tglppm1
-						legalitas_pengesahan_menteri.save()
-					except ObjectDoesNotExist:
-						legalitas_pengesahan_menteri = Legalitas(nomor_pengesahan=noppm1, tanggal_pengesahan=tglppm1, jenis_legalitas_id=3, perusahaan_id=perusahaan_id)
-						legalitas_pengesahan_menteri.save(force_insert=True)
+					if noppm1:
+						tglppm1 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pengesahan_menteri'), '%d-%m-%Y').strftime('%Y-%m-%d')
+						try:
+							legalitas_pengesahan_menteri = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=3)
+							legalitas_pengesahan_menteri.jenis_legalitas_id = 3
+							legalitas_pengesahan_menteri.perusahaan_id = perusahaan_id
+							legalitas_pengesahan_menteri.nomor_pengesahan = noppm1
+							legalitas_pengesahan_menteri.tanggal_pengesahan = tglppm1
+							legalitas_pengesahan_menteri.save()
+						except ObjectDoesNotExist:
+							legalitas_pengesahan_menteri = Legalitas(nomor_pengesahan=noppm1, tanggal_pengesahan=tglppm1, jenis_legalitas_id=3, perusahaan_id=perusahaan_id)
+							legalitas_pengesahan_menteri.save(force_insert=True)
 					# +++++++ end save pengesahan menteri +++++
 					# +++++++ save persetujuan menteri +++++
 					onoffpersetujuanmenteri = request.POST.get('onoffpersetujuanmenteri')
