@@ -885,7 +885,7 @@ class IzinAdmin(admin.ModelAdmin):
 						nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
 						obj_skizin.nama_pejabat = nama_pejabat
 						obj_skizin.nip_pejabat = str(pejabat.username)
-						if pejabat.nama_jabatan:
+						if pejabat.jabatan:
 							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
 						else:
 							obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
