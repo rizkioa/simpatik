@@ -183,22 +183,35 @@ def tdp_legalitas_pt_cookie(request):
 					# tanggal_pengesahan_pendirian = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pendirian'), '%d-%m-%Y').strftime('%Y-%m-%d')
 					perusahaan_id = pengajuan_.perusahaan.id
 					# save legalitas pendirian
-					try:
-						legalitas_pendirian = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=1)
-						# if legalitas_pendirian.jenis_legalitas_id == 1:
-						legalitas_pendirian.jenis_legalitas_id=1
-						legalitas_pendirian.perusahaan_id = perusahaan_id
+					# try:
+					# 	legalitas_pendirian = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=1)
+					# 	# if legalitas_pendirian.jenis_legalitas_id == 1:
+					# 	legalitas_pendirian.jenis_legalitas_id=1
+					# 	legalitas_pendirian.perusahaan_id = perusahaan_id
+					# 	legalitas_pendirian.nama_notaris = nama_notaris_pendirian
+					# 	legalitas_pendirian.alamat = alamat_pendirian
+					# 	legalitas_pendirian.telephone = telephone_pendirian
+					# 	legalitas_pendirian.nomor_akta = nomor_akta_pendirian
+					# 	legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
+					# 	# legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
+					# 	# legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
+					# 	legalitas_pendirian.save()
+					# 	# else:
+					# 	# 	pass
+					# except ObjectDoesNotExist:
+					# 	legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian)
+					# 	legalitas_pendirian.save(force_insert=True)
+					legalitas_pendirian = Legalitas.objects.filter(perusahaan_id=perusahaan_id, jenis_legalitas_id=1)
+					if legalitas_pendirian.exists():
+						# diambil yang terakhir jika data lebih dari satu
+						legalitas_pendirian = legalitas_pendirian.last()
 						legalitas_pendirian.nama_notaris = nama_notaris_pendirian
 						legalitas_pendirian.alamat = alamat_pendirian
 						legalitas_pendirian.telephone = telephone_pendirian
 						legalitas_pendirian.nomor_akta = nomor_akta_pendirian
 						legalitas_pendirian.tanggal_akta = tanggal_akta_pendirian
-						# legalitas_pendirian.nomor_pengesahan = nomor_pengesahan_pendirian
-						# legalitas_pendirian.tanggal_pengesahan = tanggal_pengesahan_pendirian
 						legalitas_pendirian.save()
-						# else:
-						# 	pass
-					except ObjectDoesNotExist:
+					else:
 						legalitas_pendirian = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=1,  nama_notaris=nama_notaris_pendirian, alamat=alamat_pendirian, telephone=telephone_pendirian, nomor_akta=nomor_akta_pendirian, tanggal_akta=tanggal_akta_pendirian)
 						legalitas_pendirian.save(force_insert=True)
 					# +++++++ save akta perubahan ++++
@@ -211,8 +224,25 @@ def tdp_legalitas_pt_cookie(request):
 						tanggal_akta_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						# nomor_pengesahan_perubahan = request.POST.get('nomor_pengesahan_akta_perubahan')
 						# tanggal_pengesahan_perubahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
-						try:
-							legalitas_perubahan = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=2)
+						# try:
+						# 	legalitas_perubahan = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=2)
+						# 	legalitas_perubahan.jenis_legalitas_id = 2
+						# 	legalitas_perubahan.perusahaan_id = perusahaan
+						# 	legalitas_perubahan.nama_notaris = nama_notaris_perubahan
+						# 	legalitas_perubahan.alamat = alamat_perubahan
+						# 	legalitas_perubahan.telephone = telephone_perubahan
+						# 	legalitas_perubahan.nomor_akta = nomor_akta_perubahan
+						# 	legalitas_perubahan.tanggal_akta = tanggal_akta_perubahan
+						# 	# legalitas_perubahan.nomor_pengesahan = nomor_pengesahan_perubahan
+						# 	# legalitas_perubahan.tanggal_pengesahan = tanggal_pengesahan_perubahan
+						# 	legalitas_perubahan.save()
+						# except ObjectDoesNotExist:
+						# 	legalitas_perubahan = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=2,  nama_notaris=nama_notaris_perubahan, alamat=alamat_perubahan, telephone=telephone_perubahan, nomor_akta=nomor_akta_perubahan, tanggal_akta=tanggal_akta_perubahan)
+						# 	legalitas_perubahan.save(force_insert=True)
+
+						legalitas_perubahan = Legalitas.objects.filter(perusahaan_id=perusahaan_id, jenis_legalitas_id=2)
+						if legalitas_perubahan.exists():
+							legalitas_perubahan = legalitas_perubahan.last()
 							legalitas_perubahan.jenis_legalitas_id = 2
 							legalitas_perubahan.perusahaan_id = perusahaan
 							legalitas_perubahan.nama_notaris = nama_notaris_perubahan
@@ -223,25 +253,26 @@ def tdp_legalitas_pt_cookie(request):
 							# legalitas_perubahan.nomor_pengesahan = nomor_pengesahan_perubahan
 							# legalitas_perubahan.tanggal_pengesahan = tanggal_pengesahan_perubahan
 							legalitas_perubahan.save()
-						except ObjectDoesNotExist:
+						else:
 							legalitas_perubahan = Legalitas(perusahaan_id=perusahaan_id, jenis_legalitas_id=2,  nama_notaris=nama_notaris_perubahan, alamat=alamat_perubahan, telephone=telephone_perubahan, nomor_akta=nomor_akta_perubahan, tanggal_akta=tanggal_akta_perubahan)
 							legalitas_perubahan.save(force_insert=True)
+
 					# +++++++ end save akta perubahan ++++
 					# +++++++ save pengesahan menteri +++++
-					onoffpengesahanmenteri = request.POST.get('onoffpengesahanmenteri')
-					if onoffpengesahanmenteri == 'on':
-						noppm1 = request.POST.get('nomor_pengesahan_pengesahan_menteri')
-						tglppm1 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pengesahan_menteri'), '%d-%m-%Y').strftime('%Y-%m-%d')
-						try:
-							legalitas_pengesahan_menteri = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=3)
-							legalitas_pengesahan_menteri.jenis_legalitas_id = 3
-							legalitas_pengesahan_menteri.perusahaan_id = perusahaan_id
-							legalitas_pengesahan_menteri.nomor_pengesahan = noppm1
-							legalitas_pengesahan_menteri.tanggal_pengesahan = tglppm1
-							legalitas_pengesahan_menteri.save()
-						except ObjectDoesNotExist:
-							legalitas_pengesahan_menteri = Legalitas(nomor_pengesahan=noppm1, tanggal_pengesahan=tglppm1, jenis_legalitas_id=3, perusahaan_id=perusahaan_id)
-							legalitas_pengesahan_menteri.save(force_insert=True)
+					# onoffpengesahanmenteri = request.POST.get('onoffpengesahanmenteri')
+					# if onoffpengesahanmenteri == 'on':
+					noppm1 = request.POST.get('nomor_pengesahan_pengesahan_menteri')
+					tglppm1 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_pengesahan_menteri'), '%d-%m-%Y').strftime('%Y-%m-%d')
+					try:
+						legalitas_pengesahan_menteri = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=3)
+						legalitas_pengesahan_menteri.jenis_legalitas_id = 3
+						legalitas_pengesahan_menteri.perusahaan_id = perusahaan_id
+						legalitas_pengesahan_menteri.nomor_pengesahan = noppm1
+						legalitas_pengesahan_menteri.tanggal_pengesahan = tglppm1
+						legalitas_pengesahan_menteri.save()
+					except ObjectDoesNotExist:
+						legalitas_pengesahan_menteri = Legalitas(nomor_pengesahan=noppm1, tanggal_pengesahan=tglppm1, jenis_legalitas_id=3, perusahaan_id=perusahaan_id)
+						legalitas_pengesahan_menteri.save(force_insert=True)
 					# +++++++ end save pengesahan menteri +++++
 					# +++++++ save persetujuan menteri +++++
 					onoffpersetujuanmenteri = request.POST.get('onoffpersetujuanmenteri')
@@ -943,7 +974,7 @@ def tdp_upload_surat_keputusan(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
@@ -1030,7 +1061,7 @@ def tdp_upload_akta_legalitas(request):
 					if berkas_:
 						if form.is_valid():
 							ext = os.path.splitext(berkas_.name)[1]
-							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png']
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 							if not ext in valid_extensions:
 								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 								data = json.dumps(data)
