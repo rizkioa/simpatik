@@ -414,6 +414,9 @@ class JenisKoperasi(models.Model):
 	jenis_koperasi = models.CharField(max_length=255, verbose_name='Jenis Koperasi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_koperasi))
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Jenis Koperasi'
@@ -423,6 +426,9 @@ class BentukKoperasi(models.Model):
 	bentuk_koperasi = models.CharField(max_length=255, verbose_name='Bentuk Koperasi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
+	def __unicode__(self):
+		return u'%s' % (str(self.bentuk_koperasi))
+	
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Bentuk Koperasi'
