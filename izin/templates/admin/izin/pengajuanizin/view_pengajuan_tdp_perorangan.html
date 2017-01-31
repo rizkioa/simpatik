@@ -1108,7 +1108,7 @@
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         	setTimeout(function(){
-        		window.location.replace('{% url 'admin:izin_proses_tdp_po' %}');
+        		window.location.replace('{% url 'admin:izin_proses_tdp_perorangan' %}');
         	}, 1000);
         }
     </script>
