@@ -418,7 +418,8 @@
 				$('input[name="klasifikasi_usaha"]').val('')
 				$('textarea[name="nama_paket_pekerjaan"]').val('')
 				$('select[name="tahun"]').val('')
-				$('input[name="nilai_paket_pekerjaan"]').val('')
+				$('select[name="keterangan"]').val('')
+				$('input[name="nilai_paket_pekerjaan"]').val(0)
 				$('#myModal2').modal('show');
 			}
 		}
@@ -458,7 +459,7 @@
 			$('input[name="klasifikasi_usaha"]').val('')
 			$('textarea[name="nama_paket_pekerjaan"]').val('')
 			$('select[name="tahun"]').val('')
-			$('input[name="nilai_paket_pekerjaan"]').val('')
+			$('input[name="nilai_paket_pekerjaan"]').val(0)
 			$('input[name="chkbox[]"]').prop("checked",false)
 			$('#myModal2').modal('hide');
 		});
@@ -519,12 +520,15 @@
 							cell4.innerHTML = resp.data[3].nama_paket_pekerjaan
 
 							var cell5 = row.insertCell(4);
-							cell5.innerHTML = resp.data[4].tahun
+							cell5.innerHTML = resp.data[4].keterangan
 
 							var cell6 = row.insertCell(5);
-							cell6.innerHTML = resp.data[5].nilai_paket_pekerjaan
+							cell6.innerHTML = resp.data[5].tahun
 
-							// var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+							cell7.innerHTML = resp.data[6].nilai_paket_pekerjaan
+
+							// var ce7l6 = row.insertCell(5);
 							// cell6.innerHTML = '<a href="#" onclick="show_modal_edit(\''+resp.data[0].id+'\',\''+resp.data[1].klasifikasi_usaha+'\',\''+resp.data[2].nama_paket_pekerjaan+'\',\''+resp.data[3].tahun+'\',\''+resp.data[5].nilai_str+'\')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>'
 
 							toastr["success"](resp.pesan)
