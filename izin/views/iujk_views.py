@@ -620,7 +620,7 @@ def upload_sertifikat_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -676,7 +676,7 @@ def upload_kartu_teknis_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -733,7 +733,7 @@ def upload_pernyataan_pengikat_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -789,7 +789,7 @@ def upload_pernyataan_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -901,7 +901,7 @@ def upload_keterangan_domisili_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -957,7 +957,7 @@ def upload_denah_lokasi_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -1069,7 +1069,7 @@ def upload_akta_pendirian_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
@@ -1127,7 +1127,7 @@ def upload_akta_perubahan_badan_usaha(request):
 				if berkas_:
 					if form.is_valid():
 						ext = os.path.splitext(berkas_.name)[1]
-						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.png']
+						valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
 						if not ext in valid_extensions:
 							data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
 							data = json.dumps(data)
