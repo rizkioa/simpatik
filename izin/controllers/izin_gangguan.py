@@ -74,7 +74,7 @@ def formulir_izin_gangguan(request):
 					# extra_context.update({ 'ukuran': ukuran_ })
 
 					if pengajuan_.desa:
-						letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+						letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 					else:
 						letak_ = ""
 					extra_context.update({ 'letak': letak_ })
