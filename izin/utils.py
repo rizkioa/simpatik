@@ -296,7 +296,7 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilIUJK')
 	elif kode_ijin == "503.03.01/": # REKLAME PERMANEN
 		objects_ = getattr(app_models, 'DetilReklame')
-	elif k.kode == "503.02/":
+	elif kode_ijin == "503.02/":
 		objects_ = getattr(app_models, 'DetilHO')
 
 	return objects_

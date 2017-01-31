@@ -130,18 +130,8 @@ class CustomMenu(Menu):
                     url=reverse('admin:verifikasi_operator'),  
                 )
             ]
-        if request.user.groups.filter(name="Cek Lokasi").exists():
 
-            menu_utama.children += [
-                items.MenuItem(
-                    title='Survey',
-                    icon='icon-check',
-                    css_classes='t', 
-                    url=reverse('admin:izin_survey_changelist'),                
-                ),
-            ]
-
-        if request.user.groups.filter(name="Tim Teknis").exists():
+        if request.user.groups.filter(Q(name="Tim Teknis") | Q(name="Cek Lokasi")).exists():
              menu_utama.children += [
                  items.MenuItem(
                         title='Daftar Survey',

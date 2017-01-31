@@ -378,10 +378,11 @@
 									</center>
 								</div>
 							</div>
-							{{jenis_permohonan}}
-							{% include "admin/izin/survey_1.html" %}
 
-							
+							{% if pengajuan.kelompok_jenis_izin.kode == '503.03.01/' %}
+								{% include "admin/izin/survey_1.html" %}
+							{% endif %}
+
 
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">

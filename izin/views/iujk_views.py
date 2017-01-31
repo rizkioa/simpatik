@@ -31,6 +31,7 @@ def iujk_paketpekerjaan_save(request):
 							{'klasifikasi': p.subklasifikasi.klasifikasi.klasifikasi},
 							{'subklasifikasi': p.subklasifikasi.subklasifikasi },
 							{'nama_paket_pekerjaan': p.nama_paket_pekerjaan},
+							{'keterangan': p.keterangan},
 							{'tahun': p.tahun},
 							{'nilai_paket_pekerjaan': 'Rp. '+'{:,.2f}'.format(float(p.nilai_paket_pekerjaan))},
 							{'nilai_str': str(p.nilai_paket_pekerjaan)},
