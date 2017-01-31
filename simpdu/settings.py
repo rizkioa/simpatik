@@ -78,7 +78,6 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.core.context_processors.i18n',
-                'django.core.context_processors.request',
                 'django.core.context_processors.media',
                 'django.core.context_processors.static',
                 'django.core.context_processors.tz',
@@ -101,7 +100,7 @@ DATABASES = {
         'NAME': 'simpatik',
         'USER':'simpatik',
         'PASSWORD':'!QAZ@WSX',
-        # 'PORT': '3306',
+        'PORT': '3306',
         'OPTIONS': {
             "init_command": "SET foreign_key_checks = 0;",
             # "init_command": "SET storage_engine=INNODB",

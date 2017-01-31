@@ -414,6 +414,9 @@ class JenisKoperasi(models.Model):
 	jenis_koperasi = models.CharField(max_length=255, verbose_name='Jenis Koperasi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_koperasi))
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Jenis Koperasi'
@@ -423,6 +426,9 @@ class BentukKoperasi(models.Model):
 	bentuk_koperasi = models.CharField(max_length=255, verbose_name='Bentuk Koperasi')
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
+	def __unicode__(self):
+		return u'%s' % (str(self.bentuk_koperasi))
+	
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Bentuk Koperasi'
@@ -598,6 +604,22 @@ class DetilIMB(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
+
+class DetilSkIMB(MetaAtribut):
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
+	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
+	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
+	sk_menetapkan_keenam_a = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM A.', null=True, blank=True)
+	sk_menetapkan_keenam_b = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM B.', null=True, blank=True)
+	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM C.', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'SK Detil IMB %s' % (str(self.id))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'SK Detil IMB'
+		verbose_name_plural = 'SK Detil IMB'
 
 class InformasiKekayaanDaerah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
@@ -947,14 +969,18 @@ class BidangUsahaPariwisata(models.Model):
 
 class SubJenisBidangUsaha(models.Model):
 	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata")
-	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis")
+	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis", null=True, blank=True)
 	nama_subjenis = models.CharField(max_length=255, verbose_name="Nama SubJenis")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % (str(self.nama_subjenis),)
 
+	def as_option(self):
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_subjenis)+"</option>"
+
 	class Meta:
+		ordering = ['id']
 		verbose_name = 'Sub Jenis Bidang Usaha'
 		verbose_name_plural = 'Sub Jenis Bidang Usaha'
 

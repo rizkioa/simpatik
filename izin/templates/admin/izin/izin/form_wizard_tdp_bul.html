@@ -122,7 +122,7 @@
 	            },
 
 	            onTabClick: function(tab, navigation, index) {
-	              return true;
+	              return false;
 	            }
 
 	        });
@@ -345,7 +345,7 @@
 	        if ($.cookie('id_pengajuan') === undefined){
 	          pengajuan_id = 0
 	        }
-	        window.location.replace('{% url 'admin:verifikasi' %}');
+	        window.location.replace('{% url 'admin:verifikasi_operator' %}');
 	        $.ajax({
 	          url: '{% url 'tdp_pt_done' %}',
 	          success: function(response) {

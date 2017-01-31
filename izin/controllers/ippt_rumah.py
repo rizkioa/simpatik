@@ -54,7 +54,7 @@ def formulir_ippt_rumah(request):
 					extra_context.update({ 'letak': letak_ })
 				except ObjectDoesNotExist:
 					pass
-		template = loader.get_template("admin/izin/izin/form_wizard_lokasi.html")
+		template = loader.get_template("admin/izin/izin/form_wizard_ippt_rumah.html")
 		ec = RequestContext(request, extra_context)
 		response = HttpResponse(template.render(ec))
 		if 'id_pengajuan' in request.COOKIES.keys():

@@ -28,6 +28,7 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
@@ -64,7 +65,10 @@
                   })
                 }
               }else{
-              if($current == 4){
+              if ($current == 2) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan)
+              }else if($current == 3){
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
@@ -298,7 +302,7 @@
               if(respon.success){
                 toastr["success"](respon.pesan)
               }
-              window.location.replace('{% url 'admin:verifikasi' %}');
+              window.location.replace('{% url 'admin:verifikasi_operator' %}');
             }
           });
         }
@@ -365,7 +369,6 @@
       });
 
       if ('{{pengajuan_}}'){
-        
             {% include 'front-end/load_pengajuan.html' %}
 
             $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
@@ -377,7 +380,9 @@
             $('#id_tanggal_akhir').val('{{ pengajuan_.tanggal_akhir|date:'d-m-Y' }}');
             $('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
             $('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
+            if ('{{pengajuan_.desa.kecamatan.id}}'!= ""){
             load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
+            }
             setTimeout(function(){
               $('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
             }, 1000);
@@ -501,32 +506,25 @@
 	    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
 	    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
 	    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-	    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
   	</ul>
   	<div class="tab-content">
       <div class="tab-pane" id="tab1">
         <!-- Identitas perusahaan -->
         {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
       </div>
-
       <div class="tab-pane" id="tab2">
-        <!-- Identitas perusahaan -->
-        {% include 'front-end/include/formulir_izin_lokasi/identitas_perusahaan.html' %}
+        <!-- Data Kegiatan Gangguan -->
+        {% include 'front-end/include/formulir_ippt_rumah/informasi_tanah_ippt_rumah.html' %}
       </div>
 
       <div class="tab-pane" id="tab3">
-        <!-- Data Kegiatan Gangguan -->
-        {% include 'front-end/include/formulir_izin_lokasi/informasi_tanah.html' %}
+        <!-- Upload Dokumen -->
+        {% include 'front-end/include/formulir_ippt_rumah/upload_dokumen.html' %}
       </div>
 
       <div class="tab-pane" id="tab4">
-        <!-- Upload Dokumen -->
-        {% include 'front-end/include/formulir_izin_lokasi/upload_dokumen.html' %}
-      </div>
-
-      <div class="tab-pane" id="tab5">
         <!-- Konfirmasi -->
-        {% include 'front-end/include/formulir_izin_lokasi/konfirmasi.html' %}
+        {% include 'front-end/include/formulir_ippt_rumah/konfirmasi.html' %}
       </div>
 		<ul class="pager wizard">
 		  	<li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>

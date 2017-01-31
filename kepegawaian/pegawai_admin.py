@@ -72,7 +72,7 @@ class NomorIdentitasInline(admin.StackedInline):
 class PegawaiAdmin(admin.ModelAdmin):
 	# form = PegawaiForm
 	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as')
-	list_filter = ('groups__name', )
+	list_filter = ('groups__name', 'jabatan', 'unit_kerja', )
 	inlines = [NomorIdentitasInline,]
 	search_fields = ('username', 'nama_lengkap')
 
