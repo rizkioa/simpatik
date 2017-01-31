@@ -62,7 +62,7 @@
                       // error: function(response){
                       //   $('<br>').insertAfter("#id_table_pemohon_komfirmasi");
                       // }
-                  })
+                  });
                 }
               else{
               if ($current == 2) {
@@ -76,7 +76,7 @@
                 load_data_identifikasi_jalan_imb(id_pengajuan)
               }else if($current == 5){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_imb_perumahan(id_pengajuan
+                load_berkas_imb_perumahan(id_pengajuan)
               }
               
                 $('#rootwizard').find('.pager .next').show();
