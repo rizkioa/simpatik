@@ -152,7 +152,7 @@ def delete_sertifikat_tanah(request,id_sertifikat_tanah):
     response = HttpResponse(data)
   return response
 
-def load_data_sertifikat_tanah(request,id_sertifikat_tanah):
+def load_data_tabel_sertifikat_tanah(request,id_sertifikat_tanah):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
             data = []

@@ -344,3 +344,50 @@ function load_data_informasi_kekayaan(id_pengajuan){
     })
     }
 }
+
+function load_data_tabel_sertifikat_tanah(id_sertifikat_tanah){
+  if (id_sertifikat_tanah !== ""){
+    $('#id_sertifikat_tanah_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/informasitanah/sertifikat-tanah/load/'+id_sertifikat_tanah,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_sertifikat_tanah_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_sertifikat_tanah_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_sertifikat_tanah_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            no_sertifikat_petak = b[i].no_sertifikat_petak
+            luas_sertifikat_petak = b[i].luas_sertifikat_petak
+            atas_nama_sertifikat_petak = b[i].atas_nama_sertifikat_petak
+            tahun_sertifikat = b[i].tahun_sertifikat
+            // no = a
+            // if (a > 1){
+            //   no = a-i
+            // }
+            row = '<tr>'
+            // row += '<td>'+no+'</td>'
+            row += '<td>'+no_sertifikat_petak+'</td>'
+            row += '<td>'+luas_sertifikat_petak+'</td>'
+            row += '<td>'+atas_nama_sertifikat_petak+'</td>'
+            row += '<td>'+tahun_sertifikat+'</td>'
+            row += '</tr>'
+            $('#id_sertifikat_tanah_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
+  }
+}

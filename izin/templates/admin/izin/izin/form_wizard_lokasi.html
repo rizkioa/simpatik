@@ -47,7 +47,9 @@
                 $('#rootwizard').find('.pager .finish').show();
                 $('#rootwizard').find('.pager .finish').removeClass('disabled');
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                id_sertifikat_tanah = parseInt($.cookie('id_pengajuan'))
                 load_konfirmasi_izin_lokasi(id_pengajuan)
+                load_data_tabel_sertifikat_tanah(id_sertifikat_tanah)
                 if (id_pengajuan > 0){
                   $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
@@ -72,9 +74,6 @@
               }else if($current == 4){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_izin_lokasi(id_pengajuan)
-              }else if($current == 5 ){
-                id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_data_sertifikat_tanah(id_pengajuan)
               }
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
