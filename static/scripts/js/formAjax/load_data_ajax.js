@@ -314,3 +314,33 @@ function load_data_detil_ho(id_pengajuan){
     })
     }
 }
+
+
+
+function load_data_informasi_kekayaan(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/pemakaian-kekayaan-daerah/load/'+id_pengajuan,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_lokasi').val(respon.data.id_lokasi)
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            $('#id_panjang').val(respon.data.id_panjang)
+            $('#id_lebar').val(respon.data.id_lebar)
+            $('#id_penggunaan').val(respon.data.id_penggunaan)
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}

@@ -102,8 +102,12 @@ def load_detilho(request,id_pengajuan):
       id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
       id_tujuan_gangguan = pengajuan_.tujuan_gangguan
       id_alamat = pengajuan_.alamat
-      id_desa = str(pengajuan_.desa.id)
-      id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+      if pengajuan_.desa:
+        id_desa = str(pengajuan_.desa.id)
+        id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+      else:
+        id_desa = ""
+        id_kecamatan = ""
       id_bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
       id_proses_produksi = pengajuan_.proses_produksi
       id_jenis_produksi = pengajuan_.jenis_produksi

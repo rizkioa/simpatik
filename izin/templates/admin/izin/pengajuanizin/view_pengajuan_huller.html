@@ -212,8 +212,8 @@
 						<a data-toggle="modal" data-target="#detail_reklame" class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Detail Pengajuan</span></a>
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-red btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Berkas Pengajuan</span></a>
 						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
-						<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_huller' %}" target="_blank" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
-					{% endif %}
+							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_huller' %}" target="_blank" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+						{% endif %}
 					</div>
 				</div>
 			</div>
