@@ -19,7 +19,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan,JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
 from izin.utils import formatrupiah,JENIS_IUJK, get_tahun_choices
@@ -208,9 +208,11 @@ def formulir_reklame(request, extra_context={}):
     desa = Desa.objects.all()
     jenis_pemohon = JenisPemohon.objects.all()
     reklame_jenis_list = JenisReklame.objects.all()
-
+    tipe_reklame_list = JenisTipeReklame.objects.all()
+    
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     extra_context.update({'reklame_jenis_list': reklame_jenis_list})
+    extra_context.update({'tipe_reklame_list': tipe_reklame_list})
     extra_context.update({'desa': desa})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'kabupaten': kabupaten})

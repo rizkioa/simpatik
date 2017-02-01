@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame,JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -265,7 +265,8 @@ class DetilSIUP(PengajuanIzin):
 
 class DetilReklame(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='reklame_perusahaan', blank=True, null=True)
-	jenis_reklame = models.ForeignKey(JenisReklame, verbose_name='Jenis Reklame', blank=True, null=True)
+	jenis_reklame = models.ForeignKey(JenisReklame, verbose_name='Jenis Izin Reklame', blank=True, null=True)
+	tipe_reklame = models.ForeignKey(JenisTipeReklame,verbose_name='Tipe Reklame',blank=True,null=True)
 	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame')
 	panjang = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Panjang',default=0, null=True, blank=True)
 	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar',default=0 ,null=True, blank=True)

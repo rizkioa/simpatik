@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilReklame
 
@@ -24,12 +24,13 @@ def formulir_reklame(request):
 		# produk_utama_list = ProdukUtama.objects.all()
 		jenis_legalitas_list = JenisLegalitas.objects.all()
 		reklame_jenis_list = JenisReklame.objects.all()
-
+		tipe_reklame_list = JenisTipeReklame.objects.all()
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		# print request.COOKIES
+		extra_context.update({'tipe_reklame_list': tipe_reklame_list})
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
 		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})

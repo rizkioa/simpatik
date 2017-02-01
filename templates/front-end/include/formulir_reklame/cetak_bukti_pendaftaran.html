@@ -353,7 +353,7 @@
                     <tr>
                         <td width="10%">Jenis Reklame</td>
                         <td width="5%">:</td>
-                        <td width="85%">{{ pengajuan.jenis_reklame }}</td>
+                        <td width="85%">{{ pengajuan.tipe_reklame }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama / Judul Reklame</td>
@@ -363,7 +363,7 @@
                     <tr>
                         <td width="40%">Ukuran, Panjang x Lebar x Muka/Sisi</td>
                         <td width="10%">:</td>
-                        <td width="50%">{{ pengajuan.panjang }} x {{ pengajuan.lebar }} x {{ pengajuan.sisi}}</td>
+                        <td width="50%">{{ pengajuan.panjang|floatformat:-2 }} M&sup2; x {{ pengajuan.lebar|floatformat:-2 }} x M&sup2; {{ pengajuan.sisi|floatformat:-2 }} M&sup2;</td>
                     </tr>
                     <tr>
                         <td width="30%">Jumlah</td>
@@ -373,7 +373,7 @@
                     <tr>
                         <td width="30%">Waktu / Lama Pemasangan</td>
                         <td width="10%">:</td>
-                        <td width="60%">{{ selisih }} Hari</td>
+                        <td width="60%">{{ pengajuan.tanggal_mulai|date:"d-m-Y" }} - {{pengajuan.tanggal_akhir|date:"d-m-Y"}}</td>
                     </tr>
                     <tr>
                         <td width="30%">Letak Pemasangan</td>

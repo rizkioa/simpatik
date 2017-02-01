@@ -59,7 +59,7 @@ class PengajuanReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilReklame
-		fields = ('jenis_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi','jumlah', 'letak_pemasangan', 'desa', 'tanggal_mulai', 'tanggal_akhir')
+		fields = ('jenis_reklame','tipe_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi','jumlah', 'letak_pemasangan', 'desa', 'tanggal_mulai', 'tanggal_akhir')
 
 class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
