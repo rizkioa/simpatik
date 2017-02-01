@@ -271,3 +271,46 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
     })
     }
 }
+
+
+function load_data_detil_ho(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/ho/load/'+id_pengajuan,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_perkiraan_modal').val(respon.data.id_perkiraan_modal)
+            $('#id_tujuan_gangguan').val(respon.data.id_tujuan_gangguan)
+            $('#id_alamat').val(respon.data.id_alamat)
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_gangguan').val(respon.data.id_jenis_lokasi_usaha).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_lokasi_usaha').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_bangunan').val(respon.data.id_jenis_gangguan).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+
+            $('#id_bahan_baku_dan_penolong').val(respon.data.id_bahan_baku_dan_penolong)
+            $('#id_proses_produksi').val(respon.data.id_proses_produksi)
+            $('#id_jenis_produksi').val(respon.data.id_jenis_produksi)
+            $('#id_kapasitas_produksi').val(respon.data.id_kapasitas_produksi)
+            $('#id_jumlah_tenaga_kerja').val(respon.data.id_jumlah_tenaga_kerja)
+            $('#id_jumlah_mesin').val(respon.data.id_jumlah_mesin)
+            $('#id_merk_mesin').val(respon.data.id_merk_mesin)
+            $('#id_daya').val(respon.data.id_daya)
+            $('#id_kekuatan').val(respon.data.id_kekuatan)
+            $('#id_luas_ruang_tempat_usaha').val(respon.data.id_luas_ruang_tempat_usaha)
+            $('#id_luas_lahan_usaha').val(respon.data.id_luas_lahan_usaha)
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
