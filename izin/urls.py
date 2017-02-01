@@ -294,6 +294,8 @@ urlpatterns = [
     url(r'^ho/berkas/save/$', detilho_view.detilho_upload_berkas_pendukung, name='detilho_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-ho/(?P<id_pengajuan>[0-9]+)$', detilho_view.ajax_load_berkas_detilho, name='ajax_load_berkas_detilho'),
     url(r'^layanan/ho/selesai/$', detilho_view.detilho_done , name='detilho_done'),
+    url(r'^ho/load/(?P<id_pengajuan>[0-9]+)$', detilho_view.load_detilho, name='load_detilho'),
+    
     # ++++++++++++++++++++++++ end for ajax Detil HO  ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Izin Lokasi ++++++++++++++++++++++
