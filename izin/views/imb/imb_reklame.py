@@ -23,7 +23,7 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, DetilIMBPapanReklame,Pemohon
-from izin.utils import KLASIFIKASI_JALAN
+from izin.utils import JENIS_LOKASI_USAHA
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,PengajuanIMBReklameForm,UploadBerkasKTPForm
 
@@ -32,7 +32,7 @@ def formulir_imb_reklame(request, extra_context={}):
     negara = Negara.objects.all()
     kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
     
-    extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
+    extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})

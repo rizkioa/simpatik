@@ -288,11 +288,11 @@ function load_data_detil_ho(id_pengajuan){
               load_desa_data_reklame(respon.data.id_kecamatan)
             }
             setTimeout(function(){
+              $('#id_jenis_gangguan').val(respon.data.id_jenis_gangguan).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_lokasi_usaha').val(respon.data.id_jenis_lokasi_usaha).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_bangunan').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
               $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
               $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
-              $('#id_jenis_gangguan').val(respon.data.id_jenis_lokasi_usaha).prop('selected',true).trigger("chosen:updated");
-              $('#id_jenis_lokasi_usaha').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
-              $('#id_jenis_bangunan').val(respon.data.id_jenis_gangguan).prop('selected',true).trigger("chosen:updated");
             }, 1000);
 
             $('#id_bahan_baku_dan_penolong').val(respon.data.id_bahan_baku_dan_penolong)
