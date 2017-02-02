@@ -560,6 +560,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
 	tinggi = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Tinggi')
 	lokasi_pasang = models.CharField(max_length=255, blank=True, null=True, verbose_name='Lokasi Pasang')
+	milik = models.CharField(max_length=150, blank=True, null=True, verbose_name='Milik')
 	jumlah = models.IntegerField(verbose_name="Jumlah", null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=JENIS_LOKASI_USAHA, max_length=19, null=True, blank=True)
@@ -615,7 +616,7 @@ class DetilSkIMB(MetaAtribut):
 	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM C.', null=True, blank=True)
 
 	def __unicode__(self):
-		return u'SK Detil IMB %s' % (str(self.id))
+		return u'Detil SK IMB %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
 
 	class Meta:
 		ordering = ['-status']
@@ -678,11 +679,11 @@ class InformasiTanah(PengajuanIzin):
 	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20, 	)
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
-	atas_nama_sertifikat_petak =  models.CharField(max_length=30, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
+	atas_nama_sertifikat_petak =  models.CharField(max_length=255, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
 	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
 	no_persil =  models.CharField(max_length=30, verbose_name='No. Persil', null=True, blank=True)
 	klas_persil= models.CharField(max_length=30, verbose_name='Klas Persil', null=True, blank=True)
-	atas_nama_persil=  models.CharField(max_length=30, verbose_name='Atas Nama Persil', null=True, blank=True)
+	atas_nama_persil=  models.CharField(max_length=255, verbose_name='Atas Nama Persil', null=True, blank=True)
 	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
 	#Tambahan Informasi Tanah IPPT USAHA
@@ -1030,6 +1031,20 @@ class DetilTDUP(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'TDUP'
 		verbose_name_plural = 'TDUP'
+
+# Detil Pembayaran Izin
+class DetilPembayaran(MetaAtribut):
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
+	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar")
+	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil Pembayaran'
+		verbose_name_plural = 'Detil Pembayaran'
 
 # class BUAkomodasi(models.Model):
 # 	hotel_bintang = models.BooleanField(default=False, verbose_name="Hotel Bintang")

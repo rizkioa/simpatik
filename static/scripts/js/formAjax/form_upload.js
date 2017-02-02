@@ -805,6 +805,7 @@ function load_data_informasi_tanah(id_pengajuan){
           $('#id_no_sertifikat_petak').val(respon.data.id_no_sertifikat_petak)
           $('#id_luas_sertifikat_petak').val(respon.data.id_luas_sertifikat_petak)
           $('#id_atas_nama_sertifikat_petak').val(respon.data.id_atas_nama_sertifikat_petak)
+          $('#id_tahun_sertifikat').val(respon.data.id_tahun_sertifikat)
           $('#id_no_persil').val(respon.data.id_no_persil)
           $('#id_klas_persil').val(respon.data.id_klas_persil)
           $('#id_atas_nama_persil').val(respon.data.id_atas_nama_persil)

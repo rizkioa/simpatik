@@ -60,13 +60,14 @@ def ippt_usaha_save_cookie(request):
                         pengajuan_.save()
                         data = {'success': True,
                             'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                            'data': ['']}
+                            'data': {}}
                         response = HttpResponse(json.dumps(data))
                     else:
-                        ippt_usaha.save()
+                        p = ippt_usaha.save(commit=False)
+                        P.save()
                         data = {'success': True,
                               'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                              'data': ['']}
+                              'data': {}}
                         response = HttpResponse(json.dumps(data))
             else:
                 data = ippt_usaha.errors.as_json()
@@ -76,7 +77,7 @@ def ippt_usaha_save_cookie(request):
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def ippt_usaha_rencana_pembangunan_save_cookie(request):
@@ -175,7 +176,7 @@ def informasi_penggunaan_tanah_sekarang_save_cookie(request):
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
@@ -200,10 +201,11 @@ def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
+            response = HttpResponse(data)
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def delete_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
@@ -245,10 +247,11 @@ def perumahan_yang_sudah_dimiliki_save_cookie(request):
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
+            response = HttpResponse(data)
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def edit_perumahan_yang_sudah_dimiliki(request,id_perumahan):
@@ -544,6 +547,11 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
                 id_tanggal_surat_kuasa = pengajuan_.tanggal_surat_kuasa.strftime("%d-%m-%Y")
             else:
                 id_tanggal_surat_kuasa = ""
+            if pengajuan_.tanggal_surat_kuasa:
+                id_tahun_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
+            else:
+                id_tahun_sertifikat = ""
+
             id_alamat = pengajuan_.alamat
             kabupaten = ""
             kecamatan = ""
@@ -615,7 +623,7 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             'id_no_sertifikat_petak': id_no_sertifikat_petak,
             'id_luas_sertifikat_petak': id_luas_sertifikat_petak,
             'id_atas_nama_sertifikat_petak': id_atas_nama_sertifikat_petak,
-            'id_atas_nama_sertifikat_petak': id_atas_nama_sertifikat_petak,
+            'id_tahun_sertifikat': id_tahun_sertifikat,
             'id_no_persil': id_no_persil,
             'id_klas_persil': id_klas_persil,
             'id_atas_nama_persil': id_atas_nama_persil,
