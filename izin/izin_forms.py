@@ -248,6 +248,8 @@ class RencanaPembangunanIPPTUsahaForm(forms.ModelForm):
 
 class RencanaPembiayanDanPemodalanIPPTUsahaForm(forms.ModelForm):
 	"""docstring for RencanaPembiayanDanPemodalanIPPTUsahaForm"""
+	saham_indonesia = forms.DecimalField(label="Saham Indonesia", required=False,)
+	saham_asing = forms.DecimalField(label="Saham Asing", required=False,)
 	class Meta:
 		model = InformasiTanah
 		fields = ('modal_tetap_tanah','modal_tetap_bangunan','modal_tetap_mesin','modal_tetap_angkutan','modal_tetap_inventaris','modal_tetap_lainnya','jumlah_modal_tetap','modal_kerja_bahan','modal_kerja_gaji','modal_kerja_alat_angkut','modal_kerja_lainnya','jumlah_modal_kerja','modal_dasar','modal_ditetapkan','modal_disetor','modal_bank_pemerintah','modal_bank_swasta','modal_lembaga_non_bank','modal_pihak_ketiga','modal_pinjaman_luar_negeri','jumlah_investasi','saham_indonesia','saham_asing')
