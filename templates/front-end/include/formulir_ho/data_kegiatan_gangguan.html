@@ -158,10 +158,10 @@
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Jenis Gangguan/Limbah</label>
       <div class="col-sm-5">
-        <select id="id_jenis_gangguan" name="jenis_gangguan" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
-          <option value>-- Pilih jenis bangunan --</option>
+        <select id="id_jenis_gangguan" name="jenis_gangguan" class="form-control chosen-select mb-10" required="">
+          <option value>-- Pilih Jenis Gangguan/Limbah --</option>
           {% for jb in jenis_gangguan_list %}
-          <option value="{{ jb.0 }}">{{ jb.1 }}</option>
+            <option value="{{jb.0}}">{{jb.1}}</option>
           {% endfor %}
         </select>
       </div>
@@ -170,10 +170,10 @@
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Jenis Lokasi Usaha</label>
       <div class="col-sm-5">
-        <select id="id_jenis_lokasi_usaha" name="jenis_lokasi_usaha" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
-          <option value>-- Pilih jenis limbah/gangguan --</option>
+        <select id="id_jenis_lokasi_usaha" name="jenis_lokasi_usaha" class="form-control chosen-select mb-10" required="">
+          <option value>-- Pilih Jenis Lokasi Usaha --</option>
           {% for jgl in jenis_lokasi_usaha_list %}
-          <option value="{{ jgl.0 }}">{{ jgl.1 }}</option>
+          <option value="{{jgl.0}}">{{jgl.1}}</option>
           {% endfor %}
         </select>
       </div>
@@ -182,12 +182,13 @@
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Jenis Bangunan</label>
       <div class="col-sm-5">
-        <select id="id_jenis_bangunan" name="jenis_bangunan" class="form-control chosen-select mb-10" required="" data-parsley-trigger="change">
-          <option value>-- Pilih jenis lokasi usaha --</option>
+        <select id="id_jenis_bangunan" name="jenis_bangunan" class="form-control chosen-select mb-10" required="">
+          <option value>-- Pilih Jenis Bangunan --</option>
           {% for jlu in jenis_bangunan_list %}
-          <option value="{{ jlu.0 }}">{{ jlu.1 }}</option>
+          <option value="{{jlu.0}}">{{jlu.1}}</option>
           {% endfor %}
         </select>
       </div>
     </div>
+
 </form>

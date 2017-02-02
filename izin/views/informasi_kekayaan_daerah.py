@@ -96,6 +96,35 @@ def kekayaan_done(request):
 	response = HttpResponse(data)
   return response
 
+def load_informasi_kekayaan_daerah(request,id_pengajuan):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = InformasiKekayaanDaerah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			id_lokasi = pengajuan_.lokasi
+			id_lebar = str(pengajuan_.lebar)
+			id_panjang = str(pengajuan_.panjang)
+			id_penggunaan = pengajuan_.penggunaan
+			if pengajuan_.desa:
+				id_desa = str(pengajuan_.desa.id) 
+				id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+			else:
+				id_desa = ""
+				id_kecamatan = ""
+
+			data = {'success': True,
+					'data': {'id_lokasi':id_lokasi,'id_lebar': id_lebar,'id_panjang': id_panjang,'id_penggunaan': id_penggunaan,'id_desa': id_desa,'id_kecamatan':id_kecamatan}}
+			response = HttpResponse(json.dumps(data))
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+
 def load_konfirmasi_informasi_kekayaan_daerah(request,id_pengajuan):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':

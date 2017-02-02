@@ -285,6 +285,9 @@ urlpatterns = [
     url(r'^pemakaian-kekayaan-daerah/berkas/save/$', informasi_kekayaan_daerah.informasi_kekayaan_daerah_upload_berkas_pendukung, name='informasi_kekayaan_daerah_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-pemakaian-kekayaan-daerah/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.ajax_load_berkas_informasi_kekayaan_daerah, name='ajax_load_berkas_informasi_kekayaan_daerah'),
     url(r'^layanan/pemakaian-kekayaan-daerah/konfirmasi/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_konfirmasi_informasi_kekayaan_daerah , name='load_konfirmasi_informasi_kekayaan_daerah'),
+    url(r'^pemakaian-kekayaan-daerah/load/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_informasi_kekayaan_daerah, name='load_informasi_kekayaan_daerah'),
+
+    
     # ++++++++++++++++++++++++ end for ajax Informasi Kekayaan Daerah  ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Detil HO ++++++++++++++++++++++
@@ -295,7 +298,7 @@ urlpatterns = [
     url(r'^ajax-load-berkas-ho/(?P<id_pengajuan>[0-9]+)$', detilho_view.ajax_load_berkas_detilho, name='ajax_load_berkas_detilho'),
     url(r'^layanan/ho/selesai/$', detilho_view.detilho_done , name='detilho_done'),
     url(r'^ho/load/(?P<id_pengajuan>[0-9]+)$', detilho_view.load_detilho, name='load_detilho'),
-    
+
     # ++++++++++++++++++++++++ end for ajax Detil HO  ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Izin Lokasi ++++++++++++++++++++++
@@ -307,7 +310,7 @@ urlpatterns = [
     url(r'^informasitanah/sertifikat-tanah/save/$', izin_lokasi.sertifikat_tanah_save_cookie, name='sertifikat_tanah_save'),
     url(r'^informasitanah/sertifikat-tanah/edit/(?P<id_sertifikat_tanah>[0-9]+)/$', izin_lokasi.edit_sertifikat_tanah , name='edit_sertifikat_tanah'),
     url(r'^informasitanah/sertifikat-tanah/delete/(?P<id_sertifikat_tanah>[0-9]+)$', izin_lokasi.delete_sertifikat_tanah , name='delete_sertifikat_tanah'),
-    url(r'^informasitanah/sertifikat-tanah/load/(?P<id_sertifikat_tanah>[0-9]+)$', izin_lokasi.load_data_sertifikat_tanah, name='load_data_sertifikat_tanah'),
+    url(r'^informasitanah/sertifikat-tanah/load/(?P<id_sertifikat_tanah>[0-9]+)$', izin_lokasi.load_data_tabel_sertifikat_tanah, name='load_data_tabel_sertifikat_tanah'),
     url(r'^layanan/izin-lokasi/selesai/$', izin_lokasi.izinlokasi_done , name='izinlokasi_done'),
     # ++++++++++++++++++++++++ end for ajax Izin Lokasi   ++++++++++++++++++++++
 

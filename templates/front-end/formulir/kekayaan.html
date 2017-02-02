@@ -103,6 +103,7 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
@@ -139,12 +140,13 @@
                   })
                 }
               }else{
-              if($current == 4){
-                // alert("OK")
-                id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas_informasi_kekayaan_daerah(id_pengajuan)
-                
-              }
+                if ($current == 3) {
+                  id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                  load_data_informasi_kekayaan(id_pengajuan)
+                }else if($current == 4){
+                  id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                 load_berkas_informasi_kekayaan_daerah(id_pengajuan)
+                }
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
               }
