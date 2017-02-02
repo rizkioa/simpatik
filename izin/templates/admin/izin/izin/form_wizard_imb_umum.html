@@ -765,9 +765,9 @@ $("#id_kontruksi").change(function(){
 $("#id_jenis_bangunan").change(function(){
     $this = $(this)
     id_jenis_bangunan = $(this).val()
-    if(id_jenis_bangunan == 3){
+    if((id_jenis_bangunan == 3)||(id_jenis_bangunan == 25)){
          $("#id_parameter_bangunan").css('display', 'block')
-      }else if ((id_jenis_bangunan == 4)|(id_jenis_bangunan == 19)) {
+      }else if ((id_jenis_bangunan == 4)||(id_jenis_bangunan == 19)) {
         $(".field-panjang_bangunan").css('display', 'block')
         $('#id_panjang').addClass('required')
       }else{
