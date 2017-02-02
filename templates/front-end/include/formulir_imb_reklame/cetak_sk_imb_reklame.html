@@ -359,7 +359,7 @@
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 101px;" align="left">Alamat Kantor</td>
 	        			<td width="10">:</td>
-	        			<td>{{perusahaan.alamat_perusahaan}} Desa, {{ perusahaan.desa }} Kec. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
+	        			<td>{{perusahaan.alamat_perusahaan}} DESA, {{ perusahaan.desa }} KEC. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDUA</td>
@@ -441,27 +441,44 @@
 	        			<td>{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
 	        		</tr>
 	        	</table>
-	        	<table width="100%" border="1" class="sk-justify">
+	        	<table width="100%" border="0" class="sk-justify">
 	        		<tr>
 	        			<td>KEEMPAT</td>
-	        			<td colspan="2">:</td>
-	        			<td></td>
-	        			<td  colspan="2">Pemegang izin berkewajiban :</td>
+	        			<td>:</td>
+	        			<td colspan="3">Pemegang izin berkewajiban :</td>
 	        		</tr>
 	        		<tr>
 	        			<td></td>
-	        			<td colspan="2" style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
-	        			<td colspan="3">Konstruksi {{ pengajuan.jenis_papan_reklame|default_if_none:"" }} harus sesuai standart pemasangan reklame sehingga tidak ada kekhawatiran terjadinya kerusakan ;</td>
+	        			<td></td>
+	        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
+	        			<td colspan="2">Konstruksi {{ pengajuan.jenis_papan_reklame|default_if_none:"" }} harus sesuai standart pemasangan reklame sehingga tidak ada kekhawatiran terjadinya kerusakan ;</td>
 	        		</tr>
 	        		<tr>
+	        			<td ></td>
 	        			<td ></td>
 	        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
 	        			<td colspan="3">Mengadakan pengecekan bangunan papan secara rutin dan berkala  ;</td>
 	        		</tr>
 	        		<tr>
 	        			<td ></td>
+	        			<td ></td>
 	        			<td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
 	        			<td colspan="3">Mengurus perizinan reklame.</td>
+	        		</tr>
+	        		<tr>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KELIMA</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td  colspan="3" width="2000">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama  5 (lima) tahun dan dapat diperpanjang.</td>
+	        		</tr>
+	        		<tr>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td  colspan="3" width="2000">Apabila sewaktu-waktu bangunan dan tanah tersebut digunakan oleh pemerintah daerah, maka pemegang izin harus mengosongkan bangunan dan tanah dimaksud tanpa ganti rugi.</td>
+	        		</tr>
+	        		<tr>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KETUJUH</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td  colspan="3" width="2000">Setelah jangka waktu perizinan berakhir, bangunan dapat dibongkar dan konstruksi jalan dikembalikan seperti semula oleh pemegang izin, atau oleh penyelenggara jalan dengan biaya menjadi tanggung jawab pemegang izin.</td>
 	        		</tr>
 	        	</table>
 	        </div>
@@ -470,33 +487,18 @@
 			<div class="subpage">
 			<table width="100%" border="0" class="sk-justify">
 	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KELIMA</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
-	        			<td  colspan="3" width="2000">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama  5 (lima) tahun dan dapat diperpanjang.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEENAM</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
-	        			<td  colspan="3" width="2000">Apabila sewaktu-waktu bangunan dan tanah tersebut digunakan oleh pemerintah daerah, maka pemegang izin harus mengosongkan bangunan dan tanah dimaksud tanpa ganti rugi.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KETUJUH</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
-	        			<td  colspan="3" width="2000">Setelah jangka waktu perizinan berakhir, bangunan dapat dibongkar dan konstruksi jalan dikembalikan seperti semula oleh pemegang izin, atau oleh penyelenggara jalan dengan biaya menjadi tanggung jawab pemegang izin.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDELAPAN</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEDELAPAN</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU, yang bersangkutan dikenakan retribusi sebesar Rp 68.000,00 (enam puluh delapan ribu rupiah) ;</td>
 	        		</tr>
 	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KESEMBILAN</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEMBILAN</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Setiap bentuk perbuatan yang dilakukan oleh Pemegang izin, baik disengaja maupun yang tidak disengaja yang mengakibatkan penyimpangan dan / atau  pelanggaran dan / atau tidak dilaksanakannya terhadap ketentuan-ketentuan, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini.</td>
 	        		</tr>
 	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KESEPULUH</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEPULUH</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Keputusan ini mulai berlaku pada tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
 	        		</tr>        		
 	        	</table>
@@ -524,7 +526,7 @@
 			                    <br>
 			                    <br>
 			                    <br>
-			                    <p align="center"><b>{{ nama_kepala_dinas }}</b></u><br>
+			                    <p align="center"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
 			                    Pembina Tk.l<br>
 			                    NIP: {{nip_kepala_dinas}}</p>
 			            </td>
@@ -541,35 +543,27 @@
 								</tr>   
 								<tr>
 									<td></td>
-									<td>2. Sdr. Kepala Dinas PU Kabupaten Kediri ;</td>
+									<td>2. Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
 								</tr>   
 								<tr>
 									<td></td>
-									<td>3. Sdr. Kepala Dispenda Kabupaten Kediri ;</td>
+									<td>3. Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+								</tr>    
+								<tr>
+									<td></td>
+									<td>4. Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
+								</tr>    
+								<tr>
+									<td></td>
+									<td>5. Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
 								</tr>   
 								<tr>
 									<td></td>
-									<td>4. Sdr. Kepala D K P  Kabupaten Kediri ;</td>
+									<td>6. Sdr. Kepala DESA {{pengajuan.desa}} ;</td>
 								</tr>   
 								<tr>
 									<td></td>
-									<td>5. Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>6. Sdr. Kepala Bagian Hukum Kabupaten Kediri ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>7. Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>8. Sdr. Kepala Desa {{pengajuan.desa}} ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>9. Sdr. Dir. {{perusahaan.nama_perusahaan}} {{perusahaan.alamat_perusahaan}} Desa, {{ perusahaan.desa }} Kec. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
+									<td>7. Sdr. Dir. {{perusahaan.nama_perusahaan}} {{perusahaan.alamat_perusahaan}} DESA, {{ perusahaan.desa }} KEC. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
 								</tr>   
 							</table>         
 						</td>
