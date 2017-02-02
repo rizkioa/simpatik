@@ -675,10 +675,10 @@ class InformasiTanah(PengajuanIzin):
 	tanggal_surat_kuasa = models.DateField(verbose_name='Tanggal Surat Kuasa', null=True, blank=True)
 	alamat = models.CharField(max_length=100,null=True, blank=True, verbose_name='Alamat')
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	luas = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas')
+	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas')
 	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20, 	)
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
-	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
+	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
 	atas_nama_sertifikat_petak =  models.CharField(max_length=255, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
 	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
 	no_persil =  models.CharField(max_length=30, verbose_name='No. Persil', null=True, blank=True)
@@ -800,8 +800,8 @@ class InformasiTanah(PengajuanIzin):
 class SertifikatTanah(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
-	luas_sertifikat_petak = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
-	atas_nama_sertifikat_petak =  models.CharField(max_length=30, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
+	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
+	atas_nama_sertifikat_petak =  models.CharField(max_length=255, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
 	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
 
 	def __unicode__(self):
