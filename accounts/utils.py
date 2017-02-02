@@ -18,7 +18,7 @@ STATUS = (
 # 2. Inactive: Kalo tidak ada survey kabid mengubah status dari Submitted ke Inactive
 # 3. Blocked: 
 # 4. Submitted: Operator mengubah Draft ke Submitted
-# 5. Archive: 
+# 5. Archive: untuk pembayaran
 # 6. Draft: default
 # 7. Rejected:
 # 8. Survey: Dan jika ada survey mengubah status Submitted ke Survey dan jika Survey selesai kabid merubah status menjadi Inactive
