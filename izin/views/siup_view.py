@@ -21,7 +21,7 @@ from izin.utils import get_nomor_pengajuan
 from izin.utils import formatrupiah
 
 from izin import models as app_models
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller, Kelembagaan
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna, Account
@@ -333,12 +333,14 @@ def siup_detilsiup_save_cookie(request):
 			detilSIUP = PengajuanSiupForm(request.POST, instance=pengajuan_)
 			# kekayaan = unicode(request.POST.get('kekayaan_bersih', Decimal(0.00)).replace(".", ""))
 			kekayaan_ = request.POST.get('kekayaan_bersih')
+			print kekayaan_
 			if kekayaan_ == '':
 				# kekayaan = Decimal(0.00)
 				kekayaan_ = '0' 
 			# else:
 				# kekayaan = kekayaan_.replace(".", "")
 			total_saham = request.POST.get('total_nilai_saham')
+			print total_saham
 			if total_saham == '':
 				# total_saham = Decimal(0.00)
 				total_saham = '0'
@@ -351,6 +353,8 @@ def siup_detilsiup_save_cookie(request):
 					pengajuan_.total_nilai_saham = total_saham
 					# detilSIUP.save()
 					kbli_list = request.POST.getlist('kbli')
+					data_kelembagaan = []
+					data_kelembagaan = request.POST.getlist('kelembagaan')
 					# produk_utama_list = request.POST.getlist('produk_utama')
 					pengajuan_.perusahaan_id = request.COOKIES['id_perusahaan']
 					# pengajuan_.presentase_saham_nasional = request.POST.get('presentase_saham_nasional', Decimal('0.00'))
@@ -359,6 +363,10 @@ def siup_detilsiup_save_cookie(request):
 					# print "kbli"+kbli_list
 					# print str(produk_utama_list)
 					#++++++++++++++++multi select manytomany ++++++++
+					for kelembagaan in data_kelembagaan:
+						kelembagaan_obj = Kelembagaan.objects.get(id=kelembagaan)
+						pengajuan_.kelembagaan.add(kelembagaan_obj)
+
 					nama_kbli = []
 					# print kbli_list
 					for kbli in kbli_list:
@@ -388,7 +396,7 @@ def siup_detilsiup_save_cookie(request):
 							{'total_nilai_saham': "Rp "+str(pengajuan_.total_nilai_saham)},
 							{'presentase_saham_nasional': str(pengajuan_.presentase_saham_nasional)+" %"},
 							{'presentase_saham_asing': str(pengajuan_.presentase_saham_asing)+" %"},
-							{'kelembagaan': pengajuan_.kelembagaan.kelembagaan},
+							# {'kelembagaan': pengajuan_.kelembagaan.kelembagaan},
 							# {'produk_utama': produk_utama_json},
 							{'kbli': kbli_json},
 						]
@@ -1007,6 +1015,8 @@ def siup_done(request):
 			response.delete_cookie(key='id_kelompok_izin') # set cookie
 			response.delete_cookie(key='id_legalitas') # set cookie
 			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+			response.delete_cookie(key='npwp_perusahaan') # set cookie
+			response.delete_cookie(key='id_jenis_pengajuan') # set cookie
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
 			data = json.dumps(data)

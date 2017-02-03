@@ -57,6 +57,13 @@ class Kelembagaan(models.Model):
 	def __unicode__(self):
 		return "%s" % (self.kelembagaan)
 
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"kelembagaan": self.kelembagaan,
+			"keterangan": self.keterangan,
+		}
+
 	class Meta:
 		ordering = ['id']
 		verbose_name = 'Kelembagaan'

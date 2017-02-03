@@ -591,8 +591,8 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
-			extra_context.update({'kelembagaan': kelembagaan })
+			# kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
+			# extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
 				kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
 				# print kekayaan_

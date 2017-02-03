@@ -211,6 +211,8 @@
 			</script>
 		{% endif %}
 	{% endif %}
+	<title>Cetak SKIzin SIUP - {{pengajuan.no_izin}}</title>
+	<link rel="icon" type="image/ico" href="{% static "images/SIMPATIK.ico" %}" />
 </head>
 <body id="body">
 {% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
@@ -241,7 +243,7 @@
 		        			<td>
 		        				<center>
 		        					<p class="printhide">
-		        						<font class="printhide" style="font-size: 23px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>BADAN PENANAMAN MODAL DAN PELAYANAN PERIZINAN TERPADU SATU PINTU</b></font><br>
+		        						<font class="printhide" style="font-size: 23px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU</b></font><br>
 		        						<font class="printhide">Jl. Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>
 		        						Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></font><br>
 		        						<font class="printhide" style="font-size: 25px;">KEDIRI</font>
@@ -303,7 +305,7 @@
 	        		<tr>
 	        			<td valign="top"><b>KELEMBAGAAN</b></td>
 	        			<td valign="top">:</td>
-	        			<td valign="top"><b>{{ kelembagaan }}</b></td>
+	        			<td valign="top"><b>{% for k in pengajuan.kelembagaan.all %}{{k.kelembagaan.upper}}, {% endfor %}</b></td>
 	        		</tr>
 	        		<tr>
 	        			<td valign="top"><b>KEGIATAN USAHA (KBLI/*)</b></td>

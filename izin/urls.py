@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^ajax-delete-berkas-upload-tdp/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', tdp_view.ajax_delete_berkas_tdp, name='ajax_delete_berkas_tdp'),
     
     url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kbli, name='ajax_konfirmasi_kbli'),
+    url(r'^ajax-konfirmasi-kelembagaan/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kelembagaan, name='ajax_konfirmasi_kelembagaan'),
     url(r'^ajax-konfirmasi-kuasa/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_kuasa_pemohon, name='ajax_kuasa_pemohon'),
     url(r'^ajax-konfirmasi-legalitas/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_legalitas_konfirmasi, name='ajax_legalitas_konfirmasi'),
     url(r'^ajax-konfirmasi-paket-pekerjaan/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_nama_paket_pekerjaan, name='ajax_konfirmasi_nama_paket_pekerjaan'),
