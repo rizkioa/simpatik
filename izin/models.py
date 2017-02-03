@@ -297,7 +297,7 @@ class SKIzin(AtributTambahan):
 	# untuk tanggal skizin masa berlaku izin
 	tanggal_skizin = models.DateField(verbose_name='Tanggal SKIzin', null=True, blank=True)
 	# untuk status pendaftaran baru ,perubahan
-	status pendaftaran = models.CharField(max_length=50, verbose_name='Status Pendaftaran', null=True, blank=True)
+	status_pendaftaran = models.CharField(max_length=50, verbose_name='Status Pendaftaran', null=True, blank=True)
 	# untuk status pembaharuan ke 1 - 8
 	status_pembaharuan_ke = models.IntegerField(verbose_name='Status Pembaharuan Ke', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
