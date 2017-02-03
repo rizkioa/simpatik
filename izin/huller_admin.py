@@ -76,39 +76,39 @@ class DetilHullerAdmin(admin.ModelAdmin):
 			pengajuan_ = DetilHuller.objects.get(id=id_pengajuan_izin_)
 			data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_izin_)
 
-		try:
-			motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
-			motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
-			diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
-			rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
-			flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
-			gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
-			dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
-			screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
-			mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
-			mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
-			paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
-			mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
-			grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
-			kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
-		except ObjectDoesNotExist:
-			motor_bensin = ""
-			motor_diesel = ""
-			diesel_generating_set = ""
-			rubber_roll = ""
-			flash_type = ""
-			gedogan = ""
-			dimple_plate = ""
-			screen = ""
-			mesin_slip_horisontal = ""
-			mesin_slip_vertikal = ""
-			paddy_cleaner = ""
-			mesin_polis = ""
-			grader = ""
-			kualitas = ""
+			try:
+				motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
+				motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
+				diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
+				rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
+				flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
+				gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
+				dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
+				screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
+				mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
+				mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
+				paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
+				mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
+				grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
+				kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
+			except ObjectDoesNotExist:
+				motor_bensin = ""
+				motor_diesel = ""
+				diesel_generating_set = ""
+				rubber_roll = ""
+				flash_type = ""
+				gedogan = ""
+				dimple_plate = ""
+				screen = ""
+				mesin_slip_horisontal = ""
+				mesin_slip_vertikal = ""
+				paddy_cleaner = ""
+				mesin_polis = ""
+				grader = ""
+				kualitas = ""
 
-			alamat_ = ""
-			alamat_perusahaan_ = ""
+				alamat_ = ""
+				alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
@@ -132,14 +132,7 @@ class DetilHullerAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-
-			
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
-			extra_context.update({'status': pengajuan_.status})
-			extra_context.update({'pengajuan': pengajuan_})
-			encode_pengajuan_id = (str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': encode_pengajuan_id})
+					
 
 			extra_context.update({ 'motor_bensin': motor_bensin })
 			extra_context.update({ 'motor_diesel': motor_diesel })
@@ -156,6 +149,12 @@ class DetilHullerAdmin(admin.ModelAdmin):
 			extra_context.update({ 'grader': grader })
 			extra_context.update({ 'kualitas': kualitas })
 
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'created_at': pengajuan_.created_at})
+			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'pengajuan': pengajuan_})
+			encode_pengajuan_id = (str(pengajuan_.id))
+			extra_context.update({'pengajuan_id': encode_pengajuan_id})
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++

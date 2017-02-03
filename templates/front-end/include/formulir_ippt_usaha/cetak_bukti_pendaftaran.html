@@ -283,7 +283,7 @@
                       {% endfor %}
                     </tbody>
                 </table>
-                <table class="font" width="100%">
+<!--                 <table class="font" width="100%">
                     <tr>
                       <td width="25%"><p style="font-size:13px">Berdasarkan</p><br><u>Surat Kuasa</u></td>
                       <td width="10%"></td>
@@ -299,7 +299,7 @@
                       <td width="10%">:</td>
                       <td width="65%">{{pengajuan.tanggal_surat_kuasa|date:"d-m-Y"|default_if_none:"-"}}</td>
                     </tr>
-                </table>
+                </table> -->
                 <p style="font-size:13px">Mengajukan permohonan Izin Perubahan Penggunaan Tanah (IPPT) atas lokasi tanah yang terletak di</p>
                 <table class="font" width="100%">
                     <tr>
@@ -349,7 +349,7 @@
                       <td width="65%">{{pengajuan.desa.kecamatan.kabupaten|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
-                      <td width="25%">Luas Tanah</td>
+                      <td width="25%">Luas Tanah Yang Diajukan</td>
                       <td width="10%">:</td>
                       <td width="65%">{{pengajuan.luas|default_if_none:"-"}}</td>
                     </tr>
@@ -369,7 +369,7 @@
                       <td width="65%">{{pengajuan.no_sertifikat_petak|default_if_none:"-"}}</span></td>
                     </tr>
                     <tr>
-                      <td width="25%">Luas</td>
+                      <td width="25%">Luas Tanah</td>
                       <td width="10%">:</td>
                       <td width="65%">{{pengajuan.luas_sertifikat_petak|default_if_none:"-"}}</td>
                     </tr>

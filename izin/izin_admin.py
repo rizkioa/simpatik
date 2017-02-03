@@ -307,6 +307,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def linkdetilizin(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
+		print jenis_izin_
 		if jenis_izin_ == "503.08/":
 			link_ = reverse('admin:detil_siup_view', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
@@ -322,7 +323,9 @@ class IzinAdmin(admin.ModelAdmin):
 		elif jenis_izin_ == "503.06.01/":
 			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
 		elif jenis_izin_ == "503.02/":
-			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})	
+			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "HULLER":
+			link_ = reverse('admin:view_pengajuan_huller', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.kode == "IPPT-Rumah":
 			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
@@ -355,6 +358,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.kode == "IPPT-Rumah":
 			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "HULLER":
+			link_ = reverse('admin:view_pengajuan_huller', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
 			link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})		
 		elif obj.kelompok_jenis_izin.kode == "TDP-PT":
