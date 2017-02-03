@@ -372,7 +372,7 @@ def load_identifikasi_bangunan_imb(request,id_pengajuan):
 					total_biaya = str(pengajuan_.total_biaya) 
 					data = {'success': True,
 							'data': {'kode_izin':kode_izin,'kode_kontruksi_bangunan':kode_kontruksi_bangunan,'id_kontruksi':id_kontruksi,'id_jenis_bangunan':id_jenis_bangunan,'id_jenis_bangunan':id_jenis_bangunan,'nama_fungsi_bangunan': fungsi_bangunan.id,'nilai_fungsi_bangunan': nilai_fungsi_bangunan,'kegiatan_pembangunan': kegiatan_pembangunan.id,'nilai_kegiatan_pembangunan': nilai_kegiatan_pembangunan,'kompleksitas_bangunan': kompleksitas_bangunan.id,'nilai_kompleksitas_bangunan': nilai_kompleksitas_bangunan,'permanensi_bangunan': permanensi_bangunan.id,'nilai_permanensi_bangunan': nilai_permanensi_bangunan,'ketinggian_bangunan': ketinggian_bangunan.id,'nilai_ketinggian_bangunan': nilai_ketinggian_bangunan,'letak_bangunan': letak_bangunan.id,'nilai_letak_bangunan': nilai_letak_bangunan,'kepemilikan_bangunan': kepemilikan_bangunan.id,'nilai_kepemilikan_bangunan': nilai_kepemilikan_bangunan,'lama_penggunaan_bangunan': lama_penggunaan_bangunan.id,'nilai_lama_penggunaan_bangunan': nilai_lama_penggunaan_bangunan,'total_biaya': total_biaya}}
-				elif  pengajuan_.jenis_bangunan.kode == "BK1":
+				elif  pengajuan_.jenis_bangunan.kode == "BK1" or pengajuan_.jenis_bangunan.kode == "BK23":
 					kode_izin = pengajuan_.kelompok_jenis_izin.kode
 					if pengajuan_.jenis_bangunan:
 						kode_kontruksi_bangunan = str(pengajuan_.jenis_bangunan.kode)
@@ -475,7 +475,7 @@ def load_konfirmasi_identifikasi_bangunan_imb(request,id_pengajuan):
 					total_biaya = str(pengajuan_.total_biaya) 
 					data = {'success': True,
 							'data': {'kode_izin':kode_izin,'kode_kontruksi_bangunan':kode_kontruksi_bangunan,'id_kontruksi':id_kontruksi,'id_jenis_bangunan':id_jenis_bangunan,'id_jenis_bangunan':id_jenis_bangunan,'nama_fungsi_bangunan': fungsi_bangunan.detil_parameter,'nilai_fungsi_bangunan': nilai_fungsi_bangunan,'kegiatan_pembangunan': kegiatan_pembangunan.detil_parameter,'nilai_kegiatan_pembangunan': nilai_kegiatan_pembangunan,'kompleksitas_bangunan': kompleksitas_bangunan.detil_parameter,'nilai_kompleksitas_bangunan': nilai_kompleksitas_bangunan,'permanensi_bangunan': permanensi_bangunan.detil_parameter,'nilai_permanensi_bangunan': nilai_permanensi_bangunan,'ketinggian_bangunan': ketinggian_bangunan.detil_parameter,'nilai_ketinggian_bangunan': nilai_ketinggian_bangunan,'letak_bangunan': letak_bangunan.detil_parameter,'nilai_letak_bangunan': nilai_letak_bangunan,'kepemilikan_bangunan': kepemilikan_bangunan.detil_parameter,'nilai_kepemilikan_bangunan': nilai_kepemilikan_bangunan,'lama_penggunaan_bangunan': lama_penggunaan_bangunan.detil_parameter,'nilai_lama_penggunaan_bangunan': nilai_lama_penggunaan_bangunan,'total_biaya': total_biaya}}
-				elif pengajuan_.jenis_bangunan.kode == "BK1":
+				elif pengajuan_.jenis_bangunan.kode == "BK1" or pengajuan_.jenis_bangunan.kode == "BK23":
 					kode_kontruksi_bangunan = str(pengajuan_.jenis_bangunan.kode)
 					id_kontruksi = pengajuan_.jenis_bangunan.jenis_kontruksi.nama_jenis_kontruksi
 					id_jenis_bangunan = pengajuan_.jenis_bangunan.nama_bangunan

@@ -82,7 +82,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
-          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_izin == "503.01.04/")) {
+          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_kontruksi_bangunan == "BK23")||(respon.data.kode_izin == "503.01.04/")) {
             $('#id_bobot_kegiatan_pembangunan').val(respon.data.nilai_kegiatan_pembangunan)
             $('#id_bobot_fungsi_bangunan').val(respon.data.nilai_fungsi_bangunan)
             $('#id_bobot_tingkat_kompleksitas').val(respon.data.nilai_kompleksitas_bangunan)
@@ -169,7 +169,7 @@ function load_konfirmasi_data_identifikasi_bangunan_imb(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
-          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_izin == "503.01.04/")) {
+          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_kontruksi_bangunan == "BK23")||(respon.data.kode_izin == "503.01.04/")) {
             $('#id_kontruksi_konfirmasi').text(respon.data.id_kontruksi)
             $('#id_jenis_bangunan_konfirmasi').text(respon.data.id_jenis_bangunan)
 
