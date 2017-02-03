@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 
 
-from .models import AnggotaTim, Rekomendasi, DetilBAP, BAPReklameHO
+from .models import AnggotaTim, Rekomendasi, DetilBAP, BAPReklameHO, Template
 from kepegawaian.models import Pegawai
 
 # Register your models here.
@@ -133,3 +133,4 @@ class RekomendasiAdmin(admin.ModelAdmin):
 admin.site.register(Rekomendasi,RekomendasiAdmin)
 admin.site.register(DetilBAP)
 admin.site.register(BAPReklameHO)
+admin.site.register(Template)

@@ -1936,6 +1936,18 @@
                         <label for="username">Barang / Jasa Perdagangan Utama: </label>
                         <textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama_edit" required="" data-parsley-trigger="change">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</textarea>
                     </div>
+                    <div class="form-group">
+                    	<label>Masa Berlaku Izin</label>
+                    	<input type="text" name="" class="form-control" id="masa_berlaku">
+                    </div>
+                    <div class="form-group">
+                    	<label>Status Pendaftaran</label>
+                    	<input type="text" name="" class="form-control" id="status_pendaftaran">
+                    </div>
+                    <div class="form-group">
+                    	<label>Status Pembaharuan Ke</label>
+                    	<input type="text" name="" class="form-control" id="status_pembaharuan_ke">
+                    </div>
 		      	</div>
 		      	<div class="modal-footer">
 		      		<button onclick="edit_skizin({{ pengajuan.id }}, '_submit_edit_skizin')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>

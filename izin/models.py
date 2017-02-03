@@ -352,6 +352,12 @@ class Subklasifikasi(models.Model):
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.subklasifikasi)+"</option>"
 
+	def subklasifikasi_as_li(self):
+		return "<li>"+str(self.subklasifikasi)+"</li>"
+
+	def klasifikasi_as_li(self):
+		return "<li>"+str(self.klasifikasi)+"</li>"
+
 	class Meta:
 		verbose_name = "SubKalsifikasi IUJK"
 		verbose_name_plural = "SubKalsifikasi IUJK"
@@ -384,6 +390,9 @@ class PaketPekerjaan(models.Model):
 			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
 
+	def klasifikasi_as_li(self):
+		return "<li>"+str(self.subklasifikasi.klasifikasi)+"</li>"
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Paket Pekerjaan'
@@ -393,6 +402,8 @@ class AnggotaBadanUsaha(models.Model):
 	detil_iujk = models.ForeignKey(DetilIUJK, related_name='anggota_badan_iujk', verbose_name='Detil IUJK')
 	jenis_anggota_badan = models.CharField(max_length=255, verbose_name='Jenis Anggota Badan Usaha', choices=JENIS_ANGGOTA_BADAN_USAHA)
 	nama = models.CharField(max_length=255, verbose_name='Nama')
+	npwp = models.CharField(max_length=255, verbose_name='NPWP', blank=True)
+	no_pjt_bu = models.CharField(max_length=255, verbose_name='No PJT-BU', blank=True)
 	berkas_tambahan = models.ManyToManyField(Berkas, related_name='berkas_anggota_badan_usaha', verbose_name="Berkas Tambahan", blank=True)
 
 	def __unicode__(self):
@@ -1290,4 +1301,3 @@ class DetilPembayaran(MetaAtribut):
 # 	class Meta:
 # 		ordering = ['id']
 # 		verbose_name = 'Ceklis Syarat Izin'
-# 		verbose_name_plural = 'Ceklis Syarat Izin'
