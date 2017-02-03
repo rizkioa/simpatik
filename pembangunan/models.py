@@ -4,7 +4,7 @@ from django.utils.safestring import mark_safe
 
 from .utils import KONDISI_LAHAN, JENIS_BANGUNAN, KLASIFIKASI_JALAN
 
-from izin.models import Survey, KelompokJenisIzin
+from izin.models import Survey
 from kepegawaian.models import Pegawai, UnitKerja
 from master.models import MetaAtribut, Berkas
 
@@ -19,18 +19,6 @@ class AnggotaTim(models.Model):
 
 	def __unicode__(self):
 		return u'%s' % (str(self.pegawai))
-
-class Template(models.Model):
-	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin', related_name="survey_iujk", blank=True, null=True)
-	body_html = RichTextField()
-
-	def __unicode__(self):
-		return '%s' % mark_safe(self.id)
-
-	class Meta:
-		ordering = ['id']
-		verbose_name = 'Template'
-		verbose_name_plural = 'Template'
 
 
 

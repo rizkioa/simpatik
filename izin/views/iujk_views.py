@@ -22,8 +22,8 @@ def iujk_paketpekerjaan_save(request):
 				p.detil_iujk_id = request.COOKIES['id_pengajuan']
 				p.save()
 
-				print p.subklasifikasi
-				print p.subklasifikasi.klasifikasi
+				# print p.subklasifikasi
+				# print p.subklasifikasi.klasifikasi
 				data = {'success': True, 
 				'pesan': 'Paket Pekerjaan Berhasil Disimpan.',
 				'data': [
@@ -130,9 +130,15 @@ def iujk_klasifikasi_paketpekerjaan_save(request):
 		if request.COOKIES['id_pengajuan'] != '':
 			paket = PaketPekerjaan.objects.filter(detil_iujk_id=request.COOKIES['id_pengajuan'])
 			if len(paket) > 0 :
+				pengajuan_ = DetilIUJK.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+				pengajuan_.kualifikasi_id = request.POST.get('kualifikasi')
+				pengajuan_.save()
+
 				data = {'success': True, 
-					'pesan': 'Data Paket Pekerjaan Berhasil Disimpan.',
-					'data': []
+					'pesan': 'Data Paket Pekerjaan dan Kualifikasi Berhasil Disimpan.',
+					'data': [
+						{'kualifikasi': pengajuan_.kualifikasi.nama_kualifikasi }
+					]
 				}
 				data = json.dumps(data)
 				response = HttpResponse(data)

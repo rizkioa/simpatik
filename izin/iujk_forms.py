@@ -16,13 +16,13 @@ class DetilIUJKForm(forms.ModelForm):
 
 	class Meta:
 		model = DetilIUJK
-		fields = ('perusahaan', 'jenis_iujk')
+		fields = ('perusahaan', 'jenis_iujk', 'kualifikasi')
 
 class DataAnggotaForm(forms.ModelForm):
 	"""docstring for DataAnggotaForm"""
 	class Meta:
 		model = AnggotaBadanUsaha
-		fields = ('nama', )
+		fields = ('nama', 'no_pjt_bu', 'npwp')
 
 class BerkasFom(forms.ModelForm):
 	"""docstring for BerkasFom"""

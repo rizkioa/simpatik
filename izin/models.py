@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame,JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi
+from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame,JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi, JenisKualifikasi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -318,6 +318,7 @@ class Riwayat(AtributTambahan):
 		verbose_name_plural = 'Riwayat'
 
 class DetilIUJK(PengajuanIzin):
+	kualifikasi = models.ForeignKey(JenisKualifikasi, verbose_name="Kualifikasi", related_name="kualifikasi_iujk", blank=True, null=True)
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iujk_perusahaan', blank=True, null=True)
 	jenis_iujk = models.CharField(max_length=255, verbose_name='Jenis IUJK', choices=JENIS_IUJK)
 
@@ -387,12 +388,16 @@ class PaketPekerjaan(models.Model):
 		return 'Rp. 0.00'
 
 	def as_dict(self):
+		tahun = ''
+		if self.tahun:
+			tahun = self.tahun
+
 		return {
 			'klasifikasi': self.subklasifikasi.klasifikasi.klasifikasi,
 			'subklasifikasi': self.subklasifikasi.subklasifikasi,
 			'nama_paket_pekerjaan': self.nama_paket_pekerjaan,
 			'keterangan': self.keterangan,
-			'tahun': self.tahun,
+			'tahun': tahun,
 			'nilai_paket_pekerjaan': str(self.get_nilai_rupiah()),
 		}
 
