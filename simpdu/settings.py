@@ -205,3 +205,9 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'hariyanti@kedirikab.go.id'
 EMAIL_HOST_PASSWORD = 'kediri@4531'
 DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+    },
+}

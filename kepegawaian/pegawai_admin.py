@@ -72,9 +72,15 @@ class NomorIdentitasInline(admin.StackedInline):
 class PegawaiAdmin(admin.ModelAdmin):
 	# form = PegawaiForm
 	list_display = ('nomor_identitas', 'nama_lengkap', 'unit_kerja', 'jabatan', 'bidang_struktural', 'keterangan', 'jenis_pegawai', 'login_as')
-	list_filter = ('groups__name', 'jabatan', 'unit_kerja', )
+	list_filter = ('groups__name', 'jabatan', )
 	inlines = [NomorIdentitasInline,]
 	search_fields = ('username', 'nama_lengkap')
+
+	def changelist_view(self, request, extra_context={}):
+		self.request = request
+		unit_kerja = UnitKerja.objects.all()
+		extra_context.update({'unit_kerja':unit_kerja})
+		return super(PegawaiAdmin, self).changelist_view(request, extra_context=extra_context)
 
 	def login_as(self, obj):
 		str_aksi = ""
