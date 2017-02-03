@@ -123,11 +123,18 @@ class Account(AbstractBaseUser, PermissionsMixin, IdentitasPribadi):
 
 	def get_short_name(self):
 		# The user is identified by their nama
-		return self.username
+		return self.nama_lengkap
 
 	def get_full_name(self):
 		# The user is identified by their nama
-		return self.username
+		glr_depan = ""
+		if self.gelar_depan:
+			glr_depan = self.gelar_depan+" "
+		glr_belakang = ""
+		if self.gelar_belakang:
+			glr_belakang = ", "+self.gelar_belakang
+
+		return glr_depan+self.nama_lengkap+glr_belakang
 
 	def get_foto(self):
 		if self.foto:

@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template import RequestContext, loader
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 
 from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi
@@ -149,6 +150,68 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_iujk_asli(self, request, id_pengajuan_izin_):
+
+		extra_context = {}
+
+		from django.template import Context, Template
+		from pembangunan.models import Template as tpls
+		from dateutil.relativedelta import relativedelta
+
+		tpl = tpls.objects.get(pk=1)
+
+		extra_context.update({'html':tpl.body_html})
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
+		ec = RequestContext(request, extra_context)
+		# print template.render(ec)
+
+		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
+		unit_kerja = get_object_or_404(UnitKerja, id=72)
+		skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
+
+		direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
+		if direktur.exists():
+			direktur = direktur.last()
+			direktur = direktur.nama
+		else:
+			direktur = ''
+
+		teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
+		if teknis.exists():
+			teknis = teknis.last()
+			teknis = teknis.nama
+		else:
+			teknis = ''
+
+		paket = pengajuan_.paket_pekerjaan_iujk.all()
+
+		subject_template = template.render(ec)
+		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
+		extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
+		extra_context.update({'desa': pengajuan_.perusahaan.desa})
+		extra_context.update({'kecamatan': pengajuan_.perusahaan.desa.kecamatan})
+		extra_context.update({'kabupaten': pengajuan_.perusahaan.desa.kecamatan.kabupaten})
+		extra_context.update({'provinsi': pengajuan_.perusahaan.desa.kecamatan.kabupaten.provinsi})
+		extra_context.update({'telp': pengajuan_.perusahaan.telepon})
+		extra_context.update({'direktur': direktur})
+		extra_context.update({'npwp': direktur})
+		extra_context.update({'kualifikasi': "Kecil"})
+		extra_context.update({'penanggung_jawab_teknis': teknis})
+		extra_context.update({'no_pjt_bu': "NIP. 19927012947192740"})
+		extra_context.update({'klasifikasi': ""})
+		masa_berlaku = skizin_.created_at+relativedelta(years=3)
+		masa_berlaku = masa_berlaku.strftime('%d %B %Y')
+		extra_context.update({'masa_berlaku': masa_berlaku})
+		extra_context.update({'tanggal': skizin_.created_at.strftime('%d %B %Y')})
+		extra_context.update({'satker': unit_kerja})
+		extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
+		extra_context.update({'jabatan': "Pembina Tingkat I"})
+		extra_context.update({'nip': "NIP. "+str(unit_kerja.kepala.username)})
+		extra_context.update({'pengajuan': pengajuan_ })
+		template = Template(subject_template).render(Context(extra_context))
+		return HttpResponse(template)
+
+		
 	def option_klasifikasi(self, request):
 		klasifikasi_list = Klasifikasi.objects.all()
 		
@@ -183,6 +246,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIUJKAdmin, self).get_urls()
 		my_urls = patterns('',
+			url(r'^cetak-iujk/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli), name='cetak_iujk_asli'),
 			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
 			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),
 			url(r'^option-pegawai/$', self.option_pegawai, name='option_pegawai'),

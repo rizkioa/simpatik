@@ -20,7 +20,16 @@ class AnggotaTim(models.Model):
 	def __unicode__(self):
 		return u'%s' % (str(self.pegawai))
 
+class Template(models.Model):
+	body_html = RichTextField()
 
+	def __unicode__(self):
+		return '%s' % mark_safe(self.id)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Template'
+		verbose_name_plural = 'Template'
 
 
 
