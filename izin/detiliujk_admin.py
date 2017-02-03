@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 
+
 from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi, PengajuanIzin
 from izin.utils import formatrupiah, JENIS_PERMOHONAN
 from accounts.models import NomorIdentitasPengguna
@@ -155,7 +156,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context = {}
 
 		from django.template import Context, Template
-		from pembangunan.models import Template as tpls
+		from master.models import Template as tpls
 		from dateutil.relativedelta import relativedelta
 
 		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
@@ -204,7 +205,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'telp': pengajuan_.perusahaan.telepon})
 		extra_context.update({'direktur': direktur})
 		extra_context.update({'npwp': pengajuan_.perusahaan.npwp})
-		extra_context.update({'kualifikasi': "Kecil"})
+		extra_context.update({'kualifikasi': pengajuan_.kualifikasi })
 		extra_context.update({'penanggung_jawab_teknis': teknis})
 		extra_context.update({'no_pjt_bu': no_pjt_bu})
 		extra_context.update({'klasifikasi': mark_safe("".join(x.klasifikasi_as_li() for x in paket)) })
