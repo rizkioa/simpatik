@@ -107,7 +107,6 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilIUJK')
 		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
 			objects_ = getattr(app_models, 'DetilReklame')
-		# elif k.id in [25, 26]:
 		elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif k.kode == "503.01.06/":
@@ -122,11 +121,14 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'InformasiTanah')
 		elif k.kode == "HULLER":
 			objects_ = getattr(app_models, 'DetilHuller')
+		
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
 			created_by =  request.user.id
+
 		if objects_:
+			print objects_
 			try:
 				pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
 				pengajuan.status = 11
