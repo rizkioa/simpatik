@@ -1301,4 +1301,3 @@ class DetilPembayaran(MetaAtribut):
 # 	class Meta:
 # 		ordering = ['id']
 # 		verbose_name = 'Ceklis Syarat Izin'
-# 		verbose_name_plural = 'Ceklis Syarat Izin'

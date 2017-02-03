@@ -146,7 +146,32 @@
 		th, td {
 		    padding: 7px;
 		}
+		.tdnone{
+			border-left: none;
+			border-right: none;
+		}
+		@media print { 
+			body { 
+				display: none !important; 
+			}
+			.printhide { 
+	 			display: none !important; 
+	 			/*color: white;
+	 			background-color: white;*/
+			}
+			.printpadding{
+				display: block !important;
+				padding-bottom: 4cm;
+			} 
+		}
 	</style>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1%}
+		{% if request.user|has_group:'Cetak' or request.user.is_superuser %} 
+			<script>
+				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
+			</script>
+		{% endif %}
+	{% endif %}
 </head>
 <body>
 	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px; position:fixed; left:0; top:0">
@@ -160,25 +185,10 @@
 	</div>
 
 	<page size="F4">
-		<div id="kop_surat_id">
-			<div class="row">
-				
-				<div class="col-2">
-					<img src="{% static 'images/kabkediri.png' %}" height="120px">
-				</div>
-				<div class="col-9">
-					<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
-						<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
-						<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
-						<br/>
-						<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></b></span><br>
-						<span style="font-size: 19px;"><b>KEDIRI</b></span>
-					</p>
-				</div>
-			</div>
+		{% include 'front-end/include/skizin/cop_surat.html' %}
+		<div style="display: none; width: 100%;" class="printpadding">
+			
 		</div>
-		<hr class="style14">
-		
 		<br>
 		<div class="row">
 			<div class="col-1">
@@ -198,86 +208,148 @@
     	<br>
     	<table width="100%" class="skizin" border="1">
     		<tr>
-    			<td>NOMOR TDP</td>
-    			<td>BERLAKU S/D TGL</td>
-    			<td>PENDAFTARAN</td>
-    			<td>:</td>
-    			<td>BARU</td>
+    			<td><strong>NOMOR TDP</strong></td>
+    			<td><strong>BERLAKU S/D TGL</strong></td>
+    			<td class="tdnone"><strong>PENDAFTARAN</strong></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><strong>BARU</strong></td>
     		</tr>
     		<tr>
-    			<td>{{pengajuan.no_izin|default_if_none:'-'}}</td>
-    			<td>{{masa_berlaku}}</td>
-    			<td>PEMBAHARUAN KE</td>
-    			<td>:</td>
-    			<td>0</td>
+    			<td><strong>{{pengajuan.no_izin|default_if_none:'-'}}</strong></td>
+    			<td><strong>{{masa_berlaku}}</strong></td>
+    			<td class="tdnone"><strong>PEMBAHARUAN KE</strong></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><strong>0</strong></td>
     		</tr>
     	</table>
     	<br>
     	<table width="100%" border="1" class="skizin" >
-    		<!-- <tr rowspan="3">
-    			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
-    			<td width="5%" >:</td>
-    			<td width="50%" style="padding: 0;">
-    				<b>{{ perusahaan.nama_perusahaan.upper }}</b>
-    			</td>
-    		</tr> -->
     		<tr>
-    			<td rowspan="2" valign="top">NAMA PERUSAHAAN</td>
-    			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top" style="border: 1;">{{pengajuan.perusahaan.nama_perusahaan.upper}} </td>
-    			<td>STATUS PUSAT :</td>
+    			<td class="tdnone" rowspan="2" ><strong>NAMA PERUSAHAAN</strong></td>
+    			<td class="tdnone" rowspan="2" >:</td>
+    			<td class="tdnone" rowspan="2" style="border: 1;"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}} </b></td>
+    			<td><strong>STATUS PUSAT :</strong></td>
     		</tr>
     		<tr>
-    			<td><span style="color: red;">{{pengajuan.status_waralaba.upper}}</span></td>
-    		</tr>
-    		<tr >
-    			<td>NAMA PENGURUS / PENANGGUNGJAWAB</td>
-    			<td style="border: none;">:</td>
-    			<td colspan="2">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</td>
+    			<td><span style="color: red;"><i>{{pengajuan.status_waralaba.upper}}</i></span></td>
     		</tr>
     		<tr>
-    			<td>NPWP</td>
-    			<td>:</td>
-    			<td colspan="2">{{pengajuan.perusahaan.npwp}}</td>
+    			<td class="tdnone"><strong>NAMA PENGURUS / PENANGGUNGJAWAB</strong></td>
+    			<td class="tdnone" style="border: none;">:</td>
+    			<td class="tdnone" colspan="2">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</td>
     		</tr>
     		<tr>
-    			<td>NOMOR TELEPON</td>
-    			<td>:</td>
-    			<td>{{pengajuan.perusahaan.telepon}}</td>
-    			<td>FAX : {{pengajuan.perusahaan.fax}}</td>
+    			<td class="tdnone"><strong>ALAMAT PERUSAHAAN</strong></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{alamat}}</td>
     		</tr>
     		<tr>
-    			<td rowspan="2" valign="top">KEGIATAN USAHA POKOK</td>
-    			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %} </td>
-    			<td valign="top">KBLI :</td>
+    			<td class="tdnone"><strong>NPWP</strong></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone" colspan="2"><strong>{{pengajuan.perusahaan.npwp}}</strong></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><strong>NOMOR TELEPON</strong></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.telepon}}</td>
+    			<td><strong>FAX :</strong> {{pengajuan.perusahaan.fax}}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone" rowspan="2" valign="top"><strong>KEGIATAN USAHA POKOK</strong></td>
+    			<td class="tdnone" rowspan="2" valign="top">:</td>
+    			<td class="tdnone" rowspan="2" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %} </td>
+    			<td valign="top"><strong>KBLI :</strong></td>
     		</tr>
     		<tr>
     			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
     		</tr>
     		<tr>
-    			<td colspan="4">PENGESAHAN MENTERI KEHAKIMAN</td>
+    			<td colspan="4"><strong>PENGESAHAN MENTERI KEHAKIMAN</strong></td>
     		</tr>
     		<tr>
-    			<td colspan="2">NOMOR : {{legalitas_1.nomor_pengesahan}}</td>
-    			<td colspan="2">TANGGAL : {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}</td>
+    			<td colspan="2"><strong>NOMOR :</strong> {{legalitas_1.nomor_pengesahan|default_if_none:'-'}}</td>
+    			<td colspan="2"><strong>TANGGAL :</strong> {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'|default_if_none:'-'}}</td>
     		</tr>
     		<tr>
-    			<td colspan="4">PERSETUJUAN MENTERI KEHAKIMAN ATAS AKTA PERUBAHAN ANGGARAN DASAR</td>
+    			<td colspan="4"><strong>PERSETUJUAN MENTERI KEHAKIMAN ATAS AKTA PERUBAHAN ANGGARAN DASAR</strong></td>
     		</tr>
     		<tr>
-    			<td colspan="2">NOMOR: {{legalitas_2.nomor_pengesahan}}</td>
-    			<td colspan="2">TANGGAL: {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}</td>
+    			<td colspan="2"><strong>NOMOR :</strong> {{legalitas_2.nomor_pengesahan|default_if_none:'-'}}</td>
+    			<td colspan="2"><strong>TANGGAL :</strong> {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'|default_if_none:'-'}}</td>
     		</tr>
     		<tr>
-    			<td colspan="4">PENERIMAAN LAPORAN PERUBAHAN ANGGARAN DASAR</td>
+    			<td colspan="4"><strong>PENERIMAAN LAPORAN PERUBAHAN ANGGARAN DASAR</strong></td>
     		</tr>
     		<tr>
-    			<td colspan="2">NOMOR: {{legalitas_3.nomor_pengesahan}}</td>
-    			<td colspan="2">TANGGAL: {{legalitas_3.tanggal_pengesahan|date:'d-m-Y'}}</td>
+    			<td colspan="2"><strong>NOMOR :</strong> {{legalitas_3.nomor_pengesahan|default_if_none:'-'}}</td>
+    			<td colspan="2"><strong>TANGGAL :</strong> {{legalitas_3.tanggal_pengesahan|date:'d-m-Y'|default_if_none:'-'}}</td>
     		</tr>
     	</table>
     	<br>
+
+    	<!-- <table width="100%" border="1" class="skizin">
+		  <tr>
+		    <td class="tdnone" width="32%" rowspan="2"><p ><strong>NAMA PERUSAHAAN</strong></p></td>
+		    <td class="tdnone" width="2%" rowspan="2"><div align="center">:</div></td>
+		    <td class="tdnone" width="46%" rowspan="2"><p ><strong>&#8220; </strong><strong>AVIVA VIRA ARMADA</strong><strong>&#8220;  </strong><strong>PT</strong><strong> </strong></p></td>
+		    <td width="20%"><p align="center" ><strong>STATUS  :  </strong><strong> </strong><br />
+		        <strong>PUSAT</strong></p></td>
+		  </tr>
+		  <tr>
+		    <td><strong>BUKAN WARALABA</strong></td>
+		  </tr>
+		  <tr>
+		  	<td class="tdnone"><p ><strong>NAMA PERUSAHAAN</strong></p></td>
+		    <td class="tdnone"><div align="center">:</div></td>
+		    <td class="tdnone" colspan="3">FEBRI AHMAD NURHIDAYAT</td>
+		  </tr>
+		  <tr>
+		  	<td class="tdnone"><p ><strong>ALAMAT PERUSAHAAN</strong><strong> </strong></p></td>
+		    <td class="tdnone"><div align="center">:</div></td>
+		    <td class="tdnone" colspan="3"><p >DSN. DEPOK RT.001/RW.006 DS.PELAS, KEC. KRAS, KABUPATEN KEDIRI, JAWA TIMUR </p></td>
+		  </tr>
+		  <tr>
+		  	<td class="tdnone"><p ><strong>NPWP</strong></p></td>
+		    <td class="tdnone"><div align="center">:</div></td>
+		    <td class="tdnone" colspan="3"><p>75.267.889.6-655.000</p></td>
+		  </tr>
+		  <tr>
+		  	<td class="tdnone"><p ><strong>NOMOR TELEPON</strong></p></td>
+		    <td class="tdnone"><div align="center">:</div></td>
+		    <td class="tdnone"><p>75.267.889.6-655.000</p></td>
+		    <td><strong>FAX :</strong></td>
+		  </tr>
+		  <tr>
+		  	<td rowspan="2" class="tdnone"><p ><strong>KEGIATAN USAHA POKOK</strong></p></td>
+		    <td rowspan="2" class="tdnone"><div align="center">:</div></td>
+		    <td rowspan="2" class="tdnone"><p>75.267.889.6-655.000</p></td>
+		    <td ><strong>KBLI :</strong></td>
+		  </tr>
+		  <tr>
+		    <td ><p >(95110) (49431) </p></td>
+		  </tr>
+		  <tr>
+		    <td colspan="4">PENGESAHAN MENTERI KEHAKIMAN</td>
+		  </tr>
+		  <tr>
+		   	<td colspan="2">NOMOR : {{legalitas_1.nomor_pengesahan}}</td>
+		    <td colspan="2">TANGGAL : {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="4">PERSETUJUAN MENTERI KEHAKIMAN ATAS AKTA PERUBAHAN ANGGARAN DASAR</td>
+		  </tr>
+		  <tr>
+		    <td colspan="2">NOMOR: {{legalitas_2.nomor_pengesahan}}</td>
+		    <td colspan="2">TANGGAL: {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}</td>
+		  </tr>
+		  <tr>
+		    <td colspan="4">PENERIMAAN LAPORAN PERUBAHAN ANGGARAN DASAR</td>
+		  </tr>
+		  <tr>
+		    <td colspan="2">NOMOR: {{legalitas_3.nomor_pengesahan}}</td>
+		    <td colspan="2">TANGGAL: {{legalitas_3.tanggal_pengesahan|date:'d-m-Y'}}</td>
+		  </tr>
+		</table> -->
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
     			
