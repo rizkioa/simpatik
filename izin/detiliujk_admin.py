@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 
-from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi
+from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi, PengajuanIzin
 from izin.utils import formatrupiah, JENIS_PERMOHONAN
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import UnitKerja, Pegawai
@@ -158,23 +158,31 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		from pembangunan.models import Template as tpls
 		from dateutil.relativedelta import relativedelta
 
-		tpl = tpls.objects.get(pk=1)
-
-		extra_context.update({'html':tpl.body_html})
-		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
-		ec = RequestContext(request, extra_context)
-		# print template.render(ec)
-
 		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
 		unit_kerja = get_object_or_404(UnitKerja, id=72)
 		skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
 
+		tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
+
+		extra_context.update({'html':tpl.body_html})
+		extra_context.update({'pengajuan': pengajuan_})
+		extra_context.update({'nomor': pengajuan_.no_izin})
+		extra_context.update({'skizin_status': skizin_.status})		
+
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
+		ec = RequestContext(request, extra_context)
+		# print template.render(ec)
+
+		
+
 		direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
 		if direktur.exists():
-			direktur = direktur.last()
-			direktur = direktur.nama
+			direktur_bu = direktur.last()
+			direktur = direktur_bu.nama
+			no_pjt_bu = direktur_bu.npwp
 		else:
 			direktur = ''
+			no_pjt_bu = ''
 
 		teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
 		if teknis.exists():
@@ -183,9 +191,10 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		else:
 			teknis = ''
 
-		paket = pengajuan_.paket_pekerjaan_iujk.all()
+		paket = pengajuan_.paket_pekerjaan_iujk.all()		
 
 		subject_template = template.render(ec)
+		extra_context.update({'nomor': pengajuan_.no_izin})
 		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
 		extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
 		extra_context.update({'desa': pengajuan_.perusahaan.desa})
@@ -194,11 +203,11 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'provinsi': pengajuan_.perusahaan.desa.kecamatan.kabupaten.provinsi})
 		extra_context.update({'telp': pengajuan_.perusahaan.telepon})
 		extra_context.update({'direktur': direktur})
-		extra_context.update({'npwp': direktur})
+		extra_context.update({'npwp': pengajuan_.perusahaan.npwp})
 		extra_context.update({'kualifikasi': "Kecil"})
 		extra_context.update({'penanggung_jawab_teknis': teknis})
-		extra_context.update({'no_pjt_bu': "NIP. 19927012947192740"})
-		extra_context.update({'klasifikasi': ""})
+		extra_context.update({'no_pjt_bu': no_pjt_bu})
+		extra_context.update({'klasifikasi': mark_safe("".join(x.klasifikasi_as_li() for x in paket)) })
 		masa_berlaku = skizin_.created_at+relativedelta(years=3)
 		masa_berlaku = masa_berlaku.strftime('%d %B %Y')
 		extra_context.update({'masa_berlaku': masa_berlaku})
@@ -221,7 +230,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			# print d.jenis_iujk
 			klasifikasi_list = klasifikasi_list.filter(jenis_iujk=d.jenis_iujk)
 		pilihan = "<option value=''>-- Pilih Klasifikasi --</option>"
-		print klasifikasi_list
+		# print klasifikasi_list
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in klasifikasi_list)));
 
 	def option_subklasifikasi(self, request):
