@@ -9,7 +9,7 @@ from izin.utils import KLASIFIKASI_JALAN
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilIMBPapanReklame
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilIMBPapanReklame,JENIS_LOKASI_USAHA
 
 def formulir_imb_reklame(request):
 	extra_context={}
@@ -29,7 +29,7 @@ def formulir_imb_reklame(request):
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
+		extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})

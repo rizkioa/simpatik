@@ -60,13 +60,14 @@ def ippt_usaha_save_cookie(request):
                         pengajuan_.save()
                         data = {'success': True,
                             'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                            'data': ['']}
+                            'data': {}}
                         response = HttpResponse(json.dumps(data))
                     else:
-                        ippt_usaha.save()
+                        p = ippt_usaha.save(commit=False)
+                        P.save()
                         data = {'success': True,
                               'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                              'data': ['']}
+                              'data': {}}
                         response = HttpResponse(json.dumps(data))
             else:
                 data = ippt_usaha.errors.as_json()
@@ -76,7 +77,7 @@ def ippt_usaha_save_cookie(request):
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def ippt_usaha_rencana_pembangunan_save_cookie(request):
@@ -163,7 +164,6 @@ def informasi_penggunaan_tanah_sekarang_save_cookie(request):
                     data = {'success': True,
                             'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
                             'data': {'id_penggunaan_tanah_sekarang':p.id}}
-                    data = json.dumps(data)
                     response = HttpResponse(json.dumps(data))
                 else:
                     data = penggunaan_tanah_sekarang.errors.as_json()
@@ -175,7 +175,7 @@ def informasi_penggunaan_tanah_sekarang_save_cookie(request):
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
@@ -200,10 +200,11 @@ def edit_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
+            response = HttpResponse(data)
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def delete_informasi_penggunaan_tanah_sekarang(request,id_penggunaan_tanah):
@@ -245,10 +246,11 @@ def perumahan_yang_sudah_dimiliki_save_cookie(request):
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
             data = json.dumps(data)
+            response = HttpResponse(data)
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(data)
     return response
 
 def edit_perumahan_yang_sudah_dimiliki(request,id_perumahan):
@@ -544,6 +546,11 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
                 id_tanggal_surat_kuasa = pengajuan_.tanggal_surat_kuasa.strftime("%d-%m-%Y")
             else:
                 id_tanggal_surat_kuasa = ""
+            if pengajuan_.tahun_sertifikat:
+                id_tahun_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
+            else:
+                id_tahun_sertifikat = ""
+
             id_alamat = pengajuan_.alamat
             kabupaten = ""
             kecamatan = ""
@@ -615,7 +622,7 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             'id_no_sertifikat_petak': id_no_sertifikat_petak,
             'id_luas_sertifikat_petak': id_luas_sertifikat_petak,
             'id_atas_nama_sertifikat_petak': id_atas_nama_sertifikat_petak,
-            'id_atas_nama_sertifikat_petak': id_atas_nama_sertifikat_petak,
+            'id_tahun_sertifikat': id_tahun_sertifikat,
             'id_no_persil': id_no_persil,
             'id_klas_persil': id_klas_persil,
             'id_atas_nama_persil': id_atas_nama_persil,
@@ -754,7 +761,7 @@ def load_data_pembiayaan_dan_pemodalan_ipptusaha(request,id_pengajuan):
             id_modal_kerja_lainnya = pengajuan_.modal_kerja_lainnya
             id_jumlah_modal_kerja = pengajuan_.jumlah_modal_kerja
 
-            if id_jumlah_modal_tetap or id_jumlah_modal_kerja != None:
+            if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != '':
                 id_jumlah_rencana_biaya = int(id_jumlah_modal_tetap.replace(".",""))+int(id_jumlah_modal_kerja.replace(".",""))
             else:
                 id_jumlah_rencana_biaya = 0
@@ -768,7 +775,7 @@ def load_data_pembiayaan_dan_pemodalan_ipptusaha(request,id_pengajuan):
             id_modal_lembaga_non_bank = pengajuan_.modal_lembaga_non_bank
             id_modal_pihak_ketiga = pengajuan_.modal_pihak_ketiga
 
-            if id_modal_bank_pemerintah or id_modal_bank_swasta or id_modal_lembaga_non_bank or id_modal_pihak_ketiga != None:
+            if id_modal_bank_pemerintah or id_modal_bank_swasta or id_modal_lembaga_non_bank or id_modal_pihak_ketiga != '':
                 id_jumlah_pinjaman_dalam = int(id_modal_bank_pemerintah.replace(".",""))+int(id_modal_bank_swasta.replace(".",""))+int(id_modal_lembaga_non_bank.replace(".",""))+int(id_modal_pihak_ketiga.replace(".",""))
             else:
                 id_jumlah_pinjaman_dalam = 0
@@ -966,12 +973,12 @@ def cetak_bukti_pendaftaran_ippt_usaha(request,id_pengajuan_):
         penggunaan_tanah_list = pengajuan_.penggunaantanahipptusaha_set.all()
         perumahan_yang_dimiliki_list = pengajuan_.perumahanyangdimilikiipptusaha_set.all()
 
-        if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != None:
+        if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != '':
             jumlah_rencana_biaya = int(pengajuan_.jumlah_modal_tetap.replace(".",""))+int(pengajuan_.jumlah_modal_kerja.replace(".",""))
         else:
             jumlah_rencana_biaya = ""
 
-        if pengajuan_.modal_bank_pemerintah or pengajuan_.modal_bank_swasta or pengajuan_.modal_lembaga_non_bank or pengajuan_.modal_pihak_ketiga != None:
+        if pengajuan_.modal_bank_pemerintah or pengajuan_.modal_bank_swasta or pengajuan_.modal_lembaga_non_bank or pengajuan_.modal_pihak_ketiga != '':
             jumlah_pinjaman_dalam = int(pengajuan_.modal_bank_pemerintah.replace(".",""))+int(pengajuan_.modal_bank_swasta.replace(".",""))+int(pengajuan_.modal_lembaga_non_bank.replace(".",""))+int(pengajuan_.modal_pihak_ketiga.replace(".",""))
         else:
             jumlah_pinjaman_dalam = ""

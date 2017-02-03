@@ -7,9 +7,8 @@
       </div>
     </div>
     
-    <input name="jenis_reklame" id="id_jenis_reklame" value="2" hidden="">
     <div class="form-group">
-      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
+      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Izin Reklame</strong></label>
       <div class="col-sm-5">
         <select class="form-control chosen-select mb-10" name="jenis_reklame" data-parsley-trigger="change" id="id_jenis_reklame">
           <option value>-- Pilih Jenis Izin Reklame --</option>
@@ -21,6 +20,21 @@
         </select>
       </div>
     </div>
+
+    <div class="form-group">
+      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="tipe_reklame" data-parsley-trigger="change" id="id_tipe_reklame">
+          <option value>-- Pilih Jenis Reklame --</option>
+          {% if tipe_reklame_list %}
+          {% for j in tipe_reklame_list %}
+          <option value="{{ j.id }}">{{ j.jenis_tipe_reklame }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
 
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><strong>Judul Reklame</strong></label>
@@ -43,9 +57,9 @@
             <span class="input-group-addon">
               <span>Panjang</span>
             </span>
-            <input name="panjang" id="id_panjang" type="text" required="" data-parsley-trigger="change" class="form-control">
+            <input name="panjang" id="id_panjang" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
             <span class="input-group-addon">
-              <span>cm</span>
+              <span>M&sup2;</span>
             </span>
         </div>
       </div>
@@ -54,9 +68,9 @@
             <span class="input-group-addon">
               <span>Lebar</span>
             </span>
-            <input name="lebar" id="id_lebar" type="text" required="" data-parsley-trigger="change" class="form-control">
+            <input name="lebar" id="id_lebar" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
             <span class="input-group-addon">
-              <span>cm</span>
+              <span>M&sup2;</span>
             </span>
         </div>
       </div>
@@ -65,9 +79,9 @@
             <span class="input-group-addon">
               <span>Sisi</span>
             </span>
-            <input name="sisi" id="id_sisi" type="text" required="" data-parsley-trigger="change" class="form-control">
+            <input name="sisi" id="id_sisi" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
             <span class="input-group-addon">
-              <span>cm</span>
+              <span>M&sup2;</span>
             </span>
         </div>
       </div>

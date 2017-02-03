@@ -153,6 +153,7 @@ admin.site.register(JenisNomorIdentitas)
 admin.site.register(Berkas)
 admin.site.register(JenisReklame)
 admin.site.register(JenisKontruksi)
+admin.site.register(JenisTipeReklame)
 
 def get_jenis_bangunan(request):
 	bangunan_list = BangunanJenisKontruksi.objects.all()

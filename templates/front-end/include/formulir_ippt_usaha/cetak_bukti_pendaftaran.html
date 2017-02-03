@@ -167,7 +167,7 @@
                     <p align="left" style="font-size:13px;padding-left:75%">
                         Lewat
                         <br>
-                        Yth. Kepala DPM-P2TSP Kab. Kediri
+                        Yth. Kepala DPMPTSP Kab. Kediri
                         <br>
                         di
                         <br>
@@ -377,6 +377,11 @@
                       <td width="25%">Atas Nama</td>
                       <td width="10%">:</td>
                       <td width="65%">{{pengajuan.atas_nama_sertifikat_petak|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                      <td width="25%">Tanggal Sertifikat/Petok D</td>
+                      <td width="10%">:</td>
+                      <td width="65%">{{pengajuan.tahun_sertifikat|date:"d-m-Y"|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                       <td width="25%"><u>Persil</u></td>

@@ -82,7 +82,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
-          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_izin == "503.01.04/")) {
+          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_kontruksi_bangunan == "BK23")||(respon.data.kode_izin == "503.01.04/")) {
             $('#id_bobot_kegiatan_pembangunan').val(respon.data.nilai_kegiatan_pembangunan)
             $('#id_bobot_fungsi_bangunan').val(respon.data.nilai_fungsi_bangunan)
             $('#id_bobot_tingkat_kompleksitas').val(respon.data.nilai_kompleksitas_bangunan)
@@ -169,7 +169,7 @@ function load_konfirmasi_data_identifikasi_bangunan_imb(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
-          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_izin == "503.01.04/")) {
+          if ((respon.data.kode_kontruksi_bangunan == "BK1")||(respon.data.kode_kontruksi_bangunan == "BK23")||(respon.data.kode_izin == "503.01.04/")) {
             $('#id_kontruksi_konfirmasi').text(respon.data.id_kontruksi)
             $('#id_jenis_bangunan_konfirmasi').text(respon.data.id_jenis_bangunan)
 
@@ -270,4 +270,124 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
     }
     })
     }
+}
+
+
+function load_data_detil_ho(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/ho/load/'+id_pengajuan,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_perkiraan_modal').val(respon.data.id_perkiraan_modal)
+            $('#id_tujuan_gangguan').val(respon.data.id_tujuan_gangguan)
+            $('#id_alamat').val(respon.data.id_alamat)
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_jenis_gangguan').val(respon.data.id_jenis_gangguan).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_lokasi_usaha').val(respon.data.id_jenis_lokasi_usaha).prop('selected',true).trigger("chosen:updated");
+              $('#id_jenis_bangunan').val(respon.data.id_jenis_bangunan).prop('selected',true).trigger("chosen:updated");
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+
+            $('#id_bahan_baku_dan_penolong').val(respon.data.id_bahan_baku_dan_penolong)
+            $('#id_proses_produksi').val(respon.data.id_proses_produksi)
+            $('#id_jenis_produksi').val(respon.data.id_jenis_produksi)
+            $('#id_kapasitas_produksi').val(respon.data.id_kapasitas_produksi)
+            $('#id_jumlah_tenaga_kerja').val(respon.data.id_jumlah_tenaga_kerja)
+            $('#id_jumlah_mesin').val(respon.data.id_jumlah_mesin)
+            $('#id_merk_mesin').val(respon.data.id_merk_mesin)
+            $('#id_daya').val(respon.data.id_daya)
+            $('#id_kekuatan').val(respon.data.id_kekuatan)
+            $('#id_luas_ruang_tempat_usaha').val(respon.data.id_luas_ruang_tempat_usaha)
+            $('#id_luas_lahan_usaha').val(respon.data.id_luas_lahan_usaha)
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
+
+
+function load_data_informasi_kekayaan(id_pengajuan){
+  $(".tab-content").mLoading;
+  if (id_pengajuan>0){
+    $.ajax({
+      url: __base_url__+'/pemakaian-kekayaan-daerah/load/'+id_pengajuan,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_lokasi').val(respon.data.id_lokasi)
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            $('#id_panjang').val(respon.data.id_panjang)
+            $('#id_lebar').val(respon.data.id_lebar)
+            $('#id_penggunaan').val(respon.data.id_penggunaan)
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
+function load_data_tabel_sertifikat_tanah(id_sertifikat_tanah){
+  if (id_sertifikat_tanah !== ""){
+    $('#id_sertifikat_tanah_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/informasitanah/sertifikat-tanah/load/'+id_sertifikat_tanah,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_sertifikat_tanah_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_sertifikat_tanah_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_sertifikat_tanah_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            no_sertifikat_petak = b[i].no_sertifikat_petak
+            luas_sertifikat_petak = b[i].luas_sertifikat_petak
+            atas_nama_sertifikat_petak = b[i].atas_nama_sertifikat_petak
+            tahun_sertifikat = b[i].tahun_sertifikat
+            // no = a
+            // if (a > 1){
+            //   no = a-i
+            // }
+            row = '<tr>'
+            // row += '<td>'+no+'</td>'
+            row += '<td>'+no_sertifikat_petak+'</td>'
+            row += '<td>'+luas_sertifikat_petak+'</td>'
+            row += '<td>'+atas_nama_sertifikat_petak+'</td>'
+            row += '<td>'+tahun_sertifikat+'</td>'
+            row += '</tr>'
+            $('#id_sertifikat_tanah_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
+  }
 }

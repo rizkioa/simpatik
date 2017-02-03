@@ -95,6 +95,47 @@ def detilho_done(request):
     response = HttpResponse(data)
   return response
 
+def load_detilho(request,id_pengajuan):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
+      id_tujuan_gangguan = pengajuan_.tujuan_gangguan
+      id_alamat = pengajuan_.alamat
+      if pengajuan_.desa:
+        id_desa = str(pengajuan_.desa.id)
+        id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+      else:
+        id_desa = ""
+        id_kecamatan = ""
+      id_bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
+      id_proses_produksi = pengajuan_.proses_produksi
+      id_jenis_produksi = pengajuan_.jenis_produksi
+      id_kapasitas_produksi = pengajuan_.kapasitas_produksi
+      id_jumlah_tenaga_kerja = str(pengajuan_.jumlah_tenaga_kerja)
+      id_jumlah_mesin = str(pengajuan_.jumlah_mesin)
+      id_merk_mesin = pengajuan_.merk_mesin
+      id_daya = pengajuan_.daya
+      id_kekuatan = pengajuan_.kekuatan
+      id_luas_ruang_tempat_usaha = str(pengajuan_.luas_ruang_tempat_usaha)
+      id_luas_lahan_usaha = str(pengajuan_.luas_lahan_usaha)
+      id_jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
+      id_jenis_bangunan = pengajuan_.jenis_bangunan
+      id_jenis_gangguan = pengajuan_.jenis_gangguan
+
+      data = {'success': True,
+          'data': {'id_perkiraan_modal': id_perkiraan_modal,'id_tujuan_gangguan': id_tujuan_gangguan,'id_alamat': id_alamat,'id_desa': id_desa,'id_kecamatan': id_kecamatan,'id_bahan_baku_dan_penolong': id_bahan_baku_dan_penolong,'id_proses_produksi': id_proses_produksi,'id_jenis_produksi': id_jenis_produksi,'id_kapasitas_produksi': id_kapasitas_produksi,'id_jumlah_tenaga_kerja': id_jumlah_tenaga_kerja,'id_jumlah_mesin': id_jumlah_mesin,'id_merk_mesin': id_merk_mesin,'id_daya': id_daya,'id_kekuatan': id_kekuatan,'id_luas_ruang_tempat_usaha': id_luas_ruang_tempat_usaha,'id_luas_lahan_usaha': id_luas_lahan_usaha,'id_jenis_lokasi_usaha': id_jenis_lokasi_usaha,'id_jenis_bangunan': id_jenis_bangunan,'id_jenis_gangguan': id_jenis_gangguan}}
+      response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
 def load_konfirmasi_detilho(request,id_pengajuan):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':

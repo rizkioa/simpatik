@@ -197,12 +197,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			penggunaan_tanah_list = pengajuan_.penggunaantanahipptusaha_set.all()
 			perumahan_yang_dimiliki_list = pengajuan_.perumahanyangdimilikiipptusaha_set.all()
 
-			if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != None:
+			if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != '':
 				jumlah_rencana_biaya = int(pengajuan_.jumlah_modal_tetap.replace(".",""))+int(pengajuan_.jumlah_modal_kerja.replace(".",""))
 			else:
 				jumlah_rencana_biaya = ""
 
-			if pengajuan_.modal_bank_pemerintah or pengajuan_.modal_bank_swasta or pengajuan_.modal_lembaga_non_bank or pengajuan_.modal_pihak_ketiga != None:
+			if pengajuan_.modal_bank_pemerintah or pengajuan_.modal_bank_swasta or pengajuan_.modal_lembaga_non_bank or pengajuan_.modal_pihak_ketiga != '':
 				jumlah_pinjaman_dalam = int(pengajuan_.modal_bank_pemerintah.replace(".",""))+int(pengajuan_.modal_bank_swasta.replace(".",""))+int(pengajuan_.modal_lembaga_non_bank.replace(".",""))+int(pengajuan_.modal_pihak_ketiga.replace(".",""))
 			else:
 				jumlah_pinjaman_dalam = ""

@@ -131,7 +131,7 @@
         </div>
         <div class="modal-body">
           <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
-          {% csrf_token %}
+            {% csrf_token %}
             <div class="row">
                 <div class="form-group">
                   <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
@@ -256,6 +256,7 @@
   <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
   <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+  <script src="{% static 'scripts/js/form/form_tdp_pt.js' %}"></script>
   <script type="text/javascript">
       $(window).load(function(){
         $('#rootwizard').bootstrapWizard({

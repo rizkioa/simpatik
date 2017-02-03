@@ -418,7 +418,7 @@ def siup_legalitas_perusahaan_save_cookie(request):
 					k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
 					if k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-BUL":
 						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.id == 39:
+					elif k.kode == "IPPT-Usaha":
 						objects_ = getattr(app_models, 'InformasiTanah')
 					else:
 						objects_ = getattr(app_models, 'DetilSIUP')	

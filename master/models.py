@@ -20,6 +20,19 @@ class JenisReklame(models.Model):
 		verbose_name = 'Jenis Reklame'
 		verbose_name_plural = 'Jenis Reklame'
 
+class JenisTipeReklame(models.Model):
+	jenis_tipe_reklame = models.CharField(max_length=255, verbose_name='Jenis Tipe Reklame')
+	keterangan = models.CharField(max_length=255, blank=True, null=True)
+	
+	def __unicode__(self):
+		return "%s" % (self.jenis_tipe_reklame)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Tipe Reklame'
+		verbose_name_plural = 'Jenis Tipe Reklame'
+
+
 class MetaAtribut(models.Model):
 	status = models.PositiveSmallIntegerField(verbose_name='Status Data', choices=STATUS, default=6)
 	# created_by = models.ForeignKey("accounts.Account", related_name="create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
