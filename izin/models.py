@@ -697,7 +697,7 @@ class InformasiTanah(PengajuanIzin):
 	tanggal_surat_kuasa = models.DateField(verbose_name='Tanggal Surat Kuasa', null=True, blank=True)
 	alamat = models.CharField(max_length=100,null=True, blank=True, verbose_name='Alamat')
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas')
+	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Tanah')
 	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20, 	)
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
@@ -811,6 +811,8 @@ class InformasiTanah(PengajuanIzin):
 	tenaga_kerja_tetap = models.IntegerField(verbose_name="Tenaga Kerja Tetap", null=True, blank=True)
 	tenaga_kerja_tidak_tetap = models.IntegerField(verbose_name="Tenaga Kerja Tidak Tetap", null=True, blank=True)
 
+	#Luas Tanah Yag Disetujui
+	luas_tanah_yang_disetujui = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Tanah Yang Disetujui')
 	def __unicode__(self):
 		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
@@ -1058,6 +1060,7 @@ class DetilTDUP(PengajuanIzin):
 class DetilPembayaran(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar")
+	nomor_kwitansi = models.CharField(max_length=255, verbose_name='Nomor Kwitansi', null=True, blank=True)
 	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
 
 	def __unicode__(self):

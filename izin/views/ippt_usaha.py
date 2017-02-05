@@ -332,38 +332,29 @@ def ipptusaha_upload_berkas_pendukung(request):
                                     berkas.nama_berkas = "NPWP Perusahaan"+p.no_pengajuan
                                     berkas.keterangan = "NPWP Perusahaan"
                                 elif request.POST.get('aksi') == "5":
-                                    berkas.nama_berkas = "Bukti Kepimilikan Tanah"+p.no_pengajuan
-                                    berkas.keterangan = "Bukti Kepimilikan Tanah"
-                                elif request.POST.get('aksi') == "6":
                                     berkas.nama_berkas = "Sketsa Lokasi Tanah Yang Dimohon"+p.no_pengajuan
                                     berkas.keterangan = "Sketsa Lokasi Tanah Yang Dimohon"
-                                elif request.POST.get('aksi') == "7":
+                                elif request.POST.get('aksi') == "6":
                                     berkas.nama_berkas = "Gambar / Denah Rencana Penggunaan Tanah"+p.no_pengajuan
                                     berkas.keterangan = "Gambar / Denah Rencana Penggunaan Tanah"
+                                elif request.POST.get('aksi') == "7":
+                                    berkas.nama_berkas = "Bukti Kepemilikan Tanah 01"+p.no_pengajuan
+                                    berkas.keterangan = "Bukti Kepemilikan Tanah 01"
                                 elif request.POST.get('aksi') == "8":
-                                    berkas.nama_berkas = "Sertifikat Rumah"+p.no_pengajuan
-                                    berkas.keterangan = "Sertifikat Rumah"
+                                    berkas.nama_berkas = "Bukti Kepemilikan Tanah 02"+p.no_pengajuan
+                                    berkas.keterangan = "Bukti Kepemilikan Tanah 02"
                                 elif request.POST.get('aksi') == "9":
-                                    berkas.nama_berkas = "Akta Jual Beli"+p.no_pengajuan
-                                    berkas.keterangan = "Akta Jual Beli"
+                                    berkas.nama_berkas = "Bukti Kepemilikan Tanah 03"+p.no_pengajuan
+                                    berkas.keterangan = "Bukti Kepemilikan Tanah 03"
                                 elif request.POST.get('aksi') == "10":
-                                    berkas.nama_berkas = "Site Plan"+p.no_pengajuan
-                                    berkas.keterangan = "Site Plan"
-                                elif request.POST.get('aksi') == "11":
                                     berkas.nama_berkas = "SPPT Tahun Terakhir"+p.no_pengajuan
                                     berkas.keterangan = "SPPT Tahun Terakhir"
-                                elif request.POST.get('aksi') == "12":
+                                elif request.POST.get('aksi') == "11":
                                     berkas.nama_berkas = "Rekomendasi Bupati / Izin-izin lain yang diperoleh"+p.no_pengajuan
                                     berkas.keterangan = "Rekomendasi Bupati / Izin-izin lain yang diperoleh"
-                                elif request.POST.get('aksi') == "13":
+                                else:
                                     berkas.nama_berkas = "Rencana Jadwal Pelaksanaan"+p.no_pengajuan
                                     berkas.keterangan = "Rencana Jadwal Pelaksanaan"
-                                elif request.POST.get('aksi') == "14":
-                                    berkas.nama_berkas = "Block Plan / Rencana Tapak"+p.no_pengajuan
-                                    berkas.keterangan = "Block Plan / Rencana Tapak"
-                                else:
-                                    berkas.nama_berkas = "Analisis Air"+p.no_pengajuan
-                                    berkas.keterangan = "Analisis Air"
 
                                 if request.user.is_authenticated():
                                     berkas.created_by_id = request.user.id
@@ -440,14 +431,6 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 nm_berkas.append("NPWP Perusahaan"+p.no_pengajuan)
                 id_berkas.append(npwp_perusahaan.id)
 
-            bukti_kepemilikan_tanah = Berkas.objects.filter(nama_berkas="Bukti Kepimilikan Tanah"+p.no_pengajuan)
-            if bukti_kepemilikan_tanah.exists():
-                bukti_kepemilikan_tanah = bukti_kepemilikan_tanah.last()
-                url_berkas.append(bukti_kepemilikan_tanah.berkas.url)
-                id_elemen.append('bukti_kepemilikan_tanah')
-                nm_berkas.append("Bukti Kepimilikan Tanah"+p.no_pengajuan)
-                id_berkas.append(bukti_kepemilikan_tanah.id)
-
             sketsa_tanah_yang_dimohon = Berkas.objects.filter(nama_berkas="Sketsa Lokasi Tanah Yang Dimohon"+p.no_pengajuan)
             if sketsa_tanah_yang_dimohon.exists():
                 sketsa_tanah_yang_dimohon = sketsa_tanah_yang_dimohon.last()
@@ -464,28 +447,28 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 nm_berkas.append("Gambar / Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
                 id_berkas.append(gambar_rencana_penggunaan_tanah.id)
 
-            sertifikat_rumah = Berkas.objects.filter(nama_berkas="Sertifikat Rumah"+p.no_pengajuan)
+            sertifikat_rumah = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah 01"+p.no_pengajuan)
             if sertifikat_rumah.exists():
                 sertifikat_rumah = sertifikat_rumah.last()
                 url_berkas.append(sertifikat_rumah.berkas.url)
                 id_elemen.append('sertifikat_rumah')
-                nm_berkas.append("Sertifikat Rumah"+p.no_pengajuan)
+                nm_berkas.append("Bukti Kepemilikan Tanah 01"+p.no_pengajuan)
                 id_berkas.append(sertifikat_rumah.id)
 
-            akta_jual_beli = Berkas.objects.filter(nama_berkas="Akta Jual Beli"+p.no_pengajuan)
+            akta_jual_beli = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah 02"+p.no_pengajuan)
             if akta_jual_beli.exists():
                 akta_jual_beli = akta_jual_beli.last()
                 url_berkas.append(akta_jual_beli.berkas.url)
                 id_elemen.append('akta_jual_beli')
-                nm_berkas.append("Akta Jual Beli"+p.no_pengajuan)
+                nm_berkas.append("Bukti Kepemilikan Tanah 02"+p.no_pengajuan)
                 id_berkas.append(akta_jual_beli.id)
 
-            site_plan = Berkas.objects.filter(nama_berkas="Site Plan"+p.no_pengajuan)
+            site_plan = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah 03"+p.no_pengajuan)
             if site_plan.exists():
                 site_plan = site_plan.last()
                 url_berkas.append(site_plan.berkas.url)
                 id_elemen.append('site_plan')
-                nm_berkas.append("Site Plan"+p.no_pengajuan)
+                nm_berkas.append("Bukti Kepemilikan Tanah 03"+p.no_pengajuan)
                 id_berkas.append(site_plan.id)
 
             sppt_tahun_terakhir = Berkas.objects.filter(nama_berkas="SPPT Tahun Terakhir"+p.no_pengajuan)
@@ -511,22 +494,6 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('rencana_jadwal_perencanaan')
                 nm_berkas.append("Rencana Jadwal Pelaksanaan"+p.no_pengajuan)
                 id_berkas.append(rencana_jadwal_perencanaan.id)
-
-            block_plan = Berkas.objects.filter(nama_berkas="Block Plan / Rencana Tapak"+p.no_pengajuan)
-            if block_plan.exists():
-                block_plan = block_plan.last()
-                url_berkas.append(block_plan.berkas.url)
-                id_elemen.append('block_plan')
-                nm_berkas.append("Block Plan / Rencana Tapak"+p.no_pengajuan)
-                id_berkas.append(block_plan.id)
-
-            analisis_air = Berkas.objects.filter(nama_berkas="Analisis Air"+p.no_pengajuan)
-            if analisis_air.exists():
-                analisis_air = analisis_air.last()
-                url_berkas.append(analisis_air.berkas.url)
-                id_elemen.append('analisis_air')
-                nm_berkas.append("Analisis Air"+p.no_pengajuan)
-                id_berkas.append(analisis_air.id)
 
             data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
         except ObjectDoesNotExist:
