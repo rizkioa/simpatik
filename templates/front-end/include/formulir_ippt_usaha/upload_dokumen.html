@@ -84,29 +84,10 @@
       </div>
     </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-bukti_kepemilikan_tanah" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
-    {% csrf_token %}
-    <input type="hidden" name="aksi" value="5">
-    <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Bukti Kepimilikan Tanah</strong></label>
-        <span id="field-bukti_kepemilikan_tanah">
-          <div class="col-sm-5">
-            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-            <span id="berkas_1"></span>
-                                     
-          </div>
-          <div class="col-sm-4">
-            <button href="#" id="btn-bukti_kepemilikan_tanah" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-            <a id="percent-bukti_kepemilikan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-          </div>
-        </span>
-        <span class="col-sm-6" id="load-bukti_kepemilikan_tanah"></span>
-      </div>
-    </form>
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sketsa_tanah_yang_dimohon" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="6">
+    <input type="hidden" name="aksi" value="5">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Sketsa Lokasi Tanah Yang Dimohon</strong></label>
         <span id="field-sketsa_tanah_yang_dimohon">
@@ -126,7 +107,7 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-gambar_rencana_penggunaan_tanah" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="7">
+    <input type="hidden" name="aksi" value="6">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Gambar / Denah Rencana Penggunaan Tanah</strong></label>
         <span id="field-gambar_rencana_penggunaan_tanah">
@@ -146,9 +127,9 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sertifikat_rumah" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="8">
+    <input type="hidden" name="aksi" value="7">
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Sertifikat Rumah</strong></label>
+    <label class="col-sm-3 control-label"><strong>Bukti Kepemilikan Tanah</strong></label>
         <span id="field-sertifikat_rumah">
           <div class="col-sm-5">
             <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
@@ -166,9 +147,9 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-akta_jual_beli" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="9">
+    <input type="hidden" name="aksi" value="8">
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Akta Jual Beli</strong></label>
+      <label class="col-sm-3 control-label"><strong></strong></label>
         <span id="field-akta_jual_beli">
           <div class="col-sm-5">
             <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
@@ -186,9 +167,9 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-site_plan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="10">
+    <input type="hidden" name="aksi" value="9">
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Site Plan</strong></label>
+      <label class="col-sm-3 control-label"><strong></strong></label>
         <span id="field-site_plan">
           <div class="col-sm-5">
             <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
@@ -206,7 +187,7 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-sppt_tahun_terakhir" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="11">
+    <input type="hidden" name="aksi" value="10">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>SPPT Tahun Terakhir</strong></label>
         <span id="field-sppt_tahun_terakhir">
@@ -226,7 +207,7 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rekomendasi_bupati" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="12">
+    <input type="hidden" name="aksi" value="11">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Rekomendasi Bupati / Izin-izin lain yang diperoleh</strong></label>
         <span id="field-rekomendasi_bupati">
@@ -246,7 +227,7 @@
 
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rencana_jadwal_perencanaan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
     {% csrf_token %}
-    <input type="hidden" name="aksi" value="13">
+    <input type="hidden" name="aksi" value="12">
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Rencana Jadwal Pelaksanaan</strong></label>
         <span id="field-rencana_jadwal_perencanaan">
@@ -261,45 +242,5 @@
           </div>
         </span>
         <span class="col-sm-6" id="load-rencana_jadwal_perencanaan"></span>
-      </div>
-    </form>
-
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-block_plan" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
-    {% csrf_token %}
-    <input type="hidden" name="aksi" value="14">
-    <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Block Plan / Rencana Tapak</strong></label>
-        <span id="field-block_plan">
-          <div class="col-sm-5">
-            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-            <span id="berkas_1"></span>
-                                     
-          </div>
-          <div class="col-sm-4">
-            <button href="#" id="btn-block_plan" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-            <a id="percent-block_plan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-          </div>
-        </span>
-        <span class="col-sm-6" id="load-block_plan"></span>
-      </div>
-    </form>
-
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-analisis_air" action="{% url 'ipptusaha_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
-    {% csrf_token %}
-    <input type="hidden" name="aksi" value="15">
-    <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Analisis Air</strong></label>
-        <span id="field-analisis_air">
-          <div class="col-sm-5">
-            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
-            <span id="berkas_1"></span>
-                                     
-          </div>
-          <div class="col-sm-4">
-            <button href="#" id="btn-analisis_air" onclick="form_upload_dokumen_ippt_usaha($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
-            <a id="percent-analisis_air" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
-          </div>
-        </span>
-        <span class="col-sm-6" id="load-analisis_air"></span>
       </div>
     </form>
