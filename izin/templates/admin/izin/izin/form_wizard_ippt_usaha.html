@@ -87,12 +87,24 @@
               }else if ($current == 7) {
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_data_kebutuhan_lainnya(id_pengajuan)
-              }
-              else if($current == 9){
-                // alert("OK")
+              }else if ($current == 9){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_ippt_usaha(id_pengajuan)
-              }             
+                var f = 'form-'
+                frm1 = $('#'+f+'sertifikat_rumah');
+                  // frm.parsley().validate();
+                $('#next >').on('click', function() {
+                  if (!frm1.parsley().isValid()){
+                  // if (!frm1.parsley().isValid()){
+                    setTimeout(function(){
+                      toastr["warning"]("Terjadi kesalahan, Isi Bukti Kepemilikan Tanah Minimal 1.")
+                      tab_index = '#rootwizard a[href="#tab'+(9)+'"]';
+                      $(tab_index).tab('show');
+                    }, 1000);
+                  }
+                });
+              }
+       
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
               }
