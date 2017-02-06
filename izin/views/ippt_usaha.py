@@ -63,8 +63,7 @@ def ippt_usaha_save_cookie(request):
                             'data': {}}
                         response = HttpResponse(json.dumps(data))
                     else:
-                        p = ippt_usaha.save(commit=False)
-                        P.save()
+                        ippt_usaha.save(commit=False)
                         data = {'success': True,
                               'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
                               'data': {}}
