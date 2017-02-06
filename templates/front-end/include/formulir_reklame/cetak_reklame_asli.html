@@ -128,9 +128,9 @@
 		    display: none !important;
 		  }
 		}
-		th, td {
+/*		th, td {
 		    padding: 5px;
-		}
+		}*/
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 	<script type="text/javascript">
@@ -245,7 +245,7 @@
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{jumlah_lama}}</td>
+	        			<td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} - {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Letak pemasangan</b></td>
@@ -297,7 +297,6 @@
 	        				</table>
 	        		</tr>
 	        	</table>
-	        	<br>
 	        	<div style="">
 	        	</div>
 	        	<table width="100%" border="0" class="font">
@@ -319,10 +318,9 @@
 	        			</td>
 
 	        			<td width="50%">
-	        				<p style="font-size:17px; padding-left: 20%;" align="center">
-			                    <font size="4pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
+	        				<p style="font-size:12px; padding-left: 20%;" align="center">
+			                    <font size="2pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
 			                    KEPALA BPM-P2TSP <br>KAB. KEDIRI
-			                    <br>
 			                    <br>
 			                    <br>
 			                    <br>
