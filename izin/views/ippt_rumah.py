@@ -23,6 +23,7 @@ from master.models import Negara, Kecamatan, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
+from izin.izin_forms import LuasTanahYangDisetujuiForm
 
 def formulir_ippt_rumah(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -248,3 +249,24 @@ def cetak_bukti_pendaftaran_ippt_rumah(request,id_pengajuan_):
   template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_bukti_pendaftaran.html")
   ec = RequestContext(request, extra_context)
   return HttpResponse(template.render(ec))
+
+
+def luas_tanah_yang_disetujui_save(request):
+  if request.POST:
+    pengajuan_izin_id = request.POST.get('id_pengajuan', None)
+    pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=pengajuan_izin_id)
+    luas_tanah_yang_disetujui = LuasTanahYangDisetujuiForm(request.POST, instance=pengajuan_)
+    if luas_tanah_yang_disetujui.is_valid():
+      p = luas_tanah_yang_disetujui.save(commit=False)
+      p.save()
+      pengajuan_.status = 2
+      pengajuan_.save()
+      data = {'success': True,
+          'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+          'data': ['']}
+      response = HttpResponse(json.dumps(data))
+    else:
+      data = luas_tanah_yang_disetujui.errors.as_json()
+      response = HttpResponse(data)
+
+  return response
