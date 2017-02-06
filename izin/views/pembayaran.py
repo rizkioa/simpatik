@@ -43,7 +43,7 @@ def detil_pembayaran_save(request):
 			pengajuan_izin.save()
 			data = {'success': True,
 					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-					'data': }
+					'data': {}}
 			response = HttpResponse(json.dumps(data))
 		else:
 			data = pembayaran.errors.as_json()
