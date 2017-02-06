@@ -361,7 +361,11 @@ urlpatterns = [
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
-    url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save')
+    url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save'),
+    # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
+    url(r'^izin/luas-tanah-tanah-yang-disetujui/save$', ippt_rumah.luas_tanah_yang_disetujui_save, name='luas_tanah_yang_disetujui_save'),
     # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
     
     ]
