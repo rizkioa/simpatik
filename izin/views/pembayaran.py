@@ -19,7 +19,7 @@ import time
 import json
 import os
 
-from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran
+from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran,SKIzin
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import DetilPembayaranForm
 
