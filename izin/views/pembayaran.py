@@ -37,9 +37,9 @@ def detil_pembayaran_save(request):
 		if pembayaran.is_valid():
 			p = pembayaran.save(commit=False)
 			p.save()
-			obj_skizin.status =9
+			obj_skizin.status = 9
 			obj_skizin.save()
-			pengajuan_izin.status = 1
+			pengajuan_izin.status = 2
 			pengajuan_izin.save()
 			data = {'success': True,
 					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
