@@ -201,7 +201,7 @@
 	        	</center>
 	        </div>
 	        <div class="col-2 qrcode" style="padding-left: 0px;">
-	        	<div id="qrcodeTable" >
+	        	<div id="qrcodeTable">
 	        	</div>
 	        </div>
     	</div>
@@ -212,14 +212,14 @@
     			<td><strong>BERLAKU S/D TGL</strong></td>
     			<td class="tdnone"><strong>PENDAFTARAN</strong></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><strong>BARU</strong></td>
+    			<td class="tdnone"><strong>{{skizin.status_pendaftaran.upper}}</strong></td>
     		</tr>
     		<tr>
     			<td><strong>{{pengajuan.no_izin|default_if_none:'-'}}</strong></td>
-    			<td><strong>{{masa_berlaku}}</strong></td>
+    			<td><strong>{{skizin.masa_berlaku|date:'d-m-Y'}}</strong></td>
     			<td class="tdnone"><strong>PEMBAHARUAN KE</strong></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><strong>0</strong></td>
+    			<td class="tdnone"><strong>{{skizin.status_pembaharuan_ke}}</strong></td>
     		</tr>
     	</table>
     	<br>
@@ -228,7 +228,7 @@
     			<td class="tdnone" rowspan="2" ><strong>NAMA PERUSAHAAN</strong></td>
     			<td class="tdnone" rowspan="2" >:</td>
     			<td class="tdnone" rowspan="2" style="border: 1;"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}} </b></td>
-    			<td><strong>STATUS PUSAT :</strong></td>
+    			<td><strong>{{pengajuan.status_perusahaan.status_perusahaan.upper}}</strong></td>
     		</tr>
     		<tr>
     			<td><span style="color: red;"><i>{{pengajuan.status_waralaba.upper}}</i></span></td>
@@ -241,7 +241,7 @@
     		<tr>
     			<td class="tdnone"><strong>ALAMAT PERUSAHAAN</strong></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat}}</td>
+    			<td class="tdnone">{{alamat.upper}}</td>
     		</tr>
     		<tr>
     			<td class="tdnone"><strong>NPWP</strong></td>

@@ -1,5 +1,4 @@
-import datetime
-import base64
+import json, datetime, base64
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
@@ -418,6 +417,53 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def edit_skizin_tdp(self, request):
+		from django.db import IntegrityError
+		if request.POST:
+			id_pengajuan_izin = request.POST.get('id_pengajuan_izin')
+			pengajuan_ = DetilTDP.objects.filter(id=id_pengajuan_izin).last()
+			if pengajuan_:
+				produk_utama = request.POST.get('produk_utama')
+				status_waralaba = request.POST.get('status_waralaba')
+				# # status_perusahaan = request.POST.get('status_perusahaan', None)
+				# # save pengajuan
+				pengajuan_.produk_utama = produk_utama
+				pengajuan_.status_waralaba = status_waralaba
+				# # pengajuan_.status_perusahaan = status_perusahaan
+				# # save skizin
+				status_pendaftaran = request.POST.get('status_pendaftaran')
+				status_pembaharuan_ke = request.POST.get('status_pembaharuan_ke')
+				masa_berlaku = datetime.datetime.strptime(request.POST.get('masa_berlaku'), '%d-%m-%Y').strftime('%Y-%m-%d')
+				
+				try:
+					skizin = SKIzin.objects.get(pengajuan_izin=pengajuan_)
+					skizin.status_pendaftaran = status_pendaftaran
+					skizin.status_pembaharuan_ke = status_pembaharuan_ke
+					skizin.masa_berlaku = masa_berlaku
+				except ObjectDoesNotExist:
+					skizin = SKIzin(pengajuan_izin_id=pengajuan_.id,status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, masa_berlaku=masa_berlaku)
+				skizin.save()
+				
+				# skizin.status_pendaftaran = status_pendaftaran
+				# skizin.status_pembaharuan_ke = status_pembaharuan_ke
+
+				pengajuan_.save()
+				skizin.save()
+
+				print request.POST.get('id_pengajuan_izin')
+				print request.POST.get('produk_utama')
+				print request.POST.get('status_waralaba')
+				print request.POST.get('status_perusahaan')
+				print request.POST.get('masa_berlaku')
+				print request.POST.get('status_pendaftaran')
+				print request.POST.get('status_pembaharuan_ke')
+				data = {'success': True, 'pesan': 'Proses Selesai.'}
+			else:
+				data = {'success': False, 'pesan': 'Proses Selesai.'}
+		else:
+			data = {'success': False, 'pesan': 'Proses Selesai.'}
+		response = HttpResponse(json.dumps(data))
+		return response
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -435,6 +481,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			url(r'^cetak-tdp-firma-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_tdp_firma_asli), name='cetak_tdp_firma_asli'),
 			url(r'^cetak-tdp-bul-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_tdp_bul_asli), name='cetak_tdp_bul_asli'),
 			url(r'^cetak-tdp-koperasi-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_tdp_koperasi_asli), name='cetak_tdp_koperasi_asli'),
+			url(r'^edit-skizin-tdp/$', self.admin_site.admin_view(self.edit_skizin_tdp), name='edit_skizin_tdp'),
 			)
 		return my_urls + urls
 
