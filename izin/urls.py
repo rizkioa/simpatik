@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha,huller
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha,huller,pembayaran
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
@@ -346,7 +346,6 @@ urlpatterns = [
     url(r'^ippt-usaha/perumahan-yang-dimiliki-sekarang/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_perumahan_yang_dimiliki_ipptusaha, name='load_data_perumahan_yang_dimiliki_ipptusaha'),
     url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/delete/(?P<id_perumahan>[0-9]+)$', ippt_usaha.delete_perumahan_yang_sudah_dimiliki, name='delete_perumahan_yang_sudah_dimiliki'),
     url(r'^layanan/ippt-usaha/perumahan-yang-dimiliki-sekarang/edit/(?P<id_perumahan>[0-9]+)/$', ippt_usaha.edit_perumahan_yang_sudah_dimiliki, name='edit_perumahan_yang_sudah_dimiliki'),
-    
     # ++++++++++++++++++++++++ end for ajax IPPT Usaha ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Huller ++++++++++++++++++++++
@@ -361,6 +360,18 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/(?P<id_pengajuan>[0-9]+)$', huller.load_data_mesin_detilhuller , name='load_data_mesin_detilhuller'),
     url(r'^layanan/penggilingan-padi-&-huller/selesai/$', huller.detilhuller_done , name='detilhuller_done'),
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
+<<<<<<< HEAD
     
     url(r'^cek-detil-izin/(?P<id_pengajuan_>[0-9]+)$', views.cek_detil_izin , name='cek_detil_izin'),
+=======
+
+    # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
+    url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save'),
+    # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
+    url(r'^izin/luas-tanah-tanah-yang-disetujui/save$', ippt_rumah.luas_tanah_yang_disetujui_save, name='luas_tanah_yang_disetujui_save'),
+    # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
+    
+>>>>>>> 19ca270a1a395ee580f95c3524e6064f8c1214bd
     ]

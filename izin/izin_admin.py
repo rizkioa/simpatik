@@ -776,9 +776,9 @@ class IzinAdmin(admin.ModelAdmin):
 		try:
 			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
 			# and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem')
-			print request.POST.get('aksi')
+			# print request.POST.get('aksi')
 			if request.POST.get('aksi'):
-				print 'masuk'
+				# print 'masuk'
 				if request.POST.get('aksi') == '_submit_operator':
 					# print "operator"
 					obj.status = 4
@@ -860,7 +860,21 @@ class IzinAdmin(admin.ModelAdmin):
 							"success": False,
 							"pesan": "Inputan Status Pusat kosong.",
 							"redirect": '',
-						}				
+						}	
+				elif request.POST.get('aksi') == '_submit_kasir':
+					obj.status = 5
+					obj.save()
+					riwayat_ = Riwayat(
+						pengajuan_izin_id = id_pengajuan_izin,
+						created_by_id = request.user.id,
+						keterangan = "Kadin Verified To Kasir (Pengajuan)"
+					)
+					riwayat_.save()
+					response = {
+						"success": True,
+						"pesan": "Izin berhasil di verifikasi.",
+						"redirect": '',
+					}		
 				else:
 					response = {
 						"success": False,
@@ -919,7 +933,6 @@ class IzinAdmin(admin.ModelAdmin):
 						}
 					elif request.POST.get('aksi') == '_submit_penomoran':
 						obj_skizin.status = 10
-
 						obj_skizin.save()
 						try:
 							kode_izin_ =  obj.kelompok_jenis_izin.kode
