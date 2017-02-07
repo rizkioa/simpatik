@@ -501,7 +501,7 @@
 	            <div id="minimize_4">
 	            	<div class="tile-body">
 						<div class="panel-body">
-						{% if skizin == None %}
+						{% if skizin == None and status == 2%}
 						    <center>
 						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<!-- <a style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Edit Draf</span></a><br> -->
