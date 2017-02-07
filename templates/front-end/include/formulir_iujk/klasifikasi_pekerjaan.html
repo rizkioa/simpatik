@@ -1,19 +1,19 @@
 <form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'iujk_klasifikasi_paketpekerjaan_save' %}" data-parsley-validate novalidate>
   {% csrf_token %}
-  <!-- <div class="form-group">
-    <label for="input01" class="col-sm-2 control-label"><strong>Jenis IUJK</strong> </label>
+  <div class="form-group">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kualifikasi</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="jenis_iujk" required="" data-parsley-trigger="change">
-        <option value>-- Pilih Jenis IUJK --</option>
+      <select class="form-control chosen-select mb-10" name="kualifikasi" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Kualifikasi IUJK --</option>
 
-        {% if jenis_iujk %}
-          {% for jenis in jenis_iujk %}
-            <option value="{{ jenis.0 }}" {% if get_jenis_iujk == jenis.1 %} selected="selected" {% endif %}>{{ jenis.1 }}</option>
+        {% if jenis_kualifikasi %}
+          {% for jenis in jenis_kualifikasi %}
+            <option value="{{ jenis.id }}" {% if get_kualifikasi == jenis %} selected="selected" {% endif %}>{{ jenis.nama_kualifikasi }}</option>
           {% endfor %}
         {% endif %}
       </select>
     </div>
-  </div> -->
+  </div>
   <div class="form-group">
     <div class="col-sm-12">
       <div class="table-responsive">

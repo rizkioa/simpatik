@@ -361,4 +361,6 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/(?P<id_pengajuan>[0-9]+)$', huller.load_data_mesin_detilhuller , name='load_data_mesin_detilhuller'),
     url(r'^layanan/penggilingan-padi-&-huller/selesai/$', huller.detilhuller_done , name='detilhuller_done'),
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
+    
+    url(r'^cek-detil-izin/(?P<id_pengajuan_>[0-9]+)$', views.cek_detil_izin , name='cek_detil_izin'),
     ]

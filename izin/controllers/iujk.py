@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 
 
-from master.models import Negara, JenisPemohon, Kecamatan
+from master.models import Negara, JenisPemohon, Kecamatan, JenisKualifikasi
 from izin.models import JenisPermohonanIzin, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
 from izin.utils import JENIS_IUJK, get_tahun_choices
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
@@ -25,6 +25,7 @@ def IUJKWizard(request, extra_context={}):
 	# extra_context.update({'produk_utama_list': ProdukUtama.objects.all()})
 	extra_context.update({'jenis_legalitas_list': JenisLegalitas.objects.all()})
 	extra_context.update({'jenis_iujk': JENIS_IUJK })
+	extra_context.update({'jenis_kualifikasi': JenisKualifikasi.objects.all() })
 	extra_context.update({'tahun_choices': get_tahun_choices(1945) })
 	extra_context.update({'kecamatan_perusahaan': Kecamatan.objects.filter(kabupaten__kode="06", kabupaten__provinsi__kode="35") })
 
@@ -64,6 +65,7 @@ def IUJKWizard(request, extra_context={}):
 
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
 					extra_context.update({'get_jenis_iujk': pengajuan_.jenis_iujk})
+					extra_context.update({'get_kualifikasi': pengajuan_.kualifikasi})
 					
 					anggota_list_deriktur = AnggotaBadanUsaha.objects.filter(detil_iujk__id=request.COOKIES['id_pengajuan'], jenis_anggota_badan='Direktur / Penanggung Jawab Badan Usaha')
 					if anggota_list_deriktur.exists():

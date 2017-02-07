@@ -1331,3 +1331,32 @@ def get_nilai_parameter(request):
     return  HttpResponse(json.dumps(decimal.Decimal(get_nilai),default=decimal_default))
 
         
+def cek_detil_izin(request, id_pengajuan_):
+    if id_pengajuan_:
+        if id_pengajuan_ != '0':
+            print 'masuk 0'
+            pengajuan_ = PengajuanIzin.objects.filter(id=id_pengajuan_).last()
+            if pengajuan_:
+                print 'masuk 1'
+                if request.COOKIES['id_kelompok_izin']:
+                    print 'masuk 2'
+                    kelompok_jenis_izin = str(pengajuan_.kelompok_jenis_izin.id)
+                    kelompok_izin_cookie = str(request.COOKIES['id_kelompok_izin'])
+                    print kelompok_jenis_izin
+                    print kelompok_izin_cookie
+                    if kelompok_jenis_izin == kelompok_izin_cookie:
+                        print kelompok_jenis_izin
+                        data = {'success': True, 'pesan': 'Proses Selesai.'}
+                    else:
+                        print 'gagal'
+                        data = {'success': False, 'pesan': 'Proses Selesai.'} 
+                else:
+                    data = {'success': False, 'pesan': 'Proses Selesai.'}
+            else:
+                data = {'success': False, 'pesan': 'Proses Selesai.'}
+        else:
+            data = {'success': True, 'pesan': 'Proses Selesai.'}
+    else:
+        data = {'success': False, 'pesan': 'Proses Selesai.'}
+    response = HttpResponse(json.dumps(data))
+    return response

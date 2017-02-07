@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_static widgets access %}
+{% load i18n admin_static widgets access admin_urls%}
 
 
 {% block title %}
@@ -93,6 +93,12 @@
 
 		.gambar{
 			background-image: url({% static 'images/icons/jpg.png' %});
+		}
+		#cke_id_body_html{
+			width: 100%;
+		}
+		.django-ckeditor-widget{
+			width: 100%;
 		}
 	</style>
 {% endblock %}
@@ -592,14 +598,22 @@
 		            <div id="minimize_4">
 		            	<div class="tile-body">
 							<div class="panel-body" id="id_panel_pembuat_surat">
-							{% if skizin == None %}
+							{% if skizin == None and status == 2%}
 							    <center>
-							    	<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Preview Draf</span></a><br>
-							    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
-							    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-settings"></i> <span>Generate Draf</span></a>
+							    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-settings"></i> <span>Buat SKIzin</span></a>
 							    </center>
-							</div>
+							{% else %}
+								<center>
+									<a onclick="openPopupCenter('{% url 'admin:cetak_siup_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Preview Draf</span></a><br>
+							    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
+								</center>
 							{% endif %}
+							</div>
+							<form class="form_skizin" role="form" action="" method="POST" enctype="multipart/form-data">
+           						{% csrf_token %}
+								{{form_skizin.as_p}}
+								<button name="simpan" value="submit" class="btn btn-rounded btn-success btn-sm simpan"><i class="fa  fa-paper-plane"></i> Simpan & Kirim </button>
+							</form>
 							{% if skizin_status == 6 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 							    	<div class="panel-body">
@@ -985,6 +999,8 @@
 
 {% block extrajs_site %}
 	{{ block.super }}
+	<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+  	<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
 	<script language="javascript" type="text/javascript">
         function openPopupCenter(url, title, w, h) {

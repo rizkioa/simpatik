@@ -14,6 +14,7 @@ from daterange_filter.filter import DateRangeFilter
 
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey
 from kepegawaian.models import Pegawai
+from master.models import Template
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
 from izin.controllers.imb_reklame import formulir_imb_reklame
@@ -307,6 +308,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def linkdetilizin(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
+		print jenis_izin_
 		if jenis_izin_ == "503.08/":
 			link_ = reverse('admin:detil_siup_view', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
@@ -322,7 +324,9 @@ class IzinAdmin(admin.ModelAdmin):
 		elif jenis_izin_ == "503.06.01/":
 			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
 		elif jenis_izin_ == "503.02/":
-			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})	
+			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "HULLER":
+			link_ = reverse('admin:view_pengajuan_huller', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.kode == "IPPT-Rumah":
 			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
@@ -355,6 +359,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.kode == "IPPT-Rumah":
 			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "HULLER":
+			link_ = reverse('admin:view_pengajuan_huller', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
 			link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})		
 		elif obj.kelompok_jenis_izin.kode == "TDP-PT":
@@ -611,6 +617,8 @@ class IzinAdmin(admin.ModelAdmin):
 			if kepala_:
 				extra_context.update({'kepala_dinas': kepala_ })
 				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+			template = Template.objects.filter(kelompok_jenis_izin=pengajuan_.kelompok_jenis_izin).last()
+			extra_context.update({'template': template })
 
 			# except ObjectDoesNotExist:
 			# 	pass
@@ -732,9 +740,15 @@ class IzinAdmin(admin.ModelAdmin):
 		# if request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
 		# print id_detil_siup
 		if request.user.has_perm('izin.add_skizin') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
+			pengajuan_ = PengajuanIzin.objects.filter(id=id_detil_siup).last()
+			template_ = Template.objects.filter(kelompok_jenis_izin=pengajuan_.kelompok_jenis_izin).last()
+			body_html = ""
+			if template_:
+				body_html = template_.body_html
 			skizin = SKIzin(
 				pengajuan_izin_id = id_detil_siup,
 				created_by_id = request.user.id,
+				body_html = body_html,
 				status = 6)
 			skizin.save()
 			# print "id_skizin"+str(skizin.id)

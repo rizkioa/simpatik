@@ -1,11 +1,37 @@
 from django.db import models
+from django.utils.safestring import mark_safe
+from ckeditor.fields import RichTextField
+from datetime import datetime
+
 from accounts.utils import STATUS, get_status_color
 # from accounts.models import Account
-from datetime import datetime
+
 
 
 # Create your models here.
 
+
+class Template(models.Model):
+	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="survey_iujk", blank=True, null=True)
+	body_html = RichTextField()
+
+	def __unicode__(self):
+		return '%s' % mark_safe(self.kelompok_jenis_izin)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Template'
+		verbose_name_plural = 'Template'
+class JenisKualifikasi(models.Model):
+	nama_kualifikasi = models.CharField(max_length=255, verbose_name='Nama Kualifikasi')
+	
+	def __unicode__(self):
+		return "%s" % (self.nama_kualifikasi)
+
+	class Meta:
+		ordering = ['id']
+		verbose_name = 'Jenis Kualifikasi IUJK'
+		verbose_name_plural = 'Jenis Kualifikasi IUJK'
 
 
 class JenisReklame(models.Model):

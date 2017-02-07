@@ -1,9 +1,10 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha,SertifikatTanah,DetilSkIMB
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha,SertifikatTanah,DetilSkIMB, SKIzin
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
+from ckeditor.widgets import CKEditorWidget
 
 EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 
@@ -279,3 +280,10 @@ class DetilSkIMBForm(forms.ModelForm):
 	class Meta:
 		model = DetilSkIMB
 		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menetapkan_keenam_a','sk_menetapkan_keenam_b','sk_menetapkan_keenam_c')
+
+class SKIzinForm(forms.ModelForm):
+	body_html = forms.CharField(widget=CKEditorWidget())
+
+	class Meta:
+		model = SKIzin
+		fields = ('body_html',)
