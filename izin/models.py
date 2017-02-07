@@ -622,6 +622,11 @@ class DetilIMB(PengajuanIzin):
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	jenis_bangunan = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Jenis Bangunan",blank=True,null=True)
 	panjang = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Panjang')
+	
+	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
 
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

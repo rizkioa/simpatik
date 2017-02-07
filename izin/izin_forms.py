@@ -147,7 +147,7 @@ class DetilIMBForm(forms.ModelForm):
 
 	class Meta:
 		model = DetilIMB
-		fields = ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama')
+		fields = ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')
 
 class ParameterBangunanForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
