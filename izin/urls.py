@@ -362,7 +362,6 @@ urlpatterns = [
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
     
     url(r'^cek-detil-izin/(?P<id_pengajuan_>[0-9]+)$', views.cek_detil_izin , name='cek_detil_izin'),
-
     # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
     url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save'),
     # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
