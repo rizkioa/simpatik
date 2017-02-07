@@ -13,6 +13,7 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 # from django.dispatch.dispatcher import receiver
 
 from datetime import datetime
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -244,7 +245,7 @@ class DetilSIUP(PengajuanIzin):
 	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_siup', blank=True, null=True)
 	kbli = models.ManyToManyField(KBLI, related_name='kbli_siup', verbose_name='KBLI', blank=True)
 	# Contoh isian: perdagangan mikro/ kecil/ menengah/ besar
-	kelembagaan = models.ForeignKey(Kelembagaan, related_name='kelembagaan_siup', blank=True, null=True, verbose_name='Kelembagaan')
+	kelembagaan = models.ManyToManyField(Kelembagaan, related_name='kelembagaan_siup', blank=True, verbose_name='Kelembagaan')
 	# produk_utama = models.ManyToManyField(ProdukUtama, related_name='barang_jasa_siup', verbose_name='Barang / Jasa Dagangan Utama')
 	produk_utama = models.TextField(null=True, blank=True, verbose_name='Barang / Jasa Dagang Utama')
 	bentuk_kegiatan_usaha = models.ForeignKey(BentukKegiatanUsaha, related_name='bentuk_kegiatan_usaha_siup', blank=True, null=True, verbose_name='Kegiatan Usaha')
@@ -300,6 +301,7 @@ class SKIzin(AtributTambahan):
 	status_pendaftaran = models.CharField(max_length=50, verbose_name='Status Pendaftaran', null=True, blank=True)
 	# untuk status pembaharuan ke 1 - 8
 	status_pembaharuan_ke = models.IntegerField(verbose_name='Status Pembaharuan Ke', null=True, blank=True)
+	body_html = RichTextField(null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 	
 class Riwayat(AtributTambahan):
@@ -620,6 +622,11 @@ class DetilIMB(PengajuanIzin):
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	jenis_bangunan = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Jenis Bangunan",blank=True,null=True)
 	panjang = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Panjang')
+	
+	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
 
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

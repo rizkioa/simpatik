@@ -368,7 +368,7 @@
                     <tr>
                         <td width="30%">Kelembagaan</td>
                         <td width="5%">:</td>
-                        <td width="65%">{{ kelembagaan }}</td>
+                        <td width="65%">{% for kelembagaan in pengajuan.kelembagaan.all %} {{kelembagaan.kelembagaan}}, {% endfor %}</td>
                     </tr>
                     <tr>
                         <td width="30%">KBLI / Barang Jasa</td>

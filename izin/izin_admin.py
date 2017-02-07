@@ -14,6 +14,7 @@ from daterange_filter.filter import DateRangeFilter
 
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey
 from kepegawaian.models import Pegawai
+from master.models import Template
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
 from izin.controllers.imb_reklame import formulir_imb_reklame
@@ -596,8 +597,8 @@ class IzinAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
-			extra_context.update({'kelembagaan': kelembagaan })
+			# kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
+			# extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
 				kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
 				# print kekayaan_
@@ -616,6 +617,8 @@ class IzinAdmin(admin.ModelAdmin):
 			if kepala_:
 				extra_context.update({'kepala_dinas': kepala_ })
 				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+			template = Template.objects.filter(kelompok_jenis_izin=pengajuan_.kelompok_jenis_izin).last()
+			extra_context.update({'template': template })
 
 			# except ObjectDoesNotExist:
 			# 	pass
@@ -737,9 +740,15 @@ class IzinAdmin(admin.ModelAdmin):
 		# if request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
 		# print id_detil_siup
 		if request.user.has_perm('izin.add_skizin') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
+			pengajuan_ = PengajuanIzin.objects.filter(id=id_detil_siup).last()
+			template_ = Template.objects.filter(kelompok_jenis_izin=pengajuan_.kelompok_jenis_izin).last()
+			body_html = ""
+			if template_:
+				body_html = template_.body_html
 			skizin = SKIzin(
 				pengajuan_izin_id = id_detil_siup,
 				created_by_id = request.user.id,
+				body_html = body_html,
 				status = 6)
 			skizin.save()
 			# print "id_skizin"+str(skizin.id)

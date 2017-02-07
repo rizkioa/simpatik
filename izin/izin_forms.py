@@ -1,9 +1,10 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller,MesinPerusahaan,MesinHuller,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha,SertifikatTanah,DetilSkIMB,DetilPembayaran
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSkIMB, SKIzin, DetilPembayaran
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
+from ckeditor.widgets import CKEditorWidget
 
 EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 
@@ -146,7 +147,7 @@ class DetilIMBForm(forms.ModelForm):
 
 	class Meta:
 		model = DetilIMB
-		fields = ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama')
+		fields = ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')
 
 class ParameterBangunanForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
@@ -280,6 +281,12 @@ class DetilSkIMBForm(forms.ModelForm):
 		model = DetilSkIMB
 		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menetapkan_keenam_a','sk_menetapkan_keenam_b','sk_menetapkan_keenam_c')
 
+class SKIzinForm(forms.ModelForm):
+	body_html = forms.CharField(widget=CKEditorWidget())
+
+	class Meta:
+		model = SKIzin
+		fields = ('body_html',)
 class DetilPembayaranForm(forms.ModelForm):
 	"""docstring for DetilPembayaranForm"""
 	class Meta:
@@ -291,5 +298,3 @@ class LuasTanahYangDisetujuiForm(forms.ModelForm):
 	class Meta:
 		model = InformasiTanah
 		fields = ('luas_tanah_yang_disetujui',)
-
-
