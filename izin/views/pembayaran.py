@@ -19,7 +19,7 @@ import time
 import json
 import os
 
-from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran
+from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran,SKIzin
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import DetilPembayaranForm
 
@@ -37,16 +37,16 @@ def detil_pembayaran_save(request):
 		if pembayaran.is_valid():
 			p = pembayaran.save(commit=False)
 			p.save()
-			obj_skizin.status =9
+			obj_skizin.status = 9
 			obj_skizin.save()
-			pengajuan_izin.status = 1
+			pengajuan_izin.status = 2
 			pengajuan_izin.save()
 			data = {'success': True,
 					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-					'data': ['']}
+					'data': {}}
 			response = HttpResponse(json.dumps(data))
 		else:
 			data = pembayaran.errors.as_json()
 			response = HttpResponse(data)
 
-	return response
+		return response

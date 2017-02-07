@@ -658,6 +658,12 @@
         $(response).appendTo(elem);
         $("#pengusaha_kewarganegaraan").prop('selected',true).trigger("chosen:updated");
     }
+  function load_alamat_1(){
+    var alamat = $('#alamat_pemohon_load').val();
+    if ($('#alamat_pemohon_load').val() != ""){
+      $('#id_pemilik_alamat').val(alamat);
+    }
+  }
 
     $(document).ready(function() {
       window.onbeforeunload = function ref() {

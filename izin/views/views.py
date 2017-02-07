@@ -134,7 +134,7 @@ def formulir_siup(request, extra_context={}):
                     if pengajuan_.presentase_saham_asing:
                         extra_context.update({ 'presentase_saham_asing_konfirmasi': str(pengajuan_.presentase_saham_asing)+" %" })
                     if pengajuan_.kelembagaan:
-                        extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+                        extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.all })
                     extra_context.update({ 'pengajuan_': pengajuan_ })
                     
                     template = loader.get_template("front-end/formulir/siup.html")
@@ -738,8 +738,7 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
             extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
             extra_context.update({ 'syarat': syarat })
             # extra_context.update({ 'legalitas': legalitas_ })
-            if pengajuan_.kelembagaan:
-                extra_context.update({ 'kelembagaan': pengajuan_.kelembagaan.kelembagaan })
+            
             extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
             extra_context.update({ 'created_at': pengajuan_.created_at })
             if pengajuan_.bentuk_kegiatan_usaha:
@@ -1243,6 +1242,17 @@ def ajax_konfirmasi_kbli(request, id_pengajuan_izin_):
     response = HttpResponse(json.dumps(data))
     return response
 
+def ajax_konfirmasi_kelembagaan(request, id_pengajuan_izin_):
+    kelembagaan_ = ""
+    if id_pengajuan_izin_:
+        pengajuan_ = DetilSIUP.objects.filter(id=id_pengajuan_izin_).last()
+        if pengajuan_:
+            kelembagaan_list = pengajuan_.kelembagaan.all()
+            kelembagaan_ = [ obj.as_dict() for obj in kelembagaan_list ]
+    data = {'success': True, 'pesan': 'Proses Selesai.', 'kelembagaan': kelembagaan_ }
+    response = HttpResponse(json.dumps(data))
+    return response
+
 def ajax_kuasa_pemohon(request, id_pengajuan_izin_):
     nama_kuasa = ""
     no_identitas_kuasa = ""
@@ -1321,3 +1331,32 @@ def get_nilai_parameter(request):
     return  HttpResponse(json.dumps(decimal.Decimal(get_nilai),default=decimal_default))
 
         
+def cek_detil_izin(request, id_pengajuan_):
+    if id_pengajuan_:
+        if id_pengajuan_ != '0':
+            print 'masuk 0'
+            pengajuan_ = PengajuanIzin.objects.filter(id=id_pengajuan_).last()
+            if pengajuan_:
+                print 'masuk 1'
+                if request.COOKIES['id_kelompok_izin']:
+                    print 'masuk 2'
+                    kelompok_jenis_izin = str(pengajuan_.kelompok_jenis_izin.id)
+                    kelompok_izin_cookie = str(request.COOKIES['id_kelompok_izin'])
+                    print kelompok_jenis_izin
+                    print kelompok_izin_cookie
+                    if kelompok_jenis_izin == kelompok_izin_cookie:
+                        print kelompok_jenis_izin
+                        data = {'success': True, 'pesan': 'Proses Selesai.'}
+                    else:
+                        print 'gagal'
+                        data = {'success': False, 'pesan': 'Proses Selesai.'} 
+                else:
+                    data = {'success': False, 'pesan': 'Proses Selesai.'}
+            else:
+                data = {'success': False, 'pesan': 'Proses Selesai.'}
+        else:
+            data = {'success': True, 'pesan': 'Proses Selesai.'}
+    else:
+        data = {'success': False, 'pesan': 'Proses Selesai.'}
+    response = HttpResponse(json.dumps(data))
+    return response

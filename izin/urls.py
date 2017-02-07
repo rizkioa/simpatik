@@ -37,6 +37,7 @@ urlpatterns = [
     url(r'^ajax-delete-berkas-upload-tdp/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', tdp_view.ajax_delete_berkas_tdp, name='ajax_delete_berkas_tdp'),
     
     url(r'^ajax-konfirmasi-kbli/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kbli, name='ajax_konfirmasi_kbli'),
+    url(r'^ajax-konfirmasi-kelembagaan/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_konfirmasi_kelembagaan, name='ajax_konfirmasi_kelembagaan'),
     url(r'^ajax-konfirmasi-kuasa/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_kuasa_pemohon, name='ajax_kuasa_pemohon'),
     url(r'^ajax-konfirmasi-legalitas/(?P<id_pengajuan_izin_>[0-9]+)$', views.ajax_legalitas_konfirmasi, name='ajax_legalitas_konfirmasi'),
     url(r'^ajax-konfirmasi-paket-pekerjaan/(?P<id_pengajuan>[0-9]+)$', iujk_views.ajax_konfirmasi_nama_paket_pekerjaan, name='ajax_konfirmasi_nama_paket_pekerjaan'),
@@ -359,9 +360,18 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/(?P<id_pengajuan>[0-9]+)$', huller.load_data_mesin_detilhuller , name='load_data_mesin_detilhuller'),
     url(r'^layanan/penggilingan-padi-&-huller/selesai/$', huller.detilhuller_done , name='detilhuller_done'),
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
+<<<<<<< HEAD
+    
+    url(r'^cek-detil-izin/(?P<id_pengajuan_>[0-9]+)$', views.cek_detil_izin , name='cek_detil_izin'),
+=======
 
     # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
-    url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save')
+    url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save'),
+    # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
+    url(r'^izin/luas-tanah-tanah-yang-disetujui/save$', ippt_rumah.luas_tanah_yang_disetujui_save, name='luas_tanah_yang_disetujui_save'),
     # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
     
+>>>>>>> 19ca270a1a395ee580f95c3524e6064f8c1214bd
     ]

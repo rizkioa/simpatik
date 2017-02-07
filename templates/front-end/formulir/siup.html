@@ -206,6 +206,28 @@
                     // }
                   })
                   $.ajax({
+                    url: __base_url__+'/ajax-konfirmasi-kelembagaan/'+id_pengajuan,
+                    success: function (response){
+                      respon = $.parseJSON(response)
+                      a = respon.kelembagaan.length
+                      if (respon.kelembagaan){
+                        str = ""
+                        for (var i = 0; i < a; i++){
+                          respon.kelembagaan[i].kelembagaan
+                          str = str+"("+respon.kelembagaan[i].kelembagaan+") "
+                        }
+                        $('#kelembagaan_konfirmasi').html(str)
+                      }
+                      else{
+                        $('#kelembagaan_konfirmasi').html('');
+                      }
+                    }
+                    // error: function(response){
+                    //   $('#kbli_konfirmasi').html('');
+                    // }
+                  })
+
+                  $.ajax({
                     url: __base_url__+'/ajax-konfirmasi-legalitas/'+id_pengajuan,
                     success: function (response){
                         respon = $.parseJSON(response)
@@ -252,12 +274,12 @@
           },
 
           onNext: function(tab, navigation, index) {
-              // var form = $('form[name="step'+ index +'"]');
-              // form.parsley().validate();
-              // if (!form.parsley().isValid()) {
-              //     return false;
-              // }
-              return false;
+            // var form = $('form[name="step'+ index +'"]');
+            // form.parsley().validate();
+            // if (!form.parsley().isValid()) {
+            //     return false;
+            // }
+            return false;
           },
 
           onTabClick: function(tab, navigation, index) {
@@ -266,7 +288,7 @@
             // if (!form.parsley().isValid()) {
             //     return false;
             // }
-            return false;
+            return true;
           }
         });
       });
@@ -400,12 +422,89 @@
   </script>
   <script>
 
+    // function next_tab(btn){
+    //   var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+    //   var frm = $('form[name="step'+ index +'"]');
+    //   frm.parsley().validate();
+    //     if (frm.parsley().isValid()) {
+    //       // $(".tab-content #tab"+index).mask('loading')
+    //       $(".tab-content").mLoading();
+    //       $(btn).attr('disabled', 'disabled')
+    //       $.ajax({
+    //         type: frm.attr('method'),
+    //         url: frm.attr('action'),
+    //         data: frm.serialize(),
+    //         success: function (response){
+    //           respon = $.parseJSON(response)
+    //             $(btn).removeAttr('disabled')
+    //             // alert(respon);
+    //             // console.log(respon.success);
+    //             if(respon.success){
+    //               toastr["success"](respon.pesan)
+    //               // console.log(respon.data)
+    //               // console.log(respon.data.length)
+    //               // $.cookie("keys", "value"); set cookie
+                    
+    //               for (var i = 0; i < respon.data.length; i++){
+    //                 var key = Object.keys(respon.data[i]); // Mencari key json
+    //                 // console.log(key[0]);
+    //                 // if (key[0]= "status_upload") {
+    //                 //   $("#npwp_perusahaan").hide(1000)
+
+    //                 // }else{
+    //                 var val = respon.data[i][key[0]] // mencari value json
+    //                   // console.log(key[0]+"_konfirmasi");
+    //                 var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+    //                 $(id).text(val);
+    //                 // }
+    //                 // untuk sementara
+    //                 if(key[0] === "jenis_legalitas_perubahan"){
+    //                   $('#konfirmasi_legalitas_perubahan').hide();
+    //                 }
+    //                 else{
+    //                   $('#konfirmasi_legalitas_perubahan').show();
+    //                 }
+    //               }
+    //               // $( ".tab-content #tab"+index ).unmask()
+    //               $(".tab-content").mLoading('hide');
+    //               tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+    //               $(tab_index).tab('show')
+    //             }
+    //             else{
+    //               // console.log("error")
+    //               // console.log(respon);
+    //               // console.log(typeof respon);
+    //               var a = Object.keys(respon);
+    //               // console.log(respon['nama_lengkap'][0]['message']);
+    //               // console.log(a.length);
+    //               for (var i = 0; i < a.length; i++){
+    //                 // console.log(a[i]);
+    //                 // console.log(respon[a[i]]);
+    //                 var field = a[i].replace("_", " ").capitalize();
+    //                 toastr["error"](field+", "+respon[a[i]][0]['message'])
+    //                 $("#"+a[i]+"").addClass("has-error");
+    //                 // console.log($("#"+a[i]+"").addClass("parsley-error"));
+    //               }
+    //               // $( ".tab-content #tab"+index ).unmask()
+    //               $(".tab-content").mLoading('hide');
+    //             }
+    //         },
+    //         error: function(response){
+    //           // $( ".tab-content #tab"+index ).unmask()
+    //           $(".tab-content").mLoading('hide');
+    //           $(btn).removeAttr('disabled')
+    //           toastr["error"]("Terjadi kesalahan pada koneksi server.")
+    //         }
+    //     });
+    //   }
+    // };
+
     function next_tab(btn){
       var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
       var frm = $('form[name="step'+ index +'"]');
       frm.parsley().validate();
         if (frm.parsley().isValid()) {
-          // $(".tab-content #tab"+index).mask('loading')
           $(".tab-content").mLoading();
           $(btn).attr('disabled', 'disabled')
           $.ajax({
@@ -415,28 +514,13 @@
             success: function (response){
               respon = $.parseJSON(response)
                 $(btn).removeAttr('disabled')
-                // alert(respon);
-                // console.log(respon.success);
                 if(respon.success){
                   toastr["success"](respon.pesan)
-                  // console.log(respon.data)
-                  // console.log(respon.data.length)
-                  // $.cookie("keys", "value"); set cookie
-                    
                   for (var i = 0; i < respon.data.length; i++){
-                    var key = Object.keys(respon.data[i]); // Mencari key json
-                    // console.log(key[0]);
-                    // if (key[0]= "status_upload") {
-                    //   $("#npwp_perusahaan").hide(1000)
-
-                    // }else{
-                    var val = respon.data[i][key[0]] // mencari value json
-                      // console.log(key[0]+"_konfirmasi");
-                    var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
+                    var key = Object.keys(respon.data[i]);
+                    var val = respon.data[i][key[0]]
+                    var id = "#"+key[0]+"_konfirmasi"
                     $(id).text(val);
-                    // }
-                    // untuk sementara
                     if(key[0] === "jenis_legalitas_perubahan"){
                       $('#konfirmasi_legalitas_perubahan').hide();
                     }
@@ -444,32 +528,27 @@
                       $('#konfirmasi_legalitas_perubahan').show();
                     }
                   }
-                  // $( ".tab-content #tab"+index ).unmask()
-                  $(".tab-content").mLoading('hide');
                   tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
                   $(tab_index).tab('show')
                 }
                 else{
-                  // console.log("error")
-                  // console.log(respon);
-                  // console.log(typeof respon);
                   var a = Object.keys(respon);
-                  // console.log(respon['nama_lengkap'][0]['message']);
-                  // console.log(a.length);
+                  // console.log(a)
                   for (var i = 0; i < a.length; i++){
-                    // console.log(a[i]);
-                    // console.log(respon[a[i]]);
-                    var field = a[i].replace("_", " ").capitalize();
-                    toastr["error"](field+", "+respon[a[i]][0]['message'])
+                    // console.log(a[i].replace("_", " ").charAt(0).toUpperCase())
+                    var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+                    var field = c + a[i].replace("_", " ").slice(1)
+                    // console.log(field)
+                    toastr["error"](field+" "+respon[a[i]][0]['message'])
                     $("#"+a[i]+"").addClass("has-error");
-                    // console.log($("#"+a[i]+"").addClass("parsley-error"));
+                    $("#id_"+a[i]+"_").addClass("has-error");
+                    // console.log("id_"+a[i])
+                    // toastr["warning"]("error")
                   }
-                  // $( ".tab-content #tab"+index ).unmask()
-                  $(".tab-content").mLoading('hide');
                 }
+                $(".tab-content").mLoading('hide');
             },
             error: function(response){
-              // $( ".tab-content #tab"+index ).unmask()
               $(".tab-content").mLoading('hide');
               $(btn).removeAttr('disabled')
               toastr["error"]("Terjadi kesalahan pada koneksi server.")
@@ -627,7 +706,10 @@
         }
         $('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
         $('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
-        $('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
+        // $('#id_kelembagaan').val('{{ pengajuan_.kelembagaan.id }}').prop('selected',true).trigger("chosen:updated");
+        {% for k in pengajuan_.kelembagaan.all %}
+          $('#id_kelembagaan').append('<option selected="selected" value="{{k.id}}">{{k.kelembagaan}}</option>')
+        {% endfor %}
         
         {% for k in pengajuan_.kbli.all %}
             $("#id_kbli").append('<option selected="selected" value="{{k.id}}" >{{k.kode_kbli}} - {{k.nama_kbli}}</option>');

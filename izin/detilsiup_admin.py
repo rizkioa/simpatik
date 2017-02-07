@@ -15,7 +15,7 @@ from perusahaan.models import Perusahaan, KBLI
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import formatrupiah, detil_pengajuan_siup_view
 from izin import models as app_models
-
+from izin.izin_forms import SKIzinForm
 
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -127,6 +127,24 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 
 	def view_pengajuan_siup(self, request, id_pengajuan_izin_):
 		extra_context = {}
+		skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
+		if skizin_:
+			skizinform = SKIzinForm(instance=skizin_)
+			extra_context.update({'form_skizin': skizinform })
+			if request.POST:
+				# print request.POST
+				print str(skizinform['body_html'])
+				# skizin_.body_html = str(skizinform['body_html'])
+				# skizin_.save()
+				# if skizinform.is_valid():
+				# 	print skizinform.data['body_html']
+				# 	p = skizinform.save(commit=False)
+				# 	p.save()
+				# else:
+				# 	print str(skizinform.errors)
+			else:
+				print 'sss'
+
 		return detil_pengajuan_siup_view(request, id_pengajuan_izin_, extra_context)
 
 	def detil_siup_view(self, request, id_pengajuan_izin_):

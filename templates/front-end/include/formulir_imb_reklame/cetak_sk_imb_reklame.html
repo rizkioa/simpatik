@@ -42,6 +42,8 @@
 	    .subpage {
 	        padding: 0.5cm;
 	        /*border: 5px red solid;*/
+	        padding-left: :40px;
+	        padding-right:40px;
 	        height: 257mm;
 	        /*outline: 2cm #FFEAEA solid;*/
 	    }
@@ -90,7 +92,7 @@
 		    border: 1px solid black;
 		}
 	    .font {
-	        font-size: 12px;
+	        font-size: 11px;
 	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	    }
 	    #print-modal {
@@ -201,7 +203,7 @@
 	        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 	        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-	        		<td>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }}  perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk {{ pengajuan.jenis_papan_reklame|default_if_none:"" }}, yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
+	        		<td>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }} DESA {{ perusahaan.desa|default_if_none:"-" }} KECAMATAN {{ perusahaan.desa.kecamatan|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk {{ pengajuan.jenis_papan_reklame|default_if_none:"" }}, yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
 	        		</td>
 	        	</tr>
 	        	{% if sk_imb.sk_menimbang_a %}
@@ -293,6 +295,13 @@
 	        		<td style="vertical-align: top;padding-top: 1px;">12.</td>
 	        		<td>Peraturan Menteri Pekerjaan Umum Nomor 05/PRT/M/2016 tentang Izin Mendirikan Bangunan;</td>
 	        	</tr>
+
+	        </table>
+	        </div>
+	    </div>
+		<div class="page">
+			<div class="subpage">
+			<table width="100%" border="0" class="sk-justify">
 	        	<tr>
 	        		<td width="120"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
@@ -305,9 +314,8 @@
 	        		<td style="vertical-align: top;padding-top: 1px;">14.</td>
 	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 5 Tahun 2011 tentang Jalan ;</td>
 	        	</tr>
-
 	        	<tr>
-	        		<td></td>
+	        		<td style="width: 120px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;">15.</td>
 	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 2011 tentang Bangunan Gedung di Kabupaten Kediri ;</td>
@@ -318,14 +326,8 @@
 	        		<td style="vertical-align: top;padding-top: 1px;">16.</td>
 	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 14 Tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010-2030 ;</td>
 	        	</tr>
-	        </table>
-	        </div>
-	    </div>
-		<div class="page">
-			<div class="subpage">
-			<table width="100%" border="0" class="sk-justify">
 	        	<tr>
-	        		<td></td>
+	        		<td style="width: 120px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;">17.</td>
 	        		<td>Peraturan Daerah Nomor 4 Tahun 2012 tentang Retribusi Izin Mendirikan Bangunan ;</td>
@@ -350,7 +352,7 @@
 	        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.jenis_papan_reklame|default_if_none:"" }}</b>:</td>
 	        		</tr>
 	        		<tr>
-	        			<td colspan="3" align="left" style="padding-left: 120px;width: 300px;">Nama</td>
+	        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">Nama</td>
 	        			<td width="10">:</td>
 	        			<td>{{perusahaan.nama_perusahaan}}</td>
 	        		</tr>
@@ -441,7 +443,7 @@
 	        	</table>
 	        	<table width="100%" border="0" class="sk-justify">
 	        		<tr>
-	        			<td>KEEMPAT</td>
+	        			<td  style="width: 105px;">KEEMPAT</td>
 	        			<td>:</td>
 	        			<td colspan="3">Pemegang izin berkewajiban :</td>
 	        		</tr>
@@ -473,15 +475,21 @@
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Apabila sewaktu-waktu bangunan dan tanah tersebut digunakan oleh pemerintah daerah, maka pemegang izin harus mengosongkan bangunan dan tanah dimaksud tanpa ganti rugi.</td>
 	        		</tr>
+	        	</table>
+	        </div>
+	    </div>
+		<div class="page">
+			<div class="subpage">
+	        	<table width="100%" border="0" class="sk-justify">
 	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KETUJUH</td>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KETUJUH</td>
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Setelah jangka waktu perizinan berakhir, bangunan dapat dibongkar dan konstruksi jalan dikembalikan seperti semula oleh pemegang izin, atau oleh penyelenggara jalan dengan biaya menjadi tanggung jawab pemegang izin.</td>
 	        		</tr>
 	        		<tr>
 	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEDELAPAN</td>
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
-	        			<td  colspan="3" width="2000">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU, yang bersangkutan dikenakan retribusi sebesar Rp 68.000,00 (enam puluh delapan ribu rupiah) ;</td>
+	        			<td  colspan="3" width="2000">{{sk_imb.sk_menetapkan_keenam_a}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEMBILAN</td>
@@ -489,10 +497,6 @@
 	        			<td  colspan="3" width="2000">Setiap bentuk perbuatan yang dilakukan oleh Pemegang izin, baik disengaja maupun yang tidak disengaja yang mengakibatkan penyimpangan dan / atau  pelanggaran dan / atau tidak dilaksanakannya terhadap ketentuan-ketentuan, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini.</td>
 	        		</tr>
 	        	</table>
-	        </div>
-	    </div>
-		<div class="page">
-			<div class="subpage">
 			<table width="100%" border="0" class="sk-justify">
 	        		<tr>
 	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEPULUH</td>

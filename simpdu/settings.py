@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'daterange_filter',
     'ckeditor',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'mptt',
     'cas',
     'loginas',
@@ -210,5 +210,6 @@ DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
+        'width': '100%',
     },
 }
