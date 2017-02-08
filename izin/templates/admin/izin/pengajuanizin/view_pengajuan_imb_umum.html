@@ -785,18 +785,9 @@
 						      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
 						      		<label>{{ pengajuan.kelompok_jenis_izin.kode }}</label>
 						      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
-						      		<label>/418.71/</label>
-						      		<select class="form-control chosen-select" id="penomoran_tahun" style="width: 200px;">
-								    	<option value="2016">2016</option>
-								    	<option value="2015">2015</option>
-								    	<option value="2014">2014</option>
-								    	<option value="2013">2013</option>
-								    	<option value="2012">2012</option>
-								    	<option value="2011">2011</option>
-								    	<option value="2010">2010</option>
-								    	<option value="2009">2009</option>
-								    	<option value="2008">2008</option>
-							      	</select>
+						      		<label>/418.27/</label>
+						      		<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
+							      	</input>
 							    </div>
 						  	</center>
 	            		</form>
@@ -1009,26 +1000,6 @@
 			    }
 			});
 		}
-    function pembayaran_add(btn){
-        var frm = $('#id_form_pembayaran');
-         if (frm.parsley().validate()){
-            frm.ajaxSubmit({
-             success: function(response) {  // on success..
-                var respon = $.parseJSON(response);  
-			        if(respon.success){
-	                  toastr["success"](respon.pesan)
-	                  window.location.href= "";
-	              	}
-	              	else{
-	                  	toastr["error"](respon.pesan)
-	                }
-                },
-                error: function(data) {       
-                  toast_server_error()
-                }
-              });
-            }
-      }
 	</script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.js' %}"></script>
@@ -1092,20 +1063,7 @@
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         }
-    function sk_imb_add(btn){
-        var frm = $('#id_form_sk');
-         if (frm.parsley().validate()){
-            frm.ajaxSubmit({
-             success: function(response) {  // on success..
-                var res = $.parseJSON(response);  
-                $("#edit_skizin").modal('hide');
-                },
-                error: function(data) {       
-                  toast_server_error()
-                }
-              });
-            }
-      }
+
 
     </script>
 {% endblock %}
@@ -1168,7 +1126,7 @@
 		          </form>
 		      	</div>
 		      	<div class="modal-footer">
-		      		<button onclick="sk_imb_add(this)" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+		      		<button onclick="sk_add(this)" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
                     <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
                 </div>
 		    </div>
