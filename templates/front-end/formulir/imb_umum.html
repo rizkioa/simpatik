@@ -274,160 +274,170 @@
         });
 
     function next_tab(btn){
-      var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
-      var frm = $('form[name="step'+ index +'"]');
-        if (index==3) {
-          var parameter = $('#id_parameter_bangunan').css('display')
-          if (parameter == "none") {
-              var obj = $('form[id="id_jenis"]');
-              obj.parsley().validate();
-              if (obj.parsley().isValid()) {
+      var pengajuan_id = $.cookie('id_pengajuan')
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+        success: function (response){
+          var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+          var frm = $('form[name="step'+ index +'"]');
+            if (index==3) {
+              var parameter = $('#id_parameter_bangunan').css('display')
+              if (parameter == "none") {
+                  var obj = $('form[id="id_jenis"]');
+                  obj.parsley().validate();
+                  if (obj.parsley().isValid()) {
+                    $(".tab-content").mLoading();
+                    $(btn).attr('disabled', 'disabled')
+                      $.ajax({
+                        type: obj.attr('method'),
+                        url: obj.attr('action'),
+                        data: obj.serialize(),
+                        success: function (response){
+                          respon = $.parseJSON(response)
+                            $(btn).removeAttr('disabled')
+                            if(respon.success){
+                              toastr["success"](respon.pesan)
+                              $(".tab-content").mLoading('hide');
+                              tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+                              $(tab_index).tab('show')
+                            }
+                            else{
+                              var a = Object.keys(respon);
+                              for (var i = 0; i < a.length; i++){
+                                $("#"+a[i]+"").addClass("has-error");
+                              }
+                              $(".tab-content").mLoading('hide');
+                            }
+                        },
+                        error: function(response){
+                          $(".tab-content").mLoading('hide');
+                          $(btn).removeAttr('disabled')
+                          toastr["error"]("Terjadi kesalahan pada koneksi server.")
+                        }
+                      });
+                    }
+              }
+              else{
+                var frm = $('form[name="step3"]');
+                for (var i = 0; i < frm.length; i++){      
+                  var obj = $('form[id="'+frm[i].id+'"]');
+                  obj.parsley().validate();
+                  if (obj.parsley().isValid()) {
+                    $(".tab-content").mLoading();
+                    $(btn).attr('disabled', 'disabled')
+                      $.ajax({
+                        type: obj.attr('method'),
+                        url: obj.attr('action'),
+                        data: obj.serialize(),
+                        success: function (response){
+                          respon = $.parseJSON(response)
+                            $(btn).removeAttr('disabled')
+                            if(respon.success){
+                              toastr["success"](respon.pesan)
+                              $(".tab-content").mLoading('hide');
+                              tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+                              $(tab_index).tab('show')
+                            }
+                            else{
+                              var a = Object.keys(respon);
+                              for (var i = 0; i < a.length; i++){
+                                $("#"+a[i]+"").addClass("has-error");
+                              }
+                              $(".tab-content").mLoading('hide');
+                            }
+                        },
+                        error: function(response){
+                          $(".tab-content").mLoading('hide');
+                          $(btn).removeAttr('disabled')
+                          toastr["error"]("Terjadi kesalahan pada koneksi server.")
+                        }
+                      });
+                    }
+                }
+              }      
+            }else{
+            frm.parsley().validate();
+              if (frm.parsley().isValid()) {
+                // $(".tab-content #tab"+index).mask('loading')
                 $(".tab-content").mLoading();
                 $(btn).attr('disabled', 'disabled')
-                  $.ajax({
-                    type: obj.attr('method'),
-                    url: obj.attr('action'),
-                    data: obj.serialize(),
-                    success: function (response){
-                      respon = $.parseJSON(response)
-                        $(btn).removeAttr('disabled')
-                        if(respon.success){
-                          toastr["success"](respon.pesan)
-                          $(".tab-content").mLoading('hide');
-                          tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-                          $(tab_index).tab('show')
-                        }
-                        else{
-                          var a = Object.keys(respon);
-                          for (var i = 0; i < a.length; i++){
-                            $("#"+a[i]+"").addClass("has-error");
-                          }
-                          $(".tab-content").mLoading('hide');
-                        }
-                    },
-                    error: function(response){
-                      $(".tab-content").mLoading('hide');
+                $.ajax({
+                  type: frm.attr('method'),
+                  url: frm.attr('action'),
+                  data: frm.serialize(),
+                  success: function (response){
+                    respon = $.parseJSON(response)
                       $(btn).removeAttr('disabled')
-                      toastr["error"]("Terjadi kesalahan pada koneksi server.")
-                    }
-                  });
-                }
-          }
-          else{
-            var frm = $('form[name="step3"]');
-            for (var i = 0; i < frm.length; i++){      
-              var obj = $('form[id="'+frm[i].id+'"]');
-              obj.parsley().validate();
-              if (obj.parsley().isValid()) {
-                $(".tab-content").mLoading();
-                $(btn).attr('disabled', 'disabled')
-                  $.ajax({
-                    type: obj.attr('method'),
-                    url: obj.attr('action'),
-                    data: obj.serialize(),
-                    success: function (response){
-                      respon = $.parseJSON(response)
-                        $(btn).removeAttr('disabled')
-                        if(respon.success){
-                          toastr["success"](respon.pesan)
-                          $(".tab-content").mLoading('hide');
-                          tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-                          $(tab_index).tab('show')
-                        }
-                        else{
-                          var a = Object.keys(respon);
-                          for (var i = 0; i < a.length; i++){
-                            $("#"+a[i]+"").addClass("has-error");
+                      // alert(respon);
+                      // console.log(respon.success);
+                      if(respon.success){
+                        toastr["success"](respon.pesan)
+                        // console.log(respon.data)
+                        // console.log(respon.data.length)
+                        // $.cookie("keys", "value"); set cookie
+                          
+                        for (var i = 0; i < respon.data.length; i++){
+                          var key = Object.keys(respon.data[i]); // Mencari key json
+                          // console.log(key[0]);
+                          // if (key[0]= "status_upload") {
+                          //   $("#npwp_perusahaan").hide(1000)
+
+                          // }else{
+                          var val = respon.data[i][key[0]] // mencari value json
+                            // console.log(key[0]+"_konfirmasi");
+                          var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+
+                          $(id).text(val);
+                          // }
+                          // untuk sementara
+                          if(key[0] === "jenis_legalitas_perubahan"){
+                            $('#konfirmasi_legalitas_perubahan').hide();
                           }
-                          $(".tab-content").mLoading('hide');
+                          else{
+                            $('#konfirmasi_legalitas_perubahan').show();
+                          }
                         }
-                    },
-                    error: function(response){
-                      $(".tab-content").mLoading('hide');
-                      $(btn).removeAttr('disabled')
-                      toastr["error"]("Terjadi kesalahan pada koneksi server.")
-                    }
-                  });
-                }
-            }
-          }      
-        }else{
-        frm.parsley().validate();
-          if (frm.parsley().isValid()) {
-            // $(".tab-content #tab"+index).mask('loading')
-            $(".tab-content").mLoading();
-            $(btn).attr('disabled', 'disabled')
-            $.ajax({
-              type: frm.attr('method'),
-              url: frm.attr('action'),
-              data: frm.serialize(),
-              success: function (response){
-                respon = $.parseJSON(response)
-                  $(btn).removeAttr('disabled')
-                  // alert(respon);
-                  // console.log(respon.success);
-                  if(respon.success){
-                    toastr["success"](respon.pesan)
-                    // console.log(respon.data)
-                    // console.log(respon.data.length)
-                    // $.cookie("keys", "value"); set cookie
-                      
-                    for (var i = 0; i < respon.data.length; i++){
-                      var key = Object.keys(respon.data[i]); // Mencari key json
-                      // console.log(key[0]);
-                      // if (key[0]= "status_upload") {
-                      //   $("#npwp_perusahaan").hide(1000)
-
-                      // }else{
-                      var val = respon.data[i][key[0]] // mencari value json
-                        // console.log(key[0]+"_konfirmasi");
-                      var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
-
-                      $(id).text(val);
-                      // }
-                      // untuk sementara
-                      if(key[0] === "jenis_legalitas_perubahan"){
-                        $('#konfirmasi_legalitas_perubahan').hide();
+                        // $( ".tab-content #tab"+index ).unmask()
+                        $(".tab-content").mLoading('hide');
+                        tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+                        $(tab_index).tab('show')
                       }
                       else{
-                        $('#konfirmasi_legalitas_perubahan').show();
+                        // console.log("error")
+                        // console.log(respon);
+                        // console.log(typeof respon);
+                        var a = Object.keys(respon);
+                        // console.log(respon['nama_lengkap'][0]['message']);
+                        // console.log(a.length);
+                        for (var i = 0; i < a.length; i++){
+                          // console.log(a[i]);
+                          // console.log(respon[a[i]]);
+                          var field = a[i].replace("_", " ");
+                          toastr["error"](field+", "+respon[a[i]][0]['message'])
+                          $("#"+a[i]+"").addClass("has-error");
+                          // console.log($("#"+a[i]+"").addClass("parsley-error"));
+                        }
+                        // $( ".tab-content #tab"+index ).unmask()
+                        $(".tab-content").mLoading('hide');
                       }
-                    }
+                  },
+                  error: function(response){
+                    alert(response)
                     // $( ".tab-content #tab"+index ).unmask()
                     $(".tab-content").mLoading('hide');
-                    tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-                    $(tab_index).tab('show')
+                    $(btn).removeAttr('disabled')
+                    toastr["error"]("Terjadi kesalahan pada koneksi server.")
                   }
-                  else{
-                    // console.log("error")
-                    // console.log(respon);
-                    // console.log(typeof respon);
-                    var a = Object.keys(respon);
-                    // console.log(respon['nama_lengkap'][0]['message']);
-                    // console.log(a.length);
-                    for (var i = 0; i < a.length; i++){
-                      // console.log(a[i]);
-                      // console.log(respon[a[i]]);
-                      var field = a[i].replace("_", " ");
-                      toastr["error"](field+", "+respon[a[i]][0]['message'])
-                      $("#"+a[i]+"").addClass("has-error");
-                      // console.log($("#"+a[i]+"").addClass("parsley-error"));
-                    }
-                    // $( ".tab-content #tab"+index ).unmask()
-                    $(".tab-content").mLoading('hide');
-                  }
-              },
-              error: function(response){
-                alert(response)
-                // $( ".tab-content #tab"+index ).unmask()
-                $(".tab-content").mLoading('hide');
-                $(btn).removeAttr('disabled')
-                toastr["error"]("Terjadi kesalahan pada koneksi server.")
-              }
-          });
+              });
+            }
+          }
+        },
+        error: function (response){
+          console.log('terjadi kesalahan')
         }
-      }
-    };
+      })
+    }
 
 
     document.querySelector('#alert').onclick = function(){
