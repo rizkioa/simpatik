@@ -360,11 +360,8 @@ urlpatterns = [
     url(r'^layanan/penggilingan-padi-&-huller/data-mesin-perusahaan/(?P<id_pengajuan>[0-9]+)$', huller.load_data_mesin_detilhuller , name='load_data_mesin_detilhuller'),
     url(r'^layanan/penggilingan-padi-&-huller/selesai/$', huller.detilhuller_done , name='detilhuller_done'),
     # ++++++++++++++++++++++++ end for ajax Huller ++++++++++++++++++++++
-<<<<<<< HEAD
     
     url(r'^cek-detil-izin/(?P<id_pengajuan_>[0-9]+)$', views.cek_detil_izin , name='cek_detil_izin'),
-=======
-
     # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
     url(r'^izin/pembayaran/save$', pembayaran.detil_pembayaran_save, name='detil_pembayaran_save'),
     # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
@@ -372,6 +369,4 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
     url(r'^izin/luas-tanah-tanah-yang-disetujui/save$', ippt_rumah.luas_tanah_yang_disetujui_save, name='luas_tanah_yang_disetujui_save'),
     # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
-    
->>>>>>> 19ca270a1a395ee580f95c3524e6064f8c1214bd
     ]

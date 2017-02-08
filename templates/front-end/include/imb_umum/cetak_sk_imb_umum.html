@@ -42,6 +42,8 @@
 	    .subpage {
 	        padding: 0.5cm;
 	        /*border: 5px red solid;*/
+	        padding-left: :40px;
+	        padding-right:40px;
 	        height: 257mm;
 	        /*outline: 2cm #FFEAEA solid;*/
 	    }
@@ -90,7 +92,7 @@
 		    border: 1px solid black;
 		}
 	    .font {
-	        font-size: 12px;
+	        font-size: 11px;
 	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
 	    }
 	    #print-modal {
@@ -123,14 +125,18 @@
 		    border-radius: 8px;
 		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 		}
+		.sk-justify {
+		    text-align: justify;
+		    text-justify: inter-word;
+		}
 		@media print {
 		  .hidden-print {
 		    display: none !important;
 		  }
 		}
-		th, td {
+/*		th, td {
 		    padding: 5px;
-		}
+		}*/
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 	<script type="text/javascript">
@@ -142,445 +148,1092 @@
 	</script>
 	{% endif %}
 </head>
-<body id="body">
-{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
-	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
-		<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
-			<img src="{% static 'images/icon-print.png' %}">
-		</a>
-		<br>
-		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
-			<img src="{% static 'images/icon-close.png' %}">
-		</a>
-	</div>
-{% endif %}
-	<div class="book">
-	    <div class="page">
-	        <div class="subpage">
-	        	<table>
-	        		<tr>
-	        			<td></td>
-	        		</tr>
-	        	</table>
-	        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
-	        		<tr>
-	        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
-	        			<td>
-	        				<center>
-	        					<p>
-	        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
-	        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
-	        						Email : bpmp2tsp@kedirikab.go.id   Website : kedirikab.go.id</font><br>
-	        						<font style="font-size: 20x;">KEDIRI</font>
-	        					</p>
-	        				</center>
-	        			</td>
-	        		</tr>
-	        	</table>
-	        	<hr class="style2">
-	        	<center>
-	        		<font style="font-size: 20px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL <br>DAN
-					PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br>
-	        		<font style="font-size: 20px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
-	        	</center>
-	        	<center>
-	        		<font>TENTANG<br>
-						PEMBERIAN IZIN MENDIRIKAN BANGUNAN
-	        		</font><br>
-	        		<font>
-	        			KEPALA DINAS PENANAMAN MODAL DAN<br>
-						PELAYANAN PERIZINAN TERPADU SATU PINTU,
-	        		</font>
-	        	</center>
-	        	<table width="100%" border="0">
-	        	<tr>
-	        		<td style="vertical-align: top;padding-top: 20px;">Menimbang</td>
-	        		<td style="vertical-align: top;padding-top: 20px;">:</td>
-	        		<td style="vertical-align: top;padding-top: 20px;">a.</td>
-	        		<td style="width: 700px;"><p>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }}  perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk Papan Bertiang, yang terletak di {{letak_pemasangan|default_if_none:"-"}};</p></td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">b.</td>
-	        		<td>bahwa sesuai Berita Acara Hasil Pemeriksaan Tim Pemberi Pertimbangan Perizinan Kabupaten Kediri yang memutuskan dan tidak keberatan untuk diproses perizinannya ;
-	        		</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">c.</td>
-	        		<td>bahwa berdasarkan pertimbangan sebagaimana dimaksud dalam huruf a dan huruf b, perlu menetapkan Keputusan Kepala Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu tentang Pemberian Izin Mendirikan Bangunan.
-					</td>
-	        	</tr>
-	        	<tr>
-	        		<td style="vertical-align: top;padding-top: 5px;">Mengingat</td>
-	        		<td style="vertical-align: top;padding-top: 5px;">:</td>
-	        		<td style="vertical-align: top;padding-top: 5px;">1.</td>
-	        		<td>Undang-Undang Nomor 12 Tahun 1950 tentang Pembentukan Daerah-daerah Kabupaten dalam Lingkungan Provinsi Jawa Timur ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">2.</td>
-	        		<td>Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">3.</td>
-	        		<td>Undang-Undang Nomor 38 Tahun 2004 tentang Jalan ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">4. </td>
-	        		<td>Undang-Undang Nomor 26 Tahun 2007 tentang Penataan Ruang ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">5.</td>
-	        		<td>Undang-Undang Nomor 25 Tahun 2009 tentang Pelayanan Publik ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">6. </td>
-	        		<td>Undang-Undang Nomor 28 Tahun 2009 tentang Pajak Daerah dan Retribusi Daerah ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">7.</td>
-	        		<td>Undang-Undang Nomor 12 Tahun 2011 tentang Pembentukan Peraturan Perundang-undangan ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">8.</td>
-	        		<td>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">9.</td>
-	        		<td>Peraturan Pemerintah Nomor 36 Tahun 2005 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung  ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">10.</td>
-	        		<td>Peraturan Pemerintah Nomor 38 Tahun 2007 tentang Pembagian Urusan Pemerintahan antara Pemerintah, Pemerintahan Daerah Provinsi, dan Pemerintahan Daerah Kabupaten/Kota ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">11.</td>
-	        		<td>Peraturan Menteri Pekerjaan Umum Nomor 20/PRT/M/2010 tentang Pedoman Pemanfatan dan Penggunaan Bagian-Bagian Jalan; </td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">12.</td>
-	        		<td>Peraturan Menteri Pekerjaan Umum Nomor 05/PRT/M/2016 tentang Izin Mendirikan Bangunan;</td>
-	        	</tr>
-	        </table>
-	        </div>
-	    </div>
-		<div class="page">
-			<div class="subpage">
-			<table width="100%" border="0">
-	        	<tr>
-	        		<td width="120"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">13.</td>
-	        		<td style="width: 700px;">Peraturan Daerah Kabupaten Kediri Nomor 2 Tahun 2000 tentang  Penyidik Pegawai Negeri Sipil di Lingkungan Pemerintah Kabupaten Kediri ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">14.</td>
-	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 5 Tahun 2011 tentang Jalan ;</td>
-	        	</tr>
-
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">15.</td>
-	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 2011 tentang Bangunan Gedung di Kabupaten Kediri ;</td>
-	        	</tr>
-
-
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">16.</td>
-	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 14 Tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010-2030 ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">17.</td>
-	        		<td>Peraturan Daerah Nomor 4 Tahun 2012 tentang Retribusi Izin Mendirikan Bangunan ;</td>
-	        	</tr>
-	        	<tr>
-	        		<td></td>
-	        		<td style="vertical-align: top;padding-top: 5px;"></td>
-	        		<td style="vertical-align: top;padding-top: 5px;">18.</td>
-	        		<td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu Kabupaten Kediri sebagaimana telah diubah dengan Peraturan Bupati Nomor 17 Tahun 2016.</td>
-	        	</tr>
-	        	</table>
-	        	<center>
-	        		<font><b>MEMUTUSKAN :</b>
-	        		</font>
-	        	</center>
-	        	<br>
-	        	<p>Menetapkan :</p>
-	        	<table width="100%" border="0">
-	        		<tr>
-	        			<td width="10">KESATU</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Memberikan Izin Mendirikan Bangunan untuk PAPAN BERTIANG:</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" align="left" style="padding-left: 103px;width: 275px;">Nama</td>
-	        			<td width="10">:</td>
-	        			<td>{{perusahaan.nama_perusahaan}}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" style="padding-left: 103px;" align="left" width="80">Alamat Kantor</td>
-	        			<td width="10">:</td>
-	        			<td>{{perusahaan.alamat_perusahaan}} Desa, {{ perusahaan.desa }} Kec. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDUA</td>
-	        			<td style="vertical-align: top;padding-top: 5px;">:</td>
-	        			<td  colspan="3" width="2000">Bangunan PAPAN BERTIANG yang diizinkan  sebagaimana dimaksud dalam diktum KESATU, adalah :</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" style="padding-left: 103px;" align="left" width="120">a. Ukuran</td>
-	        			<td width="10">:</td>
-	        			<td>{{ukuran}}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" style="padding-left: 103px;" align="left" width="120">b. Jumlah</td>
-	        			<td width="10">:</td>
-	        			<td>{{pengajuan.jumlah|default_if_none:"-" }} Unit</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" style="padding-left: 103px;" align="left" width="140">c. Bertempat di</td>
-	        			<td width="10">:</td>
-	        			<td></td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" align="left" width="140"></td>
-	        			<td width="10">:</td>
-	        			<td>1) Jalan / Dusun : {{ pengajuan.lokasi_pasang|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" align="left" width="140"></td>
-	        			<td width="10">:</td>
-	        			<td>2) Desa/Kelurahan : {{ pengajuan.desa|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" align="left" width="140"></td>
-	        			<td width="10">:</td>
-	        			<td>3) Kecamatan : {{ pengajuan.desa.kecamatan|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" align="left" width="140"></td>
-	        			<td width="10">:</td>
-	        			<td>4) Klasifikasi jalan : {{ pengajuan.klasifikasi_jalan|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KETIGA</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Bangunan, sebagaimana dimaksud dalam diktum KEDUA  terletak di atas tanah :</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" style="padding-left: 103px;" align="left" width="120">a. Milik</td>
-	        			<td width="10">:</td>
-	        			<td></td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="3" style="padding-left: 103px;" align="left" width="140">b. Dengan batas tanah</td>
-	        			<td width="10">:</td>
-	        			<td></td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="2" align="left" width="140"></td>
-	        			<td  width="160">1. Sebelah Utara </td>
-	        			<td width="10">:</td>
-	        			<td>{{ pengajuan.batas_utara|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="2" align="left" width="140"></td>
-	        			<td>2. Sebelah Timur</td>
-	        			<td width="10">:</td>
-	        			<td>{{ pengajuan.batas_timur|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="2" align="left" width="140"></td>
-	        			<td>3. Sebelah Selatan</td>
-	        			<td width="10">:</td>
-	        			<td>{{ pengajuan.batas_selatan|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td colspan="2" align="left" width="140"></td>
-	        			<td>4. Sebelah Barat </td>
-	        			<td width="10">:</td>
-	        			<td>{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KEEMPAT</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Pemegang izin berkewajiban :</td>
-	        		</tr>
-	        		<tr>
-	        			<td ></td>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">a.</td>
-	        			<td colspan="3">Konstruksi Papan Bertiang harus sesuai standart pemasangan reklame sehingga tidak ada kekhawatiran terjadinya kerusakan ;</td>
-	        		</tr>
-	        		<tr>
-	        			<td ></td>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">b.</td>
-	        			<td colspan="3">Mengadakan pengecekan  bangunan papan secara rutin dan berkala  ;</td>
-	        		</tr>
-	        		<tr>
-	        			<td ></td>
-	        			<td width="10" style="vertical-align: top;padding-top: 5px;">c.</td>
-	        			<td colspan="3">Mengurus perizinan reklame.</td>
-	        		</tr>
-	        	</table>
-	        </div>
-	    </div>
-		<div class="page">
-			<div class="subpage">
-			<table width="100%" border="0">
-	        		<tr>
-	        			<td width="10">KELIMA</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama  5 (lima) tahun dan dapat diperpanjang.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KEENAM</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Apabila sewaktu-waktu bangunan dan tanah tersebut digunakan oleh pemerintah daerah, maka pemegang izin harus mengosongkan bangunan dan tanah dimaksud tanpa ganti rugi.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KETUJUH</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Setelah jangka waktu perizinan berakhir, bangunan dapat dibongkar dan konstruksi jalan dikembalikan seperti semula oleh pemegang izin, atau oleh penyelenggara jalan dengan biaya menjadi tanggung jawab pemegang izin.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KEDELAPAN</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU, yang bersangkutan dikenakan retribusi sebesar Rp 68.000,00 (enam puluh delapan ribu rupiah) ;</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KESEMBILAN</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Setiap bentuk perbuatan yang dilakukan oleh Pemegang izin, baik disengaja maupun yang tidak disengaja yang mengakibatkan penyimpangan dan / atau  pelanggaran dan / atau tidak dilaksanakannya terhadap ketentuan-ketentuan, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini.</td>
-	        		</tr>
-	        		<tr>
-	        			<td width="10">KESEPULUH</td>
-	        			<td style="width: 10px;">:</td>
-	        			<td  colspan="3" width="2000">Keputusan ini mulai berlaku pada tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
-	        		</tr>        		
-	        	</table>
-	        	<br>
-	        	<div style="">
-	        	</div>
-	        	<table width="100%" border="0" class="font">
-	        		<tr>
-	        			<td colspan="3">
-		        			<table border="0" align="left">
-		  						<tr>
-		  							<td>
-		  							<br><br>
-		  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
-		  							</td>
-		  						</tr>
-		  					</table>
-	        			</td>
-	        			<td width="50%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-	        				<p style="font-size:10px; padding-left: 20%;">
-			                    <font size="2pt">Ditetapkan  di  Kediri <br> 
-									pada tanggal</font><br></p>
-			                    <p style="font-size:10px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-			                    <br>
-			                    <br>
-			                    <br>
-			                    <br>
-			                    <p align="center"><b>{{ nama_kepala_dinas }}</b></u><br>
-			                    Pembina Tk.l<br>
-			                    NIP: {{nip_kepala_dinas}}</p>
-			            </td>
-	        		</tr>
-	        		<tr>
-						<td><br><br><br><br>
-							<table border="0" align="left">
-								<tr>
-									<td colspan="2">Salinan keputusan ini disampaikan kepada :</td><br>
-								</tr>
-								<tr>
-									<td>Yth. </td>
-									<td>1. Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>2. Sdr. Kepala Dinas PU Kabupaten Kediri ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>3. Sdr. Kepala Dispenda Kabupaten Kediri ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>4. Sdr. Kepala D K P  Kabupaten Kediri ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>5. Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>6. Sdr. Kepala Bagian Hukum Kabupaten Kediri ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>7. Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>8. Sdr. Kepala Desa {{pengajuan.desa}} ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>9. Sdr. Dir. {{perusahaan.nama_perusahaan}} {{perusahaan.alamat_perusahaan}} Desa, {{ perusahaan.desa }} Kec. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
-								</tr>   
-							</table>         
+{% if pengajuan.jenis_bangunan.kode == 'BK23' %}
+	<body id="body">
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+		<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+			<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+				<img src="{% static 'images/icon-print.png' %}">
+			</a>
+			<br>
+			<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+				<img src="{% static 'images/icon-close.png' %}">
+			</a>
+		</div>
+	{% endif %}
+		<div class="book">
+		    <div class="page">
+		        <div class="subpage">
+		        	<table>
+		        		<tr>
+		        			<td></td>
+		        		</tr>
+		        	</table>
+		        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+		        		<tr>
+		        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
+		        			<td>
+		        				<center>
+		        					<p>
+		        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
+		        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
+		        						Email : bpmp2tsp@kedirikab.go.id   Website : kedirikab.go.id</font><br>
+		        						<font style="font-size: 20x;">KEDIRI</font>
+		        					</p>
+		        				</center>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	<hr class="style2">
+		        	<center>
+		        		<font style="font-size: 20px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL <br>DAN
+						PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br>
+		        		<font style="font-size: 20px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+		        	</center>
+		        	<center>
+		        		<font>TENTANG<br>
+							PEMBERIAN IZIN MENDIRIKAN BANGUNAN
+		        		</font><br><br>
+		        		<font>
+		        			KEPALA DINAS PENANAMAN MODAL DAN<br>
+							PELAYANAN PERIZINAN TERPADU SATU PINTU,
+		        		</font>
+		        	</center><br>
+		        	<table width="100%" border="0" class="sk-justify">
+		        	<tr>
+		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} DESA {{ pengajuan.pemohon.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.pemohon.desa.kecamatan|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
+		        		</td>
+		        	</tr>
+		        	{% if sk_imb.sk_menimbang_a %}
+		        	<tr>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">b.</td>
+		        		<td>{{sk_imb.sk_menimbang_a}}</td>
+		        	</tr>
+		        	{% endif %}
+		        	{% if sk_imb.sk_menimbang_b %}
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">c.</td>
+		        		<td>{{sk_imb.sk_menimbang_b}}
 						</td>
-	        		</tr>
-	        	</table>
-	        </div>    
-	    </div>
-	</div>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
-	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
-	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
-	<script type="text/javascript">
-		function Exit() {
-		    var x=confirm('Are You sure want to exit:');
-		    if(x) window.close();
-	    }
-	    jQuery('#qrcodeTable').qrcode({
-			text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
-			width 	: 80,
-			height 	: 80,
-		});	
-	</script>
-</body>
+		        	</tr>
+		        	{% endif %}
+		        	<tr>
+		        		<td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">1.</td>
+		        		<td>Undang-Undang Nomor 28 Tahun 1999 tentang Penyelenggaraan Negara yang Bersih dan Bebas dari Korupsi, Kolusi dan Nepotisme ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">2.</td>
+		        		<td>Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">3.</td>
+		        		<td>Undang-Undang Nomor 38 Tahun 2004 tentang Jalan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">4. </td>
+		        		<td>Undang-Undang Nomor 26 Tahun 2007 tentang Penataan Ruang ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">5.</td>
+		        		<td>Undang-Undang Nomor 25 Tahun 2009 tentang Pelayanan Publik ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">6. </td>
+		        		<td>Undang-Undang Nomor 28 Tahun 2009 tentang Pajak Daerah dan Retribusi Daerah ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">7.</td>
+		        		<td>Undang-Undang Nomor 32 Tahun 2009 tentang Perlindungan dan Pengelolaan Lingkungan Hidup ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">8.</td>
+		        		<td>Undang-Undang Pemerintah Nomor 36 Tahun 2009 tentang kesehatan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">9.</td>
+		        		<td>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintah Daerah ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">10.</td>
+		        		<td>Peraturan Pemerintah Nomor 36 Tahun 2005 tentang Peraturan Pelaksanaan Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">11.</td>
+		        		<td>Peraturan Pemerintah Nomor 79 Tahun 2005 tentang Pedoman Pembinaan dan Pengawasan Penyelenggaraan Pemerintahan Daerah ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">12.</td>
+		        		<td>Peraturan Menteri Pekerjaan Umum dan Perumahan Rakyat Nomor 05/PRT/M/2016 tentang Izin Mendirikan Bangunan;</td>
+		        	</tr>
+		        </table>
+		        </div>
+		    </div>
+			<div class="page">
+				<div class="subpage">
+				<table width="100%" border="0" class="sk-justify">
+		        	<tr>
+		        		<td width="120"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">13.</td>
+		        		<td style="width: 700px;">Peraturan Menteri Dalam Negeri Nomor 32 Tahun 2010 tentang Pedoman Pemebrian Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">14.</td>
+		        		<td>Peraturan menteri Kesehatan Republik Indonesia Nomor 9 Tahun 2014 tentang Klinik ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">15.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 2 Tahun 2000 tentang Penyidik Pegawai Negeri Sipil di Lingkungan Pemerintah Kabupaten Kediri ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">16.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 5 Tahun 2009 tenteng Sistim Kesehatan di Kabupaten Kediri ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">17.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 5 Tahun 2011 tentang Jalan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">18.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 2011 tentang Bangunan Gedung di Kabupaten Kediri ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">19.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 14 Tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010-2030 ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">20.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 4 Tahun 2012 tentang Retribusi Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">21.</td>
+		        		<td>Peraturan Bupati Kediri Nomor 7 Tahun 2016 tentang Perizinan Klinik ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">22.</td>
+		        		<td>Peraturan Bupati Kediri Nomor 1 Tahun 2013 tentang Petunjuk Pelaksanaan Peraturan Daerah Kabupaten Kediri Nomor 4 Tahun 2012 tentang Retribusi Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">23.</td>
+		        		<td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu Pada Badan Penanaman MOdal dan Pelayanan Perizinan Terpadu Satu Pintu Kabupaten Kediri sebagaimana telah diubah dengan Peraturan Bupati Kediri Nomor 17 Tahun 2016.</td>
+		        	</tr>
+		        </table>
+		        <br>
+		        	<center>
+		        		<font><b>MEMUTUSKAN :</b>
+		        		</font>
+		        	</center>
+		        	<p>Menetapkan :</p>
+		        	<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td width="30" style="width: 105px;">KESATU</td>
+		        			<td width="10" >:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
+		        			<td></td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">a. Nama</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;">b. Tempat/Tgl. Lahir</td>
+		        			<td width="10">:</td>
+		        			{% if pengajuan.pemohon.tempat_lahir %}
+		        			<td>{{pengajuan.pemohon.tempat_lahir|default_if_none:""}}/{{pengajuan.pemohon.tanggal_lahir|date:"d F Y"|default_if_none:""}}</td>
+		        			{% else %}
+		        			<td></td>
+		        			{% endif %}
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;">c. Pekerjaan</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.pekerjaan}}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.pemohon.alamat}} DESA {{ pengajuan.pemohon.desa }} KEC. {{ pengajuan.pemohon.desa.kecamatan }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDUA</td>
+		        			<td style="vertical-align: top;padding-top: 5px;">:</td>
+		        			<td  colspan="3">Bangunan sebagaimana dimaksud dalam diktum KESATU, adalah :</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left" width="150">a. Seluas</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.luas_bangunan}} M&sup2;</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left" width="140">b. Bertempat di</td>
+		        			<td width="10">:</td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="120">1) Jalan / Dusun</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.lokasi|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">2) Desa/Kelurahan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.desa|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">3) Kecamatan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.desa.kecamatan|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">4) Klasifikasi jalan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.klasifikasi_jalan|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;width: 160px;" align="left"></td>
+		        			<td width="10"></td>
+		        			<td></td>
+		        		</tr>
+		        	</table>
+		        </div>
+		    </div>
+			<div class="page">
+				<div class="subpage">
+		        	<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td style="width: 105px;">KETIGA</td>
+		        			<td style="width: 10px;">:</td>
+		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left">a. Milik</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.pemohon|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 119px;" align="left">
+		        			<table border="0">
+			        			<tr>
+			        				<td>b.</td>
+			        				<td>Nomor Sertifikat/</td>
+			        			</tr>
+			        			<tr>
+			        				<td colspan="2" style="padding-left: 19px;" align="left">Petok/Persil</td>
+			        			</tr>
+		        			</table>
+		        			</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.luas_tanah|default_if_none:"-" }} M&sup2;</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left" width="140">d. Dengan batas tanah</td>
+		        			<td width="10">:</td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;width: 160px;" align="left">1. Sebelah Utara </td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_utara|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">2. Sebelah Timur</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_timur|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">3. Sebelah Selatan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_selatan|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">4. Sebelah Barat </td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
+		        		</tr>
+		        	</table>
+		        	<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td colspan="3">Ketentuan Pemberian Izin Mendirikan Bangunan, sebagaimana dimaksud dalam diktum KEDUA, ditetapkan sebagai berikut :</td>
+		        		</tr>
+		        		<tr>
+		        			<td></td>
+		        			<td></td>
+		        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
+		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>3 M</b> dari tepi badan jalan ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>11 M</b> ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+		        			<td colspan="3">Letak bangunan pagar sebagaimana dimaksud pada huruf b yang menghadap ke jalan dan / atau berada di tepi jalan, baik depan, samping maupun belakang, dengan pasangan tertutup rapat, paling tinggi 1 (satu) meter dari permukaan tanah dan ketinggian selebihnya harus diberi celah / lubang sehingga bagian dalam dapat terlihat dari luar pagar ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+		        			<td colspan="3">Letak bangunan pagar samping sebagaimana dimaksud pada huruf b, yang tidak menghadap ke jalan dan / atau berada di tepi jalan sebatas garis RUWASJA, dengan pasangan tertutup rapat,  paling  tinggi 1 (satu)  meter dari permukaan tanah dan ketinggian selebihnya harus diberi  celah / lubang sehingga bagian dalam dapat terlihat dari luar pagar ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
+		        			<td colspan="3">Letak bangunan pagar sebagaimana dimaksud pada huruf b, yang tidak menghadap ke jalan dan / atau berada di tepi jalan, dibagian samping (selebihnya dari garis RUWASJA) dan bagian belakang dengan pasangan tertutup rapat paling tinggi 3 (tiga) meter dan selebihnya harus memakai kawat berduri atau teralis besi.	</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KELIMA</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Bangunan hanya digunakan dan dimanfaatkan sesuai izin yang diberikan.</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Selain melaksanakan ketentuan sebagaimana dimaksud dalam diktum KEEMPAT, Pemegang izin berkewajiban :</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">a.</td>
+		        			<td colspan="3">Menyediakan ruang terbuka hijau dan selalu dirawat agar tetap hijau dan sehat ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+		        			<td colspan="3">Membuat saluran dan pengolah air limbah ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+		        			<td colspan="3">Merawat dan menjaga saluran limbah sebagaimana dimaksud dalam huruf b, agar tetap berfungsi dengan baik ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+		        			<td colspan="3">Membuat atau menempatkan bak sampah ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KETUJUH</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Apabila di kemudian hari ada pelebaran jalan, trotoar, saluran air, pertamanan dan pengawasan oleh Pemerintah, maka bagi bangunan yang tidak sesuai dengan luas bangunan yang diberikan izin sebagaimana dimaksud dalam diktum KEDUA, dan bagi bangunan yang tidak sesuai dengan ketentuan pemberian izin sebagaimana dimaksud dalam diktum KEEMPAT dan KELIMA, harus dibongkar oleh pemilik bangunan / yang bersangkutan atas biaya sendiri.</td>
+		        		</tr>	
+		        	</table>
+		        </div>    
+		    </div>
+			<div class="page">
+				<div class="subpage">
+					<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEDELAPAN</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Bangunan yang tidak dibongkar oleh pemilik bangunan / yang bersangkutan  sebagaimana dimaksud dalam diktum KETUJUH, dapat dibongkar paksa oleh pejabat yang berwenang yang dibiayai oleh pemilik bangunan / yang bersangkutan setelah pemilik bangunan / yang bersangkutan mendapat peringatan tertulis dari Bupati.</td>
+		        		</tr> 	
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 4px;">KESEMBILAN</td>
+		        			<td style="vertical-align: top;padding-top: 4px;">:</td>
+		        			<td  colspan="3" width="2000">
+		        				<table border="0" class="sk-justify">
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;">a.</td>
+					        			<td colspan="3">{{sk_imb.sk_menetapkan_keenam_a}}</td>
+					        		</tr>
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+					        			<td colspan="3">Pembayaran Retribusi Izin Mendirikan Bangunan (IMB) sebagaimana dimaksud dalam huruf a, harus dibayar lunas melalui Pemegang Kas Daerah (Bendaharawan Penerima pada DPMPTSP).</td>
+					        		</tr>
+		        				</table>
+		        			</td>
+		        		</tr>  
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEPULUH</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Setiap bentuk perbuatan yang dilakukan oleh Pemegang Izin Mendirikan bangunan {{pengajuan.bangunan}} seluas {{pengajuan.luas_bangunan}} M&sup2;, baik disengaja maupun yang  tidak disengaja yang mengakibatkan penyimpangan dan / atau  pelanggaran dan / atau tidak dilaksanakannya terhadap ketentuan-ketentuan, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini. </td>
+		        		</tr> 
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEBELAS</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Keputusan ini mulai berlaku pada tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
+		        		</tr>   		
+		        	</table>
+		        	<table width="100%" border="0" class="font">
+		        		<tr>
+		        			<td colspan="3">
+			        			<table border="0" align="left">
+			  						<tr>
+			  							<td>
+			  							<br><br>
+			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+			  							</td>
+			  						</tr>
+			  					</table>
+		        			</td>
+		        			<td width="50%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:10px; padding-left: 20%;">
+				                    <font size="2pt">Ditetapkan  di  Kediri <br> 
+										pada tanggal</font><br></p>
+				                    <p style="font-size:10px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <p align="center"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
+				                    Pembina Tk.l<br>
+				                    NIP: {{nip_kepala_dinas}}</p>
+				            </td>
+		        		</tr>
+		        		<tr>
+							<td><br><br><br><br>
+								<table border="0" align="left">
+									<tr>
+										<td colspan="2">Salinan keputusan ini disampaikan kepada :</td><br>
+									</tr>
+									<tr>
+										<td>Yth. </td>
+										<td>1. Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>2. Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>3. Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>4. Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>5. Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>6. Sdr. Kepala DESA {{pengajuan.desa}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>7. Sdr. Dir. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} DESA, {{ pengajuan.pemohon.desa }} KEC. {{ pengajuan.pemohon.desa.kecamatan }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten }}</td>
+									</tr>   
+								</table>         
+							</td>
+		        		</tr>
+		        	</table>
+				</div>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
+		<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
+		<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
+		<script type="text/javascript">
+			function Exit() {
+			    var x=confirm('Are You sure want to exit:');
+			    if(x) window.close();
+		    }
+		    jQuery('#qrcodeTable').qrcode({
+				text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
+				width 	: 80,
+				height 	: 80,
+			});	
+		</script>
+	</body>
+{% else %}
+	<body id="body">
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+		<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+			<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+				<img src="{% static 'images/icon-print.png' %}">
+			</a>
+			<br>
+			<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+				<img src="{% static 'images/icon-close.png' %}">
+			</a>
+		</div>
+	{% endif %}
+		<div class="book">
+		    <div class="page">
+		        <div class="subpage">
+		        	<table>
+		        		<tr>
+		        			<td></td>
+		        		</tr>
+		        	</table>
+		        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+		        		<tr>
+		        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
+		        			<td>
+		        				<center>
+		        					<p>
+		        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
+		        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
+		        						Email : bpmp2tsp@kedirikab.go.id   Website : kedirikab.go.id</font><br>
+		        						<font style="font-size: 20x;">KEDIRI</font>
+		        					</p>
+		        				</center>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	<hr class="style2">
+		        	<center>
+		        		<font style="font-size: 20px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL <br>DAN
+						PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br>
+		        		<font style="font-size: 20px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+		        	</center>
+		        	<center>
+		        		<font>TENTANG<br>
+							PEMBERIAN IZIN MENDIRIKAN BANGUNAN
+		        		</font><br><br>
+		        		<font>
+		        			KEPALA DINAS PENANAMAN MODAL DAN<br>
+							PELAYANAN PERIZINAN TERPADU SATU PINTU,
+		        		</font>
+		        	</center><br>
+		        	<table width="100%" border="0" class="sk-justify">
+		        	<tr>
+		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} DESA {{ pengajuan.pemohon.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.pemohon.desa.kecamatan|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
+		        		</td>
+		        	</tr>
+		        	{% if sk_imb.sk_menimbang_a %}
+		        	<tr>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">b.</td>
+		        		<td>{{sk_imb.sk_menimbang_a}}</td>
+		        	</tr>
+		        	{% endif %}
+		        	{% if sk_imb.sk_menimbang_b %}
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">c.</td>
+		        		<td>{{sk_imb.sk_menimbang_b}}
+						</td>
+		        	</tr>
+		        	{% endif %}
+		        	<tr>
+		        		<td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        		<td style="vertical-align: top;padding-top: 1px;">1.</td>
+		        		<td>Undang-Undang Nomor 28 Tahun 1999 tentang Penyelenggaraan Negara yang Bersih dan Bebas dari Korupsi, Kolusi dan Nepotisme ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">2.</td>
+		        		<td>Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">3.</td>
+		        		<td>Undang-Undang Nomor 38 Tahun 2004 tentang Jalan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">4. </td>
+		        		<td>Undang-Undang Nomor 26 Tahun 2007 tentang Penataan Ruang ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">5.</td>
+		        		<td>Undang-Undang Nomor 25 Tahun 2009 tentang Pelayanan Publik ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">6. </td>
+		        		<td>Undang-Undang Nomor 28 Tahun 2009 tentang Pajak Daerah dan Retribusi Daerah ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">7.</td>
+		        		<td>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">8.</td>
+		        		<td>Peraturan Pemerintah Nomor 36 Tahun 2005 tentang Peraturan Pelaksana Undang-Undang Nomor 28 Tahun 2002 tentang Bangunan Gedung ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">9.</td>
+		        		<td>Peraturan Menteri Dalam Negeri Nomor 32 Tahun 2000 tentang Pedoman Pemberian Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">10.</td>
+		        		<td>Peraturan Menteri Pekerjaan Umum dan Perumahan Rakyat Nomor 05/PRT/M/2016 tentang Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">11.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 2 Tahun 2000 tentang  Penyidik Pegawai Negeri Sipil di Lingkungan Pemerintah Kabupaten Kediri ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">12.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 5 Tahun 2011 tentang Jalan ;</td>
+		        	</tr>
+
+		        </table>
+		        </div>
+		    </div>
+			<div class="page">
+				<div class="subpage">
+				<table width="100%" border="0" class="sk-justify">
+		        	<tr>
+		        		<td width="120"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">13.</td>
+		        		<td style="width: 700px;">Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 2011 tentang Bangunan Gedung di Kabupaten Kediri ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">14.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 14 Tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010-2030 ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">15.</td>
+		        		<td>Peraturan Daerah Kabupaten Kediri Nomor 4 Tahun 2012 tentang Retribusi Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">16.</td>
+		        		<td>Peraturan Bupati Kediri Nomor 1 Tahun 2013 tentang Petunjuk Pelaksanaan Peraturan Daerah Kabupaten Kediri Nomor 4  Tahun 2012 tentang RetrIbusi Izin Mendirikan Bangunan ;</td>
+		        	</tr>
+		        	<tr>
+		        		<td style="width: 120px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;"></td>
+		        		<td style="vertical-align: top;padding-top: 1px;">17.</td>
+		        		<td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu ;</td>
+		        	</tr>
+		        </table>
+		        <br>
+		        	<center>
+		        		<font><b>MEMUTUSKAN :</b>
+		        		</font>
+		        	</center>
+		        	<p>Menetapkan :</p>
+		        	<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td width="30" style="width: 105px;">KESATU</td>
+		        			<td width="10" >:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
+		        			<td></td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">a. Nama</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">b. Tempat/Tgl. Lahir</td>
+		        			<td width="10">:</td>
+		        			{% if pengajuan.pemohon.tempat_lahir %}
+		        			<td>{{pengajuan.pemohon.tempat_lahir|default_if_none:""}}/{{pengajuan.pemohon.tanggal_lahir|date:"d F Y"|default_if_none:""}}</td>
+		        			{% else %}
+		        			<td></td>
+		        			{% endif %}
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">c. Pekerjaan</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.pekerjaan}}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.pemohon.alamat}} DESA {{ pengajuan.pemohon.desa }} KEC. {{ pengajuan.pemohon.desa.kecamatan }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDUA</td>
+		        			<td style="vertical-align: top;padding-top: 5px;">:</td>
+		        			<td  colspan="3">Bangunan sebagaimana dimaksud dalam diktum KESATU, adalah :</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left" width="150">a. Seluas</td>
+		        			<td width="10">:</td>
+		        			<td>{{pengajuan.luas_bangunan}} M&sup2;</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left" width="140">b. Bertempat di</td>
+		        			<td width="10">:</td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="120">1) Jalan / Dusun</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.lokasi|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">2) Desa/Kelurahan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.desa|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">3) Kecamatan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.desa.kecamatan|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">4) Klasifikasi jalan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.klasifikasi_jalan|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10">KETIGA</td>
+		        			<td style="width: 10px;">:</td>
+		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left">a. Milik</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.pemohon|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 119px;" align="left">
+		        			<table border="0">
+			        			<tr>
+			        				<td>b.</td>
+			        				<td>Nomor Sertifikat/</td>
+			        			</tr>
+			        			<tr>
+			        				<td colspan="2" style="padding-left: 19px;" align="left">Petok/Persil</td>
+			        			</tr>
+		        			</table>
+		        			</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.luas_tanah|default_if_none:"-" }} M&sup2;</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 121px;" align="left" width="140">d. Dengan batas tanah</td>
+		        			<td width="10">:</td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">1. Sebelah Utara </td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_utara|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">2. Sebelah Timur</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_timur|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">3. Sebelah Selatan</td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_selatan|default_if_none:"-" }}</td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="2" align="left"></td>
+		        			<td style="padding-left: 18px;" align="left">4. Sebelah Barat </td>
+		        			<td width="10">:</td>
+		        			<td>{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
+		        		</tr>
+		        	</table>
+		        </div>
+		    </div>
+			<div class="page">
+				<div class="subpage">
+		        	<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td colspan="3">Ketentuan Pemberian Izin Mendirikan Bangunan, sebagaimana dimaksud dalam diktum KEDUA, ditetapkan sebagai berikut :</td>
+		        		</tr>
+		        		<tr>
+		        			<td></td>
+		        			<td></td>
+		        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
+		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>3 M</b> dari tepi badan jalan ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>11 M</b> ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+		        			<td colspan="3">Letak bangunan pagar sebagaimana dimaksud pada huruf b yang menghadap ke jalan dan / atau berada di tepi jalan, baik depan, samping maupun belakang, dengan pasangan tertutup rapat, paling tinggi 1 (satu) meter dari permukaan tanah dan ketinggian selebihnya harus diberi celah / lubang sehingga bagian dalam dapat terlihat dari luar pagar ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+		        			<td colspan="3">Letak bangunan pagar samping sebagaimana dimaksud pada huruf b, yang tidak menghadap ke jalan dan / atau berada di tepi jalan sebatas garis RUWASJA, dengan pasangan tertutup rapat,  paling  tinggi 1 (satu)  meter dari permukaan tanah dan ketinggian selebihnya harus diberi  celah / lubang sehingga bagian dalam dapat terlihat dari luar pagar ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
+		        			<td colspan="3">Letak bangunan pagar sebagaimana dimaksud pada huruf b, yang tidak menghadap ke jalan dan / atau berada di tepi jalan, dibagian samping (selebihnya dari garis RUWASJA) dan bagian belakang dengan pasangan tertutup rapat paling tinggi 3 (tiga) meter dan selebihnya harus memakai kawat berduri atau teralis besi.	</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KELIMA</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Bangunan hanya digunakan dan dimanfaatkan sesuai izin yang diberikan.</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Selain melaksanakan ketentuan sebagaimana dimaksud dalam diktum KEEMPAT, Pemegang izin berkewajiban :</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">a.</td>
+		        			<td colspan="3">Menyediakan ruang terbuka hijau dan selalu dirawat agar tetap hijau dan sehat ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+		        			<td colspan="3">Membuat saluran dan pengolah air limbah ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+		        			<td colspan="3">Merawat dan menjaga saluran limbah sebagaimana dimaksud dalam huruf b, agar tetap berfungsi dengan baik ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td ></td>
+		        			<td ></td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+		        			<td colspan="3">Membuat atau menempatkan bak sampah ;</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KETUJUH</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Apabila di kemudian hari ada pelebaran jalan, trotoar, saluran air, pertamanan dan pengawasan oleh Pemerintah, maka bagi bangunan yang tidak sesuai dengan luas bangunan yang diberikan izin sebagaimana dimaksud dalam diktum KEDUA, dan bagi bangunan yang tidak sesuai dengan ketentuan pemberian izin sebagaimana dimaksud dalam diktum KEEMPAT dan KELIMA, harus dibongkar oleh pemilik bangunan / yang bersangkutan atas biaya sendiri.</td>
+		        		</tr>
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEDELAPAN</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Bangunan yang tidak dibongkar oleh pemilik bangunan / yang bersangkutan  sebagaimana dimaksud dalam diktum KETUJUH, dapat dibongkar paksa oleh pejabat yang berwenang yang dibiayai oleh pemilik bangunan / yang bersangkutan setelah pemilik bangunan / yang bersangkutan mendapat peringatan tertulis dari Bupati.</td>
+		        		</tr> 		
+		        	</table>
+		        </div>    
+		    </div>
+			<div class="page">
+				<div class="subpage">
+					<table width="100%" border="0" class="sk-justify">
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 4px;">KESEMBILAN</td>
+		        			<td style="vertical-align: top;padding-top: 4px;">:</td>
+		        			<td  colspan="3" width="2000">
+		        				<table border="0" class="sk-justify">
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;">a.</td>
+					        			<td colspan="3">{{sk_imb.sk_menetapkan_keenam_a}}</td>
+					        		</tr>
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+					        			<td colspan="3">Pembayaran Retribusi Izin Mendirikan Bangunan (IMB) sebagaimana dimaksud dalam huruf a, harus dibayar lunas melalui Pemegang Kas Daerah (Bendaharawan Penerima pada DPMPTSP).</td>
+					        		</tr>
+		        				</table>
+		        			</td>
+		        		</tr>  
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEPULUH</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Setiap bentuk perbuatan yang dilakukan oleh Pemegang Izin Mendirikan bangunan {{pengajuan.bangunan}} seluas {{pengajuan.luas_bangunan}} M&sup2;, baik disengaja maupun yang  tidak disengaja yang mengakibatkan penyimpangan dan / atau  pelanggaran dan / atau tidak dilaksanakannya terhadap ketentuan-ketentuan, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini. </td>
+		        		</tr> 
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KESEBELAS</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td  colspan="3" width="2000">Keputusan ini mulai berlaku pada tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
+		        		</tr>   		
+		        	</table>
+		        	<table width="100%" border="0" class="font">
+		        		<tr>
+		        			<td colspan="3">
+			        			<table border="0" align="left">
+			  						<tr>
+			  							<td>
+			  							<br><br>
+			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+			  							</td>
+			  						</tr>
+			  					</table>
+		        			</td>
+		        			<td width="50%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:10px; padding-left: 20%;">
+				                    <font size="2pt">Ditetapkan  di  Kediri <br> 
+										pada tanggal</font><br></p>
+				                    <p style="font-size:10px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <p align="center"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
+				                    Pembina Tk.l<br>
+				                    NIP: {{nip_kepala_dinas}}</p>
+				            </td>
+		        		</tr>
+		        		<tr>
+							<td><br><br><br><br>
+								<table border="0" align="left">
+									<tr>
+										<td colspan="2">Salinan keputusan ini disampaikan kepada :</td><br>
+									</tr>
+									<tr>
+										<td>Yth. </td>
+										<td>1. Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>2. Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>3. Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>4. Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>5. Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>6. Sdr. Kepala DESA {{pengajuan.desa}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>7. Sdr. Dir. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} DESA, {{ pengajuan.pemohon.desa }} KEC. {{ pengajuan.pemohon.desa.kecamatan }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten }}</td>
+									</tr>   
+								</table>         
+							</td>
+		        		</tr>
+		        	</table>
+				</div>
+			</div>
+		</div>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
+		<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
+		<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
+		<script type="text/javascript">
+			function Exit() {
+			    var x=confirm('Are You sure want to exit:');
+			    if(x) window.close();
+		    }
+		    jQuery('#qrcodeTable').qrcode({
+				text	: "http://simpatik.kedirikab.go.id/{{ pengajuan.no_izin }}",
+				width 	: 80,
+				height 	: 80,
+			});	
+		</script>
+	</body>
+{% endif %}
 </html>

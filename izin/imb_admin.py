@@ -49,7 +49,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB', {'fields': ('jenis_bangunan','bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
+				('Detail IMB', {'fields': ('jenis_bangunan','bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')}),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -63,7 +63,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB', {'fields': ('jenis_bangunan','bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama') }),
+				('Detail IMB', {'fields': ('jenis_bangunan','bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')}),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
@@ -137,11 +137,11 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			# if pengajuan_.perusahaan:
+			# 	if pengajuan_.perusahaan.desa:
+			# 		alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+			# 		extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+			# 	extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
@@ -245,11 +245,11 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			# if pengajuan_.perusahaan:
+			# 	if pengajuan_.perusahaan.desa:
+			# 		alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+			# 		extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+			# 	extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
