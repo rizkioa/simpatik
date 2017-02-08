@@ -185,15 +185,15 @@
 	        	</table>
 	        	<hr class="style2">
 	        	<center>
-	        		<font style="font-size: 20px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL <br>DAN
-					PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br>
-	        		<font style="font-size: 20px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+	        		<font style="font-size: 14px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
+					PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+	        		<font style="font-size: 14px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
 	        	</center>
 	        	<center>
-	        		<font>TENTANG<br>
+	        		<font style="font-size: 13px">TENTANG<br>
 						PEMBERIAN IZIN MENDIRIKAN BANGUNAN
 	        		</font><br><br>
-	        		<font>
+	        		<font style="font-size: 13px">
 	        			KEPALA DINAS PENANAMAN MODAL DAN<br>
 						PELAYANAN PERIZINAN TERPADU SATU PINTU,
 	        		</font>
@@ -507,70 +507,77 @@
 	        	<br>
 	        	<div style="">
 	        	</div>
-	        	<table width="100%" border="0" class="font">
-	        		<tr>
-	        			<td colspan="3">
-		        			<table border="0" align="left">
-		  						<tr>
-		  							<td>
-		  							<br><br>
-		  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
-		  							</td>
-		  						</tr>
-		  					</table>
-	        			</td>
-	        			<td width="50%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-	        				<p style="font-size:10px; padding-left: 20%;">
-			                    <font size="2pt">Ditetapkan  di  Kediri <br> 
-									pada tanggal</font><br></p>
-			                    <p style="font-size:10px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-			                    <br>
-			                    <br>
-			                    <br>
-			                    <br>
-			                    <p align="center"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
-			                    Pembina Tk.l<br>
-			                    NIP: {{nip_kepala_dinas}}</p>
-			            </td>
-	        		</tr>
-	        		<tr>
-						<td><br><br><br><br>
-							<table border="0" align="left">
-								<tr>
-									<td colspan="2">Salinan keputusan ini disampaikan kepada :</td><br>
-								</tr>
-								<tr>
-									<td>Yth. </td>
-									<td>1. Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>2. Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>3. Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
-								</tr>    
-								<tr>
-									<td></td>
-									<td>4. Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
-								</tr>    
-								<tr>
-									<td></td>
-									<td>5. Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>6. Sdr. Kepala DESA {{pengajuan.desa}} ;</td>
-								</tr>   
-								<tr>
-									<td></td>
-									<td>7. Sdr. Dir. {{perusahaan.nama_perusahaan}} {{perusahaan.alamat_perusahaan}} DESA, {{ perusahaan.desa }} KEC. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
-								</tr>   
-							</table>         
-						</td>
-	        		</tr>
-	        	</table>
+		        	<table width="100%" border="0" class="font">
+		        		<tr>
+		        			<td colspan="3" style="width: 1000px;">
+			        			<table border="0" align="left">
+			  						<tr>
+			  							<td>
+			  							<br><br>
+			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+			  							</td>
+			  						</tr>
+			  					</table>
+		        			</td>
+		        			<td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:14px; padding-left: 20%;">
+				                    <font size="3pt">Ditetapkan  di  Kediri <br> 
+										pada tanggal</font><br></p>
+				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
+				                    Pembina Tk.l<br>
+				                    NIP: {{nip_kepala_dinas}}</p>
+				            </td>
+		        		</tr>
+		        		<tr>
+							<td><br><br><br><br>
+								<table border="0" align="left" style="font-size:15px;">
+									<tr>
+										<td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+									</tr>
+									<tr>
+										<td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+										<td style="vertical-align: top;padding-top: 1px;">1.</td>
+										<td width="100%">Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>2.</td>
+										<td>Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>3.</td>
+										<td>Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>4.</td>
+										<td>Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>5.</td>
+										<td>Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>6.</td>
+										<td>Sdr. Kepala DESA {{pengajuan.desa}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td style="vertical-align: top;padding-top: 1px;">7.</td>
+										<td>Sdr. Dir. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} DESA, {{ pengajuan.pemohon.desa }} KEC. {{ pengajuan.pemohon.desa.kecamatan }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten }}</td>
+									</tr>   
+								</table>         
+							</td>
+		        		</tr>
+		        	</table>
 	        </div>    
 	    </div>
 	</div>
