@@ -591,7 +591,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
-	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
 
 	def __unicode__(self):
 		return u'Detil IMB Papan Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -626,7 +626,7 @@ class DetilIMB(PengajuanIzin):
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
-	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
 
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -689,6 +689,11 @@ class DetilHO(PengajuanIzin):
 	jenis_bangunan = models.CharField(verbose_name='Jenis Bangunan', choices=JENIS_BANGUNAN, max_length=20,null=True, blank=True)
 	jenis_gangguan = models.CharField(verbose_name='Jenis Gangguan', choices=JENIS_GANGGUAN, max_length=20,null=True, blank=True)
 
+	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
+	
 	def __unicode__(self):
 		return u'Detil HO %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 

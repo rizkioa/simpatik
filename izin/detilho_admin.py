@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey
+from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
@@ -9,6 +9,8 @@ import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
+
+from izin.utils import*
 
 class DetilHOAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -184,13 +186,13 @@ class DetilHOAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
-			jumlah_ = str(int(pengajuan_.jumlah))
-			klasifikasi_ = pengajuan_.klasifikasi_jalan
+			# ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
+			# jumlah_ = str(int(pengajuan_.jumlah))
+			# klasifikasi_ = pengajuan_.klasifikasi_jalan
 
-			extra_context.update({'jumlah': jumlah_ })
-			extra_context.update({'klasifikasi_jalan': klasifikasi_ })
-			extra_context.update({'ukuran': ukuran_})
+			# extra_context.update({'jumlah': jumlah_ })
+			# extra_context.update({'klasifikasi_jalan': klasifikasi_ })
+			# extra_context.update({'ukuran': ukuran_})
 			extra_context.update({'letak': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
@@ -212,8 +214,22 @@ class DetilHOAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
-
-		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")
+			try:
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				if retribusi_:
+					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					terbilang_ = terbilang(n)
+					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'terbilang': terbilang_ })
+			except ObjectDoesNotExist:
+				pass
+		template = loader.get_template("front-end/include/formulir_ho/cetak_sk_izin_gangguan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
