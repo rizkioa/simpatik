@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilIMBPapanReklame, Syarat, SKIzin, Riwayat,DetilSkIMB
+from izin.models import DetilIMBPapanReklame, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,6 +9,8 @@ import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
+
+from izin.utils import*
 
 class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -186,9 +188,18 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				pass
 
 			try:
-				sk_imb_ = DetilSkIMB.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				if retribusi_:
+					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					terbilang_ = terbilang(n)
+					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'terbilang': terbilang_ })
 			except ObjectDoesNotExist:
 				pass
 		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")

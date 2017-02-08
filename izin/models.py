@@ -636,13 +636,13 @@ class DetilIMB(PengajuanIzin):
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
 
-class DetilSkIMB(MetaAtribut):
+class DetilSk(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
 	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
-	sk_menetapkan_keenam_a = models.CharField(max_length=255, verbose_name='SK Menetapkan 1', null=True, blank=True)
-	sk_menetapkan_keenam_b = models.CharField(max_length=255, verbose_name='SK Menetapkan 2', null=True, blank=True)
-	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan 3', null=True, blank=True)
+	sk_menetapkan_a = models.CharField(max_length=255, verbose_name='SK Menetapkan A', null=True, blank=True)
+	sk_menetapkan_b = models.CharField(max_length=255, verbose_name='SK Menetapkan B', null=True, blank=True)
+	sk_menetapkan_c = models.CharField(max_length=255, verbose_name='SK Menetapkan C', null=True, blank=True)
 
 	def __unicode__(self):
 		return u'Detil SK SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))

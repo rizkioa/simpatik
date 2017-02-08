@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSkIMB, SKIzin, DetilPembayaran
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -275,11 +275,11 @@ class PerumahanYangDimilikiIPPTUsahaForm(forms.ModelForm):
 		fields = ('nama_perumahan','luas_tanah','status_tanah','desa')
 
 
-class DetilSkIMBForm(forms.ModelForm):
+class DetilSkForm(forms.ModelForm):
 	"""docstring for DetilSkIMBForm"""
 	class Meta:
-		model = DetilSkIMB
-		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menetapkan_keenam_a','sk_menetapkan_keenam_b','sk_menetapkan_keenam_c')
+		model = DetilSk
+		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c')
 
 class SKIzinForm(forms.ModelForm):
 	body_html = forms.CharField(widget=CKEditorWidget())

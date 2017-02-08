@@ -20,21 +20,21 @@ import time
 import json
 import os
 
-from izin.models import PengajuanIzin, DetilIMB,DetilSkIMB
+from izin.models import PengajuanIzin, DetilIMB,DetilSk
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.izin_forms import DetilSkIMBForm
+from izin.izin_forms import DetilSkForm
 
 def detil_sk_imb_save(request):
 	if request.POST:
 		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
 		try:
-			pengajuan_ = DetilSkIMB.objects.get(pengajuan_izin__id=pengajuan_izin_id)
-			Sk_IMB = DetilSkIMBForm(request.POST, instance=pengajuan_)
+			pengajuan_ = DetilSk.objects.get(pengajuan_izin__id=pengajuan_izin_id)
+			Sk_ = DetilSkForm(request.POST, instance=pengajuan_)
 		except ObjectDoesNotExist:
-			Sk_IMB = DetilSkIMBForm(request.POST)
+			Sk_ = DetilSkForm(request.POST)
 
-		if Sk_IMB.is_valid():
-			p = Sk_IMB.save(commit=False)
+		if Sk_.is_valid():
+			p = Sk_.save(commit=False)
 			p.save()
 			data = {'success': True,
 					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
@@ -42,7 +42,7 @@ def detil_sk_imb_save(request):
 			data = json.dumps(data)
 			response = HttpResponse(json.dumps(data))
 		else:
-			data = Sk_IMB.errors.as_json()
+			data = Sk_.errors.as_json()
 			response = HttpResponse(data)
 
 	return response
