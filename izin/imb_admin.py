@@ -245,11 +245,11 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			# if pengajuan_.perusahaan:
+			# 	if pengajuan_.perusahaan.desa:
+			# 		alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+			# 		extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+			# 	extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 

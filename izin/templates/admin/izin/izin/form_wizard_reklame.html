@@ -68,7 +68,12 @@
 		    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 		};
 
-		function next_tab(btn){
+    function next_tab(btn){
+      var pengajuan_id = $.cookie('id_pengajuan')
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+        success: function (response){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 			var frm = $('form[name="step'+ index +'"]');
 			frm.parsley().validate();
@@ -110,8 +115,13 @@
 					}
 				});
 			}
-		}
-
+		},
+        error: function (response){
+          console.log('terjadi kesalahan')
+        }
+      })
+    }
+    
 		document.querySelector('#alert').onclick = function(){
 		    var pengajuan_cookie = $.cookie('id_pengajuan'); 
 		    var pemohon_cookie = $.cookie('id_pemohon'); 

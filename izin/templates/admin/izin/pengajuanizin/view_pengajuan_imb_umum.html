@@ -222,12 +222,12 @@
 				<center>
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
-<!-- 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
+					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 					{% if skizin_status == 1 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
-					{% endif %} -->
+					{% endif %}
 
 				</center>
 			</div>
@@ -722,7 +722,11 @@
 													<div class="col-sm-6">
 														<div class="input-group">
 															<span class="input-group-addon" style="width:34px;">Rp.</span>
-															<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
+															{% if pengajuan.jenis_bangunan.kode == 'BK1' or pengajuan.jenis_bangunan.kode == 'BK23' %}
+																<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran" value="{{pengajuan.total_biaya|floatformat:-2|formatrupiah}}">
+															{% else %}
+																<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
+															{% endif %}
 														</div>
 													</div>
 											    </div>
@@ -1135,18 +1139,17 @@
 		                  </div>
 		                </div>
 		            </div>
-
-
+		            
 		            <div class="row">
 		                <div class="form-group">
-		                  <label for="input01" class="col-sm-2 control-label">Menetapkan KEENAM</label>
+		                  <label for="input01" class="col-sm-2 control-label">Menetapkan KESEMBILAN</label>
 		                  <label for="input01" class="col-sm-1 control-label">a.</label>
 		                  <div class="col-sm-8">
 		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_a" name="sk_menetapkan_keenam_a" ></textarea>
 		                  </div>
 		                </div>
 		            </div>
-		            <div class="row">
+<!-- 		            <div class="row">
 		                <div class="form-group">
 		                  <label for="input01" class="col-sm-3 control-label">b.</label>
 		                  <div class="col-sm-8">
@@ -1161,7 +1164,7 @@
 		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_c" name="sk_menetapkan_keenam_c" ></textarea>
 		                  </div>
 		                </div>
-		            </div>
+		            </div> -->
 		          </form>
 		      	</div>
 		      	<div class="modal-footer">
@@ -1489,7 +1492,7 @@
 					    </tr>
 				    </table>
 				    <br>
-				    <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+<!-- 				    <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
 				    <table width="100%" border="0">
 					    <tr>
 					      <td width="25%">NPWP</td>
@@ -1527,7 +1530,7 @@
 					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
 					    </tr>
 				    </table>
-				    <br>
+				    <br> -->
 				    <h4><u>#3. DATA IMB UMUM</u></h4>
 	                <table width="100%" border="0" class="font">
 	                    <tr>
@@ -1568,8 +1571,28 @@
 	                    <tr>
 	                        <td width="25%">Tgl. Surat Tanah</td>
 	                        <td width="5%">:</td>
-	                        <td width="75%">{{pengajuan.tanggal_surat_tanah|default_if_none:"-"}}</td>
+	                        <td width="75%">{{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:"-"}}</td>
 	                    </tr>
+					    <tr>
+					      <td width="40%">Batas Utara</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{ pengajuan.batas_utara|default_if_none:"-" }}</td>
+					    </tr> 
+					    <tr>
+					      <td width="40%">Batas Timur</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{ pengajuan.batas_timur|default_if_none:"-" }}</td>
+					    </tr> 
+					    <tr>
+					      <td width="40%">Batas Selatan</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{ pengajuan.batas_selatan|default_if_none:"-" }}</td>
+					    </tr> 
+					    <tr>
+					      <td width="40%">Batas Barat</td>
+					      <td width="5%">:</td>
+					      <td width="55%">{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
+					    </tr> 
 	                </table>
 	                <br>
 

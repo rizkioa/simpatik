@@ -622,7 +622,7 @@ class DetilIMB(PengajuanIzin):
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	jenis_bangunan = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Jenis Bangunan",blank=True,null=True)
 	panjang = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Panjang')
-	
+
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
@@ -640,17 +640,17 @@ class DetilSkIMB(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
 	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
-	sk_menetapkan_keenam_a = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM A.', null=True, blank=True)
-	sk_menetapkan_keenam_b = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM B.', null=True, blank=True)
-	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan KEENAM C.', null=True, blank=True)
+	sk_menetapkan_keenam_a = models.CharField(max_length=255, verbose_name='SK Menetapkan 1', null=True, blank=True)
+	sk_menetapkan_keenam_b = models.CharField(max_length=255, verbose_name='SK Menetapkan 2', null=True, blank=True)
+	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan 3', null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil SK IMB %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
+		return u'Detil SK SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
 
 	class Meta:
 		ordering = ['-status']
-		verbose_name = 'SK Detil IMB'
-		verbose_name_plural = 'SK Detil IMB'
+		verbose_name = 'SK Detil SK'
+		verbose_name_plural = 'SK Detil SK'
 
 class InformasiKekayaanDaerah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
