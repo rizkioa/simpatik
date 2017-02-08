@@ -1,0 +1,10 @@
+#header.scheme-black{
+    background-color: #FF5722;
+}
+#header .branding.scheme-black, #sidebar.scheme-black, #sidebar.scheme-black #navigation, #sidebar.scheme-black #sidebar-wrap:before, #header.scheme-black li.toggle-right-sidebar > a, .appWrapper.scheme-black .page-breadcrumb > li:first-child, .appWrapper.scheme-black .footer {
+    background-color: #f44336 !important;
+}
+#navigation > li.active > a {
+    background-color: #795548;
+    color: white;
+}
