@@ -288,43 +288,68 @@
     }
 
     function next_tab(btn){
-      var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
-      var frm = $('form[name="step'+ index +'"]');
-      frm.parsley().validate();
-        if (frm.parsley().isValid()) {
-          $(".tab-content").mLoading();
-          $(btn).attr('disabled', 'disabled')
-          $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            success: function (response){
-              respon = $.parseJSON(response)
-                $(btn).removeAttr('disabled')
-                if(respon.success){
-                  toastr["success"](respon.pesan)
-                  tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-                  $(tab_index).tab('show')
-                }
-                else{
-                  var a = Object.keys(respon);
-                  for (var i = 0; i < a.length; i++){
-                    var c = a[i].replace("_", " ").charAt(0).toUpperCase()
-                    var field = c + a[i].replace("_", " ").slice(1)
-                    toastr["error"](field+" "+respon[a[i]][0]['message'])
-                    $("#"+a[i]+"").addClass("has-error");
-                    $("#id_"+a[i]+"_").addClass("has-error");
+      var pengajuan_id = $.cookie('id_pengajuan')
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+        success: function (response){
+          respon = $.parseJSON(response)
+          if (respon.success == true){
+            console.log('berhasil')
+            var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+            var frm = $('form[name="step'+ index +'"]');
+            frm.parsley().validate();
+              if (frm.parsley().isValid()) {
+                $(".tab-content").mLoading();
+                $(btn).attr('disabled', 'disabled')
+                $.ajax({
+                  type: frm.attr('method'),
+                  url: frm.attr('action'),
+                  data: frm.serialize(),
+                  success: function (response){
+                    respon = $.parseJSON(response)
+                      $(btn).removeAttr('disabled')
+                      if(respon.success){
+                        toastr["success"](respon.pesan)
+                        tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+                        $(tab_index).tab('show')
+                      }
+                      else{
+                        var a = Object.keys(respon);
+                        for (var i = 0; i < a.length; i++){
+                          var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+                          var field = c + a[i].replace("_", " ").slice(1)
+                          toastr["error"](field+" "+respon[a[i]][0]['message'])
+                          $("#"+a[i]+"").addClass("has-error");
+                          $("#id_"+a[i]+"_").addClass("has-error");
+                        }
+                      }
+                      $(".tab-content").mLoading('hide');
+                  },
+                  error: function(response){
+                    $(".tab-content").mLoading('hide');
+                    $(btn).removeAttr('disabled')
+                    toastr["error"]("Terjadi kesalahan pada koneksi server.")
                   }
-                }
-                $(".tab-content").mLoading('hide');
-            },
-            error: function(response){
-              $(".tab-content").mLoading('hide');
-              $(btn).removeAttr('disabled')
-              toastr["error"]("Terjadi kesalahan pada koneksi server.")
+              });
             }
-        });
-      }
+          }
+          else{
+            console.log('gagal')
+            $.cookie('id_pengajuan', '0', {path:'/'})
+            $.cookie('id_pemohon', '0', {path:'/'})
+            $.cookie('id_perusahaan', '0', {path:'/'})
+            $.cookie('nomor_ktp', '0', {path:'/'})
+            $.cookie('nomor_paspor', '0', {path:'/'})
+            $.cookie('npwp_perusahaan', '0', {path:'/'})
+            $.cookie('id_perusahaan_induk', '0', {path:'/'})
+            $.cookie('npwp_perusahaan_induk', '0', {path:'/'})
+          }
+        },
+        error: function (response){
+          console.log('terjadi kesalahan')
+        }
+      })
     };
 
     document.querySelector('#alert').onclick = function(){

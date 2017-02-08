@@ -267,22 +267,22 @@
     			<td colspan="4"><strong>PENGESAHAN MENTERI KEHAKIMAN</strong></td>
     		</tr>
     		<tr>
-    			<td colspan="2"><strong>NOMOR :</strong> {{legalitas_1.nomor_pengesahan|default_if_none:'-'}}</td>
-    			<td colspan="2"><strong>TANGGAL :</strong> {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'|default_if_none:'-'}}</td>
+    			<td colspan="2"><strong>NOMOR :</strong> {% if legalitas_1.nomor_pengesahan %}{{legalitas_1.nomor_pengesahan}}{% else %}-{% endif %}</td>
+    			<td colspan="2"><strong>TANGGAL :</strong> {% if legalitas_1.tanggal_pengesahan %}{{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}{% else %}-{% endif %}</td>
     		</tr>
     		<tr>
     			<td colspan="4"><strong>PERSETUJUAN MENTERI KEHAKIMAN ATAS AKTA PERUBAHAN ANGGARAN DASAR</strong></td>
     		</tr>
     		<tr>
-    			<td colspan="2"><strong>NOMOR :</strong> {{legalitas_2.nomor_pengesahan|default_if_none:'-'}}</td>
-    			<td colspan="2"><strong>TANGGAL :</strong> {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'|default_if_none:'-'}}</td>
+    			<td colspan="2"><strong>NOMOR :</strong> {% if legalitas_2.nomor_pengesahan %}{{legalitas_2.nomor_pengesahan}}{% else %}-{% endif %}</td>
+    			<td colspan="2"><strong>TANGGAL :</strong> {% if legalitas_2.tanggal_pengesahan %}{{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}{% else %}-{% endif %}</td>
     		</tr>
     		<tr>
     			<td colspan="4"><strong>PENERIMAAN LAPORAN PERUBAHAN ANGGARAN DASAR</strong></td>
     		</tr>
     		<tr>
-    			<td colspan="2"><strong>NOMOR :</strong> {{legalitas_3.nomor_pengesahan|default_if_none:'-'}}</td>
-    			<td colspan="2"><strong>TANGGAL :</strong> {{legalitas_3.tanggal_pengesahan|date:'d-m-Y'|default_if_none:'-'}}</td>
+    			<td colspan="2"><strong>NOMOR :</strong> {% if legalitas_3.nomor_pengesahan %}{{legalitas_3.nomor_pengesahan}}{% else %}-{% endif %}</td>
+    			<td colspan="2"><strong>TANGGAL :</strong> {% if legalitas_3.tanggal_pengesahan %}{{legalitas_3.tanggal_pengesahan|date:'d-m-Y'}}{% else %}-{% endif %}</td>
     		</tr>
     	</table>
     	<br>
