@@ -647,12 +647,12 @@ class DetilSk(MetaAtribut):
 	sk_menetapkan_c = models.CharField(max_length=255, verbose_name='SK Menetapkan C', null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil SK SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
+		return u'Detil SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
 
 	class Meta:
 		ordering = ['-status']
-		verbose_name = 'SK Detil SK'
-		verbose_name_plural = 'SK Detil SK'
+		verbose_name = 'Detil SK'
+		verbose_name_plural = 'Detil SK'
 
 class InformasiKekayaanDaerah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
