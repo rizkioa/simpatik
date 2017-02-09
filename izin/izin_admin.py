@@ -723,7 +723,8 @@ class IzinAdmin(admin.ModelAdmin):
 							kode_izin_ =  obj.kelompok_jenis_izin.kode
 							nomor_urut_ = request.POST.get('kode_izin')
 							tahun_ = request.POST.get('tahun')
-							obj.no_izin = kode_izin_+nomor_urut_+"/418.71/"+tahun_
+							nomor_sk = request.POST.get('nomor_izin_sk')
+							obj.no_izin = kode_izin_+nomor_urut_+"/"+nomor_sk+"/"+tahun_
 							obj.save()
 							riwayat_ = Riwayat(
 								sk_izin_id = obj_skizin.id ,
