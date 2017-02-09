@@ -203,7 +203,7 @@
 		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} DESA {{ pengajuan.pemohon.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.pemohon.desa.kecamatan|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} DESA {{ pengajuan.pemohon.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.pemohon.desa.kecamatan|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
 		        		</td>
 		        	</tr>
 		        	{% if sk_imb.sk_menimbang_a %}
