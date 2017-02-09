@@ -296,11 +296,13 @@ class SKIzin(AtributTambahan):
 	jabatan_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jabatan Pejabat')
 	nip_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='NIP Pejabat')
 	# untuk tanggal skizin masa berlaku izin
-	tanggal_skizin = models.DateField(verbose_name='Tanggal SKIzin', null=True, blank=True)
+	masa_berlaku_izin = models.DateField(verbose_name='Tanggal Masa Berlaku SKIzin', null=True, blank=True)
 	# untuk status pendaftaran baru ,perubahan
 	status_pendaftaran = models.CharField(max_length=50, verbose_name='Status Pendaftaran', null=True, blank=True)
 	# untuk status pembaharuan ke 1 - 8
 	status_pembaharuan_ke = models.IntegerField(verbose_name='Status Pembaharuan Ke', null=True, blank=True)
+	# untuk tdp status waralaba
+	status_perusahaan = models.CharField(max_length=255, verbose_name="Status Perusahaan", null=True, blank=True)
 	body_html = RichTextField(null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 	
