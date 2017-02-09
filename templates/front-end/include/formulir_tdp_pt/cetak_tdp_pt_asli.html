@@ -252,7 +252,7 @@
     			<td class="tdnone"><strong>NOMOR TELEPON</strong></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone">{{pengajuan.perusahaan.telepon}}</td>
-    			<td><strong>FAX :</strong> {{pengajuan.perusahaan.fax}}</td>
+    			<td><strong>FAX :</strong> {% if pengajuan.perusahaan.fax %}{{pengajuan.perusahaan.fax}}{% else %}-{% endif %}</td>
     		</tr>
     		<tr>
     			<td class="tdnone" rowspan="2" valign="top"><strong>KEGIATAN USAHA POKOK</strong></td>
