@@ -205,3 +205,39 @@ $("#form_penolakan_verifikasi_kabid").ajaxForm({
         }
 	}
 });
+
+function pembayaran_add(btn){
+    var frm = $('#id_form_pembayaran');
+     if (frm.parsley().validate()){
+        frm.ajaxSubmit({
+         success: function(response) {  // on success..
+            var respon = $.parseJSON(response);  
+		        if(respon.success){
+                  toastr["success"](respon.pesan)
+                  window.location.href= "";
+              	}
+              	else{
+                  	toastr["error"](respon.pesan)
+                }
+            },
+            error: function(data) {       
+              toast_server_error()
+            }
+          });
+        }
+  }
+
+    function sk_add(btn){
+        var frm = $('#id_form_sk');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                $("#edit_skizin").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
