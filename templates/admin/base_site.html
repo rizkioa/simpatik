@@ -72,118 +72,136 @@
                 $.cookie("id_notify", "0", {path:pathname});
             }
 
+            
+
             function total_izin(){
                 $.ajax({
                     type: 'GET',
                     url: '{% url 'admin:total_izin' %}',
                     success: function(response) {
-                        respon_total = $.parseJSON(response)
-                        if (respon_total > 0 ){
-                            $('.t a').append('<span class="badge bg-info">'+(respon_total)+'</span>')
-                        }
-                        // var total = respon_total
-                    }
-                })
-            }
-            function total_skizin(){
-                $.ajax({
-                    type: 'GET',
-                    url: '{% url 'admin:total_skizin' %}',
-                    success: function(response) {
-                        respon_total = $.parseJSON(response)
-                        if (respon_total > 0 ){
-                            $('.r a').append('<span class="badge bg-warning">'+(respon_total)+'</span>')
-                        }
-                        // var total = respon_total
-                    }
-                })
-            }
-            total_izin()
-            total_skizin()
-
-            // if ( 1 === respon_total){
-            // setInterval(total_izin , 20000);
-            // }
-            // alert(total)
-
-            function notify(){
-               $.ajax({
-                    type: 'GET',
-                    url: '{% url 'admin:notification' %}',
-                    success: function(response) {
                         respon = $.parseJSON(response)
-                        // request permission on page load
-                        if(respon.success){
-                            
-                            document.addEventListener('DOMContentLoaded', function () {
-                              if (!Notification) {
-                                alert('Desktop notifications not available in your browser. Try Chromium.'); 
-                                return;
-                              }
-
-                              if (Notification.permission !== "granted")
-                                Notification.requestPermission();
-                            });
-
-                            function notification() {
-                              if (Notification.permission !== "granted")
-                                Notification.requestPermission();
-                              else {
-                                var dts = Math.floor(Date.now());
-
-                                var notification = new Notification('Notification SIMPATIK', {
-                                    icon: '{% static 'images/SIMPATIK.ico' %}',
-                                    body: respon.pesan,
-                                    vibrate: [200, 100, 200],
-                                    timestamp: dts,
-                                    silent: true,
-                                    data: 'I like peas.'
-                                  // dir: 'rtl'
-                                });
-
-                                // setTimeout(notification.close, 100);
-                                // setTimeout(function() { notification.close() }, 1);
-
-                                notification.sound
-                                notification.timestamp
-                                notification.silent
-                                notification.data
-
-                                notification.onclick = function () {
-                                  // window.open(respon.url, _self);
-                                  location.replace(respon.url);      
-                                };
-
-                                // setTimeout(function(){
-                                //     notification.close();
-                                // }, 10000);
-                                //
-                                
-                                setTimeout(notification.close.bind(notification), 10000); 
-                              }
+                        // console.log(respon)
+                        len = respon.id_elemet.length
+                        for (var i = 0; i < len; i++) {
+                            // console.log(respon.id_elemet[i])
+                            // console.log(respon.jumlah_izin[i])
+                            var element = respon.id_elemet[i]
+                            if (element == 'operator'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.1 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
                             }
-                            if ($.cookie('id_notify') === respon.total.toString() ){
-                                // console.log("masuk if")
+                            if (element == 'kabid_pengajuan'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.2 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
                             }
-                            else{
-                                // console.log("masuk else")
-                                if (respon.total > 0 ){
-                                    total_skizin()
-                                    total_izin()
-                                    $.cookie("id_notify", respon.total, {path:"/"});
-                                    if (pathname === '/admin'){
-                                        notification()
-                                        $('#sound_alert')[0].play();
+                            if (element == 'kabid_skizin'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.3 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
+                            if (element == 'pembuat_surat'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.4 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
+                            if (element == 'kadin_skizin'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.5 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
+                            if (element == 'penomoran'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.6 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
+                            if (element == 'cetak'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.7 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
+                            if (element == 'selesai'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.8 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
+
+                            var jumlah_izin = respon.jumlah_izin[i]
+                        }
+                        var pesan = respon.pesan
+                        var url = respon.url
+                        var total = respon.total
+                        // console.log(total)
+                        
+                        // console.log(pesan)
+                        // console.log(url)
+                        // console.log(jumlah_izin)
+                        if ($.cookie('id_notify') === total.toString() ){
+                            console.log("tidak ada perubahan")
+                        }
+                        else{
+                            // console.log("masuk else")
+                            // console.log(pathname.split('/')[1])
+                            if (total > 0 ){
+                                // total_izin()
+                                $.cookie("id_notify", total, {path:pathname});
+                                if (pathname.split('/')[1] == 'admin'){
+                                // if (jQuery.inArray('/admin/',pathname) !== -1){
+                                    // console.log('a')
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                      if (!Notification) {
+                                        alert('Desktop notifications not available in your browser. Try Chromium.'); 
+                                        return;
+                                      }
+                                      if (Notification.permission !== "granted"){
+                                        Notification.requestPermission();
+                                      } 
+                                    });
+                                    if (Notification.permission !== "granted"){
+                                        Notification.requestPermission();
                                     }
+                                    else {
+                                        var dts = Math.floor(Date.now());
+
+                                        var notification = new Notification('Notification SIMPATIK', {
+                                            icon: '{% static 'images/SIMPATIK.ico' %}',
+                                            body: pesan,
+                                            vibrate: [200, 100, 200],
+                                            timestamp: dts,
+                                            // silent: true,
+                                            data: 'I like peas.',
+                                            dir: 'rtl'
+                                        });
+
+                                        // setTimeout(notification.close, 100);
+                                        // setTimeout(function() { notification.close() }, 1);
+
+                                        notification.sound
+                                        notification.timestamp
+                                        notification.silent
+                                        notification.data
+
+                                        notification.onclick = function () {
+                                          location.replace(url);      
+                                        };
+                                        
+                                        setTimeout(notification.close.bind(notification), 10000);
+                                    }
+                                    $('#sound_alert')[0].play();
                                 }
                             }
                         }
                     }
                 })
             }
+            
+            total_izin()
+
+            
 
             // if ( $.cookie('id_notify') > 0){
-            setInterval(notify , 3600000);
+            setInterval(total_izin , 300000);
             // }
         })
     </script>

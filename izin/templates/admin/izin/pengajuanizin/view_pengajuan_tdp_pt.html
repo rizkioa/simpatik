@@ -515,11 +515,11 @@
 				<div id="minimize_4">
 					<div class="tile-body">
 						<div class="panel-body">
-						{% if skizin == None and status == 2%}
+						{% if skizin == None and status == 2 or skizin_status == 11 %}
 							<center>
 								<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 								<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
-								<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
+								<a onclick="generate_skizin({{ pengajuan.id }}, '_submit_generate_skizin')" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 							</center>
 						</div>
 						{% endif %}
@@ -892,6 +892,7 @@
 {% block extrajs_site %}
 	{{ block.super }}
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
 	<script language="javascript" type="text/javascript">
 		function openPopupCenter(url, title, w, h) {
 			var left = Math.round((screen.width/2)-(w/2));
@@ -923,6 +924,28 @@
 			  $('.button-tolak').prop( "disabled", true );
 			}
 		  });
+
+		function generate_skizin(id_pengajuan_izin, aksi){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+			$.ajax({ // create an AJAX call...
+				data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi }, // get the form data
+				type: 'POST', // GET or POST
+				url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+				success: function(response) { // on success..
+					respon = $.parseJSON(response)
+					if(respon.success){
+						toastr["success"](respon.pesan);
+						window.location.href= "";
+					}
+					else{
+						toastr["error"](respon.pesan)
+					}
+				},
+				error: function(data) {                
+					toast_server_error()
+				}
+			});
+		}
 
 		function cetak_izin(id_pengajuan_izin, aksi){
 			
@@ -1421,7 +1444,7 @@
 						<tr>
 							<td>Jangka Waktu Berdirinya Perusahaan</td>
 							<td>:</td>
-							<td>{{pengajuan.jangka_waktu_berdiri}}</td>
+							<td>{{pengajuan.jangka_waktu_berdiri|default_if_none:'-'}}</td>
 						</tr>
 						<tr>
 							<td>Bentuk Kerja Sama</td>
@@ -1841,12 +1864,13 @@
 					<br>
 					<br>
 					<br>
-					<form method="POST" id="form_edit_skizin" action="{% url 'admin:edit_skizin_tdp' %}">
+					<form method="POST" id="form_edit_skizin" action="{% url 'admin:edit_skizin_tdp' %}" data-parsley-validate novalidate>
 						{% csrf_token %}
 						<input type="hidden" name="id_pengajuan_izin" value="{{pengajuan.id}}">
 						<div class="form-group">
 							<label for="username">Barang / Jasa Perdagangan Utama: </label>
 							<textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama" required="" data-parsley-trigger="change">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</textarea>
+							<p class="help-block mb-0">Jangan diedit jika tidak diperlukan untuk diupdate.</p>
 						</div>
 						<div class="form-group">
 							<label>Status Waralaba</label>
@@ -1854,19 +1878,29 @@
 						</div>
 						<div class="form-group">
 							<label>Status Perusahaan</label>
-							<input type="text" name="status_perusahaan" class="form-control" id="status_perusahaan" value="{{pengajuan.status_perusahaan.status_perusahaan}}">
+							<input type="text" name="status_perusahaan" class="form-control" id="status_perusahaan" value="{% if skizin.status_perusahaan %}{{skizin.status_perusahaan}}{% else %}{{pengajuan.status_perusahaan.status_perusahaan}}{% endif %}">
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<label>Masa Berlaku Izin</label>
 							<input type="text" name="masa_berlaku" class="form-control" id="masa_berlaku">
-						</div>
+						</div> -->
+						<div class="form-group" id="id_tanggal_pendirian_">
+						    <label><strong>Masa Berlaku Izin</strong></label>
+					      	<div class="input-group datepicker" data-format="L">
+						        <input type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="dd-mm-yyyy" value="{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'dd-mm-YY'}}{% else %}{% endif %}">
+						        <span class="input-group-addon">
+						          <span class="fa fa-calendar"></span>
+						        </span>
+					      	</div>
+					  	</div>
 						<div class="form-group">
 							<label>Status Pendaftaran</label>
-							<input type="text" name="status_pendaftaran" class="form-control" id="status_pendaftaran" value="{{pengajuan.jenis_permohonan.jenis_permohonan_izin}}">
+							<input type="text" name="status_pendaftaran" class="form-control" id="status_pendaftaran" value="{% if skizin.status_pendaftaran %}{{skizin.status_pendaftaran}}{% else %}{{pengajuan.jenis_permohonan.jenis_permohonan_izin}}{% endif %}" required="" data-parsley-trigger="change">
 						</div>
 						<div class="form-group">
 							<label>Status Pembaharuan Ke</label>
-							<input type="text" name="status_pembaharuan_ke" class="form-control" id="status_pembaharuan_ke" value="1">
+							<input type="text" name="status_pembaharuan_ke" class="form-control" id="status_pembaharuan_ke" value="{% if skizin.status_pembaharuan_ke %}{{skizin.status_pembaharuan_ke}}{% else %}1{% endif %}">
+							<p class="help-block mb-0">Status pembaharuan 1 - 8.</p>
 						</div>
 					</form>
 				</div>
@@ -1878,22 +1912,27 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		
-		// frm.submit(function(){
 		function edit_skizin_tdp(){
 			var frm = $('#form_edit_skizin');
-			$.ajax({
-				type:frm.attr('method'),
-				url: frm.attr('action'),
-				data: frm.serialize(),
-				success: function(response){
-					console.log('berhasil')
-				},
-				error: function(response){
-					console.log('gagal')
-				}
-			})
-		// })
-	}
+			frm.parsley().isValid()
+			if(frm.parsley().isValid()){
+				$.ajax({
+					type:frm.attr('method'),
+					url: frm.attr('action'),
+					data: frm.serialize(),
+					success: function(response){
+						toastr["success"]('SKizin berhasil diedit.');
+						$('#edit_skizin').modal('hide');
+					},
+					error: function(response){
+						toastr["error"]('SKizin gagal diedit.');
+					}
+				})
+			}
+			else{
+				// console.log('data tidak boleh kosong')
+				toastr["error"]('Data tidak boleh kosong, mohon periksa kembali.');
+			}
+		}
 	</script>
 {% endblock %}

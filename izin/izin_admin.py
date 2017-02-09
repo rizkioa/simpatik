@@ -90,12 +90,6 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
-	# def verifikasi(self, request, extra_context={}):
-	# 	self.request = request
-	# 	izin = KelompokJenisIzin.objects.all()
-	# 	extra_context.update({'izin': izin})
-	# 	return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
-
 	def verifikasi_operator(self, request, extra_context={}):
 		self.request = request
 		izin = KelompokJenisIzin.objects.all()
@@ -119,12 +113,6 @@ class IzinAdmin(admin.ModelAdmin):
 		izin = KelompokJenisIzin.objects.all()
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
-
-	# def verifikasi_skizin(self, request, extra_context={}):
-	# 	self.request = request
-	# 	izin = KelompokJenisIzin.objects.all()
-	# 	extra_context.update({'izin': izin})
-	# 	return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
 	def verifikasi_skizin_kabid(self, request, extra_context={}):
 		self.request = request
@@ -203,8 +191,6 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(status=4)
 		elif func_view.__name__ == 'verifikasi_pembuat_surat':
 			pengajuan_ = qs.filter(skizin__isnull=True, status=2)
-		# elif func_view.__name__ == 'verifikasi':
-		# 	pengajuan_ = qs.filter(~Q(status=11) and ~Q(status=8))
 		elif func_view.__name__ == 'verifikasi_skizin_kabid':
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kabid'):
@@ -223,23 +209,6 @@ class IzinAdmin(admin.ModelAdmin):
 				id_list = SKIzin.objects.filter(status=10).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list += id_list
 			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
-		# elif func_view.__name__ == 'verifikasi_skizin':
-		# 	id_pengajuan_list = []
-
-		# 	if request.user.groups.filter(name='Kabid'):
-		# 		id_list = SKIzin.objects.filter(status=6).values_list('pengajuan_izin_id', flat=True)
-		# 		id_pengajuan_list += id_list
-				
-		# 	elif request.user.groups.filter(name='Kadin'):
-		# 		id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
-		# 		id_pengajuan_list += id_list
-			
-		# 	if request.user.groups.filter(name='Cetak'):
-		# 		id_list = SKIzin.objects.filter(status=10).values_list('pengajuan_izin_id', flat=True)
-		# 		id_pengajuan_list += id_list
-			
-		# 	# print id_pengajuan_list
-		# 	pengajuan_ = qs.filter(id__in=id_pengajuan_list)
 		elif func_view.__name__ == 'penomoran_skizin':
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Penomoran'):
@@ -340,7 +309,6 @@ class IzinAdmin(admin.ModelAdmin):
 	def button_cetak_pendaftaran(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
-		# print jenis_izin_
 		if jenis_izin_ == "503.08/":
 			link_ = reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
@@ -378,161 +346,6 @@ class IzinAdmin(admin.ModelAdmin):
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
 				""" % link_ )
-		# if self.request.user.groups.filter(name='Operator'):
-		# 	if obj.status == 4:
-		# 		btn = mark_safe("""<span class="label bg-primary">Verifikasi Kabid</span>""")
-		# 	elif obj.status == 2 and not obj.skizin_set.all().exists():
-		# 		btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-		# 	elif obj.skizin_set.filter(status=6):
-		# 		btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=4):
-		# 		btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
-		# 	elif obj.skizin_set.filter(status=9):
-		# 		btn = mark_safe("""<span class="label bg-cyan">Penomoran</span>""")
-		# 	elif obj.skizin_set.filter(status=10):
-		# 		btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
-		# 	elif obj.skizin_set.filter(status=2):
-		# 		btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif self.request.user.groups.filter(name='Kabid'):
-		# 	if obj.status == 6:
-		# 		btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-		# 	elif obj.status == 2 and not obj.skizin_set.all().exists():
-		# 		btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-		# 	# elif obj.skizin_set.filter(status=6):
-		# 	# 	btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=4):
-		# 		btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
-		# 	elif obj.skizin_set.filter(status=9):
-		# 		btn = mark_safe("""<span class="label bg-cyan">Penomoran</span>""")
-		# 	elif obj.skizin_set.filter(status=10):
-		# 		btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
-		# 	elif obj.skizin_set.filter(status=2):
-		# 		btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif self.request.user.groups.filter(name='Kadin'): 
-		# 	if obj.status == 6:
-		# 		btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-		# 	elif obj.status == 4:
-		# 		btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-		# 	elif obj.status == 2 and not obj.skizin_set.all().exists():
-		# 		btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-		# 	elif obj.skizin_set.filter(status=6):
-		# 		btn = mark_safe("""<span class="label bg-info">Menunggu SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=9):
-		# 		btn = mark_safe("""<span class="label bg-cyan">Penomoran</span>""")
-		# 	elif obj.skizin_set.filter(status=10):
-		# 		btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
-		# 	elif obj.skizin_set.filter(status=2):
-		# 		btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif self.request.user.groups.filter(name='Pembuat Surat'):
-		# 	if obj.status == 6:
-		# 		btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-		# 	elif obj.status == 4:
-		# 		btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=6):
-		# 		btn = mark_safe("""<span class="label bg-info">Verifikasi SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=4):
-		# 		btn = mark_safe("""<span class="label bg-warning">Verifikasi SK Kadin</span>""")
-		# 	elif obj.skizin_set.filter(status=9):
-		# 		btn = mark_safe("""<span class="label bg-cyan">Penomoran</span>""")
-		# 	# elif obj.skizin_set.filter(status=10):
-		# 		# btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
-		# 	elif obj.skizin_set.filter(status=2):
-		# 		btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif self.request.user.groups.filter(name='Penomoran'):
-		# 	if obj.status == 6:
-		# 		btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-		# 	elif obj.status == 4:
-		# 		btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-		# 	elif obj.status == 2 and not obj.skizin_set.all().exists():
-		# 		btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-		# 	elif obj.skizin_set.filter(status=6):
-		# 		btn = mark_safe("""<span class="label bg-info">Menunggu SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=4):
-		# 		btn = mark_safe("""<span class="label bg-warning">Menunggu SK Kadin</span>""")
-		# 	elif obj.skizin_set.filter(status=10):
-		# 		btn = mark_safe("""<span class="label bg-green">Pencetakan</span>""")
-		# 	# elif obj.skizin_set.filter(status=2):
-		# 		# btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif self.request.user.groups.filter(name='Cetak'):
-		# 	if obj.status == 6:
-		# 		btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-		# 	elif obj.status == 4:
-		# 		btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-		# 	# elif obj.status == 2 and not obj.skizin_set.all().exists():
-		# 	# 	btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-		# 	elif obj.skizin_set.filter(status=6):
-		# 		btn = mark_safe("""<span class="label bg-info">Menunggu SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=4):
-		# 		btn = mark_safe("""<span class="label bg-warning">Menunggu SK Kadin</span>""")
-		# 	elif obj.skizin_set.filter(status=9):
-		# 		btn = mark_safe("""<span class="label bg-cyan">Menunggu Penomoran</span>""")
-		# 	elif obj.skizin_set.filter(status=2):
-		# 		btn = mark_safe("""<span class="label bg-drank">Penstempelan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif self.request.user.groups.filter(name='Selesai'):
-		# 	if obj.status == 6:
-		# 		btn = mark_safe("""<span class="label bg-dutch">Menunggu Operator</span>""")
-		# 	elif obj.status == 4:
-		# 		btn = mark_safe("""<span class="label bg-primary">Menunggu Kabid</span>""")
-		# 	elif obj.status == 2 and not obj.skizin_set.all().exists():
-		# 		btn = mark_safe("""<span class="label bg-slategray">Pembuatan SKIzin</span>""")
-		# 	elif obj.skizin_set.filter(status=6):
-		# 		btn = mark_safe("""<span class="label bg-info">Menunggu SK Kabid</span>""")
-		# 	elif obj.skizin_set.filter(status=4):
-		# 		btn = mark_safe("""<span class="label bg-warning">Menunggu SK Kadin</span>""")
-		# 	# elif obj.skizin_set.filter(status=9):
-		# 		# btn = mark_safe("""<span class="label bg-cyan">Menunggu Penomoran</span>""")
-		# 	elif obj.skizin_set.filter(status=10):
-		# 		btn = mark_safe("""<span class="label bg-green">Menunggu Pencetakan</span>""")
-		# 	elif obj.status == 1:
-		# 		btn = mark_safe("""<span class="label bg-success">SELESAI</span>""")
-		# 	elif obj.status == 7:
-		# 		btn = mark_safe("""<span class="label bg-danger">DITOLAK</span>""")
-		# 	else:
-		# 		btn = btn
-		# elif obj.status == 1:
-		# 	btn = mark_safe("""<span class="label label-default">SELESAI</span>""")
-		# elif obj.status == 7:
-		# 	btn = mark_safe("""<span class="label label-danger">DITOLAK</span>""")
-		# else:
-		# 	btn = btn
-				# reverse('admin:print_out_pendaftaran', kwargs={'id_pengajuan_izin_': obj.id})
-		
 		return btn
 	button_cetak_pendaftaran.short_description = "Aksi"
 
@@ -552,34 +365,8 @@ class IzinAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	# def print_out_pendaftaran(self, request, id_pengajuan_izin_):
-	# 	extra_context = {}
-	# 	if id_pengajuan_izin_:
-	# 		extra_context.update({'title': 'Pengajuan Selesai'})
-	# 		pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
-	# 		extra_context.update({'pemohon': pengajuan_.pemohon})
-	# 		nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-	# 		extra_context.update({'nomor_identitas': nomor_identitas_ })
-	# 		extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
-	# 		alamat_ = ""
-	# 		if pengajuan_.pemohon.desa:
-	# 			alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-	# 		extra_context.update({'alamat_pemohon': alamat_})
-	# 		extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-	# 		extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-	# 		extra_context.update({'created_at': pengajuan_.created_at})
-
-	# 		syarat_ = Syarat.objects.filter(jenis_izin__id=pengajuan_.id)
-	# 		extra_context.update({'syarat': syarat_})
-
-	# 	# template = loader.get_template("admin/izin/izin/add_wizard.html")
-	# 	template = loader.get_template("admin/izin/izin/cetak_bukti_pendaftaran.html")
-	# 	ec = RequestContext(request, extra_context)
-	# 	return HttpResponse(template.render(ec))
-
 	def cetak_siup_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
-		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -601,100 +388,83 @@ class IzinAdmin(admin.ModelAdmin):
 			# extra_context.update({'kelembagaan': kelembagaan })
 			if pengajuan_.kekayaan_bersih:
 				kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
-				# print kekayaan_
 				terbilang_ = terbilang(int(kekayaan_))
 				extra_context.update({'terbilang': str(terbilang_) })
 				extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
-			# try:
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 				extra_context.update({'skizin_status': skizin_.status })
-			# except ObjectDoesNotExist:
-			# 	pass
-			# try:
 			kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas").last()
 			if kepala_:
 				extra_context.update({'kepala_dinas': kepala_ })
 				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 			template = Template.objects.filter(kelompok_jenis_izin=pengajuan_.kelompok_jenis_izin).last()
 			extra_context.update({'template': template })
-
-			# except ObjectDoesNotExist:
-			# 	pass
-			# print pengajuan_.kbli.nama_kbli.all()
-			# print pengajuan_.produk_utama
 		template = loader.get_template("front-end/include/formulir_siup/cetak_siup_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
 	def total_izin(self, request):
-		# pengajuan_ = PengajuanIzin.objects.filter(status=6).count()
-		pengajuan_ = ""
+		id_elemet = []
+		jumlah_izin = []
+		pesan = []
+		url = []
+		total = 0
 		if request.user.groups.filter(name='Operator'):
 			pengajuan_ = PengajuanIzin.objects.filter(status=6).count()
-		elif request.user.groups.filter(name='Kabid'):
-			pengajuan_ = PengajuanIzin.objects.filter(status=4).count()
-		elif request.user.groups.filter(name='Pembuat Surat'):
-			pengajuan_ = PengajuanIzin.objects.filter(skizin__isnull=True, status=2).count()
-		elif request.user.groups.filter(name='Penomoran'):
-			pengajuan_ = len(SKIzin.objects.filter(status=9).values('pengajuan_izin_id'))
-		return HttpResponse(json.dumps(pengajuan_))
-
-	def total_skizin(self, request):
-		pengajuan_ = ""
+			id_elemet.append('operator')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
+			total = pengajuan_
 		if request.user.groups.filter(name='Kabid'):
-			pengajuan_ = len(SKIzin.objects.filter(status=6).values('pengajuan_izin_id'))
-		elif request.user.groups.filter(name='Kadin'):
-			pengajuan_ = len(SKIzin.objects.filter(status=4).values('pengajuan_izin_id'))
-		elif request.user.groups.filter(name='Cetak'):
-			pengajuan_ = len(SKIzin.objects.filter(status=10).values('pengajuan_izin_id'))
-		elif request.user.groups.filter(name='Selesai'):
-			pengajuan_ = len(SKIzin.objects.filter(status=2).values('pengajuan_izin_id'))
-		return HttpResponse(json.dumps(pengajuan_))
-
-	def notification(self, request):
-		data = ""
-		if request.user.groups.filter(name='Operator'):
-			pengajuan_ = len(PengajuanIzin.objects.filter(status=6))
-			pesan = "Ada "+str(pengajuan_)+" pengajuan baru."
-			url = "/admin/izin/pengajuanizin/verifikasi/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Kabid'):
-			pengajuan_ = len(PengajuanIzin.objects.filter(status=4))
-			pesan =  "Ada "+str(pengajuan_)+" pengajuan baru."
-			url = "/admin/izin/pengajuanizin/verifikasi/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Pembuat Surat'):
-			pengajuan_ = len(PengajuanIzin.objects.filter(skizin__isnull=True, status=2))
-			pesan =  "Ada "+str(pengajuan_)+" SK Izin yang harus diverifikasi."
-			url = "/admin/izin/pengajuanizin/verifikasi/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Kabid'):
-			pengajuan_ = len(SKIzin.objects.filter(status=6).values('pengajuan_izin_id'))
-			pesan = "Ada "+str(pengajuan_)+" SK Izin yang harus diverifikasi."
-			url = "/admin/izin/pengajuanizin/verifikasi-skizin/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Kadin'):
-			pengajuan_ = len(SKIzin.objects.filter(status=4).values('pengajuan_izin_id'))
-			pesan =  "Ada "+str(pengajuan_)+" SK Izin yang harus diverifikasi."
-			url = "/admin/izin/pengajuanizin/verifikasi-skizin/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Penomoran'):
+			# verifikasi pengajuan
+			pengajuan_ = PengajuanIzin.objects.filter(status=4).count()
+			id_elemet.append('kabid_pengajuan')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
+			total = pengajuan_ + total
+			# kabid draft sk
+			skizin = SKIzin.objects.filter(status=6).count()
+			id_elemet.append('kabid_skizin')
+			jumlah_izin.append(skizin)
+			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kabid/"
+			total = skizin + total
+		if request.user.groups.filter(name='Pembuat Surat'):
+			pengajuan_ = PengajuanIzin.objects.filter(skizin__isnull=True, status=2).count()
+			id_elemet.append('pembuat_surat')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/verifikasi-pembuat-surat/"
+			total = pengajuan_ + total
+		if request.user.groups.filter(name='Penomoran'):
 			pengajuan_ = len(SKIzin.objects.filter(status=9).values('pengajuan_izin_id'))
-			pesan =  "Ada "+str(pengajuan_)+" SK Izin yang harus diverifikasi."
-			url = "/admin/izin/pengajuanizin/verifikasi-skizin/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Cetak'):
-			pengajuan_ = len(SKIzin.objects.filter(status=10).values('pengajuan_izin_id'))
-			pesan =  "Ada "+str(pengajuan_)+" SK Izin yang harus diverifikasi."
-			url = "/admin/izin/pengajuanizin/verifikasi-skizin/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
-		elif request.user.groups.filter(name='Selesai'):
-			pengajuan_ = len(SKIzin.objects.filter(status=2).values('pengajuan_izin_id'))
-			pesan =  "Ada "+str(pengajuan_)+" SK Izin yang harus diverifikasi."
-			url = "/admin/izin/pengajuanizin/verifikasi-skizin/"
-			data = {'success': True, 'pesan': pesan, 'total': pengajuan_, 'url': url }
+			id_elemet.append('penomoran')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/penomoran-skizin/"
+			total = pengajuan_ + total
+		if request.user.groups.filter(name='Kadin'):
+			skizin = len(SKIzin.objects.filter(status=4).values('pengajuan_izin_id'))
+			id_elemet.append('kadin_skizin')
+			jumlah_izin.append(skizin)
+			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kadin/"
+			total = skizin + total
+		if request.user.groups.filter(name='Cetak'):
+			skizin = len(SKIzin.objects.filter(status=10).values('pengajuan_izin_id'))
+			id_elemet.append('cetak')
+			jumlah_izin.append(skizin)
+			url = "/admin/izin/pengajuanizin/verifikasi-skizin-cetak"
+			total = skizin + total
+		if request.user.groups.filter(name='Selesai'):
+			skizin = len(SKIzin.objects.filter(status=2).values('pengajuan_izin_id'))
+			id_elemet.append('selesai')
+			jumlah_izin.append(skizin)
+			url = "/admin/izin/pengajuanizin/stemple-skizin/"
+			total = skizin + total
+
+		pesan = "Ada "+str(total)+" Izin yang harus dikerjakan."
+		total = total
+
+		data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'id_elemet':id_elemet, 'jumlah_izin':jumlah_izin , 'pesan': pesan, 'url': url, 'total': total}
 		return HttpResponse(json.dumps(data))
 
 	def option_namaizin(self, request):	
@@ -884,7 +654,22 @@ class IzinAdmin(admin.ModelAdmin):
 
 				try:
 					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
-					if request.POST.get('aksi') == '_submit_skizin_kabid':
+					if request.POST.get('aksi') == '_submit_generate_skizin':
+						obj_skizin.status = 6
+						obj_skizin.save()
+						riwayat_ = Riwayat(
+							sk_izin_id = obj_skizin.id ,
+							pengajuan_izin_id = id_pengajuan_izin,
+							created_by_id = request.user.id,
+							keterangan = "Draft (SKIzin)"
+						)
+						riwayat_.save()
+						response = {
+							"success": True,
+							"pesan": "SKIzin berhasil dibuat.",
+							"redirect": '',
+						}
+					elif request.POST.get('aksi') == '_submit_skizin_kabid':
 						obj_skizin.status = 4
 						obj_skizin.save()
 						riwayat_ = Riwayat(
@@ -938,7 +723,8 @@ class IzinAdmin(admin.ModelAdmin):
 							kode_izin_ =  obj.kelompok_jenis_izin.kode
 							nomor_urut_ = request.POST.get('kode_izin')
 							tahun_ = request.POST.get('tahun')
-							obj.no_izin = kode_izin_+nomor_urut_+"/418.71/"+tahun_
+							nomor_sk = request.POST.get('nomor_izin_sk')
+							obj.no_izin = kode_izin_+nomor_urut_+"/"+nomor_sk+"/"+tahun_
 							obj.save()
 							riwayat_ = Riwayat(
 								sk_izin_id = obj_skizin.id ,
@@ -1162,8 +948,6 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^verifikasi-skizin-cetak/$', self.admin_site.admin_view(self.verifikasi_skizin_cetak), name='verifikasi_skizin_cetak'),
 			url(r'^izin-terdaftar/$', self.admin_site.admin_view(self.izinterdaftar), name='izinterdaftar'),
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
-			url(r'^total-skizin/$', self.admin_site.admin_view(self.total_skizin), name='total_skizin'),
-			url(r'^notification/$', self.admin_site.admin_view(self.notification), name='notification'),
 			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
 
 			)

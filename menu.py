@@ -126,7 +126,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Pengajuan Masuk',
                     icon='icon-check',
-                    css_classes='t',
+                    css_classes='1',
                     url=reverse('admin:verifikasi_operator'),  
                 )
             ]
@@ -152,13 +152,13 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Pengajuan Masuk',
                     icon='icon-check',
-                    css_classes='t', 
+                    css_classes='2', 
                     url=reverse('admin:verifikasi_kabid'),                
                 ),
                 items.MenuItem(
                     title='Draft SK',
                     icon='icon-list',
-                    css_classes='r', 
+                    css_classes='3', 
                     url=reverse('admin:verifikasi_skizin_kabid'),                
                 ),
             ]
@@ -168,7 +168,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Draft SK',
                     icon='fa fa-file-text',
-                    css_classes='t', 
+                    css_classes='4', 
                     url=reverse('admin:verifikasi_pembuat_surat'),                
                 ),
             ]
@@ -178,7 +178,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Draft SK',
                     icon='fa fa-file-text',
-                    css_classes='r', 
+                    css_classes='5', 
                     url=reverse('admin:verifikasi_skizin_kadin'),                
                 ),
             ]
@@ -188,7 +188,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Penomoran Izin',
                     icon='fa fa-file-text',
-                    css_classes='t', 
+                    css_classes='6', 
                     url=reverse('admin:penomoran_skizin'),                
                 ),
             ]
@@ -198,7 +198,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Cetak Izin',
                     icon='fa fa-file-text',
-                    css_classes='r', 
+                    css_classes='7', 
                     url=reverse('admin:verifikasi_skizin_cetak'),                
                 ),
             ]
@@ -208,7 +208,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Stemple Izin',
                     icon='fa fa-file-text',
-                    css_classes='r',
+                    css_classes='8',
                     url=reverse('admin:stemple_izin'),                
                 ),
             ]

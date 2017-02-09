@@ -783,7 +783,9 @@
 						      		<label>{{ pengajuan.kelompok_jenis_izin.kode }}</label>
 						      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
 						      		<label>/418.71/</label>
-						      		<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
+						      		<input type="hidden" id="nomor_izin_sk" value="418.27">
+					      			<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
+							      	</input>
 							      	</input>
 							    </div>
 						  	</center>
