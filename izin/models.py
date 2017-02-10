@@ -672,7 +672,7 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 
 class DetilHO(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='detilho_perusahaan', blank=True, null=True)
-	perkiraan_modal = models.DecimalField(max_digits=12, decimal_places=2,null=True, blank=True, verbose_name='Perkiraan Modal')
+	perkiraan_modal = models.CharField(max_length=200, null=True, blank=True, verbose_name='Perkiraan Modal')
 	tujuan_gangguan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Tujuan')
 	alamat = models.CharField(max_length=255,null=True, blank=True, verbose_name='Alamat')
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
