@@ -84,6 +84,12 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
+				if pengajuan_.parameter_bangunan:
+					fungsi_bangunan = pengajuan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
+					detil_parameter = fungsi_bangunan.last()
+					detil_ = detil_parameter.detil_parameter
+					
+					extra_context.update({'detil_': detil_})
 				try:
 					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
@@ -139,11 +145,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
-			# if pengajuan_.perusahaan:
-			# 	if pengajuan_.perusahaan.desa:
-			# 		alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-			# 		extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-			# 	extra_context.update({'perusahaan': pengajuan_.perusahaan })
+				
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
@@ -164,6 +166,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
 					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
 					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
@@ -281,6 +284,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
 					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
 					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
