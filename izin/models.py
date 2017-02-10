@@ -1041,26 +1041,28 @@ class RincianSubJenis(models.Model):
 	jumlah_kursi_rumah_makan = models.IntegerField(verbose_name="Jumlah Kursi Rumah Makan", null=True, blank=True)
 	jumlah_kursi_bar_atau_rumah_minum = models.IntegerField(verbose_name="Jumlah Kursi Bar / Rumah Minum", null=True, blank=True)
 	jumlah_kursi_kafe = models.IntegerField(verbose_name="Jumlah Kursi Kafe", null=True, blank=True)
-	jumlah_kursi_pusat_makanan = models.IntegerField(verbose_name="Jumlah Kursi Pusat Makanan", null=True, blank=True)
-	jumlah_kursi_jasa_boga = models.IntegerField(verbose_name="Jumlah Kursi Jasa Boga", null=True, blank=True)
+	jumlah_stand_pusat_makanan = models.IntegerField(verbose_name="Jumlah Stand Pusat Makanan", null=True, blank=True)
+	kapasitas_produksi_jasa_boga = models.IntegerField(verbose_name="Jumlah Kursi Jasa Boga", null=True, blank=True)
 
 	class Meta:
 		verbose_name = 'Rincian Sub Jenis'
 		verbose_name_plural = 'Rincian Sub Jenis'
 
 class DetilTDUP(PengajuanIzin):
-	sub_jenis_bidang_usaha = models.ManyToManyField(SubJenisBidangUsaha, verbose_name="Bidang Usaha Pariwisata")
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdup_perusahaan', blank=True, null=True)
+	bidang_usaha_pariwisata = models.ManyToManyField(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata", blank=True)
+	sub_jenis_bidang_usaha = models.ManyToManyField(SubJenisBidangUsaha, verbose_name="Sub Bidang Usaha Pariwisata", blank=True)
 	rincian_sub_jenis = models.OneToOneField(RincianSubJenis, verbose_name="Rincian Sub Jenis", null=True, blank=True)
 	nama_usaha = models.CharField(max_length=255, verbose_name="Nama Usaha", null=True, blank=True)
 	lokasi_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Lokasi Usaha Pariwisata", null=True, blank=True)
-	desa = models.ForeignKey(Desa, verbose_name="Desa")
+	desa_lokasi = models.ForeignKey(Desa, verbose_name="Desa", null=True, blank=True)
 	telephone = models.CharField(max_length=255, verbose_name="Telephone", null=True, blank=True)
 	# Izin gangguan
-	nomor_izin_gangguan = models.CharField(max_length=255, verbose_name="Nomor Izin Gangguan")
-	tanggal_izin_gangguan = models.DateField(verbose_name="Tanggal Izin Gangguan")
+	nomor_izin_gangguan = models.CharField(max_length=255, verbose_name="Nomor Izin Gangguan", null=True, blank=True)
+	tanggal_izin_gangguan = models.DateField(verbose_name="Tanggal Izin Gangguan", null=True, blank=True)
 	# Dokumen Pengelolaan Lingkungan
-	nomor_dokumen_pengelolaan = models.CharField(max_length=255, verbose_name="Nomor Dokumen Pengelolaan Lingkungan")
-	tanggal_dokumen_pengelolaan = models.DateField(verbose_name="Tanggal Dokumen Pengelolaan Lingkungan")
+	nomor_dokumen_pengelolaan = models.CharField(max_length=255, verbose_name="Nomor Dokumen Pengelolaan Lingkungan", null=True, blank=True)
+	tanggal_dokumen_pengelolaan = models.DateField(verbose_name="Tanggal Dokumen Pengelolaan Lingkungan", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'Detil TDUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
