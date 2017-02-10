@@ -783,7 +783,25 @@
 						    	<br>
 							    <div class="form-group">
 						      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
-						      		<label>{{ pengajuan.kelompok_jenis_izin.kode }}</label>
+						      		{% if detil_ == "Hunian" %}
+							      		<label>503.01.01</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.01">
+						      		{% elif detil_ == "Usaha" %}
+							      		<label>503.01.02</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.02">
+						      		{% elif detil_ == "Keagamaan" %}
+							      		<label>503.01.03</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.03">
+						      		{% elif detil_ == "Sosial Budaya Milik Negara" %}
+							      		<label>503.01.04</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.04">
+						      		{% elif detil_ == "Sosial Budaya Selain Milik Negara" %}
+							      		<label>503.01.05</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.05">
+						      		{% else %}
+							      		<label>503.01.06</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.06">
+						      		{% endif %}
 						      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
 						      		<label>/418.27/</label>
 						      		<input type="hidden" id="nomor_izin_sk" value="418.27">

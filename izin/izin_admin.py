@@ -720,11 +720,11 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.status = 10
 						obj_skizin.save()
 						try:
-							kode_izin_ =  obj.kelompok_jenis_izin.kode
+							kode_izin_ =  request.POST.get('kode_jenis_izin')
 							nomor_urut_ = request.POST.get('kode_izin')
 							tahun_ = request.POST.get('tahun')
 							nomor_sk = request.POST.get('nomor_izin_sk')
-							obj.no_izin = kode_izin_+nomor_urut_+"/"+nomor_sk+"/"+tahun_
+							obj.no_izin = kode_izin_+"/"+nomor_urut_+"/"+nomor_sk+"/"+tahun_
 							obj.save()
 							riwayat_ = Riwayat(
 								sk_izin_id = obj_skizin.id ,
