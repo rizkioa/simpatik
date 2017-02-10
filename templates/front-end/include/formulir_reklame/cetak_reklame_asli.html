@@ -188,7 +188,7 @@
 	        	
 	        	<center>
 	        		<font style="font-size: 20px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
-	        		<font style="font-size: 18px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+	        		<font style="font-size: 18px">NOMOR : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
 	        	</center>
 	        	<table width="100%" border="0" frame="box" rules="rows">
 	        		<tr>
@@ -245,7 +245,7 @@
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} - {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
+	        			<td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Letak pemasangan</b></td>
@@ -324,7 +324,9 @@
 			                    <br>
 			                    <br>
 			                    <br>
-			                    <u><b>{{ nama_kepala_dinas }}</b></u><br>
+			                    <br>
+			                    <br>
+			                    <u><b>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
 			                    Pembina Tk.l<br>
 			                    NIP: {{nip_kepala_dinas}}
 			                </p>

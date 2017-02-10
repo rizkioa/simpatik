@@ -275,7 +275,7 @@
                     <tr>
                         <td width="25%">Tgl. Surat Tanah</td>
                         <td width="5%">:</td>
-                        <td width="75%">{{pengajuan.tanggal_surat_tanah|default_if_none:"-"}}</td>
+                        <td width="75%">{{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:"-"}}</td>
                     </tr>
                 </table>
                 <br>

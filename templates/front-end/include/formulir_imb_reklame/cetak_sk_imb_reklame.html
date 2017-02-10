@@ -32,7 +32,7 @@
 	    .page {
 	        width: 21.5cm;
 	        min-height: 33cm;
-	        padding: 5mm;
+	        /*padding: 5mm;*/
 	        margin: 5mm auto;
 	        border: 1px #D3D3D3 solid;
 	        border-radius: 5px;
@@ -40,11 +40,14 @@
 	        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 	    }
 	    .subpage {
-	        padding: 0.5cm;
+	        /*padding: 5px 24px 24px 84px;*/
 	        /*border: 5px red solid;*/
-	        padding-left: :40px;
-	        padding-right:40px;
+	        padding-top: 1.4cm;
+	        padding-left: 2.6cm;
+	        padding-right: 1.9cm;
 	        height: 257mm;
+	        line-height: 0.55cm;
+	        font-family:"Arial";
 	        /*outline: 2cm #FFEAEA solid;*/
 	    }
 	    @-moz-document url-prefix() {
@@ -58,8 +61,9 @@
 	    }
 	    @media print {
 	        html, body {
-	            width: 210mm;
-	            height: 297mm;        
+	            width: 21.5cm;
+	            height: 33cm;  
+	            font-family:"Arial";      
 	        }
 	        .page {
 	            margin: 0;
@@ -163,47 +167,43 @@
 	<div class="book">
 	    <div class="page">
 	        <div class="subpage">
-	        	<table>
-	        		<tr>
-	        			<td></td>
-	        		</tr>
-	        	</table>
-	        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
-	        		<tr>
-	        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
-	        			<td>
-	        				<center>
-	        					<p>
-	        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN <br>PERIZINAN TERPADU SATU PINTU</b></font><br>
-	        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
-	        						Email : bpmp2tsp@kedirikab.go.id   Website : kedirikab.go.id</font><br>
-	        						<font style="font-size: 20x;">KEDIRI</font>
-	        					</p>
-	        				</center>
-	        			</td>
-	        		</tr>
-	        	</table>
-	        	<hr class="style2">
-	        	<center>
-	        		<font style="font-size: 14px"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-					PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
-	        		<font style="font-size: 15px">Nomor : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
-	        	</center>
-	        	<center>
-	        		<font style="font-size: 14px">TENTANG<br>
-						PEMBERIAN IZIN MENDIRIKAN BANGUNAN
-	        		</font><br><br>
-	        		<font style="font-size: 14px">
-	        			KEPALA DINAS PENANAMAN MODAL DAN<br>
-						PELAYANAN PERIZINAN TERPADU SATU PINTU,
-	        		</font>
-	        	</center><br>
+		        	<table width="100%" class="sk-justify" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+		        		<tr>
+		        			<td style="vertical-align: top;padding-top: 1px;"><img src="{% static 'images/kabkediri.png' %}" width="85px"></td>
+		        			<td>
+		        				<center>
+									<p style="text-align: center; margin-bottom: 10px; margin-top: 0;letter-spacing:  0.01cm;">
+										<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+										<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+										<br/>
+										<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></b></span><br>
+										<span style="font-size: 19px;"><b>KEDIRI</b></span>
+									</p>
+		        				</center>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	<hr class="style2">
+		        	<center>
+		        		<font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
+						PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+		        		<font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+		        	</center>
+		        	<center>
+		        		<font style="font-size: 15px;font-family: Arial;letter-spacing:  0.01cm;">TENTANG<br>
+							PEMBERIAN IZIN MENDIRIKAN BANGUNAN
+		        		</font><br><br>
+		        		<font style="font-size: 15px;letter-spacing:  0.01cm;">
+		        			KEPALA DINAS PENANAMAN MODAL DAN<br>
+							PELAYANAN PERIZINAN TERPADU SATU PINTU,
+		        		</font>
+		        	</center><br>
 	        	<table width="100%" border="0" class="sk-justify">
 	        	<tr>
 	        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 	        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-	        		<td>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }} DESA {{ perusahaan.desa|default_if_none:"-" }} KECAMATAN {{ perusahaan.desa.kecamatan|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk {{ pengajuan.jenis_papan_reklame|default_if_none:"" }}, yang terletak di Ruang Pengawas Jalan (RUWASJA) DESA {{ pengajuan.desa|default_if_none:"-" }} KECAMATAN {{ pengajuan.desa.kecamatan|default_if_none:"-" }};
+	        		<td>Bahwa sesuai surat permohonan dari  {{ perusahaan.nama_perusahaan }} tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ perusahaan.alamat_perusahaan }} Desa {{ perusahaan.desa|title|default_if_none:"-" }} Kecamatan {{ perusahaan.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB) untuk {{ pengajuan.jenis_papan_reklame|default_if_none:"" }}, yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }};
 	        		</td>
 	        	</tr>
 	        	{% if sk_imb.sk_menimbang_a %}
@@ -359,7 +359,7 @@
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 121px;" align="left">Alamat Kantor</td>
 	        			<td width="10">:</td>
-	        			<td>{{perusahaan.alamat_perusahaan}} DESA, {{ perusahaan.desa }} KEC. {{ perusahaan.desa.kecamatan }} {{ perusahaan.desa.kecamatan.kabupaten }}</td>
+	        			<td>{{perusahaan.alamat_perusahaan}} Desa, {{ perusahaan.desa|title }} Kec. {{ perusahaan.desa.kecamatan|title }} {{ perusahaan.desa.kecamatan.kabupaten|title }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDUA</td>
@@ -389,12 +389,12 @@
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">2) Desa/Kelurahan</td>
 	        			<td width="10">:</td>
-	        			<td>{{ pengajuan.desa|default_if_none:"-" }}</td>
+	        			<td>{{ pengajuan.desa|title|default_if_none:"-" }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">3) Kecamatan</td>
 	        			<td width="10">:</td>
-	        			<td>{{ pengajuan.desa.kecamatan|default_if_none:"-" }}</td>
+	        			<td>{{ pengajuan.desa.kecamatan|title|default_if_none:"-" }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 134px;" align="left" width="190">4) Klasifikasi jalan</td>
@@ -470,17 +470,17 @@
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama  5 (lima) tahun dan dapat diperpanjang.</td>
 	        		</tr>
-	        		<tr>
-	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
-	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
-	        			<td  colspan="3" width="2000">Apabila sewaktu-waktu bangunan dan tanah tersebut digunakan oleh pemerintah daerah, maka pemegang izin harus mengosongkan bangunan dan tanah dimaksud tanpa ganti rugi.</td>
-	        		</tr>
 	        	</table>
 	        </div>
 	    </div>
 		<div class="page">
 			<div class="subpage">
 	        	<table width="100%" border="0" class="sk-justify">
+	        		<tr>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td  colspan="3" width="2000">Apabila sewaktu-waktu bangunan dan tanah tersebut digunakan oleh pemerintah daerah, maka pemegang izin harus mengosongkan bangunan dan tanah dimaksud tanpa ganti rugi.</td>
+	        		</tr>
 	        		<tr>
 	        			<td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KETUJUH</td>
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
@@ -562,17 +562,17 @@
 									<tr>
 										<td></td>
 										<td>5.</td>
-										<td>Sdr. Camat {{pengajuan.desa.kecamatan}} ;</td>
+										<td>Sdr. Camat {{pengajuan.desa.kecamatan|title}} ;</td>
 									</tr>   
 									<tr>
 										<td></td>
 										<td>6.</td>
-										<td>Sdr. Kepala DESA {{pengajuan.desa}} ;</td>
+										<td>Sdr. Kepala Desa {{pengajuan.desa|title}} ;</td>
 									</tr>   
 									<tr>
 										<td></td>
 										<td style="vertical-align: top;padding-top: 1px;">7.</td>
-										<td>Sdr. Dir. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} DESA, {{ pengajuan.pemohon.desa }} KEC. {{ pengajuan.pemohon.desa.kecamatan }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten }}</td>
+										<td>Sdr. Dir. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
 									</tr>   
 								</table>         
 							</td>

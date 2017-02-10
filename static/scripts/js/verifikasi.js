@@ -136,12 +136,13 @@ function verifikasi_skizin_kadin(id_detil_siup, aksi){
 
 
 function penomoran_izin(id_detil_siup, aksi){
+	var kode_jenis_izin = $('#kode_jenis_izin').val()
 	var kode_izin = $('#penomoran_kode_izin').val()
 	var tahun = $('#penomoran_tahun').val()
 	var nomor_izin_sk = $('#nomor_izin_sk').val()
   	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 	$.ajax({ // create an AJAX call...
-	    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, kode_izin: kode_izin,nomor_izin_sk: nomor_izin_sk, tahun: tahun }, // get the form data
+	    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, kode_jenis_izin: kode_jenis_izin, kode_izin: kode_izin,nomor_izin_sk: nomor_izin_sk, tahun: tahun }, // get the form data
 	    type: 'POST', // GET or POST
 	    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 		    success: function(response) { // on success..
