@@ -17,12 +17,155 @@
   <div class="form-group" id="sub_jenis_bidang_usaha">
       <label class="col-sm-2 control-label text-left"><strong>Sub Jenis Bidang Usaha</strong></label>
       <div class="col-sm-10">
-          <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="sub_jenis_bidang_usaha" required="" data-parsley-trigger="change" id="id_sub_jenis_bidang_usaha">
+          <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="sub_jenis_bidang_usaha" id="id_sub_jenis_bidang_usaha" onchange="subjenis()">
           </select>
       </div>
   </div>
 
-</form>
-<script type="text/javascript">
+  <div class="form-group" id="sub_angkutan_jalan_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Jalan Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_jalan wisata" id="id_jumlah_unit_angkutan_jalan">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_jalan_wisata" id="id_kapasitas_angkutan_jalan_wisata">
+      </div>
+    </div>
+  </div>
 
-</script>
+  <div class="form-group" id="sub_angkutan_kereta_api_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Kereta Api Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_kereta_api_wisata" id="id_jumlah_unit_angkutan_kereta_api_wisata">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_kereta_api_wisata" id="id_kapasitas_angkutan_kereta_api_wisata">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_angkutan_sungai_dan_danau_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Sungai dan Danau Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_sungai_dan_danau_wisata" id="id_jumlah_unit_angkutan_sungai_dan_danau_wisata">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_sungai_dan_danau_wisata" id="id_kapasitas_angkutan_sungai_dan_danau_wisata">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_angkutan_laut_domestik_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Laut Domestik Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_laut_domestik_wisata" id="id_jumlah_unit_angkutan_laut_domestik_wisata">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_laut_domestik_wisata" id="id_kapasitas_angkutan_laut_domestik_wisata">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_angkutan_laut_internasional_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Laut Internasional Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_laut_internasional_wisata" id="id_jumlah_unit_angkutan_laut_internasional_wisata">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_laut_internasional_wisata" id="id_kapasitas_angkutan_laut_internasional_wisata">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_restoran">
+    <label class="col-sm-3 control-label text-left">Restoran</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_restoran" id="id_jumlah_kursi_restoran">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_rumah_makan">
+    <label class="col-sm-3 control-label text-left">Rumah Makan</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_rumah_makan" id="id_jumlah_kursi_rumah_makan">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_bar">
+    <label class="col-sm-3 control-label text-left">Bar/Rumah Minum</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_bar" id="id_jumlah_kursi_bar">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_kafe">
+    <label class="col-sm-3 control-label text-left">Kafe</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_kafe" id="id_jumlah_kursi_kafe">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_pusat_makanan">
+    <label class="col-sm-3 control-label text-left">Pusat Makanan</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Stand :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_stand_pusat_makanan" id="id_jumlah_stand_pusat_makanan">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_jasa_boga">
+    <label class="col-sm-3 control-label text-left">Jasa Boga</label>
+    <label class="col-sm-2 control-label text-left">Kapasitas produksi/pack :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_produksi_jasa_boga" id="id_kapasitas_produksi_jasa_boga">
+        <span class="input-group-addon">unit/bulan</span>
+      </div>
+    </div>
+  </div>
+
+</form>
