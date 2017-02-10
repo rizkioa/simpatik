@@ -397,6 +397,16 @@
       }
     });
 
+   $(document).ready(function(){
+    $(".sum-modal").each(
+        function(){
+        $(this).keyup(
+            function(){
+            FormatCurrency(this)
+                });
+            });
+        });
+
       $(document).ready(function() {
         window.onbeforeunload = function ref() {
               var r = confirm( "Do you want to leave?" );

@@ -19,7 +19,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha, DetilTDUP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon,JenisReklame,ParameterBangunan,JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -595,9 +595,38 @@ def formulir_tdp_bul(request, extra_context={}):
     return render(request, "front-end/formulir/tdp_bul.html", extra_context)
 
 def formulir_tdup(request, extra_context={}):
+    negara = Negara.objects.all()
+    provinsi = Provinsi.objects.all()
+    kabupaten = Kabupaten.objects.all()
+    kecamatan = Kecamatan.objects.all()
+    jenis_pemohon = JenisPemohon.objects.all()
     bidang_usaha_pariwisata_list = BidangUsahaPariwisata.objects.all()
     subjenisbidangusaha_list = SubJenisBidangUsaha.objects.all()
-    extra_context.update({'bidang_usaha_pariwisata': bidang_usaha_pariwisata_list})
+    extra_context.update({'bidang_usaha_pariwisata': bidang_usaha_pariwisata_list, 'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+            try:
+                pengajuan_ = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    if paspor_:
+                        paspor_ = paspor_
+                    else:
+                        paspor_ = '0'
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdup.html", extra_context)
 
 def identitas_pemohon(request, extra_context={}):
@@ -1333,21 +1362,14 @@ def get_nilai_parameter(request):
 def cek_detil_izin(request, id_pengajuan_):
     if id_pengajuan_:
         if id_pengajuan_ != '0':
-            print 'masuk 0'
             pengajuan_ = PengajuanIzin.objects.filter(id=id_pengajuan_).last()
             if pengajuan_:
-                print 'masuk 1'
                 if request.COOKIES['id_kelompok_izin']:
-                    print 'masuk 2'
                     kelompok_jenis_izin = str(pengajuan_.kelompok_jenis_izin.id)
                     kelompok_izin_cookie = str(request.COOKIES['id_kelompok_izin'])
-                    print kelompok_jenis_izin
-                    print kelompok_izin_cookie
                     if kelompok_jenis_izin == kelompok_izin_cookie:
-                        print kelompok_jenis_izin
                         data = {'success': True, 'pesan': 'Proses Selesai.'}
                     else:
-                        print 'gagal'
                         data = {'success': False, 'pesan': 'Proses Selesai.'} 
                 else:
                     data = {'success': False, 'pesan': 'Proses Selesai.'}
