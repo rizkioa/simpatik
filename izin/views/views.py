@@ -16,6 +16,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha
@@ -1300,9 +1301,7 @@ def cek_izin_terdaftar(request, id_izin_, extra_context={}):
                     extra_context.update({'lokasi': alamat_})
 
     return render(request, "front-end/cek_izin.html", extra_context)
-    
-from django.http import HttpResponse
-from django.utils.safestring import mark_safe
+
 def option_kbli(request):
     select = request.POST.get('select')
     select = eval(select)

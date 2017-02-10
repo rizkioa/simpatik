@@ -296,11 +296,13 @@ class SKIzin(AtributTambahan):
 	jabatan_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='Jabatan Pejabat')
 	nip_pejabat = models.CharField(max_length=255, null=True, blank=True, verbose_name='NIP Pejabat')
 	# untuk tanggal skizin masa berlaku izin
-	tanggal_skizin = models.DateField(verbose_name='Tanggal SKIzin', null=True, blank=True)
+	masa_berlaku_izin = models.DateField(verbose_name='Tanggal Masa Berlaku SKIzin', null=True, blank=True)
 	# untuk status pendaftaran baru ,perubahan
 	status_pendaftaran = models.CharField(max_length=50, verbose_name='Status Pendaftaran', null=True, blank=True)
 	# untuk status pembaharuan ke 1 - 8
 	status_pembaharuan_ke = models.IntegerField(verbose_name='Status Pembaharuan Ke', null=True, blank=True)
+	# untuk tdp status waralaba
+	status_perusahaan = models.CharField(max_length=255, verbose_name="Status Perusahaan", null=True, blank=True)
 	body_html = RichTextField(null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 	
@@ -591,7 +593,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
-	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
 
 	def __unicode__(self):
 		return u'Detil IMB Papan Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -626,7 +628,7 @@ class DetilIMB(PengajuanIzin):
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
-	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Bats Barat')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
 
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -636,21 +638,21 @@ class DetilIMB(PengajuanIzin):
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
 
-class DetilSkIMB(MetaAtribut):
+class DetilSk(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
 	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
-	sk_menetapkan_keenam_a = models.CharField(max_length=255, verbose_name='SK Menetapkan 1', null=True, blank=True)
-	sk_menetapkan_keenam_b = models.CharField(max_length=255, verbose_name='SK Menetapkan 2', null=True, blank=True)
-	sk_menetapkan_keenam_c = models.CharField(max_length=255, verbose_name='SK Menetapkan 3', null=True, blank=True)
+	sk_menetapkan_a = models.CharField(max_length=255, verbose_name='SK Menetapkan A', null=True, blank=True)
+	sk_menetapkan_b = models.CharField(max_length=255, verbose_name='SK Menetapkan B', null=True, blank=True)
+	sk_menetapkan_c = models.CharField(max_length=255, verbose_name='SK Menetapkan C', null=True, blank=True)
 
 	def __unicode__(self):
-		return u'Detil SK SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
+		return u'Detil SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
 
 	class Meta:
 		ordering = ['-status']
-		verbose_name = 'SK Detil SK'
-		verbose_name_plural = 'SK Detil SK'
+		verbose_name = 'Detil SK'
+		verbose_name_plural = 'Detil SK'
 
 class InformasiKekayaanDaerah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
@@ -689,6 +691,11 @@ class DetilHO(PengajuanIzin):
 	jenis_bangunan = models.CharField(verbose_name='Jenis Bangunan', choices=JENIS_BANGUNAN, max_length=20,null=True, blank=True)
 	jenis_gangguan = models.CharField(verbose_name='Jenis Gangguan', choices=JENIS_GANGGUAN, max_length=20,null=True, blank=True)
 
+	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
+	
 	def __unicode__(self):
 		return u'Detil HO %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 

@@ -138,9 +138,10 @@ function verifikasi_skizin_kadin(id_detil_siup, aksi){
 function penomoran_izin(id_detil_siup, aksi){
 	var kode_izin = $('#penomoran_kode_izin').val()
 	var tahun = $('#penomoran_tahun').val()
+	var nomor_izin_sk = $('#nomor_izin_sk').val()
   	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 	$.ajax({ // create an AJAX call...
-	    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, kode_izin: kode_izin, tahun: tahun }, // get the form data
+	    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi, kode_izin: kode_izin,nomor_izin_sk: nomor_izin_sk, tahun: tahun }, // get the form data
 	    type: 'POST', // GET or POST
 	    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 		    success: function(response) { // on success..
@@ -158,7 +159,6 @@ function penomoran_izin(id_detil_siup, aksi){
 		    }
 	  	})
 }
-
 
 
 function izin_selesai(id_detil_siup, aksi){
@@ -205,3 +205,39 @@ $("#form_penolakan_verifikasi_kabid").ajaxForm({
         }
 	}
 });
+
+function pembayaran_add(btn){
+    var frm = $('#id_form_pembayaran');
+     if (frm.parsley().validate()){
+        frm.ajaxSubmit({
+         success: function(response) {  // on success..
+            var respon = $.parseJSON(response);  
+		        if(respon.success){
+                  toastr["success"](respon.pesan)
+                  window.location.href= "";
+              	}
+              	else{
+                  	toastr["error"](respon.pesan)
+                }
+            },
+            error: function(data) {       
+              toast_server_error()
+            }
+          });
+        }
+  }
+
+    function sk_add(btn){
+        var frm = $('#id_form_sk');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                $("#edit_skizin").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }

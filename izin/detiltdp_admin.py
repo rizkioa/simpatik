@@ -375,7 +375,6 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		
 		extra_context = {}
 		if id_pengajuan_izin_:
-			# pengajuan_ = DetilTDP.objects.get_object_or_404(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 			# print legalitas_1.tanggal_pengesahan
@@ -398,7 +397,6 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		
 		extra_context = {}
 		if id_pengajuan_izin_:
-			# pengajuan_ = DetilTDP.objects.get_object_or_404(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 			# print legalitas_1.tanggal_pengesahan
@@ -418,45 +416,35 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def edit_skizin_tdp(self, request):
-		from django.db import IntegrityError
 		if request.POST:
 			id_pengajuan_izin = request.POST.get('id_pengajuan_izin')
 			pengajuan_ = DetilTDP.objects.filter(id=id_pengajuan_izin).last()
 			if pengajuan_:
 				produk_utama = request.POST.get('produk_utama')
 				status_waralaba = request.POST.get('status_waralaba')
-				# # status_perusahaan = request.POST.get('status_perusahaan', None)
+				status_perusahaan = request.POST.get('status_perusahaan', None)
 				# # save pengajuan
 				pengajuan_.produk_utama = produk_utama
 				pengajuan_.status_waralaba = status_waralaba
-				# # pengajuan_.status_perusahaan = status_perusahaan
 				# # save skizin
 				status_pendaftaran = request.POST.get('status_pendaftaran')
 				status_pembaharuan_ke = request.POST.get('status_pembaharuan_ke')
-				masa_berlaku = datetime.datetime.strptime(request.POST.get('masa_berlaku'), '%d-%m-%Y').strftime('%Y-%m-%d')
+				if request.POST.get('masa_berlaku'):
+					masa_berlaku = request.POST.get('masa_berlaku')
+					masa_berlaku = datetime.datetime.strptime(masa_berlaku, '%d-%m-%Y').strftime('%Y-%m-%d')
 				
 				try:
 					skizin = SKIzin.objects.get(pengajuan_izin=pengajuan_)
+					skizin.status_perusahaan = status_perusahaan
 					skizin.status_pendaftaran = status_pendaftaran
 					skizin.status_pembaharuan_ke = status_pembaharuan_ke
-					skizin.masa_berlaku = masa_berlaku
+					skizin.masa_berlaku_izin = masa_berlaku
+					skizin.status = 11
 				except ObjectDoesNotExist:
-					skizin = SKIzin(pengajuan_izin_id=pengajuan_.id,status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, masa_berlaku=masa_berlaku)
-				skizin.save()
-				
-				# skizin.status_pendaftaran = status_pendaftaran
-				# skizin.status_pembaharuan_ke = status_pembaharuan_ke
+					skizin = SKIzin(pengajuan_izin_id=pengajuan_.id,status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, masa_berlaku_izin=masa_berlaku, status=11, status_perusahaan=status_perusahaan)
 
 				pengajuan_.save()
 				skizin.save()
-
-				print request.POST.get('id_pengajuan_izin')
-				print request.POST.get('produk_utama')
-				print request.POST.get('status_waralaba')
-				print request.POST.get('status_perusahaan')
-				print request.POST.get('masa_berlaku')
-				print request.POST.get('status_pendaftaran')
-				print request.POST.get('status_pembaharuan_ke')
 				data = {'success': True, 'pesan': 'Proses Selesai.'}
 			else:
 				data = {'success': False, 'pesan': 'Proses Selesai.'}
