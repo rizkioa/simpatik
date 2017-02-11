@@ -210,6 +210,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
 					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
 					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 

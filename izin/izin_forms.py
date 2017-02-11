@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -261,7 +261,6 @@ class KebutuhanLainnyaIPPTUsahaForm(forms.ModelForm):
 		model = InformasiTanah
 		fields = ('tenaga_ahli','pegawai_tetap','pegawai_harian_tetap','pegawai_harian_tidak_tetap','kebutuhan_listrik','kebutuhan_listrik_sehari_hari','jumlah_daya_genset','jumlah_listrik_kebutuhan_dari_pln','air_untuk_rumah_tangga','air_untuk_produksi','air_lainnya','air_dari_pdam','air_dari_sumber','air_dari_sungai','tenaga_kerja_wni','tenaga_kerja_wna','tenaga_kerja_tetap','tenaga_kerja_tidak_tetap')
 
-
 class PenggunaanTanahIPPTUsahaForm(forms.ModelForm):
 	"""docstring for PenggunaanTanahIPPTUsahaForm"""
 	class Meta:
@@ -287,6 +286,7 @@ class SKIzinForm(forms.ModelForm):
 	class Meta:
 		model = SKIzin
 		fields = ('body_html',)
+
 class DetilPembayaranForm(forms.ModelForm):
 	"""docstring for DetilPembayaranForm"""
 	class Meta:
@@ -298,3 +298,9 @@ class LuasTanahYangDisetujuiForm(forms.ModelForm):
 	class Meta:
 		model = InformasiTanah
 		fields = ('luas_tanah_yang_disetujui',)
+
+class RincianSubJenisForm(forms.ModelForm):
+	"""docstring for RincianSubJenisForm"""
+	class Meta:
+		model = RincianSubJenis
+		fields = ('jumlah_unit_angkutan_jalan_wisata', 'kapasitas_angkutan_jalan_wisata', 'jumlah_unit_angkutan_kereta_api_wisata', 'kapasitas_angkutan_kereta_api_wisata', 'jumlah_unit_angkutan_sungai_dan_danau_wisata', 'kapasitas_angkutan_sungai_dan_danau_wisata', 'jumlah_unit_angkutan_laut_domestik_wisata', 'kapasitas_angkutan_laut_domestik_wisata', 'jumlah_unit_angkutan_laut_internasional_wisata', 'kapasitas_angkutan_laut_internasional_wisata', 'jumlah_kursi_restoran', 'jumlah_kursi_rumah_makan', 'jumlah_kursi_bar_atau_rumah_minum', 'jumlah_kursi_kafe', 'jumlah_stand_pusat_makanan', 'kapasitas_produksi_jasa_boga')

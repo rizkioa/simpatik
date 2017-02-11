@@ -1,6 +1,4 @@
-import os
-import json
-import datetime
+import os, json, datetime
 from decimal import Decimal
 from sqlite3 import OperationalError
 
@@ -21,7 +19,7 @@ from izin.utils import get_nomor_pengajuan
 from izin.utils import formatrupiah
 
 from izin import models as app_models
-from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller, Kelembagaan
+from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller, Kelembagaan, DetilTDUP
 from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna, Account
@@ -37,11 +35,16 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
+	# print request.POST.get('desa')
 	try:
+		# print "add pemohon get"
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
+		# print str(p)+' jhhjhjhjhj'
 	except ObjectDoesNotExist:
+		# print "add pemohon"
 		pemohon = PemohonForm(request.POST)		
+
 	if pemohon.is_valid():
 		# Untuk Nomor Identitas
 		ktp_ = request.POST.get('ktp', None)
@@ -121,6 +124,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'InformasiTanah')
 		elif k.kode == "HULLER":
 			objects_ = getattr(app_models, 'DetilHuller')
+		elif k.kode == "TDUP":
+			objects_ = getattr(app_models, 'DetilTDUP')
 		
 		if request.user.is_anonymous():
 			created_by = p.id
@@ -128,7 +133,6 @@ def siup_identitas_pemohon_save_cookie(request):
 			created_by =  request.user.id
 
 		if objects_:
-			print objects_
 			try:
 				pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
 				pengajuan.status = 11
@@ -162,8 +166,9 @@ def siup_identitas_pemohon_save_cookie(request):
 		email_ = ''
 		if pemohon.cleaned_data['email']:
 			email_ = pemohon.cleaned_data['email']
-
-		alamat_ = str(pengajuan.pemohon.alamat)+", DESA "+str(pengajuan.pemohon.desa.nama_desa)+", KEC. "+str(pengajuan.pemohon.desa.kecamatan.nama_kecamatan)+", "+str(pengajuan.pemohon.desa.kecamatan.kabupaten.nama_kabupaten)
+		alamat_ = ""
+		if pengajuan.pemohon.desa:
+			alamat_ = str(pengajuan.pemohon.alamat)+", DESA "+str(pengajuan.pemohon.desa.nama_desa)+", KEC. "+str(pengajuan.pemohon.desa.kecamatan.nama_kecamatan)+", "+str(pengajuan.pemohon.desa.kecamatan.kabupaten.nama_kabupaten)
 
 		data = {'success': True, 'pesan': 'Identitas Pemohon berhasil tersimpan. Proses Selanjutnya.' ,'data': [
 			{'nama_lengkap': pemohon.cleaned_data['nama_lengkap']},
@@ -202,6 +207,28 @@ def siup_identitas_perusahan_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+			if k.kode == "503.08/":
+				objects_ = getattr(app_models, 'DetilSIUP')
+			elif k.kode == "IUJK":
+				objects_ = getattr(app_models, 'DetilIUJK')
+			elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+				objects_ = getattr(app_models, 'DetilReklame')
+			elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
+				objects_ = getattr(app_models, 'DetilTDP')
+			elif k.kode == "503.01.06/":
+				objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+			elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
+				objects_ = getattr(app_models, 'DetilIMB')
+			elif k.kode == "503.06.01/":
+				objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
+			elif k.kode == "503.02/":
+				objects_ = getattr(app_models, 'DetilHO')
+			elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
+				objects_ = getattr(app_models, 'InformasiTanah')
+			elif k.kode == "HULLER":
+				objects_ = getattr(app_models, 'DetilHuller')
+			elif k.kode == "TDUP":
+				objects_ = getattr(app_models, 'DetilTDUP')
 			try:
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
@@ -213,47 +240,36 @@ def siup_identitas_perusahan_save_cookie(request):
 					else:
 						per.created_by_id = request.COOKIES['id_pemohon']
 					per.save()
-					if k.kode == "503.08/":
-						objects_ = getattr(app_models, 'DetilSIUP')
-					elif k.kode == "IUJK":
-						objects_ = getattr(app_models, 'DetilIUJK')
-					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
-						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
-					# elif k.id == 25 or k.id == 26 or k.id == 27 or k.id == 28:
-						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.kode == "503.01.06/":
-						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-					elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
-						objects_ = getattr(app_models, 'DetilIMB')
-					elif k.kode == "503.06.01/":
-						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
-					elif k.kode == "503.02/":
-						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
-						objects_ = getattr(app_models, 'InformasiTanah')
-					elif k.kode == "HULLER":
-						objects_ = getattr(app_models, 'DetilHuller')
+					
 					if objects_:
-						try:
-							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
-							pengajuan.perusahaan = per
-						except ObjectDoesNotExist:
-							pengajuan = objects_(perusahaan=per)
-						pengajuan.save()
+						# print objects_
+						# try:
+						# 	print "masuk pengajuan  perusahaan try"
+						# 	pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+						# 	pengajuan.perusahaan_id = per.id
+						# 	print per.id
+						# 	pengajuan.save()
+						# except ObjectDoesNotExist:
+						# 	pengajuan = objects_(perusahaan=per)
+						# pengajuan.save()
+						# print pengajuan
+						pengajuan_ = objects_.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+						pengajuan_.perusahaan_id = per.id
+						pengajuan_.save()
+						print pengajuan_.perusahaan
 
 					email_ = ""
 					if get_perusahaan.email:
 						email_ = get_perusahaan.email
 					alamat_ = str(get_perusahaan.alamat_perusahaan)+", DESA "+str(get_perusahaan.desa)+", KEC. "+str(get_perusahaan.desa.kecamatan)+", "+str(get_perusahaan.desa.kecamatan.kabupaten)
 					data = {'success': True, 'pesan': 'Perusahaan disimpan. Proses Selanjutnya.','data' : [
-					{'npwp_perusahaan': get_perusahaan.npwp},
-					{'nama_perusahaan': get_perusahaan.nama_perusahaan},
-					{'alamat_perusahaan': alamat_ },
-					{'kode_pos_perusahaan': get_perusahaan.kode_pos},
-					{'telepon_perusahaan': get_perusahaan.telepon},
-					{'fax_perusahaan': get_perusahaan.fax},
-					{'email_perusahaan': email_}
+						{'npwp_perusahaan': get_perusahaan.npwp},
+						{'nama_perusahaan': get_perusahaan.nama_perusahaan},
+						{'alamat_perusahaan': alamat_ },
+						{'kode_pos_perusahaan': get_perusahaan.kode_pos},
+						{'telepon_perusahaan': get_perusahaan.telepon},
+						{'fax_perusahaan': get_perusahaan.fax},
+						{'email_perusahaan': email_}
 					]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
@@ -272,33 +288,20 @@ def siup_identitas_perusahan_save_cookie(request):
 					else:
 						p.created_by_id = request.COOKIES['id_pemohon']
 					p.save()
-					if k.kode == "503.08/":
-						objects_ = getattr(app_models, 'DetilSIUP')
-					elif k.kode == "IUJK":
-						objects_ = getattr(app_models, 'DetilIUJK')
-					elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
-						objects_ = getattr(app_models, 'DetilReklame')
-					elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
-						objects_ = getattr(app_models, 'DetilTDP')
-					elif k.kode == "503.01.06/":
-						objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-					elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
-						objects_ = getattr(app_models, 'DetilIMB')
-					elif k.kode == "503.06.01/":
-						objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
-					elif k.kode == "503.02/":
-						objects_ = getattr(app_models, 'DetilHO')
-					elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
-						objects_ = getattr(app_models, 'InformasiTanah')
-					elif k.kode == "HULLER":
-						objects_ = getattr(app_models, 'DetilHuller')
 					if objects_:
-						try:
-							pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
-							pengajuan.perusahaan = p
-						except ObjectDoesNotExist:
-							pengajuan = objects_(perusahaan=p)
-						pengajuan.save()
+						# try:
+						# 	print "masuk pengajuan  perusahaan except"
+						# 	pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
+						# 	print p.id
+						# 	pengajuan.perusahaan_id = p.id
+						# except ObjectDoesNotExist:
+						# 	pengajuan = objects_(perusahaan=p)
+						# pengajuan.save()
+						# print pengajuan
+						pengajuan_ = objects_.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+						pengajuan_.perusahaan_id = p.id
+						pengajuan_.save()
+						print pengajuan_.perusahaan
 					email_ = ""
 					if p.email:
 						email_ = p.email
