@@ -5,6 +5,7 @@ import sys
 import signal
 import telebot
 from telebot import types
+from django.conf import settings 
 
 from kepegawaian.models import Pegawai, NotifikasiTelegram
 
@@ -12,12 +13,12 @@ from kepegawaian.models import Pegawai, NotifikasiTelegram
 from daemon import runner
 
 def telegram_bot_setting():
-	TOKEN = '321364862:AAFE6CglJ_u8-TGuAbV7YBIiIU0rhqukNTI'
+	API_TOKEN = settings.TELGRAM_API_TOKEN
 
 	commands = {  # command description used in the "help" command
 				  'start': 'Untuk menggunakan Bot',
 				  'bantuan': 'Memberikan anda informasi tetang perintah yang tersedia',
-				  'daftar': 'Mendaftarkan ID anda kedalam aplikasi SIMPATIK',
+				  'daftar': 'Mendaftarkan ID anda kedalam aplikasi SIMPATIK untuk notifikasi jika ada izin yang harus diproses',
 	}
 
 
@@ -45,14 +46,14 @@ def telegram_bot_setting():
 				print str(m.chat.first_name) + " [" + str(m.chat.id) + "]: " + m.text
 
 
-	bot = telebot.TeleBot(TOKEN)
+	bot = telebot.TeleBot(API_TOKEN)
 	bot.set_update_listener(listener)  # register listener
 
 	# bantuan page
 	@bot.message_handler(commands=['start'])
 	def command_help(m):
 		cid = m.chat.id
-		help_text = "Selamat Datang, Simpatik Bot ini hanya untuk notifikasi aplikasi SIMPATIK kab. Kediri\n"
+		help_text = "Selamat Datang, Simpatik Bot ini hanya untuk notifikasi aplikasi SIMPATIK Kab. Kediri\n"
 		help_text += "Perintah yang tersedia : \n"
 		for key in commands:  # generate help text out of the commands dictionary defined at the top
 			help_text += "/" + key + ": "
@@ -72,9 +73,8 @@ def telegram_bot_setting():
 
 	@bot.message_handler(commands=['daftar'])
 	def send_welcome(message):
-		msg = bot.reply_to(message, """\
-			Selamat datang, Pendaftaran Step 1.
-			Silahkan masukkan NIP/NIK anda
+		msg = bot.reply_to(message, """
+			Selamat datang, Pendaftaran Step 1. Silahkan masukkan NIP/NIK anda
 			""")
 		bot.register_next_step_handler(msg, process_verify_step)
 

@@ -140,7 +140,8 @@ class CustomMenu(Menu):
              menu_utama.children += [
                  items.MenuItem(
                         title='Daftar Survey',
-                        icon='fa fa-file-text', 
+                        icon='fa fa-file-text',
+                        css_classes='daftar_survey',
                         url=reverse('admin:izin_survey_changelist'),                        
                     ),
                     items.MenuItem(
