@@ -126,6 +126,11 @@
                                     $('.8 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
                                 }
                             }
+                            if (element == 'cek_lokasi'){
+                                if (respon.jumlah_izin[i] > 0){
+                                    $('.daftar_survey a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
+                                }
+                            }
 
                             var jumlah_izin = respon.jumlah_izin[i]
                         }

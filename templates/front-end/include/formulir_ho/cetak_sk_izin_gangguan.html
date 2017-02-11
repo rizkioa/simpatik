@@ -460,7 +460,7 @@
                 <tr>
                   <td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
                   <td width="10">:</td>
-                  <td>{{ pengajuan.luas_lahan_usaha|default_if_none:"-" }} M&sup2;</td>
+                  <td>{{ luas_lahan_usaha_|default_if_none:"-" }} M&sup2;</td>
                 </tr>
                 <tr>
                   <td colspan="3" style="padding-left: 121px;" align="left" width="140">d. Dengan batas tanah</td>
@@ -499,12 +499,12 @@
                 <tr>
                   <td colspan="3" style="padding-left: 121px;" align="left">a. Jumlah tenaga kerja</td>
                   <td width="10">:</td>
-                  <td>{{ pengajuan.jumlah_tenaga_kerja|default_if_none:"-" }}</td>
+                  <td>{{ pengajuan.jumlah_tenaga_kerja|default_if_none:"-"|floatformat:-2 }}</td>
                 </tr>
                 <tr>
                   <td colspan="3" style="padding-left: 121px;" align="left">b. Merk / jumlah mesin</td>
                   <td width="10">:</td>
-                  <td>{{pengajuan.merk_mesin|default_if_none:"-"}} / {{ pengajuan.jumlah_mesin|default_if_none:"-" }}</td>
+                  <td>{{pengajuan.merk_mesin|default_if_none:"-"}} / {{ pengajuan.jumlah_mesin|default_if_none:"-"|floatformat:-2 }}</td>
                 </tr>
                 <tr>
                   <td colspan="3" style="padding-left: 121px;" align="left">c. Daya / kekuatan mesin</td>
@@ -514,7 +514,7 @@
                 <tr>
                   <td colspan="3" style="padding-left: 121px;" align="left">d. Luas tempat usaha</td>
                   <td width="10">:</td>
-                  <td>{{ pengajuan.luas_ruang_tempat_usaha|default_if_none:"-" }} M&sup2;</td>
+                  <td>{{ luas_ruang_tempat_usaha_|default_if_none:"-" }} M&sup2;</td>
                 </tr>
               </table>
               <table width="100%" border="0" class="sk-justify">
@@ -569,7 +569,7 @@
                 <tr>
                   <td width="10" style="vertical-align: top;padding-top: 2px;">KEDELAPAN</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td  colspan="3" width="2000">Setiap bentuk pembuatan yang dilakukan oleh pemegang izin gangguan untuk tempat usaha {{ pengajuan.tujuan_gangguan|default_if_none:"-" }} dengan luas tempat usaha {{ pengajuan.luas_ruang_tempat_usaha|default_if_none:"-" }} M&sup2; , baik disengaja maupun yang tidak disengaja yang mengaakibatkan penyimpanan dan / atau pelanggaran dan / atau tidak di laksanakanya terhadap ketentuan-ketentuan  sebagaimana dimaksud dalam diktum KEDUA dan kewajiban sebagaimana dimaksud dalam diktum KETIGA dan diktum KETUJUH, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini .</td>
+                  <td  colspan="3" width="2000">Setiap bentuk pembuatan yang dilakukan oleh pemegang izin gangguan untuk tempat usaha {{ pengajuan.tujuan_gangguan|default_if_none:"-" }} dengan luas tempat usaha {{ luas_ruang_tempat_usaha_|default_if_none:"-" }} M&sup2; , baik disengaja maupun yang tidak disengaja yang mengaakibatkan penyimpanan dan / atau pelanggaran dan / atau tidak di laksanakanya terhadap ketentuan-ketentuan  sebagaimana dimaksud dalam diktum KEDUA dan kewajiban sebagaimana dimaksud dalam diktum KETIGA dan diktum KETUJUH, dikenakan sanksi menurut peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya keputusan ini .</td>
                 </tr> 
               </table>
             </div>    

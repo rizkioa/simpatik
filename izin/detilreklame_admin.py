@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilReklame, Syarat, SKIzin, Riwayat, Survey
+from izin.models import DetilReklame, Syarat, SKIzin, Riwayat, Survey,DetilPembayaran
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,6 +9,8 @@ import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
+
+from izin.utils import*
 
 class DetilReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -79,7 +81,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
@@ -95,7 +97,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 					pass
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({'perusahaan': pengajuan_.perusahaan})
 
@@ -181,12 +183,12 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
@@ -194,6 +196,37 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			if pengajuan_.desa:
+				letak_ = pengajuan_.letak_pemasangan + ",Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			else:
+				letak_ = pengajuan_.letak_pemasangan
+			
+			if pengajuan_.panjang:
+				panjang_ = '{0:f}'.format(pengajuan_.panjang)
+				p = panjang_.split(".")[1]
+				if p == "00":
+					panjang_ = ("%.0f" % pengajuan_.panjang)
+				else:
+					panjang_ = pengajuan_.panjang
+				extra_context.update({'panjang_': panjang_})
+			if pengajuan_.lebar:
+				lebar_ = '{0:f}'.format(pengajuan_.lebar)
+				l = lebar_.split(".")[1]
+				if l == "00":
+					lebar_ = ("%.0f" % pengajuan_.lebar)
+				else:
+					lebar_ = pengajuan_.lebar
+				extra_context.update({'lebar_': lebar_})
+			if pengajuan_.sisi:
+				sisi_ = '{0:f}'.format(pengajuan_.sisi)
+				s = sisi_.split(".")[1]
+				if s == "00":
+					sisi_ = ("%.0f" % pengajuan_.sisi)
+				else:
+					sisi_ = pengajuan_.sisi
+				extra_context.update({'sisi_': sisi_})
+
+			extra_context.update({'letak_pemasangan': letak_})
 			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
 				tanggal_mulai = pengajuan_.tanggal_mulai
 				tanggal_akhir = pengajuan_.tanggal_akhir
@@ -216,6 +249,17 @@ class DetilReklameAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
+			try:
+				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				if retribusi_:
+					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					terbilang_ = terbilang(n)
+					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'terbilang': terbilang_ })
+					extra_context.update({'retribusi_': retribusi_ })
+					
+			except ObjectDoesNotExist:
+				pass
 			# print pengajuan_.kbli.nama_kbli.all()
 			# print pengajuan_.produk_utama
 		template = loader.get_template("front-end/include/formulir_reklame/cetak_reklame_asli.html")
@@ -231,7 +275,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				alamat_perusahaan_ = ""
 				if pengajuan_.pemohon:
 					if pengajuan_.pemohon.desa:
-						alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+						alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 						extra_context.update({ 'alamat_pemohon': alamat_ })
 					extra_context.update({ 'pemohon': pengajuan_.pemohon })
 					paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
@@ -240,15 +284,40 @@ class DetilReklameAdmin(admin.ModelAdmin):
 					extra_context.update({ 'ktp': ktp_ })
 				if pengajuan_.perusahaan:
 					if pengajuan_.perusahaan.desa:
-						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 						extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 					extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 					syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
 				if pengajuan_.desa:
-					letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+					letak_ = pengajuan_.letak_pemasangan + ",Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 				else:
 					letak_ = pengajuan_.letak_pemasangan
-				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
+
+				if pengajuan_.panjang:
+					panjang_ = '{0:f}'.format(pengajuan_.panjang)
+					p = panjang_.split(".")[1]
+					if p == "00":
+						panjang_ = ("%.0f" % pengajuan_.panjang)
+					else:
+						panjang_ = pengajuan_.panjang
+					extra_context.update({'panjang_': panjang_})
+				if pengajuan_.lebar:
+					lebar_ = '{0:f}'.format(pengajuan_.lebar)
+					l = lebar_.split(".")[1]
+					if l == "00":
+						lebar_ = ("%.0f" % pengajuan_.lebar)
+					else:
+						lebar_ = pengajuan_.lebar
+					extra_context.update({'lebar_': lebar_})
+				if pengajuan_.sisi:
+					sisi_ = '{0:f}'.format(pengajuan_.sisi)
+					s = sisi_.split(".")[1]
+					if s == "00":
+						sisi_ = ("%.0f" % pengajuan_.sisi)
+					else:
+						sisi_ = pengajuan_.sisi
+					extra_context.update({'sisi_': sisi_})
+
 				if pengajuan_.tanggal_mulai:
 					awal = pengajuan_.tanggal_mulai
 				else:
@@ -260,7 +329,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				
 				selisih = akhir-awal
 				extra_context.update({'title': 'Proses Pengajuan'})
-				extra_context.update({'ukuran': ukuran_})
+				# extra_context.update({'ukuran': ukuran_})
 				extra_context.update({'letak_pemasangan': letak_})
 				if pengajuan_.tanggal_mulai:
 					extra_context.update({'selisih': selisih.days})

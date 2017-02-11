@@ -64,6 +64,10 @@ function load_data_imb(id_pengajuan){
             $('#id_luas_bangunan_lama').val(respon.data.luas_bangunan_lama)
             $('#id_no_imb_lama').val(respon.data.luas_bangunan_lama)
             $('#id_tanggal_imb_lama').val(respon.data.luas_bangunan_lama)
+            $('#id_batas_utara').val(respon.data.id_batas_utara)
+            $('#id_batas_timur').val(respon.data.id_batas_timur)
+            $('#id_batas_selatan').val(respon.data.id_batas_selatan)
+            $('#id_batas_barat').val(respon.data.id_batas_barat)
           }      
         },
         error: function(response){

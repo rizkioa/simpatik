@@ -882,13 +882,13 @@ def cetak_ippt_usaha(request, id_pengajuan_):
           alamat_perusahaan_ = ""
           if pengajuan_.pemohon:
             if pengajuan_.pemohon.desa:
-              alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+              alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
               extra_context.update({ 'alamat_pemohon': alamat_ })
             extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
           if pengajuan_.perusahaan:
             if pengajuan_.perusahaan.desa:
-              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
               extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
             extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 

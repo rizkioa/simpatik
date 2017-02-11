@@ -240,17 +240,17 @@
 	        		<tr>
 	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.panjang|floatformat:-2}}x{{pengajuan.lebar|floatformat:-2}}x{{pengajuan.sisi|floatformat:-2}} / {{pengajuan.jumlah|floatformat:-2|default_if_none:"-"}}</td>
+	        			<td colspan="2">{{panjang_|default_if_none:"-"}}x{{lebar_|default_if_none:"-"}}x{{sisi_|default_if_none:"-"}} / {{pengajuan.jumlah|floatformat:-2|default_if_none:"-"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
+	        			<td colspan="2">{{retribusi_.tanggal_bayar|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>Letak pemasangan</b></td>
-	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.letak_pemasangan|default_if_none:"-"}}</td>
+	        			<td style="vertical-align: top;padding-top: 1px;"><b>Letak pemasangan</b></td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td colspan="2">{{letak_pemasangan|default_if_none:"-"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="4">
