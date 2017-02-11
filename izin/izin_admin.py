@@ -461,6 +461,13 @@ class IzinAdmin(admin.ModelAdmin):
 			url = "/admin/izin/pengajuanizin/stemple-skizin/"
 			total = skizin + total
 
+		if request.user.groups.filter(name='Cek Lokasi'):
+			skizin = 10
+			id_elemet.append('cek_lokasi')
+			jumlah_izin.append(skizin)
+			url = "/admin/izin/survey/"
+			total = skizin + total
+
 		pesan = "Ada "+str(total)+" Izin yang harus dikerjakan."
 		total = total
 

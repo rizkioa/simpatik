@@ -76,6 +76,11 @@ class CustomMenu(Menu):
                     accesskey='menuIzin',
                     children= [
                         items.MenuItem(
+                            title='Notifikasi Telegram',
+                            icon='fa fa-file-text', 
+                            url=reverse('admin:kepegawaian_notifikasitelegram_changelist'),                        
+                        ),
+                        items.MenuItem(
                             title='Semua Pengajuan',
                             icon='fa fa-file-text', 
                             url=reverse('admin:semua_pengajuan'),                        
@@ -135,7 +140,8 @@ class CustomMenu(Menu):
              menu_utama.children += [
                  items.MenuItem(
                         title='Daftar Survey',
-                        icon='fa fa-file-text', 
+                        icon='fa fa-file-text',
+                        css_classes='daftar_survey',
                         url=reverse('admin:izin_survey_changelist'),                        
                     ),
                     items.MenuItem(
