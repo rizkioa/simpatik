@@ -26,4 +26,4 @@ django-html-validator
 django-daterange-filter
 django-ckeditor
 apt-get install python-imaging
-#pyTelegramBotAPI
+pyTelegramBotAPI==2.3.0
