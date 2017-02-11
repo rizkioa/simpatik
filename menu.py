@@ -76,6 +76,11 @@ class CustomMenu(Menu):
                     accesskey='menuIzin',
                     children= [
                         items.MenuItem(
+                            title='Notifikasi Telegram',
+                            icon='fa fa-file-text', 
+                            url=reverse('admin:kepegawaian_notifikasitelegram_changelist'),                        
+                        ),
+                        items.MenuItem(
                             title='Semua Pengajuan',
                             icon='fa fa-file-text', 
                             url=reverse('admin:semua_pengajuan'),                        

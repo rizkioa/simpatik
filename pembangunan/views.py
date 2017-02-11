@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import drest, json
-
-# Create your views here.
+from django.core.urlresolvers import reverse
+import drest, json 
 
 def get_rekomendasi_pembangunan(request):
 	api_url = request.GET.get('api_url')
