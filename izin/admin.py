@@ -19,7 +19,7 @@ from izin.huller_admin import DetilHullerAdmin
 from izin.survey_admin import SurveyAdmin
 from izin.detiltdup_admin import DetilTDUPAdmin
 from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha, SertifikatTanah,DetilSk
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha, SertifikatTanah,DetilSk,DetilPembayaran
 from izin.pemohon_admin import PemohonAdmin
 
 from master.models import JenisPemohon
@@ -44,7 +44,7 @@ admin.site.register(SKIzin)
 admin.site.register(Riwayat)
 admin.site.register(JenisMesin)
 admin.site.register(MesinHuller)
-
+admin.site.register(DetilPembayaran)
 
 admin.site.register(SertifikatTanah)
 admin.site.register(AnggotaBadanUsaha)

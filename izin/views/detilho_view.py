@@ -102,6 +102,11 @@ def load_detilho(request,id_pengajuan):
       id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
       id_tujuan_gangguan = pengajuan_.tujuan_gangguan
       id_alamat = pengajuan_.alamat
+      id_surat_tanah = pengajuan_.no_surat_tanah
+      if pengajuan_.tanggal_surat_tanah:
+        id_tanggal_surat_tanah = pengajuan_.tanggal_surat_tanah.strftime("%d-%m-%Y")
+      else:
+        id_tanggal_surat_tanah = ""
       if pengajuan_.desa:
         id_desa = str(pengajuan_.desa.id)
         id_kecamatan = str(pengajuan_.desa.kecamatan.id)
@@ -124,7 +129,7 @@ def load_detilho(request,id_pengajuan):
       id_jenis_gangguan = pengajuan_.jenis_gangguan
 
       data = {'success': True,
-          'data': {'id_perkiraan_modal': id_perkiraan_modal,'id_tujuan_gangguan': id_tujuan_gangguan,'id_alamat': id_alamat,'id_desa': id_desa,'id_kecamatan': id_kecamatan,'id_bahan_baku_dan_penolong': id_bahan_baku_dan_penolong,'id_proses_produksi': id_proses_produksi,'id_jenis_produksi': id_jenis_produksi,'id_kapasitas_produksi': id_kapasitas_produksi,'id_jumlah_tenaga_kerja': id_jumlah_tenaga_kerja,'id_jumlah_mesin': id_jumlah_mesin,'id_merk_mesin': id_merk_mesin,'id_daya': id_daya,'id_kekuatan': id_kekuatan,'id_luas_ruang_tempat_usaha': id_luas_ruang_tempat_usaha,'id_luas_lahan_usaha': id_luas_lahan_usaha,'id_jenis_lokasi_usaha': id_jenis_lokasi_usaha,'id_jenis_bangunan': id_jenis_bangunan,'id_jenis_gangguan': id_jenis_gangguan}}
+          'data': {'id_perkiraan_modal': id_perkiraan_modal,'id_tujuan_gangguan': id_tujuan_gangguan,'id_alamat': id_alamat,'id_surat_tanah':id_surat_tanah,'id_tanggal_surat_tanah':id_tanggal_surat_tanah,'id_desa': id_desa,'id_kecamatan': id_kecamatan,'id_bahan_baku_dan_penolong': id_bahan_baku_dan_penolong,'id_proses_produksi': id_proses_produksi,'id_jenis_produksi': id_jenis_produksi,'id_kapasitas_produksi': id_kapasitas_produksi,'id_jumlah_tenaga_kerja': id_jumlah_tenaga_kerja,'id_jumlah_mesin': id_jumlah_mesin,'id_merk_mesin': id_merk_mesin,'id_daya': id_daya,'id_kekuatan': id_kekuatan,'id_luas_ruang_tempat_usaha': id_luas_ruang_tempat_usaha,'id_luas_lahan_usaha': id_luas_lahan_usaha,'id_jenis_lokasi_usaha': id_jenis_lokasi_usaha,'id_jenis_bangunan': id_jenis_bangunan,'id_jenis_gangguan': id_jenis_gangguan}}
       response = HttpResponse(json.dumps(data))
     else:
       data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
@@ -160,12 +165,18 @@ def load_konfirmasi_detilho(request,id_pengajuan):
       jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
       jenis_bangunan = pengajuan_.jenis_bangunan
       jenis_gangguan = pengajuan_.jenis_gangguan
-
+      surat_tanah = pengajuan_.no_surat_tanah
+      if pengajuan_.tanggal_surat_tanah:
+        tanggal_surat_tanah = pengajuan_.tanggal_surat_tanah.strftime("%d-%m-%Y")
+      else:
+        tanggal_surat_tanah = ""
       data = {'success': True,
           'data': [
           {'perkiraan_modal': perkiraan_modal},
           {'tujuan_gangguan': tujuan_gangguan},
           {'alamat_ho': alamat},
+          {'surat_tanah': surat_tanah},
+          {'tanggal_surat_tanah': tanggal_surat_tanah},
           {'desa': desa},
           {'kecamatan': kecamatan},
           {'kabupaten': kabupaten},
@@ -350,13 +361,13 @@ def cetak_gangguan_ho(request, id_pengajuan_):
           alamat_perusahaan_ = ""
           if pengajuan_.pemohon:
             if pengajuan_.pemohon.desa:
-              alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+              alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
               extra_context.update({ 'alamat_pemohon': alamat_ })
             extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
           if pengajuan_.perusahaan:
             if pengajuan_.perusahaan.desa:
-              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
               extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
             extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 
@@ -389,7 +400,7 @@ def cetak_bukti_pendaftaran_gangguan_ho(request,id_pengajuan_):
       alamat_perusahaan_ = ""
       if pengajuan_.pemohon:
         if pengajuan_.pemohon.desa:
-          alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+          alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
           extra_context.update({ 'alamat_pemohon': alamat_ })
         extra_context.update({ 'pemohon': pengajuan_.pemohon })
         paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
@@ -398,11 +409,11 @@ def cetak_bukti_pendaftaran_gangguan_ho(request,id_pengajuan_):
         extra_context.update({ 'ktp': ktp_ })
       if pengajuan_.perusahaan:
         if pengajuan_.perusahaan.desa:
-          alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+          alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
           extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
         extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
         syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="HO")
-      letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+      letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 
       extra_context.update({'letak_': letak_})
       extra_context.update({ 'pengajuan': pengajuan_ })

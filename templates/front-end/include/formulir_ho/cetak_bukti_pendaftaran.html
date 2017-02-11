@@ -303,17 +303,17 @@
                     <tr>
                         <td width="30%">Desa / Kelurahan</td>
                         <td width="10%">:</td>
-                        <td width="60%">{{pengajuan.desa|default_if_none:"-"}}</td>
+                        <td width="60%">{{pengajuan.desa|title|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="30%">Kecamatan</td>
                         <td width="10%">:</td>
-                        <td width="60%">{{pengajuan.desa.kecamatan|default_if_none:"-"}}</td>
+                        <td width="60%">{{pengajuan.desa.kecamatan|title|default_if_none:"-"}}</td>
                     </tr>
                     <tr>
                         <td width="30%">Kabupaten / Kota</td>
                         <td width="10%"></td>
-                        <td width="60%">{{pengajuan.desa.kecamatan.kabupaten|default_if_none:"-"}}</td>
+                        <td width="60%">{{pengajuan.desa.kecamatan.kabupaten|title|default_if_none:"-"}}</td>
                     </tr>
                 </table>
                 <h6><u>Dalam Kegiatan Perusahaan</u></h6>

@@ -71,7 +71,7 @@ def cetak_imb_umum(request, id_pengajuan_):
 		pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_)
 		if pengajuan_.pemohon:
 			if pengajuan_.pemohon.desa:
-				alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+				alamat_ = str(pengajuan_.pemohon.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			extra_context.update({ 'alamat_pemohon': alamat_ })
 		extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
@@ -101,7 +101,7 @@ def cetak_bukti_pendaftaran_imb_umum(request,id_pengajuan_):
 		pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_)
 		if pengajuan_.pemohon:
 			if pengajuan_.pemohon.desa:
-			  alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+			  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			  extra_context.update({ 'alamat_pemohon': alamat_ })
 			extra_context.update({ 'pemohon': pengajuan_.pemohon })
 			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
@@ -109,7 +109,7 @@ def cetak_bukti_pendaftaran_imb_umum(request,id_pengajuan_):
 			extra_context.update({ 'paspor': paspor_ })
 			extra_context.update({ 'ktp': ktp_ })
 			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
-			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 
 			kegiatan_pembangunan = pengajuan_.parameter_bangunan.get(parameter="Kegiatan Pembangunan Gedung")
 			nilai_kegiatan_pembangunan = str(kegiatan_pembangunan.nilai)
@@ -314,11 +314,12 @@ def load_data_imb(request,id_pengajuan):
 				tanggal_imb_lama = pengajuan_.tanggal_imb_lama.strftime("%d-%m-%Y")
 			else:
 				tanggal_imb_lama = ""
-			if nama_bangunan != "":
-				data = {'success': True,'data':{'nama_bangunan': nama_bangunan,'luas_bangunan': luas_bangunan,'jumlah_bangunan': jumlah_bangunan,'luas_tanah': luas_tanah,'status_tanah': status_tanah,'no_surat_tanah': no_surat_tanah,'id_lokasi':id_lokasi,'tanggal_surat_tanah': tanggal_surat_tanah,'luas_bangunan_lama': luas_bangunan_lama,'no_imb_lama': no_imb_lama,'tanggal_imb_lama': tanggal_imb_lama,'id_kecamatan':id_kecamatan,'id_desa':id_desa}}
-			else:
-				id_kecamatan = ""
-				data = {'success': True,'data':{'id_kecamatan':id_kecamatan}}
+			id_batas_utara = pengajuan_.batas_utara
+			id_batas_timur = pengajuan_.batas_timur
+			id_batas_selatan = pengajuan_.batas_selatan
+			id_batas_barat = pengajuan_.batas_barat
+
+			data = {'success': True,'data':{'nama_bangunan': nama_bangunan,'luas_bangunan': luas_bangunan,'jumlah_bangunan': jumlah_bangunan,'luas_tanah': luas_tanah,'status_tanah': status_tanah,'no_surat_tanah': no_surat_tanah,'id_lokasi':id_lokasi,'tanggal_surat_tanah': tanggal_surat_tanah,'luas_bangunan_lama': luas_bangunan_lama,'no_imb_lama': no_imb_lama,'tanggal_imb_lama': tanggal_imb_lama,'id_kecamatan':id_kecamatan,'id_desa':id_desa,'id_batas_utara': id_batas_utara,'id_batas_timur': id_batas_timur,'id_batas_selatan': id_batas_selatan,'id_batas_barat': id_batas_barat,}}
 			response = HttpResponse(json.dumps(data))
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
@@ -577,7 +578,10 @@ def load_konfirmasi_imb(request,id_pengajuan):
 				tanggal_imb_lama = pengajuan_.tanggal_imb_lama.strftime("%d-%m-%Y")
 			else:
 				tanggal_imb_lama = "-"
-
+			id_batas_utara = pengajuan_.batas_utara
+			id_batas_timur = pengajuan_.batas_timur
+			id_batas_selatan = pengajuan_.batas_selatan
+			id_batas_barat = pengajuan_.batas_barat
 			data = {'success': True,
 					'data': [
 					{'nama_bangunan': nama_bangunan},
@@ -590,7 +594,11 @@ def load_konfirmasi_imb(request,id_pengajuan):
 					{'tanggal_surat_tanah': tanggal_surat_tanah},
 					{'luas_bangunan_lama': luas_bangunan_lama},
 					{'no_imb_lama': no_imb_lama},
-					{'tanggal_imb_lama': tanggal_imb_lama}
+					{'tanggal_imb_lama': tanggal_imb_lama},
+					{'id_batas_utara': id_batas_utara},
+					{'id_batas_timur': id_batas_timur},
+					{'id_batas_selatan': id_batas_selatan},
+					{'id_batas_barat': id_batas_barat}
 					]}
 			response = HttpResponse(json.dumps(data))
 		else:

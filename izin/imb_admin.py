@@ -198,7 +198,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
@@ -256,7 +256,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 			# if pengajuan_.perusahaan:
@@ -264,7 +264,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			# 		alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 			# 		extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 			# 	extra_context.update({'perusahaan': pengajuan_.perusahaan })
-			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
 			extra_context.update({'ukuran': ukuran_})

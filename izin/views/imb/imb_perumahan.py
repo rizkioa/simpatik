@@ -74,13 +74,13 @@ def cetak_imb_perumahan(request, id_pengajuan_):
 		  alamat_perusahaan_ = ""
 		  if pengajuan_.pemohon:
 			if pengajuan_.pemohon.desa:
-			  alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+			  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			  extra_context.update({ 'alamat_pemohon': alamat_ })
 			extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
 		  if pengajuan_.perusahaan:
 			if pengajuan_.perusahaan.desa:
-			  alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+			  alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			  extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 			extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 
@@ -113,7 +113,7 @@ def cetak_bukti_pendaftaran_imb_perumahan(request,id_pengajuan_):
 	  alamat_perusahaan_ = ""
 	  if pengajuan_.pemohon:
 		if pengajuan_.pemohon.desa:
-		  alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+		  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 		  extra_context.update({ 'alamat_pemohon': alamat_ })
 		extra_context.update({ 'pemohon': pengajuan_.pemohon })
 		paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
@@ -122,11 +122,11 @@ def cetak_bukti_pendaftaran_imb_perumahan(request,id_pengajuan_):
 		extra_context.update({ 'ktp': ktp_ })
 	  if pengajuan_.perusahaan:
 		if pengajuan_.perusahaan.desa:
-		  alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", DESA "+str(pengajuan_.perusahaan.desa)+", KEC. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+		  alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 		  extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 		extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 		syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
-	  letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+	  letak_ = pengajuan_.lokasi_pasang +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 	  ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M , Tinggi = "+str(int(pengajuan_.tinggi))+" M"
 	  
 	  extra_context.update({'letak_pemasangan': letak_})
@@ -188,7 +188,7 @@ def cetak_imb_perumahan(request, id_pengajuan_):
 		pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_)
 		if pengajuan_.pemohon:
 			if pengajuan_.pemohon.desa:
-		 		alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+		 		alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			extra_context.update({ 'alamat_pemohon': alamat_ })
 		extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
@@ -218,7 +218,7 @@ def cetak_bukti_pendaftaran_imb_perumahan(request,id_pengajuan_):
 		pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_)
 		if pengajuan_.pemohon:
 			if pengajuan_.pemohon.desa:
-			  alamat_ = str(pengajuan_.pemohon.alamat)+", DESA "+str(pengajuan_.pemohon.desa)+", KEC. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+			  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			  extra_context.update({ 'alamat_pemohon': alamat_ })
 			extra_context.update({ 'pemohon': pengajuan_.pemohon })
 			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
@@ -226,7 +226,7 @@ def cetak_bukti_pendaftaran_imb_perumahan(request,id_pengajuan_):
 			extra_context.update({ 'paspor': paspor_ })
 			extra_context.update({ 'ktp': ktp_ })
 			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
-			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			letak_ = pengajuan_.lokasi +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 
 			kegiatan_pembangunan = pengajuan_.parameter_bangunan.get(parameter="Kegiatan Pembangunan Gedung")
 			nilai_kegiatan_pembangunan = str(kegiatan_pembangunan.nilai)
