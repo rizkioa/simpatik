@@ -3,6 +3,7 @@ import json
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.template import RequestContext, loader
 
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import Pegawai, UnitKerja
