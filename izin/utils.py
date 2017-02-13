@@ -298,5 +298,7 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilReklame')
 	elif kode_ijin == "503.02/":
 		objects_ = getattr(app_models, 'DetilHO')
+	elif kode_ijin == "TDUP":
+		objects_ = getattr(app_models, 'DetilTDUP')
 
 	return objects_

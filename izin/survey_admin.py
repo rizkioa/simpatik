@@ -74,7 +74,12 @@ class SurveyAdmin(admin.ModelAdmin):
 						}),
 				)
 		else:
-			pass
+			add_fieldsets = (
+					(None, {
+						'classes': ('wide',),
+						'fields': field_admin+('status',)
+						}),
+				)
 
 		return add_fieldsets
 
@@ -97,10 +102,9 @@ class SurveyAdmin(admin.ModelAdmin):
 		kode_ijin = get_kode_izin(obj)
 		if get_appmodels_based_kode_jenis(kode_ijin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
-
-		if objects_:
-			pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-			perusahaan_ = pengajuan_.perusahaan
+			if objects_:
+				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
+				perusahaan_ = pengajuan_.perusahaan
 
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
@@ -111,11 +115,11 @@ class SurveyAdmin(admin.ModelAdmin):
 		if get_appmodels_based_kode_jenis(kode_ijin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
 
-		if objects_:
-			pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-			perusahaan_ = pengajuan_.perusahaan
-			if pengajuan_.perusahaan.desa:
-				kec = pengajuan_.perusahaan.desa.kecamatan
+			if objects_:
+				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
+				perusahaan_ = pengajuan_.perusahaan
+				if pengajuan_.perusahaan.desa:
+					kec = pengajuan_.perusahaan.desa.kecamatan
 
 		return kec
 	get_perusahaan_lokasi.short_description = "Kec. Lokasi"
@@ -130,19 +134,21 @@ class SurveyAdmin(admin.ModelAdmin):
 		kode_ijin = get_kode_izin(obj)
 		# print kode_ijin
 		reverse_ = "#"
-		if status == 4 or status == 8:
-			if kode_ijin == "IUJK":
-				reverse_ = reverse('admin:cek_kelengkapan', args=(obj.pengajuan.id, obj.id ))
-			elif kode_ijin == "503.03.01/" or kode_ijin == "503.02/": # Rerklame permanen dan HO
-				reverse_ = reverse('admin:cek_kelengkapan_reklame_ho', args=(obj.id, ))
+		if kode_ijin == "IUJK":
+			reverse_ = reverse('admin:cek_kelengkapan', args=(obj.pengajuan.id, obj.id ))
+		elif kode_ijin == "503.03.01/" or kode_ijin == "503.02/": # Rerklame permanen dan HO
+			reverse_ = reverse('admin:cek_kelengkapan_reklame_ho', args=(obj.id, ))
+		elif kode_ijin == "TDUP":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_tdup', args=(obj.id, ))
 
+		if status == 4 or status == 8:
 			aksi = mark_safe("""
 				<a href="%s" title='Proses'> %s </a>
 				""" % (reverse_, '<i class="fa fa-circle-o-notch"></i>' ))
 		if status == 1:
 			aksi = mark_safe("""
 				<a href="%s" title='Lihat'> %s </a>
-				""" % (reverse('admin:cek_kelengkapan', args=(obj.pengajuan.id, obj.id )), '<i class="fa fa-external-link"></i>' ))
+				""" % (reverse_, '<i class="fa fa-external-link"></i>' ))
 		
 		return aksi
 	get_aksi.short_description = "Aksi"
@@ -153,12 +159,13 @@ class SurveyAdmin(admin.ModelAdmin):
 		extra_context.update({'perusahaan': Perusahaan.objects.all() })
 		return super(SurveyAdmin, self).changelist_view(request, extra_context=extra_context)
 
-	def view_cek_kelengkapan_pengajuan_reklame_ho(self, request, id_survey):
+	def view_cek_kelengkapan_pengajuan_tdup(self, request, id_survey):
 		extra_context = {}
 		extra_context.update({'has_permission': True })
 
 		queryset_ = self.get_queryset(request)
-		queryset_ =  queryset_.filter(pk=id_survey)
+		# queryset_ =  queryset_.filter(pk=id_survey)
+		queryset_ =  Survey.objects.filter(pk=id_survey)
 		if queryset_.exists():
 			queryset_ = queryset_.last()
 
@@ -262,6 +269,223 @@ class SurveyAdmin(admin.ModelAdmin):
 						# DETIL BAP
 						form_detil = form_detil.save(commit=False)
 						form_detil.survey_iujk = queryset_
+						form_detil.survey_id = id_survey
+						form_detil.status = 1
+
+						# FORM REKOMENDASI
+						form_rekom = form_rekom.save(commit=False)
+						form_rekom.survey_iujk = queryset_
+						form_rekom.unit_kerja = get_pegawai_skpd.unit_kerja
+						form_rekom.created_by = request.user
+						form_rekom.status = 1
+						form_rekom.berkas = b
+
+						r = Riwayat.objects.filter(pengajuan_izin=queryset_.pengajuan).last()
+						sent_ = 0
+						if r.created_by:
+							emailto = r.created_by.email
+							if emailto:
+								subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+								html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
+								sent_ = send_email_notifikasi(emailto, subject, html_content)
+								print sent_
+						if sent_ == 1:
+							messages.success(request, str(queryset_.no_survey)+" Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
+						else:
+							messages.success(request, str(queryset_.no_survey)+" Berhasil Disimpan")
+							
+						form_detil.save()
+						form_rekom.save()
+						return HttpResponseRedirect(reverse('admin:izin_survey_changelist'))
+					else:
+						extra_context.update({'form_detil': form_detil })
+						extra_context.update({'form_rekomendasi': form_rekom })
+						messages.error(request, "Penyimpanan gagal, Perbaiki kesalahan dibawah.")
+				elif btn == 'draft':
+					# print form_rekom.has_changed()
+					# print form_detil.has_changed()
+					from pembangunan.models import Rekomendasi, BAPReklameHO
+					if rekom:
+						rekom.rekomendasi = request.POST.get('rekom-rekomendasi')
+						rekom.berkas = b
+						rekom.save()
+					else:
+						Rekomendasi.objects.create(
+							unit_kerja=get_pegawai_skpd.unit_kerja,
+							survey_iujk=queryset_, 
+							rekomendasi=request.POST.get('rekom-rekomendasi'),
+							created_by=request.user,
+							status = 6,
+							berkas=b)
+
+					if request.POST.get('BAP-kondisi_lahan_usaha'):
+						kondisi = request.POST.get('BAP-kondisi_lahan_usaha')
+					else:
+						kondisi = None
+
+					if request.POST.get('BAP-jenis_bangunan'):
+						jenis = request.POST.get('BAP-jenis_bangunan')
+					else:
+						jenis = None
+
+					if request.POST.get('BAP-klasifikasi_jalan'):
+						klasifikasi = request.POST.get('BAP-klasifikasi_jalan')
+					else:
+						klasifikasi = None
+
+					# CEK APAKAH KOORDINATOR
+					if status : 
+						if detilbap:
+							print "MASUK SINI"
+							detil.kondisi_lahan_usaha = kondisi
+							detil.luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha')
+							detil.jumlah_mesin = request.POST.get('BAP-jumlah_mesin')
+							detil.daya_kekuatan_mesin = request.POST.get('BAP-daya_kekuatan_mesin')
+							detil.jenis_bangunan = jenis
+							detil.sebelah_utara = request.POST.get('BAP-sebelah_utara')
+							detil.sebelah_timur = request.POST.get('BAP-sebelah_timur')
+							detil.sebelah_selatan = request.POST.get('BAP-sebelah_selatan')
+							detil.sebelah_barat = request.POST.get('BAP-sebelah_barat')
+							detil.klasifikasi_jalan = klasifikasi
+							detil.save()
+						else:
+							BAPReklameHO.objects.create(
+								survey = queryset_,
+								kondisi_lahan_usaha = kondisi,
+								luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha'),
+								jumlah_mesin = request.POST.get('BAP-jumlah_mesin'),
+								daya_kekuatan_mesin = request.POST.get('BAP-daya_kekuatan_mesin'),
+								jenis_bangunan = jenis, 
+								sebelah_utara = request.POST.get('BAP-sebelah_utara'),
+								sebelah_timur = request.POST.get('BAP-sebelah_timur'),
+								sebelah_selatan = request.POST.get('BAP-sebelah_selatan'),
+								sebelah_barat = request.POST.get('BAP-sebelah_barat'),
+								klasifikasi_jalan = klasifikasi,
+								created_by= request.user,
+								status = 6
+								)
+
+					messages.success(request, str(queryset_.no_survey)+" Berhasil disimpan sebagai draft")
+					return HttpResponseRedirect(reverse('admin:cek_kelengkapan_reklame_ho', args=[queryset_.id]))
+
+
+			template = loader.get_template("admin/pembangunan/cek_kelengkapan_tdup.html")
+			ec = RequestContext(request, extra_context)
+			return HttpResponse(template.render(ec))
+		else:
+			raise Http404
+
+	def view_cek_kelengkapan_pengajuan_reklame_ho(self, request, id_survey):
+		extra_context = {}
+		extra_context.update({'has_permission': True })
+
+		queryset_ = self.get_queryset(request)
+		# queryset_ =  queryset_.filter(pk=id_survey)
+		queryset_ =  Survey.objects.filter(pk=id_survey)
+		if queryset_.exists():
+			queryset_ = queryset_.last()
+
+			extra_context.update({ 'qs_survey' : queryset_ })
+			extra_context.update({ 'pengajuan' : queryset_.pengajuan })
+			extra_context.update({ 'pemohon' : queryset_.pengajuan.pemohon })
+
+			kode_ijin = get_kode_izin(queryset_)
+			if get_appmodels_based_kode_jenis(kode_ijin):
+				objects_ = get_appmodels_based_kode_jenis(kode_ijin)
+
+			if objects_:
+				pengajuan_ = objects_.objects.get(id=queryset_.pengajuan.id)
+				perusahaan_ = pengajuan_.perusahaan
+
+				extra_context.update({ 'perusahaan': perusahaan_ })
+
+			try:
+				status = queryset_.survey_iujk.get(pegawai=request.user)
+				status = status.koordinator
+			except ObjectDoesNotExist:
+				status = False
+
+			extra_context.update({ 'status_user': status })
+
+			rekom = queryset_.survey_rekomendiasi.filter(created_by=request.user)
+
+			if rekom.exists():
+				rekom = rekom.last()
+				extra_context.update({'rekom': rekom })
+				data_rekom = { 'rekomendasi': rekom.rekomendasi }
+
+			detilbap = queryset_.survey_reklame_ho.all()
+			if detilbap.exists():
+				detil = detilbap.first()
+				extra_context.update({'detilbap': detil })
+				data_bap = {
+					'kondisi_lahan_usaha':detil.kondisi_lahan_usaha,
+					'luas_tempat_usaha': detil.luas_tempat_usaha,
+					'jumlah_mesin': detil.jumlah_mesin,
+					'daya_kekuatan_mesin': detil.daya_kekuatan_mesin,
+					'jenis_bangunan': detil.jenis_bangunan,
+					'sebelah_utara': detil.sebelah_utara,
+					'sebelah_timur': detil.sebelah_timur,
+					'sebelah_selatan': detil.sebelah_selatan,
+					'sebelah_barat': detil.sebelah_barat,
+					'klasifikasi_jalan': detil.klasifikasi_jalan,
+					}
+				
+
+			try:
+				try:
+					rekomendasiform = RekomendasiForm(instance=rekom, prefix="rekom")
+				except AttributeError as e:
+					rekomendasiform = RekomendasiForm(prefix="rekom")
+			except UnboundLocalError, e:
+				rekomendasiform = RekomendasiForm(prefix="rekom")
+
+			extra_context.update({'form_rekomendasi': rekomendasiform })
+				
+			
+			try:
+				try:
+					bapreklamehoform = BAPReklameHOForm(instance=detil, prefix="BAP")
+				except AttributeError as e:
+					bapreklamehoform = BAPReklameHOForm(prefix="BAP")
+			except UnboundLocalError, e:
+				bapreklamehoform = BAPReklameHOForm(prefix="BAP")
+				
+			extra_context.update({'form_detil': bapreklamehoform })
+			
+			extra_context.update({'form_berkas': BerkasForm })
+
+			if request.POST:
+				get_pegawai_skpd = Pegawai.objects.get(pk=request.user.id)
+				btn = request.POST.get('simpan')
+				if detilbap:
+					form_detil = BAPReklameHOForm(request.POST, instance=detil, prefix="BAP")
+				else:
+					form_detil = BAPReklameHOForm(request.POST, prefix="BAP")
+
+				if rekom:
+					form_rekom = RekomendasiForm(request.POST, instance=rekom, prefix="rekom")
+				else:
+					form_rekom = RekomendasiForm(request.POST, prefix="rekom")
+
+				# FORM BERKAS
+				form_berkas = BerkasForm(request.POST, request.FILES)
+				b = None
+				if form_berkas.is_valid():
+					b = form_berkas.save(commit=False)
+					b.nama_berkas = 'Berkas Rekomendasi dgn No. Survey '+str(queryset_.no_survey)
+					b.keterangan = b.nama_berkas
+					b.save()
+
+				if btn == 'submit':
+					# print form_rekom.has_changed()
+					# print form_detil.has_changed()
+					if form_detil.is_valid() and form_rekom.is_valid():
+
+						# DETIL BAP
+						form_detil = form_detil.save(commit=False)
+						form_detil.survey_iujk = queryset_
+						form_detil.survey_id = id_survey
 						form_detil.status = 1
 
 						# FORM REKOMENDASI
@@ -568,10 +792,15 @@ class SurveyAdmin(admin.ModelAdmin):
 		# print request.user.pegawai.unit_kerja
 		if not request.user.is_superuser:
 			a = AnggotaTim.objects.filter(pegawai=request.user)
+			print a
 			# print "HALO"
 			if a.exists():
 				a = a.values_list('survey_iujk')
 				qs = qs.filter(id__in=a)
+			# SIMPATIK-PEMBANGUNAN BELUM DITAMBAHI INI
+			else:
+				qs = qs.none()
+			# SAMPAI SINI
 
 		if func_view.__name__ == 'surveyselesai':
 			qs = qs.filter(status=1)
@@ -759,9 +988,10 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-delete-ajax/$', self.delete_survey_ajax, name="delete_survey_ajax" ),
 			url(r'^survey-sending/$', self.send_survey, name="send_survey" ),
 			url(r'^do-survey/(?P<id_survey>[0-9]+)$', self.admin_site.admin_view(self.do_survey), name="lakukan_survey" ),
+			url(r'^laporan-survey/$', self.admin_site.admin_view(self.surveyselesai), name='survey_selesai'),
 			url(r'^survey-cek-kelengkapan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan, name="cek_kelengkapan" ),
 			url(r'^survey-cek-kelengkapan-reklame-ho/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_reklame_ho, name="cek_kelengkapan_reklame_ho" ),
-			url(r'^laporan-survey/$', self.admin_site.admin_view(self.surveyselesai), name='survey_selesai'),
+			url(r'^survey-cek-kelengkapan-tdup/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_tdup" ),
 			)
 		return my_urls + urls
 

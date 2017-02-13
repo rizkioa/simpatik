@@ -4,6 +4,8 @@ import datetime
 import os
 register = template.Library()
 
+from kepegawaian.models import UnitKerja
+
 
 @register.filter(name='add_date')
 def add_date(datetime_, addDays=0):
@@ -151,3 +153,46 @@ def get_alamat_lengkap(obj, filter):
 
 	alamat_ = str(alamat_)+", Ds. "+str(obj.desa)+", Kec. "+str(obj.desa.kecamatan)+", "+str(obj.desa.kecamatan.kabupaten)
 	return alamat_
+
+
+@register.filter(name='get_logo_login')
+def get_logo_login(args):
+	string = '<h3 class="text-light text-white"><span class="text-lightred">SIM</span>PATIK</h3>'
+	
+	unit_kerja = UnitKerja.objects.filter(url_simpatik='http://'+str(args)+'/')
+	if unit_kerja.exists():
+		unit_kerja = unit_kerja.last()
+		uk = unit_kerja.nama_unit_kerja
+		if uk == 'PEMBANGUNAN':
+			string = '<img src="/static/images/wwa.png" %}">'
+		elif uk == 'DISBUDPAR':
+			string = '<img src="/static/images/simpparis.png" %}">'
+		
+	return string
+
+@register.filter(name='get_brand')
+def get_brand(args):
+	string = 'SIMPATIK'
+	# print args
+	unit_kerja = UnitKerja.objects.filter(url_simpatik='http://'+str(args)+'/')
+	# print unit_kerja
+	if unit_kerja.exists():
+		unit_kerja = unit_kerja.last()
+		string = unit_kerja.nama_unit_kerja
+		
+	return string
+
+
+@register.filter(name='get_css')
+def get_css(args):
+	string = ''
+	unit_kerja = UnitKerja.objects.filter(url_simpatik='http://'+str(args)+'/')
+	if unit_kerja.exists():
+		unit_kerja = unit_kerja.last()
+		uk = unit_kerja.nama_unit_kerja
+		# if uk == 'DISBUDPAR':
+		# 	string = '/static/styles/css/budpar.css'
+		uk = uk.lower()
+		string = '/static/styles/css/'+str(uk)+'.css'
+
+	return string

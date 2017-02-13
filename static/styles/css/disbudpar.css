@@ -1,0 +1,31 @@
+#header.scheme-light{
+    background-color: #FFF;
+}
+#header .branding.scheme-light, #sidebar.scheme-light, #sidebar.scheme-light #navigation, #sidebar.scheme-light #sidebar-wrap:before, #header.scheme-light li.toggle-right-sidebar > a, .appWrapper.scheme-light .page-breadcrumb > li:first-child, .appWrapper.scheme-light .footer {
+    background-color: #ffc100 !important;
+}
+#navigation > li.active > a {
+    background-color: #795548;
+    color: white;
+}
+
+.appWrapper.lightred-scheme-color #navigation > li.active > a, .appWrapper.lightred-scheme-color #loading-bar .bar{
+	background-color: #616f77 !important;
+}
+
+.bg-greensea{
+	background-color: #616f77 !important;
+}
+
+#sidebar .panel-group .panel > .panel-heading .panel-title > a{
+	background-color: #FFF;
+	color: #ffc100 !important;
+}
+
+#sidebar .panel-group .panel > .panel-heading .panel-title > a:hover{
+	color: #616f77 !important;
+}
+
+#header .branding.scheme-lightred, #sidebar.scheme-lightred, #sidebar.scheme-lightred #navigation, #sidebar.scheme-lightred #sidebar-wrap:before, #header.scheme-lightred li.toggle-right-sidebar > a, .appWrapper.scheme-lightred .page-breadcrumb > li:first-child, .appWrapper.scheme-lightred .footer {
+    background-color: #ffc100 !important;
+}

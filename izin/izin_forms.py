@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -304,3 +304,9 @@ class RincianSubJenisForm(forms.ModelForm):
 	class Meta:
 		model = RincianSubJenis
 		fields = ('jumlah_unit_angkutan_jalan_wisata', 'kapasitas_angkutan_jalan_wisata', 'jumlah_unit_angkutan_kereta_api_wisata', 'kapasitas_angkutan_kereta_api_wisata', 'jumlah_unit_angkutan_sungai_dan_danau_wisata', 'kapasitas_angkutan_sungai_dan_danau_wisata', 'jumlah_unit_angkutan_laut_domestik_wisata', 'kapasitas_angkutan_laut_domestik_wisata', 'jumlah_unit_angkutan_laut_internasional_wisata', 'kapasitas_angkutan_laut_internasional_wisata', 'jumlah_kursi_restoran', 'jumlah_kursi_rumah_makan', 'jumlah_kursi_bar_atau_rumah_minum', 'jumlah_kursi_kafe', 'jumlah_stand_pusat_makanan', 'kapasitas_produksi_jasa_boga')
+
+class KeteranganUsahaTDUPForm(forms.ModelForm):
+	"""docstring for KeteranganUsahaTDUPForm"""
+	class Meta:
+		model = DetilTDUP
+		fields = ('nama_usaha', 'lokasi_usaha_pariwisata', 'desa_lokasi', 'telephone', 'nomor_izin_gangguan', 'tanggal_izin_gangguan', 'nomor_dokumen_pengelolaan', 'tanggal_dokumen_pengelolaan')
