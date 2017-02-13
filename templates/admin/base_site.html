@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 
-{% load i18n admin_static admin_tools_menu_tags %}
+{% load i18n admin_static admin_tools_menu_tags widgets %}
 
 {% block title %}
 	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
@@ -230,7 +230,7 @@
             <div class="branding">
                 {% block branding %}
                     <a class="brand" href="{% url 'admin:index' %}">
-                        <span><strong>SIMPATIK</strong></span>
+                        <span><strong>{{ request.META.HTTP_HOST|get_brand }}</strong></span>
                     </a>
                     <a href="{% url 'admin:index' %}" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
                 {% endblock %}
