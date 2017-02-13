@@ -27,6 +27,19 @@ class CustomMenu(Menu):
         from django.core.urlresolvers import resolve
         request = context['request']
 
+        menu_dashboard = items.MenuItem(
+                    title=_('Menu Utama'),
+                    description='Menu Utama',
+                    accesskey='menuUtama',
+                    children= [
+                        items.MenuItem(
+                            title='Dashboard',
+                            icon='fa fa-dashboard', 
+                            url=reverse('admin:index'),                        
+                        ),
+                    ]
+                )
+
         menu_utama = items.MenuItem(
                     title=_('Menu Izin'),
                     description='Menu Izin',
@@ -35,29 +48,15 @@ class CustomMenu(Menu):
                         items.MenuItem(
                             title='Daftar Survey',
                             icon='fa fa-file-text', 
-                            url=reverse('admin:semua_pengajuan'),                        
+                            url=reverse('admin:izin_survey_changelist'),                        
                         ),
                         items.MenuItem(
-                            title=_('Daftar Laporan'),
-                            description='Page Izin Terdaftar',
-                            icon='icon-flag',
-                            url=reverse("admin:izinterdaftar"),
-                        ),
-                        items.MenuItem(
-                            title=_('Izin Bidang Pembangunan'),
-                            description='Page Pemohon Terdaftar',
-                            icon='icon-user-following',
-                            url=reverse("admin:izin_pemohon_changelist"),
-                        ),
-                        items.MenuItem(
-                            title=_('Perusahaan Terdaftar'),
-                            description='Page Perusahaan Terdaftar',
-                            icon='icon-globe',
-                            url=reverse("admin:perusahaan_terdaftar"),
+                            title='Daftar Laporan',
+                            icon='fa fa-file-text', 
+                            url=reverse('admin:survey_selesai'),                        
                         ),
                     ]
                 )
-
         menu_pengguna = items.MenuItem(
                 title=_('Manajemen Pengguna'),
                 description='Manajemen Pengguna',
@@ -92,8 +91,37 @@ class CustomMenu(Menu):
                 ]
             )
 
-        self.children += [
-            menu_utama,
-            menu_pengguna,
-        ]
+        if request.user.groups.filter(Q(name="Admin Pembangunan")|Q(name="Kepala Pembangunan")|Q(name="Tim Teknis")).exists():
+            self.children += [
+                menu_dashboard,
+                menu_utama,
+            ]
+        elif request.user.is_superuser:
+            menu_utama.children+= [
+                    items.MenuItem(
+                        title=_('Daftar Laporan'),
+                        description='Page Izin Terdaftar',
+                        icon='icon-flag',
+                        url=reverse("admin:izinterdaftar"),
+                    ),
+                    items.MenuItem(
+                        title=_('Izin Bidang Pembangunan'),
+                        description='Page Pemohon Terdaftar',
+                        icon='icon-user-following',
+                        url=reverse("admin:izin_pemohon_changelist"),
+                    ),
+                    items.MenuItem(
+                        title=_('Perusahaan Terdaftar'),
+                        description='Page Perusahaan Terdaftar',
+                        icon='icon-globe',
+                        url=reverse("admin:perusahaan_terdaftar"),
+                    ),
+                ]
+            self.children += [
+                menu_utama,
+                menu_pengguna,
+            ]
+        else:
+            self.children += [
+            ]
         return super(CustomMenu, self).init_with_context(context)
