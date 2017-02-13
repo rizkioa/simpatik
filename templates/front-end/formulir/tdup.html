@@ -601,43 +601,45 @@
                 respon_data_usaha = $.parseJSON(data)
                 // console.log(respon_data_usaha)
                 $("#id_bidang_usaha_pariwisata").html('')
-                a = respon_data_usaha.data.bidang_usaha_json.length
-                for (var i = 0; i < a; i++){
-                  $("#id_bidang_usaha_pariwisata").append('<option selected="selected" value="'+respon_data_usaha.data.bidang_usaha_json[i].id+'" >'+respon_data_usaha.data.bidang_usaha_json[i].bidang_usaha_pariwisata+'</option>');
-                  console.log(respon_data_usaha.data.bidang_usaha_json[i])
-                }
-                $('select#id_bidang_usaha_pariwisata').trigger("chosen:updated");
+                if (respon_data_usaha.success){
+                  a = respon_data_usaha.data.bidang_usaha_json.length
+                  for (var i = 0; i < a; i++){
+                    $("#id_bidang_usaha_pariwisata").append('<option selected="selected" value="'+respon_data_usaha.data.bidang_usaha_json[i].id+'" >'+respon_data_usaha.data.bidang_usaha_json[i].bidang_usaha_pariwisata+'</option>');
+                    console.log(respon_data_usaha.data.bidang_usaha_json[i])
+                  }
+                  $('select#id_bidang_usaha_pariwisata').trigger("chosen:updated");
 
-                $("#id_sub_jenis_bidang_usaha").html('')
-                b = respon_data_usaha.data.sub_jenis_json.length
-                for (var i = 0; i < b; i++){
-                  $("#id_sub_jenis_bidang_usaha").append('<option selected="selected" value="'+respon_data_usaha.data.sub_jenis_json[i].id+'" >'+respon_data_usaha.data.sub_jenis_json[i].nama_subjenis+'</option>');
-                  console.log(respon_data_usaha.data.sub_jenis_json[i])
-                }
-                $('select#id_sub_jenis_bidang_usaha').trigger("chosen:updated");
-                setTimeout(function(){
-                  subjenis()
-                  bidang()
+                  $("#id_sub_jenis_bidang_usaha").html('')
+                  b = respon_data_usaha.data.sub_jenis_json.length
+                  for (var i = 0; i < b; i++){
+                    $("#id_sub_jenis_bidang_usaha").append('<option selected="selected" value="'+respon_data_usaha.data.sub_jenis_json[i].id+'" >'+respon_data_usaha.data.sub_jenis_json[i].nama_subjenis+'</option>');
+                    console.log(respon_data_usaha.data.sub_jenis_json[i])
+                  }
+                  $('select#id_sub_jenis_bidang_usaha').trigger("chosen:updated");
+                  setTimeout(function(){
+                    subjenis()
+                    bidang()
 
-                  // transportasi wisata
-                  $('#id_jumlah_unit_angkutan_jalan').val(respon_data_usaha.data.jumlah_unit_angkutan_jalan_wisata)
-                  $('#id_kapasitas_angkutan_jalan_wisata').val(respon_data_usaha.data.kapasitas_angkutan_jalan_wisata)
-                  $('#id_jumlah_unit_angkutan_kereta_api_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_kereta_api_wisata)
-                  $('#id_kapasitas_angkutan_kereta_api_wisata').val(respon_data_usaha.data.kapasitas_angkutan_kereta_api_wisata)
-                  $('#id_jumlah_unit_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_sungai_dan_danau_wisata)
-                  $('#id_kapasitas_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.kapasitas_angkutan_sungai_dan_danau_wisata)
-                  $('#id_jumlah_unit_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_domestik_wisata)
-                  $('#id_kapasitas_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_domestik_wisata)
-                  $('#id_jumlah_unit_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_internasional_wisata)
-                  $('#id_kapasitas_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_internasional_wisata)
-                  // makanan dan minuman
-                  $('#id_jumlah_kursi_restoran').val(respon_data_usaha.data.jumlah_kursi_restoran)
-                  $('#id_jumlah_kursi_rumah_makan').val(respon_data_usaha.data.jumlah_kursi_rumah_makan)
-                  $('#id_jumlah_kursi_bar').val(respon_data_usaha.data.jumlah_kursi_bar_atau_rumah_minum)
-                  $('#id_jumlah_kursi_kafe').val(respon_data_usaha.data.jumlah_kursi_kafe)
-                  $('#id_jumlah_stand_pusat_makanan').val(respon_data_usaha.data.jumlah_stand_pusat_makanan)
-                  $('#id_kapasitas_produksi_jasa_boga').val(respon_data_usaha.data.kapasitas_produksi_jasa_boga)
-                }, 1000);
+                    // transportasi wisata
+                    $('#id_jumlah_unit_angkutan_jalan').val(respon_data_usaha.data.jumlah_unit_angkutan_jalan_wisata)
+                    $('#id_kapasitas_angkutan_jalan_wisata').val(respon_data_usaha.data.kapasitas_angkutan_jalan_wisata)
+                    $('#id_jumlah_unit_angkutan_kereta_api_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_kereta_api_wisata)
+                    $('#id_kapasitas_angkutan_kereta_api_wisata').val(respon_data_usaha.data.kapasitas_angkutan_kereta_api_wisata)
+                    $('#id_jumlah_unit_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_sungai_dan_danau_wisata)
+                    $('#id_kapasitas_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.kapasitas_angkutan_sungai_dan_danau_wisata)
+                    $('#id_jumlah_unit_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_domestik_wisata)
+                    $('#id_kapasitas_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_domestik_wisata)
+                    $('#id_jumlah_unit_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_internasional_wisata)
+                    $('#id_kapasitas_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_internasional_wisata)
+                    // makanan dan minuman
+                    $('#id_jumlah_kursi_restoran').val(respon_data_usaha.data.jumlah_kursi_restoran)
+                    $('#id_jumlah_kursi_rumah_makan').val(respon_data_usaha.data.jumlah_kursi_rumah_makan)
+                    $('#id_jumlah_kursi_bar').val(respon_data_usaha.data.jumlah_kursi_bar_atau_rumah_minum)
+                    $('#id_jumlah_kursi_kafe').val(respon_data_usaha.data.jumlah_kursi_kafe)
+                    $('#id_jumlah_stand_pusat_makanan').val(respon_data_usaha.data.jumlah_stand_pusat_makanan)
+                    $('#id_kapasitas_produksi_jasa_boga').val(respon_data_usaha.data.kapasitas_produksi_jasa_boga)
+                  }, 1000);
+                }
 
                 $(".tab-content").mLoading('hide');
               }
@@ -653,26 +655,28 @@
             url: __base_url__+'/layanan/tdup/keterangan-usaha/ajax/'+pengajuan_id,
             success: function (data) {
               respon_keterangan_usaha = $.parseJSON(data)
-              $('#id_nama_usaha').val(respon_keterangan_usaha.data.nama_usaha);
-              $('#id_lokasi_usaha_pariwisata').val(respon_keterangan_usaha.data.lokasi_usaha_pariwisata);
-              $('#id_telephone').val(respon_keterangan_usaha.data.telephone);
-              $('#id_nomor_izin_gangguan').val(respon_keterangan_usaha.data.nomor_izin_gangguan);
-              $('#id_tanggal_izin_gangguan').val(respon_keterangan_usaha.data.tanggal_izin_gangguan);
-              $('#id_nomor_dokumen_pengelolaan').val(respon_keterangan_usaha.data.nomor_dokumen_pengelolaan);
-              $('#id_tanggal_dokumen_pengelolaan').val(respon_keterangan_usaha.data.tanggal_dokumen_pengelolaan);
-              $('#id_provinsi-3').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-              load_kabupaten_(respon.data.provinsi, '#id_kabupaten-3')
-              setTimeout(function(){
-                $('#id_kabupaten-3').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-              }, 1000);
-              load_kecamatan_(respon.data.kabupaten, '#id_kecamatan-3')
-              setTimeout(function(){
-                $('#id_kecamatan-3').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-              }, 1000);
-              load_desa_(respon.data.kecamatan, '#id_desa-3')
-              setTimeout(function(){
-                $('#id_desa-3').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-              }, 1000);
+              if (respon_keterangan_usaha.success){
+                $('#id_nama_usaha').val(respon_keterangan_usaha.data.nama_usaha);
+                $('#id_lokasi_usaha_pariwisata').val(respon_keterangan_usaha.data.lokasi_usaha_pariwisata);
+                $('#id_telephone').val(respon_keterangan_usaha.data.telephone);
+                $('#id_nomor_izin_gangguan').val(respon_keterangan_usaha.data.nomor_izin_gangguan);
+                $('#id_tanggal_izin_gangguan').val(respon_keterangan_usaha.data.tanggal_izin_gangguan);
+                $('#id_nomor_dokumen_pengelolaan').val(respon_keterangan_usaha.data.nomor_dokumen_pengelolaan);
+                $('#id_tanggal_dokumen_pengelolaan').val(respon_keterangan_usaha.data.tanggal_dokumen_pengelolaan);
+                $('#id_provinsi-3').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
+                load_kabupaten_(respon.data.provinsi, '#id_kabupaten-3')
+                setTimeout(function(){
+                  $('#id_kabupaten-3').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+                }, 1000);
+                load_kecamatan_(respon.data.kabupaten, '#id_kecamatan-3')
+                setTimeout(function(){
+                  $('#id_kecamatan-3').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+                }, 1000);
+                load_desa_(respon.data.kecamatan, '#id_desa-3')
+                setTimeout(function(){
+                  $('#id_desa-3').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
+                }, 1000);
+              }
               $(".tab-content").mLoading('hide');
             }
           })
