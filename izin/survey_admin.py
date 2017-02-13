@@ -102,10 +102,9 @@ class SurveyAdmin(admin.ModelAdmin):
 		kode_ijin = get_kode_izin(obj)
 		if get_appmodels_based_kode_jenis(kode_ijin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
-
-		if objects_:
-			pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-			perusahaan_ = pengajuan_.perusahaan
+			if objects_:
+				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
+				perusahaan_ = pengajuan_.perusahaan
 
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
@@ -116,11 +115,11 @@ class SurveyAdmin(admin.ModelAdmin):
 		if get_appmodels_based_kode_jenis(kode_ijin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
 
-		if objects_:
-			pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-			perusahaan_ = pengajuan_.perusahaan
-			if pengajuan_.perusahaan.desa:
-				kec = pengajuan_.perusahaan.desa.kecamatan
+			if objects_:
+				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
+				perusahaan_ = pengajuan_.perusahaan
+				if pengajuan_.perusahaan.desa:
+					kec = pengajuan_.perusahaan.desa.kecamatan
 
 		return kec
 	get_perusahaan_lokasi.short_description = "Kec. Lokasi"
