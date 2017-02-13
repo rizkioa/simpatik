@@ -12,7 +12,7 @@ def layanan_iujk(request, extra_context={}):
 	extra_context.update({'title_short': "IUJK"})
 	extra_context.update({'link_formulir': reverse("formulir_iujk") })
 	extra_context.update({'id_jenis_izin': "15" })
-	extra_context.update({'id_kelompok_jenis_izin': "IUJK" })
+	extra_context.update({'id_kelompok_jenis_izin': "37" })
 	response = render(request, "front-end/layanan/iujk.html", extra_context)
 	response.set_cookie(key='id_kelompok_izin', value="37")
 	return response

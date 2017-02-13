@@ -571,7 +571,7 @@ class Survey(MetaAtribut):
 	no_berita_acara = models.CharField(verbose_name='Nomor Berita Acara', max_length=255, blank=True, null=True)
 	tanggal_berita_acara_dibuat = models.DateField(verbose_name='Tanggal Berita Acara Dibuat', blank=True, null=True)
 	tanggal_berita_acara_diverifkasi = models.DateField(verbose_name='Tanggal Berita Acara Diverifikasi', blank=True, null=True)
-
+	
 	def __unicode__(self):
 		return u'%s' % (str(self.no_survey))
 
