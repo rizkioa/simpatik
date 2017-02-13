@@ -2,8 +2,11 @@ from django.contrib import admin
 import json
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
+from django.core.exceptions import ObjectDoesNotExist
 
-from izin.models import DetilTDUP, SubJenisBidangUsaha
+from accounts.models import NomorIdentitasPengguna
+from kepegawaian.models import Pegawai, UnitKerja
+from izin.models import DetilTDUP, SubJenisBidangUsaha,Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran
 
 class DetilTDUPAdmin(admin.ModelAdmin):
 
