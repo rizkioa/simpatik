@@ -1,4 +1,4 @@
-<form method="POST" name="step3" role="form" class="form-horizontal" action="" data-parsley-validate novalidate>
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'tdup_data_usaha_pariwisata_save' %}" data-parsley-validate novalidate>
 	{% csrf_token %}  
 	<h3>DATA USAHA PARIWISATA</h3>
 	<hr class="style14">
@@ -6,7 +6,7 @@
   <div class="form-group" id="bidang_usaha_pariwisata">
       <label class="col-sm-2 control-label text-left"><strong>Bidang Usaha Pariwisata</strong></label>
       <div class="col-sm-10">
-          <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="bidang_usaha_pariwisata" required="" data-parsley-trigger="change" id="id_bidang_usaha_pariwisata" onchange="bidang()">
+          <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="bidang_usaha_pariwisata"  id="id_bidang_usaha_pariwisata" onchange="bidang()" required="" data-parsley-trigger="change">
             {% for val in bidang_usaha_pariwisata %}
               <option value="{{ val.id }}">{{ val.bidang_usaha_pariwisata}}</option>
             {% endfor %}
@@ -27,13 +27,13 @@
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_jalan wisata" id="id_jumlah_unit_angkutan_jalan">
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_jalan_wisata" id="id_jumlah_unit_angkutan_jalan">
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_jalan_wisata" id="id_kapasitas_angkutan_jalan_wisata">
+        <input type="text" class="form-control"  name="kapasitas_angkutan_jalan_wisata" id="id_kapasitas_angkutan_jalan_wisata">
       </div>
     </div>
   </div>
@@ -43,13 +43,13 @@
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_kereta_api_wisata" id="id_jumlah_unit_angkutan_kereta_api_wisata">
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_kereta_api_wisata" id="id_jumlah_unit_angkutan_kereta_api_wisata">
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_kereta_api_wisata" id="id_kapasitas_angkutan_kereta_api_wisata">
+        <input type="text" class="form-control"  name="kapasitas_angkutan_kereta_api_wisata" id="id_kapasitas_angkutan_kereta_api_wisata">
       </div>
     </div>
   </div>
@@ -59,13 +59,13 @@
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_sungai_dan_danau_wisata" id="id_jumlah_unit_angkutan_sungai_dan_danau_wisata">
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_sungai_dan_danau_wisata" id="id_jumlah_unit_angkutan_sungai_dan_danau_wisata">
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_sungai_dan_danau_wisata" id="id_kapasitas_angkutan_sungai_dan_danau_wisata">
+        <input type="text" class="form-control"  name="kapasitas_angkutan_sungai_dan_danau_wisata" id="id_kapasitas_angkutan_sungai_dan_danau_wisata">
       </div>
     </div>
   </div>
@@ -75,13 +75,13 @@
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_laut_domestik_wisata" id="id_jumlah_unit_angkutan_laut_domestik_wisata">
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_laut_domestik_wisata" id="id_jumlah_unit_angkutan_laut_domestik_wisata">
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_laut_domestik_wisata" id="id_kapasitas_angkutan_laut_domestik_wisata">
+        <input type="text" class="form-control"  name="kapasitas_angkutan_laut_domestik_wisata" id="id_kapasitas_angkutan_laut_domestik_wisata">
       </div>
     </div>
   </div>
@@ -91,13 +91,13 @@
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_unit_angkutan_laut_internasional_wisata" id="id_jumlah_unit_angkutan_laut_internasional_wisata">
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_laut_internasional_wisata" id="id_jumlah_unit_angkutan_laut_internasional_wisata">
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
         <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_angkutan_laut_internasional_wisata" id="id_kapasitas_angkutan_laut_internasional_wisata">
+        <input type="text" class="form-control"  name="kapasitas_angkutan_laut_internasional_wisata" id="id_kapasitas_angkutan_laut_internasional_wisata">
       </div>
     </div>
   </div>
@@ -107,7 +107,7 @@
     <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_restoran" id="id_jumlah_kursi_restoran">
+        <input type="text" class="form-control"  name="jumlah_kursi_restoran" id="id_jumlah_kursi_restoran">
         <span class="input-group-addon">buah</span>
       </div>
     </div>
@@ -118,7 +118,7 @@
     <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_rumah_makan" id="id_jumlah_kursi_rumah_makan">
+        <input type="text" class="form-control"  name="jumlah_kursi_rumah_makan" id="id_jumlah_kursi_rumah_makan">
         <span class="input-group-addon">buah</span>
       </div>
     </div>
@@ -129,7 +129,7 @@
     <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_bar" id="id_jumlah_kursi_bar">
+        <input type="text" class="form-control"  name="jumlah_kursi_bar_atau_rumah_minum" id="id_jumlah_kursi_bar">
         <span class="input-group-addon">buah</span>
       </div>
     </div>
@@ -140,7 +140,7 @@
     <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_kursi_kafe" id="id_jumlah_kursi_kafe">
+        <input type="text" class="form-control"  name="jumlah_kursi_kafe" id="id_jumlah_kursi_kafe">
         <span class="input-group-addon">buah</span>
       </div>
     </div>
@@ -151,7 +151,7 @@
     <label class="col-sm-2 control-label text-left">Jumlah Stand :</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="jumlah_stand_pusat_makanan" id="id_jumlah_stand_pusat_makanan">
+        <input type="text" class="form-control"  name="jumlah_stand_pusat_makanan" id="id_jumlah_stand_pusat_makanan">
         <span class="input-group-addon">buah</span>
       </div>
     </div>
@@ -162,7 +162,7 @@
     <label class="col-sm-2 control-label text-left">Kapasitas produksi/pack :</label>
     <div class="col-sm-3">
       <div class="input-group">
-        <input type="text" class="form-control" required="" data-parsley-trigger="change" name="kapasitas_produksi_jasa_boga" id="id_kapasitas_produksi_jasa_boga">
+        <input type="text" class="form-control"  name="kapasitas_produksi_jasa_boga" id="id_kapasitas_produksi_jasa_boga">
         <span class="input-group-addon">unit/bulan</span>
       </div>
     </div>
