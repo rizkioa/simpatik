@@ -1005,6 +1005,9 @@ class BidangUsahaPariwisata(models.Model):
 	def __unicode__(self):
 		return u'%s' % (str(self.bidang_usaha_pariwisata),)
 
+	def as_json(self):
+		return dict(id=self.id, bidang_usaha_pariwisata=self.bidang_usaha_pariwisata, keterangan=self.keterangan)
+
 	class Meta:
 		verbose_name = 'Bidang Usaha Pariwisata'
 		verbose_name_plural = 'Bidang Usaha Pariwisata'
@@ -1017,6 +1020,9 @@ class SubJenisBidangUsaha(models.Model):
 
 	def __unicode__(self):
 		return u'%s' % (str(self.nama_subjenis),)
+
+	def as_json(self):
+		return dict(id=self.id, kode=self.kode, nama_subjenis=self.nama_subjenis, keterangan=self.keterangan)
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_subjenis)+"</option>"

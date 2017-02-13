@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view,informasi_kekayaan_daerah,detilho_view,izin_lokasi,ippt_rumah,ippt_usaha,huller,pembayaran
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
@@ -369,4 +369,12 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax Pembayaran ++++++++++++++++++++++
     url(r'^izin/luas-tanah-tanah-yang-disetujui/save$', ippt_rumah.luas_tanah_yang_disetujui_save, name='luas_tanah_yang_disetujui_save'),
     # ++++++++++++++++++++++++ end for ajax Pembayaran ++++++++++++++++++++++
+
+    ########################## save tdup ##############################
+    url(r'^layanan/tdup/data-usaha-pariwisata/save$', tdup_views.tdup_data_usaha_pariwisata_save, name='tdup_data_usaha_pariwisata_save'),
+    url(r'^layanan/tdup/keterangan-usaha/save$', tdup_views.tdup_keterangan_usaha_save, name='tdup_keterangan_usaha_save'),
+    url(r'^layanan/tdup/tdup-done$', tdup_views.tdup_done, name='tdup_done'),
+    url(r'^layanan/tdup/data-usaha-pariwisata/ajax/(?P<id_pengajuan>[0-9]+)$', tdup_views.ajax_data_usaha_pariwista, name='ajax_data_usaha_pariwista'),
+    url(r'^layanan/tdup/keterangan-usaha/ajax/(?P<id_pengajuan>[0-9]+)$', tdup_views.tdup_keterangan_usaha_ajax, name='tdup_keterangan_usaha_ajax'),
+    ########################## end save tdup ##########################
     ]

@@ -22,205 +22,205 @@
   </form>
 
   <!-- KTP yang masih berlaku -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-ktp">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>KTP yang masih berlaku</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-ktp">
         <div class="col-sm-5">
           <input type="hidden" name="kode" value="Surat Keputusan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-ktp"></span>
     </div>
   </form>
 
   <!-- Izin Tempat Usaha Pariwisata yang masih berlaku -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-izin_tempat_usaha">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Izin Tempat Usaha Pariwisata yang masih berlaku berlaku (permohonan perubahan)</strong></label>
-      <span id="field-surat_keputusan">
+      <label class="col-sm-3 control-label">Izin Tempat Usaha Pariwisata yang masih berlaku berlaku (permohonan perubahan)</label>
+      <span id="field-izin_tempat_usaha">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Izin Tempat Usaha">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-izin_tempat_usaha" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-izin_tempat_usaha" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-izin_tempat_usaha"></span>
     </div>
   </form>
 
   <!-- Sertifikat Lahan / Surat Sewa -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-sertifikat_lahan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Sertifikat Lahan / Surat Sewa</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-sertifikat_lahan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Sertifikat Lahan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-sertifikat_lahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-sertifikat_lahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-sertifikat_lahan"></span>
     </div>
   </form>
 
   <!-- Izin gangguan/HO -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-izin_gangguan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Izin gangguan/HO</strong></label>
-      <span id="field-surat_keputusan">
+      <label class="col-sm-3 control-label"><strong>Izin Gangguan/HO</strong></label>
+      <span id="field-izin_gangguan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Izin Gangguan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-izin_gangguan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-izin_gangguan"></span>
     </div>
   </form>
 
   <!-- IMB -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-imb">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>IMB</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-imb">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="IMB">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-imb" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-imb" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-imb"></span>
     </div>
   </form>
 
   <!-- Akta pendirian perusahaan kecuali bagi perorangan -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-akta_pendirian">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Akta pendirian perusahaan kecuali bagi perorangan</strong></label>
-      <span id="field-surat_keputusan">
+      <label class="col-sm-3 control-label">Akta pendirian perusahaan kecuali bagi perorangan</label>
+      <span id="field-akta_pendirian">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Akta Pendirian">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-akta_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-akta_pendirian"></span>
     </div>
   </form>
 
   <!-- Nomor Pokok Wajib Pajak (NPWP) -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-npwp">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Nomor Pokok Wajib Pajak (NPWP)</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-npwp">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="NPWP">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-npwp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-npwp"></span>
     </div>
   </form>
 
   <!-- SIUP -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-siup">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>SIUP</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-siup">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="SIUP">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-siup" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-siup" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-siup"></span>
     </div>
   </form>
 
   <!-- Surat pernyataan tertulis dari pengusaha yang menjamin bahwa data dan dokumen yang diserahakan benar dan sah -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_pernyataan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Surat pernyataan tertulis dari pengusaha yang menjamin bahwa data dan dokumen yang diserahakan benar dan sah</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-surat_pernyataan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Surat Pernyataan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-surat_pernyataan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-surat_pernyataan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-surat_pernyataan"></span>
     </div>
   </form>
 
   <!-- Dokumen lingkungan -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-dokumen_lingkungan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Dokumen lingkungan</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-dokumen_lingkungan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Dokumen Lingkungan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-dokumen_lingkungan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-dokumen_lingkungan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-dokumen_lingkungan"></span>
     </div>
   </form>
 
   <!-- Izin Usaha Angkutan Khusus untuk bidang jasa transportasi wisata -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-Izin_usaha_angkutan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Izin Usaha Angkutan Khusus untuk bidang jasa transportasi wisata</strong></label>
-      <span id="field-surat_keputusan">
+      <label class="col-sm-3 control-label">Izin Usaha Angkutan Khusus untuk bidang jasa transportasi wisata</label>
+      <span id="field-Izin_usaha_angkutan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Izin Usaha Angkutan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-Izin_usaha_angkutan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-Izin_usaha_angkutan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-Izin_usaha_angkutan"></span>
     </div>
   </form>
 
   <!-- Berkas tambahan -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-surat_keputusan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-berkas_tambahan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Berkas Tambahan</strong></label>
-      <span id="field-surat_keputusan">
+      <span id="field-berkas_tambahan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Surat Keputusan">
+          <input type="hidden" name="kode" value="Berkas Tambahan">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
-        <a href="#" id="btn-surat_keputusan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
-        <a id="percent-surat_keputusan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+        <a href="#" id="btn-berkas_tambahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-berkas_tambahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
-      <span class="col-sm-6" id="load-surat_keputusan"></span>
+      <span class="col-sm-6" id="load-berkas_tambahan"></span>
     </div>
   </form>
