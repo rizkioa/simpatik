@@ -190,7 +190,9 @@ def get_css(args):
 	if unit_kerja.exists():
 		unit_kerja = unit_kerja.last()
 		uk = unit_kerja.nama_unit_kerja
-		if uk == 'DISBUDPAR':
-			string = '/static/styles/css/budpar.css'
+		# if uk == 'DISBUDPAR':
+		# 	string = '/static/styles/css/budpar.css'
+		uk = uk.lower()
+		string = '/static/styles/css/'+str(uk)+'.css'
 
 	return string
