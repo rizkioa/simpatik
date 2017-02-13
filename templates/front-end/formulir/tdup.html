@@ -600,22 +600,30 @@
               success: function (data) {
                 respon_data_usaha = $.parseJSON(data)
                 // console.log(respon_data_usaha)
-                $("#id_bidang_usaha_pariwisata").html('')
+                
                 if (respon_data_usaha.success){
                   a = respon_data_usaha.data.bidang_usaha_json.length
-                  for (var i = 0; i < a; i++){
-                    $("#id_bidang_usaha_pariwisata").append('<option selected="selected" value="'+respon_data_usaha.data.bidang_usaha_json[i].id+'" >'+respon_data_usaha.data.bidang_usaha_json[i].bidang_usaha_pariwisata+'</option>');
-                    console.log(respon_data_usaha.data.bidang_usaha_json[i])
+                  if(a !== 0){
+                    $("#id_bidang_usaha_pariwisata").html('')
+                    for (var i = 0; i < a; i++){
+                      $("#id_bidang_usaha_pariwisata").append('<option selected="selected" value="'+respon_data_usaha.data.bidang_usaha_json[i].id+'" >'+respon_data_usaha.data.bidang_usaha_json[i].bidang_usaha_pariwisata+'</option>');
+                      console.log(respon_data_usaha.data.bidang_usaha_json[i])
+                    }
+                    $('select#id_bidang_usaha_pariwisata').trigger("chosen:updated");
                   }
-                  $('select#id_bidang_usaha_pariwisata').trigger("chosen:updated");
 
-                  $("#id_sub_jenis_bidang_usaha").html('')
+                  
                   b = respon_data_usaha.data.sub_jenis_json.length
-                  for (var i = 0; i < b; i++){
-                    $("#id_sub_jenis_bidang_usaha").append('<option selected="selected" value="'+respon_data_usaha.data.sub_jenis_json[i].id+'" >'+respon_data_usaha.data.sub_jenis_json[i].nama_subjenis+'</option>');
-                    console.log(respon_data_usaha.data.sub_jenis_json[i])
+                  if (b !== 0){
+                    $("#id_sub_jenis_bidang_usaha").html('')
+                    for (var i = 0; i < b; i++){
+                      $("#id_sub_jenis_bidang_usaha").append('<option selected="selected" value="'+respon_data_usaha.data.sub_jenis_json[i].id+'" >'+respon_data_usaha.data.sub_jenis_json[i].nama_subjenis+'</option>');
+                      console.log(respon_data_usaha.data.sub_jenis_json[i])
+                    }
+                    $('select#id_sub_jenis_bidang_usaha').trigger("chosen:updated");
                   }
-                  $('select#id_sub_jenis_bidang_usaha').trigger("chosen:updated");
+                  
+                  
                   setTimeout(function(){
                     subjenis()
                     bidang()
