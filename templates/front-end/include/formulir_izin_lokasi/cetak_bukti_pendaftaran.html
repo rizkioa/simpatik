@@ -359,24 +359,24 @@
                     </table>
                     <table class="font" width="100%">
                         <tr>
-                          <td width="25%"><u>Persil</u></td>
-                          <td width="10%"></td>
-                          <td width="65%"></td>
+                          <td width="25%"><h5><u>Akta Jual Beli</u></h5></td>
+                          <td width="5%"></td>
+                          <td width="70%"></td>
                         </tr>
                         <tr>
                           <td width="25%">No.</td>
-                          <td width="10%">:</td>
-                          <td width="65%">{{pengajuan.no_persil|default_if_none:"-"}}</td>
+                          <td width="5%">:</td>
+                          <td width="70%">{{pengajuan.no_jual_beli|default_if_none:"-"}}</td>
                         </tr>
                         <tr>
-                          <td width="25%">Klas</td>
-                          <td width="10%">:</td>
-                          <td width="65%">{{pengajuan.klas_persil|default_if_none:"-"}}</td>
+                          <td width="25%">Tanggal</td>
+                          <td width="5%">:</td>
+                          <td width="70%">{{pengajuan.tanggal_jual_beli|date:"d F Y"|default_if_none:"-"}}</td>
                         </tr>
                         <tr>
                           <td width="25%">Atas Nama</td>
-                          <td width="10%">:</td>
-                          <td width="65%">{{pengajuan.atas_nama_persil|default_if_none:"-"}}</td>
+                          <td width="5%">:</td>
+                          <td width="70%">{{pengajuan.atas_nama_jual_beli|default_if_none:"-"}}</td>
                         </tr>
                         <tr>
                           <td width="25%">Penggunaan Sekarang</td>
