@@ -1,6 +1,11 @@
 from django.db import models
 from mptt.models import MPTTModel
 from mptt.fields import TreeForeignKey
+from accounts.utils import STATUS
+from master.models import MetaAtribut
+import uuid
+
+
 from accounts.models import Account
 
 class JenisUnitKerja(MPTTModel):
@@ -144,3 +149,21 @@ class Pegawai(Account):
 	class Meta:
 		verbose_name = 'Pegawai'
 		verbose_name_plural = 'Pegawai'	
+
+
+class NotifikasiTelegram(MetaAtribut):
+	"""docstring for NotifikasiTelegram"""
+	pegawai = models.ForeignKey(Pegawai, verbose_name="Pegawai")
+	uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+	chat_id = models.IntegerField(verbose_name="Chat ID")
+	status_verifikasi = models.BooleanField(default=False, verbose_name="Status Verifikasi")
+	kirim_notifikasi = models.BooleanField(default=True, verbose_name="Menerima Notifikasi Telegram?")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (self.pegawai)
+
+	class Meta:
+		verbose_name = "Notifikasi Telegram"
+		verbose_name_plural = "Notifikasi Telegram"
+		

@@ -176,7 +176,7 @@ class InformasiKekayaanDaerahForm(forms.ModelForm):
 class DetilHOForm(forms.ModelForm):
 	class Meta:
 		model = DetilHO
-		fields = ('perkiraan_modal','tujuan_gangguan','alamat','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan','batas_utara','batas_timur','batas_selatan','batas_barat')
+		fields = ('perkiraan_modal','tujuan_gangguan','alamat','no_surat_tanah','tanggal_surat_tanah','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan','batas_utara','batas_timur','batas_selatan','batas_barat')
 
 class InformasiTanahForm(forms.ModelForm):
 	"""docstring for InformasiTanahForm"""

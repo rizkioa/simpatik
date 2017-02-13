@@ -16,8 +16,6 @@ from kepegawaian.models import UnitKerja, Pegawai
 
 class DetilIUJKAdmin(admin.ModelAdmin):
 
-	
-	
 	def view_pengajuan_iujk(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:

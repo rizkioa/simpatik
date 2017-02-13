@@ -51,7 +51,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail HO', {'fields': ('perkiraan_modal','tujuan_gangguan','alamat','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan') }),
+				('Detail HO', {'fields': ('perkiraan_modal','tujuan_gangguan','alamat','no_surat_tanah','tanggal_surat_tanah','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -65,7 +65,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail HO', {'fields': ('perkiraan_modal','tujuan_gangguan','alamat','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan') }),
+				('Detail HO', {'fields': ('perkiraan_modal','tujuan_gangguan','alamat','no_surat_tanah','tanggal_surat_tanah','desa','bahan_baku_dan_penolong','proses_produksi','jenis_produksi','kapasitas_produksi','jumlah_tenaga_kerja','jumlah_mesin','merk_mesin','daya','kekuatan','luas_ruang_tempat_usaha','luas_lahan_usaha','jenis_lokasi_usaha','jenis_bangunan','jenis_gangguan') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
@@ -79,7 +79,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
@@ -95,7 +95,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 					pass
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({'perusahaan': pengajuan_.perusahaan})
 
@@ -177,15 +177,31 @@ class DetilHOAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			if pengajuan_.luas_ruang_tempat_usaha:
+				luas_ruang_tempat_usaha_ = '{0:f}'.format(pengajuan_.luas_ruang_tempat_usaha)
+				luas_ruang_tempat_ = luas_ruang_tempat_usaha_.split(".")[1]
+				if luas_ruang_tempat_ == "00":
+					luas_ruang_tempat_usaha_ = ("%.0f" % pengajuan_.luas_ruang_tempat_usaha)
+				else:
+					luas_ruang_tempat_usaha_ = pengajuan_.luas_ruang_tempat_usaha
+				extra_context.update({'luas_ruang_tempat_usaha_': luas_ruang_tempat_usaha_})
+			if pengajuan_.luas_lahan_usaha:
+				luas_lahan_usaha_ = '{0:f}'.format(pengajuan_.luas_lahan_usaha)
+				luas_lahan_ = luas_lahan_usaha_.split(".")[1]
+				if luas_lahan_ == "00":
+					luas_lahan_usaha_ = ("%.0f" % pengajuan_.luas_lahan_usaha)
+				else:
+					luas_lahan_usaha_ = pengajuan_.luas_lahan_usaha
+				extra_context.update({'luas_lahan_usaha_': luas_lahan_usaha_})			
 			# ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
 			# jumlah_ = str(int(pengajuan_.jumlah))
 			# klasifikasi_ = pengajuan_.klasifikasi_jalan

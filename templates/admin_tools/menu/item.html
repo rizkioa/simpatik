@@ -26,7 +26,7 @@
 	</div>
 {% else %}
 	{% if not item.is_empty %}
-		<li class="menu-item{% ifequal index 1 %} first{% endifequal %}{% if not item.enabled %} disabled{% endif %}{% if selected %} selected active{% endif %}{% if item.css_classes %} {{ item.css_classes|join:' ' }}{% endif %}{% if item.children and item.enabled %} dropdown xn-openable{% endif %}">
+		<li class="menu-item{% ifequal index 1 %} first{% endifequal %}{% if not item.enabled %} disabled{% endif %}{% if selected %} selected active{% endif %}{% if item.css_classes %} {{ item.css_classes }}{% endif %}{% if item.children and item.enabled %} dropdown xn-openable{% endif %}">
 			<a href="{% if item.url and item.enabled %}{{ item.url }}{% else %}#{% endif %}"{% if item.description %} title="{{ item.description }}"{% endif %}{% if item.accesskey %} accesskey="{{ item.accesskey }}"{% endif %}>
 				{% if item.icon %}
 					<i class="{{ item.icon }}"></i>

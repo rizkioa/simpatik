@@ -363,7 +363,7 @@
                     <tr>
                         <td width="40%">Ukuran, Panjang x Lebar x Muka/Sisi</td>
                         <td width="10%">:</td>
-                        <td width="50%">{{ pengajuan.panjang|floatformat:-2 }} M x {{ pengajuan.lebar|floatformat:-2 }} x M {{ pengajuan.sisi|floatformat:-2 }} M</td>
+                        <td width="50%">{{panjang_|default_if_none:"-"}} M x {{lebar_|default_if_none:"-"}} M x {{sisi_|default_if_none:"-"}} M</td>
                     </tr>
                     <tr>
                         <td width="30%">Jumlah</td>
