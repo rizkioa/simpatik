@@ -2,7 +2,7 @@ from django.contrib import admin
 import json
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import Pegawai, UnitKerja
@@ -86,7 +86,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 
 			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
 			# print lama_pemasangan
-			banyak = len(DetilHO.objects.all())
+			banyak = len(DetilTDUP.objects.all())
 			extra_context.update({'banyak': banyak})
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
 			extra_context.update({'syarat': syarat_})
