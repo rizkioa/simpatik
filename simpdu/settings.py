@@ -215,8 +215,5 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
-<<<<<<< HEAD
-=======
 
 TELGRAM_API_TOKEN = '321364862:AAFE6CglJ_u8-TGuAbV7YBIiIU0rhqukNTI'
->>>>>>> c08e52eefd8512a7b973c9609e7f4a9886edbaa7
