@@ -43,7 +43,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-			letak_ = pengajuan_.lokasi_usaha_pariwisata + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			letak_ = pengajuan_.lokasi_usaha_pariwisata + ", Desa "+str(pengajuan_.desa_lokasi) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
 			extra_context.update({'letak': letak_})
