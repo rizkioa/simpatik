@@ -790,8 +790,6 @@ function load_data_informasi_tanah(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)     
         if (respon.success){
-          $('#id_no_surat_kuasa').val(respon.data.id_no_surat_kuasa)
-          $('#id_tanggal_surat_kuasa').val(respon.data.id_tanggal_surat_kuasa)
           $('#id_alamat').val(respon.data.id_alamat)
           if (respon.data.id_kecamatan != "") {
             load_desa_data_reklame(respon.data.id_kecamatan)
@@ -1002,8 +1000,6 @@ function load_konfirmasi_informasi_tanah(id_pengajuan){
       success: function (response){
         respon = $.parseJSON(response)
         if (respon.success){
-            $('#id_no_surat_kuasa_konfirmasi').text(respon.data.id_no_surat_kuasa);
-            $('#id_tanggal_surat_kuasa_konfirmasi').text(respon.data.id_tanggal_surat_kuasa)
             $('#id_alamat_konfirmasi').text(respon.data.id_alamat)
             $('#kabupaten_konfirmasi').text(respon.data.kabupaten)
             $('#kecamatan_konfirmasi').text(respon.data.kecamatan)

@@ -709,8 +709,6 @@ class DetilHO(PengajuanIzin):
 
 class InformasiTanah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasitanah_perusahaan', blank=True, null=True)
-	no_surat_kuasa =  models.CharField(max_length=30, verbose_name='No. Surat Kuasa', null=True, blank=True)
-	tanggal_surat_kuasa = models.DateField(verbose_name='Tanggal Surat Kuasa', null=True, blank=True)
 	alamat = models.CharField(max_length=100,null=True, blank=True, verbose_name='Alamat')
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Tanah')
@@ -722,6 +720,9 @@ class InformasiTanah(PengajuanIzin):
 	no_persil =  models.CharField(max_length=30, verbose_name='No. Persil', null=True, blank=True)
 	klas_persil= models.CharField(max_length=30, verbose_name='Klas Persil', null=True, blank=True)
 	atas_nama_persil=  models.CharField(max_length=255, verbose_name='Atas Nama Persil', null=True, blank=True)
+	no_jual_beli = models.CharField(max_length=255, verbose_name='No Jual Beli', null=True, blank=True)
+	tanggal_jual_beli = models.DateField(verbose_name='Tanggal Jual Beli', null=True, blank=True)
+	atas_nama_jual_beli = models.CharField(max_length=255, verbose_name='Atas Nama Jual Beli', null=True, blank=True)
 	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
 	#Tambahan Informasi Tanah IPPT USAHA

@@ -65,18 +65,17 @@ def informasitanah_save_cookie(request):
                   informasitanah.save()
                   data = {'success': True,
                           'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                          'data': ['']}
+                          'data': {}}
                   response = HttpResponse(json.dumps(data))
             else:
               data = informasitanah.errors.as_json()
+              response = HttpResponse(data)
         else:
           data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-          data = json.dumps(data)
-          response = HttpResponse(data)
+          response = HttpResponse(json.dumps(data))
     else:
       data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
+      response = HttpResponse(json.dumps(data))
     return response
 
 def sertifikat_tanah_save_cookie(request):
@@ -95,15 +94,15 @@ def sertifikat_tanah_save_cookie(request):
                     response = HttpResponse(json.dumps(data))
                 else:
                     data = sertifikat_tanah.errors.as_json()
+                    response = HttpResponse(json.dumps(data))
             else:
                 sertifikat_tanah = SertifikatTanahForm()
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-            data = json.dumps(data)
+            data = json.dumps(json.dumps(data))
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-        data = json.dumps(data)
-    response = HttpResponse(data)
+        response = HttpResponse(json.dumps(data))
     return response
 
 def edit_sertifikat_tanah(request,id_sertifikat_tanah):
@@ -325,8 +324,6 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
       pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      no_surat_kuasa = pengajuan_.no_surat_kuasa
-      tanggal_surat_kuasa = str(pengajuan_.tanggal_surat_kuasa)
       alamat = pengajuan_.alamat
       desa = str(pengajuan_.desa)
       kecamatan = str(pengajuan_.desa.kecamatan)
@@ -340,16 +337,19 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
         id_tanggal_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
       else:
         id_tanggal_sertifikat = " "
-      no_persil = pengajuan_.no_persil
-      klas_persil = pengajuan_.klas_persil
-      atas_nama_persil = pengajuan_.atas_nama_persil
+
+      no_jual_beli = pengajuan_.no_jual_beli
+      if pengajuan_.tanggal_jual_beli:
+        tanggal_jual_beli = pengajuan_.tanggal_jual_beli.strftime("%d-%m-%Y")
+      else:
+        tanggal_jual_beli = " "
+      atas_nama_jual_beli = pengajuan_.atas_nama_jual_beli
+
       penggunaan_sekarang = pengajuan_.penggunaan_sekarang
       rencana_penggunaan = pengajuan_.rencana_penggunaan
 
       data = {'success': True,
           'data': [
-          {'no_surat_kuasa': no_surat_kuasa},
-          {'tanggal_surat_kuasa': tanggal_surat_kuasa},
           {'alamat_informasi_tanah': alamat},
           {'desa': desa},
           {'kecamatan': kecamatan},
@@ -360,9 +360,9 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
           {'luas_sertifikat_petak': luas_sertifikat_petak},
           {'atas_nama_sertifikat_petak': atas_nama_sertifikat_petak},
           {'id_tanggal_sertifikat':id_tanggal_sertifikat},
-          {'no_persil': no_persil},
-          {'klas_persil': klas_persil},
-          {'atas_nama_persil': atas_nama_persil},
+          {'no_jual_beli': no_jual_beli},
+          {'tanggal_jual_beli': tanggal_jual_beli},
+          {'atas_nama_jual_beli': atas_nama_jual_beli},
           {'penggunaan_sekarang': penggunaan_sekarang},
           {'rencana_penggunaan': rencana_penggunaan}]}
       response = HttpResponse(json.dumps(data))
