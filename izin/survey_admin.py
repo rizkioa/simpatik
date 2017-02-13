@@ -74,7 +74,12 @@ class SurveyAdmin(admin.ModelAdmin):
 						}),
 				)
 		else:
-			pass
+			add_fieldsets = (
+					(None, {
+						'classes': ('wide',),
+						'fields': field_admin+('status',)
+						}),
+				)
 
 		return add_fieldsets
 
@@ -568,10 +573,15 @@ class SurveyAdmin(admin.ModelAdmin):
 		# print request.user.pegawai.unit_kerja
 		if not request.user.is_superuser:
 			a = AnggotaTim.objects.filter(pegawai=request.user)
+			print a
 			# print "HALO"
 			if a.exists():
 				a = a.values_list('survey_iujk')
 				qs = qs.filter(id__in=a)
+			# SIMPATIK-PEMBANGUNAN BELUM DITAMBAHI INI
+			else:
+				qs = qs.none()
+			# SAMPAI SINI
 
 		if func_view.__name__ == 'surveyselesai':
 			qs = qs.filter(status=1)
