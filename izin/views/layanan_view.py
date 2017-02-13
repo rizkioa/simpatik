@@ -18,7 +18,7 @@ def layanan_iujk(request, extra_context={}):
 	return response
 
 def layanan_tdup(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=37	)
+	kelompok = get_object_or_404(KelompokJenisIzin, id=41	)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Usaha Pariwisata"})
 	extra_context.update({'title_short': "IUJK"})
