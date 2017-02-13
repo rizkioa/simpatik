@@ -433,6 +433,8 @@ def siup_legalitas_perusahaan_save_cookie(request):
 						objects_ = getattr(app_models, 'DetilTDP')
 					elif k.kode == "IPPT-Usaha":
 						objects_ = getattr(app_models, 'InformasiTanah')
+					elif k.kode == 'TDUP':
+						objects_ = getattr(app_models, 'DetilTDUP')
 					else:
 						objects_ = getattr(app_models, 'DetilSIUP')	
 					# print objects_

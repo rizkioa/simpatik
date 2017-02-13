@@ -1,0 +1,102 @@
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'tdup_keterangan_usaha_save' %}" data-parsley-validate novalidate>
+	{% csrf_token %}  
+	<h3>KETERANGAN USAHA</h3>
+	<hr class="style14">
+
+	<div class="form-group" id="nama_usaha">
+      <label class="col-sm-2 control-label text-left">Nama Usaha</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="nama_usaha" id="id_nama_usaha">
+      </div>
+    </div>
+
+    <div class="form-group" id="lokasi_usaha_pariwisata">
+      <label class="col-sm-2 control-label text-left">Lokasi Usaha Pariwista</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="lokasi_usaha_pariwisata" id="id_lokasi_usaha_pariwisata">
+      </div>
+    </div>
+
+    <div class="form-group" id="provinsi-3">
+	    <label class="col-sm-2 control-label text-left">Provinsi </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" name="provinsi" id="id_provinsi-3">
+	      </select>
+	    </div>
+  	</div>
+
+  	<div class="form-group" id="kabupaten-3">
+	    <label class="col-sm-2 control-label text-left">Kota/Kabupaten </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten-3"> 
+	      </select>
+	    </div>
+  	</div>
+
+  	<div class="form-group" id="kecamatan-3">
+	    <label class="col-sm-2 control-label text-left">Kecamatan </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan-3">
+	      </select>
+	    </div>
+  	</div>
+
+  	<div class="form-group" id="desa-3">
+	    <label class="col-sm-2 control-label text-left">Kelurahan/Desa </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" name="desa_lokasi" id="id_desa-3">
+	      </select>
+	    </div>
+  	</div>
+
+  	<div class="form-group" id="telephone">
+      <label class="col-sm-2 control-label text-left">Telepon</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control " name="telephone" id="id_telephone">
+      </div>
+    </div>
+
+    <h4>Izin Gangguan</h4>
+    <div style="padding-left: 5%;">
+	    <div class="form-group" id="nomor_izin_gangguan" >
+	      <label class="col-sm-2 control-label text-left">Nomor Izin</label>
+	      <div class="col-sm-5">
+	        <input type="text" class="form-control " name="nomor_izin_gangguan" id="id_nomor_izin_gangguan">
+	      </div>
+	    </div>
+
+	    <div class="form-group" id="tanggal_izin_gangguan">
+		    <label class="col-sm-2 control-label text-left"">Tanggal</label>
+		    <div class="col-sm-5">
+		      <div class="input-group datepicker" data-format="L">
+		        <input type="text" class="form-control" id="id_tanggal_izin_gangguan" name="tanggal_izin_gangguan" required="" data-parsley-trigger="change">
+		        <span class="input-group-addon">
+		          <span class="fa fa-calendar"></span>
+		        </span>
+		      </div>
+		    </div>
+	  	</div>
+	</div>
+
+	<h4>Dokumen Pengelolaan Lingkungan</h4>
+    <div style="padding-left: 5%;">
+	    <div class="form-group" id="nomor_dokumen_pengelolaan" >
+	      <label class="col-sm-2 control-label text-left">Nomor Izin</label>
+	      <div class="col-sm-5">
+	        <input type="text" class="form-control" name="nomor_dokumen_pengelolaan" id="id_nomor_dokumen_pengelolaan">
+	      </div>
+	    </div>
+
+	    <div class="form-group" id="tanggal_dokumen_pengelolaan">
+		    <label class="col-sm-2 control-label text-left"">Tanggal</label>
+		    <div class="col-sm-5">
+		      <div class="input-group datepicker" data-format="L">
+		        <input type="text" class="form-control" id="id_tanggal_dokumen_pengelolaan" name="tanggal_dokumen_pengelolaan" required="" data-parsley-trigger="change">
+		        <span class="input-group-addon">
+		          <span class="fa fa-calendar"></span>
+		        </span>
+		      </div>
+		    </div>
+	  	</div>
+	</div>
+</form>
