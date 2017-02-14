@@ -255,22 +255,6 @@
                             <td width="10%">:</td>
                             <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
                         </tr>
-                     
-                        <tr>
-                          <td width="25%"><p style="font-size:13px">Berdasarkan</p><br><u>Surat Kuasa</u></td>
-                          <td width="10%"></td>
-                          <td width="65%"></td>
-                        </tr>
-                        <tr>
-                          <td width="25%">No.</td>
-                          <td width="10%">:</td>
-                          <td width="65%">{{pengajuan.no_surat_kuasa|default_if_none:"-"}}</td>
-                        </tr>
-                        <tr>
-                          <td width="25%">Tanggal</td>
-                          <td width="10%">:</td>
-                          <td width="65%">{{pengajuan.tanggal_surat_kuasa|date:"d-m-Y"|default_if_none:"-"}}</td>
-                        </tr>
                     </table>
                     <p style="font-size:13px">Mengajukan permohonan Izin Perubahan Penggunaan Tanah (IPPT) atas lokasi tanah yang terletak di</p>
                     <table class="font" width="100%">
