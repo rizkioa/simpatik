@@ -139,7 +139,16 @@
 								  str = ""
 								  for (var i = 0; i < a; i++){
 									// console.log(respon.legalitas[i].jenis_legalitas)
-									row = '<tr><td>'+respon.legalitas[i].jenis_legalitas+'</td><td>'+respon.legalitas[i].nama_notaris+'</td><td>'+respon.legalitas[i].alamat+'</td><td>'+respon.legalitas[i].telephone+'</td><td>'+respon.legalitas[i].nomor_akta+'</td><td>'+respon.legalitas[i].tanggal_akta+'</td><td>'+respon.legalitas[i].nomor_pengesahan+'</td><td>'+respon.legalitas[i].tanggal_pengesahan+'</td></tr>'
+									row = '<tr>'
+									row += '<td>'+respon.legalitas[i].jenis_legalitas+'</td>'
+									row += '<td>'+respon.legalitas[i].nama_notaris+'</td>'
+									row +=  '<td>'+respon.legalitas[i].alamat+'</td>'
+									row += '<td>'+respon.legalitas[i].telephone+'</td>'
+									row += '<td>'+respon.legalitas[i].nomor_akta+'</td>'
+									row += '<td>'+respon.legalitas[i].tanggal_akta+'</td>'
+									row += '<td>'+respon.legalitas[i].nomor_pengesahan+'</td>'
+									row += '<td>'+respon.legalitas[i].tanggal_pengesahan+'</td>'
+									row += '</tr>'
 									$('#legalitas_table > tbody').prepend(row);
 								  }
 								}
@@ -149,8 +158,8 @@
 								}
 							},
 							error: function(response){
-							  row = '<tr><td colspan='8'></td></tr>'
-								  $('#legalitas_table > tbody').prepend(row);
+							  	row = '<tr><td colspan="8"></td></tr>'
+							  	$('#legalitas_table > tbody').prepend(row);
 							}
 						  })
 						  $.ajax({
