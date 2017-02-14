@@ -107,19 +107,33 @@
   </form>
 
   <!-- Akta pendirian perusahaan kecuali bagi perorangan -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdp_upload_surat_keputusan' %}" id="form-akta_pendirian">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_pendirian' %}" id="form-akta_pendirian">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label">Akta pendirian perusahaan kecuali bagi perorangan</label>
+      <label class="col-sm-3 control-label"><strong>File Akta Pendirian</strong></label>
       <span id="field-akta_pendirian">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="Akta Pendirian">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
         <a href="#" id="btn-akta_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
         <a id="percent-akta_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
       </span>
       <span class="col-sm-6" id="load-akta_pendirian"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_akta_perubahan' %}" id="form-akta_perubahan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">File Akta Perubahan</label>
+      <span id="field-akta_perubahan">
+        <div class="col-sm-5">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-akta_perubahan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akta_perubahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akta_perubahan"></span>
     </div>
   </form>
 

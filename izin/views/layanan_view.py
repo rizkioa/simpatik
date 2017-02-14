@@ -21,10 +21,10 @@ def layanan_tdup(request, extra_context={}):
 	kelompok = get_object_or_404(KelompokJenisIzin, id=41)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Usaha Pariwisata"})
-	extra_context.update({'title_short': "IUJK"})
+	extra_context.update({'title_short': "TDUP"})
 	extra_context.update({'link_formulir': reverse("formulir_tdup") })
-	extra_context.update({'id_jenis_izin': "15" })
-	extra_context.update({'id_kelompok_jenis_izin': "37" })
+	extra_context.update({'id_jenis_izin': "17" })
+	extra_context.update({'id_kelompok_jenis_izin': "41" })
 	response = render(request, "front-end/layanan/iujk.html", extra_context)
 	response.set_cookie(key='id_kelompok_izin', value="41")
 	return response
