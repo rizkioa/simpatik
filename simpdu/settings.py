@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'daterange_filter',
     'ckeditor',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'mptt',
     'cas',
     'loginas',

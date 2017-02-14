@@ -10,7 +10,7 @@ from django.conf import settings
 from kepegawaian.models import Pegawai, NotifikasiTelegram
 
 
-from daemon import runner
+# from daemon import runner
 
 def telegram_bot_setting():
 	API_TOKEN = settings.TELGRAM_API_TOKEN
@@ -159,10 +159,10 @@ class Command(BaseCommand):
 				telegram_bot_setting()
 			finally:
 				os.unlink(pidfile)
-		elif options['command'][0]=="daemon":
-			app = App()
-			daemon_runner = runner.DaemonRunner(app)
-			daemon_runner.do_action()
+		# elif options['command'][0]=="daemon":
+		# 	app = App()
+		# 	daemon_runner = runner.DaemonRunner(app)
+		# 	daemon_runner.do_action()
 		elif options['command'][0]=="stop":
 			pid = file(pidfile,'r').read()
 			try:
