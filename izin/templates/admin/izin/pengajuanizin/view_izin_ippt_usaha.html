@@ -723,11 +723,11 @@
 						    <div class="form-group">
 					      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
 					      		<label>{{ pengajuan.kelompok_jenis_izin.kode }}</label>
+							    <input type="hidden" id="kode_jenis_izin" value="{{ pengajuan.kelompok_jenis_izin.kode }}">
 					      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
 					      		<label>/418.27/</label>
 					      		<input type="hidden" id="nomor_izin_sk" value="418.27">
 				      			<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
-						      	</select>
 						    </div>
 					  	</center>
             		</form>

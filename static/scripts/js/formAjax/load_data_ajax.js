@@ -235,6 +235,7 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
             $('#id_no_persil').val(respon.data.id_no_persil)
             $('#id_klas_persil').val(respon.data.id_klas_persil)
             $('#id_atas_nama_persil').val(respon.data.id_atas_nama_persil)
+
             $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
             $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
                     
@@ -247,15 +248,14 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
             }, 1000);
           } 
           else if (respon.data.kode_izin == "503.07/") {
-            $('#id_no_surat_kuasa').val(respon.data.id_no_surat_kuasa)
-            $('#id_tanggal_surat_kuasa').val(respon.data.id_tanggal_surat_kuasa)
             $('#id_alamat').val(respon.data.id_alamat)
             $('#id_luas').val(respon.data.id_luas)
             $('#id_status_tanah').val(respon.data.id_status_tanah)
+            
+            $('#id_no_jual_beli').val(respon.data.id_no_jual_beli)
+            $('#id_tanggal_jual_beli').val(respon.data.id_tanggal_jual_beli)
+            $('#id_atas_nama_jual_beli').val(respon.data.id_atas_nama_jual_beli)
 
-            $('#id_no_persil').val(respon.data.id_no_persil)
-            $('#id_klas_persil').val(respon.data.id_klas_persil)
-            $('#id_atas_nama_persil').val(respon.data.id_atas_nama_persil)
             $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
             $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
                     
