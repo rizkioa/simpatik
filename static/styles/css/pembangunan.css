@@ -1,0 +1,16 @@
+#header.scheme-black{
+	background-color: #134a73;
+}
+
+#header .nav-right > li > a, #header .nav-left > li > a{
+	color: #FFF
+}
+
+#header .branding.scheme-black, #sidebar.scheme-black, #sidebar.scheme-black #navigation, #sidebar.scheme-black #sidebar-wrap:before, #header.scheme-black li.toggle-right-sidebar > a, .appWrapper.scheme-black .page-breadcrumb > li:first-child, .appWrapper.scheme-black .footer{
+	background-color: #134a73 !important;
+}
+
+#navigation > li.active > a{
+	background-color: #2b8cbb;
+    /*color: #482626;*/
+}

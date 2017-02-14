@@ -1,4 +1,4 @@
-{% load i18n admin_static %}
+{% load i18n admin_static widgets %}
 <!DOCTYPE html>
 {% get_current_language as LANGUAGE_CODE %}
 {% get_current_language_bidi as LANGUAGE_BIDI %}
@@ -28,6 +28,7 @@
 
     <!-- project main css files -->
     <link rel="stylesheet" href="{% static 'styles/css/main.css' %}">
+    <link rel="stylesheet" href="{{ request.META.HTTP_HOST|get_css }}">
     <!--/ stylesheets -->
     <style type="text/css">
         #header .branding a.brand {

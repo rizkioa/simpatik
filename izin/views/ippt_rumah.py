@@ -44,8 +44,6 @@ def load_konfirmasi_ippt_rumah(request,id_pengajuan):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
       pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      no_surat_kuasa = pengajuan_.no_surat_kuasa
-      tanggal_surat_kuasa = str(pengajuan_.tanggal_surat_kuasa)
       alamat = pengajuan_.alamat
       desa = str(pengajuan_.desa)
       kecamatan = str(pengajuan_.desa.kecamatan)
@@ -67,8 +65,6 @@ def load_konfirmasi_ippt_rumah(request,id_pengajuan):
 
       data = {'success': True,
           'data': [
-          {'no_surat_kuasa': no_surat_kuasa},
-          {'tanggal_surat_kuasa': tanggal_surat_kuasa},
           {'alamat_informasi_tanah': alamat},
           {'desa': desa},
           {'kecamatan': kecamatan},
@@ -129,11 +125,6 @@ def load_informasi_tanah(request,id_pengajuan):
 
       elif pengajuan_.kelompok_jenis_izin.kode == "503.07/":
         kode_izin = pengajuan_.kelompok_jenis_izin.kode
-        id_no_surat_kuasa = pengajuan_.no_surat_kuasa
-        if pengajuan_.tanggal_surat_kuasa:
-          id_tanggal_surat_kuasa = pengajuan_.tanggal_surat_kuasa.strftime("%d-%m-%Y")
-        else:
-          id_tanggal_surat_kuasa = ""
 
         id_alamat = pengajuan_.alamat
         if pengajuan_.desa:
@@ -145,13 +136,17 @@ def load_informasi_tanah(request,id_pengajuan):
         id_luas = str(pengajuan_.luas)
         id_status_tanah = pengajuan_.status_tanah
 
-        id_no_persil = pengajuan_.no_persil
-        id_klas_persil = pengajuan_.klas_persil
-        id_atas_nama_persil = pengajuan_.atas_nama_persil
+        id_no_jual_beli = pengajuan_.no_jual_beli
+        if pengajuan_.tanggal_jual_beli:
+          id_tanggal_jual_beli = pengajuan_.tanggal_jual_beli.strftime("%d-%m-%Y")
+        else:
+          id_tanggal_jual_beli = " "
+        id_atas_nama_jual_beli = pengajuan_.atas_nama_jual_beli
+
         id_penggunaan_sekarang = pengajuan_.penggunaan_sekarang
         id_rencana_penggunaan = pengajuan_.rencana_penggunaan
 
-        data = {'success': True,'data':{'kode_izin':kode_izin,'id_no_surat_kuasa':id_no_surat_kuasa,'id_tanggal_surat_kuasa':id_tanggal_surat_kuasa,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_jual_beli':id_no_jual_beli,'id_tanggal_jual_beli':id_tanggal_jual_beli,'id_atas_nama_jual_beli':id_atas_nama_jual_beli,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
 
       else:
         data = {'success': True,'data':{}}
