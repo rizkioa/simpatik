@@ -7,5 +7,10 @@ API_TOKEN = settings.TELGRAM_API_TOKEN
 bot = telebot.TeleBot(API_TOKEN)
 
 def kirim_notifikasi_telegram(chat_id, pesan):
-    bot.send_message(chat_id, pesan)
-    return True
+	try:
+		bot.send_message(chat_id, pesan)
+		return True
+	except Exception as e:
+		print e
+		return False
+	

@@ -99,13 +99,13 @@ class CustomMenu(Menu):
         elif request.user.is_superuser:
             menu_utama.children+= [
                     items.MenuItem(
-                        title=_('Daftar Laporan'),
+                        title=_('Izin Terdaftar'),
                         description='Page Izin Terdaftar',
                         icon='icon-flag',
                         url=reverse("admin:izinterdaftar"),
                     ),
                     items.MenuItem(
-                        title=_('Izin Bidang Pembangunan'),
+                        title=_('Pemohon Terdaftar'),
                         description='Page Pemohon Terdaftar',
                         icon='icon-user-following',
                         url=reverse("admin:izin_pemohon_changelist"),
