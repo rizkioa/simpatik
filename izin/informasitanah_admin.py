@@ -261,8 +261,6 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 	def cetak_sk_izin_lokasi(self, request, id_pengajuan_izin_):
 		extra_context = {}
-		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
-		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -278,13 +276,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.alamat +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
-			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
-			jumlah_ = str(int(pengajuan_.jumlah))
-			klasifikasi_ = pengajuan_.klasifikasi_jalan
 
-			extra_context.update({'jumlah': jumlah_ })
-			extra_context.update({'klasifikasi_jalan': klasifikasi_ })
-			extra_context.update({'ukuran': ukuran_})
 			extra_context.update({'letak': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
@@ -301,25 +293,116 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
 					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
 					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
 			except ObjectDoesNotExist:
 				pass
 
-		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")
+		template = loader.get_template("front-end/include/formulir_izin_lokasi/cetak_sk_izin_lokasi.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			letak_ = pengajuan_.alamat +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+
+			extra_context.update({'letak': letak_})
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'pengajuan': pengajuan_ })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+			except ObjectDoesNotExist:
+				pass
+
+		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
+	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			letak_ = pengajuan_.alamat +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+
+			extra_context.update({'letak': letak_})
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'pengajuan': pengajuan_ })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+			except ObjectDoesNotExist:
+				pass
+
+		template = loader.get_template("front-end/include/formulir_ippt_usaha/cetak_sk_izin_ippt_usaha.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(InformasiTanahAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^cetak-sk-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
+			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
+			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
+			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
 			url(r'^view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_lokasi), name='view_pengajuan_izin_lokasi'),
 			url(r'^ippt-usaha/view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_ippt_usaha), name='view_pengajuan_ippt_usaha'),
-
 			)
 		return my_urls + urls
 
