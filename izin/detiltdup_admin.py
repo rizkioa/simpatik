@@ -108,28 +108,10 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	# def option_sub_jenis_bidang_usaha(self, request):
-	# 	select = request.POST.get('select')
-	# 	select = eval(select)
-	# 	# bidang_usaha = []
-	# 	# if request.POST.get('bidang_usaha'):
-	# 	bidang_usaha = request.POST.getlist('bidang_usaha[]')
-	# 	print bidang_usaha
-	# 	# print request.POST.getlist('value[]')
-	# 	subjenis_list = SubJenisBidangUsaha.objects.filter(bidang_usaha_pariwisata_id__in=bidang_usaha)
-	# 	# print subjenis_list
-	# 	if len(select) > 0:
-	# 		subjenis_list = subjenis_list.exclude(id__in=select)
-	# 	print subjenis_list
-	# 	pilihan = '<option></option>'
-	# 	return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in subjenis_list)));
-
-
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilTDUPAdmin, self).get_urls()
 		my_urls = patterns('',
-			# url(r'^option-sub-jenis-bidang-usaha$', self.option_sub_jenis_bidang_usaha, name='option_sub_jenis_bidang_usaha'),
 			url(r'^view-pengajuan-tdup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tdup), name='view_pengajuan_izin_tdup'),
 
 			)

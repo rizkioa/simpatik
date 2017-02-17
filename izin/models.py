@@ -1019,7 +1019,7 @@ class JenisUsahaPariwisata(models.Model):
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s' % (str(self.jenis_usaha_pariwisata),)
+		return u'%s' % (str(self.nama_jenis_usaha_pariwisata),)
 
 	class Meta:
 		verbose_name = 'Jenis Usaha Pariwisata'

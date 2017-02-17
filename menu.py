@@ -486,7 +486,7 @@ class CustomMenu(Menu):
             ]
 
         if request.user.groups.filter(name="Admin Simpatik").exists():
-            menu_pengguna = items.MenuItem(
+            items.MenuItem(
                 title=_('Manajemen Pengguna'),
                 description='Manajemen Pengguna',
                 accesskey='menuPengguna',

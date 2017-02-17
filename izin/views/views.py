@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -578,8 +578,7 @@ def formulir_tdup(request, extra_context={}):
     kabupaten = Kabupaten.objects.all()
     kecamatan = Kecamatan.objects.all()
     jenis_pemohon = JenisPemohon.objects.all()
-    bidang_usaha_pariwisata_list = ""
-    subjenisbidangusaha_list = ""
+    bidang_usaha_pariwisata_list = BidangUsahaPariwisata.objects.all()
     extra_context.update({'bidang_usaha_pariwisata': bidang_usaha_pariwisata_list, 'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
