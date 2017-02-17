@@ -1032,13 +1032,13 @@ class SubJenisUsahaPariwisata(models.Model):
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s' % (str(self.nama_subjenis),)
+		return u'%s' % (str(self.nama_sub_jenis),)
 
 	def as_json(self):
-		return dict(id=self.id, kode=self.kode, nama_subjenis=self.nama_subjenis, keterangan=self.keterangan)
+		return dict(id=self.id, kode=self.kode, nama_sub_jenis=self.nama_sub_jenis, keterangan=self.keterangan)
 
 	def as_option(self):
-		return "<option value='"+str(self.id)+"'>"+str(self.nama_subjenis)+"</option>"
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_sub_jenis)+"</option>"
 
 	class Meta:
 		ordering = ['id']
