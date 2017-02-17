@@ -1,7 +1,7 @@
 import os, json, datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from izin.models import DetilTDUP, BidangUsahaPariwisata, SubJenisBidangUsaha, RincianSubJenis
+from izin.models import DetilTDUP, RincianSubJenis
 from izin.izin_forms import RincianSubJenisForm, KeteranganUsahaTDUPForm
 from izin.tdp_forms import BerkasForm
 
@@ -15,12 +15,12 @@ def tdup_data_usaha_pariwisata_save(request):
 					bidang_usaha_list = request.POST.getlist('bidang_usaha_pariwisata')
 					sub_jenis_bidang_usaha_list = request.POST.getlist('sub_jenis_bidang_usaha')
 					# save many to many bidang usaha pariwisata
-					for bidang_usaha in bidang_usaha_list:
-						bidang_usaha_obj = BidangUsahaPariwisata.objects.get(id=bidang_usaha)
-						pengajuan.bidang_usaha_pariwisata.add(bidang_usaha_obj)
-					for sub_jenis_bidang_usaha in sub_jenis_bidang_usaha_list:
-						sub_jenis_bidang_usaha_obj = SubJenisBidangUsaha.objects.get(id=sub_jenis_bidang_usaha)
-						pengajuan.sub_jenis_bidang_usaha.add(sub_jenis_bidang_usaha_obj)
+					# for bidang_usaha in bidang_usaha_list:
+					# 	bidang_usaha_obj = BidangUsahaPariwisata.objects.get(id=bidang_usaha)
+					# 	pengajuan.bidang_usaha_pariwisata.add(bidang_usaha_obj)
+					# for sub_jenis_bidang_usaha in sub_jenis_bidang_usaha_list:
+					# 	sub_jenis_bidang_usaha_obj = SubJenisBidangUsaha.objects.get(id=sub_jenis_bidang_usaha)
+					# 	pengajuan.sub_jenis_bidang_usaha.add(sub_jenis_bidang_usaha_obj)
 					# if pengajuan.rincian_sub_jenis:
 					rincian = 0
 					if pengajuan.rincian_sub_jenis:
@@ -64,14 +64,14 @@ def ajax_data_usaha_pariwista(request, id_pengajuan):
 	if id_pengajuan:
 		try:
 			pengajuan = DetilTDUP.objects.get(id=id_pengajuan)
-			bidang_usaha_list = pengajuan.bidang_usaha_pariwisata.all()
+			# bidang_usaha_list = pengajuan.bidang_usaha_pariwisata.all()
 			bidang_usaha_json = []
-			if bidang_usaha_list:
-				bidang_usaha_json = [k.as_json() for k in BidangUsahaPariwisata.objects.filter(id__in=bidang_usaha_list)]
-			sub_jenis_list = pengajuan.sub_jenis_bidang_usaha.all()
+			# if bidang_usaha_list:
+				# bidang_usaha_json = [k.as_json() for k in BidangUsahaPariwisata.objects.filter(id__in=bidang_usaha_list)]
+			# sub_jenis_list = pengajuan.sub_jenis_bidang_usaha.all()
 			sub_jenis_json = []
-			if sub_jenis_list:
-				sub_jenis_json = [k.as_json() for k in SubJenisBidangUsaha.objects.filter(id__in=sub_jenis_list)]
+			# if sub_jenis_list:
+				# sub_jenis_json = [k.as_json() for k in SubJenisBidangUsaha.objects.filter(id__in=sub_jenis_list)]
 
 			jumlah_unit_angkutan_jalan_wisata = ""
 			kapasitas_angkutan_jalan_wisata = ""

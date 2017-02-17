@@ -19,7 +19,7 @@ from izin.huller_admin import DetilHullerAdmin
 from izin.survey_admin import SurveyAdmin
 from izin.detiltdup_admin import DetilTDUPAdmin
 from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, BidangUsahaPariwisata, SubJenisBidangUsaha, SertifikatTanah,DetilSk,DetilPembayaran
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin,MesinHuller,MesinPerusahaan,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, SertifikatTanah,DetilSk,DetilPembayaran
 from izin.pemohon_admin import PemohonAdmin
 
 from master.models import JenisPemohon
@@ -35,8 +35,6 @@ from pembangunan.views import get_rekomendasi_pembangunan
 # from django.core import serializers
 
 # Register your models here.
-admin.site.register(SubJenisBidangUsaha)
-admin.site.register(BidangUsahaPariwisata)
 admin.site.register(JenisKoperasi)
 admin.site.register(BentukKoperasi)
 admin.site.register(JenisPemohon)
