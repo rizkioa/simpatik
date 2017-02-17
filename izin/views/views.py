@@ -164,26 +164,6 @@ def formulir_siup(request, extra_context={}):
     else:
         return HttpResponseRedirect(reverse('layanan'))
 
-# def formulir_ho_daftar_ulang(request, extra_context={}):
-#     negara = Negara.objects.all()
-#     extra_context.update({'negara': negara})
-#     provinsi = Provinsi.objects.all()
-#     extra_context.update({'provinsi': provinsi})
-#     kabupaten = Kabupaten.objects.all()
-#     extra_context.update({'kabupaten': kabupaten})
-#     kecamatan = Kecamatan.objects.all()
-#     extra_context.update({'kecamatan': kecamatan})
-#     desa = Desa.objects.all()
-#     extra_context.update({'desa': desa})
-#     jenis_pemohon = JenisPemohon.objects.all()
-#     extra_context.update({'jenis_pemohon': jenis_pemohon})
-#     if 'id_kelompok_izin' in request.COOKIES.keys():
-#         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
-#         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-#     else:
-#         return HttpResponseRedirect(reverse('layanan'))
-#     return render(request, "front-end/formulir/ho_baru.html", extra_context)
-
 def formulir_huller(request, extra_context={}):
     negara = Negara.objects.all()
     kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
@@ -616,8 +596,6 @@ def formulir_tdup(request, extra_context={}):
                     else:
                         paspor_ = '0'
                     extra_context.update({ 'paspor': paspor_ })
-                # if pengajuan_.perusahaan:
-                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
             except ObjectDoesNotExist:
                 extra_context.update({'pengajuan_id': '0'})
     if 'id_kelompok_izin' in request.COOKIES.keys():
@@ -680,19 +658,11 @@ def cetak_permohonan(request, id_pengajuan_):
     else:
         response = HttpResponseRedirect(url_)
         return response
-    # else:
-    #   response = HttpResponseRedirect(url_)
-    #   return response      
-
-    # pengajuan_list = PengajuanIzin.objects.filter(id=request.COOKIES['id_pengajuan'])
-    # extra_context.update({'pengajuan_list': pengajuan_list})
     template = loader.get_template("front-end/cetak.html")
     ec = RequestContext(request, extra_context)
     return HttpResponse(template.render(ec))
-    # return render(request, response , extra_context)
 
 def cetak_permohonan_iujk(request, id_pengajuan_):
-    # id_pengajuan_ = base64.b64decode(id_pengajuan_)
     extra_context = {}
     url_ = reverse('formulir_iujk')
     if id_pengajuan_:
@@ -727,13 +697,10 @@ def cetak_permohonan_iujk(request, id_pengajuan_):
     else:
         response = HttpResponseRedirect(url_)
         return response
-
-    # template = loader.get_template("front-end/cetak.html")
     ec = RequestContext(request, extra_context)
     return HttpResponse(template.render(ec))
 
 def cetak_bukti_pendaftaran(request, id_pengajuan_):
-    # id_pengajuan_ = base64.b64decode(id_pengajuan_)
     extra_context = {}
     if id_pengajuan_:
         pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_)
@@ -755,17 +722,10 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
                     extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
                 extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
             syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="SIUP")
-            # legalitas_ = Legalitas.objects.filter()
-            # if pengajuan_.legalitas is not None:
-            #   print pengajuan_.legalitas
-            #   legalitas_list = Legalitas.objects.list_filter(pengajuan_.legalitas)
-            #   legalitas_ = [l.as_json() for l in Legalitas.objects.filter(id__in=legalitas_list)]
-            # legalitas_ = "kosong"
             extra_context.update({ 'pengajuan': pengajuan_ })
             extra_context.update({ 'kekayaan_bersih_konfirmasi': pengajuan_.kekayaan_bersih })
             extra_context.update({ 'total_nilai_saham_konfirmasi': pengajuan_.total_nilai_saham })
             extra_context.update({ 'syarat': syarat })
-            # extra_context.update({ 'legalitas': legalitas_ })
             
             extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
             extra_context.update({ 'created_at': pengajuan_.created_at })
@@ -784,7 +744,6 @@ def cetak_bukti_pendaftaran(request, id_pengajuan_):
     template = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
     ec = RequestContext(request, extra_context)
     return HttpResponse(template.render(ec))
-
 
 def cetak_ho_baru(request, extra_context={}):
     return render(request, "front-end/include/formulir_ho_baru/cetak.html", extra_context)
@@ -1326,7 +1285,6 @@ def cek_izin_terdaftar(request, id_izin_, extra_context={}):
                     extra_context.update({'nama_perusahaan': nama_perusahaan})
                     extra_context.update({'alamat_perusahaan': alamat_})
                     extra_context.update({'lokasi': alamat_})
-
     return render(request, "front-end/cek_izin.html", extra_context)
 
 def option_kbli(request):
@@ -1353,9 +1311,7 @@ def get_nilai_parameter(request):
     else:
         parameter = ParameterBangunan.objects.get(id=parameter)
         get_nilai = parameter.nilai
-        
     return  HttpResponse(json.dumps(decimal.Decimal(get_nilai),default=decimal_default))
-
         
 def cek_detil_izin(request, id_pengajuan_):
     if id_pengajuan_:

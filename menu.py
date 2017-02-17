@@ -276,156 +276,216 @@ class CustomMenu(Menu):
             menu_izin,
         ]
 
+        menu_pengaturan = items.MenuItem(
+            title=_('Menu Pengaturan'),
+            description='Menu Pengaturan',
+            accesskey='menuPengaturan',
+            children= [
+                items.MenuItem(
+                    title='Perizinan',
+                    icon='fa fa-file-text-o',
+                    children= [
+                        items.MenuItem(
+                            title='Jenis Izin',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_jenisizin_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Kelompok Jenis Izin',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_kelompokjenisizin_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Syarat Izin',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_syarat_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Prosedur Izin',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_prosedur_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Jenis Permohonan Izin',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_jenispermohonanizin_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Klasifikasi IUJK',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_klasifikasi_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='SubKlasifikasi IUJK',
+                            icon='fa fa-file-text-o',
+                            url=reverse('admin:izin_subklasifikasi_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Izin Pariwisata',
+                            icon='fa fa-file-text-o',
+                            children= [
+                                items.MenuItem(
+                                    title='Bidang Usaha Pariwisata',
+                                    icon='fa fa-file-text-o',
+                                    url=reverse('admin:izin_bidangusahapariwisata_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Jenis Usaha Pariwisata',
+                                    icon='fa fa-file-text-o',
+                                    url=reverse('admin:izin_jenisusahapariwisata_changelist'),
+                                ),
+                                items.MenuItem(
+                                    title='Sub Jenis Usaha Pariwisata',
+                                    icon='fa fa-file-text-o',
+                                    url=reverse('admin:izin_subjenisusahapariwisata_changelist'),
+                                ),
+                            ]
+                        ),
+                        # items.MenuItem(
+                        #     title='KBLI',
+                        #     icon='fa fa-file-text-o',
+                        #     url=reverse('admin:perusahaan_kbli_changelist'),
+                        # ),                           
+                    ]
+                ),
+                items.MenuItem(
+                    title='Unit Kerja',
+                    icon='fa fa-sitemap',
+                    children= [
+                        items.MenuItem(
+                            title='Jenis Unit Kerja',
+                            icon='fa fa-sitemap',
+                            url=reverse('admin:kepegawaian_jenisunitkerja_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Semua Unit Kerja',
+                            icon='fa fa-institution',
+                            url=reverse('admin:kepegawaian_unitkerja_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Bidang / Bagian / Seksi',
+                            icon='fa fa-building-o',
+                            url=reverse('admin:kepegawaian_bidangstruktural_changelist'),
+                        ),
+                    ]
+                ),
+                items.MenuItem(
+                    title='Dasar Hukum',
+                    icon='fa fa-legal',
+                    children= [
+                        items.MenuItem(
+                            title='Jenis Peraturan',
+                            icon='fa fa-info-circle',
+                            url=reverse('admin:izin_jenisperaturan_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Dasar Hukum',
+                            icon='fa fa-gavel',
+                            url=reverse('admin:izin_dasarhukum_changelist'),
+                        ),
+                    ]
+                ),
+                items.MenuItem(
+                    title='Daftar Lokasi',
+                    icon='icon-globe',
+                    children= [
+                        items.MenuItem(
+                            title='Negara',
+                            icon='icon-globe',
+                            url=reverse('admin:master_negara_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Provinsi',
+                            icon='fa fa-globe',
+                            url=reverse('admin:master_provinsi_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Kota / Kabupaten',
+                            icon='icon-globe-alt',
+                            url=reverse('admin:master_kabupaten_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Kecamatan',
+                            icon='icon-map',
+                            url=reverse('admin:master_kecamatan_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Desa / Kelurahan',
+                            icon='fa fa-map-marker',
+                            url=reverse('admin:master_desa_changelist'),
+                        ),
+                    ]
+                ),
+                items.MenuItem(
+                    title='Jabatan',
+                    icon='fa fa-star',
+                    url=reverse('admin:kepegawaian_jabatan_changelist'),
+                ),
+                items.MenuItem(
+                    title='Jenis Pemohon',
+                    icon='fa fa-child',
+                    url=reverse('admin:master_jenispemohon_changelist'),
+                ),
+                items.MenuItem(
+                    title='Kelembagaan',
+                    icon='fa fa-user-md',
+                    url=reverse('admin:perusahaan_kelembagaan_changelist'),
+                ),
+                items.MenuItem(
+                    title='KBLI',
+                    icon='fa fa-user-md',
+                    url=reverse('admin:perusahaan_kbli_changelist'),
+                ),
+                items.MenuItem(
+                    title=_('Setting'),
+                    description='Setting atau Konfigurasi',
+                    icon='fa fa-cog fa-fw',
+                    url=reverse('admin:master_settings_changelist'),
+                ),
+            ]
+        )
+
+        menu_pengguna = items.MenuItem(
+            title=_('Manajemen Pengguna'),
+            description='Manajemen Pengguna',
+            accesskey='menuPengguna',
+            children= [
+                items.MenuItem(
+                    title='Daftar Pengguna',
+                    icon='icon-user',
+                    children= [
+                        items.MenuItem(
+                            title='Pemohon',
+                            icon='fa fa-user-md',
+                            url=reverse('admin:izin_pemohon_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Pegawai',
+                            icon='fa fa-user-md',
+                            url=reverse('admin:kepegawaian_pegawai_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Pengguna Lainnya',
+                            icon='fa fa-user-md',
+                            url=reverse('admin:accounts_account_changelist'),
+                        ),
+                    ]
+                ),
+                items.MenuItem(
+                    title='Hak Akses',
+                    icon='fa fa-shield',
+                    url=reverse('admin:accounts_hakakses_changelist'),
+                ),
+            ]
+        )
         
         if request.user.is_superuser:
-            menu_pengaturan = items.MenuItem(
-                title=_('Menu Pengaturan'),
-                description='Menu Pengaturan',
-                accesskey='menuPengaturan',
-                children= [
-                    items.MenuItem(
-                        title='Perizinan',
-                        icon='fa fa-file-text-o',
-                        children= [
-                            items.MenuItem(
-                                title='Jenis Izin',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_jenisizin_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Kelompok Jenis Izin',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_kelompokjenisizin_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Syarat Izin',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_syarat_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Prosedur Izin',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_prosedur_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Jenis Permohonan Izin',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_jenispermohonanizin_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Klasifikasi IUJK',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_klasifikasi_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='SubKlasifikasi IUJK',
-                                icon='fa fa-file-text-o',
-                                url=reverse('admin:izin_subklasifikasi_changelist'),
-                            ),
-                            # items.MenuItem(
-                            #     title='KBLI',
-                            #     icon='fa fa-file-text-o',
-                            #     url=reverse('admin:perusahaan_kbli_changelist'),
-                            # ),                           
-                        ]
-                    ),
-                    items.MenuItem(
-                        title='Unit Kerja',
-                        icon='fa fa-sitemap',
-                        children= [
-                            items.MenuItem(
-                                title='Jenis Unit Kerja',
-                                icon='fa fa-sitemap',
-                                url=reverse('admin:kepegawaian_jenisunitkerja_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Semua Unit Kerja',
-                                icon='fa fa-institution',
-                                url=reverse('admin:kepegawaian_unitkerja_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Bidang / Bagian / Seksi',
-                                icon='fa fa-building-o',
-                                url=reverse('admin:kepegawaian_bidangstruktural_changelist'),
-                            ),
-                        ]
-                    ),
-                    items.MenuItem(
-                        title='Dasar Hukum',
-                        icon='fa fa-legal',
-                        children= [
-                            items.MenuItem(
-                                title='Jenis Peraturan',
-                                icon='fa fa-info-circle',
-                                url=reverse('admin:izin_jenisperaturan_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Dasar Hukum',
-                                icon='fa fa-gavel',
-                                url=reverse('admin:izin_dasarhukum_changelist'),
-                            ),
-                        ]
-                    ),
-                    items.MenuItem(
-                        title='Daftar Lokasi',
-                        icon='icon-globe',
-                        children= [
-                            items.MenuItem(
-                                title='Negara',
-                                icon='icon-globe',
-                                url=reverse('admin:master_negara_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Provinsi',
-                                icon='fa fa-globe',
-                                url=reverse('admin:master_provinsi_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Kota / Kabupaten',
-                                icon='icon-globe-alt',
-                                url=reverse('admin:master_kabupaten_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Kecamatan',
-                                icon='icon-map',
-                                url=reverse('admin:master_kecamatan_changelist'),
-                            ),
-                            items.MenuItem(
-                                title='Desa / Kelurahan',
-                                icon='fa fa-map-marker',
-                                url=reverse('admin:master_desa_changelist'),
-                            ),
-                        ]
-                    ),
-                    items.MenuItem(
-                        title='Jabatan',
-                        icon='fa fa-star',
-                        url=reverse('admin:kepegawaian_jabatan_changelist'),
-                    ),
-                    items.MenuItem(
-                        title='Jenis Pemohon',
-                        icon='fa fa-child',
-                        url=reverse('admin:master_jenispemohon_changelist'),
-                    ),
-                    items.MenuItem(
-                        title='Kelembagaan',
-                        icon='fa fa-user-md',
-                        url=reverse('admin:perusahaan_kelembagaan_changelist'),
-                    ),
-                    items.MenuItem(
-                        title='KBLI',
-                        icon='fa fa-user-md',
-                        url=reverse('admin:perusahaan_kbli_changelist'),
-                    ),
-                    items.MenuItem(
-                        title=_('Setting'),
-                        description='Setting atau Konfigurasi',
-                        icon='fa fa-cog fa-fw',
-                        url=reverse('admin:master_settings_changelist'),
-                    ),
-                ]
-            )
+            self.children += [
+                menu_pengguna,              
+                menu_pengaturan,
+            ]
 
+        if request.user.groups.filter(name="Admin Simpatik").exists():
             menu_pengguna = items.MenuItem(
                 title=_('Manajemen Pengguna'),
                 description='Manajemen Pengguna',
@@ -436,43 +496,16 @@ class CustomMenu(Menu):
                         icon='icon-user',
                         children= [
                             items.MenuItem(
-                                title='Pemohon',
-                                icon='fa fa-user-md',
-                                url=reverse('admin:izin_pemohon_changelist'),
-                            ),
-                            items.MenuItem(
                                 title='Pegawai',
                                 icon='fa fa-user-md',
                                 url=reverse('admin:kepegawaian_pegawai_changelist'),
                             ),
-                            items.MenuItem(
-                                title='Pengguna Lainnya',
-                                icon='fa fa-user-md',
-                                url=reverse('admin:accounts_account_changelist'),
-                            ),
                         ]
-                    ),
-                    items.MenuItem(
-                        title='Hak Akses',
-                        icon='fa fa-shield',
-                        url=reverse('admin:accounts_hakakses_changelist'),
                     ),
                 ]
             )
-
-            self.children += [
-                menu_pengguna,              
+            self.children += [             
                 menu_pengaturan,
-            ]
-
-        if request.user.groups.filter(name="Admin Sistem").exists():
-            menu_utama.children += [
-                items.MenuItem(
-                    title='Draft SK',
-                    icon='fa fa-file-text',
-                    css_classes='r', 
-                    url='#',                
-                ),
             ]
         
         return super(CustomMenu, self).init_with_context(context)

@@ -1004,10 +1004,10 @@ class BidangUsahaPariwisata(models.Model):
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s' % (str(self.bidang_usaha_pariwisata),)
+		return u'%s' % (str(self.nama_bidang_usaha_pariwisata),)
 
 	def as_json(self):
-		return dict(id=self.id, bidang_usaha_pariwisata=self.bidang_usaha_pariwisata, keterangan=self.keterangan)
+		return dict(id=self.id, nama_bidang_usaha_pariwisata=self.nama_bidang_usaha_pariwisata, keterangan=self.keterangan)
 
 	class Meta:
 		verbose_name = 'Bidang Usaha Pariwisata'
