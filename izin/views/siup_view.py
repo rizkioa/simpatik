@@ -1054,6 +1054,8 @@ def load_pemohon(request, ktp_):
 			paspor = ""
 			jabatan_pemohon = ""
 			nama_lengkap = ""
+			tempat_lahir = ""
+			tanggal_lahir = ""
 			alamat = ""
 			telephone = ""
 			hp = ""
@@ -1067,6 +1069,10 @@ def load_pemohon(request, ktp_):
 				jabatan_pemohon = pemohon.jabatan_pemohon
 			if pemohon.nama_lengkap:
 				nama_lengkap = pemohon.nama_lengkap
+			if pemohon.tempat_lahir:
+				tempat_lahir = pemohon.tempat_lahir
+			if pemohon.tanggal_lahir:
+				tanggal_lahir = pemohon.tanggal_lahir.strftime('%d-%m-%Y')				
 			if pemohon.alamat:
 				alamat = pemohon.alamat
 			if pemohon.telephone:
@@ -1089,7 +1095,7 @@ def load_pemohon(request, ktp_):
 				provinsi = pemohon.desa.kecamatan.kabupaten.provinsi.id
 			if pemohon.desa.kecamatan.kabupaten.provinsi.negara:
 				negara = pemohon.desa.kecamatan.kabupaten.provinsi.negara.id
-			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
+			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap,'tempat_lahir' : tempat_lahir,'tanggal_lahir' : tanggal_lahir, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))
