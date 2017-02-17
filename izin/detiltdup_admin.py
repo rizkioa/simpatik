@@ -108,6 +108,18 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	# def get_provinsi(request):
+	# 	provinsi_list = Provinsi.objects.all()
+		
+	# 	id_negara = request.POST.get('negara', None)	
+	# 	if id_negara and not id_negara is "":
+	# 		provinsi_list = provinsi_list.filter(negara__id=id_negara)
+	# 	nama_provinsi = request.POST.get('nama_provinsi', None)
+	# 	if nama_provinsi and not nama_provinsi is "":
+	# 		provinsi_list = provinsi_list.filter(nama_provinsi=nama_provinsi)
+
+	# 	return provinsi_list
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilTDUPAdmin, self).get_urls()
