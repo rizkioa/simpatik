@@ -48,7 +48,7 @@ class CustomMenu(Menu):
                         items.MenuItem(
                             title='Daftar Survey',
                             icon='fa fa-file-text', 
-                            url=reverse('admin:izin_survey_changelist'),                        
+                            url=reverse('admin:survey_proses'),                        
                         ),
                         items.MenuItem(
                             title='Daftar Laporan',
@@ -57,11 +57,31 @@ class CustomMenu(Menu):
                         ),
                     ]
                 )
-        menu_pengguna = items.MenuItem(
-                title=_('Manajemen Pengguna'),
-                description='Manajemen Pengguna',
-                accesskey='menuPengguna',
-                children= [
+
+        menu_telegram = items.MenuItem(
+                    title=_('Telegram'),
+                    description='Telegram',
+                    accesskey='menuTelegram',
+                    children= [
+                        items.MenuItem(
+                            title='Notifikasi Telegram',
+                            icon='fa fa-file-text', 
+                            url=reverse('admin:kepegawaian_notifikasitelegram_changelist'),                        
+                        ),
+                        items.MenuItem(
+                            title='Logs Telegram',
+                            icon='fa fa-file-text', 
+                            url=reverse('admin:kepegawaian_logtelegram_changelist'),                        
+                        ),
+                    ]
+                )
+
+        
+
+        pengguna = []
+
+        if request.user.is_superuser:
+            pengguna += [
                     items.MenuItem(
                         title='Daftar Pengguna',
                         icon='icon-user',
@@ -83,12 +103,21 @@ class CustomMenu(Menu):
                             ),
                         ]
                     ),
+            ]
+        elif request.user.groups.filter(name="Admin SKPD"):
+            pengguna += [
                     items.MenuItem(
-                        title='Hak Akses',
-                        icon='fa fa-shield',
-                        url=reverse('admin:accounts_hakakses_changelist'),
+                        title='Pegawai',
+                        icon='fa fa-user-md',
+                        url=reverse('admin:kepegawaian_pegawai_changelist'),
                     ),
-                ]
+            ]
+
+        menu_pengguna = items.MenuItem(
+                title=_('Manajemen Pengguna'),
+                description='Manajemen Pengguna',
+                accesskey='menuPengguna',
+                children= pengguna
             )
 
         if request.user.groups.filter(Q(name="Admin Pembangunan")|Q(name="Kepala Pembangunan")|Q(name="Tim Teknis")).exists():
@@ -97,28 +126,23 @@ class CustomMenu(Menu):
                 menu_utama,
             ]
         elif request.user.is_superuser:
-            menu_utama.children+= [
-                    items.MenuItem(
-                        title=_('Izin Terdaftar'),
-                        description='Page Izin Terdaftar',
-                        icon='icon-flag',
-                        url=reverse("admin:izinterdaftar"),
-                    ),
-                    items.MenuItem(
-                        title=_('Pemohon Terdaftar'),
-                        description='Page Pemohon Terdaftar',
-                        icon='icon-user-following',
-                        url=reverse("admin:izin_pemohon_changelist"),
-                    ),
-                    items.MenuItem(
-                        title=_('Perusahaan Terdaftar'),
-                        description='Page Perusahaan Terdaftar',
-                        icon='icon-globe',
-                        url=reverse("admin:perusahaan_terdaftar"),
-                    ),
-                ]
+            menu_pengguna.children += [
+                items.MenuItem(
+                    title='Hak Akses',
+                    icon='fa fa-shield',
+                    url=reverse('admin:accounts_hakakses_changelist'),
+                ),
+            ]
+
             self.children += [
                 menu_utama,
+                menu_telegram,
+                menu_pengguna,
+            ]
+        elif request.user.groups.filter(name="Admin SKPD"):
+            self.children += [
+                menu_utama,
+                menu_telegram,
                 menu_pengguna,
             ]
         else:

@@ -1,11 +1,11 @@
 from django.db import models
 from mptt.models import MPTTModel
 from mptt.fields import TreeForeignKey
+import uuid
+from datetime import datetime
+
 from accounts.utils import STATUS
 from master.models import MetaAtribut
-import uuid
-
-
 from accounts.models import Account
 
 class JenisUnitKerja(MPTTModel):
@@ -154,10 +154,9 @@ class Pegawai(Account):
 class NotifikasiTelegram(MetaAtribut):
 	"""docstring for NotifikasiTelegram"""
 	pegawai = models.ForeignKey(Pegawai, verbose_name="Pegawai")
-	uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+	uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False, verbose_name="UUID")
 	chat_id = models.IntegerField(verbose_name="Chat ID")
 	status_verifikasi = models.BooleanField(default=False, verbose_name="Status Verifikasi")
-	kirim_notifikasi = models.BooleanField(default=True, verbose_name="Menerima Notifikasi Telegram?")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
 
 	def __unicode__(self):
@@ -166,4 +165,28 @@ class NotifikasiTelegram(MetaAtribut):
 	class Meta:
 		verbose_name = "Notifikasi Telegram"
 		verbose_name_plural = "Notifikasi Telegram"
+
+class LogTelegram(models.Model):
+	"""docstring for LogTelegram"""
+	kepada = models.ForeignKey(Pegawai, verbose_name="Kepada", related_name="logtelegram_kepada", blank=True, null=True )
+	proses = models.CharField(max_length=255, verbose_name="Proses")
+	pesan = models.CharField(max_length=255, verbose_name="Isi Pesan")
+	status_terkirim = models.BooleanField(default=False, verbose_name="Status Terkirim")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", blank=True)
+	created_at = models.DateTimeField(editable=False)
+	created_by = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_create_by_user", verbose_name="Dibuat Oleh", blank=True, null=True)
+
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		if not self.id:
+			self.created_at = datetime.now()
+		return super(LogTelegram, self).save(*args, **kwargs)
+
+	def __unicode__(self):
+		return u'%s' % (self.pesan)
+
+	class Meta:
+		verbose_name = "Log Notifikasi Telegram"
+		verbose_name_plural = "Log Notifikasi Telegram"
+		
 		

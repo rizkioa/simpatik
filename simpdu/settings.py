@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'daterange_filter',
     'ckeditor',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'mptt',
     'cas',
     'loginas',
@@ -188,7 +188,7 @@ LOGIN_URL = '/admin/login/'
 
 AUTH_USER_MODEL = 'accounts.Account'
 
-ADMIN_TOOLS_MENU = 'menu.CustomMenu'
+ADMIN_TOOLS_MENU = 'menupembangunan.CustomMenu'
 
 #LOGIN_URL = 'frontlogin'
 
@@ -217,3 +217,4 @@ CKEDITOR_CONFIGS = {
 }
 
 TELGRAM_API_TOKEN = '321364862:AAFE6CglJ_u8-TGuAbV7YBIiIU0rhqukNTI'
+# TELGRAM_API_TOKEN = '321364862:AAFE6CglJ_u8-TGuAbV7YBIiIU0rhqukNTI'
