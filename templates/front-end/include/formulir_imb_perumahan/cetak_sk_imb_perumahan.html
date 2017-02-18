@@ -350,7 +350,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 500px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -565,7 +565,13 @@
 		        				<table border="0" class="sk-justify">
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;">a.</td>
-					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})</td>
+					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar 
+					        			{% if retribusi.jumlah_pembayaran %}
+					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        			{% else %} 
+					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
+					        			{% endif%}
+					        			</td>
 					        		</tr>
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
