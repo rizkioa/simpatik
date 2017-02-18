@@ -1000,38 +1000,50 @@ class MesinPerusahaan(MetaAtribut):
 
 # ++++++++++++ TDUP ++++++++++++
 class BidangUsahaPariwisata(models.Model):
-	bidang_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Bidang Usaha Pariwisata")
+	nama_bidang_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Nama Bidang Usaha Pariwisata")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s' % (str(self.bidang_usaha_pariwisata),)
+		return u'%s' % (str(self.nama_bidang_usaha_pariwisata),)
 
 	def as_json(self):
-		return dict(id=self.id, bidang_usaha_pariwisata=self.bidang_usaha_pariwisata, keterangan=self.keterangan)
+		return dict(id=self.id, nama_bidang_usaha_pariwisata=self.nama_bidang_usaha_pariwisata, keterangan=self.keterangan)
 
 	class Meta:
 		verbose_name = 'Bidang Usaha Pariwisata'
 		verbose_name_plural = 'Bidang Usaha Pariwisata'
 
-class SubJenisBidangUsaha(models.Model):
+class JenisUsahaPariwisata(models.Model):
 	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata")
-	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis", null=True, blank=True)
-	nama_subjenis = models.CharField(max_length=255, verbose_name="Nama SubJenis")
+	nama_jenis_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Nama Jenis Usaha Pariwisata")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s' % (str(self.nama_subjenis),)
+		return u'%s' % (str(self.nama_jenis_usaha_pariwisata),)
+
+	class Meta:
+		verbose_name = 'Jenis Usaha Pariwisata'
+		verbose_name_plural = 'Jenis Usaha Pariwisata'
+
+class SubJenisUsahaPariwisata(models.Model):
+	jenis_usaha_pariwisata = models.ForeignKey(JenisUsahaPariwisata, verbose_name="Jenis Usaha Pariwisata")
+	kode = models.CharField(max_length=10, verbose_name="Kode Sub Jenis", null=True, blank=True)
+	nama_sub_jenis = models.CharField(max_length=255, verbose_name="Nama SubJenis")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.nama_sub_jenis),)
 
 	def as_json(self):
-		return dict(id=self.id, kode=self.kode, nama_subjenis=self.nama_subjenis, keterangan=self.keterangan)
+		return dict(id=self.id, kode=self.kode, nama_sub_jenis=self.nama_sub_jenis, keterangan=self.keterangan)
 
 	def as_option(self):
-		return "<option value='"+str(self.id)+"'>"+str(self.nama_subjenis)+"</option>"
+		return "<option value='"+str(self.id)+"'>"+str(self.nama_sub_jenis)+"</option>"
 
 	class Meta:
 		ordering = ['id']
-		verbose_name = 'Sub Jenis Bidang Usaha'
-		verbose_name_plural = 'Sub Jenis Bidang Usaha'
+		verbose_name = 'Sub Jenis Usaha Pariwisata'
+		verbose_name_plural = 'Sub Jenis Usaha Pariwisata'
 
 class RincianSubJenis(models.Model):
 	# transportasi wisata
@@ -1059,8 +1071,9 @@ class RincianSubJenis(models.Model):
 
 class DetilTDUP(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdup_perusahaan', blank=True, null=True)
-	bidang_usaha_pariwisata = models.ManyToManyField(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata", blank=True)
-	sub_jenis_bidang_usaha = models.ManyToManyField(SubJenisBidangUsaha, verbose_name="Sub Bidang Usaha Pariwisata", blank=True)
+	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata", null=True, blank=True)
+	jenis_usaha_pariwisata = models.ForeignKey(JenisUsahaPariwisata, verbose_name="Jenis Usaha Pariwisata", null=True, blank=True)
+	sub_jenis_usaha_pariwisata = models.ForeignKey(SubJenisUsahaPariwisata, verbose_name="Sub Jenis Usaha Pariwisata", null=True, blank=True)
 	rincian_sub_jenis = models.OneToOneField(RincianSubJenis, verbose_name="Rincian Sub Jenis", null=True, blank=True)
 	nama_usaha = models.CharField(max_length=255, verbose_name="Nama Usaha", null=True, blank=True)
 	lokasi_usaha_pariwisata = models.CharField(max_length=255, verbose_name="Lokasi Usaha Pariwisata", null=True, blank=True)
@@ -1080,6 +1093,8 @@ class DetilTDUP(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'TDUP'
 		verbose_name_plural = 'TDUP'
+
+# ++++++++++++ end TDUP ++++++++++++
 
 # Detil Pembayaran Izin
 class DetilPembayaran(MetaAtribut):
