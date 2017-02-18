@@ -26,6 +26,7 @@ from izin.models import PengajuanIzin, DetilHO,Pemohon
 from izin.utils import JENIS_LOKASI_USAHA,JENIS_BANGUNAN,JENIS_GANGGUAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,DetilHOForm
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_ho(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -35,6 +36,7 @@ def formulir_ho(request, extra_context={}):
     extra_context.update({'jenis_lokasi_usaha_list': JENIS_LOKASI_USAHA})
     extra_context.update({'jenis_bangunan_list': JENIS_BANGUNAN})
     extra_context.update({'jenis_gangguan_list': JENIS_GANGGUAN})
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})

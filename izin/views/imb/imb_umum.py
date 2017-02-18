@@ -26,6 +26,7 @@ from izin.models import PengajuanIzin, DetilIMB,Pemohon
 from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasKTPForm,UploadBerkasPendukungForm,DetilIMBForm,ParameterBangunanForm,JenisBangunanForm
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_imb_umum(request, extra_context={}):
 	negara = Negara.objects.all()
@@ -54,6 +55,7 @@ def formulir_imb_umum(request, extra_context={}):
 	extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
 	extra_context.update({'rumija': RUMIJA })
 	extra_context.update({'ruwasja': RUWASJA })
+	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 	extra_context.update({'negara': negara})
 	extra_context.update({'kecamatan': kecamatan})
 	extra_context.update({'jenis_pemohon': jenis_pemohon})

@@ -32,23 +32,29 @@ function load_pemohon(ktp_){
                     $('#id_paspor').val(respon.data.paspor);
                     // $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
                     $('#id_nama_lengkap').val(respon.data.nama_lengkap);
+                    $('#id_tempat_lahir').val(respon.data.tempat_lahir);
+                    $('#id_tanggal_lahir').val(respon.data.tanggal_lahir);
                     $('#alamat_pemohon_load').val(respon.data.alamat);
                     $('#no_telepon_pemohon_load').val(respon.data.telephone);
                     $('#hp_load').val(respon.data.hp);
                     $('#email_pemohon_load').val(respon.data.email);
                     $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
                     $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
+                    $('#id_keterangan_pekerjaan').val(respon.data.keterangan_pekerjaan).prop('selected',true).trigger("chosen:updated");
                     
                 }
                 else{
                     $('#id_nama_lengkap').val("");
                     $('#id_paspor').val("");
+                    $('#id_tempat_lahir').val("");
+                    $('#id_tanggal_lahir').val("");
                     $('#alamat_pemohon_load').val("");
                     $('#no_telepon_pemohon_load').val("");
                     $('#hp_load').val("");
                     $('#email_pemohon_load').val("");
                     $('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
                     $('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
+                    $('#id_keterangan_pekerjaan').val("").prop('selected',true).trigger("chosen:updated");
                     if ($.cookie('id_pemohon') === "0"){
                         $('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
                         $('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");

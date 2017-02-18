@@ -1,5 +1,5 @@
 
-from accounts.utils import STATUS
+from accounts.utils import STATUS,KETERANGAN_PEKERJAAN
 from datetime import datetime
 from django.conf import settings
 

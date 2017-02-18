@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import KLASIFIKASI_JALAN
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
@@ -40,6 +41,7 @@ def formulir_imb_reklame(request):
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
 		extra_context.update({'has_permission': True })
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

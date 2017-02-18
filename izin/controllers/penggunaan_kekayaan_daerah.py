@@ -8,6 +8,7 @@ from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame,ParameterBangunan
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiKekayaanDaerah
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_informasi_kekayaan_daerah(request):
 	extra_context={}
@@ -22,6 +23,7 @@ def formulir_informasi_kekayaan_daerah(request):
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		extra_context.update({'has_permission': True })
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
