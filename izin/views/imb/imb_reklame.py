@@ -26,6 +26,7 @@ from izin.models import PengajuanIzin, DetilIMBPapanReklame,Pemohon
 from izin.utils import JENIS_LOKASI_USAHA
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,PengajuanIMBReklameForm,UploadBerkasKTPForm
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_imb_reklame(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -33,6 +34,7 @@ def formulir_imb_reklame(request, extra_context={}):
     kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
     
     extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})

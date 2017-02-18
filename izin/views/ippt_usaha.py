@@ -25,6 +25,7 @@ from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzi
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha
 from izin.izin_forms import UploadBerkasKTPForm,UploadBerkasPendukungForm,InformasiTanahIPPTUsahaForm,PenggunaanTanahIPPTUsahaForm,RencanaPembangunanIPPTUsahaForm,RencanaPembiayanDanPemodalanIPPTUsahaForm,PerumahanYangDimilikiIPPTUsahaForm,KebutuhanLainnyaIPPTUsahaForm
 from accounts.models import NomorIdentitasPengguna
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_ippt_usaha(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -34,6 +35,7 @@ def formulir_ippt_usaha(request, extra_context={}):
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
             penggunaan_tanah_list = PenggunaanTanahIPPTUsaha.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])

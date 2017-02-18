@@ -9,6 +9,7 @@ from accounts.models import NomorIdentitasPengguna
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, KedudukanKegiatanUsaha, JenisPerusahaan, JenisPengecer, Legalitas, Perusahaan, JenisKedudukan
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilTDP, JenisKoperasi, BentukKoperasi
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_tdp_pt(request):
 	extra_context={}
@@ -44,6 +45,7 @@ def formulir_tdp_pt(request):
 		extra_context.update({'jenis_kedudukan': jenis_kedudukan})
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		extra_context.update({'kegiatan_usaha': bentuk_kegiatan_usaha_list})
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan']:
 				try:
@@ -92,6 +94,7 @@ def formulir_tdp_cv(request):
 		kelompok_jenis_izin = KelompokJenisIzin.objects.all()
 		jenis_kedudukan = JenisKedudukan.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		extra_context.update({'negara': negara, 'provinsi': provinsi, 'kecamatan': kecamatan, 'jenis_pemohon': jenis_pemohon, 'jenis_perusahaan': jenis_perusahaan,  'kegiatan_usaha': bentuk_kegiatan_usaha_list, 'jenis_badan_usaha': jenis_badan_usaha, 'status_perusahaan': status_perusahaan, 'jenis_penanaman_modal': jenis_penanaman_modal, 'bentuk_kerjasama': bentuk_kerjasama, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'kelompok_jenis_izin': kelompok_jenis_izin, 'jenis_kedudukan': jenis_kedudukan })
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan']:
@@ -141,6 +144,7 @@ def formulir_tdp_firma(request):
 		kelompok_jenis_izin = KelompokJenisIzin.objects.all()
 		jenis_kedudukan = JenisKedudukan.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		extra_context.update({'negara': negara, 'provinsi': provinsi, 'kecamatan': kecamatan, 'jenis_pemohon': jenis_pemohon, 'jenis_perusahaan': jenis_perusahaan,  'kegiatan_usaha': bentuk_kegiatan_usaha_list, 'jenis_badan_usaha': jenis_badan_usaha, 'status_perusahaan': status_perusahaan, 'jenis_penanaman_modal': jenis_penanaman_modal, 'bentuk_kerjasama': bentuk_kerjasama, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'kelompok_jenis_izin': kelompok_jenis_izin, 'jenis_kedudukan': jenis_kedudukan })
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan']:
@@ -190,6 +194,7 @@ def formulir_tdp_perorangan(request):
 		kelompok_jenis_izin = KelompokJenisIzin.objects.all()
 		jenis_kedudukan = JenisKedudukan.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		extra_context.update({'negara': negara, 'provinsi': provinsi, 'kecamatan': kecamatan, 'jenis_pemohon': jenis_pemohon, 'jenis_perusahaan': jenis_perusahaan,  'kegiatan_usaha': bentuk_kegiatan_usaha_list, 'jenis_badan_usaha': jenis_badan_usaha, 'status_perusahaan': status_perusahaan, 'jenis_penanaman_modal': jenis_penanaman_modal, 'bentuk_kerjasama': bentuk_kerjasama, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'kelompok_jenis_izin': kelompok_jenis_izin, 'jenis_kedudukan': jenis_kedudukan })
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan']:
@@ -241,6 +246,7 @@ def formulir_tdp_koperasi(request):
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		jenis_koperasi = JenisKoperasi.objects.all()
 		bentuk_koperasi = BentukKoperasi.objects.all()
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		extra_context.update({'negara': negara, 'provinsi': provinsi, 'kecamatan': kecamatan, 'jenis_pemohon': jenis_pemohon, 'jenis_perusahaan': jenis_perusahaan,  'kegiatan_usaha': bentuk_kegiatan_usaha_list, 'jenis_badan_usaha': jenis_badan_usaha, 'status_perusahaan': status_perusahaan, 'jenis_penanaman_modal': jenis_penanaman_modal, 'bentuk_kerjasama': bentuk_kerjasama, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'kelompok_jenis_izin': kelompok_jenis_izin, 'jenis_kedudukan': jenis_kedudukan , 'jenis_koperasi':jenis_koperasi, 'bentuk_koperasi':bentuk_koperasi})
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan']:
@@ -290,6 +296,7 @@ def formulir_tdp_bul(request):
 		kelompok_jenis_izin = KelompokJenisIzin.objects.all()
 		jenis_kedudukan = JenisKedudukan.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		extra_context.update({'negara': negara, 'provinsi': provinsi, 'kecamatan': kecamatan, 'jenis_pemohon': jenis_pemohon, 'jenis_perusahaan': jenis_perusahaan,  'kegiatan_usaha': bentuk_kegiatan_usaha_list, 'jenis_badan_usaha': jenis_badan_usaha, 'status_perusahaan': status_perusahaan, 'jenis_penanaman_modal': jenis_penanaman_modal, 'bentuk_kerjasama': bentuk_kerjasama, 'jenis_pengecer': jenis_pengecer, 'kedudukan_kegiatan_usaha': kedudukan_kegiatan_usaha, 'kelompok_jenis_izin': kelompok_jenis_izin, 'jenis_kedudukan': jenis_kedudukan })
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan']:

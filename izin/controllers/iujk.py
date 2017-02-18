@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
-
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 from master.models import Negara, JenisPemohon, Kecamatan, JenisKualifikasi
 from izin.models import JenisPermohonanIzin, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha
@@ -25,6 +25,7 @@ def IUJKWizard(request, extra_context={}):
 	# extra_context.update({'produk_utama_list': ProdukUtama.objects.all()})
 	extra_context.update({'jenis_legalitas_list': JenisLegalitas.objects.all()})
 	extra_context.update({'jenis_iujk': JENIS_IUJK })
+	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 	extra_context.update({'jenis_kualifikasi': JenisKualifikasi.objects.all() })
 	extra_context.update({'tahun_choices': get_tahun_choices(1945) })
 	extra_context.update({'kecamatan_perusahaan': Kecamatan.objects.filter(kabupaten__kode="06", kabupaten__provinsi__kode="35") })
