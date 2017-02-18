@@ -472,7 +472,11 @@
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
-		        			<td>{{pengajuan.pekerjaan}}</td>
+		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
+		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        			{% else %}
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        			{% endif %}
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
@@ -725,7 +729,7 @@
 				                    <br>
 				                    <!-- <br> -->
 				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
-<!-- 				                    Pembina Tk.l<br>
+									<!-- Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
 				            </td>
@@ -1021,7 +1025,11 @@
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
-		        			<td>{{pengajuan.pekerjaan}}</td>
+		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
+		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        			{% else %}
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        			{% endif %}
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
