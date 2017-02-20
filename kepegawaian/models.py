@@ -116,6 +116,8 @@ class Pegawai(Account):
 	unit_kerja = TreeForeignKey(UnitKerja, verbose_name='Unit Kerja')
 	bidang_struktural = TreeForeignKey(BidangStruktural, verbose_name='Bagian / Bidang / Seksi (Struktural)', blank=True, null=True)
 	jabatan = models.ForeignKey(Jabatan, verbose_name='Jabatan', blank=True, null=True)
+	notifikasi_telegram = models.BooleanField(default=False, verbose_name="Notifikasi Telegram?")
+	notifikasi_email = models.BooleanField(default=False, verbose_name="Notifikasi Email?")
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+" - "+str(self.username)+"</option>"
