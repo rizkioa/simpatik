@@ -30,11 +30,12 @@ def formulir_izin_gangguan(request):
 		extra_context.update({'jenis_bangunan_list': JENIS_BANGUNAN})
 		extra_context.update({'jenis_gangguan_list': JENIS_GANGGUAN})
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
-		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})

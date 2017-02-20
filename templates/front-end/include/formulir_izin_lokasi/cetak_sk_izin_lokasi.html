@@ -203,24 +203,21 @@
                 <td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
                 <td style="vertical-align: top;padding-top: 1px;">a.</td>
-                <td>bahwa sesuai surat permohonan lengkap dari {% if pengajuan.perusahaan %}<b>{{ pengajuan.perusahaan }}</b>{% else %}<b>{{ pengajuan.pemohon }}</b>{% endif %} tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Gangguan untuk {{pengajuan.tujuan_gangguan}}, yang terletak di Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }};
-                </td>
+                <td>{{sk_imb.sk_menimbang_a}}</td>
               </tr>
-              {% if sk_imb.sk_menimbang_a %}
               <tr>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">b.</td>
-                <td>{{sk_imb.sk_menimbang_a}}</td>
+                <td></td>
               </tr>
-              {% endif %}
               {% if sk_imb.sk_menimbang_b %}
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">c.</td>
                 <td>{{sk_imb.sk_menimbang_b}}
-            </td>
+                </td>
               </tr>
               {% endif %}
               <tr>
