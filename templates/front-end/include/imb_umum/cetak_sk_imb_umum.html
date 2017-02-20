@@ -728,7 +728,7 @@
 				                    <br>
 				                    <br>
 				                    <!-- <br> -->
-				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
+				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
 									<!-- Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
@@ -1072,6 +1072,16 @@
 		        			<td>{{ pengajuan.klasifikasi_jalan|default_if_none:"-" }}</td>
 		        		</tr>
 		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190"></td>
+		        			<td width="10"></td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190"></td>
+		        			<td width="10"></td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
 		        			<td width="10">KETIGA</td>
 		        			<td style="width: 10px;">:</td>
 		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
@@ -1094,7 +1104,7 @@
 		        			</table>
 		        			</td>
 		        			<td width="10">:</td>
-		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
@@ -1275,8 +1285,8 @@
 				                    <br>
 				                    <br>
 				                    <br>
-				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
-<!-- 				                    Pembina Tk.l<br>
+				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
+								<!--	Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
 				            </td>

@@ -199,29 +199,47 @@
                 </font>
               </center><br>
               <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">Menimbang</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  {% if sk_.sk_menimbang_a %}
+                  <td style="vertical-align: top;padding-top: 1px;">a.</td>
+                  <td>{{sk_.sk_menimbang_a}}</td>
+                  {% else %}
+                  <td></td>
+                  <td></td>
+                  {% endif %}
+                </tr>
+                {% if sk_.sk_menimbang_b %}
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">b.</td>
+                  <td>{{sk_.sk_menimbang_b}}</td>
+                </tr>
+                {% endif %}
+                {% if sk_.sk_menimbang_c %}
+                <tr>
+                  <td></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">c.</td>
+                  <td>{{sk_.sk_menimbang_c}}
+                  </td>
+                </tr>
+                {% endif %}
+                {% if sk_.sk_menimbang_d %}
+                <tr>
+                  <td></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">d.</td>
+                  <td>{{sk_.sk_menimbang_d}}
+                  </td>
+                </tr>
+                {% endif %}
+              </table><br>
+              <table width="100%" border="0" class="sk-justify">
               <tr>
-                <td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td style="vertical-align: top;padding-top: 1px;">a.</td>
-                <td>{{sk_imb.sk_menimbang_a}}</td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">b.</td>
-                <td></td>
-              </tr>
-              {% if sk_imb.sk_menimbang_b %}
-              <tr>
-                <td></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                <td>{{sk_imb.sk_menimbang_b}}
-                </td>
-              </tr>
-              {% endif %}
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
+                <td style="vertical-align: top;padding-top: 1px;width: 105px;">Mengingat</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
                 <td style="vertical-align: top;padding-top: 1px;">1.</td>
                 <td>Undang-Undang Nomor 5 Tahun 1960 tentang Peraturan Dasar Pokok-Pokok Agraria;</td>
@@ -293,7 +311,7 @@
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">PEMBERIAN IZIN LOKASI UNTUK PERUMAHAN ATAS NAMA {{pengajuan.pemohon}} LOKASI DESA {{pengajuan.desa}} KECAMATAN {{pengajuan.desa.kecamatan}} {{pengajuan.desa.kecamatan.kabupaten}}</td>
+                  <td colspan="3">PEMBERIAN IZIN LOKASI UNTUK {{pengajuan.rencana_penggunaan|upper}} ATAS NAMA {% if pengajuan.perusahaan %}{{pengajuan.perusahaan|upper}}{% else %}{{pengajuan.pemohon|upper}}{% endif %} LOKASI DESA {{pengajuan.desa}} KECAMATAN {{pengajuan.desa.kecamatan}} {{pengajuan.desa.kecamatan.kabupaten}}</td>
                 </tr>
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
@@ -374,7 +392,7 @@
                 <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
                 <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
-                <td  colspan="3" width="2000">Apabila dikemudian hari ada penetapan/keputusan yang bersifat tetap dan mengikat terhadap penggunaan tanah lainnya yang berada di dalam areal Izin Lokasi {{ pengajuan.pemohon }} maka keputusan pemberian Izin Lokasi ini akan ditinjau kembali ;</td>
+                <td  colspan="3" width="2000">Apabila dikemudian hari ada penetapan/keputusan yang bersifat tetap dan mengikat terhadap penggunaan tanah lainnya yang berada di dalam areal Izin Lokasi {% if pengajuan.perusahaan %}{{pengajuan.perusahaan|title}}{% else %}{{pengajuan.pemohon|title}}{% endif %} maka keputusan pemberian Izin Lokasi ini akan ditinjau kembali ;</td>
               </tr>
               <tr>
                 <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>

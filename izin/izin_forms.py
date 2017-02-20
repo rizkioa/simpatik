@@ -278,7 +278,7 @@ class DetilSkForm(forms.ModelForm):
 	"""docstring for DetilSkIMBForm"""
 	class Meta:
 		model = DetilSk
-		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c')
+		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menimbang_c','sk_menimbang_d','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c')
 
 class SKIzinForm(forms.ModelForm):
 	body_html = forms.CharField(widget=CKEditorWidget())
