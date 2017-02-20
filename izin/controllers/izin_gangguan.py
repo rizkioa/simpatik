@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import JENIS_LOKASI_USAHA,JENIS_BANGUNAN,JENIS_GANGGUAN
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
@@ -29,6 +30,7 @@ def formulir_izin_gangguan(request):
 		extra_context.update({'jenis_bangunan_list': JENIS_BANGUNAN})
 		extra_context.update({'jenis_gangguan_list': JENIS_GANGGUAN})
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
