@@ -1,5 +1,5 @@
 from django import forms
-from kepegawaian.models import Pegawai, BidangStruktural
+from kepegawaian.models import Pegawai, BidangStruktural, NotifikasiTelegram
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa
 from django.core.urlresolvers import reverse
 
@@ -55,6 +55,12 @@ class PegawaiForm(KepegawaianForm):
 
 	def __init__(self, *args, **kwargs):
 		super(PegawaiForm, self).__init__(*args, **kwargs)
+		try:
+			noti = NotifikasiTelegram.objects.get(pegawai=self.instance)
+		except NotifikasiTelegram.DoesNotExist:
+			self.fields['notifikasi_telegram'].help_text = 'Pegawai tersebut belum melakukan pendaftaran notifikasi telegram. Notifikasi tidak akan berfungsi jika belum melakukan pendafaran'
+		
+
 		if self.request.user.has_perm('master.add_negara') or self.request.user.has_perm('master.change_negara'):
 			self.fields['negara'].help_text = {}
 			if self.request.user.has_perm('master.add_negara'):

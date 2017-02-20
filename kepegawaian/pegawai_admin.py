@@ -137,6 +137,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 				),
 				('Kepegawaian', {'fields': ('unit_kerja', 'bidang_struktural', 'jabatan', )}),
 				('Alamat', {'fields': ('alamat', 'negara', 'provinsi', 'kabupaten', 'kecamatan', 'desa')}),
+				('Notifikasi', {'fields': ('notifikasi_telegram', 'notifikasi_email')}),
 				('Lain-lain', {'fields': ('foto', 'keterangan', 'groups')}),
 			)
 		else:

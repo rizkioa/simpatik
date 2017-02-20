@@ -98,7 +98,7 @@ def telegram_bot_setting():
 					text += str(p.get_full_name())+' \n'
 					text += 'Silahkan klik tautan berikut'+' \n'
 					text += "http://simpatik.kedirikab.go.id%s" % reverse('admin:verifikasi_telegram', args=(obj.uuid,) )
-					text += 'untuk verifikasi'
+					text += ' untuk verifikasi'
 				else:
 					text = 'Pegawai '+str(p.get_full_name())+' sudah terdaftar. Silahkan hubungi admin.'
 					
