@@ -29,6 +29,7 @@
 	        box-sizing: border-box;
 	        -moz-box-sizing: border-box;
 	    }
+
 	    .page {
 	        width: 21.5cm;
 	        min-height: 33cm;
@@ -455,7 +456,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -471,7 +472,11 @@
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
-		        			<td>{{pengajuan.pekerjaan}}</td>
+		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
+		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        			{% else %}
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        			{% endif %}
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
@@ -678,7 +683,13 @@
 		        				<table border="0" class="sk-justify">
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;">a.</td>
-					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})</td>
+					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar
+					        			{% if retribusi.jumlah_pembayaran %}
+					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        			{% else %} 
+					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
+					        			{% endif%}
+					        			</td>
 					        		</tr>
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
@@ -718,7 +729,7 @@
 				                    <br>
 				                    <!-- <br> -->
 				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
-<!-- 				                    Pembina Tk.l<br>
+									<!-- Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
 				            </td>
@@ -998,7 +1009,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -1014,7 +1025,11 @@
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
-		        			<td>{{pengajuan.pekerjaan}}</td>
+		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
+		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        			{% else %}
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        			{% endif %}
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
