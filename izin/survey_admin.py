@@ -14,7 +14,8 @@ from izin.models import Survey, DetilIUJK, Riwayat, PengajuanIzin, DetilReklame
 from izin.izin_forms import SurveyForm
 from izin.survey_form import RekomendasiForm, DetilForm, BerkasForm, BAPReklameHOForm
 from izin.utils import get_nomor_pengajuan
-from kepegawaian.models import Pegawai, UnitKerja
+from kepegawaian.models import Pegawai, UnitKerja, NotifikasiTelegram
+from kepegawaian.views import kirim_notifikasi_telegram
 from master.models import Kecamatan
 from perusahaan.models import Perusahaan
 from pembangunan.models import AnggotaTim
@@ -46,7 +47,9 @@ class SurveyAdmin(admin.ModelAdmin):
 	def get_list_display(self, request):
 		list_display = ('no_survey','get_no_pengajuan', 'get_pemohon' , 'get_perusahaan', 'get_perusahaan_lokasi' , 'deadline_survey',)
 		if request.user.is_superuser:
-			list_display = list_display+('skpd',)
+			list_display = list_display+('get_koordinator_survey', )
+		elif request.user.groups.filter(name="Admin SKPD"):
+			list_display = list_display+('get_koordinator_survey','get_aksi',)
 		else:
 			list_display = list_display+('get_aksi',)
 
@@ -89,6 +92,7 @@ class SurveyAdmin(admin.ModelAdmin):
 		return qs
 	get_koordinator_survey.short_description = "Koordinator"
 
+	
 	def get_pengajuan(self, obj):
 		return obj.pengajuan.kelompok_jenis_izin
 	get_pengajuan.short_description = "Jenis Pengajuan"
@@ -143,11 +147,11 @@ class SurveyAdmin(admin.ModelAdmin):
 
 		if status == 4 or status == 8:
 			aksi = mark_safe("""
-				<a href="%s" title='Proses'> %s </a>
+				<a href="%s" data-toggle='tooltip' data-container='body' data-original-title='Lihat Detail' > %s </a>
 				""" % (reverse_, '<i class="fa fa-circle-o-notch"></i>' ))
 		if status == 1:
 			aksi = mark_safe("""
-				<a href="%s" title='Lihat'> %s </a>
+				<a href="%s" data-toggle='tooltip' data-container='body' data-original-title='Lihat Detail' > %s </a>
 				""" % (reverse_, '<i class="fa fa-external-link"></i>' ))
 		
 		return aksi
@@ -157,13 +161,14 @@ class SurveyAdmin(admin.ModelAdmin):
 		self.request = request
 		extra_context.update({'kecamatan': Kecamatan.objects.filter(kabupaten__provinsi__kode='35', kabupaten__kode='06') })
 		extra_context.update({'perusahaan': Perusahaan.objects.all() })
+		# return self.changelist_view(request, extra_context)
 		return super(SurveyAdmin, self).changelist_view(request, extra_context=extra_context)
 
 	def view_cek_kelengkapan_pengajuan_tdup(self, request, id_survey):
 		extra_context = {}
 		extra_context.update({'has_permission': True })
 
-		queryset_ = self.get_queryset(request)
+		# queryset_ = self.get_queryset(request)
 		# queryset_ =  queryset_.filter(pk=id_survey)
 		queryset_ =  Survey.objects.filter(pk=id_survey)
 		if queryset_.exists():
@@ -284,11 +289,18 @@ class SurveyAdmin(admin.ModelAdmin):
 						sent_ = 0
 						if r.created_by:
 							emailto = r.created_by.email
-							if emailto:
-								subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
-								html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
-								sent_ = send_email_notifikasi(emailto, subject, html_content)
-								print sent_
+							if r.created_by.notifikasi_email:
+								if emailto:
+									subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+									html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
+									sent_ = send_email_notifikasi(emailto, subject, html_content)
+									# print sent_
+							if r.created_by.notifikasi_telegram:
+								try:
+									noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
+									kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
+								except NotifikasiTelegram.DoesNotExist:
+									pass
 						if sent_ == 1:
 							messages.success(request, str(queryset_.no_survey)+" Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
 						else:
@@ -379,7 +391,7 @@ class SurveyAdmin(admin.ModelAdmin):
 		extra_context = {}
 		extra_context.update({'has_permission': True })
 
-		queryset_ = self.get_queryset(request)
+		# queryset_ = self.get_queryset(request)
 		# queryset_ =  queryset_.filter(pk=id_survey)
 		queryset_ =  Survey.objects.filter(pk=id_survey)
 		if queryset_.exists():
@@ -500,11 +512,18 @@ class SurveyAdmin(admin.ModelAdmin):
 						sent_ = 0
 						if r.created_by:
 							emailto = r.created_by.email
-							if emailto:
-								subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
-								html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
-								sent_ = send_email_notifikasi(emailto, subject, html_content)
-								print sent_
+							if r.created_by.notifikasi_email:
+								if emailto:
+									subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+									html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
+									sent_ = send_email_notifikasi(emailto, subject, html_content)
+									# print sent_
+							if r.created_by.notifikasi_telegram:
+								try:
+									noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
+									kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
+								except NotifikasiTelegram.DoesNotExist:
+									pass
 						if sent_ == 1:
 							messages.success(request, str(queryset_.no_survey)+" Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
 						else:
@@ -721,11 +740,19 @@ class SurveyAdmin(admin.ModelAdmin):
 								sent_ = 0
 								if r.created_by:
 									emailto = r.created_by.email
-									if emailto:
-										subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
-										html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
-										sent_ = send_email_notifikasi(emailto, subject, html_content)
-										print sent_
+									if r.created_by.notifikasi_email:
+										if emailto:
+											subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+											html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
+											sent_ = send_email_notifikasi(emailto, subject, html_content)
+											print sent_
+									if r.created_by.notifikasi_telegram:
+										try:
+											noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
+											kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
+										except NotifikasiTelegram.DoesNotExist:
+											pass
+										
 								if sent_ == 1:
 									messages.success(request, "Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
 								else:
@@ -776,10 +803,21 @@ class SurveyAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 		
 	def surveyselesai(self, request, extra_context={}):
+		extra_context.update({'title': 'Survey Izin Selesai'})
 		self.request = request
-		# izin = KelompokJenisIzin.objects.all()
-		# extra_context.update({'izin': izin})
-		return super(SurveyAdmin, self).changelist_view(request, extra_context=extra_context)
+		return self.changelist_view(request, extra_context)
+
+	def surveyproses(self, request, extra_context={}):
+		extra_context.update({'title': 'Survey Izin'})
+		self.request = request
+		return self.changelist_view(request, extra_context)
+
+	def get_list_display_links(self, request, list_display):
+		if request.user.is_superuser:
+			list_display_links = ('no_survey', )
+		else:
+			list_display_links = (None)
+		return list_display_links
 
 	def has_add_permission(self, request):
 		if request.user.is_superuser:
@@ -790,10 +828,9 @@ class SurveyAdmin(admin.ModelAdmin):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		qs = super(SurveyAdmin, self).get_queryset(request)
 		# print request.user.pegawai.unit_kerja
-		if not request.user.is_superuser:
+
+		if request.user.groups.filter(name="Tim Teknis"):
 			a = AnggotaTim.objects.filter(pegawai=request.user)
-			print a
-			# print "HALO"
 			if a.exists():
 				a = a.values_list('survey_iujk')
 				qs = qs.filter(id__in=a)
@@ -801,10 +838,18 @@ class SurveyAdmin(admin.ModelAdmin):
 			else:
 				qs = qs.none()
 			# SAMPAI SINI
+		elif request.user.groups.filter(name="Admin SKPD"):
+			a = AnggotaTim.objects.filter(pegawai__unit_kerja=request.user.pegawai.unit_kerja)
+			if a.exists():
+				a = a.values_list('survey_iujk')
+				qs = qs.filter(id__in=a)
+			# SIMPATIK-PEMBANGUNAN BELUM DITAMBAHI INI
+			else:
+				qs = qs.none()
 
-		if func_view.__name__ == 'surveyselesai':
+		if func_view.__name__ == self.surveyselesai.__name__:
 			qs = qs.filter(status=1)
-		else:
+		elif func_view.__name__ == self.surveyproses.__name__:
 			qs = qs.filter(~Q(status=1))
 
 		return qs
@@ -980,6 +1025,15 @@ class SurveyAdmin(admin.ModelAdmin):
 
 		return response
 
+	def suit_cell_attributes(self, obj, column):
+		if column in ['get_aksi',]:
+			return {'class': 'text-center'}
+		elif column in ['get_koordinator_survey']:
+			return {'data-toggle': 'tooltip', 'data-container': 'body', 'data-original-title': 'Anggota Survey : %s ' % ", ".join(str(x.pegawai) for x in obj.survey_iujk.all().exclude(koordinator=True) )}
+		else:
+			return None
+
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(SurveyAdmin, self).get_urls()
@@ -989,10 +1043,15 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-sending/$', self.send_survey, name="send_survey" ),
 			url(r'^do-survey/(?P<id_survey>[0-9]+)$', self.admin_site.admin_view(self.do_survey), name="lakukan_survey" ),
 			url(r'^laporan-survey/$', self.admin_site.admin_view(self.surveyselesai), name='survey_selesai'),
+			url(r'^daftar-survey/$', self.admin_site.admin_view(self.surveyproses), name='survey_proses'),
 			url(r'^survey-cek-kelengkapan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan, name="cek_kelengkapan" ),
 			url(r'^survey-cek-kelengkapan-reklame-ho/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_reklame_ho, name="cek_kelengkapan_reklame_ho" ),
 			url(r'^survey-cek-kelengkapan-tdup/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_tdup" ),
 			)
 		return my_urls + urls
+
+	# def __init__(self, *args, **kwargs):
+	# 	super(SurveyAdmin, self).__init__(*args, **kwargs)
+	# 	self.list_display_links = (None, )
 
 admin.site.register(Survey, SurveyAdmin)
