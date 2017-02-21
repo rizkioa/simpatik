@@ -1,4 +1,4 @@
-{% load i18n admin_static staticfiles widgets access %}
+{% load i18n admin_static staticfiles widgets access humanize%}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -28,10 +28,10 @@
 		  height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
 		}
 
-		/*page[size="F4"][layout="portrait"] {
+		page[size="F4"][layout="landscape"] {
 		  width: 12.99in;
 		  height: 8.26in; 
-		}*/
+		}
 		@media print {
 		  body, page {
 		    margin: 0;
@@ -197,6 +197,29 @@
 		</div>
 		<hr class="style14">
 		{{html|safe}}
+	</page>
+	<page size="F4" layout="landscape">
+		<table style="border: 2px solid black;">
+		<tr style="border: 1px solid black; height: 50px;"> 
+			<th style="border: 1px solid black;">No</th>
+			<th style="border: 1px solid black;">Klasifikasi Usaha</th>
+			<th style="border: 1px solid black;">Sub Klasifikasi Pekerjaan</th>
+			<th style="border: 1px solid black;">Nama Paket Pekerjaan Tertinggi</th>
+			<th style="border: 1px solid black;">Tahun Pelaksanaan Proyek</th>
+			<th style="border: 1px solid black;">Nilai Pekerjaan (Rp.)</th>
+			<th style="border: 1px solid black;">Keterangan</th>
+		</tr>
+		<tr style="border: 1px solid black; text-align: center;">
+			<td style="border: 1px solid black;">1</td>
+			<td style="border: 1px solid black;">2</td>
+			<td style="border: 1px solid black;">3</td>
+			<td style="border: 1px solid black;">4</td>
+			<td style="border: 1px solid black;">5</td>
+			<td style="border: 1px solid black;">6</td>
+			<td style="border: 1px solid black;">7</td>
+		</tr>
+		{{ klasifikasi_tr }}
+		</table>
 	</page>
 	<script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
 	<script type="text/javascript">
