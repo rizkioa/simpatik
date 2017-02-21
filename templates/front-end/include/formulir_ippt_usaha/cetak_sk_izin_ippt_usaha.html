@@ -288,10 +288,10 @@
         </div>
       <div class="page">
         <div class="subpage">
-              <center>
-                <font><b>MEMUTUSKAN :</b>
-                </font>
-              </center>
+            <center>
+              <font><b>MEMUTUSKAN :</b>
+              </font>
+            </center>
             <table width="100%" border="0" class="sk-justify">
                 <tr>
                   <td width="30" style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
@@ -315,142 +315,130 @@
                   <td width="10" >:</td>
                   <td colspan="3">Lokasi Izin Perubahan Penggunaan Tanah (IPPT) :</td>
                 </tr>
-              </table>
-              <table width="100%" border="0" class="sk-justify">
-                <tr>
-                  <td style="padding-left: 12px;width: 105px;"></td>
-                  <td align="left" style="padding-left: 12px;width: 260px;">1. Letak tanah yang dimohon :</td>
-                  <td style="width: 10px;"></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td align="left" style="padding-left: 27px;width: 121px;">a. Desa/Kelurahan</td>
-                  <td width="10">:</td>
-                  <td>{{pengajuan.desa|title}}</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td align="left" style="padding-left: 27px;width: 121px;">b. Kecamatan</td>
-                  <td width="10">:</td>
-                  <td>{{pengajuan.desa.kecamatan|title}}</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td align="left" style="padding-left: 27px;width: 151px;">c. Kabupaten</td>
-                  <td width="10">:</td>
-                  <td>{{pengajuan.desa.kecamatan.kabupaten|title}}</td>
-                </tr>
-                <tr>
-                  <td style="padding-left: 12px;width: 105px;"></td>
-                  <td align="left" style="padding-left: 12px">2. Luas Tanah yang Diijinkan</td>
-                  <td >:</td>
-                  <td >{{pengajuan.luas_tanah_yang_disetujui|default_if_none:"-"}} dari {{pengajuan.luas|default_if_none:"-"}}</td>
-                </tr>
-                <tr>
-                  <td style="padding-left: 12px;width: 105px;"></td>
-                  <td align="left" style="padding-left: 12px">3. Pengunaan Tanah Sebelumnya</td>
-                  <td >:</td>
-                  <td >{{pengajuan.penggunaan_tanah_sebelumnya|default_if_none:"-"}}</td>
-                </tr>
-                <tr>
-                  <td style="padding-left: 12px;width: 105px;"></td>
-                  <td align="left" style="padding-left: 12px">4. Penggunaan Saat Ini</td>
-                  <td >:</td>
-                  <td >{{pengajuan.penggunaan_sekarang|default_if_none:"-"}}</td>
-                </tr>
-                <tr>
-                  <td style="padding-left: 12px;width: 105px;"></td>
-                  <td align="left" style="padding-left: 12px">5. Rencana Penggunaan Tanah</td>
-                  <td >:</td>
-                  <td >{{pengajuan.rencana_penggunaan|default_if_none:"-"}}</td>
-                </tr>
-                <tr>
-                  <td style="padding-left: 12px;width: 105px;"></td>
-                  <td align="left" style="padding-left: 12px">6. Arahan Fungsi Kawasan</td>
-                  <td >:</td>
-                  <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
-                </tr>
-              </table>
-              <table width="100%" border="0" class="sk-justify">
-                <tr>
-                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
-                  <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Ketentuan dan Syarat Penggunaan Tanah :</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td style="vertical-align: top;padding-top: 1px;" align="right">1.</td>
-                  <td colspan="2">Izin Perubahan Penggunaan Tanah (IPPT) ini merupakan persyaratan dalam rangka penguasaan, penggunaan dan pemanfaatan tanah untuk penyelesaian administrasi pertanahan ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">2.</td>
-                  <td colspan="3">Perolehan tanah harus dilakukan secara langsung antara pihak-pihak yang berkepentingan melalui jual beli atau secara pelepasan hak yang dilaksanakan dengan pembuatan akta jual beli dihadapan PPAT atau akta pelepasan hak dihadapan Kepala Kantor Pertanahan Kabupaten Kediri atau Notaris dan atau Camat setempat dengn pemberian ganti kerugian yang bentuk dan besarnya ditentukan secara musyawarah ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">3.</td>
-                  <td colspan="3">Untuk tanah yang sudah diperoleh, penerima izin perubahan penggunaan tanah diwajibkan mengajukan permohonan hak atas tanah untuk diterbitkan sertipikat tanah sesuai dengan peruntukan dan statusnya ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">4.</td>
-                  <td colspan="3">Tanah yang sudah diperoleh, tidak boleh dipecah lebih dari 5 bidang.</td>
-                </tr>
-<!--                 <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
-                  <td colspan="3">Apabila dalam batas waktu 3 (tiga) bulan sebagaimana dimaksud pada huruf <data></data> belum dilaksanakan pemegang izin wajib melaporkan secara tertulis disertai alasan yang jelas kepada Bupati;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">f.</td>
-                  <td colspan="3">Mengadakan kegiatan usaha pada lokasi yang diizinkan dan apabilamengadakan perluasan lahan dan bangunan harus mengajukan izin kepada Bupati.</td>
-                </tr> -->
-                <tr>
-                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETIGA</td>
-                  <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Kewajiban :</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td style="vertical-align: top;padding-top: 1px;" align="right">1.</td>
-                  <td colspan="2">Pemohon berkewajiban untuk membuat Saluran Air dan atau Menjaga Saluran Air yang sudah ada, agar kelancaran jalannya air buangan/air hujan tetap berfungsi dan penyediaan sumur-sumur resapan serta tidak mencemari lahan pertanian disekitarnya ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">2.</td>
-                  <td colspan="3">Pemohon berkewajiban menanam pohon/penghijauan dan atau tanaman hias guna penyegar lingkungan serta menyediakan tempat pembuangan sampah ; </td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">3.</td>
-                  <td colspan="3">Pemohon diwajibkan memiliki Izin Mendirikan Bangunan (IMB) dan izin-izin lainnya yang berkaitan dengan kegiatan {{pengajuan.rencana_penggunaan|upper}} ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">4.</td>
-                  <td colspan="3">Pemohon tidak menelantarkan tanah dan mengoptimalkan penggunaan tanah.</td>
-                </tr>
-                <tr>
-                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
-                  <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Segala bentuk perbuatan hukum yang dapat mengakibatkan terjadinya penelantaran tanah dan tidak digunakan/dimanfaatkan sesuai dengan ketentuan maka dapat dikenakan sanksi sesuai dengan ketentuan dan peraturan yang berlaku;</td>
-                </tr>
-              </table>
-            </div>
-        </div>
+            </table>
+            <table width="100%" border="0" class="sk-justify">
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px;width: 260px;">1. Letak tanah yang dimohon :</td>
+                <td style="width: 10px;"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 121px;">a. Desa/Kelurahan</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa|title}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 121px;">b. Kecamatan</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa.kecamatan|title}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 151px;">c. Kabupaten</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa.kecamatan.kabupaten|title}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">2. Luas Tanah yang Diijinkan</td>
+                <td >:</td>
+                <td >{{pengajuan.luas_tanah_yang_disetujui|default_if_none:"-"}} dari {{pengajuan.luas|default_if_none:"-"}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">3. Pengunaan Tanah Sebelumnya</td>
+                <td >:</td>
+                <td >{{pengajuan.penggunaan_tanah_sebelumnya|default_if_none:"-"}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">4. Penggunaan Saat Ini</td>
+                <td >:</td>
+                <td >{{pengajuan.penggunaan_sekarang|default_if_none:"-"}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">5. Rencana Penggunaan Tanah</td>
+                <td >:</td>
+                <td >{{pengajuan.rencana_penggunaan|default_if_none:"-"}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">6. Arahan Fungsi Kawasan</td>
+                <td >:</td>
+                <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
+              </tr>
+            </table>
+            <table width="100%" border="0" class="sk-justify">
+              <tr>
+                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <td colspan="3">Ketentuan dan Syarat Penggunaan Tanah :</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td style="vertical-align: top;padding-top: 1px;" align="right">1.</td>
+                <td colspan="2">Izin Perubahan Penggunaan Tanah (IPPT) ini merupakan persyaratan dalam rangka penguasaan, penggunaan dan pemanfaatan tanah untuk penyelesaian administrasi pertanahan ;</td>
+              </tr>
+              <tr>
+                <td ></td>
+                <td ></td>
+                <td width="10" style="vertical-align: top;padding-top: 1px;">2.</td>
+                <td colspan="3">Perolehan tanah harus dilakukan secara langsung antara pihak-pihak yang berkepentingan melalui jual beli atau secara pelepasan hak yang dilaksanakan dengan pembuatan akta jual beli dihadapan PPAT atau akta pelepasan hak dihadapan Kepala Kantor Pertanahan Kabupaten Kediri atau Notaris dan atau Camat setempat dengn pemberian ganti kerugian yang bentuk dan besarnya ditentukan secara musyawarah ;</td>
+              </tr>
+              <tr>
+                <td ></td>
+                <td ></td>
+                <td width="10" style="vertical-align: top;padding-top: 1px;">3.</td>
+                <td colspan="3">Untuk tanah yang sudah diperoleh, penerima izin perubahan penggunaan tanah diwajibkan mengajukan permohonan hak atas tanah untuk diterbitkan sertipikat tanah sesuai dengan peruntukan dan statusnya ;</td>
+              </tr>
+              <tr>
+                <td ></td>
+                <td ></td>
+                <td width="10" style="vertical-align: top;padding-top: 1px;">4.</td>
+                <td colspan="3">Tanah yang sudah diperoleh, tidak boleh dipecah lebih dari 5 bidang.</td>
+              </tr>
+              <tr>
+                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETIGA</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <td colspan="3">Kewajiban :</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td></td>
+                <td style="vertical-align: top;padding-top: 1px;" align="right">1.</td>
+                <td colspan="2">Pemohon berkewajiban untuk membuat Saluran Air dan atau Menjaga Saluran Air yang sudah ada, agar kelancaran jalannya air buangan/air hujan tetap berfungsi dan penyediaan sumur-sumur resapan serta tidak mencemari lahan pertanian disekitarnya ;</td>
+              </tr>
+              <tr>
+                <td ></td>
+                <td ></td>
+                <td width="10" style="vertical-align: top;padding-top: 1px;">2.</td>
+                <td colspan="3">Pemohon berkewajiban menanam pohon/penghijauan dan atau tanaman hias guna penyegar lingkungan serta menyediakan tempat pembuangan sampah ; </td>
+              </tr>
+              <tr>
+                <td ></td>
+                <td ></td>
+                <td width="10" style="vertical-align: top;padding-top: 1px;">3.</td>
+                <td colspan="3">Pemohon diwajibkan memiliki Izin Mendirikan Bangunan (IMB) dan izin-izin lainnya yang berkaitan dengan kegiatan {{pengajuan.rencana_penggunaan|upper}} ;</td>
+              </tr>
+              <tr>
+                <td ></td>
+                <td ></td>
+                <td width="10" style="vertical-align: top;padding-top: 1px;">4.</td>
+                <td colspan="3">Pemohon tidak menelantarkan tanah dan mengoptimalkan penggunaan tanah.</td>
+              </tr>
+              <tr>
+                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <td colspan="3">Segala bentuk perbuatan hukum yang dapat mengakibatkan terjadinya penelantaran tanah dan tidak digunakan/dimanfaatkan sesuai dengan ketentuan maka dapat dikenakan sanksi sesuai dengan ketentuan dan peraturan yang berlaku;</td>
+              </tr>
+            </table>
+          </div>
+      </div>
       <div class="page">
         <div class="subpage">
               <table width="100%" border="0" class="sk-justify">
