@@ -122,8 +122,10 @@ def load_informasi_tanah(request,id_pengajuan):
         id_atas_nama_persil = pengajuan_.atas_nama_persil
         id_penggunaan_sekarang = pengajuan_.penggunaan_sekarang
         id_rencana_penggunaan = pengajuan_.rencana_penggunaan
+        id_penggunaan_tanah_sebelumnya = pengajuan_.penggunaan_tanah_sebelumnya
+        id_arahan_fungsi_kawasan = pengajuan_.arahan_fungsi_kawasan
 
-        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan,'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan}}
 
       elif pengajuan_.kelompok_jenis_izin.kode == "503.07/":
         kode_izin = pengajuan_.kelompok_jenis_izin.kode

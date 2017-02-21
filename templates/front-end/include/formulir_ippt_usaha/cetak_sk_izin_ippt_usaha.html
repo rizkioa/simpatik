@@ -186,7 +186,7 @@
               <hr class="style2">
               <center>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-            PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+                PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
                 <font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
               </center>
               <center>
@@ -351,7 +351,7 @@
                   <td style="padding-left: 12px;width: 105px;"></td>
                   <td align="left" style="padding-left: 12px">3. Pengunaan Tanah Sebelumnya</td>
                   <td >:</td>
-                  <td >{{pengajuan.luas_tanah_yang_disetujui|default_if_none:"-"}}</td>
+                  <td >{{pengajuan.penggunaan_tanah_sebelumnya|default_if_none:"-"}}</td>
                 </tr>
                 <tr>
                   <td style="padding-left: 12px;width: 105px;"></td>
@@ -369,7 +369,7 @@
                   <td style="padding-left: 12px;width: 105px;"></td>
                   <td align="left" style="padding-left: 12px">6. Arahan Fungsi Kawasan</td>
                   <td >:</td>
-                  <td >{{pengajuan.luas_tanah_yang_disetujui|default_if_none:"-"}}</td>
+                  <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
                 </tr>
               </table>
               <table width="100%" border="0" class="sk-justify">
