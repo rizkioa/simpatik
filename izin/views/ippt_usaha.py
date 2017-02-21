@@ -541,7 +541,8 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             id_klas_persil = pengajuan_.klas_persil
             id_atas_nama_persil = pengajuan_.atas_nama_persil
             id_rencana_penggunaan = pengajuan_.rencana_penggunaan
-
+            id_penggunaan_tanah_sebelumnya = pengajuan_.penggunaan_tanah_sebelumnya
+            id_arahan_fungsi_kawasan = pengajuan_.arahan_fungsi_kawasan
             id_batas_utara = pengajuan_.batas_utara
             id_batas_timur = pengajuan_.batas_timur
             id_batas_selatan = pengajuan_.batas_selatan
@@ -586,6 +587,8 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             'id_kecamatan': id_kecamatan,
             'id_desa': id_desa,
             'id_luas': id_luas,
+            'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,
+            'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan,
             'id_status_tanah': id_status_tanah,
             'id_no_sertifikat_petak': id_no_sertifikat_petak,
             'id_luas_sertifikat_petak': id_luas_sertifikat_petak,
