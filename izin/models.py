@@ -728,6 +728,8 @@ class InformasiTanah(PengajuanIzin):
 	atas_nama_jual_beli = models.CharField(max_length=255, verbose_name='Atas Nama Jual Beli', null=True, blank=True)
 	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
+	penggunaan_tanah_sebelumnya = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Tanah Sebelumnya')
+	arahan_fungsi_kawasan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Arahan Fungsi Kawasan')
 	#Tambahan Informasi Tanah IPPT USAHA
 	batas_utara = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Timur')

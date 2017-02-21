@@ -1,5 +1,6 @@
 from django.contrib import admin
 from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah,DetilSk
+from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
