@@ -1042,7 +1042,7 @@
 		          <form method="POST" id="id_form_sk" name="form_sk" role="form" class="form-horizontal" action="{% url 'detil_sk_imb_save' %}" data-parsley-validate novalidate>
 		            {% csrf_token %}
 		            <input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
-		            <div class="row">
+				<!-- <div class="row">
 		                <div class="form-group">
 		                  <label for="input01" class="col-sm-2 control-label">Menimbang</label>
 		                  <label for="input01" class="col-sm-1 control-label">a.</label>
@@ -1058,7 +1058,7 @@
 		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" ></textarea>
 		                  </div>
 		                </div>
-		            </div>
+		            </div> -->
 		            <div class="row">
 		                <div class="form-group">
 		                  <label for="input01" class="col-sm-3 control-label">c.</label>
@@ -1109,7 +1109,7 @@
 		    </div>
 		</div>
 	</div>
-    
+
 	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
