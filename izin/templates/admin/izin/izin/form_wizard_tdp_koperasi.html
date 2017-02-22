@@ -248,14 +248,14 @@
 			  if ($.cookie('id_pengajuan') === undefined){
 				pengajuan_id = 0
 			  }
-			  window.location.replace('{% url 'admin:verifikasi_operator' %}');
+			  
 			  $.ajax({
 				url: '{% url 'tdp_pt_done' %}',
 				success: function(response) {
 				  respon = $.parseJSON(response)
 				  if(respon.success){
 					toastr["success"](respon.pesan)
-					
+					window.location.replace('{% url 'admin:verifikasi_operator' %}');
 				  }
 				}
 			  });

@@ -7,7 +7,23 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import Pegawai, UnitKerja
-from izin.models import DetilTDUP , Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran
+from izin.models import DetilTDUP , Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata
+
+def get_jenis_usaha(request):
+	jenis_usaha_list = JenisUsahaPariwisata.objects.all()
+	id_bidang_usaha = request.POST.get('bidang_usaha_pariwisata', None)	
+	if id_bidang_usaha and not id_bidang_usaha is "":
+		jenis_usaha_list = jenis_usaha_list.filter(bidang_usaha_pariwisata__id=id_bidang_usaha)
+
+	return jenis_usaha_list
+
+def get_sub_jenis_usaha(request):
+	sub_jenis_usaha_list = SubJenisUsahaPariwisata.objects.all()
+	id_jenis_usaha = request.POST.get('jenis_usaha_pariwisata', None)	
+	if id_jenis_usaha and not id_jenis_usaha is "":
+		sub_jenis_usaha_list = sub_jenis_usaha_list.filter(jenis_usaha_pariwisata__id=id_jenis_usaha)
+
+	return sub_jenis_usaha_list
 
 class DetilTDUPAdmin(admin.ModelAdmin):
 
@@ -108,24 +124,23 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	# def get_provinsi(request):
-	# 	provinsi_list = Provinsi.objects.all()
-		
-	# 	id_negara = request.POST.get('negara', None)	
-	# 	if id_negara and not id_negara is "":
-	# 		provinsi_list = provinsi_list.filter(negara__id=id_negara)
-	# 	nama_provinsi = request.POST.get('nama_provinsi', None)
-	# 	if nama_provinsi and not nama_provinsi is "":
-	# 		provinsi_list = provinsi_list.filter(nama_provinsi=nama_provinsi)
+	def option_jenis_usaha(self, request):
+		jenis_usaha_list = get_jenis_usaha(request)
+		pilihan = "<option></option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in jenis_usaha_list)));
 
-	# 	return provinsi_list
+	def option_sub_jenis_usaha(self, request):
+		sub_jenis_usaha_list = get_sub_jenis_usaha(request)
+		pilihan = "<option></option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in sub_jenis_usaha_list)));
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilTDUPAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^view-pengajuan-tdup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tdup), name='view_pengajuan_izin_tdup'),
-
+			url(r'^option-jenis-usaha/$', self.option_jenis_usaha, name='option_jenis_usaha'),
+			url(r'^option-sub-jenis-usaha/$', self.option_sub_jenis_usaha, name='option_sub_jenis_usaha'),
 			)
 		return my_urls + urls
 

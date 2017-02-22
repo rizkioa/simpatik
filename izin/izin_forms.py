@@ -303,7 +303,7 @@ class RincianSubJenisForm(forms.ModelForm):
 	"""docstring for RincianSubJenisForm"""
 	class Meta:
 		model = RincianSubJenis
-		fields = ('jumlah_unit_angkutan_jalan_wisata', 'kapasitas_angkutan_jalan_wisata', 'jumlah_unit_angkutan_kereta_api_wisata', 'kapasitas_angkutan_kereta_api_wisata', 'jumlah_unit_angkutan_sungai_dan_danau_wisata', 'kapasitas_angkutan_sungai_dan_danau_wisata', 'jumlah_unit_angkutan_laut_domestik_wisata', 'kapasitas_angkutan_laut_domestik_wisata', 'jumlah_unit_angkutan_laut_internasional_wisata', 'kapasitas_angkutan_laut_internasional_wisata', 'jumlah_kursi_restoran', 'jumlah_kursi_rumah_makan', 'jumlah_kursi_bar_atau_rumah_minum', 'jumlah_kursi_kafe', 'jumlah_stand_pusat_makanan', 'kapasitas_produksi_jasa_boga')
+		fields = ('jumlah_unit_angkutan_jalan_wisata', 'kapasitas_angkutan_jalan_wisata', 'jumlah_unit_angkutan_kereta_api_wisata', 'kapasitas_angkutan_kereta_api_wisata', 'jumlah_unit_angkutan_sungai_dan_danau_wisata', 'kapasitas_angkutan_sungai_dan_danau_wisata', 'jumlah_kursi_restoran', 'jumlah_kursi_rumah_makan', 'jumlah_kursi_bar_atau_rumah_minum', 'jumlah_kursi_kafe', 'jumlah_stand_pusat_makanan', 'kapasitas_produksi_jasa_boga')
 
 class KeteranganUsahaTDUPForm(forms.ModelForm):
 	"""docstring for KeteranganUsahaTDUPForm"""
