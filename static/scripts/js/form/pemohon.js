@@ -45,6 +45,8 @@ function load_pemohon(ktp_){
                 }
                 else{
                     $('#id_nama_lengkap').val("");
+                    $('#id_tempat_lahir').val("");
+                    $('#id_tanggal_lahir').val("");
                     $('#id_paspor').val("");
                     $('#id_tempat_lahir').val("");
                     $('#id_tanggal_lahir').val("");

@@ -4,22 +4,31 @@
 	<hr class="style14">
 
   <div class="form-group" id="bidang_usaha_pariwisata">
-      <label class="col-sm-2 control-label text-left"><strong>Bidang Usaha Pariwisata</strong></label>
-      <div class="col-sm-10">
-          <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="bidang_usaha_pariwisata"  id="id_bidang_usaha_pariwisata" onchange="bidang()" required="" data-parsley-trigger="change">
-            {% for val in bidang_usaha_pariwisata %}
-              <option value="{{ val.id }}">{{ val.bidang_usaha_pariwisata}}</option>
-            {% endfor %}
-          </select>
-      </div>
+    <label class="col-sm-2 control-label text-left"><strong>Bidang Usaha Pariwisata</strong></label>
+    <div class="col-sm-10">
+      <select class="chosen-select" style="width: 340px;" name="bidang_usaha_pariwisata" id="id_bidang_usaha_pariwisata" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Bidang Usaha --</option>
+        {% for val in bidang_usaha_pariwisata %}
+          <option value="{{ val.id }}">{{ val.nama_bidang_usaha_pariwisata}}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
-  <div class="form-group" id="sub_jenis_bidang_usaha">
-      <label class="col-sm-2 control-label text-left"><strong>Sub Jenis Bidang Usaha</strong></label>
-      <div class="col-sm-10">
-          <select multiple="" tabindex="3" class="chosen-select" style="width: 340px;" name="sub_jenis_bidang_usaha" id="id_sub_jenis_bidang_usaha" onchange="subjenis()">
-          </select>
-      </div>
+  <div class="form-group" id="jenis_usaha_pariwisata">
+    <label class="col-sm-2 control-label text-left"><strong>Jenis Usaha Pariwisata</strong></label>
+    <div class="col-sm-10">
+      <select class="chosen-select" style="width: 340px;" name="jenis_usaha_pariwisata" id="id_jenis_usaha_pariwisata">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_jenis_usaha_pariwisata">
+    <label class="col-sm-2 control-label text-left"><strong>Sub Jenis Usaha Pariwisata</strong></label>
+    <div class="col-sm-10">
+      <select class="chosen-select" style="width: 340px;" name="sub_jenis_usaha_pariwisata" id="id_sub_jenis_usaha_pariwisata">
+      </select>
+    </div>
   </div>
 
   <div class="form-group" id="sub_angkutan_jalan_wisata">
@@ -69,39 +78,7 @@
       </div>
     </div>
   </div>
-
-  <div class="form-group" id="sub_angkutan_laut_domestik_wisata">
-    <label class="col-sm-3 control-label text-left">Angkutan Laut Domestik Wisata</label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control"  name="jumlah_unit_angkutan_laut_domestik_wisata" id="id_jumlah_unit_angkutan_laut_domestik_wisata">
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control"  name="kapasitas_angkutan_laut_domestik_wisata" id="id_kapasitas_angkutan_laut_domestik_wisata">
-      </div>
-    </div>
-  </div>
-
-  <div class="form-group" id="sub_angkutan_laut_internasional_wisata">
-    <label class="col-sm-3 control-label text-left">Angkutan Laut Internasional Wisata</label>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Jumlah Unit</span>
-        <input type="text" class="form-control"  name="jumlah_unit_angkutan_laut_internasional_wisata" id="id_jumlah_unit_angkutan_laut_internasional_wisata">
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="input-group">
-        <span class="input-group-addon">Kapasitas</span>
-        <input type="text" class="form-control"  name="kapasitas_angkutan_laut_internasional_wisata" id="id_kapasitas_angkutan_laut_internasional_wisata">
-      </div>
-    </div>
-  </div>
-
+  
   <div class="form-group" id="sub_restoran">
     <label class="col-sm-3 control-label text-left">Restoran</label>
     <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>

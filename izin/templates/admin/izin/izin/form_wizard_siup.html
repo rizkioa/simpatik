@@ -298,18 +298,16 @@
 				  timer: 2000
 				})
 				
-				window.location.replace('{% url 'admin:verifikasi_operator' %}');
 				$.ajax({
 					url: '{% url 'siup_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
 							toastr["success"](respon.pesan)
+							window.location.replace('{% url 'admin:verifikasi_operator' %}');
 						}
 					}
 				});
-
-				
 			}
 		};
 	</script>

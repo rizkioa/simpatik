@@ -374,7 +374,12 @@ urlpatterns = [
     url(r'^layanan/tdup/data-usaha-pariwisata/save$', tdup_views.tdup_data_usaha_pariwisata_save, name='tdup_data_usaha_pariwisata_save'),
     url(r'^layanan/tdup/keterangan-usaha/save$', tdup_views.tdup_keterangan_usaha_save, name='tdup_keterangan_usaha_save'),
     url(r'^layanan/tdup/tdup-done$', tdup_views.tdup_done, name='tdup_done'),
+    url(r'^layanan/tdup/tdup-berkas/save$', tdup_views.tdup_upload_berkas, name='tdup_upload_berkas'),
     url(r'^layanan/tdup/data-usaha-pariwisata/ajax/(?P<id_pengajuan>[0-9]+)$', tdup_views.ajax_data_usaha_pariwista, name='ajax_data_usaha_pariwista'),
     url(r'^layanan/tdup/keterangan-usaha/ajax/(?P<id_pengajuan>[0-9]+)$', tdup_views.tdup_keterangan_usaha_ajax, name='tdup_keterangan_usaha_ajax'),
+    url(r'^layanan/tdup/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', tdup_views.ajax_load_berkas_tdup, name='ajax_load_berkas_tdup'),
+    url(r'^layanan/tdup/konfirmasi/ajax/(?P<pengajuan_id>[0-9]+)$', tdup_views.ajax_konfirmasi_tdup, name='ajax_konfirmasi_tdup'),
+    url(r'^layanan/tdup/cetak/(?P<id_pengajuan>[0-9]+)$', views.cetak_tdup, name='cetak_tdup'),
+    url(r'^layanan/tdup/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', views.cetak_bukti_pendaftaran_tdup, name='cetak_bukti_pendaftaran_tdup'),
     ########################## end save tdup ##########################
     ]
