@@ -31,6 +31,7 @@ class PemohonForm(forms.ModelForm):
 		# self.fields['desa'].required = True
 		self.fields['alamat'].required = True
 		self.fields['telephone'].required = True
+		self.fields['keterangan_pekerjaan'].required = False
 
 	class Meta:
 		model = Pemohon
