@@ -166,7 +166,67 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'html':tpl.body_html})
 		extra_context.update({'pengajuan': pengajuan_})
 		extra_context.update({'nomor': pengajuan_.no_izin})
-		extra_context.update({'skizin_status': skizin_.status})		
+		extra_context.update({'skizin_status': skizin_.status})
+
+		paket = pengajuan_.paket_pekerjaan_iujk.all()
+
+		kla = []
+		tr = ''
+		no = 0
+		for p in paket:
+			tr += '<tr style="border: 1px solid black;">'
+			if p.subklasifikasi.klasifikasi in kla:
+				tr += '<td style="border: 1px solid black;"></td>'
+				tr += '<td style="border: 1px solid black;"></td>'
+			else:
+				k = p.subklasifikasi.klasifikasi
+				no = no+1
+				tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
+				tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
+				kla.append(p.subklasifikasi.klasifikasi)
+			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+str(p.tahun)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+str(p.nilai_paket_pekerjaan)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+str(p.keterangan)+'</td>'
+			tr += '</tr>'
+
+		# print tr
+
+		ts = '<tr style="border: 1px solid black;">'
+		klasifikasi = ''
+		no = 0
+		for k in kla:
+			klasifikasi += str(k)
+			no = no+1
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
+		# klasifikasi = '<ol>'
+		klasifikasi, paket_pekerjaan, nilai, keterangan, tahun = '<ol type="1">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">'
+		for p in paket:
+			klasifikasi += '<li>'+str(p.subklasifikasi)+'</li>'
+			paket_pekerjaan += '<li>'+str(p.nama_paket_pekerjaan)+'</li>'
+			tahun += '<li>'+str(p.tahun)+'</li>'
+			nilai += '<li>'+str(p.nilai_paket_pekerjaan)+'</li>'
+			if p.keterangan == None or p.keterangan == '':
+				keterangan_str = ''
+			else:
+				keterangan_str = p.keterangan
+			keterangan += '<li>'+str(keterangan_str)+'</li>'
+		klasifikasi += '</ol>'
+		paket_pekerjaan += '</ul>'
+		nilai += '</ul>'
+		keterangan += '</ul>'
+		tahun += '</ul>'
+
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+paket_pekerjaan+'</td>'
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+tahun+'</td>'
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+nilai+'</td>'
+		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+keterangan+'</td>'
+		ts += '</tr>'
+
+		extra_context.update({'klasifikasi_tr': mark_safe(ts) })	
 
 		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
 		ec = RequestContext(request, extra_context)
@@ -190,7 +250,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		else:
 			teknis = ''
 
-		paket = pengajuan_.paket_pekerjaan_iujk.all()		
+				
 
 		subject_template = template.render(ec)
 		extra_context.update({'nomor': pengajuan_.no_izin})
@@ -206,7 +266,18 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'kualifikasi': pengajuan_.kualifikasi })
 		extra_context.update({'penanggung_jawab_teknis': teknis})
 		extra_context.update({'no_pjt_bu': no_pjt_bu})
-		extra_context.update({'klasifikasi': mark_safe("".join(x.klasifikasi_as_li() for x in paket)) })
+
+		
+		li = ''
+		for x in paket:
+			if x.subklasifikasi.klasifikasi in kla:
+				k = ''
+			else:
+				k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+			li += k
+
+		extra_context.update({'klasifikasi': mark_safe(li) })
+
 		masa_berlaku = skizin_.created_at+relativedelta(years=3)
 		masa_berlaku = masa_berlaku.strftime('%d %B %Y')
 		extra_context.update({'masa_berlaku': masa_berlaku})
@@ -216,6 +287,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'jabatan': "Pembina Tingkat I"})
 		extra_context.update({'nip': "NIP. "+str(unit_kerja.kepala.username)})
 		extra_context.update({'pengajuan': pengajuan_ })
+
 		template = Template(subject_template).render(Context(extra_context))
 		return HttpResponse(template)
 

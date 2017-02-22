@@ -186,12 +186,13 @@
               <hr class="style2">
               <center>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-                PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+            PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
                 <font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
               </center>
               <center>
                 <font style="font-size: 15px;font-family: Arial;letter-spacing:  0.01cm;">TENTANG<br>
-              PEMBERIAN IZIN PERUBAHAN PENGGUNAAN TANAH (IPPT)
+              IZIN PENGGILINGAN PADI,<br>
+              HULLER DAN PENYOSOHAN BERAS
                 </font><br><br>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;">
                   KEPALA DINAS PENANAMAN MODAL DAN<br>
@@ -199,89 +200,66 @@
                 </font>
               </center><br>
               <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">Menimbang</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td>bahwa berdasarkan permohonan Sdr. {{pengajuan.pemohon|upper}} dan telah dipenuhinya persyaratan yang ditentukan, maka perlu ditetapkan Keputusan Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu tentang Izin Penggilingan Padi, Huller dan Penyosohan Beras;</td>
+                </tr>
+              </table><br>
+              <table width="100%" border="0" class="sk-justify">
               <tr>
-                <td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td style="vertical-align: top;padding-top: 1px;">a.</td>
-                <td>bahwa pemohon sudah mengajukan Permohonan Izin Perubahan  Penggunaan  Tanah (IPPT) tanggal {{pengajuan.created_at|date:"d F Y"}} ;</td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">b.</td>
-                <td>bahwa perubahan penggunaan tanah harus sesuai dengan Peraturan Daerah Kabupaten Kediri Nomor 14 tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010 – 2030 ;</td>
-              </tr>
-              {% if sk_.sk_menimbang_c %}
-              <tr>
-                <td></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                <td>{{sk_.sk_menimbang_c}}
-                </td>
-              </tr>
-              {% endif %}
-              {% if sk_.sk_menimbang_d %}
-              <tr>
-                <td></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">d.</td>
-                <td>{{sk_.sk_menimbang_d}}
-                </td>
-              </tr>
-              {% endif %}
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
+                <td style="vertical-align: top;padding-top: 1px;width: 105px;">Mengingat</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
                 <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                <td>Undang-Undang Nomor 5 Tahun 1960 tentang Peraturan Dasar Pokok-Pokok Agraria;</td>
+                <td>Undang-Undang Nomor 12 Tahun 1950 tentang pembentukann daerah Kabupaten dalam Lingkungan Provinsi Jawa Timur;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">2.</td>
-                <td>Undang-Undang Nomor 25 Tahun 2007 tentang Penanaman Modal;</td>
+                <td>Undang-Undang Nomor 12 Tahun 1992 tentang sistem Budi Daya Tanaman;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">3.</td>
-                <td>Undang-Undang Nomor 27 Tahun 2007 tentang Penataan Ruang;</td>
+                <td>Undang-Undang Nomor 32 Tahun 2009 tentang perlindungan dan penggelolaan lingkungan          hidup;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">4. </td>
-                <td>Peraturan Pemerintah Nomor 16 Tahun 2004 tentang Penatagunaan Tanah ;</td>
+                <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                <td>Undang-Undang Nomor 12 Tahun 2011 tentang pembentukan peraturan peraturan perundang         undangan;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">5.</td>
-                <td>Peraturan Presiden Nomor 10 Tahun 2006 tantang Badan Pertanahan Nasional ;</td>
+                <td>Undang-Undang Nomor 23 Tahun 2004 tentang pemerinyahan daerah;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">6. </td>
-                <td>Peraturan Kepala Badan Pertanahan Nasional Republik Indonesia Nomor 1 Tahun 2010 tentang standar pelayanan dan pengaturan pertanahan ;  </td>
+                <td>Peraturan pemerintah nomor 65 tahun 1971 tentang perusahaan penggelilingan padi, Huller dan penyosohan Beras;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">7.</td>
-                <td>Peraturan Kepala Badan Pertanahan Nasional Republik Indonesia Nomor 2 Tahun 2011 tentang Pedoman Pertimbangan Teknis Pertanahan dalam Penerbitan Izin Lokasi, Penetapan Lokasi dan Izin Perubahan Penggunaan Tanah ;</td>
+                <td>Keputusan mentri pertanian nomor 859/Kpts/TP.250/II/1998 tentang pedoman pembinaan perusahaan pengelilingan padi, huller dan penyosohan beras;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">8.</td>
-                <td>Peraturan Daerah Kabupaten Kediri Nomor 14 Tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010-2030 ;</td>
+                <td>Keputusan bupati Kediri nomor 841 Tahun 2002 tentang petunjuk pelaksanaan peraturan  daerah kabupaten Kediri nomor 23 tahun 2001 tentang retribusi perusahaan penggilingan padi, Huller dan penyosohan beras serta mesin perontok padi dan jagung;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">9.</td>
-                <td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu Kabupaten Kediri sebagaimana telah diubah dengan Peraturan Bupati Kediri Nomor 17 Tahun 2016.</td>
+                <td>Peraturan Bupati Kediri nomor 42 nomor 2015 tentang penyelenggaraan pelayanan terpadu satu pintu pada badan penanaman modal dan pelayanann perizinan terpadu satu pintu Kabupaten Kediri sebagaimana telah diubah dengan peraturan Bupati Kediri Nomor 17 Tahun 2016.</td>
               </tr>
             </table>
             </div>
@@ -296,78 +274,96 @@
                 <tr>
                   <td width="30" style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
                   <td width="10" style="vertical-align: top;padding-top: 1px;" >:</td>
-                  <td colspan="3">Pemberian Izin Perubahan Penggunaan Tanah (IPPT) dari tanah pertanian menjadi non pertanian untuk {{pengajuan.rencana_penggunaan|upper}} kepada:</td>
+                  <td colspan="3"></td>
                 </tr>
-                <tr>
-                  <td></td>
-                  <td colspan="2" align="left" style="padding-left: 12px;width: 121px;">Nama</td>
-                  <td width="10">:</td>
-                  <td>{{pengajuan.pemohon.nama_lengkap}}</td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td colspan="2" align="left" style="padding-left: 12px;width: 121px;">Alamat</td>
-                  <td width="10">:</td>
-                  <td>{{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
-                </tr>
-                <tr>
-                  <td width="30" style="width: 105px;">KESATU</td>
-                  <td width="10" >:</td>
-                  <td colspan="3">Lokasi Izin Perubahan Penggunaan Tanah (IPPT) :</td>
-                </tr>
+              <tr>
+                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <td colspan="4">Memberikan izin Penggilingan Padi, Huller dan Penyosohan Beras yang Menetap kepada :</td>
+              </tr>
             </table>
             <table width="100%" border="0" class="sk-justify">
               <tr>
                 <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px;width: 260px;">1. Letak tanah yang dimohon :</td>
-                <td style="width: 10px;"></td>
-                <td></td>
+                <td align="left" style="padding-left: 12px;width: 250px;">a. Nama Perusahaan</td>
+                <td>:</td>
+                <td>"{{pengajuan.perusahaan|upper}}"</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">b. Nama Pengusaha</td>
+                <td >:</td>
+                <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">c. Nama Pemilik</td>
+                <td >:</td>
+                <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
               </tr>
               <tr>
                 <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">a. Desa/Kelurahan</td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Alamat / Jalan</td>
                 <td width="10">:</td>
                 <td>{{pengajuan.desa|title}}</td>
               </tr>
               <tr>
                 <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">b. Kecamatan</td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
                 <td width="10">:</td>
-                <td>{{pengajuan.desa.kecamatan|title}}</td>
+                <td>{{pengajuan.desa|title}}</td>
               </tr>
               <tr>
                 <td></td>
-                <td align="left" style="padding-left: 27px;width: 151px;">c. Kabupaten</td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
                 <td width="10">:</td>
-                <td>{{pengajuan.desa.kecamatan.kabupaten|title}}</td>
+                <td>{{pengajuan.desa|title}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa|title}}</td>
               </tr>
               <tr>
                 <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">2. Luas Tanah yang Diijinkan</td>
-                <td >:</td>
-                <td >{{pengajuan.luas_tanah_yang_disetujui|default_if_none:"-"}} dari {{pengajuan.luas|default_if_none:"-"}}</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">3. Pengunaan Tanah Sebelumnya</td>
-                <td >:</td>
-                <td >{{pengajuan.penggunaan_tanah_sebelumnya|default_if_none:"-"}}</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">4. Penggunaan Saat Ini</td>
+                <td align="left" style="padding-left: 12px">d. Jenis Perusahaan</td>
                 <td >:</td>
                 <td >{{pengajuan.penggunaan_sekarang|default_if_none:"-"}}</td>
               </tr>
               <tr>
                 <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">5. Rencana Penggunaan Tanah</td>
-                <td >:</td>
-                <td >{{pengajuan.rencana_penggunaan|default_if_none:"-"}}</td>
+                <td align="left" style="padding-left: 12px">e. Lokasi Penggilingan Padi</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa|title}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa|title}}</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
+                <td width="10">:</td>
+                <td>{{pengajuan.desa|title}}</td>
               </tr>
               <tr>
                 <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">6. Arahan Fungsi Kawasan</td>
+                <td align="left" style="padding-left: 12px">f. Nomor kode</td>
+                <td >:</td>
+                <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 12px;width: 105px;"></td>
+                <td align="left" style="padding-left: 12px">g. Kapasitas potensial</td>
                 <td >:</td>
                 <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
               </tr>
@@ -441,74 +437,87 @@
       </div>
       <div class="page">
         <div class="subpage">
-              <table width="100%" border="0" class="sk-justify">
-               <tr>
-                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KELIMA</td>
-                  <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Bahwa apabila ada perubahan penggunaan tanah selain untuk pendirian RUMAH TINGGAL harus memperoleh Izin/Persetujuan dari Bupati Kediri;</td>
-                </tr>
-               <tr>
-                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEENAM</td>
-                  <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Izin Perubahan Penggunaan Tanah (IPPT) tidak berlaku jika dalam waktu 36 (tiga puluh enam) bulan sejak ditandatangani, pemohon tidak melaksanakan pembangunan {{pengajuan.rencana_penggunaan|upper}} ;</td>
-                </tr>
-               <tr>
-                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETUJUH</td>
-                  <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Apabila dalam pemberian Izin Perubahan Penggunaan Tanah (IPPT) ini dikemudian hari terdapat kekeliruan, akan diadakan perbaikan serta perubahan seperlunya.</td>
-                </tr>
-                <tr>
-                  <td colspan="5" style="padding-left: 35px;"></td>
-                </tr>
-                <tr>
-                  <td colspan="5" style="padding-left: 35px;"></td>
-                </tr>
-               <tr>
-                  <td colspan="5" style="padding-left: 35px;">Demikian untuk dipergunakan sebagaimana mestinya.</td>
-                </tr>
-              </table>
-              <table width="100%" border="0" class="font">
-                <tr>
-                  <td colspan="3" style="width: 1000px;">
-                    <table border="0" align="left">
-                      <tr>
-                        <td>
-                        <br><br>
-                          <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-                    <p style="font-size:14px; padding-left: 20%;">
-                      <font size="3pt">Ditetapkan di Kab. Kediri <br> pada tanggal</font><br></p>
-                        <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
-                        </p>
+            <table width="100%" border="0" class="sk-justify">
+              <tr>
+                <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KEEMPAT</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
+                <td  colspan="3" width="2000">Izin Lokasi ini bukan merupakan pemberian hak atas tanah dan diberikan untuk mengurus perizinan selanjutnya pada instansi yang berwenang ;</td>
+              </tr>
+              <tr>
+                <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
+                <td  colspan="3" width="2000">Apabila dikemudian hari ada penetapan/keputusan yang bersifat tetap dan mengikat terhadap penggunaan tanah lainnya yang berada di dalam areal Izin Lokasi {% if pengajuan.perusahaan %}{{pengajuan.perusahaan|title}}{% else %}{{pengajuan.pemohon|title}}{% endif %} maka keputusan pemberian Izin Lokasi ini akan ditinjau kembali ;</td>
+              </tr>
+              <tr>
+                <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>
+                <td style="vertical-align: top;padding-top: 1px;">:</td>
+                <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
+                <td  colspan="3" width="2000">Keputusan ini berlaku selama 3 (tiga) tahun sejak tanggal ditetapkan dengan ketentuan apabila dikemudian hari terdapat kekeliruan dalam penetapannya, akan dirubah dan diperbaiki sebagaimana mestinya. </td>
+              </tr>
+            </table>
+            <table width="100%" border="0" class="font">
+            <tr>
+              <td colspan="3" style="width: 1000px;">
+                <table border="0" align="left">
+                  <tr>
+                    <td>
+                    <br><br>
+                      <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
                     </td>
-                </tr>
-                <tr>
-                  <td><br><br><br><br>
-                    <table border="0" align="left" style="font-size:15px;">
-                      <tr>
-                        <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
-                      </tr>
-                      <tr>
-                        <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
-                        <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                        <td width="100%">Sdr. Kepala Kantor Pertanahan Kabupaten Kediri  ;</td>
-                      </tr>    
-                    </table>         
-                  </td>
-                </tr>
-              </table>
-            </div>    
+                  </tr>
+                </table>
+              </td>
+              <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+                <p style="font-size:14px; padding-left: 20%;">
+                  <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
+                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
+                    <!-- Pembina Tk.l<br>
+                    NIP: {{nip_kepala_dinas}} -->
+                    </p>
+                </td>
+            </tr>
+            <tr>
+              <td><br><br><br><br>
+                <table border="0" align="left" style="font-size:15px;">
+                  <tr>
+                    <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+                  </tr>
+                  <tr>
+                    <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+                    <td style="vertical-align: top;padding-top: 1px;">1.</td>
+                    <td width="100%">Sdr. Kepala Dinas PUPR Kabupaten Kediri ;</td>
+                  </tr>   
+                  <tr>
+                    <td></td>
+                    <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                    <td>Sdr. Kepala Dinas Perumahan dan Kaw. Permukiman Kabupaten Kediri;</td>
+                  </tr>   
+                  <tr>
+                    <td></td>
+                    <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                    <td>Sdr. Ka. Kantor Pertanahan Kabupaten Kediri;</td>
+                  </tr>    
+                  <tr>
+                    <td></td>
+                    <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                    <td>Sdr. Dir. {% if pengajuan.perusahaan %} {{ pengajuan.perusahaan }} {% else %} {{ pengajuan.pemohon }} {% endif %}
+                      <!-- {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }} -->
+                    </td>
+                  </tr>   
+                </table>         
+              </td>
+            </tr>
+                </table>
+            </div>
+          </div>
         </div>
-    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
     <script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>

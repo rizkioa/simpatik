@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilHuller, Syarat, SKIzin, Riwayat,MesinPerusahaan
+from izin.models import DetilHuller, Syarat, SKIzin, Riwayat,MesinPerusahaan,DetilSk
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -180,11 +180,65 @@ class DetilHullerAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_sk_izin_huller(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
+		# print id_pengajuan_izin_
+		if id_pengajuan_izin_:
+			pengajuan_ = DetilHuller.objects.get(id=id_pengajuan_izin_)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'pengajuan': pengajuan_ })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+			except ObjectDoesNotExist:
+				pass
+			try:
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+			# try:
+			# 	retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+			# 	if retribusi_:
+			# 		n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+			# 		terbilang_ = terbilang(n)
+			# 		extra_context.update({'retribusi': retribusi_ })
+			# 		extra_context.update({'terbilang': terbilang_ })
+			# except ObjectDoesNotExist:
+			# 	pass
+		template = loader.get_template("front-end/include/formulir_huller/cetak_sk_izin_huller.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilHullerAdmin, self).get_urls()
 		my_urls = patterns('',
-			# url(r'^cetak-reklame-asli/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_reklame_asli), name='cetak_reklame_asli'),
+			url(r'^cetak-sk-izin-huller/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_huller), name='cetak_sk_izin_huller'),
 			url(r'^view-pengajuan-penggilingan-padi-huller/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_huller), name='view_pengajuan_huller'),
 			# url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_reklame), name='cetak_bukti_admin_reklame'),
 			)
