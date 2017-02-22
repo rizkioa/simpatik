@@ -34,7 +34,7 @@ class PemohonForm(forms.ModelForm):
 
 	class Meta:
 		model = Pemohon
-		fields = ( 'jenis_pemohon', 'nama_lengkap', 'tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
+		fields = ( 'jenis_pemohon', 'nama_lengkap','tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan','keterangan_pekerjaan', 'status')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None
@@ -184,7 +184,7 @@ class InformasiTanahForm(forms.ModelForm):
 
 	class Meta:
 		model = InformasiTanah
-		fields = ('alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli','penggunaan_sekarang','rencana_penggunaan')
+		fields = ('alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli','penggunaan_sekarang','rencana_penggunaan','penggunaan_tanah_sebelumnya','arahan_fungsi_kawasan')
 
 class SertifikatTanahForm(forms.ModelForm):
 	class Meta:
@@ -278,7 +278,7 @@ class DetilSkForm(forms.ModelForm):
 	"""docstring for DetilSkIMBForm"""
 	class Meta:
 		model = DetilSk
-		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c')
+		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menimbang_c','sk_menimbang_d','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c')
 
 class SKIzinForm(forms.ModelForm):
 	body_html = forms.CharField(widget=CKEditorWidget())

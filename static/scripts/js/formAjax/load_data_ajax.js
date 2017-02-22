@@ -238,7 +238,10 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
 
             $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
             $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
-                    
+            $('#id_penggunaan_tanah_sebelumnya').val(respon.data.id_penggunaan_tanah_sebelumnya)
+            $('#id_arahan_fungsi_kawasan').val(respon.data.id_arahan_fungsi_kawasan)
+                   
+ 
             if (respon.data.id_kecamatan != "") {
               load_desa_data_reklame(respon.data.id_kecamatan)
             }
@@ -251,7 +254,7 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
             $('#id_alamat').val(respon.data.id_alamat)
             $('#id_luas').val(respon.data.id_luas)
             $('#id_status_tanah').val(respon.data.id_status_tanah)
-            
+
             $('#id_no_jual_beli').val(respon.data.id_no_jual_beli)
             $('#id_tanggal_jual_beli').val(respon.data.id_tanggal_jual_beli)
             $('#id_atas_nama_jual_beli').val(respon.data.id_atas_nama_jual_beli)

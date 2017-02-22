@@ -183,6 +183,7 @@ LOGIN_URL = '/admin/login/'
 
 AUTH_USER_MODEL = 'accounts.Account'
 
+# ADMIN_TOOLS_MENU = 'menupembangunan.CustomMenu'
 ADMIN_TOOLS_MENU = 'menu.CustomMenu'
 
 #LOGIN_URL = 'frontlogin'

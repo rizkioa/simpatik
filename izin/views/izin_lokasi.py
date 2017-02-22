@@ -26,6 +26,7 @@ from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzi
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon,SertifikatTanah
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm,SertifikatTanahForm
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_izin_lokasi(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -35,6 +36,7 @@ def formulir_izin_lokasi(request, extra_context={}):
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})

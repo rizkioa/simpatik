@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH
+from accounts.utils import KETERANGAN_PEKERJAAN
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, JenisPemohon, JenisReklame,ParameterBangunan
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah,SertifikatTanah
 
@@ -26,6 +27,7 @@ def formulir_izin_lokasi(request):
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		extra_context.update({'has_permission': True })
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		# print request.COOKIES
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++

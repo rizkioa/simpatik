@@ -9,6 +9,7 @@ from accounts.models import NomorIdentitasPengguna
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilReklame
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_reklame(request):
 	extra_context={}
@@ -40,6 +41,7 @@ def formulir_reklame(request):
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
 		extra_context.update({'has_permission': True })
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

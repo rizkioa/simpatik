@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 from master.models import Negara, Kecamatan, JenisPemohon, JenisReklame
 from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilHuller
@@ -24,6 +25,7 @@ def formulir_detilhuller(request):
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
 		extra_context.update({'has_permission': True })
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

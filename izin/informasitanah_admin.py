@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah
+from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah,DetilSk
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -288,6 +288,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 				if skizin_:
 					extra_context.update({'skizin': skizin_ })
 					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				sk_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				if sk_:
+					extra_context.update({'sk_': sk_ })
 			except ObjectDoesNotExist:
 				pass
 			try:

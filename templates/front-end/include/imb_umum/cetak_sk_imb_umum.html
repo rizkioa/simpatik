@@ -29,6 +29,7 @@
 	        box-sizing: border-box;
 	        -moz-box-sizing: border-box;
 	    }
+
 	    .page {
 	        width: 21.5cm;
 	        min-height: 33cm;
@@ -455,7 +456,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -471,7 +472,11 @@
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
-		        			<td>{{pengajuan.pekerjaan}}</td>
+		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
+		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        			{% else %}
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        			{% endif %}
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
@@ -678,7 +683,13 @@
 		        				<table border="0" class="sk-justify">
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;">a.</td>
-					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})</td>
+					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar
+					        			{% if retribusi.jumlah_pembayaran %}
+					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        			{% else %} 
+					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
+					        			{% endif%}
+					        			</td>
 					        		</tr>
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
@@ -711,14 +722,14 @@
 		        			</td>
 		        			<td width="40%" rowspan="2" style="vertical-align: top;padding-top: 10px;">
 		        				<p style="font-size:14px; padding-left: 20%;">
-				                    <font size="3pt">Ditetapkan  di  Kediri <br> 
+				                    <font size="3pt">Ditetapkan di Kab. Kediri<br> 
 										pada tanggal</font><br></p>
 				                    <p style="font-size:16px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
 				                    <br>
 				                    <br>
 				                    <!-- <br> -->
-				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
-<!-- 				                    Pembina Tk.l<br>
+				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
+									<!-- Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
 				            </td>
@@ -998,7 +1009,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -1014,7 +1025,11 @@
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
-		        			<td>{{pengajuan.pekerjaan}}</td>
+		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
+		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        			{% else %}
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        			{% endif %}
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
@@ -1057,6 +1072,16 @@
 		        			<td>{{ pengajuan.klasifikasi_jalan|default_if_none:"-" }}</td>
 		        		</tr>
 		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190"></td>
+		        			<td width="10"></td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
+		        			<td colspan="3" style="padding-left: 134px;" align="left" width="190"></td>
+		        			<td width="10"></td>
+		        			<td></td>
+		        		</tr>
+		        		<tr>
 		        			<td width="10">KETIGA</td>
 		        			<td style="width: 10px;">:</td>
 		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
@@ -1079,7 +1104,7 @@
 		        			</table>
 		        			</td>
 		        			<td width="10">:</td>
-		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
@@ -1253,15 +1278,15 @@
 		        			</td>
 		        			<td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
 		        				<p style="font-size:14px; padding-left: 20%;">
-				                    <font size="3pt">Ditetapkan  di  Kediri <br> 
+				                    <font size="3pt">Ditetapkan di Kab. Kediri <br> 
 										pada tanggal</font><br></p>
 				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
 				                    <br>
 				                    <br>
 				                    <br>
 				                    <br>
-				                    <p align="center" style="font-size:15px;"><b><u>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
-<!-- 				                    Pembina Tk.l<br>
+				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
+								<!--	Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
 				            </td>

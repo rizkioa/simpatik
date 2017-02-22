@@ -25,6 +25,7 @@ from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzi
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon,PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha
 from izin.izin_forms import UploadBerkasKTPForm,UploadBerkasPendukungForm,InformasiTanahIPPTUsahaForm,PenggunaanTanahIPPTUsahaForm,RencanaPembangunanIPPTUsahaForm,RencanaPembiayanDanPemodalanIPPTUsahaForm,PerumahanYangDimilikiIPPTUsahaForm,KebutuhanLainnyaIPPTUsahaForm
 from accounts.models import NomorIdentitasPengguna
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_ippt_usaha(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -34,6 +35,7 @@ def formulir_ippt_usaha(request, extra_context={}):
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
             penggunaan_tanah_list = PenggunaanTanahIPPTUsaha.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
@@ -539,7 +541,8 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             id_klas_persil = pengajuan_.klas_persil
             id_atas_nama_persil = pengajuan_.atas_nama_persil
             id_rencana_penggunaan = pengajuan_.rencana_penggunaan
-
+            id_penggunaan_tanah_sebelumnya = pengajuan_.penggunaan_tanah_sebelumnya
+            id_arahan_fungsi_kawasan = pengajuan_.arahan_fungsi_kawasan
             id_batas_utara = pengajuan_.batas_utara
             id_batas_timur = pengajuan_.batas_timur
             id_batas_selatan = pengajuan_.batas_selatan
@@ -584,6 +587,8 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             'id_kecamatan': id_kecamatan,
             'id_desa': id_desa,
             'id_luas': id_luas,
+            'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,
+            'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan,
             'id_status_tanah': id_status_tanah,
             'id_no_sertifikat_petak': id_no_sertifikat_petak,
             'id_luas_sertifikat_petak': id_luas_sertifikat_petak,

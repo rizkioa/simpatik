@@ -656,8 +656,12 @@
 						<div class="panel-body">
 						{% if skizin == None and status == 2%}
 						    <center>
+						    {% if kelompok_jenis_izin.kode == "503.07/" %}
 						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_lokasi' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
-						    	<!-- <a style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Edit Draf</span></a><br> -->
+						    {% else %}
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_ippt_rumah' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+					    	{% endif %}
+					    		<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 						    </center>
 						</div>
@@ -1188,6 +1192,164 @@
 
 {% block extracontent %}
     {{ block.super }}
+
+	{% if kelompok_jenis_izin.kode == "503.07/" %}
+    <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
+		      	</div>
+		      	<div class="modal-body">
+		          <form method="POST" id="id_form_sk" name="form_sk" role="form" class="form-horizontal" action="{% url 'detil_sk_imb_save' %}" data-parsley-validate novalidate>
+		            {% csrf_token %}
+		            <input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Menimbang</label>
+		                  <label for="input01" class="col-sm-1 control-label">a.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_a" name="sk_menimbang_a" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">b.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">c.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_c" name="sk_menimbang_c" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">d.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+				<!-- 	<div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Menetapkan KESEMBILAN</label>
+		                  <label for="input01" class="col-sm-1 control-label">a.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_a" name="sk_menetapkan_keenam_a" ></textarea>
+		                  </div>
+		                </div>
+		            </div> -->
+				<!--	<div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">b.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_b" name="sk_menetapkan_keenam_b" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">c.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_c" name="sk_menetapkan_keenam_c" ></textarea>
+		                  </div>
+		                </div>
+		            </div> -->
+		          </form>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="sk_add(this)" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
+	{% else %}
+    <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Edit SKIzin</h3>
+		      	</div>
+		      	<div class="modal-body">
+		          <form method="POST" id="id_form_sk" name="form_sk" role="form" class="form-horizontal" action="{% url 'detil_sk_imb_save' %}" data-parsley-validate novalidate>
+		            {% csrf_token %}
+		            <input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+				<!-- <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Menimbang</label>
+		                  <label for="input01" class="col-sm-1 control-label">a.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_a" name="sk_menimbang_a" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">b.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" ></textarea>
+		                  </div>
+		                </div>
+		            </div> -->
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">c.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_c" name="sk_menimbang_c" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">d.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_d" name="sk_menimbang_d" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+				<!-- 	<div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Menetapkan KESEMBILAN</label>
+		                  <label for="input01" class="col-sm-1 control-label">a.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_a" name="sk_menetapkan_keenam_a" ></textarea>
+		                  </div>
+		                </div>
+		            </div> -->
+				<!--	<div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">b.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_b" name="sk_menetapkan_keenam_b" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">c.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_keenam_c" name="sk_menetapkan_keenam_c" ></textarea>
+		                  </div>
+		                </div>
+		            </div> -->
+		          </form>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="sk_add(this)" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
+	{% endif %}
 	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">

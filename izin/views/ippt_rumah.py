@@ -24,6 +24,7 @@ from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzi
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import LuasTanahYangDisetujuiForm
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_ippt_rumah(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
@@ -33,6 +34,7 @@ def formulir_ippt_rumah(request, extra_context={}):
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
@@ -120,8 +122,10 @@ def load_informasi_tanah(request,id_pengajuan):
         id_atas_nama_persil = pengajuan_.atas_nama_persil
         id_penggunaan_sekarang = pengajuan_.penggunaan_sekarang
         id_rencana_penggunaan = pengajuan_.rencana_penggunaan
+        id_penggunaan_tanah_sebelumnya = pengajuan_.penggunaan_tanah_sebelumnya
+        id_arahan_fungsi_kawasan = pengajuan_.arahan_fungsi_kawasan
 
-        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan,'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan}}
 
       elif pengajuan_.kelompok_jenis_izin.kode == "503.07/":
         kode_izin = pengajuan_.kelompok_jenis_izin.kode

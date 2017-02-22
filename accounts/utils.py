@@ -30,6 +30,20 @@ STATUS = (
 # 2. kabid merubah status Draft ke Submitted
 # 3. 
 
+KETERANGAN_PEKERJAAN = (
+	('Dokter', 'Dokter'),
+	('Petani', 'Petani'),
+	('Guru', 'Guru'),
+	('TNI', 'TNI'),
+	('Polisi', 'Polisi'),
+	('Nelayan', 'Nelayan'),
+	('Dosen', 'Dosen'),
+	('Direktur', 'Direktur'),
+	('Bidan', 'Bidan'),
+	('Apoteker', 'Apoteker'),
+	('Wartawan', 'Wartawan'),
+)
+
 def get_status_color(obj):
 	warna = ""
 	if obj.status == 2:

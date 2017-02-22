@@ -808,6 +808,8 @@ function load_data_informasi_tanah(id_pengajuan){
           $('#id_klas_persil').val(respon.data.id_klas_persil)
           $('#id_atas_nama_persil').val(respon.data.id_atas_nama_persil)
           $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
+          $('#id_penggunaan_tanah_sebelumnya').val(respon.data.id_penggunaan_tanah_sebelumnya)
+          $('#id_arahan_fungsi_kawasan').val(respon.data.id_arahan_fungsi_kawasan)
           $('#id_batas_utara').val(respon.data.id_batas_utara)
           $('#id_batas_timur').val(respon.data.id_batas_timur)
           $('#id_batas_selatan').val(respon.data.id_batas_selatan)

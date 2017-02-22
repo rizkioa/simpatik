@@ -27,6 +27,7 @@ from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
 import datetime
 
 from izin.utils import JENIS_IZIN, formatrupiah
+from accounts.utils import KETERANGAN_PEKERJAAN
 
 def add_wizard_siup(request):
 	extra_context = {}
@@ -158,6 +159,7 @@ def formulir_siup(request):
 		# extra_context.update({'produk_utama_list': produk_utama_list})
 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
 		extra_context.update({'has_permission': True })
+		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():

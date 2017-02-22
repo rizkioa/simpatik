@@ -14,12 +14,13 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 
 from datetime import datetime
 from ckeditor.fields import RichTextField
-
+from accounts.utils import KETERANGAN_PEKERJAAN
 # Create your models here.
 
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
+	keterangan_pekerjaan = models.CharField(max_length=50, verbose_name='Keterangan Pekerjaan', choices=KETERANGAN_PEKERJAAN)
 	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
@@ -642,6 +643,8 @@ class DetilSk(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
 	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
+	sk_menimbang_c = models.CharField(max_length=255, verbose_name='SK Menimbang C.', null=True, blank=True)
+	sk_menimbang_d = models.CharField(max_length=255, verbose_name='SK Menimbang D.', null=True, blank=True)
 	sk_menetapkan_a = models.CharField(max_length=255, verbose_name='SK Menetapkan A', null=True, blank=True)
 	sk_menetapkan_b = models.CharField(max_length=255, verbose_name='SK Menetapkan B', null=True, blank=True)
 	sk_menetapkan_c = models.CharField(max_length=255, verbose_name='SK Menetapkan C', null=True, blank=True)
@@ -725,6 +728,8 @@ class InformasiTanah(PengajuanIzin):
 	atas_nama_jual_beli = models.CharField(max_length=255, verbose_name='Atas Nama Jual Beli', null=True, blank=True)
 	penggunaan_sekarang = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Sekarang')
 	rencana_penggunaan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Rencana Penggunaan')
+	penggunaan_tanah_sebelumnya = models.CharField(max_length=150,null=True, blank=True, verbose_name='Penggunaan Tanah Sebelumnya')
+	arahan_fungsi_kawasan = models.CharField(max_length=150,null=True, blank=True, verbose_name='Arahan Fungsi Kawasan')
 	#Tambahan Informasi Tanah IPPT USAHA
 	batas_utara = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Timur')
