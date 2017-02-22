@@ -21,6 +21,7 @@ from izin.controllers.imb_reklame import formulir_imb_reklame
 from izin.controllers.imb_umum import formulir_imb_umum
 from izin.controllers.imb_perumahan import formulir_imb_perumahan
 from izin.controllers.tdp import *
+from izin.controllers.tdup import formulir_tdup
 from izin.controllers.izin_gangguan import formulir_izin_gangguan
 from izin.controllers.penggunaan_kekayaan_daerah import formulir_informasi_kekayaan_daerah
 from izin.controllers.izin_lokasi import formulir_izin_lokasi 
@@ -157,16 +158,33 @@ class IzinAdmin(admin.ModelAdmin):
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		if request.user.is_superuser:
-			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','get_status_pengajuan', 'button_cetak_pendaftaran')
 		elif not request.user.is_superuser:
 			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 		elif func_view.__name__ == 'izinterdaftar':
 			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan', 'get_status_proses', 'linkdetilizin')
 		elif func_view.__name__ == 'semua_pengajuan':
-			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran', 'linkdetilizin')
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','get_status_pengajuan', 'button_cetak_pendaftaran', 'linkdetilizin')
 		# else:
 			# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses')
 		return list_display
+
+	def get_status_pengajuan(self, obj):
+		pengajuan = obj.id
+		keterangan = '-'
+		dibuat_oleh = '-'
+		dibuat_tanggal = '-'
+		if pengajuan:
+			riwayat_ = Riwayat.objects.filter(pengajuan_izin_id=pengajuan).last()
+			keterangan = riwayat_.keterangan
+			dibuat_oleh = str(riwayat_.created_by.nama_lengkap)
+			dibuat_tanggal = str(riwayat_.created_at.strftime("%d-%m-%Y"))
+			status = mark_safe("""
+				<button type="button" class="btn btn-blue btn-xs mb-10" title="" data-toggle="popover" data-content="Diverifikasi terakhir oleh %s pada tanggal %s" data-original-title="Detil Status" data-trigger="hover" data-placement="left">%s</button>
+				""" % (dibuat_oleh, dibuat_tanggal, keterangan))
+		return status
+	get_status_pengajuan.short_description = "Status Data"
+
 
 	def get_list_display_links(self, request, list_display):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
@@ -936,6 +954,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/ippt-rumah/$', self.admin_site.admin_view(formulir_ippt_rumah), name='izin_proses_ippt_rumah'),
 			url(r'^wizard/add/proses/ippt-usaha/$', self.admin_site.admin_view(formulir_ippt_usaha), name='izin_proses_ippt_usaha'),
 			url(r'^wizard/add/proses/penggilingan-padi-&-huller/$', self.admin_site.admin_view(formulir_detilhuller), name='izin_proses_huller'),
+			url(r'^wizard/add/proses/tdup/$', self.admin_site.admin_view(formulir_tdup), name='izin_proses_tdup'),
 
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
@@ -963,7 +982,7 @@ class IzinAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 	def suit_cell_attributes(self, obj, column):
-		if column in ['button_cetak_pendaftaran', 'linkdetilizin']:
+		if column in ['button_cetak_pendaftaran', 'linkdetilizin', 'get_status_pengajuan']:
 			return {'class': 'text-center'}
 		else:
 			return None

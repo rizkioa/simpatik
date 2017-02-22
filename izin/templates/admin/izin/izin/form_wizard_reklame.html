@@ -157,8 +157,8 @@
 		        		respon = $.parseJSON(response)
 		        		if(respon.success){
 		        			toastr["success"](respon.pesan)
+		        			window.location.replace('{% url 'admin:verifikasi_operator' %}');
 		        		}
-		      		window.location.replace('{% url 'admin:verifikasi_operator' %}');
 		        	}
 	        	});
 	        	}

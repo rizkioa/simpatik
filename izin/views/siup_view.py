@@ -776,12 +776,14 @@ def siup_upload_berkas_npwp_perusahaan(request):
 									kode = request.POST.get('kode', None)
 									if kode == 'NPWP Perusahaan TDP':
 										d = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+									elif kode == 'NPWP Perusahaan TDUP':
+										d = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
 									else:
 										d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 									
 									berkas = form.save(commit=False)
 									berkas.nama_berkas = "NPWP Perusahaan "+p.nama_perusahaan
-									berkas.keterangan = "npwp perusahaan"
+									berkas.keterangan = "NPWP Perusahaan "+p.npwp
 									if request.user.is_authenticated():
 										berkas.created_by_id = request.user.id
 									else:

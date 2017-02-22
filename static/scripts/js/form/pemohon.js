@@ -32,6 +32,8 @@ function load_pemohon(ktp_){
                     $('#id_paspor').val(respon.data.paspor);
                     // $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
                     $('#id_nama_lengkap').val(respon.data.nama_lengkap);
+                    $('#id_tempat_lahir').val(respon.data.tempat_lahir);
+                    $('#id_tanggal_lahir').val(respon.data.tanggal_lahir);
                     $('#alamat_pemohon_load').val(respon.data.alamat);
                     $('#no_telepon_pemohon_load').val(respon.data.telephone);
                     $('#hp_load').val(respon.data.hp);
@@ -42,6 +44,8 @@ function load_pemohon(ktp_){
                 }
                 else{
                     $('#id_nama_lengkap').val("");
+                    $('#id_tempat_lahir').val("");
+                    $('#id_tanggal_lahir').val("");
                     $('#id_paspor').val("");
                     $('#alamat_pemohon_load').val("");
                     $('#no_telepon_pemohon_load').val("");

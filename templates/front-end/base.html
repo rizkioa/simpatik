@@ -262,6 +262,31 @@
 
         </script>
         <script>
+        function toast_server_error(msg_){
+            toastr.options = {
+              "closeButton": true,
+              "debug": false,
+              "newestOnTop": false,
+              "progressBar": false,
+              "positionClass": "toast-top-right",
+              "preventDuplicates": false,
+              "onclick": null,
+              "showDuration": "300",
+              "hideDuration": "1000",
+              "timeOut": "5000",
+              "extendedTimeOut": "1000",
+              "showEasing": "swing",
+              "hideEasing": "linear",
+              "showMethod": "fadeIn",
+              "hideMethod": "fadeOut"
+            }
+            if(typeof msg_ == "undefined"){
+                toastr["error"]("Terjadi kesalahan pada koneksi server.")
+            }
+            else{
+                toastr["error"](msg_)
+            }
+        }
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
             document.getElementById("wrap").style.marginLeft = "250px";
