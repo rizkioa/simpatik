@@ -31,6 +31,7 @@ STATUS = (
 # 3. 
 
 KETERANGAN_PEKERJAAN = (
+	('',''),
 	('Dokter', 'Dokter'),
 	('Petani', 'Petani'),
 	('Guru', 'Guru'),
