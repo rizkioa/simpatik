@@ -20,7 +20,7 @@ from accounts.utils import KETERANGAN_PEKERJAAN
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
-	keterangan_pekerjaan = models.CharField(max_length=50, verbose_name='Keterangan Pekerjaan', choices=KETERANGAN_PEKERJAAN)
+	keterangan_pekerjaan = models.CharField(max_length=50, verbose_name='Keterangan Pekerjaan', blank=True, null=True, choices=KETERANGAN_PEKERJAAN)
 	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
@@ -661,8 +661,9 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='informasikekayaandaerah_perusahaan', blank=True, null=True)
 	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
-	panjang = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Panjang')
+	# lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
+	# panjang = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Panjang')
+	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas')
 	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
 
 	def __unicode__(self):

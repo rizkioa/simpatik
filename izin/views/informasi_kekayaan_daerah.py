@@ -29,20 +29,20 @@ from izin.izin_forms import UploadBerkasPendukungForm,InformasiKekayaanDaerahFor
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_kekayaan(request, extra_context={}):
-    jenis_pemohon = JenisPemohon.objects.all()
-    negara = Negara.objects.all()
-    kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+	jenis_pemohon = JenisPemohon.objects.all()
+	negara = Negara.objects.all()
+	kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
 
-    extra_context.update({'negara': negara})
-    extra_context.update({'kecamatan': kecamatan})
-    extra_context.update({'jenis_pemohon': jenis_pemohon})
-    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
-    if 'id_kelompok_izin' in request.COOKIES.keys():
-        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
-        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-    else:
-        return HttpResponseRedirect(reverse('layanan'))
-    return render(request, "front-end/formulir/kekayaan.html", extra_context)
+	extra_context.update({'negara': negara})
+	extra_context.update({'kecamatan': kecamatan})
+	extra_context.update({'jenis_pemohon': jenis_pemohon})
+	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/kekayaan.html", extra_context)
 
 def informasi_kekayaan_daerah_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
@@ -50,26 +50,27 @@ def informasi_kekayaan_daerah_save_cookie(request):
 			pengajuan_ = InformasiKekayaanDaerah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			informasikekayaan = InformasiKekayaanDaerahForm(request.POST, instance=pengajuan_)
 			if informasikekayaan.is_valid():
-				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-				pengajuan_.save()
-				letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))
-				data = {'success': True,
-						'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
-						'data': [
-						{'ukuran': ukuran_},
-						{'letak_pemasangan': letak_}]}
-				data = json.dumps(data)
-				response = HttpResponse(json.dumps(data))
+				if request.COOKIES['id_perusahaan'] != '0':
+					pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+					pengajuan_.save()
+					data = {'success': True,
+						  'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+						  'data': ['']}
+					response = HttpResponse(json.dumps(data))
+				else:
+					informasikekayaan.save()
+					data = {'success': True,
+						  'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+						  'data': {}}
+					response = HttpResponse(json.dumps(data))
 			else:
 				data = informasikekayaan.errors.as_json()
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-			data = json.dumps(data)
+			response = HttpResponse(json.dumps(data))
 	else:
 		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-		data = json.dumps(data)
-	response = HttpResponse(data)
+		response = HttpResponse(json.dumps(data))
 	return response
 
 def kekayaan_done(request):
@@ -103,8 +104,7 @@ def load_informasi_kekayaan_daerah(request,id_pengajuan):
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = InformasiKekayaanDaerah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			id_lokasi = pengajuan_.lokasi
-			id_lebar = str(pengajuan_.lebar)
-			id_panjang = str(pengajuan_.panjang)
+			id_luas = str(pengajuan_.luas)
 			id_penggunaan = pengajuan_.penggunaan
 			if pengajuan_.desa:
 				id_desa = str(pengajuan_.desa.id) 
@@ -114,7 +114,7 @@ def load_informasi_kekayaan_daerah(request,id_pengajuan):
 				id_kecamatan = ""
 
 			data = {'success': True,
-					'data': {'id_lokasi':id_lokasi,'id_lebar': id_lebar,'id_panjang': id_panjang,'id_penggunaan': id_penggunaan,'id_desa': id_desa,'id_kecamatan':id_kecamatan}}
+					'data': {'id_lokasi':id_lokasi,'id_luas': id_luas,'id_penggunaan': id_penggunaan,'id_desa': id_desa,'id_kecamatan':id_kecamatan}}
 			response = HttpResponse(json.dumps(data))
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
@@ -131,16 +131,14 @@ def load_konfirmasi_informasi_kekayaan_daerah(request,id_pengajuan):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = InformasiKekayaanDaerah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-			lebar = str(pengajuan_.lebar)
-			panjang = str(pengajuan_.panjang)
+			luas = str(pengajuan_.luas)
 			penggunaan = pengajuan_.penggunaan
 			lokasi = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 
 
 			data = {'success': True,
 					'data': [
-					{'lebar': lebar},
-					{'panjang': panjang},
+					{'luas': luas},
 					{'penggunaan': penggunaan},
 					{'lokasi': lokasi},
 					]}
@@ -258,80 +256,80 @@ def ajax_load_berkas_informasi_kekayaan_daerah(request, id_pengajuan):
 	return response
 
 def cetak_informasi_kekayaan_daerah(request, id_pengajuan_):
-      extra_context = {}
-      url_ = reverse('formulir_reklame')
-      if id_pengajuan_:
-        pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_)
-        if pengajuan_.perusahaan != '':
-          alamat_ = ""
-          alamat_perusahaan_ = ""
-          if pengajuan_.pemohon:
-            if pengajuan_.pemohon.desa:
-              alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
-            extra_context.update({ 'pemohon': pengajuan_.pemohon })
+	  extra_context = {}
+	  url_ = reverse('formulir_reklame')
+	  if id_pengajuan_:
+		pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_)
+		if pengajuan_.perusahaan != '':
+		  alamat_ = ""
+		  alamat_perusahaan_ = ""
+		  if pengajuan_.pemohon:
+			if pengajuan_.pemohon.desa:
+			  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			extra_context.update({ 'pemohon': pengajuan_.pemohon })
 
-          if pengajuan_.perusahaan:
-            if pengajuan_.perusahaan.desa:
-              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
-              extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
-            extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+		  if pengajuan_.perusahaan:
+			if pengajuan_.perusahaan.desa:
+			  alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			  extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+			extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 
-          extra_context.update({ 'pengajuan': pengajuan_ })
-          pengajuan_id = base64.b64encode(str(pengajuan_.id))
-          extra_context.update({ 'pengajuan_id': pengajuan_id })
+		  extra_context.update({ 'pengajuan': pengajuan_ })
+		  pengajuan_id = base64.b64encode(str(pengajuan_.id))
+		  extra_context.update({ 'pengajuan_id': pengajuan_id })
 
-          riwayat = Riwayat.objects.filter(pengajuan_izin=pengajuan_)
-          if riwayat:
-            extra_context.update({ 'riwayat': riwayat })
-            extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
-            extra_context.update({ 'created_at': pengajuan_.created_at })
-          response = loader.get_template("front-end/include/formulir_kekayaan/cetak.html")
-        else:
-          response = HttpResponseRedirect(url_)
-          return response
-      else:
-        response = HttpResponseRedirect(url_)
-        return response
-      template = loader.get_template("front-end/include/formulir_kekayaan/cetak.html")
-      ec = RequestContext(request, extra_context)
-      return HttpResponse(template.render(ec))
+		  riwayat = Riwayat.objects.filter(pengajuan_izin=pengajuan_)
+		  if riwayat:
+			extra_context.update({ 'riwayat': riwayat })
+			extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+			extra_context.update({ 'created_at': pengajuan_.created_at })
+		  response = loader.get_template("front-end/include/formulir_kekayaan/cetak.html")
+		else:
+		  response = HttpResponseRedirect(url_)
+		  return response
+	  else:
+		response = HttpResponseRedirect(url_)
+		return response
+	  template = loader.get_template("front-end/include/formulir_kekayaan/cetak.html")
+	  ec = RequestContext(request, extra_context)
+	  return HttpResponse(template.render(ec))
 
 def cetak_bukti_pendaftaran_informasi_kekayaan_daerah(request,id_pengajuan_):
   extra_context = {}
   if id_pengajuan_:
-    pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_)
-    if pengajuan_.perusahaan != '':
-      alamat_ = ""
-      alamat_perusahaan_ = ""
-      if pengajuan_.pemohon:
-        if pengajuan_.pemohon.desa:
-          alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
-          extra_context.update({ 'alamat_pemohon': alamat_ })
-        extra_context.update({ 'pemohon': pengajuan_.pemohon })
-        paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
-        ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
-        extra_context.update({ 'paspor': paspor_ })
-        extra_context.update({ 'ktp': ktp_ })
-      if pengajuan_.perusahaan:
-        if pengajuan_.perusahaan.desa:
-          alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
-          extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
-        extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-        syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
-      letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+	pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_)
+	if pengajuan_.perusahaan != '':
+	  alamat_ = ""
+	  alamat_perusahaan_ = ""
+	  if pengajuan_.pemohon:
+		if pengajuan_.pemohon.desa:
+		  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+		  extra_context.update({ 'alamat_pemohon': alamat_ })
+		extra_context.update({ 'pemohon': pengajuan_.pemohon })
+		paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+		ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+		extra_context.update({ 'paspor': paspor_ })
+		extra_context.update({ 'ktp': ktp_ })
+	  if pengajuan_.perusahaan:
+		if pengajuan_.perusahaan.desa:
+		  alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+		  extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
+		extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
+		syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
+	  letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 
-      extra_context.update({'letak_': letak_})
-      extra_context.update({ 'pengajuan': pengajuan_ })
-      extra_context.update({ 'syarat': syarat })
-      extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
-      extra_context.update({ 'created_at': pengajuan_.created_at })
-      response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
-    else:
-      response = HttpResponseRedirect(url_)
-      return response
+	  extra_context.update({'letak_': letak_})
+	  extra_context.update({ 'pengajuan': pengajuan_ })
+	  extra_context.update({ 'syarat': syarat })
+	  extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+	  extra_context.update({ 'created_at': pengajuan_.created_at })
+	  response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+	else:
+	  response = HttpResponseRedirect(url_)
+	  return response
   else:
-    response = HttpResponseRedirect(url_)
-    return response 
+	response = HttpResponseRedirect(url_)
+	return response 
 
   template = loader.get_template("front-end/include/formulir_kekayaan/cetak_bukti_pendaftaran.html")
   ec = RequestContext(request, extra_context)
