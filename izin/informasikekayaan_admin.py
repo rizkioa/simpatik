@@ -49,7 +49,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','lebar','panjang','penggunaan') }),
+				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','luas','penggunaan') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -63,7 +63,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','lebar','panjang','penggunaan') }),
+				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','luas','penggunaan') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
