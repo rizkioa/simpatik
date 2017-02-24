@@ -1043,11 +1043,12 @@
 			    }
 			});
 		}
+		// edit pengajuan
         function change_edit_pengajuan(){
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
         	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
         	setTimeout(function(){
-        		window.location.replace('{% url 'admin:izin_proses_tdp_perorangant ' %}');
+        		window.location.replace('{% url 'admin:izin_proses_tdp_perorangan' %}');
         	}, 1000);
         }
     </script>
@@ -1455,43 +1456,6 @@
 					</table>
 					<br>
 					<br>
-					<!-- <h5><strong>LEGALITAS PERUSAHAAN</strong></h5>
-					<div class="table-responsive">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<td>No.</td>
-									<td>Jenis Akta & Pengesahan</td>
-									<td>Nama Notaris</td>
-									<td>Telp</td>
-									<td>No.Akta</td>
-									<td>Tgl.Akta</td>
-									<td>No.Pengesahan</td>
-									<td>Tgl.Pengesahan</td>
-								</tr>
-							</thead>
-							<tbody>
-								{% if legalitas %}
-								{% for l in legalitas %}
-								<tr>
-									<td>{{forloop.counter}}</td>
-									<td>{{l.jenis_legalitas.jenis_legalitas}}</td>
-									<td>{{l.nama_notaris|default_if_none:"-"}}</td>
-									<td>{{l.telephone|default_if_none:"-"}}</td>
-									<td>{{l.nomor_akta|default_if_none:"-"}}</td>
-									<td>{{l.tanggal_akta|date:'d-m-Y'|default_if_none:"-"}}</td>
-									<td>{{l.nomor_pengesahan}}</td>
-									<td>{{l.tanggal_pengesahan|date:'d-m-Y'}}</td>
-								</tr>
-								{% endfor %}
-								{% else %}
-								<tr>
-									<td colspan="8" align="center">Kosong...!!!</td>
-								</tr>
-								{% endif %}
-							</tbody>
-						</table>
-					</div> -->
 					<br>
 					<br>
 					<h5><strong>IZIN-IZIN & LEGALITAS LAINNYA</strong></h5>
@@ -1605,43 +1569,6 @@
 							</tbody>
 						</table>
 					</div>
-					<!-- <h5><strong>PEMEGANG SAHAM</strong></h5>
-					<div class="table-responsive">
-						<table class="table table-striped">
-							<thead>
-								<tr>
-						          	<th>No.</th>
-						          	<th>Nama lengkap</th>
-						          	<th>Alamat Tetap</th>
-						          	<th>No. Telp</th>
-						          	<th>Kewarganegaraan</th>
-						          	<th>NPWP</th>
-						          	<th>Jumlah saham yang dimiliki (lembar)</th>
-						          	<th>Jumlah modal disetor (Rp)</th>
-						        </tr>
-							</thead>
-							<tbody>
-								{% if pemegang_saham %}
-								{% for p in pemegang_saham %}
-								<tr>
-									<td>{{forloop.counter}}</td>
-									<td>{{p.nama_lengkap}}</td>
-									<td>{{p.alamat}}</td>
-									<td>{{p.telephone}}</td>
-									<td>{{p.kewarganegaraan}}</td>
-									<td>{{p.npwp}}</td>
-									<td>{{p.jumlah_saham_dimiliki}} Lembar</td>
-									<td>Rp {{p.jumlah_saham_disetor}},-</td>
-								</tr>
-								{% endfor %}
-								{% else %}
-								<tr>
-									<td colspan="8" align="center">Kosong...!!!</td>
-								</tr>
-								{% endif %}
-							</tbody>
-						</table>
-					</div> -->
 					<h5><strong>PERUSAHAAN</strong></h5>
 					<div class="table-responsive">
 						<table class="table table-striped">
