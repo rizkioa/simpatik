@@ -456,7 +456,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 490px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -1009,7 +1009,7 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 490px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -1032,13 +1032,13 @@
 		        			{% endif %}
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
-		        			<td width="10">:</td>
+		        			<td colspan="3" style="padding-left: 121px;vertical-align: top;padding-top: 1px;" align="left">d. Alamat</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">:</td>
 		        			<td>{{pengajuan.pemohon.alamat}} Desa {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
 		        		</tr>
 		        		<tr>
-		        			<td width="10" style="vertical-align: top;padding-top: 5px;">KEDUA</td>
-		        			<td style="vertical-align: top;padding-top: 5px;">:</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">KEDUA</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        			<td  colspan="3">Bangunan sebagaimana dimaksud dalam diktum KESATU, adalah :</td>
 		        		</tr>
 		        		<tr>
@@ -1082,8 +1082,8 @@
 		        			<td></td>
 		        		</tr>
 		        		<tr>
-		        			<td width="10">KETIGA</td>
-		        			<td style="width: 10px;">:</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">KETIGA</td>
+		        			<td style="width: 10px;vertical-align: top;padding-top: 1px;">:</td>
 		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
 		        		</tr>
 		        		<tr>
@@ -1103,8 +1103,8 @@
 			        			</tr>
 		        			</table>
 		        			</td>
-		        			<td width="10">:</td>
-		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        			<td width="10" style="vertical-align: bottom;padding-bottom: 4px;">:</td>
+		        			<td style="vertical-align: bottom;padding-bottom: 4px;">{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
