@@ -154,13 +154,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
-			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
-			jumlah_ = str(int(pengajuan_.jumlah))
-			klasifikasi_ = pengajuan_.klasifikasi_jalan
 
-			extra_context.update({'jumlah': jumlah_ })
-			extra_context.update({'klasifikasi_jalan': klasifikasi_ })
-			extra_context.update({'ukuran': ukuran_})
 			extra_context.update({'letak': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
@@ -183,7 +177,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 
-		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")
+		template = loader.get_template("front-end/include/formulir_kekayaan/cetak_sk_izin_kekayaan_daerah.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
