@@ -1,6 +1,7 @@
 from django.contrib import admin
-from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran
-from kepegawaian.models import Pegawai
+from django.contrib.auth.models import Group
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey
+from kepegawaian.models import Pegawai,UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
@@ -75,7 +76,12 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
+			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
+
+			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
 			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
+
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
@@ -128,6 +134,24 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'riwayat': riwayat_ })
 			except ObjectDoesNotExist:
 				pass
+			# SURVEY
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
+			try:
+				try:
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					print s.survey_iujk.all()
+			except ObjectDoesNotExist:
+				s = ''
+
+			extra_context.update({'survey': s })
+			
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_umum.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))

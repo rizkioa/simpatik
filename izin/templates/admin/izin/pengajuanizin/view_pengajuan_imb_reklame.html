@@ -377,60 +377,242 @@
 									</center>
 								</div>
 							</div>
-<!-- 
-							<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
-								<form>
+
+							
+                            {% include "admin/izin/survey_1.html" %}
+						
+
+							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
+								{% csrf_token %}
+									<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
 									<div class="panel-body">
-										<h4>SURVEY</h4>
+										<h4>MENOLAK PENGAJUAN</h4>
 										<br>
-										<div class="panel panel-default" style="color: black">
-									      	<div class="panel-heading">SKPD Surveyor</div>
-									      	<div class="panel-body">
-									      		<div class="form-group">
-												    <label for="input01">SKPD </label>
-												    <select class="form-control chosen-select">
-												    	<option>Pilih SKPD</option>
-											      	</select>
-											  	</div>
-
-											  	<div class="form-group">
-												    <label for="input01">Permohonan </label>
-												    <select class="form-control chosen-select mb-10">
-												    	<option>Pilih</option>
-											      	</select>
-											  	</div>
-
-											  	<div class="form-group">
-											      	<label>Tanggal Survey </label>
-											        <div class="input-group datepicker" data-format="L">
-											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-											          <span class="input-group-addon">
-											            <span class="fa fa-calendar"></span>
-											          </span>
-											        </div>
-											    </div>
-
-											    <div class="form-group">
-											      	<label>Deadline Survey </label>
-											        <div class="input-group datepicker" data-format="L">
-											          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-											          <span class="input-group-addon">
-											            <span class="fa fa-calendar"></span>
-											          </span>
-											        </div>
-											    </div>
-									      	</div>
-									    </div>
+										<div class="form-group">
+										    <label for="input01">Alasan </label>
+									      	<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+									  	</div>
+									  	<div class="form-group">
+										    <label for="input01">Lampiran </label>
+										    <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+										</div>
 									</div>
 
 									<div class="panel-footer">
 										<center>
-											<button type="button" class="btn btn-success mb-10"><i class="icon-plus"></i> Buat Jadwal Survey</button>
+											<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
 										</center>
 									</div>
 								</form>
 							</div>
- -->
+						{% endif %}
+						
+						{% if status == 8 %}
+							<!-- <section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;"> -->
+							<section class="tile">
+
+                                <!-- tile header -->
+                                <div class="tile-header">
+                                    <h1 class="custom-font"><strong>Survey Izin </strong></h1>
+                                </div>
+                                <!-- /tile header -->
+
+                                <!-- tile body -->
+                                <div class="tile-body">
+									<table id="" class="table table-striped table-bordered table-hover table-condensed">
+										<thead>
+										  <tr>
+										      <th scope="col" class="">SKPD</th>
+										      <th scope="col" class="">NAMA</th>
+										      <th scope="col" class="">KOORDINATOR</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  {% for q in survey.survey_iujk.all %}
+										    <tr>
+										      <td>{{q.pegawai.unit_kerja}}</td>
+										      <td>{{q.pegawai}} [{{q.pegawai.username}}]</td>
+										      <td>{{q.koordinator|true_or_false|safe}}</td>
+										    </tr>
+										  {% endfor %}
+										</tbody>
+									</table>
+                                </div>
+                                <!-- /tile body -->
+
+                            </section>
+                            <section class="tile">
+                            	<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Deadline Survey</label>
+										<div class="col-sm-4"> {{ survey_pengajuan.deadline_survey }}
+										</div>
+									</div>
+									
+								</div>
+                                <!-- tile header -->
+                                <div class="tile-header">
+                                    <h1 class="custom-font"><strong>Pertimbangan Dan Saran </strong></h1>
+                                </div>
+                                <!-- /tile header -->
+
+                                <!-- tile body -->
+                                <div class="tile-body">
+									<div class="row">
+						            <div class="col-md-6">
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Bangunan Kantor</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.bangunan_kantor|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Ruang Direktur</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_direktur|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Ruang Staff</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_staf|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Meja + Kursi Direktur</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_meja_kursi_derektur|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Meja + Kursi Staff Administrasi</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_meja_kursi_staff_administrasi|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Meja + Kursi Staff</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_meja_kursi_staff_teknis|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Komputer</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.komputer|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Almari/Filing</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.lemari|true_or_false|safe }}
+						                </div>
+						              </div>
+						            </div>
+						            <div class="col-md-6">
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Klasifikasi (K1+k2) Uk. 0,50m x 0,90m</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_klasifikasi_k1_k2|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Klasifikasi (K1+k2) Uk. 0,50m x 0,90m</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_klasifikasi_k1_k2|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Klasifikasi (M+B) Uk. 0,60m x 1,20m</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_klasifikasi_mb|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Nama Perusahaan</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_nama_perusahaan|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">No. Telp</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_telp|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Alamat</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_alamat|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">NPWP</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_npwp|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Nomor Anggota Asosiasi</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_nama_anggota_asosiasi|true_or_false|safe }}
+						                </div>
+						              </div>
+						            </div>
+						          </div>
+                                </div>
+                                <!-- /tile body -->
+
+                            </section>
+                            <section class="tile">
+
+                                <!-- tile header -->
+                                <div class="tile-header">
+                                    <h1 class="custom-font"><strong>Pertimbangan Dan Saran </strong></h1>
+                                </div>
+                                <!-- /tile header -->
+
+                                <!-- tile body -->
+                                <div class="tile-body">
+									<table id="" class="table table-striped table-bordered table-hover table-condensed">
+										<thead>
+										  <tr>
+										      <th scope="col" class="">SKPD</th>
+										      <th scope="col" class="">NAMA</th>
+										      <th scope="col" class="">Rekomendasi/Saran</th>
+										      <th scope="col" class="">Lampiran</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  {% for q in survey.survey_iujk.all %}
+											<tr>
+												<td>{{q.pegawai.unit_kerja}}</td>
+												<td>{{q.pegawai}} ({{q.pegawai.username}})</td>
+												<td>{{survey|get_rekomendasi:q.pegawai.id|safe}}</td>
+												<td>{{survey|get_berkas:q.pegawai.id|safe}}</td>
+											</tr>
+										  {% endfor %}
+										</tbody>
+									</table>
+                                </div>
+                                <!-- /tile body -->
+
+                            </section>
+                            <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+								<div class="panel-body">
+									<h4>MENERUSKAN PENGAJUAN KE KEPALA BPM-P2T</h4>
+									<br>
+									<label class="checkbox checkbox-custom-alt">
+								        <input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala BPM-P2T untuk ditindaklanjuti.
+							      	</label>
+								</div>
+								<div class="panel-footer">
+									<center>
+										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+									</center>
+								</div>
+							</div>
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
 								{% csrf_token %}
@@ -1061,10 +1243,13 @@
 	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
-	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/iujk.js' %}"></script>
 	<script>
         $(window).load(function(){
 
@@ -1154,11 +1339,115 @@
               });
             }
       }
+        function tambah_skpd_survey(){
+        	$('#button-survey').html('<i class="fa fa-arrow-right"></i> Simpan')
+  			$('#button-survey').attr('disabled',false)
+        	$("#tambah_skpd_survey").modal('show');
+        }
     </script>
 {% endblock %}
 
 {% block extracontent %}
     {{ block.super }}
+
+    <div class="modal fade bs-sinkron-modal-lg" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalSinkronLabel"></h4>
+            </div>
+            <div class="modal-body">
+            <form class="form-horizontal" role="form" action="" method="POST" id="anggotatim">
+            {% csrf_token %}
+            <input type="hidden" id="id_survey_iujk" value="{{survey.id}}" name="survey_iujk"></input>
+              <div class="form-group">
+                <label  class="col-sm-2 control-label" for="skpd">SKPD</label>
+                <div class="col-sm-10">
+                    <select class="form-control chosen-select" name="skpd" onchange="load_pegawai(this); return false">
+                      <option>---Pilih SKPD---</option>
+                      {% for p in skpd_list %}
+                      <option value="{{p.id}}">{{p}} </option>
+                      {% endfor %}
+                    </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label  class="col-sm-2 control-label" for="Pengawai">Pegawai</label>
+                <div class="col-sm-10">
+                    <select class="form-control chosen-select" name="pegawai" id="id_pegawai">
+                      <option>---Pilih Pegawai---</option>
+                    </select>
+                </div>
+              </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" onclick="save_anggota();return false;">Simpan dan Tambahkan Lagi</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" >Selesai</button>
+              </div>
+            </div>
+        </div>
+    </div>
+	<div class="modal fade" id="tambah_skpd_survey" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Tambah SKPD Survey</h3>
+		      	</div>
+		      	<div class="modal-body">
+                    <form role="form" method="POST" action="{% url 'admin:save_survey_ajax' %}" id="form-survey" data-parsley-validate novalidate>
+					{% csrf_token %}
+					<input type="hidden" name="pengajuan_id" value="{{pengajuan.id}}"></input>
+					<input type="hidden" name="kelompok_jenis_izin_id" value="{{pengajuan.kelompok_jenis_izin.id}}"></input>
+				      	<div class="form-group">
+						    <label for="input01"><span style="color: black">SKPD</span> </label>
+						    <select class="form-control chosen-2" name="skpd" required="" data-parsley-trigger="change">
+						    	<option value="">Pilih SKPD</option>
+						    	{% for s in skpd_list %}
+						    		<option value="{{ s.id }}">{{ s.nama_unit_kerja }}</option>
+						    	{% endfor %}
+					      	</select>
+					  	</div>
+
+					  	<div class="form-group">
+						    <label for="input01"><span style="color: black">Permohonan </span> </label>
+						    <select class="form-control chosen-2 mb-10" name="permohonan" required="" data-parsley-trigger="change">
+						    	<option value="">Pilih</option>
+						    	{% for j in jenis_permohonan %}
+						    		<option value="{{ j.0}}">{{ j.1 }}</option>
+						    	{% endfor %}
+					      	</select>
+					  	</div>
+
+					  	<div class="form-group">
+					      	<label><span style="color: black">Tanggal Survey</span> </label>
+					        <div class="input-group datepicker" data-format="L">
+					          <input type="text" class="form-control" placeholder="dd-mm-yyyy" required="" name="tanggal_survey" data-parsley-trigger="change">
+					          <span class="input-group-addon">
+					            <span class="fa fa-calendar"></span>
+					          </span>
+					        </div>
+					    </div>
+
+					    <div class="form-group">
+					      	<label><span style="color: black">Deadline Survey</span> </label>
+					        <div class="input-group datepicker" data-format="L">
+					          <input type="text" class="form-control" placeholder="dd-mm-yyyy" data-parsley-trigger="change" required="" name="deadline_survey">
+					          <span class="input-group-addon">
+					            <span class="fa fa-calendar"></span>
+					          </span>
+					        </div>
+					    </div>
+				    </form>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="survey_save('survey')" id="button-survey" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
+
     <div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">
