@@ -31,11 +31,11 @@ class PemohonForm(forms.ModelForm):
 		# self.fields['desa'].required = True
 		self.fields['alamat'].required = True
 		self.fields['telephone'].required = True
-		self.fields['keterangan_pekerjaan'].required = False
+		# self.fields['keterangan_pekerjaan'].required = False
 
 	class Meta:
 		model = Pemohon
-		fields = ( 'jenis_pemohon', 'nama_lengkap','tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan','keterangan_pekerjaan', 'status')
+		fields = ( 'jenis_pemohon', 'nama_lengkap','tempat_lahir', 'alamat','tanggal_lahir','telephone','hp','kewarganegaraan','desa','email','pekerjaan', 'status')
 
 	def clean_email(self):
 		return self.cleaned_data['email'] or None

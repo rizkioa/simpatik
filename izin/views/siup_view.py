@@ -1064,7 +1064,6 @@ def load_pemohon(request, ktp_):
 			email = ""
 			kewarganegaraan = ""
 			pekerjaan = ""
-			keterangan_pekerjaan = ""
 			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id, jenis_identitas_id=2).last()
 			if paspor_:
 				paspor = paspor_.nomor
@@ -1088,8 +1087,6 @@ def load_pemohon(request, ktp_):
 				kewarganegaraan = pemohon.kewarganegaraan
 			if pemohon.pekerjaan:
 				pekerjaan = pemohon.pekerjaan
-			if pemohon.keterangan_pekerjaan:
-				keterangan_pekerjaan = pemohon.keterangan_pekerjaan
 			if pemohon.desa:
 				desa = pemohon.desa.id
 			if pemohon.desa.kecamatan:
@@ -1100,7 +1097,7 @@ def load_pemohon(request, ktp_):
 				provinsi = pemohon.desa.kecamatan.kabupaten.provinsi.id
 			if pemohon.desa.kecamatan.kabupaten.provinsi.negara:
 				negara = pemohon.desa.kecamatan.kabupaten.provinsi.negara.id
-			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap,'tempat_lahir' : tempat_lahir,'tanggal_lahir' : tanggal_lahir, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan,'keterangan_pekerjaan':keterangan_pekerjaan, 'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
+			data = {'success': True, 'pesan': 'Load data berhasil.', 'data': {'jabatan_pemohon': jabatan_pemohon,'paspor': paspor, 'nama_lengkap': nama_lengkap,'tempat_lahir' : tempat_lahir,'tanggal_lahir' : tanggal_lahir, 'alamat': alamat, 'telephone': telephone, 'hp': hp, 'email': email, 'kewarganegaraan': kewarganegaraan, 'pekerjaan': pekerjaan,'desa': desa, 'kecamatan': kecamatan, 'kabupaten': kabupaten, 'provinsi': provinsi, 'negara': negara }}
 	else:
 		data = {'success': False, 'pesan': "Riwayat tidak ditemukan" }
 	return HttpResponse(json.dumps(data))

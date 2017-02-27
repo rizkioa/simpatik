@@ -40,7 +40,6 @@ function load_pemohon(ktp_){
                     $('#email_pemohon_load').val(respon.data.email);
                     $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
                     $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-                    $('#id_keterangan_pekerjaan').val(respon.data.keterangan_pekerjaan).prop('selected',true).trigger("chosen:updated");
                     
                 }
                 else{
@@ -56,7 +55,6 @@ function load_pemohon(ktp_){
                     $('#email_pemohon_load').val("");
                     $('#kewarganegaraan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
                     $('#pekerjaan_pemohon_load').val("").prop('selected',true).trigger("chosen:updated");
-                    $('#id_keterangan_pekerjaan').val("").prop('selected',true).trigger("chosen:updated");
                     if ($.cookie('id_pemohon') === "0"){
                         $('#id_negara').val("").prop('selected',true).trigger("chosen:updated");
                         $('#id_provinsi').val("").prop('selected',true).trigger("chosen:updated");
