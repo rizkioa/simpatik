@@ -191,33 +191,26 @@
               </center>
               <center>
                 <font style="font-size: 15px;font-family: Arial;letter-spacing:  0.01cm;">TENTANG<br>
-              PEMBERIAN IZIN LOKASI
+              PEMBERIAN IZIN PEMAKAIAN TANAH<br>
+              MILIK DAN/ATAU YANG DIKUASAI PEMERINTAH KABUPATEN KEDIRI
                 </font><br><br>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;">
-                  KEPALA DINAS PENANAMAN MODAL DAN<br>
-                  PELAYANAN PERIZINAN TERPADU SATU PINTU,
+                  SEKRETARIS DAERAH,
                 </font>
               </center><br>
               <table width="100%" border="0" class="sk-justify">
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">Menimbang</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  {% if sk_.sk_menimbang_a %}
                   <td style="vertical-align: top;padding-top: 1px;">a.</td>
-                  <td>{{sk_.sk_menimbang_a}}</td>
-                  {% else %}
-                  <td></td>
-                  <td></td>
-                  {% endif %}
+                  <td>bahwa sesuai permohonan Sdr. {{pengajuan.pemohon|upper}} dan dalam rangka meningkatkan tertib administrasi barang daerah, khususnya pemakaian/penggunaan tanah milik dan/atau yang dikuasai Pemerintah Kabupaten Kediri dan untuk peningkatan Pendapatan Asli Daerah dari sektor retribusi daerah, maka dipandang perlu menertibkan, meneliti dan menginventarisir pemakaian /penggunaan Kekayaaan Daerah ; </td>
                 </tr>
-                {% if sk_.sk_menimbang_b %}
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;"></td>
                   <td style="vertical-align: top;padding-top: 1px;"></td>
                   <td style="vertical-align: top;padding-top: 1px;">b.</td>
-                  <td>{{sk_.sk_menimbang_b}}</td>
+                  <td>bahwa permohonan Sdr. {{pengajuan.pemohon|upper}} tersebut telah memenuhi persyaratan yang ditentukan, maka  perlu diterbitkan izin yang ditetapkan dengan Keputusan Sekretaris Daerah Kabupaten Kediri. </td>
                 </tr>
-                {% endif %}
                 {% if sk_.sk_menimbang_c %}
                 <tr>
                   <td></td>
@@ -242,69 +235,55 @@
                 <td style="vertical-align: top;padding-top: 1px;width: 105px;">Mengingat</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
                 <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                <td>Undang-Undang Nomor 5 Tahun 1960 tentang Peraturan Dasar Pokok-Pokok Agraria;</td>
+                <td>Undang-Undang Nomor 28 Tahun 1999 tentang Penyelenggaraan Negara yang Bersih dan Bebas dari Korupsi, Kolusi dan Nepotisme ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">2.</td>
-                <td>Undang-Undang Nomor 25 Tahun 2007 tentang Penanaman Modal;</td>
+                <td>Undang-Undang Nomor 32 Tahun 2004 tentang Pemerintahan Daerah sebagaimana telah diubah dengan Undang-Undang Nomor 12 Tahun 2008 ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">3.</td>
-                <td>Undang-Undang Nomor 27 Tahun 2007 tentang Penataan Ruang;</td>
+                <td>Undang-Undang Nomor 25 Tahun 2009 tentang Pelayanan Publik ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">4. </td>
-                <td>Undang-Undang Nomor 12 Tahun 2011 tentang Pembentukan Peraturan Perundang-undangan;</td>
+                <td>Undang-Undang Nomor 28 Tahun 2009 tentang Pajak Daerah dan Retribusi Daerah ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">5.</td>
-                <td>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah;</td>
+                <td>Peraturan Pemerintah Nomor 20 Tahun 2001 tentang Pembinaan dan Pengawasan Penyelenggaraan Pemerintahan Daerah ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">6. </td>
-                <td>Peraturan Menteri Agaria da Tata Ruang/Kepala Badan Pertahanan Nasional Nomor 5 Tahun 2015 tentang Izin Lokasi;</td>
+                <td>Keputusan Menteri Dalam Negeri Nomor 32 Tahun 1998 tentang Manual Administrasi Barang Daerah ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">7.</td>
-                <td>Peraturan Kepala Badan Pertahanan Nasional Nomor 2 Tahun 2011 tentang Pedoman Pertimbangan Teknis Pertahanan dalam Penerbitan Izin Lokasi, Penetapan Izin Lokasi dan Izin Perubahan Penggunaan Tanah;</td>
+                <td>Peraturan Daerah Kabupaten Kediri Nomor 4 Tahun 2015 tentang Perubahan atas Peraturan Daerah Nomor 17 Tahun 2011 tentang Retribusi Pemakaian Kekayaan Daerah ;</td>
               </tr>
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">8.</td>
-                <td>Peraturan Daerah Kabupaten Kediri Nomor 14 Tahun 2011 tentang Tata Ruang Wilayah Kabupaten Kediri;</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">9.</td>
-                <td>Peraturan Daerah Kabupaten Kediri Nomor 3 Tahun 2015 tentang Organisasi dan Tata Kerja Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu (BPM-P2TSP);</td>
+                <td>Keputusan Bupati Kediri Nomor 1082 Tahun 2003 tentang Pelimpahan Wewenang Pengambilan Keputusan yang Bersifat mengikat ;</td>
               </tr>
             </table>
             </div>
         </div>
       <div class="page">
         <div class="subpage">
-              <table width="100%" border="0" class="sk-justify">
-                    <tr>
-                      <td></td>
-                      <td style="vertical-align: top;padding-top: 1px;width: 105px;"></td>
-                      <td style="vertical-align: top;padding-top: 1px;">10.</td>
-                      <td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu Kabupaten Kediri sebagaimana telah diubah dengan Peraturan Bupati Kediri Nomor 17 Tahun 2016;</td>
-                    </tr>
-              </table><br>
               <center>
                 <font><b>MEMUTUSKAN :</b>
                 </font>
@@ -313,70 +292,78 @@
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">PEMBERIAN IZIN LOKASI UNTUK {{pengajuan.rencana_penggunaan|upper}} ATAS NAMA {% if pengajuan.perusahaan %}{{pengajuan.perusahaan|upper}}{% else %}{{pengajuan.pemohon|upper}}{% endif %} LOKASI DESA {{pengajuan.desa}} KECAMATAN {{pengajuan.desa.kecamatan}} {{pengajuan.desa.kecamatan.kabupaten}}</td>
+                  <td colspan="3"></td>
                 </tr>
+              </table><br>
+              <table width="100%" border="0" class="sk-justify">
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Memberikan Izin Lokasi kepada {{pengajuan.pemohon}} beralamat di {{pengajuan.pemohon.desa.kecamatan.kabupaten|title}} untuk tanah seluas {{pengajuan.luas}} M&sup2; Desa {{pengajuan.desa|title}} Kecamatan {{pengajuan.desa.kecamatan|title}} {{pengajuan.desa.kecamatan.kabupaten|title}}</td>
+                  <td colspan="3">Memberikan izin menempati bangunan milik dan/atau yang dikuasai Pemerintah Kabupaten Kediri kepada {{pengajuan.pemohon|upper}} alamat {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} lokasi {{pengajuan.lokasi}} ukuran {{pengajuan.luas}} M&sup2;.</td>
                 </tr>
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Semua persyaratan dan ketentuan serta tahapan perizinan harus dipatuhi sesuai peraturan perundangan yang berlaku</td>
+                  <td colspan="3">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama  3 (tiga) tahun terhitung sejak tanggal 01-01-2016 sampai dengan 31-12-2018,  dengan ketentuan : </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
+                  <td colspan="2">Apabila pemegang izin masih ingin memperpanjang, harus mengajukan permohonan perpanjangan selambat-lambatnya 6 (enam) bulan sebelum masa berlaku izinnya berakhir.</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="vertical-align: top;padding-top: 1px;" align="right">b.</td>
+                  <td colspan="2">Apabila pemegang izin sampai masa berlaku izinnya berakhir tidak mengajukan perpanjangan, maka yang bersangkutan  dianggap tidak memperpanjang dan terhadap izinnya dinyatakan tidak berlaku lagi.</td>
                 </tr>
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETIGA</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Hak dan Kewajiban Pemegang Izin :</td>
+                  <td colspan="3">Sehubungan dengan pemberian izin sebagaimana dimaksud pada diktum KESATU, yang bersangkutan mempunyai hak dan kewajiban sebagai berikut : </td>
                 </tr>
                 <tr>
                   <td></td>
                   <td></td>
-                  <td style="vertical-align: top;padding-top: 1px;" align="right">1.</td>
-                  <td colspan="2">Perolehan tanah harus dilakukan secara langsung antara pihak-pihak yang berkepentingan melalui jual beli atau secara pelepasan hak yang dilaksanakan dengan pembuatan akta jual beli dihadapan PPAT atau akta pelepasan hak dihadapan Kepala Kantor Pertanahan Kabupaten Kediri atau notaries dan/atau camat setempat dengan pemberian ganti kerugian yang bentuk dan besarnya secara musyawarah;</td>
+                  <td style="vertical-align: top;padding-top: 1px;">a.</td>
+                  <td colspan="2">Tidak boleh menyerahkan haknya kepada pihak lain ;</td>
                 </tr>
                 <tr>
                   <td ></td>
                   <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">2.</td>
-                  <td colspan="3">Perolehan tanah harus diselesaikan dalam jangka waktu 3 (tiga) tahun dan dapat diperpanjang 1 (satu) kali, 1 (satu) tahun serta dilaporkan perkembanganya secara periodik setiap 3 (tiga) bulan sekali oleh penerima Izin Lokasi kepada Kepada Kantor Pertanahan Kabupaten Kediri dengan tembusan Kepala Kantor Wilayah Badan Pertanahan Nasional Provinsi Jawa Timur;</td>
+                  <td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+                  <td colspan="3">Kios tersebut tetap milik Pemerintah Kabupaten Kediri;</td>
                 </tr>
                 <tr>
                   <td ></td>
                   <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">3.</td>
-                  <td colspan="3">Sebelum tanah yang bersangkutan dibebaskan oleh Pemegang Izin Lokasi, maka semua hak atau kepentingan pihak lain yang sudah ada atas tanah yang bersangkutan tidak berkurang atau tetap diakui haknya, termasuk kewenangan yang menurut hukum dipunyai oleh pemegang hak atas tanah untuk memperoleh tanda bukti hak (sertipikat) dan kewenangan untuk menggunakan dan memanfaatkan tanahnya bagi keperluan pribadi atau usahanya sesuai Rencana Tata Ruang yang berlaku serta kewenangan untuk mengalihkannya kepada pihak lain;</td>
+                  <td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+                  <td colspan="3">Diberikan kesempatan  mengatur sebaik-baiknya untuk memperindah lingkungan dan tidak diperkenankan merubah bangunan kios tanpa seizin Kepala Daerah ;</td>
                 </tr>
                 <tr>
                   <td ></td>
                   <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">4.</td>
-                  <td colspan="3">Untuk tanah yang sudah diperoleh,penerimaan Izin Lokasi diwajibkan mengajukan permohonan hak atas tanah untuk diterbitkan sertifikat tanah sesuai dengan peruntukan dan seterusnya;</td>
+                  <td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+                  <td colspan="3">Apabila sewaktu-waktu kios tersebut digunakan oleh Pemerintah Daerah, maka pemegang izin harus mengosongkan kios dimaksud tanpa ganti rugi ;</td>
                 </tr>
                 <tr>
                   <td ></td>
                   <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">5.</td>
-                  <td colspan="3">Pemegang Izin Lokasi wajib menghormati kepentingan pihak-pihak lain atas tanah yang belum dibebaskan, tidak menutup atau mengurangi aksesbilitas yang dimiliki oleh masyarakat di sekitar lokasi dan menjaga serta melindungi kepentingan umum ;</td>
+                  <td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
+                  <td colspan="3">Apabila kios tersebut sudah tidak dipergunakan/ditempati lagi oleh pemegang izin, supaya menyerahkan kembali kepada Pemerintah Daerah.</td>
                 </tr>
                 <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">6.</td>
-                  <td colspan="3">Pemegang Izin Lokasi hanya dapat memperoleh tanah sesuai dengan peta Izin Lokasi ;</td>
+                  <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KEEMPAT</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td style="vertical-align: top;padding-top: 2px;width: 20px;">a.</td>
+                  <td  colspan="2" width="2000">Atas pemberian izin sebagaimana dimaksud pada diktum KESATU, yang bersangkutan dikenakan retribusi kios sebesar Rp. 50.400,00 (lima puluh ribu empat ratus rupiah) setiap bulan  sesuai dengan ketentuan dalam Peraturan Daerah yang berlaku ;</td>
                 </tr>
                 <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">7.</td>
-                  <td colspan="3">Pemegang Izin Lokasi yang memperoleh tanah diluar lokasi yang ditetapkan dalam Izin Lokasi, maka perolehan hak atas tanahnya tidak dapat diproses ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">8.</td>
-                  <td colspan="3">Bahwa apabila ada perubahan penggunaan tanah selain untuk usaha Perumahan maka harus mendapat persetujuan dari Bupati Kediri.</td>
+                  <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td style="vertical-align: top;padding-top: 2px;width: 20px;">b.</td>
+                  <td  colspan="2" width="2000">Retribusi sebagaimana dimaksud huruf a harus dibayar lunas melalui Pemegang Kas Daerah (Bendahara Penerima pada Dinas Pendapatan Daerah Kabupaten Kediri) selambat-lambatnya pada saat penyerahan izin menempati kios kepada yang bersangkutan.</td>
                 </tr>
               </table>
             </div>
@@ -384,24 +371,12 @@
       <div class="page">
         <div class="subpage">
             <table width="100%" border="0" class="sk-justify">
-              <tr>
-                <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KEEMPAT</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
-                <td  colspan="3" width="2000">Izin Lokasi ini bukan merupakan pemberian hak atas tanah dan diberikan untuk mengurus perizinan selanjutnya pada instansi yang berwenang ;</td>
-              </tr>
-              <tr>
-                <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
-                <td  colspan="3" width="2000">Apabila dikemudian hari ada penetapan/keputusan yang bersifat tetap dan mengikat terhadap penggunaan tanah lainnya yang berada di dalam areal Izin Lokasi {% if pengajuan.perusahaan %}{{pengajuan.perusahaan|title}}{% else %}{{pengajuan.pemohon|title}}{% endif %} maka keputusan pemberian Izin Lokasi ini akan ditinjau kembali ;</td>
-              </tr>
-              <tr>
-                <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
-                <td  colspan="3" width="2000">Keputusan ini berlaku selama 3 (tiga) tahun sejak tanggal ditetapkan dengan ketentuan apabila dikemudian hari terdapat kekeliruan dalam penetapannya, akan dirubah dan diperbaiki sebagaimana mestinya. </td>
-              </tr>
+                <tr>
+                  <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KELIMA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <!-- <td style="vertical-align: top;padding-top: 2px;width: 20px;"></td> -->
+                  <td  colspan="3" width="2000">Keputusan ini berlaku sejak tanggal ditetapkan dan  apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
+                </tr>
             </table>
             <table width="100%" border="0" class="font">
             <tr>
@@ -418,11 +393,8 @@
               <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
                 <p style="font-size:14px; padding-left: 20%;">
                   <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
-                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
+                    <p style="font-size:15px;" align="center"> <font size="2pt">a.n. BUPATI KEDIRI<br>SEKRETARIS DAERAH </font></p>
+                    <p style="font-size:15px;" align="center">ttd</p>
                     <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
                     <!-- Pembina Tk.l<br>
                     NIP: {{nip_kepala_dinas}} -->
@@ -438,23 +410,13 @@
                   <tr>
                     <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
                     <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                    <td width="100%">Sdr. Kepala Dinas PUPR Kabupaten Kediri ;</td>
+                    <td width="100%">Sdr. Kepala DISPENDA Kabupaten Kediri ;</td>
                   </tr>   
                   <tr>
                     <td></td>
                     <td style="vertical-align: top;padding-top: 1px;">2.</td>
-                    <td>Sdr. Kepala Dinas Perumahan dan Kaw. Permukiman Kabupaten Kediri;</td>
-                  </tr>   
-                  <tr>
-                    <td></td>
-                    <td style="vertical-align: top;padding-top: 1px;">3.</td>
-                    <td>Sdr. Ka. Kantor Pertanahan Kabupaten Kediri;</td>
-                  </tr>    
-                  <tr>
-                    <td></td>
-                    <td style="vertical-align: top;padding-top: 1px;">4.</td>
-                    <td>Sdr. Dir. {% if pengajuan.perusahaan %} {{ pengajuan.perusahaan }} {% else %} {{ pengajuan.pemohon }} {% endif %}
-                      <!-- {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }} -->
+                    <td>Sdr. {{pengajuan.pemohon}}<br>
+                      {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}
                     </td>
                   </tr>   
                 </table>         
