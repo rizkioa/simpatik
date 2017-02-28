@@ -50,6 +50,8 @@ INSTALLED_APPS = (
     'pembangunan',
     # 'telebot',
     'raven.contrib.django.raven_compat',
+    'mobile',
+    'tastypie',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -99,10 +101,11 @@ DATABASES = {
         'USER':'simpatik',
         'PASSWORD':'!QAZ@WSX',
         'PORT': '3306',
-        'OPTIONS': {
-            "init_command": "SET foreign_key_checks = 0;",
-            # "init_command": "SET storage_engine=INNODB",
-         },
+        'HOST': '127.0.0.1',
+        # 'OPTIONS': {
+        #     "init_command": "SET foreign_key_checks = 0;",
+        #     # "init_command": "SET storage_engine=INNODB",
+        #  },
     }
 }
 

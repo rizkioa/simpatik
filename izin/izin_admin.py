@@ -158,13 +158,16 @@ class IzinAdmin(admin.ModelAdmin):
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		if request.user.is_superuser:
-			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','get_status_pengajuan', 'button_cetak_pendaftaran')
-		elif not request.user.is_superuser:
-			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
+			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan','get_status_pengajuan', 'button_cetak_pendaftaran')
 		elif func_view.__name__ == 'izinterdaftar':
-			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan', 'get_status_proses', 'linkdetilizin')
+			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan')
 		elif func_view.__name__ == 'semua_pengajuan':
-			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','get_status_pengajuan', 'button_cetak_pendaftaran', 'linkdetilizin')
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan','get_status_pengajuan', 'button_cetak_pendaftaran')
+		# elif func_view.__name__ == 'verifikasi_skizin_kadin':
+		else:
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon', 'jenis_permohonan', 'get_status_pengajuan','button_cetak_pendaftaran')
+		# else:
+		# 	list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'button_cetak_pendaftaran')
 		# else:
 			# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses')
 		return list_display
@@ -256,7 +259,7 @@ class IzinAdmin(admin.ModelAdmin):
 	get_kelompok_jenis_izin.short_description = "Izin Pengajuan"
 
 	def get_tanggal_pengajuan(self, obj):
-		return obj.created_at
+		return obj.created_at.strftime("%d-%m-%y")
 	get_tanggal_pengajuan.short_description = "Tgl. Pengajuan"
 
 	def get_no_pengajuan(self, obj):
@@ -364,7 +367,7 @@ class IzinAdmin(admin.ModelAdmin):
 		elif obj.kelompok_jenis_izin.kode == "TDUP":
 			link_ = reverse('admin:view_pengajuan_izin_tdup', kwargs={'id_pengajuan_izin_': obj.id})
 		btn = mark_safe("""
-				<a href="%s" class="btn btn-darkgray btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Proses</span> </a>
+				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )
 		return btn
 	button_cetak_pendaftaran.short_description = "Aksi"

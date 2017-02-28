@@ -1,103 +1,49 @@
 {% load i18n admin_static staticfiles widgets access %}
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title></title>
+	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+	<title>Cetak SKIZIN TDUP - {{pengajuan.no_izin}}</title>
+	<link rel="icon" type="image/ico" href="{% static "images/SIMPATIK.ico" %}" />
+	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
 	<style type="text/css">
-    
-	    hr.style14 { 
-	        /*border: 0; 
-	        height: 1px; 
-	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); */
-	        border-top: 3px double #8c8b8b;
-	      }
-	    * {
-	      font-family: "Open Sans", Helvetica, Arial, sans-serif;
-	    }
 		body {
-	        width: 100%;
-	        height: 100%;
-	        margin: 0;
-	        padding: 0;
-	        background-color: #FAFAFA;
-	        font: 12pt "Open Sans";
-	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
-	    }
-	    * {
-	        box-sizing: border-box;
-	        -moz-box-sizing: border-box;
-	    }
-	    .page {
-	        width: 21.5cm;
-	        min-height: 33cm;
-	        padding: 5mm;
-	        margin: 5mm auto;
-	        border: 1px #D3D3D3 solid;
-	        border-radius: 5px;
-	        background: white;
-	        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-	    }
-	    .subpage {
-	        padding: 0.5cm;
-	        padding-right: 60px;
-	        /*border: 5px red solid;*/
-	        /*height: 257mm;*/
-	        height: 330mm;
-	        width: 216mm;
-	        /*outline: 2cm #FFEAEA solid;*/
-	    }
-	    
-	    @page {
-	        size: F4;
-	        margin: 0;
-	    }
-	    @media print {
-	        html, body {
-	            width: 210mm;
-	            height: 330mm;        
-	        }
-	        .page {
-	            margin: 0;
-	            border: initial;
-	            border-radius: initial;
-	            width: initial;
-	            min-height: initial;
-	            box-shadow: initial;
-	            background: initial;
-	            page-break-after: always;
-	        }
-	    }
-
-	    /*.title, .tabel{
-			border-bottom: 1px solid #7d7d7d;
-	    }
-	    .title h3{
-	    	margin-top: 0px;
-	    }
-	    .tabel{
-	    	padding-top: 0px;
-	    	padding-bottom: 10px;
-	    }
-
-	    table {
-	        border-collapse: collapse;
-		}*/
-
-		.ceklist {
-		    border: 1px solid black;
+  			/*background: rgb(204,204,204);*/
+  			background-color: #FAFAFA; 
 		}
-	    .font {
-	        font-size: 12px;
-	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+		* {
+	      font-family: Arial;
 	    }
-	    #print-modal {
-	        margin: 0 0 0 -393px;
-	    }
-	    .style2 {
-			border-top: 3px double #8c8b8b;
+		page {
+		  background: white;
+		  display: block;
+		  margin: 0 auto;
+		  margin-bottom: 0.5cm;
+		  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+		  padding: 60px;
+		  border-radius: 6px;
+		}
+		page[size="F4"] {  
+		  width: 8.27in;
+		  height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
+		}
+
+		/*page[size="F4"][layout="portrait"] {
+		  width: 12.99in;
+		  height: 8.26in; 
+		}*/
+		@media print {
+		  body, page {
+		    margin: 0;
+		    box-shadow: 0;
+		  }
+		  @page { 
+		  	margin: 0; /* Menghapus header & Footer browser */
+		  	size: 8.27in 12.99in; /* Ngefixkan kertas ke F4 Landscape*/
+		  }
+		  page{
+		  	border-radius: 0;
+		  }
 		}
 		.button {
 		    background-color: #4CAF50; /* Green */
@@ -123,32 +69,49 @@
 		    border-radius: 8px;
 		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 		}
-		@media print {
-		  .hidden-print {
-		    display: none !important;
-		  }
-		}
-		/*table, td, th {    
-		    border: 1px solid #ddd;
-		    text-align: left;
-		}*/
-
-		table {
-		    border-collapse: collapse;
+		/* HALAMAN */
+		#kop_surat_id {
+			display: inline-block;
+		    margin-bottom: 5px;
+    		margin-top: 15px;
+		    text-align: center;
 		    width: 100%;
 		}
-		th, td {
-		    padding: 7px;
+		.isi_kop_surat {
+		    display: inline-block;
+		    margin-left: 21px;
+		    max-width: 740px;
 		}
+		.double-lines div {
+		    /*border-bottom: 2px solid gray;
+    		border-top: 2px solid black;
+    		height: 1px; 
+    		width: 900px; 
+    		display: inline-block;*/
+    		border-top: 3px double #8c8b8b;
+		}
+		hr.style14 { 
+	        /*border: 0; 
+	        height: 1px; 
+	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); */
+	        border-top: 3px double #8c8b8b;
+	      }
+		/*.row{
+			padding: 20px;
+		}*/
 		.row::after {
 		    content: "";
 		    clear: both;
 		    display: block;
-		    padding-block-start: 20px;
+		    /*padding-block-start: 20px;*/
+		    /*padding: 20px;*/
 		}
 		[class*="col-"] {
 		    float: left;
-		    padding: 15px;
+		    padding: 10px;
 		    /*border: 1px solid red;*/
 		}
 		.col-1 {width: 8.33%;}
@@ -164,28 +127,6 @@
 		.col-11 {width: 91.66%;}
 		.col-12 {width: 100%;}
 
-		@media print {
-	 		.printhide { 
-	 			display: none !important; 
-	 			/*color: white;
-	 			background-color: white;*/
-			}
-			.logokabhide{
-				display: none !important; 
-			}
-			.subpage{
-				padding-top: 200px;
-			}
-		}
-
-		.isi{
-			font-size: 14px;
-		}
-
-		.images{
-			width: 3cm;
-    		height: 4cm;
-		}
 		#qrcodeTable canvas{
 			padding: 2px;
 			border-radius: 3px;
@@ -194,94 +135,166 @@
 		    width: 110px;
 			height: 110px;
 		}
-
-		/*table tr:last-child td:first-child {
-		    border-bottom-left-radius: 10px;
+		.skizin{
+			font-size: 14px;
+			padding: 5px;
 		}
-
-		table tr:last-child td:last-child {
-		    border-bottom-right-radius: 10px;
-		}*/
-		@media print { body { display: none !important; } }
+		table {
+		    border-collapse: collapse;
+		    width: 100%;
+		}
+		th, td {
+		    padding: 7px;
+		}
+		.tdnone{
+			border-left: none;
+			border-right: none;
+		}
+		@media print { 
+			body { 
+				display: none !important; 
+			}
+			.printhide { 
+	 			display: none !important; 
+	 			/*color: white;
+	 			background-color: white;*/
+			}
+			.printpadding{
+				display: block !important;
+				padding-bottom: 4cm;
+			} 
+		}
 	</style>
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1%}
-		{% if request.user|has_group:'Cetak' %} 
+		{% if request.user|has_group:'Cetak' or request.user.is_superuser %} 
 			<script>
 				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
 			</script>
 		{% endif %}
 	{% endif %}
-	<title>Cetak SKIzin SIUP - {{pengajuan.no_izin}}</title>
-	<link rel="icon" type="image/ico" href="{% static "images/SIMPATIK.ico" %}" />
 </head>
-<body id="body">
-{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
-	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
-		<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+<body>
+	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px; position:fixed; left:0; top:0">
+		<a class="button hidden-print" onclick="$(this).parent().css('display', 'none'); window.print(); $(this).parent().css('display', 'block');" href="#" style="margin-bottom: 10px;">
 			<img src="{% static 'images/icon-print.png' %}">
 		</a>
 		<br>
-		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()">
 			<img src="{% static 'images/icon-close.png' %}">
 		</a>
 	</div>
-{% endif %}
-	<div class="book">
-	    <div class="page">
-	        <div class="subpage">
-	        	<!-- <table>
-	        		<tr>
-	        			<td></td>
-	        		</tr>
-	        	</table> -->
-	        	<div class="printhide">
-	        		<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
-		        		<tr>
-		        			<td>
-		        				<img class="logokabhide" src="{% static 'images/kabkediri.png' %}" width="100px">
-		        			</td>
-		        			<td>
-		        				<center>
-		        					<p class="printhide">
-		        						<font class="printhide" style="font-size: 23px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU</b></font><br>
-		        						<font class="printhide">Jl. Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>
-		        						Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></font><br>
-		        						<font class="printhide" style="font-size: 25px;">KEDIRI</font>
-		        					</p>
-		        				</center>
-		        			</td>
-		        		</tr>
-		        	</table>
-	        	</div>
-	        	<hr class="style14 printhide">
-	        	<div class="row">
-	        		<div class="col-2">
-	        		
-		        	</div>
-		        	<div class="col-8">
-			        	<center>
-			        		<font style="font-size: 22px"><b>SURAT IZIN USAHA PERDAGANGAN</b></font><br>
-			        		<font style="font-size: 20px"><i>( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</i></font><br>
-			        		<font style="font-size: 20px">Nomor : {% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}Tidak Ada{% endif %}</font><br>
-			        	</center>
-			        </div>
-			        <div class="col-2 qrcode" style="padding-left: 0px;">
 
-			        	<div id="qrcodeTable" >
-			        	</div>
-			        </div>
+	<page size="F4">
+		{% include 'front-end/include/skizin/cop_surat.html' %}
+		<div style="display: none; width: 100%;" class="printpadding">
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-1">
+			</div>
+        	<div class="col-8">
+	        	<center>
+	        		<b>
+	        		<span style="font-size: 23px;">SURAT IZIN USAHA PERDAGANGAN</span><br>
+	        		<span style="font-size: 18px;">( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</span><br>
+	        		<span style="font-size: 18px;">Nomor : {% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}TIDAK ADA{% endif %}</span><br>
+	        		</b>
+	        	</center>
+	        </div>
+	        <div class="col-2 qrcode" style="padding-left: 0px;">
+	        	<div id="qrcodeTable">
 	        	</div>
-	        	{{skizin.body_html|safe}}
-	        </div>    
-	    </div>
-	</div>
-	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+	        </div>
+    	</div>
+    	<br>
+    	<table width="100%" class="skizin" border="1">
+    		<tr>
+    			<td class="tdnone" width="40%"><b>NAMA PERUSAHAAN</b></td>
+    			<td class="tdnone" width="5%">:</td>
+    			<td class="tdnone" width="55%"><b>{{perusahaan.nama_perusahaan}}</b></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><b>{{pemohon.nama_lengkap.upper}} ({{pemohon.jabatan_pemohon|default_if_none:'-'}})</b></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>ALAMAT PERUSAHAAN</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{alamat_perusahaan.upper}}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>NPWP</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{perusahaan.npwp}}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>NOMOR TELEPON</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{perusahaan.telepon}}  {% if perusahaan.fax %}FAX : {{perusahaan.fax}}{% endif %}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><b>{{kekayaan_bersih}},-</b><br>({{terbilang.upper}})</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>KELEMBAGAAN</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><b>{% if pengajuan.kelembagaan %}{% for k in pengajuan.kelembagaan.all %}{{k.kelembagaan.upper}}{% endfor %}{% endif %}</b></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>KEGIATAN USAHA (KBLI/*)</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli.upper }}) {% endfor %}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>BARANG/JASA DAGANGAN UTAMA</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</td>
+    		</tr>
+    		<tr>
+    			<td colspan="3" align="justify">
+    				<b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTAR ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b>
+    			</td>
+    		</tr>
+    	</table>
+    	<br>
+    	<br>
+    	<br>
+    	<div style="float: left; width: 50%">
+    		<div style="padding-left: 70%;padding-top: 46px;">
+    			{% if pemohon.berkas_foto.last %}
+    				<img src="{{pemohon.berkas_foto.last}}" style="width: 3cm;height: 4cm;">
+    			{% else %}
+    				<img src="{% static 'images/no-avatar.jpg' %}" style="width: 3cm;height: 4cm;">
+    			{% endif %}
+    		</div>
+    	</div>
+    	<div style="float: right; width: 50%">
+        	<p style="font-size:17px; padding-left: 0%;" align="center">
+                {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
+                
+                {% if skizin.nama_pejabat %}
+                    <br>Kepala DPMPTSP
+                    <br>KABUPATEN KEDIRI
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <u><b>{{ skizin.nama_pejabat }}</b></u><br>
+                    <span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
+                    <span>NIP: {{skizin.nip_pejabat}}</span>
+                {% endif %}
+            </p>
+        </div>
+	</page>
 	<script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
 	<script type="text/javascript">
         lokasi = document.createElement("a");
         lokasi.href = location.href;
         window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
-        // alert(__base_url__)
     </script>
 
 	<script type="text/javascript">
@@ -345,19 +358,7 @@
 
     			image: logo,
 			});
-			
 		{% endif %}
-
-		$(window).load(function(){
-			angka = parseInt("{{pengajuan.kekayaan_bersih}}")
-
-			if (typeof(angka) != 'string') angka = angka.toString();
-			var reg = new RegExp('([0-9]+)([0-9]{3})');
-			while(reg.test(angka)) angka = angka.replace(reg, '$1.$2');
-			// alert(angka)
-			$('#id_kekayaan').replaceWith('Rp. '+angka+',-')
-			return angka;
-		})
 	</script>
 </body>
 </html>
