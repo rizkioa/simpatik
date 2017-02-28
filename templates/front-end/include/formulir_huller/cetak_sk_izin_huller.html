@@ -454,7 +454,156 @@
                 </td>
               </tr>
             </table><hr>
-          </div>
+        </div>
+      </div>
+      <div class="page">
+        <div class="subpage">
+          <h5>A. Data Peralatan yang digunakan</h5>
+          <p style="font-size:13px">1. Montor Penggerak</p>
+          <table width="100%" class="font" border="1">
+              <thead>
+                  <tr>
+                      <th align="center">Jenis</th>
+                      <th align="center">Type / Model</th>
+                      <th align="center">PK</th>
+                      <th align="center">Buatan / Merk</th>
+                      <th align="center">Jumlah Unit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr align="center">
+                      <td>Montor Bensin</td>
+                      <td>{{motor_bensin.type_model|default_if_none:"-"}}</td>
+                      <td>{{motor_bensin.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{motor_bensin.buatan|default_if_none:"-"}}</td>
+                      <td>{{motor_bensin.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+                  <tr align="center">
+                      <td>Montor Diesel</td>
+                      <td>{{motor_diesel.type_model|default_if_none:"-"}}</td>
+                      <td>{{motor_diesel.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{motor_diesel.buatan|default_if_none:"-"}}</td>
+                      <td>{{motor_diesel.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+                  <tr align="center">
+                      <td>Diesel Generating Set</td>
+                      <td>{{diesel_generating_set.type_model|default_if_none:"-"}}</td>
+                      <td>{{diesel_generating_set.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{diesel_generating_set.buatan|default_if_none:"-"}}</td>
+                      <td>{{diesel_generating_set.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+              </tbody>
+          </table>
+          <p style="font-size:13px">2. Mesin Pecah Kulit / Pengupas Gabah</p>
+          <table width="100%" class="font" border="1">
+              <thead>
+                  <tr>
+                      <th align="center">Jenis</th>
+                      <th align="center">Type / Model</th>
+                      <th align="center">PK</th>
+                      <th align="center">Kapasitas</th>
+                      <th align="center">Buatan / Merk</th>
+                      <th align="center">Jumlah Unit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr align="center">
+                      <td>Rubber Roll / Roll Karet</td>
+                      <td>{{rubber_roll.type_model|default_if_none:"-"}}</td>
+                      <td>{{rubber_roll.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{rubber_roll.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{rubber_roll.buatan|default_if_none:"-"}}</td>
+                      <td>{{rubber_roll.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+                  <tr align="center">
+                      <td>Flash Type / Type Banting</td>
+                      <td>{{flash_type.type_model|default_if_none:"-"}}</td>
+                      <td>{{flash_type.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{flash_type.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{flash_type.buatan|default_if_none:"-"}}</td>
+                      <td>{{flash_type.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+              </tbody>
+          </table>
+          <p style="font-size:13px">3. Mesin Pemisah Gabah dan Beras Pecah Kulit</p>
+          <table width="100%" class="font" border="1">
+              <thead>
+                  <tr>
+                      <th align="center">Jenis</th>
+                      <th align="center">Type / Model</th>
+                      <th align="center">PK</th>
+                      <th align="center">Kapasitas</th>
+                      <th align="center">Buatan / Merk</th>
+                      <th align="center">Jumlah Unit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr align="center">
+                      <td>Gedongan</td>
+                      <td>{{gedogan.type_model|default_if_none:"-"}}</td>
+                      <td>{{gedogan.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{gedogan.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{gedogan.buatan|default_if_none:"-"}}</td>
+                      <td>{{gedogan.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+                  <tr align="center">
+                      <td>Dimple Plate</td>
+                      <td>{{dimple_plate.type_model|default_if_none:"-"}}</td>
+                      <td>{{dimple_plate.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{dimple_plate.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{dimple_plate.buatan|default_if_none:"-"}}</td>
+                      <td>{{dimple_plate.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+                  <tr align="center">
+                      <td>Screen</td>
+                      <td>{{screen.type_model|default_if_none:"-"}}</td>
+                      <td>{{screen.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{screen.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{screen.buatan|default_if_none:"-"}}</td>
+                      <td>{{screen.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+              </tbody>
+          </table>
+          <p style="font-size:13px">4. Mesin Penyosoh Beras</p>
+          <table width="100%" class="font" border="1">
+              <thead>
+                  <tr>
+                      <th align="center">Jenis</th>
+                      <th align="center">Type / Model</th>
+                      <th align="center">PK</th>
+                      <th align="center">Kapasitas</th>
+                      <th align="center">Buatan / Merk</th>
+                      <th align="center">Jumlah Unit</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr align="center">
+                      <td>Mesin Slip Horizontal</td>
+                      <td>{{mesin_slip_horisontal.type_model|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_horisontal.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_horisontal.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_horisontal.buatan|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_horisontal.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+                  <tr align="center">
+                      <td>Mesin Slip Vertikal</td>
+                      <td>{{mesin_slip_vertikal.type_model|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_vertikal.pk_mesin|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_vertikal.kapasitas|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_vertikal.buatan|default_if_none:"-"}}</td>
+                      <td>{{mesin_slip_vertikal.jumlah_unit|default_if_none:"-"}}</td>
+                  </tr>
+              </tbody>
+          </table>
+          <table>
+              <tr>
+                <td style="vertical-align: top;padding-top: 1px;"></td>
+                <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                <td colspan="2" style="vertical-align: top;padding-top: 1px;">1.</td>
+                <td>Keputusan ini berlaku mulai tanggal ditetapkan selama perusahaan masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan peraturan perundang-undangn yang berlaku;</td>
+              </tr>
+          </table>
+        </div>
       </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
