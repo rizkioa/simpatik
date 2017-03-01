@@ -1391,3 +1391,14 @@ def cek_detil_izin(request, id_pengajuan_):
         data = {'success': False, 'pesan': 'Proses Selesai.'}
     response = HttpResponse(json.dumps(data))
     return response
+
+def list_track_pengajuan(request, id_pengajuan):
+    if id_pengajuan:
+        pengajuan = get_object_or_404(PengajuanIzin, id_pengajuan)
+        if pengajuan:
+            extra.extra_context.update({'pengajuan':pengajuan})
+            return render(request, "front-end/list_track_pengajuan.html")
+        else:
+            return redirect(reverse('cari_pengajuan'))
+
+
