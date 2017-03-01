@@ -330,7 +330,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def button_cetak_pendaftaran(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
-		if jenis_izin_ == "503.08/":
+		if jenis_izin_ == "503.08":
 			link_ = reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})

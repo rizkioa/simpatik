@@ -161,7 +161,7 @@
 			}
 			.printpadding{
 				display: block !important;
-				padding-bottom: 4cm;
+				padding-bottom: 5cm;
 			} 
 		}
 	</style>
@@ -216,7 +216,7 @@
     		<tr>
     			<td class="tdnone"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><b>{{pemohon.nama_lengkap.upper}} ({{pemohon.jabatan_pemohon|default_if_none:'-'}})</b></td>
+    			<td class="tdnone"><b>{{pemohon.nama_lengkap.upper}} ({{pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})</b></td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>ALAMAT PERUSAHAAN</b></td>
@@ -265,7 +265,7 @@
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
     			{% if pemohon.berkas_foto.last %}
-    				<img src="{{pemohon.berkas_foto.last}}" style="width: 3cm;height: 4cm;">
+    				<img src="{{pemohon.berkas_foto.last.url}}" style="width: 3cm;height: 4cm;">
     			{% else %}
     				<img src="{% static 'images/no-avatar.jpg' %}" style="width: 3cm;height: 4cm;">
     			{% endif %}
