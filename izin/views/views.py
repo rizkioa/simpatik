@@ -1333,7 +1333,7 @@ def cek_izin_terdaftar(request, id_izin_, extra_context={}):
             extra_context.update({'pemilik_izin': pemilik_izin})
             extra_context.update({'pengajuan_status': pengajuan_.status})
 
-            if pengajuan_.kelompok_jenis_izin.kode == '503.08/':
+            if pengajuan_.kelompok_jenis_izin.kode == '503.08':
                 detilsiup = DetilSIUP.objects.filter(no_izin=id_izin_).last()
                 if detilsiup.perusahaan:
                     nama_perusahaan = detilsiup.perusahaan.nama_perusahaan
@@ -1392,11 +1392,12 @@ def cek_detil_izin(request, id_pengajuan_):
     response = HttpResponse(json.dumps(data))
     return response
 
-def list_track_pengajuan(request, id_pengajuan):
+def list_track_pengajuan(request, id_pengajuan, extra_context={}):
     if id_pengajuan:
-        pengajuan = get_object_or_404(PengajuanIzin, id_pengajuan)
+        pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan)
         if pengajuan:
-            extra.extra_context.update({'pengajuan':pengajuan})
+            riwayat = Riwayat.objects.filter(pengajuan_izin_id=pengajuan.id)
+            extra_context.update({'pengajuan':pengajuan, 'riwayat':riwayat})
             return render(request, "front-end/list_track_pengajuan.html")
         else:
             return redirect(reverse('cari_pengajuan'))

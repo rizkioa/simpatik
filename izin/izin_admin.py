@@ -299,7 +299,7 @@ class IzinAdmin(admin.ModelAdmin):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
 		print jenis_izin_
-		if jenis_izin_ == "503.08/":
+		if jenis_izin_ == "503.08":
 			link_ = reverse('admin:detil_siup_view', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
 			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
