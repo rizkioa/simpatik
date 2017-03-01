@@ -2,6 +2,7 @@ import json
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
+from django.shortcuts import get_object_or_404
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
@@ -58,18 +59,14 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 
 				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
-				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
-				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-			letak_ = pengajuan_.lokasi_usaha_pariwisata + ", Desa "+str(pengajuan_.desa_lokasi) + ", Kec. "+str(pengajuan_.desa_lokasi.kecamatan)+", "+ str(pengajuan_.desa_lokasi.kecamatan.kabupaten)
-			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
+				legalitas_list = pengajuan_.perusahaan.legalitas_set.all()
+				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian, 'legalitas_perubahan': legalitas_perubahan, 'legalitas_list': legalitas_list })
+			rincian = pengajuan_.rincian_sub_jenis
 			pengajuan_id = pengajuan_.id
-			extra_context.update({'letak': letak_})
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
-			extra_context.update({'status': pengajuan_.status})
-			extra_context.update({'pengajuan': pengajuan_})
-			# encode_pengajuan_id = (str(pengajuan_.id))
-
+			lokasi_usaha_pariwisata = ''
+			if pengajuan_.lokasi_usaha_pariwisata:
+				lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata) + ', Ds. ' +str(pengajuan_.desa_lokasi)+', Kec. '+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)+', Prov. '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten.provinsi)
+			extra_context.update({'pengajuan': pengajuan_, 'rincian': rincian, 'status': pengajuan_.status, 'created_at': pengajuan_.created_at, 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata})
 
 			# UNTUK SURVEY
 			from django.contrib.auth.models import Group
@@ -124,6 +121,28 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_tdup_asli(self, request, id_pengajuan_izin_):
+		extra_context = {}
+		if id_pengajuan_izin_:
+			pengajuan_ = get_object_or_404(DetilTDUP, id=id_pengajuan_izin_)
+			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+			# print legalitas_1.tanggal_pengesahan
+			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata) + ', Ds. ' +str(pengajuan_.desa_lokasi)+', Kec. '+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)+', Prov. '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten.provinsi)
+			if skizin_:
+				extra_context.update({'skizin': skizin_ })
+			masa_berlaku = ''
+			if skizin_:
+				masa_berlakua = skizin_.created_at + relativedelta(years=5)
+				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata})
+		template = loader.get_template("front-end/include/formulir_tdup/cetak_tdup_asli.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
+
 	def option_jenis_usaha(self, request):
 		jenis_usaha_list = get_jenis_usaha(request)
 		pilihan = "<option></option>"
@@ -139,6 +158,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		urls = super(DetilTDUPAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^view-pengajuan-tdup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tdup), name='view_pengajuan_izin_tdup'),
+			url(r'^cetak-tdup-asli/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_tdup_asli), name='cetak_tdup_asli'),
 			url(r'^option-jenis-usaha/$', self.option_jenis_usaha, name='option_jenis_usaha'),
 			url(r'^option-sub-jenis-usaha/$', self.option_sub_jenis_usaha, name='option_sub_jenis_usaha'),
 			)

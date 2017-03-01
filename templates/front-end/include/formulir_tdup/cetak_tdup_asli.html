@@ -194,11 +194,9 @@
 			</div>
         	<div class="col-8">
 	        	<center>
-	        		<b>
-	        		<span style="font-size: 23px;">SURAT IZIN USAHA PERDAGANGAN</span><br>
-	        		<span style="font-size: 18px;">( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</span><br>
-	        		<span style="font-size: 18px;">Nomor : {% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}TIDAK ADA{% endif %}</span><br>
-	        		</b>
+	        		<font style="font-size: 22px"><b>TANDA DAFTAR USAHA PARIWISATA</b></font><br><!-- 
+	        		<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
+	        		<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br> -->
 	        	</center>
 	        </div>
 	        <div class="col-2 qrcode" style="padding-left: 0px;">
@@ -209,66 +207,124 @@
     	<br>
     	<table width="100%" class="skizin" border="1">
     		<tr>
-    			<td class="tdnone" width="40%"><b>NAMA PERUSAHAAN</b></td>
-    			<td class="tdnone" width="5%">:</td>
-    			<td class="tdnone" width="55%"><b>{{perusahaan.nama_perusahaan}}</b></td>
+    			<td width="5%" align="center">1.</td>
+    			<td width="40%" class="tdnone"><b>Nomor Pendaftaran Usaha Pariwisata</b></td>
+    			<td width="5%" class="tdnone">:</td>
+    			<td width="50%" class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
+    			<td align="center">2.</td>
+    			<td class="tdnone"><b>Tanggal Pendaftaran Usaha Pariwisata</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><b>{{pemohon.nama_lengkap.upper}} ({{pemohon.jabatan_pemohon|default_if_none:'-'}})</b></td>
+    			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>ALAMAT PERUSAHAAN</b></td>
+    			<td align="center">3.</td>
+    			<td class="tdnone"><b>Nama Perusahaan</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat_perusahaan.upper}}</td>
+    			<td class="tdnone"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}}</b></td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>NPWP</b></td>
+    			<td align="center">4.</td>
+    			<td class="tdnone"><b>Alamat Perusahaan</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{perusahaan.npwp}}</td>
+    			<td class="tdnone">{{alamat.upper}}</td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>NOMOR TELEPON</b></td>
+    			<td align="center">5.</td>
+    			<td class="tdnone"><b>Alamat Lokasi Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{perusahaan.telepon}}  {% if perusahaan.fax %}FAX : {{perusahaan.fax}}{% endif %}</td>
+    			<td class="tdnone">{{lokasi_usaha_pariwisata.upper}}</td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
+    			<td align="center">6.</td>
+    			<td class="tdnone"><b>Nama Pengusaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><b>{{kekayaan_bersih}},-</b><br>({{terbilang.upper}})</td>
+    			<td class="tdnone"><b>{{pengajuan.pemohon.nama_lengkap.upper}}</b></td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>KELEMBAGAAN</b></td>
+    			<td align="center">7.</td>
+    			<td class="tdnone"><b>Nomor Telepon</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><b>{% if pengajuan.kelembagaan %}{% for k in pengajuan.kelembagaan.all %}{{k.kelembagaan.upper}}{% endfor %}{% endif %}</b></td>
+    			<td class="tdnone">{% if pengajuan.telephone %}{{pengajuan.telephone}}{% else %}{{pengajuan.pemohon.telephone}}{% endif %}</td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>KEGIATAN USAHA (KBLI/*)</b></td>
+    			<td align="center">8.</td>
+    			<td class="tdnone"><b>Nama Pengurus Badan Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli.upper }}) {% endfor %}</td>
+    			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td class="tdnone"><b>BARANG/JASA DAGANGAN UTAMA</b></td>
+    			<td align="center">9.</td>
+    			<td class="tdnone"><b>Bidang Usaha Jenis Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</td>
+    			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td colspan="3" align="justify">
-    				<b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN WAJIB DIDAFTAR ULANG SETIAP 5 (LIMA) TAHUN SEKALI.</b>
-    			</td>
+    			<td align="center">10.</td>
+    			<td class="tdnone"><b>Merk Usaha</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"></td>
+    		</tr>
+    		<tr>
+    			<td align="center">11.</td>
+    			<td class="tdnone"><b>Nomor dan Tanggal Akta Pendirian Badan Usaha Beserta Perubahannya Bila Ada</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"></td>
+    		</tr>
+    		<tr>
+    			<td align="center">12.</td>
+    			<td class="tdnone"><b>Nama Izin dan Nomor Ijin Teknis</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"></td>
+    		</tr>
+    		<tr>
+    			<td align="center">13.</td>
+    			<td class="tdnone"><b>Nomor Dokumen Lingkungan Hidup</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"></td>
+    		</tr>
+    		<tr>
+    			<td align="center">14.</td>
+    			<td class="tdnone"><b>Kapasitas</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"></td>
     		</tr>
     	</table>
     	<br>
-    	<br>
-    	<br>
+    	<table width="100%" border="0" style="font-size: 14px; padding: 3px;">
+    		<tr>
+    			<td valign="top">1.</td>
+    			<td>Tanda Daftar Usaha Pariwisata ini berlaku selama perusahaan masih menjalankan kegiatan usaha pariwisata sesuai dengan Tanda Daftar Usaha Pariwisata ini.</td>
+    		</tr>
+    		<tr>
+    			<td valign="top">2.</td>
+    			<td>Tanda Daftar Usaha Pariwisata ini dapat dibatalkan apabila:</td>
+    		</tr>
+    		<tr>
+    			<td></td>
+    			<td>a. Terkena sanksi penghentian tetap kegiatan usaha sesuai dengan ketentuan peraturan perundang-undangan;</td>
+    		</tr>
+    		<tr>
+    			<td></td>
+    			<td>b. Tidak menyelenggarakan kegiatan usaha secara terus menerus untuk jangka waktu 1 (satu) tahun lebih;</td>
+    		</tr>
+    		<tr>
+    			<td></td>
+    			<td>c. Membubarkan usahanya.</td>
+    		</tr>
+    		<tr>
+    			<td valign="top">3.</td>
+    			<td>Pengusaha wajib mengembalikan Tanda Daftar Usaha Pariwisata yang telah dibatalkan.</td>
+    		</tr>
+    		<tr>
+    			<td valign="top">4.</td>
+    			<td>Pengusaha wajib mengajukan permohonan pemutakhiran Tanda Daftar Usaha Pariwisata apabila terdapat suatu perubahan kondisi terhadap hal yang tercantum di dalam Tanda Daftar Usaha Pariwisata paling lambat 30 (tiga puluh) hari kerja setelah suatu perubahan terjadi.</td>
+    		</tr>
+    	</table>
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
-    			{% if pemohon.berkas_foto.last %}
-    				<img src="{{pemohon.berkas_foto.last}}" style="width: 3cm;height: 4cm;">
-    			{% else %}
-    				<img src="{% static 'images/no-avatar.jpg' %}" style="width: 3cm;height: 4cm;">
-    			{% endif %}
+    			
     		</div>
     	</div>
     	<div style="float: right; width: 50%">

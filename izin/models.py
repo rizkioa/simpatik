@@ -14,13 +14,13 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 
 from datetime import datetime
 from ckeditor.fields import RichTextField
-from accounts.utils import KETERANGAN_PEKERJAAN
+# from accounts.utils import KETERANGAN_PEKERJAAN
 # Create your models here.
 
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
 	jabatan_pemohon = models.CharField(max_length=255, blank=True, null=True, verbose_name='Jabatan Pemohon')
-	# keterangan_pekerjaan = models.CharField(max_length=50, verbose_name='Keterangan Pekerjaan', blank=True, null=True, choices=KETERANGAN_PEKERJAAN)
+	keterangan_pekerjaan = models.CharField(max_length=50, verbose_name='Keterangan Pekerjaan', blank=True, null=True)
 	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 

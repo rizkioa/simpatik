@@ -40,6 +40,7 @@ function load_pemohon(ktp_){
                     $('#email_pemohon_load').val(respon.data.email);
                     $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
                     $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
+                    $('#id_keterangan_pekerjaan').val(respon.data.keterangan_pekerjaan)
                     
                 }
                 else{

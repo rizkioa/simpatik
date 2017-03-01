@@ -77,9 +77,9 @@
 	            }
 	          });
 	        }
-	      };
+      	};
 
-	      $(document).ready(function() {
+      	$(document).ready(function() {
 	        window.onbeforeunload = function ref() {
 	          var r = confirm( "Do you want to leave?" );
 	          if (r == true) {
@@ -145,7 +145,10 @@
 	              $.cookie('npwp_perusahaan', '0' , { path: pathname })
 	            }
 	          }
-	      })
+      	})
+
+      	$( "#jenis_usaha_pariwisata" ).fadeOut().hide();
+		$( "#sub_jenis_usaha_pariwisata" ).fadeOut().hide();
     </script>
 {% endblock %}
 

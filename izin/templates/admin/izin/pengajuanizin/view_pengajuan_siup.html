@@ -827,13 +827,14 @@
 		            			<center>
 							    	<br>
 								    <div class="form-group">
+
 							      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
-							      		<label>{{ pengajsuan.kelompok_jenis_izin.kode }}</label>
+							      		<!-- <input type="hidden" id="nomor_izin_sk" value="418"><label>503.01.01</label> -->
+							      		<label>{{ pengajuan.kelompok_jenis_izin.kode }}</label>
 							      		<input type="hidden" id="kode_jenis_izin" value="{{ pengajuan.kelompok_jenis_izin.kode }}">
 							      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
 							      		<label>/418.71/</label>
-							      		<input type="hidden" id="nomor_izin_sk" value="418							      		<label>503.01.01</label>
-							      		<input type="hidden" id="kode_jenis_izin_sk" value="503.01.01">.71">
+							      		<input type="hidden" id="kode_jenis_izin_sk" value="503.01.01">
 						      			<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
 							      	</input>
 								    </div>

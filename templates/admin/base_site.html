@@ -69,10 +69,8 @@
         $(document).ready(function() {
 
             if ($.cookie('id_notify') === undefined){
-                $.cookie("id_notify", "0", {path:pathname});
+                $.cookie("id_notify", "0", {path:'/admin/'});
             }
-
-            
 
             function total_izin(){
                 $.ajax({
@@ -150,7 +148,7 @@
                             // console.log(pathname.split('/')[1])
                             if (total > 0 ){
                                 // total_izin()
-                                $.cookie("id_notify", total, {path:pathname});
+                                $.cookie("id_notify", total, {path:'/admin/'});
                                 if (pathname.split('/')[1] == 'admin'){
                                 // if (jQuery.inArray('/admin/',pathname) !== -1){
                                     // console.log('a')

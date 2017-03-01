@@ -2,6 +2,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from tastypie.api import Api
+from mobile.api import PengajuanIzinResource
 
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
@@ -11,9 +13,13 @@ from .views import index
 
 admin.autodiscover()
 
+v1_api = Api(api_name='pengajuanizin')
+v1_api.register(PengajuanIzinResource())
+
 #Admin
 urlpatterns = [
     # url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
+    url(r'^api/', include(v1_api.urls)),
 	url(r'^admin/$', index, name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
     # url(r'^s/', include('perusahaan.urls')),

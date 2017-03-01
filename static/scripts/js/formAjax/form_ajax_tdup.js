@@ -314,67 +314,100 @@ $(window).load(function() {
   $('#'+p+'imb').hide()
   $('#'+p+'akta_pendirian').hide()
   $('#'+p+'akta_perubahan').hide()
-  $('#'+p+'npwp').hide()
+  $('#'+p+'npwp_perusahaan').hide()
   $('#'+p+'siup').hide()
   $('#'+p+'surat_pernyataan').hide()
   $('#'+p+'dokumen_lingkungan').hide()
   $('#'+p+'izin_usaha_angkutan').hide()
   $('#'+p+'berkas_tambahan').hide()
+
+  $('#sub_angkutan_jalan_wisata').hide()
+  $('#sub_angkutan_kereta_api_wisata').hide()
+  $('#sub_angkutan_sungai_dan_danau_wisata').hide()
+  $('#sub_restoran').hide()
+  $('#sub_rumah_makan').hide()
+  $('#sub_bar').hide()
+  $('#sub_kafe').hide()
+  $('#sub_pusat_makanan').hide()
+  $('#sub_jasa_boga').hide()
+
+  // konfirmasi
+  $('#tr-jenis_usaha_pariwisata').show()
+  $('#tr-sub_jenis_usaha_pariwisata').show()
+
+  $('#tr-sub_angkutan_jalan_wisata').hide()
+  $('#tr-sub_angkutan_kereta_api_wisata').hide()
+  $('#tr-sub_angkutan_sungai_dan_danau_wisata').hide()
+  $('#tr-sub_restoran').hide()
+  $('#tr-sub_rumah_makan').hide()
+  $('#tr-sub_bar').hide()
+  $('#tr-sub_kafe').hide()
+  $('#tr-sub_pusat_makanan').hide()
+  $('#tr-sub_jasa_boga').hide()
+
+  make_disabled($( "#id_jenis_usaha_pariwisata" ), true)
+  make_disabled($( "#id_sub_jenis_usaha_pariwisata" ), true)
+  
 });
 // @@@@@@@ fungsi hidden elemen step 3 sub jenis @@@@@@
-$('#sub_angkutan_jalan_wisata').hide()
-$('#sub_angkutan_kereta_api_wisata').hide()
-$('#sub_angkutan_sungai_dan_danau_wisata').hide()
-$('#sub_restoran').hide()
-$('#sub_rumah_makan').hide()
-$('#sub_bar').hide()
-$('#sub_kafe').hide()
-$('#sub_pusat_makanan').hide()
-$('#sub_jasa_boga').hide()
 
-// konfirmasi
-$('#tr-jenis_usaha_pariwisata').show()
-$('#tr-sub_jenis_usaha_pariwisata').show()
-
-$('#tr-sub_angkutan_jalan_wisata').hide()
-$('#tr-sub_angkutan_kereta_api_wisata').hide()
-$('#tr-sub_angkutan_sungai_dan_danau_wisata').hide()
-$('#tr-sub_restoran').hide()
-$('#tr-sub_rumah_makan').hide()
-$('#tr-sub_bar').hide()
-$('#tr-sub_kafe').hide()
-$('#tr-sub_pusat_makanan').hide()
-$('#tr-sub_jasa_boga').hide()
 
 // @@@@@ fungsi menampilkan element sub jenis sesuai dengan id sub @@@@@
-function subjenis(){
-  var subjenis = $('#id_sub_jenis_bidang_usaha').val()
+function subjenis(val){
+  var subjenis = val
   if (subjenis == 29){
     $('#sub_angkutan_sungai_dan_danau_wisata').show()
   }
-  else if(subjenis == 28){
+  else{
+    $('#sub_angkutan_sungai_dan_danau_wisata').hide()
+  }
+  if(subjenis == 28){
     $('#sub_angkutan_kereta_api_wisata').show()
   }
-  else if(subjenis == 27){
+  else{
+    $('#sub_angkutan_kereta_api_wisata').hide()
+  }
+  if(subjenis == 27){
     $('#sub_angkutan_jalan_wisata').show()
   }
-  else if(subjenis == 30){
+  else{
+    $('#sub_angkutan_jalan_wisata').hide()
+  }
+  if(subjenis == 30){
     $('#sub_restoran').show()
   }
-  else if(subjenis == 31){
+  else{
+    $('#sub_restoran').hide()
+  }
+  if(subjenis == 31){
     $('#sub_rumah_makan').show()
   }
-  else if(subjenis == 32){
+  else{
+    $('#sub_rumah_makan').hide()
+  }
+  if(subjenis == 32){
     $('#sub_bar').show()
   }
-  else if(subjenis == 33){
+  else{
+    $('#sub_bar').hide()
+  }
+  if(subjenis == 33){
     $('#sub_kafe').show()
   }
-  else if(subjenis == 34){
+  else{
+    $('#sub_kafe').hide()
+  }
+  if(subjenis == 34){
     $('#sub_pusat_makanan').show()
   }
-  else if(subjenis == 35){
+  else{
+    $('#sub_pusat_makanan').hide()
+  }
+  if(subjenis == 35){
     $('#sub_jasa_boga').show()
+  }
+  else{
+    $('#sub_jasa_boga').hide()
   }
 }
 
@@ -389,14 +422,18 @@ function set_value_data_usaha_pariwisata(pengajuan_id){
           respon_data_usaha = $.parseJSON(data)
           
           if (respon_data_usaha.success){
-            load_jenis_usaha(respon_data_usaha.data.bidang_usaha_pariwisata)
-            load_sub_jenis_usaha(respon_data_usaha.data.jenis_usaha_pariwisata)
+            if (respon_data_usaha.data.bidang_usaha_pariwisata){
+              load_jenis_usaha(respon_data_usaha.data.bidang_usaha_pariwisata)
+            }
+            if (respon_data_usaha.data.jenis_usaha_pariwisata){
+              load_sub_jenis_usaha(respon_data_usaha.data.jenis_usaha_pariwisata)
+            }
             setTimeout(function(){
               $('#id_bidang_usaha_pariwisata').val(respon_data_usaha.data.bidang_usaha_pariwisata).prop('selected',true).trigger("chosen:updated");
               $('#id_jenis_usaha_pariwisata').val(respon_data_usaha.data.jenis_usaha_pariwisata).prop('selected',true).trigger("chosen:updated");
               $('#id_sub_jenis_usaha_pariwisata').val(respon_data_usaha.data.sub_jenis_usaha_pariwisata).prop('selected',true).trigger("chosen:updated");
             }, 1000);
-            
+            subjenis(respon_data_usaha.data.jenis_usaha_pariwisata)
             setTimeout(function(){
 
               // transportasi wisata
@@ -418,6 +455,11 @@ function set_value_data_usaha_pariwisata(pengajuan_id){
               $('#id_jumlah_stand_pusat_makanan').val(respon_data_usaha.data.jumlah_stand_pusat_makanan)
               $('#id_kapasitas_produksi_jasa_boga').val(respon_data_usaha.data.kapasitas_produksi_jasa_boga)
             }, 1000);
+          }
+          else{
+            
+            $( "#jenis_usaha_pariwisata" ).fadeOut().hide();
+            $( "#sub_jenis_usaha_pariwisata" ).fadeOut().hide();
           }
 
           $(".tab-content").mLoading('hide');
@@ -463,10 +505,7 @@ function set_value_keterangan_usaha(pengajuan_id){
 }
 // @@@@@@@@@@ end set value @@@@@@@@
 // @@@@@ funsi load sub jenis @@@@@@
-make_disabled($( "#id_jenis_usaha_pariwisata" ), true)
-make_disabled($( "#id_sub_jenis_usaha_pariwisata" ), true)
-$( "#jenis_usaha_pariwisata" ).fadeOut().hide();
-$( "#sub_jenis_usaha_pariwisata" ).fadeOut().hide();
+
 $( "#id_bidang_usaha_pariwisata" ).change(function(){
   $this = $(this)
   id_bidang_usaha_pariwisata = $(this).val()
@@ -492,6 +531,7 @@ function load_jenis_usaha(id_bidang_usaha){
         elem = $( "#id_jenis_usaha_pariwisata" )
         elem.html(response);
         make_disabled(elem, false)
+        $( "#id_sub_jenis_usaha_pariwisata" ).hide()
         $( "#jenis_usaha_pariwisata" ).fadeIn().show();
         $( "#id_jenis_usaha_pariwisata_chosen" ).mLoading('hide');
         $( "#id_jenis_usaha_pariwisata" ).change(function(){
@@ -500,8 +540,6 @@ function load_jenis_usaha(id_bidang_usaha){
           if(id_jenis_usaha.length > 0){
             load_sub_jenis_usaha(id_jenis_usaha)
           }else{
-            elem = $( "#id_sub_jenis_usaha_pariwisata" )
-            make_disabled(elem, true)
             $( "#jenis_usaha_pariwisata" ).fadeOut().hide();
           }
         })
@@ -523,12 +561,18 @@ function load_sub_jenis_usaha(id_jenis_usaha){
     success: function(response) { // on success..
       elem = $( "#id_sub_jenis_usaha_pariwisata" )
       elem.html(response);
+      // console.log(response)
       make_disabled(elem, false)
-      $( "#sub_jenis_usaha_pariwisata" ).fadeIn().show()
+      if (response !== '<option></option>'){
+        $( "#sub_jenis_usaha_pariwisata" ).fadeIn().show()
+        $( "#id_sub_jenis_usaha_pariwisata" ).change(function(){
+          $this = $(this)
+        })
+      }
+      else{
+        $( "#sub_jenis_usaha_pariwisata" ).hide()
+      }
       $( "#id_sub_jenis_usaha_pariwisata_chosen" ).mLoading('hide');
-      $( "#id_sub_jenis_usaha_pariwisata" ).change(function(){
-        $this = $(this)
-      })
     },
     error: function(data) {                
       toast_server_error()

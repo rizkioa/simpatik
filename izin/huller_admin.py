@@ -221,6 +221,41 @@ class DetilHullerAdmin(admin.ModelAdmin):
 					extra_context.update({'sk_imb': sk_imb_ })
 			except ObjectDoesNotExist:
 				pass
+
+			try:
+				data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_izin_)
+				motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
+				motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
+				diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
+				rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
+				flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
+				gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
+				dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
+				screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
+				mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
+				mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
+				paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
+				mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
+				grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
+				kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
+				
+				extra_context.update({'data_mesin': data_mesin })
+				extra_context.update({'motor_bensin': motor_bensin })
+				extra_context.update({'motor_diesel': motor_diesel })
+				extra_context.update({'diesel_generating_set': diesel_generating_set })
+				extra_context.update({'rubber_roll': rubber_roll })
+				extra_context.update({'flash_type': flash_type })
+				extra_context.update({'gedogan': gedogan })
+				extra_context.update({'dimple_plate': dimple_plate })
+				extra_context.update({'screen': screen })
+				extra_context.update({'mesin_slip_horisontal': mesin_slip_horisontal })
+				extra_context.update({'mesin_slip_vertikal': mesin_slip_vertikal })
+				extra_context.update({'paddy_cleaner': paddy_cleaner })
+				extra_context.update({'mesin_polis': mesin_polis })
+				extra_context.update({'grader': grader })
+				extra_context.update({'kualitas': kualitas })
+			except ObjectDoesNotExist:
+				pass
 			# try:
 			# 	retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
 			# 	if retribusi_:
