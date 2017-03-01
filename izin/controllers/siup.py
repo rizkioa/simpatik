@@ -77,7 +77,7 @@ def add_wizard_siup(request):
 				url_ = reverse('admin:izin_proses_imb_perumahan')
 			elif id_kelompok_list.kode == "503.06.01/":
 				url_ = reverse('admin:izin_proses_pemakaian_kekayaan_daerah')
-			elif id_kelompok_list.kode == "503.08/":
+			elif id_kelompok_list.kode == "503.08":
 				url_ = reverse('admin:izin_proses_siup')
 			elif id_kelompok_list.kode == "IUJK":
 				url_ = reverse('admin:izin_iujk')
