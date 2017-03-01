@@ -93,9 +93,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				if pengajuan_.parameter_bangunan:
 					fungsi_bangunan = pengajuan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
 					detil_parameter = fungsi_bangunan.last()
-					detil_ = detil_parameter.detil_parameter
-					
-					extra_context.update({'detil_': detil_})
+					if detil_parameter:
+						detil_ = detil_parameter.detil_parameter
+						
+						extra_context.update({'detil_': detil_})
 				try:
 					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
