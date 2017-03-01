@@ -382,4 +382,7 @@ urlpatterns = [
     url(r'^layanan/tdup/cetak/(?P<id_pengajuan>[0-9]+)$', views.cetak_tdup, name='cetak_tdup'),
     url(r'^layanan/tdup/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', views.cetak_bukti_pendaftaran_tdup, name='cetak_bukti_pendaftaran_tdup'),
     ########################## end save tdup ##########################
+
+    url(r'^list-track-pengajuan/(?P<id_pengajuan>[0-9]+)$', views.list_track_pengajuan, name='list_track_pengajuan'),
+    
     ]

@@ -104,7 +104,7 @@ def siup_identitas_pemohon_save_cookie(request):
 
 		i.save()
 
-		if k.kode == "503.08/":
+		if k.kode == "503.08":
 			objects_ = getattr(app_models, 'DetilSIUP')
 		elif k.kode == "IUJK":
 			objects_ = getattr(app_models, 'DetilIUJK')
@@ -207,7 +207,7 @@ def siup_identitas_perusahan_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
-			if k.kode == "503.08/":
+			if k.kode == "503.08":
 				objects_ = getattr(app_models, 'DetilSIUP')
 			elif k.kode == "IUJK":
 				objects_ = getattr(app_models, 'DetilIUJK')

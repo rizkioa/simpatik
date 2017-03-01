@@ -5,8 +5,30 @@
   	<div class="col-md-12">
 	    <section class="tile">
       		<div class="tile-body">
-      			
+      			<div class="table-responsive">          
+				  	<table class="table">
+					    <thead>
+					      	<tr>
+						        <th>No.</th>
+						        <th>Tanggal Proses</th>
+						        <th>Keterangan Status</th>
+						        <th>Penanggung Jawab</th>
+					      	</tr>
+					    </thead>
+					    <tbody>
+					    	{% for r in riwayat %}
+					      	<tr>
+						        <td></td>
+						        <td></td>
+						        <td></td>
+						        <td></td>
+					      	</tr>
+					      	{% endfor %}
+					    </tbody>
+				  	</table>
+			  	</div>
       		</div>
 	    </section>
 	</div>
 </div>
+{% endblock %}
