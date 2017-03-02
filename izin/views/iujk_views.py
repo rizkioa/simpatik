@@ -333,7 +333,7 @@ def penanggung_jawab_save_bu(request):
 						response = HttpResponse(data)
 
 				else:
-					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.doc, *.docx, *.jpg, *.png)'}]}
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Foto format tidak sesuai (*.pdf, *.jpg, *.png)'}]}
 					data = json.dumps(data)
 					response = HttpResponse(data)
 
@@ -408,7 +408,8 @@ def penanggung_jawab_teknik_save_bu(request):
 											# # legalitas perubahaan
 												{ 'id': da_.id },
 												{ 'nama': da_.nama },
-												{ 'berkas': berkas_}
+												{ 'berkas': berkas_},
+												{ 'no_pjt_bu': da_.no_pjt_bu}
 											]}
 
 									data = json.dumps(data)

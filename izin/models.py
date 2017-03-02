@@ -430,6 +430,7 @@ class AnggotaBadanUsaha(models.Model):
 			'jenis_anggota_badan': self.jenis_anggota_badan,
 			'nama': self.nama,
 			'id': self.id,
+			'no_pjt_bu': self.no_pjt_bu,
 			# 'berkas_tambahan': self.berkas_tambahan.all(),
 		}
 
