@@ -158,7 +158,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		if request.user.is_superuser:
-			list_display = ('get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan','get_status_pengajuan', 'button_cetak_pendaftaran')
+			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan','get_status_pengajuan', 'button_cetak_pendaftaran')
 		elif func_view.__name__ == 'izinterdaftar':
 			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan')
 		elif func_view.__name__ == 'semua_pengajuan':
@@ -244,7 +244,7 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
 		else:
 			pengajuan_ = qs
-		return pengajuan_
+		return pengajuan_.order_by('-updated_at')
 
 	def get_perusahaan(self, obj):
 		return obj.perusahaan

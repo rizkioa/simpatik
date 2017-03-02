@@ -1259,7 +1259,7 @@ def ajax_cek_pengajuan(request):
         try:
             pengajuan_list = PengajuanIzin.objects.get(no_pengajuan=no_pengajuan_)
             if pengajuan_list:
-                url = reverse('cetak_permohonan', kwargs={'id_pengajuan_': pengajuan_list.id} )
+                url = reverse('list_track_pengajuan', kwargs={'id_pengajuan': pengajuan_list.id} )
                 data = {'success': True, 'pesan': 'Pencarian pengajuan sukses.', 'url': url}
                 return HttpResponse(json.dumps(data))
             else:
@@ -1397,9 +1397,10 @@ def list_track_pengajuan(request, id_pengajuan, extra_context={}):
         pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan)
         if pengajuan:
             riwayat = Riwayat.objects.filter(pengajuan_izin_id=pengajuan.id)
-            extra_context.update({'pengajuan':pengajuan, 'riwayat':riwayat})
-            return render(request, "front-end/list_track_pengajuan.html")
-        else:
-            return redirect(reverse('cari_pengajuan'))
-
-
+            print riwayat
+            extra_context.update({'pengajuan':pengajuan, 'riwayats':riwayat})
+            template = loader.get_template("front-end/list_track_pengajuan.html")
+            ec = RequestContext(request, extra_context)
+            return HttpResponse(template.render(ec))
+        # else:
+        #     return redirect(reverse('cari_pengajuan'))
