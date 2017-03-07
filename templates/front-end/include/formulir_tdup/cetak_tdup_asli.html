@@ -136,7 +136,7 @@
 			height: 110px;
 		}
 		.skizin{
-			font-size: 14px;
+			font-size: 13px;
 			padding: 5px;
 		}
 		table {
@@ -188,114 +188,105 @@
 		{% include 'front-end/include/skizin/cop_surat.html' %}
 		<div style="display: none; width: 100%;" class="printpadding">
 		</div>
-		<br>
-		<div class="row">
-			<div class="col-1">
-			</div>
-        	<div class="col-8">
-	        	<center>
-	        		<font style="font-size: 22px"><b>TANDA DAFTAR USAHA PARIWISATA</b></font><br><!-- 
-	        		<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
-	        		<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br> -->
-	        	</center>
-	        </div>
-	        <div class="col-2 qrcode" style="padding-left: 0px;">
-	        	<div id="qrcodeTable">
-	        	</div>
-	        </div>
-    	</div>
+    	<center>
+    		<br>
+    		<font style="font-size: 22px"><b>TANDA DAFTAR USAHA PARIWISATA</b></font><br><!-- 
+    		<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
+    		<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br> -->
+    	</center>
     	<br>
-    	<table width="100%" class="skizin" border="1">
+    	<br>
+    	<table width="100%" class="skizin" border="2">
     		<tr>
-    			<td width="5%" align="center">1.</td>
+    			<td width="5%" align="center"><b>1.</b></td>
     			<td width="40%" class="tdnone"><b>Nomor Pendaftaran Usaha Pariwisata</b></td>
     			<td width="5%" class="tdnone">:</td>
     			<td width="50%" class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">2.</td>
+    			<td align="center"><b>2.</b></td>
     			<td class="tdnone"><b>Tanggal Pendaftaran Usaha Pariwisata</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">3.</td>
+    			<td align="center"><b>3.</b></td>
     			<td class="tdnone"><b>Nama Perusahaan</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}}</b></td>
     		</tr>
     		<tr>
-    			<td align="center">4.</td>
+    			<td align="center"><b>4.</b></td>
     			<td class="tdnone"><b>Alamat Perusahaan</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone">{{alamat.upper}}</td>
     		</tr>
     		<tr>
-    			<td align="center">5.</td>
+    			<td align="center"><b>5.</b></td>
     			<td class="tdnone"><b>Alamat Lokasi Usaha</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone">{{lokasi_usaha_pariwisata.upper}}</td>
     		</tr>
     		<tr>
-    			<td align="center">6.</td>
+    			<td align="center"><b>6.</b></td>
     			<td class="tdnone"><b>Nama Pengusaha</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"><b>{{pengajuan.pemohon.nama_lengkap.upper}}</b></td>
     		</tr>
     		<tr>
-    			<td align="center">7.</td>
+    			<td align="center"><b>7.</b></td>
     			<td class="tdnone"><b>Nomor Telepon</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone">{% if pengajuan.telephone %}{{pengajuan.telephone}}{% else %}{{pengajuan.pemohon.telephone}}{% endif %}</td>
     		</tr>
     		<tr>
-    			<td align="center">8.</td>
+    			<td align="center"><b>8.</b></td>
     			<td class="tdnone"><b>Nama Pengurus Badan Usaha</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">9.</td>
+    			<td align="center"><b>9.</b></td>
     			<td class="tdnone"><b>Bidang Usaha Jenis Usaha</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">10.</td>
+    			<td align="center"><b>10.</b></td>
     			<td class="tdnone"><b>Merk Usaha</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">11.</td>
+    			<td align="center"><b>11.</b></td>
     			<td class="tdnone"><b>Nomor dan Tanggal Akta Pendirian Badan Usaha Beserta Perubahannya Bila Ada</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">12.</td>
+    			<td align="center"><b>12.</b></td>
     			<td class="tdnone"><b>Nama Izin dan Nomor Ijin Teknis</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">13.</td>
+    			<td align="center"><b>13.</b></td>
     			<td class="tdnone"><b>Nomor Dokumen Lingkungan Hidup</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     		<tr>
-    			<td align="center">14.</td>
+    			<td align="center"><b>14.</b></td>
     			<td class="tdnone"><b>Kapasitas</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone"></td>
     		</tr>
     	</table>
     	<br>
-    	<table width="100%" border="0" style="font-size: 14px; padding: 3px;">
+    	<table width="100%" border="0" style="font-size: 13px; padding: 2px;">
     		<tr>
     			<td valign="top">1.</td>
-    			<td>Tanda Daftar Usaha Pariwisata ini berlaku selama perusahaan masih menjalankan kegiatan usaha pariwisata sesuai dengan Tanda Daftar Usaha Pariwisata ini.</td>
+    			<td align="justify">Tanda Daftar Usaha Pariwisata ini berlaku selama perusahaan masih menjalankan kegiatan usaha pariwisata sesuai dengan Tanda Daftar Usaha Pariwisata ini.</td>
     		</tr>
     		<tr>
     			<td valign="top">2.</td>
@@ -319,12 +310,13 @@
     		</tr>
     		<tr>
     			<td valign="top">4.</td>
-    			<td>Pengusaha wajib mengajukan permohonan pemutakhiran Tanda Daftar Usaha Pariwisata apabila terdapat suatu perubahan kondisi terhadap hal yang tercantum di dalam Tanda Daftar Usaha Pariwisata paling lambat 30 (tiga puluh) hari kerja setelah suatu perubahan terjadi.</td>
+    			<td align="justify">Pengusaha wajib mengajukan permohonan pemutakhiran Tanda Daftar Usaha Pariwisata apabila terdapat suatu perubahan kondisi terhadap hal yang tercantum di dalam Tanda Daftar Usaha Pariwisata paling lambat 30 (tiga puluh) hari kerja setelah suatu perubahan terjadi.</td>
     		</tr>
     	</table>
     	<div style="float: left; width: 50%">
-    		<div style="padding-left: 70%;padding-top: 46px;">
-    			
+    		<div style="padding-left: 10%;padding-top: 46px;">
+    			<div id="qrcodeTable">
+	        	</div>
     		</div>
     	</div>
     	<div style="float: right; width: 50%">
@@ -358,7 +350,6 @@
 		    var x=confirm('Are You sure want to exit:');
 		    if(x) window.close();
 	    }
-	    {% if pengajuan.no_izin %}
 	    	var logo = $(new Image()).attr('src', '{% static 'images/SIMPATIK.png' %}').get(0);
 		    $('#qrcodeTable').qrcode({
 		    	// render method: 'canvas', 'image' or 'div'
@@ -404,6 +395,7 @@
 			    // 4: image box
 			    mode: 4,
 
+
 			    mSize: 0.2,
 			    mPosX: 0.5,
 			    mPosY: 0.5,
@@ -413,8 +405,9 @@
     			fontcolor: '#000',
 
     			image: logo,
+			    // label: 'S',
+
 			});
-		{% endif %}
 	</script>
 </body>
 </html>
