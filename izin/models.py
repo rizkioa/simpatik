@@ -5,7 +5,7 @@ from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame,Je
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN,STATUS_HAK_TANAH,KEPEMILIKAN_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA,JENIS_BANGUNAN,JENIS_GANGGUAN
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
 # from django.utils.deconstruct import deconstructible
@@ -130,7 +130,7 @@ class JenisIzin(models.Model):
 		return "<option value='"+str(self.kode)+"'>"+str(self.nama_izin)+"</option>"
 
 	def __unicode__(self):
-		return "%s" % (self.nama_izin)
+		return "%s - %s" % (str(self.kode) , str(self.nama_izin))
 
 	class Meta:
 		ordering = ['id']
@@ -1126,113 +1126,191 @@ class DetilPembayaran(MetaAtribut):
 		verbose_name = 'Detil Pembayaran'
 		verbose_name_plural = 'Detil Pembayaran'
 
-# class BUAkomodasi(models.Model):
-# 	hotel_bintang = models.BooleanField(default=False, verbose_name="Hotel Bintang")
-# 	hotel_non_bintang = models.BooleanField(default=False, verbose_name="Hotel Non Bintang")
-# 	bumi_perkemahan = models.BooleanField(default=False, verbose_name="Bumi Perkemahan")
-# 	persinggahan_karavan = models.BooleanField(default=False, verbose_name="Persinggahan Karavan")
-# 	villa = models.BooleanField(default=False, verbose_name="Villa")
-# 	pondok_wisata = models.BooleanField(defaul=False, verbose_name="Pondok Wisata")
-# 	motel = models.BooleanField(default=False, verbose_name="Motel")
+# +++++++++++++ LPK Sw ++++++++++++
+class SumberBiayaPelatihan(models.Model):
+	sumber_dana = models.CharField(max_length=255, verbose_name='Sumber Dana Pelatihan') # siswa, sponsor, subsidi, lembaga sendiri
+	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Akomodasi'
-# 		verbose_name_plural = 'Bidang Usaha Akomodasi'
+	def __unicode__(self):
+		return u'%s' % (str(self.sumber_dana))
 
-# class BUTirta(models.Model):
-# 	wisata_bahari = models.BooleanField(default=False, verbose_name="Wisata Bahari")
-# 	wisata_perahu_layar = models.BooleanField(default=False, verbose_name="Wisata Perahu Layar")
-# 	wisata_memancing = models.BooleanField(default=False, verbose_name="Wisata Memancing")
-# 	wisata_selancar = models.BooleanField(default=False, verbose_name="Wisata Selancar")
-# 	dermaga_bahari = models.BooleanField(default=False, verbose_name="Dermaga Bahari")
-# 	wisata_arum_jeram = models.BooleanField(default=False, verbose_name="Wisata Arum Jeram")
-# 	wisata_dayung = models.BooleanField(default=False, verbose_name="Wisata Dayung")
+	class Meta:
+		ordering = ['-id']
+		verbose_name = 'Sumber Biaya Pelatihan'
+		verbose_name_plural = 'Sumber Biaya Pelatihan'
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Tirta'
-# 		verbose_name_plural = 'Bidang Usaha Tirta'
+class DetilLPKSW(PengajuanIzin):
+	# metode pelatihan
+	ceramah = models.BooleanField(default=False, verbose_name='Metode Pelatihan Ceramah')
+	diskusi = models.BooleanField(default=False, verbose_name='Metode Pelatihan Diskusi')
+	praktek = models.BooleanField(default=False, verbose_name='Metode Pelatihan Praktek')
+	lain_lain = models.BooleanField(default=False, verbose_name='Metode Pelatihan Lain-lain')
+	# metode pelatihan
+	ruang_kantor = models.CharField(max_length=30, verbose_name='Ruang Kantor', null=True, blank=True)
+	ruang_praktek = models.CharField(max_length=30, verbose_name='Ruang Praktek', null=True, blank=True)
+	ruang_teori = models.CharField(max_length=30, verbose_name='Ruang Teori', null=True, blank=True)
+	ruang_lain = models.CharField(max_length=30, verbose_name='Ruang Lain-lain', null=True, blank=True)
 
-# class BUHiburandanRekreasi(models.Model):
-# 	lapangan_golf = models.BooleanField(default=False, verbose_name="Lapangan Golf")
-# 	lapangan_bilyard = models.BooleanField(default=False, verbose_name="Lapangan Bilyard")
-# 	gelanggang_renang = models.BooleanField(default=False, verbose_name="Gelanggang Renang")
-# 	lapangan_tenis = models.BooleanField(default=False, verbose_name="Lapangan Tenis")
-# 	gelaggang_bowling = models.BooleanField(default=False, verbose_name="Gelanggang Bowling")
-# 	sanggar_tari = models.BooleanField(default=False, verbose_name="Sanggar Tari")
-# 	galeri_seni = models.BooleanField(default=False, verbose_name="Galeri Seni")
-# 	gedung_pertunjukan_seni = models.BooleanField(default=False, verbose_name="Gedung Pertunjukan Seni")
-# 	kelab_malam = models.BooleanField(default=False, verbose_name="Kelab Malam")
-# 	diskotik = models.BooleanField(default=False, verbose_name="Diskotik")
-# 	pub = models.BooleanField(default=False, verbose_name="Pub")
-# 	panti_pijat = models.BooleanField(default=False, verbose_name="Panti Pijat")
-# 	taman_rekreasi = models.BooleanField(default=False, verbose_name="Taman Rekreasi")
-# 	taman_bertema = models.BooleanField(default=False, verbose_name="Taman Bertema")
-# 	karaoke = models.BooleanField(default=False, verbose_name="karaoke")
-# 	jasa_impreasariat = models.BooleanField(default=False, verbose_name="Jasa Impreasariat")
+	# lain lain
+	pencari_kerja = models.BooleanField(default=False, verbose_name='Sumber Siswa Pencari Kerja')
+	karyawan = models.BooleanField(default=False, verbose_name='Sumber Siswa Karyawan')
+	# ++ umur siswa
+	umur_dari = models.CharField(max_length=10, verbose_name='Umur Dari', null=True, blank=True)
+	umur_sampai = models.CharField(max_length=10, verbose_name='Umur Sampai', null=True, blank=True)
+	# ++ umur siswa
+	sumber_dana_pelatihan = models.ManyToManyField(SumberBiayaPelatihan, verbose_name='Sumber Dana')
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Hiburan dan Rekreasi'
-# 		verbose_name_plural = 'Bidang Usaha Hiburan dan Rekreasi'
+	# lain lain
 
-# class BUDayaTarikWisata(models.Model):
-# 	pengelolaan_pemandian = models.BooleanField(default=False, verbose_name="Pengelolaan pemandian air panas alami")
-# 	pengelolaan_gua = models.BooleanField(default=False, verbose_name="Pengelolaan Gua")
-# 	pengelolaan_peninggalan_sejarah = models.BooleanField(default=False, verbose_name="Pengelolaan peninggalan sejarah")
-# 	pengelolaan_museum = models.BooleanField(default=False, verbose_name="Pengelolaan Museum")
-# 	pengelolaan_pemukiman = models.BooleanField(default=False, verbose_name="Pengelolaan pemukiman")
+	def __unicode__(self):
+		return u'Detil LPKSW %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Tarik Wisata'
-# 		verbose_name_plural = 'Bidang Usaha Tarik Wisata'
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil LPKSW'
+		verbose_name_plural = 'Detil LPKSW'
 
-# class BUJasaPerjalananWisata(models.Model):
-# 	biro_perjalanan_wisata = models.BooleanField(default=False, verbose_name="Biro Perjalanan Wisata")
-# 	agen_perjalanan_wisata = models.BooleanField(default=False, verbose_name="Agen Perjalanan Wisata")
+class JenisProgramPelatihan(models.Model):
+	detil_lpksw = models.ForeignKey(DetilLPKSW, verbose_name='Detil LPK Sw')
+	jenis_program = models.CharField(max_length=255, verbose_name='Jenis Program', null=True, blank=True)
+	lama_pelatihan = models.CharField(max_length=255, verbose_name='Lama Pelatihan (Jam)', null=True, blank=True)
+	jumlah_peserta_per_grup = models.IntegerField(verbose_name='Jumlah Peserta per Grup', null=True, blank=True)
+	jumlah_peserta_per_tahun = models.IntegerField(verbose_name='Jumlah Peserta per Tahun', null=True, blank=True)
+	biaya_pelatihan_per_orang = models.CharField(max_length=255, verbose_name='Biaya Pelatihan per Orang (Rp)', null=True, blank=True)
+	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Perjalanan Wisata'
-# 		verbose_name_plural = 'Bidang Usaha Perjalanan Wisata'
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_program))
 
-# class BUTransportasiWisata(models.Model):
-# 	angkutan_jalan_wisata = models.BooleanField(default=False, verbose_name="Angkutan Jalan Wisata")
-# 	jumlah_unit_angkutan_jalan_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Jalan Wisata", null=True, blank=True)
-# 	kapasitas_angkutan_jalan_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Jalan Wisata", null=True, blank=True)
-# 	angkutan_kereta_api_wisata = models.BooleanField(default=False, verbose_name="Angkutan Kereta Api Wisata")
-# 	jumlah_unit_angkutan_kereta_api_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Kereta Api Wisata", null=True, blank=True)
-# 	kapasitas_angkutan_kereta_api_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Kereta Api Wisata", null=True, blank=True)
-# 	angkutan_sungai_dan_danau_wisata = models.BooleanField(default=False, verbose_name="Angkutan Sungai dan Danau Wisata")
-# 	jumlah_unit_angkutan_sungai_dan_danau_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Sungai dan Danau Wisata", null=True, blank=True)
-# 	kapasitas_angkutan_sungai_dan_danau_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Sungai dan Danau Wisata", null=True, blank=True)
-# 	angkutan_laut_domestik_wisata = models.BooleanField(default=False, verbose_name="Angkutan Laut Domestik Wisata")
-# 	jumlah_unit_angkutan_laut_domestik_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Laut Domestik Wisata", null=True, blank=True)
-# 	kapasitas_angkutan_laut_domestik_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Laut Domestik Wisata", null=True, blank=True)
-# 	angkutan_laut_internasional_wisata = models.BooleanField(default=False, verbose_name="Angkutan Laut Internasional Wisata")
-# 	jumlah_unit_angkutan_laut_internasional_wisata = models.IntegerField(verbose_name="Jumlah Unit Angkutan Laut Internasional Wisata", null=True, blank=True)
-# 	kapasitas_angkutan_laut_internasional_wisata = models.IntegerField(verbose_name="Kapasitas Angkutan Laut Internasional Wisata", null=True, blank=True)
+	class Meta:
+		ordering = ['-id']
+		verbose_name = 'Jenis Program Pelatihan'
+		verbose_name_plural = 'Jenis Program Pelatihan'
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Transportasi Wisata'
-# 		verbose_name_plural = 'Bidang Usaha Transportasi Wisata'
+class MesinPeralatan(models.Model):
+	detil_lpksw = models.ForeignKey(DetilLPKSW, verbose_name='Detil LPK Sw')
+	mesin_peralatan = models.CharField(max_length=255, verbose_name='Mesin atau Peralatan', choices=JENIS_MESIN_PERALATAN)
+	jenis_mesin = models.CharField(max_length=255, verbose_name='Jenis Mesin', null=True, blank=True)
+	jumlah_mesin_baik = models.CharField(max_length=255, verbose_name='Jumlah Mesin Baik', null=True, blank=True)
+	jumlah_mesin_rusak_ringan = models.CharField(max_length=255, verbose_name='Jumlah Mesin Rusak Ringan', null=True, blank=True)
+	jumlah_mesin_rusak_berat = models.CharField(max_length=255, verbose_name='Jumlah Mesin Rusak Berat', null=True, blank=True)
+	jumlah_total = models.CharField(max_length=255, verbose_name='Jumlah Total', null=True, blank=True)
 
-# class BUMakananMinuman(models.Model):
-# 	restoran = models.BooleanField(default=False, verbose_name="Restoran")
-# 	jumlah_kursi_restoran = models.IntegerField(verbose_name="Jumlah Kursi Restoran", null=True, blank=True)
-# 	rumah_makan = models.BooleanField(default=False, verbose_name="Rumah Makan")
-# 	jumlah_kursi_rumah_makan = models.IntegerField(verbose_name="Jumlah Kursi Rumah Makan", null=True, blank=True)
-# 	bar_atau_rumah_minum = models.BooleanField(default=False, verbose_name="Bar / Rumah Minum")
-# 	jumlah_kursi_bar_atau_rumah_minum = models.IntegerField(verbose_name="Jumlah Kursi Bar / Rumah Minum", null=True, blank=True)
-# 	kafe = models.BooleanField(default=False, verbose_name="Kafe")
-# 	jumlah_kursi_kafe = models.IntegerField(verbose_name="Jumlah Kursi Kafe", null=True, blank=True)
-# 	pusat_makanan = models.BooleanField(default=False, verbose_name="Pusat Makanan")
-# 	jumlah_kursi_pusat_makanan = models.IntegerField(verbose_name="Jumlah Kursi Pusat Makanan", null=True, blank=True)
-# 	jasa_boga = models.BooleanField(default=False, verbose_name="Jasa Boga")
-# 	jumlah_kursi_jasa_boga = models.IntegerField(verbose_name="Jumlah Kursi Jasa Boga", null=True, blank=True)
+	def __unicode__(self):
+		return u'%s' % (str(self.mesin_peralatan))
 
-# 	class Meta:
-# 		verbose_name = 'Bidang Usaha Makanan Minuman'
-# 		verbose_name_plural = 'Bidang Usaha Makanan Minuman'
+	class Meta:
+		ordering = ['-id']
+		verbose_name = 'Mesin Peralatan'
+		verbose_name_plural = 'Mesin Peralatan'
 
-# ++++++++++++ TDUP ++++++++++++
+class Instruktur(models.Model):
+	detil_lpksw = models.ForeignKey(DetilLPKSW, verbose_name='Detil LPK Sw')
+	jenis_pelatihan = models.CharField(max_length=255, verbose_name='Jenis Pelatihan')
+	jumlah_instruktur = models.IntegerField(verbose_name='Jumlah Intruktur', null=True, blank=True)
+	jumlah_kualifikasi_baik = models.IntegerField(verbose_name='Jumlah Kualifikasi Baik', null=True, blank=True)
+	jumlah_kualifikasi_cukup = models.IntegerField(verbose_name='Jumlah Kualifikasi Cukup', null=True, blank=True)
+	jumlah_status_tetap = models.IntegerField(verbose_name='Jumlah Status Tetap', null=True, blank=True)
+	jumlah_status_tidak_tetap = models.IntegerField(verbose_name='Jumlah Status Tidak Tetap', null=True, blank=True)
+	jumlah_pria = models.IntegerField(verbose_name='Jumlah Pria', null=True, blank=True)
+	jumlah_wanita = models.IntegerField(verbose_name='Jumlah Wanita', null=True, blank=True)
+	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_pelatihan))
+
+	class Meta:
+		ordering = ['-id']
+		verbose_name = 'Instruktur'
+		verbose_name_plural = 'Instruktur'
+
+class IdentitasInstruktur(models.Model):
+	detil_lpksw = models.ForeignKey(DetilLPKSW, verbose_name='Detil LPK Sw')
+	nama = models.CharField(max_length=255, verbose_name='Nama Instruktur', null=True, blank=True)
+	umur = models.IntegerField(verbose_name='Umur', null=True, blank=True)
+	pendidikan = models.CharField(max_length=255, verbose_name='Pendidikan', null=True, blank=True)
+	pelatihan_teknis_dibidangnya = models.CharField(max_length=255, verbose_name='Pelatihan Teknis Dibidangnya', null=True, blank=True)
+	pengalaman_teknis_dibidangnya = models.CharField(max_length=255, verbose_name='Pengalaman Teknis Dibidangnya', null=True, blank=True)
+	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.jenis_pelatihan))
+
+	class Meta:
+		ordering = ['-id']
+		verbose_name = 'Identitas Instruktur'
+		verbose_name_plural = 'Identitas Instruktur'
+# +++++++++++++ end LPK Sw ++++++++
+
+# ++++++++++++ IPCTKI +++++++++
+class DetilIPCTKI(PengajuanIzin):
+
+	def __unicode__(self):
+		return u'Detil IPCTKI %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil IPCTKI'
+		verbose_name_plural = 'Detil IPCTKI'
+# ++++++++++++ end IPCTKI +++++++++
+
+# ++++++++++++ UP3CTKI +++++++++++++++
+class DetilUP3CTKI(PengajuanIzin):
+
+	def __unicode__(self):
+		return u'Detil UP3CTKI %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil UP3CTKI'
+		verbose_name_plural = 'Detil UP3CTKI'
+# ++++++++++++ end UP3CTKI +++++++++++
+
+# ++++++++++++ TDG +++++++++++++++++
+# models Detil TDG belum selsai mockup ruwet :D
+class DetilTDG(PengajuanIzin):
+	lokasi_gudang = models.CharField(max_length=255, verbose_name='Lokasi Gudang', null=True, blank=True)
+	desa_lokasi = models.ForeignKey(Desa, verbose_name='Lokasi Desa', null=True, blank=True)
+	luas_gudang = models.CharField(max_length=255, verbose_name='Luas Gudang m2', null=True, blank=True)
+	kapasitas = models.CharField(max_length=255, verbose_name='Kapasitas', null=True, blank=True)
+	nilai_gudang = models.CharField(max_length=255, verbose_name='Nilai Gudang (Rp)', null=True, blank=True)
+	# kapasitas kepemilikan
+	nasional = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Kepemilikan Nasional')
+	asing = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Kepemilikan Asing')
+	# kota/kab label salah dimockup
+	# berpendingin, tidak berpendingin, keduanya
+	# kota = models.CharField()
+
+	jenis_isi_gudang = models.TextField(verbose_name='Macam dan Jenis Isi Gudang', null=True, blank=True)
+# ++++++++++++ end TDG +++++++++++++
+
+# +++++++++++ IUTM +++++++++++++
+class DetilIUTM(PengajuanIzin):
+	modal = models.CharField(max_length=255, verbose_name='Modal', null=True, blank=True)
+	total_nilai_saham = models.CharField(max_length=255, null=True, blank=True, verbose_name='Total Nilai Saham')
+	presentase_saham_nasional = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Nasional')
+	presentase_saham_asing = models.DecimalField(max_digits=5, decimal_places=2,null=True, blank=True, verbose_name='Presentase Saham Asing')
+	# status_penanaman_modal = models
+
+	# identitas perbelanjaan
+	nama_perbelanjaan = models.CharField(max_length=255, verbose_name='Nama Perbelanjaan', null=True, blank=True)
+	luas_tanah = models.CharField(max_length=255, verbose_name='Luas Tanah (m2)', null=True, blank=True)
+	luas_bangunan = models.CharField(max_length=255, verbose_name='Luas Bangunan (m2)', null=True, blank=True)
+	luas_lantai_penjualan = models.CharField(max_length=255, verbose_name='Luas Lantai Penjualan (m2)', null=True, blank=True)
+	luas_lantai_parkir = models.CharField(max_length=255, verbose_name='Luas Lantai Parkir (m2)', null=True, blank=True)
+	kapasitas_parkir = models.CharField(max_length=255, verbose_name='Kapasitas Parkir (Roda Empat)', null=True, blank=True)
+	alamat_lokasi = models.CharField(max_length=255, verbose_name='Alamat Lokasi', null=True, blank=True)
+	desa_lokasi = models.ForeignKey(Desa, verbose_name='Lokasi Desa', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'Detil IUTM %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		ordering = ['-status']
+		verbose_name = 'Detil IUTM'
+		verbose_name_plural = 'Detil IUTM'
+# +++++++++++ end IUTM +++++++++++++
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 

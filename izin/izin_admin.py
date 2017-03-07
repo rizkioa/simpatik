@@ -36,6 +36,7 @@ class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 	list_filter = ('kelompok_jenis_izin', ('created_at', DateRangeFilter))
 	search_fields = ('no_izin', 'pemohon__nama_lengkap', 'no_pengajuan')
+	
 
 	def changelist_view(self, request, extra_context={}):
 		self.request = request
@@ -151,6 +152,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def kasir(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def get_telephone_pemohon(self, obj):
 		return obj.pemohon.telephone
 	get_telephone_pemohon.short_description = "No. Telp"
@@ -212,6 +219,8 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(status=4)
 		elif func_view.__name__ == 'verifikasi_pembuat_surat':
 			pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+		elif func_view.__name__ == 'kasir':
+			pengajuan_ = qs.filter(status=5)
 		elif func_view.__name__ == 'verifikasi_skizin_kabid':
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kabid'):
@@ -439,6 +448,12 @@ class IzinAdmin(admin.ModelAdmin):
 			id_elemet.append('operator')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
+			total = pengajuan_
+		if request.user.groups.filter(name='Kasir'):
+			pengajuan_ = PengajuanIzin.objects.filter(status=5).count()
+			id_elemet.append('kasir')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/kasir/"
 			total = pengajuan_
 		if request.user.groups.filter(name='Kabid'):
 			# verifikasi pengajuan
@@ -1006,6 +1021,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^semua-pengajuan/$', self.admin_site.admin_view(self.semua_pengajuan), name='semua_pengajuan'),
 			url(r'^penomoran-skizin/$', self.admin_site.admin_view(self.penomoran_skizin), name='penomoran_skizin'),
 			url(r'^stemple-skizin/$', self.admin_site.admin_view(self.stemple_izin), name='stemple_izin'),
+			url(r'^kasir/$', self.admin_site.admin_view(self.kasir), name='kasir'),
 			# url(r'^verifikasi-skizin/$', self.admin_site.admin_view(self.verifikasi_skizin), name='verifikasi_skizin'),
 			url(r'^verifikasi-skizin-kabid/$', self.admin_site.admin_view(self.verifikasi_skizin_kabid), name='verifikasi_skizin_kabid'),
 			url(r'^verifikasi-skizin-kadin/$', self.admin_site.admin_view(self.verifikasi_skizin_kadin), name='verifikasi_skizin_kadin'),
