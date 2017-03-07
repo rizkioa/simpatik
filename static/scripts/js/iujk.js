@@ -280,6 +280,7 @@ function tenaga_teknik_cancel(){
 }
 
 function penanggung_jawab_teknik_save(btn_){
+  // alert("aOKE")
   btn_.html("Tunggu...")
   btn_.attr('disabled',true)
 
@@ -305,9 +306,10 @@ function penanggung_jawab_teknik_save(btn_){
       },
       success: function(response){
         resp = $.parseJSON(response)
+        console.log(resp)
         if (resp.success){
           
-          row = '<tr id="'+resp.data[0].id+'"> <td><input type="checkbox" value="'+resp.data[0].id+'" id="chkbox"></input></td> <td>'+resp.data[1].nama+'</td>'
+          row = '<tr id="'+resp.data[0].id+'"> <td><input type="checkbox" value="'+resp.data[0].id+'" id="chkbox"></input></td> <td>'+resp.data[1].nama+'</td><td>'+resp.data[3].no_pjt_bu+'</td>'
           split = resp.data[2].berkas.split(",")
           row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[0]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
           row += '<td align="center"><a class="btn btn-success btn-xs" href="'+split[1]+'" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>'
@@ -647,6 +649,7 @@ function load_konfirmasi(id_pengajuan){
             // console.log(respon.anggota[i].berkas_tambahan)
             teknik = '<tr>'
             teknik += '<td>'+respon.anggota[i].nama+'</td>'
+            teknik += '<td>'+respon.anggota[i].no_pjt_bu+'</td>'
             teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
             teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
             teknik += '<td align="center"><input type="checkbox" id="checkbox-sertifikat" disabled="" checked>'
