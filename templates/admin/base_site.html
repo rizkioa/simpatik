@@ -84,50 +84,8 @@
                             // console.log(respon.id_elemet[i])
                             // console.log(respon.jumlah_izin[i])
                             var element = respon.id_elemet[i]
-                            if (element == 'operator'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.1 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'kabid_pengajuan'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.2 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'kabid_skizin'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.3 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'pembuat_surat'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.4 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'kadin_skizin'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.5 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'penomoran'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.6 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'cetak'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.7 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'selesai'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.8 a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
-                            }
-                            if (element == 'cek_lokasi'){
-                                if (respon.jumlah_izin[i] > 0){
-                                    $('.daftar_survey a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
-                                }
+                            if (respon.jumlah_izin[i] > 0){
+                                $('.'+respon.id_elemet[i]+' a').append('<span class="badge bg-info">'+(respon.jumlah_izin[i])+'</span>')
                             }
 
                             var jumlah_izin = respon.jumlah_izin[i]
@@ -198,11 +156,7 @@
                     }
                 })
             }
-            
             total_izin()
-
-            
-
             // if ( $.cookie('id_notify') > 0){
             setInterval(total_izin , 300000);
             // }

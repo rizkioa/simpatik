@@ -36,6 +36,7 @@ class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 	list_filter = ('kelompok_jenis_izin', ('created_at', DateRangeFilter))
 	search_fields = ('no_izin', 'pemohon__nama_lengkap', 'no_pengajuan')
+	
 
 	def changelist_view(self, request, extra_context={}):
 		self.request = request
@@ -151,6 +152,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def kasir(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def get_telephone_pemohon(self, obj):
 		return obj.pemohon.telephone
 	get_telephone_pemohon.short_description = "No. Telp"
@@ -212,6 +219,8 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(status=4)
 		elif func_view.__name__ == 'verifikasi_pembuat_surat':
 			pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+		elif func_view.__name__ == 'kasir':
+			pengajuan_ = qs.filter(status=5)
 		elif func_view.__name__ == 'verifikasi_skizin_kabid':
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kabid'):
@@ -440,6 +449,12 @@ class IzinAdmin(admin.ModelAdmin):
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
 			total = pengajuan_
+		if request.user.groups.filter(name='Kasir'):
+			pengajuan_ = PengajuanIzin.objects.filter(status=5).count()
+			id_elemet.append('kasir')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/kasir/"
+			total = pengajuan_
 		if request.user.groups.filter(name='Kabid'):
 			# verifikasi pengajuan
 			pengajuan_ = PengajuanIzin.objects.filter(status=4).count()
@@ -662,8 +677,11 @@ class IzinAdmin(admin.ModelAdmin):
 							"redirect": '',
 						}	
 				elif request.POST.get('aksi') == '_submit_kasir':
+					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
 					obj.status = 5
 					obj.save()
+					obj_skizin.status = 5
+					obj_skizin.save()
 					riwayat_ = Riwayat(
 						pengajuan_izin_id = id_pengajuan_izin,
 						created_by_id = request.user.id,
@@ -681,108 +699,112 @@ class IzinAdmin(admin.ModelAdmin):
 						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
 						"redirect": '',
 					}
-
-				try:
-					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
-					if request.POST.get('aksi') == '_submit_generate_skizin':
-						obj_skizin.status = 6
-						obj_skizin.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Draft (SKIzin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "SKIzin berhasil dibuat.",
-							"redirect": '',
-						}
-					elif request.POST.get('aksi') == '_submit_skizin_kabid':
-						obj_skizin.status = 4
-						obj_skizin.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Kabid Verified (Izin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "SKIzin berhasil di verifikasi.",
-							"redirect": '',
-						}
-					elif request.POST.get('aksi') == '_submit_skizin_kadin':
-						pejabat = Pegawai.objects.filter(id=request.user.id).last()
-						# print request.user.id
-						# print pejabat.nama_lengkap
-						obj_skizin.status = 9
-						gelar_depan = ""
-						gelar_belakang = ""
-						if pejabat.gelar_depan:
-							gelar_depan = pejabat.gelar_depan
-						if pejabat.gelar_belakang:
-							gelar_belakang = pejabat.gelar_belakang
-						nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-						obj_skizin.nama_pejabat = nama_pejabat
-						obj_skizin.nip_pejabat = str(pejabat.username)
-						if pejabat.jabatan:
-							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
-						else:
-							obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
-						obj_skizin.keterangan = "Pembina Tk.l"
-						obj_skizin.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Kadin Verified (Izin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "SKIzin berhasil di verifikasi.",
-							"redirect": '',
-						}
-					elif request.POST.get('aksi') == '_submit_penomoran':
-						obj_skizin.status = 10
-						obj_skizin.save()
-						try:
-							kode_izin_ =  request.POST.get('kode_jenis_izin')
-							nomor_urut_ = request.POST.get('kode_izin')
-							tahun_ = request.POST.get('tahun')
-							nomor_sk = request.POST.get('nomor_izin_sk')
-							obj.no_izin = kode_izin_+"/"+nomor_urut_+"/"+nomor_sk+"/"+tahun_
-							obj.save()
+				if obj.status != 5:
+					try:
+						obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
+						if request.POST.get('aksi') == '_submit_generate_skizin':
+							obj_skizin.status = 6
+							obj_skizin.save()
 							riwayat_ = Riwayat(
 								sk_izin_id = obj_skizin.id ,
 								pengajuan_izin_id = id_pengajuan_izin,
 								created_by_id = request.user.id,
-								keterangan = "Registered (Izin)"
+								keterangan = "Draft (SKIzin)"
 							)
 							riwayat_.save()
 							response = {
 								"success": True,
-								"pesan": "SKIzin berhasil di register.",
+								"pesan": "SKIzin berhasil dibuat.",
 								"redirect": '',
 							}
-						except IntegrityError:
+						elif request.POST.get('aksi') == '_submit_skizin_kabid':
+							obj_skizin.status = 4
+							obj_skizin.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Kabid Verified (Izin)"
+							)
+							riwayat_.save()
 							response = {
-								"success": False,
-								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+								"success": True,
+								"pesan": "SKIzin berhasil di verifikasi.",
 								"redirect": '',
 							}
-					
-					elif request.POST.get('aksi') == '_submit_penomoran_tdp':
-						obj_skizin.status = 10
-						obj_skizin.created_at = datetime.datetime.now()
-						obj_skizin.save()
-						try:
-							nomor = request.POST.get('nomor')
-							if nomor:
-								obj.no_izin = nomor
+						elif request.POST.get('aksi') == '_submit_skizin_kadin':
+							pejabat = Pegawai.objects.filter(id=request.user.id).last()
+							# print request.user.id
+							# print pejabat.nama_lengkap
+							obj_skizin.status = 9
+							gelar_depan = ""
+							gelar_belakang = ""
+							if pejabat.gelar_depan:
+								gelar_depan = pejabat.gelar_depan
+							if pejabat.gelar_belakang:
+								gelar_belakang = pejabat.gelar_belakang
+							nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+							obj_skizin.nama_pejabat = nama_pejabat
+							obj_skizin.nip_pejabat = str(pejabat.username)
+							if pejabat.jabatan:
+								obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
+							else:
+								obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
+							obj_skizin.keterangan = "Pembina Tk.l"
+							obj_skizin.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Kadin Verified (Izin)"
+							)
+							riwayat_.save()
+							response = {
+								"success": True,
+								"pesan": "SKIzin berhasil di verifikasi.",
+								"redirect": '',
+							}
+						# elif request.POST.get('aksi') == '_submit_sk_kasir_kadin':
+						# 	pejabat = Pegawai.objects.filter(id=request.user.id).last()
+						# 	obj.status = 5
+						# 	obj.save()
+						# 	obj_skizin.status = 9
+						# 	gelar_depan = ""
+						# 	gelar_belakang = ""
+						# 	if pejabat.gelar_depan:
+						# 		gelar_depan = pejabat.gelar_depan
+						# 	if pejabat.gelar_belakang:
+						# 		gelar_belakang = pejabat.gelar_belakang
+						# 	nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+						# 	obj_skizin.nama_pejabat = nama_pejabat
+						# 	obj_skizin.nip_pejabat = str(pejabat.username)
+						# 	if pejabat.jabatan:
+						# 		obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
+						# 	else:
+						# 		obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
+						# 	obj_skizin.keterangan = "Pembina Tk.l"
+						# 	obj_skizin.save()
+						# 	riwayat_ = Riwayat(
+						# 		sk_izin_id = obj_skizin.id ,
+						# 		pengajuan_izin_id = id_pengajuan_izin,
+						# 		created_by_id = request.user.id,
+						# 		keterangan = "Kadin Verified (Izin)"
+						# 	)
+						# 	riwayat_.save()
+						# 	response = {
+						# 		"success": True,
+						# 		"pesan": "SKIzin berhasil di verifikasi.",
+						# 		"redirect": '',
+						# 	}
+						elif request.POST.get('aksi') == '_submit_penomoran':
+							obj_skizin.status = 10
+							obj_skizin.save()
+							try:
+								kode_izin_ =  request.POST.get('kode_jenis_izin')
+								nomor_urut_ = request.POST.get('kode_izin')
+								tahun_ = request.POST.get('tahun')
+								nomor_sk = request.POST.get('nomor_izin_sk')
+								obj.no_izin = kode_izin_+"/"+nomor_urut_+"/"+nomor_sk+"/"+tahun_
 								obj.save()
 								riwayat_ = Riwayat(
 									sk_izin_id = obj_skizin.id ,
@@ -796,61 +818,89 @@ class IzinAdmin(admin.ModelAdmin):
 									"pesan": "SKIzin berhasil di register.",
 									"redirect": '',
 								}
-							
-							else:
+							except IntegrityError:
 								response = {
 									"success": False,
-									"pesan": "Nomor Kosong.",
+									"pesan": "Nomor SKIzin telah ada coba cek kembali.",
 									"redirect": '',
 								}
-							
-							
-						except IntegrityError:
+						
+						elif request.POST.get('aksi') == '_submit_penomoran_tdp':
+							obj_skizin.status = 10
+							obj_skizin.created_at = datetime.datetime.now()
+							obj_skizin.save()
+							try:
+								nomor = request.POST.get('nomor')
+								if nomor:
+									obj.no_izin = nomor
+									obj.save()
+									riwayat_ = Riwayat(
+										sk_izin_id = obj_skizin.id ,
+										pengajuan_izin_id = id_pengajuan_izin,
+										created_by_id = request.user.id,
+										keterangan = "Registered (Izin)"
+									)
+									riwayat_.save()
+									response = {
+										"success": True,
+										"pesan": "SKIzin berhasil di register.",
+										"redirect": '',
+									}
+								
+								else:
+									response = {
+										"success": False,
+										"pesan": "Nomor Kosong.",
+										"redirect": '',
+									}
+								
+								
+							except IntegrityError:
+								response = {
+									"success": False,
+									"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+									"redirect": '',
+								}
+						elif request.POST.get('aksi') == '_submit_cetak_izin':
+							obj_skizin.status = 2
+							obj_skizin.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Printed (Izin)"
+							)
+							riwayat_.save()
 							response = {
-								"success": False,
-								"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+								"success": True,
+								"pesan": "SKIzin berhasil di cetak.",
 								"redirect": '',
 							}
-					elif request.POST.get('aksi') == '_submit_cetak_izin':
-						obj_skizin.status = 2
-						obj_skizin.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Printed (Izin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "SKIzin berhasil di cetak.",
-							"redirect": '',
-						}
-					elif request.POST.get('aksi') == '_submit_izin_selsai':
-						obj_skizin.status = 1
-						obj_skizin.save()
-						obj.status = 1
-						obj.save()
-						riwayat_ = Riwayat(
-							sk_izin_id = obj_skizin.id ,
-							pengajuan_izin_id = id_pengajuan_izin,
-							created_by_id = request.user.id,
-							keterangan = "Finished (Izin)"
-						)
-						riwayat_.save()
-						response = {
-							"success": True,
-							"pesan": "Izin telah selsai diproses.",
-							"redirect": '',
-						}
-					else:
-						response = {
-							"success": False,
-							"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
-							"redirect": '',
-						}
-				except ObjectDoesNotExist:
-					pass
+						elif request.POST.get('aksi') == '_submit_izin_selsai':
+							obj_skizin.status = 1
+							obj_skizin.save()
+							obj.status = 1
+							obj.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Finished (Izin)"
+							)
+							riwayat_.save()
+							response = {
+								"success": True,
+								"pesan": "Izin telah selsai diproses.",
+								"redirect": '',
+							}
+						else:
+							response = {
+								"success": False,
+								"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+								"redirect": '',
+							}
+					except ObjectDoesNotExist:
+						pass
 			else:
 				response = {
 					"success": False,
@@ -973,6 +1023,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^semua-pengajuan/$', self.admin_site.admin_view(self.semua_pengajuan), name='semua_pengajuan'),
 			url(r'^penomoran-skizin/$', self.admin_site.admin_view(self.penomoran_skizin), name='penomoran_skizin'),
 			url(r'^stemple-skizin/$', self.admin_site.admin_view(self.stemple_izin), name='stemple_izin'),
+			url(r'^kasir/$', self.admin_site.admin_view(self.kasir), name='kasir'),
 			# url(r'^verifikasi-skizin/$', self.admin_site.admin_view(self.verifikasi_skizin), name='verifikasi_skizin'),
 			url(r'^verifikasi-skizin-kabid/$', self.admin_site.admin_view(self.verifikasi_skizin_kabid), name='verifikasi_skizin_kabid'),
 			url(r'^verifikasi-skizin-kadin/$', self.admin_site.admin_view(self.verifikasi_skizin_kadin), name='verifikasi_skizin_kadin'),

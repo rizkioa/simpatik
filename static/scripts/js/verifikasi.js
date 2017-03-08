@@ -106,6 +106,34 @@ function verifikasi_skizin_kabid(id_detil_siup, aksi){
   	}
 }
 
+function verifikasi_kadin_to_kasir(id_detil_siup, aksi){
+  var centang = $('#centang_skizin_kadin').val();
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    if ($('#centang_skizin_kadin').is(":checked")){
+    $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi }, // get the form data
+          type: 'POST', // GET or POST
+          url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+          success: function(response) { // on success..
+            respon = $.parseJSON(response)
+            if(respon.success){
+                  toastr["success"](respon.pesan)
+                  window.location.href= "";
+                }
+                else{
+                    toastr["error"](respon.pesan)
+                }
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    }
+    else{
+      toastr["warning"]("Anda belum menyentang persetujuan.")
+    }
+}
+
 function verifikasi_skizin_kadin(id_detil_siup, aksi){
 	var centang = $('#centang_skizin_kadin').val();
   	csrf_token = $("input[name='csrfmiddlewaretoken']").val();

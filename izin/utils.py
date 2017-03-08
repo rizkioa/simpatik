@@ -100,6 +100,11 @@ JENIS_ANGGOTA_BADAN_USAHA = (
 	('Tenaga Non Teknik', 'Tenaga Non Teknik'),
 )
 
+JENIS_MESIN_PERALATAN = (
+	('Mesin', 'Mesin'),
+	('Peralatan', 'Peralatan'),
+)
+
 def terbilang_(bil):
 	# bil = nilai.replace(".", "")
 	satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']

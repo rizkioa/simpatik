@@ -61,6 +61,7 @@
                 <tr>
                   <th>&nbsp;</th>
                   <th>Nama</th>
+                  <th>No PJT-BU</th>
                   <th>File Foto 4X6 </th>
                   <th>KTP</th>
                   <th>Ijazah</th>
@@ -74,6 +75,7 @@
                   <tr id="{{a.id}}">
                     <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
                     <td>{{a.nama}}</td>
+                    <td>{{a.no_pjt_bu}}</td>
                     {% for b in a.berkas_tambahan.all %}
 
                       <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>

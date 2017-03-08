@@ -131,7 +131,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Pengajuan Masuk',
                     icon='icon-check',
-                    css_classes='1',
+                    css_classes='operator',
                     url=reverse('admin:verifikasi_operator'),  
                 )
             ]
@@ -141,7 +141,7 @@ class CustomMenu(Menu):
                  items.MenuItem(
                         title='Daftar Survey',
                         icon='fa fa-file-text',
-                        css_classes='daftar_survey',
+                        css_classes='cek_lokasi',
                         url=reverse('admin:izin_survey_changelist'),                        
                     ),
                     items.MenuItem(
@@ -158,13 +158,13 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Pengajuan Masuk',
                     icon='icon-check',
-                    css_classes='2', 
+                    css_classes='kabid_pengajuan', 
                     url=reverse('admin:verifikasi_kabid'),                
                 ),
                 items.MenuItem(
                     title='Draft SK',
                     icon='icon-list',
-                    css_classes='3', 
+                    css_classes='kabid_skizin', 
                     url=reverse('admin:verifikasi_skizin_kabid'),                
                 ),
             ]
@@ -174,8 +174,18 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Draft SK',
                     icon='fa fa-file-text',
-                    css_classes='4', 
+                    css_classes='pembuat_surat', 
                     url=reverse('admin:verifikasi_pembuat_surat'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name='Kasir').exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Kasir',
+                    icon='fa fa-file-text',
+                    css_classes='kasir', 
+                    url=reverse('admin:kasir'),                
                 ),
             ]
 
@@ -184,7 +194,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Draft SK',
                     icon='fa fa-file-text',
-                    css_classes='5', 
+                    css_classes='kadin_skizin', 
                     url=reverse('admin:verifikasi_skizin_kadin'),                
                 ),
             ]
@@ -194,7 +204,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Penomoran Izin',
                     icon='fa fa-file-text',
-                    css_classes='6', 
+                    css_classes='penomoran', 
                     url=reverse('admin:penomoran_skizin'),                
                 ),
             ]
@@ -204,7 +214,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Cetak Izin',
                     icon='fa fa-file-text',
-                    css_classes='7', 
+                    css_classes='cetak', 
                     url=reverse('admin:verifikasi_skizin_cetak'),                
                 ),
             ]
@@ -214,7 +224,7 @@ class CustomMenu(Menu):
                 items.MenuItem(
                     title='Stemple Izin',
                     icon='fa fa-file-text',
-                    css_classes='8',
+                    css_classes='selesai',
                     url=reverse('admin:stemple_izin'),                
                 ),
             ]
