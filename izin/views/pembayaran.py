@@ -19,7 +19,7 @@ import time
 import json
 import os
 
-from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran,SKIzin
+from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran,SKIzin,Riwayat
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import DetilPembayaranForm
 
@@ -41,6 +41,14 @@ def detil_pembayaran_save(request):
 			obj_skizin.save()
 			pengajuan_izin.status = 2
 			pengajuan_izin.save()
+			riwayat_ = Riwayat(
+				sk_izin_id = obj_skizin.id ,
+				pengajuan_izin_id = pengajuan_izin.id,
+				created_by_id = request.user.id,
+				keterangan = "Kasir Verified"
+			)
+			riwayat_.save()
+
 			data = {'success': True,
 					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
 					'data': {}}
