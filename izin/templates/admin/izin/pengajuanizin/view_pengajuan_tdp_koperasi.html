@@ -235,7 +235,7 @@
 						
 
 						{% if request.user|has_group:'Operator' or request.user.is_superuser %}
-							{% if pengajuan.status == 6 %}
+							{% if pengajuan.status == 6 or pengajuan.status == 11 %}
 							<a onclick="change_edit_pengajuan()" href="#" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 							{% endif %}
 						{% endif %}
