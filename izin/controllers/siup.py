@@ -205,7 +205,7 @@ def formulir_siup(request):
 					if pengajuan_.presentase_saham_asing:
 						extra_context.update({ 'presentase_saham_asing_konfirmasi': str(pengajuan_.presentase_saham_asing)+" %" })
 					if pengajuan_.kelembagaan:
-						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan.kelembagaan })
+						extra_context.update({ 'kelembagaan_konfirmasi': pengajuan_.kelembagaan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
 
 					template = loader.get_template("admin/izin/izin/form_wizard_siup.html")

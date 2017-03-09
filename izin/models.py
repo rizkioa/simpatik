@@ -289,6 +289,25 @@ class DetilReklame(PengajuanIzin):
 		verbose_name = 'Detil Reklame'
 		verbose_name_plural = 'Detil Reklame'
 
+class DetilReklameIzin(AtributTambahan):
+	detil_reklame = models.ForeignKey(DetilReklame, verbose_name='Detil Reklame', blank=True,null=True)
+	tipe_reklame = models.ForeignKey(JenisTipeReklame,verbose_name='Tipe Reklame',blank=True,null=True)
+	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame')
+	panjang = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Panjang',default=0, null=True, blank=True)
+	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar',default=0 ,null=True, blank=True)
+	sisi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Sisi',default=0, null=True, blank=True)
+	letak_pemasangan = models.CharField(max_length=255, verbose_name='Letak Pemasangan', null=True, blank=True)
+	jumlah = models.IntegerField(verbose_name="Jumlah", null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'Detil Reklame Izin %s ' % (str(self.detil_reklame))
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'Detil Reklame Izin'
+		verbose_name_plural = 'Detil Reklame Izin'
+
 class SKIzin(AtributTambahan):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin')
 	isi = models.TextField(verbose_name="Isi", blank=True, null=True)
