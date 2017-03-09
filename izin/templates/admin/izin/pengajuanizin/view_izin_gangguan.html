@@ -246,7 +246,7 @@
 		<div class="col-lg-12">
 			<section class="tile">
 				<div class="tile-header dvd dvd-btm">
-	                <h1 class="custom-font" align="center"> Validasi Persyaratan</h1>
+	                <h1 class="custom-font" align="center"> Validasi Persyaratan & Pembayaran Retribusi</h1>
 	                <ul class="controls">
 	                    <li>
 	                        <a role="button" tabindex="0" class="tile-toggle">
@@ -259,32 +259,6 @@
 	            <div id="minimize">
 	            	<div class="tile-body">
 	            		{% if status != 6 %}
-			                <!-- <table class="table table-bordered">
-						        <thead>
-							        <tr >
-							        	<th>No.</th>
-							          	<th>Dokumen Persyaratan</th>
-							          	<th>Lengkap/Tidak</th>
-							        </tr>
-						        </thead>
-						        <tbody>
-						        	{% if syarat %}
-						        		{% for s in syarat %}
-						        			<tr>
-						        				<td valign="top">{{ forloop.counter }}</td>
-									          	<td>
-									            	{{ s.syarat }}
-									          	</td>
-									          	<td align="center">
-										            <label class="checkbox checkbox-custom-alt">
-										              	<input type="checkbox"><i></i>
-										            </label>
-									          	</td>
-									        </tr>
-						        		{% endfor %}
-						        	{% endif %}
-						        </tbody>
-						    </table> -->
 						    <br>
 						    <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 						    	<div class="panel-body">
@@ -297,15 +271,67 @@
 						   	</div>
 					    {% endif %}
 					    <br>
-					    <br>
 					    {% if status == 6 %}
-						    <section class="tile bg-greensea">
-							    <div class="tile-body">
-							      <label class="checkbox checkbox-custom-alt">
-							        <input id="centang_operator" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan dan setuju bahwa pengajuan bisa diteruskan ke KABID untuk ditindaklanjuti.
-							      </label>
-							    </div>
-						    </section>
+			                <div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
+								<div class="panel-body">
+									<form method="POST" id="id_form_pembayaran" name="form_pembayaran" role="form" class="form-horizontal" action="{% url 'detil_pembayaran_save' %}" data-parsley-validate novalidate>
+									{% csrf_token %}
+											<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+
+											<div class="form-group">
+											<label for="input01" class="col-sm-2 label-color">Tanggal Bayar</label>
+												<div class="col-sm-2">
+													<div class="input-group datepicker w-360 tanggal-awal"> 
+														<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
+														<span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+														<a class="btn btn-default" style="height:34px;" type="button"><i class="fa fa-calendar"></i></a>
+														</span>
+													</div>
+												</div>
+											</div>
+
+										    <div class="form-group">
+												<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
+												<div class="col-sm-5">
+													<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;">
+												</div>
+										    </div>
+
+										    <div class="form-group">
+												<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
+												<div class="col-sm-6">
+													<div class="input-group">
+														<span class="input-group-addon" style="width:34px;">Rp.</span>
+														{% if pengajuan.jenis_bangunan.kode == 'BK1' or pengajuan.jenis_bangunan.kode == 'BK23' %}
+															<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran" value="{{pengajuan.total_biaya|floatformat:-2|formatrupiah}}">
+														{% else %}
+															<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
+														{% endif %}
+													</div>
+												</div>
+										    </div>
+									</form>
+								</div>
+							    <section class="tile bg-greensea">
+								    <div class="tile-body">
+								      <label class="checkbox checkbox-custom-alt">
+								        <input id="centang_operator" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan dan setuju bahwa pengajuan bisa diteruskan ke KABID untuk ditindaklanjuti.
+								      </label>
+								    </div>
+							    </section>
+								{% if skizin_status == 9 and pengajuan.status != 6%}
+									<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+								    	<div class="panel-body">
+								    		<center>
+								    			<h3>
+								    				TERVERIFIKASI
+								    			</h3>
+								    		</center>
+								    	</div>
+								   	</div>
+								{% endif %}
+			                </div>
+	
 					    {% endif %}
 					</div>
 
@@ -313,7 +339,8 @@
 						<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 							<div class="row">
 								<div class="col-md-12" align="right">
-									<a type="button" onclick="verifikasi_operator({{ pengajuan.id }}, '_submit_operator')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+									<a type="button" class="btn btn-darkgray mb-10">Tidak Dibayar</a>
+									<button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></button>
 								</div>
 							</div>
 						</div>
@@ -379,9 +406,9 @@
 								</div>
 							</div>
 
-							{% include "admin/izin/survey_1.html" %}
-
 							
+                            {% include "admin/izin/survey_1.html" %}
+						
 
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
@@ -408,6 +435,7 @@
 								</form>
 							</div>
 						{% endif %}
+						
 						{% if status == 8 %}
 							<!-- <section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;"> -->
 							<section class="tile">
@@ -446,56 +474,121 @@
                             	<div class="col-md-12">
 									<div class="form-group">
 										<label class="col-sm-2 control-label">Deadline Survey</label>
-										<div class="col-sm-4"> {{ survey.deadline_survey }}
+										<div class="col-sm-4"> {{ survey_pengajuan.deadline_survey }}
 										</div>
 									</div>
 									
 								</div>
                                 <!-- tile header -->
                                 <div class="tile-header">
-                                    <h1 class="custom-font"><strong>Laporan Survey </strong></h1>
+                                    <h1 class="custom-font"><strong>Pertimbangan Dan Saran </strong></h1>
                                 </div>
                                 <!-- /tile header -->
 
                                 <!-- tile body -->
                                 <div class="tile-body">
 									<div class="row">
-							            <div class="col-md-6">
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
-
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_luas_tempat_usaha">Luas Tempat Usaha : {{detilbap.luas_tempat_usaha}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_jumlah_mesin">Jumlah Mesin : {{detilbap.jumlah_mesin}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_daya_kekuatan_mesin">Daya Kekuatan Mesin : {{detilbap.daya_kekuatan_mesin}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_jenis_bangunan">Jenis Bangunan : {{detilbap.get_jenis_bangunan_display}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
-							              </div>
-							            </div>
-							            <div class="col-md-6">
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_sebelah_timur">Sebelah Timur : {{ detilbap.sebelah_timur}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_sebelah_selatan">Sebelah Selatan : {{detilbap.sebelah_selatan}}</label>
-							              </div>
-							              <div class="form-group">
-							                <label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
-							              </div>
-							            </div>
-							          </div>
+						            <div class="col-md-6">
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Bangunan Kantor</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.bangunan_kantor|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Ruang Direktur</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_direktur|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Ruang Staff</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_staf|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Meja + Kursi Direktur</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_meja_kursi_derektur|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Meja + Kursi Staff Administrasi</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_meja_kursi_staff_administrasi|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Meja + Kursi Staff</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.ruang_meja_kursi_staff_teknis|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Komputer</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.komputer|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Almari/Filing</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.lemari|true_or_false|safe }}
+						                </div>
+						              </div>
+						            </div>
+						            <div class="col-md-6">
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Klasifikasi (K1+k2) Uk. 0,50m x 0,90m</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_klasifikasi_k1_k2|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Klasifikasi (K1+k2) Uk. 0,50m x 0,90m</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_klasifikasi_k1_k2|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Klasifikasi (M+B) Uk. 0,60m x 1,20m</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_klasifikasi_mb|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Nama Perusahaan</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_nama_perusahaan|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">No. Telp</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_telp|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Alamat</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_alamat|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">NPWP</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_npwp|true_or_false|safe }}
+						                </div>
+						              </div>
+						              <div class="form-group">
+						                <label class="col-sm-8 control-label">Nomor Anggota Asosiasi</label>
+						                <div class="col-sm-4">
+						                  {{ detilbap.papan_nama_ada_nama_anggota_asosiasi|true_or_false|safe }}
+						                </div>
+						              </div>
+						            </div>
+						          </div>
                                 </div>
                                 <!-- /tile body -->
 
@@ -580,66 +673,6 @@
 	</div>
 {% endif %}
 
-<!-- {% if request.user|has_group:'Kasir' or request.user.is_superuser %}
-	<div class="row">
-		<div class="col-lg-12">
-			<section class="tile">
-				<div class="tile-header dvd dvd-btm">
-	                <h1 class="custom-font" align="center"> Pembayaran Retribusi</h1>
-	                <ul class="controls">
-	                    <li>
-	                        <a role="button" tabindex="0" class="tile-toggle">
-	                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
-	                            <span class="expand"><i class="fa fa-angle-up"></i></span>
-	                        </a>
-	                    </li>
-	                </ul>
-	            </div>
-	            <div id="minimize_3">
-	            	<div class="tile-body">
-		                <div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
-		                	<form>
-								<div class="panel-body">
-									<div class="form-group">	
-								      	<label class="label-color">Tanggal Bayar </label>
-								        <div class="input-group datepicker" data-format="L">
-								          <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-								          <span class="input-group-addon">
-								            <span class="fa fa-calendar"></span>
-								          </span>
-								        </div>
-								    </div>
-								    <div class="form-group">
-								      	<label class="label-color">Nomor Kwitansi </label>
-									    <input type="text" class="form-control" name="">
-								    </div>
-								    <div class="form-group">
-								      	<label class="label-color">Jumlah Dibayar </label>
-								      	<div class="input-group">
-									      	<span class="input-group-addon">Rp.</span>
-									      	<input type="text" class="form-control" name="">
-								      	</div>
-								    </div>
-								    
-								</div>
-							</form>
-
-		                </div>
-					</div>
-					<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
-						<div class="row">
-							<div class="col-md-12" align="right">
-								<a type="button" class="btn btn-red mb-10">Tidak Dibayar</a>
-								<a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
-							</div>
-						</div>
-					</div>
-	            </div>
-			</section>
-		</div>
-	</div>
-{% endif %} -->
-
 {% if request.user|has_group:'Pembuat Surat' or request.user.is_superuser %}
 	<div class="row">
 		<div class="col-lg-12">
@@ -660,7 +693,7 @@
 						<div class="panel-body">
 						{% if skizin == None and status == 2%}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_gangguan' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 						    </center>
@@ -779,11 +812,12 @@
 {% endif %}
 
 {% if request.user|has_group:'Kadin' or request.user.is_superuser %}
+	{% if skizin != None and pengajuan.status == 2 %}
 		<div class="row">
 			<div class="col-lg-12">
 				<section class="tile">
 					<div class="tile-header dvd dvd-btm">
-		                <h1 class="custom-font" align="center"> Verifikasi Kadin</h1>
+		                <h1 class="custom-font" align="center"> Verifikasi Draf Izin Kadin</h1>
 		                <ul class="controls">
 		                    <li>
 		                        <a role="button" tabindex="0" class="tile-toggle">
@@ -795,7 +829,7 @@
 		            </div>
 		            <div id="minimize_6">
 		            	<div class="tile-body">
-		            		{% if pengajuan.status == 5 %}
+		            		{% if skizin_status == 9 %}
 		            			<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 							    	<div class="panel-body">
 							    		<center>
@@ -806,18 +840,18 @@
 							    	</div>
 							   	</div>
 		            		{% endif %}
-			            	{% if pengajuan.status == 2 %}
+			            	{% if skizin_status == 4 %}
 							    <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
-										<h4>MEMVERIFIKASI IZIN</h4>
+										<h4>MEMVERIFIKASI DRAF IZIN</h4>
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-									        <input id="centang_skizin_kadin" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa izin bisa diteruskan.
+									        <input id="centang_skizin_kadin" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa izin bisa diteruskan untuk dicetak.
 								      	</label>
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a onclick="verifikasi_kadin_to_kasir({{ pengajuan.id }}, '_submit_kasir')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_kadin')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
@@ -852,199 +886,136 @@
 				</section>
 			</div>
 		</div>
-{% endif %}
-
-{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
-		<div class="row">
-			<div class="col-lg-12">
-				<section class="tile">
-					<div class="tile-header dvd dvd-btm">
-		                <h1 class="custom-font" align="center"> Pembayaran Retribusi</h1>
-		                <ul class="controls">
-		                    <li>
-		                        <a role="button" tabindex="0" class="tile-toggle">
-		                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
-		                            <span class="expand"><i class="fa fa-angle-up"></i></span>
-		                        </a>
-		                    </li>
-		                </ul>
-		            </div>
-		            <div id="minimize_3">
-		            	<div class="tile-body">
-			                <div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
-			                	{% if pengajuan.status == 5 %}
-									<div class="panel-body">
-										<form method="POST" id="id_form_pembayaran" name="form_pembayaran" role="form" class="form-horizontal" action="{% url 'detil_pembayaran_save' %}" data-parsley-validate novalidate>
-										{% csrf_token %}
-												<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
-
-												<div class="form-group">
-												<label for="input01" class="col-sm-2 label-color">Tanggal Bayar</label>
-													<div class="col-sm-2">
-														<div class="input-group datepicker w-360 tanggal-awal"> 
-															<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
-															<span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-															<a class="btn btn-default" style="height:34px;" type="button"><i class="fa fa-calendar"></i></a>
-															</span>
-														</div>
-													</div>
-												</div>
-
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
-													<div class="col-sm-5">
-														<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;">
-													</div>
-											    </div>
-
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
-													<div class="col-sm-6">
-														<div class="input-group">
-															<span class="input-group-addon" style="width:34px;">Rp.</span>
-																<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
-														</div>
-													</div>
-											    </div>
-										</form>
-									</div>
-									<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
-										<div class="row">
-											<div class="col-md-12" align="right">
-												<a type="button" class="btn btn-darkgray mb-10">Tidak Dibayar</a>
-												<button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></button>
-											</div>
-										</div>
-									</div>
-								{% endif %}
-								{% if skizin_status == 9 and pengajuan.status != 5%}
-									<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
-								    	<div class="panel-body">
-								    		<center>
-								    			<h3>
-								    				TERVERIFIKASI
-								    			</h3>
-								    		</center>
-								    	</div>
-								   	</div>
-								{% endif %}
-			                </div>
-						</div>
-		            </div>
-				</section>
-			</div>
-		</div>
+	{% endif %}
 {% endif %}
 
 {% if request.user|has_group:'Penomoran' or request.user.is_superuser %}
-<div class="row">
-	<div class="col-lg-12">
-		<section class="tile">
-			<div class="tile-header dvd dvd-btm">
-                <h1 class="custom-font" align="center"> Registrasi Izin (Penomoran Izin)</h1>
-                <ul class="controls">
-                    <li>
-                        <a role="button" tabindex="0" class="tile-toggle">
-                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
-                            <span class="expand"><i class="fa fa-angle-up"></i></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="minimize_7">
-            	<div class="tile-body">
-            		{% if skizin_status == 9 %}
-            		<form class="form-inline">
-            			<center>
-					    	<br>
-						    <div class="form-group">
-					      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
-					      		<label>503.03.01</label>
-					      		<input type="hidden" id="kode_jenis_izin" value="503.03.01">
-					      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
-					      		<label>/418.27/</label>
-					      		<input type="hidden" id="nomor_izin_sk" value="418.27">
-				      			<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
-						    </div>
-					  	</center>
-            		</form>
-				  	{% endif %}
-				  	{% if skizin_status == 10 %}
-				  		<!-- <a role="button" class="btn btn-lightred">
-						  <span><h3>No. Izin : {{ pengajuan.no_izin }}</h3></span>
-						</a> -->
-						<div class="panel panel-darkgray" style="background-color: #525348  !important;color: white;border: 0;border-radius: 6px; padding-bottom: 10px;">
-					    	<div class="panel-body">
-					    		<center>
-					    			<h3>
-					    				No. Izin : {{ pengajuan.no_izin }}
-					    			</h3>
-					    		</center>
-					    	</div>
-					   	</div>
-						<br>
-				  		<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
-					    	<div class="panel-body">
-					    		<center>
-					    			<h3>
-					    				TELAH DIREGISTER
-					    			</h3>
-					    		</center>
-					    	</div>
-					   	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<section class="tile">
+				<div class="tile-header dvd dvd-btm">
+	                <h1 class="custom-font" align="center"> Registrasi Izin (Penomoran Izin)</h1>
+	                <ul class="controls">
+	                    <li>
+	                        <a role="button" tabindex="0" class="tile-toggle">
+	                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
+	                            <span class="expand"><i class="fa fa-angle-up"></i></span>
+	                        </a>
+	                    </li>
+	                </ul>
+	            </div>
+	            <div id="minimize_7">
+	            	<div class="tile-body">
+	            		{% if skizin_status == 9 %}
+	            		<form class="form-inline">
+	            			<center>
+						    	<br>
+							    <div class="form-group">
+						      		<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
+						      		{% if detil_ == "Hunian" %}
+							      		<label>503.01.01</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.01">
+						      		{% elif detil_ == "Usaha" %}
+							      		<label>503.01.02</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.02">
+						      		{% elif detil_ == "Keagamaan" %}
+							      		<label>503.01.03</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.03">
+						      		{% elif detil_ == "Sosial Budaya Milik Negara" %}
+							      		<label>503.01.04</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.04">
+						      		{% elif detil_ == "Sosial Budaya Selain Milik Negara" %}
+							      		<label>503.01.05</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.05">
+						      		{% else %}
+							      		<label>503.01.06</label>
+							      		<input type="hidden" id="kode_jenis_izin" value="503.01.06">
+						      		{% endif %}
+						      		<input value="{{ banyak }}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
+						      		<label>/418.27/</label>
+						      		<input type="hidden" id="nomor_izin_sk" value="418.27">
+					      			<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
+							      	</input>
+							    </div>
+						  	</center>
+	            		</form>
+					  	{% endif %}
+					  	{% if skizin_status == 10 %}
+					  		<!-- <a role="button" class="btn btn-lightred">
+							  <span><h3>No. Izin : {{ pengajuan.no_izin }}</h3></span>
+							</a> -->
+							<div class="panel panel-darkgray" style="background-color: #525348  !important;color: white;border: 0;border-radius: 6px; padding-bottom: 10px;">
+						    	<div class="panel-body">
+						    		<center>
+						    			<h3>
+						    				No. Izin : {{ pengajuan.no_izin }}
+						    			</h3>
+						    		</center>
+						    	</div>
+						   	</div>
+							<br>
+					  		<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+						    	<div class="panel-body">
+						    		<center>
+						    			<h3>
+						    				TELAH DIREGISTER
+						    			</h3>
+						    		</center>
+						    	</div>
+						   	</div>
+						{% endif %}
+					</div>
+	            	{% if skizin_status == 9 %}
+					<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
+						<center>
+							<a onclick="penomoran_izin({{ pengajuan.id }}, '_submit_penomoran')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+						</center>
+					</div>
 					{% endif %}
-				</div>
-            	{% if skizin_status == 9 %}
-				<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
-					<center>
-						<a onclick="penomoran_izin({{ pengajuan.id }}, '_submit_penomoran')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
-					</center>
-				</div>
-				{% endif %}
-            </div>
-		</section>
+	            </div>
+			</section>
+		</div>
 	</div>
-</div>
 {% endif %}
 
 {% if request.user|has_group:'Cetak' or request.user.is_superuser %}
-<div class="row">
-	<div class="col-lg-12">
-		<section class="tile">
-			<div class="tile-header dvd dvd-btm">
-                <h1 class="custom-font" align="center"> Cetak Izin</h1>
-                <ul class="controls">
-                    <li>
-                        <a role="button" tabindex="0" class="tile-toggle">
-                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
-                            <span class="expand"><i class="fa fa-angle-up"></i></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div id="minimize_8">
-            	<div class="tile-body">
-            		{% if skizin_status == 10 %}
-	            		<center>
-					    	<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
-					  	</center>
-				  	{% endif %}
-				  	{% if skizin_status == 2 %}
-				  		<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
-					    	<div class="panel-body">
-					    		<center>
-					    			<h3>
-					    				TELAH DICETAK
-					    			</h3>
-					    		</center>
-					    	</div>
-					   	</div>
-				  	{% endif %}
-				</div>
-            </div>
-		</section>
+	<div class="row">
+		<div class="col-lg-12">
+			<section class="tile">
+				<div class="tile-header dvd dvd-btm">
+	                <h1 class="custom-font" align="center"> Cetak Izin</h1>
+	                <ul class="controls">
+	                    <li>
+	                        <a role="button" tabindex="0" class="tile-toggle">
+	                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
+	                            <span class="expand"><i class="fa fa-angle-up"></i></span>
+	                        </a>
+	                    </li>
+	                </ul>
+	            </div>
+	            <div id="minimize_8">
+	            	<div class="tile-body">
+	            		{% if skizin_status == 10 %}
+		            		<center>
+						    	<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
+						  	</center>
+					  	{% endif %}
+					  	{% if skizin_status == 2 %}
+					  		<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+						    	<div class="panel-body">
+						    		<center>
+						    			<h3>
+						    				TELAH DICETAK
+						    			</h3>
+						    		</center>
+						    	</div>
+						   	</div>
+					  	{% endif %}
+					</div>
+	            </div>
+			</section>
+		</div>
 	</div>
-</div>
 {% endif %}
 
 {% if request.user|has_group:'Selesai' or request.user.is_superuser %}
