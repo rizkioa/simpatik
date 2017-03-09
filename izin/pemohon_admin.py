@@ -67,7 +67,7 @@ class PemohonAdmin(admin.ModelAdmin):
 	inlines = [NomorIdentitasInline,]
 	list_display = ('get_nomor_ktp', 'nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon', 'get_alamat')
 	list_filter = ('nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon')
-	search_fields = ('nama_lengkap','jenis_pemohon','jabatan_pemohon')
+	search_fields = ('username','nama_lengkap','jenis_pemohon__jenis_pemohon','jabatan_pemohon')
 	
 	def get_list_display_links(self, request, list_display):
 		if request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin') or request.user.groups.filter(name='Pembuat Surat') or request.user.groups.filter(name='Penomoran') or request.user.groups.filter(name='Cetak') or request.user.groups.filter(name='Selesai'):
