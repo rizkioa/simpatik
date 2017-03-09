@@ -367,9 +367,9 @@
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
 		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
-		        				<td>{{pengajuan.pemohon.pekerjaan}}</td>
+		        				<td>{{pengajuan.pemohon.pekerjaan|default_if_none:""}}</td>
 		        			{% else %}
-		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan}}</td>
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan|default_if_none:""}}</td>
 		        			{% endif %}
 		        		</tr>
 		        		<tr>
