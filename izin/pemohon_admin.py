@@ -152,7 +152,7 @@ class PemohonAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 	def get_fieldsets(self, request, obj = None):
-		field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email', 'jenis_pemohon','jabatan_pemohon','kewarganegaraan', 'pekerjaan')
+		field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email', 'jenis_pemohon','jabatan_pemohon','kewarganegaraan', 'pekerjaan','keterangan_pekerjaan')
 		fieldsets = (
 			(None, {
 				'classes': ('wide',),
