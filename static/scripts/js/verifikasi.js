@@ -20,7 +20,7 @@ function verifikasi_operator(id_detil_siup, aksi){
 	        	alert('{{ pengajuan.id }}')                
 	          	toast_server_error()
 	        }
-	    });
+	   });
   	}
   	else{
   		toastr["warning"]("Anda belum menyentang persetujuan.")
@@ -236,24 +236,31 @@ $("#form_penolakan_verifikasi_kabid").ajaxForm({
 });
 
 function pembayaran_add(btn){
-    var frm = $('#id_form_pembayaran');
-     if (frm.parsley().validate()){
+    var centang = $('#centang_operator').val();
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    if ($('#centang_operator').is(":checked")){
+      var frm = $('#id_form_pembayaran');
+      if (frm.parsley().validate()){
         frm.ajaxSubmit({
-         success: function(response) {  // on success..
-            var respon = $.parseJSON(response);  
-		        if(respon.success){
-                  toastr["success"](respon.pesan)
-                  window.location.href= "";
-              	}
-              	else{
-                  	toastr["error"](respon.pesan)
-                }
-            },
-            error: function(data) {       
-              toast_server_error()
-            }
-          });
+        success: function(response) {  // on success..
+        var respon = $.parseJSON(response);  
+        if(respon.success){
+          toastr["success"](respon.pesan)
+          window.location.href= "";
         }
+        else{
+          toastr["error"](respon.pesan)
+            }
+          },
+          error: function(data) {       
+          toast_server_error()
+        }
+        });
+      }
+    }
+    else{
+      toastr["warning"]("Anda belum menyentang persetujuan.")
+    }
   }
 
     function sk_add(btn){

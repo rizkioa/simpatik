@@ -27,7 +27,6 @@ def detil_pembayaran_save(request):
 	if request.POST:
 		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
 		pengajuan_izin = PengajuanIzin.objects.get(id=pengajuan_izin_id)
-		obj_skizin = SKIzin.objects.get(pengajuan_izin_id=pengajuan_izin_id)
 		try:
 			pengajuan_ = DetilPembayaran.objects.get(pengajuan_izin__id=pengajuan_izin_id)
 			pembayaran = DetilPembayaranForm(request.POST, instance=pengajuan_)
@@ -37,15 +36,12 @@ def detil_pembayaran_save(request):
 		if pembayaran.is_valid():
 			p = pembayaran.save(commit=False)
 			p.save()
-			obj_skizin.status = 9
-			obj_skizin.save()
-			pengajuan_izin.status = 2
+			pengajuan_izin.status = 4
 			pengajuan_izin.save()
 			riwayat_ = Riwayat(
-				sk_izin_id = obj_skizin.id ,
 				pengajuan_izin_id = pengajuan_izin.id,
 				created_by_id = request.user.id,
-				keterangan = "Kasir Verified"
+				keterangan = "Operator Verified"
 			)
 			riwayat_.save()
 
