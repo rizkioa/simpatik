@@ -236,7 +236,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nama_paket_pekerjaan)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.tahun)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nilai_paket_pekerjaan)+'</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(keterangan_str)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.keterangan)+'</td>'
 			ts += '</tr>'
 
 		extra_context.update({'klasifikasi_tr': mark_safe(ts) })	
