@@ -230,10 +230,20 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		# ts += '</tr>'
 		ts = ''
 		for p in paket:
+			klas = []
+			if p.subklasifikasi.klasifikasi in kla:
+				tr += '<td style="border: 1px solid black;"></td>'
+				tr += '<td style="border: 1px solid black;"></td>'
+			else:
+				k = p.subklasifikasi.klasifikasi
+				no = no+1
+				tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
+				tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
+				kla.append(p.subklasifikasi.klasifikasi)
 			ts += '<tr style="border: 1px solid black;">'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi.klasifikasi)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nama_paket_pekerjaan)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.tahun)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nilai_paket_pekerjaan)+'</td>'
