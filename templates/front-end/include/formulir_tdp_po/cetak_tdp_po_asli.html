@@ -198,18 +198,18 @@
     	<br>
     	<table width="100%" class="skizin" border="2">
     		<tr>
-    			<td>NOMOR TDP</td>
-    			<td>BERLAKU S/D TGL</td>
-    			<td>PENDAFTARAN</td>
+    			<td><strong>NOMOR TDP</strong></td>
+    			<td><strong>BERLAKU S/D TGL</strong></td>
+    			<td><strong>PENDAFTARAN</strong></td>
     			<td>:</td>
-    			<td>BARU</td>
+    			<td><strong>{{skizin.status_pendaftaran.upper}}</strong></td>
     		</tr>
     		<tr>
-    			<td>{{pengajuan.no_izin|default_if_none:'-'}}</td>
-    			<td>{{masa_berlaku}}</td>
-    			<td>PEMBAHARUAN KE</td>
+    			<td><strong>{{pengajuan.no_izin|default_if_none:'-'}}</strong></td>
+    			<td><strong>{{skizin.masa_berlaku_izin|date:'d-m-Y'}}</strong></td>
+    			<td><strong>PEMBAHARUAN KE</strong></td>
     			<td>:</td>
-    			<td>0</td>
+    			<td><strong>{{skizin.status_pembaharuan_ke}}</strong></td>
     		</tr>
     	</table>
     	<br>
@@ -222,40 +222,40 @@
     			</td>
     		</tr> -->
     		<tr>
-    			<td rowspan="2" valign="top">NAMA PERUSAHAAN</td>
+    			<td rowspan="2" valign="top"><strong>NAMA PERUSAHAAN</strong></td>
     			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top" style="border: 1;">{{pengajuan.perusahaan.nama_perusahaan.upper}} </td>
-    			<td>STATUS PUSAT :</td>
+    			<td rowspan="2" valign="top" style="border: 1;"><strong>{{pengajuan.perusahaan.nama_perusahaan.upper}}</strong></td>
+    			<td width="18%"><strong>STATUS PUSAT :</strong></td>
     		</tr>
     		<tr>
     			<td><span style="color: red;">{{pengajuan.status_waralaba.upper}}</span></td>
     		</tr>
     		<tr >
-    			<td>NAMA PENGURUS / PENANGGUNGJAWAB</td>
+    			<td><strong>NAMA PENGURUS / PENANGGUNGJAWAB</strong></td>
     			<td style="border: none;">:</td>
-    			<td colspan="2">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</td>
+    			<td colspan="2"><strong>{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</strong></td>
     		</tr>
     		<tr>
-    			<td class="tdnone">ALAMAT PERUSAHAAN</td>
+    			<td class="tdnone"><strong>ALAMAT PERUSAHAAN</strong></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat.upper}}</td>
+    			<td class="tdnone" colspan="2">{{alamat.upper}}</td>
     		</tr>
     		<tr>
-    			<td>NPWP</td>
+    			<td><strong>NPWP</strong></td>
     			<td>:</td>
-    			<td colspan="2">{{pengajuan.perusahaan.npwp}}</td>
+    			<td colspan="2"><strong>{{pengajuan.perusahaan.npwp}}</strong></td>
     		</tr>
     		<tr>
-    			<td>NOMOR TELEPON</td>
+    			<td><strong>NOMOR TELEPON</strong></td>
     			<td>:</td>
     			<td>{{pengajuan.perusahaan.telepon}}</td>
     			<td>FAX : {{pengajuan.perusahaan.fax}}</td>
     		</tr>
     		<tr>
-    			<td rowspan="2" valign="top">KEGIATAN USAHA POKOK</td>
+    			<td rowspan="2" valign="top"><strong>KEGIATAN USAHA POKOK</strong></td>
     			<td rowspan="2" valign="top">:</td>
     			<td rowspan="2" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %} </td>
-    			<td valign="top">KBLI :</td>
+    			<td valign="top" align="center"><strong>KBLI :</strong></td>
     		</tr>
     		<tr>
     			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
