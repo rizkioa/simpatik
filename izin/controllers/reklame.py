@@ -8,7 +8,7 @@ from accounts.models import NomorIdentitasPengguna
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilReklame
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilReklame,DetilReklameIzin
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_reklame(request):
@@ -65,7 +65,8 @@ def formulir_reklame(request):
 							alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
 							extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
 						extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
-					
+					detail_izin_reklame_list = DetilReklameIzin.objects.filter(detil_reklame=request.COOKIES['id_pengajuan'])
+					extra_context.update({ 'detail_izin_reklame_list': detail_izin_reklame_list })
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
 					extra_context.update({ 'pengajuan_': pengajuan_ })
