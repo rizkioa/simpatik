@@ -250,7 +250,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		if teknis.exists():
 			teknis = teknis.last()
 			teknis = teknis.nama
-			no_pjt_bu = teknis.no_pjt_bu
+			no_pjt_bu = str(teknis.no_pjt_bu)
 		else:
 			teknis = ''
 			no_pjt_bu = ''
