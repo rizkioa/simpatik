@@ -41,7 +41,7 @@
     </style>
 
     {% block custom_style %}{% endblock %}
-
+    <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script>
     <!-- ==========================================
     ================= Modernizr ===================
     =========================================== -->
@@ -104,7 +104,7 @@
         <script>window.jQuery || document.write('<script src="{% static "scripts/js/vendor/jquery/jquery-1.11.2.min.js" %}"><\/script>')</script>
         -->
         <!-- <script src="{% static "scripts/js/vendor/jquery/jquery-1.11.2.min.js" %}"></script> -->
-        <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script>
+        
         <!-- <script src="{% static "scripts/js/vendor/jquery/jquery-3.1.1.min.js" %}"></script> -->
         <script src="{% static 'scripts/js/vendor/bootstrap/bootstrap.min.js' %}"></script>
         <script src="{% static 'scripts/js/vendor/jRespond/jRespond.min.js' %}"></script>

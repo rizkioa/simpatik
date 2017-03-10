@@ -184,47 +184,61 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
 				tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
 				kla.append(p.subklasifikasi.klasifikasi)
+			tahun = '0'
+			if p.tahun:
+				tahun = str(p.tahun)
 			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+str(p.tahun)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+tahun+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.nilai_paket_pekerjaan)+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.keterangan)+'</td>'
 			tr += '</tr>'
 
 		# print tr
 
-		ts = '<tr style="border: 1px solid black;">'
-		klasifikasi = ''
-		no = 0
-		for k in kla:
-			klasifikasi += str(k)
-			no = no+1
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
-		# klasifikasi = '<ol>'
-		klasifikasi, paket_pekerjaan, nilai, keterangan, tahun = '<ol type="1">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">'
-		for p in paket:
-			klasifikasi += '<li>'+str(p.subklasifikasi)+'</li>'
-			paket_pekerjaan += '<li>'+str(p.nama_paket_pekerjaan)+'</li>'
-			tahun += '<li>'+str(p.tahun)+'</li>'
-			nilai += '<li>'+str(p.nilai_paket_pekerjaan)+'</li>'
-			if p.keterangan == None or p.keterangan == '':
-				keterangan_str = ''
-			else:
-				keterangan_str = p.keterangan
-			keterangan += '<li>'+str(keterangan_str)+'</li>'
-		klasifikasi += '</ol>'
-		paket_pekerjaan += '</ul>'
-		nilai += '</ul>'
-		keterangan += '</ul>'
-		tahun += '</ul>'
+		# ts = '<tr style="border: 1px solid black;">'
+		# klasifikasi = ''
+		# no = 0
+		# for k in kla:
+		# 	klasifikasi += str(k)
+		# 	no = no+1
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
+		# # klasifikasi = '<ol>'
+		# klasifikasi, paket_pekerjaan, nilai, keterangan, tahun = '<ol type="1">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">'
+		# for p in paket:
+		# 	klasifikasi += '<li>'+str(p.subklasifikasi)+'</li>'
+		# 	paket_pekerjaan += '<li>'+str(p.nama_paket_pekerjaan)+'</li>'
+		# 	tahun += '<li>'+tahun+'</li>'
+		# 	nilai += '<li>'+str(p.nilai_paket_pekerjaan)+'</li>'
+		# 	if p.keterangan == None or p.keterangan == '':
+		# 		keterangan_str = ''
+		# 	else:
+		# 		keterangan_str = p.keterangan
+		# 	keterangan += '<li>'+str(keterangan_str)+'</li>'
+		# klasifikasi += '</ol>'
+		# paket_pekerjaan += '</ul>'
+		# nilai += '</ul>'
+		# keterangan += '</ul>'
+		# tahun += '</ul>'
 
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+paket_pekerjaan+'</td>'
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+tahun+'</td>'
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+nilai+'</td>'
-		ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+keterangan+'</td>'
-		ts += '</tr>'
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+paket_pekerjaan+'</td>'
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+tahun+'</td>'
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+nilai+'</td>'
+		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+keterangan+'</td>'
+		# ts += '</tr>'
+		ts = ''
+		for p in paket:
+			ts += '<tr style="border: 1px solid black;">'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi.klasifikasi)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nama_paket_pekerjaan)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.tahun)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nilai_paket_pekerjaan)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.keterangan)+'</td>'
+			ts += '</tr>'
 
 		extra_context.update({'klasifikasi_tr': mark_safe(ts) })	
 
@@ -238,17 +252,20 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		if direktur.exists():
 			direktur_bu = direktur.last()
 			direktur = direktur_bu.nama
-			no_pjt_bu = direktur_bu.npwp
+			
 		else:
 			direktur = ''
-			no_pjt_bu = ''
-
+			
+		no_pjt_bu = '0'
 		teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
 		if teknis.exists():
-			teknis = teknis.last()
-			teknis = teknis.nama
+			teknis_ = teknis.last()
+			teknis = teknis_.nama
+			if teknis_.no_pjt_bu:
+				no_pjt_bu = str(teknis_.no_pjt_bu)
 		else:
 			teknis = ''
+			no_pjt_bu = ''
 
 				
 
@@ -269,19 +286,24 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		
 		li = ''
-		for x in paket:
-			if x.subklasifikasi.klasifikasi in kla:
-				k = ''
-			else:
-				k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+		for x in list(set(kla)):
+			k =  "<li>"+str(x)+"</li>"
 			li += k
+		# for x in paket:
+		# 	if x.subklasifikasi.klasifikasi in kla:
+
+		# 		k = ''
+		# 	else:
+		# 		k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+		# 	
+		# li += k
 
 		extra_context.update({'klasifikasi': mark_safe(li) })
 
 		masa_berlaku = skizin_.created_at+relativedelta(years=3)
-		masa_berlaku = masa_berlaku.strftime('%d %B %Y')
+		masa_berlaku = masa_berlaku.strftime('%d %m %Y')
 		extra_context.update({'masa_berlaku': masa_berlaku})
-		extra_context.update({'tanggal': skizin_.created_at.strftime('%d %B %Y')})
+		extra_context.update({'tanggal': skizin_.created_at.strftime('%d %m %Y')})
 		extra_context.update({'satker': unit_kerja})
 		extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
 		extra_context.update({'jabatan': "Pembina Tingkat I"})
@@ -336,10 +358,5 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 admin.site.register(DetilIUJK, DetilIUJKAdmin)
-
-
-
 admin.site.register(Klasifikasi)
-
-
 admin.site.register(Subklasifikasi)
