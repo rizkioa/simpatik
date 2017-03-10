@@ -228,11 +228,12 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+nilai+'</td>'
 		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+keterangan+'</td>'
 		# ts += '</tr>'
-
+		ts = ''
 		for p in paket:
-			ts = '<tr style="border: 1px solid black;">'
+			ts += '<tr style="border: 1px solid black;">'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi)+'</td>'
+			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi.klasifikasi)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nama_paket_pekerjaan)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.tahun)+'</td>'
 			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nilai_paket_pekerjaan)+'</td>'
