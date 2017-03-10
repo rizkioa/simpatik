@@ -248,10 +248,10 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		no_pjt_bu = '0'
 		teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
 		if teknis.exists():
-			teknis = teknis.last()
-			teknis = teknis.nama
-			if teknis.no_pjt_bu:
-				no_pjt_bu = str(teknis.no_pjt_bu).encode('utf8')
+			teknis_ = teknis.last()
+			teknis = teknis_.nama
+			if teknis_.no_pjt_bu:
+				no_pjt_bu = str(teknis_.no_pjt_bu)
 		else:
 			teknis = ''
 			no_pjt_bu = ''
@@ -275,12 +275,17 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		
 		li = ''
-		for x in paket:
-			if x.subklasifikasi.klasifikasi in kla:
-				k = ''
-			else:
-				k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+		for x in list(set(kla)):
+			k =  "<li>"+str(x)+"</li>"
 			li += k
+		# for x in paket:
+		# 	if x.subklasifikasi.klasifikasi in kla:
+
+		# 		k = ''
+		# 	else:
+		# 		k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+		# 	
+		# li += k
 
 		extra_context.update({'klasifikasi': mark_safe(li) })
 
