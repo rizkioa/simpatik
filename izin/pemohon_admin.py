@@ -67,7 +67,7 @@ class PemohonAdmin(admin.ModelAdmin):
 	inlines = [NomorIdentitasInline,]
 	list_display = ('get_nomor_ktp', 'nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon', 'get_alamat')
 	list_filter = ('nama_lengkap','telephone','jenis_pemohon','jabatan_pemohon')
-	search_fields = ('jenis_pemohon','jabatan_pemohon')
+	search_fields = ('username','nama_lengkap','jenis_pemohon__jenis_pemohon','jabatan_pemohon')
 	
 	def get_list_display_links(self, request, list_display):
 		if request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin') or request.user.groups.filter(name='Pembuat Surat') or request.user.groups.filter(name='Penomoran') or request.user.groups.filter(name='Cetak') or request.user.groups.filter(name='Selesai'):
@@ -152,7 +152,7 @@ class PemohonAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 	def get_fieldsets(self, request, obj = None):
-		field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email', 'jenis_pemohon','jabatan_pemohon','kewarganegaraan', 'pekerjaan')
+		field = ('nama_lengkap', ('tempat_lahir', 'tanggal_lahir'), 'telephone', 'email', 'jenis_pemohon','jabatan_pemohon','kewarganegaraan', 'pekerjaan','keterangan_pekerjaan')
 		fieldsets = (
 			(None, {
 				'classes': ('wide',),
