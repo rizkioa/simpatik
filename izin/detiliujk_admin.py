@@ -186,7 +186,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				kla.append(p.subklasifikasi.klasifikasi)
 			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+p.tahun if str(p.tahun) else '0'+'</td>'
+			tr += '<td style="border: 1px solid black;">'+str(p.tahun) if str(p.tahun) else '0'+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.nilai_paket_pekerjaan)+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.keterangan)+'</td>'
 			tr += '</tr>'
