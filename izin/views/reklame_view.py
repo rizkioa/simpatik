@@ -112,78 +112,78 @@ def reklame_detilreklame_permanen_save_cookie(request):
 	return response
 
 def detail_izin_reklame_save_cookie(request):
-    if 'id_pengajuan' in request.COOKIES.keys():
-    	pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-        if request.COOKIES['id_pengajuan'] != '':
-            detail_izin_reklame = DetilReklameIzinForm(request.POST)
-            if request.method == 'POST':
-                if detail_izin_reklame.is_valid():
-                    p = detail_izin_reklame.save(commit=False)
-                    p.detil_reklame = pengajuan_
-                    p.save()
-                    data = {'success': True,
-                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                            'data': {'id_detil_reklame':p.id,'id_tipe_reklame':p.tipe_reklame.jenis_tipe_reklame}}
-                    response = HttpResponse(json.dumps(data))
-                else:
-                    data = detail_izin_reklame.errors.as_json()
-            else:
-                detail_izin_reklame = DetilReklameIzinForm()
-        else:
-            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-            data = json.dumps(data)
-    else:
-        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-        data = json.dumps(data)
-        response = HttpResponse(data)
-    return response
+	if 'id_pengajuan' in request.COOKIES.keys():
+		pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+		if request.COOKIES['id_pengajuan'] != '':
+			detail_izin_reklame = DetilReklameIzinForm(request.POST)
+			if request.method == 'POST':
+				if detail_izin_reklame.is_valid():
+					p = detail_izin_reklame.save(commit=False)
+					p.detil_reklame = pengajuan_
+					p.save()
+					data = {'success': True,
+							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+							'data': {'id_detil_reklame':p.id,'id_tipe_reklame':p.tipe_reklame.jenis_tipe_reklame}}
+					response = HttpResponse(json.dumps(data))
+				else:
+					data = detail_izin_reklame.errors.as_json()
+			else:
+				detail_izin_reklame = DetilReklameIzinForm()
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
 
 def edit_detail_izin_reklame(request,id_detail_izin_reklame):
-    if 'id_pengajuan' in request.COOKIES.keys():
-        if request.COOKIES['id_pengajuan'] != '':
-        	pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-            p = DetilReklameIzin.objects.get(id=id_detail_izin_reklame)
-            detail_izin_reklame = DetilReklameIzinForm(request.POST,instance=p)
-            if request.method == 'POST':
-                if detail_izin_reklame.is_valid():
-                    p = detail_izin_reklame.save(commit=False)
-                    p.detil_reklame = pengajuan_
-                    p.save()
-                    data = {'success': True,
-                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                            'data': {'id_detil_reklame':p.id,'id_tipe_reklame':p.tipe_reklame.jenis_tipe_reklame}}
-                    data = json.dumps(data)
-                    response = HttpResponse(json.dumps(data))
-                else:
-                    data = detail_izin_reklame.errors.as_json()
-            else:
-                detail_izin_reklame = DetilReklameIzinForm()
-        else:
-            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-            data = json.dumps(data)
-            response = HttpResponse(data)
-    else:
-        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-        data = json.dumps(data)
-        response = HttpResponse(data)
-    return response
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			p = DetilReklameIzin.objects.get(id=id_detail_izin_reklame)
+			detail_izin_reklame = DetilReklameIzinForm(request.POST,instance=p)
+			if request.method == 'POST':
+				if detail_izin_reklame.is_valid():
+					p = detail_izin_reklame.save(commit=False)
+					p.detil_reklame = pengajuan_
+					p.save()
+					data = {'success': True,
+							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+							'data': {'id_detil_reklame':p.id,'id_tipe_reklame':p.tipe_reklame.jenis_tipe_reklame}}
+					data = json.dumps(data)
+					response = HttpResponse(json.dumps(data))
+				else:
+					data = detail_izin_reklame.errors.as_json()
+			else:
+				detail_izin_reklame = DetilReklameIzinForm()
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
 
 def delete_detail_izin_reklame(request,id_detail_izin_reklame):
   if 'id_pengajuan' in request.COOKIES.keys():
-    if request.COOKIES['id_pengajuan'] != '':
-        tag_to_delete = get_object_or_404(DetilReklameIzin, id=id_detail_izin_reklame)
-        tag_to_delete.delete()
-        data = {'success': True,
-                'pesan': 'Data berhasil Dihapus.'}
-        response = HttpResponse(json.dumps(data))
-    else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
+	if request.COOKIES['id_pengajuan'] != '':
+		tag_to_delete = get_object_or_404(DetilReklameIzin, id=id_detail_izin_reklame)
+		tag_to_delete.delete()
+		data = {'success': True,
+				'pesan': 'Data berhasil Dihapus.'}
+		response = HttpResponse(json.dumps(data))
+	else:
+	  data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+	  data = json.dumps(data)
+	  response = HttpResponse(data)
   else:
-    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-    data = json.dumps(data)
-    response = HttpResponse(data)
+	data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+	data = json.dumps(data)
+	response = HttpResponse(data)
   return response
 
 def reklame_upload_berkas_pendukung(request):
@@ -394,6 +394,4 @@ def ajax_delete_berkas_reklame(request, id_berkas):
 			
 		response = HttpResponse(json.dumps(data))
 		return response
-
 	return False
-		
