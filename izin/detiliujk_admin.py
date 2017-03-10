@@ -245,12 +245,13 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		else:
 			direktur = ''
 			
-
+		no_pjt_bu = '0'
 		teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
 		if teknis.exists():
 			teknis = teknis.last()
 			teknis = teknis.nama
-			no_pjt_bu = '0'
+			if teknis.no_pjt_bu:
+				no_pjt_bu = str(teknis.no_pjt_bu).encode('utf8')
 		else:
 			teknis = ''
 			no_pjt_bu = ''
