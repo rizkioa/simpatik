@@ -26,3 +26,4 @@ django-html-validator
 django-daterange-filter
 django-ckeditor
 pyTelegramBotAPI==2.3.0
+djangorestframework-jwt
