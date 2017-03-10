@@ -21,129 +21,34 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
-      <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="tipe_reklame" data-parsley-trigger="change" id="id_tipe_reklame">
-          <option value>-- Pilih Jenis Reklame --</option>
-          {% if tipe_reklame_list %}
-          {% for j in tipe_reklame_list %}
-          <option value="{{ j.id }}">{{ j.jenis_tipe_reklame }}</option>
-          {% endfor %}
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Data Izin Reklame</label> 
+        <table id="id_table_detail_izin_reklame" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>Jenis Reklame</td>
+              <td>Judul Reklame</td>
+              <td>Jumlah</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if detail_izin_reklame_list %}
+            {% for a in detail_izin_reklame_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
+                <td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
+                <td id="id_table_jumlah">{{a.jumlah}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowpenggunaantanah(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowpenggunaantanah(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
           {% endif %}
-        </select>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" data-toggle="modal" data-target="#id_detail_izin_reklame">Tambah Data Izin Reklame<i class="fa fa-plus"></i></a>
       </div>
     </div>
-
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Judul Reklame</strong></label>
-      <div class="col-sm-7">
-        <textarea class="form-control" rows="5" required="" data-parsley-trigger="change" name="judul_reklame" placeholder="" id="id_judul_reklame"></textarea>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Jumlah</strong></label>
-      <div class="col-sm-7">
-        <input type="number" class="form-control" rows="5" required="" data-parsley-trigger="change" name="jumlah" placeholder="" id="id_jumlah"></input>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Ukuran Reklame</strong></label>
-      <div class="col-sm-3">
-        <div class="input-group">
-            <span class="input-group-addon">
-              <span>Panjang</span>
-            </span>
-            <input name="panjang" id="id_panjang" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
-            <span class="input-group-addon">
-              <span>M</span>
-            </span>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="input-group">
-            <span class="input-group-addon">
-              <span>Lebar</span>
-            </span>
-            <input name="lebar" id="id_lebar" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
-            <span class="input-group-addon">
-              <span>M</span>
-            </span>
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="input-group">
-            <span class="input-group-addon">
-              <span>Sisi</span>
-            </span>
-            <input name="sisi" id="id_sisi" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
-            <span class="input-group-addon">
-              <span>M</span>
-            </span>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Lama Pemasangan</strong></label>
-      <div class="col-sm-3">
-          <div class="input-group datepicker w-360 tanggal-awal"> 
-            <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_mulai" name="tanggal_mulai" style="width: 170px;">
-            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-            </span>
-          </div>
-      </div>
-      <label class="col-sm-1"><center>s/d</center></label>
-      <div class="col-sm-3">
-          <div class="input-group datepicker w-360 tanggal-akhir"> 
-            <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_akhir" name="tanggal_akhir" style="width: 170px;">
-            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-            </span>
-          </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label"><strong>Letak Reklame</strong></label>
-      <div class="col-sm-7">
-        <textarea name="letak_pemasangan" id="id_letak_pemasangan" class="form-control" rows="5" required="" data-parsley-trigger="change" placeholder="isi alamat pemasangan letak reklame"></textarea>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
-      <div class="col-sm-5">
-        <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
-          <option value="1">Kabupaten Kediri</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group" id="kecamatan3">
-      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
-      <div class="col-sm-5">
-        <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
-          <option value>-- Pilih Kecamatan --</option>
-          {% if kecamatan %}
-          {% for k in kecamatan %}
-          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
-          {% endfor %}
-          {% endif %}
-        </select>
-      </div>
-    </div>
-
-    <div class="form-group" id="desa3">
-      <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
-      <div class="col-sm-5">
-        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_data_reklame" required="" data-parsley-trigger="change">
-        </select>
-      </div>
-    </div>
-
+    <br>
 </form>

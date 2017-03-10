@@ -145,8 +145,32 @@
 		}
 		th, td {
 		    padding: 7px;
+		}.tdnone{
+			border-left: none;
+			border-right: none;
+		}
+		@media print { 
+			body { 
+				display: none !important; 
+			}
+			.printhide { 
+	 			display: none !important; 
+	 			/*color: white;
+	 			background-color: white;*/
+			}
+			.printpadding{
+				display: block !important;
+				padding-bottom: 4cm;
+			} 
 		}
 	</style>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1%}
+		{% if request.user|has_group:'Cetak' or request.user.is_superuser %} 
+			<script>
+				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
+			</script>
+		{% endif %}
+	{% endif %}
 </head>
 <body>
 	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px; position:fixed; left:0; top:0">

@@ -200,7 +200,7 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
     url(r'^layanan/reklame/detilreklame/permanen/save/$', reklame_view.reklame_detilreklame_permanen_save_cookie, name='reklame_detilreklame_permanen_save'),
-
+    url(r'^layanan/reklame/detil-izin-reklame/save/$', reklame_view.detail_izin_reklame_save_cookie, name='detail_izin_reklame_save'),
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
     url(r'^ajax-load-berkas-reklame/(?P<id_pengajuan>[0-9]+)$', reklame_view.ajax_load_berkas_reklame, name='ajax_load_berkas_reklame'),

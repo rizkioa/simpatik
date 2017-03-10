@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP,DetilReklameIzin
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -63,6 +63,12 @@ class PengajuanReklameForm(forms.ModelForm):
 		model = DetilReklame
 		fields = ('jenis_reklame','tipe_reklame', 'judul_reklame', 'panjang', 'lebar', 'sisi','jumlah', 'letak_pemasangan', 'desa', 'tanggal_mulai', 'tanggal_akhir')
 
+class DetilReklameIzinForm(forms.ModelForm):
+	"""docstring for DetilReklameIzin"""
+	class Meta:
+		model = DetilReklameIzin
+		fields = ('tipe_reklame','judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan','jumlah', 'desa')
+		
 class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
 	class Meta:

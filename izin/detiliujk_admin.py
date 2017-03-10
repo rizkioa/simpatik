@@ -211,8 +211,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		# print tr
 
-		extra_context.update({'klasifikasi_tr': mark_safe(tr) })	
-
 		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
 		ec = RequestContext(request, extra_context)
 		# print template.render(ec)
