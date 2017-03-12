@@ -299,7 +299,8 @@ class DetilReklameIzin(AtributTambahan):
 	letak_pemasangan = models.CharField(max_length=255, verbose_name='Letak Pemasangan', null=True, blank=True)
 	jumlah = models.IntegerField(verbose_name="Jumlah", null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-
+	tanggal_mulai = models.DateField(verbose_name='Tanggal Mulai Dipasang', null=True, blank=True)
+	tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Dipasang', null=True, blank=True)
 	def __unicode__(self):
 		return u'Detil Reklame Izin %s ' % (str(self.detil_reklame))
 
