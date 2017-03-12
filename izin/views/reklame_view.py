@@ -393,10 +393,8 @@ def ajax_delete_berkas_reklame(request, id_berkas):
 		except ObjectDoesNotExist:
 			data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
 			
-		response = HttpResponse(json.dumps(data))
+			response = HttpResponse(json.dumps(data))
 		return response
-
-	return False
 		
 def load_data_detail_izin_reklame(request,id_detail_izin_reklame):
 	if 'id_pengajuan' in request.COOKIES.keys():

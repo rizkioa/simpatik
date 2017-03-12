@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 
 
 from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi, PengajuanIzin
-from izin.utils import formatrupiah, JENIS_PERMOHONAN
+from izin.utils import formatrupiah, JENIS_PERMOHONAN, formatrupiah
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import UnitKerja, Pegawai
 
@@ -173,8 +173,14 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		kla = []
 		tr = ''
 		no = 0
+		total_ = len(paket)
+		css = 'hidden-border-tr'
 		for p in paket:
-			tr += '<tr style="border: 1px solid black;">'
+			total_ = total_ - 1
+			# print total_
+			if total_ == 0:
+				css = ''
+			tr += '<tr style="border: 1px solid black;" class="'+css+'">'
 			if p.subklasifikasi.klasifikasi in kla:
 				tr += '<td style="border: 1px solid black;"></td>'
 				tr += '<td style="border: 1px solid black;"></td>'
@@ -190,57 +196,20 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
 			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
 			tr += '<td style="border: 1px solid black;">'+tahun+'</td>'
-			tr += '<td style="border: 1px solid black;">'+str(p.nilai_paket_pekerjaan)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+str(p.keterangan)+'</td>'
+			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
+				nilai_paket = 0
+			else:
+				nilai_paket = formatrupiah(p.nilai_paket_pekerjaan)
+			tr += '<td style="border: 1px solid black;">'+str(nilai_paket)+'</td>'
+			
+			if p.keterangan is None or p.keterangan == '-':
+				keterangan = ''
+			else:
+				keterangan = p.keterangan	
+			tr += '<td style="border: 1px solid black;">'+str(keterangan)+'</td>'
 			tr += '</tr>'
 
 		# print tr
-
-		# ts = '<tr style="border: 1px solid black;">'
-		# klasifikasi = ''
-		# no = 0
-		# for k in kla:
-		# 	klasifikasi += str(k)
-		# 	no = no+1
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
-		# # klasifikasi = '<ol>'
-		# klasifikasi, paket_pekerjaan, nilai, keterangan, tahun = '<ol type="1">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">', '<ul style="list-style-type:circle">'
-		# for p in paket:
-		# 	klasifikasi += '<li>'+str(p.subklasifikasi)+'</li>'
-		# 	paket_pekerjaan += '<li>'+str(p.nama_paket_pekerjaan)+'</li>'
-		# 	tahun += '<li>'+tahun+'</li>'
-		# 	nilai += '<li>'+str(p.nilai_paket_pekerjaan)+'</li>'
-		# 	if p.keterangan == None or p.keterangan == '':
-		# 		keterangan_str = ''
-		# 	else:
-		# 		keterangan_str = p.keterangan
-		# 	keterangan += '<li>'+str(keterangan_str)+'</li>'
-		# klasifikasi += '</ol>'
-		# paket_pekerjaan += '</ul>'
-		# nilai += '</ul>'
-		# keterangan += '</ul>'
-		# tahun += '</ul>'
-
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+klasifikasi+'</td>'
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+paket_pekerjaan+'</td>'
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+tahun+'</td>'
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+nilai+'</td>'
-		# ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+keterangan+'</td>'
-		# ts += '</tr>'
-		ts = ''
-		for p in paket:
-			ts += '<tr style="border: 1px solid black;">'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(no)+'.</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi)+'</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.subklasifikasi.klasifikasi)+'</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nama_paket_pekerjaan)+'</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.tahun)+'</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.nilai_paket_pekerjaan)+'</td>'
-			ts += '<td style="border: 1px solid black; vertical-align:text-top;">'+str(p.keterangan)+'</td>'
-			ts += '</tr>'
-
-		extra_context.update({'klasifikasi_tr': mark_safe(ts) })	
 
 		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
 		ec = RequestContext(request, extra_context)
@@ -301,9 +270,9 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'klasifikasi': mark_safe(li) })
 
 		masa_berlaku = skizin_.created_at+relativedelta(years=3)
-		masa_berlaku = masa_berlaku.strftime('%d %m %Y')
+		masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
 		extra_context.update({'masa_berlaku': masa_berlaku})
-		extra_context.update({'tanggal': skizin_.created_at.strftime('%d %m %Y')})
+		extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
 		extra_context.update({'satker': unit_kerja})
 		extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
 		extra_context.update({'jabatan': "Pembina Tingkat I"})
