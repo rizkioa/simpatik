@@ -19,6 +19,7 @@
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
 	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
@@ -322,6 +323,7 @@
             frm.ajaxSubmit({
              success: function(response) {  // on success..
                 var res = $.parseJSON(response);  
+                
                 id_penggunaan = res.data.id_detil_reklame
                 if ($('#id_table_detail_izin_reklame').find('#'+id_penggunaan+'')){
                   $('#'+id_penggunaan+'').remove()
@@ -330,10 +332,10 @@
                 var judul_reklame = $("#id_judul_reklame").val()
                 var jumlah_reklame = $("#id_jumlah").val()
                 var rows = "";
-                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_nama_penggunaan'>" + jenis_reklame + "</td><td id='id_table_ukuran_penggunaan'>" + judul_reklame +"</td><td id='id_table_nama_penggunaan'>"+jumlah_reklame+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowpenggunaantanah(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowpenggunaantanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_nama_penggunaan'>" + jenis_reklame + "</td><td id='id_table_ukuran_penggunaan'>" + judul_reklame +"</td><td id='id_table_nama_penggunaan'>"+jumlah_reklame+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRow_detail_izin_reklame(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRow_detail_izin_reklame(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
                     $(rows).appendTo("#id_table_detail_izin_reklame","tbody");
                 $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
-                $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+                $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')	
                 $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
                 $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save')
                 $("#id_form_detail_izin_reklame").resetForm()
@@ -345,6 +347,55 @@
               });
             }
       }
+
+    function deleteRow_detail_izin_reklame(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/layanan/reklame/detil-izin-reklame/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+					$("#id_form_detail_izin_reklame").resetForm()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+    function editRow_detail_izin_reklame(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+		load_data_detail_izin_reklame(id_button)
+
+        $('#id_detail_izin_reklame').modal('show');
+        $('#id_detail_izin_reklame').find('.btn-success').attr('onclick','').unbind('click');
+        $('#id_detail_izin_reklame').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('id',id_button)
+        $('#id_detail_izin_reklame').find('.btn-primary').text("Edit")
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+        $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/edit/'+id_button+'/')        
+    }
+
+    function batalRow_detail_izin_reklame(btn){
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+        $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
+        $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save/')
+        $("#id_form_detail_izin_reklame").resetForm()
+        $("#id_detail_izin_reklame").modal('hide');
+    }
+
+	function Tambah_detail_izin_reklame(btn){
+		$("#id_detail_izin_reklame").modal('show');
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+        $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
+        $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save/')
+	}
+
   	</script>
 
 {% endblock %}
@@ -637,7 +688,7 @@
       </div>
       <div class="modal-footer">
         <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="detail_izin_reklame_add(this)" >Simpan</a>
-        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRow_detail_izin_reklame(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
       </div>
     </div>
   </div>

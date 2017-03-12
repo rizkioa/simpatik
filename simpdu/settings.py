@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'mobile',
     'tastypie',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = (

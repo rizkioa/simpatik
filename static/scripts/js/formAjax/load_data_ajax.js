@@ -398,3 +398,36 @@ function load_data_tabel_sertifikat_tanah(id_sertifikat_tanah){
     $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
   }
 }
+
+function load_data_detail_izin_reklame(id_button){
+  $(".tab-content").mLoading;
+  if (id_button>0){
+    $.ajax({
+      url: __base_url__+'/layanan/reklame/detil-izin-reklame/load/'+id_button,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_judul_reklame').val(respon.data.id_judul_reklame)
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_tipe_reklame').val(respon.data.id_tipe_reklame).prop('selected',true).trigger("chosen:updated");
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            $('#id_panjang').val(respon.data.id_panjang)
+            $('#id_lebar').val(respon.data.id_lebar)
+            $('#id_sisi').val(respon.data.id_sisi)
+            $('#id_letak_pemasangan').val(respon.data.id_letak_pemasangan)
+            $('#id_jumlah').val(respon.data.id_jumlah)
+            $('#id_tanggal_mulai').val(respon.data.id_tanggal_mulai)
+            $('#id_tanggal_akhir').val(respon.data.id_tanggal_akhir)
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
