@@ -184,26 +184,12 @@
 	</div>
 
 	<page size="F4">
-		<div id="kop_surat_id">
-			<div class="row">
-				
-				<div class="col-2">
-					<img src="{% static 'images/kabkediri.png' %}" height="120px">
-				</div>
-				<div class="col-9">
-					<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
-						<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
-						<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
-						<br/>
-						<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></b></span><br>
-						<span style="font-size: 19px;"><b>KEDIRI</b></span>
-					</p>
-				</div>
-			</div>
+		{% include 'front-end/include/skizin/cop_surat.html' %}
+		<div style="display: none; width: 100%;" class="printpadding">
+			
 		</div>
-		<hr class="style14">
-		
 		<br>
+
 		<div class="row">
 			<div class="col-1">
 				</div>
@@ -220,71 +206,7 @@
 	        </div>
     	</div>
     	<br>
-    	<table width="100%" class="skizin" border="1">
-    		<tr>
-    			<td><strong>NOMOR TDP</strong></td>
-    			<td><strong>BERLAKU S/D TGL</strong></td>
-    			<td><strong>PENDAFTARAN</strong></td>
-    			<td>:</td>
-    			<td><strong>{{skizin.status_pendaftaran.upper}}</strong></td>
-    		</tr>
-    		<tr>
-    			<td><strong>{{pengajuan.no_izin|default_if_none:'-'}}</strong></td>
-    			<td><strong>{{skizin.masa_berlaku_izin|date:'d-m-Y'}}</strong></td>
-    			<td><strong>PEMBAHARUAN KE</strong></td>
-    			<td>:</td>
-    			<td><strong>{{skizin.status_pembaharuan_ke}}</strong></td>
-    		</tr>
-    	</table>
-    	<br>
-    	<table width="100%" border="1" class="skizin" >
-    		<!-- <tr rowspan="3">
-    			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
-    			<td width="5%" >:</td>
-    			<td width="50%" style="padding: 0;">
-    				<b>{{ perusahaan.nama_perusahaan.upper }}</b>
-    			</td>
-    		</tr> -->
-    		<tr>
-    			<td rowspan="2" valign="top"><strong>NAMA PERUSAHAAN</strong></td>
-    			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top" style="border: 1;"><strong>{{pengajuan.perusahaan.nama_perusahaan.upper}}</strong></td>
-    			<td width="18%"><strong>STATUS PUSAT :</strong></td>
-    		</tr>
-    		<tr>
-    			<td><span style="color: red;">{{pengajuan.status_waralaba.upper}}</span></td>
-    		</tr>
-    		<tr >
-    			<td><<strong>NAMA PENGURUS / PENANGGUNGJAWAB</strong></td>
-    			<td style="border: none;">:</td>
-    			<td colspan="2">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</td>
-    		</tr>
-    		<tr>
-    			<td class="tdnone">ALAMAT PERUSAHAAN</td>
-    			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat.upper}}</td>
-    		</tr>
-    		<tr>
-    			<td>NPWP</td>
-    			<td>:</td>
-    			<td colspan="2">{{pengajuan.perusahaan.npwp}}</td>
-    		</tr>
-    		<tr>
-    			<td>NOMOR TELEPON</td>
-    			<td>:</td>
-    			<td>{{pengajuan.perusahaan.telepon}}</td>
-    			<td>FAX : {{pengajuan.perusahaan.fax}}</td>
-    		</tr>
-    		<tr>
-    			<td rowspan="2" valign="top">KEGIATAN USAHA POKOK</td>
-    			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %} </td>
-    			<td valign="top">KBLI :</td>
-    		</tr>
-    		<tr>
-    			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
-    		</tr>
-    	</table>
+    	{% include 'front-end/include/skizin/skizin_tdp_isi.html' %}
     	<br>
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">

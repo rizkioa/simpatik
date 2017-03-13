@@ -183,7 +183,7 @@
 	        </div>
     	</div>
     	<br>
-    	<table width="100%" class="skizin" border="2">
+    	<!-- <table width="100%" class="skizin" border="2">
     		<tr>
     			<td><strong>NOMOR TDP</strong></td>
     			<td><strong>BERLAKU S/D TGL</strong></td>
@@ -218,7 +218,7 @@
     		<tr>
     			<td class="tdnone"><strong>ALAMAT PERUSAHAAN</strong></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat.upper}}</td>
+    			<td class="tdnone" colspan="2">{{alamat.upper}}</td>
     		</tr>
     		<tr>
     			<td class="tdnone"><strong>NPWP</strong></td>
@@ -240,7 +240,8 @@
     		<tr>
     			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
     		</tr>
-    	</table>
+    	</table> -->
+    	{% include 'front-end/include/skizin/skizin_tdp_isi.html' %}
     	<br>
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
