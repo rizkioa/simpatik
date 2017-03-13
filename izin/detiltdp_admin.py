@@ -189,6 +189,12 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if pengajuan_.jumlah_karyawan_wna:
 					wna = pengajuan_.jumlah_karyawan_wna
 				jumlah_karyawan = int(wni)+int(wna)
+				if pengajuan_.jenis_permohonan_id == 1:
+					masa_berlaku = ''
+					if pengajuan_.created_at:
+						masa_berlaku_ = pengajuan_.created_at + relativedelta(years=5)
+						masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
+						extra_context.update({'masa_berlaku':masa_berlaku})
 				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
@@ -217,8 +223,9 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
 			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+				masa_berlaku_ = skizin_.created_at + relativedelta(years=5)
+				masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
+
 			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
 		template = loader.get_template("front-end/include/formulir_tdp_po/cetak_tdp_po_asli.html")
 		ec = RequestContext(request, extra_context)
@@ -430,9 +437,13 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				# # save skizin
 				status_pendaftaran = request.POST.get('status_pendaftaran')
 				status_pembaharuan_ke = request.POST.get('status_pembaharuan_ke')
-				if request.POST.get('masa_berlaku'):
-					masa_berlaku = request.POST.get('masa_berlaku')
-					masa_berlaku = datetime.datetime.strptime(masa_berlaku, '%d-%m-%Y').strftime('%Y-%m-%d')
+				if pengajuan_.jenis_permohonan.id == 1:
+					masa_berlaku_ = pengajuan_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlaku_.strftime('%Y-%m-%d')
+				else:
+					if request.POST.get('masa_berlaku'):
+						masa_berlaku = request.POST.get('masa_berlaku')
+						masa_berlaku = datetime.datetime.strptime(masa_berlaku, '%d-%m-%Y').strftime('%Y-%m-%d')
 				
 				try:
 					skizin = SKIzin.objects.get(pengajuan_izin=pengajuan_)

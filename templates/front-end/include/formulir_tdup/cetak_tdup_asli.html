@@ -249,13 +249,13 @@
     			<td align="center"><b>9.</b></td>
     			<td class="tdnone"><b>Bidang Usaha Jenis Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">{{pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata.upper}}{% if pengajuan.jenis_usaha_pariwisata %}, <br>{{pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata.upper}}{% if pengajuan.sub_jenis_usaha_pariwisata %}, <br>{{pengajuan.sub_jenis_usaha_pariwisata.nama_sub_jenis.upper}}{% endif %}{% endif %}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>10.</b></td>
     			<td class="tdnone"><b>Merk Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">{{pengajuan.nama_usaha.upper}}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>11.</b></td>
@@ -267,13 +267,13 @@
     			<td align="center"><b>12.</b></td>
     			<td class="tdnone"><b>Nama Izin dan Nomor Ijin Teknis</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">{{pengajuan.nomor_izin_gangguan.upper}} TANGGAL {{pengajuan.tanggal_izin_gangguan|date:'d-m-Y'}}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>13.</b></td>
     			<td class="tdnone"><b>Nomor Dokumen Lingkungan Hidup</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">{{pengajuan.nomor_dokumen_pengelolaan.upper}} TANGGAL {{pengajuan.tanggal_dokumen_pengelolaan|date:'d-m-Y'}}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>14.</b></td>

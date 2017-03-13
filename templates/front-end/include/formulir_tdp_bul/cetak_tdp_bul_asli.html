@@ -145,6 +145,7 @@
 		}
 		th, td {
 		    padding: 7px;
+		}
 		}.tdnone{
 			border-left: none;
 			border-right: none;
@@ -220,71 +221,7 @@
 	        </div>
     	</div>
     	<br>
-    	<table width="100%" class="skizin" border="1">
-    		<tr>
-    			<td>NOMOR TDP</td>
-    			<td>BERLAKU S/D TGL</td>
-    			<td>PENDAFTARAN</td>
-    			<td>:</td>
-    			<td>BARU</td>
-    		</tr>
-    		<tr>
-    			<td>{{pengajuan.no_izin|default_if_none:'-'}}</td>
-    			<td>{{masa_berlaku}}</td>
-    			<td>PEMBAHARUAN KE</td>
-    			<td>:</td>
-    			<td>0</td>
-    		</tr>
-    	</table>
-    	<br>
-    	<table width="100%" border="1" class="skizin" >
-    		<!-- <tr rowspan="3">
-    			<td width="45%"><b>NAMA PERUSAHAAN</b></td>
-    			<td width="5%" >:</td>
-    			<td width="50%" style="padding: 0;">
-    				<b>{{ perusahaan.nama_perusahaan.upper }}</b>
-    			</td>
-    		</tr> -->
-    		<tr>
-    			<td rowspan="2" valign="top">NAMA PERUSAHAAN</td>
-    			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top" style="border: 1;">{{pengajuan.perusahaan.nama_perusahaan.upper}} </td>
-    			<td>STATUS PUSAT :</td>
-    		</tr>
-    		<tr>
-    			<td><span style="color: red;">{{pengajuan.status_waralaba.upper}}</span></td>
-    		</tr>
-    		<tr >
-    			<td>NAMA PENGURUS / PENANGGUNGJAWAB</td>
-    			<td style="border: none;">:</td>
-    			<td colspan="2">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</td>
-    		</tr>
-    		<tr>
-    			<td class="tdnone">ALAMAT PERUSAHAAN</td>
-    			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat.upper}}</td>
-    		</tr>
-    		<tr>
-    			<td>NPWP</td>
-    			<td>:</td>
-    			<td colspan="2">{{pengajuan.perusahaan.npwp}}</td>
-    		</tr>
-    		<tr>
-    			<td>NOMOR TELEPON</td>
-    			<td>:</td>
-    			<td>{{pengajuan.perusahaan.telepon}}</td>
-    			<td>FAX : {{pengajuan.perusahaan.fax}}</td>
-    		</tr>
-    		<tr>
-    			<td rowspan="2" valign="top">KEGIATAN USAHA POKOK</td>
-    			<td rowspan="2" valign="top">:</td>
-    			<td rowspan="2" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %} </td>
-    			<td valign="top">KBLI :</td>
-    		</tr>
-    		<tr>
-    			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
-    		</tr>
-    	</table>
+    	{% include 'front-end/include/skizin/skizin_tdp_isi.html' %}
     	<br>
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
