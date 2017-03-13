@@ -500,7 +500,7 @@ class IzinAdmin(admin.ModelAdmin):
 			total = skizin + total
 
 		if request.user.groups.filter(name='Cek Lokasi'):
-			skizin = 10
+			skizin = 0
 			id_elemet.append('cek_lokasi')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/survey/"
@@ -829,11 +829,22 @@ class IzinAdmin(admin.ModelAdmin):
 							obj_skizin.status = 10
 							obj_skizin.created_at = datetime.datetime.now()
 							obj_skizin.save()
+
+							# Untuk Penomoran 
+							# obj.verified_at = datetime.datetime.now()
+							# obj.save()
+							#
 							try:
 								nomor = request.POST.get('nomor')
 								if nomor:
 									obj.no_izin = nomor
 									obj.save()
+
+									if obj.kelompok_jenis_izin.kode == "IUJK":
+										from dateutil.relativedelta import relativedelta
+										obj_skizin.masa_berlaku_izin = datetime.datetime.now()+relativedelta(years=3)
+										obj_skizin.save()
+
 									riwayat_ = Riwayat(
 										sk_izin_id = obj_skizin.id ,
 										pengajuan_izin_id = id_pengajuan_izin,
@@ -856,11 +867,33 @@ class IzinAdmin(admin.ModelAdmin):
 								
 								
 							except IntegrityError:
-								response = {
-									"success": False,
-									"pesan": "Nomor SKIzin telah ada coba cek kembali.",
-									"redirect": '',
-								}
+								if obj.kelompok_jenis_izin.kode == "IUJK":
+									obj.no_izin = nomor+"/perubahan"
+									obj.save()
+
+									if obj.kelompok_jenis_izin.kode == "IUJK":
+										from dateutil.relativedelta import relativedelta
+										obj_skizin.masa_berlaku_izin = datetime.datetime.now()+relativedelta(years=3)
+										obj_skizin.save()
+
+									riwayat_ = Riwayat(
+										sk_izin_id = obj_skizin.id ,
+										pengajuan_izin_id = id_pengajuan_izin,
+										created_by_id = request.user.id,
+										keterangan = "Registered (Izin)"
+									)
+									riwayat_.save()
+									response = {
+										"success": True,
+										"pesan": "SKIzin Perubahan berhasil di register.",
+										"redirect": '',
+									}
+								else:	
+									response = {
+										"success": False,
+										"pesan": "Nomor SKIzin telah ada coba cek kembali.",
+										"redirect": '',
+									}
 						elif request.POST.get('aksi') == '_submit_cetak_izin':
 							obj_skizin.status = 2
 							obj_skizin.save()
