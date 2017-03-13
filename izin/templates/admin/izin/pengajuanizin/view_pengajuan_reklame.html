@@ -1590,26 +1590,26 @@
 				    </table>
 				    <br>
 				    <h4><u>#3. DATA REKLAME</u></h4>
-				        <table id="id_data_reklame_konfirmasi" class="table table-bordered" style="width: 762px;">
-				          <thead>
-				            <tr>
-				              <td>Jenis Reklame</td>
-				              <td>Judul Reklame</td>
-				              <td>Letak Pemasangan</td>
-				              <td>Jumlah</td>
-				            </tr>
-				          </thead>
-				          <tbody>
-							{% if detil_reklame_list %}
-								{% for a in detil_reklame_list %}
-									<td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
-									<td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
-									<td id="id_table_jumlah">{{a.letak_pemasangan}}</td>
-									<td id="id_table_jumlah">{{a.jumlah}}</td>
-								{% endfor %}
-							{% endif %}
-				          </tbody>
-				        </table>
+			        <table id="id_data_reklame_konfirmasi" class="table table-bordered" style="width: 762px;">
+			          <thead>
+			            <tr>
+			              <td>Jenis Reklame</td>
+			              <td>Judul Reklame</td>
+			              <td>Letak Pemasangan</td>
+			              <td>Jumlah</td>
+			            </tr>
+			          </thead>
+			          <tbody>
+						{% if detil_reklame_list %}
+							{% for a in detil_reklame_list %}
+								<td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
+								<td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
+								<td id="id_table_jumlah">{{a.letak_pemasangan}}</td>
+								<td id="id_table_jumlah">{{a.jumlah}}</td>
+							{% endfor %}
+						{% endif %}
+			          </tbody>
+			        </table>
 				    <br>
 		      	<div class="modal-footer">
 			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
