@@ -439,7 +439,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				status_pembaharuan_ke = request.POST.get('status_pembaharuan_ke')
 				if pengajuan_.jenis_permohonan.id == 1:
 					masa_berlaku_ = pengajuan_.created_at + relativedelta(years=5)
-					masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
+					masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y').strftime('%Y-%m-%d')
 				else:
 					if request.POST.get('masa_berlaku'):
 						masa_berlaku = request.POST.get('masa_berlaku')
