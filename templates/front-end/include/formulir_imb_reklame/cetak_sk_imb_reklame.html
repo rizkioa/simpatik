@@ -491,7 +491,7 @@
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU, yang bersangkutan dikenakan retribusi sebesar 
 	        			{% if retribusi.jumlah_pembayaran %}
-	        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+	        				Rp{{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}})
 	        			{% else %} 
 	        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 	        			{% endif%}

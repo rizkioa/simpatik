@@ -277,3 +277,18 @@ function pembayaran_add(btn){
               });
             }
       }
+
+    function klasifikasi_jalan_add(btn){
+        var frm = $('#id_form_klasifikasi_jalan');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                $("#edit_klasifikasi_jalan").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }

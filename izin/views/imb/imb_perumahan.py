@@ -171,17 +171,46 @@ def identifikasi_jalan_save_cookie(request):
 						{'ruang_pengawasan_jalan': ruang_pengawasan_jalan},
 						]}
 				data = json.dumps(data)
-				response = HttpResponse(json.dumps(data))
+				response = HttpResponse(data)
 			else:
 				data = IMBIdentifikasiJalan.errors.as_json()
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)
+			response = HttpResponse(data)
 	else:
 		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
 		data = json.dumps(data)
-	response = HttpResponse(data)
+		response = HttpResponse(data)
 	return response
+
+def identifikasi_jalan_pembuat_surat_save_cookie(request):
+	if request.POST:
+		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
+		pengajuan_ = DetilIMB.objects.get(pengajuanizin_ptr_id=pengajuan_izin_id)
+		IMBIdentifikasiJalan = IdentifikasiJalanForm(request.POST, instance=pengajuan_)
+		parameter = request.POST.getlist('parameter_bangunan')
+		if IMBIdentifikasiJalan.is_valid():
+			pengajuan_.klasifikasi_jalan  = request.POST.get('klasifikasi_jalan')
+			pengajuan_.ruang_milik_jalan  = request.POST.get('ruang_milik_jalan')
+			pengajuan_.ruang_pengawasan_jalan  = request.POST.get('ruang_pengawasan_jalan')
+			pengajuan_.save()
+			klasifikasi_jalan = pengajuan_.klasifikasi_jalan
+			ruang_milik_jalan = pengajuan_.ruang_milik_jalan
+			ruang_pengawasan_jalan = pengajuan_.ruang_pengawasan_jalan
+			data = {'success': True,
+					'pesan': 'Data IMB berhasil disimpan. Proses Selanjutnya.',
+					'data': [
+					{'klasifikasi_jalan': klasifikasi_jalan},
+					{'ruang_milik_jalan': ruang_milik_jalan},
+					{'ruang_pengawasan_jalan': ruang_pengawasan_jalan},
+					]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+		else:
+			data = IMBIdentifikasiJalan.errors.as_json()
+		return response
+
 
 def cetak_imb_perumahan(request, id_pengajuan_):
 	extra_context = {}

@@ -278,6 +278,10 @@ urlpatterns = [
      # ++++++++++++++++++++++++ for ajax IMB PERUMAHAN ++++++++++++++++++++++
     url(r'^layanan/imb-perumahan/formulir$', imb_perumahan.formulir_imb_perumahan, name='formulir_imb_perumahan'),
     url(r'^layanan/identifikasijalan/save/$', imb_perumahan.identifikasi_jalan_save_cookie, name='identifikasi_jalan_save'),
+    url(r'^layanan/identifikasi-jalan-pembuat-surat/edit/$', imb_perumahan.identifikasi_jalan_pembuat_surat_save_cookie, name='identifikasi_jalan_pembuat_surat_save'),
+
+
+
     url(r'^imbperumahan/berkas/save/$', imb_perumahan.imbperumahan_upload_berkas_pendukung, name='imbperumahan_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-imb-perumahan/(?P<id_pengajuan>[0-9]+)$', imb_perumahan.ajax_load_berkas_imbperumahan, name='ajax_load_berkas_imbperumahan'),
     
