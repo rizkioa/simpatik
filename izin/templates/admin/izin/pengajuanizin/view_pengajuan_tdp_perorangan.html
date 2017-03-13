@@ -1663,14 +1663,14 @@
 						<div class="form-group" id="id_tanggal_pendirian_">
 						    <label><strong>Masa Berlaku Izin</strong></label>
 					      	<div class="input-group datepicker" data-format="L">
-						        <input {% if pengajuan.jenis_permohonan.id == 1 %}disable='disable'{% endif %} type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="dd-mm-yyyy" value="23-02-2022">
+						        <input  type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="dd-mm-yyyy" value="23-02-2022">
 						        <span class="input-group-addon">
 						          <span class="fa fa-calendar"></span>
 						        </span>
 					      	</div>
 					  	</div>
 					  	<div class="form-group">
-					  		<label>{{masa_berlaku}}</label>
+					  		<label>{% if pengajuan.jenis_permohonan.id == 1 %}blablabla{{pengajuan.jenis_permohonan.id}}{% endif %}</label>
 					  	</div>
 						<div class="form-group">
 							<label>Status Pendaftaran</label>
