@@ -1663,7 +1663,7 @@
 						<div class="form-group" id="id_tanggal_pendirian_">
 						    <label><strong>Masa Berlaku Izin</strong></label>
 					      	<div class="input-group datepicker" data-format="L">
-						        <input {% if pengajuan.jenis_permohonan.id == 1 %}disable='disable'{% endif %} type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="dd-mm-yyyy" value="{% if pengajuan.jenis_permohonan.id == 1 %}{{masa_berlaku|date:'d-m-Y'}}{% else %}{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{% else %}{% endif %}{% endif %}">
+						        <input {% if pengajuan.jenis_permohonan.id == 1 %}disable='disable'{% endif %} type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="dd-mm-yyyy" value="{{pengajuan.jenis_permohonan.id}}{% if pengajuan.jenis_permohonan.id == 1 %}{{masa_berlaku|date:'d-m-Y'}}{% else %}{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{% else %}{% endif %}{% endif %}">
 						        <span class="input-group-addon">
 						          <span class="fa fa-calendar"></span>
 						        </span>
