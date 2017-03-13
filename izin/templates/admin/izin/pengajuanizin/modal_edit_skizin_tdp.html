@@ -1,2 +1,116 @@
 {% load i18n admin_static %}
 <script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+<div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title custom-font">Edit SKIzin</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped" width="100%" border="1">
+					<thead>
+						<tr>
+							<td>Kode KBLI</td>
+							<td>Nama Kegiatan Usaha</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for kbli in pengajuan.kegiatan_usaha_pokok.all %}
+						<tr>
+							<td>{{ kbli.kode_kbli }}</td>
+							<td>{{ kbli.nama_kbli }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+				<br>
+				<br>
+				<br>
+				<form method="POST" id="form_edit_skizin" action="{% url 'admin:edit_skizin_tdp' %}" data-parsley-validate novalidate>
+					{% csrf_token %}
+					<input type="hidden" name="id_pengajuan_izin" value="{{pengajuan.id}}">
+					<div class="form-group">
+						<label for="username">Barang / Jasa Perdagangan Utama: </label>
+						<textarea class="form-control" id="produk_utama_edit" rows="5" name="produk_utama" required="" data-parsley-trigger="change">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</textarea>
+						<p class="help-block mb-0">Jangan diedit jika tidak diperlukan untuk diupdate.</p>
+					</div>
+					<div class="form-group">
+						<label>Status Waralaba</label>
+						<input type="text" name="status_waralaba" class="form-control" id="status_waralaba" value="{{pengajuan.status_waralaba}}" required="" data-parsley-trigger="change">
+					</div>
+					<div class="form-group">
+						<label>Status Perusahaan</label>
+						<input type="text" name="status_perusahaan" class="form-control" id="status_perusahaan" value="{% if skizin.status_perusahaan %}{{skizin.status_perusahaan}}{% else %}{{pengajuan.status_perusahaan.status_perusahaan}}{% endif %}" required="" data-parsley-trigger="change">
+					</div>
+					<div class="form-group" id="id_tanggal_pendirian_">
+					    <label><strong>Masa Berlaku Izin</strong></label>
+				      	<div class="input-group datepicker" data-format="L">
+					        <input  type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="dd-mm-yyyy" {% if pengajuan.jenis_permohonan.id == 1 %}disabled="True"{% endif %} value="{% if pengajuan.jenis_permohonan.id == 1 %}{{masa_berlaku}}{% else %}{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{% else %}{% endif %}{% endif %}">
+					        <span class="input-group-addon">
+					          <span class="fa fa-calendar"></span>
+					        </span>
+				      	</div>
+				  	</div>
+					<div class="form-group">
+						<label>Status Pendaftaran</label>
+						<input type="text" name="status_pendaftaran" class="form-control" id="status_pendaftaran" value="{% if skizin.status_pendaftaran %}{{skizin.status_pendaftaran}}{% else %}{{pengajuan.jenis_permohonan.jenis_permohonan_izin}}{% endif %}" required="" data-parsley-trigger="change">
+					</div>
+					<div class="form-group">
+						<label>Status Pembaharuan Ke</label>
+						<input type="text" name="status_pembaharuan_ke" class="form-control" id="status_pembaharuan_ke" value="{% if skizin.status_pembaharuan_ke %}{{skizin.status_pembaharuan_ke}}{% else %}1{% endif %}" required="" data-parsley-trigger="change">
+						<p class="help-block mb-0">Status pembaharuan 1 - 8.</p>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button onclick="edit_skizin_tdp({{ pengajuan.id }}, '_submit_edit_skizin')" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+				<a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function edit_skizin_tdp(){
+		var frm = $('#form_edit_skizin');
+		frm.parsley().isValid()
+		if(frm.parsley().isValid()){
+			$.ajax({
+				type:frm.attr('method'),
+				url: frm.attr('action'),
+				data: frm.serialize(),
+				success: function(response){
+					toastr["success"]('SKizin berhasil diedit.');
+					$('#edit_skizin').modal('hide');
+				},
+				error: function(response){
+					toastr["error"]('SKizin gagal diedit.');
+				}
+			})
+		}
+		else{
+			toastr["error"]('Data tidak boleh kosong, mohon periksa kembali.');
+		}
+	}
+
+	function generate_skizin(id_pengajuan_izin, aksi){
+		csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+		$.ajax({ // create an AJAX call...
+			data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi }, // get the form data
+			type: 'POST', // GET or POST
+			url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+			success: function(response) { // on success..
+				respon = $.parseJSON(response)
+				if(respon.success){
+					toastr["success"](respon.pesan);
+					window.location.href= "";
+				}
+				else{
+					toastr["error"](respon.pesan)
+				}
+			},
+			error: function(data) {                
+				toast_server_error()
+			}
+		});
+	}
+</script>
