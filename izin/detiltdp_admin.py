@@ -189,7 +189,12 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if pengajuan_.jumlah_karyawan_wna:
 					wna = pengajuan_.jumlah_karyawan_wna
 				jumlah_karyawan = int(wni)+int(wna)
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
+				if pengajuan_.jenis_permohonan_id == 1:
+					masa_berlaku = ''
+					if pengajuan_.created_at:
+						masa_berlaku_ = pengajuan_.created_at + relativedelta(years=5)
+						masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'masa_berlaku':masa_berlaku})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -432,7 +437,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				status_pendaftaran = request.POST.get('status_pendaftaran')
 				status_pembaharuan_ke = request.POST.get('status_pembaharuan_ke')
 				if pengajuan_.jenis_permohonan.id == 1:
-					masa_berlaku_ = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku_ = pengajuan_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
 				else:
 					if request.POST.get('masa_berlaku'):
