@@ -431,3 +431,50 @@ function load_data_detail_izin_reklame(id_button){
     })
     }
 }
+
+function load_data_tabel_data_reklame(id_detil_reklame){
+  if (id_detil_reklame !== ""){
+    $('#id_data_reklame_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/reklame/detil-izin-reklame/load/'+id_detil_reklame,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_data_reklame_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_data_reklame_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_data_reklame_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            tipe_reklame = b[i].tipe_reklame
+            judul_reklame = b[i].judul_reklame
+            letak_pemasangan = b[i].letak_pemasangan
+            jumlah = b[i].jumlah
+            // no = a
+            // if (a > 1){
+            //   no = a-i
+            // }
+            row = '<tr>'
+            // row += '<td>'+no+'</td>'
+            row += '<td>'+tipe_reklame+'</td>'
+            row += '<td>'+judul_reklame+'</td>'
+            row += '<td>'+letak_pemasangan+'</td>'
+            row += '<td>'+jumlah+'</td>'
+            row += '</tr>'
+            $('#id_data_reklame_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_data_reklame_konfirmasi').mLoading('hide');
+  }
+}

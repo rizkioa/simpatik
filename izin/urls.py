@@ -205,7 +205,9 @@ urlpatterns = [
     url(r'^layanan/reklame/detil-izin-reklame/delete/(?P<id_detail_izin_reklame>[0-9]+)$', reklame_view.delete_detail_izin_reklame, name='delete_detail_izin_reklame'),
     url(r'^^layanan/reklame/detil-izin-reklame/edit/(?P<id_detail_izin_reklame>[0-9]+)/$', reklame_view.edit_detail_izin_reklame, name='edit_detail_izin_reklame'),
     url(r'^^layanan/reklame/detil-izin-reklame/load/(?P<id_detail_izin_reklame>[0-9]+)/$', reklame_view.load_data_detail_izin_reklame, name='load_data_detail_izin_reklame'),
-    
+
+    url(r'^reklame/detil-izin-reklame/load/(?P<id_detil_reklame>[0-9]+)$', reklame_view.load_data_tabel_detil_reklame, name='load_data_tabel_detil_reklame'),
+
     url(r'^layanan/reklame/upload-berkas/save/$', reklame_view.reklame_upload_berkas_pendukung, name='reklame_upload_berkas_pendukung'),
     url(r'^layanan/reklame/upload/save/$', reklame_view.reklame_upload_dokumen_cookie, name='reklame_upload_dokumen'),
     url(r'^ajax-load-berkas-reklame/(?P<id_pengajuan>[0-9]+)$', reklame_view.ajax_load_berkas_reklame, name='ajax_load_berkas_reklame'),
