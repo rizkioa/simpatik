@@ -25,26 +25,19 @@ def reklame_detilreklame_save_cookie(request):
 				else:
 					pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
 					pengajuan_.save()
-				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
-				if pengajuan_.tanggal_mulai:
-					awal = pengajuan_.tanggal_mulai
-				else:
-					awal = 0
-				if pengajuan_.tanggal_akhir:
-					akhir = pengajuan_.tanggal_akhir
-				else:
-					akhir = 0
+				# if pengajuan_.tanggal_mulai:
+				# 	awal = pengajuan_.tanggal_mulai
+				# else:
+				# 	awal = 0
+				# if pengajuan_.tanggal_akhir:
+				# 	akhir = pengajuan_.tanggal_akhir
+				# else:
+				# 	akhir = 0
 				
-				selisih = akhir-awal
+				# selisih = akhir-awal
 				data = {'success': True,
 						'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
-						'data': [
-						{'jenis_reklame': pengajuan_.jenis_reklame.jenis_reklame},
-						{'judul_reklame': pengajuan_.judul_reklame},
-						{'ukuran': ukuran_},
-						{'letak_pemasangan': letak_},
-						{'selisih': selisih.days}]}
+						'data': {}}
 				data = json.dumps(data)
 				response = HttpResponse(json.dumps(data))
 			else:
@@ -448,3 +441,12 @@ def load_data_detail_izin_reklame(request,id_detail_izin_reklame):
 		data = json.dumps(data)
 		response = HttpResponse(data)
 	return response
+
+def load_data_tabel_detil_reklame(request,id_detil_reklame):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            data = []
+            i = DetilReklameIzin.objects.filter(detil_reklame_id=request.COOKIES['id_pengajuan'])
+            data = [ob.as_json() for ob in i]
+            response = HttpResponse(json.dumps(data), content_type="application/json")
+    return response

@@ -41,6 +41,8 @@
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
+						id_detil_reklame = parseInt($.cookie('id_pengajuan'))
+						load_data_tabel_data_reklame(id_detil_reklame)
 					} else {
 						if($current == 4){
 						// alert("OK")
@@ -54,12 +56,12 @@
 				},
 
 				onNext: function(tab, navigation, index) {
-					return true;
+					return false;
 
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return true;
+					return false;
 				}
 			});
 		});

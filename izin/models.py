@@ -301,6 +301,21 @@ class DetilReklameIzin(AtributTambahan):
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	tanggal_mulai = models.DateField(verbose_name='Tanggal Mulai Dipasang', null=True, blank=True)
 	tanggal_akhir = models.DateField(verbose_name='Tanggal Akhir Dipasang', null=True, blank=True)
+
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"tipe_reklame": str(self.tipe_reklame),
+			"judul_reklame": self.judul_reklame,
+			"letak_pemasangan": self.letak_pemasangan,
+			"jumlah": str(self.jumlah),
+
+		}
+
+	def as_json(self):
+		return dict(tipe_reklame=str(self.tipe_reklame), judul_reklame=self.judul_reklame,letak_pemasangan=self.letak_pemasangan, jumlah=str(self.jumlah))
+
+
 	def __unicode__(self):
 		return u'Detil Reklame Izin %s ' % (str(self.detil_reklame))
 

@@ -1585,38 +1585,31 @@
 					    <tr>
 					      <td width="25%">E-mail</td>
 					      <td width="5%">:</td>
-					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email }}</span></td>
+					      <td width="70%"><span id='email_konfirmasi'>{{ perusahaan.email|default_if_none:"-" }}</span></td>
 					    </tr>
 				    </table>
 				    <br>
 				    <h4><u>#3. DATA REKLAME</u></h4>
-				    <table width="100%" border="0">
-					    <tr>
-					      <td width="25%">Jenis Reklame</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_reklame.jenis_reklame }}</td>
-					    </tr>
-					    <tr>
-					      <td width="25%">Nama / Judul Reklame</td>
-					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.judul_reklame}}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Ukuran, Panjang x Lebar x Muka/sisi</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.panjang }} x {{ pengajuan.lebar }} x {{ pengajuan.sisi }}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Waktu / Lama Pemasangan</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{jumlah_lama}}</td>
-					    </tr>
-					    <tr>
-					      <td width="40%">Letak Pemasangan</td>
-					      <td width="5%">:</td>
-					      <td width="55%">{{ pengajuan.letak_pemasangan }}</td>
-					    </tr>
-				    </table>
+				        <table id="id_data_reklame_konfirmasi" class="table table-bordered" style="width: 762px;">
+				          <thead>
+				            <tr>
+				              <td>Jenis Reklame</td>
+				              <td>Judul Reklame</td>
+				              <td>Letak Pemasangan</td>
+				              <td>Jumlah</td>
+				            </tr>
+				          </thead>
+				          <tbody>
+							{% if detil_reklame_list %}
+								{% for a in detil_reklame_list %}
+									<td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
+									<td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
+									<td id="id_table_jumlah">{{a.letak_pemasangan}}</td>
+									<td id="id_table_jumlah">{{a.jumlah}}</td>
+								{% endfor %}
+							{% endif %}
+				          </tbody>
+				        </table>
 				    <br>
 		      	<div class="modal-footer">
 			        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
