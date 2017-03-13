@@ -448,7 +448,7 @@
 		        		<tr>
 		        			<td width="30" style="width: 105px;">KESATU</td>
 		        			<td width="10" >:</td>
-		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|upper|default_if_none:"" }}</b>:</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
@@ -475,7 +475,7 @@
 		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
 		        				<td>{{pengajuan.pemohon.pekerjaan|default_if_none:""}}</td>
 		        			{% else %}
-		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan|default_if_none:""}}</td>
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan|upper|default_if_none:""}}</td>
 		        			{% endif %}
 		        		</tr>
 		        		<tr>
@@ -600,13 +600,13 @@
 		        			<td></td>
 		        			<td></td>
 		        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
-		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>3 M</b> dari tepi badan jalan ;</td>
+		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>{{pengajuan.ruang_pengawasan_jalan}} M</b> dari tepi badan jalan ;</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
 		        			<td ></td>
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
-		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>11 M</b> ;</td>
+		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>{{pengajuan.ruang_milik_jalan}} M</b> ;</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
@@ -685,7 +685,7 @@
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar
 					        			{% if retribusi.jumlah_pembayaran %}
-					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        				Rp{{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}})
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
@@ -1155,13 +1155,13 @@
 		        			<td></td>
 		        			<td></td>
 		        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
-		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>3 M</b> dari tepi badan jalan ;</td>
+		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>{{pengajuan.ruang_pengawasan_jalan}} M</b> dari tepi badan jalan ;</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
 		        			<td ></td>
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
-		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>11 M</b> ;</td>
+		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>{{pengajuan.ruang_milik_jalan}} M</b> ;</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
@@ -1240,7 +1240,7 @@
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar 
 					        			{% if retribusi.jumlah_pembayaran %}
-					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        				Rp{{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}} Rupiah)
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}

@@ -109,6 +109,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
 			extra_context.update({'letak_pemasangan': letak_})
+			extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
+			extra_context.update({'rumija': RUMIJA })
+			extra_context.update({'ruwasja': RUWASJA })
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
