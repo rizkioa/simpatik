@@ -125,10 +125,9 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			pengajuan_ = get_object_or_404(DetilTDUP, id=id_pengajuan_izin_)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
 			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata) + ', Ds. ' +str(pengajuan_.desa_lokasi)+', Kec. '+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)+', Prov. '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten.provinsi)
@@ -138,7 +137,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, 'alamat': alamat_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata})
 		template = loader.get_template("front-end/include/formulir_tdup/cetak_tdup_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))

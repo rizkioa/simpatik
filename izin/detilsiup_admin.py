@@ -159,8 +159,11 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 			k = pengajuan.kelompok_jenis_izin
 			if k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
 				objects_ = getattr(app_models, 'DetilTDP')
+			elif k.kode == 'TDUP':
+				objects_ = getattr(app_models, 'DetilTDUP')
 			else:
 				objects_ = getattr(app_models, 'DetilSIUP')
+
 
 			pengajuan_ = get_object_or_404(objects_, id=id_pengajuan_izin_)
 			extra_context.update({'pengajuan': pengajuan_ })
