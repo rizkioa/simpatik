@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import DetilReklame, Syarat, SKIzin, Riwayat, Survey,DetilPembayaran
+from izin.models import DetilReklame, Syarat, SKIzin, Riwayat, Survey,DetilPembayaran,DetilReklameIzin
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -77,6 +77,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			detil_reklame_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -137,6 +138,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'detil_reklame_list': detil_reklame_list})
 			extra_context.update({'pengajuan': pengajuan_})
 			encode_pengajuan_id = (str(pengajuan_.id))
 			extra_context.update({'pengajuan_id': encode_pengajuan_id})
@@ -176,7 +178,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 	def cetak_reklame_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
-		print id_pengajuan_izin_
+		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -270,6 +272,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			detil_reklame_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_)
 			if pengajuan_.perusahaan != '':
 				alamat_ = ""
 				alamat_perusahaan_ = ""
@@ -331,6 +334,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({'title': 'Proses Pengajuan'})
 				# extra_context.update({'ukuran': ukuran_})
 				extra_context.update({'letak_pemasangan': letak_})
+				extra_context.update({'detil_reklame_list': detil_reklame_list})
 				if pengajuan_.tanggal_mulai:
 					extra_context.update({'selisih': selisih.days})
 				else:

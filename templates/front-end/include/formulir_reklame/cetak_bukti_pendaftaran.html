@@ -347,40 +347,28 @@
                         <td width="10%">:</td>
                         <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
                     </tr>
-                </table>
-                <br>
-                <table class="font" width="100%">
+                </table>        
+                <h5><u>#3. DATA REKLAME</u></h5>
+                <table id="id_data_reklame_konfirmasi" class="table table-bordered font" style="width: 762px;">
+                  <thead>
                     <tr>
-                        <td width="10%">Jenis Reklame</td>
-                        <td width="5%">:</td>
-                        <td width="85%">{{ pengajuan.tipe_reklame }}</td>
+                      <td>Jenis Reklame</td>
+                      <td>Judul Reklame</td>
+                      <td>Letak Pemasangan</td>
+                      <td>Jumlah</td>
                     </tr>
-                    <tr>
-                        <td width="25%">Nama / Judul Reklame</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.judul_reklame }}</td>
-                    </tr>
-                    <tr>
-                        <td width="40%">Ukuran, Panjang x Lebar x Muka/Sisi</td>
-                        <td width="10%">:</td>
-                        <td width="50%">{{panjang_|default_if_none:"-"}} M x {{lebar_|default_if_none:"-"}} M x {{sisi_|default_if_none:"-"}} M</td>
-                    </tr>
-                    <tr>
-                        <td width="30%">Jumlah</td>
-                        <td width="10%">:</td>
-                        <td width="60%">{{ pengajuan.jumlah }}</td>
-                    </tr>
-                    <tr>
-                        <td width="30%">Waktu / Lama Pemasangan</td>
-                        <td width="10%">:</td>
-                        <td width="60%">{{ pengajuan.tanggal_mulai|date:"d F Y" }} s/d  {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
-                    </tr>
-                    <tr>
-                        <td width="30%">Letak Pemasangan</td>
-                        <td width="10%">:</td>
-                        <td width="60%">{{ letak_pemasangan }}</td>
-                    </tr>
-                </table>            
+                  </thead>
+                  <tbody>
+                    {% if detil_reklame_list %}
+                        {% for a in detil_reklame_list %}
+                            <td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
+                            <td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
+                            <td id="id_table_letak_pemasangan">{{a.letak_pemasangan}}</td>
+                            <td id="id_table_jumlah">{{a.jumlah}}</td>
+                        {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table>       
                 <br>
                     <p style="font-size: 12px;text-indent: 30px;">
                         Demikian permohonan ini kami buat dan kami bersedia memenuhi semua kewajiban sesuai peraturan yang berlaku atas perkenan izinnya di sampaikan terima kasih

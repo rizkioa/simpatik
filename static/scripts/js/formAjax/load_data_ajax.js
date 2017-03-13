@@ -398,3 +398,83 @@ function load_data_tabel_sertifikat_tanah(id_sertifikat_tanah){
     $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
   }
 }
+
+function load_data_detail_izin_reklame(id_button){
+  $(".tab-content").mLoading;
+  if (id_button>0){
+    $.ajax({
+      url: __base_url__+'/layanan/reklame/detil-izin-reklame/load/'+id_button,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_judul_reklame').val(respon.data.id_judul_reklame)
+            if (respon.data.id_kecamatan != "") {
+              load_desa_data_reklame(respon.data.id_kecamatan)
+            }
+            setTimeout(function(){
+              $('#id_tipe_reklame').val(respon.data.id_tipe_reklame).prop('selected',true).trigger("chosen:updated");
+              $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            $('#id_panjang').val(respon.data.id_panjang)
+            $('#id_lebar').val(respon.data.id_lebar)
+            $('#id_sisi').val(respon.data.id_sisi)
+            $('#id_letak_pemasangan').val(respon.data.id_letak_pemasangan)
+            $('#id_jumlah').val(respon.data.id_jumlah)
+            $('#id_tanggal_mulai').val(respon.data.id_tanggal_mulai)
+            $('#id_tanggal_akhir').val(respon.data.id_tanggal_akhir)
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
+function load_data_tabel_data_reklame(id_detil_reklame){
+  if (id_detil_reklame !== ""){
+    $('#id_data_reklame_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/reklame/detil-izin-reklame/load/'+id_detil_reklame,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+
+        if(a === 0){
+          $('#id_data_reklame_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_data_reklame_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_data_reklame_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            tipe_reklame = b[i].tipe_reklame
+            judul_reklame = b[i].judul_reklame
+            letak_pemasangan = b[i].letak_pemasangan
+            jumlah = b[i].jumlah
+            // no = a
+            // if (a > 1){
+            //   no = a-i
+            // }
+            row = '<tr>'
+            // row += '<td>'+no+'</td>'
+            row += '<td>'+tipe_reklame+'</td>'
+            row += '<td>'+judul_reklame+'</td>'
+            row += '<td>'+letak_pemasangan+'</td>'
+            row += '<td>'+jumlah+'</td>'
+            row += '</tr>'
+            $('#id_data_reklame_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_data_reklame_konfirmasi').mLoading('hide');
+  }
+}
