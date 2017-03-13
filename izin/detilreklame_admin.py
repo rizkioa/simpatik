@@ -178,7 +178,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 	def cetak_reklame_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
-		print id_pengajuan_izin_
+		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -272,6 +272,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			detil_reklame_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_)
 			if pengajuan_.perusahaan != '':
 				alamat_ = ""
 				alamat_perusahaan_ = ""
@@ -333,6 +334,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({'title': 'Proses Pengajuan'})
 				# extra_context.update({'ukuran': ukuran_})
 				extra_context.update({'letak_pemasangan': letak_})
+				extra_context.update({'detil_reklame_list': detil_reklame_list})
 				if pengajuan_.tanggal_mulai:
 					extra_context.update({'selisih': selisih.days})
 				else:

@@ -91,11 +91,164 @@
     <!-- Konfirmasi -->
     {% include 'front-end/include/formulir_reklame/konfirmasi.html' %}
   </div>
+<div class="modal fade" id="id_detail_izin_reklame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Detail Izin Reklame</h3>
+      </div>
+      <div class="modal-body">
+        <form method="POST" id="id_form_detail_izin_reklame" name="form_detail_izin_reklame" role="form" class="form-horizontal" action="{% url 'detail_izin_reklame_save' %}" data-parsley-validate novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
+          <div class="col-sm-5">
+            <select class="form-control chosen-select mb-10" name="tipe_reklame" data-parsley-trigger="change" id="id_tipe_reklame">
+              <option value>-- Pilih Jenis Reklame --</option>
+              {% if tipe_reklame_list %}
+              {% for j in tipe_reklame_list %}
+              <option value="{{ j.id }}">{{ j.jenis_tipe_reklame }}</option>
+              {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Judul Reklame</strong></label>
+          <div class="col-sm-7">
+            <textarea class="form-control" rows="5" required="" data-parsley-trigger="change" name="judul_reklame" placeholder="" id="id_judul_reklame"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Jumlah</strong></label>
+          <div class="col-sm-7">
+            <input type="number" class="form-control" rows="5" required="" data-parsley-trigger="change" name="jumlah" placeholder="" id="id_jumlah"></input>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Ukuran Reklame</strong></label>
+          <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">
+                  <span>Panjang</span>
+                </span>
+                <input name="panjang" id="id_panjang" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
+                <span class="input-group-addon">
+                  <span>M</span>
+                </span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">
+                  <span>Lebar</span>
+                </span>
+                <input name="lebar" id="id_lebar" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
+                <span class="input-group-addon">
+                  <span>M</span>
+                </span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">
+                  <span>Sisi</span>
+                </span>
+                <input name="sisi" id="id_sisi" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
+                <span class="input-group-addon">
+                  <span>M</span>
+                </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Lama Pemasangan</strong></label>
+          <div class="col-sm-3">
+              <div class="input-group datepicker w-360 tanggal-awal"> 
+                <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_mulai" name="tanggal_mulai" style="width: 170px;">
+                <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                  <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                </span>
+              </div>
+          </div>
+          <label class="col-sm-1"><center>s/d</center></label>
+          <div class="col-sm-3">
+              <div class="input-group datepicker w-360 tanggal-akhir"> 
+                <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_akhir" name="tanggal_akhir" style="width: 170px;">
+                <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                  <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                </span>
+              </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Letak Reklame</strong></label>
+          <div class="col-sm-7">
+            <textarea name="letak_pemasangan" id="id_letak_pemasangan" class="form-control" rows="5" required="" data-parsley-trigger="change" placeholder="isi alamat pemasangan letak reklame"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+          <div class="col-sm-5">
+            <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+              <option value="1">Kabupaten Kediri</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="kecamatan3">
+          <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
+          <div class="col-sm-5">
+            <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+              <option value>-- Pilih Kecamatan --</option>
+              {% if kecamatan %}
+              {% for k in kecamatan %}
+              <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+              {% endfor %}
+              {% endif %}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="desa3">
+          <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+          <div class="col-sm-5">
+            <select class="form-control chosen-select mb-10" name="desa" id="id_desa_data_reklame" required="" data-parsley-trigger="change">
+            </select>
+          </div>
+        </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="detail_izin_reklame_add(this)" >Simpan</a>
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRow_detail_izin_reklame(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
 
+
 {% block extratools %}
   {{ block.super }}
+  <script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+  <script src="{% static 'scripts/js/main.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
   <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
@@ -104,202 +257,47 @@
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
-  <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-  <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
-  <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+    <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+  <!--/ custom javascripts -->
   <script type="text/javascript">
-      $(window).load(function(){
-        $('#rootwizard').bootstrapWizard({
-          onTabShow: function(tab, navigation, index) {
-              var $total = navigation.find('li').length;
-              var $current = index+1;
-              if($current >= $total) {
-                $('#rootwizard').find('.pager .next').hide();
-                $('#rootwizard').find('.pager .finish').show();
-                $('#rootwizard').find('.pager .finish').removeClass('disabled');
-                id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                if (id_pengajuan > 0){
-                  $.ajax({
-                    url: __base_url__+'/ajax-konfirmasi-kbli/'+id_pengajuan,
-                    success: function (response){
-                      respon = $.parseJSON(response)
-                      a = respon.kbli.length
-                      // console.log(a)
-                      // console.log(respon.kbli[0].kode_kbli)
-                      if (respon.kbli){
-                        str = ""
-                        for (var i = 0; i < a; i++){
-                          respon.kbli[i].kode_kbli
-                          str = str+"("+respon.kbli[i].kode_kbli+" - "+respon.kbli[i].nama_kbli+") "
-                          // $('#kbli_konfirmasi').append("("+respon.kbli[i].kode_kbli+")")
-                        }
-                        $('#kbli_konfirmasi').html(str)
-                      }
-                      else{
-                        $('#kbli_konfirmasi').html('');
-                      }
-                    }
-                    // error: function(response){
-                    //   $('#kbli_konfirmasi').html('');
-                    // }
-                  })
-                  $.ajax({
-                    url: __base_url__+'/ajax-konfirmasi-legalitas/'+id_pengajuan,
-                    success: function (response){
-                        respon = $.parseJSON(response)
-                        a = respon.legalitas.length
-                        if (respon.legalitas){
-                          str = ""
-                          for (var i = 0; i < a; i++){
-                            // console.log(respon.legalitas[i].jenis_legalitas)
-                            row = '<tr><td>'+respon.legalitas[i].jenis_legalitas+'</td><td>'+respon.legalitas[i].nama_notaris+'</td><td>'+respon.legalitas[i].alamat+'</td><td>'+respon.legalitas[i].telephone+'</td><td>'+respon.legalitas[i].nomor_akta+'</td><td>'+respon.legalitas[i].tanggal_akta+'</td><td>'+respon.legalitas[i].nomor_pengesahan+'</td><td>'+respon.legalitas[i].tanggal_pengesahan+'</td></tr>'
-                            $('#legalitas_table > tbody').prepend(row);
-                          }
-                        }
-                        else{
-                          row = '<tr><td colspan="8"></td></tr>'
-                          $('#legalitas_table > tbody').prepend(row);
-                        }
-                    }
-                    // error: function(response){
-                    //   row = '<tr><td colspan='8'></td></tr>'
-                    //       $('#legalitas_table > tbody').prepend(row);
-                    // }
-                  })
-                  $.ajax({
-                    url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
-                    success: function (response){
-                        respon = $.parseJSON(response)
-                        if (respon.success){
-                          $("<br><br><table border='0' width='100%'><tr><td colspan='3'><h3 class='custom-font'>Data Kuasa</h3></td></tr><tr><td width='25%'>Nama Kuasa</td><td width='5%'>:</td><td width='70%'>"+respon.nama_kuasa+"</td></tr><tr><td>No Identitas Kuasa</td><td>:</td><td>"+respon.no_identitas_kuasa+"</td></tr><tr><td>Telpon Kuasa</td><td>:</td><td>"+respon.telephone_kuasa+"</td></tr></table>").insertAfter("#id_table_pemohon_komfirmasi");
-                        }
-                        else{
-                          $('<br>').insertAfter("#id_table_pemohon_komfirmasi");
-                                  }
-                      }
-                      // error: function(response){
-                      //   $('<br>').insertAfter("#id_table_pemohon_komfirmasi");
-                      // }
-                  })
-                }
-              }else{
-              if($current == 4){
-                // alert("OK")
-                id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_berkas(id_pengajuan)
-                
-              }
-                $('#rootwizard').find('.pager .next').show();
-                $('#rootwizard').find('.pager .finish').hide();
-              }
-          },
+    $(window).load(function(){
+      $('#rootwizard').bootstrapWizard({
+        onTabShow: function(tab, navigation, index) {
+          var $total = navigation.find('li').length;
+          var $current = index+1;
+          if($current >= $total) {
+            $('#rootwizard').find('.pager .next').hide();
+            $('#rootwizard').find('.pager .finish').show();
+            $('#rootwizard').find('.pager .finish').removeClass('disabled');
+            id_detil_reklame = parseInt($.cookie('id_pengajuan'))
+            load_data_tabel_data_reklame(id_detil_reklame)
+          } else {
+            if($current == 4){
+            // alert("OK")
+              id_pengajuan = parseInt($.cookie('id_pengajuan'))
+              load_berkas(id_pengajuan)
 
-          onNext: function(tab, navigation, index) {
-              // var form = $('form[name="step'+ index +'"]');
-              // form.parsley().validate();
-              // if (!form.parsley().isValid()) {
-              //     return false;
-              // }
-              return false;
-          },
-
-          onTabClick: function(tab, navigation, index) {
-            // var form = $('form[name="step'+ (index+1) +'"]');
-            // form.parsley().validate();
-            // if (!form.parsley().isValid()) {
-            //     return false;
-            // }
-            return false;
+            }
+            $('#rootwizard').find('.pager .next').show();
+            $('#rootwizard').find('.pager .finish').hide();
           }
-        });
+        },
+
+        onNext: function(tab, navigation, index) {
+          return false;
+
+        },
+
+        onTabClick: function(tab, navigation, index) {
+          return false;
+        }
       });
+    });
 
-      $(document).ready(function() {
-
-          /* +++++++++++++++++++ untuk confirmasi dialog sebelum halaman di reload +++++++++*/
-          window.onbeforeunload = function ref() {
-            var r = confirm( "Do you want to leave?" );
-            if (r == true) {
-                
-            }
-            else {
-                return false;
-            }
-          };
-          /* +++++++++++++++++++ end untuk confirmasi dialog sebelum halaman di reload +++++++++*/
-          
-          $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
-            $("#switch_akta_pendirian_disabled").change(function() {
-              if ($(this).is(':checked')) {
-                $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
-              }
-              else {
-                $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
-              }
-            });
-
-          $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
-          $("#switch_akta_perubahan_disabled").change(function() {
-            if ($(this).is(':checked')) {
-              $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
-            }
-            else {
-              $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
-            }
-          });
-
-          $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
-          $("#switch_pemohon_disabled").change(function() {
-            if ($(this).is(':checked')) {
-              $('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
-            }
-            else {
-              $('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
-            }
-          });
-          
-          $('#percent_berkas_foto').hide()
-          $('#percent_berkas_ktp').hide()
-          $('#percent_berkas_npwp_pribadi').hide()
-          $('#percent_berkas_npwp_perusahaan').hide()
-          $('#percent_berkas_akta_pendirian').hide()
-          $('#percent_berkas_akta_perubahan').hide()
-          $('#percent_berkas_pendukung').hide()
-          // $.removeCookie('id_pengajuan', { path: '/' });`
-          // 
-          if ($.cookie('id_pengajuan') === undefined){
-            $.cookie('id_pengajuan', "0", {path:"/"});
-          }
-          if ($.cookie('id_pemohon') === undefined){
-            $.cookie('id_pemohon', "0", {path:"/"});
-          }
-          if ($.cookie('id_perusahaan') === undefined){
-            $.cookie('id_perusahaan', "0", {path:"/"});
-          }
-          if ($.cookie('id_legalitas') === undefined){
-            $.cookie('id_legalitas', "0", {path:"/"});
-          }
-          if ($.cookie('id_legalitas_perubahan') === undefined){
-            $.cookie('id_legalitas_perubahan', "0", {path:"/"});
-          }
-
-          $( "#alert" ).prop( "disabled", true );
-          $('#checkbox_siup_done').change(function() {
-            if ($(this).is(':checked')) {
-              $( "#alert" ).prop( "disabled", false );
-              window.onbeforeunload = null;
-            }
-            else{
-              $( "#alert" ).prop( "disabled", true );
-            }
-          });
-          if($('#switch_akta_perubahan_disabled').is(':checked')){
-            $('#konfirmasi_legalitas_perubahan').show();
-          }
-          else{
-            $('#konfirmasi_legalitas_perubahan').hide();
-          }
-        });
+    // Function to capitalize for string
+    String.prototype.capitalize = function() {
+        return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+    };
 
     function next_tab(btn){
       var pengajuan_id = $.cookie('id_pengajuan')
@@ -307,96 +305,102 @@
         type: 'GET',
         url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
         success: function (response){
-          var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
-          var frm = $('form[name="step'+ index +'"]');
-          frm.parsley().validate();
-          if (frm.parsley().isValid()) {
-            $(".tab-content").mLoading();
-            $(btn).attr('disabled', 'disabled')
-            $.ajax({
-              type: frm.attr('method'),
-              url: frm.attr('action'),
-              data: frm.serialize(),
-              success: function (response){
-                respon = $.parseJSON(response)
-                      $(btn).removeAttr('disabled')
-                      if(respon.success){
-                        toastr["success"](respon.pesan)
-                        for (var i = 0; i < respon.data.length; i++){
-                          var key = Object.keys(respon.data[i]); // Mencari key json
-                          var val = respon.data[i][key[0]]
-                          var id = "#"+key[0]+"_konfirmasi"
-                          $(id).text(val);
-                        }
-                  $(".tab-content").mLoading('hide');
-                  tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-                  $(tab_index).tab('show')
-                      }else{
-                        var a = Object.keys(respon);
-                        for (var i = 0; i < a.length; i++){
-                          var field = a[i].replace("_", " ").capitalize();
-                          toastr["error"](field+", "+respon[a[i]][0]['message'])
-                          $("#"+a[i]+"").addClass("has-error");
-                        }
-                        $(".tab-content").mLoading('hide');
-                      }
-              },
-              error: function(response){
-                $(".tab-content").mLoading('hide');
-                $(btn).removeAttr('disabled')
-                toastr["error"]("Terjadi kesalahan pada koneksi server.")
-              }
-            });
+      var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+      var frm = $('form[name="step'+ index +'"]');
+      frm.parsley().validate();
+      if (frm.parsley().isValid()) {
+        $(".tab-content").mLoading();
+        $(btn).attr('disabled', 'disabled')
+        $.ajax({
+          type: frm.attr('method'),
+          url: frm.attr('action'),
+          data: frm.serialize(),
+          success: function (response){
+            respon = $.parseJSON(response)
+                  $(btn).removeAttr('disabled')
+                  if(respon.success){
+                    toastr["success"](respon.pesan)
+                    for (var i = 0; i < respon.data.length; i++){
+                      var key = Object.keys(respon.data[i]); // Mencari key json
+                      var val = respon.data[i][key[0]]
+                      var id = "#"+key[0]+"_konfirmasi"
+                      $(id).text(val);
+                    }
+              $(".tab-content").mLoading('hide');
+              tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+              $(tab_index).tab('show')
+                  }else{
+                    var a = Object.keys(respon);
+                    for (var i = 0; i < a.length; i++){
+                      var field = a[i].replace("_", " ").capitalize();
+                      toastr["error"](field+", "+respon[a[i]][0]['message'])
+                      $("#"+a[i]+"").addClass("has-error");
+                    }
+                    $(".tab-content").mLoading('hide');
+                  }
+          },
+          error: function(response){
+            $(".tab-content").mLoading('hide');
+            $(btn).removeAttr('disabled')
+            toastr["error"]("Terjadi kesalahan pada koneksi server.")
           }
-        },
+        });
+      }
+    },
         error: function (response){
           console.log('terjadi kesalahan')
         }
       })
     }
-
+    
     document.querySelector('#alert').onclick = function(){
-      // swal("Good job!", "You clicked the button!", "success");
-      var pengajuan_cookie = $.cookie('id_pengajuan'); 
-      var pemohon_cookie = $.cookie('id_pemohon'); 
-      var perusahaan_cookie = $.cookie('id_perusahaan'); 
-      if (pengajuan_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-        $(tab_index).tab('show');
-      }
-      else if(pemohon_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-        $(tab_index).tab('show');
-      }else if(perusahaan_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-        $(tab_index).tab('show');
-      }
-      else{
-        swal({
-          showConfirmButton: false,
-          type: 'success',
-          title: 'Pendaftaran Berhasil Tersimpan',
-          timer: 2000
-        })
-        
-        id_pengajuan_ = $.cookie("id_pengajuan");
-        if (id_pengajuan_ != undefined){
-          $.ajax({
-            url: '{% url 'reklame_done' %}',
-            success: function(response) {
-              respon = $.parseJSON(response)
-              if(respon.success){
-                toastr["success"](respon.pesan)
-              }
-              window.location.replace("/layanan/reklame/formulir/cetak/"+id_pengajuan_);
-            }
-          });
+        var pengajuan_cookie = $.cookie('id_pengajuan'); 
+        var pemohon_cookie = $.cookie('id_pemohon'); 
+        var perusahaan_cookie = $.cookie('id_perusahaan'); 
+        if (pengajuan_cookie === ""){
+            toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+            tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+            $(tab_index).tab('show');
         }
-      }
-    };
+          else if(pemohon_cookie === ""){
+            toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+            tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+            $(tab_index).tab('show');
+          }
+          else if(perusahaan_cookie === ""){
+            toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+            tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+            $(tab_index).tab('show');
+          }
+          else{
+            swal({
+              showConfirmButton: false,
+              type: 'success',
+              title: 'Pendaftaran Berhasil Tersimpan',
+              timer: 2000
+            })
+
+          id_pengajuan_ = $.cookie("id_pengajuan");
+          if (id_pengajuan_ != undefined){
+            $.ajax({
+              url: '{% url 'reklame_done' %}',
+              success: function(response) {
+                respon = $.parseJSON(response)
+                if(respon.success){
+                  toastr["success"](respon.pesan)
+                  window.location.replace('{% url 'admin:verifikasi_operator' %}');
+                }
+              }
+            });
+            }
+            $.removeCookie('id_pengajuan', { path: '/' });
+            $.removeCookie('id_perusahaan', { path: '/' });
+            $.removeCookie('id_pemohon', { path: '/' });
+            $.removeCookie('nomor_ktp', { path: '/' });
+            $.removeCookie('nomor_paspor', { path: '/' });
+            $.removeCookie('id_kelompok_izin', { path: '/' });
+          }
+      };
 
       $.ajaxSetup({
       timeout: 20000, // Microseconds, for the laughs. Guaranteed timeout.
@@ -405,7 +409,8 @@
       alert("Jaringan Internet anda terputus!");
       }
     });
-
+  </script>
+  <script type="text/javascript">
       $(document).ready(function() {
         window.onbeforeunload = function ref() {
               var r = confirm( "Do you want to leave?" );
@@ -461,7 +466,7 @@
       });
 
       if ('{{pengajuan_}}'){
-        
+        load_perusahaan_a('{{pengajuan_.perusahaan.npwp}}')
             {% include 'front-end/load_pengajuan.html' %}
 
             $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
@@ -542,18 +547,88 @@
               $('#checkbox_berkas_tambahan').prop('checked', 1)
             }
       }
+    function detail_izin_reklame_add(btn){
+        var frm = $('#id_form_detail_izin_reklame');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                
+                id_penggunaan = res.data.id_detil_reklame
+                if ($('#id_table_detail_izin_reklame').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var jenis_reklame  = res.data.id_tipe_reklame
+                var judul_reklame = $("#id_judul_reklame").val()
+                var jumlah_reklame = $("#id_jumlah").val()
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_nama_penggunaan'>" + jenis_reklame + "</td><td id='id_table_ukuran_penggunaan'>" + judul_reklame +"</td><td id='id_table_nama_penggunaan'>"+jumlah_reklame+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRow_detail_izin_reklame(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRow_detail_izin_reklame(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_table_detail_izin_reklame","tbody");
+                $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)') 
+                $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
+                $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save')
+                $("#id_form_detail_izin_reklame").resetForm()
+                $("#id_detail_izin_reklame").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
 
-  $(function() {
-    $('#id_data_reklame').on('keydown', '#id_jumlah', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-    })
-  $(function() {
-    $('#id_data_reklame').on('keydown', '#id_panjang', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-    })
-  $(function() {
-    $('#id_data_reklame').on('keydown', '#id_lebar', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
-    })
+    function deleteRow_detail_izin_reklame(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/layanan/reklame/detil-izin-reklame/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+          $("#id_form_detail_izin_reklame").resetForm()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+    function editRow_detail_izin_reklame(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+    load_data_detail_izin_reklame(id_button)
+
+        $('#id_detail_izin_reklame').modal('show');
+        $('#id_detail_izin_reklame').find('.btn-success').attr('onclick','').unbind('click');
+        $('#id_detail_izin_reklame').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('id',id_button)
+        $('#id_detail_izin_reklame').find('.btn-primary').text("Edit")
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+        $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/edit/'+id_button+'/')        
+    }
+
+    function batalRow_detail_izin_reklame(btn){
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+        $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
+        $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save/')
+        $("#id_form_detail_izin_reklame").resetForm()
+        $("#id_detail_izin_reklame").modal('hide');
+    }
+
+  function Tambah_detail_izin_reklame(btn){
+    $("#id_detail_izin_reklame").modal('show');
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')
+        $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
+        $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save/')
+  }
+
     </script>
 
 {% endblock %}
+
 
 
