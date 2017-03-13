@@ -1669,9 +1669,6 @@
 						        </span>
 					      	</div>
 					  	</div>
-					  	<div class="form-group">
-					  		<label>{% if pengajuan.jenis_permohonan.id == 1 %}blablabla{{pengajuan.jenis_permohonan.id}}{% endif %}</label>
-					  	</div>
 						<div class="form-group">
 							<label>Status Pendaftaran</label>
 							<input type="text" name="status_pendaftaran" class="form-control" id="status_pendaftaran" value="{% if skizin.status_pendaftaran %}{{skizin.status_pendaftaran}}{% else %}{{pengajuan.jenis_permohonan.jenis_permohonan_izin}}{% endif %}" required="" data-parsley-trigger="change">
