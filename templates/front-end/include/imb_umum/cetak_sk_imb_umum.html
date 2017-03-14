@@ -448,7 +448,7 @@
 		        		<tr>
 		        			<td width="30" style="width: 105px;">KESATU</td>
 		        			<td width="10" >:</td>
-		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|upper|default_if_none:"" }}</b>:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
@@ -475,7 +475,7 @@
 		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
 		        				<td>{{pengajuan.pemohon.pekerjaan|default_if_none:""}}</td>
 		        			{% else %}
-		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan|upper|default_if_none:""}}</td>
+		        				<td>{{pengajuan.pemohon.keterangan_pekerjaan|default_if_none:""}}</td>
 		        			{% endif %}
 		        		</tr>
 		        		<tr>
