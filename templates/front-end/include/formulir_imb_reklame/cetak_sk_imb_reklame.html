@@ -336,7 +336,7 @@
 	        		<td></td>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;">18.</td>
-	        		<td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu Kabupaten Kediri sebagaimana telah diubah dengan Peraturan Bupati Nomor 17 Tahun 2016.</td>
+	        		<td>Peraturan Bupati Kediri Nomor 1 Tahun 2017 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri;</td>
 	        	</tr>
 	        </table>
 	        <br>
@@ -491,7 +491,7 @@
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="3" width="2000">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU, yang bersangkutan dikenakan retribusi sebesar 
 	        			{% if retribusi.jumlah_pembayaran %}
-	        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+	        				Rp{{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}})
 	        			{% else %} 
 	        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 	        			{% endif%}

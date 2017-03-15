@@ -690,6 +690,7 @@
 						    <center>
 						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
+						    	<a data-toggle="modal" data-target="#edit_klasifikasi_jalan" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Klasifikasi Jalan</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 						    </center>
 						</div>
@@ -1380,7 +1381,66 @@
 		    </div>
 		</div>
 	</div>
-    
+    <div class="modal fade" id="edit_klasifikasi_jalan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		       	<div class="modal-header">
+		        	<h3 class="modal-title custom-font">Edit Identifikasi Jalan</h3>
+		      	</div>
+		      	<div class="modal-body">
+		          <form method="POST" id="id_form_klasifikasi_jalan" name="form_klasifikasi_jalan" role="form" class="form-horizontal" action="{% url 'identifikasi_jalan_pembuat_surat_save' %}" data-parsley-validate novalidate>
+		            {% csrf_token %}
+		            <input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+				    <div class="form-group">
+				      <label for="input01" class="col-sm-2 control-label">Klasifikasi Jalan</label>
+				      <div class="form-group">
+				        <div class="col-sm-7">
+				          <select id="id_klasifikasi_jalan" name="klasifikasi_jalan" class="form-control chosen-select mb-20">
+				            <option>-- Pilih Klasifikasi Jalan</option>
+				              {% for j in klasifikasi_jalan %}
+				               <option value="{{j.0}}">{{j.1}}</option>
+				              {% endfor %}
+				          </select>
+				        </div>
+				      </div>
+				    </div>
+
+				    <div class="form-group">
+				      <label for="input01" class="col-sm-2 control-label">Ruang Milik Jalan (RUMIJA)</label>
+				      <div class="form-group">
+				        <div class="col-sm-7">
+				          <select id="id_ruang_milik_jalan" name="ruang_milik_jalan" class="form-control chosen-select mb-20">
+				            <option>-- Pilih Ruang Milik Jalan</option>
+				              {% for j in rumija %}
+				               <option value="{{j.0}}">{{j.1}}</option>
+				              {% endfor %}
+				          </select>
+				        </div>
+				      </div>
+				    </div>
+
+				    <div class="form-group">
+				      <label for="input01" class="col-sm-2 control-label">Ruang Pengawasan Jalan (RUWASJA)</label>
+				      <div class="form-group">
+				        <div class="col-sm-7">
+				          <select id="id_ruang_pengawasan_jalan" name="ruang_pengawasan_jalan" class="form-control chosen-select mb-20">
+				            <option>-- Pilih Ruang Pengawasan Jalan</option>
+				              {% for j in ruwasja %}
+				               <option value="{{j.0}}">{{j.1}}</option>
+				              {% endfor %}
+				          </select>
+				        </div>
+				      </div>
+				    </div>
+		          </form>
+		      	</div>
+		      	<div class="modal-footer">
+		      		<button onclick="klasifikasi_jalan_add(this)" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+                </div>
+		    </div>
+		</div>
+	</div>
 	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 		    <div class="modal-content">

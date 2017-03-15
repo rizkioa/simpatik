@@ -105,6 +105,9 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
+			if pengajuan_.no_izin:
+				no_izin = pengajuan_.no_izin.split("/")
+				extra_context.update({'no_izin': no_izin[0]})
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++
@@ -159,14 +162,20 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
 		unit_kerja = get_object_or_404(UnitKerja, id=72)
-		skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
+		# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
+
+		skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
+
 
 		tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
 
 		extra_context.update({'html':tpl.body_html})
 		extra_context.update({'pengajuan': pengajuan_})
-		extra_context.update({'nomor': pengajuan_.no_izin})
-		extra_context.update({'skizin_status': skizin_.status})
+		if pengajuan_.no_izin:
+			no_izin = pengajuan_.no_izin.split("/")
+			extra_context.update({'nomor': no_izin[0]})
+		if skizin_:
+			extra_context.update({'skizin_status': skizin_.status})
 
 		paket = pengajuan_.paket_pekerjaan_iujk.all()
 
@@ -241,7 +250,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				
 
 		subject_template = template.render(ec)
-		extra_context.update({'nomor': pengajuan_.no_izin})
 		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
 		extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
 		extra_context.update({'desa': pengajuan_.perusahaan.desa})
@@ -270,11 +278,25 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		# li += k
 
 		extra_context.update({'klasifikasi': mark_safe(li) })
+		# if pengajuan_.jenis_permohonan_id == 1 : #Baru
+		# 	masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
+		# 	masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
+		# else:
+		# 	masa_berlaku = ''
 
-		masa_berlaku = skizin_.created_at+relativedelta(years=3)
-		masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
+		# masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
+		# masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
+		masa_berlaku = '-'
+		tanggal_ = '-'
+		if skizin_:
+			if skizin_.masa_berlaku_izin:
+				print "asdsfd"
+				masa_berlaku = skizin_.masa_berlaku_izin.strftime('%d-%m-%Y')
+				tanggal_ = skizin_.masa_berlaku_izin-relativedelta(years=3)
+				tanggal_ = tanggal_.strftime('%d-%m-%Y')
 		extra_context.update({'masa_berlaku': masa_berlaku})
-		extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
+		# extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
+		extra_context.update({'tanggal': tanggal_})
 		extra_context.update({'satker': unit_kerja})
 		extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
 		extra_context.update({'jabatan': "Pembina Tingkat I"})

@@ -271,7 +271,7 @@
 		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }};
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }} ;
 		        		</td>
 		        	</tr>
 		        	{% if sk_imb.sk_menimbang_a %}
@@ -435,7 +435,7 @@
 		        		<td style="width: 120px;"></td>
 		        		<td style="vertical-align: top;padding-top: 1px;"></td>
 		        		<td style="vertical-align: top;padding-top: 1px;">23.</td>
-		        		<td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu Pada Badan Penanaman MOdal dan Pelayanan Perizinan Terpadu Satu Pintu Kabupaten Kediri sebagaimana telah diubah dengan Peraturan Bupati Kediri Nomor 17 Tahun 2016.</td>
+		        		<td>Peraturan Bupati Kediri Nomor 1 Tahun 2017 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri;</td>
 		        	</tr>
 		        </table>
 		        <br>
@@ -464,7 +464,7 @@
 		        			<td colspan="3" align="left" style="padding-left: 120px;">b. Tempat/Tgl. Lahir</td>
 		        			<td width="10">:</td>
 		        			{% if pengajuan.pemohon.tempat_lahir %}
-		        			<td>{{pengajuan.pemohon.tempat_lahir|default_if_none:""}}/{{pengajuan.pemohon.tanggal_lahir|date:"d F Y"|default_if_none:""}}</td>
+		        			<td>{{pengajuan.pemohon.tempat_lahir|default_if_none:""}}, {{pengajuan.pemohon.tanggal_lahir|date:"d F Y"|default_if_none:""}}</td>
 		        			{% else %}
 		        			<td></td>
 		        			{% endif %}
@@ -600,13 +600,14 @@
 		        			<td></td>
 		        			<td></td>
 		        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
-		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>3 M</b> dari tepi badan jalan ;</td>
+		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>{{pengajuan.ruang_pengawasan_jalan}} M</b> dari {% if pengajuan.klasifikasi_jalan == "Jalan Strategis"%} teras bangunan sampai teras bangunan ;{% else %} tepi badan jalan ;{% endif %}
+		        			</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
 		        			<td ></td>
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
-		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>11 M</b> ;</td>
+		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>{{pengajuan.ruang_milik_jalan}} M</b> ;</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
@@ -685,7 +686,7 @@
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar
 					        			{% if retribusi.jumlah_pembayaran %}
-					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        				Rp{{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}})
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
@@ -711,48 +712,48 @@
 		        	</table>
 		        	<table width="100%" border="0" class="font">
 		        		<tr>
-		        			<td colspan="3" style="width: 1000px;">
+		        			<td colspan="3" style="width: 900px;">
 			        			<table border="0" align="left">
 			  						<tr>
-			  							<td style="vertical-align: top;padding-top: 10px;">
+			  							<td>
+			  							<br><br>
 			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
 			  							</td>
 			  						</tr>
 			  					</table>
 		        			</td>
-		        			<td width="40%" rowspan="2" style="vertical-align: top;padding-top: 10px;">
-		        				<p style="font-size:14px; padding-left: 20%;">
-				                    <font size="3pt">Ditetapkan di Kab. Kediri<br> 
+		        			<td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:14px; padding-left: 10%;">
+				                    <font size="3pt">Ditetapkan di Kediri <br> 
 										pada tanggal</font><br></p>
-				                    <p style="font-size:16px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</font></p><br>
 				                    <br>
-				                    <br>
-				                    <!-- <br> -->
 				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
-									<!-- Pembina Tk.l<br>
+								<!--	Pembina Tk.l<br>
 				                    NIP: {{nip_kepala_dinas}} -->
 				                    </p>
 				            </td>
 		        		</tr>
 		        		<tr>
-							<td><table border="0" align="left" style="font-size:15px;">
-									<tr >
-										<td colspan="3" style="vertical-align: top;padding-top: 10px;">Salinan keputusan ini disampaikan kepada :</td><br>
+							<td><br><br><br><br>
+								<table border="0" align="left" style="font-size:15px;">
+									<tr>
+										<td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
 									</tr>
 									<tr>
 										<td style="vertical-align: top;padding-top: 1px;">Yth. </td>
 										<td style="vertical-align: top;padding-top: 1px;">1.</td>
-										<td width="100%">Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+										<td width="100%" style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas PU dan Penataan Ruang <br>Kabupaten Kediri  ;</td>
 									</tr>   
 									<tr>
 										<td></td>
-										<td>2.</td>
-										<td>Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+										<td style="vertical-align: top;padding-top: 1px;">2.</td>
+										<td style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas Perumahan dan Kawasan <br>Permukiman Kabupaten Kediri ;</td>
 									</tr>   
 									<tr>
 										<td></td>
 										<td>3.</td>
-										<td>Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+										<td>Sdr. Kepala BAPENDA Kabupaten Kediri ;</td>
 									</tr>    
 									<tr>
 										<td></td>
@@ -772,7 +773,7 @@
 									<tr>
 										<td></td>
 										<td style="vertical-align: top;padding-top: 1px;">7.</td>
-										<td>Sdr. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
+										<td style="text-indent:-30px;padding-left: 30px;">Sdr. {{pengajuan.pemohon}} <br>{{pengajuan.pemohon.alamat}} <br>Desa {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}.</td>
 									</tr>   
 								</table>         
 							</td>
@@ -850,7 +851,7 @@
 		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }};
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }} ;
 		        		</td>
 		        	</tr>
 		        	{% if sk_imb.sk_menimbang_a %}
@@ -988,7 +989,7 @@
 		        		<td style="width: 120px;"></td>
 		        		<td style="vertical-align: top;padding-top: 1px;"></td>
 		        		<td style="vertical-align: top;padding-top: 1px;">17.</td>
-		        		<td>Peraturan Bupati Kediri Nomor 42 Tahun 2015 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Badan Penanaman Modal dan Pelayanan Perizinan Terpadu Satu Pintu;</td>
+		        		<td>Peraturan Bupati Kediri Nomor 1 Tahun 2017 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri;</td>
 		        	</tr>
 		        </table>
 		        <br>
@@ -1017,7 +1018,7 @@
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">b. Tempat/Tgl. Lahir</td>
 		        			<td width="10">:</td>
 		        			{% if pengajuan.pemohon.tempat_lahir %}
-		        			<td>{{pengajuan.pemohon.tempat_lahir|default_if_none:""}}/{{pengajuan.pemohon.tanggal_lahir|date:"d F Y"|default_if_none:""}}</td>
+		        			<td>{{pengajuan.pemohon.tempat_lahir|default_if_none:""}}, {{pengajuan.pemohon.tanggal_lahir|date:"d F Y"|default_if_none:""}}</td>
 		        			{% else %}
 		        			<td></td>
 		        			{% endif %}
@@ -1155,13 +1156,13 @@
 		        			<td></td>
 		        			<td></td>
 		        			<td style="vertical-align: top;padding-top: 1px;" align="right">a.</td>
-		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>3 M</b> dari tepi badan jalan ;</td>
+		        			<td colspan="2">Letak bangunan paling luar / Ruang Pengawasan Jalan (RUWASJA) minimal <b>{{pengajuan.ruang_pengawasan_jalan}} M</b> dari {% if pengajuan.klasifikasi_jalan == "Jalan Strategis"%} teras bangunan sampai teras bangunan ;{% else %} tepi badan jalan ;{% endif %}</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
 		        			<td ></td>
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
-		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>11 M</b> ;</td>
+		        			<td colspan="3">Letak bangunan pagar sampai bangunan pagar seberang jalan / Ruang Milik Jalan (RUMIJA) minimal <b>{{pengajuan.ruang_milik_jalan}} M</b> ;</td>
 		        		</tr>
 		        		<tr>
 		        			<td ></td>
@@ -1240,7 +1241,7 @@
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar 
 					        			{% if retribusi.jumlah_pembayaran %}
-					        				Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        				Rp{{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}} Rupiah)
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
@@ -1266,7 +1267,7 @@
 		        	</table>
 		        	<table width="100%" border="0" class="font">
 		        		<tr>
-		        			<td colspan="3" style="width: 1000px;">
+		        			<td colspan="3" style="width: 900px;">
 			        			<table border="0" align="left">
 			  						<tr>
 			  							<td>
@@ -1276,14 +1277,11 @@
 			  						</tr>
 			  					</table>
 		        			</td>
-		        			<td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-		        				<p style="font-size:14px; padding-left: 20%;">
-				                    <font size="3pt">Ditetapkan di Kab. Kediri <br> 
+		        			<td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:14px; padding-left: 10%;">
+				                    <font size="3pt">Ditetapkan di Kediri <br> 
 										pada tanggal</font><br></p>
-				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-				                    <br>
-				                    <br>
-				                    <br>
+				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</font></p><br>
 				                    <br>
 				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
 								<!--	Pembina Tk.l<br>
@@ -1300,17 +1298,17 @@
 									<tr>
 										<td style="vertical-align: top;padding-top: 1px;">Yth. </td>
 										<td style="vertical-align: top;padding-top: 1px;">1.</td>
-										<td width="100%">Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+										<td width="100%" style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas PU dan Penataan Ruang <br>Kabupaten Kediri  ;</td>
 									</tr>   
 									<tr>
 										<td></td>
-										<td>2.</td>
-										<td>Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+										<td style="vertical-align: top;padding-top: 1px;">2.</td>
+										<td style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas Perumahan dan Kawasan <br>Permukiman Kabupaten Kediri ;</td>
 									</tr>   
 									<tr>
 										<td></td>
 										<td>3.</td>
-										<td>Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+										<td>Sdr. Kepala BAPENDA Kabupaten Kediri ;</td>
 									</tr>    
 									<tr>
 										<td></td>
@@ -1330,7 +1328,7 @@
 									<tr>
 										<td></td>
 										<td style="vertical-align: top;padding-top: 1px;">7.</td>
-										<td>Sdr. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
+										<td style="text-indent:-30px;padding-left: 30px;">Sdr. {{pengajuan.pemohon}} <br>{{pengajuan.pemohon.alamat}} <br>Desa {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}.</td>
 									</tr>   
 								</table>         
 							</td>

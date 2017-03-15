@@ -652,7 +652,7 @@ class DetilIMB(PengajuanIzin):
 	status_hak_tanah = models.CharField(verbose_name='Status Hak Tanah', choices=STATUS_HAK_TANAH, max_length=20, null=True, blank=True)
 	kepemilikan_tanah = models.CharField(verbose_name='Kepemilikan Tanah', choices=KEPEMILIKAN_TANAH, max_length=20, null=True, blank=True)
 	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
-	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=KLASIFIKASI_JALAN, max_length=19, null=True, blank=True)
+	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=JENIS_LOKASI_USAHA, max_length=19, null=True, blank=True)
 	ruang_milik_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Milik Jalan', choices=RUMIJA, null=True, blank=True)
 	ruang_pengawasan_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Pengawasan Jalan', choices=RUWASJA, null=True, blank=True)
 	total_biaya = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Biaya')
