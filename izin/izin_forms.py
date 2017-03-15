@@ -316,4 +316,4 @@ class KeteranganUsahaTDUPForm(forms.ModelForm):
 	"""docstring for KeteranganUsahaTDUPForm"""
 	class Meta:
 		model = DetilTDUP
-		fields = ('nama_usaha', 'lokasi_usaha_pariwisata', 'desa_lokasi', 'telephone', 'nomor_izin_gangguan', 'tanggal_izin_gangguan', 'nomor_dokumen_pengelolaan', 'tanggal_dokumen_pengelolaan')
+		fields = ('nama_usaha', 'lokasi_usaha_pariwisata', 'desa_lokasi', 'telephone', 'nomor_dokumen_pengelolaan', 'tanggal_dokumen_pengelolaan')

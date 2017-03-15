@@ -201,13 +201,13 @@
     			<td width="5%" align="center"><b>1.</b></td>
     			<td width="40%" class="tdnone"><b>Nomor Pendaftaran Usaha Pariwisata</b></td>
     			<td width="5%" class="tdnone">:</td>
-    			<td width="50%" class="tdnone"></td>
+    			<td width="50%" class="tdnone">{% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}-{% endif %}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>2.</b></td>
     			<td class="tdnone"><b>Tanggal Pendaftaran Usaha Pariwisata</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{% else %}-{% endif %}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>3.</b></td>
@@ -248,8 +248,8 @@
     		<tr>
     			<td align="center"><b>9.</b></td>
     			<td class="tdnone"><b>Bidang Usaha Jenis Usaha</b></td>
-    			<td class="tdnone">:</td>
-    			<td class="tdnone">{{pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata.upper}}{% if pengajuan.jenis_usaha_pariwisata %}, <br>{{pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata.upper}}{% if pengajuan.sub_jenis_usaha_pariwisata %}, <br>{{pengajuan.sub_jenis_usaha_pariwisata.nama_sub_jenis.upper}}{% endif %}{% endif %}</td>
+    			<td class="tdnone" valign="top">:</td>
+    			<td class="tdnone" valign="top">{{pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata.upper}}{% if pengajuan.jenis_usaha_pariwisata %}, <br>{{pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata.upper}}{% if pengajuan.sub_jenis_usaha_pariwisata %}, <br>{{pengajuan.sub_jenis_usaha_pariwisata.nama_sub_jenis.upper}}{% endif %}{% endif %}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>10.</b></td>
@@ -260,8 +260,9 @@
     		<tr>
     			<td align="center"><b>11.</b></td>
     			<td class="tdnone"><b>Nomor dan Tanggal Akta Pendirian Badan Usaha Beserta Perubahannya Bila Ada</b></td>
-    			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone" valign="top">:</td>
+    			<td class="tdnone" valign="top">{% if legalitas_1 %}{{legalitas_1.nomor_pengesahan.upper}} TANGGAL {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}{% endif %}
+    			{% if legalitas_2 %}, <br>{{legalitas_2.nomor_pengesahan.upper}} TANGGAL {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}{% endif %}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>12.</b></td>
