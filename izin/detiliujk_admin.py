@@ -105,8 +105,9 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'created_at': pengajuan_.created_at})
 			extra_context.update({'status': pengajuan_.status})
 			extra_context.update({'pengajuan': pengajuan_})
-			no_izin = pengajuan_.no_izin.split("/")
-			extra_context.update({'no_izin': no_izin[0]})
+			if pengajuan_.no_izin:
+				no_izin = pengajuan_.no_izin.split("/")
+				extra_context.update({'no_izin': no_izin[0]})
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++
