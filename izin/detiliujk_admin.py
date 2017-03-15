@@ -171,8 +171,9 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		extra_context.update({'html':tpl.body_html})
 		extra_context.update({'pengajuan': pengajuan_})
-		no_izin = pengajuan_.no_izin.split("/")
-		extra_context.update({'nomor': no_izin[0]})
+		if pengajuan_.no_izin:
+			no_izin = pengajuan_.no_izin.split("/")
+			extra_context.update({'nomor': no_izin[0]})
 		if skizin_:
 			extra_context.update({'skizin_status': skizin_.status})
 
