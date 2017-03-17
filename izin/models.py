@@ -1119,14 +1119,6 @@ class RincianSubJenis(models.Model):
 		verbose_name = 'Rincian Sub Jenis'
 		verbose_name_plural = 'Rincian Sub Jenis'
 
-class IzinLainTDUP(models.Model):
-	no_izin = models.CharField(max_length=255, verbose_name='Nomor Izin')
-	tanggal_izin_gangguan = models.DateField(verbose_name="Tanggal Izin Gangguan", null=True, blank=True)
-
-	class Meta:
-		verbose_name = 'Izin Lain TDUP'
-		verbose_name_plural = 'Izin Lain TDUP'
-
 class DetilTDUP(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='tdup_perusahaan', blank=True, null=True)
 	bidang_usaha_pariwisata = models.ForeignKey(BidangUsahaPariwisata, verbose_name="Bidang Usaha Pariwisata", null=True, blank=True)
@@ -1140,7 +1132,7 @@ class DetilTDUP(PengajuanIzin):
 	# Izin gangguan
 	# nomor_izin_gangguan = models.CharField(max_length=255, verbose_name="Nomor Izin Gangguan", null=True, blank=True)
 	# tanggal_izin_gangguan = models.DateField(verbose_name="Tanggal Izin Gangguan", null=True, blank=True)
-	izin_lain = models.ForeignKey(IzinLainTDUP, verbose_name='Izin Lain', null=True, blank=True)
+	# izin_lain = models.ForeignKey(IzinLainTDUP, verbose_name='Izin Lain', null=True, blank=True)
 	# Dokumen Pengelolaan Lingkungan
 	nomor_dokumen_pengelolaan = models.CharField(max_length=255, verbose_name="Nomor Dokumen Pengelolaan Lingkungan", null=True, blank=True)
 	tanggal_dokumen_pengelolaan = models.DateField(verbose_name="Tanggal Dokumen Pengelolaan Lingkungan", null=True, blank=True)
@@ -1152,6 +1144,18 @@ class DetilTDUP(PengajuanIzin):
 		ordering = ['-status']
 		verbose_name = 'TDUP'
 		verbose_name_plural = 'TDUP'
+
+class IzinLainTDUP(models.Model):
+	detil_tdup = models.ForeignKey(DetilTDUP, related_name='detil_tdup_izin_lain')
+	no_izin = models.CharField(max_length=255, verbose_name='Nomor Izin')
+	tanggal_izin = models.DateField(verbose_name="Tanggal Izin", null=True, blank=True)
+
+	def as_json(self):
+		return dict(id=self.id, no_izin=self.no_izin, tanggal_izin=self.tanggal_izin.strftime("%d-%m-%Y"))
+
+	class Meta:
+		verbose_name = 'Izin Lain TDUP'
+		verbose_name_plural = 'Izin Lain TDUP'
 
 # ++++++++++++ end TDUP ++++++++++++
 

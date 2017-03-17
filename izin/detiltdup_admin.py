@@ -8,7 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import Pegawai, UnitKerja
-from izin.models import DetilTDUP , Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata
+from izin.models import DetilTDUP , Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata, IzinLainTDUP
 
 def get_jenis_usaha(request):
 	jenis_usaha_list = JenisUsahaPariwisata.objects.all()
@@ -152,6 +152,43 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		pilihan = "<option></option>"
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in sub_jenis_usaha_list)));
 
+	def ajax_save_izin_lain(self, request):
+		if 'id_pengajuan' in request.COOKIES.keys():
+			if request.COOKIES['id_pengajuan'] != '':
+				if 'id_kelompok_izin' in request.COOKIES.keys():
+					nomor_izin = request.POST.get('nomor_izin')
+					tanggal_izin = request.POST.get('tanggal_izin')
+					izin_lain_, created = IzinLainTDUP.objects.get_or_create(detil_tdup_id = request.COOKIES['id_pengajuan'])
+					izin_lain_.nomor_izin = nomor_izin
+					izin_lain_.tanggal_izin = tanggal_izin
+					izin_lain_.save()
+
+					data = {'success': True, 'pesan': 'Data Usaha Pariwisata berhasil tersimpan.'}
+					data = json.dumps(data)
+					response = HttpResponse(data) 
+				else:
+					data = {'success': False, 'pesan': 'Data Kelompok Jenis Izin tidak ditemukan/data kosong.'}
+					data = json.dumps(data)
+					response = HttpResponse(data)
+			else:
+				data = {'success': False, 'pesan': 'Data Pengajuan tidak ditemukan/data kosong.'}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+		else:
+			data = {'success': False, 'pesan': 'Data Pengajuan tidak ditemukan/data kosong.'}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+		return response
+
+	def load_izin_lain(self, request, pengajuan_id):
+		data = []
+		if pengajuan_id:
+			i = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_id)
+			data = [obj.as_json() for obj in i]
+		
+		response = HttpResponse(json.dumps(data), content_type="application/json")
+		return response
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilTDUPAdmin, self).get_urls()
@@ -160,6 +197,8 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 			url(r'^cetak-tdup-asli/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_tdup_asli), name='cetak_tdup_asli'),
 			url(r'^option-jenis-usaha/$', self.option_jenis_usaha, name='option_jenis_usaha'),
 			url(r'^option-sub-jenis-usaha/$', self.option_sub_jenis_usaha, name='option_sub_jenis_usaha'),
+			url(r'^ajax-save-izin-lain/$', self.ajax_save_izin_lain, name='ajax_save_izin_lain'),
+			url(r'^load-izin-lain/(?P<pengajuan_id>[0-9]+)$', self.load_izin_lain, name='load_izin_lain'),
 			)
 		return my_urls + urls
 
