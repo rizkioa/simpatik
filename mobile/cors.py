@@ -116,3 +116,20 @@ class CORSModelResource(BaseCorsResource, ModelResource):
 
 class CORSResource(BaseCorsResource, Resource):
     pass
+
+def CORSHttpResponse(isi):
+    respon = HttpResponse(isi)
+    respon['Access-Control-Allow-Origin'] = '*'
+    respon['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    respon['Access-Control-Allow-Methods'] = "GET, PUT, POST, PATCH"
+    return respon
+
+from rest_framework_jwt.views import ObtainJSONWebToken
+
+class CORSObtainJSONWebToken(ObtainJSONWebToken):
+    def post(self, request, *args, **kwargs):
+        respon = super(CORSObtainJSONWebToken, self).post(request, *args, **kwargs)
+        respon['Access-Control-Allow-Origin'] = '*'
+        respon['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        respon['Access-Control-Allow-Methods'] = "GET, PUT, POST, PATCH"
+        return respon

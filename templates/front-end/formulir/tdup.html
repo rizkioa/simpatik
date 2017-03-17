@@ -404,4 +404,60 @@
           }
       })
     </script>
+    
+    <div class="modal fade" id="izin_lain" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title custom-font">Tambah Izin Lain</h3>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <input type="hidden" name="id_izin_lain" id="id_izin_lain">
+              <div class="form-group" id="nomor_izin_gangguan" >
+                <label class="col-sm-2 control-label text-left">Nomor Izin</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control " name="nomor_izin_gangguan" id="id_nomor_izin_gangguan">
+                </div>
+              </div>
+
+              <div class="form-group" id="tanggal_izin_gangguan">
+                <label class="col-sm-2 control-label text-left"">Tanggal</label>
+                <div class="col-sm-8">
+                  <div class="input-group datepicker" data-format="L">
+                    <input type="text" class="form-control" id="id_tanggal_izin_gangguan" name="tanggal_izin_gangguan" required="" data-parsley-trigger="change">
+                    <span class="input-group-addon">
+                      <span class="fa fa-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button onclick="save_perusahaan_cabang()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+            <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      function save_izin_lain(){
+        var id = $('#id_izin_lain').val();
+        var nomor_izin = $('#id_nomor_izin_gangguan').val()
+        var tanggal_izin = $('#id_tanggal_izin_gangguan').val()
+        $.ajax({
+          method: 'POST',
+          data: {id:id, nomor_izin:nomor_izin, tanggal_izin: tanggal_izin, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+          url: __base_url__+'/admin/izin/detiltdup/ajax-save-izin-lain/',
+          success: function(response){
+            resp = $.parseJSON(response)
+            if (resp.success){ 
+              toastr["success"](resp.pesan)
+              $('#izin_lain').modal('hide')
+            }
+          }
+        })
+      }
+    </script>
 {% endblock %}

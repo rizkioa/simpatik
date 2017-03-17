@@ -3,26 +3,36 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
-from mobile.api import PengajuanIzinResource, AccountsResource
+from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
 
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
 from simpdu.sites import usersite
 from .views import index
 
-from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_jwt.views import refresh_jwt_token
+from rest_framework_jwt.views import verify_jwt_token
+from mobile.cors import CORSObtainJSONWebToken
+from mobile.views import request_user
 
 
 admin.autodiscover()
 
 v1_api = Api(api_name='v1')
 v1_api.register(PengajuanIzinResource())
+v1_api.register(AuthResource())
 v1_api.register(AccountsResource())
+
+obtain_jwt_token = CORSObtainJSONWebToken.as_view()
 
 #Admin
 urlpatterns = [
     # url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
     url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api-token-login/', request_user),
+    # url(r'^api-token-auth/', ObtainJSONWebToken.as_views()),
+    url(r'^api-token-refresh/', refresh_jwt_token),
+    url(r'^api-token-verify/', verify_jwt_token),
     url(r'^api/', include(v1_api.urls)),
 	url(r'^admin/$', index, name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
