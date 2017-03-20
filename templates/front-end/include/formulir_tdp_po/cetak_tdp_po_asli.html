@@ -141,14 +141,7 @@
 			} 
 		}
 	</style>
-	{% if pengajuan.status == 1 or skizin.status == 2 or skizin.status == 1 %}
-		{% if request.user|has_group:'Cetak' or request.user.is_superuser %} 
-			<script>
-
-				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
-			</script>
-		{% endif %}
-	{% endif %}
+	{% include 'front-end/include/skizin/body_display_status.html' %}
 </head>
 <body>
 	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px; position:fixed; left:0; top:0">
