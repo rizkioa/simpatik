@@ -358,16 +358,16 @@
                       <td>Jumlah</td>
                     </tr>
                   </thead>
-                  <tbody>
                     {% if detil_reklame_list %}
                         {% for a in detil_reklame_list %}
+                        <tbody>
                             <td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
                             <td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
                             <td id="id_table_letak_pemasangan">{{a.letak_pemasangan}}</td>
                             <td id="id_table_jumlah">{{a.jumlah}}</td>
+                        </tbody>
                         {% endfor %}
                     {% endif %}
-                  </tbody>
                 </table>       
                 <br>
                     <p style="font-size: 12px;text-indent: 30px;">

@@ -235,7 +235,7 @@
 	        		<tr>
 	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{pengajuan.tipe_reklame.jenis_tipe_reklame}} / {{pengajuan.judul_reklame}}</td>
+	        			<td colspan="2">{% for i in detil_reklame_list %} {{i}} {% endfor%} / {{pengajuan.judul_reklame}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
