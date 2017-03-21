@@ -29,26 +29,46 @@ def detil_pembayaran_save(request):
 		pengajuan_izin = PengajuanIzin.objects.get(id=pengajuan_izin_id)
 		try:
 			pengajuan_ = DetilPembayaran.objects.get(pengajuan_izin__id=pengajuan_izin_id)
+			sk_izin_ = SKIzin.objects.get(pengajuan_izin__id=pengajuan_izin_id)
 			pembayaran = DetilPembayaranForm(request.POST, instance=pengajuan_)
 		except ObjectDoesNotExist:
 			pembayaran = DetilPembayaranForm(request.POST)
 
 		if pembayaran.is_valid():
-			p = pembayaran.save(commit=False)
-			p.save()
-			pengajuan_izin.status = 4
-			pengajuan_izin.save()
-			riwayat_ = Riwayat(
-				pengajuan_izin_id = pengajuan_izin.id,
-				created_by_id = request.user.id,
-				keterangan = "Operator Verified"
-			)
-			riwayat_.save()
+			if request.user.groups.filter(name='Kasir'):
+				p = pembayaran.save(commit=False)
+				p.save()
+				sk_izin_.status = 4
+				sk_izin_.save()
+				pengajuan_izin.status = 2
+				pengajuan_izin.save()
+				riwayat_ = Riwayat(
+					pengajuan_izin_id = pengajuan_izin.id,
+					created_by_id = request.user.id,
+					keterangan = "Kasir Verified"
+				)
+				riwayat_.save()
 
-			data = {'success': True,
-					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-					'data': {}}
-			response = HttpResponse(json.dumps(data))
+				data = {'success': True,
+						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+						'data': {}}
+				response = HttpResponse(json.dumps(data))
+			else:
+				p = pembayaran.save(commit=False)
+				p.save()
+				pengajuan_izin.status = 4
+				pengajuan_izin.save()
+				riwayat_ = Riwayat(
+					pengajuan_izin_id = pengajuan_izin.id,
+					created_by_id = request.user.id,
+					keterangan = "Operator Verified"
+				)
+				riwayat_.save()
+
+				data = {'success': True,
+						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+						'data': {}}
+				response = HttpResponse(json.dumps(data))
 		else:
 			data = pembayaran.errors.as_json()
 			response = HttpResponse(data)
