@@ -290,7 +290,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		tanggal_ = '-'
 		if skizin_:
 			if skizin_.masa_berlaku_izin:
-				print "asdsfd"
+				# print "asdsfd"
 				masa_berlaku = skizin_.masa_berlaku_izin.strftime('%d-%m-%Y')
 				tanggal_ = skizin_.masa_berlaku_izin-relativedelta(years=3)
 				tanggal_ = tanggal_.strftime('%d-%m-%Y')
@@ -306,6 +306,69 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		template = Template(subject_template).render(Context(extra_context))
 		return HttpResponse(template)
 
+	def cetak_iujk_asli_hal_2(self, request, id_pengajuan_izin_):
+		extra_context = {}
+
+		from django.template import Context, Template
+		from master.models import Template as tpls
+		from dateutil.relativedelta import relativedelta
+
+		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
+		# unit_kerja = get_object_or_404(UnitKerja, id=72)
+		# # skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
+
+		# skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
+
+		paket = pengajuan_.paket_pekerjaan_iujk.all()
+
+		kla = []
+		tr = ''
+		no = 0
+		total_ = len(paket)
+		css = 'hidden-border-tr'
+		for p in paket:
+			total_ = total_ - 1
+			# print total_
+			if total_ == 0:
+				css = ''
+			tr += '<tr style="border: 1px solid black;" class="'+css+'">'
+			if p.subklasifikasi.klasifikasi in kla:
+				tr += '<td style="border: 1px solid black;"></td>'
+				tr += '<td style="border: 1px solid black;"></td>'
+			else:
+				k = p.subklasifikasi.klasifikasi
+				no = no+1
+				tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
+				tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
+				kla.append(p.subklasifikasi.klasifikasi)
+			tahun = '0'
+			if p.tahun:
+				tahun = str(p.tahun)
+			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
+			tr += '<td style="border: 1px solid black;">'+tahun+'</td>'
+			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
+				nilai_paket = 0
+			else:
+				nilai_paket = formatrupiah(p.nilai_paket_pekerjaan)
+			tr += '<td style="border: 1px solid black;">'+str(nilai_paket)+'</td>'
+			
+			if p.keterangan is None or p.keterangan == '-':
+				keterangan = ''
+			else:
+				keterangan = p.keterangan	
+			tr += '<td style="border: 1px solid black;">'+str(keterangan)+'</td>'
+			tr += '</tr>'
+
+
+		# print tr
+		extra_context.update({'klasifikasi_tr': mark_safe(tr) })
+
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman2.html")
+		ec = RequestContext(request, extra_context)
+		subject_template = template.render(ec)
+		template = Template(subject_template).render(Context(extra_context))
+		return HttpResponse(template)
 		
 	def option_klasifikasi(self, request):
 		klasifikasi_list = Klasifikasi.objects.all()
@@ -342,6 +405,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		urls = super(DetilIUJKAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-iujk/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli), name='cetak_iujk_asli'),
+			url(r'^cetak-iujk-hal-2/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli_hal_2), name='cetak_iujk_asli_hal2'),
 			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
 			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),
 			url(r'^option-pegawai/$', self.option_pegawai, name='option_pegawai'),

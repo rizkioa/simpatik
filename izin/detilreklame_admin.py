@@ -9,7 +9,7 @@ import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
-
+import collections
 from izin.utils import*
 
 class DetilReklameAdmin(admin.ModelAdmin):
@@ -181,6 +181,8 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			detail_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_).values_list('tipe_reklame__jenis_tipe_reklame', flat=True)
+			detil_reklame_list = [item for item, count in collections.Counter(detail_list).items() if count >= 1]	
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -227,7 +229,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				else:
 					sisi_ = pengajuan_.sisi
 				extra_context.update({'sisi_': sisi_})
-
+			extra_context.update({'detil_reklame_list': detil_reklame_list})	
 			extra_context.update({'letak_pemasangan': letak_})
 			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
 				tanggal_mulai = pengajuan_.tanggal_mulai
