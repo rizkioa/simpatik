@@ -1,4 +1,5 @@
-# from tastypie.resources import ModelResource
+import json
+import datetime
 from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin
 from cors import CORSModelResource, CORSHttpResponse
 from accounts.models import Account
@@ -6,46 +7,35 @@ from django.contrib.auth import authenticate, login, logout
 from tastypie.http import HttpUnauthorized, HttpForbidden
 from django.conf.urls import url
 from tastypie.utils import trailing_slash
-from tastypie.serializers import Serializer
 from tastypie.authorization import Authorization
-import json
 from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication
 from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
 from tastypie.authentication import BasicAuthentication
 from tastypie.models import ApiKey
 from kepegawaian.models import Pegawai
 from tastypie import fields
-import datetime
-# import uuid
-from tastypie.serializers import Serializer
-class MySerializer(Serializer):
-	def format_date(self, created_at):
-		return created_at.strftime("%Y-%m-%d")
+
 
 class KelompokJenisIzinRecource(CORSModelResource):
 	class Meta:
 		queryset = KelompokJenisIzin.objects.all()
 		excludes = ['id','jenis_izin', 'kode', 'keterangan', 'masa_berlaku', 'standart_waktu', 'biaya', 'resource_uri']
 
-
 class PemohonResource(CORSModelResource):
 	class Meta:
 		queryset = Pemohon.objects.all()
-		# authentication = ApiKeyAuthentication()
 		allowed_methods = ['get']
 
 class PengajuanIzinResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True)
 	kelompok_jenis_izin = fields.ToOneField(KelompokJenisIzinRecource, 'kelompok_jenis_izin', full = True)
-	# created_at = fields.DateTimeField(attribute='created_at')
 	class Meta:
 		queryset = PengajuanIzin.objects.all()
-		# authentication = ApiKeyAuthentication()
 		allowed_methods = ['get']
-		serializer = MySerializer()
-
-	# def dateformat(self, bundle):
-	# 	date = bundle.
+		authentication = ApiKeyAuthentication()
+		filtering = {
+        	'no_pengajuan': ['contains'],
+        }
 
 class AccountsResource(CORSModelResource):
 	class Meta:
@@ -53,9 +43,7 @@ class AccountsResource(CORSModelResource):
 		allowed_methods = ['get', 'post']
 		resource_name = 'akun'
 		excludes = ['password', 'verified_at',]
-		# authentication = SessionAuthentication()
 		authentication = ApiKeyAuthentication()
-		# authorization  = DjangoAuthorization()
 
 	def prepend_urls(self):
 		return [
@@ -63,10 +51,8 @@ class AccountsResource(CORSModelResource):
 		]
 
 	def obj_get(self, bundle, **kwargs):
-		# print bundle.request.user
 
 		obj = super(AccountsResource, self).obj_get(bundle, **kwargs)
-		# print bundle.request
 		return obj
 
 	def request_user(self, request, **kwargs):
