@@ -229,6 +229,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				else:
 					sisi_ = pengajuan_.sisi
 				extra_context.update({'sisi_': sisi_})
+				
 			extra_context.update({'detil_reklame_list': detil_reklame_list})	
 			extra_context.update({'letak_pemasangan': letak_})
 			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
