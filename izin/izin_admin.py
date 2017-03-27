@@ -976,11 +976,7 @@ class IzinAdmin(admin.ModelAdmin):
 							"redirect": '',
 						}
 				except ObjectDoesNotExist:
-					response = {
-						"success": False,
-						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
-						"redirect": '',
-					}
+					pass
 			else:
 				response = {
 					"success": False,
