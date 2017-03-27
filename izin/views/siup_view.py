@@ -256,7 +256,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						pengajuan_ = objects_.objects.filter(id=request.COOKIES['id_pengajuan']).last()
 						pengajuan_.perusahaan_id = per.id
 						pengajuan_.save()
-						print pengajuan_.perusahaan
+						# print pengajuan_.perusahaan
 
 					email_ = ""
 					if get_perusahaan.email:
