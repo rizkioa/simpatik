@@ -597,6 +597,8 @@ class IzinAdmin(admin.ModelAdmin):
 				if request.POST.get('aksi') == '_submit_operator':
 					# print "operator"
 					obj.status = 4
+					obj.verified_by_id = request.user.id
+					obj.verified_at = datetime.datetime.now()
 					obj.save()
 					riwayat_ = Riwayat(
 						pengajuan_izin_id = id_pengajuan_izin,
@@ -611,6 +613,8 @@ class IzinAdmin(admin.ModelAdmin):
 					}
 				elif request.POST.get('aksi') == '_submit_kabid':
 					obj.status = 2
+					obj.verified_by_id = request.user.id
+					obj.verified_at = datetime.datetime.now()
 					obj.save()
 					riwayat_ = Riwayat(
 						pengajuan_izin_id = id_pengajuan_izin,
@@ -679,6 +683,8 @@ class IzinAdmin(admin.ModelAdmin):
 				elif request.POST.get('aksi') == '_submit_kasir':
 					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
 					obj.status = 5
+					obj.verified_by_id = request.user.id
+					obj.verified_at = datetime.datetime.now()
 					obj.save()
 					obj_skizin.status = 5
 					obj_skizin.save()
@@ -704,6 +710,9 @@ class IzinAdmin(admin.ModelAdmin):
 					if request.POST.get('aksi') == '_submit_generate_skizin':
 						obj_skizin.status = 6
 						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
 							pengajuan_izin_id = id_pengajuan_izin,
@@ -719,6 +728,9 @@ class IzinAdmin(admin.ModelAdmin):
 					elif request.POST.get('aksi') == '_submit_skizin_kabid':
 						obj_skizin.status = 4
 						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
 							pengajuan_izin_id = id_pengajuan_izin,
@@ -733,6 +745,8 @@ class IzinAdmin(admin.ModelAdmin):
 						}
 					elif request.POST.get('aksi') == '_submit_skizin_kabid_to_kasir':
 						obj.status = 5
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
 						obj.save()
 						obj_skizin.status = 5
 						obj_skizin.save()
@@ -769,6 +783,9 @@ class IzinAdmin(admin.ModelAdmin):
 							obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
 						obj_skizin.keterangan = "Pembina Tk.l"
 						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
 							pengajuan_izin_id = id_pengajuan_izin,
@@ -816,6 +833,9 @@ class IzinAdmin(admin.ModelAdmin):
 					elif request.POST.get('aksi') == '_submit_penomoran':
 						obj_skizin.status = 10
 						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
 						try:
 							kode_izin_ =  request.POST.get('kode_jenis_izin')
 							nomor_urut_ = request.POST.get('kode_izin')
@@ -846,6 +866,9 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.status = 10
 						obj_skizin.created_at = datetime.datetime.now()
 						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
 
 						# Untuk Penomoran 
 						# obj.verified_at = datetime.datetime.now()
@@ -881,8 +904,6 @@ class IzinAdmin(admin.ModelAdmin):
 									"pesan": "Nomor Kosong.",
 									"redirect": '',
 								}
-							
-							
 						except IntegrityError:
 							if obj.kelompok_jenis_izin.kode == "IUJK":
 								obj.no_izin = nomor+"/perubahan"
@@ -892,7 +913,6 @@ class IzinAdmin(admin.ModelAdmin):
 									from dateutil.relativedelta import relativedelta
 									obj_skizin.masa_berlaku_izin = datetime.datetime.now()+relativedelta(years=3)
 									obj_skizin.save()
-
 								riwayat_ = Riwayat(
 									sk_izin_id = obj_skizin.id ,
 									pengajuan_izin_id = id_pengajuan_izin,
@@ -914,6 +934,9 @@ class IzinAdmin(admin.ModelAdmin):
 					elif request.POST.get('aksi') == '_submit_cetak_izin':
 						obj_skizin.status = 2
 						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
 							pengajuan_izin_id = id_pengajuan_izin,
@@ -930,6 +953,9 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.status = 1
 						obj_skizin.save()
 						obj.status = 1
+						obj.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
 						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
@@ -950,7 +976,11 @@ class IzinAdmin(admin.ModelAdmin):
 							"redirect": '',
 						}
 				except ObjectDoesNotExist:
-					pass
+					response = {
+						"success": False,
+						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+						"redirect": '',
+					}
 			else:
 				response = {
 					"success": False,

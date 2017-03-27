@@ -1,0 +1,42 @@
+Script started on Wed 22 Mar 2017 09:15:30 AM WIB
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+virtualenvwrapper.sh: There was a problem running the initialization hooks. 
+
+If Python could not import the module virtualenvwrapper.hook_loader,
+check that virtualenvwrapper has been installed for
+VIRTUALENVWRAPPER_PYTHON=/home/samsul/Env/django182/bin/python and that PATH is
+set properly.
+]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$ WO[K[Kworkon djanggo182
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+(django182) ]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$  workon django182
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+(django182) ]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$  deactivate 
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$ deactivate  [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cworkon djanggo182
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+(django182) ]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$  python manage.py runserver
+Performing system checks...
+
+System check identified no issues (0 silenced).
+March 22, 2017 - 09:22:04
+Django version 1.8, using settings 'simpdu.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+^C(django182) ]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$  source ~/.bashrc
+/home/samsul/Env/django182/bin/python: No module named virtualenvwrapper
+virtualenvwrapper.sh: There was a problem running the initialization hooks. 
+
+If Python could not import the module virtualenvwrapper.hook_loader,
+check that virtualenvwrapper has been installed for
+VIRTUALENVWRAPPER_PYTHON=/home/samsul/Env/django182/bin/python and that PATH is
+set properly.
+]0;samsul@aitc: /media/harddisk/data/Projects/eGovernment/Django/simpdu[01;31msamsul@aitc[00m:[01;34m/media/harddisk/data/Projects/eGovernment/Django/simpdu[00m$ exit
+exit
+
+Script done on Wed 22 Mar 2017 09:24:21 AM WIB
