@@ -557,7 +557,7 @@
                     <table border="0" class="sk-justify">
                       <tr>
                         <td width="10" style="vertical-align: top;">a.</td>
-                        <td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar Rp{{retribusi.jumlah_pembayaran}},00 ({{terbilang}})</td>
+                        <td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar Rp {{retribusi.jumlah_pembayaran}},00 ({{terbilang}})</td>
                       </tr>
                       <tr>
                         <td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
@@ -599,10 +599,6 @@
                 <p style="font-size:14px; padding-left: 20%;">
                   <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
                     <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
                     <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
                     <!-- Pembina Tk.l<br> -->
                     <!-- NIP: {{nip_kepala_dinas}} -->
@@ -610,7 +606,7 @@
                 </td>
             </tr>
             <tr>
-              <td><br><br><br><br>
+              <td><br><br>
                 <table border="0" align="left" style="font-size:15px;">
                   <tr>
                     <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
@@ -618,37 +614,47 @@
                   <tr>
                     <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
                     <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                    <td width="100%">Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+                    <td width="100%" style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas PU dan Penataan Ruang <br>Kabupaten Kediri  ;</td>
                   </tr>   
                   <tr>
                     <td></td>
-                    <td>2.</td>
-                    <td>Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+                    <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas Perumahan dan Kawasan <br>Permukiman Kabupaten Kediri ;</td>
                   </tr>   
                   <tr>
                     <td></td>
                     <td>3.</td>
-                    <td>Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
-                  </tr>    
+                    <td>Sdr. Kepala BAPENDA Kabupaten Kediri ;</td>
+                  </tr>  
                   <tr>
                     <td></td>
-                    <td>4.</td>
+                    <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas Perdagangan Kabupaten Kediri ;  </td>
+                  </tr>  
+                  <tr>
+                    <td></td>
+                    <td style="vertical-align: top;padding-top: 1px;">5.</td>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas Lingkungan Hidup Kabupaten Kediri ;  </td>
+                  </tr>  
+                  <tr>
+                    <td></td>
+                    <td>6.</td>
                     <td>Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
                   </tr>    
                   <tr>
                     <td></td>
-                    <td>5.</td>
+                    <td>7.</td>
                     <td>Sdr. Camat {{pengajuan.desa.kecamatan|title}} ;</td>
                   </tr>   
                   <tr>
                     <td></td>
-                    <td>6.</td>
+                    <td>8.</td>
                     <td>Sdr. Kepala Desa {{pengajuan.desa|title}} ;</td>
                   </tr>   
                   <tr>
                     <td></td>
                     <td style="vertical-align: top;padding-top: 1px;">7.</td>
-                    <td>Sdr. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
                   </tr>   
                 </table>         
               </td>
