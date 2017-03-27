@@ -47,7 +47,7 @@ class PengajuanIzinResource(CORSModelResource):
 		queryset = PengajuanIzin.objects.all()
 		allowed_methods = ['get']
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'verified_at', 'verified_by', 'jenis_permohonan']
-		authentication = ApiKeyAuthentication()
+		# authentication = ApiKeyAuthentication()
 		filtering = {
         	'no_pengajuan': ['contains'],
         }
