@@ -5,6 +5,7 @@ import os
 register = template.Library()
 
 from kepegawaian.models import UnitKerja
+from dateutil.relativedelta import relativedelta
 
 
 @register.filter(name='add_date')
@@ -12,6 +13,15 @@ def add_date(datetime_, addDays=0):
 
 	if (addDays!=0):
 		anotherTime = datetime_ + datetime.timedelta(days=addDays)
+	else:
+		anotherTime = datetime_
+
+	return anotherTime
+
+@register.filter(name='add_year')
+def add_year(datetime_, addDays=0):
+	if (addDays!=0):
+		anotherTime = datetime_ + relativedelta(years=addDays)
 	else:
 		anotherTime = datetime_
 

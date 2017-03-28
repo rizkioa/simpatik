@@ -23,7 +23,7 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, InformasiKekayaanDaerah,Pemohon
-from izin.utils import STATUS_HAK_TANAH
+from izin.utils import STATUS_HAK_TANAH,JENIS_PENGGUNAAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,InformasiKekayaanDaerahForm
 from accounts.utils import KETERANGAN_PEKERJAAN
@@ -37,6 +37,7 @@ def formulir_kekayaan(request, extra_context={}):
 	extra_context.update({'kecamatan': kecamatan})
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
 	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+	extra_context.update({'jenis_penggunaan_list': JENIS_PENGGUNAAN })
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
