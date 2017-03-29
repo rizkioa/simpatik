@@ -32,7 +32,7 @@ class PengajuanIzinResource(CORSModelResource):
 	class Meta:
 		queryset = PengajuanIzin.objects.all()
 		allowed_methods = ['get']
-		authentication = ApiKeyAuthentication()
+		# authentication = ApiKeyAuthentication()
 		filtering = {
         	'no_pengajuan': ['contains'],
         }
