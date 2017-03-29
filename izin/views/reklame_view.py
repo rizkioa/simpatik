@@ -110,6 +110,8 @@ def detail_izin_reklame_save_cookie(request):
 		pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 		if request.COOKIES['id_pengajuan'] != '':
 			detail_izin_reklame = DetilReklameIzinForm(request.POST)
+			print "HALO"
+			print request.method
 			if request.method == 'POST':
 				if detail_izin_reklame.is_valid():
 					p = detail_izin_reklame.save(commit=False)
@@ -117,15 +119,21 @@ def detail_izin_reklame_save_cookie(request):
 					p.save()
 					data = {'success': True,
 							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-							'data': {'id_detil_reklame':p.id,'id_tipe_reklame':p.tipe_reklame.jenis_tipe_reklame}}
+							'data': {'id_detil_reklame':p.id, 'kecamatan': p.desa.kecamatan.nama_kecamatan, 'desa':p.desa.nama_desa }}
 					response = HttpResponse(json.dumps(data))
 				else:
+					print "NOT VALID"
 					data = detail_izin_reklame.errors.as_json()
+					response = HttpResponse(data)
 			else:
+				print "REQUEST"
 				detail_izin_reklame = DetilReklameIzinForm()
+				data = {'Terjadi Kesalahan': [{'message': 'What....!!!!!'}]}
+				response = HttpResponse(json.dumps(data))
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)
+			response = HttpResponse(data)
 	else:
 		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
 		data = json.dumps(data)

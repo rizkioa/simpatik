@@ -292,7 +292,7 @@ class DetilReklame(PengajuanIzin):
 class DetilReklameIzin(AtributTambahan):
 	detil_reklame = models.ForeignKey(DetilReklame, verbose_name='Detil Reklame', blank=True,null=True)
 	tipe_reklame = models.ForeignKey(JenisTipeReklame,verbose_name='Tipe Reklame',blank=True,null=True)
-	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame')
+	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame',blank=True,null=True)
 	panjang = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Panjang',default=0, null=True, blank=True)
 	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar',default=0 ,null=True, blank=True)
 	sisi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Sisi',default=0, null=True, blank=True)
@@ -313,7 +313,7 @@ class DetilReklameIzin(AtributTambahan):
 		}
 
 	def as_json(self):
-		return dict(tipe_reklame=str(self.tipe_reklame), judul_reklame=self.judul_reklame,letak_pemasangan=self.letak_pemasangan, jumlah=str(self.jumlah))
+		return dict(kecamatan=self.desa.kecamatan.nama_kecamatan, desa=self.desa.nama_desa)
 
 
 	def __unicode__(self):
