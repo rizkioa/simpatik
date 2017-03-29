@@ -181,8 +181,9 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
-			detail_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_).values_list('tipe_reklame__jenis_tipe_reklame', flat=True)
-			detil_reklame_list = [item for item, count in collections.Counter(detail_list).items() if count >= 1]	
+			detail_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_)
+			detail_list_by_tipe = detail_list.values_list('tipe_reklame__jenis_tipe_reklame', flat=True)
+			detil_reklame_list = [item for item, count in collections.Counter(detail_list_by_tipe).items() if count >= 1]	
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -230,7 +231,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 					sisi_ = pengajuan_.sisi
 				extra_context.update({'sisi_': sisi_})
 				
-			extra_context.update({'detil_reklame_list': detil_reklame_list})	
+			extra_context.update({'detil_reklame_list': ", ".join(x.desa.nama_desa for x in detail_list)})	
 			extra_context.update({'letak_pemasangan': letak_})
 			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
 				tanggal_mulai = pengajuan_.tanggal_mulai
@@ -257,11 +258,12 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			try:
 				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
 				if retribusi_:
-					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-					terbilang_ = terbilang(n)
-					extra_context.update({'retribusi': retribusi_ })
-					extra_context.update({'terbilang': terbilang_ })
-					extra_context.update({'retribusi_': retribusi_ })
+					if retribusi_.jumlah_pembayaran:
+						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+						terbilang_ = terbilang(n)
+						extra_context.update({'retribusi': retribusi_ })
+						extra_context.update({'terbilang': terbilang_ })
+						extra_context.update({'retribusi_': retribusi_ })
 					
 			except ObjectDoesNotExist:
 				pass
