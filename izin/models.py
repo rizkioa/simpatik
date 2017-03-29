@@ -5,7 +5,7 @@ from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame,Je
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN,JENIS_PENGGUNAAN
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
 # from django.utils.deconstruct import deconstructible
@@ -699,6 +699,7 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	# lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
 	# panjang = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Panjang')
+	jenis_penggunaan = models.CharField(verbose_name='Jenis Penggunaan', choices=JENIS_PENGGUNAAN, max_length=10, null=True, blank=True)
 	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas')
 	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
 
@@ -727,8 +728,8 @@ class DetilHO(PengajuanIzin):
 	merk_mesin = models.CharField(max_length=150,null=True, blank=True, verbose_name='Merk Mesin')
 	daya = models.CharField(max_length=100,null=True, blank=True, verbose_name='Daya')
 	kekuatan = models.CharField(max_length=100,null=True, blank=True, verbose_name='Kekuatan')
-	luas_ruang_tempat_usaha = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Luas Ruang Tempat Usaha/Bangunan')
-	luas_lahan_usaha = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Lahan Usaha')
+	luas_ruang_tempat_usaha = models.DecimalField(max_digits=10, decimal_places=2,default=0, verbose_name='Luas Ruang Tempat Usaha/Bangunan')
+	luas_lahan_usaha = models.DecimalField(max_digits=10, decimal_places=2,default=0, verbose_name='Luas Lahan Usaha')
 	jenis_lokasi_usaha = models.CharField(verbose_name='Jenis Lokasi Usaha', choices=JENIS_LOKASI_USAHA, max_length=20,null=True, blank=True)
 	jenis_bangunan = models.CharField(verbose_name='Jenis Bangunan', choices=JENIS_BANGUNAN, max_length=20,null=True, blank=True)
 	jenis_gangguan = models.CharField(verbose_name='Jenis Gangguan', choices=JENIS_GANGGUAN, max_length=20,null=True, blank=True)

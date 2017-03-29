@@ -1,5 +1,5 @@
 from django.contrib import admin
-from izin.models import InformasiKekayaanDaerah, Syarat, SKIzin, Riwayat
+from izin.models import InformasiKekayaanDaerah, Syarat, SKIzin, Riwayat,DetilPembayaran
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,6 +9,8 @@ import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
+
+from izin.utils import*
 
 class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -49,7 +51,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','luas','penggunaan') }),
+				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','luas','jenis_penggunaan','penggunaan') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -63,7 +65,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','luas','penggunaan') }),
+				('Detail Informasi Kekayaan Daerah', {'fields': ('lokasi','desa','luas','jenis_penggunaan','penggunaan') }),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
@@ -161,6 +163,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:
@@ -168,6 +171,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 					extra_context.update({'skizin_status': skizin_.status })
 			except ObjectDoesNotExist:
 				pass
+
 			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
@@ -176,7 +180,15 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
-
+			try:
+				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				if retribusi_:
+					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					terbilang_ = terbilang(n)
+					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'terbilang': terbilang_ })
+			except ObjectDoesNotExist:
+				pass
 		template = loader.get_template("front-end/include/formulir_kekayaan/cetak_sk_izin_kekayaan_daerah.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))

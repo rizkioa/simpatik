@@ -186,7 +186,7 @@
               <hr class="style2">
               <center>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-            PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+            PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
                 <font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
               </center>
               <center>
@@ -196,7 +196,7 @@
                 </font><br><br>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;">
                   KEPALA DINAS PENANAMAN MODAL DAN<br>
-                  PELAYANAN PERIZINAN TERPADU SATU PINTU,
+                  PELAYANAN TERPADU SATU PINTU,
                 </font>
               </center><br>
               <table width="100%" border="0" class="sk-justify">
@@ -455,7 +455,24 @@
       </div>
       <div class="page">
         <div class="subpage">
-          <h4>A. Data Peralatan yang digunakan</h4>
+          <table class="right" border="0" style="font-size:12px;padding-left: 360px;">
+            <tr>
+              <td style="vertical-align: top;padding-top: 1px;"><b>LAMPIRAN</b></td>
+              <td style="vertical-align: top;padding-top: 1px;">:</td>
+              <td><b>KEPUTUSAN KEPALA DPMPTSP<br>KABUPATEN KEDIRI</b></td>
+            </tr>
+            <tr>
+              <td><b>NOMOR</b></td>
+              <td>:</td>
+              <td><b>{{ pengajuan.no_izin|default_if_none:"-" }}</b></td>
+            </tr>
+            <tr>
+              <td><b>TANGGAL</b></td>
+              <td>:</td>
+              <td></td>
+            </tr>
+          </table>
+          <h5>A. Data Peralatan yang digunakan</h5>
           <p style="font-size:13px">1. Montor Penggerak</p>
           <table width="100%" class="font" border="1">
               <thead>
@@ -497,7 +514,6 @@
                   <tr>
                       <th align="center">Jenis</th>
                       <th align="center">Type / Model</th>
-                      <th align="center">PK</th>
                       <th align="center">Kapasitas</th>
                       <th align="center">Buatan / Merk</th>
                       <th align="center">Jumlah Unit</th>
@@ -507,7 +523,6 @@
                   <tr align="center">
                       <td>Rubber Roll / Roll Karet</td>
                       <td>{{rubber_roll.type_model|default_if_none:"-"}}</td>
-                      <td>{{rubber_roll.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{rubber_roll.kapasitas|default_if_none:"-"}}</td>
                       <td>{{rubber_roll.buatan|default_if_none:"-"}}</td>
                       <td>{{rubber_roll.jumlah_unit|default_if_none:"-"}}</td>
@@ -515,7 +530,6 @@
                   <tr align="center">
                       <td>Flash Type / Type Banting</td>
                       <td>{{flash_type.type_model|default_if_none:"-"}}</td>
-                      <td>{{flash_type.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{flash_type.kapasitas|default_if_none:"-"}}</td>
                       <td>{{flash_type.buatan|default_if_none:"-"}}</td>
                       <td>{{flash_type.jumlah_unit|default_if_none:"-"}}</td>
@@ -528,7 +542,6 @@
                   <tr>
                       <th align="center">Jenis</th>
                       <th align="center">Type / Model</th>
-                      <th align="center">PK</th>
                       <th align="center">Kapasitas</th>
                       <th align="center">Buatan / Merk</th>
                       <th align="center">Jumlah Unit</th>
@@ -538,7 +551,6 @@
                   <tr align="center">
                       <td>Gedongan</td>
                       <td>{{gedogan.type_model|default_if_none:"-"}}</td>
-                      <td>{{gedogan.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{gedogan.kapasitas|default_if_none:"-"}}</td>
                       <td>{{gedogan.buatan|default_if_none:"-"}}</td>
                       <td>{{gedogan.jumlah_unit|default_if_none:"-"}}</td>
@@ -546,7 +558,6 @@
                   <tr align="center">
                       <td>Dimple Plate</td>
                       <td>{{dimple_plate.type_model|default_if_none:"-"}}</td>
-                      <td>{{dimple_plate.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{dimple_plate.kapasitas|default_if_none:"-"}}</td>
                       <td>{{dimple_plate.buatan|default_if_none:"-"}}</td>
                       <td>{{dimple_plate.jumlah_unit|default_if_none:"-"}}</td>
@@ -554,7 +565,6 @@
                   <tr align="center">
                       <td>Screen</td>
                       <td>{{screen.type_model|default_if_none:"-"}}</td>
-                      <td>{{screen.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{screen.kapasitas|default_if_none:"-"}}</td>
                       <td>{{screen.buatan|default_if_none:"-"}}</td>
                       <td>{{screen.jumlah_unit|default_if_none:"-"}}</td>
@@ -567,7 +577,6 @@
                   <tr>
                       <th align="center">Jenis</th>
                       <th align="center">Type / Model</th>
-                      <th align="center">PK</th>
                       <th align="center">Kapasitas</th>
                       <th align="center">Buatan / Merk</th>
                       <th align="center">Jumlah Unit</th>
@@ -577,7 +586,6 @@
                   <tr align="center">
                       <td>Mesin Slip Horizontal</td>
                       <td>{{mesin_slip_horisontal.type_model|default_if_none:"-"}}</td>
-                      <td>{{mesin_slip_horisontal.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{mesin_slip_horisontal.kapasitas|default_if_none:"-"}}</td>
                       <td>{{mesin_slip_horisontal.buatan|default_if_none:"-"}}</td>
                       <td>{{mesin_slip_horisontal.jumlah_unit|default_if_none:"-"}}</td>
@@ -585,7 +593,6 @@
                   <tr align="center">
                       <td>Mesin Slip Vertikal</td>
                       <td>{{mesin_slip_vertikal.type_model|default_if_none:"-"}}</td>
-                      <td>{{mesin_slip_vertikal.pk_mesin|default_if_none:"-"}}</td>
                       <td>{{mesin_slip_vertikal.kapasitas|default_if_none:"-"}}</td>
                       <td>{{mesin_slip_vertikal.buatan|default_if_none:"-"}}</td>
                       <td>{{mesin_slip_vertikal.jumlah_unit|default_if_none:"-"}}</td>

@@ -186,7 +186,7 @@
               <hr class="style2">
               <center>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-            PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+            PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
                 <font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
               </center>
               <center>
@@ -195,7 +195,8 @@
               MILIK DAN/ATAU YANG DIKUASAI PEMERINTAH KABUPATEN KEDIRI
                 </font><br><br>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;">
-                  SEKRETARIS DAERAH,
+                    KEPALA DINAS PENANAMAN MODAL DAN<br>
+                    PELAYANAN TERPADU SATU PINTU,
                 </font>
               </center><br>
               <table width="100%" border="0" class="sk-justify">
@@ -277,7 +278,7 @@
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">8.</td>
-                <td>Keputusan Bupati Kediri Nomor 1082 Tahun 2003 tentang Pelimpahan Wewenang Pengambilan Keputusan yang Bersifat mengikat ;</td>
+                <td>Peraturan Bupati Kediri Nomor 1 Tahun 2017 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri;</td>
               </tr>
             </table>
             </div>
@@ -299,12 +300,17 @@
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Memberikan izin menempati bangunan milik dan/atau yang dikuasai Pemerintah Kabupaten Kediri kepada {{pengajuan.pemohon|upper}} alamat {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} lokasi {{pengajuan.lokasi}} ukuran {{pengajuan.luas}} M&sup2;.</td>
+                  <td colspan="3">Memberikan izin menempati bangunan milik dan/atau yang dikuasai Pemerintah Kabupaten Kediri kepada {{pengajuan.pemohon|upper}} alamat {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} lokasi {{pengajuan.lokasi}} ukuran {{pengajuan.luas}} M&sup2; untuk {{pengajuan.penggunaan}}.</td>
                 </tr>
                 <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama  3 (tiga) tahun terhitung sejak tanggal 01-01-2016 sampai dengan 31-12-2018,  dengan ketentuan : </td>
+                  <td colspan="3">Pemberian izin sebagaimana dimaksud pada diktum KESATU berlaku selama 
+                  {% if pengajuan.jenis_penggunaan == "Kios" %}
+                   3 (tiga) tahun terhitung sejak tanggal {{ pengajuan.created_at|date:"d-m-Y" }} sampai dengan {{ pengajuan.created_at|add_year:3|date:"d-m-Y" }},  dengan ketentuan :
+                  {% else %}
+                   2 (dua) tahun terhitung sejak tanggal {{ pengajuan.created_at|date:"d-m-Y" }} sampai dengan {{ pengajuan.created_at|add_year:2|date:"d-m-Y" }},  dengan ketentuan :
+                   {% endif %}</td>
                 </tr>
                 <tr>
                   <td></td>
@@ -329,41 +335,73 @@
                   <td style="vertical-align: top;padding-top: 1px;">a.</td>
                   <td colspan="2">Tidak boleh menyerahkan haknya kepada pihak lain ;</td>
                 </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
-                  <td colspan="3">Kios tersebut tetap milik Pemerintah Kabupaten Kediri;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
-                  <td colspan="3">Diberikan kesempatan  mengatur sebaik-baiknya untuk memperindah lingkungan dan tidak diperkenankan merubah bangunan kios tanpa seizin Kepala Daerah ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
-                  <td colspan="3">Apabila sewaktu-waktu kios tersebut digunakan oleh Pemerintah Daerah, maka pemegang izin harus mengosongkan kios dimaksud tanpa ganti rugi ;</td>
-                </tr>
-                <tr>
-                  <td ></td>
-                  <td ></td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
-                  <td colspan="3">Apabila kios tersebut sudah tidak dipergunakan/ditempati lagi oleh pemegang izin, supaya menyerahkan kembali kepada Pemerintah Daerah.</td>
-                </tr>
+                {% if pengajuan.jenis_penggunaan == "Kios" %}
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+                    <td colspan="3">Kios tersebut tetap milik Pemerintah Kabupaten Kediri;</td>
+                  </tr>
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+                    <td colspan="3">Diberikan kesempatan  mengatur sebaik-baiknya untuk memperindah lingkungan dan tidak diperkenankan merubah bangunan kios tanpa seizin Kepala Daerah ;</td>
+                  </tr>
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+                    <td colspan="3">Apabila sewaktu-waktu kios tersebut digunakan oleh Pemerintah Daerah, maka pemegang izin harus mengosongkan kios dimaksud tanpa ganti rugi ;</td>
+                  </tr>
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
+                    <td colspan="3">Apabila kios tersebut sudah tidak dipergunakan/ditempati lagi oleh pemegang izin, supaya menyerahkan kembali kepada Pemerintah Daerah.</td>
+                  </tr>
+                {% else %}
+                 <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+                    <td colspan="3">Tanah tersebut tetap milik Pemerintah Kabupaten Kediri;</td>
+                  </tr>
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">c.</td>
+                    <td colspan="3">Diberikan kesempatan mengelola tanah sebaik-baiknya;</td>
+                  </tr>
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">d.</td>
+                    <td colspan="3">Apabila sewaktu-waktu tanah tersebut digunakan oleh Pemerintah Daerah, maka pemegang izin harus menyerahkan tanah dimaksud tanpa ganti rugi ;</td>
+                  </tr>
+                  <tr>
+                    <td ></td>
+                    <td ></td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
+                    <td colspan="3">Apabila tanah tersebut sudah tidak dikelola lagi oleh pemegang izin, supaya menyerahkan kembali kepada Pemerintah Daerah.</td>
+                  </tr>
+                {% endif %}
                 <tr>
                   <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;">KEEMPAT</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
                   <td style="vertical-align: top;padding-top: 2px;width: 20px;">a.</td>
-                  <td  colspan="2" width="2000">Atas pemberian izin sebagaimana dimaksud pada diktum KESATU, yang bersangkutan dikenakan retribusi kios sebesar Rp. 50.400,00 (lima puluh ribu empat ratus rupiah) setiap bulan  sesuai dengan ketentuan dalam Peraturan Daerah yang berlaku ;</td>
+                  <td  colspan="2" width="2000">Atas pemberian izin sebagaimana dimaksud pada diktum KESATU, yang bersangkutan dikenakan retribusi pemakaian kekayaan daerah sebesar
+                  {% if retribusi.jumlah_pembayaran %}
+                    Rp {{retribusi.jumlah_pembayaran|formatrupiah}},00 ({{terbilang}})
+                  {% else %} 
+                    <u>(Nilai akan keluar setelah operator memverifikasi retribusi)</u>
+                  {% endif%} setiap tahun  sesuai dengan ketentuan dalam Peraturan Daerah yang berlaku ;</td>
                 </tr>
                 <tr>
                   <td width="10" style="vertical-align: top;padding-top: 2px;width: 105px;"></td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
                   <td style="vertical-align: top;padding-top: 2px;width: 20px;">b.</td>
-                  <td  colspan="2" width="2000">Retribusi sebagaimana dimaksud huruf a harus dibayar lunas melalui Pemegang Kas Daerah (Bendahara Penerima pada Dinas Pendapatan Daerah Kabupaten Kediri) selambat-lambatnya pada saat penyerahan izin menempati kios kepada yang bersangkutan.</td>
+                  <td  colspan="2" width="2000">Retribusi sebagaimana dimaksud huruf a harus dibayar lunas melalui Pemegang Kas Daerah ( Bendahara Penerima pada {% if pengajuan.jenis_penggunaan == "Kios" %}Badan Pendapatan Daerah Kabupaten Kediri {% else %} Dinas Pekerjaan Umum Dan Penataan Ruang{% endif %} ) selambat-lambatnya pada saat penyerahan izin menempati kios kepada yang bersangkutan.</td>
                 </tr>
               </table>
             </div>
@@ -391,18 +429,38 @@
                 </table>
               </td>
               <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-                <p style="font-size:14px; padding-left: 20%;">
-                  <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
-                    <p style="font-size:15px;" align="center"> <font size="2pt">a.n. BUPATI KEDIRI<br>SEKRETARIS DAERAH </font></p>
-                    <p style="font-size:15px;" align="center">ttd</p>
-                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
-                    <!-- Pembina Tk.l<br>
-                    NIP: {{nip_kepala_dinas}} -->
-                    </p>
+                <p style="font-size:14px; padding-left: 10%;">
+                        <font size="3pt">Ditetapkan di Kediri <br> 
+                pada tanggal</font><br></p>
+                        <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</font></p>
+                        <br>
+                        <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
+            <!--  Pembina Tk.l<br>
+                        NIP: {{nip_kepala_dinas}} -->
+                        </p>
                 </td>
             </tr>
             <tr>
-              <td><br><br><br><br>
+              <td><br><br><br>
+              {% if pengajuan.jenis_penggunaan == "Kios" %}
+                <table border="0" align="left" style="font-size:15px;">
+                  <tr>
+                    <td colspan="3">Salinan keputusan ini disampaikan kepada : {{pengajuan.jenis_penggunaan}}</td><br>
+                  </tr>
+                  <tr>
+                    <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+                    <td style="vertical-align: top;padding-top: 1px;">1.</td>
+                    <td width="100%">Sdr. Kepala BAPENDA Kabupaten Kediri ;</td>
+                  </tr>   
+                  <tr>
+                    <td></td>
+                    <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. {{pengajuan.pemohon}}<br>
+                      {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}
+                    </td>
+                  </tr>  
+                </table>
+              {% else %}
                 <table border="0" align="left" style="font-size:15px;">
                   <tr>
                     <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
@@ -410,16 +468,22 @@
                   <tr>
                     <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
                     <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                    <td width="100%">Sdr. Kepala DISPENDA Kabupaten Kediri ;</td>
+                    <td width="100%">Sdr. Kepala BAPENDA Kabupaten Kediri ;</td>
                   </tr>   
                   <tr>
                     <td></td>
                     <td style="vertical-align: top;padding-top: 1px;">2.</td>
-                    <td>Sdr. {{pengajuan.pemohon}}<br>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. Kepala Dinas Pekerjaan Umum Dan Penataan Ruang ;</td>
+                  </tr> 
+                  <tr>
+                    <td></td>
+                    <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                    <td style="text-indent:-30px;padding-left: 30px;">Sdr. {{pengajuan.pemohon}}<br>
                       {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}
                     </td>
-                  </tr>   
-                </table>         
+                  </tr>  
+                </table> 
+              {% endif %}      
               </td>
             </tr>
                 </table>

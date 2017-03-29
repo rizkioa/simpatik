@@ -52,6 +52,13 @@ JENIS_GANGGUAN = (
 	('Kebisingan','Kebisingan'),
 	('Getaran','Getaran'),
 )
+
+JENIS_PENGGUNAAN = (
+	('Kios','Kios'),
+	('Tanah','Tanah'),
+)
+
+
 RUMIJA = (
 	(30, 30),
 	(25, 25),

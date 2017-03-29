@@ -178,7 +178,7 @@ class JenisBangunanForm(forms.ModelForm):
 class InformasiKekayaanDaerahForm(forms.ModelForm):
 	class Meta:
 		model = InformasiKekayaanDaerah
-		fields = ('lokasi','desa','luas','penggunaan')
+		fields = ('lokasi','desa','luas','jenis_penggunaan','penggunaan')
 
 class DetilHOForm(forms.ModelForm):
 	class Meta:
