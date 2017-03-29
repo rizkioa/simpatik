@@ -432,6 +432,29 @@ function load_data_detail_izin_reklame(id_button){
     }
 }
 
+function load_data_lokasi_detail_izin_reklame(id_button){
+  $(".tab-content").mLoading;
+  if (id_button>0){
+    $.ajax({
+      url: __base_url__+'/layanan/reklame/detil-lokasi-izin-reklame/load/'+id_button,    
+      success: function (response){
+        respon = $.parseJSON(response)  
+        if (respon.success){
+            $('#id_kecamatan_data_reklame').val(respon.data.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+            load_desa_data_reklame(respon.data.id_kecamatan)
+            setTimeout(function(){
+              $('#id_desa_data_reklame').val(respon.data.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            
+          }      
+        },
+        error: function(response){
+        toast_server_error()
+    }
+    })
+    }
+}
+
 function load_data_tabel_data_reklame(id_detil_reklame){
   if (id_detil_reklame !== ""){
     $('#id_data_reklame_konfirmasi').mLoading();
@@ -452,20 +475,16 @@ function load_data_tabel_data_reklame(id_detil_reklame){
           b = data.reverse()
           $('#id_data_reklame_konfirmasi > tbody > tr:first').remove()
           for (var i = 0; i < a; i++){
-            tipe_reklame = b[i].tipe_reklame
-            judul_reklame = b[i].judul_reklame
-            letak_pemasangan = b[i].letak_pemasangan
-            jumlah = b[i].jumlah
+            kecamatan = b[i].kecamatan
+            desa = b[i].desa
             // no = a
             // if (a > 1){
             //   no = a-i
             // }
             row = '<tr>'
             // row += '<td>'+no+'</td>'
-            row += '<td>'+tipe_reklame+'</td>'
-            row += '<td>'+judul_reklame+'</td>'
-            row += '<td>'+letak_pemasangan+'</td>'
-            row += '<td>'+jumlah+'</td>'
+            row += '<td>'+kecamatan+'</td>'
+            row += '<td>'+desa+'</td>'
             row += '</tr>'
             $('#id_data_reklame_konfirmasi > tbody').prepend(row);
           }

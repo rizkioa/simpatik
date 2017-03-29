@@ -205,6 +205,7 @@ urlpatterns = [
     url(r'^layanan/reklame/detil-izin-reklame/delete/(?P<id_detail_izin_reklame>[0-9]+)$', reklame_view.delete_detail_izin_reklame, name='delete_detail_izin_reklame'),
     url(r'^^layanan/reklame/detil-izin-reklame/edit/(?P<id_detail_izin_reklame>[0-9]+)/$', reklame_view.edit_detail_izin_reklame, name='edit_detail_izin_reklame'),
     url(r'^^layanan/reklame/detil-izin-reklame/load/(?P<id_detail_izin_reklame>[0-9]+)/$', reklame_view.load_data_detail_izin_reklame, name='load_data_detail_izin_reklame'),
+    url(r'^^layanan/reklame/detil-lokasi-izin-reklame/load/(?P<id_detail_izin_reklame>[0-9]+)/$', reklame_view.load_data_lokasi_detail_izin_reklame, name='load_data_lokasi_detail_izin_reklame'),
 
     url(r'^reklame/detil-izin-reklame/load/(?P<id_detil_reklame>[0-9]+)$', reklame_view.load_data_tabel_detil_reklame, name='load_data_tabel_detil_reklame'),
 

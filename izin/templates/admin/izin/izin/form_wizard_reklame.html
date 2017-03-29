@@ -50,6 +50,12 @@
 							load_berkas(id_pengajuan)
 
 						}
+						if($current == 3){
+						// alert("OK")
+							id_pengajuan = parseInt($.cookie('id_pengajuan'))
+							load_data_detail_izin_reklame(id_pengajuan)
+
+						}
 						$('#rootwizard').find('.pager .next').show();
 						$('#rootwizard').find('.pager .finish').hide();
 					}
@@ -152,26 +158,26 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
-
+		        console.log("MASUK SINI")
 			    id_pengajuan_ = $.cookie("id_pengajuan");
 			    if (id_pengajuan_ != undefined){
-		        $.ajax({
-		        	url: '{% url 'reklame_done' %}',
-		        	success: function(response) {
-		        		respon = $.parseJSON(response)
-		        		if(respon.success){
-		        			toastr["success"](respon.pesan)
-		        			window.location.replace('{% url 'admin:verifikasi_operator' %}');
-		        		}
-		        	}
-	        	});
+			        $.ajax({
+			        	url: '{% url 'reklame_done' %}',
+			        	success: function(response) {
+			        		respon = $.parseJSON(response)
+			        		if(respon.success){
+			        			toastr["success"](respon.pesan)
+			        			window.location.replace('{% url 'admin:verifikasi_operator' %}');
+			        		}
+			        	}
+		        	});
 	        	}
-		      	$.removeCookie('id_pengajuan', { path: '/' });
-		      	$.removeCookie('id_perusahaan', { path: '/' });
-		      	$.removeCookie('id_pemohon', { path: '/' });
-		      	$.removeCookie('nomor_ktp', { path: '/' });
-		      	$.removeCookie('nomor_paspor', { path: '/' });
-		      	$.removeCookie('id_kelompok_izin', { path: '/' });
+		      	// $.removeCookie('id_pengajuan', { path: '/' });
+		      	// $.removeCookie('id_perusahaan', { path: '/' });
+		      	// $.removeCookie('id_pemohon', { path: '/' });
+		      	// $.removeCookie('nomor_ktp', { path: '/' });
+		      	// $.removeCookie('nomor_paspor', { path: '/' });
+		      	// $.removeCookie('id_kelompok_izin', { path: '/' });
 	      	}
     	};
 
@@ -252,9 +258,9 @@
           	$('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
           	$('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
           	load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
-          	setTimeout(function(){
-          		$('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
-          	}, 1000);
+          	// setTimeout(function(){
+          	// 	$('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
+          	// }, 1000);
 
           	$('a[data-toggle="tooltip"]').tooltip({
 			    animated: 'fade',
@@ -347,6 +353,8 @@
 	                $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
 	                $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save')
 	                $("#id_form_detail_izin_reklame").resetForm()
+	                $("#id_kecamatan_data_reklame").trigger("chosen:updated")
+	                $("#id_desa_data_reklame").trigger("chosen:updated")
 	                $("#id_detail_izin_reklame").modal('hide');
 	                },
 	            error: function(data) {    
@@ -377,7 +385,7 @@
         var row = btn.parentNode.parentNode;
         id_button = btn.id
         var parent_tr = $('#'+id_button+'')
-		load_data_detail_izin_reklame(id_button)
+		load_data_lokasi_detail_izin_reklame(id_button)
 
         $('#id_detail_izin_reklame').modal('show');
         $('#id_detail_izin_reklame').find('.btn-success').attr('onclick','').unbind('click');
@@ -394,6 +402,8 @@
         $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
         $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save/')
         $("#id_form_detail_izin_reklame").resetForm()
+        $("#id_kecamatan_data_reklame").trigger("chosen:updated")
+	    $("#id_desa_data_reklame").trigger("chosen:updated")
         $("#id_detail_izin_reklame").modal('hide');
     }
 
