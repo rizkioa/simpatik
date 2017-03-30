@@ -666,7 +666,7 @@
 						<div class="panel-body">
 						{% if skizin == None and status == 2%}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_gangguan' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 						    </center>
@@ -1297,6 +1297,73 @@
 		                  <label for="input01" class="col-sm-3 control-label">c.</label>
 		                  <div class="col-sm-8">
 		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Diktum Ke 2</label>
+		                  <label for="input01" class="col-sm-1 control-label">g.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum2_g" name="sk_diktum2_g" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">h.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum2_h" name="sk_diktum2_h" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">i.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum2_i" name="sk_diktum2_i" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">j.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum2_j" name="sk_diktum2_j" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Diktum Ke 3</label>
+		                  <label for="input01" class="col-sm-1 control-label">i.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum3_i" name="sk_diktum3_i" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">j.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum3_j" name="sk_diktum3_j" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">k.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum3_k" name="sk_diktum3_k" ></textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-3 control-label">l.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_diktum3_l" name="sk_diktum3_l" ></textarea>
 		                  </div>
 		                </div>
 		            </div>
