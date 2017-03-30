@@ -168,6 +168,14 @@ class DetilHOAdmin(admin.ModelAdmin):
 					extra_context.update({'riwayat': riwayat_ })
 			except ObjectDoesNotExist:
 				pass
+
+			try:
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				print "WASEM"
+
 		template = loader.get_template("admin/izin/pengajuanizin/view_izin_gangguan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -240,8 +248,8 @@ class DetilHOAdmin(admin.ModelAdmin):
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
 			except ObjectDoesNotExist:
-				print "OBJECT GA AD"
-				print id_pengajuan_izin_
+				pass
+
 			try:
 				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
 				if retribusi_:

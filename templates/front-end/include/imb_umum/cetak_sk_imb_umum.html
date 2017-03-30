@@ -1182,11 +1182,31 @@
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
 		        			<td colspan="3">Letak bangunan pagar sebagaimana dimaksud pada huruf b, yang tidak menghadap ke jalan dan / atau berada di tepi jalan, dibagian samping (selebihnya dari garis RUWASJA) dan bagian belakang dengan pasangan tertutup rapat paling tinggi 3 (tiga) meter dan selebihnya harus memakai kawat berduri atau teralis besi.	</td>
 		        		</tr>
+		        		{% if sk_imb.sk_menetapkan_b %}
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 4px;">KELIMA</td>
+		        			<td style="vertical-align: top;padding-top: 4px;">:</td>
+		        			<td  colspan="3" width="2000">
+		        				<table border="0" class="sk-justify">
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;">a.</td>
+					        			<td colspan="3">Bangunan hanya digunakan dan dimanfaatkan sesuai izin yang diberikan.
+					        			</td>
+					        		</tr>
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+					        			<td colspan="3">{{sk_imb.sk_menetapkan_b}}</td>
+					        		</tr>
+		        				</table>
+		        			</td>
+		        		</tr>
+		        		{% else %}
 		        		<tr>
 		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KELIMA</td>
 		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        			<td  colspan="3" width="2000">Bangunan hanya digunakan dan dimanfaatkan sesuai izin yang diberikan.</td>
-		        		</tr>
+		        		</tr>		        		
+		        		{% endif %}
 		        		<tr>
 		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
 		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
