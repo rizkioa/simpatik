@@ -158,6 +158,15 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				s = ''
 
 			extra_context.update({'survey': s })
+
+			# SURVEY
+
+			try:
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				print "WASEM"
 			
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_umum.html")
 		ec = RequestContext(request, extra_context)
@@ -204,7 +213,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
 			except ObjectDoesNotExist:

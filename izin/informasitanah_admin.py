@@ -102,11 +102,11 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
-				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id)
+				if ktp_.exists():
+					ktp_ = ktp_.last()
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
-				except ObjectDoesNotExist:
-					pass
+				
 				sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah__id=id_pengajuan_izin_)
 				extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
 			if pengajuan_.perusahaan:
