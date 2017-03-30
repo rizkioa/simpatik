@@ -235,7 +235,7 @@
 	        		<tr>
 	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{% for i in detil_reklame_list %} {{i}} {% endfor%} / {{pengajuan.judul_reklame}}</td>
+	        			<td colspan="2">{{pengajuan.tipe_reklame}} / "{{pengajuan.judul_reklame}}"</td>
 	        		</tr>
 	        		<tr>
 	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
@@ -245,12 +245,12 @@
 	        		<tr>
 	        			<td><b>Jangka waktu izin</b></td>
 	        			<td>:</td>
-	        			<td colspan="2">{{retribusi_.tanggal_bayar|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
+	        			<td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td style="vertical-align: top;padding-top: 1px;"><b>Letak pemasangan</b></td>
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
-	        			<td colspan="2">{{letak_pemasangan|default_if_none:"-"}}</td>
+	        			<td colspan="2">{{detil_reklame_list|title}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="4">

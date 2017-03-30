@@ -240,7 +240,8 @@ class DetilHOAdmin(admin.ModelAdmin):
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
 			except ObjectDoesNotExist:
-				pass
+				print "OBJECT GA AD"
+				print id_pengajuan_izin_
 			try:
 				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
 				if retribusi_:

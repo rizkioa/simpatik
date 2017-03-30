@@ -292,7 +292,7 @@ class DetilReklame(PengajuanIzin):
 class DetilReklameIzin(AtributTambahan):
 	detil_reklame = models.ForeignKey(DetilReklame, verbose_name='Detil Reklame', blank=True,null=True)
 	tipe_reklame = models.ForeignKey(JenisTipeReklame,verbose_name='Tipe Reklame',blank=True,null=True)
-	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame')
+	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame',blank=True,null=True)
 	panjang = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Panjang',default=0, null=True, blank=True)
 	lebar = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Lebar',default=0 ,null=True, blank=True)
 	sisi = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='Sisi',default=0, null=True, blank=True)
@@ -313,7 +313,7 @@ class DetilReklameIzin(AtributTambahan):
 		}
 
 	def as_json(self):
-		return dict(tipe_reklame=str(self.tipe_reklame), judul_reklame=self.judul_reklame,letak_pemasangan=self.letak_pemasangan, jumlah=str(self.jumlah))
+		return dict(kecamatan=self.desa.kecamatan.nama_kecamatan, desa=self.desa.nama_desa)
 
 
 	def __unicode__(self):
@@ -681,9 +681,20 @@ class DetilSk(MetaAtribut):
 	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
 	sk_menimbang_c = models.CharField(max_length=255, verbose_name='SK Menimbang C.', null=True, blank=True)
 	sk_menimbang_d = models.CharField(max_length=255, verbose_name='SK Menimbang D.', null=True, blank=True)
+
 	sk_menetapkan_a = models.CharField(max_length=255, verbose_name='SK Menetapkan A', null=True, blank=True)
 	sk_menetapkan_b = models.CharField(max_length=255, verbose_name='SK Menetapkan B', null=True, blank=True)
 	sk_menetapkan_c = models.CharField(max_length=255, verbose_name='SK Menetapkan C', null=True, blank=True)
+
+	sk_diktum2_g = models.CharField(max_length=255, verbose_name='SK Diktum Ke 2 G', null=True, blank=True)
+	sk_diktum2_h = models.CharField(max_length=255, verbose_name='SK Diktum Ke 2 H', null=True, blank=True)
+	sk_diktum2_i = models.CharField(max_length=255, verbose_name='SK Diktum Ke 2 I', null=True, blank=True)
+	sk_diktum2_j = models.CharField(max_length=255, verbose_name='SK Diktum Ke 2 J', null=True, blank=True)
+
+	sk_diktum3_i = models.CharField(max_length=255, verbose_name='SK Diktum Ke 3 I', null=True, blank=True)
+	sk_diktum3_j = models.CharField(max_length=255, verbose_name='SK Diktum Ke 3 J', null=True, blank=True)
+	sk_diktum3_k = models.CharField(max_length=255, verbose_name='SK Diktum Ke 3 K', null=True, blank=True)
+	sk_diktum3_l = models.CharField(max_length=255, verbose_name='SK Diktum Ke 3 L', null=True, blank=True)
 
 	def __unicode__(self):
 		return u'Detil SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))

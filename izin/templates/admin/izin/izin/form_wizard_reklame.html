@@ -50,6 +50,12 @@
 							load_berkas(id_pengajuan)
 
 						}
+						if($current == 3){
+						// alert("OK")
+							id_pengajuan = parseInt($.cookie('id_pengajuan'))
+							load_data_detail_izin_reklame(id_pengajuan)
+
+						}
 						$('#rootwizard').find('.pager .next').show();
 						$('#rootwizard').find('.pager .finish').hide();
 					}
@@ -67,9 +73,9 @@
 		});
 
 		// Function to capitalize for string
-		String.prototype.capitalize = function() {
-		    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-		};
+		// String.prototype.capitalize = function() {
+		//     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+		// };
 
     function next_tab(btn){
       var pengajuan_id = $.cookie('id_pengajuan')
@@ -151,26 +157,26 @@
 		          title: 'Pendaftaran Berhasil Tersimpan',
 		          timer: 2000
 		        })
-
+		        console.log("MASUK SINI")
 			    id_pengajuan_ = $.cookie("id_pengajuan");
 			    if (id_pengajuan_ != undefined){
-		        $.ajax({
-		        	url: '{% url 'reklame_done' %}',
-		        	success: function(response) {
-		        		respon = $.parseJSON(response)
-		        		if(respon.success){
-		        			toastr["success"](respon.pesan)
-		        			window.location.replace('{% url 'admin:verifikasi_operator' %}');
-		        		}
-		        	}
-	        	});
+			        $.ajax({
+			        	url: '{% url 'reklame_done' %}',
+			        	success: function(response) {
+			        		respon = $.parseJSON(response)
+			        		if(respon.success){
+			        			toastr["success"](respon.pesan)
+			        			window.location.replace('{% url 'admin:verifikasi_operator' %}');
+			        		}
+			        	}
+		        	});
 	        	}
-		      	$.removeCookie('id_pengajuan', { path: '/' });
-		      	$.removeCookie('id_perusahaan', { path: '/' });
-		      	$.removeCookie('id_pemohon', { path: '/' });
-		      	$.removeCookie('nomor_ktp', { path: '/' });
-		      	$.removeCookie('nomor_paspor', { path: '/' });
-		      	$.removeCookie('id_kelompok_izin', { path: '/' });
+		      	// $.removeCookie('id_pengajuan', { path: '/' });
+		      	// $.removeCookie('id_perusahaan', { path: '/' });
+		      	// $.removeCookie('id_pemohon', { path: '/' });
+		      	// $.removeCookie('nomor_ktp', { path: '/' });
+		      	// $.removeCookie('nomor_paspor', { path: '/' });
+		      	// $.removeCookie('id_kelompok_izin', { path: '/' });
 	      	}
     	};
 
@@ -251,9 +257,9 @@
           	$('#id_letak_pemasangan').val('{{ pengajuan_.letak_pemasangan }}');
           	$('#id_kecamatan_data_reklame').val('{{ pengajuan_.desa.kecamatan.id }}').prop('selected',true).trigger("chosen:updated");
           	load_desa_data_reklame('{{ pengajuan_.desa.kecamatan.id }}')
-          	setTimeout(function(){
-          		$('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
-          	}, 1000);
+          	// setTimeout(function(){
+          	// 	$('#id_desa_data_reklame').val('{{ pengajuan_.desa.id }}').prop('selected',true).trigger("chosen:updated");
+          	// }, 1000);
 
           	$('a[data-toggle="tooltip"]').tooltip({
 			    animated: 'fade',
@@ -323,32 +329,40 @@
         var frm = $('#id_form_detail_izin_reklame');
          if (frm.parsley().validate()){
             frm.ajaxSubmit({
-             success: function(response) {  // on success..
-                var res = $.parseJSON(response);  
-                
-                id_penggunaan = res.data.id_detil_reklame
-                if ($('#id_table_detail_izin_reklame').find('#'+id_penggunaan+'')){
-                  $('#'+id_penggunaan+'').remove()
-                }
-                var jenis_reklame  = res.data.id_tipe_reklame
-                var judul_reklame = $("#id_judul_reklame").val()
-                var jumlah_reklame = $("#id_jumlah").val()
-                var rows = "";
-                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_nama_penggunaan'>" + jenis_reklame + "</td><td id='id_table_ukuran_penggunaan'>" + judul_reklame +"</td><td id='id_table_nama_penggunaan'>"+jumlah_reklame+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRow_detail_izin_reklame(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRow_detail_izin_reklame(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
-                    $(rows).appendTo("#id_table_detail_izin_reklame","tbody");
-                $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
-                $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')	
-                $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
-                $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save')
-                $("#id_form_detail_izin_reklame").resetForm()
-                $("#id_detail_izin_reklame").modal('hide');
-                },
-                error: function(data) {       
-                  toast_server_error()
-                }
-              });
-            }
+            	method: 'POST',
+		        url: frm.attr('action'),
+	            success: function(response) {  // on success..
+	                var res = $.parseJSON(response);  
+	                
+	                id_penggunaan = res.data.id_detil_reklame
+	                if ($('#id_table_detail_izin_reklame').find('#'+id_penggunaan+'')){
+	                  $('#'+id_penggunaan+'').remove()
+	                }
+	                var jenis_reklame  = res.data.id_tipe_reklame
+	                var judul_reklame = $("#id_judul_reklame").val()
+	                var jumlah_reklame = $("#id_jumlah").val()
+	                var kecamatan = res.data.kecamatan
+	                var desa = res.data.desa
+
+	                var rows = "";
+	                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_nama_penggunaan'>" + kecamatan + "</td><td id='id_table_ukuran_penggunaan'>" + desa +"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRow_detail_izin_reklame(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRow_detail_izin_reklame(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+	                    $(rows).appendTo("#id_table_detail_izin_reklame","tbody");
+	                $('#id_detail_izin_reklame').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+	                $('#id_detail_izin_reklame').find('.btn-primary').attr('onclick','detail_izin_reklame_add(this)')	
+	                $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
+	                $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save')
+	                $("#id_form_detail_izin_reklame").resetForm()
+	                $("#id_kecamatan_data_reklame").trigger("chosen:updated")
+	                $("#id_desa_data_reklame").trigger("chosen:updated")
+	                $("#id_detail_izin_reklame").modal('hide');
+	                },
+	            error: function(data) {    
+	              toast_server_error()
+	            }
+            });
+         }
       }
+
 
     function deleteRow_detail_izin_reklame(btn){
         var row = btn.parentNode.parentNode;
@@ -370,7 +384,7 @@
         var row = btn.parentNode.parentNode;
         id_button = btn.id
         var parent_tr = $('#'+id_button+'')
-		load_data_detail_izin_reklame(id_button)
+		load_data_lokasi_detail_izin_reklame(id_button)
 
         $('#id_detail_izin_reklame').modal('show');
         $('#id_detail_izin_reklame').find('.btn-success').attr('onclick','').unbind('click');
@@ -387,6 +401,8 @@
         $('#id_detail_izin_reklame').find('.btn-success').text("Simpan")
         $('#id_detail_izin_reklame').find('#id_form_detail_izin_reklame').attr('action','/layanan/reklame/detil-izin-reklame/save/')
         $("#id_form_detail_izin_reklame").resetForm()
+        $("#id_kecamatan_data_reklame").trigger("chosen:updated")
+	    $("#id_desa_data_reklame").trigger("chosen:updated")
         $("#id_detail_izin_reklame").modal('hide');
     }
 
@@ -561,99 +577,7 @@
       <div class="modal-body">
         <form method="POST" id="id_form_detail_izin_reklame" name="form_detail_izin_reklame" role="form" class="form-horizontal" action="{% url 'detail_izin_reklame_save' %}" data-parsley-validate novalidate>
         {% csrf_token %}
-		    <div class="form-group">
-		      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
-		      <div class="col-sm-5">
-		        <select class="form-control chosen-select mb-10" name="tipe_reklame" data-parsley-trigger="change" id="id_tipe_reklame">
-		          <option value>-- Pilih Jenis Reklame --</option>
-		          {% if tipe_reklame_list %}
-		          {% for j in tipe_reklame_list %}
-		          <option value="{{ j.id }}">{{ j.jenis_tipe_reklame }}</option>
-		          {% endfor %}
-		          {% endif %}
-		        </select>
-		      </div>
-		    </div>
-
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label"><strong>Judul Reklame</strong></label>
-		      <div class="col-sm-7">
-		        <textarea class="form-control" rows="5" required="" data-parsley-trigger="change" name="judul_reklame" placeholder="" id="id_judul_reklame"></textarea>
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label"><strong>Jumlah</strong></label>
-		      <div class="col-sm-7">
-		        <input type="number" class="form-control" rows="5" required="" data-parsley-trigger="change" name="jumlah" placeholder="" id="id_jumlah"></input>
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label"><strong>Ukuran Reklame</strong></label>
-		      <div class="col-sm-3">
-		        <div class="input-group">
-		            <span class="input-group-addon">
-		              <span>Panjang</span>
-		            </span>
-		            <input name="panjang" id="id_panjang" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
-		            <span class="input-group-addon">
-		              <span>M</span>
-		            </span>
-		        </div>
-		      </div>
-		      <div class="col-sm-3">
-		        <div class="input-group">
-		            <span class="input-group-addon">
-		              <span>Lebar</span>
-		            </span>
-		            <input name="lebar" id="id_lebar" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
-		            <span class="input-group-addon">
-		              <span>M</span>
-		            </span>
-		        </div>
-		      </div>
-		      <div class="col-sm-3">
-		        <div class="input-group">
-		            <span class="input-group-addon">
-		              <span>Sisi</span>
-		            </span>
-		            <input name="sisi" id="id_sisi" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
-		            <span class="input-group-addon">
-		              <span>M</span>
-		            </span>
-		        </div>
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label"><strong>Lama Pemasangan</strong></label>
-		      <div class="col-sm-3">
-		          <div class="input-group datepicker w-360 tanggal-awal"> 
-		            <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_mulai" name="tanggal_mulai" style="width: 170px;">
-		            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-		              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-		            </span>
-		          </div>
-		      </div>
-		      <label class="col-sm-1"><center>s/d</center></label>
-		      <div class="col-sm-3">
-		          <div class="input-group datepicker w-360 tanggal-akhir"> 
-		            <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_akhir" name="tanggal_akhir" style="width: 170px;">
-		            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-		              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-		            </span>
-		          </div>
-		      </div>
-		    </div>
-
-		    <div class="form-group">
-		      <label for="input01" class="col-sm-2 control-label"><strong>Letak Reklame</strong></label>
-		      <div class="col-sm-7">
-		        <textarea name="letak_pemasangan" id="id_letak_pemasangan" class="form-control" rows="5" required="" data-parsley-trigger="change" placeholder="isi alamat pemasangan letak reklame"></textarea>
-		      </div>
-		    </div>
+		  
 
 		    <div class="form-group">
 		      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>

@@ -61,13 +61,13 @@ class PengajuanReklameForm(forms.ModelForm):
 	"""docstring for PengajuanSiupForm"""
 	class Meta:
 		model = DetilReklame
-		fields = ('jenis_reklame',)
+		fields = ('jenis_reklame', 'tipe_reklame','judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan','jumlah', 'tanggal_mulai', 'tanggal_akhir') 
 
 class DetilReklameIzinForm(forms.ModelForm):
 	"""docstring for DetilReklameIzin"""
 	class Meta:
 		model = DetilReklameIzin
-		fields = ('tipe_reklame','judul_reklame', 'panjang', 'lebar', 'sisi', 'letak_pemasangan','jumlah', 'desa', 'tanggal_mulai', 'tanggal_akhir')
+		fields = ('desa', )
 		
 class LegalitasPerusahaanForm(forms.ModelForm):
 	"""docstring for LegalitasAktaPerusahaanForm"""
@@ -285,7 +285,7 @@ class DetilSkForm(forms.ModelForm):
 	"""docstring for DetilSkIMBForm"""
 	class Meta:
 		model = DetilSk
-		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menimbang_c','sk_menimbang_d','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c')
+		fields = ('pengajuan_izin','sk_menimbang_a','sk_menimbang_b','sk_menimbang_c','sk_menimbang_d','sk_menetapkan_a','sk_menetapkan_b','sk_menetapkan_c','sk_diktum2_g','sk_diktum2_h','sk_diktum2_i','sk_diktum2_j','sk_diktum3_i','sk_diktum3_j','sk_diktum3_k','sk_diktum3_l')
 
 class SKIzinForm(forms.ModelForm):
 	body_html = forms.CharField(widget=CKEditorWidget())
