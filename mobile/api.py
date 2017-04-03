@@ -1,6 +1,6 @@
 import json
 import datetime
-from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohonanIzin
+from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohonanIzin, Riwayat
 from cors import CORSModelResource, CORSHttpResponse
 from accounts.models import Account
 from django.contrib.auth import authenticate, login, logout
@@ -49,8 +49,29 @@ class PengajuanIzinResource(CORSModelResource):
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'verified_at', 'verified_by', 'jenis_permohonan']
 		# authentication = ApiKeyAuthentication()
 		filtering = {
-        	'no_pengajuan': ['contains'],
-        }
+			'no_pengajuan': ['contains'],
+		}
+
+	def prepend_urls(self):
+		return [
+			url(r"^pengajuanizin/get-riwayat/$", self.wrap_view('get_riwayat_pengajuan'), name="api_get_riwayat_pengajuan"),
+		]
+
+	def get_riwayat_pengajuan(self, request, **kwargs):
+		id_pengajuan = request.GET['id_pengajuan']
+		data = []
+		if id_pengajuan:
+			riwayat_list = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan)
+			# print riwayat_list
+			data = [x.as_json() for x in riwayat_list]
+		return CORSHttpResponse(json.dumps(data))
+
+	# def get_detil_pengajuan_izin(self, request, **kwargs):
+	# 	id_pengajuan = request.GET['id']
+	# 	pengajuan_izin = PengajuanIzin.objects.filter(id=id_pengajuan).last()
+	# 	if kelompok_jenis_izin
+	# 	kelompok_jenis_izin = pengajuan_izin.ke
+	# 	data = {'success':True, 'data':}
 
 class AccountsResource(CORSModelResource):
 	class Meta:
@@ -64,6 +85,7 @@ class AccountsResource(CORSModelResource):
 	def prepend_urls(self):
 		return [
 			url(r"^account/request-user/$", self.wrap_view('request_user'), name="api_request_user"),
+			url(r"^account/request-menu/$", self.wrap_view('get_request_menu'), name="api_get_request_menu"),
 		]
 
 	def obj_get(self, bundle, **kwargs):
@@ -74,11 +96,27 @@ class AccountsResource(CORSModelResource):
 	def request_user(self, request, **kwargs):
 		self.is_authenticated(request)
 		user_ = request.user
+
 		# user_ = Account.objects.filter(id=user_.id).last()
 
 		data = {'data':{'nama_lengkap':user_.nama_lengkap, 'gelar_depan': user_.gelar_depan, 'gelar_belakang': user_.gelar_belakang}}
 		data = json.dumps(data)
 		return CORSHttpResponse(data)
+
+	def get_request_menu(self, request, **kwargs):
+		self.is_authenticated(request)
+		user_ = request.user
+		icon_menu = []
+		nama_menu = []
+		link_menu = []
+		if user_.is_superuser:
+			icon_menu.append("email")
+			nama_menu.append("Pengajuan Izin")
+			link_menu.append("pengajuan_izin.html")
+		data = {'data':{'icon_menu':icon_menu, 'nama_menu':nama_menu, 'link_menu':link_menu}}
+		data = json.dumps(data)
+		return CORSHttpResponse(data)
+
 
 
 class AuthResource(CORSModelResource):

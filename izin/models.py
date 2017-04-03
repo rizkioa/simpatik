@@ -352,6 +352,13 @@ class Riwayat(AtributTambahan):
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.pengajuan_izin), str(self.sk_izin))
 
+	def as_json(self):
+		# pemohon = ''
+		# if self.pengajuan_izin.pemohon:
+		# 	pemohon = self.pengajuan_izin.pemohon.nama_lengkap
+		created_at = self.created_at.strftime('%d-%m-%Y %I:%M:%S %p')
+		return dict(created_at=str(created_at), keterangan=self.keterangan, created_by=self.created_by.nama_lengkap)
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Riwayat'

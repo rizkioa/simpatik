@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from daterange_filter.filter import DateRangeFilter
-
+from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey
 from kepegawaian.models import Pegawai
 from master.models import Template
