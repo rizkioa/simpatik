@@ -244,7 +244,7 @@
 										<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
 										<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
 										<br/>
-										<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>bpmp2tsp@kedirikab.go.id</u></b></span><br>
+										<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
 										<span style="font-size: 19px;"><b>KEDIRI</b></span>
 									</p>
 		        				</center>
@@ -254,7 +254,7 @@
 		        	<hr class="style2">
 		        	<center>
 		        		<font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-						PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+						PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
 		        		<font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
 		        	</center>
 		        	<center>
@@ -536,7 +536,7 @@
 		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 121px;" align="left">a. Milik</td>
+		        			<td colspan="3" style="padding-left: 200px;" align="left">a. Milik</td>
 		        			<td width="10">:</td>
 		        			<td>{{ pengajuan.pemohon|default_if_none:"-" }}</td>
 		        		</tr>
@@ -694,7 +694,7 @@
 					        		</tr>
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
-					        			<td colspan="3">Pembayaran Retribusi Izin Mendirikan Bangunan (IMB) sebagaimana dimaksud dalam huruf a, harus dibayar lunas melalui Pemegang Kas Daerah (Bendaharawan Penerima pada DPMPTSP).</td>
+					        			<td colspan="3">Pembayaran Retribusi Izin Mendirikan Bangunan (IMB) sebagaimana dimaksud dalam huruf a, harus dibayar lunas melalui Pemegang Kas Daerah (Bendahara Penerima pada DPMPTSP).</td>
 					        		</tr>
 		        				</table>
 		        			</td>
@@ -834,7 +834,7 @@
 		        	<hr class="style2">
 		        	<center>
 		        		<font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
-						PELAYANAN PERIZINAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+						PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
 		        		<font style="font-size: 15px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
 		        	</center>
 		        	<center>
@@ -843,7 +843,7 @@
 		        		</font><br><br>
 		        		<font style="font-size: 15px;letter-spacing:  0.01cm;">
 		        			KEPALA DINAS PENANAMAN MODAL DAN<br>
-							PELAYANAN PERIZINAN TERPADU SATU PINTU,
+							PELAYANAN TERPADU SATU PINTU,
 		        		</font>
 		        	</center><br>
 		        	<table width="100%" border="0" class="sk-justify">
@@ -1182,11 +1182,31 @@
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">e.</td>
 		        			<td colspan="3">Letak bangunan pagar sebagaimana dimaksud pada huruf b, yang tidak menghadap ke jalan dan / atau berada di tepi jalan, dibagian samping (selebihnya dari garis RUWASJA) dan bagian belakang dengan pasangan tertutup rapat paling tinggi 3 (tiga) meter dan selebihnya harus memakai kawat berduri atau teralis besi.	</td>
 		        		</tr>
+		        		{% if sk_imb.sk_menetapkan_b %}
+		        		<tr>
+		        			<td width="10" style="vertical-align: top;padding-top: 4px;">KELIMA</td>
+		        			<td style="vertical-align: top;padding-top: 4px;">:</td>
+		        			<td  colspan="3" width="2000">
+		        				<table border="0" class="sk-justify">
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;">a.</td>
+					        			<td colspan="3">Bangunan hanya digunakan dan dimanfaatkan sesuai izin yang diberikan.
+					        			</td>
+					        		</tr>
+					        		<tr>
+					        			<td width="10" style="vertical-align: top;padding-top: 1px;">b.</td>
+					        			<td colspan="3">{{sk_imb.sk_menetapkan_b}}</td>
+					        		</tr>
+		        				</table>
+		        			</td>
+		        		</tr>
+		        		{% else %}
 		        		<tr>
 		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KELIMA</td>
 		        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        			<td  colspan="3" width="2000">Bangunan hanya digunakan dan dimanfaatkan sesuai izin yang diberikan.</td>
-		        		</tr>
+		        		</tr>		        		
+		        		{% endif %}
 		        		<tr>
 		        			<td width="10" style="vertical-align: top;padding-top: 2px;">KEENAM</td>
 		        			<td style="vertical-align: top;padding-top: 1px;">:</td>

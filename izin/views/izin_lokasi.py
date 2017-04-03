@@ -93,7 +93,7 @@ def sertifikat_tanah_save_cookie(request):
                             'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
                             'data': {'id_sertifikat_tanah':p.id}}
                     data = json.dumps(data)
-                    response = HttpResponse(json.dumps(data))
+                    response = HttpResponse(data)
                 else:
                     data = sertifikat_tanah.errors.as_json()
                     response = HttpResponse(json.dumps(data))

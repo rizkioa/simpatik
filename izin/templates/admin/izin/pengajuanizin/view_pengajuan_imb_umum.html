@@ -226,7 +226,7 @@
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
-					{% if skizin_status == 1 %}
+					{% if skizin_status == 1 or skizin_status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 
@@ -1395,7 +1395,7 @@
 		                  <label for="input01" class="col-sm-2 control-label">Menimbang</label>
 		                  <label for="input01" class="col-sm-1 control-label">b.</label>
 		                  <div class="col-sm-8">
-		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_a" name="sk_menimbang_a" ></textarea>
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_a" name="sk_menimbang_a" ><{{sk_imb.sk_menimbang_a}}/textarea>
 		                  </div>
 		                </div>
 		            </div>
@@ -1403,7 +1403,16 @@
 		                <div class="form-group">
 		                  <label for="input01" class="col-sm-3 control-label">c.</label>
 		                  <div class="col-sm-8">
-		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" ></textarea>
+		                    <textarea class="form-control" rows="2" id="id_sk_menimbang_b" name="sk_menimbang_b" >{{sk_imb.sk_menimbang_b}}</textarea>
+		                  </div>
+		                </div>
+		            </div>
+		            <div class="row">
+		                <div class="form-group">
+		                  <label for="input01" class="col-sm-2 control-label">Menetapkan</label>
+		                  <label for="input01" class="col-sm-1 control-label">b.</label>
+		                  <div class="col-sm-8">
+		                    <textarea class="form-control" rows="2" id="id_sk_menetapkan_b" name="sk_menetapkan_b" >{{sk_imb.sk_menetapkan_b}}</textarea>
 		                  </div>
 		                </div>
 		            </div>

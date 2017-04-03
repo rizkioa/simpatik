@@ -57,6 +57,20 @@
       </div>
     </div>
 
+    <div class="form-group" id="kecamatan3">
+      <label for="input01" class="col-sm-2 control-label"><strong>Jenis Penggunaan Kekayaan Daerah</strong></label>
+      <div class="col-sm-5">
+        <select id="id_jenis_penggunaan" name="jenis_penggunaan" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+          <option value>-- Pilih Jenis Penggunaan Kekayaan Daerah --</option>
+          {% if kecamatan %}
+          {% for k in jenis_penggunaan_list %}
+          <option value="{{ k.0 }}">{{ k.1 }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><strong>Penggunaan</strong></label>
       <div class="col-sm-5">

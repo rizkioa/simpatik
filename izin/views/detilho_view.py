@@ -101,7 +101,9 @@ def load_detilho(request,id_pengajuan):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
       pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
+      id_perkiraan_modal = 0
+      if pengajuan_.perkiraan_modal:
+        id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
       id_tujuan_gangguan = pengajuan_.tujuan_gangguan
       id_alamat = pengajuan_.alamat
       id_surat_tanah = pengajuan_.no_surat_tanah

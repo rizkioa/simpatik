@@ -280,9 +280,10 @@
 						<a onclick="get_load_detail_pengajuan(); return false;" data-toggle="modal" data-target="#detail_iujk" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-list"></i> <span>Lihat Detail Pengajuan</span></a>
 
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class=" icon-folder"></i> <span>Lihat Berkas Pengajuan</span></a>
-
-						{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
-							<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_iujk' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+						{% if skizin_status != 2 or skizin_status != 2 %}
+							{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
+								<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_iujk' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+							{% endif %}
 						{% endif %}
 					</div>
 				</div>
@@ -324,7 +325,7 @@
 						<!-- <a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli' pengajuan.id  %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Csetak Izin</a> -->
 						<div class="btn-group mb-20">
                             <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <i class="fa fa-print"></i> Cetak <span class="caret"></span>
+                                <i class="fa fa-print"></i> Cetak Izin<span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu" role="menu">
                                 <li><a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli' pengajuan.id  %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)">Halaman 1</a></li>
@@ -1105,15 +1106,7 @@
             	<div class="tile-body">
             		{% if skizin_status == 10 %}
 	            		<center>
-					    	<div class="btn-group mb-20">
-	                            <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-	                                <i class="fa fa-print"></i> Cetak <span class="caret"></span>
-	                            </button>
-	                            <ul class="dropdown-menu" role="menu">
-	                                <li><a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli' pengajuan.id  %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)">Halaman 1</a></li>
-	                                <li><a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli_hal2' pengajuan.id  %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)">Halaman 2</a></li>
-	                            </ul>
-	                        </div>
+					    	<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
 					  	</center>
 				  	{% endif %}
 				  	{% if skizin_status == 2 %}

@@ -21,15 +21,108 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="id_jenis_reklame" class="col-sm-2 control-label"><strong>Jenis Reklame</strong></label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="tipe_reklame" data-parsley-trigger="change" id="id_tipe_reklame">
+          <option value>-- Pilih Jenis Reklame --</option>
+          {% if tipe_reklame_list %}
+          {% for j in tipe_reklame_list %}
+          <option value="{{ j.id }}">{{ j.jenis_tipe_reklame }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Judul Reklame</strong></label>
+          <div class="col-sm-7">
+            <textarea class="form-control" rows="5" required="" data-parsley-trigger="change" name="judul_reklame" placeholder="" id="id_judul_reklame"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Jumlah</strong></label>
+          <div class="col-sm-7">
+            <input type="number" class="form-control" rows="5" required="" data-parsley-trigger="change" name="jumlah" placeholder="" id="id_jumlah"></input>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Ukuran Reklame</strong></label>
+          <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">
+                  <span>Panjang</span>
+                </span>
+                <input name="panjang" id="id_panjang" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
+                <span class="input-group-addon">
+                  <span>M</span>
+                </span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">
+                  <span>Lebar</span>
+                </span>
+                <input name="lebar" id="id_lebar" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
+                <span class="input-group-addon">
+                  <span>M</span>
+                </span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">
+                  <span>Sisi</span>
+                </span>
+                <input name="sisi" id="id_sisi" type="text" required="" data-parsley-trigger="change" class="form-control float-type">
+                <span class="input-group-addon">
+                  <span>M</span>
+                </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Lama Pemasangan</strong></label>
+          <div class="col-sm-3">
+              <div class="input-group datepicker w-360 tanggal-awal"> 
+                <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_mulai" name="tanggal_mulai" style="width: 170px;">
+                <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                  <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                </span>
+              </div>
+          </div>
+          <label class="col-sm-1"><center>s/d</center></label>
+          <div class="col-sm-3">
+              <div class="input-group datepicker w-360 tanggal-akhir"> 
+                <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_akhir" name="tanggal_akhir" style="width: 170px;">
+                <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                  <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                </span>
+              </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="input01" class="col-sm-2 control-label"><strong>Letak Reklame</strong></label>
+          <div class="col-sm-7">
+            <textarea name="letak_pemasangan" id="id_letak_pemasangan" class="form-control" rows="5" required="" data-parsley-trigger="change" placeholder="isi alamat pemasangan letak reklame"></textarea>
+          </div>
+        </div>
+
     <div class="row">
       <div class="form-group">
         <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Data Izin Reklame</label> 
         <table id="id_table_detail_izin_reklame" class="table table-bordered" style="width: 762px;">
           <thead>
             <tr>
-              <td>Jenis Reklame</td>
-              <td>Judul Reklame</td>
-              <td>Jumlah</td>
+              <td>Kecamatan</td>
+              <td>Desa</td>
               <td>Aksi</td>
             </tr>
           </thead>
@@ -37,9 +130,8 @@
           {% if detail_izin_reklame_list %}
             {% for a in detail_izin_reklame_list %}
               <tr id="{{a.id}}">
-                <td id="id_table_jenis_reklame">{{a.tipe_reklame}}</td>
-                <td id="id_table_judul_reklame">{{a.judul_reklame}}</td>
-                <td id="id_table_jumlah">{{a.jumlah}}</td>
+                <td id="id_table_jenis_reklame">{{a.desa.kecamatan}}</td>
+                <td id="id_table_judul_reklame">{{a.desa}}</td>
                 <td align='center'> <a href='#' id={{a.id}} onclick="editRow_detail_izin_reklame(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRow_detail_izin_reklame(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
             {% endfor %}
           {% endif %}
