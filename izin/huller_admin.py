@@ -117,11 +117,17 @@ class DetilHullerAdmin(admin.ModelAdmin):
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
-				try:
-					ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
-					extra_context.update({'cookie_file_ktp': ktp_.berkas })
-				except ObjectDoesNotExist:
-					pass
+				nomor = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id)
+				if nomor.exists():
+					nomor = nomor.filter(jenis_identitas_id=1)
+					if nomor.exists():
+						ktp_ = nomor.last()
+						extra_context.update({'cookie_file_ktp': ktp_.berkas })
+				# try:
+				# 	ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
+				# 	extra_context.update({'cookie_file_ktp': ktp_.berkas })
+				# except ObjectDoesNotExist:
+				# 	pass
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
 					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
