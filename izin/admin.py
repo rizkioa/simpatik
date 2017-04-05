@@ -57,7 +57,7 @@ admin.site.register(JenisPeraturan, JenisPeraturanAdmin)
 class DasarHukumAdmin(admin.ModelAdmin):
 	list_display = ('nomor', 'instansi', 'jenis_peraturan', 'tentang', 'keterangan', 'aksi')
 	list_filter = ('jenis_peraturan__jenis_peraturan', 'tahun', )
-	search_fields = ('jenis_peraturan','instansi','nomor','tentang', 'keterangan')
+	search_fields = ('instansi','nomor','tentang', 'keterangan')
 
 	def aksi(self, obj):
 		aksi_str = '<a title="Hapus Dasar Hukum" href="'+reverse('admin:izin_dasarhukum_delete', args=(obj.id,))+'"><span class="glyphicon glyphicon-remove-circle"></span></a>'
