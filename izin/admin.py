@@ -55,7 +55,7 @@ class JenisPeraturanAdmin(admin.ModelAdmin):
 admin.site.register(JenisPeraturan, JenisPeraturanAdmin)
 
 class DasarHukumAdmin(admin.ModelAdmin):
-	list_display = ('nomor', 'instansi', 'jenis_peraturan', 'tentang', 'keterangan', 'aksi')
+	list_display = ('nomor', 'tahun', 'instansi', 'jenis_peraturan', 'tentang', 'keterangan', 'aksi')
 	list_filter = ('jenis_peraturan__jenis_peraturan', 'tahun', )
 	search_fields = ('instansi','nomor','tentang', 'keterangan')
 
