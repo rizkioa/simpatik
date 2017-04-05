@@ -1824,7 +1824,13 @@
 					    <tr>
 					      <td width="25%">Pekerjaan</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon.pekerjaan }}<span id='pekerjaan_konfirmasi'></span></td>
+					      <td width="70%">
+					      {% if pemohon.keterangan_pekerjaan %}
+					       	{{ pemohon.pekerjaan }} - {{pemohon.keterangan_pekerjaan}}
+					      {% else %}
+					      	{{ pemohon.pekerjaan }}
+					      {% endif %}
+					      <span id='pekerjaan_konfirmasi'></span></td>
 					    </tr>
 				    </table>
 				    <br>
