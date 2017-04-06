@@ -112,7 +112,7 @@ class DasarHukum(models.Model):
 		return "#"
 
 	def __unicode__(self):
-		return "%s" % (self.nomor)
+		return "No. %s Tahun %s" % (self.nomor, self.tahun)
 
 	class Meta:
 		ordering = ['id']
