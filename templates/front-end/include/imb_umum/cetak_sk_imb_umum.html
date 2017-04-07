@@ -245,7 +245,8 @@
 										<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
 										<br/>
 										<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
-										<span style="font-size: 19px;"><b>KEDIRI</b></span>
+					                    <span style="font-size: 19px; padding-left: 220px;"><b>KEDIRI</b></span>
+					                    <span style="font-size: 15px; padding-left: 105px;">Kode Pos : 64182</span>
 									</p>
 		        				</center>
 		        			</td>
@@ -271,7 +272,7 @@
 		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }} ;
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }} ;
 		        		</td>
 		        	</tr>
 		        	{% if sk_imb.sk_menimbang_a %}
@@ -448,13 +449,13 @@
 		        		<tr>
 		        			<td width="30" style="width: 105px;">KESATU</td>
 		        			<td width="10" >:</td>
-		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>Kepada :</td>
 		        		</tr>
-		        		<tr>
+<!-- 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
 		        			<td></td>
 		        			<td></td>
-		        		</tr>
+		        		</tr> -->
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 490px;">a. Nama</td>
 		        			<td width="10">:</td>
@@ -726,7 +727,7 @@
 		        				<p style="font-size:14px; padding-left: 10%;">
 				                    <font size="3pt">Ditetapkan di Kediri <br> 
 										pada tanggal</font><br></p>
-				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</font></p><br>
+				                    <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</p><br>
 				                    <br>
 				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
 								<!--	Pembina Tk.l<br>
@@ -825,7 +826,8 @@
 										<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
 										<br/>
 										<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmtsp@kedirikab.go.id</u></b></span><br>
-										<span style="font-size: 19px;"><b>KEDIRI</b></span>
+					                    <span style="font-size: 19px; padding-left: 220px;"><b>KEDIRI</b></span>
+					                    <span style="font-size: 15px; padding-left: 105px;">Kode Pos : 64182</span>
 									</p>
 		        				</center>
 		        			</td>
@@ -851,7 +853,7 @@
 		        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 		        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Ruang Pengawas Jalan (RUWASJA) Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }} ;
+		        		<td>bahwa sesuai surat permohonan lengkap dari <b>{{ pengajuan.pemohon }}</b> tanggal {{ pengajuan.created_at|date:"d F Y" }} yang beralamat di {{ pengajuan.pemohon.alamat|default_if_none:"-" }} Desa {{ pengajuan.pemohon.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.pemohon.desa.kecamatan|title|default_if_none:"-" }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title|default_if_none:"-" }} perihal Permohonan Izin Mendirikan Bangunan (IMB), yang terletak di Desa {{ pengajuan.desa|title|default_if_none:"-" }} Kecamatan {{ pengajuan.desa.kecamatan|title|default_if_none:"-" }} ;
 		        		</td>
 		        	</tr>
 		        	{% if sk_imb.sk_menimbang_a %}
@@ -935,7 +937,7 @@
 		        		<td></td>
 		        		<td style="vertical-align: top;padding-top: 1px;"></td>
 		        		<td style="vertical-align: top;padding-top: 1px;">9.</td>
-		        		<td>Peraturan Menteri Dalam Negeri Nomor 32 Tahun 2000 tentang Pedoman Pemberian Izin Mendirikan Bangunan;</td>
+		        		<td>Peraturan Menteri Dalam Negeri Nomor 32 Tahun 2010 tentang Pedoman Pemberian Izin Mendirikan Bangunan;</td>
 		        	</tr>
 		        	<tr>
 		        		<td></td>
@@ -1002,13 +1004,13 @@
 		        		<tr>
 		        			<td width="30" style="width: 105px;">KESATU</td>
 		        			<td width="10" >:</td>
-		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }} </b>Kepada:</td>
 		        		</tr>
-		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
+<!-- 		        		<tr>
+		        			<td colspan="3" align="left" style="padding-left: 120px;"></td>
 		        			<td></td>
 		        			<td></td>
-		        		</tr>
+		        		</tr> -->
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;width: 490px;">a. Nama</td>
 		        			<td width="10">:</td>
@@ -1301,7 +1303,7 @@
 		        				<p style="font-size:14px; padding-left: 10%;">
 				                    <font size="3pt">Ditetapkan di Kediri <br> 
 										pada tanggal</font><br></p>
-				                    <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</font></p><br>
+				                    <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</p><br>
 				                    <br>
 				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
 								<!--	Pembina Tk.l<br>
