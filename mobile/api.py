@@ -1,19 +1,21 @@
 import json
 import datetime
-from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohonanIzin, Riwayat
-from cors import CORSModelResource, CORSHttpResponse
-from accounts.models import Account
 from django.contrib.auth import authenticate, login, logout
-from tastypie.http import HttpUnauthorized, HttpForbidden
 from django.conf.urls import url
-from tastypie.utils import trailing_slash
-from tastypie.authorization import Authorization
-from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication
-from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization
-from tastypie.authentication import BasicAuthentication
-from tastypie.models import ApiKey
-from kepegawaian.models import Pegawai
+
 from tastypie import fields
+from tastypie.utils import trailing_slash
+from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication, BasicAuthentication
+from tastypie.authorization import ReadOnlyAuthorization, DjangoAuthorization, Authorization
+from tastypie.http import HttpUnauthorized, HttpForbidden
+from tastypie.models import ApiKey
+from cors import CORSModelResource, CORSHttpResponse
+
+from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohonanIzin, Riwayat, DetilSIUP, DetilTDP, SKIzin
+from accounts.models import Account
+from kepegawaian.models import Pegawai
+from perusahaan.models import Perusahaan, Legalitas
+
 
 
 class KelompokJenisIzinRecource(CORSModelResource):
@@ -55,6 +57,8 @@ class PengajuanIzinResource(CORSModelResource):
 	def prepend_urls(self):
 		return [
 			url(r"^pengajuanizin/get-riwayat/$", self.wrap_view('get_riwayat_pengajuan'), name="api_get_riwayat_pengajuan"),
+			url(r"^pengajuanizin/get-detil-siup/$", self.wrap_view('get_detil_siup'), name="api_get_detil_siup"),
+			url(r"^pengajuanizin/get-detil-tdp-po/$", self.wrap_view('get_tdp_po'), name="api_get_tdp_po"),
 		]
 
 	def get_riwayat_pengajuan(self, request, **kwargs):
@@ -65,6 +69,99 @@ class PengajuanIzinResource(CORSModelResource):
 			# print riwayat_list
 			data = [x.as_json() for x in riwayat_list]
 		return CORSHttpResponse(json.dumps(data))
+
+
+	# get detail pengajuan izin
+	def get_pengajuan_izin(self, id_pengajuan):
+		data = {}
+		if id_pengajuan:
+			pengajuan_obj = PengajuanIzin.objects.filter(id=id_pengajuan).last()
+			if pengajuan_obj:
+				data = pengajuan_obj.as_json()
+		return data
+
+	def get_pemohon(self, id_pemohon):
+		data = {}
+		if id_pemohon:
+			pemohon_list = Pemohon.objects.filter(id=id_pemohon).last()
+			# print pemohon_list
+			if pemohon_list:
+				data = pemohon_list.as_json()
+		return data
+
+	def get_perusahaan(self, id_perusahaan):
+		data = {}
+		if id_perusahaan:
+			perusahaan_list = Perusahaan.objects.filter(id=id_perusahaan).last()
+			if perusahaan_list:
+				data = perusahaan_list.as_json()
+		return data
+
+	def get_legalitas(self, id_perusahaan):
+		data = []
+		if id_perusahaan:
+			legaitas_list = Legalitas.objects.filter(perusahaan_id=id_perusahaan)
+			if legaitas_list:
+				data = [x.as_json() for x in legaitas_list]
+		return data
+
+	def get_skizin(self, id_pengajuan):
+		data = {}
+		if id_pengajuan:
+			skizin_obj = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan).last()
+			if skizin_obj:
+				data = skizin_obj.as_json()
+		return data
+
+	def get_detil_siup(self, request, **kwargs):
+		id_pengajuan = request.GET['id_pengajuan']
+		data = {'success':False}
+		if id_pengajuan and id_pengajuan is not "":
+			siup_list = DetilSIUP.objects.filter(id=id_pengajuan).last()
+			if siup_list:
+				detil_siup_obj = {}
+				pengajuan_obj = {}
+				skizin_obj = {}
+				if siup_list:
+					skizin_obj = self.get_skizin(siup_list.id)
+					pengajuan_obj = self.get_pengajuan_izin(siup_list.id)
+					pemohon_obj = {}
+					if siup_list.pemohon:
+						pemohon_obj = self.get_pemohon(siup_list.pemohon.id)
+					perusahaan_obj = {}
+					legalitas_list = {}
+					if siup_list.perusahaan:
+						perusahaan_obj = self.get_perusahaan(siup_list.perusahaan.id)
+						legalitas_list = self.get_legalitas(siup_list.perusahaan.id)
+					
+					detil_siup_obj = siup_list.as_json()
+					data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'detil_siup_obj':detil_siup_obj, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj}
+		return CORSHttpResponse(json.dumps(data))
+
+	def get_skizin_siup(self, request, **kwargs):
+		id_pengajuan = request.GET['id_pengajuan']
+		data = {'success':False}
+		if id_pengajuan and id_pengajuan is not "":
+			pass
+
+	def get_tdp_po(self, request, **kwargs):
+		id_pengajuan = request.GET['id_pengajuan']
+		data = {}
+		if id_pengajuan and id_pengajuan is not "":
+			tdp_po_list = DetilTDP.objects.get(id=id_pengajuan)
+			detil_tdp_po = {}
+			if tdp_po_list:
+				pemohon_obj = {}
+				if tdp_po_list.pemohon:
+					pemohon_obj = self.get_pemohon(request, tdp_po_list.pemohon.id)
+				perusahaan_obj = {}
+				legalitas_list = {}
+				if tdp_po_list.perusahaan:
+					perusahaan_obj = self.get_perusahaan(request, tdp_po_list.perusahaan.id)
+					legalitas_list = self.get_legalitas(request, tdp_po_list.perusahaan.id)
+				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list}
+				return CORSHttpResponse(json.dumps(data))
+
 
 	# def get_detil_pengajuan_izin(self, request, **kwargs):
 	# 	id_pengajuan = request.GET['id']
