@@ -185,6 +185,12 @@
 		        		</tr>
 		        	</table>
 		        	<hr class="style2">
+		        	{% if salinan == 'True' %}
+		        	<div align="right" style="margin-top: -7px;">
+		        		<font style="font-size: 15px;letter-spacing:  0.01cm;"><b>SALINAN<br></b></font>
+		        	</div>
+		        	{% else %}
+		        	{% endif %}
 		        	<center>
 		        		<font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
 						PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
@@ -514,6 +520,88 @@
 	        	<br>
 	        	<div style="">
 	        	</div>
+	        	{% if salinan == 'True' %}
+		        	<table width="100%" border="0" class="font">
+		        		<tr>
+		        			<td colspan="3" style="width: 900px;">
+			        			<table border="0" align="left">
+			  						<tr>
+			  							<td>
+			  							<br><br>
+			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+			  							</td>
+			  						</tr>
+			  					</table>
+		        			</td>
+		        			<td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:14px; padding-left: 10%;">
+				                    <font size="3pt">Ditetapkan di Kediri <br> 
+										pada tanggal</font><br></p>
+				                    <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
+				                    <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
+				                    </p>
+				            </td>
+		        		</tr>
+		        		<tr>
+							<td><br><br><br><br>
+								<table border="0" align="left" style="font-size:15px;">
+									<tr>
+										<td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+									</tr>
+									<tr>
+										<td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+										<td style="vertical-align: top;padding-top: 1px;">1.</td>
+										<td width="100%">Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>2.</td>
+										<td>Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>3.</td>
+										<td>Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>4.</td>
+										<td>Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>5.</td>
+										<td>Sdr. Camat {{pengajuan.desa.kecamatan|title}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>6.</td>
+										<td>Sdr. Kepala Desa {{pengajuan.desa|title}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td style="vertical-align: top;padding-top: 1px;">7.</td>
+										<td>Sdr. Dir. {{pengajuan.pemohon}} {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
+									</tr>   
+								</table>         
+							</td>
+		        		</tr>
+		        	</table>
+	        		<hr>
+	        		<table align="center">
+		        		<tr>
+		        			<td>
+		        				<p style="font-size:14px; padding-left: 10%;" align="center">
+			                    <font size="3pt">Disalin sesuai dengan aslinya <br> 
+									yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
+			                    <p align="center" style="font-size:15px;margin-top: 50px;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+									<font size="3pt">Pembina Tk.l<br>
+				                    NIP: {{nip_kepala_dinas}}</font>
+				                </p>
+				            </td>
+		        		</tr>	        			
+	        		</table>
+	        	{% else %}
 		        	<table width="100%" border="0" class="font">
 		        		<tr>
 		        			<td colspan="3" style="width: 1000px;">
@@ -586,7 +674,8 @@
 							</td>
 		        		</tr>
 		        	</table>
-		        <hr>
+		        	<hr>
+	        	{% endif %}
 	        </div>    
 	    </div>
 	</div>

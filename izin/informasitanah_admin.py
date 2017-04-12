@@ -311,9 +311,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -356,9 +357,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
