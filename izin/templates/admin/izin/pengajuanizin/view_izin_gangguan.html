@@ -233,6 +233,7 @@
 					{% endif %}
 					{% if skizin_status == 1 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_gangguan' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_gangguan' pengajuan_id True %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
 					{% endif %}
 
 				</center>

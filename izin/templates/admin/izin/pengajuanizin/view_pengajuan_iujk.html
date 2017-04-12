@@ -332,6 +332,14 @@
                                 <li><a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli_hal2' pengajuan.id  %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)">Halaman 2</a></li>
                             </ul>
                         </div>
+                        <div class="btn-group mb-20">
+                            <button type="button" class="btn btn-red dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                <i class="fa fa-print"></i> Cetak Salinan<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli' pengajuan.id  True %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)">Halaman 1</a></li>
+                            </ul>
+                        </div>
 					{% endif %}
 				</center>
 			</div>

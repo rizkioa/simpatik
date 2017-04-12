@@ -162,11 +162,12 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_imb_reklame(self, request, id_pengajuan_izin_):
+	def cetak_sk_imb_reklame(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -236,6 +237,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		urls = super(DetilIMBPapanReklameAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-sk-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_imb_reklame), name='cetak_sk_imb_reklame'),
+			url(r'^cetak-sk-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_imb_reklame), name='cetak_sk_imb_reklame'),
 			url(r'^view-pengajuan-imb-reklame/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_reklame), name='view_pengajuan_imb_reklame'),
 
 			)

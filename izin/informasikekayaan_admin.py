@@ -137,7 +137,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_pemakaian_kekayaan_daerah(self, request, id_pengajuan_izin_):
+	def cetak_sk_pemakaian_kekayaan_daerah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
@@ -199,6 +199,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 		urls = super(InformasiKekayaanDaerahAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-sk-pemakaian-kekayaan-daerah/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_pemakaian_kekayaan_daerah), name='cetak_sk_pemakaian_kekayaan_daerah'),
+			url(r'^cetak-sk-pemakaian-kekayaan-daerah/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_pemakaian_kekayaan_daerah), name='cetak_sk_pemakaian_kekayaan_daerah'),
 			url(r'^view-pengajuan-pemakaian-kekayaan-daerah/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_pemakaian_kekayaan_daerah), name='view_pemakaian_kekayaan_daerah'),
 
 			)

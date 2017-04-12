@@ -186,11 +186,12 @@ class DetilHullerAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_huller(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_huller(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = DetilHuller.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -279,7 +280,8 @@ class DetilHullerAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(DetilHullerAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^cetak-sk-izin-huller/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_huller), name='cetak_sk_izin_huller'),
+			url(r'^cetak-sk-izin-huller/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_sk_izin_huller), name='cetak_sk_izin_huller'),
+			url(r'^cetak-sk-izin-huller/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_izin_huller), name='cetak_sk_izin_huller'),
 			url(r'^view-pengajuan-penggilingan-padi-huller/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_huller), name='view_pengajuan_huller'),
 			# url(r'^cetak-bukti-pendaftaran-admin/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_bukti_admin_reklame), name='cetak_bukti_admin_reklame'),
 			)
