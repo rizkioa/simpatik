@@ -152,7 +152,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_iujk_asli(self, request, id_pengajuan_izin_):
+	def cetak_iujk_asli(self, request, id_pengajuan_izin_, salinan_=None):
 
 		extra_context = {}
 
@@ -262,6 +262,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'kualifikasi': pengajuan_.kualifikasi })
 		extra_context.update({'penanggung_jawab_teknis': teknis})
 		extra_context.update({'no_pjt_bu': no_pjt_bu})
+		extra_context.update({'salinan':salinan_})
 
 		
 		li = ''
@@ -405,6 +406,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		urls = super(DetilIUJKAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-iujk/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli), name='cetak_iujk_asli'),
+			url(r'^cetak-iujk/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_iujk_asli), name='cetak_iujk_asli'),
 			url(r'^cetak-iujk-hal-2/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli_hal_2), name='cetak_iujk_asli_hal2'),
 			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
 			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),

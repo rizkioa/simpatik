@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.shortcuts import get_object_or_404
-
+from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
 from perusahaan.models import Perusahaan, KBLI
 from accounts.models import NomorIdentitasPengguna
@@ -116,7 +116,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		pengajuan_ho = len(DetilHO.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
 		pengajuan_huller = len(DetilHuller.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
 		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_reklame': pengajuan_reklame, 'pengajuan_tdp': pengajuan_tdp, 'pengajuan_uijk':pengajuan_uijk, 'pengajuan_imb':pengajuan_imb, 'pengajuan_ho':pengajuan_ho, 'pengajuan_huller':pengajuan_huller }
-		return HttpResponse(json.dumps(data))
+		return CORSHttpResponse(json.dumps(data))
 
 	def ajax_load_pengajuan_siup(self, request, id_pengajuan_):
 		data = ""
@@ -176,7 +176,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(DetilSIUPAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^ajax-dashboard/$', self.admin_site.admin_view(self.ajax_dashboard), name='ajax_dashboard'),
+			url(r'^ajax-dashboard/$', self.ajax_dashboard, name='ajax_dashboard'),
 			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
 			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
 			url(r'^detil-siup-view/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.detil_siup_view), name='detil_siup_view'),
