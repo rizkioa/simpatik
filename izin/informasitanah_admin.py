@@ -408,11 +408,11 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		urls = super(InformasiTanahAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
-			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
+			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
 			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
-			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
+			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
 			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
-			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
+			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
 			url(r'^view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_lokasi), name='view_pengajuan_izin_lokasi'),
 			url(r'^ippt-usaha/view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_ippt_usaha), name='view_pengajuan_ippt_usaha'),
 			)
