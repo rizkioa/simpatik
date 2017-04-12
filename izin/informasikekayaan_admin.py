@@ -142,6 +142,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -175,6 +176,7 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
 					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
 					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
