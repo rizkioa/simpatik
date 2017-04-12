@@ -236,6 +236,7 @@
 						{% endif %}
 						{% if skizin_status == 1 %}
 							<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_lokasi' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+							<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_lokasi' pengajuan_id True %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
 						{% endif %}
 					{% else %}
 						{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
@@ -243,6 +244,7 @@
 						{% endif %}
 						{% if skizin_status == 1 %}
 							<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_ippt_rumah' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+							<a onclick="openPopupCenter('{% url 'admin:cetak_sk_izin_ippt_rumah' pengajuan_id True %}','Cetak Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
 						{% endif %}
 					{% endif %}
 

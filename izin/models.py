@@ -25,11 +25,32 @@ class Pemohon(Account):
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
 	def as_json(self):
-		tanggal_lahir = ''
+		tanggal_lahir = '-'
 		if self.tanggal_lahir:
 			tanggal_lahir = self.tanggal_lahir.strftime("%d-%m-%Y")
-		return dict(id=self.id,username=self.username, nama_lengkap=self.nama_lengkap, jabatan_pemohon=self.jabatan_pemohon, alamat=self.alamat, tempat_lahir=self.tempat_lahir,
-					tanggal_lahir=tanggal_lahir,telephone=self.telephone, kewarganegaraan=self.kewarganegaraan)
+		jenis_pemohon =  '-'
+		if self.jenis_pemohon:
+			jenis_pemohon = self.jenis_pemohon.jenis_pemohon
+		jabatan_pemohon = '-'
+		if self.jabatan_pemohon:
+			jabatan_pemohon = self.jabatan_pemohon
+		alamat_lengkap = '-'
+		if self.alamat and self.desa:
+			alamat_lengkap = str(self.alamat)+', Ds. '+str(self.desa.nama_desa)+', Kec. '+str(self.desa.kecamatan.nama_kecamatan)+', '+str(self.desa.kecamatan.kabupaten.nama_kabupaten)+', Prov. '+str(self.desa.kecamatan.kabupaten.provinsi.nama_provinsi)
+		email = '-'
+		if self.email:
+			email = self.email
+		pekerjaan = '-'
+		if self.pekerjaan:
+			pekerjaan = self.pekerjaan
+		kewarganegaraan = '-'
+		if self.kewarganegaraan:
+			kewarganegaraan = self.kewarganegaraan
+		hp = '-'
+		if self.hp:
+			hp = self.hp
+		return dict(id=self.id,username=self.username, nama_lengkap=self.nama_lengkap, jabatan_pemohon=jabatan_pemohon, alamat=self.alamat, tempat_lahir=self.tempat_lahir,
+					tanggal_lahir=tanggal_lahir,telephone=self.telephone, hp=hp, jenis_pemohon=jenis_pemohon, alamat_lengkap=alamat_lengkap, email=email, pekerjaan=pekerjaan, kewarganegaraan=kewarganegaraan)
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+"</option>"
@@ -112,7 +133,7 @@ class DasarHukum(models.Model):
 		return "#"
 
 	def __unicode__(self):
-		return "%s" % (self.nomor)
+		return "No. %s Tahun %s" % (self.nomor, self.tahun)
 
 	class Meta:
 		ordering = ['id']
@@ -232,6 +253,33 @@ class PengajuanIzin(AtributTambahan):
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
+	def as_json(self):
+		jenis_permohonan = ''
+		if self.jenis_permohonan:
+			jenis_permohonan = self.jenis_permohonan.jenis_permohonan_izin
+		pemohon = ''
+		if self.pemohon:
+			pemohon = self.pemohon.nama_lengkap
+		kelompok_jenis_izin = ''
+		if self.kelompok_jenis_izin:
+			kelompok_jenis_izin = self.kelompok_jenis_izin.kelompok_jenis_izin
+		no_pengajuan = ''
+		if self.no_pengajuan:
+			no_pengajuan = self.no_pengajuan
+		no_izin = ''
+		if self.no_izin:
+			no_izin = self.no_izin
+		nama_kuasa = ''
+		if self.nama_kuasa:
+			nama_kuasa = self.nama_kuasa
+		no_identitas_kuasa = ''
+		if self.no_identitas_kuasa:
+			no_identitas_kuasa = self.no_identitas_kuasa
+		telephone_kuasa = ''
+		if self.telephone_kuasa:
+			telephone_kuasa = self.telephone_kuasa
+		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa)
+
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Pengajuan Izin'
@@ -259,6 +307,32 @@ class DetilSIUP(PengajuanIzin):
 
 	def __unicode__(self):
 		return u'Detil SIUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	def as_json(self):
+		bentuk_kegiatan_usaha = ''
+		if self.bentuk_kegiatan_usaha:
+			bentuk_kegiatan_usaha = self.bentuk_kegiatan_usaha.kegiatan_usaha
+		kekayaan_bersih = ''
+		if self.kekayaan_bersih:
+			kekayaan_bersih = 'Rp. '+str(self.kekayaan_bersih)
+		total_nilai_saham = ''
+		if self.total_nilai_saham:
+			total_nilai_saham = 'Rp. '+str(self.total_nilai_saham)
+		presentase_saham_nasional = '0 %'
+		if self.presentase_saham_nasional:
+			presentase_saham_nasional = str(self.presentase_saham_nasional)+' %'
+		presentase_saham_asing = '0 %'
+		if self.presentase_saham_asing:
+			presentase_saham_asing = str(self.presentase_saham_asing)+' %'
+		kelembagaan = []
+		if self.kelembagaan:
+			kelembagaan_list = self.kelembagaan.all()
+			kelembagaan = [x.as_json() for x in kelembagaan_list]
+		kbli = []
+		if self.kbli:
+			kbli_list = self.kbli.all()
+			kbli = [x.as_json() for x in kbli_list]
+		return dict(bentuk_kegiatan_usaha=bentuk_kegiatan_usaha, kekayaan_bersih=kekayaan_bersih, total_nilai_saham=total_nilai_saham, presentase_saham_nasional=presentase_saham_nasional, presentase_saham_asing=presentase_saham_asing, kelembagaan=kelembagaan, kbli=kbli)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -341,6 +415,35 @@ class SKIzin(AtributTambahan):
 	status_perusahaan = models.CharField(max_length=255, verbose_name="Status Perusahaan", null=True, blank=True)
 	body_html = RichTextField(null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+
+	def as_json(self):
+		nama_pejabat = '-'
+		if self.nama_pejabat:
+			nama_pejabat = self.nama_pejabat
+		jabatan_pejabat = '-'
+		if self.jabatan_pejabat:
+			jabatan_pejabat = self.jabatan_pejabat
+		nip_pejabat = '-'
+		if self.nip_pejabat:
+			nip_pejabat = self.nip_pejabat
+		masa_berlaku_izin = '-'
+		if self.masa_berlaku_izin:
+			masa_berlaku_izin = self.masa_berlaku_izin.strftime('%d-%m-%Y')
+		status_pendaftaran = '-'
+		if self.status_pendaftaran:
+			status_pendaftaran = self.status_pendaftaran
+		status_pembaharuan_ke = '-'
+		if self.status_pembaharuan_ke:
+			status_pembaharuan_ke = self.status_pembaharuan_ke
+		status_perusahaan = '-'
+		if self.status_perusahaan:
+			status_perusahaan = self.status_perusahaan
+		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan)
+
+	class Meta:
+		# ordering = ['-status', '-updated_at',]
+		verbose_name = 'SKIzin'
+		verbose_name_plural = 'SKIzin'
 	
 class Riwayat(AtributTambahan):
 	alasan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
@@ -351,6 +454,13 @@ class Riwayat(AtributTambahan):
 
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.pengajuan_izin), str(self.sk_izin))
+
+	def as_json(self):
+		# pemohon = ''
+		# if self.pengajuan_izin.pemohon:
+		# 	pemohon = self.pengajuan_izin.pemohon.nama_lengkap
+		created_at = self.created_at.strftime('%d-%m-%Y %I:%M:%S %p')
+		return dict(created_at=str(created_at), keterangan=self.keterangan, created_by=self.created_by.nama_lengkap)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]

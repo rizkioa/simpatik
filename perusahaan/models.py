@@ -57,6 +57,9 @@ class Kelembagaan(models.Model):
 	def __unicode__(self):
 		return "%s" % (self.kelembagaan)
 
+	def as_json(self):
+		return dict(kelembagaan=self.kelembagaan)
+
 	def as_dict(self):
 		return {
 			# "id": self.id,
@@ -153,8 +156,21 @@ class Perusahaan(AtributTambahan):
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
+
 	def as_json(self):
-		return dict(id=self.id, nomor_tdp=self.nomor_tdp, nama_perusahaan=self.nama_perusahaan, alamat_perusahaan=self.alamat_perusahaan, desa=self.desa.id, kecamatan=self.desa.kecamatan.id, kabupaten=self.desa.kecamatan.kabupaten.id, provinsi=self.desa.kecamatan.kabupaten.provinsi.id, kode_pos=self.kode_pos, telepon=self.telepon, fax=self.fax, email=self.email, npwp=self.npwp, status_perusahaan=self.status_perusahaan, kegiatan_usaha=self.kegiatan_usaha, nama_kabupaten=self.desa.kecamatan.kabupaten.nama_kabupaten, nama_provinsi=self.desa.kecamatan.kabupaten.provinsi.nama_provinsi)
+		email = '-'
+		if self.email:
+			email = self.email
+		alamat_lengkap = '-'
+		if self.alamat_perusahaan and self.desa:
+			alamat_lengkap = str(self.alamat_perusahaan)+', Ds. '+str(self.desa.nama_desa)+', Kec. '+str(self.desa.kecamatan.nama_kecamatan)+', '+str(self.desa.kecamatan.kabupaten.nama_kabupaten)+', Prov. '+str(self.desa.kecamatan.kabupaten.provinsi.nama_provinsi)
+		kode_pos = '-'
+		if self.kode_pos:
+			kode_pos = self.kode_pos
+		fax = '-'
+		if self.fax:
+			fax = self.fax
+		return dict(id=self.id, nomor_tdp=self.nomor_tdp, nama_perusahaan=self.nama_perusahaan, alamat_perusahaan=self.alamat_perusahaan, kecamatan=self.desa.kecamatan.id, kabupaten=self.desa.kecamatan.kabupaten.id,  provinsi=self.desa.kecamatan.kabupaten.provinsi.id, kode_pos=kode_pos, telepon=self.telepon, fax=fax, email=email, npwp=self.npwp, status_perusahaan=self.status_perusahaan, kegiatan_usaha=self.kegiatan_usaha, desa=self.desa.id, nama_desa=self.desa.nama_desa, nama_kabupaten=self.desa.kecamatan.kabupaten.nama_kabupaten, nama_provinsi=self.desa.kecamatan.kabupaten.provinsi.nama_provinsi, nama_kecamatan=self.desa.kecamatan.nama_kecamatan, alamat_lengkap=alamat_lengkap)
 
 	def __unicode__ (self):
 		return "%s" % (self.nama_perusahaan)
