@@ -7,7 +7,7 @@ from django.db import models
 
 from django.utils.deconstruct import deconstructible
 
-from master.models import JenisNomorIdentitas, Desa, AtributTambahan, Berkas
+from master.models import JenisNomorIdentitas, Desa, MetaAtribut, Berkas
 
 from uuid import uuid4
 
@@ -67,7 +67,7 @@ class AccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-class IdentitasPribadi(AtributTambahan):
+class IdentitasPribadi(MetaAtribut):
 	nama_lengkap = models.CharField("Nama Lengkap", max_length=100)
 
 	tempat_lahir = models.CharField(max_length=30, verbose_name='Tempat Lahir', null=True, blank=True)
