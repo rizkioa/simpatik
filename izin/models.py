@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, AtributTambahan, Berkas, JenisReklame,JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi, JenisKualifikasi
+from master.models import JenisPemohon, Berkas, JenisReklame,JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi, JenisKualifikasi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -232,7 +232,7 @@ class JenisPermohonanIzin(models.Model):
 		verbose_name ='Jenis Permohonan Izin'
 		verbose_name_plural = 'Jenis Permohonan Izin'
 
-class PengajuanIzin(AtributTambahan):
+class PengajuanIzin(MetaAtribut):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
 	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
@@ -363,7 +363,7 @@ class DetilReklame(PengajuanIzin):
 		verbose_name = 'Detil Reklame'
 		verbose_name_plural = 'Detil Reklame'
 
-class DetilReklameIzin(AtributTambahan):
+class DetilReklameIzin(MetaAtribut):
 	detil_reklame = models.ForeignKey(DetilReklame, verbose_name='Detil Reklame', blank=True,null=True)
 	tipe_reklame = models.ForeignKey(JenisTipeReklame,verbose_name='Tipe Reklame',blank=True,null=True)
 	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame',blank=True,null=True)
@@ -398,7 +398,7 @@ class DetilReklameIzin(AtributTambahan):
 		verbose_name = 'Detil Reklame Izin'
 		verbose_name_plural = 'Detil Reklame Izin'
 
-class SKIzin(AtributTambahan):
+class SKIzin(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin')
 	isi = models.TextField(verbose_name="Isi", blank=True, null=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_sk', blank=True, null=True)
@@ -445,7 +445,7 @@ class SKIzin(AtributTambahan):
 		verbose_name = 'SKIzin'
 		verbose_name_plural = 'SKIzin'
 	
-class Riwayat(AtributTambahan):
+class Riwayat(MetaAtribut):
 	alasan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 	sk_izin = models.ForeignKey(SKIzin, verbose_name='SK Izin', null=True, blank=True)
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin', null=True, blank=True)
@@ -689,7 +689,7 @@ class DetilTDP(PengajuanIzin):
 		verbose_name = 'Detil TDP'
 		verbose_name_plural = 'Detil TDP'
 
-class IzinLain(AtributTambahan):
+class IzinLain(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, related_name='izin_lain_pengajuan_izin', verbose_name='Izin Lain')
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	no_izin = models.CharField(max_length=255, verbose_name='nomor izin', blank=True, null=True)
