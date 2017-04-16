@@ -752,7 +752,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 		return u'Detil IMB Papan Reklame %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil IMB Papan Reklame'
 		verbose_name_plural = 'Detil IMB Papan Reklame'
 
@@ -787,7 +787,7 @@ class DetilIMB(PengajuanIzin):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil IMB'
 		verbose_name_plural = 'Detil IMB'
 
@@ -817,7 +817,7 @@ class DetilSk(models.Model):
 		return u'Detil SK %s - %s' % (str(self.pengajuan_izin.kelompok_jenis_izin), str(self.pengajuan_izin.pemohon))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil SK'
 		verbose_name_plural = 'Detil SK'
 
@@ -835,7 +835,7 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 		return u'Detil Informasi Kekayaan Daerah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Informasi Kekayaan Daerah'
 		verbose_name_plural = 'Informasi Kekayaan Daerah'
 
@@ -871,7 +871,7 @@ class DetilHO(PengajuanIzin):
 		return u'Detil HO %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil HO'
 		verbose_name_plural = 'Detil HO'
 
@@ -1005,7 +1005,7 @@ class InformasiTanah(PengajuanIzin):
 		return u'Detil Informasi Tanah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Informasi Tanah'
 		verbose_name_plural = 'Informasi Tanah'
 
@@ -1034,7 +1034,7 @@ class SertifikatTanah(models.Model):
 		return dict(no_sertifikat_petak=self.no_sertifikat_petak, luas_sertifikat_petak=str(self.luas_sertifikat_petak),atas_nama_sertifikat_petak=self.atas_nama_sertifikat_petak, tahun_sertifikat=self.tahun_sertifikat.strftime("%d-%m-%Y"))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Sertifikat Tanah'
 		verbose_name_plural = 'Sertifikat Tanah'
 
@@ -1059,7 +1059,7 @@ class PenggunaanTanahIPPTUsaha(models.Model):
 		return dict(nama_penggunaan=self.nama_penggunaan, ukuran_penggunaan=self.ukuran_penggunaan)
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Penggunaan Tanah IPPT Usaha'
 		verbose_name_plural = 'Penggunaan Tanah IPPT Usaha'
 
@@ -1092,7 +1092,7 @@ class PerumahanYangDimilikiIPPTUsaha(models.Model):
 		return dict(nama_perumahan=self.nama_perumahan, luas_tanah=luas_tanah,status_tanah= self.status_tanah,desa= desa,kecamatan= kecamatan)
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Perumahan Yang Sudah Dimiliki IPPT Usaha'
 		verbose_name_plural = 'Perumahan Yang Sudah Dimiliki IPPT Usaha'
 
@@ -1123,7 +1123,7 @@ class DetilHuller(PengajuanIzin):
 		return u'Detil Huller %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Huller'
 		verbose_name_plural = 'Huller'
 
@@ -1136,7 +1136,7 @@ class JenisMesin(models.Model):
 		return u'%s' % (str(self.jenis_mesin),)
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Jenis Mesin'
 		verbose_name_plural = 'Jenis Mesin'
 
@@ -1151,7 +1151,7 @@ class MesinHuller(models.Model):
 		return u'%s - %s' % (str(self.jenis_mesin), str(self.mesin_huller))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Mesin Huller'
 		verbose_name_plural = 'Mesin Huller'
 
@@ -1171,7 +1171,7 @@ class MesinPerusahaan(models.Model):
 		return u'%s - %s' % (str(self.mesin_huller), str(self.detil_huller))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Mesin Perusahaan'
 		verbose_name_plural = 'Mesin Perusahaan'	
 
@@ -1282,7 +1282,7 @@ class DetilTDUP(PengajuanIzin):
 		return data
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'TDUP'
 		verbose_name_plural = 'TDUP'
 
@@ -1315,7 +1315,7 @@ class DetilPembayaran(models.Model):
 		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil Pembayaran'
 		verbose_name_plural = 'Detil Pembayaran'
 
@@ -1359,7 +1359,7 @@ class DetilLPKSW(PengajuanIzin):
 		return u'Detil LPKSW %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil LPKSW'
 		verbose_name_plural = 'Detil LPKSW'
 
@@ -1442,7 +1442,7 @@ class DetilIPCTKI(PengajuanIzin):
 		return u'Detil IPCTKI %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil IPCTKI'
 		verbose_name_plural = 'Detil IPCTKI'
 # ++++++++++++ end IPCTKI +++++++++
@@ -1454,7 +1454,7 @@ class DetilUP3CTKI(PengajuanIzin):
 		return u'Detil UP3CTKI %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil UP3CTKI'
 		verbose_name_plural = 'Detil UP3CTKI'
 # ++++++++++++ end UP3CTKI +++++++++++
@@ -1499,7 +1499,7 @@ class DetilIUTM(PengajuanIzin):
 		return u'Detil IUTM %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
-		ordering = ['-status']
+		# ordering = ['-status']
 		verbose_name = 'Detil IUTM'
 		verbose_name_plural = 'Detil IUTM'
 # +++++++++++ end IUTM +++++++++++++
