@@ -242,13 +242,43 @@ class Desa(models.Model):
 	lt = models.CharField(max_length=100, null=True, blank=True, verbose_name='Latitute')
 	lg = models.CharField(max_length=100, null=True, blank=True, verbose_name='Longitute')
 	kode = models.CharField(max_length=10, null=True, blank=True, verbose_name='Kode')
-	
+
+	def __unicode__(self):
+		return "%s" % (self.nama_desa,)
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_desa)+"</option>"
 
-	def __unicode__(self):
-		return "%s" % (self.nama_desa,)
+	def lokasi_lengkap(self):
+		data = ''
+		if self.kecamatan:
+			if self.kecamatan.kabupaten:
+				if self.kecamatan.kabupaten.provinsi:
+					data = 'Ds. '+str(self.nama_desa)+', Kec. '+str(self.kecamatan.nama_kecamatan)+', '+str(self.kecamatan.kabupaten.nama_kabupaten)+', Prov. '+str(self.kecamatan.kabupaten.provinsi.nama_provinsi)
+		return data
+
+	def as_json(self):
+		id_desa = ''
+		id_kecamatan = ''
+		id_kabupaten = ''
+		id_provinsi = ''
+		nama_desa = ''
+		nama_kecamatan = ''
+		nama_kabupaten = ''
+		nama_provinsi = ''
+		if self.nama_desa:
+			id_desa = str(self.id)
+			nama_desa = str(self.nama_desa)
+		if self.kecamatan:
+			id_kecamatan = str(self.kecamatan.id)
+			nama_kecamatan = str(self.kecamatan.nama_kecamatan)
+			if self.kecamatan.kabupaten:
+				id_kabupaten = str(self.kecamatan.kabupaten.id)
+				nama_kabupaten = str(self.kecamatan.kabupaten.nama_kabupaten)
+				if self.kecamatan.kabupaten.provinsi:
+					id_provinsi = str(self.kecamatan.kabupaten.provinsi.id)
+					nama_provinsi = str(self.kecamatan.kabupaten.provinsi.nama_provinsi)
+		return dict(id_desa=id_desa, nama_desa=nama_desa, id_kecamatan=id_kecamatan, nama_kecamatan=nama_kecamatan, id_kabupaten=id_kabupaten, nama_kabupaten=nama_kabupaten, id_provinsi=id_provinsi, nama_provinsi=nama_provinsi)
 
 	class Meta:
 		ordering = ['nama_desa']

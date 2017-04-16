@@ -393,6 +393,9 @@ urlpatterns = [
     url(r'^layanan/tdup/konfirmasi/ajax/(?P<pengajuan_id>[0-9]+)$', tdup_views.ajax_konfirmasi_tdup, name='ajax_konfirmasi_tdup'),
     url(r'^layanan/tdup/cetak/(?P<id_pengajuan>[0-9]+)$', views.cetak_tdup, name='cetak_tdup'),
     url(r'^layanan/tdup/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', views.cetak_bukti_pendaftaran_tdup, name='cetak_bukti_pendaftaran_tdup'),
+    url(r'^layanan/tdup/data-izin-lain/save$', tdup_views.save_data_izin_lain, name='tdup_save_data_izin_lain'),
+    url(r'^layanan/tdup/data-izin-lain/delete/(?P<id_izin_lain>[0-9]+)$', tdup_views.delete_data_izin_lain, name='tdup_delete_data_izin_lain'),
+    url(r'^layanan/tdup/data-izin-lain/load/(?P<id_pengajuan>[0-9]+)$', tdup_views.load_data_izin_lain, name='tdup_load_data_izin_lain'),
     ########################## end save tdup ##########################
 
     url(r'^list-track-pengajuan/(?P<id_pengajuan>[0-9]+)$', views.list_track_pengajuan, name='list_track_pengajuan'),

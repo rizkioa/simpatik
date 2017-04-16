@@ -1,7 +1,7 @@
 import os, json, datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from izin.models import DetilTDUP, RincianSubJenis
+from izin.models import DetilTDUP, RincianSubJenis, IzinLainTDUP
 from izin.izin_forms import RincianSubJenisForm, KeteranganUsahaTDUPForm
 from izin.tdp_forms import BerkasForm
 from master.models import Berkas
@@ -140,7 +140,6 @@ def tdup_keterangan_usaha_save(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			if 'id_kelompok_izin' in request.COOKIES.keys():
-				# print "masuk save"
 				try:
 					pengajuan = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
 					keteranganform = KeteranganUsahaTDUPForm(request.POST, instance=pengajuan)
@@ -182,33 +181,33 @@ def tdup_keterangan_usaha_ajax(request, id_pengajuan):
 			kecamatan = ''
 			desa = ''
 			telephone = ''
-			nomor_izin_gangguan = ''
-			tanggal_izin_gangguan = ''
+			# nomor_izin_gangguan = ''
+			# tanggal_izin_gangguan = ''
 			nomor_dokumen_pengelolaan = ''
 			tanggal_dokumen_pengelolaan = ''
+			lokasi_lengkap = ''
 			if pengajuan:
 				nama_usaha = pengajuan.nama_usaha
 				lokasi_usaha_pariwisata = pengajuan.lokasi_usaha_pariwisata
-				provinsi = pengajuan.desa_lokasi.kecamatan.kabupaten.provinsi.id
-				kabupaten = pengajuan.desa_lokasi.kecamatan.kabupaten.id
-				kecamatan = pengajuan.desa_lokasi.kecamatan.id
-				desa = pengajuan.desa_lokasi.id
 				telephone = pengajuan.telephone
-				nomor_izin_gangguan = pengajuan.nomor_izin_gangguan
-				tanggal_izin_gangguan = pengajuan.tanggal_izin_gangguan.strftime('%d-%m-%Y')
-				nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
-				tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
-				data = {'success': True, 'pesan': 'Load data keterangan usaha', 'data':{ 'nama_usaha':nama_usaha, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'desa':desa, 'telephone':telephone, 'nomor_izin_gangguan':nomor_izin_gangguan, 'tanggal_izin_gangguan':tanggal_izin_gangguan, 'nomor_dokumen_pengelolaan':nomor_dokumen_pengelolaan, 'tanggal_dokumen_pengelolaan':tanggal_dokumen_pengelolaan}}
-				data = json.dumps(data)
-				response = HttpResponse(data)
+				# if pengajuan.nomor_izin_gangguan:
+				# 	nomor_izin_gangguan = pengajuan.nomor_izin_gangguan
+				# tanggal_izin_gangguan = pengajuan.tanggal_izin_gangguan.strftime('%d-%m-%Y')
+				if pengajuan.nomor_dokumen_pengelolaan:
+					nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
+				if pengajuan.tanggal_dokumen_pengelolaan:
+					tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
+				# nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
+				# tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
+				if pengajuan.desa_lokasi:
+					lokasi_lengkap = pengajuan.desa_lokasi.as_json()
+				data = {'success': True, 'pesan': 'Load data keterangan usaha', 'data':{ 'nama_usaha':nama_usaha, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'telephone':telephone, 'nomor_dokumen_pengelolaan':nomor_dokumen_pengelolaan, 'tanggal_dokumen_pengelolaan':tanggal_dokumen_pengelolaan, 'lokasi_lengkap': lokasi_lengkap}}
 		except ObjectDoesNotExist:
-			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-			data = json.dumps(data)
-			response = HttpResponse(data)
+			data = {'success': False, 'pesan': 'Data Pengajuan tidak ditemukan/data kosong' }
 	else:
-		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-		data = json.dumps(data)
-		response = HttpResponse(data)
+		data = {'success': False, 'pesan': 'Data Pengajuan tidak ditemukan/data kosong' }
+	data = json.dumps(data)
+	response = HttpResponse(data)
 	return response
 
 def tdup_upload_berkas(request):
@@ -629,10 +628,14 @@ def ajax_konfirmasi_tdup(request, pengajuan_id):
 				lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata) + ', Ds. ' +str(pengajuan_.desa_lokasi)+', Kec. '+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)+', Prov. '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten.provinsi)
 			if pengajuan_.telephone:
 				telephone = pengajuan_.telephone
-			if pengajuan_.nomor_izin_gangguan:
-				nomor_izin_gangguan = pengajuan_.nomor_izin_gangguan
-			if pengajuan_.tanggal_izin_gangguan:
-				tanggal_izin_gangguan = pengajuan_.tanggal_izin_gangguan.strftime('%d-%m-%Y')
+			# if pengajuan_.nomor_izin_gangguan:
+			# 	nomor_izin_gangguan = pengajuan_.nomor_izin_gangguan
+			# if pengajuan_.tanggal_izin_gangguan:
+			# 	tanggal_izin_gangguan = pengajuan_.tanggal_izin_gangguan.strftime('%d-%m-%Y')
+			izin_lain_json = []
+			izin_lain_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
+			if izin_lain_list:
+				izin_lain_json = [x.as_json() for x in izin_lain_list]
 			if pengajuan_.nomor_dokumen_pengelolaan:
 				nomor_dokumen_pengelolaan = pengajuan_.nomor_dokumen_pengelolaan
 			if pengajuan_.tanggal_dokumen_pengelolaan:
@@ -646,6 +649,7 @@ def ajax_konfirmasi_tdup(request, pengajuan_id):
 					'tanggal_izin_gangguan': tanggal_izin_gangguan,
 					'nomor_dokumen_pengelolaan': nomor_dokumen_pengelolaan,
 					'tanggal_dokumen_pengelolaan': tanggal_dokumen_pengelolaan,
+					'izin_lain_json': izin_lain_json
 				}
 			}
 			###################################
@@ -654,3 +658,43 @@ def ajax_konfirmasi_tdup(request, pengajuan_id):
 			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon, data_perusahaan, keterangan_usaha, data_kuasa, data_usaha
 			response = HttpResponse(json.dumps(data))
 			return response
+
+def save_data_izin_lain(request):
+	# izin_lain_obj, created = IzinLainTDUP.objects.get_or_create(id=id_izin_lain)
+	pengajuan_id = request.POST.get('pengajuan_id')
+	if pengajuan_id:
+		no_izin = request.POST.get('nomor_izin', None)
+		tanggal_izin = request.POST.get('tanggal_izin', None)
+		print tanggal_izin
+		if tanggal_izin:
+			tanggal_izin = datetime.datetime.strptime(tanggal_izin, '%d-%m-%Y').strftime('%Y-%m-%d')
+		izin_lain_obj = IzinLainTDUP(detil_tdup_id=pengajuan_id, no_izin=no_izin, tanggal_izin=tanggal_izin)
+		izin_lain_obj.save()
+		data = {'success': True, 'pesan': 'Simpan berhasil'}
+	else:
+		data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def delete_data_izin_lain(request, id_izin_lain):
+	if id_izin_lain:
+		try:
+			i = IzinLainTDUP.objects.get(id=id_izin_lain)
+			i.delete()
+			data = {'success': True, 'pesan': 'Data berhasil dihapus.'}
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	else:
+		data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	data = json.dumps(data)
+	return HttpResponse(data)
+
+def load_data_izin_lain(request, id_pengajuan):
+	izin_lain_json = []
+	if id_pengajuan:
+		izin_lain_list = IzinLainTDUP.objects.filter(detil_tdup_id=id_pengajuan)
+		if izin_lain_list:
+			izin_lain_json = [x.as_json() for x in izin_lain_list]
+	data = {'success': True, 'pesan': 'load konfirmasi berhasil', 'izin_lain_json': izin_lain_json}
+	response = HttpResponse(json.dumps(data))
+	return response

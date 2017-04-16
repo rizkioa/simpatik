@@ -476,6 +476,7 @@ function set_value_keterangan_usaha(pengajuan_id){
       url: __base_url__+'/layanan/tdup/keterangan-usaha/ajax/'+pengajuan_id,
       success: function (data) {
         respon_keterangan_usaha = $.parseJSON(data)
+        console.log(respon_keterangan_usaha)
         if (respon_keterangan_usaha.success){
           $('#id_nama_usaha').val(respon_keterangan_usaha.data.nama_usaha);
           $('#id_lokasi_usaha_pariwisata').val(respon_keterangan_usaha.data.lokasi_usaha_pariwisata);
@@ -484,20 +485,26 @@ function set_value_keterangan_usaha(pengajuan_id){
           $('#id_tanggal_izin_gangguan').val(respon_keterangan_usaha.data.tanggal_izin_gangguan);
           $('#id_nomor_dokumen_pengelolaan').val(respon_keterangan_usaha.data.nomor_dokumen_pengelolaan);
           $('#id_tanggal_dokumen_pengelolaan').val(respon_keterangan_usaha.data.tanggal_dokumen_pengelolaan);
-          $('#id_provinsi-3').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-          load_kabupaten_(respon.data.provinsi, '#id_kabupaten-3')
-          setTimeout(function(){
-            $('#id_kabupaten-3').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-          }, 1000);
-          load_kecamatan_(respon.data.kabupaten, '#id_kecamatan-3')
-          setTimeout(function(){
-            $('#id_kecamatan-3').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-          }, 1000);
-          load_desa_(respon.data.kecamatan, '#id_desa-3')
-          setTimeout(function(){
-            $('#id_desa-3').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-          }, 1000);
+          if (respon_keterangan_usaha.data.lokasi_lengkap !== ""){
+            $('#id_provinsi-3').val(respon_keterangan_usaha.data.lokasi_lengkap.id_provinsi).prop('selected',true).trigger("chosen:updated");
+            load_kabupaten_(respon_keterangan_usaha.data.lokasi_lengkap.id_provinsi, '#id_kabupaten-3')
+            setTimeout(function(){
+              $('#id_kabupaten-3').val(respon_keterangan_usaha.data.lokasi_lengkap.id_kabupaten).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            load_kecamatan_(respon_keterangan_usaha.data.lokasi_lengkap.id_kabupaten, '#id_kecamatan-3')
+            setTimeout(function(){
+              $('#id_kecamatan-3').val(respon_keterangan_usaha.data.lokasi_lengkap.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+            load_desa_(respon_keterangan_usaha.data.lokasi_lengkap.id_kecamatan, '#id_desa-3')
+            setTimeout(function(){
+              $('#id_desa-3').val(respon_keterangan_usaha.data.lokasi_lengkap.id_desa).prop('selected',true).trigger("chosen:updated");
+            }, 1000);
+          }
+          
         }
+        $(".tab-content").mLoading('hide');
+      },
+      error: function(data){
         $(".tab-content").mLoading('hide');
       }
     })
@@ -589,6 +596,7 @@ function load_konfirmasi_tdup(pengajuan_id){
     url: __base_url__+'/layanan/tdup/konfirmasi/ajax/'+pengajuan_id,
     success: function (data) {
       resp = $.parseJSON(data)
+      console.log(resp)
       if (resp[0].success){
         // Pemohon
         $('#jenis_permohonan_konfirmasi').html(resp[1].pemohon.jenis_pengajuan)
@@ -672,8 +680,26 @@ function load_konfirmasi_tdup(pengajuan_id){
         $('#nama_usaha_konfirmasi').html(resp[3].keterangan_usaha.nama_usaha)
         $('#lokasi_usaha_pariwisata_konfirmasi').html(resp[3].keterangan_usaha.lokasi_usaha_pariwisata)
         $('#telephone_usaha_konfirmasi').html(resp[3].keterangan_usaha.telephone)
-        $('#nomor_izin_gangguan_konfirmasi').html(resp[3].keterangan_usaha.nomor_izin_gangguan)
-        $('#tanggal_gangguan_konfirmasi').html(resp[3].keterangan_usaha.tanggal_izin_gangguan)
+        // $('#nomor_izin_gangguan_konfirmasi').html(resp[3].keterangan_usaha.nomor_izin_gangguan)
+        // $('#tanggal_gangguan_konfirmasi').html(resp[3].keterangan_usaha.tanggal_izin_gangguan)
+        izin_lain_json = resp[3].keterangan_usaha.izin_lain_json
+        $('#konfirmasi_data_izin_lain > tbody').html('')
+        if (izin_lain_json.length > 0){
+          for (var i = 0; i < izin_lain_json.length; i++){
+            no = i
+            if(izin_lain_json.length > 1){
+              no = i+1
+            }
+            console.log(no)
+            
+            row = '<tr>'
+            row += '<td width="10%" style="padding-left:10px;">'+no+'</td>'
+            row += '<td width="20%">'+izin_lain_json[i].no_izin+'</td>'
+            row += '<td width="20%">'+izin_lain_json[i].tanggal_izin+'</td>'
+            row += '</tr>'
+            $('#konfirmasi_data_izin_lain > tbody').append(row)
+          }
+        }
         $('#nomor_dokumen_pengelolaan_konfirmasi').html(resp[3].keterangan_usaha.nomor_dokumen_pengelolaan)
         $('#tanggal_dokumen_pengelolaan_konfirmasi').html(resp[3].keterangan_usaha.tanggal_dokumen_pengelolaan)
       }
@@ -759,6 +785,7 @@ $(window).load(function(){
           load_provinsi_(1, '#id_provinsi-3')
           if ($.cookie('id_pengajuan') !== '0'){
             set_value_keterangan_usaha($.cookie('id_pengajuan'))
+            load_data_izin_lain($.cookie('id_pengajuan'))
           }
         }
         if($current == 6){

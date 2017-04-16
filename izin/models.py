@@ -1262,6 +1262,12 @@ class DetilTDUP(PengajuanIzin):
 	def __unicode__(self):
 		return u'Detil TDUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
+	def alamat_lengkap(self):
+		data = ''
+		if self.desa_lokasi and self.lokasi_usaha_pariwisata:
+			data = str(self.lokasi_usaha_pariwisata)+self.desa_lokasi.lokasi_lengkap()
+		return data
+
 	class Meta:
 		ordering = ['-status']
 		verbose_name = 'TDUP'
@@ -1273,7 +1279,10 @@ class IzinLainTDUP(models.Model):
 	tanggal_izin = models.DateField(verbose_name="Tanggal Izin", null=True, blank=True)
 
 	def as_json(self):
-		return dict(id=self.id, no_izin=self.no_izin, tanggal_izin=self.tanggal_izin.strftime("%d-%m-%Y"))
+		tanggal_izin = ''
+		if self.tanggal_izin:
+			tanggal_izin = self.tanggal_izin.strftime("%d-%m-%Y")
+		return dict(id=self.id, no_izin=self.no_izin, tanggal_izin=tanggal_izin)
 
 	class Meta:
 		verbose_name = 'Izin Lain TDUP'

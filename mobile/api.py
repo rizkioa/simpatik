@@ -193,10 +193,23 @@ class AccountsResource(CORSModelResource):
 	def request_user(self, request, **kwargs):
 		self.is_authenticated(request)
 		user_ = request.user
-
+		# print "#######################"
+		# print user_.get_foto()
+		
 		# user_ = Account.objects.filter(id=user_.id).last()
+		jabatan = ''
+		group = user_.groups.all()
+		# print group
+		# print "#######################"
+		if user_.is_superuser:
+			jabatan = 'Superuser'
+		elif group:
+			pegawai_obj = Pegawai.objects.filter(id=user_.id).last()
+			if pegawai_obj:
+				if pegawai_obj.jabatan:
+					jabatan = pegawai_obj.jabatan.nama_jabatan
 
-		data = {'data':{'nama_lengkap':user_.nama_lengkap, 'gelar_depan': user_.gelar_depan, 'gelar_belakang': user_.gelar_belakang}}
+		data = {'data':{'nama_lengkap':user_.nama_lengkap, 'gelar_depan': user_.gelar_depan, 'gelar_belakang': user_.gelar_belakang, 'foto': user_.get_foto(), 'jabatan':jabatan}}
 		data = json.dumps(data)
 		return CORSHttpResponse(data)
 
