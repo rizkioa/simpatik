@@ -184,6 +184,12 @@
                 </tr>
               </table>
               <hr class="style2">
+              {% if salinan == 'True' %}
+              <div align="right" style="margin-top: -7px;">
+                <font style="font-size: 15px;letter-spacing:  0.01cm;"><b>SALINAN<br></b></font>
+              </div>
+              {% else %}
+              {% endif %}
               <center>
                 <font style="font-size: 15px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
             PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
@@ -264,142 +270,150 @@
             </table>
             </div>
         </div>
-      <div class="page">
-        <div class="subpage">
-            <center>
-              <font><b>MEMUTUSKAN :</b>
-              </font>
-            </center>
-            <table width="100%" border="0" class="sk-justify">
+
+      {% if salinan == 'True'%}
+        <div class="page">
+          <div class="subpage">
+              <center>
+                <font><b>MEMUTUSKAN :</b>
+                </font>
+              </center>
+              <table width="100%" border="0" class="sk-justify">
+                  <tr>
+                    <td width="30" style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;" >:</td>
+                    <td colspan="3"></td>
+                  </tr>
                 <tr>
-                  <td width="30" style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
-                  <td width="10" style="vertical-align: top;padding-top: 1px;" >:</td>
-                  <td colspan="3"></td>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="4">Memberikan izin Penggilingan Padi, Huller dan Penyosohan Beras yang Menetap kepada :</td>
                 </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td colspan="4">Memberikan izin Penggilingan Padi, Huller dan Penyosohan Beras yang Menetap kepada :</td>
-              </tr>
+              </table>
+              <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px;width: 250px;">a. Nama Perusahaan</td>
+                  <td>:</td>
+                  <td>"{{pengajuan.perusahaan|upper}}"</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">b. Nama Pengusaha</td>
+                  <td >:</td>
+                  <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">c. Nama Pemilik</td>
+                  <td >:</td>
+                  <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Alamat / Jalan</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.alamat|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.desa|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.desa.kecamatan|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.desa.kecamatan.kabupaten|title}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="vertical-align: top;padding-top: 1px;padding-left: 12px">d. Jenis Perusahaan</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td >Penggilingan Padi, Huller dan Penyosohan Beras</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">e. Lokasi Penggilingan Padi</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.perusahaan.desa|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.perusahaan.desa.kecamatan|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.perusahaan.desa.kecamatan.kabupaten|title}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">f. Nomor kode</td>
+                  <td >:</td>
+                  <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">g. Kapasitas potensial</td>
+                  <td >:</td>
+                  <td >{{pengajuan.kapasitas_potensial_giling_beras_per_jam|default_if_none:"-"}} Ton/Jam</td>
+                </tr>
+              </table>
+              <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="3">Peralatan yang digunakan harus sesuai dengan persyaratan yang telah ditentukan pada Keputusan Menteri Pertanian Nomor 859/Kpts/TP.250/II/1998 tanggal 4 Nopember 1998 sebagaimana tertera pada lampiran Keputusan ini.</td>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETIGA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">1.</td>
+                  <td>Keputusan ini berlaku mulai tanggal ditetapkan selama perusahaan masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan peraturan perundang-undangn yang berlaku;</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="vertical-align: top;padding-top: 1px;" align="right">2.</td>
+                  <td colspan="2">Untuk Pengawasan dan pembinaan, maka setiap 5 (lima) tahun sekali diadakan pendaftaran ulang.;</td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="3">Ketentuan dan persyaratan pengelolaan Perusahaan dapat dilihat pada lampiran Keputusan ini.</td>
+                </tr>
             </table>
-            <table width="100%" border="0" class="sk-justify">
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px;width: 250px;">a. Nama Perusahaan</td>
-                <td>:</td>
-                <td>"{{pengajuan.perusahaan|upper}}"</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">b. Nama Pengusaha</td>
-                <td >:</td>
-                <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">c. Nama Pemilik</td>
-                <td >:</td>
-                <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Alamat / Jalan</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.pemohon.alamat|title}}</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.pemohon.desa|title}}</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.pemohon.desa.kecamatan|title}}</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.pemohon.desa.kecamatan.kabupaten|title}}</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="vertical-align: top;padding-top: 1px;padding-left: 12px">d. Jenis Perusahaan</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td >Penggilingan Padi, Huller dan Penyosohan Beras</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">e. Lokasi Penggilingan Padi</td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.perusahaan.desa|title}}</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.perusahaan.desa.kecamatan|title}}</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
-                <td width="10">:</td>
-                <td>{{pengajuan.perusahaan.desa.kecamatan.kabupaten|title}}</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">f. Nomor kode</td>
-                <td >:</td>
-                <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
-              </tr>
-              <tr>
-                <td style="padding-left: 12px;width: 105px;"></td>
-                <td align="left" style="padding-left: 12px">g. Kapasitas potensial</td>
-                <td >:</td>
-                <td >{{pengajuan.kapasitas_potensial_giling_beras_per_jam|default_if_none:"-"}} Ton/Jam</td>
-              </tr>
-            </table>
-            <table width="100%" border="0" class="sk-justify">
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td colspan="3">Peralatan yang digunakan harus sesuai dengan persyaratan yang telah ditentukan pada Keputusan Menteri Pertanian Nomor 859/Kpts/TP.250/II/1998 tanggal 4 Nopember 1998 sebagaimana tertera pada lampiran Keputusan ini.</td>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETIGA</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">1.</td>
-                <td>Keputusan ini berlaku mulai tanggal ditetapkan selama perusahaan masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan peraturan perundang-undangn yang berlaku;</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td></td>
-                <td style="vertical-align: top;padding-top: 1px;" align="right">2.</td>
-                <td colspan="2">Untuk Pengawasan dan pembinaan, maka setiap 5 (lima) tahun sekali diadakan pendaftaran ulang.;</td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td colspan="3">Ketentuan dan persyaratan pengelolaan Perusahaan dapat dilihat pada lampiran Keputusan ini.</td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;width: 105px;">KELIMA</td>
-                <td style="vertical-align: top;padding-top: 1px;">:</td>
-                <td colspan="3">Keputusan ini berlaku sejak tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
-              </tr>
-            </table>
-            <table width="100%" border="0" class="font">
-              <tr>
-                <td colspan="3" style="width: 1000px;">
-                  <table border="0" align="left">
+          </div>
+        </div>
+        <div class="page">
+          <div class="subpage">
+              <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KELIMA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="3">Keputusan ini berlaku sejak tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
+                </tr>
+              </table>
+              <table width="100%" border="0" class="font">
+                <tr>
+                  <td colspan="3" style="width: 900px;">
+                    <table border="0" align="left">
                     <tr>
                       <td>
                       <br><br>
@@ -407,52 +421,254 @@
                       </td>
                     </tr>
                   </table>
-                </td>
-                <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-                  <p style="font-size:14px; padding-left: 20%;">
-                    <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
-                      <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                      <br>
-                      <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
-                      <!-- Pembina Tk.l<br>
-                      NIP: {{nip_kepala_dinas}} -->
-                      </p>
                   </td>
-              </tr>
-              <tr>
-                <td><br>
-                  <table border="0" align="left" style="font-size:15px;">
-                    <tr>
-                      <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
-                    </tr>
-                    <tr>
-                      <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
-                      <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                      <td width="100%">Sdr. Kepala Dinas PUPR Kabupaten Kediri ;</td>
-                    </tr>   
-                    <tr>
-                      <td></td>
-                      <td style="vertical-align: top;padding-top: 1px;">2.</td>
-                      <td>Sdr. Kepala Dinas Perumahan dan Kaw. Permukiman Kabupaten Kediri;</td>
-                    </tr>   
-                    <tr>
-                      <td></td>
-                      <td style="vertical-align: top;padding-top: 1px;">3.</td>
-                      <td>Sdr. Ka. Kantor Pertanahan Kabupaten Kediri;</td>
-                    </tr>    
-                    <tr>
-                      <td></td>
-                      <td style="vertical-align: top;padding-top: 1px;">4.</td>
-                      <td>Sdr. Dir. {% if pengajuan.perusahaan %} {{ pengajuan.perusahaan }} {% else %} {{ pengajuan.pemohon }} {% endif %}
-                        <!-- {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }} -->
-                      </td>
-                    </tr>   
-                  </table>         
-                </td>
-              </tr>
-            </table><hr>
+                  <td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+                    <p style="font-size:14px; padding-left: 10%;">
+                            <font size="3pt">Ditetapkan di Kediri <br> 
+                    pada tanggal</font><br></p>
+                            <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
+                            <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
+                            </p>
+                    </td>
+                </tr>
+                <tr>
+                  <td><br>
+                    <table border="0" align="left" style="font-size:15px;">
+                      <tr>
+                        <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+                        <td style="vertical-align: top;padding-top: 1px;">1.</td>
+                        <td width="100%">Sdr. Kepala Dinas PUPR Kabupaten Kediri ;</td>
+                      </tr>   
+                      <tr>
+                        <td></td>
+                        <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                        <td>Sdr. Kepala Dinas Perumahan dan Kaw. Permukiman Kabupaten Kediri;</td>
+                      </tr>   
+                      <tr>
+                        <td></td>
+                        <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                        <td>Sdr. Ka. Kantor Pertanahan Kabupaten Kediri;</td>
+                      </tr>    
+                      <tr>
+                        <td></td>
+                        <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                        <td>Sdr. Dir. {% if pengajuan.perusahaan %} {{ pengajuan.perusahaan }} {% else %} {{ pengajuan.pemohon }} {% endif %}
+                          <!-- {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }} -->
+                        </td>
+                      </tr>   
+                    </table>         
+                  </td>
+                </tr>
+              </table><hr>
+              <table align="center">
+                <tr>
+                  <td>
+                    <p style="font-size:14px; padding-left: 10%;" align="center">
+                          <font size="3pt">Disalin sesuai dengan aslinya <br> 
+                  yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
+                          <p align="center" style="font-size:15px;margin-top: 50px;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+                  <font size="3pt">Pembina Tk.l<br>
+                            NIP: {{nip_kepala_dinas}}</font>
+                        </p>
+                    </td>
+                </tr>               
+              </table>
+          </div>
         </div>
-      </div>
+      {% else %}
+        <div class="page">
+          <div class="subpage">
+              <center>
+                <font><b>MEMUTUSKAN :</b>
+                </font>
+              </center>
+              <table width="100%" border="0" class="sk-justify">
+                  <tr>
+                    <td width="30" style="vertical-align: top;padding-top: 1px;width: 105px;">Menetapkan</td>
+                    <td width="10" style="vertical-align: top;padding-top: 1px;" >:</td>
+                    <td colspan="3"></td>
+                  </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KESATU</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="4">Memberikan izin Penggilingan Padi, Huller dan Penyosohan Beras yang Menetap kepada :</td>
+                </tr>
+              </table>
+              <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px;width: 250px;">a. Nama Perusahaan</td>
+                  <td>:</td>
+                  <td>"{{pengajuan.perusahaan|upper}}"</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">b. Nama Pengusaha</td>
+                  <td >:</td>
+                  <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">c. Nama Pemilik</td>
+                  <td >:</td>
+                  <td >{{pengajuan.pemohon|default_if_none:"-"}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Alamat / Jalan</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.alamat|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.desa|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.desa.kecamatan|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.pemohon.desa.kecamatan.kabupaten|title}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="vertical-align: top;padding-top: 1px;padding-left: 12px">d. Jenis Perusahaan</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td >Penggilingan Padi, Huller dan Penyosohan Beras</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">e. Lokasi Penggilingan Padi</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Desa / Kel.</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.perusahaan.desa|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kecamatan</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.perusahaan.desa.kecamatan|title}}</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td align="left" style="padding-left: 27px;width: 121px;">Kab. / Kota</td>
+                  <td width="10">:</td>
+                  <td>{{pengajuan.perusahaan.desa.kecamatan.kabupaten|title}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">f. Nomor kode</td>
+                  <td >:</td>
+                  <td >{{pengajuan.arahan_fungsi_kawasan|default_if_none:"-"}}</td>
+                </tr>
+                <tr>
+                  <td style="padding-left: 12px;width: 105px;"></td>
+                  <td align="left" style="padding-left: 12px">g. Kapasitas potensial</td>
+                  <td >:</td>
+                  <td >{{pengajuan.kapasitas_potensial_giling_beras_per_jam|default_if_none:"-"}} Ton/Jam</td>
+                </tr>
+              </table>
+              <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEDUA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="3">Peralatan yang digunakan harus sesuai dengan persyaratan yang telah ditentukan pada Keputusan Menteri Pertanian Nomor 859/Kpts/TP.250/II/1998 tanggal 4 Nopember 1998 sebagaimana tertera pada lampiran Keputusan ini.</td>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KETIGA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">1.</td>
+                  <td>Keputusan ini berlaku mulai tanggal ditetapkan selama perusahaan masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan peraturan perundang-undangn yang berlaku;</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td style="vertical-align: top;padding-top: 1px;" align="right">2.</td>
+                  <td colspan="2">Untuk Pengawasan dan pembinaan, maka setiap 5 (lima) tahun sekali diadakan pendaftaran ulang.;</td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEEMPAT</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="3">Ketentuan dan persyaratan pengelolaan Perusahaan dapat dilihat pada lampiran Keputusan ini.</td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;width: 105px;">KELIMA</td>
+                  <td style="vertical-align: top;padding-top: 1px;">:</td>
+                  <td colspan="3">Keputusan ini berlaku sejak tanggal ditetapkan dan apabila dikemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
+                </tr>
+              </table>
+              <table width="100%" border="0" class="font">
+                <tr>
+                  <td colspan="3" style="width: 1000px;">
+                    <table border="0" align="left">
+                      <tr>
+                        <td>
+                        <br><br>
+                          <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+                    <p style="font-size:14px; padding-left: 20%;">
+                      <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
+                        <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+                        <br>
+                        <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
+                        <!-- Pembina Tk.l<br>
+                        NIP: {{nip_kepala_dinas}} -->
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                  <td><br>
+                    <table border="0" align="left" style="font-size:15px;">
+                      <tr>
+                        <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+                      </tr>
+                      <tr>
+                        <td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+                        <td style="vertical-align: top;padding-top: 1px;">1.</td>
+                        <td width="100%">Sdr. Kepala Dinas PUPR Kabupaten Kediri ;</td>
+                      </tr>   
+                      <tr>
+                        <td></td>
+                        <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                        <td>Sdr. Kepala Dinas Perumahan dan Kaw. Permukiman Kabupaten Kediri;</td>
+                      </tr>   
+                      <tr>
+                        <td></td>
+                        <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                        <td>Sdr. Ka. Kantor Pertanahan Kabupaten Kediri;</td>
+                      </tr>    
+                      <tr>
+                        <td></td>
+                        <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                        <td>Sdr. Dir. {% if pengajuan.perusahaan %} {{ pengajuan.perusahaan }} {% else %} {{ pengajuan.pemohon }} {% endif %}
+                          <!-- {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }} -->
+                        </td>
+                      </tr>   
+                    </table>         
+                  </td>
+                </tr>
+              </table><hr>
+          </div>
+        </div>
+      {% endif%}
       <div class="page">
         <div class="subpage">
           <table class="right" border="0" style="font-size:12px;padding-left: 360px;">
@@ -637,153 +853,320 @@
           </table>
         </div>
       </div>
-      <div class="page">
-        <div class="subpage">
-          <h4>B.  Ketentuan – ketentuan yang harus diperhatikan bagi pemegang Izin Tanda Daftar  Usaha Penggilingan Padi :</h4>
-          <table width="100%" border="0" class="sk-justify">
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">1.</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">Surat Izin Tanda Daftar Usaha yang telah diberikan dan semua surat – surat perubahan yang akan diadakan haruslah diperlihatkan kepada pegawai yang bertugas mengawasi pelanggaran peraturan – peraturan yang bersangkutan.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">2.</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan wajib memenuhi dan memberikan bantuan seperlunya dalam penyelenggaraan segala peraturan yang ditetapkan oleh Pemerintah.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">a.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Untuk kepentingan persediaan makanan.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">b.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Untuk kepentingan keamanan kerja.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Wajib melaporkan kegiatan dan perkembangan usahanya setiap 1 ( satu ) bulan sekali kepada Dinas Pertanian Tanaman Pangan Kabupaten Kediri paling lambat tanggal 5 ( lima )</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">3.</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan harus siap bekerja selambat – lambatnya 6 ( enam ) bulan setelah tanggal Surat Tanda Daftar Usaha ini diberikan baik dalam rangka pendirian baru maupun bagi perusahaan yang mengadakan perubahan.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">4.</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">Izin Tanda Daftar Usaha ini berlaku untuk jangka waktu selama perusahaan  masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan perundang – undangan yang berlaku. Namun dalam rangka pengawasan dan pembinaan, maka setiap 3 (tiga) tahun sekali Pengusaha wajib daftar ulang.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">5.</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan yang akan memperluas usahanya melebihi 30 % dari kapasitas semula wajib mengajukan izin perluasan usaha, memperluas tidak melebihi 30 % dari kapasitas semula cukup melaporkannya kepada Instansi pemberi Izin.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">6.</td>
-                <td colspan="2" style="vertical-align: top;padding-top: 1px;">Izin Tanda Daftar Usaha dapat dicabut apabila :</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">a.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha dengan sengaja memalsukan data atau dokumen yang dilampirkan sewaktu mengajukan permohonan Tanda Daftar Usaha.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">b.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha tidak melaksanakan ketentuan yang tercantum dalam Tanda Daftar Usaha ini.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha melakukan perubahan Lokasi dan Perluasan Usaha tanpa persetujuan pemberi Izin Tanda Daftar Usaha.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">d.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha melakukan tindakan yang langsung maupun tidak langsung dapat menimbulkan gangguan ketertiban umum, dan melanggar peraturan perundang – undangan yang berlaku.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">e.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha tidak memberikan laporan maupun memberikan pelaporan palsu tentang kegiatan dan perkembangan usahanya.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">f.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha selama 12 ( dua belas ) bulan berturut turut tidak melakukan kegiatan usahanya.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">g.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha atas kemauannya sendiri menyerahkan kembali kepada pemberi Izin Tanda Daftar Usaha.</td>
-                <td></td>
-              </tr>
-              <tr>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;"></td>
-                <td style="vertical-align: top;padding-top: 1px;">h.</td>
-                <td style="vertical-align: top;padding-top: 1px;">Terjadi perubahan pemegang Tanda Daftar Usaha tanpa sepengetahuan pemberi Izin Tanda Daftar Usaha.</td>
-                <td></td>
-              </tr>
-          </table>
-
-            <table width="100%" border="0" class="font">
-              <tr>
-                <td colspan="3" style="width: 1000px;">
-                  <table border="0" align="left">
-                    <tr>
-                      <td>
-                      <br><br>
-                      </td>
-                    </tr>
-                  </table>
-                </td>
-                <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 10px;">
-                  <p style="font-size:14px; padding-left: 20%;">
-                    <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
-                      <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                      <br>
-                      <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
-                      <!-- Pembina Tk.l<br>
-                      NIP: {{nip_kepala_dinas}} -->
-                      </p>
-                  </td>
-              </tr>
-              <tr>
-                <td></td>
-              </tr>
-            </table>
+      {% if salinan == 'True'%}
+        <div class="page">
+          <div class="subpage">
+            <h4>B.  Ketentuan – ketentuan yang harus diperhatikan bagi pemegang Izin Tanda Daftar  Usaha Penggilingan Padi :</h4>
+            <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">1.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Surat Izin Tanda Daftar Usaha yang telah diberikan dan semua surat – surat perubahan yang akan diadakan haruslah diperlihatkan kepada pegawai yang bertugas mengawasi pelanggaran peraturan – peraturan yang bersangkutan.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan wajib memenuhi dan memberikan bantuan seperlunya dalam penyelenggaraan segala peraturan yang ditetapkan oleh Pemerintah.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">a.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Untuk kepentingan persediaan makanan.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">b.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Untuk kepentingan keamanan kerja.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">c.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Wajib melaporkan kegiatan dan perkembangan usahanya setiap 1 ( satu ) bulan sekali kepada Dinas Pertanian Tanaman Pangan Kabupaten Kediri paling lambat tanggal 5 ( lima )</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan harus siap bekerja selambat – lambatnya 6 ( enam ) bulan setelah tanggal Surat Tanda Daftar Usaha ini diberikan baik dalam rangka pendirian baru maupun bagi perusahaan yang mengadakan perubahan.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Izin Tanda Daftar Usaha ini berlaku untuk jangka waktu selama perusahaan  masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan perundang – undangan yang berlaku. Namun dalam rangka pengawasan dan pembinaan, maka setiap 3 (tiga) tahun sekali Pengusaha wajib daftar ulang.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">5.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan yang akan memperluas usahanya melebihi 30 % dari kapasitas semula wajib mengajukan izin perluasan usaha, memperluas tidak melebihi 30 % dari kapasitas semula cukup melaporkannya kepada Instansi pemberi Izin.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">6.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Izin Tanda Daftar Usaha dapat dicabut apabila :</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">a.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha dengan sengaja memalsukan data atau dokumen yang dilampirkan sewaktu mengajukan permohonan Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">b.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha tidak melaksanakan ketentuan yang tercantum dalam Tanda Daftar Usaha ini.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">c.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha melakukan perubahan Lokasi dan Perluasan Usaha tanpa persetujuan pemberi Izin Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">d.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha melakukan tindakan yang langsung maupun tidak langsung dapat menimbulkan gangguan ketertiban umum, dan melanggar peraturan perundang – undangan yang berlaku.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">e.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha tidak memberikan laporan maupun memberikan pelaporan palsu tentang kegiatan dan perkembangan usahanya.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">f.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha selama 12 ( dua belas ) bulan berturut turut tidak melakukan kegiatan usahanya.</td>
+                  <td></td>
+                </tr>
+              </table>
+          </div>
         </div>
-      </div>
+        <div class="page">
+          <div class="subpage">
+            <table width="100%" border="0" class="sk-justify">
+               <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">g.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha atas kemauannya sendiri menyerahkan kembali kepada pemberi Izin Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">h.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Terjadi perubahan pemegang Tanda Daftar Usaha tanpa sepengetahuan pemberi Izin Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+            </table>
+
+              <table width="100%" border="0" class="font">
+                <tr>
+                  <td colspan="3" style="width: 1000px;">
+                    <table border="0" align="left">
+                      <tr>
+                        <td>
+                        <br><br>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 10px;">
+                    <p style="font-size:14px; padding-left: 10%;">
+                            <font size="3pt">Ditetapkan di Kediri <br> 
+                    pada tanggal</font><br></p>
+                            <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
+                            <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
+                            </p>
+                    </td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+              </table>
+              <table align="center">
+                <tr>
+                  <td style="width:400px;">
+                    <p style="font-size:14px; padding-left: 10%;" align="center">
+                          <font size="3pt">Disalin sesuai dengan aslinya <br> 
+                  yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
+                          <p align="center" style="font-size:15px;margin-top: 50px;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+                  <font size="3pt">Pembina Tk.l<br>
+                            NIP: {{nip_kepala_dinas}}</font>
+                        </p>
+                    </td>
+                </tr>               
+              </table>
+          </div>
+        </div>
+      {% else %}
+        <div class="page">
+          <div class="subpage">
+            <h4>B.  Ketentuan – ketentuan yang harus diperhatikan bagi pemegang Izin Tanda Daftar  Usaha Penggilingan Padi :</h4>
+            <table width="100%" border="0" class="sk-justify">
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">1.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Surat Izin Tanda Daftar Usaha yang telah diberikan dan semua surat – surat perubahan yang akan diadakan haruslah diperlihatkan kepada pegawai yang bertugas mengawasi pelanggaran peraturan – peraturan yang bersangkutan.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">2.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan wajib memenuhi dan memberikan bantuan seperlunya dalam penyelenggaraan segala peraturan yang ditetapkan oleh Pemerintah.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">a.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Untuk kepentingan persediaan makanan.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">b.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Untuk kepentingan keamanan kerja.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">c.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Wajib melaporkan kegiatan dan perkembangan usahanya setiap 1 ( satu ) bulan sekali kepada Dinas Pertanian Tanaman Pangan Kabupaten Kediri paling lambat tanggal 5 ( lima )</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">3.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan harus siap bekerja selambat – lambatnya 6 ( enam ) bulan setelah tanggal Surat Tanda Daftar Usaha ini diberikan baik dalam rangka pendirian baru maupun bagi perusahaan yang mengadakan perubahan.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">4.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Izin Tanda Daftar Usaha ini berlaku untuk jangka waktu selama perusahaan  masih beroperasi serta tidak ada perubahan / pengembangan usaha dan tidak melanggar ketentuan perundang – undangan yang berlaku. Namun dalam rangka pengawasan dan pembinaan, maka setiap 3 (tiga) tahun sekali Pengusaha wajib daftar ulang.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">5.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Perusahaan yang akan memperluas usahanya melebihi 30 % dari kapasitas semula wajib mengajukan izin perluasan usaha, memperluas tidak melebihi 30 % dari kapasitas semula cukup melaporkannya kepada Instansi pemberi Izin.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">6.</td>
+                  <td colspan="2" style="vertical-align: top;padding-top: 1px;">Izin Tanda Daftar Usaha dapat dicabut apabila :</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">a.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha dengan sengaja memalsukan data atau dokumen yang dilampirkan sewaktu mengajukan permohonan Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">b.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha tidak melaksanakan ketentuan yang tercantum dalam Tanda Daftar Usaha ini.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">c.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha melakukan perubahan Lokasi dan Perluasan Usaha tanpa persetujuan pemberi Izin Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">d.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha melakukan tindakan yang langsung maupun tidak langsung dapat menimbulkan gangguan ketertiban umum, dan melanggar peraturan perundang – undangan yang berlaku.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">e.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha tidak memberikan laporan maupun memberikan pelaporan palsu tentang kegiatan dan perkembangan usahanya.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">f.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha selama 12 ( dua belas ) bulan berturut turut tidak melakukan kegiatan usahanya.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">g.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Pemegang Izin Tanda Daftar Usaha atas kemauannya sendiri menyerahkan kembali kepada pemberi Izin Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;"></td>
+                  <td style="vertical-align: top;padding-top: 1px;">h.</td>
+                  <td style="vertical-align: top;padding-top: 1px;">Terjadi perubahan pemegang Tanda Daftar Usaha tanpa sepengetahuan pemberi Izin Tanda Daftar Usaha.</td>
+                  <td></td>
+                </tr>
+            </table>
+
+              <table width="100%" border="0" class="font">
+                <tr>
+                  <td colspan="3" style="width: 1000px;">
+                    <table border="0" align="left">
+                      <tr>
+                        <td>
+                        <br><br>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 10px;">
+                    <p style="font-size:14px; padding-left: 20%;">
+                      <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
+                        <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
+                        <br>
+                        <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
+                        <!-- Pembina Tk.l<br>
+                        NIP: {{nip_kepala_dinas}} -->
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+              </table>
+          </div>
+        </div>
+      {% endif %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
     <script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>

@@ -172,11 +172,12 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_imb_umum(self, request, id_pengajuan_izin_):
+	def cetak_sk_imb_umum(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -286,11 +287,12 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_imb_perumahan(self, request, id_pengajuan_izin_):
+	def cetak_sk_imb_perumahan(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -355,7 +357,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		urls = super(DetilIMBAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-sk-imb-umum/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_imb_umum), name='cetak_sk_imb_umum'),
+			url(r'^cetak-sk-imb-umum/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_imb_umum), name='cetak_sk_imb_umum'),
 			url(r'^cetak-sk-imb-perumahan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_imb_perumahan), name='cetak_sk_imb_perumahan'),
+			url(r'^cetak-sk-imb-perumahan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_imb_perumahan), name='cetak_sk_imb_perumahan'),
 			url(r'^view-pengajuan-imb-umum/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_umum), name='view_pengajuan_imb_umum'),
 			url(r'^view-pengajuan-imb-perumahan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_perumahan), name='view_pengajuan_imb_perumahan'),
 

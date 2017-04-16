@@ -259,9 +259,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_lokasi(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_lokasi(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -310,9 +311,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -355,9 +357,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_):
+	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		if id_pengajuan_izin_:
+			extra_context.update({'salinan': salinan_})
 			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -405,8 +408,11 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		urls = super(InformasiTanahAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
+			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
 			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
+			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
 			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
+			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
 			url(r'^view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_lokasi), name='view_pengajuan_izin_lokasi'),
 			url(r'^ippt-usaha/view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_ippt_usaha), name='view_pengajuan_ippt_usaha'),
 			)
