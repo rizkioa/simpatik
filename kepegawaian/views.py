@@ -84,6 +84,7 @@ def import_pegawai_xls(nama_file, unit_kerja):
 						nama_lengkap = nama_lengkap.strip()
 
 						jabatan = first_sheet.cell(row,7).value
+						jabatan = jabatan.strip()
 
 						print str(row)+". Proses menyimpan pegawai "+nama_lengkap+"...."
 
