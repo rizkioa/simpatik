@@ -48,9 +48,9 @@ def import_subklasifikasi():
 	print "Total ID KOSONG => "+str(un)
 	print "######################## DONE ########################"
 
-
+base_lokasi = 'static/import/lokasi/'
 def import_provinsi():
-	f1 = file('files/import/provinces.csv', 'r') # Data
+	f1 = file(base_lokasi+'provinces.csv', 'r') # Data
 
 	c1 = csv.reader(f1) # Data Golongan
 	row = 0 
@@ -72,7 +72,7 @@ def import_provinsi():
 	print "######################## DONE ########################"
 
 def import_kabupaten():
-	f1 = file('files/import/regencies.csv', 'r') # Data
+	f1 = file(base_lokasi+'regencies.csv', 'r') # Data
 
 	c1 = csv.reader(f1) # Data Golongan
 	row = 0 
@@ -100,7 +100,7 @@ def import_kabupaten():
 	print "######################## DONE ########################"
 
 def import_kecamatan():
-	f1 = file('files/import/districts.csv', 'r')
+	f1 = file(base_lokasi+'districts.csv', 'r')
 
 	c1 = csv.reader(f1) # Data Golongan
 	row = 0 
@@ -124,7 +124,7 @@ def import_kecamatan():
 	print "######################## DONE ########################"
 
 def import_desa():
-	f1 = file('files/import/villages.csv', 'r')
+	f1 = file(base_lokasi+'villages.csv', 'r')
 
 	c1 = csv.reader(f1) # Data Golongan
 	row = 0 
