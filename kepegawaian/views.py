@@ -69,7 +69,7 @@ def import_pegawai_xls(nama_file, unit_kerja):
 		try:
 			print "############################## START #############################"
 			book = xlrd.open_workbook('static/import/pegawai/'+nama_file+'.xlsx')
-			first_sheet = book.sheet_by_index(0)
+			first_sheet = book.sheet_by_index(-1)
 			print "Total Baris : "+str(first_sheet.nrows-2)
 			success_count = 0
 			fail_count = 0
