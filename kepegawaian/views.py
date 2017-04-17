@@ -75,14 +75,14 @@ def import_pegawai_xls(nama_file, unit_kerja):
 			fail_count = 0
 			for row in range(first_sheet.nrows):
 				if(row>1) :
-					nip = first_sheet.cell(row,1).value
+					nip = first_sheet.cell(row,0).value
 					nip = nip.strip()
 					nip = nip.replace(" ", "")
 					print "Baris #"+str(row)+" => "+str(nip)
 					
 					if nip != "":
 						keterangan = []
-						nama_lengkap = first_sheet.cell(row,2).value
+						nama_lengkap = first_sheet.cell(row,1).value
 						nama_lengkap = nama_lengkap.strip()
 
 						# jabatan = first_sheet.cell(row,7).value
