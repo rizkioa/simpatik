@@ -61,3 +61,49 @@ def import_pegawai(nama_file):
 		p.save()
 		nomor, created = NomorIdentitasPengguna.objects.get_or_create(nomor=nip,user_id=p.id,jenis_identitas_id=1)
 		print '####### END #######'
+
+def import_pegawai_xls(nama_file, unit_kerja):
+	if unit_kerja and nama_file:
+		try:
+			print "############################## START #############################"
+			book = xlrd.open_workbook('static/import/pegawai/'+nama_file+'.xlsx')
+			first_sheet = book.sheet_by_index(0)
+			print "Total Baris : "+str(first_sheet.nrows-2)
+			success_count = 0
+			fail_count = 0
+			for row in range(first_sheet.nrows):
+				if(row>1) :
+					nip = first_sheet.cell(row,1).value
+					nip = nip.strip()
+					nip = nip.replace(" ", "")
+					print "Baris #"+str(row)+" => "+str(nip)
+					
+					if nip != "":
+						keterangan = []
+						nama_lengkap = first_sheet.cell(row,2).value
+						nama_lengkap = nama_lengkap.strip()
+
+						jabatan = first_sheet.cell(row,7).value
+
+						print str(row)+". Proses menyimpan pegawai "+nama_lengkap+"...."
+
+						p, created = Pegawai.objects.get_or_create(username=nip)
+						p.nama_lengkap = nama_lengkap
+						p.pekerjaan = jabatan
+						p.unit_kerja_id = unit_kerja
+						p.save()
+
+						nomor, created = NomorIdentitasPengguna.objects.get_or_create(nomor=nip,user_id=p.id,jenis_identitas_id=1)
+						nomor.save()
+
+						success_count += 1
+					else:
+						fail_count += 1
+						print "Baris #"+str(row)+" NIP Kosong!!!!"
+			print "############################## DONE #############################"
+			print "Total Data Masuk: "+str(success_count)
+			print "Total Data Gagal Masuk: "+str(fail_count)
+		except IOError:
+			print "File tidak ditemukan."
+	else:
+		print "nama file & unit kerja kosong"
