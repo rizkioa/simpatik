@@ -1,6 +1,6 @@
 import telebot
 from django.conf import settings
-
+import xlrd
 from .models import LogTelegram, NotifikasiTelegram
 
 
