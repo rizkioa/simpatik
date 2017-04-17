@@ -63,6 +63,7 @@ def import_pegawai(nama_file):
 		nomor, created = NomorIdentitasPengguna.objects.get_or_create(nomor=nip,user_id=p.id,jenis_identitas_id=1)
 		print '####### END #######'
 
+from django.core.exceptions import ValidationError, MultipleObjectsReturned,ObjectDoesNotExist
 def import_pegawai_xls(nama_file, unit_kerja):
 	if unit_kerja and nama_file:
 		try:
@@ -88,11 +89,13 @@ def import_pegawai_xls(nama_file, unit_kerja):
 						# jabatan = jabatan.strip()
 
 						print str(row)+". Proses menyimpan pegawai "+nama_lengkap+"...."
-
-						p, created = Pegawai.objects.get_or_create(username=nip)
-						p.nama_lengkap = nama_lengkap
-						# p.pekerjaan = jabatan
-						p.unit_kerja_id = 72
+						try:
+							p = Pegawai.objects.get(username=nip)
+							p.nama_lengkap = nama_lengkap
+							# p.pekerjaan = jabatan
+							p.unit_kerja_id = 72
+						except ObjectDoesNotExist:
+							p = Pegawai(nama_lengkap=nama_lengkap, username=username, unit_kerja_id=72)
 						p.save()
 
 						nomor, created = NomorIdentitasPengguna.objects.get_or_create(nomor=nip,user_id=p.id,jenis_identitas_id=1)
