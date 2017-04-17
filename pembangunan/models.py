@@ -20,9 +20,6 @@ class AnggotaTim(models.Model):
 	def __unicode__(self):
 		return u'%s' % (str(self.pegawai))
 
-
-
-
 class Rekomendasi(MetaAtribut):
 	"""docstring for Rekomendasi"""
 	unit_kerja = models.ForeignKey(UnitKerja, verbose_name='Unit Kerja', related_name="skpd_rekomendiasi")

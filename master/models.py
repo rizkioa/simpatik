@@ -355,7 +355,7 @@ class FileField(models.FileField):
 				file.delete(save=False)
 		super(FileField, self).save_form_data(instance, data)
 
-class Berkas(AtributTambahan):
+class Berkas(MetaAtribut):
 	# nama_berkas = models.CharField("Nama Berkas", max_length=254)
 	nama_berkas = models.TextField("Nama Berkas")
 	berkas = FileField(upload_to=path_and_rename, max_length=255)

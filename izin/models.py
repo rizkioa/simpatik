@@ -232,7 +232,7 @@ class JenisPermohonanIzin(models.Model):
 		verbose_name_plural = 'Jenis Permohonan Izin'
 
 # Meta
-class PengajuanIzin(models.Model):
+class PengajuanIzin(MetaAtribut):
 	# berkaitan dengan pengejuan izin sebelumnya jika ada
 	izin_induk = models.ForeignKey('PengajuanIzin', blank=True, null=True)
 	pemohon = models.ForeignKey(Pemohon, related_name='pemohon_izin', null=True, blank=True,)
@@ -364,7 +364,7 @@ class DetilReklame(PengajuanIzin):
 		verbose_name_plural = 'Detil Reklame'
 
 # meta
-class DetilReklameIzin(models.Model):
+class DetilReklameIzin(MetaAtribut):
 	detil_reklame = models.ForeignKey(DetilReklame, verbose_name='Detil Reklame', blank=True,null=True)
 	tipe_reklame = models.ForeignKey(JenisTipeReklame,verbose_name='Tipe Reklame',blank=True,null=True)
 	judul_reklame = models.CharField(max_length=255, verbose_name='Judul Reklame',blank=True,null=True)
@@ -400,7 +400,7 @@ class DetilReklameIzin(models.Model):
 		verbose_name_plural = 'Detil Reklame Izin'
 
 # meta
-class SKIzin(models.Model):
+class SKIzin(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin')
 	isi = models.TextField(verbose_name="Isi", blank=True, null=True)
 	berkas = models.ForeignKey(Berkas, verbose_name="Berkas", related_name='berkas_sk', blank=True, null=True)
@@ -448,7 +448,7 @@ class SKIzin(models.Model):
 		verbose_name_plural = 'SKIzin'
 	
 # meta
-class Riwayat(models.Model):
+class Riwayat(MetaAtribut):
 	alasan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 	sk_izin = models.ForeignKey(SKIzin, verbose_name='SK Izin', null=True, blank=True)
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name='Pengajuan Izin', null=True, blank=True)
@@ -693,7 +693,7 @@ class DetilTDP(PengajuanIzin):
 		verbose_name_plural = 'Detil TDP'
 
 # meta
-class IzinLain(models.Model):
+class IzinLain(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, related_name='izin_lain_pengajuan_izin', verbose_name='Izin Lain')
 	kelompok_jenis_izin = models.ForeignKey(KelompokJenisIzin, verbose_name='Kelompok Jenis Izin')
 	no_izin = models.CharField(max_length=255, verbose_name='nomor izin', blank=True, null=True)
@@ -711,7 +711,7 @@ class IzinLain(models.Model):
 		verbose_name_plural = 'Izin Lain'
 
 # meta
-class Survey(models.Model):
+class Survey(MetaAtribut):
 	no_survey = models.CharField(verbose_name='Nomor Survey', max_length=255, unique=True)
 	pengajuan = models.ForeignKey(PengajuanIzin, related_name='survey_pengajuan', verbose_name='Pengajuan')
 	skpd = models.ForeignKey("kepegawaian.UnitKerja", related_name="survey_skpd", verbose_name='SKPD', blank=True, null=True)
@@ -791,7 +791,7 @@ class DetilIMB(PengajuanIzin):
 		verbose_name_plural = 'Detil IMB'
 
 # meta
-class DetilSk(models.Model):
+class DetilSk(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	sk_menimbang_a = models.CharField(max_length=255, verbose_name='SK Menimbang A.', null=True, blank=True)
 	sk_menimbang_b = models.CharField(max_length=255, verbose_name='SK Menimbang B.', null=True, blank=True)
@@ -1009,7 +1009,7 @@ class InformasiTanah(PengajuanIzin):
 		verbose_name_plural = 'Informasi Tanah'
 
 # meta
-class SertifikatTanah(models.Model):
+class SertifikatTanah(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
@@ -1038,7 +1038,7 @@ class SertifikatTanah(models.Model):
 		verbose_name_plural = 'Sertifikat Tanah'
 
 # meta
-class PenggunaanTanahIPPTUsaha(models.Model):
+class PenggunaanTanahIPPTUsaha(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	nama_penggunaan = models.CharField(max_length=20, verbose_name='Penggunaan Tanah', blank=True, null=True)
 	ukuran_penggunaan = models.IntegerField(verbose_name="Ukuran Penggunaan", null=True, blank=True)
@@ -1063,7 +1063,7 @@ class PenggunaanTanahIPPTUsaha(models.Model):
 		verbose_name_plural = 'Penggunaan Tanah IPPT Usaha'
 
 # meta
-class PerumahanYangDimilikiIPPTUsaha(models.Model):
+class PerumahanYangDimilikiIPPTUsaha(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	nama_perumahan = models.CharField(max_length=20, verbose_name='Nama Perumahan', blank=True, null=True)
 	luas_tanah = models.DecimalField(max_digits=5, decimal_places=2,default=0,verbose_name="Luas Tanah")
@@ -1127,7 +1127,7 @@ class DetilHuller(PengajuanIzin):
 		verbose_name_plural = 'Huller'
 
 # meta
-class JenisMesin(models.Model):
+class JenisMesin(MetaAtribut):
 	jenis_mesin = models.CharField(max_length=200, verbose_name='Jenis Mesin')
 	keterangan = models.CharField(max_length=255,blank=True, null=True, verbose_name='Keterangan')
 
@@ -1141,7 +1141,7 @@ class JenisMesin(models.Model):
 
 # Parameter / Property untuk Mesin Huller Value ada di mesin perusahaan
 # meta
-class MesinHuller(models.Model):
+class MesinHuller(MetaAtribut):
 	jenis_mesin = models.ForeignKey(JenisMesin, verbose_name="Jenis Mesin")
 	mesin_huller = models.CharField(max_length=200, verbose_name='Mesin Huller')
 	keterangan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Keterangan')
@@ -1155,7 +1155,7 @@ class MesinHuller(models.Model):
 		verbose_name_plural = 'Mesin Huller'
 
 # meta
-class MesinPerusahaan(models.Model):
+class MesinPerusahaan(MetaAtribut):
 	detil_huller = models.ForeignKey(DetilHuller, verbose_name="Detil Huller")
 	mesin_huller = models.ForeignKey(MesinHuller, verbose_name="Mesin Huller")
 
