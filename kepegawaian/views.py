@@ -83,14 +83,14 @@ def import_pegawai_xls(nama_file, unit_kerja):
 						nama_lengkap = first_sheet.cell(row,2).value
 						nama_lengkap = nama_lengkap.strip()
 
-						jabatan = first_sheet.cell(row,7).value
-						jabatan = jabatan.strip()
+						# jabatan = first_sheet.cell(row,7).value
+						# jabatan = jabatan.strip()
 
 						print str(row)+". Proses menyimpan pegawai "+nama_lengkap+"...."
 
 						p, created = Pegawai.objects.get_or_create(username=nip)
 						p.nama_lengkap = nama_lengkap
-						p.pekerjaan = jabatan
+						# p.pekerjaan = jabatan
 						p.unit_kerja_id = unit_kerja
 						p.save()
 
