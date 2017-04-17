@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account
-from master.models import JenisPemohon, Berkas, JenisReklame,JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan,BangunanJenisKontruksi, JenisKualifikasi
+from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, BangunanJenisKontruksi, JenisKualifikasi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN,JENIS_PENGGUNAAN
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN, JENIS_PENGGUNAAN
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
 # from django.utils.deconstruct import deconstructible
@@ -15,7 +15,6 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 from datetime import datetime
 from ckeditor.fields import RichTextField
 # from accounts.utils import KETERANGAN_PEKERJAAN
-# Create your models here.
 
 class Pemohon(Account):
 	jenis_pemohon = models.ForeignKey(JenisPemohon, verbose_name='Jenis Pemohon')
