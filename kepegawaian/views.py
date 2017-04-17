@@ -2,7 +2,8 @@ import telebot
 from django.conf import settings
 import xlrd
 from .models import LogTelegram, NotifikasiTelegram
-
+from models import Pegawai
+from accounts.models import NomorIdentitasPengguna
 
 API_TOKEN = settings.TELGRAM_API_TOKEN
 
