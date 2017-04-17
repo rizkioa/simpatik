@@ -92,7 +92,7 @@ def import_pegawai_xls(nama_file, unit_kerja):
 						p, created = Pegawai.objects.get_or_create(username=nip)
 						p.nama_lengkap = nama_lengkap
 						# p.pekerjaan = jabatan
-						p.unit_kerja_id = unit_kerja
+						p.unit_kerja_id = 72
 						p.save()
 
 						nomor, created = NomorIdentitasPengguna.objects.get_or_create(nomor=nip,user_id=p.id,jenis_identitas_id=1)
