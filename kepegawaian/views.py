@@ -97,8 +97,10 @@ def import_pegawai_xls(nama_file, unit_kerja):
 						except ObjectDoesNotExist:
 							p = Pegawai(nama_lengkap=nama_lengkap, username=nip, unit_kerja_id=72)
 						p.save()
-
-						nomor, created = NomorIdentitasPengguna.objects.get_or_create(nomor=nip,user_id=p.id,jenis_identitas_id=1)
+						try:
+							nomor = NomorIdentitasPengguna.objects.get(nomor=nip,user_id=p.id,jenis_identitas_id=1)
+						except ObjectDoesNotExist:
+							nomor = NomorIdentitasPengguna(nomor=nip,user_id=p.id,jenis_identitas_id=1)
 						nomor.save()
 
 						success_count += 1
