@@ -93,9 +93,9 @@ def import_pegawai_xls(nama_file, unit_kerja):
 							p = Pegawai.objects.get(username=nip)
 							p.nama_lengkap = nama_lengkap
 							# p.pekerjaan = jabatan
-							p.unit_kerja_id = 72
+							p.unit_kerja_id = unit_kerja
 						except ObjectDoesNotExist:
-							p = Pegawai(nama_lengkap=nama_lengkap, username=nip, unit_kerja_id=72)
+							p = Pegawai(nama_lengkap=nama_lengkap, username=nip, unit_kerja_id=unit_kerja)
 						p.save()
 						try:
 							nomor = NomorIdentitasPengguna.objects.get(nomor=nip,user_id=p.id,jenis_identitas_id=1)
