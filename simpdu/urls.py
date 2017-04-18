@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^api-token-refresh/', refresh_jwt_token),
     url(r'^api-token-verify/', verify_jwt_token),
     url(r'^api/', include(v1_api.urls)),
-	url(r'^admin/$', index, name='admin_home'),
+	# url(r'^admin/$', index, name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
     # url(r'^s/', include('perusahaan.urls')),
     url(r'^admin/', include(admin.site.urls)),
