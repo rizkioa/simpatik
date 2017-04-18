@@ -71,7 +71,7 @@ def formulir_siup(request, extra_context={}):
         extra_context.update({'kecamatan': kecamatan})
         extra_context.update({'desa': desa})
 
-        kecamatan_perusahaan = Kecamatan.objects.filter(kabupaten_id=1083)
+        kecamatan_perusahaan = Kecamatan.objects.filter(kabupaten__kode='06')
         extra_context.update({'kecamatan_perusahaan': kecamatan_perusahaan})
 
         jenis_pemohon = JenisPemohon.objects.all()
@@ -167,7 +167,7 @@ def formulir_siup(request, extra_context={}):
 
 def formulir_huller(request, extra_context={}):
     negara = Negara.objects.all()
-    kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+    kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
     jenis_pemohon = JenisPemohon.objects.all()
     
     extra_context.update({'kecamatan': kecamatan})
@@ -185,7 +185,7 @@ def formulir_reklame(request, extra_context={}):
     negara = Negara.objects.all()
     provinsi = Provinsi.objects.all()
     kabupaten = Kabupaten.objects.all()
-    kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+    kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
     desa = Desa.objects.all()
     jenis_pemohon = JenisPemohon.objects.all()
     reklame_jenis_list = JenisReklame.objects.all()

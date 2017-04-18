@@ -15,7 +15,7 @@ def formulir_ippt_usaha(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'IPPT - Usaha'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
 		jenis_pemohon = JenisPemohon.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Un

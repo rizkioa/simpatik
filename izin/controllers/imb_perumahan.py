@@ -16,7 +16,7 @@ def formulir_imb_perumahan(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'Izin IMB formulir_imb_perumahan'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
 		jenis_pemohon = JenisPemohon.objects.all()
 		reklame_jenis_list = JenisReklame.objects.all()
 		kegiatan_pembangunan = ParameterBangunan.objects.filter(parameter="Kegiatan Pembangunan Gedung")

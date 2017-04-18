@@ -17,7 +17,7 @@ def formulir_izin_gangguan(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'Izin Gangguan (HO)'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
 		jenis_pemohon = JenisPemohon.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
