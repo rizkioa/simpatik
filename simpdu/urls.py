@@ -10,9 +10,9 @@ admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu 
 from simpdu.sites import usersite
 from .views import index
 
-from rest_framework_jwt.views import refresh_jwt_token
-from rest_framework_jwt.views import verify_jwt_token
-from mobile.cors import CORSObtainJSONWebToken
+# from rest_framework_jwt.views import refresh_jwt_token
+# from rest_framework_jwt.views import verify_jwt_token
+# from mobile.cors import CORSObtainJSONWebToken
 from mobile.views import request_user
 
 
@@ -23,18 +23,18 @@ v1_api.register(PengajuanIzinResource())
 v1_api.register(AuthResource())
 v1_api.register(AccountsResource())
 
-obtain_jwt_token = CORSObtainJSONWebToken.as_view()
+# obtain_jwt_token = CORSObtainJSONWebToken.as_view()
 
 #Admin
 urlpatterns = [
     # url(r'^admin/$', 'simpdu.views.admin_home', name='admin_home'),
-    url(r'^api-token-auth/', obtain_jwt_token),
-    url(r'^api-token-login/', request_user),
+    # url(r'^api-token-auth/', obtain_jwt_token),
+    # url(r'^api-token-login/', request_user),
     # url(r'^api-token-auth/', ObtainJSONWebToken.as_views()),
-    url(r'^api-token-refresh/', refresh_jwt_token),
-    url(r'^api-token-verify/', verify_jwt_token),
+    # url(r'^api-token-refresh/', refresh_jwt_token),
+    # url(r'^api-token-verify/', verify_jwt_token),
     url(r'^api/', include(v1_api.urls)),
-	# url(r'^admin/$', index, name='admin_home'),
+	url(r'^admin/$', index, name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
     # url(r'^s/', include('perusahaan.urls')),
     url(r'^admin/', include(admin.site.urls)),

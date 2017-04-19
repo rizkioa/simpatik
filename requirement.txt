@@ -6,15 +6,12 @@ django-extensions==1.7.4
 django-loginas==0.1.5
 django-mama-cas==2.1.0
 django-mptt==0.8.6
-django-mysql==1.1.0
 django-suit==0.2.21
 django-tastypie==0.13.3
 drest==0.9.12
 gunicorn==19.6.0
 httplib2==0.9.2
-MySQL-python==1.2.5
 Pillow==2.3.0
-pkg-resources==0.0.0
 python-dateutil==2.5.3
 python-mimeparse==1.5.2
 raven==5.27.1
@@ -26,4 +23,4 @@ django-html-validator
 django-daterange-filter
 django-ckeditor
 pyTelegramBotAPI==2.3.0
-djangorestframework-jwt
+psycopg2

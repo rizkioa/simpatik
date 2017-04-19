@@ -138,28 +138,30 @@ def add_wizard_siup(request):
 def formulir_siup(request):
 	extra_context={}
 	if 'id_kelompok_izin' in request.COOKIES.keys():
-		extra_context.update({'title': 'SIUP'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
+		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 		jenis_pemohon = JenisPemohon.objects.all()
 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
 		kelembagaan_list = Kelembagaan.objects.all()
 		jenis_legalitas_list = JenisLegalitas.objects.all()
-
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
-		extra_context.update({'negara': negara})
-		extra_context.update({'kecamatan': kecamatan})
-		extra_context.update({'kecamatan_perusahaan': kecamatan})
-		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
-		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
-		extra_context.update({'kelembagaan_list': kelembagaan_list})
-		# extra_context.update({'produk_utama_list': produk_utama_list})
-		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
-		extra_context.update({'has_permission': True })
-		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+
+		extra_context.update({
+			'title': 'SIUP - Surat Izin Usaha Perusahaan',
+			'negara': negara,
+			'kecamatan': kecamatan,
+			'kecamatan_perusahaan': kecamatan,
+			'jenis_pemohon': jenis_pemohon,
+			'jenispermohonanizin_list': jenispermohonanizin_list,
+			'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list,
+			'jenis_penanaman_modal_list': jenis_penanaman_modal_list,
+			'kelembagaan_list': kelembagaan_list,
+			'jenis_legalitas_list': jenis_legalitas_list,
+			'has_permission': True,
+			'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+
+			})
 
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():

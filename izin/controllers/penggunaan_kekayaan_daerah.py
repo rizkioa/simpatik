@@ -15,7 +15,7 @@ def formulir_informasi_kekayaan_daerah(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'Izin Pemakaian Kekayaan Daerah'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
+		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 		jenis_pemohon = JenisPemohon.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Un

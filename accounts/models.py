@@ -1,16 +1,10 @@
-
 from accounts.utils import STATUS,KETERANGAN_PEKERJAAN
 from datetime import datetime
 from django.conf import settings
-
 from django.db import models
-
 from django.utils.deconstruct import deconstructible
-
 from master.models import JenisNomorIdentitas, Desa, AtributTambahan, Berkas, MetaAtribut
-
 from uuid import uuid4
-
 import os, re
 
 @deconstructible

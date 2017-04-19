@@ -15,7 +15,7 @@ def formulir_detilhuller(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		extra_context.update({'title': 'Penggilingan Padi & Huller'})
 		negara = Negara.objects.all()
-		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06')
+		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 		jenis_pemohon = JenisPemohon.objects.all()
 
 
