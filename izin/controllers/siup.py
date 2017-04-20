@@ -1,3 +1,4 @@
+import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext, loader
@@ -6,12 +7,9 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.utils.safestring import mark_safe
-
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilSIUP
-from izin.izin_forms import PengajuanBaruForm, PemohonForm
-from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 
 try:
@@ -19,15 +17,13 @@ try:
 except ImportError:
 	from django.utils.encoding import force_unicode as force_text
 
-from django.utils.translation import ugettext_lazy as _
-
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-
-import datetime
-
 from izin.utils import JENIS_IZIN, formatrupiah
 from accounts.utils import KETERANGAN_PEKERJAAN
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilSIUP
+from izin.izin_forms import PengajuanBaruForm, PemohonForm
+from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
+from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
 
 def add_wizard_siup(request):
 	extra_context = {}
@@ -49,7 +45,6 @@ def add_wizard_siup(request):
 				# response.set_cookie(key='id_kelompok_izin', value=id_kelompok_)
 			# else:
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
-			# print(kode_izin_)
 			try:
 				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_)
 				if len(id_kelompok_list) > 1:
@@ -188,8 +183,10 @@ def formulir_siup(request):
 						legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
 						legalitas_perubahan= pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas__id=2).last()
 
-						extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
-						extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
+						extra_context.update({ 
+							'legalitas_perubahan': legalitas_perubahan,
+							'legalitas_pendirian': legalitas_pendirian
+						 })
 
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })

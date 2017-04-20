@@ -7,10 +7,17 @@ import json
 
 def get_kecamatan(request):
 	kecamatan_list = Kecamatan.objects.all()
-	
+
+	kode_kabupaten = request.POST.get('kode_kabupaten', None)
+	kode_provinsi = request.POST.get('kode_provinsi', None)
+
+	if kode_kabupaten and kode_kabupaten is not "" and kode_provinsi and kode_provinsi is not "":
+		kecamatan_list = kecamatan_list.filter(kabupaten__kode=kode_kabupaten, kabupaten__provinsi__kode=kode_provinsi)
+
 	id_kabupaten = request.POST.get('kabupaten', None)	
 	if id_kabupaten and not id_kabupaten is "":
 		kecamatan_list = kecamatan_list.filter(kabupaten__id=id_kabupaten)
+		
 	nama_kecamatan = request.POST.get('nama_kecamatan', None)
 	if nama_kecamatan and not nama_kecamatan is "":
 		kecamatan_list = kecamatan_list.filter(nama_kecamatan=nama_kecamatan)

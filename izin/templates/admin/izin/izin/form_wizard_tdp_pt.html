@@ -38,7 +38,7 @@
 					var $total = navigation.find('li').length;
 					var $current = index+1;
 					if ($current == 2){
-		                load_kecamatan1(1083);
+		                load_kecamatan1('', '06', '35');
 		                if ($.cookie('npwp_perusahaan') !== '0'){
 		                  $('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
 		                  setTimeout(function(){
@@ -49,7 +49,6 @@
 	              	if ($current == 3){
 		                perusahaan_induk = $.cookie('npwp_perusahaan_induk')
 		                if (perusahaan_induk !== '0'){
-		                  // load_provinsi_(1, '#id_provinsi-3')
 		                  load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
 		                  
 		                }
@@ -137,11 +136,10 @@
 
 				onNext: function(tab, navigation, index) {
 					return false;
-
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return true;
+					return false;
 				}
 			});
 		});
