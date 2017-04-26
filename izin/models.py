@@ -1503,6 +1503,37 @@ class DetilIUTM(PengajuanIzin):
 		verbose_name_plural = 'Detil IUTM'
 # +++++++++++ end IUTM +++++++++++++
 
+# ################ IUA (izin usaha angkutan) #################
+class KategoriKendaraan(models.Model):
+	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
+	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_kategori)
+
+	class Meta:
+		verbose_name = 'Kategori Kendaraan'
+		verbose_name_plural = 'Kategori Kendaraan'
+
+class MerkTypeKendaraan(models.Model):
+	nama_type = models.CharField(max_length=255, verbose_name='Nama Type')
+	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_type)
+
+	class Meta:
+		verbose_name = 'Nama Type'
+		verbose_name_plural = 'Nama Type'
+
+class Kendaraan(models.Model):
+	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan')
+	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala')
+	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan')
+	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka')
+	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin')
+	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan')
+	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 

@@ -83,6 +83,7 @@ urlpatterns = [
     url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
     url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
     url(r'^layanan/tdup$', layanan_view.layanan_tdup, name='layanan_tdup'),
+    url(r'^layanan/izin-usaha-angkutan$', layanan_view.layanan_izin_usaha_angkutan, name='layanan_izin_usaha_angkutan'),
 
     
     url(r'^404/', views.page_404, name='404'),
@@ -103,6 +104,7 @@ urlpatterns = [
     url(r'^layanan/tdp-koperasi/formulir$', views.formulir_tdp_koperasi, name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
     url(r'^layanan/tdup/formulir$', views.formulir_tdup, name='formulir_tdup'),
+    url(r'^layanan/izin-usaha-angkutan/formulir$', views.formulir_izin_usaha_angkutan, name='formulir_izin_usaha_angkutan'),
 
     #cetak SIUP
     url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
