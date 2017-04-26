@@ -1529,7 +1529,7 @@ class MerkTypeKendaraan(models.Model):
 class Kendaraan(models.Model):
 	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
 	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala', null=True, blank=True)
-	merk_kendaraan = models.ForeignKey(max_length=255, verbose_name='Merk Kendaraan', null=True, blank=True)
+	merk_kendaraan = models.ForeignKey(MerkTypeKendaraan, max_length=255, verbose_name='Merk Kendaraan', null=True, blank=True)
 	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan', null=True, blank=True)
 	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka', null=True, blank=True)
 	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin', null=True, blank=True)
@@ -1543,7 +1543,6 @@ class Kendaraan(models.Model):
 		verbose_name = 'Kendaraan'
 		verbose_name_plural = 'Kendaraan'
 
-class
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
