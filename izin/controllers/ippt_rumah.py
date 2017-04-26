@@ -19,13 +19,15 @@ def formulir_ippt_rumah(request):
 		jenis_pemohon = JenisPemohon.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Un
-		extra_context.update({'negara': negara})
-		extra_context.update({'kecamatan': kecamatan})
-		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		extra_context.update({'has_permission': True })
-		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
-		# print request.COOKIES
-		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+
+		extra_context.update({
+			'negara': negara,
+			'kecamatan': kecamatan,
+			'jenis_pemohon': jenis_pemohon,
+			'has_permission': True,
+			'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+			'jenispermohonanizin_list': jenispermohonanizin_list,
+			})
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

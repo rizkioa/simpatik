@@ -28,28 +28,32 @@ def formulir_imb_umum(request):
 		lama_penggunaan_bangunan = ParameterBangunan.objects.filter(parameter="Lama Penggunaan Bangunan")
 		jenis_kontruksi_list = JenisKontruksi.objects.all()
 
-		extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
-		extra_context.update({'rumija': RUMIJA })
-		extra_context.update({'ruwasja': RUWASJA })
-		extra_context.update({'jenis_kontruksi_list': jenis_kontruksi_list})
-		extra_context.update({'fungsi_bangunan': fungsi_bangunan })
-		extra_context.update({'kompleksitas_bangunan': kompleksitas_bangunan })
-		extra_context.update({'permanensi_bangunan': permanensi_bangunan })
-		extra_context.update({'ketinggian_bangunan': ketinggian_bangunan })
-		extra_context.update({'lokasi_bangunan': lokasi_bangunan })
-		extra_context.update({'kepemilikan_bangunan': kepemilikan_bangunan })
-		extra_context.update({'lama_penggunaan_bangunan': lama_penggunaan_bangunan })
-		extra_context.update({'kegiatan_pembangunan': kegiatan_pembangunan })
-		extra_context.update({'status_hak_tanah': STATUS_HAK_TANAH })
+		
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
-		extra_context.update({'negara': negara})
-		extra_context.update({'kecamatan': kecamatan})
-		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		# print request.COOKIES
-		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
-		extra_context.update({'has_permission': True })
-		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+
+		extra_context.update({
+			'klasifikasi_jalan': JENIS_LOKASI_USAHA,
+			'rumija': RUMIJA,
+			'ruwasja': RUWASJA,
+			'jenis_kontruksi_list': jenis_kontruksi_list,
+			'fungsi_bangunan': fungsi_bangunan,
+			'kompleksitas_bangunan': kompleksitas_bangunan,
+			'permanensi_bangunan': permanensi_bangunan,
+			'ketinggian_bangunan': ketinggian_bangunan,
+			'lokasi_bangunan': lokasi_bangunan,
+			'kepemilikan_bangunan': kepemilikan_bangunan,
+			'lama_penggunaan_bangunan': lama_penggunaan_bangunan,
+			'kegiatan_pembangunan': kegiatan_pembangunan,
+			'status_hak_tanah': STATUS_HAK_TANAH,
+			'negara': negara,
+			'kecamatan': kecamatan,
+			'jenis_pemohon': jenis_pemohon,
+			'jenispermohonanizin_list': jenispermohonanizin_list,
+			'reklame_jenis_list': reklame_jenis_list,
+			'has_permission': True,
+			'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+
+			})
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

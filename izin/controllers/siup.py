@@ -117,8 +117,6 @@ def add_wizard_siup(request):
 					messages.warning(request, msg_, extra_tags='safe')
 					return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 				response.set_cookie(key='id_kelompok_izin', value=reklame_izin_id) # to set cookie in browser
-
-			# print request.COOKIES
 			return response
 		else:
 			messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
