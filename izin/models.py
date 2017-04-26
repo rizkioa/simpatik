@@ -1526,7 +1526,13 @@ class MerkTypeKendaraan(models.Model):
 		verbose_name = 'Merk Type'
 		verbose_name_plural = 'Merk Type'
 
+class DetilIUA(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='siup_perusahaan', blank=True, null=True)
+	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
+	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
+
 class Kendaraan(models.Model):
+	iua = models.ForeignKey(DetilIUA, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
 	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
 	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala', null=True, blank=True)
 	merk_kendaraan = models.ForeignKey(MerkTypeKendaraan, max_length=255, verbose_name='Merk Kendaraan', null=True, blank=True)
@@ -1542,6 +1548,8 @@ class Kendaraan(models.Model):
 	class Meta:
 		verbose_name = 'Kendaraan'
 		verbose_name_plural = 'Kendaraan'
+
+
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
