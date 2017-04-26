@@ -1523,8 +1523,8 @@ class MerkTypeKendaraan(models.Model):
 		return u'%s' % str(self.nama_type)
 
 	class Meta:
-		verbose_name = 'Nama Type'
-		verbose_name_plural = 'Nama Type'
+		verbose_name = 'Merk Type'
+		verbose_name_plural = 'Merk Type'
 
 class Kendaraan(models.Model):
 	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan')
@@ -1534,6 +1534,13 @@ class Kendaraan(models.Model):
 	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin')
 	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan')
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.nomor_kendaraan), str(self.nomor_uji_berkala), str(self.berat_diperbolehkan), str(self.nomor_rangka), str(self.nomor_mesin), str(self.tahun_pembuatan))
+
+	class Meta:
+		verbose_name = 'Kendaraan'
+		verbose_name_plural = 'Kendaraan'
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
