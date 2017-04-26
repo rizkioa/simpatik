@@ -15,6 +15,7 @@ from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohon
 from accounts.models import Account
 from kepegawaian.models import Pegawai
 from perusahaan.models import Perusahaan, Legalitas
+from django.db.models import Q
 
 
 
@@ -44,14 +45,17 @@ class PengajuanIzinResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True)
 	kelompok_jenis_izin = fields.ToOneField(KelompokJenisIzinRecource, 'kelompok_jenis_izin', full = True)
 	verified_by = fields.ToOneField(KepegawaianResource, 'verified_by', full=True, null=True)
+	created_by = fields.ToOneField(KepegawaianResource, 'created_by', full=True, null=True)
 	jenis_permohonan = fields.ToOneField(JenisPermohonanIzinResource, 'jenis_permohonan', full=True, null=True)
 	class Meta:
-		queryset = PengajuanIzin.objects.all()
+		queryset = PengajuanIzin.objects.filter(~Q(status=11))
+		# queryset = PengajuanIzin.objects.all()
 		allowed_methods = ['get']
-		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'verified_at', 'verified_by', 'jenis_permohonan']
+		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
 		# authentication = ApiKeyAuthentication()
 		filtering = {
 			'no_pengajuan': ['contains'],
+			# 'status': ALL,
 		}
 
 	def prepend_urls(self):

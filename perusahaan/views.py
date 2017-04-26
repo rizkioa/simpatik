@@ -104,3 +104,29 @@ def editsaham():
     except AttributeError:
         print 'error'
 
+import csv
+from models import KBLI
+
+def import_kbli():
+    f1 = file('static/import/data/perusahaan_kbli.csv', 'r') 
+
+    c1 = csv.reader(f1) # Data 
+    row = 0 
+    for kl in c1:
+        row += 1
+        id_ = kl[0]
+        kode_kbli = kl[1]
+        nama_kbli = kl[2]
+        keterangan = kl[3]
+        versi = kl[4]
+
+        # print "Baris => "+str(row)
+
+        k, created = KBLI.objects.get_or_create(nama_kbli=nama_kbli, kode_kbli=kode_kbli)
+        # k.nama_kbli = nama_kbli
+        k.keterangan = keterangan
+        k.versi = versi
+        k.save()
+        print "simpan "+str(k.nama_kbli)+' kode kbli '+str(k.kode_kbli)
+    print row
+    print "######################## DONE ########################"
