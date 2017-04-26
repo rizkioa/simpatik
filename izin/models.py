@@ -1527,12 +1527,13 @@ class MerkTypeKendaraan(models.Model):
 		verbose_name_plural = 'Merk Type'
 
 class Kendaraan(models.Model):
-	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan')
-	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala')
-	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan')
-	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka')
-	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin')
-	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan')
+	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
+	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala', null=True, blank=True)
+	merk_kendaraan = models.ForeignKey(max_length=255, verbose_name='Merk Kendaraan', null=True, blank=True)
+	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan', null=True, blank=True)
+	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka', null=True, blank=True)
+	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin', null=True, blank=True)
+	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan',null=True, blank=True)
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
 	def __unicode__(self):
@@ -1541,6 +1542,8 @@ class Kendaraan(models.Model):
 	class Meta:
 		verbose_name = 'Kendaraan'
 		verbose_name_plural = 'Kendaraan'
+
+class
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
