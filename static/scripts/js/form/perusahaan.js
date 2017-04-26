@@ -195,12 +195,18 @@ function load_perusahaan_a(npwp_){
 	}
 }
 
-function load_kecamatan1(id_kabupaten){
+function load_kecamatan1(id_kabupaten, kode_kabupaten, kode_provinsi){
+	if(kode_kabupaten == undefined){
+		kode_kabupaten = ''
+	}
+	if(kode_provinsi == undefined){
+		kode_provinsi = ''
+	}
 	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 	$( "#id_kecamatan1_chosen" ).mLoading();
 	// $( "#id_kecamatan1_chosen .loadmask-msg" ).css('top', '2px')
 	$.ajax({ // create an AJAX call...
-        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten , kode_kabupaten: kode_kabupaten, kode_provinsi, kode_provinsi}, // get the form data
         type: 'POST', // GET or POST
         // url: '{% url 'admin:option_kecamatan' %}', // the file to call
         url: __base_url__+'/admin/master/kecamatan/option/',

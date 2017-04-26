@@ -27,21 +27,23 @@ def formulir_imb_reklame(request):
 		reklame_jenis_list = JenisReklame.objects.all()
 
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
-		extra_context.update({'negara': negara})
-		extra_context.update({'kecamatan': kecamatan})
-		extra_context.update({'jenis_pemohon': jenis_pemohon})
-		extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
-		# print request.COOKIES
-		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
-		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
-		extra_context.update({'kelembagaan_list': kelembagaan_list})
-		extra_context.update({'kbli_list': kbli_list})
-		# extra_context.update({'produk_utama_list': produk_utama_list})
-		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
-		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
-		extra_context.update({'has_permission': True })
-		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+		
+		extra_context.update({
+			'negara': negara,
+			'kecamatan': kecamatan,
+			'jenis_pemohon': jenis_pemohon,
+			'klasifikasi_jalan': JENIS_LOKASI_USAHA,
+			'jenispermohonanizin_list': jenispermohonanizin_list,
+			'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list,
+			'jenis_penanaman_modal_list': jenis_penanaman_modal_list,
+			'kelembagaan_list': kelembagaan_list,
+			'kbli_list': kbli_list,
+			'jenis_legalitas_list': jenis_legalitas_list,
+			'reklame_jenis_list': reklame_jenis_list,
+			'has_permission': True,
+			'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+			})
+
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":

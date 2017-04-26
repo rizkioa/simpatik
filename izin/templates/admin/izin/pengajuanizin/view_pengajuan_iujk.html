@@ -283,7 +283,7 @@
 						{% if skizin_status != 2 or skizin_status != 2 %}
 							{% if request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
 								<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_iujk' %}" target="_blank" class="btn btn-red btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
-							{% ensdif %}
+							{% endif %}
 						{% endif %}
 					</div>
 				</div>
