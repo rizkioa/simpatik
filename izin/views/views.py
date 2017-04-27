@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -642,9 +642,16 @@ def formulir_izin_usaha_angkutan(request, extra_context={}):
     kabupaten = Kabupaten.objects.all()
     kecamatan = Kecamatan.objects.all()
     jenis_pemohon = JenisPemohon.objects.all()
-    bidang_usaha_pariwisata_list = BidangUsahaPariwisata.objects.all()
-    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
-    extra_context.update({'bidang_usaha_pariwisata': bidang_usaha_pariwisata_list, 'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
+    katogri_kendaraan_list = KategoriKendaraan.objects.all()
+    extra_context.update({
+        'negara':negara, 
+        'provinsi':provinsi, 
+        'kabupaten':kabupaten, 
+        'kecamatan':kecamatan, 
+        'jenis_pemohon':jenis_pemohon,
+        'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+        'katogri_kendaraan':katogri_kendaraan_list,
+        })
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
