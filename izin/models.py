@@ -1527,7 +1527,7 @@ class MerkTypeKendaraan(models.Model):
 		verbose_name_plural = 'Merk Type'
 
 class DetilIUA(PengajuanIzin):
-	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='siup_perusahaan', blank=True, null=True)
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iua_perusahaan', blank=True, null=True)
 	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
 	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
 
