@@ -7,6 +7,11 @@ import json
 
 def get_provinsi(request):
 	provinsi_list = Provinsi.objects.all()
+
+	kode_negara = request.POST.get('kode_negara', None)
+
+	if kode_negara and kode_negara is not "":
+		provinsi_list = provinsi_list.filter(negara__kode=kode_negara)
 	
 	id_negara = request.POST.get('negara', None)	
 	if id_negara and not id_negara is "":
