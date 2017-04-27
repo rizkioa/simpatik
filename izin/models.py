@@ -1503,6 +1503,54 @@ class DetilIUTM(PengajuanIzin):
 		verbose_name_plural = 'Detil IUTM'
 # +++++++++++ end IUTM +++++++++++++
 
+# ################ IUA (izin usaha angkutan) #################
+class KategoriKendaraan(models.Model):
+	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
+	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_kategori)
+
+	class Meta:
+		verbose_name = 'Kategori Kendaraan'
+		verbose_name_plural = 'Kategori Kendaraan'
+
+class MerkTypeKendaraan(models.Model):
+	nama_type = models.CharField(max_length=255, verbose_name='Nama Type')
+	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_type)
+
+	class Meta:
+		verbose_name = 'Merk Type'
+		verbose_name_plural = 'Merk Type'
+
+class DetilIUA(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='siup_perusahaan', blank=True, null=True)
+	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
+	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
+
+class Kendaraan(models.Model):
+	iua = models.ForeignKey(DetilIUA, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
+	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
+	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala', null=True, blank=True)
+	merk_kendaraan = models.ForeignKey(MerkTypeKendaraan, max_length=255, verbose_name='Merk Kendaraan', null=True, blank=True)
+	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan', null=True, blank=True)
+	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka', null=True, blank=True)
+	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin', null=True, blank=True)
+	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan',null=True, blank=True)
+	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.nomor_kendaraan), str(self.nomor_uji_berkala), str(self.berat_diperbolehkan), str(self.nomor_rangka), str(self.nomor_mesin), str(self.tahun_pembuatan))
+
+	class Meta:
+		verbose_name = 'Kendaraan'
+		verbose_name_plural = 'Kendaraan'
+
+
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 

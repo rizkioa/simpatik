@@ -1,0 +1,612 @@
+{% extends "front-end/formulir/formulir_izin.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block customstyle %}
+	{{ block.super }}
+	<style type="text/css">
+		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+				background-color: #22beef;
+				color: aliceblue;
+			}
+			.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+				background-color: #616f77;
+			}
+			.tab-wizard .nav-tabs > li:before {
+				background-color: #333;
+			}
+			.onoffswitch.labeled .onoffswitch-inner:before {
+				content: "Ya";
+			}
+			.onoffswitch.labeled .onoffswitch-inner:after {
+				content: "Tidak";
+			}
+			.onoffswitch.labeled {
+				width: 59px;
+			}
+			.onoffswitch.labeled .onoffswitch-switch {
+				right: 34px;
+			}
+			.checkbox-custom-alt input[disabled] + i {
+				border-color: #0e0d0d;
+				background-color: #fbf6f6;
+			}
+			.checkbox-custom-alt input[disabled] + i::before {
+				background-color: transparent;
+				color: #0c0c0c;
+			}
+			label, h3, h4, table{
+				color: black;
+			}
+			#id_kbli_chosen .search-field input{
+				min-width: 125px;
+			}
+	</style>
+
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+{% endblock %}
+
+{% block pageheader %}
+	<h2>Surat Perizinan Usaha Angkutan (IUA)
+			<span>Berikut adalah info pendaftaran perizinan IUA Kabupaten Kediri.</span>
+		</h2>
+		<div class="page-bar">
+			<ul class="page-breadcrumb">
+				<li>
+					<a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+				</li>
+				<li>
+					<a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+				</li>
+				<li>
+					<a href="#"> IUA</a>
+				</li>
+				<li>
+					<a href="#">Formulir IUA</a>
+				</li>
+			</ul>
+		</div>
+{% endblock %}
+
+{% block rootwizard %}
+	<ul class="nav nav-tabs nav-justified">
+		<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Kendaraan</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+	</ul>
+{% endblock %}
+
+{% block tab-content %}
+	<div class="tab-pane" id="tab1">
+		<!-- Identitas perusahaan -->
+		{% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab2">
+		<!-- Identitas perusahaan -->
+		{% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab3">
+		<!-- Legalitas perusahaan -->
+		{% include 'front-end/include/formulir_iua/data_kendaraan.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab4">
+		<!-- Kekayaan -->
+		{% include 'front-end/include/formulir_iua/upload_dokumen.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab5">
+		<!-- Dokumen upload -->
+		{% include 'front-end/include/formulir_siup/upload_dokumen.html' %}
+	</div>
+{% endblock %}
+
+{% block extratools %}
+	{{ block.super }}
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_siup.js' %}"></script>
+ 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+	<script type="text/javascript">
+			$(window).load(function(){
+				$('#rootwizard').bootstrapWizard({
+					onTabShow: function(tab, navigation, index) {
+						var $total = navigation.find('li').length;
+						var $current = index+1;
+						if($current === 5){
+							// alert("OK")
+							// console.log("ok")
+							id_pengajuan = parseInt($.cookie('id_pengajuan'))
+							load_berkas(id_pengajuan)
+
+						}
+						if($current === 3){
+							// $('#id_kbli_chosen .search-field input').css('width: 300px;');
+							set_chosen_element($('select#id_kbli'))
+							$('#id_kbli_chosen .search-field input').keyup(function(event) {
+
+								var event = window.event ? window.event : event;
+								value_ = $(this).val()
+								if(value_.length > 1 && event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40){
+									csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+									$( "#id_kbli_chosen .chosen-results" ).mLoading();
+									select = "["+$("#id_kbli option:selected").map(function(){ return this.value }).get().join(", ")+"]"
+									$.ajax({ // create an AJAX call...
+										data: { csrfmiddlewaretoken: csrf_token, kbli: value_, select: select }, // get the form data
+										type: 'POST', // GET or POST
+										url: __base_url__+'/option-kbli/', // the file to call
+										success: function(response) { // on success..
+											selected = $("#id_kbli option:selected").map(function(){ elm=$(this).attr('selected', 'selected'); return elm.outerHTML() }).get().join("");
+											// console.log(selected+response)
+											elem = $( "select#id_kbli" )
+											elem.html(selected+response);
+											$( "#id_kbli_chosen .chosen-results" ).mLoading('hide');
+											$('select#id_kbli').trigger("chosen:updated");
+											$('#id_kbli_chosen .search-field input').val(value_); 
+											// $(this).css("width,"+value_.length+"00px")
+											set_chosen_element($('select#id_kbli'))
+										},
+										error: function(data) {                
+											toast_server_error()
+										}
+									});
+								}
+								event.preventDefault();
+							}); 
+						}
+						if($current >= $total) {
+							$('#rootwizard').find('.pager .next').hide();
+							$('#rootwizard').find('.pager .finish').show();
+							$('#rootwizard').find('.pager .finish').removeClass('disabled');
+							
+							id_pengajuan = parseInt($.cookie('id_pengajuan'))
+							if (id_pengajuan > 0){
+								$.ajax({
+									url: __base_url__+'/ajax-konfirmasi-kbli/'+id_pengajuan,
+									success: function (response){
+										respon = $.parseJSON(response)
+										a = respon.kbli.length
+										// console.log(a)
+										// console.log(respon.kbli[0].kode_kbli)
+										if (respon.kbli){
+											str = ""
+											for (var i = 0; i < a; i++){
+												respon.kbli[i].kode_kbli
+												str = str+"("+respon.kbli[i].kode_kbli+" - "+respon.kbli[i].nama_kbli+") "
+												// $('#kbli_konfirmasi').append("("+respon.kbli[i].kode_kbli+")")
+											}
+											$('#kbli_konfirmasi').html(str)
+										}
+										else{
+											$('#kbli_konfirmasi').html('');
+										}
+									}
+									// error: function(response){
+									//   $('#kbli_konfirmasi').html('');
+									// }
+								})
+								$.ajax({
+									url: __base_url__+'/ajax-konfirmasi-kelembagaan/'+id_pengajuan,
+									success: function (response){
+										respon = $.parseJSON(response)
+										a = respon.kelembagaan.length
+										if (respon.kelembagaan){
+											str = ""
+											for (var i = 0; i < a; i++){
+												respon.kelembagaan[i].kelembagaan
+												str = str+"("+respon.kelembagaan[i].kelembagaan+") "
+											}
+											$('#kelembagaan_konfirmasi').html(str)
+										}
+										else{
+											$('#kelembagaan_konfirmasi').html('');
+										}
+									}
+									// error: function(response){
+									//   $('#kbli_konfirmasi').html('');
+									// }
+								})
+
+								$.ajax({
+									url: __base_url__+'/ajax-konfirmasi-legalitas/'+id_pengajuan,
+									success: function (response){
+											respon = $.parseJSON(response)
+											a = respon.legalitas.length
+											if (respon.legalitas){
+												str = ""
+												for (var i = 0; i < a; i++){
+													// console.log(respon.legalitas[i].jenis_legalitas)
+													row = '<tr><td>'+respon.legalitas[i].jenis_legalitas+'</td><td>'+respon.legalitas[i].nama_notaris+'</td><td>'+respon.legalitas[i].alamat+'</td><td>'+respon.legalitas[i].telephone+'</td><td>'+respon.legalitas[i].nomor_akta+'</td><td>'+respon.legalitas[i].tanggal_akta+'</td><td>'+respon.legalitas[i].nomor_pengesahan+'</td><td>'+respon.legalitas[i].tanggal_pengesahan+'</td></tr>'
+													$('#legalitas_table > tbody').prepend(row);
+												}
+											}
+											else{
+												row = '<tr><td colspan="8"></td></tr>'
+												$('#legalitas_table > tbody').prepend(row);
+											}
+									},
+									// error: function(response){
+									//   row = '<tr><td colspan='8'></td></tr>'
+									//       $('#legalitas_table > tbody').prepend(row);
+									// }
+								})
+								$.ajax({
+									url: __base_url__+'/ajax-konfirmasi-kuasa/'+id_pengajuan,
+									success: function (response){
+										respon = $.parseJSON(response)
+										if (respon.success){
+											$("<br><br><table border='0' width='100%'><tr><td colspan='3'><h3 class='custom-font'>Data Kuasa</h3></td></tr><tr><td width='25%'>Nama Kuasa</td><td width='5%'>:</td><td width='70%'>"+respon.nama_kuasa+"</td></tr><tr><td>No Identitas Kuasa</td><td>:</td><td>"+respon.no_identitas_kuasa+"</td></tr><tr><td>Telpon Kuasa</td><td>:</td><td>"+respon.telephone_kuasa+"</td></tr></table>").insertAfter("#id_table_pemohon_komfirmasi");
+										}
+										else{
+											$('<br>').insertAfter("#id_table_pemohon_komfirmasi");
+															}
+									},
+									// error: function(response){
+									//   $('<br>').insertAfter("#id_table_pemohon_komfirmasi");
+									// }
+								})
+							}
+						}
+						else{
+							$('#rootwizard').find('.pager .next').show();
+							$('#rootwizard').find('.pager .finish').hide();
+						}
+					},
+
+					onNext: function(tab, navigation, index) {
+						return true;
+					},
+
+					onTabClick: function(tab, navigation, index) {
+						return true;
+					}
+				});
+			});
+
+			$.fn.outerHTML = function(){
+
+				// IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
+				return (!this.length) ? this : (this[0].outerHTML || (
+					function(el){
+							var div = document.createElement('div');
+							div.appendChild(el.cloneNode(true));
+							var contents = div.innerHTML;
+							div = null;
+							return contents;
+				})(this[0]));
+
+			}
+
+			function set_chosen_element(chosenEl){
+				$chosenEl = $(chosenEl)
+				if ($chosenEl.length > 0) {             
+					$chosenEl.each(function() {
+						var element = $(this);
+						element.on('chosen:ready', function(e, chosen) {
+							var width = element.css("width");
+							element.next().find('.chosen-choices').addClass('form-control');
+							element.next().css("width", width);
+							element.next().find('.search-field input').css("width", "125px");
+						}).chosen();                
+					});
+				}
+			}
+
+			$(document).ready(function() {
+				// id_pengajuan_ = $.cookie("id_pengajuan");
+				// alert(id_pengajuan_)
+				/* +++++++++++++++++++ untuk confirmasi dialog sebelum halaman di reload +++++++++*/
+				window.onbeforeunload = function ref() {
+					var r = confirm( "Do you want to leave?" );
+					if (r == true) {
+							
+					}
+					else {
+							return false;
+					}
+				};
+				/* +++++++++++++++++++ end untuk confirmasi dialog sebelum halaman di reload +++++++++*/
+				
+				$('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+				$('#form-akta_pendirian').hide()
+				$("#switch_akta_pendirian_disabled").change(function() {
+					if ($(this).is(':checked')) {
+						$('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
+						$('#form-akta_pendirian').show()
+					}
+					else {
+						$('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+						$('#form-akta_pendirian').hide()
+					}
+				});
+
+				$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+				$('#form-akta_perubahan').hide()
+				$("#switch_akta_perubahan_disabled").change(function() {
+					if ($(this).is(':checked')) {
+						$('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
+						$('#form-akta_perubahan').show()
+
+					}
+					else {
+						$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+						$('#form-akta_perubahan').hide()
+
+					}
+				});
+
+				$('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+				$("#switch_pemohon_disabled").change(function() {
+					if ($(this).is(':checked')) {
+						$('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+					}
+					else {
+						$('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+					}
+				});
+				
+				$('#percent-foto').hide()
+				$('#percent-ktp').hide()
+				$('#percent-npwp_pribadi').hide()
+				$('#percent-npwp_perusahaan').hide()
+				$('#percent-akta_pendirian').hide()
+				$('#percent-akta_perubahan').hide()
+				$('#percent-pendukung').hide()
+				// $.removeCookie('id_pengajuan', { path: '/' });`
+				// 
+				if ($.cookie('id_pengajuan') === undefined){
+					$.cookie('id_pengajuan', "0", {path:"/"});
+				}
+				if ($.cookie('id_pemohon') === undefined){
+					$.cookie('id_pemohon', "0", {path:"/"});
+				}
+				if ($.cookie('id_perusahaan') === undefined){
+					$.cookie('id_perusahaan', "0", {path:"/"});
+				}
+				if ($.cookie('id_legalitas') === undefined){
+					$.cookie('id_legalitas', "0", {path:"/"});
+				}
+				if ($.cookie('id_legalitas_perubahan') === undefined){
+					$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+				}
+
+				$( "#alert" ).prop( "disabled", true );
+				$('#checkbox_siup_done').change(function() {
+					if ($(this).is(':checked')) {
+						$( "#alert" ).prop( "disabled", false );
+						window.onbeforeunload = null;
+					}
+					else{
+						$( "#alert" ).prop( "disabled", true );
+					}
+				});
+				if($('#switch_akta_perubahan_disabled').is(':checked')){
+					$('#konfirmasi_legalitas_perubahan').show();
+				}
+				else{
+					$('#konfirmasi_legalitas_perubahan').hide();
+				}
+			});
+	</script>
+	<script>
+
+		function next_tab(btn){
+			var pengajuan_id = $.cookie('id_pengajuan')
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+				success: function (response){
+					respon = $.parseJSON(response)
+					if (respon.success == true){
+						console.log('berhasil')
+						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+						var frm = $('form[name="step'+ index +'"]');
+						frm.parsley().validate();
+							if (frm.parsley().isValid()) {
+								$(".tab-content").mLoading();
+								$(btn).attr('disabled', 'disabled')
+								$.ajax({
+									type: frm.attr('method'),
+									url: frm.attr('action'),
+									data: frm.serialize(),
+									success: function (response){
+										respon = $.parseJSON(response)
+											$(btn).removeAttr('disabled')
+											if(respon.success){
+												toastr["success"](respon.pesan)
+												for (var i = 0; i < respon.data.length; i++){
+													var key = Object.keys(respon.data[i]);
+													var val = respon.data[i][key[0]]
+													var id = "#"+key[0]+"_konfirmasi"
+													$(id).text(val);
+													if(key[0] === "jenis_legalitas_perubahan"){
+														$('#konfirmasi_legalitas_perubahan').hide();
+													}
+													else{
+														$('#konfirmasi_legalitas_perubahan').show();
+													}
+												}
+												tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+												$(tab_index).tab('show')
+											}
+											else{
+												var a = Object.keys(respon);
+												// console.log(a)
+												for (var i = 0; i < a.length; i++){
+													// console.log(a[i].replace("_", " ").charAt(0).toUpperCase())
+													var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+													var field = c + a[i].replace("_", " ").slice(1)
+													// console.log(field)
+													toastr["error"](field+" "+respon[a[i]][0]['message'])
+													$("#"+a[i]+"").addClass("has-error");
+													$("#id_"+a[i]+"_").addClass("has-error");
+													// console.log("id_"+a[i])
+													// toastr["warning"]("error")
+												}
+											}
+											$(".tab-content").mLoading('hide');
+									},
+									error: function(response){
+										$(".tab-content").mLoading('hide');
+										$(btn).removeAttr('disabled')
+										toastr["error"]("Terjadi kesalahan pada koneksi server.")
+									}
+							});
+						}
+					}
+					else{
+						console.log('gagal')
+						$.cookie('id_pengajuan', '0', {path:'/'})
+						$.cookie('id_pemohon', '0', {path:'/'})
+						$.cookie('id_perusahaan', '0', {path:'/'})
+						$.cookie('nomor_ktp', '0', {path:'/'})
+						$.cookie('nomor_paspor', '0', {path:'/'})
+						$.cookie('npwp_perusahaan', '0', {path:'/'})
+					}
+				},
+				error: function (response){
+					console.log('terjadi kesalahan')
+				}
+			})
+		};
+
+		document.querySelector('#alert').onclick = function(){
+			// swal("Good job!", "You clicked the button!", "success");
+			var pengajuan_cookie = $.cookie('id_pengajuan'); 
+			var pemohon_cookie = $.cookie('id_pemohon'); 
+			var perusahaan_cookie = $.cookie('id_perusahaan'); 
+			if (pengajuan_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			else if(pemohon_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}else if(perusahaan_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+				tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+				$(tab_index).tab('show');
+			}
+			else{
+				swal({
+					showConfirmButton: false,
+					type: 'success',
+					title: 'Pendaftaran Berhasil Tersimpan',
+					timer: 2000
+				})
+				
+				id_pengajuan_ = $.cookie("id_pengajuan");
+				if (id_pengajuan_ !== ""){
+					window.location.replace("/layanan/siup/formulir/cetak/"+id_pengajuan_);
+					$.ajax({
+						url: '{% url 'siup_done' %}',
+						success: function(response) {
+							respon = $.parseJSON(response)
+							if(respon.success){
+								toastr["success"](respon.pesan)
+							}
+						}
+					});
+
+				}
+			}
+		};
+
+		$.ajaxSetup({
+			timeout: 50000, // Microseconds, for the laughs. Guaranteed timeout.
+			error: function(request, status, maybe_an_exception_object) {
+			if(status == 'timeout')
+			alert("Jaringan Internet anda terputus!");
+			}
+		});
+
+		function total_n_a(){
+			var nasional = parseFloat($('#id_presentase_saham_nasional').val())
+			var asing = parseFloat($('#id_presentase_saham_asing').val())
+			var total_a_n = nasional+asing
+			if (total_a_n.toFixed(2) > 100.00){
+				$('.saham').addClass('has-error')
+				$('.saham').append('<span class="help-block mb-0 error-saham"><font color="red">Jumlah persen saham nasional dan asing tidak boleh melebihi 100%.</font></span>')
+			}
+			else{
+				$('.saham').removeClass('has-error')
+				$('.error-saham').remove()
+			}
+		}
+
+		$("#id_kekayaan_bersih").on("change", function(e) {
+			kekayaan = $('#id_kekayaan_bersih').val()
+			res = parseInt(kekayaan.replace(/\./g, ""))
+			if (res <= 50000000){
+				$('#id_bentuk_kegiatan_usaha').val(1).prop('selected',true).trigger("chosen:updated");
+			}
+			else if(res > 50000000 && res <= 500000000){
+				$('#id_bentuk_kegiatan_usaha').val(3).prop('selected',true).trigger("chosen:updated");
+			}
+			else if(res > 500000000 && res <= 10000000000){
+				$('#id_bentuk_kegiatan_usaha').val(4).prop('selected',true).trigger("chosen:updated");
+			}
+			else if(res > 10000000000){
+				$('#id_bentuk_kegiatan_usaha').val(5).prop('selected',true).trigger("chosen:updated");
+			}
+		})
+
+		// $('#id_kekayaan_bersih').maskMoney({ thousands:'.', decimal:',', precision:0});
+		// $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
+		// $('#id_kekayaan_bersih').mask("000.000.000.000.000",{reverse:true});
+		// $('#id_total_nilai_saham').mask("000.000.000.000.000",{reverse:true});
+		$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
+		$(document).ready(function() {
+			if ('{{pengajuan_}}'){
+				// alert("{{ pengajuan_.jenis_pengajuan }}");
+				// +++++++ pemohon +++++
+				$('#id_ktp').val('{{ ktp.nomor }}')
+				$('#id_paspor').val('{{ paspor.nomor }}')
+				$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+				setTimeout(function(){
+					load_pemohon('{{ ktp.nomor }}')
+				}, 1000);
+				if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+					$('#switch_pemohon_disabled').prop( "checked", true );
+					setTimeout(function(){
+						$('.kuasa_disable').prop('disabled', false);
+						$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+						$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+						$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+					}, 1000);
+				}
+				//+++++++ end pemohon +++++
+				// tabpos = $('#rootwizard').bootstrapWizard('currentIndex')
+				// if (parseInt(tabpos) === 2){
+					// +++++ perusahaan+++++++
+				// alert('{{perusahaan_konfirmasi.npwp}}')
+				if ('{{perusahaan_konfirmasi.npwp}}' !== ''){
+					$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+					setTimeout(function(){
+						load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+					}, 3000);
+				}
+				
+					// +++++ end perusahaan+++++++
+				// }
+				
+			}
+		});
+
+	
+
+				
+	</script>
+{% include 'front-end/include/formulir_iua/popup/tambah_data_kendaraan.html' %}
+{% endblock %}

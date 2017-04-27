@@ -1,0 +1,77 @@
+<div class="modal fade" id="data_kendaraan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title costom-font">Tambah Data Kendaraan</h3>
+			</div>
+			<div class="modal-body">
+				<form method="POST" role="form" class="form-horizontal" id="id_form_data_kendaraan" data-parsley-validate novalidate>
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Tanda Nomor Kendaraan</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="id_tanda_nomor_kendaraan" name="tanda_nomor_kendaraan" required="">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Nomor Uji Berkala</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="id_nomor_uji_berkala" name="nomor_uji_berkala" required="">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Merk / Type</label>
+						<div class="col-sm-7">
+							<select class="form-control choses-select mb-10" id="id_merk_type" name="merk_type">
+								<option value="">-- Pilih Merk --</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Berat yang diperbolehkan</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="id_berat_diperbolehkan" name="berat_diperbolehkan">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Nomor Rangka</label>
+						<div class="col-sm-7">
+							<input type="text" class="control-label" id="id_nomor_rangka" name="nomor_rangka" required="">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Nomor Mesin</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="id_nomor_mesin" name="nomor_mesin">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Tahun Pembuatan</label>
+						<div class="col-sm-7">
+							<select class="form-control chosen-select mb-10" id="id_tahun_pembuatan" name="tahun_pembuatan" required="">
+								<option value="">-- Pilih Tahun --</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="input01" class="col-sm-2 control-label">Keterangan</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" id="id_keterangan" name="keterangan">
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c" onclick="">Simpan</button>
+						<button type="button" class="btn btn-lighther btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i>Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

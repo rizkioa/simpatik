@@ -636,6 +636,22 @@ def formulir_tdup(request, extra_context={}):
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/tdup.html", extra_context)
 
+def formulir_izin_usaha_angkutan(request, extra_context={}):
+    negara = Negara.objects.all()
+    provinsi = Provinsi.objects.all()
+    kabupaten = Kabupaten.objects.all()
+    kecamatan = Kecamatan.objects.all()
+    jenis_pemohon = JenisPemohon.objects.all()
+    bidang_usaha_pariwisata_list = BidangUsahaPariwisata.objects.all()
+    extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+    extra_context.update({'bidang_usaha_pariwisata': bidang_usaha_pariwisata_list, 'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
+    return render(request, "front-end/formulir/izin_usaha_angkutan.html", extra_context)
+
 def cetak_tdup(request, id_pengajuan):
     extra_context = {}
     if id_pengajuan:

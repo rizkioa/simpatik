@@ -1,0 +1,64 @@
+<form method="POST" name="step3" id="id_data_reklame" role="form" class="form-horizontal" action="{% url 'reklame_detilreklame_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>DATA KENDARAAN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Nilai Investasi</strong></label>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <span>Rp</span>
+          </span>
+          <input type="text" id="id_nilai_investasi" name="nilai_investasi" class="form-control sum-modal" required="" data-parsley-trigger="change">
+        </div>
+        <p style="font-size:13px;">(tidak termasuk tanah dan bangunan)</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Jenis/Kategori Kendaraan</strong></label>
+       <div class="col-sm-5">
+        <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+          <option value>-- Jenis/Kategori Kendaraan --</option>
+          <option value="">Mobil Barang</option>
+          <option value="">Angkutan Orang</option>
+        </select>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Data Kendaraan</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10"></div>
+        <button onclick="" type="button" data-toggle="modal" data-target="#data_kendaraan_modal" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kendaraan </button>
+      </div>
+    </div>
+     <table class="table table-striped" id="table_daftar_kendaraan">
+      <thead>
+          <tr>
+            <th>Tanda Nomor Kendaraan</th>
+            <th>Nomor Uji Berkala</th>
+            <th>Merk / Type</th>
+            <th>Nomor Rangka</th>
+            <th>Nomor Mesin</th>
+            <th>Tahun Pembuatan </th>
+            <th>Jumlah Berat yang diperbolehkan</th>
+            <th>Keterangan</th>
+          </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+    <br>
+</form>
