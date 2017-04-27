@@ -42,22 +42,32 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
 			perusahaan_ = pengajuan_.perusahaan
+			legalitas_ = {}
+			legalitas_pendirian = {}
+			legalitas_perubahan = {}
+			legalitas_3 = {}
+			legalitas_4 = {}
+			legalitas_6 = {}
+			legalitas_7 = {}
+			perusahaan_cabang_ = {}
 			if pengajuan_:
 				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
 				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
 				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
-				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
-				legalitas_ = perusahaan_.legalitas_set.all()
+				if perusahaan_:
+					alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
+					legalitas_ = perusahaan_.legalitas_set.all()
+					legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
+					legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
+					legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+					legalitas_4 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+					legalitas_6 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+					legalitas_7 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=7).last()
 				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
 				pemegang_saham_ = PemegangSaham.objects.filter(pengajuan_izin_id=pengajuan_.id)
-				perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=perusahaan_.id)
-				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
-				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
-				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-				legalitas_4 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-				legalitas_6 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-				legalitas_7 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=7).last()
+				if perusahaan_:
+					perusahaan_cabang_ = Perusahaan.objects.filter(perusahaan_induk_id=perusahaan_.id)
 				wni = 0
 				if pengajuan_.jumlah_karyawan_wni:
 					wni = pengajuan_.jumlah_karyawan_wni
