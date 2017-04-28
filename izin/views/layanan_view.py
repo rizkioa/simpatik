@@ -333,15 +333,17 @@ def layanan_izin_usaha_penggabunggan_penanaman_modal(request, extra_context={}):
 	extra_context.update({'id_kelompok_jenis_izin': "1" })
 	return render(request, "front-end/layanan/izin_usaha_penggabunggan_penanaman_modal.html", extra_context)
 
-def layanan_izin_usaha_angkutan(request, extra_context={}): 
-	kelompok = get_object_or_404(KelompokJenisIzin, id=1)
+def layanan_izin_usaha_angkutan(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, id=3)
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Usaha Angkutan"})
 	extra_context.update({'title_short': "Izin Usaha Angkutan"})
 	extra_context.update({'link_formulir': reverse("formulir_izin_usaha_angkutan") })
-	extra_context.update({'id_jenis_izin': "13" })
-	extra_context.update({'id_kelompok_jenis_izin': "1" })
-	return render(request, "front-end/layanan/izin_usaha_angkutan.html", extra_context)
+	extra_context.update({'id_jenis_izin': "30" })
+	extra_context.update({'id_kelompok_jenis_izin': "3" })
+	response = render(request, "front-end/layanan/izin_usaha_angkutan.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="3")
+	return response
 
 def layanan_sipa_sumur_bor(request, extra_context={}):
 	return render(request, "front-end/layanan/sipa_sumur_bor.html")

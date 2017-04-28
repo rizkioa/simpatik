@@ -23,8 +23,13 @@
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Merk / Type</label>
 						<div class="col-sm-7">
-							<select class="form-control choses-select mb-10" id="id_merk_type" name="merk_type">
-								<option value="">-- Pilih Merk --</option>
+							<select class="form-control chosen-select mb-10" id=id_merk_type" name="merk_type">
+								<option value>-- Pilih Merk --</option>
+								{% if merk_type %}
+									{% for merk in merk_type %}
+										<option value="{{merk.id}}">{{merk.nama_type}}</option>
+									{% endfor %}
+								{% endif %}
 							</select>
 						</div>
 					</div>
@@ -54,7 +59,10 @@
 						<label for="input01" class="col-sm-2 control-label">Tahun Pembuatan</label>
 						<div class="col-sm-7">
 							<select class="form-control chosen-select mb-10" id="id_tahun_pembuatan" name="tahun_pembuatan" required="">
-								<option value="">-- Pilih Tahun --</option>
+								<option value>-- Pilih Tahun --</option>
+								{% for tahun in tahun_choices %}
+								<option value="{{tahun.0}}">{{ tahun.1 }}</option>
+								{% endfor %}
 							</select>
 						</div>
 					</div>
