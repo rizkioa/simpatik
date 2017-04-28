@@ -163,6 +163,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 			i = instance
 		if i:
 			i.user.pegawai.set_username()
+			i.user.pegawai.set_password(i.user.username)
 
 	def save_model(self, request, obj, form, change):
 		obj.save()

@@ -8,6 +8,12 @@ import json
 
 def get_kabupaten(request):
 	kabupaten_list = Kabupaten.objects.all()
+
+	kode_negara = request.POST.get('kode_negara', None)
+	kode_provinsi = request.POST.get('kode_provinsi', None)
+
+	if kode_negara and kode_negara is not "" and kode_provinsi and kode_provinsi is not "":
+		kabupaten_list = kabupaten_list.filter(provinsi__kode=kode_provinsi, provinsi__negara__kode=kode_negara)
 	
 	id_provinsi = request.POST.get('provinsi', None)	
 	if id_provinsi and not id_provinsi is "":
