@@ -126,6 +126,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilHuller')
 		elif k.kode == "TDUP":
 			objects_ = getattr(app_models, 'DetilTDUP')
+		elif k.kode == "IUA":
+			objects_ = getattr(app_models, 'DetilIUA')
 		
 		if request.user.is_anonymous():
 			created_by = p.id
@@ -229,6 +231,8 @@ def siup_identitas_perusahan_save_cookie(request):
 				objects_ = getattr(app_models, 'DetilHuller')
 			elif k.kode == "TDUP":
 				objects_ = getattr(app_models, 'DetilTDUP')
+			elif k.kode == "IUA":
+				objects_ = getattr(app_models, 'DetilIUA')
 			try:
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views, iua_views
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
@@ -401,5 +401,9 @@ urlpatterns = [
     ########################## end save tdup ##########################
 
     url(r'^list-track-pengajuan/(?P<id_pengajuan>[0-9]+)$', views.list_track_pengajuan, name='list_track_pengajuan'),
+
+    # ################################# IUA ######################
+    url(r'^layanan/iua/data-kendaraan/save$', iua_views.save_data_kendaraan, name='iua_save_data_kendaraan'),
+    # ################################# IUA ######################
     
     ]
