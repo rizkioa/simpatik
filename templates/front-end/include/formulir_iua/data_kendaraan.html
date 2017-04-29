@@ -25,9 +25,9 @@
        <div class="col-sm-5">
         <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
           <option value>-- Jenis/Kategori Kendaraan --</option>
-          {% if katogri_kendaraan %}
-            {% for k in katogri_kendaraan %}
-              <option value="{{k.id}}">{{k.nama_kategori}}</option>
+          {% if kategori_kendaraan %}
+            {% for kategori in kategori_kendaraan %}
+              <option value="{{kategori.id}}">{{kategori.nama_kategori}}</option>
             {% endfor %}
           {% endif %}
         </select>
@@ -56,7 +56,6 @@
             <th>Nomor Rangka</th>
             <th>Nomor Mesin</th>
             <th>Tahun Pembuatan </th>
-            <th>Jumlah Berat yang diperbolehkan</th>
             <th>Keterangan</th>
           </tr>
       </thead>
