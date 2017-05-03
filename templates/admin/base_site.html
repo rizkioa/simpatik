@@ -339,16 +339,16 @@
                             {% endif %}
                         {% endif %}
                         <li>
-                            <a href="{# url 'admin:profile_pegawai' #}">
+                            <a href="{% url 'admin:profile_account' %}">
                                 <i class="fa fa-user"></i>{% trans "Profil" %}
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="#">
                                 <span class="label bg-lightred pull-right">new</span>
                                 <i class="fa fa-check"></i>Tasks
                             </a>
-                        </li>
+                        </li> -->
                         {% if user.has_usable_password %}
                             <li>
                                 <a href="{% url 'admin:password_change' %}">

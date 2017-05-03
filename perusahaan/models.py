@@ -158,6 +158,7 @@ class Perusahaan(AtributTambahan):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
 
 	def as_json(self):
+
 		email = '-'
 		if self.email:
 			email = self.email
@@ -170,6 +171,9 @@ class Perusahaan(AtributTambahan):
 		fax = '-'
 		if self.fax:
 			fax = self.fax
+		desa = ''
+		if self.desa:
+			desa = self.desa.id
 		return dict(id=self.id, nomor_tdp=self.nomor_tdp, nama_perusahaan=self.nama_perusahaan, alamat_perusahaan=self.alamat_perusahaan, kecamatan=self.desa.kecamatan.id, kabupaten=self.desa.kecamatan.kabupaten.id,  provinsi=self.desa.kecamatan.kabupaten.provinsi.id, kode_pos=kode_pos, telepon=self.telepon, fax=fax, email=email, npwp=self.npwp, status_perusahaan=self.status_perusahaan, kegiatan_usaha=self.kegiatan_usaha, desa=self.desa.id, nama_desa=self.desa.nama_desa, nama_kabupaten=self.desa.kecamatan.kabupaten.nama_kabupaten, nama_provinsi=self.desa.kecamatan.kabupaten.provinsi.nama_provinsi, nama_kecamatan=self.desa.kecamatan.nama_kecamatan, alamat_lengkap=alamat_lengkap)
 
 	def __unicode__ (self):

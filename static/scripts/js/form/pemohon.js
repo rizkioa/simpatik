@@ -66,11 +66,11 @@ function load_pemohon(ktp_){
                     
                     $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
                     load_provinsi('1')
-                    load_kabupaten('1')
-                    load_kecamatan('1083')
+                    load_kabupaten('15')
+                    load_kecamatan('233')
                     setTimeout(function(){
-                        $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
-                        $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
+                        $('#id_provinsi').val('15').prop('selected',true).trigger("chosen:updated");
+                        $('#id_kabupaten').val('233').prop('selected',true).trigger("chosen:updated")
                     }, 1000);
                 }
                 $(".tab-content").mLoading('hide');
@@ -231,10 +231,10 @@ id_pengajuan = $.cookie('id_pengajuan');
 if (id_pengajuan == '0'){
   $('#id_negara').val('1').prop('selected',true).trigger("chosen:updated");
   load_provinsi('1')
-  load_kabupaten('1')
-  load_kecamatan('1083')
+  load_kabupaten('15')
+  load_kecamatan('233')
   setTimeout(function(){
-    $('#id_provinsi').val('1').prop('selected',true).trigger("chosen:updated");
-    $('#id_kabupaten').val('1083').prop('selected',true).trigger("chosen:updated")
+    $('#id_provinsi').val('15').prop('selected',true).trigger("chosen:updated");
+    $('#id_kabupaten').val('233').prop('selected',true).trigger("chosen:updated")
   }, 1000);
 }

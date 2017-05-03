@@ -11,10 +11,11 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext, loader
 from django.utils.decorators import method_decorator
 from django.utils.safestring import mark_safe
-
+from django.shortcuts import render
 from simpdu.sites import usersite
 
 from master.utils import get_param
+from master.models import Negara
 
 import drest
 
@@ -153,11 +154,21 @@ class AccountAdmin(UserAdmin):
 		qs = qs.filter(pemohon__isnull=True)
 		return qs
 
+	def profile_account(self, request, extra_context={}):
+		negara_list = Negara.objects.all()
+		extra_context.update({
+			'has_permission': True,
+			'title': 'Profile',
+			'negara': negara_list,
+		 })
+		return render(request, "admin/accounts/account/profile.html", extra_context)
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		
 		urls = super(AccountAdmin, self).get_urls()
 		my_urls = patterns('',
+				url(r'^profile/$', self.profile_account, name='profile_account'),
 				url(r'^password_change/$', self.ganti_password, name='password_change'),
 				url(r'^sync_siabjo/(?P<username>\w+)/$', self.sync_siabjo, name='sync_siabjo'),
 		)

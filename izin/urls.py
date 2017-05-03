@@ -89,6 +89,7 @@ urlpatterns = [
     url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
     url(r'^layanan/$', views.layanan, name='layanan'),
+    url(r'^call-center/$', views.call_center, name='call_center'),
     url(r'^cari-pengajuan-izin/$', views.cari_pengajuan, name='cari_pengajuan'),
     url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
     

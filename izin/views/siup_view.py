@@ -1064,7 +1064,8 @@ def load_pemohon(request, ktp_):
 			email = ""
 			kewarganegaraan = ""
 			pekerjaan = ""
-			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id, jenis_identitas_id=2).last()
+			# paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id, jenis_identitas_id=2).last()
+			paspor_ = pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=2).last()
 			if paspor_:
 				paspor = paspor_.nomor
 			if pemohon.jabatan_pemohon:
