@@ -680,34 +680,36 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "Inputan Status Pusat kosong.",
 							"redirect": '',
 						}	
-				elif request.POST.get('aksi') == '_submit_kasir':
-					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
-					obj.status = 5
-					obj.verified_by_id = request.user.id
-					obj.verified_at = datetime.datetime.now()
-					obj.save()
-					obj_skizin.status = 5
-					obj_skizin.save()
-					riwayat_ = Riwayat(
-						pengajuan_izin_id = id_pengajuan_izin,
+				
+				elif request.POST.get('aksi') == '_submit_buat_skizin':
+					skizin = SKIzin(
+						pengajuan_izin_id = obj.id,
 						created_by_id = request.user.id,
-						keterangan = "Kadin Verified To Kasir (Pengajuan)"
-					)
+						status = 11)
+					skizin.save()
+					riwayat_ = Riwayat(
+						sk_izin_id = skizin.id ,
+						pengajuan_izin_id = obj.id,
+						created_by_id = request.user.id,
+						keterangan = "Draf (Izin)" 
+						)
 					riwayat_.save()
 					response = {
 						"success": True,
-						"pesan": "Izin berhasil di verifikasi.",
+						"pesan": "Draft SKIzin berhasil dibuat.",
 						"redirect": '',
-					}		
+					}
 				else:
 					response = {
 						"success": False,
-						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.s",
 						"redirect": '',
 					}
 				try:
 					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
+					print obj_skizin
 					if request.POST.get('aksi') == '_submit_generate_skizin':
+
 						obj_skizin.status = 6
 						obj_skizin.save()
 						obj.verified_by_id = request.user.id
@@ -778,9 +780,9 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.nama_pejabat = nama_pejabat
 						obj_skizin.nip_pejabat = str(pejabat.username)
 						if pejabat.jabatan:
-							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
+							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
 						else:
-							obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
+							obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
 						obj_skizin.keterangan = "Pembina Tk.l"
 						obj_skizin.save()
 						obj.verified_by_id = request.user.id
@@ -969,18 +971,30 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "Izin telah selsai diproses.",
 							"redirect": '',
 						}
-					else:
+					elif request.POST.get('aksi') == '_submit_kasir':
+						obj.status = 5
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
+						obj_skizin.status = 5
+						obj_skizin.save()
+						riwayat_ = Riwayat(
+							pengajuan_izin_id = id_pengajuan_izin,
+							created_by_id = request.user.id,
+							keterangan = "Kadin Verified To Kasir (Pengajuan)"
+						)
+						riwayat_.save()
 						response = {
-							"success": False,
-							"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+							"success": True,
+							"pesan": "Izin berhasil di verifikasi.",
 							"redirect": '',
 						}
-				except ObjectDoesNotExist:
+				except SKIzin.ObjectDoesNotExist:
 					pass
 			else:
 				response = {
 					"success": False,
-					"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+					"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.b",
 					"redirect": '',
 				}
 		except ObjectDoesNotExist:

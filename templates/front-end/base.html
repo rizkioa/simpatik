@@ -304,10 +304,10 @@
             }
 
             $.ajaxSetup({
-                timeout: 30000000, // Microseconds, for the laughs. Guaranteed timeout.
+                timeout: 10000, // Microseconds, for the laughs. Guaranteed timeout.
                 error: function(request, status, maybe_an_exception_object) {
                     if(status == 'timeout'){
-                        alert("Jaringan Internet anda terputus!");
+                        toast_server_error()
                     }
                 }
             });

@@ -1148,7 +1148,7 @@
 					    <tr>
 					      <td width="25%">Jenis Pemohon</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
+					      <td width="70%">{{ pengajuan.pemohon.jenis_pemohon }}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nomor KTP/Paspor</td>
@@ -1158,7 +1158,7 @@
 					    <tr>
 					      <td width="25%">Nama</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon }} ({{ pemohon.jenis_pemohon }})</td>
+					      <td width="70%">{{ pemohon.nama_lengkap }}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Alamat tempat tinggal</td>
@@ -1281,7 +1281,7 @@
 					      <tr>
 					          <td width="25%">Kelembagaan</td>
 					          <td width="5%">:</td>
-					          <td width="70%">{{ pengajuan.kelembagaan }}</td>
+					          <td width="70%">{% for k in pengajuan.kelembagaan.all %}{{k.kelembagaan}}{% endfor %}</td>
 					      </tr>
 					      <tr>
 					          <td width="25%">KBLI</td>
