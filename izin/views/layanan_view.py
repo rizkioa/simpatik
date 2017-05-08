@@ -30,7 +30,7 @@ def layanan_tdup(request, extra_context={}):
 	return response
 
 def layanan_siup(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=17)
+	kelompok = get_object_or_404(KelompokJenisIzin, kode='503.08')
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Surat Perizinan Usaha Perdagangan (SIUP)"})
 	extra_context.update({'title_short': "SIUP"})
@@ -39,6 +39,7 @@ def layanan_siup(request, extra_context={}):
 	extra_context.update({'id_kelompok_jenis_izin': "17" })
 	response = render(request, "front-end/layanan/siup.html", extra_context)
 	response.set_cookie(key='id_kelompok_izin', value="17")
+	response.set_cookie(key='kode_kelompok_jenis_izin', value="503.08")
 	return response
 
 def layanan_ho(request, extra_context={}):
