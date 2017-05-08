@@ -18,7 +18,7 @@ def layanan_iujk(request, extra_context={}):
 	return response
 
 def layanan_tdup(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, id=41)
+	kelompok = get_object_or_404(KelompokJenisIzin, kode='TDUP')
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Usaha Pariwisata"})
 	extra_context.update({'title_short': "TDUP"})
@@ -27,6 +27,7 @@ def layanan_tdup(request, extra_context={}):
 	extra_context.update({'id_kelompok_jenis_izin': "41" })
 	response = render(request, "front-end/layanan/iujk.html", extra_context)
 	response.set_cookie(key='id_kelompok_izin', value="41")
+	response.set_cookie(key='kode_kelompok_jenis_izin', value="TDUP")
 	return response
 
 def layanan_siup(request, extra_context={}):
