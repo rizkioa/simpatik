@@ -1092,6 +1092,7 @@ def tdp_upload_akta_legalitas(request):
 										berkas.keterangan = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.npwp
 									elif jenis_legalitas == '8':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=8).last()
+										print "masuk"
 										berkas.nama_berkas = "Akta Pengesahan Menteri Koperasi UKM "+p.perusahaan.nama_perusahaan
 										berkas.keterangan = "Akta Pengesahan Menteri Koperasi UKM "+p.perusahaan.npwp
 									elif jenis_legalitas == '9':

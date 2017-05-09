@@ -687,13 +687,13 @@ class IzinAdmin(admin.ModelAdmin):
 						created_by_id = request.user.id,
 						status = 11)
 					skizin.save()
-					riwayat_ = Riwayat(
-						sk_izin_id = skizin.id ,
-						pengajuan_izin_id = obj.id,
-						created_by_id = request.user.id,
-						keterangan = "Draf (Izin)" 
-						)
-					riwayat_.save()
+					# riwayat_ = Riwayat(
+					# 	sk_izin_id = skizin.id ,
+					# 	pengajuan_izin_id = obj.id,
+					# 	created_by_id = request.user.id,
+					# 	keterangan = "Draf (Izin)" 
+					# 	)
+					# riwayat_.save()
 					response = {
 						"success": True,
 						"pesan": "Draft SKIzin berhasil dibuat.",
@@ -992,7 +992,7 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "Izin berhasil di verifikasi.",
 							"redirect": '',
 						}
-				except SKIzin.ObjectDoesNotExist:
+				except ObjectDoesNotExist:
 					pass
 			else:
 				response = {
