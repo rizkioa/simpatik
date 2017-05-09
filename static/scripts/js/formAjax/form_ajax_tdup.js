@@ -770,7 +770,8 @@ $(window).load(function(){
         var $total = navigation.find('li').length;
         var $current = index+1;
         if ($current == 2){
-          load_kecamatan1(1083);
+          load_kecamatan1('', '06', '35');
+          // alert('aaaa')
           if ($.cookie('npwp_perusahaan') !== '0'){
             $('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
             setTimeout(function(){

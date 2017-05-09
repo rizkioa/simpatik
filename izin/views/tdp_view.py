@@ -295,6 +295,7 @@ def tdp_legalitas_pt_cookie(request):
 					onoffpenerimalaporan = request.POST.get('onoffpenerimalaporan')
 					if onoffpenerimalaporan == 'on':
 						noppm3 = request.POST.get('nomor_pengesahan_penerima_laporan')
+						print request.POST.get('tanggal_pengesahan_penerima_laporan')
 						tglppm3 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_penerima_laporan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						try:
 							legalitas_penerima_laporan = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=6)

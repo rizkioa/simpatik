@@ -707,7 +707,7 @@ class IzinAdmin(admin.ModelAdmin):
 					}
 				try:
 					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
-					print obj_skizin
+					# print obj_skizin
 					if request.POST.get('aksi') == '_submit_generate_skizin':
 
 						obj_skizin.status = 6
@@ -955,9 +955,12 @@ class IzinAdmin(admin.ModelAdmin):
 						obj_skizin.status = 1
 						obj_skizin.save()
 						obj.status = 1
-						obj.save()
 						obj.verified_by_id = request.user.id
 						obj.verified_at = datetime.datetime.now()
+						if obj.pemohon:
+							obj.pemohon.status = 1
+						# if obj.perusahaan:
+						# 	obj.perusahaan.status = 1
 						obj.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
