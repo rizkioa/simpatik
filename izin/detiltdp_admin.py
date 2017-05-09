@@ -87,10 +87,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 
-				extra_context.update({
-					'skizin': skizin_, 
-					'skizin_status': skizin_.status,
-					'masa_berlaku':masa_berlaku })
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_pt.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -156,10 +156,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 
-				extra_context.update({
-					'skizin': skizin_, 
-					'skizin_status': skizin_.status,
-					'masa_berlaku':masa_berlaku })
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_cv.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -231,10 +231,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 
-				extra_context.update({
-					'skizin': skizin_, 
-					'skizin_status': skizin_.status,
-					'masa_berlaku':masa_berlaku })
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_perorangan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -301,10 +301,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 
-				extra_context.update({
-					'skizin': skizin_, 
-					'skizin_status': skizin_.status,
-					'masa_berlaku':masa_berlaku })
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_firma.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -372,10 +372,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 
-				extra_context.update({
-					'skizin': skizin_, 
-					'skizin_status': skizin_.status,
-					'masa_berlaku':masa_berlaku })
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_bul.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -423,10 +423,10 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 
-				extra_context.update({
-					'skizin': skizin_, 
-					'skizin_status': skizin_.status,
-					'masa_berlaku':masa_berlaku })
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_koperasi.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
