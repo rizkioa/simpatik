@@ -105,7 +105,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -177,7 +177,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -253,7 +253,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -324,7 +324,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -447,7 +447,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -470,7 +470,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
