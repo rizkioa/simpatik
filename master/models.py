@@ -374,6 +374,9 @@ class Berkas(MetaAtribut):
 			'berkas': self.get_file_url(),
 		}
 
+	def as_json(self):
+		return dict(nama_berkas= self.nama_berkas, file=self.get_file_url())
+
 	def __unicode__(self):
 		return self.nama_berkas
 

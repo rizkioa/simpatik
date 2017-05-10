@@ -55,6 +55,17 @@ class Pemohon(Account):
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+"</option>"
 
+	def get_berkas(self):
+		berkas_npwp = ''
+		berkas_foto = ''
+		if self.berkas_npwp:
+			berkas_npwp = self.berkas_npwp.as_json()
+		if self.berkas_foto:
+			berkas_foto_list = self.berkas_foto.all()
+			if berkas_foto_list:
+				berkas_foto = [x.as_json() for x in berkas_foto_list]
+		return dict(berkas_npwp=berkas_npwp, berkas_foto=berkas_foto)
+
 	def set_username(self):
 		nomor_list = self.nomoridentitaspengguna_set.all()
 		jumlah_ =  nomor_list.count()
@@ -279,7 +290,16 @@ class PengajuanIzin(MetaAtribut):
 		telephone_kuasa = ''
 		if self.telephone_kuasa:
 			telephone_kuasa = self.telephone_kuasa
-		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa)
+		berkas_tambahan_list = []
+		berkas_tambahan_json = {}
+		if self.berkas_tambahan:
+			berkas_tambahan_list = self.berkas_tambahan.all()
+			berkas_tambahan_json = [obj.as_json() for obj in berkas_tambahan_list]
+		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa, berkas_tambahan=berkas_tambahan_json)
+
+	# def get_berkas(self):
+		
+
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]

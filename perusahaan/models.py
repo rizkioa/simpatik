@@ -157,6 +157,12 @@ class Perusahaan(AtributTambahan):
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
 
+	def get_berkas(self):
+		berkas_npwp = ''
+		if self.berkas_npwp:
+			berkas_npwp = berkas_npwp.as_json()
+		return dict(berkas_npwp=berkas_npwp)
+
 	def as_json(self):
 
 		email = '-'
@@ -224,6 +230,15 @@ class Legalitas(AtributTambahan):
 			"nomor_pengesahan": self.nomor_pengesahan,
 			"tanggal_pengesahan": self.tanggal_pengesahan.strftime('%d-%m-%Y'),			
 		}
+
+	def get_berkas(self):
+		nama_berkas = ''
+		file = ''
+		if self.berkas:
+			if self.berkas.nama_berkas:
+				nama_berkas = self.berkas.nama_berkas
+				file = self.berkas.get_file_url()
+		return dict(nama_berkas= self.nama_berkas, file=file)
 
 	def as_json(self):
 		tanggal_akta = ''
