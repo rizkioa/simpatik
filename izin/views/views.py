@@ -619,12 +619,17 @@ def formulir_tdup(request, extra_context={}):
         if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
             try:
                 pengajuan_ = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
+                print pengajuan_
                 extra_context.update({'pengajuan_': pengajuan_})
                 extra_context.update({'pengajuan_id': pengajuan_.id})
                 if pengajuan_.pemohon:
-                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
-                    extra_context.update({ 'ktp': ktp_ })
-                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    extra_context.update({ 'pemohon': pengajuan_.pemohon })
+                    # ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    ktp_ = pengajuan_.pemohon.nomoridentitaspengguna_set(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    if ktp_:
+                        extra_context.update({ 'ktp': ktp_ })
+                    # paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    paspor_ = pengajuan_.pemohon.nomoridentitaspengguna_set(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
                     if paspor_:
                         paspor_ = paspor_
                     else:

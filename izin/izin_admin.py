@@ -31,6 +31,7 @@ from izin.controllers.ippt_usaha import formulir_ippt_usaha
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
+from mobile.utils import get_model_detil
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -815,9 +816,9 @@ class IzinAdmin(admin.ModelAdmin):
 					# 	obj_skizin.nama_pejabat = nama_pejabat
 					# 	obj_skizin.nip_pejabat = str(pejabat.username)
 					# 	if pejabat.jabatan:
-					# 		obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
+					# 		obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
 					# 	else:
-					# 		obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
+					# 		obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
 					# 	obj_skizin.keterangan = "Pembina Tk.l"
 					# 	obj_skizin.save()
 					# 	riwayat_ = Riwayat(
@@ -959,6 +960,15 @@ class IzinAdmin(admin.ModelAdmin):
 						obj.verified_at = datetime.datetime.now()
 						if obj.pemohon:
 							obj.pemohon.status = 1
+						if obj.kelompok_jenis_izin:
+							if obj.kelompok_jenis_izin.kode:
+								obj_detil_ = get_model_detil(obj.kelompok_jenis_izin.kode)
+								if obj_detil_:
+									obj_detil_ = obj_detil_.objects.filter(id=obj.id).last()
+									if obj_detil_:
+										if obj_detil_.perusahaan:
+											obj_detil_.perusahaan.status = 1
+											obj_detil_.save()
 						# if obj.perusahaan:
 						# 	obj.perusahaan.status = 1
 						obj.save()
