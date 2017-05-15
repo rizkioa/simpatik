@@ -708,7 +708,7 @@
 										<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_perbaiki_draft_skizin" method="POST">
 										{% csrf_token %}
 											<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
-											<input type="hidden" name="kode_aksi">
+											<input type="hidden" name="kode_aksi" value="perbaikan_draft_skizin">
 											<div class="panel-body">
 												<h4>PERBAIKI PENGAJUAN</h4>
 												<br>

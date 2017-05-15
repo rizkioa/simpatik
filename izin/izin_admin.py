@@ -1027,16 +1027,24 @@ class IzinAdmin(admin.ModelAdmin):
 			if request.user.is_superuser or request.user.groups.filter(name='Admin Sistem') or request.user.groups.filter(name='Operator') or request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin'):
 				berkas =  request.FILES.get('berkas', None)
 				if request.method == "POST":
+					keterangan = "Tolak (Izin)."
+					nama_berkas = 'Berkas Penolakan Izin '
+					status_sk = 7
+					if request.POST.get('kode_aksi') == 'perbaikan_draft_skizin':
+						keterangan = "Perbaiki Draft SK (Draft)."
+						nama_berkas = "Berkas Perbaikan Draft SK Izin "
+						status_sk = 13
+
 					riwayat_ = Riwayat(
 									alasan = request.POST.get('alasan', None),
 									pengajuan_izin_id = id_detil_siup,
 									created_by_id = request.user.id,
-									keterangan = "Tolak (Izin)."
+									keterangan = keterangan
 								)
 					# cek bila berkas kosong jika kosong lewati
 					if berkas and berkas is not None:
 						berkas_obj = Berkas(
-							nama_berkas = 'Berkas Penolakan Izin '+str(obj.pemohon.nama_lengkap),
+							nama_berkas = nama_berkas+str(obj.pemohon.nama_lengkap),
 							berkas = berkas,
 							created_by_id = request.user.id,
 							)
@@ -1045,7 +1053,7 @@ class IzinAdmin(admin.ModelAdmin):
 					riwayat_.save()
 					try:
 						obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
-						obj_skizin.status = 7
+						obj_skizin.status = status_sk
 						obj_skizin.created_by_id = request.user.id
 						obj_skizin.save()
 						riwayat_.sk_izin = obj_skizin
