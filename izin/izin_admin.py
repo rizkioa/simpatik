@@ -865,7 +865,7 @@ class IzinAdmin(admin.ModelAdmin):
 						# print pejabat.nama_lengkap
 						obj_skizin.status = 9
 
-						#Keterangan Yang Digunakan Untuk Sk Izin
+						#Keterangan Yang Digunakan Untuk Sk Izin	
 						obj_skizin.keterangan = "Pembina Tk.l"
 
 						obj_skizin.save()
