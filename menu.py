@@ -199,6 +199,16 @@ class CustomMenu(Menu):
                 ),
             ]
 
+        if request.user.groups.filter(name="Bupati").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Draft SK',
+                    icon='fa fa-file-text',
+                    css_classes='bupati_skizin', 
+                    url=reverse('admin:verifikasi_skizin_bupati'),                
+                ),
+            ]
+
         if request.user.groups.filter(name="Penomoran").exists():
             menu_utama.children += [
                 items.MenuItem(

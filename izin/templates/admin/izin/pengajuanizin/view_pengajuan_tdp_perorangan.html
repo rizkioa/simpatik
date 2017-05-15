@@ -656,7 +656,7 @@
 		            </div>
 		            <div id="minimize_6">
 		            	<div class="tile-body">
-		            		{% if skizin_status == 9 %}
+		            		{% if skizin_status == 12 %}
 		            			<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 							    	<div class="panel-body">
 							    		<center>
@@ -745,7 +745,7 @@
 							    	</div>
 							   	</div>
 		            		{% endif %}
-			            	{% if skizin_status == 4 %}
+			            	{% if skizin_status == 12 %}
 							    <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
@@ -756,7 +756,7 @@
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_kadin')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_bupati')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
