@@ -16,8 +16,8 @@ from accounts.models import Account
 from kepegawaian.models import Pegawai
 from perusahaan.models import Perusahaan, Legalitas
 from django.db.models import Q
-
-
+from izin import models as app_models
+from utils import get_model_detil
 
 class KelompokJenisIzinRecource(CORSModelResource):
 	class Meta:
@@ -61,6 +61,7 @@ class PengajuanIzinResource(CORSModelResource):
 	def prepend_urls(self):
 		return [
 			url(r"^pengajuanizin/get-riwayat/$", self.wrap_view('get_riwayat_pengajuan'), name="api_get_riwayat_pengajuan"),
+			url(r"^pengajuanizin/get-berkas-pengajuan/$", self.wrap_view('get_berkas_pengajuan'), name="api_get_berkas_pengajuan"),
 			url(r"^pengajuanizin/get-pengajuan-izin/$", self.wrap_view('get_data_pengajuan_izin'), name="api_get_data_pengajuan_izin"),
 			url(r"^pengajuanizin/get-detil-siup/$", self.wrap_view('get_detil_siup'), name="api_get_detil_siup"),
 			url(r"^pengajuanizin/get-detil-tdp-po/$", self.wrap_view('get_tdp_po'), name="api_get_tdp_po"),
@@ -101,7 +102,8 @@ class PengajuanIzinResource(CORSModelResource):
 		if id_perusahaan:
 			perusahaan_obj = Perusahaan.objects.filter(id=id_perusahaan).last()
 			if perusahaan_obj:
-				data = perusahaan_obj.get_berkas()
+				if perusahaan_obj.berkas_npwp:
+					data = perusahaan_obj.berkas_npwp.as_json()
 		return data
 
 	def get_riwayat_pengajuan(self, request, **kwargs):
@@ -109,12 +111,34 @@ class PengajuanIzinResource(CORSModelResource):
 		data = []
 		if id_pengajuan:
 			riwayat_list = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan)
-			# print riwayat_list
 			data = [x.as_json() for x in riwayat_list]
 		return CORSHttpResponse(json.dumps(data))
 
+	def get_berkas_pengajuan(self, request, **kwargs):
+		id_pengajuan = request.GET['id_pengajuan']
+		data = {'success':False}
+		if id_pengajuan:
+			pengajuan_obj = PengajuanIzin.objects.filter(id=id_pengajuan).last()
+			if pengajuan_obj:
+				berkas_tambahan = self.get_berkas_tambahan(pengajuan_obj.id)
+				berkas_legalitas = self.get_berkas_legalitas(pengajuan_obj.id)
+				berkas_pemohon = {}
+				if pengajuan_obj.pemohon:
+					berkas_pemohon = self.get_berkas_pemohon(pengajuan_obj.pemohon.id)
 
-	# get detail pengajuan izin
+				berkas_perusahaan = {}
+				################# untuk mencari objects perusahaan ########
+				k = pengajuan_obj.kelompok_jenis_izin
+				if k.kode:
+					objects_ = get_model_detil(k.kode)					
+					if objects_:
+						pengajuan_obj = objects_.objects.filter(id=id_pengajuan).last()
+						if pengajuan_obj:
+							if pengajuan_obj.perusahaan:
+								berkas_perusahaan = self.get_berkas_perusahaan(pengajuan_obj.perusahaan.id)
+				data = {'success':True, 'berkas_tambahan': berkas_tambahan, 'berkas_legalitas': berkas_legalitas, 'berkas_pemohon':berkas_pemohon, 'berkas_perusahaan': berkas_perusahaan}
+		return CORSHttpResponse(json.dumps(data))
+
 	def get_pengajuan_izin(self, id_pengajuan):
 		data = {}
 		if id_pengajuan:
@@ -136,7 +160,6 @@ class PengajuanIzinResource(CORSModelResource):
 		data = {}
 		if id_pemohon:
 			pemohon_list = Pemohon.objects.filter(id=id_pemohon).last()
-			# print pemohon_list
 			if pemohon_list:
 				data = pemohon_list.as_json()
 		return data
@@ -190,11 +213,11 @@ class PengajuanIzinResource(CORSModelResource):
 					data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'detil_siup_obj':detil_siup_obj, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj}
 		return CORSHttpResponse(json.dumps(data))
 
-	def get_skizin_siup(self, request, **kwargs):
-		id_pengajuan = request.GET['id_pengajuan']
-		data = {'success':False}
-		if id_pengajuan and id_pengajuan is not "":
-			pass
+	# def get_skizin_siup(self, request, **kwargs):
+	# 	id_pengajuan = request.GET['id_pengajuan']
+	# 	data = {'success':False}
+	# 	if id_pengajuan and id_pengajuan is not "":
+	# 		pass
 
 	def get_tdp_po(self, request, **kwargs):
 		id_pengajuan = request.GET['id_pengajuan']

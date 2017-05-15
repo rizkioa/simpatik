@@ -672,7 +672,7 @@ def upload_sertifikat_badan_usaha(request):
 		data = {'Terjadi Kesalahan': [{'message': 'Upload Sertifikat Badan Usaha, Perusahaan tidak ditemukan/tidak ada.'}]}
 		data = json.dumps(data)
 		response = HttpResponse(data)
-	return response	
+	return response
 
 def upload_kartu_teknis_badan_usaha(request):
 	if 'id_perusahaan' in request.COOKIES.keys():

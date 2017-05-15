@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
-from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views
+from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views, iua_views
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
@@ -402,5 +402,16 @@ urlpatterns = [
     ########################## end save tdup ##########################
 
     url(r'^list-track-pengajuan/(?P<id_pengajuan>[0-9]+)$', views.list_track_pengajuan, name='list_track_pengajuan'),
+
+    # ################################# IUA ######################
+    url(r'^layanan/iua/detil-iua/save$', iua_views.save_detil_iua, name='iua_save_detil_iua'),
+    url(r'^ajax-save-data-kendaraan/$', iua_views.save_data_kendaraan, name='save_data_kendaraan'),
+    url(r'^ajax-load-data-kendaraan/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_kendaraan, name='load_data_kendaraan'),
+    url(r'^ajax-load-jumlah-data-kendaraan/(?P<pengajuan_id>[0-9]+)$', iua_views.jumlah_data_kendaraan, name='jumlah_data_kendaraan'),
+    url(r'^ajax-load-detil-iua/(?P<pengajuan_id>[0-9]+)$', iua_views.load_detil_iua, name='load_detil_iua'),
+    url(r'^ajax-delete-data-kendaraan/(?P<kendaraan_id>[0-9]+)$', iua_views.delete_data_kendaraan, name='delete_data_kendaraan'),
+    url(r'^ajax-load-berkas-iua/(?P<id_pengajuan>[0-9]+)$', iua_views.ajax_load_berkas_iua, name='ajax_load_berkas_iua'),
+    url(r'^ajax-iua-upload-dokument/$', iua_views.iua_upload_dokument, name='iua_upload_dokument'),
+    # ################################# IUA ######################
     
     ]

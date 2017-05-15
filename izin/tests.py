@@ -27,9 +27,14 @@ from django.test import TestCase
 # 	response = self.client.get('/example/')
 # 	self.assertEqual(response.status_code, 200)
 
-a = "[2, 8, 2, 5, 7]"
-print a
-print eval(a)
+# a = "[2, 8, 2, 5, 7]"
+# print a
+# print eval(a)
 
 # import drest
 # drest.api.TastyPieAPI("http://simpatik.kedirikab.go.id:8889/api/v1/")
+
+
+u = '5 2 1'
+p = u.split()
+print len(p)
