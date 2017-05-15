@@ -4,6 +4,7 @@
 			<div class="modal-header">
 				<h3 class="modal-title costom-font">Tambah Data Kendaraan</h3>
 			</div>
+			{% csrf_token %}
 			<div class="modal-body">
 				<form method="POST" role="form" class="form-horizontal" id="id_form_data_kendaraan" data-parsley-validate novalidate>
 					<div class="form-group">
@@ -23,7 +24,7 @@
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Merk / Type</label>
 						<div class="col-sm-7">
-							<select class="form-control chosen-select mb-10" id=id_merk_type" name="merk_type">
+							<select class="form-control chosen-select mb-10" id="id_merk_type" name="merk_type">
 								<option value>-- Pilih Merk --</option>
 								{% if merk_type %}
 									{% for merk in merk_type %}
@@ -75,7 +76,7 @@
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c" onclick="">Simpan</button>
+						<button onclick="save_data_kendaraan();" type="button" id="modal_save_data_kendaraan" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
 						<button type="button" class="btn btn-lighther btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i>Cancel</button>
 					</div>
 				</form>
@@ -83,3 +84,119 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	function save_data_kendaraan(){
+		nomor_kendaraan = $('#id_tanda_nomor_kendaraan').val()
+		nomor_uji_berkala = $('#id_nomor_uji_berkala').val()
+		merk_kendaraan = $('#id_merk_type').val()
+		berat_diperbolehkan = $('#id_berat_diperbolehkan').val()
+		nomor_rangka = $('#id_nomor_rangka').val()
+		nomor_mesin = $('#id_nomor_mesin').val()
+		tahun_pembuatan = $('#id_tahun_pembuatan').val()
+		keterangan = $('#id_keterangan').val()
+		csrf = $("input[name='csrfmiddlewaretoken']").val()
+
+		$.ajax({
+			method: 'POST',
+			data : { nomor_kendaraan: nomor_kendaraan, nomor_uji_berkala: nomor_uji_berkala, merk_kendaraan: merk_kendaraan, berat_diperbolehkan: berat_diperbolehkan, nomor_rangka:nomor_rangka, nomor_mesin:nomor_mesin, tahun_pembuatan: tahun_pembuatan, keterangan:keterangan, csrfmiddlewaretoken: csrf },
+			url : __base_url__ +'/ajax-save-data-kendaraan/',
+			success: function(response){
+				console.log(response)
+				resp = $.parseJSON(response)
+				if (resp.success){
+					toastr["success"](resp.pesan)
+					$('#data_kendaraan_modal').modal('hide')
+					load_data_kendaraan($.cookie('id_pengajuan'))
+				}
+				else{
+					alert('error')
+					// var a = Object.keys(resp);
+					// for (var i = 0; i < a.length; i++){
+					// 	var field = a[i].replace("_", " ");
+					// 	console.log(a[i][0]['message'])
+					// 	toastr['error'](field+", "+resp[a[i]][0]['message'])
+					// }
+				}
+			}
+		})
+	}
+
+	function load_data_kendaraan(pengajuan_id){
+		if (pengajuan_id !== ""){
+			tablekosong = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!<td><tr>' 
+			$('#table_daftar_kendaraan').mLoading();
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/ajax-load-data-kendaraan/'+pengajuan_id,
+				success: function (data) {
+					a = data.length
+					if(a === 0){
+						$('#table_daftar_kendaraan > tbody > tr:first/').remove()
+						table = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!!<td><tr>'
+						$('#table_daftar_kendaraan > tbody').prepend(table)
+					}
+					else{
+						load_jumlah_data_kendaraan(pengajuan_id)
+						b = data.reverse()
+						$('#table_daftar_kendaraan > tbody > tr:first').remove()
+						for (var i = 0; i < a; i++){
+							id = b[i].id
+							tanda_nomor_kendaraan = b[i].nomor_kendaraan
+							nomor_uji_berkala = b[i].nomor_uji_berkala
+							merk_type = b[i].merk_kendaraan_nama
+							nomor_rangka = b[i].nomor_rangka
+							nomor_mesin = b[i].nomor_mesin
+							tahun_pembuatan = b[i].tahun_pembuatan
+							keterangan = b[i].keterangan
+							no = a
+							if (a > 1){
+								no = a-i
+							}
+							row = '<tr>'
+							row += '<td>'+tanda_nomor_kendaraan+'</td>'
+							row += '<td>'+nomor_uji_berkala+'</td>'
+							row += '<td>'+merk_type+'</td>'
+							row += '<td>'+nomor_rangka+'</td>'
+							row += '<td>'+nomor_mesin+'</td>'
+							row += '<td>'+tahun_pembuatan+'</td>'
+							row += '<td>'+keterangan+'</td>'
+							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
+							row += '</tr>'
+							$('#table_daftar_kendaraan > tbody').prepend(row)
+						}
+					}
+				}
+			})
+			$('#table_daftar_kendaraan').mLoading('hide');
+		}
+	}
+
+	function load_jumlah_data_kendaraan(pengajuan_id){
+		$.ajax({
+			type: 'GET',
+			url: __base_url__+'/ajax-load-jumlah-data-kendaraan/'+pengajuan_id,
+			success: function(data){
+				response = $.parseJSON(data)
+				$('#jumlah_kendaraan').text(response.data.kendaraan)
+			}
+		})
+	}
+
+	function delete_data_kendaraan(val_){
+		$.ajax({
+			type: 'GET',
+			url: __base_url__+'/ajax-delete-data-kendaraan/'+val_,
+			success: function (data) {
+				resp = $.parseJSON(data)
+				if (resp.success){
+					toastr["success"](resp.pesan)
+					load_data_kendaraan($.cookie('id_pengajuan'))
+				}
+				else{
+					toastr["error"](resp.pesan)
+				}
+			}
+		})
+	}
+</script>

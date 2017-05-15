@@ -755,6 +755,7 @@ def siup_upload_berkas_npwp_pribadi(request):
 		response = HttpResponse(data)
 	return response
 
+from izin.models import DetilIUA
 def siup_upload_berkas_npwp_perusahaan(request):
 	if 'id_perusahaan' in request.COOKIES.keys():
 		if request.COOKIES['id_perusahaan'] != '':
@@ -782,6 +783,8 @@ def siup_upload_berkas_npwp_perusahaan(request):
 										d = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 									elif kode == 'NPWP Perusahaan TDUP':
 										d = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
+									elif kode == 'NPWP Perusahaan IUA':
+										d = DetilIUA.objects.get(id=request.COOKIES['id_pengajuan'])
 									else:
 										d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 									
