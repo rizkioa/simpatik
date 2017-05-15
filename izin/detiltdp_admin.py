@@ -82,8 +82,15 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if riwayat_:
 					extra_context.update({'riwayat': riwayat_ })
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+				masa_berlaku = ''
 				if skizin_:
-					extra_context.update({'skizin': skizin_, 'skizin_status': skizin_.status })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_pt.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -97,7 +104,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -142,9 +149,17 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
 					extra_context.update({'riwayat': riwayat_ })
+				
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+				masa_berlaku = ''
 				if skizin_:
-					extra_context.update({'skizin': skizin_, 'skizin_status': skizin_.status })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_cv.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -160,7 +175,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -211,8 +226,15 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if riwayat_:
 					extra_context.update({'riwayat': riwayat_ })
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+				masa_berlaku = ''
 				if skizin_:
-					extra_context.update({'skizin': skizin_, 'skizin_status': skizin_.status })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_perorangan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -228,7 +250,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -274,8 +296,15 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if riwayat_:
 					extra_context.update({'riwayat': riwayat_ })
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+				masa_berlaku = ''
 				if skizin_:
-					extra_context.update({'skizin': skizin_, 'skizin_status': skizin_.status })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_firma.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -291,7 +320,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -338,8 +367,15 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if riwayat_:
 					extra_context.update({'riwayat': riwayat_ })
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+				masa_berlaku = ''
 				if skizin_:
-					extra_context.update({'skizin': skizin_, 'skizin_status': skizin_.status })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_bul.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -382,8 +418,15 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if riwayat_:
 					extra_context.update({'riwayat': riwayat_ })
 				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+				masa_berlaku = ''
 				if skizin_:
-					extra_context.update({'skizin': skizin_, 'skizin_status': skizin_.status })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+
+					extra_context.update({
+						'skizin': skizin_, 
+						'skizin_status': skizin_.status,
+						'masa_berlaku':masa_berlaku })
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_tdp_koperasi.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -398,7 +441,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -421,7 +464,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + "Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -429,7 +472,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
-		template = loader.get_template("front-end/include/formulir_tdp_bul/cetak_tdp_koperasi_asli.html")
+		template = loader.get_template("front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 

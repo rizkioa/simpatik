@@ -171,6 +171,7 @@
 						            	toastr["success"](respon.pesan)
 										tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
 										$(tab_index).tab('show')
+										window.scrollTo(0, 0);
 						            }else{
 						            	var a = Object.keys(respon);
 					                    for (var i = 0; i < a.length; i++){

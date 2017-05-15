@@ -14,6 +14,7 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 
 from datetime import datetime
 from ckeditor.fields import RichTextField
+
 # from accounts.utils import KETERANGAN_PEKERJAAN
 
 class Pemohon(Account):
@@ -53,6 +54,17 @@ class Pemohon(Account):
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+"</option>"
+
+	def get_berkas(self):
+		berkas_npwp = ''
+		berkas_foto = ''
+		if self.berkas_npwp:
+			berkas_npwp = self.berkas_npwp.as_json()
+		if self.berkas_foto:
+			berkas_foto_list = self.berkas_foto.all()
+			if berkas_foto_list:
+				berkas_foto = [x.as_json() for x in berkas_foto_list]
+		return dict(berkas_npwp=berkas_npwp, berkas_foto=berkas_foto)
 
 	def set_username(self):
 		nomor_list = self.nomoridentitaspengguna_set.all()
@@ -278,7 +290,16 @@ class PengajuanIzin(MetaAtribut):
 		telephone_kuasa = ''
 		if self.telephone_kuasa:
 			telephone_kuasa = self.telephone_kuasa
-		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa)
+		berkas_tambahan_list = []
+		berkas_tambahan_json = {}
+		if self.berkas_tambahan:
+			berkas_tambahan_list = self.berkas_tambahan.all()
+			berkas_tambahan_json = [obj.as_json() for obj in berkas_tambahan_list]
+		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa, berkas_tambahan=berkas_tambahan_json)
+
+	# def get_berkas(self):
+		
+
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -309,6 +330,7 @@ class DetilSIUP(PengajuanIzin):
 		return u'Detil SIUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	def as_json(self):
+		from utils import terbilang
 		bentuk_kegiatan_usaha = ''
 		if self.bentuk_kegiatan_usaha:
 			bentuk_kegiatan_usaha = self.bentuk_kegiatan_usaha.kegiatan_usaha
@@ -332,7 +354,12 @@ class DetilSIUP(PengajuanIzin):
 		if self.kbli:
 			kbli_list = self.kbli.all()
 			kbli = [x.as_json() for x in kbli_list]
-		return dict(bentuk_kegiatan_usaha=bentuk_kegiatan_usaha, kekayaan_bersih=kekayaan_bersih, total_nilai_saham=total_nilai_saham, presentase_saham_nasional=presentase_saham_nasional, presentase_saham_asing=presentase_saham_asing, kelembagaan=kelembagaan, kbli=kbli)
+		terbilang_ = ''
+		if self.kekayaan_bersih:
+			kekayaan = str(self.kekayaan_bersih)
+			kekayaan = kekayaan.replace('.', '')
+			terbilang_ = terbilang(kekayaan)
+		return dict(bentuk_kegiatan_usaha=bentuk_kegiatan_usaha, kekayaan_bersih=kekayaan_bersih, total_nilai_saham=total_nilai_saham, presentase_saham_nasional=presentase_saham_nasional, presentase_saham_asing=presentase_saham_asing, kelembagaan=kelembagaan, kbli=kbli, terbilang=terbilang_)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]

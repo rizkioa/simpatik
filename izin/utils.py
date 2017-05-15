@@ -142,6 +142,7 @@ def terbilang_(bil):
 
 
 def terbilang(n):
+	print n
 	if n == 0:
 		return 'nol'
 	t = terbilang_(n)

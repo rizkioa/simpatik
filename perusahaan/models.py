@@ -157,7 +157,14 @@ class Perusahaan(AtributTambahan):
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
 
+	def get_berkas(self):
+		berkas_npwp = ''
+		if self.berkas_npwp:
+			berkas_npwp = berkas_npwp.as_json()
+		return dict(berkas_npwp=berkas_npwp)
+
 	def as_json(self):
+
 		email = '-'
 		if self.email:
 			email = self.email
@@ -170,6 +177,9 @@ class Perusahaan(AtributTambahan):
 		fax = '-'
 		if self.fax:
 			fax = self.fax
+		desa = ''
+		if self.desa:
+			desa = self.desa.id
 		return dict(id=self.id, nomor_tdp=self.nomor_tdp, nama_perusahaan=self.nama_perusahaan, alamat_perusahaan=self.alamat_perusahaan, kecamatan=self.desa.kecamatan.id, kabupaten=self.desa.kecamatan.kabupaten.id,  provinsi=self.desa.kecamatan.kabupaten.provinsi.id, kode_pos=kode_pos, telepon=self.telepon, fax=fax, email=email, npwp=self.npwp, status_perusahaan=self.status_perusahaan, kegiatan_usaha=self.kegiatan_usaha, desa=self.desa.id, nama_desa=self.desa.nama_desa, nama_kabupaten=self.desa.kecamatan.kabupaten.nama_kabupaten, nama_provinsi=self.desa.kecamatan.kabupaten.provinsi.nama_provinsi, nama_kecamatan=self.desa.kecamatan.nama_kecamatan, alamat_lengkap=alamat_lengkap)
 
 	def __unicode__ (self):
@@ -220,6 +230,15 @@ class Legalitas(AtributTambahan):
 			"nomor_pengesahan": self.nomor_pengesahan,
 			"tanggal_pengesahan": self.tanggal_pengesahan.strftime('%d-%m-%Y'),			
 		}
+
+	def get_berkas(self):
+		nama_berkas = ''
+		file = ''
+		if self.berkas:
+			if self.berkas.nama_berkas:
+				nama_berkas = self.berkas.nama_berkas
+				file = self.berkas.get_file_url()
+		return dict(nama_berkas= self.nama_berkas, file=file)
 
 	def as_json(self):
 		tanggal_akta = ''

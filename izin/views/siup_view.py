@@ -35,14 +35,10 @@ def set_cookie(response, key, value, days_expire = 7):
   response.set_cookie(key, value, max_age=max_age, expires=expires, domain=settings.SESSION_COOKIE_DOMAIN, secure=settings.SESSION_COOKIE_SECURE or None)
 
 def siup_identitas_pemohon_save_cookie(request):
-	# print request.POST.get('desa')
 	try:
-		# print "add pemohon get"
 		p = Pemohon.objects.get(username = request.POST.get('ktp'))
 		pemohon = PemohonForm(request.POST, instance=p)
-		# print str(p)+' jhhjhjhjhj'
-	except ObjectDoesNotExist:
-		# print "add pemohon"
+	except ObjectDoesNotExist:		
 		pemohon = PemohonForm(request.POST)		
 
 	if pemohon.is_valid():
@@ -52,7 +48,15 @@ def siup_identitas_pemohon_save_cookie(request):
 		jenis_pemohon = request.POST.get('jenis_pemohon', None)
 		# End
 		jenis_permohonan_ = request.POST.get('jenis_pengajuan', None)
+		# default query kelompok jenis izin berdasarkan id
 		k = KelompokJenisIzin.objects.filter(id=request.COOKIES['id_kelompok_izin']).last()
+		# dan jika cookie kode kelompok jenis izin ada id query berdasarkan kode
+		# untuk memastikan keadaan benar atau tidak id itu 
+		if 'kode_kelompok_jenis_izin' in request.COOKIES.keys():
+			cookie_kelompok_jenis_izin = request.COOKIES['kode_kelompok_jenis_izin']
+			if cookie_kelompok_jenis_izin and cookie_kelompok_jenis_izin is not "":
+				k = KelompokJenisIzin.objects.filter(kode=cookie_kelompok_jenis_izin).last()
+		
 		nomor_pengajuan_ = get_nomor_pengajuan(k.jenis_izin.kode)
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
@@ -90,12 +94,9 @@ def siup_identitas_pemohon_save_cookie(request):
 							user_id=p.id,
 							)
 		if paspor_:
-			# print "if paspor"
 			try:
 				i = NomorIdentitasPengguna.objects.get(nomor = paspor_, jenis_identitas_id=2, user_id=p.id)
-				# print "try"
 			except ObjectDoesNotExist:
-				# print "except"
 				i, created = NomorIdentitasPengguna.objects.get_or_create(
 							nomor = paspor_,
 							jenis_identitas_id=2,
@@ -246,7 +247,8 @@ def siup_identitas_perusahan_save_cookie(request):
 					per.save()
 					
 					if objects_:
-						# print objects_
+
+						print objects_
 						# try:
 						# 	print "masuk pengajuan  perusahaan try"
 						# 	pengajuan = objects_.objects.get(id=request.COOKIES['id_pengajuan'])
@@ -258,6 +260,7 @@ def siup_identitas_perusahan_save_cookie(request):
 						# pengajuan.save()
 						# print pengajuan
 						pengajuan_ = objects_.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+						print pengajuan_
 						pengajuan_.perusahaan_id = per.id
 						pengajuan_.save()
 						# print pengajuan_.perusahaan
@@ -1033,6 +1036,7 @@ def siup_done(request):
 			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
 			response.delete_cookie(key='npwp_perusahaan') # set cookie
 			response.delete_cookie(key='id_jenis_pengajuan') # set cookie
+			response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
 			data = json.dumps(data)
@@ -1071,7 +1075,8 @@ def load_pemohon(request, ktp_):
 			email = ""
 			kewarganegaraan = ""
 			pekerjaan = ""
-			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id, jenis_identitas_id=2).last()
+			# paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon.id, jenis_identitas_id=2).last()
+			paspor_ = pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=2).last()
 			if paspor_:
 				paspor = paspor_.nomor
 			if pemohon.jabatan_pemohon:

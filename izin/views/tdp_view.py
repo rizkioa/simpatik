@@ -295,6 +295,7 @@ def tdp_legalitas_pt_cookie(request):
 					onoffpenerimalaporan = request.POST.get('onoffpenerimalaporan')
 					if onoffpenerimalaporan == 'on':
 						noppm3 = request.POST.get('nomor_pengesahan_penerima_laporan')
+						print request.POST.get('tanggal_pengesahan_penerima_laporan')
 						tglppm3 = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_penerima_laporan'), '%d-%m-%Y').strftime('%Y-%m-%d')
 						try:
 							legalitas_penerima_laporan = Legalitas.objects.get(perusahaan_id=perusahaan_id, jenis_legalitas_id=6)
@@ -1091,6 +1092,7 @@ def tdp_upload_akta_legalitas(request):
 										berkas.keterangan = "Akta Penerimaan Pemberitahuan Direksi/Komisaris "+p.perusahaan.npwp
 									elif jenis_legalitas == '8':
 										legalitas = p.perusahaan.legalitas_set.filter(jenis_legalitas_id=8).last()
+										print "masuk"
 										berkas.nama_berkas = "Akta Pengesahan Menteri Koperasi UKM "+p.perusahaan.nama_perusahaan
 										berkas.keterangan = "Akta Pengesahan Menteri Koperasi UKM "+p.perusahaan.npwp
 									elif jenis_legalitas == '9':

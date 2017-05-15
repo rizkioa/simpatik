@@ -134,8 +134,8 @@ class ProsedurAdmin(admin.ModelAdmin):
 admin.site.register(Prosedur, ProsedurAdmin)
 
 class KelompokJenisIzinAdmin(admin.ModelAdmin):
-	list_display = ('kelompok_jenis_izin','jenis_izin', 'hargabeli', 'standart_waktu', 'keterangan')
-	list_filter = ('biaya','standart_waktu', 'jenis_izin')
+	list_display = ('kelompok_jenis_izin', 'kode', 'jenis_izin', 'hargabeli', 'standart_waktu', 'keterangan')
+	list_filter = ('biaya', 'standart_waktu', 'jenis_izin')
 	search_fields = ('kelompok_jenis_izin','biaya', 'jenis_izin', 'biaya', 'standart_waktu', 'keterangan')
 
 	def hargabeli(self, obj):

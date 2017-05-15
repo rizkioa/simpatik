@@ -51,6 +51,9 @@ def tentang(request):
 def layanan(request):
     return render(request, "front-end/layanan.html")
 
+def call_center(request):
+    return render(request, "front-end/call_center.html")
+
 def cari_pengajuan(request):
     return render(request, "front-end/cari_pengajuan.html")
 

@@ -1521,7 +1521,7 @@
 					    <tr>
 					      <td width="25%">Jenis Pemohon</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pengajuan.jenis_permohonan|default_if_none:"-" }}</td>
+					      <td width="70%">{{ pengajuan.pemohon.jenis_pemohon|default_if_none:"-" }}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Nomor KTP/Paspor</td>
@@ -1531,7 +1531,7 @@
 					    <tr>
 					      <td width="25%">Nama</td>
 					      <td width="5%">:</td>
-					      <td width="70%">{{ pemohon }} ({{ pemohon.jenis_pemohon }})</td>
+					      <td width="70%">{{ pemohon.nama_lengkap }}</td>
 					    </tr>
 					    <tr>
 					      <td width="25%">Alamat tempat tinggal</td>

@@ -99,6 +99,8 @@
   	</div>
 </div>
 
+{% include 'front-end/perhatian.html' %}
+
 <div id="rootwizard" class="tab-container tab-wizard">
 	<ul class="nav nav-tabs nav-justified">
 	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
@@ -474,7 +476,7 @@
             if(respon.success == true){
               if (izin_lain_json.length > 0){
                 for (var i = 0; i < izin_lain_json.length; i++){
-                  no = i
+                  no = 1
                   if(izin_lain_json.length > 1){
                     no = i+1
                   }

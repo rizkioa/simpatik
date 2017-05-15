@@ -163,7 +163,6 @@
                 <a href="{% url 'cari_pengajuan' %}"><i class="fa fa-search"></i> Cari Pengajuan</a>
                 <a href="{% url 'admin:index' %}"><i class="fa fa-user"></i> Admin </a>
             </div>
-            
         </div>
         <div id="wrap" class="animsition">
             <section id="header">
@@ -174,7 +173,7 @@
                             <div style="float:right;width: 90%;" class="title-menu">
                                 <a href="{% url 'frontindex' %}" class="brand" >
                                     <strong class="strong_title" >SIMPATIK</strong><br>
-                                    <span class="font_hidden"><font size="4px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</font></span>
+                                    <span class="font_hidden" style="font-size: 14px;">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</span>
                                 </a>
                             </div>
                             <div style="float:left;width: 10%;padding-top: 10px;" class="nav-menu">
@@ -249,70 +248,69 @@
                 navigator.serviceWorker
                     .register('{% static 'scripts/js/sw.js' %}')
                     .then(function() { console.log("Service Worker Registered"); });
+            }
+
+
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-87576217-2', 'auto');
+            ga('send', 'pageview');
+
+            function toast_server_error(msg_){
+                toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": false,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
                 }
-          </script>
-        <script>
-          // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          // })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-          // ga('create', 'UA-87576217-2', 'auto');
-          // ga('send', 'pageview');
-
-        </script>
-        <script>
-        function toast_server_error(msg_){
-            toastr.options = {
-              "closeButton": true,
-              "debug": false,
-              "newestOnTop": false,
-              "progressBar": false,
-              "positionClass": "toast-top-right",
-              "preventDuplicates": false,
-              "onclick": null,
-              "showDuration": "300",
-              "hideDuration": "1000",
-              "timeOut": "5000",
-              "extendedTimeOut": "1000",
-              "showEasing": "swing",
-              "hideEasing": "linear",
-              "showMethod": "fadeIn",
-              "hideMethod": "fadeOut"
-            }
-            if(typeof msg_ == "undefined"){
-                toastr["error"]("Terjadi kesalahan pada koneksi server.")
-            }
-            else{
-                toastr["error"](msg_)
-            }
-        }
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("wrap").style.marginLeft = "250px";
-            $('#header').hide()
-            $("#wrap").mLoading();
-            $("#footer, .footer").mLoading();
-            $(".mloading-bar").hide();
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("wrap").style.marginLeft= "0";
-            $('#header').show()
-            $("#wrap").mLoading('hide');
-            $("#footer, .footer").mLoading('hide');
-
-        }
-
-        $.ajaxSetup({
-            timeout: 30000000, // Microseconds, for the laughs. Guaranteed timeout.
-            error: function(request, status, maybe_an_exception_object) {
-                if(status == 'timeout'){
-                    alert("Jaringan Internet anda terputus!");
+                if(typeof msg_ == "undefined"){
+                    toastr["error"]("Terjadi kesalahan pada koneksi server.")
+                }
+                else{
+                    toastr["error"](msg_)
                 }
             }
-        });
+            
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("wrap").style.marginLeft = "250px";
+                $('#header').hide()
+                $("#wrap").mLoading();
+                $("#footer, .footer").mLoading();
+                $(".mloading-bar").hide();
+            }
+
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("wrap").style.marginLeft= "0";
+                $('#header').show()
+                $("#wrap").mLoading('hide');
+                $("#footer, .footer").mLoading('hide');
+
+            }
+
+            $.ajaxSetup({
+                timeout: 10000, // Microseconds, for the laughs. Guaranteed timeout.
+                error: function(request, status, maybe_an_exception_object) {
+                    if(status == 'timeout'){
+                        toast_server_error()
+                    }
+                }
+            });
         </script>
     </body>
 </html>
