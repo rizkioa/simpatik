@@ -1018,60 +1018,52 @@ class IzinAdmin(admin.ModelAdmin):
 				}
 		return HttpResponse(json.dumps(response))
 
+
 	def penolakanizin(self, request):
+		from master.models import Berkas
 		id_detil_siup = request.POST.get('id_pengajuan')
 		try:
 			obj = PengajuanIzin.objects.get(id=id_detil_siup)
 			if request.user.is_superuser or request.user.groups.filter(name='Admin Sistem') or request.user.groups.filter(name='Operator') or request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin'):
-				form = UploadBerkasPenolakanIzinForm(request.POST, request.FILES)
+				berkas =  request.FILES.get('berkas', None)
 				if request.method == "POST":
-					if request.FILES.get('berkas'):
-						if form.is_valid():
-							berkas = form.save(commit=False)
-							berkas.nama_berkas = "Berkas Penolakan Izin"
-							berkas.created_by_id = request.user.id
-							berkas.save()
-							obj.status = 7
-							obj.rejected_by_id = request.user.id
-							obj.save()
-							riwayat_ = Riwayat(
-										alasan = request.POST.get('alasan', None),
-										pengajuan_izin_id = id_detil_siup,
-										created_by_id = request.user.id,
-										keterangan = "Tolak (Izin)."
-									)
-							riwayat_.berkas_id = berkas.id
-							riwayat_.save()
-							try:
-								obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
-								obj_skizin.status = 7
-								obj_skizin.created_by_id = request.user.id
-								obj_skizin.save()
-								riwayat_.sk_izin = obj_skizin
-								riwayat_.save()
-							except ObjectDoesNotExist:
-								pass
+					riwayat_ = Riwayat(
+									alasan = request.POST.get('alasan', None),
+									pengajuan_izin_id = id_detil_siup,
+									created_by_id = request.user.id,
+									keterangan = "Tolak (Izin)."
+								)
+					# cek bila berkas kosong jika kosong lewati
+					if berkas and berkas is not None:
+						berkas_obj = Berkas(
+							nama_berkas = 'Berkas Penolakan Izin '+str(obj.pemohon.nama_lengkap),
+							berkas = berkas,
+							created_by_id = request.user.id,
+							)
+						berkas_obj.save()
+						riwayat_.berkas_id = berkas_obj.id
+					riwayat_.save()
+					try:
+						obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
+						obj_skizin.status = 7
+						obj_skizin.created_by_id = request.user.id
+						obj_skizin.save()
+						riwayat_.sk_izin = obj_skizin
+						riwayat_.save()
+					except ObjectDoesNotExist:
+						pass
 
-							response = {
-										"success": True,
-										"pesan": "Izin telah ditolak.",
-										"redirect": '',
-									}
-						else:
-							data = form.errors.as_json()
-							response = HttpResponse(data)
-					else:
-						response = {
-							"success": False,
-							"pesan": "Berkas Kosong",
-							"redirect": '',
-						}
+					response = {
+								"success": True,
+								"pesan": "Izin telah ditolak.",
+								"redirect": '',
+							}
 				else:
-						response = {
-							"success": False,
-							"pesan": "Terjadi kesalahan server",
-							"redirect": '',
-						}
+					response = {
+						"success": False,
+						"pesan": "Terjadi kesalahan server",
+						"redirect": '',
+					}
 			else:
 				response = {
 					"success": False,
