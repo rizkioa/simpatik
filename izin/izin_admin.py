@@ -128,6 +128,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def verifikasi_skizin_bupati(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def verifikasi_skizin_cetak(self, request, extra_context={}):
 		self.request = request
 		izin = KelompokJenisIzin.objects.all()
@@ -230,6 +236,12 @@ class IzinAdmin(admin.ModelAdmin):
 		elif func_view.__name__ == 'verifikasi_skizin_kadin':
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kadin'):
+				id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
+				id_pengajuan_list += id_list
+			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
+		elif func_view.__name__ == 'verifikasi_skizin_bupati':
+			id_pengajuan_list = []
+			if request.user.groups.filter(name='Bupati'):
 				id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list += id_list
 			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
@@ -800,6 +812,46 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "SKIzin berhasil di verifikasi.",
 							"redirect": '',
 						}
+					
+					#Digunakan untuk verifikasi Bupati
+					elif request.POST.get('aksi') == '_submit_skizin_kadin_to_bupati':
+						pejabat = Pegawai.objects.filter(id=request.user.id).last()
+						# print request.user.id
+						# print pejabat.nama_lengkap
+						obj_skizin.status = 12
+						gelar_depan = ""
+						gelar_belakang = ""
+						if pejabat.gelar_depan:
+							gelar_depan = pejabat.gelar_depan
+						if pejabat.gelar_belakang:
+							gelar_belakang = pejabat.gelar_belakang
+						nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+						obj_skizin.nama_pejabat = nama_pejabat
+						obj_skizin.nip_pejabat = str(pejabat.username)
+						if pejabat.jabatan:
+							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+						else:
+							obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+
+						obj_skizin.keterangan = "Pembina Tk.l"
+						obj_skizin.save()
+						obj.status = 12
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
+						riwayat_ = Riwayat(
+							sk_izin_id = obj_skizin.id ,
+							pengajuan_izin_id = id_pengajuan_izin,
+							created_by_id = request.user.id,
+							keterangan = "Kadin Verified (Izin)"
+						)
+						riwayat_.save()
+						response = {
+							"success": True,
+							"pesan": "SKIzin berhasil di verifikasi.",
+							"redirect": '',
+						}
+
 					# elif request.POST.get('aksi') == '_submit_sk_kasir_kadin':
 					# 	pejabat = Pegawai.objects.filter(id=request.user.id).last()
 					# 	obj.status = 5
@@ -1120,6 +1172,7 @@ class IzinAdmin(admin.ModelAdmin):
 			# url(r'^verifikasi-skizin/$', self.admin_site.admin_view(self.verifikasi_skizin), name='verifikasi_skizin'),
 			url(r'^verifikasi-skizin-kabid/$', self.admin_site.admin_view(self.verifikasi_skizin_kabid), name='verifikasi_skizin_kabid'),
 			url(r'^verifikasi-skizin-kadin/$', self.admin_site.admin_view(self.verifikasi_skizin_kadin), name='verifikasi_skizin_kadin'),
+			url(r'^verifikasi-skizin-bupati/$', self.admin_site.admin_view(self.verifikasi_skizin_kadin), name='verifikasi_skizin_bupati'),
 			url(r'^verifikasi-skizin-cetak/$', self.admin_site.admin_view(self.verifikasi_skizin_cetak), name='verifikasi_skizin_cetak'),
 			url(r'^izin-terdaftar/$', self.admin_site.admin_view(self.izinterdaftar), name='izinterdaftar'),
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
