@@ -127,6 +127,8 @@ def siup_identitas_pemohon_save_cookie(request):
 			objects_ = getattr(app_models, 'DetilHuller')
 		elif k.kode == "TDUP":
 			objects_ = getattr(app_models, 'DetilTDUP')
+		elif k.kode == "IUA":
+			objects_ = getattr(app_models, 'DetilIUA')
 		
 		if request.user.is_anonymous():
 			created_by = p.id
@@ -230,6 +232,8 @@ def siup_identitas_perusahan_save_cookie(request):
 				objects_ = getattr(app_models, 'DetilHuller')
 			elif k.kode == "TDUP":
 				objects_ = getattr(app_models, 'DetilTDUP')
+			elif k.kode == "IUA":
+				objects_ = getattr(app_models, 'DetilIUA')
 			try:
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
@@ -754,6 +758,7 @@ def siup_upload_berkas_npwp_pribadi(request):
 		response = HttpResponse(data)
 	return response
 
+from izin.models import DetilIUA
 def siup_upload_berkas_npwp_perusahaan(request):
 	if 'id_perusahaan' in request.COOKIES.keys():
 		if request.COOKIES['id_perusahaan'] != '':
@@ -781,6 +786,8 @@ def siup_upload_berkas_npwp_perusahaan(request):
 										d = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
 									elif kode == 'NPWP Perusahaan TDUP':
 										d = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
+									elif kode == 'NPWP Perusahaan IUA':
+										d = DetilIUA.objects.get(id=request.COOKIES['id_pengajuan'])
 									else:
 										d = DetilSIUP.objects.get(id=request.COOKIES['id_pengajuan'])
 									

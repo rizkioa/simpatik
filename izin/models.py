@@ -1558,6 +1558,25 @@ class DetilIUA(PengajuanIzin):
 	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
 	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
 
+	def as_json(self):
+		nilai_investasi = ''
+		if self.nilai_investasi:
+			nilai_investasi = self.nilai_investasi
+		kategori_kendaraan = ''
+		if self.kategori_kendaraan:
+			kategori_kendaraan = self.kategori_kendaraan.nama_kategori
+		kategori_kendaraan_id = ''
+		if self.kategori_kendaraan.id:
+			kategori_kendaraan_id = self.kategori_kendaraan.id
+		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nilai_investasi)
+
+	class Meta:
+		verbose_name = 'Detil IUA'
+		verbose_name_plural = 'Detil IUA'
+
 class Kendaraan(models.Model):
 	iua = models.ForeignKey(DetilIUA, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
 	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
@@ -1566,11 +1585,38 @@ class Kendaraan(models.Model):
 	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan', null=True, blank=True)
 	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka', null=True, blank=True)
 	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin', null=True, blank=True)
-	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan',null=True, blank=True)
+	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
+	def as_json(self):
+		nomor_kendaraan = ''
+		if self.nomor_kendaraan:
+			nomor_kendaraan = self.nomor_kendaraan
+		nomor_uji_berkala = ''
+		if self.nomor_uji_berkala:
+			nomor_uji_berkala = self.nomor_uji_berkala
+		merk_kendaraan_nama = ''
+		if self.merk_kendaraan.nama_type:
+			merk_kendaraan_nama = self.merk_kendaraan.nama_type
+		berat_diperbolehkan = ''
+		if self.berat_diperbolehkan:
+			berat_diperbolehkan = self.berat_diperbolehkan
+		nomor_rangka = ''
+		if self.nomor_rangka:
+			nomor_rangka = self.nomor_rangka
+		nomor_mesin = ''
+		if self.nomor_mesin:
+			nomor_mesin = self.nomor_mesin
+		tahun_pembuatan = ''
+		if self.tahun_pembuatan:
+			tahun_pembuatan = self.tahun_pembuatan
+		keterangan = ''
+		if self.keterangan:
+			keterangan = self.keterangan
+		return dict(id=self.id, nomor_kendaraan=nomor_kendaraan, nomor_uji_berkala=nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=keterangan)
+
 	def __unicode__(self):
-		return u'%s' % (str(self.nomor_kendaraan), str(self.nomor_uji_berkala), str(self.berat_diperbolehkan), str(self.nomor_rangka), str(self.nomor_mesin), str(self.tahun_pembuatan))
+		return u'%s' % str(self.nomor_kendaraan)
 
 	class Meta:
 		verbose_name = 'Kendaraan'
