@@ -720,57 +720,58 @@
 			<div class="col-lg-12">
 				<section class="tile">
 					<div class="tile-header dvd dvd-btm">
-		                <h1 class="custom-font" align="center"> Verifikasi Draf Izin Kabid</h1>
-		                <ul class="controls">
-		                    <li>
-		                        <a role="button" tabindex="0" class="tile-toggle">
-		                            <span class="minimize"><i class="fa fa-angle-down"></i></span>
-		                            <span class="expand"><i class="fa fa-angle-up"></i></span>
-		                        </a>
-		                    </li>
-		                </ul>
-		            </div>
-		            <div id="minimize_5">
-		            	<div class="tile-body">
-		            		{% if skizin_status == 6 %}
-							    <div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+						<h1 class="custom-font" align="center"> Verifikasi Draf Izin Kabid</h1>
+						<ul class="controls">
+							<li>
+								<a role="button" tabindex="0" class="tile-toggle">
+									<span class="minimize"><i class="fa fa-angle-down"></i></span>
+									<span class="expand"><i class="fa fa-angle-up"></i></span>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div id="minimize_5">
+						<div class="tile-body">
+							{% if skizin_status == 6 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-									        <input id="centang_skizin_kabid" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa draf izin bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
-								      	</label>
+											<input id="centang_skizin_kabid" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa draf izin bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+										</label>
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a onclick="verifikasi_skizin_kabid({{ pengajuan.id }}, '_submit_skizin_kabid_to_kasir')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a onclick="verifikasi_skizin_kabid({{ pengajuan.id }}, '_submit_skizin_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
 							{% endif %}
 
 							{% if status == 7 %}
-		            			<div class="panel panel-darkgray" style="background-color: #ff1910 !important;color: white;border: 0;border-radius: 6px;">
-							    	<div class="panel-body">
-							    		<center>
-							    			<h3>
-							    				Izin Ditolak
-							    			</h3>
-							    		</center>
-							    	</div>
-							   	</div>
-		            		{% endif %}
+								<div class="panel panel-darkgray" style="background-color: #ff1910 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												Izin Ditolak
+											</h3>
+										</center>
+									</div>
+								</div>
+
+							{% endif %}
 
 							{% if skizin_status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
-							    	<div class="panel-body">
-							    		<center>
-							    			<h3>
-							    				TERVERIFIKASI
-							    			</h3>
-							    		</center>
-							    	</div>
-							   	</div>
+									<div class="panel-body">
+										<center>
+											<h3>
+												TERVERIFIKASI
+											</h3>
+										</center>
+									</div>
+								</div>
 							{% endif %}
 
 							{% if skizin_status == 6 %}
@@ -783,12 +784,12 @@
 											<h4>MENOLAK PENGAJUAN</h4>
 											<br>
 											<div class="form-group">
-											    <label for="input01">Alasan </label>
-										      	<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
-										  	</div>
-										  	<div class="form-group">
-											    <label for="input01">Lampiran </label>
-											    <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+												<label for="input01">Alasan </label>
+												<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+											</div>
+											<div class="form-group">
+												<label for="input01">Lampiran </label>
+												<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" data-parsley-trigger="change">
 											</div>
 										</div>
 
@@ -801,13 +802,12 @@
 								</div>
 							{% endif %}
 						</div>
-		            </div>
+					</div>
 				</section>
 			</div>
 		</div>
 	{% endif %}
 {% endif %}
-
 <!--{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
 		<div class="row">
 			<div class="col-lg-12">
