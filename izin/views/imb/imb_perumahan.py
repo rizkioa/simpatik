@@ -174,6 +174,7 @@ def identifikasi_jalan_save_cookie(request):
 				response = HttpResponse(data)
 			else:
 				data = IMBIdentifikasiJalan.errors.as_json()
+				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			data = json.dumps(data)
