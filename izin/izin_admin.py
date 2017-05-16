@@ -111,6 +111,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def verifikasi_perbaikan_surat(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def survey(self, request, extra_context={}):
 		self.request = request
 		izin = KelompokJenisIzin.objects.all()
@@ -226,6 +232,8 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(status=4)
 		elif func_view.__name__ == 'verifikasi_pembuat_surat':
 			pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+		elif func_view.__name__ == 'verifikasi_perbaikan_surat':
+			pengajuan_ = qs.filter(skizin__status=13, status=2)
 		elif func_view.__name__ == 'kasir':
 			pengajuan_ = qs.filter(status=5)
 		elif func_view.__name__ == 'verifikasi_skizin_kabid':
@@ -487,6 +495,12 @@ class IzinAdmin(admin.ModelAdmin):
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-pembuat-surat/"
 			total = pengajuan_ + total
+			# perbaikan draf sk
+			pengajuan_ = PengajuanIzin.objects.filter(skizin__status=13, status=2).count()
+			id_elemet.append('perbaikan_surat')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/verifikasi-perbaikan-surat/"
+			total = pengajuan_ + total
 		if request.user.groups.filter(name='Penomoran'):
 			pengajuan_ = len(SKIzin.objects.filter(status=9).values('pengajuan_izin_id'))
 			id_elemet.append('penomoran')
@@ -579,12 +593,22 @@ class IzinAdmin(admin.ModelAdmin):
 			body_html = ""
 			if template_:
 				body_html = template_.body_html
-			skizin = SKIzin(
-				pengajuan_izin_id = id_detil_siup,
-				created_by_id = request.user.id,
-				body_html = body_html,
-				status = 6)
+			# id_sk = 0
+			# skizin_obj = pengajuan_.skizin_set.last()
+			# if skizin_obj:
+			# 	id_sk = skizin_obj.id
+			skizin, created = SKIzin.objects.get_or_create(pengajuan_izin_id=id_detil_siup)
+			skizin.created_by_id = request.user.id
+			skizin.body_html = body_html
+			skizin.status = 6
 			skizin.save()
+
+			# skizin = SKIzin(
+			# 	pengajuan_izin_id = id_detil_siup,
+			# 	created_by_id = request.user.id,
+			# 	body_html = body_html,
+			# 	status = 6)
+			# skizin.save()
 			# print "id_skizin"+str(skizin.id)
 			riwayat_ = Riwayat(
 				sk_izin_id = skizin.id ,
@@ -607,8 +631,8 @@ class IzinAdmin(admin.ModelAdmin):
 	
 	def aksi_detil_siup(self, request):
 		id_pengajuan_izin = request.POST.get('id_detil_siup')
-		try:
-			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
+		obj = PengajuanIzin.objects.filter(id=id_pengajuan_izin).last()
+		if obj:
 			# and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem')
 			# print request.POST.get('aksi')
 			if request.POST.get('aksi'):
@@ -724,8 +748,9 @@ class IzinAdmin(admin.ModelAdmin):
 						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.s",
 						"redirect": '',
 					}
-				try:
-					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
+				
+				obj_skizin = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin).last()
+				if obj_skizin:
 					# print obj_skizin
 					if request.POST.get('aksi') == '_submit_generate_skizin':
 
@@ -1158,7 +1183,7 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "Izin berhasil di verifikasi.",
 							"redirect": '',
 						}
-				except ObjectDoesNotExist:
+				else:
 					pass
 			else:
 				response = {
@@ -1166,7 +1191,7 @@ class IzinAdmin(admin.ModelAdmin):
 					"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.b",
 					"redirect": '',
 				}
-		except ObjectDoesNotExist:
+		else:
 			response = {
 					"success": False,
 					"pesan": "Terjadi kesalahan, pengajuan izin tidak ada dalam daftar.",
@@ -1186,10 +1211,12 @@ class IzinAdmin(admin.ModelAdmin):
 					keterangan = "Tolak (Izin)."
 					nama_berkas = 'Berkas Penolakan Izin '
 					status_sk = 7
+					pesan = "Izin telah ditolak."
 					if request.POST.get('kode_aksi') == 'perbaikan_draft_skizin':
 						keterangan = "Perbaiki Draft SK (Draft)."
 						nama_berkas = "Berkas Perbaikan Draft SK Izin "
 						status_sk = 13
+						pesan = "Perbaikan Draft SK Izin."
 
 					riwayat_ = Riwayat(
 									alasan = request.POST.get('alasan', None),
@@ -1219,7 +1246,7 @@ class IzinAdmin(admin.ModelAdmin):
 
 					response = {
 								"success": True,
-								"pesan": "Izin telah ditolak.",
+								"pesan": pesan,
 								"redirect": '',
 							}
 				else:
@@ -1278,6 +1305,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^verifikasi-operator/$', self.admin_site.admin_view(self.verifikasi_operator), name='verifikasi_operator'),
 			url(r'^verifikasi-kabid/$', self.admin_site.admin_view(self.verifikasi_kabid), name='verifikasi_kabid'),
 			url(r'^verifikasi-pembuat-surat/$', self.admin_site.admin_view(self.verifikasi_pembuat_surat), name='verifikasi_pembuat_surat'),
+			url(r'^verifikasi-perbaikan-surat/$', self.admin_site.admin_view(self.verifikasi_perbaikan_surat), name='verifikasi_perbaikan_surat'),
 			url(r'^survey/$', self.admin_site.admin_view(self.survey), name='survey'),
 			url(r'^semua-pengajuan/$', self.admin_site.admin_view(self.semua_pengajuan), name='semua_pengajuan'),
 			url(r'^penomoran-skizin/$', self.admin_site.admin_view(self.penomoran_skizin), name='penomoran_skizin'),
