@@ -162,7 +162,6 @@ function verifikasi_skizin_kadin(id_detil_siup, aksi){
 		}
 }
 
-
 function penomoran_izin(id_detil_siup, aksi){
 	var kode_jenis_izin = $('#kode_jenis_izin').val()
 	var kode_izin = $('#penomoran_kode_izin').val()
