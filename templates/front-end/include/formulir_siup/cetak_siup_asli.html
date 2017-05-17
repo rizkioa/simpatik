@@ -211,7 +211,7 @@
     		<tr>
     			<td class="tdnone" width="40%"><b>NAMA PERUSAHAAN</b></td>
     			<td class="tdnone" width="5%">:</td>
-    			<td class="tdnone" width="55%"><b>{{perusahaan.nama_perusahaan}}</b></td>
+    			<td class="tdnone" width="55%"><b>{{perusahaan.nama_perusahaan.upper}}</b></td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
@@ -273,7 +273,7 @@
     	</div>
     	<div style="float: right; width: 50%">
         	<p style="font-size:17px; padding-left: 0%;" align="center">
-                {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
+                {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
                 
                 {% if skizin.nama_pejabat %}
                     <br>Kepala DPMPTSP

@@ -11,6 +11,8 @@ STATUS = (
 	(9, 'Verified'),
 	(10, 'Regitered'),
 	(11, 'Insert'),
+	(12, 'Bupati'),
+	(13, 'Perbaikan'),
 )
 
 # Status Data : 
@@ -24,6 +26,9 @@ STATUS = (
 # 8. Survey: Dan jika ada survey mengubah status Submitted ke Survey dan jika Survey selesai kabid merubah status menjadi Inactive
 # 9. Verified:
 # 10. Regitered:
+# 11. Insert:
+# 12. Bupati: Izin perlu di verifikasi oleh Bupati
+# 13. Perbaikan: Izin Kembali ke kabid untuk di cek kembali
 # 
 # Status Data surat:
 # 1. Surat dibuat default status Draft

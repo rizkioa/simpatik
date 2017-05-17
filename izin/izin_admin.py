@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from daterange_filter.filter import DateRangeFilter
 from mobile.cors import CORSHttpResponse
-from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey
+from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey, DetilPembayaran
 from kepegawaian.models import Pegawai
 from master.models import Template
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
@@ -31,6 +31,7 @@ from izin.controllers.ippt_usaha import formulir_ippt_usaha
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
+from mobile.utils import get_model_detil
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -110,6 +111,12 @@ class IzinAdmin(admin.ModelAdmin):
 		extra_context.update({'izin': izin})
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
+	def verifikasi_perbaikan_surat(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
 	def survey(self, request, extra_context={}):
 		self.request = request
 		izin = KelompokJenisIzin.objects.all()
@@ -123,6 +130,12 @@ class IzinAdmin(admin.ModelAdmin):
 		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
 
 	def verifikasi_skizin_kadin(self, request, extra_context={}):
+		self.request = request
+		izin = KelompokJenisIzin.objects.all()
+		extra_context.update({'izin': izin})
+		return super(IzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def verifikasi_skizin_bupati(self, request, extra_context={}):
 		self.request = request
 		izin = KelompokJenisIzin.objects.all()
 		extra_context.update({'izin': izin})
@@ -219,6 +232,8 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(status=4)
 		elif func_view.__name__ == 'verifikasi_pembuat_surat':
 			pengajuan_ = qs.filter(skizin__isnull=True, status=2)
+		elif func_view.__name__ == 'verifikasi_perbaikan_surat':
+			pengajuan_ = qs.filter(skizin__status=13, status=2)
 		elif func_view.__name__ == 'kasir':
 			pengajuan_ = qs.filter(status=5)
 		elif func_view.__name__ == 'verifikasi_skizin_kabid':
@@ -231,6 +246,12 @@ class IzinAdmin(admin.ModelAdmin):
 			id_pengajuan_list = []
 			if request.user.groups.filter(name='Kadin'):
 				id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
+				id_pengajuan_list += id_list
+			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
+		elif func_view.__name__ == 'verifikasi_skizin_bupati':
+			id_pengajuan_list = []
+			if request.user.groups.filter(name='Bupati'):	
+				id_list = SKIzin.objects.filter(status=12).values_list('pengajuan_izin_id', flat=True)
 				id_pengajuan_list += id_list
 			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
 		elif func_view.__name__ == 'verifikasi_skizin_cetak':
@@ -474,6 +495,12 @@ class IzinAdmin(admin.ModelAdmin):
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-pembuat-surat/"
 			total = pengajuan_ + total
+			# perbaikan draf sk
+			pengajuan_ = PengajuanIzin.objects.filter(skizin__status=13, status=2).count()
+			id_elemet.append('perbaikan_surat')
+			jumlah_izin.append(pengajuan_)
+			url = "/admin/izin/pengajuanizin/verifikasi-perbaikan-surat/"
+			total = pengajuan_ + total
 		if request.user.groups.filter(name='Penomoran'):
 			pengajuan_ = len(SKIzin.objects.filter(status=9).values('pengajuan_izin_id'))
 			id_elemet.append('penomoran')
@@ -485,6 +512,12 @@ class IzinAdmin(admin.ModelAdmin):
 			id_elemet.append('kadin_skizin')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kadin/"
+			total = skizin + total
+		if request.user.groups.filter(name='Bupati'):
+			skizin = len(SKIzin.objects.filter(status=12).values('pengajuan_izin_id'))
+			id_elemet.append('bupati_skizin')
+			jumlah_izin.append(skizin)
+			url = "/admin/izin/pengajuanizin/verifikasi-skizin-bupati/"
 			total = skizin + total
 		if request.user.groups.filter(name='Cetak'):
 			skizin = len(SKIzin.objects.filter(status=10).values('pengajuan_izin_id'))
@@ -560,12 +593,22 @@ class IzinAdmin(admin.ModelAdmin):
 			body_html = ""
 			if template_:
 				body_html = template_.body_html
-			skizin = SKIzin(
-				pengajuan_izin_id = id_detil_siup,
-				created_by_id = request.user.id,
-				body_html = body_html,
-				status = 6)
+			# id_sk = 0
+			# skizin_obj = pengajuan_.skizin_set.last()
+			# if skizin_obj:
+			# 	id_sk = skizin_obj.id
+			skizin, created = SKIzin.objects.get_or_create(pengajuan_izin_id=id_detil_siup)
+			skizin.created_by_id = request.user.id
+			skizin.body_html = body_html
+			skizin.status = 6
 			skizin.save()
+
+			# skizin = SKIzin(
+			# 	pengajuan_izin_id = id_detil_siup,
+			# 	created_by_id = request.user.id,
+			# 	body_html = body_html,
+			# 	status = 6)
+			# skizin.save()
 			# print "id_skizin"+str(skizin.id)
 			riwayat_ = Riwayat(
 				sk_izin_id = skizin.id ,
@@ -588,8 +631,8 @@ class IzinAdmin(admin.ModelAdmin):
 	
 	def aksi_detil_siup(self, request):
 		id_pengajuan_izin = request.POST.get('id_detil_siup')
-		try:
-			obj = PengajuanIzin.objects.get(id=id_pengajuan_izin)
+		obj = PengajuanIzin.objects.filter(id=id_pengajuan_izin).last()
+		if obj:
 			# and request.user.has_perm('izin.change_detilsiup') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem')
 			# print request.POST.get('aksi')
 			if request.POST.get('aksi'):
@@ -705,8 +748,9 @@ class IzinAdmin(admin.ModelAdmin):
 						"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.s",
 						"redirect": '',
 					}
-				try:
-					obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_pengajuan_izin)
+				
+				obj_skizin = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin).last()
+				if obj_skizin:
 					# print obj_skizin
 					if request.POST.get('aksi') == '_submit_generate_skizin':
 
@@ -800,6 +844,151 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "SKIzin berhasil di verifikasi.",
 							"redirect": '',
 						}
+					
+					#Digunakan untuk verifikasi Bupati
+					elif request.POST.get('aksi') == '_submit_skizin_kadin_to_bupati':
+						pejabat = Pegawai.objects.filter(id=request.user.id).last()
+						# print request.user.id
+						# print pejabat.nama_lengkap
+
+						#Untuk Izin IMB jika biaya retribusi lebih dari 2 juta maka perlu verifikasi Bupati
+						if obj.kelompok_jenis_izin.jenis_izin.kode == "IMB" or obj.kelompok_jenis_izin.jenis_izin.kode == "HO":
+							try:
+								detil_pembayaran = DetilPembayaran.objects.get(pengajuan_izin__id=obj.id)
+								n = ''.join(detil_pembayaran.jumlah_pembayaran.split('.')[::1])
+								if int(n) > 2000000:
+									obj_skizin.status = 12
+									gelar_depan = ""
+									gelar_belakang = ""
+									if pejabat.gelar_depan:
+										gelar_depan = pejabat.gelar_depan
+									if pejabat.gelar_belakang:
+										gelar_belakang = pejabat.gelar_belakang
+									nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+									obj_skizin.nama_pejabat = nama_pejabat
+									obj_skizin.nip_pejabat = str(pejabat.username)
+									if pejabat.jabatan:
+										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+									else:
+										obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+
+									obj_skizin.keterangan = "Pembina Tk.l"
+									obj_skizin.save()
+									obj.status = 12
+									obj.verified_by_id = request.user.id
+									obj.verified_at = datetime.datetime.now()
+									obj.save()
+									riwayat_ = Riwayat(
+										sk_izin_id = obj_skizin.id ,
+										pengajuan_izin_id = id_pengajuan_izin,
+										created_by_id = request.user.id,
+										keterangan = "Kadin Verified (Izin)"
+									)
+									riwayat_.save()
+									response = {
+										"success": True,
+										"pesan": "SKIzin berhasil di verifikasi.",
+										"redirect": '',
+									}
+								else:
+									obj_skizin.status = 9
+									gelar_depan = ""
+									gelar_belakang = ""
+									if pejabat.gelar_depan:
+										gelar_depan = pejabat.gelar_depan
+									if pejabat.gelar_belakang:
+										gelar_belakang = pejabat.gelar_belakang
+									nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+									obj_skizin.nama_pejabat = nama_pejabat
+									obj_skizin.nip_pejabat = str(pejabat.username)
+									if pejabat.jabatan:
+										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+									else:
+										obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+									obj_skizin.keterangan = "Pembina Tk.l"
+									obj_skizin.save()
+									obj.verified_by_id = request.user.id
+									obj.verified_at = datetime.datetime.now()
+									obj.save()
+									riwayat_ = Riwayat(
+										sk_izin_id = obj_skizin.id ,
+										pengajuan_izin_id = id_pengajuan_izin,
+										created_by_id = request.user.id,
+										keterangan = "Kadin Verified (Izin)"
+									)
+									riwayat_.save()
+									response = {
+										"success": True,
+										"pesan": "SKIzin berhasil di verifikasi.",
+										"redirect": '',
+									}
+							except ObjectDoesNotExist:
+								response = {
+										"success": False,
+										"pesan": "Terjadi kesalahan, pengajuan izin tidak ada dalam daftar.",
+										"redirect": '',
+									}
+						else:
+							obj_skizin.status = 12
+							gelar_depan = ""
+							gelar_belakang = ""
+							if pejabat.gelar_depan:
+								gelar_depan = pejabat.gelar_depan
+							if pejabat.gelar_belakang:
+								gelar_belakang = pejabat.gelar_belakang
+							nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+							obj_skizin.nama_pejabat = nama_pejabat
+							obj_skizin.nip_pejabat = str(pejabat.username)
+							if pejabat.jabatan:
+								obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+							else:
+								obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+
+							obj_skizin.keterangan = "Pembina Tk.l"
+							obj_skizin.save()
+							obj.status = 12
+							obj.verified_by_id = request.user.id
+							obj.verified_at = datetime.datetime.now()
+							obj.save()
+							riwayat_ = Riwayat(
+								sk_izin_id = obj_skizin.id ,
+								pengajuan_izin_id = id_pengajuan_izin,
+								created_by_id = request.user.id,
+								keterangan = "Kadin Verified (Izin)"
+							)
+							riwayat_.save()
+							response = {
+								"success": True,
+								"pesan": "SKIzin berhasil di verifikasi.",
+								"redirect": '',
+							}
+							
+					elif request.POST.get('aksi') == '_submit_skizin_bupati':
+						pejabat = Pegawai.objects.filter(id=request.user.id).last()
+						# print request.user.id
+						# print pejabat.nama_lengkap
+						obj_skizin.status = 9
+
+						#Keterangan Yang Digunakan Untuk Sk Izin	
+						obj_skizin.keterangan = "Pembina Tk.l"
+
+						obj_skizin.save()
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
+						riwayat_ = Riwayat(
+							sk_izin_id = obj_skizin.id ,
+							pengajuan_izin_id = id_pengajuan_izin,
+							created_by_id = request.user.id,
+							keterangan = "Bupati Verified (Izin)"
+						)
+						riwayat_.save()
+						response = {
+							"success": True,
+							"pesan": "SKIzin berhasil di verifikasi.",
+							"redirect": '',
+						}
+
 					# elif request.POST.get('aksi') == '_submit_sk_kasir_kadin':
 					# 	pejabat = Pegawai.objects.filter(id=request.user.id).last()
 					# 	obj.status = 5
@@ -815,9 +1004,9 @@ class IzinAdmin(admin.ModelAdmin):
 					# 	obj_skizin.nama_pejabat = nama_pejabat
 					# 	obj_skizin.nip_pejabat = str(pejabat.username)
 					# 	if pejabat.jabatan:
-					# 		obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" BPM-P2TSP"
+					# 		obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
 					# 	else:
-					# 		obj_skizin.jabatan_pejabat = "Kepala Dinas BPM-P2TSP"
+					# 		obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
 					# 	obj_skizin.keterangan = "Pembina Tk.l"
 					# 	obj_skizin.save()
 					# 	riwayat_ = Riwayat(
@@ -959,6 +1148,15 @@ class IzinAdmin(admin.ModelAdmin):
 						obj.verified_at = datetime.datetime.now()
 						if obj.pemohon:
 							obj.pemohon.status = 1
+						if obj.kelompok_jenis_izin:
+							if obj.kelompok_jenis_izin.kode:
+								obj_detil_ = get_model_detil(obj.kelompok_jenis_izin.kode)
+								if obj_detil_:
+									obj_detil_ = obj_detil_.objects.filter(id=obj.id).last()
+									if obj_detil_:
+										if obj_detil_.perusahaan:
+											obj_detil_.perusahaan.status = 1
+											obj_detil_.save()
 						# if obj.perusahaan:
 						# 	obj.perusahaan.status = 1
 						obj.save()
@@ -992,7 +1190,7 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "Izin berhasil di verifikasi.",
 							"redirect": '',
 						}
-				except ObjectDoesNotExist:
+				else:
 					pass
 			else:
 				response = {
@@ -1000,7 +1198,7 @@ class IzinAdmin(admin.ModelAdmin):
 					"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.b",
 					"redirect": '',
 				}
-		except ObjectDoesNotExist:
+		else:
 			response = {
 					"success": False,
 					"pesan": "Terjadi kesalahan, pengajuan izin tidak ada dalam daftar.",
@@ -1008,60 +1206,62 @@ class IzinAdmin(admin.ModelAdmin):
 				}
 		return HttpResponse(json.dumps(response))
 
+
 	def penolakanizin(self, request):
+		from master.models import Berkas
 		id_detil_siup = request.POST.get('id_pengajuan')
 		try:
 			obj = PengajuanIzin.objects.get(id=id_detil_siup)
 			if request.user.is_superuser or request.user.groups.filter(name='Admin Sistem') or request.user.groups.filter(name='Operator') or request.user.groups.filter(name='Kabid') or request.user.groups.filter(name='Kadin'):
-				form = UploadBerkasPenolakanIzinForm(request.POST, request.FILES)
+				berkas =  request.FILES.get('berkas', None)
 				if request.method == "POST":
-					if request.FILES.get('berkas'):
-						if form.is_valid():
-							berkas = form.save(commit=False)
-							berkas.nama_berkas = "Berkas Penolakan Izin"
-							berkas.created_by_id = request.user.id
-							berkas.save()
-							obj.status = 7
-							obj.rejected_by_id = request.user.id
-							obj.save()
-							riwayat_ = Riwayat(
-										alasan = request.POST.get('alasan', None),
-										pengajuan_izin_id = id_detil_siup,
-										created_by_id = request.user.id,
-										keterangan = "Tolak (Izin)."
-									)
-							riwayat_.berkas_id = berkas.id
-							riwayat_.save()
-							try:
-								obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
-								obj_skizin.status = 7
-								obj_skizin.created_by_id = request.user.id
-								obj_skizin.save()
-								riwayat_.sk_izin = obj_skizin
-								riwayat_.save()
-							except ObjectDoesNotExist:
-								pass
+					keterangan = "Tolak (Izin)."
+					nama_berkas = 'Berkas Penolakan Izin '
+					status_sk = 7
+					pesan = "Izin telah ditolak."
+					if request.POST.get('kode_aksi') == 'perbaikan_draft_skizin':
+						keterangan = "Perbaiki Draft SK (Draft)."
+						nama_berkas = "Berkas Perbaikan Draft SK Izin "
+						status_sk = 13
+						pesan = "Perbaikan Draft SK Izin."
 
-							response = {
-										"success": True,
-										"pesan": "Izin telah ditolak.",
-										"redirect": '',
-									}
-						else:
-							data = form.errors.as_json()
-							response = HttpResponse(data)
-					else:
-						response = {
-							"success": False,
-							"pesan": "Berkas Kosong",
-							"redirect": '',
-						}
+					riwayat_ = Riwayat(
+									alasan = request.POST.get('alasan', None),
+									pengajuan_izin_id = id_detil_siup,
+									created_by_id = request.user.id,
+									keterangan = keterangan
+								)
+					# cek bila berkas kosong jika kosong lewati
+					if berkas and berkas is not None:
+						berkas_obj = Berkas(
+							nama_berkas = nama_berkas+str(obj.pemohon.nama_lengkap),
+							berkas = berkas,
+							created_by_id = request.user.id,
+							)
+						berkas_obj.save()
+						riwayat_.berkas_id = berkas_obj.id
+					riwayat_.save()
+					try:
+						obj_skizin = SKIzin.objects.get(pengajuan_izin_id=id_detil_siup)
+						obj_skizin.status = status_sk
+						obj_skizin.created_by_id = request.user.id
+						obj_skizin.save()
+						riwayat_.sk_izin = obj_skizin
+						riwayat_.save()
+					except ObjectDoesNotExist:
+						pass
+
+					response = {
+								"success": True,
+								"pesan": pesan,
+								"redirect": '',
+							}
 				else:
-						response = {
-							"success": False,
-							"pesan": "Terjadi kesalahan server",
-							"redirect": '',
-						}
+					response = {
+						"success": False,
+						"pesan": "Terjadi kesalahan server",
+						"redirect": '',
+					}
 			else:
 				response = {
 					"success": False,
@@ -1112,6 +1312,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^verifikasi-operator/$', self.admin_site.admin_view(self.verifikasi_operator), name='verifikasi_operator'),
 			url(r'^verifikasi-kabid/$', self.admin_site.admin_view(self.verifikasi_kabid), name='verifikasi_kabid'),
 			url(r'^verifikasi-pembuat-surat/$', self.admin_site.admin_view(self.verifikasi_pembuat_surat), name='verifikasi_pembuat_surat'),
+			url(r'^verifikasi-perbaikan-surat/$', self.admin_site.admin_view(self.verifikasi_perbaikan_surat), name='verifikasi_perbaikan_surat'),
 			url(r'^survey/$', self.admin_site.admin_view(self.survey), name='survey'),
 			url(r'^semua-pengajuan/$', self.admin_site.admin_view(self.semua_pengajuan), name='semua_pengajuan'),
 			url(r'^penomoran-skizin/$', self.admin_site.admin_view(self.penomoran_skizin), name='penomoran_skizin'),
@@ -1120,6 +1321,7 @@ class IzinAdmin(admin.ModelAdmin):
 			# url(r'^verifikasi-skizin/$', self.admin_site.admin_view(self.verifikasi_skizin), name='verifikasi_skizin'),
 			url(r'^verifikasi-skizin-kabid/$', self.admin_site.admin_view(self.verifikasi_skizin_kabid), name='verifikasi_skizin_kabid'),
 			url(r'^verifikasi-skizin-kadin/$', self.admin_site.admin_view(self.verifikasi_skizin_kadin), name='verifikasi_skizin_kadin'),
+			url(r'^verifikasi-skizin-bupati/$', self.admin_site.admin_view(self.verifikasi_skizin_bupati), name='verifikasi_skizin_bupati'),
 			url(r'^verifikasi-skizin-cetak/$', self.admin_site.admin_view(self.verifikasi_skizin_cetak), name='verifikasi_skizin_cetak'),
 			url(r'^izin-terdaftar/$', self.admin_site.admin_view(self.izinterdaftar), name='izinterdaftar'),
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),

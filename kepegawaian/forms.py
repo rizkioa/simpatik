@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 class KepegawaianForm(forms.ModelForm):
 	"""docstring for KepegawaianForm"""
-	bidang_struktural = forms.ModelChoiceField(label="Bagian / Bidang / Seksi (Struktural)", queryset=BidangStruktural.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
+	bidang_struktural = forms.ModelChoiceField(label="Bagian / Bidang / Seksi (Struktural)", required=False,queryset=BidangStruktural.objects.none(), widget=forms.Select(attrs={'disabled': 'disabled'}))
 	def __init__(self, *args, **kwargs):
 		super(KepegawaianForm, self).__init__(*args, **kwargs)
 		

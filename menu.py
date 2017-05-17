@@ -177,6 +177,12 @@ class CustomMenu(Menu):
                     css_classes='pembuat_surat', 
                     url=reverse('admin:verifikasi_pembuat_surat'),                
                 ),
+                items.MenuItem(
+                    title='Perbaikan SK',
+                    icon='fa fa-file-text',
+                    css_classes='perbaikan_surat', 
+                    url=reverse('admin:verifikasi_perbaikan_surat'),                
+                ),
             ]
 
         if request.user.groups.filter(name='Kasir').exists():
@@ -196,6 +202,16 @@ class CustomMenu(Menu):
                     icon='fa fa-file-text',
                     css_classes='kadin_skizin', 
                     url=reverse('admin:verifikasi_skizin_kadin'),                
+                ),
+            ]
+
+        if request.user.groups.filter(name="Bupati").exists():
+            menu_utama.children += [
+                items.MenuItem(
+                    title='Draft SK',
+                    icon='fa fa-file-text',
+                    css_classes='bupati_skizin', 
+                    url=reverse('admin:verifikasi_skizin_bupati'),                
                 ),
             ]
 
