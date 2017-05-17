@@ -90,14 +90,14 @@
 	                <div class="tile-body">
 	                    <div class="form-group">
 	                    	<div class="col-md-12">
-	                    		<div class="input-group ">
+	                    		<!-- <div class="input-group "> -->
 		                            <input id="q" name="q" value="{{ request.GET.q }}" type="text" placeholder="Cari..." class="form-control">
-			                        <span class="input-group-btn">
+			                        <!-- <span class="input-group-btn">
 			                            <button class="btn btn-success" type="submit">
 			                            	<i class="fa fa-search"></i>
 			                            </button>
-			                        </span>
-		                        </div>
+			                        </span> -->
+		                        <!-- </div> -->
 	                    	</div>
 	                    </div>
 		  				<div class="form-group">
@@ -119,7 +119,7 @@
 					    	<label class="col-sm-2 control-label text-left"><strong>Tanggal Diterbitkan</strong></label>
 					    	<div class="col-sm-3">
 						        <div class="input-group datepicker" data-format="L">
-						          <input type="text" class="form-control" id="id_drf__created_at__gte" name="drf__created_at__gte">
+						          <input type="text" class="form-control" id="id_drf__created_at__gte" name="drf__created_at__gte" value="{{ request.GET.drf__created_at__gte }}">
 						          <span class="input-group-addon">
 						            <span class="fa fa-calendar"></span>
 						          </span>
@@ -130,7 +130,7 @@
 						    </div>
 						    <div class="col-sm-3">
 						        <div class="input-group datepicker" data-format="L">
-						          <input type="text" class="form-control" id="id_drf__created_at__lte" name="drf__created_at__lte">
+						          <input type="text" class="form-control" id="id_drf__created_at__lte" name="drf__created_at__lte" value="{{ request.GET.drf__created_at__lte }}">
 						          <span class="input-group-addon">
 						            <span class="fa fa-calendar"></span>
 						          </span>
