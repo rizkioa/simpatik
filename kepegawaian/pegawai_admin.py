@@ -153,6 +153,10 @@ class PegawaiAdmin(admin.ModelAdmin):
 				)
 		return add_fieldsets
 
+	def get_queryset(self, request):
+		qs = super(PegawaiAdmin, self).get_queryset(request)
+		return qs.order_by('-jabatan_id')
+
 	def save_formset(self, request, form, formset, change):
 		instances = formset.save(commit=False)
 		for obj in formset.deleted_objects:
