@@ -35,7 +35,7 @@ def detil_pembayaran_save(request):
 			pembayaran = DetilPembayaranForm(request.POST)
 
 		if pembayaran.is_valid():
-			if request.user.groups.filter(name='Kasir'):
+			if request.user.groups.filter(name='Kasir') or request.user.is_superuser:
 				p = pembayaran.save(commit=False)
 				p.save()
 				sk_izin_.status = 4

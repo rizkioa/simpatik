@@ -852,75 +852,82 @@ class IzinAdmin(admin.ModelAdmin):
 						# print pejabat.nama_lengkap
 
 						#Untuk Izin IMB jika biaya retribusi lebih dari 2 juta maka perlu verifikasi Bupati
-						if obj.kelompok_jenis_izin.jenis_izin.kode == "IMB":
-							detil_pembayaran = DetilPembayaran.objects.get(pengajuan_izin__id=obj.id)
-							n = ''.join(detil_pembayaran.jumlah_pembayaran.split('.')[::1])
-							if int(n) > 2000000:
-								obj_skizin.status = 12
-								gelar_depan = ""
-								gelar_belakang = ""
-								if pejabat.gelar_depan:
-									gelar_depan = pejabat.gelar_depan
-								if pejabat.gelar_belakang:
-									gelar_belakang = pejabat.gelar_belakang
-								nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-								obj_skizin.nama_pejabat = nama_pejabat
-								obj_skizin.nip_pejabat = str(pejabat.username)
-								if pejabat.jabatan:
-									obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
-								else:
-									obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+						if obj.kelompok_jenis_izin.jenis_izin.kode == "IMB" or obj.kelompok_jenis_izin.jenis_izin.kode == "HO":
+							try:
+								detil_pembayaran = DetilPembayaran.objects.get(pengajuan_izin__id=obj.id)
+								n = ''.join(detil_pembayaran.jumlah_pembayaran.split('.')[::1])
+								if int(n) > 2000000:
+									obj_skizin.status = 12
+									gelar_depan = ""
+									gelar_belakang = ""
+									if pejabat.gelar_depan:
+										gelar_depan = pejabat.gelar_depan
+									if pejabat.gelar_belakang:
+										gelar_belakang = pejabat.gelar_belakang
+									nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+									obj_skizin.nama_pejabat = nama_pejabat
+									obj_skizin.nip_pejabat = str(pejabat.username)
+									if pejabat.jabatan:
+										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+									else:
+										obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
 
-								obj_skizin.keterangan = "Pembina Tk.l"
-								obj_skizin.save()
-								obj.status = 12
-								obj.verified_by_id = request.user.id
-								obj.verified_at = datetime.datetime.now()
-								obj.save()
-								riwayat_ = Riwayat(
-									sk_izin_id = obj_skizin.id ,
-									pengajuan_izin_id = id_pengajuan_izin,
-									created_by_id = request.user.id,
-									keterangan = "Kadin Verified (Izin)"
-								)
-								riwayat_.save()
-								response = {
-									"success": True,
-									"pesan": "SKIzin berhasil di verifikasi.",
-									"redirect": '',
-								}
-							else:
-								obj_skizin.status = 9
-								gelar_depan = ""
-								gelar_belakang = ""
-								if pejabat.gelar_depan:
-									gelar_depan = pejabat.gelar_depan
-								if pejabat.gelar_belakang:
-									gelar_belakang = pejabat.gelar_belakang
-								nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-								obj_skizin.nama_pejabat = nama_pejabat
-								obj_skizin.nip_pejabat = str(pejabat.username)
-								if pejabat.jabatan:
-									obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+									obj_skizin.keterangan = "Pembina Tk.l"
+									obj_skizin.save()
+									obj.status = 12
+									obj.verified_by_id = request.user.id
+									obj.verified_at = datetime.datetime.now()
+									obj.save()
+									riwayat_ = Riwayat(
+										sk_izin_id = obj_skizin.id ,
+										pengajuan_izin_id = id_pengajuan_izin,
+										created_by_id = request.user.id,
+										keterangan = "Kadin Verified (Izin)"
+									)
+									riwayat_.save()
+									response = {
+										"success": True,
+										"pesan": "SKIzin berhasil di verifikasi.",
+										"redirect": '',
+									}
 								else:
-									obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
-								obj_skizin.keterangan = "Pembina Tk.l"
-								obj_skizin.save()
-								obj.verified_by_id = request.user.id
-								obj.verified_at = datetime.datetime.now()
-								obj.save()
-								riwayat_ = Riwayat(
-									sk_izin_id = obj_skizin.id ,
-									pengajuan_izin_id = id_pengajuan_izin,
-									created_by_id = request.user.id,
-									keterangan = "Kadin Verified (Izin)"
-								)
-								riwayat_.save()
+									obj_skizin.status = 9
+									gelar_depan = ""
+									gelar_belakang = ""
+									if pejabat.gelar_depan:
+										gelar_depan = pejabat.gelar_depan
+									if pejabat.gelar_belakang:
+										gelar_belakang = pejabat.gelar_belakang
+									nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
+									obj_skizin.nama_pejabat = nama_pejabat
+									obj_skizin.nip_pejabat = str(pejabat.username)
+									if pejabat.jabatan:
+										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+									else:
+										obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+									obj_skizin.keterangan = "Pembina Tk.l"
+									obj_skizin.save()
+									obj.verified_by_id = request.user.id
+									obj.verified_at = datetime.datetime.now()
+									obj.save()
+									riwayat_ = Riwayat(
+										sk_izin_id = obj_skizin.id ,
+										pengajuan_izin_id = id_pengajuan_izin,
+										created_by_id = request.user.id,
+										keterangan = "Kadin Verified (Izin)"
+									)
+									riwayat_.save()
+									response = {
+										"success": True,
+										"pesan": "SKIzin berhasil di verifikasi.",
+										"redirect": '',
+									}
+							except ObjectDoesNotExist:
 								response = {
-									"success": True,
-									"pesan": "SKIzin berhasil di verifikasi.",
-									"redirect": '',
-								}
+										"success": False,
+										"pesan": "Terjadi kesalahan, pengajuan izin tidak ada dalam daftar.",
+										"redirect": '',
+									}
 						else:
 							obj_skizin.status = 12
 							gelar_depan = ""
