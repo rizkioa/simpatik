@@ -31,7 +31,7 @@ from accounts.utils import KETERANGAN_PEKERJAAN
 def formulir_ho(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
     negara = Negara.objects.all()
-    kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+    kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 
     extra_context.update({'jenis_lokasi_usaha_list': JENIS_LOKASI_USAHA})
     extra_context.update({'jenis_bangunan_list': JENIS_BANGUNAN})
