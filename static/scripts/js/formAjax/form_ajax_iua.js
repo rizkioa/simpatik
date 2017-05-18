@@ -127,3 +127,35 @@ function delete_berkas_upload(id, elemen){
   $(".tab-content").mLoading('hide');
 }
 // **** END *****
+
+// **** Load Komfirmasi ****
+function load_konfirmasi(pengajuan_id){
+    // console.log(id_pengajuan)
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/layanan/iua/ajax-iua-load-konfirmasi/'+pengajuan_id,
+      success: function(data){
+        data_ = JSON.parse(data)
+        console.log(data_)
+        $('#jenis_pengajuan_konfirmasi').text(data_.jenis_pengajuan)
+        $('#jenis_pemohon_konfirmasi').text(data_.pemohon_json.jenis_pemohon)
+        $('#nomor_ktp_konfirmasi').text(data_.pemohon_json.username)
+        $('#nama_lengkap_konfirmasi').text(data_.pemohon_json.nama_lengkap)
+        $('#alamat_konfirmasi').text(data_.pemohon_json.alamat)
+        $('#telephone_konfirmasi').text(data_.pemohon_json.telephone)
+        $('#hp_konfirmasi').text(data_.pemohon_json.hp)
+        $('#email_konfirmasi').text(data_.pemohon_json.email)
+        $('#kewarganegaraan_konfirmasi').text(data_.pemohon_json.kewarganegaraan)
+        $('#pekerjaan_konfirmasi').text(data_.pemohon_json.pekerjaan)
+        // **** perusahaan ****
+        $('#npwp_perusahaan_konfirmasi').text(data_.perusahaan_json.npwp)
+        $('#nama_perusahaan_konfirmasi').text(data_.perusahaan_json.nama_perusahaan)
+        $('#alamat_perusahaan_konfirmasi').text(data_.perusahaan_json.alamat_lengkap)
+        $('#kode_pos_perusahaan_konfirmasi').text(data_.perusahaan_json.kode_pos)
+        $('#telepon_perusahaan_konfirmasi').text(data_.perusahaan_json.telepon)
+        $('#fax_perusahaan_konfirmasi').text(data_.perusahaan_json.fax)
+        $('#email_perusahaan_konfirmasi').text(data_.perusahaan_json.email)
+      }
+    })
+  }
+// **** END ****

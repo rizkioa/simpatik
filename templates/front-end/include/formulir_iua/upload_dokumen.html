@@ -90,10 +90,11 @@
       <label class="col-sm-3 control-label"><strong>Izin Gangguan</strong></label>
       <span id="field-akta_pengesahan_menteri">
         <div class="col-sm-5">
-          <input type="text" name="izin_gangguan">
+
+          <input type="text" name="izin_gangguan" id="id_izin_gangguan">
           <!--Proses cek IZIN GANGGUAN-->
         </div>
-        <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick=" return false;">Cek Nomor Izin</a>
+        <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick="cek_nomor_izin_ho()">Cek Nomor Izin</a>
       </span>
       <span class="col-sm-6" id="load-izin_gangguan"></span>
     </div>
@@ -114,3 +115,18 @@
       <span class="col-sm-6" id="load-buku_uji_berkala"></span>
     </div>
   </form>
+
+  <script type="text/javascript">
+    function cek_nomor_izin_ho(){
+      nomor_izin_ho =  $('#id_izin_gangguan').val()
+
+      $.ajax({
+        url: __base_url__+'/layanan/iua/ajax-load-izin-ho/',
+        method: 'POST',
+        data : { nomor_izin_ho: nomor_izin_ho, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+        success: function(response){
+          console.log(response)
+        }
+      })
+    }
+  </script>

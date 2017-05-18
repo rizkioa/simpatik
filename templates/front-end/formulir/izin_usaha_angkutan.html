@@ -208,7 +208,7 @@
 						// });
 					}
 					if($current >= $total) {
-						load_konfirmasi_tdp($.cookie('id_pengajuan'))
+						load_konfirmasi($.cookie('id_pengajuan'))
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
@@ -391,7 +391,7 @@
 				}
 
 				$( "#alert" ).prop( "disabled", true );
-				$('#checkbox_tdp_done').change(function() {
+				$('#checkbox_iua_done').change(function() {
 					if ($(this).is(':checked')) {
 						$( "#alert" ).prop( "disabled", false );
 						window.onbeforeunload = null;

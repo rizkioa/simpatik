@@ -407,11 +407,13 @@ urlpatterns = [
     url(r'^layanan/iua/detil-iua/save$', iua_views.save_detil_iua, name='iua_save_detil_iua'),
     url(r'^ajax-save-data-kendaraan/$', iua_views.save_data_kendaraan, name='save_data_kendaraan'),
     url(r'^ajax-load-data-kendaraan/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_kendaraan, name='load_data_kendaraan'),
+    url(r'^layanan/iua/ajax-load-izin-ho/$', iua_views.load_izin_ho, name='load_izin_ho'),
     url(r'^ajax-load-jumlah-data-kendaraan/(?P<pengajuan_id>[0-9]+)$', iua_views.jumlah_data_kendaraan, name='jumlah_data_kendaraan'),
     url(r'^ajax-load-detil-iua/(?P<pengajuan_id>[0-9]+)$', iua_views.load_detil_iua, name='load_detil_iua'),
     url(r'^ajax-delete-data-kendaraan/(?P<kendaraan_id>[0-9]+)$', iua_views.delete_data_kendaraan, name='delete_data_kendaraan'),
     url(r'^ajax-load-berkas-iua/(?P<id_pengajuan>[0-9]+)$', iua_views.ajax_load_berkas_iua, name='ajax_load_berkas_iua'),
     url(r'^ajax-iua-upload-dokument/$', iua_views.iua_upload_dokument, name='iua_upload_dokument'),
+    url(r'^layanan/iua/ajax-iua-load-konfirmasi/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_konfirmasi, name='load_data_konfirmasi'),
     # ################################# IUA ######################
     
     ]

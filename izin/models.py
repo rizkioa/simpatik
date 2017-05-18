@@ -1557,7 +1557,7 @@ class DetilIUA(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iua_perusahaan', blank=True, null=True)
 	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
 	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
-	no_izin_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
+	detil_izin_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
 
 	def as_json(self):
 		nilai_investasi = ''

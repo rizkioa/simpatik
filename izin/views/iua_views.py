@@ -1,7 +1,7 @@
 import json, os, datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from izin.models import DetilIUA, Kendaraan
+from izin.models import DetilIUA, Kendaraan, DetilHO
 from izin.iua_forms import DataKendaraanForm
 from izin.tdp_forms import BerkasForm
 
@@ -93,11 +93,32 @@ def delete_data_kendaraan(request, kendaraan_id):
 		except ObjectDoesNotExist:
 			data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
 			data = json.dumps(data)
-			response = HttpResponse
+			response = HttpResponse(data)
 	else:
 		data = {'success': False, 'pesan': 'Data tidak ditemukan'}
 		data = json.dumps(data)
 		response = HttpResponse(data)
+	return response
+
+def load_izin_ho(request):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan'}
+	nomor_izin_ho = request.POST.get('nomor_izin_ho')
+	if nomor_izin_ho and nomor_izin_ho is not None:
+		detil_ho = DetilHO.objects.filter(no_izin=nomor_izin_ho).last()
+		if detil_ho and detil_ho is not None:
+			print detil_ho
+			print detil_ho.id
+			if 'id_pengajuan' in request.COOKIES.keys():
+				if request.COOKIES['id_pengajuan'] != '':
+					pengajuan_obj = DetilIUA.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+					if pengajuan_obj and pengajuan_obj is not None:
+						pengajuan_obj.detil_izin_ho_id = detil_ho.id
+						pengajuan_obj.save()
+						data = {'success': True, 'pesan': 'Data berhasil disimpan.'}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+	data = json.dumps(data)
+	response = HttpResponse(data)
 	return response
 
 def iua_upload_dokument(request):
@@ -239,5 +260,25 @@ def ajax_load_berkas_iua(request, id_pengajuan):
 			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas}
 		except ObjectDoesNotExist:
 			data = {'success': False, 'pesan': ''}
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def load_data_konfirmasi(request, pengajuan_id):
+	pemohon_json = {}
+	data = {'success': False, 'pesan': 'Data tidak ditemukan'}
+	if pengajuan_id and pengajuan_id is not None:
+		try:
+			pengajuan_ = DetilIUA.objects.get(id=pengajuan_id)
+			jenis_pengajuan = pengajuan_.jenis_permohonan.jenis_permohonan_izin
+			pemohon_obj = pengajuan_.pemohon
+			perusahaan_obj = pengajuan_.perusahaan
+
+			if pemohon_obj:
+				pemohon_json = pemohon_obj.as_json()
+				perusahaan_json = perusahaan_obj.as_json() 
+			data = {'success': True, 'pesan': 'Data Berhasil','jenis_pengajuan': jenis_pengajuan, 'pemohon_json': pemohon_json, 'perusahaan_json': perusahaan_json}
+		except ObjectDoesNotExist:
+			pass
+
 	response = HttpResponse(json.dumps(data))
 	return response
