@@ -35,6 +35,13 @@ from django.test import TestCase
 # drest.api.TastyPieAPI("http://simpatik.kedirikab.go.id:8889/api/v1/")
 
 
-u = '5 2 1'
-p = u.split()
-print len(p)
+# u = '5 2 1'
+# p = u.split()
+# print len(p)
+
+u = [u'as']
+print type(u)
+if not u:
+	print "Halo"
+else:
+	print "As"
