@@ -1571,6 +1571,8 @@ class DetilIUTM(PengajuanIzin):
 		verbose_name_plural = 'Detil IUTM'
 # +++++++++++ end IUTM +++++++++++++
 
+#### Izin Dinas Perhubungan ####
+
 # ################ IUA (izin usaha angkutan) #################
 class KategoriKendaraan(models.Model):
 	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
@@ -1664,8 +1666,43 @@ class Kendaraan(models.Model):
 		verbose_name = 'Kendaraan'
 		verbose_name_plural = 'Kendaraan'
 
+class DetilIzinParkirIsidentil(PengajuanIzin):
+	jenis_penitipan = models.CharField(max_length=100, verbose_name='Jenis Penitipan', null=True, blank=True)
+	lebar_penitipan = models.CharField(max_length=20, verbose_name='Luas Penitipan M', null=True, blank=True)
+	panjang_penitipan = models.CharField(max_length=20, verbose_name='Panjang Penitipan M', null=True, blank=True)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	alamat = models.CharField(max_length=150, verbose_name='Alamat', null=True, blank=True)
+	tanggal_pelaksanaan_parkir = models.DateField(verbose_name="Tanggal Pelaksanaan Parkir",null=True, blank=True)
+	waktu_mulai = models.TimeField(verbose_name='Waktu Mulai',auto_now=False, auto_now_add=False)
+	waktu_berakhir = models.TimeField(verbose_name='Waktu Berakhir',auto_now=False, auto_now_add=False)
+	jumlah_anggota_parkir = models.CharField(max_length=20, verbose_name='Jumlah Anggota Parkir', null=True, blank=True)
+	batas_utara = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Utara')
+	batas_timur = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Timur')
+	batas_selatan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Selatan')
+	batas_barat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Barat')
 
+	def __unicode__(self):
+		return u'%s' % str(self.jenis_penitipan)
 
+	class Meta:
+		verbose_name = 'Detil Izin Parkir Isidentil'
+		verbose_name_plural = 'Detil Izin Parkir Isidentil'
+
+class DataAnggotaParkir(models.Model):
+	izin_parkir_isidentil = models.ForeignKey(DetilIzinParkirIsidentil, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
+	nomor_ktp = models.CharField(max_length=50, blank=True, null=True, verbose_name='Nomor KTP')
+	nama_anggota = models.CharField(max_length=150, blank=True, null=True, verbose_name='Nama Anggota')
+	tanggal_lahir = models.DateField(verbose_name="Tanggal Lahir",null=True, blank=True)
+	alamat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Alamat')
+	no_hp_telepon = models.CharField(max_length=150, blank=True, null=True, verbose_name='No HP/Telpon')
+	keterangan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Keterangan')
+	
+	def __unicode__(self):
+		return u'%s' % str(self.nama_anggota)
+
+	class Meta:
+		verbose_name = 'Data Anggota Izin Parkir Isidentil'
+		verbose_name_plural = 'Data Anggota Parkir Isidentil'
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
