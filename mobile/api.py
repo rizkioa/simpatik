@@ -1,6 +1,7 @@
 import json
 import datetime
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
 from django.conf.urls import url
 
 from tastypie import fields
@@ -11,10 +12,10 @@ from tastypie.http import HttpUnauthorized, HttpForbidden
 from tastypie.models import ApiKey
 from cors import CORSModelResource, CORSHttpResponse
 
-from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohonanIzin, Riwayat, DetilSIUP, DetilTDP, SKIzin
+from izin.models import PengajuanIzin, Pemohon, KelompokJenisIzin, JenisPermohonanIzin, Riwayat, DetilSIUP, DetilTDP, SKIzin, IzinLain
 from accounts.models import Account
 from kepegawaian.models import Pegawai
-from perusahaan.models import Perusahaan, Legalitas
+from perusahaan.models import Perusahaan, Legalitas, DataPimpinan, PemegangSaham
 from django.db.models import Q
 from izin import models as app_models
 from utils import get_model_detil
@@ -64,6 +65,7 @@ class PengajuanIzinResource(CORSModelResource):
 			url(r"^pengajuanizin/get-berkas-pengajuan/$", self.wrap_view('get_berkas_pengajuan'), name="api_get_berkas_pengajuan"),
 			url(r"^pengajuanizin/get-pengajuan-izin/$", self.wrap_view('get_data_pengajuan_izin'), name="api_get_data_pengajuan_izin"),
 			url(r"^pengajuanizin/get-detil-siup/$", self.wrap_view('get_detil_siup'), name="api_get_detil_siup"),
+			url(r"^pengajuanizin/get-detil-tdp-pt/$", self.wrap_view('get_tdp_pt'), name="api_get_tdp_pt"),
 			url(r"^pengajuanizin/get-detil-tdp-po/$", self.wrap_view('get_tdp_po'), name="api_get_tdp_po"),
 		]
 
@@ -175,9 +177,9 @@ class PengajuanIzinResource(CORSModelResource):
 	def get_legalitas(self, id_perusahaan):
 		data = []
 		if id_perusahaan:
-			legaitas_list = Legalitas.objects.filter(perusahaan_id=id_perusahaan)
-			if legaitas_list:
-				data = [x.as_json() for x in legaitas_list]
+			legalitas_list = Legalitas.objects.filter(perusahaan_id=id_perusahaan)
+			if legalitas_list:
+				data = [x.as_json() for x in legalitas_list]
 		return data
 
 	def get_skizin(self, id_pengajuan):
@@ -188,62 +190,114 @@ class PengajuanIzinResource(CORSModelResource):
 				data = skizin_obj.as_json()
 		return data
 
+	##################### TDP #################
+	def get_data_pimpinan(self, id_pengajuan):
+		data = []
+		if id_pengajuan:
+			data_pimpinan_list = DataPimpinan.objects.filter(detil_tdp_id=id_pengajuan)
+			if data_pimpinan_list:
+				data = [x.as_json() for x in data_pimpinan_list]
+		return data
+
+	def get_pemegang_saham(self, id_pengajuan):
+		data = []
+		if id_pengajuan:
+			pemegang_saham_list = PemegangSaham.objects.filter(pengajuan_izin_id=id_pengajuan)
+			if pemegang_saham_list:
+				data = [x.as_json() for x in pemegang_saham_list]
+		return data
+
+	def get_izin_lain(self, id_pengajuan):
+		data = []
+		if id_pengajuan:
+			izin_lain_list = IzinLain.objects.filter(pengajuan_izin_id=id_pengajuan)
+			if izin_lain_list:
+				data = [x.as_json() for x in izin_lain_list]
+		return data
+
+	def get_perusahaan_lain(self, no_tdp):
+		data = []
+		if no_tdp:
+			perusahaan_lain_list = Perusahaan.objects.filter(nomor_tdp=no_tdp)
+			if perusahaan_lain_list:
+				data = [x.as_json() for x in perusahaan_lain_list]
+		return data
+	##################### TDP #################
+
+
 	def get_detil_siup(self, request, **kwargs):
 		id_pengajuan = request.GET['id_pengajuan']
 		data = {'success':False}
 		if id_pengajuan and id_pengajuan is not "":
 			siup_list = DetilSIUP.objects.filter(id=id_pengajuan).last()
+			detil_siup_obj = {}
+			pengajuan_obj = {}
+			skizin_obj = {}
 			if siup_list:
-				detil_siup_obj = {}
-				pengajuan_obj = {}
-				skizin_obj = {}
-				if siup_list:
-					skizin_obj = self.get_skizin(siup_list.id)
-					pengajuan_obj = self.get_pengajuan_izin(siup_list.id)
-					pemohon_obj = {}
-					if siup_list.pemohon:
-						pemohon_obj = self.get_pemohon(siup_list.pemohon.id)
-					perusahaan_obj = {}
-					legalitas_list = {}
-					if siup_list.perusahaan:
-						perusahaan_obj = self.get_perusahaan(siup_list.perusahaan.id)
-						legalitas_list = self.get_legalitas(siup_list.perusahaan.id)
-					
-					detil_siup_obj = siup_list.as_json()
-					data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'detil_siup_obj':detil_siup_obj, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj}
+				skizin_obj = self.get_skizin(siup_list.id)
+				pengajuan_obj = self.get_pengajuan_izin(siup_list.id)
+				pemohon_obj = {}
+				if siup_list.pemohon:
+					pemohon_obj = self.get_pemohon(siup_list.pemohon.id)
+				perusahaan_obj = {}
+				legalitas_list = {}
+				if siup_list.perusahaan:
+					perusahaan_obj = self.get_perusahaan(siup_list.perusahaan.id)
+					legalitas_list = self.get_legalitas(siup_list.perusahaan.id)
+				
+				detil_siup_obj = siup_list.as_json()
+				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'detil_siup_obj':detil_siup_obj, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj}
 		return CORSHttpResponse(json.dumps(data))
 
-	# def get_skizin_siup(self, request, **kwargs):
-	# 	id_pengajuan = request.GET['id_pengajuan']
-	# 	data = {'success':False}
-	# 	if id_pengajuan and id_pengajuan is not "":
-	# 		pass
+	def get_detil_tdp(self, id_pengajuan):
+		data = {}
+		if id_pengajuan:
+			detil_tdp_obj = DetilTDP.objects.filter(id=id_pengajuan).last()
+			if detil_tdp_obj:
+				data = detil_tdp_obj.as_json()
+		return data
+
+	def get_tdp_pt(self, request, **kwargs):
+		data = {'success':False}
+		id_pengajuan = request.GET['id_pengajuan']
+		if id_pengajuan and id_pengajuan is not "":
+			tdp_pt_list = DetilTDP.objects.get(id=id_pengajuan)
+			detil_tdp_pt = {}
+			pengajuan_obj = {}
+			skizin_obj = {}
+			if tdp_pt_list:
+				skizin_obj = self.get_skizin(tdp_pt_list.id)
+				pengajuan_obj = self.get_pengajuan_izin(tdp_pt_list.id)
+				pemohon_obj = {}
+				if tdp_pt_list.pemohon:
+					pemohon_obj = self.get_pemohon(tdp_pt_list.pemohon.id)
+				perusahaan_obj = {}
+				legalitas_list = {}
+				if tdp_pt_list.perusahaan:
+					perusahaan_obj = self.get_perusahaan(tdp_pt_list.perusahaan.id)
+					legalitas_list = self.get_legalitas(tdp_pt_list.perusahaan.id)
+				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj}
+				return CORSHttpResponse(json.dumps(data))
+
 
 	def get_tdp_po(self, request, **kwargs):
+		data = {'success':False}
 		id_pengajuan = request.GET['id_pengajuan']
-		data = {}
 		if id_pengajuan and id_pengajuan is not "":
 			tdp_po_list = DetilTDP.objects.get(id=id_pengajuan)
 			detil_tdp_po = {}
 			if tdp_po_list:
 				pemohon_obj = {}
 				if tdp_po_list.pemohon:
-					pemohon_obj = self.get_pemohon(request, tdp_po_list.pemohon.id)
+					pemohon_obj = self.get_pemohon(tdp_po_list.pemohon.id)
 				perusahaan_obj = {}
 				legalitas_list = {}
 				if tdp_po_list.perusahaan:
-					perusahaan_obj = self.get_perusahaan(request, tdp_po_list.perusahaan.id)
-					legalitas_list = self.get_legalitas(request, tdp_po_list.perusahaan.id)
+					perusahaan_obj = self.get_perusahaan(tdp_po_list.perusahaan.id)
+					legalitas_list = self.get_legalitas(tdp_po_list.perusahaan.id)
 				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list}
 				return CORSHttpResponse(json.dumps(data))
 
-
-	# def get_detil_pengajuan_izin(self, request, **kwargs):
-	# 	id_pengajuan = request.GET['id']
-	# 	pengajuan_izin = PengajuanIzin.objects.filter(id=id_pengajuan).last()
-	# 	if kelompok_jenis_izin
-	# 	kelompok_jenis_izin = pengajuan_izin.ke
-	# 	data = {'success':True, 'data':}
 
 class AccountsResource(CORSModelResource):
 	class Meta:
@@ -276,15 +330,17 @@ class AccountsResource(CORSModelResource):
 		group = user_.groups.all()
 		# print group
 		# print "#######################"
+		groups = []
 		if user_.is_superuser:
 			jabatan = 'Superuser'
-		elif group:
+		else:
 			pegawai_obj = Pegawai.objects.filter(id=user_.id).last()
 			if pegawai_obj:
 				if pegawai_obj.jabatan:
 					jabatan = pegawai_obj.jabatan.nama_jabatan
+				groups = pegawai_obj.groups.all().values('name')
 
-		data = {'data':{'nama_lengkap':user_.nama_lengkap, 'gelar_depan': user_.gelar_depan, 'gelar_belakang': user_.gelar_belakang, 'foto': user_.get_foto(), 'jabatan':jabatan}}
+		data = {'data':{'nama_lengkap':user_.nama_lengkap, 'gelar_depan': user_.gelar_depan, 'gelar_belakang': user_.gelar_belakang, 'foto': user_.get_foto(), 'jabatan':jabatan, 'groups':list(groups)}}
 		data = json.dumps(data)
 		return CORSHttpResponse(data)
 
@@ -301,8 +357,6 @@ class AccountsResource(CORSModelResource):
 		data = {'data':{'icon_menu':icon_menu, 'nama_menu':nama_menu, 'link_menu':link_menu}}
 		data = json.dumps(data)
 		return CORSHttpResponse(data)
-
-
 
 class AuthResource(CORSModelResource):
 	class Meta:
@@ -326,12 +380,20 @@ class AuthResource(CORSModelResource):
 		if user:
 			if user.is_active:
 				a = login(request, user)
-				apikey_, created = ApiKey.objects.get_or_create(user=user)
-				apikey_.user = user
+				try:
+					apikey_ = ApiKey.objects.get(user=user)
+				except ObjectDoesNotExist:
+					apikey_ = ApiKey(
+						user = user
+						)
+					apikey_.save()
+					apikey_.key = apikey_.generate_key()
+					apikey_.save()
+				# apikey_.user = user
 				# apikey_.key = str(uuid.uuid4())
-				apikey_.save()
-				apikey_.key = apikey_.generate_key()
-				apikey_.save()
+				# apikey_.save()
+				# apikey_.key = apikey_.generate_key()
+				# apikey_.save()
 				if apikey_.key and apikey_.user:
 					return self.create_response(request, {
 						'success': True,

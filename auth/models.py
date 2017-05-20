@@ -129,6 +129,9 @@ class Group(models.Model):
         verbose_name = _('group')
         verbose_name_plural = _('groups')
 
+    def as_json(self):
+        return dict(name=self.name)
+
     def __str__(self):
         return self.name
 
