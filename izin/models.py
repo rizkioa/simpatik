@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from accounts.models import Account
+from accounts.models import Account, IdentitasPribadi
 from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, BangunanJenisKontruksi, JenisKualifikasi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
@@ -1688,17 +1688,17 @@ class DetilIzinParkirIsidentil(PengajuanIzin):
 		verbose_name = 'Detil Izin Parkir Isidentil'
 		verbose_name_plural = 'Detil Izin Parkir Isidentil'
 
-class DataAnggotaParkir(models.Model):
-	izin_parkir_isidentil = models.ForeignKey(DetilIzinParkirIsidentil, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
+class DataAnggotaParkir(IdentitasPribadi):
+	izin_parkir_isidentil = models.ForeignKey(DetilIzinParkirIsidentil, max_length=255, verbose_name='Izin Usaha Parkir', null=True, blank=True)
 	nomor_ktp = models.CharField(max_length=50, blank=True, null=True, verbose_name='Nomor KTP')
-	nama_anggota = models.CharField(max_length=150, blank=True, null=True, verbose_name='Nama Anggota')
-	tanggal_lahir = models.DateField(verbose_name="Tanggal Lahir",null=True, blank=True)
-	alamat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Alamat')
-	no_hp_telepon = models.CharField(max_length=150, blank=True, null=True, verbose_name='No HP/Telpon')
-	keterangan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Keterangan')
+	# nama_anggota = models.CharField(max_length=150, blank=True, null=True, verbose_name='Nama Anggota')
+	# tanggal_lahir = models.DateField(verbose_name="Tanggal Lahir",null=True, blank=True)
+	# alamat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Alamat')
+	# no_hp_telepon = models.CharField(max_length=150, blank=True, null=True, verbose_name='No HP/Telpon')
+	# keterangan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Keterangan')
 	
 	def __unicode__(self):
-		return u'%s' % str(self.nama_anggota)
+		return u'%s' % str(self.nama_lengkap)
 
 	class Meta:
 		verbose_name = 'Data Anggota Izin Parkir Isidentil'
