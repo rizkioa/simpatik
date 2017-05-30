@@ -690,6 +690,33 @@ def formulir_izin_usaha_angkutan(request, extra_context={}):
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/izin_usaha_angkutan.html", extra_context)
 
+def formulir_izin_parkir(request, extra_context={}):
+    negara = Negara.objects.all()
+    provinsi = Provinsi.objects.all()
+    kabupaten = Kabupaten.objects.all()
+    kecamatan = Kecamatan.objects.all()
+    jenis_pemohon = JenisPemohon.objects.all()
+    katogri_kendaraan_list = KategoriKendaraan.objects.all()
+    merk_type_list = MerkTypeKendaraan.objects.all()
+    extra_context.update({
+        'negara':negara, 
+        'provinsi':provinsi, 
+        'kabupaten':kabupaten, 
+        'kecamatan':kecamatan,
+        'kecamatan_perusahaan': kecamatan.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+        'jenis_pemohon':jenis_pemohon,
+        'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+        'kategori_kendaraan':katogri_kendaraan_list,
+        'merk_type' : merk_type_list,
+        'tahun_choices': get_tahun_choices(1945),
+        })
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
+    return render(request, "front-end/formulir/izin_parkir.html", extra_context)
+
 def cetak_tdup(request, id_pengajuan):
     extra_context = {}
     if id_pengajuan:
