@@ -56,6 +56,10 @@ def is_select(field):
 def is_date(field):
 	return isinstance(field.field.widget, forms.DateInput)
 
+@register.filter('is_time')
+def is_time(field):
+	return isinstance(field.field.widget, forms.TimeInput)
+
 @register.filter('is_datetime')
 def is_datetime(field):
 	return isinstance(field.field.widget, forms.SplitDateTimeWidget)
