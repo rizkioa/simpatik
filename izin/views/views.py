@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -710,6 +710,22 @@ def formulir_izin_parkir(request, extra_context={}):
         'merk_type' : merk_type_list,
         'tahun_choices': get_tahun_choices(1945),
         })
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0':
+            print request.COOKIES['id_pengajuan']
+            try:
+                pengajuan_ = DetilIzinParkirIsidentil.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})

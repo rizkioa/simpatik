@@ -1,218 +1,160 @@
+{% load i18n %}
 <div class="modal fade" id="modal_data_anggota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title custom-font">Tambah Data Anggota</h3>
-      </div>
-      <div class="modal-body">
-        <form role="form" class="form-horizontal">
-          <div class="form-group">
-            <label class="col-sm-3 control-label"><strong>No. KTP</strong></label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="no_ktp">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label"><strong>Nama Lengkap</strong></label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="nama_lengkap">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Tanggal Lahir</label>
-            <div class="col-sm-8">
-              <div class="input-group datepicker mt-10" data-format="L" data-locale="ru">
-                <input type="text" class="form-control" name="tanggal_lahir">
-                <span class="input-group-addon">
-                  <span class="fa fa-calendar"></span>
-                </span>
+      <form method="POST" action="{% url 'save_data_anggota_izin_parkir' %}" id="form-data_anggota">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h3 class="modal-title custom-font">Tambah Data Anggota</h3>
+        </div>
+        <div class="modal-body">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-3 control-label"><strong>No. KTP</strong></label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control data-anggota" name="nomor_ktp">
               </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Alamat </label>
-            <div class="col-sm-8">
-              <textarea class="form-control" rows="5" name="alamat"></textarea>
+            <div class="form-group">
+              <label class="col-sm-3 control-label"><strong>Nama Lengkap</strong></label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control data-anggota" name="nama_lengkap">
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label"><strong>No. Hp/Telp</strong></label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="no_telp">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Tanggal Lahir</label>
+              <div class="col-sm-8">
+                <div class="input-group datepicker mt-10" data-format="L" data-locale="ru">
+                  <input type="text" class="form-control data-anggota" name="tanggal_lahir">
+                  <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                  </span>
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div class="form-group">
-            <label class="col-sm-3 control-label">Keterangan </label>
-            <div class="col-sm-8">
-              <textarea class="form-control" rows="5" name="keterangan"></textarea>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Alamat </label>
+              <div class="col-sm-8">
+                <textarea class="form-control data-anggota" rows="5" name="alamat"></textarea>
+              </div>
             </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label"><strong>No. Hp/Telp</strong></label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control data-anggota" name="telephone">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Keterangan </label>
+              <div class="col-sm-8">
+                <textarea class="form-control data-anggota" rows="5" name="keterangan"></textarea>
+              </div>
+            </div>
+            
           </div>
-          
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button onclick="save_perusahaan_cabang()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
-        <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="save_data_anggota()" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+          <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+        </div>
+      </form>    
     </div>
   </div>
 </div>
 <script type="text/javascript">
-  function save_perusahaan_cabang() {
-    var id = $('#id_perusahaan_cabang').val()
-    var nama = $('#nama_perusahaan_cabang').val()
-    var alamat = $('#alamat_perusahaan_cabang').val()
-    var desa = $('#id_desa-5').val()
-    var kode_pos = $('#kode_pos_perusahaan_cabang').val()
-    var telp = $('#telepon_perusahaan_cabang').val()
-    var fax = $('#fax_perusahaan_cabang').val()
-    var status = $('#status_perusahaan_cabang').val()
-    var kegiatan = $('#kegiatan_usaha_perusahaan_cabang').val()
-    var no_tdp = $('#nomor_tdp_perusahaan_cabang').val()
-
-    $.ajax({
+  function save_data_anggota(){
+    frm = $('#form-data_anggota')
+    frm.ajaxSubmit({
       method: 'POST',
-      data: {id:id, nama_perusahaan:nama, alamat_perusahaan:alamat, desa:desa, kode_pos:kode_pos, telepon:telp, fax:fax, status_perusahaan:status, kegiatan_usaha:kegiatan, nomor_tdp:no_tdp, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
-      url: __base_url__+'/ajax-save-perusahaan-cabang/',
+      data: frm.serialize(),
+      url: frm.attr('action'),
+      beforeSend: function() {
+        frm.mLoading();
+      },
       success: function(response){
-        resp = $.parseJSON(response)
-        if (resp.success){ 
-          toastr["success"](resp.pesan)
-          $('#create_cabang').modal('hide')
-          load_data_perusahaan_cabang($.cookie('id_pengajuan'))
+        console.log(response)
+        
+        respon = JSON.parse(response)
+        if(respon.success == true){
+          toastr["success"](respon.pesan)
+          $('#modal_data_anggota').modal('hide')
+          frm.find('.data-anggota').val('')
+          load_data_anggota($.cookie('id_pengajuan'))
         }
         else{
-          var a = Object.keys(resp);
-          for (var i = 0; i < a.length; i++){
-            var field = a[i].replace("_", " ");
-            console.log(a[i][0]['message'])
-            toastr["error"](field+", "+resp[a[i]][0]['message'])
-          //   $("#"+a[i]+"").addClass("has-error");
-          }
+          toastr["error"](respon.pesan)
         }
-      } 
-    });
-  }
+        frm.mLoading('hide');
+      },
+      error: function(){
+        frm.mLoading('hide');
+        toast_server_error();
+      }
 
-  function load_data_perusahaan_cabang(pengajuan_id){
+    })
+  }
+  
+
+  function load_data_anggota(pengajuan_id){
     if (pengajuan_id !== ""){
       tablekosong = '<tr><td colspan="11">Kosong/Tidak ada ...!!!</td></tr>'
-      $('#table_perusahaan_cabang > tbody').html(tablekosong)
-      $('#table_perusahaan_cabang').mLoading();
+      $('#table_data_anggota > tbody').html(tablekosong)
+      $('#table_data_anggota').mLoading();
       $.ajax({
         type: 'GET',
-        url: __base_url__+'/ajax-load-data-perusahaan-cabang/'+pengajuan_id,
+        url: __base_url__+'/layanan/izin-parkir/load-data_anggota/ajax/'+pengajuan_id,
         success: function (data) {
-          a = data.length
+          // console.log(data)
+          data = JSON.parse(data)
+          a = data.data.length
           if(a === 0){
-            $('#table_perusahaan_cabang > tbody > tr:first').remove()
+            $('#table_data_anggota > tbody > tr:first').remove()
             table = '<tr><td colspan="19" align="center">Kosong/Tidak ada...!!!</td></tr>'
-            $('#table_perusahaan_cabang > tbody').prepend(table)
+            $('#table_data_anggota > tbody').prepend(table)
           }
           else{
-            b = data.reverse()
-            $('#table_perusahaan_cabang > tbody > tr:first').remove()
+            b = data.data.reverse()
+            $('#table_data_anggota > tbody > tr:first').remove()
             for (var i = 0; i < a; i++){
               id = b[i].id
               no = a
               if (a > 1){
                 no = a-i
               }
-              nama = b[i].nama_perusahaan
-              alamat = b[i].alamat_perusahaan
-              no_tdp = b[i].nomor_tdp
-              nama_kabupaten = b[i].nama_kabupaten
-              nama_provinsi = b[i].nama_provinsi
-              kode_pos = b[i].kode_pos
-              telepon = b[i].telepon
-              status_perusahaan = b[i].status_perusahaan
-              kegiatan_usaha = b[i].kegiatan_usaha
+              b[i].kegiatan_usaha
               row = '<tr>'
               row += '<td>'+no+'</td>'
-              row += '<td>'+nama+'</td>'
-              row += '<td>'+alamat+'</td>'
-              row += '<td>'+no_tdp+'</td>'
-              row += '<td>'+nama_kabupaten+'</td>'
-              row += '<td>'+nama_provinsi+'</td>'
-              row += '<td>'+kode_pos+'</td>'
-              row += '<td>'+telepon+'</td>'
-              row += '<td>'+status_perusahaan+'</td>'
-              row += '<td>'+kegiatan_usaha+'</td>'
-              row += '<td><button onclick="edit_perusahaan_cabang($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_perusahaan_cabang($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+              row += '<td>'+b[i].nomor_ktp+'</td>'
+              row += '<td>'+b[i].nama_lengkap+'</td>'
+              row += '<td>'+b[i].tanggal_lahir+'</td>'
+              row += '<td>'+b[i].alamat+'</td>'
+              row += '<td>'+b[i].telephone+'</td>'
+              row += '<td>'+b[i].keterangan+'</td>'
+              row += '<td><button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_data_anggota($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
               row += '</tr>'
-              $('#table_perusahaan_cabang > tbody').prepend(row)
+              $('#table_data_anggota > tbody').prepend(row)
             }
           }
         }
       });
-      $('#table_perusahaan_cabang').mLoading('hide');
+      $('#table_data_anggota').mLoading('hide');
     }
   }
 
-  function add_perusahaan_cabang(){
-    $('#id_perusahaan_cabang').val("0")
-    $('#nama_perusahaan_cabang').val("")
-    $('#alamat_perusahaan_cabang').val("")
-    $('#id_desa-5').val()
-    $('#id_provinsi-5').val("").prop('disabled', false).trigger("chosen:updated");
-    $('#id_kabupaten-5').val("").prop('disabled', false).trigger("chosen:updated");
-    $('#id_kecamatan-5').val("").prop('disabled', false).trigger("chosen:updated");
-    $('#id_desa-5').val("").prop('disabled', false).trigger("chosen:updated");
-    $('#kode_pos_perusahaan_cabang').val("")
-    $('#telepon_perusahaan_cabang').val("")
-    $('#fax_perusahaan_cabang').val("")
-    $('#status_perusahaan_cabang').val("").prop('disabled', false).trigger("chosen:updated");
-    $('#kegiatan_usaha_perusahaan_cabang').val("").prop('disabled', false).trigger("chosen:updated");
-    $('#nomor_tdp_perusahaan_cabang').val("")
-  }
-
-  function edit_perusahaan_cabang(val_){
-    $('#create_cabang').modal('show')
+  function delete_data_anggota(val_){
     $.ajax({
       type: 'GET',
-      url: __base_url__+'/ajax-edit-perusahaan-cabang/'+val_,
-      success: function (data) {
-        resp = $.parseJSON(data)
-        $('#id_perusahaan_cabang').val(val_)
-        $('#nama_perusahaan_cabang').val(resp.data.nama_perusahaan)
-        $('#alamat_perusahaan_cabang').val(resp.data.alamat_perusahaan)
-        $('#id_provinsi-5').val(resp.data.provinsi).prop('disabled', false).trigger("chosen:updated");
-        load_kabupaten_(resp.data.provinsi, '#id_provinsi-5')
-        setTimeout(function(){
-          $('#id_kabupaten-5').val(resp.data.kabupaten).prop('disabled', false).trigger("chosen:updated");
-        }, 500);
-        load_kecamatan_(resp.data.kabupaten, '#id_provinsi-5')
-        setTimeout(function(){
-          $('#id_kecamatan-5').val(resp.data.kecamatan).prop('disabled', false).trigger("chosen:updated");
-        }, 600);
-        load_desa_(resp.data.kecamatan, '#id_provinsi-5')
-        setTimeout(function(){
-          $('#id_desa-5').val(resp.data.desa).prop('disabled', false).trigger("chosen:updated");
-        }, 700);
-        $('#kode_pos_perusahaan_cabang').val(resp.data.kode_pos)
-        $('#telepon_perusahaan_cabang').val(resp.data.telepon)
-        $('#fax_perusahaan_cabang').val(resp.data.fax)
-        $('#status_perusahaan_cabang').val(resp.data.status_perusahaan).prop('disabled', false).trigger("chosen:updated");
-        $('#kegiatan_usaha_perusahaan_cabang').val(resp.data.kegiatan_usaha).prop('disabled', false).trigger("chosen:updated");
-        $('#nomor_tdp_perusahaan_cabang').val(resp.data.nomor_tdp)
-      }
-    })
-  }
-
-  function delete_perusahaan_cabang(val_){
-    $.ajax({
-      type: 'GET',
-      url: __base_url__+'/ajax-delete-perusahaan-cabang/'+val_,
+      url: __base_url__+'/layanan/izin-parkir/delete-data_anggota/ajax/'+val_,
       success: function (data) {
         resp = $.parseJSON(data)
         if (resp.success){
           toastr["success"](resp.pesan)
-          load_data_perusahaan_cabang($.cookie('id_pengajuan'))
+          load_data_anggota($.cookie('id_pengajuan'))
         }
         else{
           toastr["error"](resp.pesan)

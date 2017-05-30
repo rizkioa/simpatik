@@ -67,6 +67,7 @@ class PengajuanIzinResource(CORSModelResource):
 			url(r"^pengajuanizin/get-detil-siup/$", self.wrap_view('get_detil_siup'), name="api_get_detil_siup"),
 			url(r"^pengajuanizin/get-detil-tdp-pt/$", self.wrap_view('get_tdp_pt'), name="api_get_tdp_pt"),
 			url(r"^pengajuanizin/get-detil-tdp-po/$", self.wrap_view('get_tdp_po'), name="api_get_tdp_po"),
+			url(r"^pengajuanizin/get-pemohon/$", self.wrap_view('get_pemohon_'), name="api_get_pemohon_"),
 		]
 
 	def get_berkas_tambahan(self, id_pengajuan):
@@ -165,6 +166,16 @@ class PengajuanIzinResource(CORSModelResource):
 			if pemohon_list:
 				data = pemohon_list.as_json()
 		return data
+
+	def get_pemohon_(self, request, **kwargs):
+		data = {'success': False}
+		id_pemohon = request.GET['id_pemohon']
+		if id_pemohon:
+			pemohon_obj = Pemohon.objects.filter(id=id_pemohon).last()
+			if pemohon_obj:
+				pemohon_json = self.get_pemohon(id_pemohon)
+				data = {'success':True, 'pemohon_json': pemohon_json,}
+		return CORSHttpResponse(json.dumps(data))
 
 	def get_perusahaan(self, id_perusahaan):
 		data = {}
