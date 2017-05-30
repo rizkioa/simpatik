@@ -77,7 +77,7 @@
                                         {% endif %}
                                     {# Lainnya #}
                                     {% else %}       
-                                        {% if field.field|is_date or field.field|is_datetime %}
+                                        {% if field.field|is_date or field.field|is_time or field.field|is_datetime %}
                                             <div class="related-date-wrapper">
                                                 {% if field.field.errors %}
                                                     {{ field.field }}

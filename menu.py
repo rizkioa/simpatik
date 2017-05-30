@@ -504,11 +504,24 @@ class CustomMenu(Menu):
                 ),
             ]
         )
-        
+        menu_dinas_perhubungan = items.MenuItem(
+            title=_('Izin Dinas Perhubungan'),
+            description='Izin Dinas Perhubungan',
+            accesskey='menuIzinDinasPerhubungan',
+            children= [
+                items.MenuItem(
+                    title='Izin Parkir Isidentil',
+                    icon='fa fa-shield',
+                    url=reverse('admin:izin_detilizinparkirisidentil_changelist'),
+                ),
+            ]
+        )
         if request.user.is_superuser:
             self.children += [
-                menu_pengguna,              
+                menu_pengguna,      
+                menu_dinas_perhubungan,        
                 menu_pengaturan,
+                
             ]
 
         if request.user.groups.filter(name="Admin Simpatik").exists():
