@@ -84,8 +84,6 @@ urlpatterns = [
     url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
     url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
     url(r'^layanan/tdup$', layanan_view.layanan_tdup, name='layanan_tdup'),
-
-    
     url(r'^layanan/izin-parkir$', layanan_view.layanan_izin_parkir, name='layanan_izin_parkir'),
 
     
