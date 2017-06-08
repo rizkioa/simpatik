@@ -1571,7 +1571,13 @@ class DetilIUA(PengajuanIzin):
 		kategori_kendaraan_id = ''
 		if self.kategori_kendaraan.id:
 			kategori_kendaraan_id = self.kategori_kendaraan.id
-		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id)
+		detil_izin_ho = ''
+		if self.detil_izin_ho:
+			detil_izin_ho = self.detil_izin_ho.no_izin
+		detil_izin_ho_id = ''
+		if self.detil_izin_ho_id:
+			detil_izin_ho_id = self.detil_izin_ho.id
+		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id, detil_izin_ho=detil_izin_ho, detil_izin_ho_id=detil_izin_ho_id)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nilai_investasi)

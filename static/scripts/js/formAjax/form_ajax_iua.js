@@ -106,7 +106,7 @@ function delete_berkas_upload(id, elemen){
   $(".tab-content").mLoading();
   
   $.ajax({
-    url: url = __base_url__+'/ajax-delete-berkas-upload-tdp/'+id+'/'+elemen,
+    url: url = __base_url__+'/layanan/iua/ajax-delete-berkas-upload-iua/'+id+'/'+elemen,
     success: function (response){
         respon = $.parseJSON(response)
         if (respon.success) {
@@ -155,6 +155,29 @@ function load_konfirmasi(pengajuan_id){
         $('#telepon_perusahaan_konfirmasi').text(data_.perusahaan_json.telepon)
         $('#fax_perusahaan_konfirmasi').text(data_.perusahaan_json.fax)
         $('#email_perusahaan_konfirmasi').text(data_.perusahaan_json.email)
+        // **** kendaraan ****
+        $('#nilai_investasi_konfirmasi').text(data_.nilai_investasi)
+        $('#jenis_kendaraan_konfirmasi').text(data_.kategori_kendaraan)
+        $('#jumlah_kendaraan_konfirmasi').text(data_.jumlah_kendaraan)
+        $('#nomor_izin_ho').text(data_.detil_izin_ho)
+        len1 = data_.kendaraan.length
+        row = '<tr>'
+        if(len1 > 0){
+          for (var i=0; i<len1; i++){
+            row += '<td>'+data_.kendaraan[i].nomor_kendaraan+'</td>'
+            row += '<td>'+data_.kendaraan[i].nomor_uji_berkala+'</td>'
+            row += '<td>'+data_.kendaraan[i].merk_kendaraan_nama+'</td>'
+            row += '<td>'+data_.kendaraan[i].nomor_rangka+'</td>'
+            row += '<td>'+data_.kendaraan[i].nomor_mesin+'</td>'
+            row += '<td>'+data_.kendaraan[i].tahun_pembuatan+'</td>'
+            row += '<td>'+data_.kendaraan[i].berat_diperbolehkan+'</td>'
+            row += '<td>'+data_.kendaraan[i].keterangan+'</td>'
+            row += '</tr>'
+          } 
+        }else{
+          row += '<td colspan="2" aling="center">Data Kosong ! </td>'
+        }
+        $('#id_data_kendaraan > tbody').html(row)
       }
     })
   }
