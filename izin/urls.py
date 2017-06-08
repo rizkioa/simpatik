@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views, iua_views
+from izin.views.dishub import izinparkir_views
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
@@ -84,6 +85,8 @@ urlpatterns = [
     url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
     url(r'^layanan/tdup$', layanan_view.layanan_tdup, name='layanan_tdup'),
 
+   
+
     
     url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
@@ -104,6 +107,11 @@ urlpatterns = [
     url(r'^layanan/tdp-koperasi/formulir$', views.formulir_tdp_koperasi, name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
     url(r'^layanan/tdup/formulir$', views.formulir_tdup, name='formulir_tdup'),
+<<<<<<< HEAD
+=======
+    url(r'^layanan/izin-usaha-angkutan/formulir$', views.formulir_izin_usaha_angkutan, name='formulir_izin_usaha_angkutan'),
+    url(r'^layanan/izin-parkir/formulir$', views.formulir_izin_parkir, name='formulir_izin_parkir'),
+>>>>>>> d3c03fd6ca41230aa3e80d8d469e534602f0472a
 
     #cetak SIUP
     url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
@@ -420,5 +428,18 @@ urlpatterns = [
     url(r'^layanan/iua/ajax-iua-load-konfirmasi/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_konfirmasi, name='load_data_konfirmasi'),
     url(r'^layanan/iua/ajax-delete-berkas-upload-iua/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iua_views.ajax_delete_berkas_iua, name='ajax_delete_berkas_iua'),
     # ################################# IUA ######################
+
+    ########################## Izin Parkir Dishub ###############################
+    url(r'^layanan/izin-parkir/detil-izin-parkir/save$', izinparkir_views.save_detil_izin_parkir, name='save_detil_izin_parkir'),
+    url(r'^layanan/izin-parkir/load-detil-izin-parkir/ajax/(?P<id_pengajuan>[0-9]+)$', izinparkir_views.load_detil_izin_parkir, name='load_detil_izin_parkir'),
+    url(r'^layanan/izin-parkir/data-anggota/save$', izinparkir_views.save_data_anggota, name='save_data_anggota_izin_parkir'),
+    url(r'^layanan/izin-parkir/load-data_anggota/ajax/(?P<id_pengajuan>[0-9]+)$', izinparkir_views.load_data_anggota, name='load_data_anggota_izin_parkir'),
+    url(r'^layanan/izin-parkir/delete-data_anggota/ajax/(?P<id_data_anggota>[0-9]+)$', izinparkir_views.delete_data_anggota, name='delete_data_anggota_izin_parkir'),
+    url(r'^layanan/izin-parkir/upload-berkas/save$', izinparkir_views.upload_berkas_save, name='upload_berkas_save_izin_parkir'),
+    url(r'^layanan/izin-parkir/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', izinparkir_views.load_berkas_izin_parkir, name='load_berkas_izin_parkir'),
+    url(r'^layanan/izin-parkir/delete-berkas/ajax/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', izinparkir_views.delete_berkas_izin_parkir, name='delete_berkas_izin_parkir'),
+    url(r'^layanan/izin-parkir/load-konfirmasi/ajax/(?P<id_pengajuan>[0-9]+)$', izinparkir_views.load_konfirmasi, name='load_konfirmasi_izin_parkir'),
+
+    ########################## Izin Parkir Dishub ###############################
     
     ]

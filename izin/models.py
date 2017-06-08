@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-from accounts.models import Account
+from accounts.models import Account, IdentitasPribadi
 from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, BangunanJenisKontruksi, JenisKualifikasi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
@@ -295,7 +295,10 @@ class PengajuanIzin(MetaAtribut):
 		if self.berkas_tambahan:
 			berkas_tambahan_list = self.berkas_tambahan.all()
 			berkas_tambahan_json = [obj.as_json() for obj in berkas_tambahan_list]
-		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa, berkas_tambahan=berkas_tambahan_json)
+		verified_at = ''
+		if self.verified_at:
+			verified_at = self.verified_at.strftime('%d-%m-%Y')
+		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa, berkas_tambahan=berkas_tambahan_json, verified_at=verified_at)
 
 	# def get_berkas(self):
 		
@@ -467,7 +470,10 @@ class SKIzin(MetaAtribut):
 		status_perusahaan = '-'
 		if self.status_perusahaan:
 			status_perusahaan = self.status_perusahaan
-		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan)
+		keterangan = ''
+		if self.keterangan:
+			keterangan = self.keterangan
+		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan, keterangan=keterangan)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -713,6 +719,41 @@ class DetilTDP(PengajuanIzin):
 
 	def __unicode__(self):
 		return u'Detil TDP %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
+
+	def as_json(self):
+		status_perusahaan = ''
+		if self.status_perusahaan:
+			if self.status_perusahaan.status_perusahaan:
+				status_perusahaan = self.status_perusahaan.status_perusahaan
+		jenis_badan_usaha = ''
+		if self.jenis_badan_usaha:
+			if self.jenis_badan_usaha.jenis_badan_usaha:
+				jenis_badan_usaha = self.jenis_badan_usaha.jenis_badan_usaha
+		bentuk_kerjasama = ''
+		if self.bentuk_kerjasama:
+			if self.bentuk_kerjasama.bentuk_kerjasama:
+				bentuk_kerjasama = self.bentuk_kerjasama.bentuk_kerjasama
+		jumlah_bank = ''
+		if self.jumlah_bank:
+			jumlah_bank = self.jumlah_bank
+		nasabah_utama_bank_1 = ''
+		if self.nasabah_utama_bank_1:
+			nasabah_utama_bank_1 = self.nasabah_utama_bank_1
+		nasabah_utama_bank_2 = ''
+		if self.nasabah_utama_bank_2:
+			nasabah_utama_bank_2 = self.nasabah_utama_bank_2
+		jenis_penanaman_modal = ''
+		if self.jenis_penanaman_modal:
+			if self.jenis_penanaman_modal.jenis_penanaman_modal:
+				jenis_penanaman_modal = self.jenis_penanaman_modal.jenis_penanaman_modal
+		tanggal_pendirian = ''
+		if self.tanggal_pendirian:
+			tanggal_pendirian = self.tanggal_pendirian.strftime('%d-%m-%Y')
+		tanggal_mulai_kegiatan = ''
+		if self.tanggal_mulai_kegiatan:
+			tanggal_mulai_kegiatan = self.tanggal_mulai_kegiatan.strftime('%d-%m-%Y')
+
+		return dict(status_perusahaan=status_perusahaan, jenis_badan_usaha=jenis_badan_usaha, bentuk_kerjasama=bentuk_kerjasama, jumlah_bank=jumlah_bank, nasabah_utama_bank_1=nasabah_utama_bank_1, nasabah_utama_bank_2=nasabah_utama_bank_2, jenis_penanaman_modal=jenis_penanaman_modal, tanggal_pendirian=tanggal_pendirian, tanggal_mulai_kegiatan=tanggal_mulai_kegiatan)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -1580,7 +1621,7 @@ class DetilIUA(PengajuanIzin):
 		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id, detil_izin_ho=detil_izin_ho, detil_izin_ho_id=detil_izin_ho_id)
 
 	def __unicode__(self):
-		return u'%s' % str(self.nilai_investasi)
+		return u'Detil IUA %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
 	class Meta:
 		verbose_name = 'Detil IUA'
@@ -1637,9 +1678,9 @@ class DetilIzinParkirIsidentil(PengajuanIzin):
 	panjang_penitipan = models.CharField(max_length=20, verbose_name='Panjang Penitipan M', null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	alamat = models.CharField(max_length=150, verbose_name='Alamat', null=True, blank=True)
-	tanggal_pelaksanaan_parkir = models.DateField(verbose_name="Tanggal Pelaksanaan Parkir",null=True, blank=True)
-	waktu_mulai = models.TimeField(verbose_name='Waktu Mulai',auto_now=False, auto_now_add=False)
-	waktu_berakhir = models.TimeField(verbose_name='Waktu Berakhir',auto_now=False, auto_now_add=False)
+	tanggal_pelaksanaan_parkir = models.DateField(verbose_name="Tanggal Pelaksanaan Parkir", null=True, blank=True)
+	waktu_mulai = models.TimeField(verbose_name='Waktu Mulai', auto_now=False, auto_now_add=False, null=True, blank=True)
+	waktu_berakhir = models.TimeField(verbose_name='Waktu Berakhir', auto_now=False, auto_now_add=False, null=True, blank=True)
 	jumlah_anggota_parkir = models.CharField(max_length=20, verbose_name='Jumlah Anggota Parkir', null=True, blank=True)
 	batas_utara = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Utara')
 	batas_timur = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Timur')
@@ -1647,23 +1688,60 @@ class DetilIzinParkirIsidentil(PengajuanIzin):
 	batas_barat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Batas Barat')
 
 	def __unicode__(self):
-		return u'%s' % str(self.jenis_penitipan)
+		return u'Detil Izin Parkir Isidentil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	def as_json(self):
+		alamat_lengkap = ''
+		if self.desa and self.alamat:
+			alamat_lengkap = str(self.alamat)+self.desa.lokasi_lengkap()
+		desa = ''
+		if self.desa:
+			desa = self.desa.as_json()
+		tanggal_pelaksanaan_parkir = ''
+		if self.tanggal_pelaksanaan_parkir:
+			tanggal_pelaksanaan_parkir = self.tanggal_pelaksanaan_parkir.strftime("%d-%m-%Y")
+		waktu_mulai = ''
+		if self.waktu_mulai:
+			waktu_mulai = self.waktu_mulai.strftime("%H:%M")
+		waktu_berakhir = ''
+		if self.waktu_berakhir:
+			waktu_berakhir = self.waktu_berakhir.strftime("%H:%M")
+
+		return dict(jenis_penitipan=self.jenis_penitipan, lebar_penitipan=self.lebar_penitipan, panjang_penitipan=self.panjang_penitipan, desa=desa, alamat=self.alamat, tanggal_pelaksanaan_parkir=tanggal_pelaksanaan_parkir, waktu_mulai=waktu_mulai, waktu_berakhir=waktu_berakhir, jumlah_anggota_parkir=self.jumlah_anggota_parkir, batas_utara=self.batas_utara, batas_timur=self.batas_timur, batas_selatan=self.batas_selatan, batas_barat=self.batas_barat, alamat_lengkap=alamat_lengkap)
 
 	class Meta:
 		verbose_name = 'Detil Izin Parkir Isidentil'
 		verbose_name_plural = 'Detil Izin Parkir Isidentil'
 
-class DataAnggotaParkir(models.Model):
-	izin_parkir_isidentil = models.ForeignKey(DetilIzinParkirIsidentil, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
+class DataAnggotaParkir(IdentitasPribadi):
+	izin_parkir_isidentil = models.ForeignKey(DetilIzinParkirIsidentil, max_length=255, verbose_name='Izin Usaha Parkir', null=True, blank=True)
 	nomor_ktp = models.CharField(max_length=50, blank=True, null=True, verbose_name='Nomor KTP')
-	nama_anggota = models.CharField(max_length=150, blank=True, null=True, verbose_name='Nama Anggota')
-	tanggal_lahir = models.DateField(verbose_name="Tanggal Lahir",null=True, blank=True)
-	alamat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Alamat')
-	no_hp_telepon = models.CharField(max_length=150, blank=True, null=True, verbose_name='No HP/Telpon')
-	keterangan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Keterangan')
+	# nama_anggota = models.CharField(max_length=150, blank=True, null=True, verbose_name='Nama Anggota')
+	# tanggal_lahir = models.DateField(verbose_name="Tanggal Lahir",null=True, blank=True)
+	# alamat = models.CharField(max_length=150, blank=True, null=True, verbose_name='Alamat')
+	# no_hp_telepon = models.CharField(max_length=150, blank=True, null=True, verbose_name='No HP/Telpon')
+	# keterangan = models.CharField(max_length=150, blank=True, null=True, verbose_name='Keterangan')
 	
 	def __unicode__(self):
-		return u'%s' % str(self.nama_anggota)
+		return u'%s' % str(self.nama_lengkap)
+
+	def as_json(self):
+		nomor_ktp = '-'
+		if self.nomor_ktp:
+			nomor_ktp = self.nomor_ktp
+		tanggal_lahir = '-'
+		if self.tanggal_lahir:
+			tanggal_lahir = self.tanggal_lahir.strftime("%d-%m-%Y")
+		alamat = '-'
+		if self.alamat:
+			alamat = self.alamat
+		telephone = '-'
+		if self.telephone:
+			telephone = self.telephone
+		keterangan = '-'
+		if self.keterangan:
+			keterangan = self.keterangan
+		return dict(id=self.id, nama_lengkap=self.nama_lengkap, nomor_ktp=nomor_ktp, tanggal_lahir=tanggal_lahir, alamat=alamat, telephone=telephone, keterangan=keterangan)
 
 	class Meta:
 		verbose_name = 'Data Anggota Izin Parkir Isidentil'

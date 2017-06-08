@@ -15,8 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
 
 from izin.izin_forms import PemohonForm, PerusahaanForm, PengajuanSiupForm, LegalitasPerusahaanForm, UploadBerkasPendukungForm, UploadBerkasNPWPPerusahaanForm, UploadBerkasFotoForm, UploadBerkasKTPForm, UploadBerkasNPWPPribadiForm, UploadBerkasAktaPendirianForm, UploadBerkasAktaPerubahanForm, LegalitasPerusahaanPerubahanForm
-from izin.utils import get_nomor_pengajuan
-from izin.utils import formatrupiah
+from izin.utils import formatrupiah, get_model_detil, get_nomor_pengajuan
 
 from izin import models as app_models
 from izin.models import PengajuanIzin, Pemohon, JenisPermohonanIzin, DetilSIUP, KelompokJenisIzin, Riwayat, DetilReklame, DetilTDP,DetilIMBPapanReklame,DetilIMB,InformasiKekayaanDaerah,DetilHO,InformasiTanah,DetilHuller, Kelembagaan, DetilTDUP
@@ -105,30 +104,32 @@ def siup_identitas_pemohon_save_cookie(request):
 
 		i.save()
 
-		if k.kode == "503.08":
-			objects_ = getattr(app_models, 'DetilSIUP')
-		elif k.kode == "IUJK":
-			objects_ = getattr(app_models, 'DetilIUJK')
-		elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
-			objects_ = getattr(app_models, 'DetilReklame')
-		elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
-			objects_ = getattr(app_models, 'DetilTDP')
-		elif k.kode == "503.01.06/":
-			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-		elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
-			objects_ = getattr(app_models, 'DetilIMB')
-		elif k.kode == "503.06.01/":
-			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
-		elif k.kode == "503.02/":
-			objects_ = getattr(app_models, 'DetilHO')
-		elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
-			objects_ = getattr(app_models, 'InformasiTanah')
-		elif k.kode == "HULLER":
-			objects_ = getattr(app_models, 'DetilHuller')
-		elif k.kode == "TDUP":
-			objects_ = getattr(app_models, 'DetilTDUP')
-		elif k.kode == "IUA":
-			objects_ = getattr(app_models, 'DetilIUA')
+		# if k.kode == "503.08":
+		# 	objects_ = getattr(app_models, 'DetilSIUP')
+		# elif k.kode == "IUJK":
+		# 	objects_ = getattr(app_models, 'DetilIUJK')
+		# elif k.kode == "503.03.01/" or k.kode == "503.03.02/":
+		# 	objects_ = getattr(app_models, 'DetilReklame')
+		# elif k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
+		# 	objects_ = getattr(app_models, 'DetilTDP')
+		# elif k.kode == "503.01.06/":
+		# 	objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+		# elif k.kode == "503.01.05/" or k.kode == "503.01.04/" :
+		# 	objects_ = getattr(app_models, 'DetilIMB')
+		# elif k.kode == "503.06.01/":
+		# 	objects_ = getattr(app_models, 'InformasiKekayaanDaerah')
+		# elif k.kode == "503.02/":
+		# 	objects_ = getattr(app_models, 'DetilHO')
+		# elif k.kode == "503.07/" or k.kode == "IPPT-Rumah" or k.kode == "IPPT-Usaha":
+		# 	objects_ = getattr(app_models, 'InformasiTanah')
+		# elif k.kode == "HULLER":
+		# 	objects_ = getattr(app_models, 'DetilHuller')
+		# elif k.kode == "TDUP":
+		# 	objects_ = getattr(app_models, 'DetilTDUP')
+		# elif k.kode == "IUA":
+		# 	objects_ = getattr(app_models, 'DetilIUA')
+
+		objects_ = get_model_detil(k.kode)
 		
 		if request.user.is_anonymous():
 			created_by = p.id

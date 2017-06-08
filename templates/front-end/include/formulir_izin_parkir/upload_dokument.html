@@ -1,0 +1,63 @@
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+</form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-ktp">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>File KTP</strong></label>
+      <span id="field-ktp">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="KTP">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+          <label class="help-text">(Dirut/pemilik/pengurus/penanggungjawab)</label>
+        </div>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ktp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-sketsa_lokasi">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Sketsa Lokasi Tempat Parkir/Gambar Lokasi Tempar Parkir</strong></label>
+      <span id="field-sketsa_lokasi">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Sketsa Lokasi Tempat Parkir">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-sketsa_lokasi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-sketsa_lokasi" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-sketsa_lokasi"></span>
+    </div>
+  </form>
+
+  <div class="row" style="padding-bottom: 10px;">
+    <label class="col-sm-3 control-label" style="text-align: right;"><strong>Download Surat Pernyataan</strong></label>
+    <div class="col-sm-5">
+      <a id="btn-load-sketsa_lokasi" class="btn btn-success btn-sm" target="blank_" href="/static/dokumen/dishub/surat-pernyataan.pdf"> <i class="fa fa-download"></i> Download </a>
+      <br>
+    </div>
+  </div>
+
+	<!-- Surat Permohonan -->
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" id="form-surat_pernyataan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Surat Pernyataan</strong></label>
+      <span id="field-surat_pernyataan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Surat Pernyataan">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-surat_pernyataan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-surat_pernyataan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-surat_pernyataan"></span>
+    </div>
+  </form>

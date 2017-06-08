@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -689,6 +689,49 @@ def formulir_izin_usaha_angkutan(request, extra_context={}):
     else:
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/izin_usaha_angkutan.html", extra_context)
+
+def formulir_izin_parkir(request, extra_context={}):
+    negara = Negara.objects.all()
+    provinsi = Provinsi.objects.all()
+    kabupaten = Kabupaten.objects.all()
+    kecamatan = Kecamatan.objects.all()
+    jenis_pemohon = JenisPemohon.objects.all()
+    katogri_kendaraan_list = KategoriKendaraan.objects.all()
+    merk_type_list = MerkTypeKendaraan.objects.all()
+    extra_context.update({
+        'negara':negara, 
+        'provinsi':provinsi, 
+        'kabupaten':kabupaten, 
+        'kecamatan':kecamatan,
+        'kecamatan_perusahaan': kecamatan.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+        'jenis_pemohon':jenis_pemohon,
+        'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+        'kategori_kendaraan':katogri_kendaraan_list,
+        'merk_type' : merk_type_list,
+        'tahun_choices': get_tahun_choices(1945),
+        })
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '0':
+            print request.COOKIES['id_pengajuan']
+            try:
+                pengajuan_ = DetilIzinParkirIsidentil.objects.get(id=request.COOKIES['id_pengajuan'])
+                extra_context.update({'pengajuan_': pengajuan_})
+                extra_context.update({'pengajuan_id': pengajuan_.id})
+                if pengajuan_.pemohon:
+                    ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+                    extra_context.update({ 'ktp': ktp_ })
+                    paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+                    extra_context.update({ 'paspor': paspor_ })
+                # if pengajuan_.perusahaan:
+                #     perusahaan_cabang = Perusahaan.objects.filter(id=)
+            except ObjectDoesNotExist:
+                extra_context.update({'pengajuan_id': '0'})
+    if 'id_kelompok_izin' in request.COOKIES.keys():
+        jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+        extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+    else:
+        return HttpResponseRedirect(reverse('layanan'))
+    return render(request, "front-end/formulir/izin_parkir.html", extra_context)
 
 def cetak_tdup(request, id_pengajuan):
     extra_context = {}
