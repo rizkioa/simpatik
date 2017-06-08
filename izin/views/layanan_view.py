@@ -18,7 +18,7 @@ def layanan_iujk(request, extra_context={}):
 	return response
 
 def layanan_izin_parkir(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, kode='IP')
+	kelompok = get_object_or_404(KelompokJenisIzin, kode='IZINPARKIR')
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Parkir"})
 	extra_context.update({'title_short': "Izin Parkir"})
@@ -27,7 +27,7 @@ def layanan_izin_parkir(request, extra_context={}):
 	extra_context.update({'id_kelompok_jenis_izin': "55" })
 	response = render(request, "front-end/layanan/iujk.html", extra_context)
 	response.set_cookie(key='id_kelompok_izin', value="55")
-	response.set_cookie(key='kode_kelompok_jenis_izin', value="IP")
+	response.set_cookie(key='kode_kelompok_jenis_izin', value="IZINPARKIR")
 	return response
 
 def layanan_tdup(request, extra_context={}):

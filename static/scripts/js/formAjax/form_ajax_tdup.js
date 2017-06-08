@@ -810,7 +810,12 @@ $(window).load(function(){
       },
 
       onTabClick: function(tab, navigation, index) {
-        return true;
+        if (window.location.hostname == 'localhost'){
+          return true
+        }
+        else{
+          return false;
+        }
       }
     });
 });
@@ -825,7 +830,7 @@ function next_tab(btn){
     success: function (response){
       respon = $.parseJSON(response)
       if (respon.success == true){
-        console.log('berhasil')
+        // console.log('berhasil')
         var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
         var frm = $('form[name="step'+ index +'"]');
         frm.parsley().validate();
@@ -837,7 +842,7 @@ function next_tab(btn){
             url: frm.attr('action'),
             data: frm.serialize(),
             success: function (response){
-              console.log('masuk ajax')
+              // console.log('masuk ajax')
               respon = $.parseJSON(response)
                 $(btn).removeAttr('disabled')
                 if(respon.success){

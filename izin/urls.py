@@ -426,7 +426,10 @@ urlpatterns = [
     url(r'^layanan/izin-parkir/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', izinparkir_views.load_berkas_izin_parkir, name='load_berkas_izin_parkir'),
     url(r'^layanan/izin-parkir/delete-berkas/ajax/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', izinparkir_views.delete_berkas_izin_parkir, name='delete_berkas_izin_parkir'),
     url(r'^layanan/izin-parkir/load-konfirmasi/ajax/(?P<id_pengajuan>[0-9]+)$', izinparkir_views.load_konfirmasi, name='load_konfirmasi_izin_parkir'),
-
+    url(r'^layanan/izin-parkir/detele-cookie/ajax/$', izinparkir_views.izin_parkir_done, name='izin_parkir_done'),
+    url(r'^layanan/izin-parkir/formulir/cetak/(?P<id_pengajuan>[0-9]+)$', views.cetak_izin_parkir, name='cetak_izin_parkir'),
+    url(r'^layanan/izin-parkir/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', views.cetak_bukti_pendaftaran_izin_parkir, name='cetak_bukti_pendaftaran_izin_parkir'),
+    # url(r'^layanan/izin-parkir/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
     ########################## Izin Parkir Dishub ###############################
     
     ]
