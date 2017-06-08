@@ -84,8 +84,10 @@ urlpatterns = [
     url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
     url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
     url(r'^layanan/tdup$', layanan_view.layanan_tdup, name='layanan_tdup'),
-    url(r'^layanan/izin-usaha-angkutan$', layanan_view.layanan_izin_usaha_angkutan, name='layanan_izin_usaha_angkutan'),
+
+    
     url(r'^layanan/izin-parkir$', layanan_view.layanan_izin_parkir, name='layanan_izin_parkir'),
+
     
     url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
@@ -106,8 +108,10 @@ urlpatterns = [
     url(r'^layanan/tdp-koperasi/formulir$', views.formulir_tdp_koperasi, name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
     url(r'^layanan/tdup/formulir$', views.formulir_tdup, name='formulir_tdup'),
-    url(r'^layanan/izin-usaha-angkutan/formulir$', views.formulir_izin_usaha_angkutan, name='formulir_izin_usaha_angkutan'),
+
+
     url(r'^layanan/izin-parkir/formulir$', views.formulir_izin_parkir, name='formulir_izin_parkir'),
+
 
     #cetak SIUP
     url(r'^layanan/siup/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', views.cetak_permohonan, name='cetak_permohonan'),
@@ -406,14 +410,23 @@ urlpatterns = [
     url(r'^list-track-pengajuan/(?P<id_pengajuan>[0-9]+)$', views.list_track_pengajuan, name='list_track_pengajuan'),
 
     # ################################# IUA ######################
+    url(r'^layanan/izin-usaha-angkutan$', layanan_view.layanan_izin_usaha_angkutan, name='layanan_izin_usaha_angkutan'),
+    url(r'^layanan/izin-usaha-angkutan/formulir$', views.formulir_izin_usaha_angkutan, name='formulir_izin_usaha_angkutan'),
+    ############## Cetak Izin ############
+    url(r'^layanan/izin-usaha-angkutan/formulir/cetak/(?P<id_pengajuan>[0-9]+)$', iua_views.cetak_iua, name='cetak_iua'),
+    url(r'^layanan/izin-usaha-angkutan/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', iua_views.cetak_bukti_pendaftaran_iua, name='cetak_bukti_pendaftaran_iua'),
+    ############ END Cetak ###############
     url(r'^layanan/iua/detil-iua/save$', iua_views.save_detil_iua, name='iua_save_detil_iua'),
     url(r'^ajax-save-data-kendaraan/$', iua_views.save_data_kendaraan, name='save_data_kendaraan'),
     url(r'^ajax-load-data-kendaraan/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_kendaraan, name='load_data_kendaraan'),
+    url(r'^layanan/iua/ajax-load-izin-ho/$', iua_views.load_izin_ho, name='load_izin_ho'),
     url(r'^ajax-load-jumlah-data-kendaraan/(?P<pengajuan_id>[0-9]+)$', iua_views.jumlah_data_kendaraan, name='jumlah_data_kendaraan'),
     url(r'^ajax-load-detil-iua/(?P<pengajuan_id>[0-9]+)$', iua_views.load_detil_iua, name='load_detil_iua'),
     url(r'^ajax-delete-data-kendaraan/(?P<kendaraan_id>[0-9]+)$', iua_views.delete_data_kendaraan, name='delete_data_kendaraan'),
     url(r'^ajax-load-berkas-iua/(?P<id_pengajuan>[0-9]+)$', iua_views.ajax_load_berkas_iua, name='ajax_load_berkas_iua'),
     url(r'^ajax-iua-upload-dokument/$', iua_views.iua_upload_dokument, name='iua_upload_dokument'),
+    url(r'^layanan/iua/ajax-iua-load-konfirmasi/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_konfirmasi, name='load_data_konfirmasi'),
+    url(r'^layanan/iua/ajax-delete-berkas-upload-iua/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iua_views.ajax_delete_berkas_iua, name='ajax_delete_berkas_iua'),
     # ################################# IUA ######################
 
     ########################## Izin Parkir Dishub ###############################

@@ -190,6 +190,7 @@
 					}
 					if ($current == 4){
 						load_berkas($.cookie('id_pengajuan'))
+						// cek_nomor_izin_ho($.cookie('id_pengajuan'))
 						// var f = 'form-'
 						// frm1 = $('#'+f+'npwp');
 						// frm2 = $('#'+f+'akte_pendirian');
@@ -208,7 +209,7 @@
 						// });
 					}
 					if($current >= $total) {
-						load_konfirmasi_tdp($.cookie('id_pengajuan'))
+						load_konfirmasi($.cookie('id_pengajuan'))
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
@@ -353,7 +354,7 @@
 					if ($.cookie('id_pengajuan') === undefined){
 						pengajuan_id = 0
 					}
-					window.location.replace(__base_url__+'/layanan/tdp-pt/formulir/cetak/'+pengajuan_id);
+					window.location.replace(__base_url__+'/layanan/izin-usaha-angkutan/formulir/cetak/'+pengajuan_id);
 					$.ajax({
 						url: '{% url 'tdp_pt_done' %}',
 						success: function(response) {
@@ -391,7 +392,7 @@
 				}
 
 				$( "#alert" ).prop( "disabled", true );
-				$('#checkbox_tdp_done').change(function() {
+				$('#checkbox_iua_done').change(function() {
 					if ($(this).is(':checked')) {
 						$( "#alert" ).prop( "disabled", false );
 						window.onbeforeunload = null;

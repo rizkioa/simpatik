@@ -1,4 +1,4 @@
-<form method="POST" name="step6" role="form" action="{% url 'siup_done' %}" data-parsley-validate novalidate>
+<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}" data-parsley-validate novalidate>
   {% csrf_token %}
   
   <h3>KONFIRMASI DATA</h3>
@@ -7,7 +7,7 @@
     <tr>
       <td width="25%">Jenis Pengajuan</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
+      <td width="70%"><span id='jenis_pengajuan_konfirmasi'></span></td>
     </tr>
   </table>
   <br>
@@ -118,10 +118,10 @@
     </tr>
   </table>
   <br>
-  <table class="table table-bordered">
+  <table class="table table-bordered" id="id_data_kendaraan">
     <thead>
       <tr>
-        <th>Tand Nomor Kendaraan</th>
+        <th>Tanda Nomor Kendaraan</th>
         <th>Nomor Uji Berkala</th>
         <th>Merk / Type</th>
         <th>Nomor Rangka</th>
@@ -160,7 +160,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox-npwp" disabled><i></i>
+              <input type="checkbox" id="checkbox-npwp_perusahaan" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -190,7 +190,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox-pernyataan_kesangupan_memiliki" disabled><i></i>
+              <input type="checkbox" id="checkbox-pernyataan_kesanggupan_memiliki" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -200,13 +200,13 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox-pernyataan_kesangupan_menyediakan" disabled><i></i>
+              <input type="checkbox" id="checkbox-pernyataan_kesanggupan_menyediakan" disabled><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Izin Gangguan (dengan nomor izin)
+            Izin Gangguan <span id="nomor_izin_ho"></span>
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -220,7 +220,7 @@
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" id="checkbox-buku_uji" disabled><i></i>
+              <input type="checkbox" id="checkbox-buku_uji_berkala" disabled><i></i>
             </label>
           </td>
         </tr>
@@ -231,7 +231,7 @@
     <section class="tile bg-greensea">
       <div class="tile-body">
         <label class="checkbox checkbox-custom-alt">
-          <input id="checkbox_siup_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+          <input id="checkbox_iua_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
         </label>
       </div>
     </section>

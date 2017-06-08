@@ -1623,7 +1623,7 @@ class DetilIUA(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iua_perusahaan', blank=True, null=True)
 	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
 	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
-	no_izin_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
+	detil_izin_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
 
 	def as_json(self):
 		nilai_investasi = ''
@@ -1635,7 +1635,13 @@ class DetilIUA(PengajuanIzin):
 		kategori_kendaraan_id = ''
 		if self.kategori_kendaraan.id:
 			kategori_kendaraan_id = self.kategori_kendaraan.id
-		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id)
+		detil_izin_ho = ''
+		if self.detil_izin_ho:
+			detil_izin_ho = self.detil_izin_ho.no_izin
+		detil_izin_ho_id = ''
+		if self.detil_izin_ho_id:
+			detil_izin_ho_id = self.detil_izin_ho.id
+		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id, detil_izin_ho=detil_izin_ho, detil_izin_ho_id=detil_izin_ho_id)
 
 	def __unicode__(self):
 		return u'Detil IUA %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
