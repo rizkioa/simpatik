@@ -1598,6 +1598,7 @@ class DetilIUTM(PengajuanIzin):
 
 # ################ IUA (izin usaha angkutan) #################
 class KategoriKendaraan(models.Model):
+	# Mobil barang, angkutan orang
 	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
@@ -1609,6 +1610,7 @@ class KategoriKendaraan(models.Model):
 		verbose_name_plural = 'Kategori Kendaraan'
 
 class MerkTypeKendaraan(models.Model):
+	# HONDA
 	nama_type = models.CharField(max_length=255, verbose_name='Nama Type')
 	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 
