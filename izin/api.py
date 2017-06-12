@@ -19,7 +19,7 @@ class KendaraanRecource(CORSModelResource):
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = Kendaraan.objects.all()
-		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua_id']
+		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua']
 		filtering = {
 			'iua_id': ['contains'],
 			# 'status': ALL,
@@ -41,7 +41,7 @@ class DetilIUARecource(CORSModelResource):
 	jenis_permohonan = fields.ToOneField(JenisPermohonanIzinResource, 'jenis_permohonan', full=True, null=True)
 	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True)
 	kategori_kendaraan = fields.ToOneField(KategoriKendaraanRecource, 'kategori_kendaraan', full = True)
-	# detil_izin_ho = fields.ToOneField(DetilHORecource, 'detil_izin_ho', full = True)
+	detil_izin_ho = fields.ToOneField(DetilHORecource, 'detil_izin_ho', full = True, null=True, blank=True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = DetilIUA.objects.all()
