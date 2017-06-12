@@ -1,5 +1,5 @@
 from mobile.cors import CORSModelResource
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource
@@ -10,12 +10,20 @@ class PemohonResource(CORSModelResource):
 		# allowed_methods = ['get']
 		# fields = ['id', 'nama_lengkap']
 
+class MerkTypeKendaraanResource(CORSModelResource):
+	class Meta:
+		queryset = MerkTypeKendaraan.objects.all()
+
 class KendaraanRecource(CORSModelResource):
+	merk_kendaraan = fields.ToOneField(MerkTypeKendaraanResource, 'merk_kendaraan', full = True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = Kendaraan.objects.all()
-		# excludes = ['id','jenis_izin', 'kode', 'keterangan', 'masa_berlaku', 'standart_waktu', 'biaya', 'resource_uri']
-		# fields = ['Kendaraan', 'kode']
+		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua_id']
+		filtering = {
+			'iua_id': ['contains'],
+			# 'status': ALL,
+		}
 
 class KategoriKendaraanRecource(CORSModelResource):
 	class Meta:
@@ -24,8 +32,6 @@ class KategoriKendaraanRecource(CORSModelResource):
 class DetilHORecource(CORSModelResource):
 	class Meta:
 		queryset = DetilHO.objects.all()
-
-####
 
 class DetilIUARecource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True)
