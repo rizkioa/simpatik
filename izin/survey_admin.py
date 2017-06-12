@@ -1,13 +1,12 @@
+import json, drest
 from django.contrib import admin, messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404, HttpResponseRedirect
-import json
 from django.db.models import Q
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.template import RequestContext, loader
 from datetime import datetime
-
 from daterange_filter.filter import DateRangeFilter
 
 from izin.models import Survey, DetilIUJK, Riwayat, PengajuanIzin, DetilReklame
@@ -1032,6 +1031,64 @@ class SurveyAdmin(admin.ModelAdmin):
 			return {'data-toggle': 'tooltip', 'data-container': 'body', 'data-original-title': 'Anggota Survey : %s ' % ", ".join(str(x.pegawai) for x in obj.survey_iujk.all().exclude(koordinator=True) )}
 		else:
 			return None
+
+	def send_detil_pengajuan(self, request, id_pengajuan):
+		if id_pengajuan:
+			try:
+				pengajuan_obj = PengajuanIzin.objects.get(id=id_pengajuan)
+				try:
+					try:
+						api = drest.api.TastyPieAPI('http://127.0.0.1:8889/api/v1/')
+						api.auth('dishub', 'jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J')
+						api.request.add_header('X-CSRFToken', '{{csrf_token}}')
+						api.request.add_header('Content-Type', 'application/json')
+						data_izin = dict(
+							id=pengajuan_obj.id,
+							pemohon=pengajuan_obj.pemohon.nama_lengkap,
+							jenis_pengajuan=pengajuan_obj.jenis_permohonan.jenis_permohonan,
+							perusahaan=pengajuan_obj.perusahaan.nama_perusahaan,
+							no_pengajuan=pengajuan_obj.no_pengajuan,
+							tgl_pengajuan=pengajuan_obj.created_at.strftime('%d-%m-%Y')
+						)
+						response = api.izin.post(data_izin)
+						print response
+						if response.status in (200, 201, 202):
+							print "OK"
+					except drest.exc.dRestAPIError as e:
+						print e.msg
+				except drest.exc.dRestRequestError as e:
+					print e.msg
+			except ObjectDoesNotExist:
+				print "Data tidak ditemukan"
+
+	def send_detil_pengajuan_without_perusahaan(self, request, id_pengajuan):
+		if id_pengajuan:
+			try:
+				pengajuan_obj = PengajuanIzin.objects.get(id=id_pengajuan)
+				try:
+					try:
+						api = drest.api.TastyPieAPI('http://127.0.0.1:8889/api/v1/')
+						api.auth('dishub', 'jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J')
+						api.request.add_header('X-CSRFToken', '{{csrf_token}}')
+						api.request.add_header('Content-Type', 'application/json')
+						data_izin = dict(
+							id=pengajuan_obj.id,
+							pemohon=pengajuan_obj.pemohon.nama_lengkap,
+							jenis_pengajuan=pengajuan_obj.jenis_permohonan.jenis_permohonan,
+							# perusahaan=pengajuan_obj.perusahaan.nama_perusahaan,
+							no_pengajuan=pengajuan_obj.no_pengajuan,
+							tgl_pengajuan=pengajuan_obj.created_at.strftime('%d-%m-%Y')
+						)
+						response = api.izin.post(data_izin)
+						print response
+						if response.status in (200, 201, 202):
+							print "OK"
+					except drest.exc.dRestAPIError as e:
+						print e.msg
+				except drest.exc.dRestRequestError as e:
+					print e.msg
+			except ObjectDoesNotExist:
+				print "Data tidak ditemukan"
 
 
 	def get_urls(self):

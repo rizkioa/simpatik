@@ -4,7 +4,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
-from izin.api import KendaraanRecource, DetilIUARecource
+from izin.api import KendaraanRecource, DetilIUARecource, PemohonResource
+from perusahaan.api import PerusahaanResource
 
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
@@ -25,6 +26,8 @@ v1_api.register(AuthResource())
 v1_api.register(AccountsResource())
 v1_api.register(KendaraanRecource())
 v1_api.register(DetilIUARecource())
+v1_api.register(PemohonResource())
+v1_api.register(PerusahaanResource())
 
 # obtain_jwt_token = CORSObtainJSONWebToken.as_view()
 

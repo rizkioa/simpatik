@@ -24,18 +24,18 @@ class KelompokJenisIzinRecource(CORSModelResource):
 	class Meta:
 		queryset = KelompokJenisIzin.objects.all()
 		# excludes = ['id','jenis_izin', 'kode', 'keterangan', 'masa_berlaku', 'standart_waktu', 'biaya', 'resource_uri']
-		fields = ['kelompok_jenis_izin', 'kode']
+		fields = ['id', 'kelompok_jenis_izin', 'kode']
 
-class PemohonResource(CORSModelResource):
+class PemohonResource1(CORSModelResource):
 	class Meta:
 		queryset = Pemohon.objects.all()
 		allowed_methods = ['get']
-		fields = ['nama_lengkap']
+		fields = ['id', 'nama_lengkap']
 
 class KepegawaianResource(CORSModelResource):
 	class Meta:
 		queryset = Pegawai.objects.all()
-		fields = ['nama_lengkap']
+		fields = ['id', 'nama_lengkap']
 
 class JenisPermohonanIzinResource(CORSModelResource):
 	class Meta:
@@ -43,7 +43,7 @@ class JenisPermohonanIzinResource(CORSModelResource):
 		fields = ['jenis_permohonan_izin']
 
 class PengajuanIzinResource(CORSModelResource):
-	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True)
+	pemohon = fields.ToOneField(PemohonResource1, 'pemohon', full = True)
 	kelompok_jenis_izin = fields.ToOneField(KelompokJenisIzinRecource, 'kelompok_jenis_izin', full = True)
 	verified_by = fields.ToOneField(KepegawaianResource, 'verified_by', full=True, null=True)
 	created_by = fields.ToOneField(KepegawaianResource, 'created_by', full=True, null=True)
@@ -53,7 +53,7 @@ class PengajuanIzinResource(CORSModelResource):
 		# queryset = PengajuanIzin.objects.all()
 		allowed_methods = ['get']
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
-		# authentication = ApiKeyAuthentication()
+		authentication = ApiKeyAuthentication()
 		filtering = {
 			'no_pengajuan': ['contains'],
 			# 'status': ALL,
@@ -68,7 +68,29 @@ class PengajuanIzinResource(CORSModelResource):
 			url(r"^pengajuanizin/get-detil-tdp-pt/$", self.wrap_view('get_tdp_pt'), name="api_get_tdp_pt"),
 			url(r"^pengajuanizin/get-detil-tdp-po/$", self.wrap_view('get_tdp_po'), name="api_get_tdp_po"),
 			url(r"^pengajuanizin/get-pemohon/$", self.wrap_view('get_pemohon_'), name="api_get_pemohon_"),
+			url(r"^pengajuanizin/verifikasi-pengajuan/$", self.wrap_view('api_verifikasi_pengajuan'), name="api_verifikasi_pengajuan"),
 		]
+
+	def api_verifikasi_pengajuan(self, request, **kwargs):
+		self.is_authenticated(request)
+		data = {'success':False, 'pesan': 'Terjadi kesalahan, Data tidak ditemukan.'}
+		id_pengajuan = request.GET['id_pengajuan']
+		if id_pengajuan:
+			pengajuan_obj = PengajuanIzin.objects.filter(id=id_pengajuan).last()
+			if pengajuan_obj:
+				skizin_obj = pengajuan_obj.skizin_set.last()
+				groups_list = request.user.groups.all()
+				if groups_list.filter(name='Kadin') or request.user.is_superuser:
+					data = {'success':True, 'pesan': 'Terjadi kesalahan, Data tidak ditemukan.'}
+					# pass
+				# if request.user.is_superuser:
+					# print "Superuser"
+				# user_ = request.user
+				# pegawai = Pegawai.objects.filter(id=user_.id).last()
+				# print pegawai
+				
+		return CORSHttpResponse(json.dumps(data))				
+
 
 	def get_berkas_tambahan(self, id_pengajuan):
 		data = {}
@@ -308,7 +330,6 @@ class PengajuanIzinResource(CORSModelResource):
 					legalitas_list = self.get_legalitas(tdp_po_list.perusahaan.id)
 				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list}
 				return CORSHttpResponse(json.dumps(data))
-
 
 class AccountsResource(CORSModelResource):
 	class Meta:
