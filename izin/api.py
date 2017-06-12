@@ -37,7 +37,7 @@ class DetilIUARecource(CORSModelResource):
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = DetilIUA.objects.all()
-		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'perusahaan', 'nilai_investasi', 'kategori_kendaraan', 'detil_izin_ho']
+		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'perusahaan', 'nilai_investasi', 'kategori_kendaraan']
 
 class DataAnggotaParkirRecource(CORSModelResource):
 	class Meta:
