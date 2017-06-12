@@ -33,7 +33,7 @@ class DetilIUARecource(CORSModelResource):
 	jenis_permohonan = fields.ToOneField(JenisPermohonanIzinResource, 'jenis_permohonan', full=True, null=True)
 	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True)
 	kategori_kendaraan = fields.ToOneField(KategoriKendaraanRecource, 'kategori_kendaraan', full = True)
-	detil_izin_ho = fields.ToOneField(DetilHORecource, 'detil_izin_ho', full = True)
+	# detil_izin_ho = fields.ToOneField(DetilHORecource, 'detil_izin_ho', full = True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = DetilIUA.objects.all()
