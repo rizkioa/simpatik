@@ -25,6 +25,8 @@ class DetilHORecource(CORSModelResource):
 	class Meta:
 		queryset = DetilHO.objects.all()
 
+####
+
 class DetilIUARecource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True)
 	kelompok_jenis_izin = fields.ToOneField(KelompokJenisIzinRecource, 'kelompok_jenis_izin', full = True)
