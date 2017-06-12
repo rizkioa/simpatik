@@ -3,6 +3,7 @@ from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggo
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource
+from master.api import BerkasResource
 
 class PemohonResource(CORSModelResource):
 	class Meta:
@@ -43,10 +44,11 @@ class DetilIUARecource(CORSModelResource):
 	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True)
 	kategori_kendaraan = fields.ToOneField(KategoriKendaraanRecource, 'kategori_kendaraan', full = True)
 	detil_izin_ho = fields.ToOneField(DetilHORecource, 'detil_izin_ho', full = True, null=True, blank=True)
+	berkas_tambahan = fields.OneToManyField(BerkasResource, 'berkas_tambahan', full=True, null=True, blank=True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = DetilIUA.objects.all()
-		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'perusahaan', 'nilai_investasi', 'kategori_kendaraan']
+		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'perusahaan', 'nilai_investasi', 'kategori_kendaraan', 'berkas_tambahan']
 
 class DataAnggotaParkirRecource(CORSModelResource):
 	class Meta:
