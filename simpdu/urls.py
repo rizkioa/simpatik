@@ -6,6 +6,7 @@ from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
 from izin.api import KendaraanRecource, DetilIUARecource, PemohonResource, KendaraanRecource
 from perusahaan.api import PerusahaanResource
+from master.api import BerkasResource
 
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
@@ -29,6 +30,7 @@ v1_api.register(DetilIUARecource())
 v1_api.register(PemohonResource())
 v1_api.register(PerusahaanResource())
 v1_api.register(KendaraanRecource())
+v1_api.register(BerkasResource())
 
 # obtain_jwt_token = CORSObtainJSONWebToken.as_view()
 
