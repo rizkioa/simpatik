@@ -149,6 +149,30 @@
     th, td {
         padding: 0px;
     }
+    div.row > div {
+      display: inline-block;  
+      border: solid 0px #ccc;
+      margin: 0.1cm;
+      font-size: 1rem;
+    }
+    div.row {
+      display: block;
+      margin: solid 2px black;
+      margin: 0.2cm 1cm;
+      font-size: 0;
+      white-space: nowrap;
+    }
+    .table {
+        transform: translate(6.3in, 100%) rotate(90deg);
+        transform-origin: bottom left;
+
+        display: block;
+    }
+    .tabell{
+        transform: translate(7.3in, 100%) rotate(90deg);
+        text-align: center;
+        transform-origin: bottom left;
+    }
 </style>
 <body>
     <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
@@ -383,7 +407,6 @@
                     </div>
                 </div>
                 <br>
-                <br>
                 <hr>
                 <i class="font" align="right">
                     <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
@@ -444,34 +467,41 @@
     <div class="book">
          <div class="page">
             <div class="subpage">
-                <table id="id_data_kendaraam_konfirmasi" border="2%" class="table table-bordered font" style="width: 762px;">
-                    <thead>
-                      <tr>
-                        <th>Tanda Nomor Kendaraan</th>
-                        <th>Nomor Uji Berkala</th>
-                        <th>Merk / Type</th>
-                        <th>Nomor Rangka</th>
-                        <th>Nomor Mesin</th>
-                        <th>Tahun Pembuatan</th>
-                        <th>Jumlah Berat yang diperbolehkan</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% if kendaraan %}
-                            {% for k in kendaraan %}
-                                <tr>
-                                    <td>{{k.nomor_kendaraan}}</td>
-                                    <td>{{k.nomor_uji_berkala}}</td>
-                                    <td>{{k.merk_kendaraan}}</td>
-                                    <td>{{k.berat_diperbolehkan}}</td>
-                                    <td>{{k.nomor_rangka}}</td>
-                                    <td>{{k.nomor_mesin}}</td>
-                                    <td>{{k.tahun_pembuatan}}</td>
-                               </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>  
+                <table class="tabell" width="100%">
+                    <tr>
+                        <td>Data Kendaraan</td>
+                    </tr>
+                </table>
+                <center>
+                    <table id="id_data_kendaraam_konfirmasi" border="2%" class="table table-bordered font" style="width: 100%;">
+                        <thead>
+                          <tr>
+                            <th>Tanda Nomor Kendaraan</th>
+                            <th>Nomor Uji Berkala</th>
+                            <th>Merk / Type</th>
+                            <th>Nomor Rangka</th>
+                            <th>Nomor Mesin</th>
+                            <th>Tahun Pembuatan</th>
+                            <th>Jumlah Berat yang diperbolehkan</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% if kendaraan %}
+                                {% for k in kendaraan %}
+                                    <tr>
+                                        <td>{{k.nomor_kendaraan}}</td>
+                                        <td>{{k.nomor_uji_berkala}}</td>
+                                        <td>{{k.merk_kendaraan}}</td>
+                                        <td>{{k.nomor_rangka}}</td>
+                                        <td>{{k.nomor_mesin}}</td>
+                                        <td>{{k.tahun_pembuatan}}</td>
+                                        <td>{{k.berat_diperbolehkan}}</td>
+                                   </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>  
+                </center>
             </div>
         </div>
     </div>
