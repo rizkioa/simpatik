@@ -16,7 +16,7 @@ class MerkTypeKendaraanResource(CORSModelResource):
 
 class KendaraanRecource(CORSModelResource):
 	merk_kendaraan = fields.ToOneField(MerkTypeKendaraanResource, 'merk_kendaraan', full = True)
-	iua_id = fields.IntegerField(attribute="iua__id", null=True, blank=MerkTypeKendaraanResource)
+	iua_id = fields.IntegerField(attribute="iua__id", null=True, blank=True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = Kendaraan.objects.all()
