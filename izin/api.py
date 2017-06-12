@@ -16,10 +16,11 @@ class MerkTypeKendaraanResource(CORSModelResource):
 
 class KendaraanRecource(CORSModelResource):
 	merk_kendaraan = fields.ToOneField(MerkTypeKendaraanResource, 'merk_kendaraan', full = True)
+	iua_id = IntegerField(attribute="iua__id", null=True, blank=True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = Kendaraan.objects.all()
-		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua']
+		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua_id']
 		filtering = {
 			'iua_id': ['contains'],
 			# 'status': ALL,
