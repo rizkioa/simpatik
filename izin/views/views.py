@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
@@ -733,6 +733,38 @@ def formulir_izin_parkir(request, extra_context={}):
         return HttpResponseRedirect(reverse('layanan'))
     return render(request, "front-end/formulir/izin_parkir.html", extra_context)
 
+def cetak_izin_parkir(request, id_pengajuan):
+    extra_context = {}
+    if id_pengajuan:
+        pengajuan_ = get_object_or_404(DetilIzinParkirIsidentil, id=id_pengajuan)
+        if pengajuan_:
+            no_pengajuan = pengajuan_.no_pengajuan
+            jenis_izin = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
+            pemohon_ = pengajuan_.pemohon
+            if pemohon_:
+                nama_pemohon = pemohon_.nama_lengkap
+                alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
+            # perusahaan_ = pengajuan_.perusahaan
+            # if perusahaan_:
+            #     nama_perusahaan = perusahaan_.nama_perusahaan
+            #     alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
+            tanggal_dibuat = pengajuan_.created_at
+            extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'created_at':tanggal_dibuat, 'id':pengajuan_.id})
+    return render(request, "front-end/include/formulir_izin_parkir/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_parkir(request, id_pengajuan):
+    extra_context = {}
+    extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN PARKIR'})
+    if id_pengajuan:
+        pengajuan_ = get_object_or_404(DetilIzinParkirIsidentil, id=id_pengajuan)
+        if pengajuan_:
+            data_anggota_list = DataAnggotaParkir.objects.filter(izin_parkir_isidentil_id=pengajuan_.id)
+            # rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
+            # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
+            syarat_ = Syarat.objects.filter(jenis_izin__kode="IZINPARKIR")
+            extra_context.update({'pengajuan_':pengajuan_, 'data_anggota': data_anggota_list, 'syarat':syarat_})
+    return render(request, "front-end/include/formulir_izin_parkir/cetak_bukti_pendaftaran.html", extra_context)
+
 def cetak_tdup(request, id_pengajuan):
     extra_context = {}
     if id_pengajuan:
@@ -775,7 +807,7 @@ def cetak_bukti_pendaftaran_tdup(request, id_pengajuan):
             lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata)+', Ds.'+str(pengajuan_.desa_lokasi)+', Kec.'+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)
             # rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
             # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
-            syarat_ = Syarat.objects.filter(jenis_izin_id=25)
+            syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="TDUP")
             extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'nama_perusahaan':nama_perusahaan, 'alamat_perusahaan':alamat_perusahaan, 'created_at':tanggal_dibuat, 'id':pengajuan_.id, 'pengajuan_':pengajuan_, 'legalitas':legalitas_, 'rincian': rincian_sub_jenis_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata})
     return render(request, "front-end/include/formulir_tdup/cetak_bukti_pendaftaran.html", extra_context)
 

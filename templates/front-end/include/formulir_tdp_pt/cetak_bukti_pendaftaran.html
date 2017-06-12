@@ -211,54 +211,7 @@
                     </tr>
                 </table>
 
-                <h5>IDENTITAS PEMOHON</h5>
-                <table width="100%" border="0" class="font">
-                    <tr>
-                        <td width="25%">Jenis Pemohon</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.jenis_pemohon}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nomor KTP/Paspor</td>
-                        <td width="10%">:</td>
-                        <td width="65%">350001010010101001</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nama</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.nama_lengkap}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Alamat</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{alamat_pemohon}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Telp</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.telephone}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. HP</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.hp}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Email</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.email|default_if_none:"-"}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Kewarganegaraan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.kewarganegaraan}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Pekerjaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{pengajuan_.pemohon.pekerjaan}}</td>
-                    </tr>
-                </table>
+                {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon.html' %}
 
                 <h5>IDENTITAS PERUSAHAAN</h5>
                 <table class="font" width="100%">

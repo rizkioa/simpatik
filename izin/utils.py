@@ -116,9 +116,10 @@ JENIS_MESIN_PERALATAN = (
 )
 
 def terbilang_(bil):
-	# bil = nilai.replace(".", "")
+	# bil = bil.replace(".", "")
 	satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
+	print bil
 	n = int(bil)
 	if n >= 0 and n <= 11:
 		hasil = [satuan[n]]
@@ -139,6 +140,32 @@ def terbilang_(bil):
 	else:
 		hasil = terbilang_(n / 1000000000) + ['milyar'] + terbilang_(n % 100000000)
 	return hasil
+
+def konversi(x):
+    satuan = [' ', 'satu ', 'dua ', 'tiga ', 'empat ', 'lima ', 'enam ', 'tujuh ', 'delapan ', 'sembilan ', 'sepuluh ', 'sebelas ']
+    hasil = ""
+    x = int(x)
+    # if x <= 0:
+    #     hasil += 'Bilangan Haruslah Positif dan Bilangan Asli'
+    if x < 12 :
+        hasil += satuan[x]
+    elif x < 20 :
+        hasil += konversi(x-10) + "belas "
+    elif x < 100:
+        hasil += konversi(int(x/10)) + "puluh " + konversi(x%10)
+    elif x < 200 :
+        hasil += "seratus " + konversi(x-100)
+    elif x < 1000 :
+        hasil += konversi(int(x/100)) + "ratus " + konversi(x%100)
+    elif x < 2000 :
+        hasil += "seribu " + konversi(x-1000)
+    elif x < 1000000 :
+        hasil += konversi(int(x/1000)) + "ribu" + konversi(x%1000)
+    elif x < 1000000000 :
+        hasil += konversi(int(x/1000000)) + "juta " + konversi(x%1000000)
+    elif x >= 1000000000 :
+        hasil += konversi(int(x/1000000000)) + "milyar " + konversi(x%1000000000)
+    return hasil
 
 
 def terbilang(n):
@@ -345,6 +372,8 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilHuller')
 		elif kode == "TDUP":
 			objects_ = getattr(app_models, 'DetilTDUP')
-		elif kode == "IP":
+		elif kode == "IUA":
+			objects_ = getattr(app_models, 'DetilIUA')
+		elif kode == "IZINPARKIR":
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 	return objects_

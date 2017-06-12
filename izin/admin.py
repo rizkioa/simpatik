@@ -25,6 +25,7 @@ from master.models import JenisPemohon
 from izin.izin_forms import SurveyForm
 from izin.utils import get_nomor_pengajuan
 from pembangunan.views import get_rekomendasi_pembangunan
+from izin.detilizinparkir_admin import DetilIzinParkirIsidentilAdmin
 
 # from perusahaan.models import Perusahaan
 
@@ -52,7 +53,7 @@ admin.site.register(KategoriKendaraan)
 admin.site.register(MerkTypeKendaraan)
 admin.site.register(Kendaraan)
 admin.site.register(DetilIUA)
-admin.site.register(DetilIzinParkirIsidentil)
+# admin.site.register(DetilIzinParkirIsidentil)
 admin.site.register(DataAnggotaParkir)
 
 class JenisPeraturanAdmin(admin.ModelAdmin):

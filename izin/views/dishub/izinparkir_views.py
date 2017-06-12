@@ -244,3 +244,31 @@ def load_konfirmasi(request, id_pengajuan):
 		except ObjectDoesNotExist:
 			pass
 	return HttpResponse(json.dumps(data))
+
+def izin_parkir_done(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = DetilIzinParkirIsidentil.objects.get(id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+					
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+			response.delete_cookie(key='id_jenis_pengajuan')
+			response.delete_cookie(key='id_kelompok_izin')
+			response.delete_cookie(key='kode_kelompok_jenis_izin')
+			response.delete_cookie(key='id_pengajuan')
+			response.delete_cookie(key='id_perusahaan')
+			response.delete_cookie(key='nomor_ktp')
+			response.delete_cookie(key='nomor_paspor')
+			response.delete_cookie(key='id_pemohon')
+			response.delete_cookie(key='id_jenis_pengajuan')
+			response.delete_cookie(key='npwp_perusahaan')
+			response.delete_cookie(key='npwp_perusahaan_induk') # set cookie
+		else:
+			data = {'success': False, 'pesan': 'Terjadi Kesalahan, Data tidak ditemukan.' }
+			response = HttpResponse(json.dumps(data))
+	else:
+		data = {'success': False, 'pesan': 'Terjadi Kesalahan, Data tidak ditemukan.' }
+		response = HttpResponse(json.dumps(data))
+	return response

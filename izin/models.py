@@ -24,6 +24,20 @@ class Pemohon(Account):
 	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
+	def get_ktp(self):
+		nomor_ktp = ""
+		ktp_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=1).last()
+		if ktp_obj:
+			nomor_ktp = ktp_obj.nomor
+		return nomor_ktp
+
+	def get_paspor(self):
+		nomor_paspor = ""
+		paspor_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=2).last()
+		if paspor_obj:
+			nomor_paspor = paspor_obj.nomor
+		return nomor_paspor
+
 	def as_json(self):
 		tanggal_lahir = '-'
 		if self.tanggal_lahir:
@@ -331,6 +345,15 @@ class DetilSIUP(PengajuanIzin):
 
 	def __unicode__(self):
 		return u'Detil SIUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	def get_terbilang(self):
+		from izin.utils import konversi
+		terbilang = ""
+		if self.kekayaan_bersih:
+			kekayaan = self.kekayaan_bersih.replace(".", "")
+			if kekayaan:
+				terbilang = konversi(3309998000)
+		return terbilang
 
 	def as_json(self):
 		from utils import terbilang
@@ -1575,6 +1598,7 @@ class DetilIUTM(PengajuanIzin):
 
 # ################ IUA (izin usaha angkutan) #################
 class KategoriKendaraan(models.Model):
+	# Mobil barang, angkutan orang
 	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
@@ -1586,6 +1610,7 @@ class KategoriKendaraan(models.Model):
 		verbose_name_plural = 'Kategori Kendaraan'
 
 class MerkTypeKendaraan(models.Model):
+	# HONDA
 	nama_type = models.CharField(max_length=255, verbose_name='Nama Type')
 	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 
@@ -1689,6 +1714,12 @@ class DetilIzinParkirIsidentil(PengajuanIzin):
 
 	def __unicode__(self):
 		return u'Detil Izin Parkir Isidentil %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	def get_lama_penitipan(self):
+		lama_pelatihan = ""
+		if self.tanggal_pelaksanaan_parkir and self.waktu_mulai and self.waktu_berakhir:
+			lama_pelatihan = "Tanggal "+self.tanggal_pelaksanaan_parkir.strftime("%d-%m-%Y")+" , "+self.waktu_mulai.strftime("%H:%M")+" sampai dengan "+self.waktu_berakhir.strftime("%H:%M")
+		return lama_pelatihan
 
 	def as_json(self):
 		alamat_lengkap = ''
