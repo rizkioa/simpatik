@@ -213,7 +213,7 @@
                         <td width="65%">Baru</td>
                     </tr>
                 </table>
-                {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon.html' %}
+                {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon_.html' %}
                 <h5><u>IDENTITAS PERUSAHAAN</u></h5>
                 <table class="font" width="100%">
                     <tr>
@@ -229,7 +229,7 @@
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ alamat_perusahaan }}</td>
+                        <td width="65%">{{ perusahaan.alamat_perusahaan }}, {{perusahaan.desa.lokasi_lengkap}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
@@ -303,11 +303,11 @@
                 </table>
                 
                 <br>
-                <hr>
+                <!-- <hr>
                 <i class="font" align="right">
                     <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
+                </i> -->
             </div>    
         </div>
         <div class="page">
@@ -420,8 +420,8 @@
                     </tr>
                 </table>
                 
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+                <!-- <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i> -->
                 <br>
                 <br>
                 <br>

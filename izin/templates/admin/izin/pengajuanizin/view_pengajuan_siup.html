@@ -1268,7 +1268,7 @@
 						<tr>
 						  <td width="25%">Nomor KTP/Paspor</td>
 						  <td width="5%">:</td>
-						  <td width="70%">{{ ktp }} {% if paspor %}/ {{ paspor }}{% endif %}</td>
+						  <td width="70%">{{pengajuan.pemohon.get_ktp}} {% if pengajuan.pemohon.get_paspor %}{{pengajuan.pemohon.get_paspor}}{% endif %}</td>
 						</tr>
 						<tr>
 						  <td width="25%">Nama</td>
@@ -1278,12 +1278,12 @@
 						<tr>
 						  <td width="25%">Alamat tempat tinggal</td>
 						  <td width="5%">:</td>
-						  <td width="70%">{{ alamat_pemohon }}</td>
+						  <td width="70%">{{pengajuan.pemohon.alamat}}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
 						</tr>
 						<tr>
 						  <td width="25%">No.Telp</td>
 						  <td width="5%">:</td>
-						  <td width="70%">{{ pemohon.telephone }}<span id='telephone_konfirmasi'></span></td>
+						  <td width="70%">{{ pengajuan.pemohon.telephone }}<span id='telephone_konfirmasi'></span></td>
 						</tr>
 						<tr>
 						  <td width="25%">No.HP</td>
@@ -1322,7 +1322,7 @@
 						<tr>
 						  <td width="25%">Alamat Perusahaan</td>
 						  <td width="5%">:</td>
-						  <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan }}</span></td>
+						  <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ perusahaan.alamat_perusahaan }}, {{perusahaan.desa.lokasi_lengkap}}</span></td>
 						</tr>
 						<tr>
 						  <td width="25%">Kode Pos</td>

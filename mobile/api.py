@@ -51,7 +51,7 @@ class PengajuanIzinResource(CORSModelResource):
 	class Meta:
 		queryset = PengajuanIzin.objects.filter(~Q(status=11))
 		# queryset = PengajuanIzin.objects.all()
-		allowed_methods = ['get']
+		allowed_methods = ['get', 'post']
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
 		authentication = ApiKeyAuthentication()
 		filtering = {
@@ -80,15 +80,38 @@ class PengajuanIzinResource(CORSModelResource):
 			if pengajuan_obj:
 				skizin_obj = pengajuan_obj.skizin_set.last()
 				groups_list = request.user.groups.all()
-				if groups_list.filter(name='Kadin') or request.user.is_superuser:
-					data = {'success':True, 'pesan': 'Terjadi kesalahan, Data tidak ditemukan.'}
-					# pass
-				# if request.user.is_superuser:
-					# print "Superuser"
-				# user_ = request.user
-				# pegawai = Pegawai.objects.filter(id=user_.id).last()
-				# print pegawai
-				
+				if skizin_obj:
+					if groups_list.filter(name='Kadin') or request.user.is_superuser:
+						if pengajuan_obj.status == 2 and skizin_obj.status == 4:
+							# print request.user.get_full_name()
+							skizin_obj.status = 12 # Bupati
+							skizin_obj.nama_pejabat = request.user.get_full_name()
+							skizin_obj.nip_pejabat = request.user.username
+							skizin_obj.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+							skizin_obj.keterangan = "Pembina Tk.l"
+							skizin_obj.save()
+							riwayat_obj = Riwayat(
+								sk_izin_id = skizin_obj.id ,
+								pengajuan_izin_id = pengajuan_obj.id,
+								created_by_id = request.user.id,
+								keterangan = "Kadin Verified (Izin)"
+							)
+							riwayat_obj.save()
+							data = {'success':True, 'pesan': 'Berhasil, Pangajuan berhasil diverifikasi.'}
+					elif groups_list.filter(name='Bupati') or request.user.is_superuser:
+						if pengajuan_obj.status == 2 and skizin_obj.status == 12:
+							skizin_obj.status = 9 # Verified
+							skizin_obj.save()
+							riwayat_obj = Riwayat(
+								sk_izin_id = skizin_obj.id ,
+								pengajuan_izin_id = pengajuan_obj.id,
+								created_by_id = request.user.id,
+								keterangan = "Bupati Verified (Izin)"
+							)
+							riwayat_obj.save()
+							data = {'success':True, 'pesan': 'Berhasil, Pangajuan berhasil diverifikasi.'}
+					else:
+						data = {'success': False, 'pesan': 'Terjadi kesalahan, Anda tidak punya hak akses untuk memverifikasi.'}
 		return CORSHttpResponse(json.dumps(data))				
 
 
