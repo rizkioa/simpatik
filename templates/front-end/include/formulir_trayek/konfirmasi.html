@@ -1,0 +1,194 @@
+<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+  
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pengajuan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0" id="id_table_pemohon_komfirmasi">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#3. DATA Kendaraan</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jumlah Kendaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="jumlah_kendaraan_konfirmasi"></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Kendaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="jenis_kendaraan_konfirmasi"></span></td>
+    </tr>
+  </table>
+  <br>
+  <table class="table table-bordered" id="id_data_kendaraan">
+    <thead>
+      <tr>
+        <th>Tanda Nomor Kendaraan</th>
+        <th>Nomor Uji Berkala</th>
+        <th>Merk / Type</th>
+        <th>Nomor Rangka</th>
+        <th>Nomor Mesin</th>
+        <th>Tahun Pembuatan</th>
+        <th>Jumlah Berat yang diperbolehkan</th>
+        <th>Keterangan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Scan NPWP
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-npwp_perusahaan" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Scan KTP
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-ktp" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Izin Gangguan <span id="nomor_izin_ho"></span>
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-izin_gangguan" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <div class="form-group">
+    <section class="tile bg-greensea">
+      <div class="tile-body">
+        <label class="checkbox checkbox-custom-alt">
+          <input id="checkbox_iua_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+        </label>
+      </div>
+    </section>
+  </div>
+</form>

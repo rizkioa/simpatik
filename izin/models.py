@@ -1596,7 +1596,6 @@ class DetilIUTM(PengajuanIzin):
 
 #### Izin Dinas Perhubungan ####
 
-# ################ IUA (izin usaha angkutan) #################
 class KategoriKendaraan(models.Model):
 	# Mobil barang, angkutan orang
 	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
@@ -1610,7 +1609,6 @@ class KategoriKendaraan(models.Model):
 		verbose_name_plural = 'Kategori Kendaraan'
 
 class MerkTypeKendaraan(models.Model):
-	# HONDA
 	nama_type = models.CharField(max_length=255, verbose_name='Nama Type')
 	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 
@@ -1652,6 +1650,18 @@ class DetilIUA(PengajuanIzin):
 		verbose_name = 'Detil IUA'
 		verbose_name_plural = 'Detil IUA'
 
+class Trayek(models.Model):
+	trayek = models.CharField(max_length=100, verbose_name='Trayek')
+	jurusan = models.CharField(max_length=255, verbose_name='Jurusan')
+	rute_dilewati = models.TextField(verbose_name='Rute dilewati')
+
+	def __unicode__(self):
+		return u'%s' % str(self.trayek)
+
+	class Meta:
+		verbose_name = 'Trayek'
+		verbose_name_plural = 'Trayek'
+
 class Kendaraan(models.Model):
 	iua = models.ForeignKey(DetilIUA, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
 	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
@@ -1660,6 +1670,7 @@ class Kendaraan(models.Model):
 	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan', null=True, blank=True)
 	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka', null=True, blank=True)
 	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin', null=True, blank=True)
+	trayek = models.ForeignKey(Trayek, verbose_name='Trayek', null=True, blank=True)
 	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
@@ -1696,6 +1707,17 @@ class Kendaraan(models.Model):
 	class Meta:
 		verbose_name = 'Kendaraan'
 		verbose_name_plural = 'Kendaraan'
+
+class DetilTrayek(PengajuanIzin):
+	detil_iua = models.ForeignKey(DetilIUA, verbose_name='Nomor Izin Angkutan')
+
+	def __unicode__(self):
+		return u'Detil Izin Trayek %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		verbose_name = 'Trayek'
+		verbose_name_plural = 'Trayek'
+
 
 class DetilIzinParkirIsidentil(PengajuanIzin):
 	jenis_penitipan = models.CharField(max_length=100, verbose_name='Jenis Penitipan', null=True, blank=True)

@@ -442,5 +442,10 @@ urlpatterns = [
     url(r'^layanan/izin-parkir/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', views.cetak_bukti_pendaftaran_izin_parkir, name='cetak_bukti_pendaftaran_izin_parkir'),
     # url(r'^layanan/izin-parkir/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
     ########################## Izin Parkir Dishub ###############################
+
+    ################################ Izin Angkutan Trayek ###################################
+    url(r'^layanan/izin-angkutan-trayek$', layanan_view.layanan_izin_angkutan_trayek, name='layanan_izin_angkutan_trayek'),
+    url(r'^layanan/izin-angkutan-trayek/formulir$', views.formulir_izin_angkutan_trayek, name='formulir_izin_angkutan_trayek'),
+    ################################ END Izin Angkutan Trayek ###################################
     
     ]

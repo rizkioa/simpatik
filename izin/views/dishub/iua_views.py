@@ -228,7 +228,7 @@ def ajax_load_berkas_iua(request, id_pengajuan):
 				npwp = pemohon_.berkas_npwp
 				if npwp:
 					url_berkas.apped(npwp.berkas.url)
-					id_elemen.apped('npwp')
+					id_elemen.apped('npwp_perusahaan')
 					nm_berkas.apped(npwp.nama_berkas)
 					id_berkas.apped(npwp.id)
 			if berkas_:

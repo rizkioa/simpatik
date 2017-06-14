@@ -76,8 +76,8 @@
 {% endblock %}
 {% block section %}
 <div class="pageheader">
-		<h2>IUA - Izin Usaha Angkutan
-		<span>Berikut adalah info pendaftaran perizinan IUA Kabupaten Kediri.</span>
+		<h2>Trayek - Izin Angkutan Trayek
+		<span>Berikut adalah info pendaftaran perizinan Trayek Kabupaten Kediri.</span>
 	</h2>
 	<div class="page-bar">
 		<ul class="page-breadcrumb">
@@ -88,10 +88,10 @@
 				<a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
 			</li>
 			<li>
-				<a href="#"> IUA - Izin Usaha Angkuta</a>
+				<a href="#"> Trayek - Izin Angkuta Trayek</a>
 			</li>
 			<li>
-				<a href="#">Formulir IUA - IUA</a>
+				<a href="#">Formulir Trayek - Trayek</a>
 			</li>
 		</ul>
 	</div>
@@ -103,29 +103,33 @@
 		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">STEP #2</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
 		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">STEP #3</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
 		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">STEP #4 </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">STEP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>\
+		<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">STEP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+		<li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">STEP #6</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
 	</ul>
 	<div class="tab-content">
-		<div class="tab-pane" id="tab1"> 
+		<div class="tab-pane" id="tab1">
+			{% include 'front-end/include/formulir_trayek/cek_iua.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab2"> 
 			<!-- Identitas pemohon --> 
 			{% include 'front-end/include/pemohon/identitas_pemohon.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab2">
+		<div class="tab-pane" id="tab3">
 			<!-- Identitas perusahaan -->
 			{% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab3">
-			{% include 'front-end/include/formulir_iua/data_kendaraan.html' %}
-		</div>
-
 		<div class="tab-pane" id="tab4">
-			{% include 'front-end/include/formulir_iua/upload_dokumen.html' %}
+			{% include 'front-end/include/formulir_trayek/data_kendaraan.html' %}
+		</div>
+		<div class="tab-pane" id="tab5">
+			{% include 'front-end/include/formulir_trayek/upload_dokumen.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab5">
-			{% include 'front-end/include/formulir_iua/konfirmasi.html' %}
+		<div class="tab-pane" id="tab6">
+			{% include 'front-end/include/formulir_trayek/konfirmasi.html' %}
 		</div>
 
 		<ul class="pager wizard">
@@ -189,24 +193,6 @@
 						}
 					}
 					if ($current == 4){
-						load_berkas($.cookie('id_pengajuan'))
-						// cek_nomor_izin_ho($.cookie('id_pengajuan'))
-						// var f = 'form-'
-						// frm1 = $('#'+f+'npwp');
-						// frm2 = $('#'+f+'akte_pendirian');
-						// frm3 = $('#'+f+'domisili');
-						// frm4 = $('#'+f+'pernyataan_kesanggupan_memiliki');
-						// frm5 = $('#'+f+'pernyataan_kesanggupan_menyediakan');
-						// frm6 = $('#'+f+'buku_uji_berkala');
-						// $('#next >').on('click', function(){
-						// 	if (!frm1.parsley().isValid() || !frm2.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate()){
-						// 		setTimeout(function(){
-						// 			toastr["warning"]("Terjadi kesalahan, lengkapi data yang kurang.")
-						// 			tab_index = '#rootwizard a[href="#tab'+(4)+'"]';
-						// 			$(tab_index).tab('show');
-						// 		}, 1000);
-						// 	}
-						// });
 					}
 					if($current >= $total) {
 						load_konfirmasi($.cookie('id_pengajuan'))
@@ -452,56 +438,6 @@
 				$('#'+p+'buku_uji_berkala').hide()
 			});
 
-		function load_detil_iua(pengajuan_id){
-		if (pengajuan_id !== ""){
-			$.ajax({
-				type: 'GET',
-				url: __base_url__+'/ajax-load-detil-iua/'+pengajuan_id,
-				success: function (data) {
-					console.log(data)
-					response = data
-					$('#id_nilai_investasi').val(response.nilai_investasi)
-					$('#id_jenis_kategori_kendaraan').val(response.kategori_kendaraan_id).prop('selected',true).trigger("chosen:updated");
-					// a = data.length
-					// if(a === 0){
-					// 	$('#table_daftar_kendaraan > tbody > tr:first/').remove()
-					// 	table = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!!<td><tr>'
-					// 	$('#table_daftar_kendaraan > tbody').prepend(table)
-					// }
-					// else{
-					// 	load_data_kendaraan(pengajuan_id)
-					// 	b = data.reverse()
-					// 	$('#table_daftar_kendaraan > tbody > tr:first').remove()
-					// 	for (var i = 0; i < a; i++){
-					// 		id = b[i].id
-					// 		tanda_nomor_kendaraan = b[i].nomor_kendaraan
-					// 		nomor_uji_berkala = b[i].nomor_uji_berkala
-					// 		merk_type = b[i].merk_type
-					// 		nomor_rangka = b[i].nomor_rangka
-					// 		nomor_mesin = b[i].nomor_mesin
-					// 		tahun_pembuatan = b[i].tahun_pembuatan
-					// 		keterangan = b[i].keterangan
-					// 		no = a
-					// 		if (a > 1){
-					// 			no = a-i
-					// 		}
-					// 		row = '<tr>'
-					// 		row += '<td>'+tanda_nomor_kendaraan+'</td>'
-					// 		row += '<td>'+nomor_uji_berkala+'</td>'
-					// 		row += '<td>'+merk_type+'</td>'
-					// 		row += '<td>'+nomor_rangka+'</td>'
-					// 		row += '<td>'+nomor_mesin+'</td>'
-					// 		row += '<td>'+tahun_pembuatan+'</td>'
-					// 		row += '<td>'+keterangan+'</td>'
-					// 		row += '</tr>'
-					// 		$('#table_daftar_kendaraan > tbody').prepend(row)
-					// 	}
-					// }
-				}
-			})
-			$('#table_daftar_kendaraan').mLoading('hide');
-		}
-	}
 	</script>
 {% include 'front-end/include/formulir_iua/popup/tambah_data_kendaraan.html' %}
 
