@@ -33,7 +33,7 @@ class BaseCorsResource(Resource):
         
     def add_cors_headers(self, response, expose_headers=False):
         response['Access-Control-Allow-Origin'] = '*'
-        response['Access-Control-Allow-Headers'] = 'content-type, authorization'
+        response['Access-Control-Allow-Headers'] = 'content-type, Authorization'
         if expose_headers:
             response['Access-Control-Expose-Headers'] = 'Location'
         return response    

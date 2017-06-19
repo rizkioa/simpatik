@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
-from izin.api import KendaraanRecource, DetilIUARecource, PemohonResource, KendaraanRecource
+from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource
 from perusahaan.api import PerusahaanResource
 from master.api import BerkasResource
 
@@ -22,15 +22,18 @@ from mobile.views import request_user
 admin.autodiscover()
 
 v1_api = Api(api_name='v1')
+
 v1_api.register(PengajuanIzinResource())
 v1_api.register(AuthResource())
 v1_api.register(AccountsResource())
-v1_api.register(KendaraanRecource())
-v1_api.register(DetilIUARecource())
+v1_api.register(DetilIUAResource())
 v1_api.register(PemohonResource())
 v1_api.register(PerusahaanResource())
-v1_api.register(KendaraanRecource())
+v1_api.register(KendaraanResource())
 v1_api.register(BerkasResource())
+v1_api.register(SKIzinResource())
+v2_api = Api(api_name='v2')
+v2_api.register(PengajuanIzinAllResource())
 
 # obtain_jwt_token = CORSObtainJSONWebToken.as_view()
 
@@ -43,6 +46,7 @@ urlpatterns = [
     # url(r'^api-token-refresh/', refresh_jwt_token),
     # url(r'^api-token-verify/', verify_jwt_token),
     url(r'^api/', include(v1_api.urls)),
+    url(r'^api/', include(v2_api.urls)),
 	url(r'^admin/$', index, name='admin_home'),
     url(r'^user/$', 'simpdu.views.user_home', name='user_home'),
     # url(r'^s/', include('perusahaan.urls')),

@@ -59,6 +59,19 @@ class PengajuanIzinResource(CORSModelResource):
 			# 'status': ALL,
 		}
 
+	# untuk list filter berdasarkanuser
+	def get_object_list(self, request):
+		id_pengajuan_list = []
+		data = super(PengajuanIzinResource, self).get_object_list(request)
+		if request.user.groups.filter(name='Kadin'):
+			# return object_list.filter(status=1)
+			data = data.filter(status=2)
+			id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
+			id_pengajuan_list += id_list
+			data = data.filter(id__in=id_pengajuan_list)
+			# print data
+		return data
+
 	def prepend_urls(self):
 		return [
 			url(r"^pengajuanizin/get-riwayat/$", self.wrap_view('get_riwayat_pengajuan'), name="api_get_riwayat_pengajuan"),
@@ -68,51 +81,8 @@ class PengajuanIzinResource(CORSModelResource):
 			url(r"^pengajuanizin/get-detil-tdp-pt/$", self.wrap_view('get_tdp_pt'), name="api_get_tdp_pt"),
 			url(r"^pengajuanizin/get-detil-tdp-po/$", self.wrap_view('get_tdp_po'), name="api_get_tdp_po"),
 			url(r"^pengajuanizin/get-pemohon/$", self.wrap_view('get_pemohon_'), name="api_get_pemohon_"),
-			url(r"^pengajuanizin/verifikasi-pengajuan/$", self.wrap_view('api_verifikasi_pengajuan'), name="api_verifikasi_pengajuan"),
-		]
-
-	def api_verifikasi_pengajuan(self, request, **kwargs):
-		self.is_authenticated(request)
-		data = {'success':False, 'pesan': 'Terjadi kesalahan, Data tidak ditemukan.'}
-		id_pengajuan = request.GET['id_pengajuan']
-		if id_pengajuan:
-			pengajuan_obj = PengajuanIzin.objects.filter(id=id_pengajuan).last()
-			if pengajuan_obj:
-				skizin_obj = pengajuan_obj.skizin_set.last()
-				groups_list = request.user.groups.all()
-				if skizin_obj:
-					if groups_list.filter(name='Kadin') or request.user.is_superuser:
-						if pengajuan_obj.status == 2 and skizin_obj.status == 4:
-							# print request.user.get_full_name()
-							skizin_obj.status = 12 # Bupati
-							skizin_obj.nama_pejabat = request.user.get_full_name()
-							skizin_obj.nip_pejabat = request.user.username
-							skizin_obj.jabatan_pejabat = "Kepala Dinas DPMPTSP"
-							skizin_obj.keterangan = "Pembina Tk.l"
-							skizin_obj.save()
-							riwayat_obj = Riwayat(
-								sk_izin_id = skizin_obj.id ,
-								pengajuan_izin_id = pengajuan_obj.id,
-								created_by_id = request.user.id,
-								keterangan = "Kadin Verified (Izin)"
-							)
-							riwayat_obj.save()
-							data = {'success':True, 'pesan': 'Berhasil, Pangajuan berhasil diverifikasi.'}
-					elif groups_list.filter(name='Bupati') or request.user.is_superuser:
-						if pengajuan_obj.status == 2 and skizin_obj.status == 12:
-							skizin_obj.status = 9 # Verified
-							skizin_obj.save()
-							riwayat_obj = Riwayat(
-								sk_izin_id = skizin_obj.id ,
-								pengajuan_izin_id = pengajuan_obj.id,
-								created_by_id = request.user.id,
-								keterangan = "Bupati Verified (Izin)"
-							)
-							riwayat_obj.save()
-							data = {'success':True, 'pesan': 'Berhasil, Pangajuan berhasil diverifikasi.'}
-					else:
-						data = {'success': False, 'pesan': 'Terjadi kesalahan, Anda tidak punya hak akses untuk memverifikasi.'}
-		return CORSHttpResponse(json.dumps(data))				
+			# url(r"^pengajuanizin/verifikasi-pengajuan/$", self.wrap_view('api_verifikasi_pengajuan'), name="api_verifikasi_pengajuan"),
+		]				
 
 
 	def get_berkas_tambahan(self, id_pengajuan):
@@ -282,6 +252,7 @@ class PengajuanIzinResource(CORSModelResource):
 
 
 	def get_detil_siup(self, request, **kwargs):
+		print request.user
 		id_pengajuan = request.GET['id_pengajuan']
 		data = {'success':False}
 		if id_pengajuan and id_pengajuan is not "":
@@ -317,22 +288,23 @@ class PengajuanIzinResource(CORSModelResource):
 		data = {'success':False}
 		id_pengajuan = request.GET['id_pengajuan']
 		if id_pengajuan and id_pengajuan is not "":
-			tdp_pt_list = DetilTDP.objects.get(id=id_pengajuan)
-			detil_tdp_pt = {}
+			tdp_pt_obj = DetilTDP.objects.get(id=id_pengajuan)
+			detil_tdp_obj = {}
 			pengajuan_obj = {}
 			skizin_obj = {}
-			if tdp_pt_list:
-				skizin_obj = self.get_skizin(tdp_pt_list.id)
-				pengajuan_obj = self.get_pengajuan_izin(tdp_pt_list.id)
+			if tdp_pt_obj:
+				skizin_obj = self.get_skizin(tdp_pt_obj.id)
+				pengajuan_obj = self.get_pengajuan_izin(tdp_pt_obj.id)
+				detil_tdp_obj = self.get_detil_tdp(tdp_pt_obj.id)
 				pemohon_obj = {}
-				if tdp_pt_list.pemohon:
-					pemohon_obj = self.get_pemohon(tdp_pt_list.pemohon.id)
+				if tdp_pt_obj.pemohon:
+					pemohon_obj = self.get_pemohon(tdp_pt_obj.pemohon.id)
 				perusahaan_obj = {}
 				legalitas_list = {}
-				if tdp_pt_list.perusahaan:
-					perusahaan_obj = self.get_perusahaan(tdp_pt_list.perusahaan.id)
-					legalitas_list = self.get_legalitas(tdp_pt_list.perusahaan.id)
-				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj}
+				if tdp_pt_obj.perusahaan:
+					perusahaan_obj = self.get_perusahaan(tdp_pt_obj.perusahaan.id)
+					legalitas_list = self.get_legalitas(tdp_pt_obj.perusahaan.id)
+				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj, 'detil_tdp_obj':detil_tdp_obj}
 				return CORSHttpResponse(json.dumps(data))
 
 
@@ -357,16 +329,17 @@ class PengajuanIzinResource(CORSModelResource):
 class AccountsResource(CORSModelResource):
 	class Meta:
 		queryset = Account.objects.all()
+		authentication = ApiKeyAuthentication()
 		allowed_methods = ['get', 'post']
 		resource_name = 'akun'
 		# excludes = ['password', 'verified_at',]
 		fields = ['nama_lengkap']
-		authentication = ApiKeyAuthentication()
-
+		
 	def prepend_urls(self):
 		return [
 			url(r"^account/request-user/$", self.wrap_view('request_user'), name="api_request_user"),
 			url(r"^account/request-menu/$", self.wrap_view('get_request_menu'), name="api_get_request_menu"),
+			url(r"^pengajuanizin/verifikasi-pengajuan/$", self.wrap_view('api_verifikasi_pengajuan'), name="api_verifikasi_pengajuan"),
 		]
 
 	def obj_get(self, bundle, **kwargs):
@@ -412,6 +385,53 @@ class AccountsResource(CORSModelResource):
 		data = {'data':{'icon_menu':icon_menu, 'nama_menu':nama_menu, 'link_menu':link_menu}}
 		data = json.dumps(data)
 		return CORSHttpResponse(data)
+
+	def api_verifikasi_pengajuan(self, request, **kwargs):
+		self.is_authenticated(request)
+		# print request.user
+		data = {'success':False, 'pesan': 'Terjadi kesalahan, Data tidak ditemukan.'}
+		id_pengajuan = request.GET['id_pengajuan']
+		if id_pengajuan:
+			pengajuan_obj = PengajuanIzin.objects.filter(id=id_pengajuan).last()
+			if pengajuan_obj:
+				skizin_obj = pengajuan_obj.skizin_set.last()
+				groups_list = request.user.groups.all()
+				if skizin_obj:
+					if groups_list.filter(name='Kadin') or request.user.is_superuser:
+						if pengajuan_obj.status == 2 and skizin_obj.status == 4:
+							# print request.user.get_full_name()
+							skizin_obj.status = 12 # Bupati
+							skizin_obj.nama_pejabat = request.user.get_full_name()
+							skizin_obj.nip_pejabat = request.user.username
+							skizin_obj.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+							skizin_obj.keterangan = "Pembina Tk.l"
+							skizin_obj.save()
+							riwayat_obj = Riwayat(
+								sk_izin_id = skizin_obj.id ,
+								pengajuan_izin_id = pengajuan_obj.id,
+								created_by_id = request.user.id,
+								keterangan = "Kadin Verified (Izin)"
+							)
+							riwayat_obj.save()
+							data = {'success':True, 'pesan': 'Berhasil, Pangajuan berhasil diverifikasi.'}
+						elif pengajuan_obj.status == 2 and skizin_obj.status == 12:
+							print "Pengajuan sudah terverifikasi"
+							data = {'success':False, 'pesan': 'Terjadi kesalahan, Pengajuan sudah terverifikasi.'}
+					elif groups_list.filter(name='Bupati') or request.user.is_superuser:
+						if pengajuan_obj.status == 2 and skizin_obj.status == 12:
+							skizin_obj.status = 9 # Verified
+							skizin_obj.save()
+							riwayat_obj = Riwayat(
+								sk_izin_id = skizin_obj.id ,
+								pengajuan_izin_id = pengajuan_obj.id,
+								created_by_id = request.user.id,
+								keterangan = "Bupati Verified (Izin)"
+							)
+							riwayat_obj.save()
+							data = {'success':True, 'pesan': 'Berhasil, Pangajuan berhasil diverifikasi.'}
+					else:
+						data = {'success': False, 'pesan': 'Terjadi kesalahan, Anda tidak punya hak akses untuk memverifikasi.'}
+		return CORSHttpResponse(json.dumps(data))
 
 class AuthResource(CORSModelResource):
 	class Meta:
