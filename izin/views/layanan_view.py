@@ -361,6 +361,20 @@ def layanan_izin_usaha_angkutan(request, extra_context={}):
 	response.set_cookie(key='kode_kelompok_jenis_izin', value="IUA")
 	return response
 
+
+def layanan_izin_angkutan_trayek(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode='TRAYEK')
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Angkutan Trayek"})
+	extra_context.update({'title_short': "TRAYEK"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_angkutan_trayek") })
+	extra_context.update({'id_jenis_izin': "17" })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/izin_angkutan_trayek.html", extra_context)
+	response.set_cookie(key='id_kelompok_izin', value="31")
+	response.set_cookie(key='kode_kelompok_jenis_izin', value="TRAYEK")
+	return response
+
 def layanan_sipa_sumur_bor(request, extra_context={}):
 	return render(request, "front-end/layanan/sipa_sumur_bor.html")
 

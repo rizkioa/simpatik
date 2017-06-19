@@ -1596,7 +1596,6 @@ class DetilIUTM(PengajuanIzin):
 
 #### Izin Dinas Perhubungan ####
 
-# ################ IUA (izin usaha angkutan) #################
 class KategoriKendaraan(models.Model):
 	# Mobil barang, angkutan orang
 	nama_kategori = models.CharField(max_length=255, verbose_name='Nama Kategori')
@@ -1610,7 +1609,6 @@ class KategoriKendaraan(models.Model):
 		verbose_name_plural = 'Kategori Kendaraan'
 
 class MerkTypeKendaraan(models.Model):
-	# HONDA
 	nama_type = models.CharField(max_length=255, verbose_name='Nama Type')
 	keterangan = models.CharField(max_length=255, verbose_name='Keterangan', null=True, blank=True)
 
@@ -1625,7 +1623,7 @@ class DetilIUA(PengajuanIzin):
 	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='iua_perusahaan', blank=True, null=True)
 	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
 	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
-	detil_izin_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
+	detil_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
 
 	def as_json(self):
 		nilai_investasi = ''
@@ -1637,13 +1635,13 @@ class DetilIUA(PengajuanIzin):
 		kategori_kendaraan_id = ''
 		if self.kategori_kendaraan.id:
 			kategori_kendaraan_id = self.kategori_kendaraan.id
-		detil_izin_ho = ''
-		if self.detil_izin_ho:
-			detil_izin_ho = self.detil_izin_ho.no_izin
-		detil_izin_ho_id = ''
-		if self.detil_izin_ho_id:
-			detil_izin_ho_id = self.detil_izin_ho.id
-		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id, detil_izin_ho=detil_izin_ho, detil_izin_ho_id=detil_izin_ho_id)
+		detil_ho = ''
+		if self.detil_ho:
+			detil_ho = self.detil_ho.no_izin
+		detil_iua_id = ''
+		if self.detil_ho_id:
+			detil_ho_id = self.detil_ho.id
+		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id, detil_iua=detil_iua, detil_iua_id=detil_iua_id)
 
 	def __unicode__(self):
 		return u'Detil IUA %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -1651,6 +1649,18 @@ class DetilIUA(PengajuanIzin):
 	class Meta:
 		verbose_name = 'Detil IUA'
 		verbose_name_plural = 'Detil IUA'
+
+class Trayek(models.Model):
+	trayek = models.CharField(max_length=100, verbose_name='Trayek')
+	jurusan = models.CharField(max_length=255, verbose_name='Jurusan')
+	rute_dilewati = models.TextField(verbose_name='Rute dilewati')
+
+	def __unicode__(self):
+		return u'%s' % str(self.trayek)
+
+	class Meta:
+		verbose_name = 'Trayek'
+		verbose_name_plural = 'Trayek'
 
 class Kendaraan(models.Model):
 	iua = models.ForeignKey(DetilIUA, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
@@ -1660,6 +1670,7 @@ class Kendaraan(models.Model):
 	berat_diperbolehkan = models.CharField(max_length=255, verbose_name='Berat diperbolehkan', null=True, blank=True)
 	nomor_rangka = models.CharField(max_length=255, verbose_name='Nomor Rangka', null=True, blank=True)
 	nomor_mesin = models.CharField(max_length=255, verbose_name='Nomor Mesin', null=True, blank=True)
+	trayek = models.ForeignKey(Trayek, verbose_name='Trayek', null=True, blank=True)
 	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
@@ -1696,6 +1707,26 @@ class Kendaraan(models.Model):
 	class Meta:
 		verbose_name = 'Kendaraan'
 		verbose_name_plural = 'Kendaraan'
+
+class DetilTrayek(PengajuanIzin):
+	detil_iua = models.ForeignKey(DetilIUA, verbose_name='Nomor Izin Angkutan')
+
+	def as_json(self):
+		detil_iua = ''
+		if self.detil_iua:
+			detil_iua = self.detil_iua.no_izin
+		detil_iua_id = ''
+		if self.detil_iua_id:
+			detil_iua_id = self.detil_iua.id
+		return dict(detil_iua=detil_iua, detil_iua_id=detil_iua_id)
+
+	def __unicode__(self):
+		return u'Detil Izin Trayek %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+
+	class Meta:
+		verbose_name = 'Trayek'
+		verbose_name_plural = 'Trayek'
+
 
 class DetilIzinParkirIsidentil(PengajuanIzin):
 	jenis_penitipan = models.CharField(max_length=100, verbose_name='Jenis Penitipan', null=True, blank=True)

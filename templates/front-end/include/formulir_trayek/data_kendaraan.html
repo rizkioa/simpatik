@@ -1,0 +1,53 @@
+<form method="POST" name="step3" id="id_data_reklame" role="form" class="form-horizontal" action="{% url 'iua_save_detil_iua' %}" data-parsley-validate novalidate>
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>DATA KENDARAAN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Jenis/Kategori Kendaraan</strong></label>
+       <div class="col-sm-5">
+        <select id="id_jenis_kategori_kendaraan" name="kategori_kendaraan" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+          <option value>-- Jenis/Kategori Kendaraan --</option>
+          {% if kategori_kendaraan %}
+            {% for kategori in kategori_kendaraan %}
+              <option value="{{kategori.id}}">{{kategori.nama_kategori}}</option>
+            {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-12">
+          <h4>Data Kendaraan</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-10"></div>
+        <button onclick="" type="button" data-toggle="modal" data-target="#data_kendaraan_modal" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kendaraan </button>
+      </div>
+    </div>
+     <table class="table table-striped" id="table_daftar_kendaraan">
+      <thead>
+          <tr>
+            <th>Tanda Nomor Kendaraan</th>
+            <th>Nomor Uji Berkala</th>
+            <th>Merk / Type</th>
+            <th>Nomor Rangka</th>
+            <th>Nomor Mesin</th>
+            <th>Tahun Pembuatan </th>
+            <th>Keterangan</th>
+          </tr>
+      </thead>
+      <tbody>
+      </tbody>
+  </table>
+    <br>
+</form>

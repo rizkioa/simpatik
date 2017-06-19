@@ -1,0 +1,76 @@
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+</form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_npwp_perusahaan' %}" id="form-npwp_perusahaan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan NPWP</strong></label>
+      <span id="field-npwp_perusahaan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="NPWP Perusahaan IUA">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-npwp_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-npwp_perusahaan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-ktp">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan KTP</strong></label>
+      <span id="field-ktp">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="ktp">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ktp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-izin_gangguan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Izin Gangguan</strong></label>
+      <span id="field-akta_pengesahan_menteri">
+        <div class="col-sm-5">
+
+          <input type="text" name="izin_gangguan" id="id_izin_gangguan">
+          <!--Proses cek IZIN GANGGUAN-->
+        </div>
+        <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick="cek_nomor_izin_ho()">Cek Nomor Izin</a>
+      </span>
+      <span class="col-sm-4" id="load-izin_gangguan"></span>
+    </div>
+  </form>
+
+  <script type="text/javascript">
+    function cek_nomor_izin_ho(){
+      nomor_izin_ho =  $('#id_izin_gangguan').val()
+
+      $.ajax({
+        url: __base_url__+'/layanan/iua/ajax-load-izin-ho/',
+        method: 'POST',
+        data : { nomor_izin_ho: nomor_izin_ho, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+        success: function(response){
+          console.log(response)
+          respon = JSON.parse(response)
+          // console.log(respon)
+          // console.log(respon.data)
+            url = '<a id="btn-load-'+respon.data+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" target="blank_"> <i class="fa fa-check"></i> '+respon.data+' </a>'
+
+          $('#load-izin_gangguan').html(url)
+          $('#id_izin_gangguan').hide()
+          $('#btn-izin_gangguan').hide()
+        }
+      })
+    }
+  </script>
