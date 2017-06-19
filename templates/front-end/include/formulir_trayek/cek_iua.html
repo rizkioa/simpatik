@@ -3,7 +3,7 @@
   <!-- <input type="hidden" name="path_name" class="path_name"> -->
   <div class="row">
     <div class="col-md-12">
-      <h3>CEK IZIN USAHA ANGKUTAN</h3>
+      <h3>CEK IZIN USAHA Angkutan</h3>
       <hr class="style14">
     </div>
   </div>
@@ -12,10 +12,28 @@
   <div class="form-group" id="nama_lengkap">
     <label for="input01" class="col-sm-2 control-label"><strong>No. Izin Angkutan</strong> </label>
     <div class="col-sm-7">
-      <input type="text" class="form-control" id="id_no_izin_angkutan" name="no_izin_angkutan" required="" data-parsley-trigger="change">
+      <input type="text" class="form-control" id="id_no_izin_iua" name="no_izin_iua" required="" data-parsley-trigger="change">
     </div>
+    <a href="#" id="btn-izin_iua" class="btn btn-success mb-10" onclick="cek_nomor_izin_iua()">Cek Nomor Izin</a>
   </div>
 
 </form>
 
+<script type="text/javascript">
+  function cek_nomor_izin_iua(){
+    nomor_izin_iua =  $('#id_no_izin_iua').val()
 
+    $.ajax({
+      url: __base_url__+'/layanan/trayek/ajax-load-izin-iua/',
+      method: 'POST',
+      data : { nomor_izin_iua: nomor_izin_iua, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+      success: function(response){
+        console.log(response)
+        respon = JSON.parse(response)
+        console.log(respon)
+        // console.log(respon.data)
+
+      }
+    })
+  }
+</script>

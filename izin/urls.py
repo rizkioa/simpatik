@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, url, include
 from django.core.urlresolvers import reverse_lazy
 from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views, tdp_view, informasi_kekayaan_daerah,detilho_view, izin_lokasi, ippt_rumah, ippt_usaha, huller, pembayaran, tdup_views, iua_views
-from izin.views.dishub import izinparkir_views
+from izin.views.dishub import izinparkir_views, trayek_views
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
 
@@ -446,6 +446,7 @@ urlpatterns = [
     ################################ Izin Angkutan Trayek ###################################
     url(r'^layanan/izin-angkutan-trayek$', layanan_view.layanan_izin_angkutan_trayek, name='layanan_izin_angkutan_trayek'),
     url(r'^layanan/izin-angkutan-trayek/formulir$', views.formulir_izin_angkutan_trayek, name='formulir_izin_angkutan_trayek'),
+    url(r'^layanan/trayek/ajax-load-izin-iua/$', trayek_views.load_izin_iua, name='load_izin_iua'),
     ################################ END Izin Angkutan Trayek ###################################
     
     ]
