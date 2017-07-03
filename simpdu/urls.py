@@ -4,8 +4,8 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
-from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource
-from perusahaan.api import PerusahaanResource
+from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource
+from perusahaan.api import PerusahaanResource, LegalitasResource, DataPimpinanResource, PemegangSahamResource
 from master.api import BerkasResource
 
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
@@ -32,6 +32,12 @@ v1_api.register(PerusahaanResource())
 v1_api.register(KendaraanResource())
 v1_api.register(BerkasResource())
 v1_api.register(SKIzinResource())
+v1_api.register(DetilTDPResource())
+v1_api.register(LegalitasResource())
+v1_api.register(IzinLainResource())
+v1_api.register(DataPimpinanResource())
+v1_api.register(PemegangSahamResource())
+
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())
 

@@ -24,6 +24,20 @@ class Pemohon(Account):
 	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
+	def get_berkas_ktp(self):
+		berkas = None
+		ktp_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=1).last()
+		if ktp_obj:
+			berkas = ktp_obj.berkas
+		return berkas
+
+	def get_berkas_paspor(self):
+		berkas = None
+		paspor_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=2).last()
+		if paspor_obj:
+			berkas = paspor_obj.berkas
+		return berkas
+
 	def get_ktp(self):
 		nomor_ktp = ""
 		ktp_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=1).last()
@@ -352,7 +366,7 @@ class DetilSIUP(PengajuanIzin):
 		if self.kekayaan_bersih:
 			kekayaan = self.kekayaan_bersih.replace(".", "")
 			if kekayaan:
-				terbilang = konversi(3309998000)
+				terbilang = konversi(kekayaan)
 		return terbilang
 
 	def as_json(self):
@@ -775,8 +789,11 @@ class DetilTDP(PengajuanIzin):
 		tanggal_mulai_kegiatan = ''
 		if self.tanggal_mulai_kegiatan:
 			tanggal_mulai_kegiatan = self.tanggal_mulai_kegiatan.strftime('%d-%m-%Y')
+		desa_unit_produksi = ''
+		if self.desa_unit_produksi:
+			desa_unit_produksi = self.desa_unit_produksi.lokasi_lengkap()
 
-		return dict(status_perusahaan=status_perusahaan, jenis_badan_usaha=jenis_badan_usaha, bentuk_kerjasama=bentuk_kerjasama, jumlah_bank=jumlah_bank, nasabah_utama_bank_1=nasabah_utama_bank_1, nasabah_utama_bank_2=nasabah_utama_bank_2, jenis_penanaman_modal=jenis_penanaman_modal, tanggal_pendirian=tanggal_pendirian, tanggal_mulai_kegiatan=tanggal_mulai_kegiatan)
+		return dict(status_perusahaan=status_perusahaan, jenis_badan_usaha=jenis_badan_usaha, bentuk_kerjasama=bentuk_kerjasama, jumlah_bank=jumlah_bank, nasabah_utama_bank_1=nasabah_utama_bank_1, nasabah_utama_bank_2=nasabah_utama_bank_2, jenis_penanaman_modal=jenis_penanaman_modal, tanggal_pendirian=tanggal_pendirian, tanggal_mulai_kegiatan=tanggal_mulai_kegiatan, jangka_waktu_berdiri=self.jangka_waktu_berdiri, alamat_unit_produksi=self.alamat_unit_produksi, desa_unit_produksi=desa_unit_produksi, merek_dagang=self.merek_dagang, no_merek_dagang=self.no_merek_dagang, pemegang_hak_cipta=self.pemegang_hak_cipta)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -1632,16 +1649,10 @@ class DetilIUA(PengajuanIzin):
 		kategori_kendaraan = ''
 		if self.kategori_kendaraan:
 			kategori_kendaraan = self.kategori_kendaraan.nama_kategori
-		kategori_kendaraan_id = ''
-		if self.kategori_kendaraan.id:
-			kategori_kendaraan_id = self.kategori_kendaraan.id
 		detil_ho = ''
 		if self.detil_ho:
 			detil_ho = self.detil_ho.no_izin
-		detil_iua_id = ''
-		if self.detil_ho_id:
-			detil_ho_id = self.detil_ho.id
-		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=kategori_kendaraan_id, detil_iua=detil_iua, detil_iua_id=detil_iua_id)
+		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=self.kategori_kendaraan_id, id=self.id)
 
 	def __unicode__(self):
 		return u'Detil IUA %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -1675,31 +1686,16 @@ class Kendaraan(models.Model):
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
 
 	def as_json(self):
-		nomor_kendaraan = ''
-		if self.nomor_kendaraan:
-			nomor_kendaraan = self.nomor_kendaraan
-		nomor_uji_berkala = ''
-		if self.nomor_uji_berkala:
-			nomor_uji_berkala = self.nomor_uji_berkala
 		merk_kendaraan_nama = ''
 		if self.merk_kendaraan.nama_type:
 			merk_kendaraan_nama = self.merk_kendaraan.nama_type
-		berat_diperbolehkan = ''
-		if self.berat_diperbolehkan:
-			berat_diperbolehkan = self.berat_diperbolehkan
 		nomor_rangka = ''
 		if self.nomor_rangka:
 			nomor_rangka = self.nomor_rangka
-		nomor_mesin = ''
-		if self.nomor_mesin:
-			nomor_mesin = self.nomor_mesin
 		tahun_pembuatan = ''
 		if self.tahun_pembuatan:
 			tahun_pembuatan = self.tahun_pembuatan
-		keterangan = ''
-		if self.keterangan:
-			keterangan = self.keterangan
-		return dict(id=self.id, nomor_kendaraan=nomor_kendaraan, nomor_uji_berkala=nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=keterangan)
+		return dict(id=self.id, nomor_kendaraan=self.nomor_kendaraan, nomor_uji_berkala=self.nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=self.berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=self.nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=self.keterangan)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nomor_kendaraan)

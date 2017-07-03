@@ -10,6 +10,8 @@ from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
+
 from daterange_filter.filter import DateRangeFilter
 from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey, DetilPembayaran
@@ -425,19 +427,8 @@ class IzinAdmin(admin.ModelAdmin):
 	def cetak_siup_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
-			pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Ds. "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+",f"+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Ds. "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			# pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilSIUP, id=id_pengajuan_izin_)
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
@@ -576,16 +567,6 @@ class IzinAdmin(admin.ModelAdmin):
 		}
 
 		return HttpResponse(json.dumps(response))
-		# return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)));
-
-		# pilihan = """
-		# <option value=1>SIUP</option>
-		# <option>HO</option>
-		# <option>SIPA</option>
-		# <option>Izin Pertambangan</option>
-		# <option>TDP</option>
-		# """
-		# return HttpResponse(mark_safe(pilihan));
 		
 	def create_skizin(self, request):
 		id_detil_siup = request.POST.get('id_detil_siup', None)

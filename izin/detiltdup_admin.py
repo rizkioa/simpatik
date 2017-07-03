@@ -32,7 +32,8 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilTDUP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDUP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDUP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

@@ -10,7 +10,8 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 import datetime
 import collections
-from izin.utils import*
+from izin.utils import *
+from django.shortcuts import get_object_or_404
 
 class DetilReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -76,7 +77,8 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'pegawai_list' : Pegawai.objects.filter(unit_kerja_id=72) })
-			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilReklame.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilReklame, id=id_pengajuan_izin_)
 			detil_reklame_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""

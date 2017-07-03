@@ -38,6 +38,12 @@ class CustomMenu(Menu):
                             icon='fa fa-dashboard fa-fw',
                             url=reverse('admin:index'),
                         ),
+                        items.MenuItem(
+                            title=_('Front-end'),
+                            description='Front-end Page',
+                            icon='fa fa-home fa-fw',
+                            url=reverse('frontindex'),
+                        ),
                         # items.MenuItem(
                         #     title='Pengajuan Izin',
                         #     icon='fa fa-file-text-o',

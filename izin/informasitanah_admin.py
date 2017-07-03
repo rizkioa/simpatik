@@ -1,14 +1,15 @@
+import base64, datetime
 from django.contrib import admin
-from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah,DetilSk
-from kepegawaian.models import Pegawai
-from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-import datetime
+from django.shortcuts import get_object_or_404
+
+from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah,DetilSk
+from kepegawaian.models import Pegawai
+from accounts.models import NomorIdentitasPengguna
 
 class InformasiTanahAdmin(admin.ModelAdmin):
 	list_display = ('id','get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -91,7 +92,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -163,7 +165,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -263,7 +266,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -315,7 +319,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -361,7 +366,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

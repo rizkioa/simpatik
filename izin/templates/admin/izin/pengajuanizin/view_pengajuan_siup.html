@@ -1525,30 +1525,30 @@
 								</div>
 							</div>
 							{% endif %}
-							{% if cookie_file_ktp %}
+							{% if pengajuan.pemohon.get_berkas_ktp %}
 							<div class="col-md-3 col-sm-4 mb-20 mix mix_all">
 								<div class="img-container">
 									<div class="img-responsi" angle='0'>
-										{% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
+										{% with pengajuan.pemohon.get_berkas_ktp.berkas.name|extension|stringformat:"s" as ext %}
 											{% if ext|InList:'.pdf, .PDF' %}
 												<div class="imageloaderImage" style="background-image: url({% static 'images/icons/pdf.png' %});">			
 												</div>
 											{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-												<div class="imageloaderImage" style="background-image: url({{cookie_file_ktp.berkas.url}});">			
+												<div class="imageloaderImage" style="background-image: url({{pengajuan.pemohon.get_berkas_ktp.berkas.url}});">			
 												</div>
 											{% endif %}
 										{% endwith %}
 									</div>
 									<div class="img-details">
-										<h4 class="custom-font ng-binding">{{ cookie_file_ktp.nama_berkas }}</h4>
+										<h4 class="custom-font ng-binding">{{ pengajuan.pemohon.get_berkas_ktp.nama_berkas }}</h4>
 										<div class="img-controls">
-											{% with cookie_file_ktp.berkas.name|extension|stringformat:"s" as ext %}
+											{% with pengajuan.pemohon.get_berkas_ktp.berkas.name|extension|stringformat:"s" as ext %}
 												{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-													<a href="{{ cookie_file_ktp.berkas.url }}" target="_blank" class="img-link">
+													<a href="{{ pengajuan.pemohon.get_berkas_ktp.berkas.url }}" target="_blank" class="img-link">
 														<i class="fa fa-link"></i>
 													</a>
 												{% elif ext|InList:'.pdf, .doc, .docx' %}
-													<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ cookie_file_ktp.berkas }}&embedded=true" target="_blank" class="img-link">
+													<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ pengajuan.pemohon.get_berkas_ktp.berkas }}&embedded=true" target="_blank" class="img-link">
 														<i class="fa fa-link"></i>
 													</a>
 												{% endif %}

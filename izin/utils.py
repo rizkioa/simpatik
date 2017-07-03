@@ -201,37 +201,36 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 def detil_pengajuan_siup_view(request, id_pengajuan_izin_, extra_context = {}):
 	from izin.models import DetilSIUP
 	from accounts.models import NomorIdentitasPengguna
 	from izin.models import PengajuanIzin, Pemohon, Syarat, Riwayat, SKIzin
 	if id_pengajuan_izin_:
 		extra_context.update({'title': 'Proses Pengajuan'})
-		pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
-		
-		alamat_ = ""
-		alamat_perusahaan_ = ""
+		pengajuan_ = get_object_or_404(DetilSIUP, id=id_pengajuan_izin_)
+		# pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan_izin_)
 		if pengajuan_.pemohon:
-			if pengajuan_.pemohon.desa:
-				alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-				extra_context.update({'alamat_pemohon': alamat_})
+			# if pengajuan_.pemohon.desa:
+				# alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+				# extra_context.update({'alamat_pemohon': alamat_})
 			extra_context.update({'pemohon': pengajuan_.pemohon})
 			extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-			ktp_ = pengajuan_.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=1).last()
-			paspor_ = pengajuan_.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=2).last()
-			extra_context.update({'ktp': ktp_ })
-			extra_context.update({'paspor': paspor_ })
-			extra_context.update({'nomor_identitas': nomor_identitas_ })
-			try:
-				ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id, jenis_identitas__id=1)
-				extra_context.update({'cookie_file_ktp': ktp_.berkas })
-			except ObjectDoesNotExist:
-				pass
+			# nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			# ktp_ = pengajuan_.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=1).last()
+			# paspor_ = pengajuan_.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas_id=2).last()
+			# extra_context.update({'ktp': ktp_ })
+			# extra_context.update({'paspor': paspor_ })
+			# extra_context.update({'nomor_identitas': nomor_identitas_ })
+			# try:
+				# ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id, jenis_identitas__id=1)
+				# extra_context.update({'cookie_file_ktp': ktp_.berkas })
+			# except ObjectDoesNotExist:
+				# pass
 		if pengajuan_.perusahaan:
-			if pengajuan_.perusahaan.desa:
-				alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
-				extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
+			# if pengajuan_.perusahaan.desa:
+				# alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+				# extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
 			extra_context.update({'perusahaan': pengajuan_.perusahaan})
 			legalitas_pendirian = pengajuan_.legalitas.filter(~Q(jenis_legalitas_id=2)).last()
 			legalitas_perubahan = pengajuan_.legalitas.filter(jenis_legalitas_id=2).last()

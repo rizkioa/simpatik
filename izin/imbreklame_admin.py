@@ -1,3 +1,4 @@
+import base64, datetime
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from izin.models import DetilIMBPapanReklame, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey
@@ -6,10 +7,9 @@ from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-import datetime
+from django.shortcuts import get_object_or_404
 
 from izin.utils import*
 
@@ -76,7 +76,8 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMBPapanReklame, id=id_pengajuan_izin_)
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 
 			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
@@ -168,7 +169,8 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMBPapanReklame, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

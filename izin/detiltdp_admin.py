@@ -37,7 +37,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan Persero Terbatas (PT)'})
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
@@ -121,7 +122,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan TDP Persekutuan Komenditer (CV)'})
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
@@ -192,7 +194,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan TDP Perorangan (PO)'})
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
@@ -268,7 +271,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan TDP Firma'})
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
@@ -337,7 +341,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan TDP Badan Usaha Lainnya (BUL)'})
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
@@ -385,7 +390,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan TDP Koperasi'})
-			pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon

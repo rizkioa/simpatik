@@ -1,14 +1,15 @@
+import base64, datetime
 from django.contrib import admin
-from izin.models import InformasiKekayaanDaerah, Syarat, SKIzin, Riwayat,DetilPembayaran
-from kepegawaian.models import Pegawai
-from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-import datetime
+from django.shortcuts import get_object_or_404
+
+from izin.models import InformasiKekayaanDaerah, Syarat, SKIzin, Riwayat,DetilPembayaran
+from kepegawaian.models import Pegawai
+from accounts.models import NomorIdentitasPengguna
 
 from izin.utils import*
 
@@ -74,7 +75,8 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiKekayaanDaerah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -143,7 +145,8 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(InformasiKekayaanDaerah, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

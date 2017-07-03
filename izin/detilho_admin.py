@@ -1,15 +1,15 @@
+import base64, datetime
 from django.contrib import admin
-from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran
-from kepegawaian.models import Pegawai, UnitKerja
-from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-import datetime
+from django.shortcuts import get_object_or_404
 
+from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran
+from kepegawaian.models import Pegawai, UnitKerja
+from accounts.models import NomorIdentitasPengguna
 from izin.utils import*
 
 class DetilHOAdmin(admin.ModelAdmin):

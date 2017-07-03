@@ -22,8 +22,8 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 			extra_context.update({'jenis_permohonan' : JENIS_PERMOHONAN })
-			pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
-
+			# pengajuan_ = DetilIUJK.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
 			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
 
 			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)

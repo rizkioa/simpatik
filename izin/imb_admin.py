@@ -1,15 +1,16 @@
+import base64, datetime
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey
-from kepegawaian.models import Pegawai,UnitKerja
-from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-import base64
+from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-import datetime
+
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey
+from kepegawaian.models import Pegawai,UnitKerja
+from accounts.models import NomorIdentitasPengguna
 
 from izin.utils import*
 
@@ -79,7 +80,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 
 			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
-			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan_izin_)
 			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
 
 			if pengajuan_.pemohon:
@@ -178,7 +180,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
@@ -236,7 +239,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
-			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan_izin_)
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
 					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
@@ -293,7 +297,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		# print id_pengajuan_izin_
 		if id_pengajuan_izin_:
 			extra_context.update({'salinan': salinan_})
-			pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

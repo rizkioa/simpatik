@@ -1,8 +1,8 @@
 from mobile.cors import CORSModelResource
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
-from perusahaan.api import PerusahaanResource
+from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
 from master.api import BerkasResource
 from tastypie.resources import ALL_WITH_RELATIONS, ALL
 from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication, BasicAuthentication
@@ -18,8 +18,13 @@ class SKIzinResource(CORSModelResource):
 		}
 
 class PemohonResource(CORSModelResource):
+	ktp = fields.CharField(attribute="get_ktp", null=True, blank=True)
+	paspor = fields.CharField(attribute="get_paspor", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	jenis_pemohon = fields.CharField(attribute="jenis_pemohon__jenis_pemohon", null=True, blank=True)
 	class Meta:
 		queryset = Pemohon.objects.all()
+		excludes = ['is_active', 'is_admin', 'is_superuser', 'updated_at', 'username', 'verified_at', 'status', 'last_login', 'password', 'rejected_at', 'created_at']
 		# allowed_methods = ['get']
 		# fields = ['id', 'nama_lengkap']
 
@@ -84,3 +89,35 @@ class PengajuanIzinAllResource(CORSModelResource):
 			'no_pengajuan': ['contains'],
 			# 'status': ALL,
 		}
+
+class DetilTDPResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	status_perusahaan = fields.CharField(attribute="status_perusahaan__status_perusahaan", null=True, blank=True)
+	jenis_badan_usaha = fields.CharField(attribute="jenis_badan_usaha__jenis_badan_usaha", null=True, blank=True)
+	bentuk_kerjasama = fields.CharField(attribute="bentuk_kerjasama__bentuk_kerjasama", null=True, blank=True)
+	jenis_penanaman_modal = fields.CharField(attribute="jenis_penanaman_modal__jenis_penanaman_modal", null=True, blank=True)
+	desa_unit_produksi = fields.CharField(attribute="desa_unit_produksi__lokasi_lengkap", null=True, blank=True)
+	kegiatan_usaha_pokok = fields.ToManyField(KBLIResource, 'kegiatan_usaha_pokok', full = True, null=True)
+	jenis_pengecer = fields.CharField(attribute="jenis_pengecer__jenis_pengecer", null=True, blank=True)
+	jenis_perusahaan = fields.CharField(attribute="jenis_perusahaan__jenis_perusahaan", null=True, blank=True)
+	jenis_koperasi = fields.CharField(attribute="jenis_koperasi__jenis_koperasi", null=True, blank=True)
+	bentuk_koperasi = fields.CharField(attribute="bentuk_koperasi__bentuk_koperasi", null=True, blank=True)
+	# legalitas = fields.ToManyField(LegalitasResource, '', full = True, null=True)
+	class Meta:
+		queryset = DetilTDP.objects.all()
+		limit = 10
+		authentication = ApiKeyAuthentication()
+
+class IzinLainResource(CORSModelResource):
+	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	class Meta:
+		queryset = IzinLain.objects.all()
+		filtering = {
+			'pengajuan_izin_id': ['contains'],
+			
+		}
+		excludes = ['updated_at', 'verified_at', 'status', 'rejected_at', 'created_at']

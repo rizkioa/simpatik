@@ -122,6 +122,38 @@
 		})
 	}
 
+	function save_data_anggota(){
+	    frm = $('#form-data_anggota')
+	    frm.ajaxSubmit({
+	      method: 'POST',
+	      data: frm.serialize(),
+	      url: frm.attr('action'),
+	      beforeSend: function() {
+	        frm.mLoading();
+	      },
+	      success: function(response){
+	        console.log(response)
+	        
+	        respon = JSON.parse(response)
+	        if(respon.success == true){
+	          toastr["success"](respon.pesan)
+	          $('#modal_data_anggota').modal('hide')
+	          frm.find('.data-anggota').val('')
+	          load_data_anggota($.cookie('id_pengajuan'))
+	        }
+	        else{
+	          toastr["error"](respon.pesan)
+	        }
+	        frm.mLoading('hide');
+	      },
+	      error: function(){
+	        frm.mLoading('hide');
+	        toast_server_error();
+	      }
+
+	    })
+	  }
+
 	function load_data_kendaraan(pengajuan_id){
 		if (pengajuan_id !== ""){
 			tablekosong = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!<td><tr>' 
@@ -129,43 +161,30 @@
 			$.ajax({
 				type: 'GET',
 				url: __base_url__+'/ajax-load-data-kendaraan/'+pengajuan_id,
-				success: function (data) {
-					a = data.length
-					if(a === 0){
-						$('#table_daftar_kendaraan > tbody > tr:first/').remove()
-						table = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!!<td><tr>'
-						$('#table_daftar_kendaraan > tbody').prepend(table)
+				success: function (respon) {
+					// console.log(respon)
+					if(respon.length > 0){
+						$.each( respon, function( index ) {
+		                    row = '<tr>'
+		                    no = index+1
+		                    row += '<td>'+no+'</td>'
+		                    row += '<td>'+respon[index].nomor_kendaraan+'</td>'
+							row += '<td>'+respon[index].nomor_uji_berkala+'</td>'
+							row += '<td>'+respon[index].merk_kendaraan_nama+'</td>'
+							row += '<td>'+respon[index].nomor_rangka+'</td>'
+							row += '<td>'+respon[index].nomor_mesin+'</td>'
+							row += '<td>'+respon[index].tahun_pembuatan+'</td>'
+							row += '<td>'+respon[index].keterangan+'</td>'
+							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button> | <button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick=""><i class="fa fa-trash"></i><span>Edit</span></button></td>'
+							row += '</tr>'
+						})
 					}
 					else{
-						load_jumlah_data_kendaraan(pengajuan_id)
-						b = data.reverse()
-						$('#table_daftar_kendaraan > tbody > tr:first').remove()
-						for (var i = 0; i < a; i++){
-							id = b[i].id
-							tanda_nomor_kendaraan = b[i].nomor_kendaraan
-							nomor_uji_berkala = b[i].nomor_uji_berkala
-							merk_type = b[i].merk_kendaraan_nama
-							nomor_rangka = b[i].nomor_rangka
-							nomor_mesin = b[i].nomor_mesin
-							tahun_pembuatan = b[i].tahun_pembuatan
-							keterangan = b[i].keterangan
-							no = a
-							if (a > 1){
-								no = a-i
-							}
-							row = '<tr>'
-							row += '<td>'+tanda_nomor_kendaraan+'</td>'
-							row += '<td>'+nomor_uji_berkala+'</td>'
-							row += '<td>'+merk_type+'</td>'
-							row += '<td>'+nomor_rangka+'</td>'
-							row += '<td>'+nomor_mesin+'</td>'
-							row += '<td>'+tahun_pembuatan+'</td>'
-							row += '<td>'+keterangan+'</td>'
-							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
-							row += '</tr>'
-							$('#table_daftar_kendaraan > tbody').prepend(row)
-						}
+						row = '<tr>'
+						row += '<td colspan="9" align="center">Kosong</td>'
+						row += '</tr>'
 					}
+					$('#table_daftar_kendaraan > tbody').html(row)
 				}
 			})
 			$('#table_daftar_kendaraan').mLoading('hide');
@@ -198,5 +217,11 @@
 				}
 			}
 		})
+	}
+
+	function tambah_kendaraan(){
+		$('#data_kendaraan_modal').modal('show');
+		$('#id_form_data_kendaraan').find('input').val('');
+		$('#id_form_data_kendaraan').find('select').val('').trigger("chosen:updated");
 	}
 </script>

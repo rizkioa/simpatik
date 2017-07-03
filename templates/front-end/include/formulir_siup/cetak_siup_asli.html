@@ -211,32 +211,32 @@
     		<tr>
     			<td class="tdnone" width="40%"><b>NAMA PERUSAHAAN</b></td>
     			<td class="tdnone" width="5%">:</td>
-    			<td class="tdnone" width="55%"><b>{{perusahaan.nama_perusahaan.upper}}</b></td>
+    			<td class="tdnone" width="55%"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}}</b></td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><b>{{pemohon.nama_lengkap.upper}} ({{pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})</b></td>
+    			<td class="tdnone"><b>{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})</b></td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>ALAMAT PERUSAHAAN</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{alamat_perusahaan.upper}}</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.alamat_perusahaan.upper}}, {{pengajuan.perusahaan.desa.lokasi_lengkap.upper}}</td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>NPWP</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{perusahaan.npwp}}</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.npwp}}</td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>NOMOR TELEPON</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{perusahaan.telepon}}  {% if perusahaan.fax %}FAX : {{perusahaan.fax}}{% endif %}</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.telepon}}  {% if pengajuan.perusahaan.fax %}FAX : {{pengajuan.perusahaan.fax}}{% endif %}</td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"><b>{{kekayaan_bersih}},-</b><br>({{pengajuan.get_terbilang.upper}} RUPIAH)</td>
+    			<td class="tdnone"><b>{{pengajuan.kekayaan_bersih}},-</b><br>({{pengajuan.get_terbilang.upper}} RUPIAH)</td>
     		</tr>
     		<tr>
     			<td class="tdnone"><b>KELEMBAGAAN</b></td>
@@ -264,8 +264,8 @@
     	<br>
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
-    			{% if pemohon.berkas_foto.last %}
-    				<img src="{{pemohon.berkas_foto.last.url}}" style="width: 3cm;height: 4cm;">
+    			{% if pengajuan.pemohon.berkas_foto.last %}
+    				<img src="{{pengajuan.pemohon.berkas_foto.last.url}}" style="width: 3cm;height: 4cm;">
     			{% else %}
     				<img src="{% static 'images/no-avatar.jpg' %}" style="width: 3cm;height: 4cm;">
     			{% endif %}
@@ -346,7 +346,7 @@
 			    // 2: label box
 			    // 3: image strip
 			    // 4: image box
-			    mode: 4,
+			    mode: 0,
 
 			    mSize: 0.2,
 			    mPosX: 0.5,
@@ -356,7 +356,7 @@
 				fontname: 'sans',
     			fontcolor: '#000',
 
-    			image: logo,
+    			// image: logo,
 			});
 		{% endif %}
 	</script>
