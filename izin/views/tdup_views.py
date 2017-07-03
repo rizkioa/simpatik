@@ -17,9 +17,9 @@ def tdup_data_usaha_pariwisata_save(request):
 					bidang_usaha_pariwisata = request.POST.get('bidang_usaha_pariwisata', None)
 					jenis_usaha_pariwisata = request.POST.get('jenis_usaha_pariwisata', None)
 					sub_jenis_usaha_pariwisata = request.POST.get('sub_jenis_usaha_pariwisata', None)
-					print '++++++++++'
-					print bidang_usaha_pariwisata
-					print '++++++++++'
+					# print '++++++++++'
+					# print bidang_usaha_pariwisata
+					# print '++++++++++'
 					pengajuan.bidang_usaha_pariwisata_id = bidang_usaha_pariwisata
 					pengajuan.jenis_usaha_pariwisata_id = jenis_usaha_pariwisata
 					pengajuan.sub_jenis_usaha_pariwisata_id = sub_jenis_usaha_pariwisata

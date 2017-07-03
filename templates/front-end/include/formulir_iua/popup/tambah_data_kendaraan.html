@@ -156,7 +156,7 @@
 
 	function load_data_kendaraan(pengajuan_id){
 		if (pengajuan_id !== ""){
-			tablekosong = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!<td><tr>' 
+			$('#table_daftar_kendaraan > tbody').html('')
 			$('#table_daftar_kendaraan').mLoading();
 			$.ajax({
 				type: 'GET',
@@ -175,16 +175,18 @@
 							row += '<td>'+respon[index].nomor_mesin+'</td>'
 							row += '<td>'+respon[index].tahun_pembuatan+'</td>'
 							row += '<td>'+respon[index].keterangan+'</td>'
-							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button> | <button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick=""><i class="fa fa-trash"></i><span>Edit</span></button></td>'
+							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick="tambah_kendaraan($(this).val())"><i class="fa fa-pencil"></i><span>Edit</span></button> | <button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
 							row += '</tr>'
+							$('#table_daftar_kendaraan > tbody').append(row)
 						})
 					}
 					else{
 						row = '<tr>'
 						row += '<td colspan="9" align="center">Kosong</td>'
 						row += '</tr>'
+						$('#table_daftar_kendaraan > tbody').append(row)
 					}
-					$('#table_daftar_kendaraan > tbody').html(row)
+					// $('#table_daftar_kendaraan > tbody').html(row)
 				}
 			})
 			$('#table_daftar_kendaraan').mLoading('hide');
@@ -219,9 +221,29 @@
 		})
 	}
 
-	function tambah_kendaraan(){
+	function tambah_kendaraan(id_kendaraan){
 		$('#data_kendaraan_modal').modal('show');
 		$('#id_form_data_kendaraan').find('input').val('');
 		$('#id_form_data_kendaraan').find('select').val('').trigger("chosen:updated");
+		if(id_kendaraan && id_kendaraan > 0){
+			$.ajax({
+				url: __base_url__+'/api/v1/kendaraan/'+id_kendaraan+'/?format=json',
+				type: 'GET',
+				success: function(respon){
+					console.log(respon)
+					if(respon){
+						$('#id_tanda_nomor_kendaraan').val(respon.nomor_kendaraan);
+						$('#id_nomor_uji_berkala').val(respon.nomor_uji_berkala);
+						$('#id_merk_type').val(respon.merk_kendaraan.id).prop('selected',true).trigger("chosen:updated");
+						$('#id_berat_diperbolehkan').val(respon.berat_diperbolehkan);
+						$('#id_nomor_rangka').val(respon.nomor_rangka);
+						$('#id_nomor_mesin').val(respon.nomor_mesin);
+						$('#id_tahun_pembuatan').val(respon.tahun_pembuatan).prop('selected',true).trigger("chosen:updated");
+						$('#id_keterangan').val(respon.keterangan);
+					}
+				}
+			})
+		}
+		
 	}
 </script>

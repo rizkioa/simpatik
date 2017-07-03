@@ -223,14 +223,15 @@ def ajax_load_berkas_iua(request, id_pengajuan):
 			perusahaan_ = iua.perusahaan
 			berkas_ = iua.berkas_tambahan.all()
 			pemohon_ = iua.pemohon
-
-			if pemohon_:
-				npwp = pemohon_.berkas_npwp
+			print iua.perusahaan.berkas_npwp
+			if perusahaan_:
+				npwp = perusahaan_.berkas_npwp
 				if npwp:
 					url_berkas.apped(npwp.berkas.url)
 					id_elemen.apped('npwp_perusahaan')
 					nm_berkas.apped(npwp.nama_berkas)
 					id_berkas.apped(npwp.id)
+					
 			if berkas_:
 				akte_pendirian = berkas_.filter(keterangan='File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan'+perusahaan_.npwp).last()
 				if akte_pendirian:
