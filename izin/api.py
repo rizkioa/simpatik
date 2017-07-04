@@ -1,9 +1,9 @@
 from mobile.cors import CORSModelResource
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
-from master.api import BerkasResource
+from master.api import BerkasResource, ParameterBangunanResource, BangunanJenisKontruksiResource
 from tastypie.resources import ALL_WITH_RELATIONS, ALL
 from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication, BasicAuthentication
 
@@ -121,3 +121,59 @@ class IzinLainResource(CORSModelResource):
 			
 		}
 		excludes = ['updated_at', 'verified_at', 'status', 'rejected_at', 'created_at']
+
+class DetilReklameResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	jenis_reklame = fields.CharField(attribute="jenis_reklame__jenis_reklame", null=True, blank=True)
+	tipe_reklame = fields.CharField(attribute="tipe_reklame__jenis_tipe_reklame", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+
+	class Meta:
+		queryset = DetilReklame.objects.all()
+		limit = 10
+		authentication = ApiKeyAuthentication()
+
+class DetilReklameIzinResource(CORSModelResource):
+	detil_reklame_id = fields.IntegerField(attribute="detil_reklame__id", null=True, blank=True)
+	tipe_reklame = fields.CharField(attribute="tipe_reklame__jenis_tipe_reklame", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+
+	class Meta:
+		queryset = DetilReklameIzin.objects.all()
+		authentication = ApiKeyAuthentication()
+
+class DetilIMBPapanReklameResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+
+	class Meta:
+		queryset = DetilIMBPapanReklame.objects.all()
+		authentication = ApiKeyAuthentication()
+
+class DetilIMBResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	parameter_bangunan = fields.ToManyField(ParameterBangunanResource, 'parameter_bangunan', full = True, null=True)
+	jenis_bangunan = fields.ToOneField(BangunanJenisKontruksiResource, 'jenis_bangunan', full=True, null=True)
+
+	class Meta:
+		queryset = DetilIMB.objects.all()
+		authentication = ApiKeyAuthentication()
+
+class InformasiKekayaanDaerahResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	
+	class Meta:
+		queryset = InformasiKekayaanDaerah.objects.all()
