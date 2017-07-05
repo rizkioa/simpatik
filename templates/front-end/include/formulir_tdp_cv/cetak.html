@@ -51,27 +51,27 @@
                   <tr>
                     <td style="width: 24%;">Jenis Izin</td>
                     <td style="width: 5%;">:</td>
-                    <td>{{ pengajuan.kelompok_jenis_izin|default_if_none:"-" }}</td>
+                    <td>{{ pengajuan.kelompok_jenis_izin}}</td>
                   </tr>
                   <tr>
                     <td>Nama Pemohon</td>
                     <td>:</td>
-                    <td>{{pengajuan.pemohon.nama_lengkap|default_if_none:"-"}}</td>
+                    <td>{{ pengajuan.pemohon.nama_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>{{alamat_pemohon|default_if_none:"-"}}</td>
+                    <td>{{ pengajuan.pemohon.alamat }}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Perusahaan</td>
                     <td>:</td>
-                    <td>{{pengajuan.perusahaan.nama_perusahaan|default_if_none:"-"}}</td>
+                    <td>{{ pengajuan.perusahaan.nama_perusahaan }}</td>
                   </tr>
                   <tr>
                     <td>Alamat Perusahaan</td>
                     <td>:</td>
-                    <td>{{alamat_perusahaan|default_if_none:"-"}}</td>
+                    <td>{{pengajuan.perusahaan.alamat_perusahaan}}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Dibuat tanggal</td>

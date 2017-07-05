@@ -41,7 +41,7 @@
               <div class="panel-header">
                 <div class="row">
                   <div class="col-sm-12">
-                    <h2 class="text-center">No. Pengajuan Izin : {{ no_pengajuan|default_if_none:"-" }}</h2>
+                    <h2 class="text-center">No. Pengajuan Izin : {{ pengajuan.no_pengajuan|default_if_none:"-" }}</h2>
                     <hr class="style14">
                   </div>
                 </div>
@@ -51,39 +51,39 @@
                   <tr>
                     <td style="width: 24%;">Jenis Izin</td>
                     <td style="width: 5%;">:</td>
-                    <td>{{ jenis_izin|default_if_none:"-" }}</td>
+                    <td>{{ pengajuan.kelompok_jenis_izin }}</td>
                   </tr>
                   <tr>
                     <td>Nama Pemohon</td>
                     <td>:</td>
-                    <td>{{nama_pemohon|default_if_none:"-"}}</td>
+                    <td>{{pengajuan.pemohon.nama_pemohon|default_if_none:"-"}}</td>
                   </tr>
                   <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>{{alamat_pemohon|default_if_none:"-"}}</td>
+                    <td>{{pengajuan.pemohon.alamat}}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Perusahaan</td>
                     <td>:</td>
-                    <td>{{nama_perusahaan|default_if_none:"-"}}</td>
+                    <td>{{pengajuan.perusahaan.nama_perusahaan}}</td>
                   </tr>
                   <tr>
                     <td>Alamat Perusahaan</td>
                     <td>:</td>
-                    <td>{{alamat_perusahaan|default_if_none:"-"}}</td>
+                    <td>{{pengajuan.perusahaan.alamat_perusahaan}}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Dibuat tanggal</td>
                     <td>:</td>
-                    <td>{{ created_at|date:"d-m-Y" }} {{ created_at|time:"H:i" }}</td>
+                    <td>{{ pengajuan.created_at|date:"d-m-Y" }} {{ pengajuan.created_at|time:"H:i" }}</td>
                   </tr>
                 </table>
                 <br>
-                <h4><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d-m-Y" }}</font></h4>
+                <h4><font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d-m-Y" }}</font></h4>
                 <div class="row">
                   <div class="col-md-6 col-md-offset-3" align="center">
-                    <a href="{% url 'cetak_bukti_pendaftaran_tdp_pt' id %}" target="_blank" class="btn btn-primary btn-lg btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-print"></i> <span>Cetak Formulir Pengajuan</span></a>
+                    <a href="{% url 'cetak_bukti_pendaftaran_tdp_pt' pengajuan.id %}" target="_blank" class="btn btn-primary btn-lg btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-print"></i> <span>Cetak Formulir Pengajuan</span></a>
                   </div>
                 </div>
               </div>

@@ -195,7 +195,7 @@
                         <tr>
                             <td>
                                 <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
-                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
+                                <font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d F Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
@@ -210,7 +210,7 @@
                     <tr>
                         <td width="25%">Jenis Pengajuan</td>
                         <td width="10%">:</td>
-                        <td width="65%">Baru</td>
+                        <td width="65%">{{pengajuan.jenis_permohonan}}</td>
                     </tr>
                 </table>
                 {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon_.html' %}
@@ -219,37 +219,37 @@
                     <tr>
                         <td width="25%">NPWP</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.npwp }}</td>
+                        <td width="65%">{{ pengajuan.perusahaan.npwp }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
+                        <td width="65%">{{ pengajuan.perusahaan.nama_perusahaan }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.alamat_perusahaan }}, {{perusahaan.desa.lokasi_lengkap}}</td>
+                        <td width="65%">{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.kode_pos }}</td>
+                        <td width="65%">{{ pengajuan.perusahaan.kode_pos }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.telepon }}</td>
+                        <td width="65%">{{ pengajuan.perusahaan.telepon }}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Fax</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.fax }}</td>
+                        <td width="65%">{{ pengajuan.perusahaan.fax }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
+                        <td width="65%">{% if pengajuan.perusahaan.email %}{{ pengajuan.perusahaan.email }}{% endif %}</td>
                     </tr>
                 </table>
                 <h5><u>DATA SIUP</u></h5>
@@ -257,12 +257,12 @@
                     <tr>
                         <td width="25%">Bentuk Kegiatan Usaha</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ bentuk_kegiatan_usaha }}</td>
+                        <td width="65%">{{ pengajuan.bentuk_kegiatan_usaha }}</td>
                     </tr>
                     <tr>
                         <td width="25%">Status Penanaman Modal</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ status_penanaman_modal }}</td>
+                        <td width="65%">{{ pengajuan.jenis_penanaman_modal }}</td>
                     </tr>
                 </table>
                 <h5><u>Kekayaan Bersih dan Saham </u></h5>
@@ -270,20 +270,18 @@
                     <tr>
                         <td width="40%">Kekayaan Bersih Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="50%">{{ kekayaan_bersih_konfirmasi }}</td>
+                        <td width="50%">Rp. {{ pengajuan.kekayaan_bersih }}</td>
                     </tr>
                     <tr>
                         <td colspan="3">(tidak termasuk tanah dan bangunan tempat usaha)</td>
                     </tr>
                     <tr>
-                        <td width="30%">Saham (Khusus Untuk Penanaman Modal Asing)</td>
-                        <td width="10%">:</td>
-                        <td width="60%"></td>
+                        <td width="100%" colspan="3">Saham (Khusus Untuk Penanaman Modal Asing)</td>
                     </tr>
                     <tr>
                         <td width="40%" style="padding-left: 30px;">a. Total Nilai Saham</td>
                         <td width="10%">:</td>
-                        <td width="50%">{{ total_nilai_saham_konfirmasi }}</td>
+                        <td width="50%">{{ pengajuan.total_nilai_saham }}</td>
                     </tr>
                     <tr>
                         <td width="30%" style="padding-left: 30px;">b. Komposisi Kepemilikan Saham</td>
@@ -305,7 +303,7 @@
                 <br>
                 <!-- <hr>
                 <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d F Y" }}</font> 
                     <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                 </i> -->
             </div>    
@@ -372,12 +370,13 @@
                     <br>
                     Pemilik
                     <br>
-                    {{ perusahaan.nama_perusahaan }}
+                    {{ pengajuan.perusahaan.nama_perusahaan }}
                     <br>
                     <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
                     <br>
                     <br>
-                    <u class="font"><b>{{ pemohon.nama_lengkap }}</b></u>
+                    <br>
+                    <u class="font"><b>{{ pengajuan.pemohon.nama_lengkap }}</b></u>
                 </p>
                 <h5>Syarat SIUP:</h5>
                 <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
@@ -420,8 +419,6 @@
                     </tr>
                 </table>
                 
-                <!-- <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i> -->
                 <br>
                 <br>
                 <br>
