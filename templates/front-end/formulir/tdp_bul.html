@@ -172,100 +172,102 @@
 <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
 <script src="{% static 'scripts/js/formAjax/form_ajax_tdp_cv.js' %}"></script>
 <script>
-		$(window).load(function(){
+	$(window).load(function(){
+		$('#rootwizard').bootstrapWizard({
+			onTabShow: function(tab, navigation, index) {
+				var $total = navigation.find('li').length;
+				var $current = index+1;
+				if ($current == 2){
+					load_kecamatan1('', '06', '35');
+					if ($.cookie('npwp_perusahaan') !== '0'){
+						$('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
+						setTimeout(function(){
+							load_perusahaan_a($.cookie('npwp_perusahaan'))
+						}, 1000);
+					}
+				}
+				if($current === 3){
+					perusahaan_induk = $.cookie('npwp_perusahaan_induk')
+					if (perusahaan_induk !== '0'){
+						// load_provinsi_(1, '#id_provinsi-3')
+						load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
+						
+					}
+					setTimeout(function(){
+						load_data_umum_perusahaan($.cookie('id_pengajuan'))
+					}, 1000);
+				}
+				if ($current === 4){
+					load_data_kegiatan_perusahaan($.cookie('id_pengajuan'))
+					set_chosen_element($('select#id_kegiatan_usaha_pokok'))
+					$('#id_kegiatan_usaha_pokok_chosen .search-field input').keyup(function(event) {
 
-				$('#rootwizard').bootstrapWizard({
-						onTabShow: function(tab, navigation, index) {
-								var $total = navigation.find('li').length;
-								var $current = index+1;
-								if ($current == 2){
-									load_kecamatan1('', '06', '35');
-									if ($.cookie('npwp_perusahaan') !== '0'){
-										$('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
-										setTimeout(function(){
-											load_perusahaan_a($.cookie('npwp_perusahaan'))
-										}, 1000);
+						var event = window.event ? window.event : event;
+						value_ = $(this).val()
+						if(value_.length > 1 && event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40){
+							csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+							$( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading();
+							select = "["+$("#id_kegiatan_usaha_pokok option:selected").map(function(){ return this.value }).get().join(", ")+"]"
+							$.ajax({ // create an AJAX call...
+									data: { csrfmiddlewaretoken: csrf_token, kbli: value_, select: select }, // get the form data
+									type: 'POST', // GET or POST
+									url: __base_url__+'/option-kbli/', // the file to call
+									success: function(response) { // on success..
+											selected = $("#id_kegiatan_usaha_pokok option:selected").map(function(){ elm=$(this).attr('selected', 'selected'); return elm.outerHTML() }).get().join("");
+											// console.log(selected+response)
+											elem = $( "select#id_kegiatan_usaha_pokok" )
+											elem.html(selected+response);
+											$( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading('hide');
+											$('select#id_kegiatan_usaha_pokok').trigger("chosen:updated");
+											$('#id_kegiatan_usaha_pokok_chosen .search-field input').val(value_); 
+											// $(this).css("width,"+value_.length+"00px")
+											set_chosen_element($('select#id_kegiatan_usaha_pokok'))
+									},
+									error: function(data) {                
+											toast_server_error()
 									}
-								}
-								if($current === 3){
-									perusahaan_induk = $.cookie('npwp_perusahaan_induk')
-									if (perusahaan_induk !== '0'){
-										// load_provinsi_(1, '#id_provinsi-3')
-										load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
-										
-									}
-									setTimeout(function(){
-										load_data_umum_perusahaan($.cookie('id_pengajuan'))
-									}, 1000);
-								}
-								if ($current === 4){
-									load_data_kegiatan_perusahaan($.cookie('id_pengajuan'))
-									set_chosen_element($('select#id_kegiatan_usaha_pokok'))
-									$('#id_kegiatan_usaha_pokok_chosen .search-field input').keyup(function(event) {
-
-										var event = window.event ? window.event : event;
-										value_ = $(this).val()
-										if(value_.length > 1 && event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40){
-											csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-											$( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading();
-											select = "["+$("#id_kegiatan_usaha_pokok option:selected").map(function(){ return this.value }).get().join(", ")+"]"
-											$.ajax({ // create an AJAX call...
-													data: { csrfmiddlewaretoken: csrf_token, kbli: value_, select: select }, // get the form data
-													type: 'POST', // GET or POST
-													url: __base_url__+'/option-kbli/', // the file to call
-													success: function(response) { // on success..
-															selected = $("#id_kegiatan_usaha_pokok option:selected").map(function(){ elm=$(this).attr('selected', 'selected'); return elm.outerHTML() }).get().join("");
-															// console.log(selected+response)
-															elem = $( "select#id_kegiatan_usaha_pokok" )
-															elem.html(selected+response);
-															$( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading('hide');
-															$('select#id_kegiatan_usaha_pokok').trigger("chosen:updated");
-															$('#id_kegiatan_usaha_pokok_chosen .search-field input').val(value_); 
-															// $(this).css("width,"+value_.length+"00px")
-															set_chosen_element($('select#id_kegiatan_usaha_pokok'))
-													},
-													error: function(data) {                
-															toast_server_error()
-													}
-											});
-										}
-										event.preventDefault();
-									});
-								}
-								if ($current ===6){
-									load_data_izin_lain($.cookie('id_pengajuan'))
-								}
-								if ($current == 7) {
-									load_provinsi_(1, '#id_provinsi-5')
-									load_data_pemegang_saham($.cookie('id_pengajuan'))
-									load_data_pimpinan_perusahaan($.cookie('id_pengajuan'))
-									load_data_perusahaan_cabang($.cookie('id_pengajuan'))
-								}
-								if ($current == 8){
-									load_berkas($.cookie('id_pengajuan'))
-								}
-								if($current >= $total) {
-										load_konfirmasi_tdp($.cookie('id_pengajuan'))
-										$('#rootwizard').find('.pager .next').hide();
-										$('#rootwizard').find('.pager .finish').show();
-										$('#rootwizard').find('.pager .finish').removeClass('disabled');
-								} else {
-										$('#rootwizard').find('.pager .next').show();
-										$('#rootwizard').find('.pager .finish').hide();
-								}
-
-						},
-
-						onNext: function(tab, navigation, index) {
-							return false;
-						},
-
-						onTabClick: function(tab, navigation, index) {
-							return false;
+							});
 						}
+						event.preventDefault();
+					});
+				}
+				if ($current ===6){
+					load_data_izin_lain($.cookie('id_pengajuan'))
+				}
+				if ($current == 7) {
+					load_provinsi_(1, '#id_provinsi-5')
+					load_data_pemegang_saham($.cookie('id_pengajuan'))
+					load_data_pimpinan_perusahaan($.cookie('id_pengajuan'))
+					load_data_perusahaan_cabang($.cookie('id_pengajuan'))
+				}
+				if ($current == 8){
+					load_berkas($.cookie('id_pengajuan'))
+				}
+				if($current >= $total) {
+						load_konfirmasi_tdp($.cookie('id_pengajuan'))
+						$('#rootwizard').find('.pager .next').hide();
+						$('#rootwizard').find('.pager .finish').show();
+						$('#rootwizard').find('.pager .finish').removeClass('disabled');
+				} else {
+						$('#rootwizard').find('.pager .next').show();
+						$('#rootwizard').find('.pager .finish').hide();
+				}
+			},
 
-				});
+			onNext: function(tab, navigation, index) {
+				return false;
+			},
+
+			onTabClick: function(tab, navigation, index) {
+				if (window.location.hostname == 'localhost'){
+					return true
+				}
+				else{
+					return false;
+				}
+			}
 		});
+	});
 
 		$.fn.outerHTML = function(){
 

@@ -1366,7 +1366,7 @@ def ajax_delete_berkas_tdp(request, id_berkas, kode):
 
 def ajax_konfirmasi_tdp(request, pengajuan_id):
 	if pengajuan_id:
-		pengajuan_ = DetilTDP.objects.get(id=pengajuan_id)
+		pengajuan_ = DetilTDP.objects.filter(id=pengajuan_id).last()
 		jenis_pengajuan = ""
 		ktp_ = ""
 		paspor_ = ""
@@ -1388,7 +1388,7 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
 				jenis_pemohon = pemohon_.jenis_pemohon.jenis_pemohon
 				nama_lengkap_pemohon = pemohon_.nama_lengkap
-				alamat_lengkap_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
+				alamat_lengkap_pemohon = str(pemohon_.alamat)+", "+str(pemohon_.desa.lokasi_lengkap)
 				telephone_pemohon = pemohon_.telephone
 				hp_pemohon = pemohon_.hp
 				email_pemohon = ""
@@ -1559,8 +1559,10 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 			data_rincian_perusahaan = {'rincian':{'modal_dasar':modal_dasar, 'modal_ditempatkan':modal_ditempatkan, 'modal_disetor':modal_disetor, 'banyaknya_saham':banyaknya_saham, 'nilai_nominal_per_saham':nilai_nominal_per_saham, 'jenis_koperasi': jenis_koperasi, 'bentuk_koperasi': bentuk_koperasi, 'modal_sendiri_simpanan_pokok': modal_sendiri_simpanan_pokok, 'modal_sendiri_simpanan_wajib': modal_sendiri_simpanan_wajib, 'modal_sendiri_dana_cadangan': modal_sendiri_dana_cadangan,'modal_sendiri_hibah': modal_sendiri_hibah, 'modal_pinjaman_anggota': modal_pinjaman_anggota, 'modal_pinjaman_koperasi_lain': modal_pinjaman_koperasi_lain, 'modal_pinjaman_bank': modal_pinjaman_bank, 'modal_pinjaman_lainnya': modal_pinjaman_lainnya,'jumlah_anggota': jumlah_anggota}}
 			# ###### end data kegiatan perusahaan ######
 			data = {'success': True, 'pesan': 'load konfirmasi berhasil', },data_pemohon,data_perusahaan,data_umum_perusahaan,data_kegiatan_perusahaan,data_rincian_perusahaan,data_kuasa
-			response = HttpResponse(json.dumps(data))
-			return response
+		else:
+			data = {'success': False, 'pesan': 'Terjadi kesalahan. Data tidak ditemukan.'}
+		response = HttpResponse(json.dumps(data))
+		return response
 
 def load_legalitas_perusahaan_tdp(request, perusahaan_id):
 	data = []
@@ -1585,31 +1587,33 @@ def load_legalitas_perusahaan_tdp(request, perusahaan_id):
 def tdp_pt_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
-			pengajuan_.status = 6
-			pengajuan_.save()
-					
-			data = {'success': True, 'pesan': 'Proses Selesai.' }
-			response = HttpResponse(json.dumps(data))
-			response.delete_cookie(key='id_jenis_pengajuan') # set cookie	
-			response.delete_cookie(key='id_kelompok_izin') # set cookie	
-			response.delete_cookie(key='id_pengajuan') # set cookie	
-			response.delete_cookie(key='id_perusahaan') # set cookie	
-			response.delete_cookie(key='id_perusahaan_induk') # set cookie	
-			response.delete_cookie(key='nomor_ktp') # set cookie	
-			response.delete_cookie(key='nomor_paspor') # set cookie	
-			response.delete_cookie(key='id_pemohon') # set cookie	
-			response.delete_cookie(key='id_kelompok_izin') # set cookie
-			response.delete_cookie(key='id_legalitas') # set cookie
-			response.delete_cookie(key='id_legalitas_perubahan') # set cookie
-			response.delete_cookie(key='npwp_perusahaan') # set cookie
-			response.delete_cookie(key='npwp_perusahaan_induk') # set cookie
+			pengajuan_ = DetilTDP.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+			if pengajuan_:
+				pengajuan_.status = 6
+				pengajuan_.save()
+						
+				data = {'success': True, 'pesan': 'Proses Selesai.' }
+				response = HttpResponse(json.dumps(data))
+				response.delete_cookie(key='id_jenis_pengajuan') # set cookie	
+				response.delete_cookie(key='id_kelompok_izin') # set cookie	
+				response.delete_cookie(key='id_pengajuan') # set cookie	
+				response.delete_cookie(key='id_perusahaan') # set cookie	
+				response.delete_cookie(key='id_perusahaan_induk') # set cookie	
+				response.delete_cookie(key='nomor_ktp') # set cookie	
+				response.delete_cookie(key='nomor_paspor') # set cookie	
+				response.delete_cookie(key='id_pemohon') # set cookie	
+				response.delete_cookie(key='id_kelompok_izin') # set cookie
+				response.delete_cookie(key='id_legalitas') # set cookie
+				response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+				response.delete_cookie(key='npwp_perusahaan') # set cookie
+				response.delete_cookie(key='npwp_perusahaan_induk') # set cookie
+			else:
+				data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
+				response = HttpResponse(json.dumps(data))
 		else:
-			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-			data = json.dumps(data)
-			response = HttpResponse(data)
+			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
+			response = HttpResponse(json.dumps(data))
 	else:
-		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-		data = json.dumps(data)
-		response = HttpResponse(data)
+		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
+		response = HttpResponse(json.dumps(data))
 	return response

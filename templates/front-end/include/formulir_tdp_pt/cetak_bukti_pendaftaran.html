@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cetak Bukti Pendaftaran - {{no_pengajuan}}</title>
+	<title>Cetak Bukti Pendaftaran - {{pengajuan_.no_pengajuan}}</title>
 </head>
 <style type="text/css">
     hr.style18 {
@@ -788,68 +788,53 @@
                     <u class="font"><b>{{ pengajuan_.pemohon.nama_lengkap }}</b></u>
                 </p>
                 <hr class="style14">
-                <h5>Syarat Pengajuan:</h5>
-                <table class="font tables syarat" width="100%" border="1" style="border:2px;">
+                <h5>Syarat {{pengajuan_.kelompok_jenis_izin.keterangan}}:</h5>
+                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
                     <thead>
                         <tr>
-                            <td width="5%" style="text-align:center;">No</td>
-                            <td width="80%">Syarat</td>
-                            <td align="center" width="15%">Kelengkapan (diisi Petugas 1)</td>
-                            <td align="center" width="15%">Kelengkapan (diisi Petugas 2)</td>
+                            <td width="5%">No</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
                         </tr>
                     </thead>
                     <tbody>
                         {% if syarat %}
                             {% for s in syarat %}
                             <tr>
-                                <td style="text-align:center;">{{ forloop.counter }}</td>
+                                <td>{{ forloop.counter }}</td>
                                 <td>{{ s.syarat }}</td>
-                                <td><p align="center"><input type="checkbox"></p></td>
-                                <td><p align="center"><input type="checkbox"></p></td>
+                                <td align="center"><input type="checkbox"></td>
+                                <td align="center"><input type="checkbox"></td>
                             </tr>
                             {% endfor %}
                         {% endif %}
                     </tbody>
                 </table>
-                <table width="100%">
+                <br>
+                <table border="0" width="100%" style="font-size: 15px;">
                     <tr>
-                        <td width="25%"></td>
-                        <td width="25%"></td>
-                        <td width="25%">
-                            <p align="center" style="font-size:13px;">
-                                Kediri,.......................
-                                <br>
-                                Petugas 1
-                                <br>
-                                Cap BPM
-                                <br>
-                                <br>
-                                <br>
-                                (...........................................)
-                            </p>
+                        <td width="48%" >
+                            
                         </td>
-                        <td width="25%">
-                            <p align="center" style="font-size:13px;">
-                            Kediri,.......................
-                            <br>
-                            Petugas 2
-                            <br>
-                            Cap BPM
-                            <br>
-                            <br>
-                            <br>
-                            (...........................................)
-                            </p>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                        <td width="2%">
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
                         </td>
                     </tr>
                 </table>
-                <div class="printfooter">
+                <<!-- div class="printfooter">
                     <hr class="style18">
                     <i class="font" align="right">
                         <font color="red">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d-M-Y" }}</font> 
                         <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
                     </i>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

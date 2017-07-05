@@ -186,22 +186,21 @@ def tdup_keterangan_usaha_ajax(request, id_pengajuan):
 			nomor_dokumen_pengelolaan = ''
 			tanggal_dokumen_pengelolaan = ''
 			lokasi_lengkap = ''
-			if pengajuan:
-				nama_usaha = pengajuan.nama_usaha
-				lokasi_usaha_pariwisata = pengajuan.lokasi_usaha_pariwisata
-				telephone = pengajuan.telephone
-				# if pengajuan.nomor_izin_gangguan:
-				# 	nomor_izin_gangguan = pengajuan.nomor_izin_gangguan
-				# tanggal_izin_gangguan = pengajuan.tanggal_izin_gangguan.strftime('%d-%m-%Y')
-				if pengajuan.nomor_dokumen_pengelolaan:
-					nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
-				if pengajuan.tanggal_dokumen_pengelolaan:
-					tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
-				# nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
-				# tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
-				if pengajuan.desa_lokasi:
-					lokasi_lengkap = pengajuan.desa_lokasi.as_json()
-				data = {'success': True, 'pesan': 'Load data keterangan usaha', 'data':{ 'nama_usaha':nama_usaha, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'telephone':telephone, 'nomor_dokumen_pengelolaan':nomor_dokumen_pengelolaan, 'tanggal_dokumen_pengelolaan':tanggal_dokumen_pengelolaan, 'lokasi_lengkap': lokasi_lengkap}}
+			nama_usaha = pengajuan.nama_usaha
+			lokasi_usaha_pariwisata = pengajuan.lokasi_usaha_pariwisata
+			telephone = pengajuan.telephone
+			# if pengajuan.nomor_izin_gangguan:
+			# 	nomor_izin_gangguan = pengajuan.nomor_izin_gangguan
+			# tanggal_izin_gangguan = pengajuan.tanggal_izin_gangguan.strftime('%d-%m-%Y')
+			if pengajuan.nomor_dokumen_pengelolaan:
+				nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
+			if pengajuan.tanggal_dokumen_pengelolaan:
+				tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
+			# nomor_dokumen_pengelolaan = pengajuan.nomor_dokumen_pengelolaan
+			# tanggal_dokumen_pengelolaan = pengajuan.tanggal_dokumen_pengelolaan.strftime('%d-%m-%Y')
+			if pengajuan.desa_lokasi:
+				lokasi_lengkap = pengajuan.desa_lokasi.as_json()
+			data = {'success': True, 'pesan': 'Load data keterangan usaha', 'data':{ 'nama_usaha':nama_usaha, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'telephone':telephone, 'nomor_dokumen_pengelolaan':nomor_dokumen_pengelolaan, 'tanggal_dokumen_pengelolaan':tanggal_dokumen_pengelolaan, 'lokasi_lengkap': lokasi_lengkap}}
 		except ObjectDoesNotExist:
 			data = {'success': False, 'pesan': 'Data Pengajuan tidak ditemukan/data kosong' }
 	else:

@@ -52,11 +52,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_7 = {}
 			perusahaan_cabang_ = {}
 			if pengajuan_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
-				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
 				if perusahaan_:
-					alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
 					legalitas_ = perusahaan_.legalitas_set.all()
 					legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
 					legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
@@ -77,7 +73,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 					wna = pengajuan_.jumlah_karyawan_wna
 				jumlah_karyawan = int(wni)+int(wna)
 				# print jumlah_karyawan
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian, 'legalitas_perubahan':legalitas_perubahan, 'legalitas_3':legalitas_3, 'legalitas_4':legalitas_4, 'legalitas_6':legalitas_6, 'legalitas_7':legalitas_7})
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'perusahaan':perusahaan_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian, 'legalitas_perubahan':legalitas_perubahan, 'legalitas_3':legalitas_3, 'legalitas_4':legalitas_4, 'legalitas_6':legalitas_6, 'legalitas_7':legalitas_7})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -101,18 +97,16 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
 			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_pt/cetak_tdp_pt_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -124,15 +118,9 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan TDP Persekutuan Komenditer (CV)'})
 			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
 			perusahaan_ = pengajuan_.perusahaan
 			if pengajuan_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
-				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
-				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
 				legalitas_ = perusahaan_.legalitas_set.all()
 				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
@@ -145,8 +133,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if pengajuan_.jumlah_karyawan_wna:
 					wna = pengajuan_.jumlah_karyawan_wna
 				jumlah_karyawan = int(wni)+int(wna)
-				print jumlah_karyawan
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -177,14 +164,13 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_cv/cetak_tdp_cv_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -196,15 +182,9 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan TDP Perorangan (PO)'})
 			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
 			perusahaan_ = pengajuan_.perusahaan
 			if pengajuan_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
-				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
-				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
 				legalitas_ = perusahaan_.legalitas_set.all()
 				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
@@ -223,7 +203,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 						masa_berlaku_ = pengajuan_.created_at + relativedelta(years=5)
 						masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
 						extra_context.update({'masa_berlaku':masa_berlaku})
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'perusahaan':perusahaan_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -253,7 +233,6 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -261,7 +240,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				masa_berlaku_ = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
 
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_po/cetak_tdp_po_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -273,15 +252,9 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan TDP Firma'})
 			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
 			perusahaan_ = pengajuan_.perusahaan
 			if pengajuan_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
-				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
-				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
 				legalitas_ = perusahaan_.legalitas_set.all()
 				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
@@ -294,7 +267,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if pengajuan_.jumlah_karyawan_wna:
 					wna = pengajuan_.jumlah_karyawan_wna
 				jumlah_karyawan = int(wni)+int(wna)
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'perusahaan':perusahaan_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -314,7 +287,6 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_tdp_firma_asli(self, request, id_pengajuan_izin_):
-		
 		extra_context = {}
 		if id_pengajuan_izin_:
 			# pengajuan_ = DetilTDP.objects.get_object_or_404(id=id_pengajuan_izin_)
@@ -324,14 +296,13 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_firma/cetak_tdp_firma_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -343,15 +314,9 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan TDP Badan Usaha Lainnya (BUL)'})
 			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
 			perusahaan_ = pengajuan_.perusahaan
 			if pengajuan_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
-				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
-				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
 				legalitas_ = perusahaan_.legalitas_set.all()
 				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
@@ -366,7 +331,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				jumlah_karyawan = int(wni)+int(wna)
 				# print jumlah_karyawan
 				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian})
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'perusahaan':perusahaan_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -376,7 +341,6 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				if skizin_:
 					masa_berlakua = skizin_.created_at + relativedelta(years=5)
 					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-
 					extra_context.update({
 						'skizin': skizin_, 
 						'skizin_status': skizin_.status,
@@ -392,15 +356,9 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan TDP Koperasi'})
 			# pengajuan_ = DetilTDP.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
 			pemohon_ = pengajuan_.pemohon
 			perusahaan_ = pengajuan_.perusahaan
 			if pengajuan_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
-				alamat_ = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa)+", Kec. "+str(pemohon_.desa.kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten)
-				alamat_perusahaan_ = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa)+", Kec. "+str(perusahaan_.desa.kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten)
 				legalitas_ = perusahaan_.legalitas_set.all()
 				izin_lain_ = IzinLain.objects.filter(pengajuan_izin_id=pengajuan_.id)
 				data_pimpinan_ = DataPimpinan.objects.filter(detil_tdp_id=pengajuan_.id)
@@ -418,7 +376,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
 				legalitas_8 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=8).last()
 				legalitas_9 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=9).last()
-				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'alamat_pemohon': alamat_, 'perusahaan':perusahaan_, 'alamat_perusahaan':alamat_perusahaan_, 'ktp':ktp_, 'paspor':paspor_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian, 'legalitas_perubahan':legalitas_perubahan, 'legalitas_8':legalitas_8, 'legalitas_9':legalitas_9})
+				extra_context.update({'pengajuan':pengajuan_, 'pemohon': pemohon_, 'perusahaan':perusahaan_, 'status': pengajuan_.status, 'legalitas':legalitas_, 'izin_lain':izin_lain_, 'data_pimpinan':data_pimpinan_, 'pemegang_saham':pemegang_saham_, 'perusahaan_cabang':perusahaan_cabang_, 'jumlah_karyawan':jumlah_karyawan, 'legalitas_pendirian':legalitas_pendirian, 'legalitas_perubahan':legalitas_perubahan, 'legalitas_8':legalitas_8, 'legalitas_9':legalitas_9})
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
 				if riwayat_:
@@ -437,8 +395,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_tdp_bul_asli(self, request, id_pengajuan_izin_):
-		
+	def cetak_tdp_bul_asli(self, request, id_pengajuan_izin_):		
 		extra_context = {}
 		if id_pengajuan_izin_:
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
@@ -447,21 +404,18 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_
-				})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_bul/cetak_tdp_bul_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
 	def cetak_tdp_koperasi_asli(self, request, id_pengajuan_izin_):
-		
 		extra_context = {}
 		if id_pengajuan_izin_:
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
@@ -470,14 +424,13 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku, 'alamat': alamat_})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
