@@ -6,6 +6,7 @@ from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
 from master.api import BerkasResource, ParameterBangunanResource, BangunanJenisKontruksiResource
 from tastypie.resources import ALL_WITH_RELATIONS, ALL
 from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication, BasicAuthentication
+from tastypie.authorization import Authorization
 
 class SKIzinResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
@@ -64,6 +65,7 @@ class DetilIUAResource(CORSModelResource):
 	berkas_tambahan = fields.OneToManyField(BerkasResource, 'berkas_tambahan', full=True, null=True, blank=True)
 	class Meta:
 		# authentication = ApiKeyAuthentication()
+		authorization = Authorization()
 		queryset = DetilIUA.objects.all()
 		allowed_methods = ['get', 'put']
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'perusahaan', 'nilai_investasi', 'kategori_kendaraan', 'berkas_tambahan']
