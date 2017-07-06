@@ -1395,9 +1395,9 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				nomor_identitas = ""
 				if pemohon_.email is not None:
 					email_pemohon = str(pemohon_.email)
-					nomor_identitas = str(pengajuan_.pemohon.get_ktp())
-					if pengajuan_.pemohon.get_paspor():
-						nomor_identitas = str(pengajuan_.pemohon.get_ktp())+" / "+str(pengajuan_.pemohon.get_paspor())
+				nomor_identitas = str(pengajuan_.pemohon.get_ktp())
+				if pengajuan_.pemohon.get_paspor():
+					nomor_identitas = str(pengajuan_.pemohon.get_ktp())+" / "+str(pengajuan_.pemohon.get_paspor())
 				# print email_pemohon
 					# email_pemohon = ""
 				kewarganegaraan_pemohon = pemohon_.kewarganegaraan
