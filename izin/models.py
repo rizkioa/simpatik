@@ -1690,8 +1690,9 @@ class Kendaraan(models.Model):
 
 	def as_json(self):
 		merk_kendaraan_nama = ''
-		if self.merk_kendaraan.nama_type:
-			merk_kendaraan_nama = self.merk_kendaraan.nama_type
+		if self.merk_kendaraan:
+			if self.merk_kendaraan.nama_type:
+				merk_kendaraan_nama = self.merk_kendaraan.nama_type
 		nomor_rangka = ''
 		if self.nomor_rangka:
 			nomor_rangka = self.nomor_rangka

@@ -31,14 +31,19 @@ def save_detil_iua(request):
 	return response
 
 def save_data_kendaraan(request):
+	data = {'success': False, 'pesan': 'Data Kendaraan gagal disimpan.'}
+	data = json.dumps(data)
+	response = HttpResponse(data)
+	# print request.POST.get('id_kendaraan')
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			try:
-				pengajuan_ = DetilIUA.objects.get(id=request.COOKIES['id_pengajuan'])
-				data_kendaraan_form = DataKendaraanForm(request.POST)
+			pengajuan_obj = DetilIUA.objects.filter(id=request.COOKIES['id_pengajuan']).last()
+			if pengajuan_obj:
+				kendaraan_obj = Kendaraan.objects.filter(id=request.POST.get('id_kendaraan')).last()
+				data_kendaraan_form = DataKendaraanForm(request.POST, instance=kendaraan_obj)
 				if data_kendaraan_form.is_valid():
 					i = data_kendaraan_form.save(commit=False)
-					i.iua_id = pengajuan_.id
+					i.iua_id = pengajuan_obj.id
 					i.save()
 					data = {'success': True, 'pesan': 'Data Kendaraan berhasil disimpan.'}
 					data = json.dumps(data)
@@ -46,18 +51,6 @@ def save_data_kendaraan(request):
 				else:
 					data = data_kendaraan_form.errors.as_json()
 					response = HttpResponse(data)
-			except ObjectDoesNotExist:
-				data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada.'}]}
-				data = json.dumps(data)
-				response = HttpResponse(data)
-		else:
-			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-			data = json.dumps(data)
-			response = HttpResponse(data)
-	else:
-		data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
-		data = json.dumps(data)
-		response = HttpResponse(data)
 	return response
 
 def load_data_kendaraan(request, pengajuan_id):

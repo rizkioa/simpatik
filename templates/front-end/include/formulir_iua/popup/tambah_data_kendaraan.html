@@ -1,30 +1,33 @@
+{% load i18n %}
 <div class="modal fade" id="data_kendaraan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title costom-font">Tambah Data Kendaraan</h3>
-			</div>
-			{% csrf_token %}
-			<div class="modal-body">
-				<form method="POST" role="form" class="form-horizontal" id="id_form_data_kendaraan" data-parsley-validate novalidate>
+			<form method="POST" class="form-horizontal" id="id_form_data_kendaraan" action="{% url 'save_data_kendaraan' %}">
+				<div class="modal-header">
+					<h3 class="modal-title costom-font">Tambah Data Kendaraan</h3>
+				</div>
+			
+				<div class="modal-body">
+					{% csrf_token %}
+					<input type="hidden" name="id_kendaraan" id="id_kendaraan" class="data-kendaraan">
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Tanda Nomor Kendaraan</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_tanda_nomor_kendaraan" name="tanda_nomor_kendaraan" required="">
+							<input type="text" class="form-control data-kendaraan" id="id_tanda_nomor_kendaraan" name="nomor_kendaraan" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Nomor Uji Berkala</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_nomor_uji_berkala" name="nomor_uji_berkala" required="">
+							<input type="text" class="form-control data-kendaraan" id="id_nomor_uji_berkala" name="nomor_uji_berkala" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Merk / Type</label>
 						<div class="col-sm-7">
-							<select class="form-control chosen-select mb-10" id="id_merk_type" name="merk_type">
+							<select class="form-control chosen-select mb-10 data-kendaraan" id="id_merk_type" name="merk_kendaraan">
 								<option value>-- Pilih Merk --</option>
 								{% if merk_type %}
 									{% for merk in merk_type %}
@@ -38,28 +41,28 @@
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Berat yang diperbolehkan</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_berat_diperbolehkan" name="berat_diperbolehkan">
+							<input type="text" class="form-control data-kendaraan" id="id_berat_diperbolehkan" name="berat_diperbolehkan">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Nomor Rangka</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_nomor_rangka" name="nomor_rangka" required="">
+							<input type="text" class="form-control data-kendaraan" id="id_nomor_rangka" name="nomor_rangka" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Nomor Mesin</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_nomor_mesin" name="nomor_mesin">
+							<input type="text" class="form-control data-kendaraan" id="id_nomor_mesin" name="nomor_mesin">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Tahun Pembuatan</label>
 						<div class="col-sm-7">
-							<select class="form-control chosen-select mb-10" id="id_tahun_pembuatan" name="tahun_pembuatan" required="">
+							<select class="form-control chosen-select mb-10 data-kendaraan" id="id_tahun_pembuatan" name="tahun_pembuatan" required="">
 								<option value>-- Pilih Tahun --</option>
 								{% for tahun in tahun_choices %}
 								<option value="{{tahun.0}}">{{ tahun.1 }}</option>
@@ -71,87 +74,88 @@
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Keterangan</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_keterangan" name="keterangan">
+							<input type="text" class="form-control data-kendaraan" id="id_keterangan" name="keterangan">
 						</div>
 					</div>
 
 					<div class="modal-footer">
-						<button onclick="save_data_kendaraan();" type="button" id="modal_save_data_kendaraan" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+						<button type="button" onclick="save_data_kendaraan()" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
 						<button type="button" class="btn btn-lighther btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i>Cancel</button>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	function save_data_kendaraan(){
-		nomor_kendaraan = $('#id_tanda_nomor_kendaraan').val()
-		nomor_uji_berkala = $('#id_nomor_uji_berkala').val()
-		merk_kendaraan = $('#id_merk_type').val()
-		berat_diperbolehkan = $('#id_berat_diperbolehkan').val()
-		nomor_rangka = $('#id_nomor_rangka').val()
-		nomor_mesin = $('#id_nomor_mesin').val()
-		tahun_pembuatan = $('#id_tahun_pembuatan').val()
-		keterangan = $('#id_keterangan').val()
-		csrf = $("input[name='csrfmiddlewaretoken']").val()
+	// function save_data_kendaraan(){
+	// 	nomor_kendaraan = $('#id_tanda_nomor_kendaraan').val()
+	// 	nomor_uji_berkala = $('#id_nomor_uji_berkala').val()
+	// 	merk_kendaraan = $('#id_merk_type').val()
+	// 	berat_diperbolehkan = $('#id_berat_diperbolehkan').val()
+	// 	nomor_rangka = $('#id_nomor_rangka').val()
+	// 	nomor_mesin = $('#id_nomor_mesin').val()
+	// 	tahun_pembuatan = $('#id_tahun_pembuatan').val()
+	// 	keterangan = $('#id_keterangan').val()
+	// 	csrf = $("input[name='csrfmiddlewaretoken']").val()
 
-		$.ajax({
+	// 	$.ajax({
+	// 		method: 'POST',
+	// 		data : { nomor_kendaraan: nomor_kendaraan, nomor_uji_berkala: nomor_uji_berkala, merk_kendaraan: merk_kendaraan, berat_diperbolehkan: berat_diperbolehkan, nomor_rangka:nomor_rangka, nomor_mesin:nomor_mesin, tahun_pembuatan: tahun_pembuatan, keterangan:keterangan, csrfmiddlewaretoken: csrf },
+	// 		url : __base_url__ +'/ajax-save-data-kendaraan/',
+	// 		success: function(response){
+	// 			console.log(response)
+	// 			resp = $.parseJSON(response)
+	// 			if (resp.success){
+	// 				toastr["success"](resp.pesan)
+	// 				$('#data_kendaraan_modal').modal('hide')
+	// 				load_data_kendaraan($.cookie('id_pengajuan'))
+	// 			}
+	// 			else{
+	// 				alert('error')
+	// 				// var a = Object.keys(resp);
+	// 				// for (var i = 0; i < a.length; i++){
+	// 				// 	var field = a[i].replace("_", " ");
+	// 				// 	console.log(a[i][0]['message'])
+	// 				// 	toastr['error'](field+", "+resp[a[i]][0]['message'])
+	// 				// }
+	// 			}
+	// 		}
+	// 	})
+	// }
+
+	function save_data_kendaraan(){
+		frm = $('#id_form_data_kendaraan')
+		frm.ajaxSubmit({
 			method: 'POST',
-			data : { nomor_kendaraan: nomor_kendaraan, nomor_uji_berkala: nomor_uji_berkala, merk_kendaraan: merk_kendaraan, berat_diperbolehkan: berat_diperbolehkan, nomor_rangka:nomor_rangka, nomor_mesin:nomor_mesin, tahun_pembuatan: tahun_pembuatan, keterangan:keterangan, csrfmiddlewaretoken: csrf },
-			url : __base_url__ +'/ajax-save-data-kendaraan/',
+			data: frm.serialize(),
+			url: frm.attr('action'),
+			beforeSend: function() {
+				frm.mLoading();
+			},
 			success: function(response){
-				console.log(response)
-				resp = $.parseJSON(response)
-				if (resp.success){
-					toastr["success"](resp.pesan)
+				// console.log(response)
+					
+				respon = JSON.parse(response)
+				if(respon.success == true){
+					toastr["success"](respon.pesan)
 					$('#data_kendaraan_modal').modal('hide')
+					// frm.find('.data-anggota').val('')
+					// $('#id_form_data_kendaraan').find('input').val('');
+					$('#id_form_data_kendaraan').find('.data-kendaraan').val('').trigger("chosen:updated");
 					load_data_kendaraan($.cookie('id_pengajuan'))
 				}
 				else{
-					alert('error')
-					// var a = Object.keys(resp);
-					// for (var i = 0; i < a.length; i++){
-					// 	var field = a[i].replace("_", " ");
-					// 	console.log(a[i][0]['message'])
-					// 	toastr['error'](field+", "+resp[a[i]][0]['message'])
-					// }
+					toastr["error"](respon.pesan)
 				}
+				frm.mLoading('hide');
+		  	},
+			error: function(){
+				frm.mLoading('hide');
+				toast_server_error();
 			}
 		})
-	}
-
-	function save_data_anggota(){
-	    frm = $('#form-data_anggota')
-	    frm.ajaxSubmit({
-	      method: 'POST',
-	      data: frm.serialize(),
-	      url: frm.attr('action'),
-	      beforeSend: function() {
-	        frm.mLoading();
-	      },
-	      success: function(response){
-	        console.log(response)
-	        
-	        respon = JSON.parse(response)
-	        if(respon.success == true){
-	          toastr["success"](respon.pesan)
-	          $('#modal_data_anggota').modal('hide')
-	          frm.find('.data-anggota').val('')
-	          load_data_anggota($.cookie('id_pengajuan'))
-	        }
-	        else{
-	          toastr["error"](respon.pesan)
-	        }
-	        frm.mLoading('hide');
-	      },
-	      error: function(){
-	        frm.mLoading('hide');
-	        toast_server_error();
-	      }
-
-	    })
 	  }
 
 	function load_data_kendaraan(pengajuan_id){
@@ -165,10 +169,10 @@
 					// console.log(respon)
 					if(respon.length > 0){
 						$.each( respon, function( index ) {
-		                    row = '<tr>'
-		                    no = index+1
-		                    row += '<td>'+no+'</td>'
-		                    row += '<td>'+respon[index].nomor_kendaraan+'</td>'
+							row = '<tr>'
+							no = index+1
+							row += '<td>'+no+'</td>'
+							row += '<td>'+respon[index].nomor_kendaraan+'</td>'
 							row += '<td>'+respon[index].nomor_uji_berkala+'</td>'
 							row += '<td>'+respon[index].merk_kendaraan_nama+'</td>'
 							row += '<td>'+respon[index].nomor_rangka+'</td>'
@@ -223,18 +227,21 @@
 
 	function tambah_kendaraan(id_kendaraan){
 		$('#data_kendaraan_modal').modal('show');
-		$('#id_form_data_kendaraan').find('input').val('');
-		$('#id_form_data_kendaraan').find('select').val('').trigger("chosen:updated");
+		$('#id_form_data_kendaraan').find('.data-kendaraan').val('').trigger("chosen:updated");
 		if(id_kendaraan && id_kendaraan > 0){
 			$.ajax({
 				url: __base_url__+'/api/v1/kendaraan/'+id_kendaraan+'/?format=json',
 				type: 'GET',
 				success: function(respon){
-					console.log(respon)
+					// console.log(respon)
 					if(respon){
+						$('#id_kendaraan').val(respon.id);
 						$('#id_tanda_nomor_kendaraan').val(respon.nomor_kendaraan);
 						$('#id_nomor_uji_berkala').val(respon.nomor_uji_berkala);
-						$('#id_merk_type').val(respon.merk_kendaraan.id).prop('selected',true).trigger("chosen:updated");
+						if(respon.merk_kendaraan){
+							$('#id_merk_type').val(respon.merk_kendaraan.id).prop('selected',true).trigger("chosen:updated");
+						}
+						
 						$('#id_berat_diperbolehkan').val(respon.berat_diperbolehkan);
 						$('#id_nomor_rangka').val(respon.nomor_rangka);
 						$('#id_nomor_mesin').val(respon.nomor_mesin);
