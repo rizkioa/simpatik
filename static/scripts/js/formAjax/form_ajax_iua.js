@@ -136,7 +136,7 @@ function load_konfirmasi(pengajuan_id){
       url: __base_url__+'/layanan/iua/ajax-iua-load-konfirmasi/'+pengajuan_id,
       success: function(data){
         data_ = JSON.parse(data)
-        console.log(data_)
+        // console.log(data_)
         $('#jenis_pengajuan_konfirmasi').text(data_.jenis_pengajuan)
         $('#jenis_pemohon_konfirmasi').text(data_.pemohon_json.jenis_pemohon)
         $('#nomor_ktp_konfirmasi').text(data_.pemohon_json.username)

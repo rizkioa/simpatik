@@ -200,151 +200,87 @@
                     <table>
                         <tr>
                             <td>
-                                <h5>No. Pengajuan Izin : {{ pengajuan_.no_pengajuan }}<br>
-                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
+                                <h5>No. Pengajuan Izin : {{pengajuan_.no_pengajuan}}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d-m-Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div>
-
-                </div>
-                <div>
-                    <h4 align="center"><u>PERMOHONAN SURAT IZIN USAHA ANGKUTAN</u></h4>
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="font">
-                            <tr>
-                                <td>
-                                    <table width="500" class="left">
-                                        <tr>
-                
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td>
-                                    <table width="200">
-                                        <tr>
-                                            <td>Kepada</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-left: 15px;">Yth. Bupati Kediri</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lewat</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-left: 15px;">Yth. Kepala DPMPTSP Kab. Kediri</td>
-                                        </tr>
-                                        <tr>
-                                            <td>di.</td>
-                                        </tr>
-                                        <tr>
-                                            <td><p style="text-indent:3em;"><b><u>K E D I R I</u></b> </p></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                    <h4 align="center"><u>{{formulir_judul}}</u></h4>
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="10%"></td>
+                            <td width="40%">
+                                
+                            </td>
+                            <td width="50%">
+                                <p align="left" style="font-size:13px;padding-left:25%">
+                                    Kepada
+                                    <br>
+                                    Yth. Bupati Kediri
+                                    <b></b>
+                                    Lewat
+                                    <br>
+                                    Yth. Kepala DPMPTSP Kab. Kediri
+                                    <br>
+                                    di
+                                    <br>
+                                    KEDIRI
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <table width="100%" border="0" class="font">
                     <tr>
                         <td width="25%">Jenis Pengajuan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ jenis_pengajuan }}</td>
+                        <td width="65%">{{ pengajuan_.jenis_permohonan }}</td>
                     </tr>
                 </table>
                     <p style="font-size: 12px;text-indent: 30px;">
                         Bersama ini kami mengajukan Permohonan / Perpanjangan *) Izin Pemasangan Reklame sebagaimana diatur dalam PERDA Nomor 1 Tahun 2012 tentang Pajak Daerah, dengan keterangan sebagai berikut :
                     </p>
-                <h5 style="padding-top: -2px;"><u>IDENTITAS PEMOHON</u></h5>
-                <table width="100%" border="0" class="font">
-                    <tr>
-                        <td width="25%">Jenis Pemohon</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.jenis_pemohon }} </td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nomor KTP/Paspor</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nama</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Alamat</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ alamat_pemohon }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Telp</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.telephone }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. HP</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Email</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Kewarganegaraan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Pekerjaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.pekerjaan }}</td>
-                    </tr>
-                </table>
-                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
+                {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon.html' %}
+                <h5>IDENTITAS PERUSAHAAN</h5>
                 <table class="font" width="100%">
                     <tr>
                         <td width="25%">NPWP</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.npwp }}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.npwp}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Nama Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.nama_perusahaan}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Alamat Perusahaan</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ alamat_perusahaan }}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.alamat_perusahaan}}, {{pengajuan_.perusahaan.desa.lokasi_lengkap}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Kode Pos</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.kode_pos }}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.kode_pos}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Telp</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.telepon }}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.telepon}}</td>
                     </tr>
                     <tr>
                         <td width="25%">No. Fax</td>
                         <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.fax }}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.fax}}</td>
                     </tr>
                     <tr>
                         <td width="25%">Email</td>
                         <td width="10%">:</td>
-                        <td width="65%">{% if perusahaan.email_perusahaan %}{{ perusahaan.email_perusahaan }}{% endif %}</td>
+                        <td width="65%">{{pengajuan_.perusahaan.email|default_if_none:"-"}}</td>
                     </tr>
-                </table>        
+                </table>     
                 <h5><u>#3. DATA KENDARAAN</u></h5>
                 <table class="font" width="100%">
                     <tr>
@@ -363,10 +299,21 @@
                         <td width="65%">{{ nilai_investasi }}</td>
                     </tr>
                 </table>
+                
                 <br>
-                    <p style="font-size: 12px;text-indent: 30px;">
-                        Demikian permohonan ini kami buat dan kami bersedia memenuhi semua kewajiban sesuai peraturan yang berlaku atas perkenan izinnya di sampaikan terima kasih
-                    </p>
+                <!-- <hr>
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i> -->
+            </div>    
+        </div>
+        <div class="page">
+            <div class="subpage">
+                <br>
+                <p style="font-size: 12px;text-indent: 30px;">
+                    Demikian permohonan ini kami buat dan kami bersedia memenuhi semua kewajiban sesuai peraturan yang berlaku atas perkenan izinnya di sampaikan terima kasih
+                </p>
                 <div class="row">
                     <div class="col-md-12">
                         <table class="font">
@@ -405,17 +352,7 @@
                             </tr>
                         </table>
                     </div>
-                </div>
-                <br>
-                <hr>
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
-            </div>    
-        </div>
-        <div class="page">
-            <div class="subpage">            
+                </div>            
                 <h5>Syarat Izin Usaha Angkutan:</h5>
                 <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
                     <thead>
@@ -457,10 +394,6 @@
                     </tr>
                 </table>
                 
-
-                <br><br><br> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
             </div>    
         </div>
     </div>

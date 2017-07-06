@@ -218,12 +218,12 @@ def ajax_load_berkas_iua(request, id_pengajuan):
 			pemohon_ = iua.pemohon
 			print iua.perusahaan.berkas_npwp
 			if perusahaan_:
-				npwp = perusahaan_.berkas_npwp
-				if npwp:
-					url_berkas.apped(npwp.berkas.url)
-					id_elemen.apped('npwp_perusahaan')
-					nm_berkas.apped(npwp.nama_berkas)
-					id_berkas.apped(npwp.id)
+				npwp_perusahaan = perusahaan_.berkas_npwp
+				if npwp_perusahaan:
+					url_berkas.append(npwp_perusahaan.berkas.url)
+					id_elemen.append('npwp_perusahaan')
+					nm_berkas.append(npwp_perusahaan.nama_berkas)
+					id_berkas.append(npwp_perusahaan.id)
 					
 			if berkas_:
 				akte_pendirian = berkas_.filter(keterangan='File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan'+perusahaan_.npwp).last()
@@ -284,22 +284,24 @@ def load_data_konfirmasi(request, pengajuan_id):
 	data = {'success': False, 'pesan': 'Data tidak ditemukan'}
 	if pengajuan_id and pengajuan_id is not None:
 		try:
-			pengajuan_ = DetilIUA.objects.get(id=pengajuan_id)
-			jenis_pengajuan = pengajuan_.jenis_permohonan.jenis_permohonan_izin
-			nilai_investasi = pengajuan_.nilai_investasi
-			detil_izin_ho = pengajuan_.detil_izin_ho.no_izin
-			kategori_kendaraan = pengajuan_.kategori_kendaraan.nama_kategori
-			pemohon_obj = pengajuan_.pemohon
-			perusahaan_obj = pengajuan_.perusahaan
-			kendaraan_obj = Kendaraan.objects.filter(iua_id=pengajuan_.id)
+			pengajuan_obj = DetilIUA.objects.get(id=pengajuan_id)
+			jenis_pengajuan = pengajuan_obj.jenis_permohonan.jenis_permohonan_izin
+			nilai_investasi = pengajuan_obj.nilai_investasi
+			detil_ho = ""
+			if pengajuan_obj.detil_ho:
+				detil_ho = pengajuan_obj.detil_izin_ho.no_izin
+			kategori_kendaraan = pengajuan_obj.kategori_kendaraan.nama_kategori
+			pemohon_obj = pengajuan_obj.pemohon
+			perusahaan_obj = pengajuan_obj.perusahaan
+			kendaraan_obj = Kendaraan.objects.filter(iua_id=pengajuan_obj.id)
 			jumlah_kendaraan_obj = kendaraan_obj.count()
 
-			if pengajuan_:
+			if pengajuan_obj:
 				# pengajuan_json = pengajuan_.as_json()
 				pemohon_json = pemohon_obj.as_json()
 				perusahaan_json = perusahaan_obj.as_json()
 				kendaraan_json = [k.as_json() for k in kendaraan_obj]
-			data = {'success': True, 'pesan': 'Data Berhasil','jenis_pengajuan': jenis_pengajuan, 'nilai_investasi': nilai_investasi,'detil_izin_ho': detil_izin_ho, 'kategori_kendaraan': kategori_kendaraan, 'pemohon_json': pemohon_json, 'perusahaan_json': perusahaan_json,'kendaraan': kendaraan_json, 'jumlah_kendaraan': jumlah_kendaraan_obj}
+			data = {'success': True, 'pesan': 'Data Berhasil','jenis_pengajuan': jenis_pengajuan, 'nilai_investasi': nilai_investasi,'detil_izin_ho': detil_ho, 'kategori_kendaraan': kategori_kendaraan, 'pemohon_json': pemohon_json, 'perusahaan_json': perusahaan_json,'kendaraan': kendaraan_json, 'jumlah_kendaraan': jumlah_kendaraan_obj}
 		except ObjectDoesNotExist:
 			pass
 
@@ -309,20 +311,9 @@ def load_data_konfirmasi(request, pengajuan_id):
 def cetak_iua(request, id_pengajuan):
     extra_context = {}
     if id_pengajuan:
-        pengajuan_ = DetilIUA.objects.get(id=id_pengajuan)
-        if pengajuan_:
-            no_pengajuan = pengajuan_.no_pengajuan
-            jenis_izin = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
-            pemohon_ = pengajuan_.pemohon
-            if pemohon_:
-                nama_pemohon = pemohon_.nama_lengkap
-                alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
-            perusahaan_ = pengajuan_.perusahaan
-            if perusahaan_:
-                nama_perusahaan = perusahaan_.nama_perusahaan
-                alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
-            tanggal_dibuat = pengajuan_.created_at
-            extra_context.update({'no_pengajuan': no_pengajuan, 'jenis_izin':jenis_izin, 'nama_pemohon':nama_pemohon, 'alamat_pemohon':alamat_pemohon, 'nama_perusahaan':nama_perusahaan, 'alamat_perusahaan':alamat_perusahaan, 'created_at':tanggal_dibuat, 'id':pengajuan_.id})
+        pengajuan_obj = get_object_or_404(DetilIUA, id=id_pengajuan)
+        if pengajuan_obj:
+            extra_context.update({'pengajuan':pengajuan_obj})
     return render(request, "front-end/include/formulir_iua/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_iua(request, id_pengajuan):
@@ -331,28 +322,15 @@ def cetak_bukti_pendaftaran_iua(request, id_pengajuan):
     if id_pengajuan:
         pengajuan_ = get_object_or_404(DetilIUA, id=id_pengajuan)
         if pengajuan_:
-            no_pengajuan = pengajuan_.no_pengajuan
             nilai_investasi = pengajuan_.nilai_investasi
             kategori_kendaraan = pengajuan_.kategori_kendaraan.nama_kategori
-            jenis_izin = pengajuan_.kelompok_jenis_izin.kelompok_jenis_izin
-            jenis_pengajuan = pengajuan_.jenis_permohonan.jenis_permohonan_izin
-            pemohon_ = pengajuan_.pemohon
-            if pemohon_:
-            	jenis_pemohon = pemohon_.jenis_pemohon
-                alamat_pemohon = str(pemohon_.alamat)+", Ds. "+str(pemohon_.desa.nama_desa)+", Kec."+str(pemohon_.desa.kecamatan.nama_kecamatan)+", "+str(pemohon_.desa.kecamatan.kabupaten.nama_kabupaten)
-                ktp = pemohon_.nomoridentitaspengguna_set.filter(jenis_identitas_id = 1).last()
-                paspor = pemohon_.nomoridentitaspengguna_set.filter(jenis_identitas_id = 2).last()
-            perusahaan_ = pengajuan_.perusahaan
-            if perusahaan_:
-                alamat_perusahaan = str(perusahaan_.alamat_perusahaan)+", Ds. "+str(perusahaan_.desa.nama_desa)+", Kec."+str(perusahaan_.desa.kecamatan.nama_kecamatan)+", "+str(perusahaan_.desa.kecamatan.kabupaten.nama_kabupaten)
             kendaraan_ = Kendaraan.objects.filter(iua_id=pengajuan_.id)
             if kendaraan_:
             	kendaraan_jumlah = kendaraan_.count()
-            tanggal_dibuat = pengajuan_.created_at
 
             
             # rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
             # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
-            syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IUA")
-            extra_context.update({'no_pengajuan': no_pengajuan, 'pemohon': pemohon_, 'jenis_pengajuan': jenis_pengajuan, 'jenis_izin':jenis_izin, 'perusahaan': perusahaan_, 'ktp': ktp, 'alamat_pemohon':alamat_pemohon, 'alamat_perusahaan':alamat_perusahaan, 'nilai_investasi': nilai_investasi, 'kategori_kendaraan': kategori_kendaraan, 'kendaraan_jumlah': kendaraan_jumlah, 'kendaraan': kendaraan_, 'created_at':tanggal_dibuat, 'id':pengajuan_.id, 'pengajuan_':pengajuan_, 'syarat': syarat_})
+            syarat_ = Syarat.objects.filter(jenis_izin__kode="IUA")
+            extra_context.update({ 'nilai_investasi': nilai_investasi, 'kategori_kendaraan': kategori_kendaraan, 'kendaraan_jumlah': kendaraan_jumlah, 'kendaraan': kendaraan_,  'pengajuan_':pengajuan_, 'syarat': syarat_})
     return render(request, "front-end/include/formulir_iua/cetak_bukti_pendaftaran.html", extra_context)

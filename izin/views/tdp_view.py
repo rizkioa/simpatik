@@ -1384,30 +1384,25 @@ def ajax_konfirmasi_tdp(request, pengajuan_id):
 				telephone_kuasa = pengajuan_.telephone_kuasa
 			data_kuasa = {'kuasa': {'nama_kuasa':nama_kuasa, 'no_identitas_kuasa':no_identitas_kuasa, 'telephone_kuasa':telephone_kuasa}}
 			if pemohon_:
-				ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=1).last()
-				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pemohon_.id, jenis_identitas_id=2).last()
 				jenis_pemohon = pemohon_.jenis_pemohon.jenis_pemohon
 				nama_lengkap_pemohon = pemohon_.nama_lengkap
 				alamat_lengkap_pemohon = str(pemohon_.alamat)+", "+str(pemohon_.desa.lokasi_lengkap)
 				telephone_pemohon = pemohon_.telephone
 				hp_pemohon = pemohon_.hp
 				email_pemohon = ""
+				nomor_ktp = ""
+				nomor_paspor = ""
 				if pemohon_.email is not None:
 					email_pemohon = str(pemohon_.email)
+					nomor_ktp = pemohon_.get_ktp()
+					nomor_paspor = pemohon_.get_paspor()
 				# print email_pemohon
 					# email_pemohon = ""
 				kewarganegaraan_pemohon = pemohon_.kewarganegaraan
 				pekerjaan_pemohon = pemohon_.pekerjaan
-				nomor_ktp = ""
-				nomor_paspor = ""
-				if 'nomor_ktp' in request.COOKIES.keys():
-					nomor_ktp = request.COOKIES['nomor_ktp']
-				elif ktp_.nomor:
-					nomor_ktp = ktp_.nomor
-				if 'nomor_paspor' in request.COOKIES.keys():
-					nomor_paspor = request.COOKIES['nomor_paspor']
-				elif paspor_.nomor:
-					nomor_paspor = paspor_.nomor
+				
+
+				
 			data_pemohon = {'pemohon': {'jenis_pengajuan': jenis_pengajuan, 'ktp_paspor': nomor_ktp+" / "+nomor_paspor, 'jenis_pemohon': jenis_pemohon, 'nama_lengkap_pemohon': nama_lengkap_pemohon, 'alamat_lengkap_pemohon': alamat_lengkap_pemohon, 'telephone_pemohon': telephone_pemohon, 'hp_pemohon': hp_pemohon, 'email_pemohon': email_pemohon, 'kewarganegaraan_pemohon': kewarganegaraan_pemohon, 'pekerjaan_pemohon': pekerjaan_pemohon}}
 			if perusahaan_:
 				npwp_perusahaan = perusahaan_.npwp
