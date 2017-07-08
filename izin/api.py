@@ -1,22 +1,41 @@
-from mobile.cors import CORSModelResource
+from mobile.cors import CORSModelResource, CORSHttpResponse
 from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
 from master.api import BerkasResource, ParameterBangunanResource, BangunanJenisKontruksiResource
 from tastypie.resources import ALL_WITH_RELATIONS, ALL
-from tastypie.authentication import SessionAuthentication, ApiKeyAuthentication, BasicAuthentication
+from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
+from django.conf.urls import url
+import json
 
 class SKIzinResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
+	masa_berlaku = fields.CharField(attribute="get_masa_berlaku_izin", null=True, blank=True)
 	class Meta:
 		queryset = SKIzin.objects.all()
-		fields = ['id', 'status', 'pengajuan_izin_id']
+		fields = ['id', 'status', 'pengajuan_izin_id', 'masa_berlaku', 'status_pembaharuan_ke', 'nip_pejabat', 'jabatan_pejabat', 'nama_pejabat']
 		filtering = {
 			'pengajuan_izin_id' : ['contains'],
 			'pengajuan_izin': ALL,
 		}
+		authentication = ApiKeyAuthentication()
+
+
+	def prepend_urls(self):
+		return [
+			url(r"^skizin/get-skizin/$", self.wrap_view('get_skizin_'), name="api_skizin_get_skizin"),
+			]
+
+	def get_skizin_(self, request, **kwargs):
+		id_pengajuan = request.GET['id_pengajuan']
+		data = {}
+		if id_pengajuan:
+			skizin_obj = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan).last()
+			if skizin_obj:
+				data = skizin_obj.as_json()
+		return CORSHttpResponse(json.dumps(data))
 
 class PemohonResource(CORSModelResource):
 	ktp = fields.CharField(attribute="get_ktp", null=True, blank=True)
@@ -28,6 +47,10 @@ class PemohonResource(CORSModelResource):
 		excludes = ['is_active', 'is_admin', 'is_superuser', 'updated_at', 'username', 'verified_at', 'status', 'last_login', 'password', 'rejected_at', 'created_at']
 		# allowed_methods = ['get']
 		# fields = ['id', 'nama_lengkap']
+		filtering = {
+			'nama_lengkap': ALL,
+			# 'status': ALL,
+		}
 
 class MerkTypeKendaraanResource(CORSModelResource):
 	class Meta:
@@ -89,9 +112,9 @@ class PengajuanIzinAllResource(CORSModelResource):
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
 		authentication = ApiKeyAuthentication()
 		filtering = {
-			'no_pengajuan': ['contains'],
-			# 'status': ALL,
-		}
+            "no_pengajuan" : ALL,
+            "pemohon" : ALL_WITH_RELATIONS,
+        }
 
 class DetilTDPResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
@@ -109,10 +132,16 @@ class DetilTDPResource(CORSModelResource):
 	jenis_koperasi = fields.CharField(attribute="jenis_koperasi__jenis_koperasi", null=True, blank=True)
 	bentuk_koperasi = fields.CharField(attribute="bentuk_koperasi__bentuk_koperasi", null=True, blank=True)
 	# legalitas = fields.ToManyField(LegalitasResource, '', full = True, null=True)
+	masa_berlaku = fields.CharField(attribute="get_masa_berlaku", null=True, blank=True)
+
 	class Meta:
 		queryset = DetilTDP.objects.all()
 		limit = 10
 		authentication = ApiKeyAuthentication()
+		filtering = {
+            "no_pengajuan" : ALL,
+            "pemohon" : ALL_WITH_RELATIONS,
+        }
 
 class IzinLainResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)

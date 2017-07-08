@@ -328,10 +328,6 @@ class PengajuanIzin(MetaAtribut):
 			verified_at = self.verified_at.strftime('%d-%m-%Y')
 		return dict(jenis_permohonan=jenis_permohonan, pemohon=pemohon, kelompok_jenis_izin=kelompok_jenis_izin, no_pengajuan=no_pengajuan, no_izin=no_izin, nama_kuasa=nama_kuasa, telephone_kuasa=telephone_kuasa, berkas_tambahan=berkas_tambahan_json, verified_at=verified_at)
 
-	# def get_berkas(self):
-		
-
-
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
 		verbose_name = 'Pengajuan Izin'
@@ -485,6 +481,12 @@ class SKIzin(MetaAtribut):
 	body_html = RichTextField(null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
 
+	def get_masa_berlaku_izin(self):
+		masa_berlaku_izin = ''
+		if self.masa_berlaku_izin:
+			masa_berlaku_izin = self.masa_berlaku_izin.strftime('%d-%m-%Y')
+		return str(masa_berlaku_izin)
+
 	def as_json(self):
 		nama_pejabat = '-'
 		if self.nama_pejabat:
@@ -510,7 +512,10 @@ class SKIzin(MetaAtribut):
 		keterangan = ''
 		if self.keterangan:
 			keterangan = self.keterangan
-		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan, keterangan=keterangan)
+		created_at = ''
+		if self.created_at:
+			created_at = self.created_at.strftime('%d-%m-%Y')
+		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan, keterangan=keterangan, created_at=created_at)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
@@ -795,6 +800,25 @@ class DetilTDP(PengajuanIzin):
 			desa_unit_produksi = self.desa_unit_produksi.lokasi_lengkap()
 
 		return dict(status_perusahaan=status_perusahaan, jenis_badan_usaha=jenis_badan_usaha, bentuk_kerjasama=bentuk_kerjasama, jumlah_bank=jumlah_bank, nasabah_utama_bank_1=nasabah_utama_bank_1, nasabah_utama_bank_2=nasabah_utama_bank_2, jenis_penanaman_modal=jenis_penanaman_modal, tanggal_pendirian=tanggal_pendirian, tanggal_mulai_kegiatan=tanggal_mulai_kegiatan, jangka_waktu_berdiri=self.jangka_waktu_berdiri, alamat_unit_produksi=self.alamat_unit_produksi, desa_unit_produksi=desa_unit_produksi, merek_dagang=self.merek_dagang, no_merek_dagang=self.no_merek_dagang, pemegang_hak_cipta=self.pemegang_hak_cipta)
+
+	def get_skizin(self):
+		skizin = None
+		skizin_obj = self.skizin_set.last()
+		if skizin_obj:
+			skizin = skizin_obj
+		return skizin
+
+	def get_masa_berlaku(self):
+		masa_berlaku = ''
+		if self.get_skizin():
+			masa_berlaku = self.get_skizin().get_masa_berlaku_izin()
+		return masa_berlaku
+
+	def get_skizin_as_json():
+		json = {}
+		if self.get_skizin():
+			json = self.get_skizin().as_json()
+		return json
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]

@@ -12,7 +12,7 @@ def load_izin_iua(request):
 		detil_iua = DetilIUA.objects.filter(no_izin=nomor_izin_iua).last()
 		if detil_iua and detil_iua is not None:
 			pengajuan_obj = DetilTrayek.objects.filter(id=request.COOKIES['id_pengajuan']).last()
-			print pengajuan_obj
+			# print pengajuan_obj
 			detil_iua_no_izin = detil_iua.no_izin
 			data = {'success': True, 'pesan': 'No Izin Terdaftar.', 'data': detil_iua}
 

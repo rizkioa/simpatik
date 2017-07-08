@@ -250,7 +250,6 @@ class PengajuanIzinResource(CORSModelResource):
 		return data
 	##################### TDP #################
 
-
 	def get_detil_siup(self, request, **kwargs):
 		print request.user
 		id_pengajuan = request.GET['id_pengajuan']

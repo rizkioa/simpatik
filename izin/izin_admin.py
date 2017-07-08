@@ -799,14 +799,7 @@ class IzinAdmin(admin.ModelAdmin):
 						# print request.user.id
 						# print pejabat.nama_lengkap
 						obj_skizin.status = 9
-						gelar_depan = ""
-						gelar_belakang = ""
-						if pejabat.gelar_depan:
-							gelar_depan = pejabat.gelar_depan
-						if pejabat.gelar_belakang:
-							gelar_belakang = pejabat.gelar_belakang
-						nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-						obj_skizin.nama_pejabat = nama_pejabat
+						obj_skizin.nama_pejabat = str(pejabat.get_full_name())
 						obj_skizin.nip_pejabat = str(pejabat.username)
 						if pejabat.jabatan:
 							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
@@ -843,14 +836,7 @@ class IzinAdmin(admin.ModelAdmin):
 								n = ''.join(detil_pembayaran.jumlah_pembayaran.split('.')[::1])
 								if int(n) > 2000000:
 									obj_skizin.status = 12
-									gelar_depan = ""
-									gelar_belakang = ""
-									if pejabat.gelar_depan:
-										gelar_depan = pejabat.gelar_depan
-									if pejabat.gelar_belakang:
-										gelar_belakang = pejabat.gelar_belakang
-									nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-									obj_skizin.nama_pejabat = nama_pejabat
+									obj_skizin.nama_pejabat = str(pejabat.get_full_name())
 									obj_skizin.nip_pejabat = str(pejabat.username)
 									if pejabat.jabatan:
 										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
@@ -877,14 +863,7 @@ class IzinAdmin(admin.ModelAdmin):
 									}
 								else:
 									obj_skizin.status = 9
-									gelar_depan = ""
-									gelar_belakang = ""
-									if pejabat.gelar_depan:
-										gelar_depan = pejabat.gelar_depan
-									if pejabat.gelar_belakang:
-										gelar_belakang = pejabat.gelar_belakang
-									nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-									obj_skizin.nama_pejabat = nama_pejabat
+									obj_skizin.nama_pejabat = str(pejabat.get_full_name())
 									obj_skizin.nip_pejabat = str(pejabat.username)
 									if pejabat.jabatan:
 										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
@@ -915,14 +894,7 @@ class IzinAdmin(admin.ModelAdmin):
 									}
 						else:
 							obj_skizin.status = 12
-							gelar_depan = ""
-							gelar_belakang = ""
-							if pejabat.gelar_depan:
-								gelar_depan = pejabat.gelar_depan
-							if pejabat.gelar_belakang:
-								gelar_belakang = pejabat.gelar_belakang
-							nama_pejabat = str(gelar_depan)+" "+str(pejabat.nama_lengkap)+" "+str(gelar_belakang)
-							obj_skizin.nama_pejabat = nama_pejabat
+							obj_skizin.nama_pejabat = str(pejabat.get_full_name())
 							obj_skizin.nip_pejabat = str(pejabat.username)
 							if pejabat.jabatan:
 								obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
