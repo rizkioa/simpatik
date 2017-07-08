@@ -66,6 +66,7 @@ def informasi_kekayaan_daerah_save_cookie(request):
 					response = HttpResponse(json.dumps(data))
 			else:
 				data = informasikekayaan.errors.as_json()
+				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
 			response = HttpResponse(json.dumps(data))
