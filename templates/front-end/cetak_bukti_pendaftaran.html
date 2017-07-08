@@ -214,44 +214,7 @@
                     </tr>
                 </table>
                 {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon_.html' %}
-                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
-                <table class="font" width="100%">
-                    <tr>
-                        <td width="25%">NPWP</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.perusahaan.npwp }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nama Perusahaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.perusahaan.nama_perusahaan }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Alamat Perusahaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Kode Pos</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.perusahaan.kode_pos }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Telp</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.perusahaan.telepon }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Fax</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pengajuan.perusahaan.fax }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Email</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{% if pengajuan.perusahaan.email %}{{ pengajuan.perusahaan.email }}{% endif %}</td>
-                    </tr>
-                </table>
+                {% include 'front-end/include/cetak_bukti_pendaftaran/perusahaan.html' %}
                 <h5><u>DATA SIUP</u></h5>
                 <table class="font" width="100%">
                     <tr>

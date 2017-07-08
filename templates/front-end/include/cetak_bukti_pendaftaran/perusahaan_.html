@@ -1,0 +1,38 @@
+<h5>IDENTITAS PERUSAHAAN</h5>
+<table class="font" width="100%">
+    <tr>
+        <td width="25%">NPWP</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.npwp}}</td>
+    </tr>
+    <tr>
+        <td width="25%">Nama Perusahaan</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.nama_perusahaan}}</td>
+    </tr>
+    <tr>
+        <td width="25%">Alamat Perusahaan</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.alamat_perusahaan}}, {{pengajuan_.perusahaan.desa.lokasi_lengkap}}</td>
+    </tr>
+    <tr>
+        <td width="25%">Kode Pos</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.kode_pos}}</td>
+    </tr>
+    <tr>
+        <td width="25%">No. Telp</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.telepon}}</td>
+    </tr>
+    <tr>
+        <td width="25%">No. Fax</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.fax}}</td>
+    </tr>
+    <tr>
+        <td width="25%">Email</td>
+        <td width="10%">:</td>
+        <td width="65%">{{pengajuan_.perusahaan.email|default_if_none:"-"}}</td>
+    </tr>
+</table>
