@@ -228,34 +228,34 @@
                   <tr>
                     <td>Nama Pemohon</td>
                     <td>:</td>
-                    <td>{{ pemohon }}</td>
+                    <td>{{ pengajuan.pemohon.nama_lengkap }}</td>
                   </tr>
                   <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td>{{ alamat_pemohon }}</td>
+                    <td>{{ pengajuan.pemohon.alamat }}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Perusahaan</td>
                     <td>:</td>
-                    <td>{{ perusahaan }}</td>
+                    <td>{{ pengajuan.perusahaan.nama_perusahaan }}</td>
                   </tr>
                   <tr>
                     <td>Alamat Perusahaan</td>
                     <td>:</td>
-                    <td>{{ alamat_perusahaan }}</td>
+                    <td>{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
                   </tr>
                   <tr>
                     <td>Dibuat tanggal</td>
                     <td>:</td>
-                    <td>{{ created_at|date:"d F Y" }} {{ created_at|time:"H:i" }}</td>
+                    <td>{{ pengajuan.created_at|date:"d F Y" }} {{ pengajuan.created_at|time:"H:i" }}</td>
                   </tr>
                 </table>
                 <br>
-                <h4><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h4>
+                <h4><font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d F Y" }}</font></h4>
                 <div class="row">
                   <div class="col-md-6 col-md-offset-3" align="center">
-                    <a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_informasi_kekayaan_daerah' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-primary btn-lg btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-print"></i> <span>Cetak Formulir Pengajuan</span></a>
+                    <a href="{% url 'cetak_bukti_pendaftaran_informasi_kekayaan_daerah' pengajuan.id  %}" target="_blank" class="btn btn-primary btn-lg btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-print"></i> <span>Cetak Formulir Pengajuan</span></a>
                   </div>
                 </div>
               </div>
@@ -265,65 +265,6 @@
         <br>
         <br>
         <br>
-        {% if riwayat %}
-        <div class="row" style="margin-top: -48px;">
-          <div class="col-md-12">
-            <center>
-              <h1 class="custom-font">Timeline Riwayat Pendaftaran</h1>
-            </center>
-            <hr class="style14">
-            <div style="display:inline-block;width:100%;overflow-y:auto;margin-top: -110px;">
-              <ul class="timeline timeline-horizontal">
-                {% for r in riwayat %}
-                  <li class="timeline-item">
-                    <div class="timeline-badge primary"><i class="glyphicon glyphicon-check"></i></div>
-                    <div class="timeline-panel">
-                      <!-- <div class="timeline-heading">
-                        <h4 class="timeline-title">{{ r.pengajuan_izin.no_pengajuan }}</h4>
-                        <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ r.created_at }}</small></p>
-                      </div> -->
-                      <div class="timeline-body">
-                        <p>{{ created_at|date:"d F Y" }} {{ created_at|time:"H:i" }}<br>{{ r.keterangan }}</p>
-                      </div>
-                    </div>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <td>No. Pengajuan</td>
-                    <td>Kelompok Jenis Izin</td>
-                    <td>Keterangan</td>
-                    <td>Penanggung Jawab</td>
-                    <td>Tanggal Proses</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% if riwayat %}
-                    {% for r in riwayat %}
-                      <tr>
-                        <td>{{ r.pengajuan_izin.no_pengajuan }}</td>
-                        <td>{{ r.pengajuan_izin.kelompok_jenis_izin.jenis_izin }}</td>
-                        <td>{{ r.keterangan }}</td>
-                        <td>{{ r.created_by }}</td>
-                        <td>{{ r.created_at }}</td>
-                      </tr>
-                    {% endfor %}
-                  {% endif %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        
-        {% endif %}
       </div>
     </section>
   </div>

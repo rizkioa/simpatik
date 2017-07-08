@@ -31,7 +31,7 @@ from accounts.utils import KETERANGAN_PEKERJAAN
 def formulir_kekayaan(request, extra_context={}):
 	jenis_pemohon = JenisPemohon.objects.all()
 	negara = Negara.objects.all()
-	kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+	kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 
 	extra_context.update({'negara': negara})
 	extra_context.update({'kecamatan': kecamatan})
