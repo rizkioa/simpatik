@@ -543,7 +543,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def option_namaizin(self, request):	
 		jenis_izin = request.POST.get('param', None)
 		if jenis_izin:
-			jenisizin_list = JenisIzin.objects.filter(jenis_izin=jenis_izin)
+			jenisizin_list = JenisIzin.objects.filter(jenis_izin=jenis_izin, akrif=True)
 		else:
 			jenisizin_list = JenisIzin.objects.none()
 		pilihan = "<option></option>"
