@@ -330,7 +330,8 @@ function load_data_informasi_kekayaan(id_pengajuan){
     $.ajax({
       url: __base_url__+'/pemakaian-kekayaan-daerah/load/'+id_pengajuan,    
       success: function (response){
-        respon = $.parseJSON(response)  
+        respon = $.parseJSON(response) 
+        console.log(respon) 
         if (respon.success){
             $('#id_lokasi').val(respon.data.id_lokasi)
             if (respon.data.id_kecamatan != "") {

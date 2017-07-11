@@ -1,11 +1,22 @@
-
-$('#id_ktp').val('{{ ktp.nomor }}')
-$('#id_paspor').val('{{ paspor.nomor }}')
+//alert('{{pengajuan_}}')
+$('#id_ktp').val('{{ pengajuan_.pemohon.get_ktp }}')
+$('#id_paspor').val('{{ pengajuan_.pemohon.get_paspor }}')
 $('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
 $('#id_jenis_pemohon').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
 
-if (parseInt($.cookie('id_pemohon')) > 0){
-	load_pemohon('{{ ktp.nomor }}')
+if ('{{ pengajuan_.pemohon }}' !== 'None'){
+	$.cookie('nomor_ktp', '{{ pengajuan_.pemohon.get_ktp }}' , { path: '/' })
+	$.cookie('nomor_paspor', '{{ pengajuan_.pemohon.get_paspor }}' , { path: '/'})
+	$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: '/'})
+}
+else{
+	$.cookie('nomor_ktp', '0' , { path: '/' })
+	$.cookie('nomor_paspor', '0' , { path: '/'})
+	$.cookie('id_pemohon', '0' , { path: '/'})
+}
+
+if('{{pengajuan_.pemohon.get_ktp}}'){
+	load_pemohon('{{ pengajuan_.pemohon.get_ktp }}')
 }
 
 if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
@@ -17,10 +28,16 @@ if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
 		$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
 	}, 1000);
 }
-if (parseInt($.cookie('id_perusahaan')) > 0){
-	$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-	setTimeout(function(){
-		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-	}, 3000);
+
+$('#id_npwp_perusahaan').val('{{pengajuan_.perusahaan.npwp}}')
+
+
+
+if ('{{ pengajuan_.perusahaan }}' !== 'None'){
+	$.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: '/'})
+	$.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: '/' })
 }
-<!-- alert('{{perusahaan_konfirmasi.npwp}}') -->
+else{
+	$.cookie('id_perusahaan', '0' , { path: '/'})
+	$.cookie('npwp_perusahaan', '0' , { path: '/' })
+}

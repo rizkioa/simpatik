@@ -37,8 +37,8 @@ def passes_test_cache(test_func, timeout=None, using=None, key_prefix=None):
 def frontindex(request):
     return render(request, "front-end/index.html")
 
-def page_404(request):
-    return render(request, "error/404.html")
+# def page_404(request):
+#     return render(request, "error/404.html")
 
 def frontlogin(request):
     return render(request, "front-end/login.html")

@@ -59,35 +59,35 @@ urlpatterns = [
     url(r'^layanan/ippt-usaha$', layanan_view.layanan_ippt_usaha, name='layanan_ippt_usaha'),
     # url(r'^layanan/ho-permohonan-baru$', layanan_view.layanan_ho_baru, name='layanan_ho_baru'),
     # url(r'^layanan/ho-daftar-ulang$', layanan_view.layanan_ho_daftar_ulang, name='layanan_ho_daftar_ulang'),
-    url(r'^layanan/sipa-sumur-bor$', layanan_view.layanan_sipa_sumur_bor, name='layanan_sipa_sumur_bor'),
-    url(r'^layanan/sipa-sumur-pasak$', layanan_view.layanan_sipa_sumur_pasak, name='layanan_sipa_sumur_pasak'),
-    url(r'^layanan/izin-pertambangan$', layanan_view.layanan_pertambangan, name='layanan_pertambangan'),
+    # url(r'^layanan/sipa-sumur-bor$', layanan_view.layanan_sipa_sumur_bor, name='layanan_sipa_sumur_bor'),
+    # url(r'^layanan/sipa-sumur-pasak$', layanan_view.layanan_sipa_sumur_pasak, name='layanan_sipa_sumur_pasak'),
+    # url(r'^layanan/izin-pertambangan$', layanan_view.layanan_pertambangan, name='layanan_pertambangan'),
     url(r'^layanan/tdp-pt$', layanan_view.layanan_tdp_pt, name='layanan_tdp_pt'),
     url(r'^layanan/tdp-cv$', layanan_view.layanan_tdp_cv, name='layanan_tdp_cv'),
     url(r'^layanan/tdp-firma$', layanan_view.layanan_tdp_firma, name='layanan_tdp_firma'),
     url(r'^layanan/tdp-perorangan$', layanan_view.layanan_tdp_perorangan, name='layanan_tdp_perorangan'),
     url(r'^layanan/tdp-koperasi$', layanan_view.layanan_tdp_koperasi, name='layanan_tdp_koperasi'),
     url(r'^layanan/tdp-bul$', layanan_view.layanan_tdp_bul, name='layanan_tdp_bul'),
-    url(r'^layanan/tdp-cabang$', layanan_view.layanan_tdp_baru_cabang, name='layanan_tdp_cabang'),
-    url(r'^layanan/tdp-daftar-ulang$', layanan_view.layanan_tdp_daftar_ulang, name='layanan_tdp_daftar_ulang'),
+    # url(r'^layanan/tdp-cabang$', layanan_view.layanan_tdp_baru_cabang, name='layanan_tdp_cabang'),
+    # url(r'^layanan/tdp-daftar-ulang$', layanan_view.layanan_tdp_daftar_ulang, name='layanan_tdp_daftar_ulang'),
     url(r'^layanan/reklame$', layanan_view.layanan_reklame, name='layanan_reklame'),
     url(r'^layanan/pemakaian-kekayaan$', layanan_view.layanan_kekayaan, name='layanan_kekayaan'),
     url(r'^layanan/penggilingan-padi-&-huller$', layanan_view.layanan_huller, name='layanan_huller'),
     url(r'^layanan/imb-umum$', layanan_view.layanan_imb_umum, name='layanan_imb_umum'),
     url(r'^layanan/imb-perumahan$', layanan_view.layanan_imb_perumahan, name='layanan_imb_perumahan'),
     url(r'^layanan/imb-reklame$', layanan_view.layanan_imb_reklame, name='layanan_imb_reklame'),
-    url(r'^layanan/izin-prinsip-penanaman-modal$', layanan_view.layanan_izin_prinsip_penanaman_modal, name='layanan_izin_prinsip_penanaman_modal'),
-    url(r'^layanan/izin-prinsip-perluasan-penanaman-modal$', layanan_view.layanan_izin_prinsip_perluasan_penanaman_modal, name='layanan_izin_prinsip_perluasan_penanaman_modal'),
-    url(r'^layanan/izin-prinsip-perubahan-penanaman-modal$', layanan_view.layanan_izin_prinsip_perubahan_penanaman_modal, name='layanan_izin_prinsip_perubahan_penanaman_modal'),
-    url(r'^layanan/izin-usaha-dan-izin-usaha-perluasan-penanaman-modal$', layanan_view.layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal, name='layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal'),
-    url(r'^layanan/izin-usaha-perubahan-penanaman-modal$', layanan_view.layanan_izin_usaha_perubahan_penanaman_modal, name='layanan_izin_usaha_perubahan_penanaman_modal'),
-    url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
+    # url(r'^layanan/izin-prinsip-penanaman-modal$', layanan_view.layanan_izin_prinsip_penanaman_modal, name='layanan_izin_prinsip_penanaman_modal'),
+    # url(r'^layanan/izin-prinsip-perluasan-penanaman-modal$', layanan_view.layanan_izin_prinsip_perluasan_penanaman_modal, name='layanan_izin_prinsip_perluasan_penanaman_modal'),
+    # url(r'^layanan/izin-prinsip-perubahan-penanaman-modal$', layanan_view.layanan_izin_prinsip_perubahan_penanaman_modal, name='layanan_izin_prinsip_perubahan_penanaman_modal'),
+    # url(r'^layanan/izin-usaha-dan-izin-usaha-perluasan-penanaman-modal$', layanan_view.layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal, name='layanan_izin_usaha_dan_izin_usaha_perluasan_penanaman_modal'),
+    # url(r'^layanan/izin-usaha-perubahan-penanaman-modal$', layanan_view.layanan_izin_usaha_perubahan_penanaman_modal, name='layanan_izin_usaha_perubahan_penanaman_modal'),
+    # url(r'^layanan/izin-usaha-penggabungan-penanaman-modal$', layanan_view.layanan_izin_usaha_penggabunggan_penanaman_modal, name='layanan_izin_usaha_penggabunggan_penanaman_modal'),
     url(r'^layanan/iujk$', layanan_view.layanan_iujk, name='layanan_iujk'),
     url(r'^layanan/tdup$', layanan_view.layanan_tdup, name='layanan_tdup'),
     url(r'^layanan/izin-parkir$', layanan_view.layanan_izin_parkir, name='layanan_izin_parkir'),
 
     
-    url(r'^404/', views.page_404, name='404'),
+    # url(r'^404/', views.page_404, name='404'),
     url(r'^tentang/$', views.tentang, name='tentang'),
     url(r'^layanan/$', views.layanan, name='layanan'),
     url(r'^call-center/$', views.call_center, name='call_center'),
@@ -106,8 +106,6 @@ urlpatterns = [
     url(r'^layanan/tdp-koperasi/formulir$', views.formulir_tdp_koperasi, name='formulir_tdp_koperasi'),
     url(r'^layanan/tdp-bul/formulir$', views.formulir_tdp_bul, name='formulir_tdp_bul'),
     url(r'^layanan/tdup/formulir$', views.formulir_tdup, name='formulir_tdup'),
-
-
     url(r'^layanan/izin-parkir/formulir$', views.formulir_izin_parkir, name='formulir_izin_parkir'),
 
 
@@ -183,7 +181,6 @@ urlpatterns = [
     url(r'^layanan/tdp-bul/formulir/cetak/(?P<id_pengajuan_>[0-9]+)$', views.cetak_tdp_bul, name='cetak_tdp_bul'),
     url(r'^layanan/tdp-bul/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)$', views.cetak_bukti_pendaftaran_tdp_bul, name='cetak_bukti_pendaftaran_tdp_bul'),
 
-
     # url for ajax siup
     url(r'^layanan/siup/pemohon/save/$', siup_view.siup_identitas_pemohon_save_cookie, name='siup_pemohon_save'),
     url(r'^layanan/siup/identitasperusahaan/save/$', siup_view.siup_identitas_perusahan_save_cookie, name='siup_identitas_perusahan_save'),
@@ -202,8 +199,6 @@ urlpatterns = [
     url(r'^layanan/siup/save/$', siup_view.siup_done , name='siup_done'),
     url(r'^load-pemohon/(?P<ktp_>[0-9A-Za-z_\-]+)$', siup_view.load_pemohon , name='load_pemohon'),
     url(r'^load-perusahaan/(?P<npwp_>[0-9A-Za-z_\-.]+)$', siup_view.load_perusahaan , name='load_perusahaan'),
-    # End
-    # 
     # ++++++++++++++++++++++++ for ajax reklame ++++++++++++++++++++++
     url(r'^layanan/reklame/detilreklame/save/$', reklame_view.reklame_detilreklame_save_cookie, name='reklame_detilreklame_save'),
     url(r'^layanan/reklame/detilreklame/permanen/save/$', reklame_view.reklame_detilreklame_permanen_save_cookie, name='reklame_detilreklame_permanen_save'),
@@ -256,18 +251,15 @@ urlpatterns = [
     # +++++++ end ajax save tdp pt +++++++
 
     # ++++++++++++++++++++++++ for ajax IMB reklame ++++++++++++++++++++++
-
     url(r'^layanan/imbreklame/save/$', imb_reklame.reklame_imbreklame_save_cookie, name='reklame_imbreklame_save'),
     url(r'^imbreklame/load/(?P<id_pengajuan>[0-9]+)$', imb_reklame.load_data_reklame_imbreklame, name='load_data_reklame_imbreklame'),
     url(r'^imbreklame/berkas/save/$', imb_reklame.imbreklame_upload_berkas_pendukung, name='reklame_imbreklame_berkaspendukung'),
     url(r'^ajax-load-berkas-imb-reklame/(?P<id_pengajuan>[0-9]+)$', imb_reklame.ajax_load_berkas_imbreklame, name='ajax_load_berkas_imbreklame'),
     url(r'^ajax-delete-berkas-imb-reklame-upload/(?P<id_berkas>[0-9]+)$', imb_reklame.ajax_delete_berkas_imbreklame, name='ajax_delete_berkas_imbreklame'),
     url(r'^layanan/imbreklame/selesai/$', imb_reklame.imb_reklame_done , name='imb_reklame_done'),
-
     # ++++++++++++++++++++++++ end for ajax IMB reklame ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax IMB UMUM ++++++++++++++++++++++
-
     url(r'^layanan/imb-umum/formulir$', imb_umum.formulir_imb_umum, name='formulir_imb_umum'),
     url(r'^layanan/imbumum/save/$', imb_umum.imb_save_cookie, name='imb_save'),
     url(r'^layanan/parameterbangunan/save/$', imb_umum.parameter_bangunan_save_cookie, name='parameter_bangunan_save'),
@@ -287,14 +279,9 @@ urlpatterns = [
     url(r'^layanan/imb-perumahan/formulir$', imb_perumahan.formulir_imb_perumahan, name='formulir_imb_perumahan'),
     url(r'^layanan/identifikasijalan/save/$', imb_perumahan.identifikasi_jalan_save_cookie, name='identifikasi_jalan_save'),
     url(r'^layanan/identifikasi-jalan-pembuat-surat/edit/$', imb_perumahan.identifikasi_jalan_pembuat_surat_save_cookie, name='identifikasi_jalan_pembuat_surat_save'),
-
-
-
     url(r'^imbperumahan/berkas/save/$', imb_perumahan.imbperumahan_upload_berkas_pendukung, name='imbperumahan_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-imb-perumahan/(?P<id_pengajuan>[0-9]+)$', imb_perumahan.ajax_load_berkas_imbperumahan, name='ajax_load_berkas_imbperumahan'),
-    
     url(r'^imb/sk/save/$', detil_sk_imb.detil_sk_imb_save, name='detil_sk_imb_save'),
-   
      # ++++++++++++++++++++++++ end for ajax IMB PERUMAHAN ++++++++++++++++++++++
     url(r'^get-nilai-parameter$', views.get_nilai_parameter, name='get_nilai_parameter'),
     
@@ -305,9 +292,7 @@ urlpatterns = [
     url(r'^pemakaian-kekayaan-daerah/berkas/save/$', informasi_kekayaan_daerah.informasi_kekayaan_daerah_upload_berkas_pendukung, name='informasi_kekayaan_daerah_upload_berkas_pendukung'),
     url(r'^ajax-load-berkas-pemakaian-kekayaan-daerah/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.ajax_load_berkas_informasi_kekayaan_daerah, name='ajax_load_berkas_informasi_kekayaan_daerah'),
     url(r'^layanan/pemakaian-kekayaan-daerah/konfirmasi/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_konfirmasi_informasi_kekayaan_daerah , name='load_konfirmasi_informasi_kekayaan_daerah'),
-    url(r'^pemakaian-kekayaan-daerah/load/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_informasi_kekayaan_daerah, name='load_informasi_kekayaan_daerah'),
-
-    
+    url(r'^pemakaian-kekayaan-daerah/load/(?P<id_pengajuan>[0-9]+)$', informasi_kekayaan_daerah.load_informasi_kekayaan_daerah, name='load_informasi_kekayaan_daerah'),    
     # ++++++++++++++++++++++++ end for ajax Informasi Kekayaan Daerah  ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Detil HO ++++++++++++++++++++++
@@ -318,7 +303,6 @@ urlpatterns = [
     url(r'^ajax-load-berkas-ho/(?P<id_pengajuan>[0-9]+)$', detilho_view.ajax_load_berkas_detilho, name='ajax_load_berkas_detilho'),
     url(r'^layanan/ho/selesai/$', detilho_view.detilho_done , name='detilho_done'),
     url(r'^ho/load/(?P<id_pengajuan>[0-9]+)$', detilho_view.load_detilho, name='load_detilho'),
-
     # ++++++++++++++++++++++++ end for ajax Detil HO  ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax Izin Lokasi ++++++++++++++++++++++
@@ -337,7 +321,6 @@ urlpatterns = [
     # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
     url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
     url(r'^informasitanah/load/(?P<id_pengajuan>[0-9]+)$', ippt_rumah.load_informasi_tanah, name='load_informasi_tanah'),
-
     # ++++++++++++++++++++++++ end for ajax IPPT Rumah ++++++++++++++++++++++
 
     # ++++++++++++++++++++++++ for ajax IPPT Usaha ++++++++++++++++++++++
@@ -354,7 +337,6 @@ urlpatterns = [
     url(r'^layanan/ippt-usaha/formulir$', ippt_usaha.formulir_ippt_usaha, name='formulir_ippt_usaha'),
 
     #Penggunaan Tanah
-
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/save$', ippt_usaha.informasi_penggunaan_tanah_sekarang_save_cookie, name='informasi_penggunaan_tanah_sekarang_save'),
     url(r'^ippt-usaha/pengunaan-tanah-sekarang/load/(?P<id_pengajuan>[0-9]+)$', ippt_usaha.load_data_penggunaan_tanah_ipptusaha, name='load_data_penggunaan_tanah_ipptusaha'),
     url(r'^layanan/ippt-usaha/pengunaan-tanah-sekarang/delete/(?P<id_penggunaan_tanah>[0-9]+)$', ippt_usaha.delete_informasi_penggunaan_tanah_sekarang, name='delete_informasi_penggunaan_tanah_sekarang'),

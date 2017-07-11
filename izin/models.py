@@ -185,6 +185,7 @@ class JenisIzin(models.Model):
 	nama_izin = models.CharField(max_length=100, verbose_name='Nama Izin')
 	jenis_izin = models.CharField(max_length=20, verbose_name='Jenis Izin', choices=JENIS_IZIN, default=1)
 	keterangan = models.CharField(max_length=255,null=True, blank=True, verbose_name='Keterangan')
+	aktif = models.BooleanField(verbose_name="Apakah izin ini aktif ?", default=True)
 	
 	def as_option(self):
 		return "<option value='"+str(self.kode)+"'>"+str(self.nama_izin)+"</option>"
@@ -205,6 +206,7 @@ class KelompokJenisIzin(models.Model):
 	standart_waktu = models.PositiveSmallIntegerField(verbose_name='Standar Waktu (Berapa Hari?)', null=True, blank=True,)
 	masa_berlaku = models.PositiveSmallIntegerField(verbose_name='Masa Berlaku (Berapa Tahun?)', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+	aktif = models.BooleanField(verbose_name="Apakah izin ini aktif ?", default=True)
 
 	def __unicode__(self):
 		return "%s" % (self.kelompok_jenis_izin)
@@ -960,7 +962,7 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 	# lebar = models.DecimalField(max_digits=5, decimal_places=2,default=0 ,verbose_name='Lebar')
 	# panjang = models.DecimalField(max_digits=5, decimal_places=2,default=0, verbose_name='Panjang')
 	jenis_penggunaan = models.CharField(verbose_name='Jenis Penggunaan', choices=JENIS_PENGGUNAAN, max_length=10, null=True, blank=True)
-	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas')
+	luas = models.DecimalField(max_digits=8, decimal_places=2, default=0, verbose_name='Luas')
 	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
 
 	def __unicode__(self):

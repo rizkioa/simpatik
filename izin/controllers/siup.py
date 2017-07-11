@@ -46,7 +46,7 @@ def add_wizard_siup(request):
 			# else:
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
 			try:
-				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_)
+				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_, aktif=True)
 				if len(id_kelompok_list) > 1:
 					id_kelompok_ = request.POST.get('kelompok_izin')
 					id_kelompok_list = KelompokJenisIzin.objects.filter(id=id_kelompok_).last()

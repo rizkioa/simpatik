@@ -3,7 +3,7 @@ from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggo
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
-from master.api import BerkasResource, ParameterBangunanResource, BangunanJenisKontruksiResource
+from master.api import BerkasResource, ParameterBangunanResource, BangunanJenisKontruksiResource, DesaResource
 from tastypie.resources import ALL_WITH_RELATIONS, ALL
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
@@ -206,6 +206,7 @@ class InformasiKekayaanDaerahResource(CORSModelResource):
 	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	desa = fields.ToOneField(DesaResource, 'desa', full = True, null=True)
 	
 	class Meta:
 		queryset = InformasiKekayaanDaerah.objects.all()

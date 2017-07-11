@@ -557,7 +557,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def option_kelompokjenisizin(self, request):
 		kode_jenis_izin = request.POST.get('param', None)
 		if kode_jenis_izin:
-			kelompokjenisizin_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_jenis_izin)
+			kelompokjenisizin_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_jenis_izin, aktif=True)
 		else:
 			kelompokjenisizin_list = KelompokJenisIzin.objects.none()
 		pilihan = "<option></option>"

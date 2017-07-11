@@ -22,7 +22,7 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, InformasiKekayaanDaerah,Pemohon
+from izin.models import PengajuanIzin, InformasiKekayaanDaerah, Pemohon
 from izin.utils import STATUS_HAK_TANAH,JENIS_PENGGUNAAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,InformasiKekayaanDaerahForm
@@ -39,6 +39,19 @@ def formulir_kekayaan(request, extra_context={}):
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
 	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
 	extra_context.update({'jenis_penggunaan_list': JENIS_PENGGUNAAN })
+	# print request.COOKIES['id_pengajuan']
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != "" and request.COOKIES['id_pengajuan'] != "0":
+			try:
+				kekayaan_obj = InformasiKekayaanDaerah.objects.get(id=request.COOKIES['id_pengajuan'])
+				print kekayaan_obj
+				print "###############"
+				print request.COOKIES['id_pengajuan']
+				print "###############"
+				if kekayaan_obj:
+					extra_context.update({'pengajuan_': kekayaan_obj })
+			except ObjectDoesNotExist:
+				pass
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
@@ -133,19 +146,24 @@ def load_informasi_kekayaan_daerah(request,id_pengajuan):
 def load_konfirmasi_informasi_kekayaan_daerah(request,id_pengajuan):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = InformasiKekayaanDaerah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-			luas = str(pengajuan_.luas)
-			penggunaan = pengajuan_.penggunaan
-			lokasi = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			pengajuan_ = InformasiKekayaanDaerah.objects.filter(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan']).last()
+			if pengajuan_:
+				luas = str(pengajuan_.luas)
+				penggunaan = pengajuan_.penggunaan
+				lokasi = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 
-
-			data = {'success': True,
-					'data': [
-					{'luas': luas},
-					{'penggunaan': penggunaan},
-					{'lokasi': lokasi},
-					]}
-			response = HttpResponse(json.dumps(data))
+				data = {'success': True,
+						'data': [
+						{'luas': luas},
+						{'penggunaan': penggunaan},
+						{'lokasi': lokasi},
+						{'jenis_penggunaan': pengajuan_.jenis_penggunaan}
+						]}
+				response = HttpResponse(json.dumps(data))
+			else:
+				data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
 			data = json.dumps(data)

@@ -78,9 +78,21 @@ class DasarHukumAdmin(admin.ModelAdmin):
 admin.site.register(DasarHukum, DasarHukumAdmin)
 
 class JenisIzinAdmin(admin.ModelAdmin):
-	list_display = ('kode','nama_izin','jenis_izin','keterangan')
+	list_display = ('kode', 'nama_izin' , 'jenis_izin', 'keterangan', 'get_aktif')
 	list_filter = ('dasar_hukum','jenis_izin')
 	search_fields = ('kode','nama_izin','jenis_izin', 'dasar_hukum', 'keterangan')
+
+	def get_aktif(self, obj):
+		if obj.aktif == True:
+			btn = mark_safe("""
+				<i class="fa fa-check-circle"></i>
+				""")
+		else:
+			btn = mark_safe("""
+				<i class="fa fa-minus-square"></i>
+				""")
+		return btn
+	get_aktif.short_description = "Aktif"
 
 	def tr_dasar_hukum(self, request, id_jenis_izin):
 		jenis_izin_list = JenisIzin.objects.filter(id=id_jenis_izin)
@@ -138,8 +150,8 @@ class ProsedurAdmin(admin.ModelAdmin):
 admin.site.register(Prosedur, ProsedurAdmin)
 
 class KelompokJenisIzinAdmin(admin.ModelAdmin):
-	list_display = ('kelompok_jenis_izin', 'kode', 'jenis_izin', 'hargabeli', 'standart_waktu', 'keterangan')
-	list_filter = ('biaya', 'standart_waktu', 'jenis_izin')
+	list_display = ('kelompok_jenis_izin', 'kode', 'jenis_izin', 'hargabeli', 'standart_waktu', 'keterangan', 'get_aktif')
+	list_filter = ('aktif', 'biaya', 'standart_waktu', 'jenis_izin')
 	search_fields = ('kelompok_jenis_izin','biaya', 'jenis_izin', 'biaya', 'standart_waktu', 'keterangan')
 
 	def hargabeli(self, obj):
@@ -147,10 +159,19 @@ class KelompokJenisIzinAdmin(admin.ModelAdmin):
 	hargabeli.short_description = 'Biaya'
 	hargabeli.admin_order_field = 'biaya'
 
-	
+	def get_aktif(self, obj):
+		if obj.aktif == True:
+			btn = mark_safe("""
+				<i class="fa fa-check-circle"></i>
+				""")
+		else:
+			btn = mark_safe("""
+				<i class="fa fa-minus-square"></i>
+				""")
+		return btn
+	get_aktif.short_description = "Aktif"
 
 admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
-
 admin.site.register(JenisPermohonanIzin)
 admin.site.register(PenggunaanTanahIPPTUsaha)
 admin.site.register(PerumahanYangDimilikiIPPTUsaha)
