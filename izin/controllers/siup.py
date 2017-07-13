@@ -24,6 +24,7 @@ from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, P
 from izin.izin_forms import PengajuanBaruForm, PemohonForm
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas
+from izin.views.layanan_view import delete_cookie
 
 def add_wizard_siup(request):
 	extra_context = {}
@@ -106,6 +107,7 @@ def add_wizard_siup(request):
 				url_ = "#"
 
 			response = HttpResponseRedirect(url_) # Redirect to url
+			delete_cookie(response)
 			if id_kelompok_list.kode:
 				response.set_cookie(key='kode_kelompok_jenis_izin', value=id_kelompok_list.kode) # to set cookie in browser
 

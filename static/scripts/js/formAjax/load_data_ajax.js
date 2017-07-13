@@ -286,10 +286,13 @@ function load_data_detil_ho(id_pengajuan){
     $.ajax({
       url: __base_url__+'/ho/load/'+id_pengajuan,    
       success: function (response){
-        respon = $.parseJSON(response)  
+        respon = $.parseJSON(response)
+        console.log(respon)
         if (respon.success){
             $('#id_perkiraan_modal').val(respon.data.id_perkiraan_modal)
             $('#id_tujuan_gangguan').val(respon.data.id_tujuan_gangguan)
+            $('#id_no_surat_tanah').val(respon.data.id_surat_tanah)
+            $('#id_tanggal_surat_tanah').val(respon.data.id_tanggal_surat_tanah)
             $('#id_alamat').val(respon.data.id_alamat)
             if (respon.data.id_kecamatan != "") {
               load_desa_data_reklame(respon.data.id_kecamatan)
@@ -313,6 +316,11 @@ function load_data_detil_ho(id_pengajuan){
             $('#id_kekuatan').val(respon.data.id_kekuatan)
             $('#id_luas_ruang_tempat_usaha').val(respon.data.id_luas_ruang_tempat_usaha)
             $('#id_luas_lahan_usaha').val(respon.data.id_luas_lahan_usaha)
+
+            $('#id_batas_utara').val(respon.data.batas_utara)
+            $('#id_batas_selatan').val(respon.data.batas_selatan)
+            $('#id_batas_barat').val(respon.data.batas_barat)
+            $('#id_batas_timur').val(respon.data.batas_timur)
           }      
         },
         error: function(response){

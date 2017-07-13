@@ -152,7 +152,7 @@
                         <tr>
                             <td>
                                 <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
-                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
+                                <font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d F Y" }}</font></h5>
                             </td>
                         </tr>
                     </table>
@@ -184,92 +184,8 @@
                         <td width="65%">{{ pengajuan.jenis_permohonan }}</td>
                     </tr>
                 </table>
-                <h5><u>IDENTITAS PEMOHON</u></h5>
-                <table width="100%" border="0" class="font">
-                    <tr>
-                        <td width="25%">Jenis Pemohon</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nomor KTP/Paspor</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nama</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Alamat</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ alamat_pemohon }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Telp</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.telephone }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. HP</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Email</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Kewarganegaraan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Pekerjaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ pemohon.pekerjaan }}</td>
-                    </tr>
-                </table>
-                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
-                <table class="font" width="100%">
-                    <tr>
-                        <td width="25%">NPWP</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.npwp }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Nama Perusahaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Alamat Perusahaan</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ alamat_perusahaan }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Kode Pos</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.kode_pos }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Telp</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.telepon }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">No. Fax</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{{ perusahaan.fax }}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Email</td>
-                        <td width="10%">:</td>
-                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
-                    </tr>
-                </table>
+                {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon_.html' %}
+                {% include 'front-end/include/cetak_bukti_pendaftaran/perusahaan.html' %}
                 <h5><u>DATA KEGIATAN GANGGUAN</u></h5>
                 <table class="font" width="100%">
                     <tr>
@@ -284,11 +200,6 @@
                 <br>
                 <br>
                 
-                <hr>
-                <i class="font" align="right">
-                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
-                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
-                </i>
             </div>    
         </div>
         <div class="page">
@@ -415,9 +326,6 @@
                 <br>
                 <br>
                 <br>
-                <br>
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
             </div>    
         </div>
 
@@ -447,6 +355,7 @@
                         {% endif %}
                     </tbody>
                 </table>
+                <br>
                 <table border="0" width="100%" style="font-size: 15px;">
                     <tr>
                         <td width="48%" >
@@ -463,8 +372,6 @@
                         </td>
                     </tr>
                 </table>
-                <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
             </div>    
         </div>
     </div>

@@ -40,6 +40,44 @@ def formulir_ho(request, extra_context={}):
     extra_context.update({'negara': negara})
     extra_context.update({'kecamatan': kecamatan})
     extra_context.update({'jenis_pemohon': jenis_pemohon})
+    if 'id_pengajuan' in request.COOKIES.keys():
+      if request.COOKIES['id_pengajuan'] != "":
+        print request.COOKIES['id_pengajuan']
+        try:
+          pengajuan_ = DetilHO.objects.get(id=request.COOKIES['id_pengajuan'])
+          print pengajuan_
+          alamat_ = ""
+          alamat_perusahaan_ = ""
+          if pengajuan_.pemohon:
+            if pengajuan_.pemohon.desa:
+              alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+            extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+            extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+            ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+            extra_context.update({ 'ktp': ktp_ })
+            paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+            extra_context.update({ 'paspor': paspor_ })
+            extra_context.update({'cookie_file_ktp': ktp_.berkas })
+          if pengajuan_.perusahaan:
+            if pengajuan_.perusahaan.desa:
+              alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+str(pengajuan_.perusahaan.desa)+", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan)+", "+str(pengajuan_.perusahaan.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_perusahaan_konfirmasi': alamat_perusahaan_ })
+            extra_context.update({ 'perusahaan_konfirmasi': pengajuan_.perusahaan })
+          # ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M , Tinggi = "+str(int(pengajuan_.tinggi))+" M"
+
+          extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+          extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+          extra_context.update({ 'pengajuan_': pengajuan_ })
+          # extra_context.update({ 'ukuran': ukuran_ })
+
+          if pengajuan_.desa:
+            letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+          else:
+            letak_ = ""
+          extra_context.update({ 'letak': letak_ })
+        except ObjectDoesNotExist:
+          pass
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
         extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
@@ -48,165 +86,161 @@ def formulir_ho(request, extra_context={}):
     return render(request, "front-end/formulir/ho.html", extra_context)
 
 def detilho_save_cookie(request):
-    if 'id_pengajuan' in request.COOKIES.keys():
-        if request.COOKIES['id_pengajuan'] != '':
-            pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-            detilHO = DetilHOForm(request.POST, instance=pengajuan_)
-            if detilHO.is_valid():
-                pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-                pengajuan_.save()
-                data = {'success': True,
-                        'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-                        'data': ['']}
-                data = json.dumps(data)
-                response = HttpResponse(json.dumps(data))
-            else:
-                data = detilHO.errors.as_json()
-        else:
-            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-            data = json.dumps(data)
-    else:
-        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+      detilHO = DetilHOForm(request.POST, instance=pengajuan_)
+      if detilHO.is_valid():
+        pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+        pengajuan_.save()
+        data = {'success': True,
+                'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                'data': ['']}
         data = json.dumps(data)
-    response = HttpResponse(data)
-    return response
+        response = HttpResponse(json.dumps(data))
+      else:
+        data = detilHO.errors.as_json()
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+      data = json.dumps(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+    data = json.dumps(data)
+  response = HttpResponse(data)
+  return response
 
 def detilho_done(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
-      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      pengajuan_.status = 6
-      pengajuan_.save()
-      data = {'success': True, 'pesan': 'Proses Selesai.' }
-      response = HttpResponse(json.dumps(data))
-      response.delete_cookie(key='id_pengajuan') # set cookie 
-      response.delete_cookie(key='id_perusahaan') # set cookie 
-      response.delete_cookie(key='nomor_ktp') # set cookie  
-      response.delete_cookie(key='nomor_paspor') # set cookie 
-      response.delete_cookie(key='id_pemohon') # set cookie 
-      response.delete_cookie(key='id_kelompok_izin') # set cookie
-      response.delete_cookie(key='id_legalitas') # set cookie
-      response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+      try:
+        pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+        pengajuan_.status = 6
+        pengajuan_.save()
+        data = {'success': True, 'pesan': 'Proses Selesai.' }
+        response = HttpResponse(json.dumps(data))
+        response.delete_cookie(key='id_pengajuan') # set cookie 
+        response.delete_cookie(key='id_perusahaan') # set cookie 
+        response.delete_cookie(key='nomor_ktp') # set cookie  
+        response.delete_cookie(key='nomor_paspor') # set cookie 
+        response.delete_cookie(key='id_pemohon') # set cookie 
+        response.delete_cookie(key='id_kelompok_izin') # set cookie
+        response.delete_cookie(key='id_legalitas') # set cookie
+        response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+        response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
+        response.delete_cookie(key='npwp_perusahaan') # set cookie
+      except ObjectDoesNotExist:
+        data = {'success': False, 'pesan': 'Data tidak ditemukan.' }
+        response = HttpResponse(json.dumps(data))
     else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
+      data = {'success': False, 'pesan': 'Data tidak ditemukan.' }
+      response = HttpResponse(json.dumps(data))
   else:
-    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-    data = json.dumps(data)
-    response = HttpResponse(data)
+    data = {'success': False, 'pesan': 'Data tidak ditemukan.' }
+    response = HttpResponse(json.dumps(data))
   return response
 
-def load_detilho(request,id_pengajuan):
+def load_detilho(request, id_pengajuan):
+  data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data tidak ditemukan atau tidak.'}
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
-      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      id_perkiraan_modal = 0
-      if pengajuan_.perkiraan_modal:
-        id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
-      id_tujuan_gangguan = pengajuan_.tujuan_gangguan
-      id_alamat = pengajuan_.alamat
-      id_surat_tanah = pengajuan_.no_surat_tanah
-      if pengajuan_.tanggal_surat_tanah:
-        id_tanggal_surat_tanah = pengajuan_.tanggal_surat_tanah.strftime("%d-%m-%Y")
-      else:
-        id_tanggal_surat_tanah = ""
-      if pengajuan_.desa:
-        id_desa = str(pengajuan_.desa.id)
-        id_kecamatan = str(pengajuan_.desa.kecamatan.id)
-      else:
-        id_desa = ""
-        id_kecamatan = ""
-      id_bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
-      id_proses_produksi = pengajuan_.proses_produksi
-      id_jenis_produksi = pengajuan_.jenis_produksi
-      id_kapasitas_produksi = pengajuan_.kapasitas_produksi
-      id_jumlah_tenaga_kerja = str(pengajuan_.jumlah_tenaga_kerja)
-      id_jumlah_mesin = str(pengajuan_.jumlah_mesin)
-      id_merk_mesin = pengajuan_.merk_mesin
-      id_daya = pengajuan_.daya
-      id_kekuatan = pengajuan_.kekuatan
-      id_luas_ruang_tempat_usaha = str(pengajuan_.luas_ruang_tempat_usaha)
-      id_luas_lahan_usaha = str(pengajuan_.luas_lahan_usaha)
-      id_jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
-      id_jenis_bangunan = pengajuan_.jenis_bangunan
-      id_jenis_gangguan = pengajuan_.jenis_gangguan
+      try:
+        pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+        id_perkiraan_modal = 0
+        if pengajuan_.perkiraan_modal:
+          id_perkiraan_modal = str(pengajuan_.perkiraan_modal)
+        id_tujuan_gangguan = pengajuan_.tujuan_gangguan
+        id_alamat = pengajuan_.alamat
+        id_surat_tanah = pengajuan_.no_surat_tanah
+        if pengajuan_.tanggal_surat_tanah:
+          id_tanggal_surat_tanah = pengajuan_.tanggal_surat_tanah.strftime("%d-%m-%Y")
+        else:
+          id_tanggal_surat_tanah = ""
+        if pengajuan_.desa:
+          id_desa = str(pengajuan_.desa.id)
+          id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+        else:
+          id_desa = ""
+          id_kecamatan = ""
+        id_bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
+        id_proses_produksi = pengajuan_.proses_produksi
+        id_jenis_produksi = pengajuan_.jenis_produksi
+        id_kapasitas_produksi = pengajuan_.kapasitas_produksi
+        id_jumlah_tenaga_kerja = str(pengajuan_.jumlah_tenaga_kerja)
+        id_jumlah_mesin = str(pengajuan_.jumlah_mesin)
+        id_merk_mesin = pengajuan_.merk_mesin
+        id_daya = pengajuan_.daya
+        id_kekuatan = pengajuan_.kekuatan
+        id_luas_ruang_tempat_usaha = str(pengajuan_.luas_ruang_tempat_usaha)
+        id_luas_lahan_usaha = str(pengajuan_.luas_lahan_usaha)
+        id_jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
+        id_jenis_bangunan = pengajuan_.jenis_bangunan
+        id_jenis_gangguan = pengajuan_.jenis_gangguan
 
-      data = {'success': True,
-          'data': {'id_perkiraan_modal': id_perkiraan_modal,'id_tujuan_gangguan': id_tujuan_gangguan,'id_alamat': id_alamat,'id_surat_tanah':id_surat_tanah,'id_tanggal_surat_tanah':id_tanggal_surat_tanah,'id_desa': id_desa,'id_kecamatan': id_kecamatan,'id_bahan_baku_dan_penolong': id_bahan_baku_dan_penolong,'id_proses_produksi': id_proses_produksi,'id_jenis_produksi': id_jenis_produksi,'id_kapasitas_produksi': id_kapasitas_produksi,'id_jumlah_tenaga_kerja': id_jumlah_tenaga_kerja,'id_jumlah_mesin': id_jumlah_mesin,'id_merk_mesin': id_merk_mesin,'id_daya': id_daya,'id_kekuatan': id_kekuatan,'id_luas_ruang_tempat_usaha': id_luas_ruang_tempat_usaha,'id_luas_lahan_usaha': id_luas_lahan_usaha,'id_jenis_lokasi_usaha': id_jenis_lokasi_usaha,'id_jenis_bangunan': id_jenis_bangunan,'id_jenis_gangguan': id_jenis_gangguan}}
-      response = HttpResponse(json.dumps(data))
-    else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
-  else:
-    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-    data = json.dumps(data)
-    response = HttpResponse(data)
+        data = {'success': True, 'pesan': 'Data berhasil diload.',
+            'data': {'id_perkiraan_modal': id_perkiraan_modal,'id_tujuan_gangguan': id_tujuan_gangguan,'id_alamat': id_alamat,'id_surat_tanah':id_surat_tanah,'id_tanggal_surat_tanah':id_tanggal_surat_tanah,'id_desa': id_desa,'id_kecamatan': id_kecamatan,'id_bahan_baku_dan_penolong': id_bahan_baku_dan_penolong,'id_proses_produksi': id_proses_produksi,'id_jenis_produksi': id_jenis_produksi,'id_kapasitas_produksi': id_kapasitas_produksi,'id_jumlah_tenaga_kerja': id_jumlah_tenaga_kerja,'id_jumlah_mesin': id_jumlah_mesin,'id_merk_mesin': id_merk_mesin,'id_daya': id_daya,'id_kekuatan': id_kekuatan,'id_luas_ruang_tempat_usaha': id_luas_ruang_tempat_usaha,'id_luas_lahan_usaha': id_luas_lahan_usaha,'id_jenis_lokasi_usaha': id_jenis_lokasi_usaha,'id_jenis_bangunan': id_jenis_bangunan,'id_jenis_gangguan': id_jenis_gangguan, 'batas_utara': pengajuan_.batas_utara, 'batas_selatan': pengajuan_.batas_selatan, 'batas_barat': pengajuan_.batas_barat, 'batas_timur': pengajuan_.batas_timur}}
+      except ObjectDoesNotExist:
+        pass
+  response = HttpResponse(json.dumps(data))
   return response
 
 def load_konfirmasi_detilho(request,id_pengajuan):
+  data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data tidak ditemukan atau tidak.'}
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
-      pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      perkiraan_modal = str(pengajuan_.perkiraan_modal)
-      tujuan_gangguan = pengajuan_.tujuan_gangguan
-      alamat = pengajuan_.alamat
-      desa = str(pengajuan_.desa)
-      kecamatan = str(pengajuan_.desa.kecamatan)
-      kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
-      bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
-      proses_produksi = pengajuan_.proses_produksi
-      jenis_produksi = pengajuan_.jenis_produksi
-      kapasitas_produksi = pengajuan_.kapasitas_produksi
-      jumlah_tenaga_kerja = str(pengajuan_.jumlah_tenaga_kerja)
-      jumlah_mesin = str(pengajuan_.jumlah_mesin)
-      merk_mesin = pengajuan_.merk_mesin
-      daya = pengajuan_.daya
-      kekuatan = pengajuan_.kekuatan
-      luas_ruang_tempat_usaha = str(pengajuan_.luas_ruang_tempat_usaha)
-      luas_lahan_usaha = str(pengajuan_.luas_lahan_usaha)
-      jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
-      jenis_bangunan = pengajuan_.jenis_bangunan
-      jenis_gangguan = pengajuan_.jenis_gangguan
-      surat_tanah = pengajuan_.no_surat_tanah
-      if pengajuan_.tanggal_surat_tanah:
-        tanggal_surat_tanah = pengajuan_.tanggal_surat_tanah.strftime("%d-%m-%Y")
-      else:
-        tanggal_surat_tanah = ""
-      data = {'success': True,
-          'data': [
-          {'perkiraan_modal': perkiraan_modal},
-          {'tujuan_gangguan': tujuan_gangguan},
-          {'alamat_ho': alamat},
-          {'surat_tanah': surat_tanah},
-          {'tanggal_surat_tanah': tanggal_surat_tanah},
-          {'desa': desa},
-          {'kecamatan': kecamatan},
-          {'kabupaten': kabupaten},
-          {'bahan_baku_dan_penolong': bahan_baku_dan_penolong},
-          {'proses_produksi': proses_produksi},
-          {'jenis_produksi': jenis_produksi},
-          {'kapasitas_produksi': kapasitas_produksi},
-          {'jumlah_tenaga_kerja': jumlah_tenaga_kerja},
-          {'jumlah_mesin': jumlah_mesin},
-          {'merk_mesin': merk_mesin},
-          {'daya': daya},
-          {'kekuatan': kekuatan},
-          {'luas_ruang_tempat_usaha': luas_ruang_tempat_usaha},
-          {'luas_lahan_usaha': luas_lahan_usaha},
-          {'jenis_lokasi_usaha': jenis_lokasi_usaha},
-          {'jenis_bangunan': jenis_bangunan},
-          {'jenis_gangguan': jenis_gangguan}]}
-      response = HttpResponse(json.dumps(data))
-    else:
-      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-      data = json.dumps(data)
-      response = HttpResponse(data)
-  else:
-    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-    data = json.dumps(data)
-    response = HttpResponse(data)
+      try:
+        pengajuan_ = DetilHO.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+        perkiraan_modal = str(pengajuan_.perkiraan_modal)
+        tujuan_gangguan = pengajuan_.tujuan_gangguan
+        alamat = pengajuan_.alamat
+        desa = str(pengajuan_.desa)
+        kecamatan = str(pengajuan_.desa.kecamatan)
+        kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
+        bahan_baku_dan_penolong = pengajuan_.bahan_baku_dan_penolong
+        proses_produksi = pengajuan_.proses_produksi
+        jenis_produksi = pengajuan_.jenis_produksi
+        kapasitas_produksi = pengajuan_.kapasitas_produksi
+        jumlah_tenaga_kerja = str(pengajuan_.jumlah_tenaga_kerja)
+        jumlah_mesin = str(pengajuan_.jumlah_mesin)
+        merk_mesin = pengajuan_.merk_mesin
+        daya = pengajuan_.daya
+        kekuatan = pengajuan_.kekuatan
+        luas_ruang_tempat_usaha = str(pengajuan_.luas_ruang_tempat_usaha)
+        luas_lahan_usaha = str(pengajuan_.luas_lahan_usaha)
+        jenis_lokasi_usaha = pengajuan_.jenis_lokasi_usaha
+        jenis_bangunan = pengajuan_.jenis_bangunan
+        jenis_gangguan = pengajuan_.jenis_gangguan
+        surat_tanah = pengajuan_.no_surat_tanah
+        if pengajuan_.tanggal_surat_tanah:
+          tanggal_surat_tanah = pengajuan_.tanggal_surat_tanah.strftime("%d-%m-%Y")
+        else:
+          tanggal_surat_tanah = ""
+        data = {'success': True,
+            'data': [
+            {'perkiraan_modal': perkiraan_modal},
+            {'tujuan_gangguan': tujuan_gangguan},
+            {'alamat_ho': alamat},
+            {'surat_tanah': surat_tanah},
+            {'tanggal_surat_tanah': tanggal_surat_tanah},
+            {'desa': desa},
+            {'kecamatan': kecamatan},
+            {'kabupaten': kabupaten},
+            {'bahan_baku_dan_penolong': bahan_baku_dan_penolong},
+            {'proses_produksi': proses_produksi},
+            {'jenis_produksi': jenis_produksi},
+            {'kapasitas_produksi': kapasitas_produksi},
+            {'jumlah_tenaga_kerja': jumlah_tenaga_kerja},
+            {'jumlah_mesin': jumlah_mesin},
+            {'merk_mesin': merk_mesin},
+            {'daya': daya},
+            {'kekuatan': kekuatan},
+            {'luas_ruang_tempat_usaha': luas_ruang_tempat_usaha},
+            {'luas_lahan_usaha': luas_lahan_usaha},
+            {'jenis_lokasi_usaha': jenis_lokasi_usaha},
+            {'jenis_bangunan': jenis_bangunan},
+            {'jenis_gangguan': jenis_gangguan}]}
+      except ObjectDoesNotExist:
+        pass
+  response = HttpResponse(json.dumps(data))
   return response
 
 

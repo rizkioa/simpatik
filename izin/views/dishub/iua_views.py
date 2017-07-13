@@ -37,20 +37,30 @@ def save_data_kendaraan(request):
 	# print request.POST.get('id_kendaraan')
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_obj = DetilIUA.objects.filter(id=request.COOKIES['id_pengajuan']).last()
-			if pengajuan_obj:
-				kendaraan_obj = Kendaraan.objects.filter(id=request.POST.get('id_kendaraan')).last()
-				data_kendaraan_form = DataKendaraanForm(request.POST, instance=kendaraan_obj)
-				if data_kendaraan_form.is_valid():
-					i = data_kendaraan_form.save(commit=False)
-					i.iua_id = pengajuan_obj.id
-					i.save()
-					data = {'success': True, 'pesan': 'Data Kendaraan berhasil disimpan.'}
-					data = json.dumps(data)
-					response = HttpResponse(data)
-				else:
-					data = data_kendaraan_form.errors.as_json()
-					response = HttpResponse(data)
+			try:
+				pengajuan_obj = DetilIUA.objects.get(id=request.COOKIES['id_pengajuan'])
+				if pengajuan_obj:
+					# kendaraan_obj = Kendaraan.objects.none()
+					data_kendaraan_form = DataKendaraanForm(request.POST)
+					if request.POST.get('id_kendaraan'):
+						try:
+							kendaraan_obj = Kendaraan.objects.get(id=request.POST.get('id_kendaraan'))
+							data_kendaraan_form = DataKendaraanForm(request.POST, instance=kendaraan_obj)
+						except ObjectDoesNotExist:
+							pass
+					
+					if data_kendaraan_form.is_valid():
+						i = data_kendaraan_form.save(commit=False)
+						i.iua_id = pengajuan_obj.id
+						i.save()
+						data = {'success': True, 'pesan': 'Data Kendaraan berhasil disimpan.'}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+					else:
+						data = data_kendaraan_form.errors.as_json()
+						response = HttpResponse(data)
+			except ObjectDoesNotExist:
+				pass
 	return response
 
 def load_data_kendaraan(request, pengajuan_id):

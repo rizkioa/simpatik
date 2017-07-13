@@ -114,6 +114,11 @@
           onTabShow: function(tab, navigation, index) {
               var $total = navigation.find('li').length;
               var $current = index+1;
+              if($current == 2){
+                if($.cookie("npwp_perusahaan") && $.cookie("npwp_perusahaan") != '0'){
+                  load_perusahaan_a($.cookie("npwp_perusahaan"))
+                }
+              }
               if($current >= $total) {
                 $('#rootwizard').find('.pager .next').hide();
                 $('#rootwizard').find('.pager .finish').show();
@@ -151,21 +156,16 @@
           },
 
           onNext: function(tab, navigation, index) {
-              // var form = $('form[name="step'+ index +'"]');
-              // form.parsley().validate();
-              // if (!form.parsley().isValid()) {
-              //     return false;
-              // }
-              return false;
+            return false;
           },
 
           onTabClick: function(tab, navigation, index) {
-            // var form = $('form[name="step'+ (index+1) +'"]');
-            // form.parsley().validate();
-            // if (!form.parsley().isValid()) {
-            //     return false;
-            // }
-            return true;
+            if (window.location.hostname == 'localhost'){
+              return true
+            }
+            else{
+              return false;
+            }
           }
         });
       });

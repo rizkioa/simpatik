@@ -294,7 +294,7 @@ def layanan_imb_perumahan(request, extra_context={}):
 	return response
 
 def layanan_reklame(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, kode="503.03.01")
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="503.03.01/")
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Izin Pemasangan Reklame"})
 	extra_context.update({'title_short': "Izin Pemasangan Reklame"})
