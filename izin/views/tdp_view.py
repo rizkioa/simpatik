@@ -1585,35 +1585,32 @@ def load_legalitas_perusahaan_tdp(request, perusahaan_id):
 	return response
 
 def tdp_pt_done(request):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
+	response = HttpResponse(json.dumps(data))
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilTDP.objects.filter(id=request.COOKIES['id_pengajuan']).last()
-			if pengajuan_:
-				pengajuan_.status = 6
-				pengajuan_.save()
-						
-				data = {'success': True, 'pesan': 'Proses Selesai.' }
-				response = HttpResponse(json.dumps(data))
-				response.delete_cookie(key='id_jenis_pengajuan') # set cookie	
-				response.delete_cookie(key='id_kelompok_izin') # set cookie	
-				response.delete_cookie(key='id_pengajuan') # set cookie	
-				response.delete_cookie(key='id_perusahaan') # set cookie	
-				response.delete_cookie(key='id_perusahaan_induk') # set cookie	
-				response.delete_cookie(key='nomor_ktp') # set cookie	
-				response.delete_cookie(key='nomor_paspor') # set cookie	
-				response.delete_cookie(key='id_pemohon') # set cookie	
-				response.delete_cookie(key='id_kelompok_izin') # set cookie
-				response.delete_cookie(key='id_legalitas') # set cookie
-				response.delete_cookie(key='id_legalitas_perubahan') # set cookie
-				response.delete_cookie(key='npwp_perusahaan') # set cookie
-				response.delete_cookie(key='npwp_perusahaan_induk') # set cookie
-			else:
-				data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
-				response = HttpResponse(json.dumps(data))
-		else:
-			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
-			response = HttpResponse(json.dumps(data))
-	else:
-		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
-		response = HttpResponse(json.dumps(data))
+			try:
+				pengajuan_ = DetilTDP.objects.get(id=request.COOKIES['id_pengajuan'])
+				if pengajuan_:
+					pengajuan_.status = 6
+					pengajuan_.save()
+							
+					data = {'success': True, 'pesan': 'Proses Selesai.' }
+					response = HttpResponse(json.dumps(data))
+					response.delete_cookie(key='id_jenis_pengajuan') # set cookie	
+					response.delete_cookie(key='id_kelompok_izin') # set cookie	
+					response.delete_cookie(key='id_pengajuan') # set cookie	
+					response.delete_cookie(key='id_perusahaan') # set cookie	
+					response.delete_cookie(key='id_perusahaan_induk') # set cookie	
+					response.delete_cookie(key='nomor_ktp') # set cookie	
+					response.delete_cookie(key='nomor_paspor') # set cookie	
+					response.delete_cookie(key='id_pemohon') # set cookie	
+					response.delete_cookie(key='id_kelompok_izin') # set cookie
+					response.delete_cookie(key='id_legalitas') # set cookie
+					response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+					response.delete_cookie(key='npwp_perusahaan') # set cookie
+					response.delete_cookie(key='npwp_perusahaan_induk') # set cookie
+					response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
+			except ObjectDoesNotExist:
+				pass
 	return response

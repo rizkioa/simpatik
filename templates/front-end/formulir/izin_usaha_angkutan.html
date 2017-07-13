@@ -360,14 +360,14 @@
 				if ($.cookie('id_pengajuan') === undefined){
 					pengajuan_id = 0
 				}
-				window.location.replace(__base_url__+'/layanan/izin-usaha-angkutan/formulir/cetak/'+pengajuan_id);
+				
 				$.ajax({
-					url: '{% url 'tdp_pt_done' %}',
+					url: '{% url 'iua_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
+							window.location.replace(__base_url__+'/layanan/izin-usaha-angkutan/formulir/cetak/'+pengajuan_id);
 							toastr["success"](respon.pesan)
-							
 						}
 					}
 				});
@@ -381,7 +381,7 @@
 						
 				}
 				else {
-						return false;
+					return false;
 				}
 			};
 

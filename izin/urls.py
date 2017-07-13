@@ -407,6 +407,7 @@ urlpatterns = [
     url(r'^ajax-iua-upload-dokument/$', iua_views.iua_upload_dokument, name='iua_upload_dokument'),
     url(r'^layanan/iua/ajax-iua-load-konfirmasi/(?P<pengajuan_id>[0-9]+)$', iua_views.load_data_konfirmasi, name='load_data_konfirmasi'),
     url(r'^layanan/iua/ajax-delete-berkas-upload-iua/(?P<id_berkas>[0-9]+)/(?P<kode>[a-z_]+)$', iua_views.ajax_delete_berkas_iua, name='ajax_delete_berkas_iua'),
+    url(r'^layanan/iua/selesai/$', iua_views.iua_done , name='iua_done'),
     # ################################# IUA ######################
 
     ########################## Izin Parkir Dishub ###############################
