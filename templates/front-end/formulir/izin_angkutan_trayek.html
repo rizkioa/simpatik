@@ -210,7 +210,12 @@
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return true;
+					if (window.location.hostname == 'localhost'){
+						return true
+					}
+					else{
+						return false;
+					}
 				}
 			});
 		});

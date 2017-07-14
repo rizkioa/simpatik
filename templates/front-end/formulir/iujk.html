@@ -149,23 +149,16 @@
 			},
 
 			onNext: function(tab, navigation, index) {
-				// var form = $('form[name="step'+ index +'"]');
-
-				// form.parsley().validate();
-
-				// if (!form.parsley().isValid()) {
-				//     return true;
-				// }
-				// 
-
 				return false;
-
 			},
 
 			onTabClick: function(tab, navigation, index) {
-
-				// return true;
-				return false;
+				if (window.location.hostname == 'localhost'){
+					return true
+				}
+				else{
+					return false;
+				}
 			}
 		});
 

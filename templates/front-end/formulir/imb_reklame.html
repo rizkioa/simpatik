@@ -150,21 +150,16 @@
           },
 
           onNext: function(tab, navigation, index) {
-              // var form = $('form[name="step'+ index +'"]');
-              // form.parsley().validate();
-              // if (!form.parsley().isValid()) {
-              //     return false;
-              // }
-              return false;
+            return false;
           },
 
           onTabClick: function(tab, navigation, index) {
-            // var form = $('form[name="step'+ (index+1) +'"]');
-            // form.parsley().validate();
-            // if (!form.parsley().isValid()) {
-            //     return false;
-            // }
-            return false;
+            if (window.location.hostname == 'localhost'){
+              return true
+            }
+            else{
+              return false;
+            }
           }
         });
       });

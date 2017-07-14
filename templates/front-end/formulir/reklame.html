@@ -257,7 +257,7 @@
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
   <script src="{% static 'scripts/js/form/perusahaan_reklame.js' %}"></script>
-    <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+  <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
   <!--/ custom javascripts -->
   <script type="text/javascript">
     $(window).load(function(){
@@ -289,7 +289,12 @@
         },
 
         onTabClick: function(tab, navigation, index) {
-          return false;
+          if (window.location.hostname == 'localhost'){
+            return true
+          }
+          else{
+            return false;
+          }
         }
       });
     });

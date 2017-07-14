@@ -428,7 +428,7 @@ urlpatterns = [
 
     ################################ Izin Angkutan Trayek ###################################
     url(r'^layanan/izin-angkutan-trayek$', layanan_view.layanan_izin_angkutan_trayek, name='layanan_izin_angkutan_trayek'),
-    url(r'^layanan/izin-angkutan-trayek/formulir$', views.formulir_izin_angkutan_trayek, name='formulir_izin_angkutan_trayek'),
+    url(r'^layanan/izin-angkutan-trayek/formulir$', trayek_views.formulir_izin_angkutan_trayek, name='formulir_izin_angkutan_trayek'),
     url(r'^layanan/trayek/ajax-load-izin-iua/$', trayek_views.load_izin_iua, name='load_izin_iua'),
     ################################ END Izin Angkutan Trayek ###################################
     
