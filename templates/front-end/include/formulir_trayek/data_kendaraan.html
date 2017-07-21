@@ -1,9 +1,22 @@
-<form method="POST" name="step3" id="id_data_reklame" role="form" class="form-horizontal" action="{% url 'iua_save_detil_iua' %}" data-parsley-validate novalidate>
+<form method="POST" name="step4" role="form" class="form-horizontal form-kendaraan" action="{% url 'iua_save_detil_iua' %}" data-parsley-validate novalidate>
   {% csrf_token %}   
     <div class="row">
       <div class="col-md-12">
         <h3>DATA KENDARAAN</h3>
         <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Nilai Investasi</strong></label>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <span>Rp</span>
+          </span>
+          <input type="text" id="id_nilai_investasi" name="nilai_investasi" class="form-control sum-modal" required="" data-parsley-trigger="change">
+        </div>
+        <p style="font-size:13px;">(tidak termasuk tanah dan bangunan)</p>
       </div>
     </div>
 
@@ -23,31 +36,32 @@
 
     <br>
     <br>
-    <div class="form-group">
-      <div class="row">
-        <div class="col-md-12">
-          <h4>Data Kendaraan</h4>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-10"></div>
-        <button onclick="" type="button" data-toggle="modal" data-target="#data_kendaraan_modal" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kendaraan </button>
-      </div>
-    </div>
-     <table class="table table-striped" id="table_daftar_kendaraan">
+    
+    <table class="table table-striped" id="table_daftar_kendaraan">
       <thead>
           <tr>
-            <th>Tanda Nomor Kendaraan</th>
-            <th>Nomor Uji Berkala</th>
+            <th>No.</th>
+            <th>Tanda nomor kendaraan</th>
+            <th>Nomor uji berkala</th>
             <th>Merk / Type</th>
-            <th>Nomor Rangka</th>
-            <th>Nomor Mesin</th>
-            <th>Tahun Pembuatan </th>
+            <th>Berat diperbolehkan</th>
+            <th>Nomor rangka</th>
+            <th>Nomor mesin</th>
+            <th>Tahun pembuatan </th>
             <th>Keterangan</th>
+            <th width="10%">Berkas</th>
+            <th width="10%">Aksi</th>
           </tr>
       </thead>
       <tbody>
       </tbody>
-  </table>
+    </table>
+    <br>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-10"></div>
+        <button onclick="tambah_kendaraan()" type="button" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kendaraan </button>
+      </div>
+    </div>
     <br>
 </form>

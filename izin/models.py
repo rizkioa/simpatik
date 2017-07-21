@@ -1703,7 +1703,7 @@ class Trayek(models.Model):
 		verbose_name_plural = 'Trayek'
 
 class Kendaraan(models.Model):
-	iua = models.ForeignKey(DetilIUA, max_length=255, verbose_name='izin_usaha_angkuta', null=True, blank=True)
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, max_length=255, verbose_name='Pengajuan Izin', null=True, blank=True)
 	nomor_kendaraan = models.CharField(max_length=255, verbose_name='Nomor Kendaraan', null=True, blank=True)
 	nomor_uji_berkala = models.CharField(max_length=255, verbose_name='Nomor Uji Berkala', null=True, blank=True)
 	merk_kendaraan = models.ForeignKey(MerkTypeKendaraan, max_length=255, verbose_name='Merk Kendaraan', null=True, blank=True)
@@ -1713,6 +1713,8 @@ class Kendaraan(models.Model):
 	trayek = models.ForeignKey(Trayek, verbose_name='Trayek', null=True, blank=True)
 	tahun_pembuatan = models.CharField(max_length=255, verbose_name='Tahun Pembuatan', null=True, blank=True)
 	keterangan = models.CharField(max_length=255, verbose_name='keterangan', null=True, blank=True)
+	berkas_stnk = models.ForeignKey(Berkas, verbose_name="Berkas STNK", related_name='berkas_scan_stnk', blank=True, null=True)
+	berkas_kartu_pengawasan = models.ForeignKey(Berkas, verbose_name="Berkas Kartu Pengawasan", related_name='berkas_kartu_pengawasan', blank=True, null=True)
 
 	def as_json(self):
 		merk_kendaraan_nama = ''
@@ -1725,7 +1727,17 @@ class Kendaraan(models.Model):
 		tahun_pembuatan = ''
 		if self.tahun_pembuatan:
 			tahun_pembuatan = self.tahun_pembuatan
-		return dict(id=self.id, nomor_kendaraan=self.nomor_kendaraan, nomor_uji_berkala=self.nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=self.berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=self.nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=self.keterangan)
+		berkas_stnk_nama = ''
+		berkas_stnk = None
+		if self.berkas_stnk:
+			berkas_stnk_nama = self.berkas_stnk.nama_berkas
+			berkas_stnk = self.berkas_stnk.get_file_url()
+		berkas_kartu_pengawasan = None
+		berkas_kartu_pengawasan_nama = ''
+		if self.berkas_kartu_pengawasan:
+			berkas_kartu_pengawasan_nama = self.berkas_kartu_pengawasan.nama_berkas
+			berkas_kartu_pengawasan = self.berkas_kartu_pengawasan.get_file_url()
+		return dict(id=self.id, nomor_kendaraan=self.nomor_kendaraan, nomor_uji_berkala=self.nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=self.berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=self.nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=self.keterangan, berkas_stnk=berkas_stnk, berkas_kartu_pengawasan=berkas_kartu_pengawasan, berkas_stnk_nama=berkas_stnk_nama, berkas_kartu_pengawasan_nama=berkas_kartu_pengawasan_nama)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nomor_kendaraan)
@@ -1735,16 +1747,24 @@ class Kendaraan(models.Model):
 		verbose_name_plural = 'Kendaraan'
 
 class DetilTrayek(PengajuanIzin):
-	detil_iua = models.ForeignKey(DetilIUA, verbose_name='Nomor Izin Angkutan')
+	detil_iua = models.ForeignKey(DetilIUA, verbose_name='Nomor Izin Angkutan', null=True, blank=True)
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='trayek_perusahaan', blank=True, null=True)
+	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
+	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
+	detil_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
+	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_trayek', blank=True, null=True)
 
 	def as_json(self):
-		detil_iua = ''
-		if self.detil_iua:
-			detil_iua = self.detil_iua.no_izin
-		detil_iua_id = ''
-		if self.detil_iua_id:
-			detil_iua_id = self.detil_iua.id
-		return dict(detil_iua=detil_iua, detil_iua_id=detil_iua_id)
+		nilai_investasi = ''
+		if self.nilai_investasi:
+			nilai_investasi = self.nilai_investasi
+		kategori_kendaraan = ''
+		if self.kategori_kendaraan:
+			kategori_kendaraan = self.kategori_kendaraan.nama_kategori
+		detil_ho = ''
+		if self.detil_ho:
+			detil_ho = self.detil_ho.no_izin
+		return dict(nilai_investasi=nilai_investasi, kategori_kendaraan=kategori_kendaraan, kategori_kendaraan_id=self.kategori_kendaraan_id, id=self.id)
 
 	def __unicode__(self):
 		return u'Detil Izin Trayek %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

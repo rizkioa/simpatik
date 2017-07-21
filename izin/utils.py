@@ -373,6 +373,8 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilTDUP')
 		elif kode == "IUA":
 			objects_ = getattr(app_models, 'DetilIUA')
+		elif kode == "TRAYEK":
+			objects_ = getattr(app_models, 'DetilTrayek')
 		elif kode == "IZINPARKIR":
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 	return objects_

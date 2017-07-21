@@ -168,15 +168,32 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
 	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
 	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-	<script src="{% static 'scripts/js/formAjax/form_ajax_iua.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_trayek.js' %}"></script>
 	
 	<script>
 		$(window).load(function(){
+			$('.form-pemohon').attr('name', 'step2')
+			$('.form-perusahaan').attr('name', 'step3')
+			// $('.form-kendaraan').attr('name', 'step4')
 			$('#rootwizard').bootstrapWizard({
 				onTabShow: function(tab, navigation, index) {
 					var $total = navigation.find('li').length;
 					var $current = index+1;
-					if ($current == 2){
+					// if ($current == 1){
+						// cek_nomor_izin_iua()
+					// }
+					if($current != 1){
+						window.onbeforeunload = function ref() {
+							var r = confirm( "Do you want to leave?" );
+							if (r == true) {
+									
+							}
+							else {
+								return false;
+							}
+						};
+					}
+					if ($current == 3){
 						load_kecamatan1('', '06', '35');
 						if ($.cookie('npwp_perusahaan') !== '0'){
 							$('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
@@ -185,14 +202,16 @@
 							}, 1000);
 						} 
 					}
-					if ($current == 3){
-						pengajuan_id = $.cookie('id_pengajuan')
-						if (pengajuan_id != '' && pengajuan_id != '0'){
-							load_data_kendaraan(pengajuan_id)
-							load_detil_iua(pengajuan_id)
+					if ($current == 4){
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_detil_iua($.cookie('id_pengajuan'));
+							load_data_kendaraan($.cookie('id_pengajuan'));
 						}
 					}
-					if ($current == 4){
+					if ($current == 5){
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_berkas($.cookie('id_pengajuan'))
+						}
 					}
 					if($current >= $total) {
 						load_konfirmasi($.cookie('id_pengajuan'))
@@ -234,7 +253,7 @@
 
 		function set_chosen_element(chosenEl){
 			$chosenEl = $(chosenEl)
-			if ($chosenEl.length > 0) {             
+			if ($chosenEl.length > 0) {
 				$chosenEl.each(function() {
 					var element = $(this);
 					element.on('chosen:ready', function(e, chosen) {
@@ -242,208 +261,204 @@
 						element.next().find('.chosen-choices').addClass('form-control');
 						element.next().css("width", width);
 						element.next().find('.search-field input').css("width", "125px");
-					}).chosen();                
+					}).chosen();
 				});
 			}
 		}
 
 		function next_tab(btn){
-			var pengajuan_id = $.cookie('id_pengajuan')
-			if(pengajuan_id == ''){
-				$.cookie('id_pengajuan', '0', {path:'/'})
-			}
-			$.ajax({
-				type: 'GET',
-				url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
-				success: function (response){
-					respon = $.parseJSON(response)
-					if (respon.success == true){
-						console.log('berhasil')
-						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
-						var frm = $('form[name="step'+ index +'"]');
-						frm.parsley().validate();
-							if (frm.parsley().isValid()) {
-								$(".tab-content").mLoading();
-								$(btn).attr('disabled', 'disabled')
-								$.ajax({
-									type: frm.attr('method'),
-									url: frm.attr('action'),
-									data: frm.serialize(),
-									success: function (response){
-										respon = $.parseJSON(response)
-											$(btn).removeAttr('disabled')
-											if(respon.success){
-												toastr["success"](respon.pesan)
-												tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-												$(tab_index).tab('show')
-											}
-											else{
-												var a = Object.keys(respon);
-												for (var i = 0; i < a.length; i++){
-													var c = a[i].replace("_", " ").charAt(0).toUpperCase()
-													var field = c + a[i].replace("_", " ").slice(1)
-													toastr["error"](field+" "+respon[a[i]][0]['message'])
-													$("#"+a[i]+"").addClass("has-error");
-													$("#id_"+a[i]+"_").addClass("has-error");
-												}
-											}
-											$(".tab-content").mLoading('hide');
-									},
-									error: function(response){
-										$(".tab-content").mLoading('hide');
-										$(btn).removeAttr('disabled')
-										toastr["error"]("Terjadi kesalahan pada koneksi server.")
-									}
-							});
+			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+			var frm = $('form[name="step'+ index +'"]');
+			frm.parsley().validate();
+			if (frm.parsley().isValid()) {
+				$(".tab-content").mLoading();
+				$(btn).attr('disabled', 'disabled')
+				$.ajax({
+					type: frm.attr('method'),
+					url: frm.attr('action'),
+					data: frm.serialize(),
+					success: function (response){
+						respon = $.parseJSON(response)
+						console.log(respon)
+						$(btn).removeAttr('disabled')
+						if(respon.success == true){
+							toastr["success"](respon.pesan)
+							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+							$(tab_index).tab('show')
 						}
-					}
-					else{
-						console.log('gagal')
-						$.cookie('id_pengajuan', '0', {path:'/'})
-						$.cookie('id_pemohon', '0', {path:'/'})
-						$.cookie('id_perusahaan', '0', {path:'/'})
-						$.cookie('nomor_ktp', '0', {path:'/'})
-						$.cookie('nomor_paspor', '0', {path:'/'})
-						$.cookie('npwp_perusahaan', '0', {path:'/'})
-						$.cookie('id_perusahaan_induk', '0', {path:'/'})
-						$.cookie('npwp_perusahaan_induk', '0', {path:'/'})
-					}
-				},
-				error: function (response){
-					console.log('terjadi kesalahan')
-				}
-			})
-		};
-
-			document.querySelector('#alert').onclick = function(){
-				var pengajuan_cookie = $.cookie('id_pengajuan'); 
-				var pemohon_cookie = $.cookie('id_pemohon'); 
-				var perusahaan_cookie = $.cookie('id_perusahaan'); 
-				if (pengajuan_cookie === ""){
-					toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-					tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-					$(tab_index).tab('show');
-				}
-				else if(pemohon_cookie === ""){
-					toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-					tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-					$(tab_index).tab('show');
-				}
-				else if(perusahaan_cookie === ""){
-					toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-					tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-					$(tab_index).tab('show');
-				}
-				else{
-					swal({
-						showConfirmButton: false,
-						type: 'success',
-						title: 'Pendaftaran Berhasil Tersimpan',
-						timer: 2000
-					})
-					pengajuan_id = $.cookie('id_pengajuan')
-					if ($.cookie('id_pengajuan') === undefined){
-						pengajuan_id = 0
-					}
-					window.location.replace(__base_url__+'/layanan/izin-usaha-angkutan/formulir/cetak/'+pengajuan_id);
-					$.ajax({
-						url: '{% url 'tdp_pt_done' %}',
-						success: function(response) {
-							respon = $.parseJSON(response)
-							if(respon.success){
-								toastr["success"](respon.pesan)
-								
+						else if(respon.success == false){
+							toastr["warning"](respon.pesan)
+						}
+						else{
+							var a = Object.keys(respon);
+							for (var i = 0; i < a.length; i++){
+								var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+								var field = c + a[i].replace("_", " ").slice(1)
+								toastr["error"](field+" "+respon[a[i]][0]['message'])
+								$("#"+a[i]+"").addClass("has-error");
+								$("#id_"+a[i]+"_").addClass("has-error");
 							}
 						}
-					});
-				}
-			};
-
-			$(document).ready(function() {
-				window.onbeforeunload = function ref() {
-					var r = confirm( "Do you want to leave?" );
-					if (r == true) {
-							
-					}
-					else {
-							return false;
-					}
-				};
-
-				var pathname = "/";
-
-				if ($.cookie('id_pengajuan') === undefined){
-					$.cookie('id_pengajuan', "0", {path:pathname});
-				}
-				if ($.cookie('id_pemohon') === undefined){
-					$.cookie('id_pemohon', "0", {path:pathname});
-				}
-				if ($.cookie('id_perusahaan') === undefined){
-					$.cookie('id_perusahaan', "0", {path:pathname});
-				}
-
-				$( "#alert" ).prop( "disabled", true );
-				$('#checkbox_iua_done').change(function() {
-					if ($(this).is(':checked')) {
-						$( "#alert" ).prop( "disabled", false );
-						window.onbeforeunload = null;
-					}
-					else{
-						$( "#alert" ).prop( "disabled", true );
+						$(".tab-content").mLoading('hide');
+					},
+					error: function(response){
+						$(".tab-content").mLoading('hide');
+						$(btn).removeAttr('disabled')
+						toastr["error"]("Terjadi kesalahan pada koneksi server.")
 					}
 				});
+			}
+		}
 
-					// $('.path_name').val(pathname)
-						
-				pengajuan = $.cookie('id_pengajuan')
-				if (pengajuan !== '0'){
-					$('#id_ktp').val('{{ktp}}');
-					$('#id_paspor').val('{{paspor}}');
-					load_pemohon('{{ktp}}');
+		document.querySelector('#alert').onclick = function(){
+			var pengajuan_cookie = $.cookie('id_pengajuan'); 
+			var pemohon_cookie = $.cookie('id_pemohon'); 
+			var perusahaan_cookie = $.cookie('id_perusahaan'); 
+			if (pengajuan_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			else if(pemohon_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			else if(perusahaan_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+				tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+				$(tab_index).tab('show');
+			}
+			else{
+				swal({
+					showConfirmButton: false,
+					type: 'success',
+					title: 'Pendaftaran Berhasil Tersimpan',
+					timer: 2000
+				})
+				pengajuan_id = $.cookie('id_pengajuan')
+				if ($.cookie('id_pengajuan') === undefined){
+					pengajuan_id = 0
+				}
+				window.location.replace(__base_url__+'/layanan/izin-usaha-angkutan/formulir/cetak/'+pengajuan_id);
+				$.ajax({
+					url: '{% url 'tdp_pt_done' %}',
+					success: function(response) {
+						respon = $.parseJSON(response)
+						if(respon.success){
+							toastr["success"](respon.pesan)
+						}
+					}
+				});
+			}
+		};
 
-					$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
-					$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
-					$('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+		$(document).ready(function() {
+			var pathname = "/";
 
-					$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
-					if ('{{ pengajuan_.pemohon }}' !== 'None'){
-						$.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
-						$.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
-						$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
-					}
-					else{
-						$.cookie('nomor_ktp', '0' , { path: pathname })
-						$.cookie('nomor_paspor', '0' , { path: pathname})
-						$.cookie('id_pemohon', '0' , { path: pathname})
-					}
-					
-					if ('{{ pengajuan_.perusahaan }}' !== 'None'){
-						$.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
-						$.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
-					}
-					else{
-						$.cookie('id_perusahaan', '0' , { path: pathname})
-						$.cookie('npwp_perusahaan', '0' , { path: pathname })
-					}
-					
-					
+			if ($.cookie('id_pengajuan') === undefined){
+				$.cookie('id_pengajuan', "0", {path:pathname});
+			}
+			if ($.cookie('id_pemohon') === undefined){
+				$.cookie('id_pemohon', "0", {path:pathname});
+			}
+			if ($.cookie('id_perusahaan') === undefined){
+				$.cookie('id_perusahaan', "0", {path:pathname});
+			}
+
+			$( "#alert" ).prop( "disabled", true );
+			$('#checkbox_iua_done').change(function() {
+				if ($(this).is(':checked')) {
+					$( "#alert" ).prop( "disabled", false );
+					window.onbeforeunload = null;
+				}
+				else{
+					$( "#alert" ).prop( "disabled", true );
 				}
 			});
-
 			
-			$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
-			
-			$(window).load(function() {
-				var p = 'percent-'
-				$('#'+p+'npwp_perusahaan').hide()
-				$('#'+p+'akte_pendirian').hide()
-				$('#'+p+'domisili').hide()
-				$('#'+p+'pernyataan_kesanggupan_memiliki').hide()
-				$('#'+p+'pernyataan_kesanggupan_menyediakan').hide()
-				$('#'+p+'buku_uji_berkala').hide()
-			});
+			if ('{{pengajuan_}}'){
+				if ('{{pengajuan_.no_izin}}' && '{{pengajuan_.status}}' == '1'){
+					$('.result-cek-izin-iua').fadeIn();
+					$('.cek-no_izin').text('{{pengajuan_.no_izin}}');
+					$('#id_no_izin_iua').val('{{pengajuan_.no_izin}}');
+					$('.cek-nama_pemohon').text('{{pengajuan_.pemohon.nama_lengkap}}');
+					$('.cek-nama_perusahaan').text('{{pengajuan_.perusahaan.nama_perusahaan}}');	
+				}
 
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
+
+				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+				$('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+
+				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
+				if ('{{ pengajuan_.pemohon }}' !== 'None'){
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
+					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
+				}
+				else{
+					$.cookie('nomor_ktp', '0' , { path: pathname })
+					$.cookie('nomor_paspor', '0' , { path: pathname})
+					$.cookie('id_pemohon', '0' , { path: pathname})
+				}
+				
+				if ('{{ pengajuan_.perusahaan }}' !== 'None'){
+					$.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
+					$.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
+				}
+				else{
+					$.cookie('id_perusahaan', '0' , { path: pathname})
+					$.cookie('npwp_perusahaan', '0' , { path: pathname })
+				}				
+			}
+		});
+		
+		$(window).load(function() {
+			var p = 'percent-'
+			$('#'+p+'npwp_perusahaan').hide()
+			$('#'+p+'ktp').hide()
+		});
+
+		$('.result-cek-izin-iua').fadeOut()
+		function cek_nomor_izin_iua(){
+			nomor_izin_iua =  $('#id_no_izin_iua').val()
+			$.ajax({
+				url: __base_url__+'/layanan/trayek/ajax-load-izin-iua/',
+				method: 'POST',
+				data : { nomor_izin_iua: nomor_izin_iua, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+				success: function(response){
+					respon = JSON.parse(response)
+					if(respon.success == true){
+						$('.result-cek-izin-iua').fadeIn()
+						$('.cek-no_izin').text(respon.data.no_izin)
+						$('.cek-nama_pemohon').text(respon.data.nama_pemohon)
+						$('.cek-nama_perusahaan').text(respon.data.nama_perusahaan)
+						toastr["success"](respon.pesan)
+						window.location.reload();
+					}
+					else{
+						toastr["warning"](respon.pesan)
+					}
+				}
+			})
+		}
+
+		function load_detil_iua(pengajuan_id){
+			if (pengajuan_id !== ""){
+				$.ajax({
+					type: 'GET',
+					url: __base_url__+'/ajax-load-detil-iua/'+pengajuan_id,
+					success: function (response) {
+						$('#id_nilai_investasi').val(response.nilai_investasi)
+						$('#id_jenis_kategori_kendaraan').val(response.kategori_kendaraan_id).prop('selected',true).trigger("chosen:updated");
+					}
+				})
+			}
+		}
 	</script>
 {% include 'front-end/include/formulir_trayek/popup/tambah_data_kendaraan.html' %}
-
 {% endblock %}
