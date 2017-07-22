@@ -136,48 +136,59 @@ function load_konfirmasi(pengajuan_id){
       url: __base_url__+'/layanan/iua/ajax-iua-load-konfirmasi/'+pengajuan_id,
       success: function(data){
         data_ = JSON.parse(data)
-        // console.log(data_)
-        $('#jenis_pengajuan_konfirmasi').text(data_.jenis_pengajuan)
-        $('#jenis_pemohon_konfirmasi').text(data_.pemohon_json.jenis_pemohon)
-        $('#nomor_ktp_konfirmasi').text(data_.pemohon_json.username)
-        $('#nama_lengkap_konfirmasi').text(data_.pemohon_json.nama_lengkap)
-        $('#alamat_konfirmasi').text(data_.pemohon_json.alamat)
-        $('#telephone_konfirmasi').text(data_.pemohon_json.telephone)
-        $('#hp_konfirmasi').text(data_.pemohon_json.hp)
-        $('#email_konfirmasi').text(data_.pemohon_json.email)
-        $('#kewarganegaraan_konfirmasi').text(data_.pemohon_json.kewarganegaraan)
-        $('#pekerjaan_konfirmasi').text(data_.pemohon_json.pekerjaan)
-        // **** perusahaan ****
-        $('#npwp_perusahaan_konfirmasi').text(data_.perusahaan_json.npwp)
-        $('#nama_perusahaan_konfirmasi').text(data_.perusahaan_json.nama_perusahaan)
-        $('#alamat_perusahaan_konfirmasi').text(data_.perusahaan_json.alamat_lengkap)
-        $('#kode_pos_perusahaan_konfirmasi').text(data_.perusahaan_json.kode_pos)
-        $('#telepon_perusahaan_konfirmasi').text(data_.perusahaan_json.telepon)
-        $('#fax_perusahaan_konfirmasi').text(data_.perusahaan_json.fax)
-        $('#email_perusahaan_konfirmasi').text(data_.perusahaan_json.email)
-        // **** kendaraan ****
-        $('#nilai_investasi_konfirmasi').text(data_.nilai_investasi)
-        $('#jenis_kendaraan_konfirmasi').text(data_.kategori_kendaraan)
-        $('#jumlah_kendaraan_konfirmasi').text(data_.jumlah_kendaraan)
-        $('#nomor_izin_ho').text(data_.detil_izin_ho)
-        len1 = data_.kendaraan.length
-        row = '<tr>'
-        if(len1 > 0){
-          for (var i=0; i<len1; i++){
-            row += '<td>'+data_.kendaraan[i].nomor_kendaraan+'</td>'
-            row += '<td>'+data_.kendaraan[i].nomor_uji_berkala+'</td>'
-            row += '<td>'+data_.kendaraan[i].merk_kendaraan_nama+'</td>'
-            row += '<td>'+data_.kendaraan[i].nomor_rangka+'</td>'
-            row += '<td>'+data_.kendaraan[i].nomor_mesin+'</td>'
-            row += '<td>'+data_.kendaraan[i].tahun_pembuatan+'</td>'
-            row += '<td>'+data_.kendaraan[i].berat_diperbolehkan+'</td>'
-            row += '<td>'+data_.kendaraan[i].keterangan+'</td>'
-            row += '</tr>'
-          } 
-        }else{
-          row += '<td colspan="2" aling="center">Data Kosong ! </td>'
+        console.log(data_)
+        if(data_.success == true){
+          $('#jenis_pengajuan_konfirmasi').text(data_.jenis_pengajuan)
+          $('#jenis_pemohon_konfirmasi').text(data_.pemohon_json.jenis_pemohon)
+          $('#nomor_ktp_konfirmasi').text(data_.pemohon_json.username)
+          $('#nama_lengkap_konfirmasi').text(data_.pemohon_json.nama_lengkap)
+          $('#alamat_konfirmasi').text(data_.pemohon_json.alamat)
+          $('#telephone_konfirmasi').text(data_.pemohon_json.telephone)
+          $('#hp_konfirmasi').text(data_.pemohon_json.hp)
+          $('#email_konfirmasi').text(data_.pemohon_json.email)
+          $('#kewarganegaraan_konfirmasi').text(data_.pemohon_json.kewarganegaraan)
+          $('#pekerjaan_konfirmasi').text(data_.pemohon_json.pekerjaan)
+          // **** perusahaan ****
+          $('#npwp_perusahaan_konfirmasi').text(data_.perusahaan_json.npwp)
+          $('#nama_perusahaan_konfirmasi').text(data_.perusahaan_json.nama_perusahaan)
+          $('#alamat_perusahaan_konfirmasi').text(data_.perusahaan_json.alamat_lengkap)
+          $('#kode_pos_perusahaan_konfirmasi').text(data_.perusahaan_json.kode_pos)
+          $('#telepon_perusahaan_konfirmasi').text(data_.perusahaan_json.telepon)
+          $('#fax_perusahaan_konfirmasi').text(data_.perusahaan_json.fax)
+          $('#email_perusahaan_konfirmasi').text(data_.perusahaan_json.email)
+          // **** kendaraan ****
+          $('#nilai_investasi_konfirmasi').text(data_.nilai_investasi)
+          $('#jenis_kendaraan_konfirmasi').text(data_.kategori_kendaraan)
+          $('#jumlah_kendaraan_konfirmasi').text(data_.jumlah_kendaraan)
+          $('#nomor_izin_ho').text(data_.detil_izin_ho)
+          len1 = data_.kendaraan.length
+          
+          if(len1 > 0){
+            for (var i=0; i<len1; i++){
+              row = '<tr>'
+              row += '<td>'+data_.kendaraan[i].nomor_kendaraan+'</td>'
+              row += '<td>'+data_.kendaraan[i].nomor_uji_berkala+'</td>'
+              row += '<td>'+data_.kendaraan[i].merk_kendaraan_nama+'</td>'
+              row += '<td>'+data_.kendaraan[i].nomor_rangka+'</td>'
+              row += '<td>'+data_.kendaraan[i].nomor_mesin+'</td>'
+              row += '<td>'+data_.kendaraan[i].tahun_pembuatan+'</td>'
+              row += '<td>'+data_.kendaraan[i].berat_diperbolehkan+'</td>'
+              row += '<td>'+data_.kendaraan[i].keterangan+'</td>'
+              row += '</tr>'
+            } 
+          }
+
+          else{
+            row = '<tr><td colspan="2" aling="center">Data Kosong ! </td></tr>'
+            // $('#id_data_kendaraan > tbody').html(row)
+          }
+        }
+        else{
+          row = '<tr><td colspan="2" aling="center">Data Kosong ! </td></tr>'
+          // $('#id_data_kendaraan > tbody').html(row)
         }
         $('#id_data_kendaraan > tbody').html(row)
+        
       }
     })
   }

@@ -1694,6 +1694,7 @@ class Trayek(models.Model):
 	trayek = models.CharField(max_length=100, verbose_name='Trayek')
 	jurusan = models.CharField(max_length=255, verbose_name='Jurusan')
 	rute_dilewati = models.TextField(verbose_name='Rute dilewati')
+	jumlah_mpu =models.CharField(max_length=255, verbose_name="Jumlah MPU", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % str(self.trayek)
