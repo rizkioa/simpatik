@@ -142,30 +142,30 @@ def terbilang_(bil):
 	return hasil
 
 def konversi(x):
-    satuan = [' ', 'satu ', 'dua ', 'tiga ', 'empat ', 'lima ', 'enam ', 'tujuh ', 'delapan ', 'sembilan ', 'sepuluh ', 'sebelas ']
-    hasil = ""
-    x = int(x)
-    # if x <= 0:
-    #     hasil += 'Bilangan Haruslah Positif dan Bilangan Asli'
-    if x < 12 :
-        hasil += satuan[x]
-    elif x < 20 :
-        hasil += konversi(x-10) + "belas "
-    elif x < 100:
-        hasil += konversi(int(x/10)) + "puluh " + konversi(x%10)
-    elif x < 200 :
-        hasil += "seratus " + konversi(x-100)
-    elif x < 1000 :
-        hasil += konversi(int(x/100)) + "ratus " + konversi(x%100)
-    elif x < 2000 :
-        hasil += "seribu " + konversi(x-1000)
-    elif x < 1000000 :
-        hasil += konversi(int(x/1000)) + "ribu" + konversi(x%1000)
-    elif x < 1000000000 :
-        hasil += konversi(int(x/1000000)) + "juta " + konversi(x%1000000)
-    elif x >= 1000000000 :
-        hasil += konversi(int(x/1000000000)) + "milyar " + konversi(x%1000000000)
-    return hasil
+	satuan = [' ', 'satu ', 'dua ', 'tiga ', 'empat ', 'lima ', 'enam ', 'tujuh ', 'delapan ', 'sembilan ', 'sepuluh ', 'sebelas ']
+	hasil = ""
+	x = int(x)
+	# if x <= 0:
+	#     hasil += 'Bilangan Haruslah Positif dan Bilangan Asli'
+	if x < 12 :
+		hasil += satuan[x]
+	elif x < 20 :
+		hasil += konversi(x-10) + "belas "
+	elif x < 100:
+		hasil += konversi(int(x/10)) + "puluh " + konversi(x%10)
+	elif x < 200 :
+		hasil += "seratus " + konversi(x-100)
+	elif x < 1000 :
+		hasil += konversi(int(x/100)) + "ratus " + konversi(x%100)
+	elif x < 2000 :
+		hasil += "seribu " + konversi(x-1000)
+	elif x < 1000000 :
+		hasil += konversi(int(x/1000)) + "ribu" + konversi(x%1000)
+	elif x < 1000000000 :
+		hasil += konversi(int(x/1000000)) + "juta " + konversi(x%1000000)
+	elif x >= 1000000000 :
+		hasil += konversi(int(x/1000000000)) + "milyar " + konversi(x%1000000000)
+	return hasil
 
 
 def terbilang(n):
@@ -378,3 +378,50 @@ def get_model_detil(kode):
 		elif kode == "IZINPARKIR":
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 	return objects_
+
+
+import drest, json
+def push_api_dishub(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan'}
+	if id_pengajuan:
+		try:
+			pengajuan_obj = PengajuanIzin.objects.get(id=id_pengajuan)
+			if pengajuan_obj.kelompok_jenis_izin:
+				objects_ = get_model_detil(pengajuan_obj.kelompok_jenis_izin.kode)
+				if objects_:
+					try:
+						pengajuan_obj = objects_.objects.get(id=id_pengajuan)
+						try:
+							try:
+								api = drest.api.TastyPieAPI('http://192.168.100.234:8000/api/v1/')
+								api.auth('dishub', 'jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J')
+								api.request.add_header('X-CSRFToken', '{{csrf_token}}')
+								api.request.add_header('Content-Type', 'application/json')
+								nama_lengkap = ""
+								if pengajuan_.pemohon:
+									nama_lengkap = pengajuan_.pemohon.nama_lengkap
+								perusahaan = ""
+								if pengajuan_obj.perusahaan:
+									perusahaan = pengajuan_obj.perusahaan.nama_perusahaan
+								data_izin = dict(
+									pemohon=nama_lengkap,
+									jenis_pengajuan=2,
+									id=pengajuan_obj.id,
+									perusahaan=perusahaan,
+									no_pengajuan=pengajuan_obj.no_pengajuan,
+									tgl_pengajuan=pengajuan_obj.created_at.strftime("%d-%m-%Y")
+								)
+								response = api.izin.post(data_izin)
+								if response.status in (200, 201, 202):
+									data = {'success': True, 'pesan': 'Berhasil'}
+							except drest.exc.dRestAPIError as e:
+								# resp.pesan = '[E002] '+str(e.msg)
+								data = {'success': False, 'pesan': str(e.msg)}
+						except drest.exc.dRestRequestError as e:
+							# resp.pesan = '[E001] '+str(e.msg)
+							data = {'success': False, 'pesan': str(e.msg)}
+					except ObjectDoesNotExist:
+						pass
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
