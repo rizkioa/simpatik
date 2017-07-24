@@ -75,6 +75,12 @@ class KategoriKendaraanRecource(CORSModelResource):
 		queryset = KategoriKendaraan.objects.all()
 
 class DetilHOResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True)
+	kelompok_jenis_izin = fields.ToOneField(KelompokJenisIzinRecource, 'kelompok_jenis_izin', full = True)
+	verified_by = fields.ToOneField(KepegawaianResource, 'verified_by', full=True, null=True)
+	created_by = fields.ToOneField(KepegawaianResource, 'created_by', full=True, null=True)
+	jenis_permohonan = fields.ToOneField(JenisPermohonanIzinResource, 'jenis_permohonan', full=True, null=True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True)
 	class Meta:
 		queryset = DetilHO.objects.all()
 
