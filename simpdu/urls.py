@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
-from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource, InformasiKekayaanDaerahResource
+from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource, InformasiKekayaanDaerahResource, DetilHOResource
 from perusahaan.api import PerusahaanResource, LegalitasResource, DataPimpinanResource, PemegangSahamResource
 from master.api import BerkasResource, DesaResource
 
@@ -39,6 +39,7 @@ v1_api.register(DataPimpinanResource())
 v1_api.register(PemegangSahamResource())
 v1_api.register(InformasiKekayaanDaerahResource())
 v1_api.register(DesaResource())
+v1_api.register(DetilHOResource())
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())
