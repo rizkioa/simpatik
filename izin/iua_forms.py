@@ -9,4 +9,4 @@ class DetaiIUAForm(forms.ModelForm):
 class DataKendaraanForm(forms.ModelForm):
 	class Meta:
 		model = Kendaraan
-		fields = ('nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan')
+		fields = ('nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'trayek')
