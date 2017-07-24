@@ -71,14 +71,19 @@
 						</div>
 					</div>
 
-					<!-- <div class="form-group">
+					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Trayek</label>
 						<div class="col-sm-7">
 							<select class="form-control chosen-select mb-10" id="id_trayek" name="trayek">
-								<option>-- Pilih Trayek --</option>
+								<option value>-- Pilih Trayek --</option>
+								{% if trayek_list %}
+									{% for t in trayek_list %}
+										<option value="{{t.id}}">Trayek {{t.trayek}} ({{t.jurusan}})</option>
+									{% endfor %}
+								{% endif %}
 							</select>
 						</div>
-					</div> -->
+					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Keterangan</label>
@@ -169,7 +174,7 @@
 							row += '<td>'+respon[index].nomor_rangka+'</td>'
 							row += '<td>'+respon[index].nomor_mesin+'</td>'
 							row += '<td>'+respon[index].tahun_pembuatan+'</td>'
-							row += '<td>'+respon[index].keterangan+'</td>'
+							row += '<td>'+respon[index].trayek+'</td>'
 							if(respon[index].berkas_stnk && respon[index].berkas_kartu_pengawasan){
 								row += '<td><a title="'+respon[index].berkas_stnk_nama+'" target="_blank" href="'+respon[index].berkas_stnk+'"><button type="button" class="btn btn-info"><img src="'+respon[index].berkas_stnk+'" width="30px" height="30px"/></button></a> | <a title="'+respon[index].berkas_kartu_pengawasan_nama+'" target="_blank" href="'+respon[index].berkas_kartu_pengawasan+'"><button type="button" class="btn btn-info"><img src="'+respon[index].berkas_kartu_pengawasan+'" width="30px" height="30px"/></button></a></td>'
 							}

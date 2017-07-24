@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
-from izin.models import DetilIUA, DetilTrayek, JenisPemohon, KategoriKendaraan, MerkTypeKendaraan, JenisPermohonanIzin, Kendaraan
+from izin.models import DetilIUA, DetilTrayek, JenisPemohon, KategoriKendaraan, MerkTypeKendaraan, JenisPermohonanIzin, Kendaraan, Trayek
 from master.models import Negara, Kecamatan, Berkas
 from izin.utils import get_tahun_choices
 from accounts.utils import KETERANGAN_PEKERJAAN
@@ -37,7 +37,9 @@ def formulir_izin_angkutan_trayek(request, extra_context={}):
 	jenis_pemohon = JenisPemohon.objects.all()
 	katogri_kendaraan_list = KategoriKendaraan.objects.all()
 	merk_type_list = MerkTypeKendaraan.objects.all()
+	trayek_list = Trayek.objects.all()
 	extra_context.update({
+		'trayek_list': trayek_list,
 		'negara':negara,
 		'kecamatan_perusahaan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
 		'jenis_pemohon':jenis_pemohon,

@@ -1738,7 +1738,10 @@ class Kendaraan(models.Model):
 		if self.berkas_kartu_pengawasan:
 			berkas_kartu_pengawasan_nama = self.berkas_kartu_pengawasan.nama_berkas
 			berkas_kartu_pengawasan = self.berkas_kartu_pengawasan.get_file_url()
-		return dict(id=self.id, nomor_kendaraan=self.nomor_kendaraan, nomor_uji_berkala=self.nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=self.berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=self.nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=self.keterangan, berkas_stnk=berkas_stnk, berkas_kartu_pengawasan=berkas_kartu_pengawasan, berkas_stnk_nama=berkas_stnk_nama, berkas_kartu_pengawasan_nama=berkas_kartu_pengawasan_nama)
+		trayek = ""
+		if self.trayek:
+			trayek = self.trayek.trayek+" - "+self.trayek.jurusan
+		return dict(id=self.id, nomor_kendaraan=self.nomor_kendaraan, nomor_uji_berkala=self.nomor_uji_berkala, merk_kendaraan_nama=merk_kendaraan_nama, berat_diperbolehkan=self.berat_diperbolehkan, nomor_rangka=nomor_rangka, nomor_mesin=self.nomor_mesin, tahun_pembuatan=tahun_pembuatan, keterangan=self.keterangan, berkas_stnk=berkas_stnk, berkas_kartu_pengawasan=berkas_kartu_pengawasan, berkas_stnk_nama=berkas_stnk_nama, berkas_kartu_pengawasan_nama=berkas_kartu_pengawasan_nama, trayek=trayek)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nomor_kendaraan)
