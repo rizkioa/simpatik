@@ -36,9 +36,7 @@ v1_api.register(DataPimpinanResource())
 v1_api.register(PemegangSahamResource())
 v1_api.register(InformasiKekayaanDaerahResource())
 v1_api.register(DesaResource())
-<<<<<<< HEAD
 v1_api.register(DetilHOResource())
-=======
 v1_api.register(PengajuanIzinResource())
 v1_api.register(DetilTDPResource())
 v1_api.register(DetilIUAResource())
@@ -47,7 +45,6 @@ v1_api.register(DetilReklameResource())
 v1_api.register(DetilReklameIzinResource())
 v1_api.register(DetilIMBPapanReklameResource())
 v1_api.register(DetilIMBResource())
->>>>>>> aa011bded0f89f8bc68eca927eff280f3cec0623
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())
