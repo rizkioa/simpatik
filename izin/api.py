@@ -1,5 +1,5 @@
 from mobile.cors import CORSModelResource, CORSHttpResponse
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, DetilIUJK
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
@@ -217,3 +217,26 @@ class InformasiKekayaanDaerahResource(CORSModelResource):
 	
 	class Meta:
 		queryset = InformasiKekayaanDaerah.objects.all()
+
+class DetilHullerResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null = True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null = True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True , blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_pemohon__jenis_pemohon", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+
+	class Meta:
+		queryset = DetilHuller.objects.all()
+		authentication = ApiKeyAuthentication()
+
+class DetilIUJKResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null = True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null = True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True , blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_pemohon__jenis_pemohon", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+
+	class Meta:
+		queryset = DetilIUJK.objects.all()
+		authentication = ApiKeyAuthentication()
+
