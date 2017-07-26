@@ -62,7 +62,7 @@ class MerkTypeKendaraanResource(CORSModelResource):
 
 class KendaraanResource(CORSModelResource):
 	merk_kendaraan = fields.ToOneField(MerkTypeKendaraanResource, 'merk_kendaraan', full = True, null=True)
-	iua_id = fields.IntegerField(attribute="iua__id", null=True, blank=True)
+	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
 	berkas_stnk = fields.ToOneField(BerkasResource, 'berkas_stnk', full=True, null=True, blank=True)
 	berkas_kartu_pengawasan = fields.ToOneField(BerkasResource, 'berkas_kartu_pengawasan', full=True, null=True, blank=True)
 	class Meta:
@@ -70,7 +70,7 @@ class KendaraanResource(CORSModelResource):
 		queryset = Kendaraan.objects.all()
 		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua_id', 'berkas_stnk', 'berkas_kartu_pengawasan']
 		filtering = {
-			'iua_id': ['contains'],
+			'pengajuan_izin_id': ['contains'],
 			# 'status': ALL,
 		}
 
