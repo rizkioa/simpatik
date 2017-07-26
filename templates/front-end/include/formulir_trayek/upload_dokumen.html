@@ -1,4 +1,4 @@
-<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14">
@@ -10,7 +10,7 @@
       <label class="col-sm-3 control-label"><strong>Scan NPWP</strong></label>
       <span id="field-npwp_perusahaan">
         <div class="col-sm-5">
-          <input type="hidden" name="kode" value="NPWP Perusahaan IUA">
+          <input type="hidden" name="kode" value="NPWP Perusahaan TRAYEK">
           <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
         </div>
         <a href="#" id="btn-npwp_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
@@ -20,7 +20,7 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-ktp">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_ktp_pemohon' %}" id="form-ktp">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Scan KTP</strong></label>
@@ -43,7 +43,7 @@
       <span id="field-akta_pengesahan_menteri">
         <div class="col-sm-5">
 
-          <input type="text" name="izin_gangguan" id="id_izin_gangguan">
+          <input type="text" name="izin_gangguan" id="id_izin_gangguan" class="form-control">
           <!--Proses cek IZIN GANGGUAN-->
         </div>
         <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick="cek_nomor_izin_ho()">Cek Nomor Izin</a>
@@ -65,7 +65,7 @@
           respon = JSON.parse(response)
           // console.log(respon)
           // console.log(respon.data)
-            url = '<a id="btn-load-'+respon.data+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" target="blank_"> <i class="fa fa-check"></i> '+respon.data+' </a>'
+          url = '<a id="btn-load-'+respon.data+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" target="blank_"> <i class="fa fa-check"></i> '+respon.data+' </a>'
 
           $('#load-izin_gangguan').html(url)
           $('#id_izin_gangguan').hide()

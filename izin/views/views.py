@@ -426,6 +426,7 @@ def formulir_iujk(request, extra_context={}):
         'kecamatan_perusahaan': Kecamatan.objects.filter(kabupaten__kode="06", kabupaten__provinsi__kode="35")
 
         })
+    extra_context.update({'jenis_kualifikasi': JenisKualifikasi.objects.all() })
 
     if 'id_kelompok_izin' in request.COOKIES.keys():
         jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
@@ -847,7 +848,7 @@ def cetak_permohonan_iujk(request, id_pengajuan_):
     extra_context = {}
     url_ = reverse('formulir_iujk')
     if id_pengajuan_:
-        pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_)
+        pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_)
         if pengajuan_.perusahaan != '':
             alamat_ = ""
             alamat_perusahaan_ = ""

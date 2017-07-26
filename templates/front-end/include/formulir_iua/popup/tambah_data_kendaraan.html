@@ -135,7 +135,6 @@
 				frm.mLoading();
 			},
 			success: function(response){
-				// console.log(response)
 					
 				respon = JSON.parse(response)
 				if(respon.success == true){
@@ -156,7 +155,7 @@
 				toast_server_error();
 			}
 		})
-	  }
+  	}
 
 	function load_data_kendaraan(pengajuan_id){
 		if (pengajuan_id !== ""){
@@ -250,7 +249,6 @@
 					}
 				}
 			})
-		}
-		
+		}	
 	}
 </script>

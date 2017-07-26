@@ -265,65 +265,6 @@
        <br>
         <br>
         <br>
-        {% if riwayat %}
-        <div class="row" style="margin-top: -48px;">
-          <div class="col-md-12">
-            <center>
-              <h1 class="custom-font">Timeline Riwayat Pendaftaran</h1>
-            </center>
-            <hr class="style14">
-            <div style="display:inline-block;width:100%;overflow-y:auto;margin-top: -110px;">
-              <ul class="timeline timeline-horizontal">
-                {% for r in riwayat %}
-                  <li class="timeline-item">
-                    <div class="timeline-badge primary"><i class="glyphicon glyphicon-check"></i></div>
-                    <div class="timeline-panel">
-                      <!-- <div class="timeline-heading">
-                        <h4 class="timeline-title">{{ r.pengajuan_izin.no_pengajuan }}</h4>
-                        <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{ r.created_at }}</small></p>
-                      </div> -->
-                      <div class="timeline-body">
-                        <p>{{ created_at|date:"d F Y" }} {{ created_at|time:"H:i" }}<br>{{ r.keterangan }}</p>
-                      </div>
-                    </div>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <td>No. Pengajuan</td>
-                    <td>Kelompok Jenis Izin</td>
-                    <td>Keterangan</td>
-                    <td>Penanggung Jawab</td>
-                    <td>Tanggal Proses</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% if riwayat %}
-                    {% for r in riwayat %}
-                      <tr>
-                        <td>{{ r.pengajuan_izin.no_pengajuan }}</td>
-                        <td>{{ r.pengajuan_izin.kelompok_jenis_izin.jenis_izin }}</td>
-                        <td>{{ r.keterangan }}</td>
-                        <td>{{ r.created_by }}</td>
-                        <td>{{ r.created_at }}</td>
-                      </tr>
-                    {% endfor %}
-                  {% endif %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        
-        {% endif %}
       </div>
     </section>
   </div>

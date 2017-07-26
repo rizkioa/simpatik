@@ -1,7 +1,7 @@
 import json, os, datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from izin.models import DetilIUA, Kendaraan, DetilHO, Syarat
+from izin.models import DetilIUA, Kendaraan, DetilHO, Syarat, DetilTrayek
 from izin.iua_forms import DataKendaraanForm
 from master.models import Berkas
 from django.shortcuts import render
@@ -9,23 +9,21 @@ from django.shortcuts import get_object_or_404
 from izin.tdp_forms import BerkasForm
 
 def save_detil_iua(request):
+	data = {'success':False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan', 'data': []}
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			if 'id_kelompok_izin' in request.COOKIES.keys():
+			if 'kode_kelompok_jenis_izin' in request.COOKIES.keys() != '' and request.COOKIES['kode_kelompok_jenis_izin'] != '':
 				try:
-					pengajuan_ = DetilIUA.objects.get(id=request.COOKIES['id_pengajuan'])
+					if request.COOKIES['kode_kelompok_jenis_izin'] == 'TRAYEK':
+						pengajuan_ = DetilTrayek.objects.get(id=request.COOKIES['id_pengajuan'])
+					else:	
+						pengajuan_ = DetilIUA.objects.get(id=request.COOKIES['id_pengajuan'])
 					pengajuan_.nilai_investasi = request.POST.get('nilai_investasi')
 					pengajuan_.kategori_kendaraan_id = request.POST.get('kategori_kendaraan')
 					pengajuan_.save()
 					data = {'success': True, 'pesan': 'Data Umum Perusahaan berhasil tersimpan.', 'data': []}
 				except ObjectDoesNotExist:
-					data = {'success':False, 'pesan': 'sjhajsd', 'data': []}
-			else:
-				data = {'success':False, 'pesan': 'sjhajsd', 'data': []}
-		else:
-			data = {'success':False, 'pesan': 'sjhajsd', 'data': []}
-	else:
-		data = {'success':False, 'pesan': 'sjhajsd', 'data': []}
+					pass
 	data = json.dumps(data)
 	response = HttpResponse(data)
 	return response
@@ -51,7 +49,7 @@ def save_data_kendaraan(request):
 					
 					if data_kendaraan_form.is_valid():
 						i = data_kendaraan_form.save(commit=False)
-						i.iua_id = pengajuan_obj.id
+						i.pengajuan_izin_id = pengajuan_obj.id
 						i.save()
 						data = {'success': True, 'pesan': 'Data Kendaraan berhasil disimpan.'}
 						data = json.dumps(data)
@@ -66,7 +64,7 @@ def save_data_kendaraan(request):
 def load_data_kendaraan(request, pengajuan_id):
 	data = []
 	if pengajuan_id:
-		i = Kendaraan.objects.filter(iua_id=pengajuan_id)
+		i = Kendaraan.objects.filter(pengajuan_izin_id=pengajuan_id)
 		data = [ob.as_json() for ob in i]
 		response = HttpResponse(json.dumps(data), content_type="application/json")
 		return response
@@ -81,12 +79,20 @@ def jumlah_data_kendaraan(request, pengajuan_id):
 
 def load_detil_iua(request, pengajuan_id):
 	data = []
-	if pengajuan_id:
-		i = DetilIUA.objects.filter(id=pengajuan_id).last()
-		if i:
-			data = i.as_json()
-			response = HttpResponse(json.dumps(data), content_type="application/json")
-			return response
+	if 'kode_kelompok_jenis_izin' in request.COOKIES.keys() != '' and request.COOKIES['kode_kelompok_jenis_izin'] != '':
+		if pengajuan_id:
+			try:
+				if request.COOKIES['kode_kelompok_jenis_izin'] == 'TRAYEK':
+					i = DetilTrayek.objects.get(id=pengajuan_id)
+				else:
+					i = DetilIUA.objects.get(id=pengajuan_id)
+				if i:
+					data = i.as_json()
+				print data
+			except ObjectDoesNotExist:
+				pass
+	response = HttpResponse(json.dumps(data), content_type="application/json")
+	return response
 
 def delete_data_kendaraan(request, kendaraan_id):
 	if kendaraan_id:
@@ -293,27 +299,33 @@ def load_data_konfirmasi(request, pengajuan_id):
 	pemohon_json = {}
 	data = {'success': False, 'pesan': 'Data tidak ditemukan'}
 	if pengajuan_id and pengajuan_id is not None:
-		try:
-			pengajuan_obj = DetilIUA.objects.get(id=pengajuan_id)
-			jenis_pengajuan = pengajuan_obj.jenis_permohonan.jenis_permohonan_izin
-			nilai_investasi = pengajuan_obj.nilai_investasi
-			detil_ho = ""
-			if pengajuan_obj.detil_ho:
-				detil_ho = pengajuan_obj.detil_izin_ho.no_izin
-			kategori_kendaraan = pengajuan_obj.kategori_kendaraan.nama_kategori
-			pemohon_obj = pengajuan_obj.pemohon
-			perusahaan_obj = pengajuan_obj.perusahaan
-			kendaraan_obj = Kendaraan.objects.filter(iua_id=pengajuan_obj.id)
-			jumlah_kendaraan_obj = kendaraan_obj.count()
+		if 'kode_kelompok_jenis_izin' in request.COOKIES.keys():
+			if request.COOKIES['kode_kelompok_jenis_izin'] != '':
+				try:
+					if request.COOKIES['kode_kelompok_jenis_izin'] == "TRAYEK":
+						pengajuan_obj = DetilTrayek.objects.get(id=pengajuan_id)
+					else:
+						pengajuan_obj = DetilIUA.objects.get(id=pengajuan_id)
+					jenis_pengajuan = pengajuan_obj.jenis_permohonan.jenis_permohonan_izin
+					nilai_investasi = pengajuan_obj.nilai_investasi
+					detil_ho = ""
+					if pengajuan_obj.detil_ho:
+						detil_ho = pengajuan_obj.detil_izin_ho.no_izin
+					kategori_kendaraan = pengajuan_obj.kategori_kendaraan.nama_kategori
+					pemohon_obj = pengajuan_obj.pemohon
+					perusahaan_obj = pengajuan_obj.perusahaan
+					kendaraan_obj = Kendaraan.objects.filter(pengajuan_izin_id=pengajuan_obj.id)
+					print kendaraan_obj
+					jumlah_kendaraan_obj = kendaraan_obj.count()
 
-			if pengajuan_obj:
-				# pengajuan_json = pengajuan_.as_json()
-				pemohon_json = pemohon_obj.as_json()
-				perusahaan_json = perusahaan_obj.as_json()
-				kendaraan_json = [k.as_json() for k in kendaraan_obj]
-			data = {'success': True, 'pesan': 'Data Berhasil','jenis_pengajuan': jenis_pengajuan, 'nilai_investasi': nilai_investasi,'detil_izin_ho': detil_ho, 'kategori_kendaraan': kategori_kendaraan, 'pemohon_json': pemohon_json, 'perusahaan_json': perusahaan_json,'kendaraan': kendaraan_json, 'jumlah_kendaraan': jumlah_kendaraan_obj}
-		except ObjectDoesNotExist:
-			pass
+					if pengajuan_obj:
+						# pengajuan_json = pengajuan_.as_json()
+						pemohon_json = pemohon_obj.as_json()
+						perusahaan_json = perusahaan_obj.as_json()
+						kendaraan_json = [k.as_json() for k in kendaraan_obj]
+					data = {'success': True, 'pesan': 'Data Berhasil','jenis_pengajuan': jenis_pengajuan, 'nilai_investasi': nilai_investasi,'detil_izin_ho': detil_ho, 'kategori_kendaraan': kategori_kendaraan, 'pemohon_json': pemohon_json, 'perusahaan_json': perusahaan_json,'kendaraan': kendaraan_json, 'jumlah_kendaraan': jumlah_kendaraan_obj}
+				except ObjectDoesNotExist:
+					pass
 
 	response = HttpResponse(json.dumps(data))
 	return response

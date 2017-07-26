@@ -51,11 +51,14 @@ admin.site.register(DetilReklameIzin)
 admin.site.register(Pemohon, PemohonAdmin)
 admin.site.register(KategoriKendaraan)
 admin.site.register(MerkTypeKendaraan)
-admin.site.register(Trayek)
 admin.site.register(Kendaraan)
 admin.site.register(DetilIUA)
 # admin.site.register(DetilIzinParkirIsidentil)
 admin.site.register(DataAnggotaParkir)
+
+class TrayekAdmin(admin.ModelAdmin):
+	list_display = ('trayek', 'jurusan', 'rute_dilewati', 'jumlah_mpu')
+admin.site.register(Trayek, TrayekAdmin)
 
 class JenisPeraturanAdmin(admin.ModelAdmin):
 	list_display = ('jenis_peraturan','keterangan')

@@ -1,30 +1,33 @@
 <div class="modal fade" id="data_kendaraan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h3 class="modal-title costom-font">Tambah Data Kendaraan</h3>
-			</div>
-			{% csrf_token %}
-			<div class="modal-body">
-				<form method="POST" role="form" class="form-horizontal" id="id_form_data_kendaraan" data-parsley-validate novalidate>
+			<form method="POST" role="form" class="form-horizontal" id="id_form_data_kendaraan" data-parsley-validate novalidate action="{% url 'save_data_kendaraan_trayek' %}">
+
+				<div class="modal-header">
+					<h3 class="modal-title costom-font">Tambah Data Kendaraan</h3>
+				</div>
+			
+				<div class="modal-body">
+					{% csrf_token %}
+					<input type="hidden" name="id_kendaraan" id="id_kendaraan" class="data-kendaraan">
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Tanda Nomor Kendaraan</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_tanda_nomor_kendaraan" name="tanda_nomor_kendaraan" required="">
+							<input type="text" class="form-control data-kendaraan" id="id_tanda_nomor_kendaraan" name="nomor_kendaraan" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Nomor Uji Berkala</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_nomor_uji_berkala" name="nomor_uji_berkala" required="">
+							<input type="text" class="form-control data-kendaraan" id="id_nomor_uji_berkala" name="nomor_uji_berkala" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Merk / Type</label>
 						<div class="col-sm-7">
-							<select class="form-control chosen-select mb-10" id="id_merk_type" name="merk_type">
+							<select class="form-control chosen-select mb-10 data-kendaraan" id="id_merk_type" name="merk_kendaraan">
 								<option value>-- Pilih Merk --</option>
 								{% if merk_type %}
 									{% for merk in merk_type %}
@@ -38,28 +41,28 @@
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Berat yang diperbolehkan</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_berat_diperbolehkan" name="berat_diperbolehkan">
+							<input type="text" class="form-control data-kendaraan" id="id_berat_diperbolehkan" name="berat_diperbolehkan">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Nomor Rangka</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_nomor_rangka" name="nomor_rangka" required="">
+							<input type="text" class="form-control data-kendaraan" id="id_nomor_rangka" name="nomor_rangka" required="">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Nomor Mesin</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_nomor_mesin" name="nomor_mesin">
+							<input type="text" class="form-control data-kendaraan" id="id_nomor_mesin" name="nomor_mesin">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Tahun Pembuatan</label>
 						<div class="col-sm-7">
-							<select class="form-control chosen-select mb-10" id="id_tahun_pembuatan" name="tahun_pembuatan" required="">
+							<select class="form-control chosen-select mb-10 data-kendaraan" id="id_tahun_pembuatan" name="tahun_pembuatan" required="">
 								<option value>-- Pilih Tahun --</option>
 								{% for tahun in tahun_choices %}
 								<option value="{{tahun.0}}">{{ tahun.1 }}</option>
@@ -72,7 +75,12 @@
 						<label for="input01" class="col-sm-2 control-label">Trayek</label>
 						<div class="col-sm-7">
 							<select class="form-control chosen-select mb-10" id="id_trayek" name="trayek">
-								<option>-- Pilih Trayek --</option>
+								<option value>-- Pilih Trayek --</option>
+								{% if trayek_list %}
+									{% for t in trayek_list %}
+										<option value="{{t.id}}">Trayek {{t.trayek}} ({{t.jurusan}})</option>
+									{% endfor %}
+								{% endif %}
 							</select>
 						</div>
 					</div>
@@ -80,101 +88,111 @@
 					<div class="form-group">
 						<label for="input01" class="col-sm-2 control-label">Keterangan</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="id_keterangan" name="keterangan">
+							<input type="text" class="form-control data-kendaraan" id="id_keterangan" name="keterangan">
 						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Berkas Scan STNK</label>
+						<div class="col-sm-7 berkas_scan_stnk">
+							<input type="file" class="filestyle data-kendaraan" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas_scan_stnk" id="id_berkas_scan_stnk">
+						</div>
+						<span class="col-sm-7" id="load-berkas_scan_stnk"></span>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Berkas Kartu Pengawasan</label>
+						<div class="col-sm-7 berkas_kartu_pengawasan">
+							<input type="file" class="filestyle data-kendaraan" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas_kartu_pengawasan" id="id_berkas_kartu_pengawasan">
+						</div>
+						<span class="col-sm-7" id="load-berkas_kartu_pengawasan"></span>
 					</div>
 
 					<div class="modal-footer">
 						<button onclick="save_data_kendaraan();" type="button" id="modal_save_data_kendaraan" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
 						<button type="button" class="btn btn-lighther btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i>Cancel</button>
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	function save_data_kendaraan(){
-		nomor_kendaraan = $('#id_tanda_nomor_kendaraan').val()
-		nomor_uji_berkala = $('#id_nomor_uji_berkala').val()
-		merk_kendaraan = $('#id_merk_type').val()
-		berat_diperbolehkan = $('#id_berat_diperbolehkan').val()
-		nomor_rangka = $('#id_nomor_rangka').val()
-		nomor_mesin = $('#id_nomor_mesin').val()
-		tahun_pembuatan = $('#id_tahun_pembuatan').val()
-		keterangan = $('#id_keterangan').val()
-		csrf = $("input[name='csrfmiddlewaretoken']").val()
 
-		$.ajax({
-			method: 'POST',
-			data : { nomor_kendaraan: nomor_kendaraan, nomor_uji_berkala: nomor_uji_berkala, merk_kendaraan: merk_kendaraan, berat_diperbolehkan: berat_diperbolehkan, nomor_rangka:nomor_rangka, nomor_mesin:nomor_mesin, tahun_pembuatan: tahun_pembuatan, keterangan:keterangan, csrfmiddlewaretoken: csrf },
-			url : __base_url__ +'/ajax-save-data-kendaraan/',
-			success: function(response){
-				console.log(response)
-				resp = $.parseJSON(response)
-				if (resp.success){
-					toastr["success"](resp.pesan)
-					$('#data_kendaraan_modal').modal('hide')
-					load_data_kendaraan($.cookie('id_pengajuan'))
+	function save_data_kendaraan(){
+		frm = $('#id_form_data_kendaraan')
+		frm.parsley().validate();
+		if (frm.parsley().isValid()){
+			frm.ajaxSubmit({
+				method: 'POST',
+				data: frm.serialize(),
+				url: frm.attr('action'),
+				beforeSend: function() {
+					frm.mLoading();
+				},
+				success: function(response){
+						
+					respon = JSON.parse(response)
+					if(respon.success == true){
+						toastr["success"](respon.pesan)
+						$('#data_kendaraan_modal').modal('hide')
+						frm.find('.data-kendaraan').val('').trigger("chosen:updated");
+						load_data_kendaraan($.cookie('id_pengajuan'))
+					}
+					else{
+						toastr["error"](respon.pesan)
+					}
+					frm.mLoading('hide');
+				},
+				error: function(){
+					frm.mLoading('hide');
+					toast_server_error();
 				}
-				else{
-					alert('error')
-					// var a = Object.keys(resp);
-					// for (var i = 0; i < a.length; i++){
-					// 	var field = a[i].replace("_", " ");
-					// 	console.log(a[i][0]['message'])
-					// 	toastr['error'](field+", "+resp[a[i]][0]['message'])
-					// }
-				}
-			}
-		})
+			})
+		}
 	}
 
 	function load_data_kendaraan(pengajuan_id){
 		if (pengajuan_id !== ""){
-			tablekosong = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!<td><tr>' 
+			$('#table_daftar_kendaraan > tbody').html('')
 			$('#table_daftar_kendaraan').mLoading();
 			$.ajax({
 				type: 'GET',
 				url: __base_url__+'/ajax-load-data-kendaraan/'+pengajuan_id,
-				success: function (data) {
-					a = data.length
-					if(a === 0){
-						$('#table_daftar_kendaraan > tbody > tr:first/').remove()
-						table = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!!<td><tr>'
-						$('#table_daftar_kendaraan > tbody').prepend(table)
+				success: function (respon) {
+					// console.log(respon)
+					if(respon.length > 0){
+						$.each( respon, function( index ) {
+							row = '<tr>'
+							no = index+1
+							row += '<td>'+no+'</td>'
+							row += '<td>'+respon[index].nomor_kendaraan+'</td>'
+							row += '<td>'+respon[index].nomor_uji_berkala+'</td>'
+							row += '<td>'+respon[index].merk_kendaraan_nama+'</td>'
+							row += '<td>'+respon[index].berat_diperbolehkan+'</td>'
+							row += '<td>'+respon[index].nomor_rangka+'</td>'
+							row += '<td>'+respon[index].nomor_mesin+'</td>'
+							row += '<td>'+respon[index].tahun_pembuatan+'</td>'
+							row += '<td>'+respon[index].trayek+'</td>'
+							if(respon[index].berkas_stnk && respon[index].berkas_kartu_pengawasan){
+								row += '<td><a title="'+respon[index].berkas_stnk_nama+'" target="_blank" href="'+respon[index].berkas_stnk+'"><button type="button" class="btn btn-info"><img src="'+respon[index].berkas_stnk+'" width="30px" height="30px"/></button></a> | <a title="'+respon[index].berkas_kartu_pengawasan_nama+'" target="_blank" href="'+respon[index].berkas_kartu_pengawasan+'"><button type="button" class="btn btn-info"><img src="'+respon[index].berkas_kartu_pengawasan+'" width="30px" height="30px"/></button></a></td>'
+							}
+							else{
+								row += '<td>-</td>'
+							}
+							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick="tambah_kendaraan($(this).val())"><i class="fa fa-pencil"></i><span>Edit</span></button> | <button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon[index].id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
+							row += '</tr>'
+							$('#table_daftar_kendaraan > tbody').append(row)
+						})
 					}
 					else{
-						load_jumlah_data_kendaraan(pengajuan_id)
-						b = data.reverse()
-						$('#table_daftar_kendaraan > tbody > tr:first').remove()
-						for (var i = 0; i < a; i++){
-							id = b[i].id
-							tanda_nomor_kendaraan = b[i].nomor_kendaraan
-							nomor_uji_berkala = b[i].nomor_uji_berkala
-							merk_type = b[i].merk_kendaraan_nama
-							nomor_rangka = b[i].nomor_rangka
-							nomor_mesin = b[i].nomor_mesin
-							tahun_pembuatan = b[i].tahun_pembuatan
-							keterangan = b[i].keterangan
-							no = a
-							if (a > 1){
-								no = a-i
-							}
-							row = '<tr>'
-							row += '<td>'+tanda_nomor_kendaraan+'</td>'
-							row += '<td>'+nomor_uji_berkala+'</td>'
-							row += '<td>'+merk_type+'</td>'
-							row += '<td>'+nomor_rangka+'</td>'
-							row += '<td>'+nomor_mesin+'</td>'
-							row += '<td>'+tahun_pembuatan+'</td>'
-							row += '<td>'+keterangan+'</td>'
-							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_data_kendaraan($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
-							row += '</tr>'
-							$('#table_daftar_kendaraan > tbody').prepend(row)
-						}
+						row = '<tr>'
+						row += '<td colspan="9" align="center">Kosong</td>'
+						row += '</tr>'
+						$('#table_daftar_kendaraan > tbody').append(row)
 					}
+					// $('#table_daftar_kendaraan > tbody').html(row)
 				}
 			})
 			$('#table_daftar_kendaraan').mLoading('hide');
@@ -208,4 +226,103 @@
 			}
 		})
 	}
+
+	function tambah_kendaraan(id_kendaraan){
+		$('#data_kendaraan_modal').modal('show');
+		$('#id_form_data_kendaraan').find('.data-kendaraan').val('').trigger("chosen:updated");
+		$('#id_berkas_scan_stnk').attr('required', true);
+		$('.berkas_scan_stnk').fadeIn();
+		$('#id_berkas_kartu_pengawasan').attr('required', true);
+		$('.berkas_kartu_pengawasan').fadeIn();
+		$('#load-berkas_scan_stnk').fadeOut();
+		$('#load-berkas_kartu_pengawasan').fadeOut();
+		if(id_kendaraan && id_kendaraan > 0){
+			$.ajax({
+				url: __base_url__+'/api/v1/kendaraan/'+id_kendaraan+'/?format=json',
+				type: 'GET',
+				beforeSend: function() {
+					$('#data_kendaraan_modal').mLoading();
+				},
+				success: function(respon){
+					// console.log(respon)
+					if(respon){
+						$('#id_kendaraan').val(respon.id);
+						$('#id_tanda_nomor_kendaraan').val(respon.nomor_kendaraan);
+						$('#id_nomor_uji_berkala').val(respon.nomor_uji_berkala);
+						if(respon.merk_kendaraan){
+							$('#id_merk_type').val(respon.merk_kendaraan.id).prop('selected',true).trigger("chosen:updated");
+						}
+						
+						$('#id_berat_diperbolehkan').val(respon.berat_diperbolehkan);
+						$('#id_nomor_rangka').val(respon.nomor_rangka);
+						$('#id_nomor_mesin').val(respon.nomor_mesin);
+						$('#id_tahun_pembuatan').val(respon.tahun_pembuatan).prop('selected',true).trigger("chosen:updated");
+						$('#id_keterangan').val(respon.keterangan);
+
+						if(respon.berkas_stnk != null){
+							if(respon.berkas_stnk.keterangan && respon.berkas_stnk.nama_berkas && respon.berkas_stnk.berkas){
+								$('#load-berkas_scan_stnk').fadeIn();
+								$('#id_berkas_scan_stnk').attr('required', false);
+								$('.berkas_scan_stnk').fadeOut();
+								url_berkas_stnk = '<a class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas_stnk.berkas+'" target="blank_"> <i class="fa fa-check"></i> '+respon.berkas_stnk.nama_berkas+' </a> <a class="btn btn-danger btn-sm" onclick="detele_berkas_kendaraan('+respon.berkas_stnk.id+',\''+respon.berkas_stnk.keterangan+'\');return false;"> <i class="fa fa-trash"></i> Hapus</a>';
+								$('#load-berkas_scan_stnk').html(url_berkas_stnk);
+							}
+						}
+
+						if(respon.berkas_kartu_pengawasan != null){
+							if(respon.berkas_kartu_pengawasan.keterangan && respon.berkas_kartu_pengawasan.nama_berkas && respon.berkas_kartu_pengawasan.berkas){
+								$('#load-berkas_kartu_pengawasan').fadeIn();
+								$('#id_berkas_kartu_pengawasan').attr('required', false);
+								$('.berkas_kartu_pengawasan').fadeOut();
+								url_berkas_kartu_pengawasan = '<a class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas_kartu_pengawasan.berkas+'" target="blank_"> <i class="fa fa-check"></i> '+respon.berkas_kartu_pengawasan.nama_berkas+' </a> <a class="btn btn-danger btn-sm" onclick="detele_berkas_kendaraan('+respon.berkas_kartu_pengawasan.id+',\''+respon.berkas_kartu_pengawasan.keterangan+'\');return false;"> <i class="fa fa-trash"></i> Hapus</a>';
+								$('#load-berkas_kartu_pengawasan').html(url_berkas_kartu_pengawasan);
+							}
+						}
+						$('#data_kendaraan_modal').mLoading('hide');
+					}
+				}
+			})
+		}	
+	}
+
+	function detele_berkas_kendaraan(id_berkas, jenis){
+		id_kendaraan = $('#id_kendaraan').val()
+		if(id_kendaraan && id_berkas && jenis){
+			$.ajax({
+				url: __base_url__+'/layanan/izin-angkutan-trayek/delete-berkas-kendaraan/?id_kendaraan='+id_kendaraan+'&id_berkas='+id_berkas+'&jenis='+jenis,
+				type: 'GET',
+				beforeSend: function() {
+					$('#data_kendaraan_modal').mLoading();
+				},
+				success: function(response){
+					// console.log(response)
+					response = JSON.parse(response)
+					if(response.success == true){
+						toastr["success"](response.pesan)
+						if(response.jenis == 'scan_stnk'){
+							$('#load-berkas_scan_stnk').fadeOut();
+							$('#id_berkas_scan_stnk').attr('required', true);
+							$('.berkas_scan_stnk').fadeIn();
+						}
+						else if (response.jenis == 'kartu_pengawasan'){
+							$('#load-berkas_kartu_pengawasan').fadeOut();
+							$('#id_berkas_kartu_pengawasan').attr('required', true);
+							$('.berkas_kartu_pengawasan').fadeIn();
+						}
+					}
+					else{
+						toastr["warning"](response.pesan)
+					}
+					$('#data_kendaraan_modal').mLoading('hide');
+				},
+				error: function(){
+					$('#data_kendaraan_modal').mLoading('hide');
+				}
+			})
+		}
+		else{
+			console.log('data kosong')
+		}
+	}
+
 </script>
