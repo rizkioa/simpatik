@@ -1,7 +1,7 @@
 import json
 import base64
 import datetime
-from izin.utils import terbilang_, terbilang, formatrupiah
+from izin.utils import terbilang_, terbilang, formatrupiah, push_api_dishub
 from django.db.models import Q
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
@@ -1283,6 +1283,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^izin-terdaftar/$', self.admin_site.admin_view(self.izinterdaftar), name='izinterdaftar'),
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
 			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
+			url(r'^push-api-dishub/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(push_api_dishub), name='push_api_dishub'),
 
 			)
 		return my_urls + urls

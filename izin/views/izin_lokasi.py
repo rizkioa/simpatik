@@ -165,19 +165,22 @@ def load_data_tabel_sertifikat_tanah(request,id_sertifikat_tanah):
 def izinlokasi_done(request):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
-      pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-      pengajuan_.status = 6
-      pengajuan_.save()
-      data = {'success': True, 'pesan': 'Proses Selesai.' }
-      response = HttpResponse(json.dumps(data))
-      response.delete_cookie(key='id_pengajuan') # set cookie 
-      response.delete_cookie(key='id_perusahaan') # set cookie 
-      response.delete_cookie(key='nomor_ktp') # set cookie  
-      response.delete_cookie(key='nomor_paspor') # set cookie 
-      response.delete_cookie(key='id_pemohon') # set cookie 
-      response.delete_cookie(key='id_kelompok_izin') # set cookie
-      response.delete_cookie(key='id_legalitas') # set cookie
-      response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+      try:
+        pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+        pengajuan_.status = 6
+        pengajuan_.save()
+        data = {'success': True, 'pesan': 'Proses Selesai.' }
+        response = HttpResponse(json.dumps(data))
+        response.delete_cookie(key='id_pengajuan') # set cookie 
+        response.delete_cookie(key='id_perusahaan') # set cookie 
+        response.delete_cookie(key='nomor_ktp') # set cookie  
+        response.delete_cookie(key='nomor_paspor') # set cookie 
+        response.delete_cookie(key='id_pemohon') # set cookie 
+        response.delete_cookie(key='id_kelompok_izin') # set cookie
+        response.delete_cookie(key='id_legalitas') # set cookie
+        response.delete_cookie(key='id_legalitas_perubahan') # set cookie
+      except ObjectDoesNotExist:
+        pass
     else:
       data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
       data = json.dumps(data)
