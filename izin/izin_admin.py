@@ -30,6 +30,7 @@ from izin.controllers.izin_lokasi import formulir_izin_lokasi
 from izin.controllers.ippt_rumah import formulir_ippt_rumah 
 from izin.controllers.huller import formulir_detilhuller 
 from izin.controllers.ippt_usaha import formulir_ippt_usaha 
+from izin.controllers.dishub.izin_usaha_angkutan import formulir_iua
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
@@ -354,7 +355,9 @@ class IzinAdmin(admin.ModelAdmin):
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
 			link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IZINPARKIR":
-			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})	
+			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IUA":
+			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})	
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
 				""" % link_ )
@@ -402,6 +405,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_tdup', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IZINPARKIR":
 			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IUA":
+			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -1284,6 +1289,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/ippt-usaha/$', self.admin_site.admin_view(formulir_ippt_usaha), name='izin_proses_ippt_usaha'),
 			url(r'^wizard/add/proses/penggilingan-padi-&-huller/$', self.admin_site.admin_view(formulir_detilhuller), name='izin_proses_huller'),
 			url(r'^wizard/add/proses/tdup/$', self.admin_site.admin_view(formulir_tdup), name='izin_proses_tdup'),
+			url(r'^wizard/add/proses/izin-usaha-angkutan/$', self.admin_site.admin_view(formulir_iua), name='izin_proses_izin_usaha_angkutan'),
 
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),

@@ -331,31 +331,28 @@ def load_data_konfirmasi(request, pengajuan_id):
 	return response
 
 def cetak_iua(request, id_pengajuan):
-    extra_context = {}
-    if id_pengajuan:
-        pengajuan_obj = get_object_or_404(DetilIUA, id=id_pengajuan)
-        if pengajuan_obj:
-            extra_context.update({'pengajuan':pengajuan_obj})
-    return render(request, "front-end/include/formulir_iua/cetak.html", extra_context)
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_obj = get_object_or_404(DetilIUA, id=id_pengajuan)
+		if pengajuan_obj:
+			extra_context.update({'pengajuan':pengajuan_obj})
+	return render(request, "front-end/include/formulir_iua/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_iua(request, id_pengajuan):
-    extra_context = {}
-    extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN USAHA ANGKUTAN'})
-    if id_pengajuan:
-        pengajuan_ = get_object_or_404(DetilIUA, id=id_pengajuan)
-        if pengajuan_:
-            nilai_investasi = pengajuan_.nilai_investasi
-            kategori_kendaraan = pengajuan_.kategori_kendaraan.nama_kategori
-            kendaraan_ = Kendaraan.objects.filter(iua_id=pengajuan_.id)
-            if kendaraan_:
-            	kendaraan_jumlah = kendaraan_.count()
-
-            
-            # rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
-            # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
-            syarat_ = Syarat.objects.filter(jenis_izin__kode="IUA")
-            extra_context.update({ 'nilai_investasi': nilai_investasi, 'kategori_kendaraan': kategori_kendaraan, 'kendaraan_jumlah': kendaraan_jumlah, 'kendaraan': kendaraan_,  'pengajuan_':pengajuan_, 'syarat': syarat_})
-    return render(request, "front-end/include/formulir_iua/cetak_bukti_pendaftaran.html", extra_context)
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN USAHA ANGKUTAN'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(DetilIUA, id=id_pengajuan)
+		if pengajuan_:
+			nilai_investasi = pengajuan_.nilai_investasi
+			kategori_kendaraan = pengajuan_.kategori_kendaraan.nama_kategori
+			kendaraan_ = pengajuan_.kendaraan_set.all()
+			kendaraan_jumlah = kendaraan_.count()
+			# rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
+			# id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
+			syarat_ = Syarat.objects.filter(jenis_izin__kode="IUA")
+			extra_context.update({ 'nilai_investasi': nilai_investasi, 'kategori_kendaraan': kategori_kendaraan, 'kendaraan_jumlah': kendaraan_jumlah, 'kendaraan': kendaraan_,  'pengajuan_':pengajuan_, 'syarat': syarat_})
+	return render(request, "front-end/include/formulir_iua/cetak_bukti_pendaftaran.html", extra_context)
 
 def iua_done(request):
 	data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
