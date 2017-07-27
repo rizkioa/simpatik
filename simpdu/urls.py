@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
-from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource, InformasiKekayaanDaerahResource
+from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource, InformasiKekayaanDaerahResource, DetilHOResource, DetilReklameResource, DetilReklameIzinResource, DetilIMBPapanReklameResource, DetilIMBResource, DetilHullerResource, InformasiTanahResource, SertifikatTanahResource
 from perusahaan.api import PerusahaanResource, LegalitasResource, DataPimpinanResource, PemegangSahamResource
 from master.api import BerkasResource, DesaResource
 
@@ -22,23 +22,31 @@ from mobile.views import request_user
 admin.autodiscover()
 
 v1_api = Api(api_name='v1')
-
-v1_api.register(PengajuanIzinResource())
 v1_api.register(AuthResource())
 v1_api.register(AccountsResource())
-v1_api.register(DetilIUAResource())
 v1_api.register(PemohonResource())
 v1_api.register(PerusahaanResource())
 v1_api.register(KendaraanResource())
 v1_api.register(BerkasResource())
 v1_api.register(SKIzinResource())
-v1_api.register(DetilTDPResource())
 v1_api.register(LegalitasResource())
 v1_api.register(IzinLainResource())
 v1_api.register(DataPimpinanResource())
 v1_api.register(PemegangSahamResource())
 v1_api.register(InformasiKekayaanDaerahResource())
 v1_api.register(DesaResource())
+v1_api.register(DetilHOResource())
+v1_api.register(PengajuanIzinResource())
+v1_api.register(DetilTDPResource())
+v1_api.register(DetilIUAResource())
+v1_api.register(DetilHOResource())
+v1_api.register(DetilReklameResource())
+v1_api.register(DetilReklameIzinResource())
+v1_api.register(DetilIMBPapanReklameResource())
+v1_api.register(DetilIMBResource())
+v1_api.register(DetilHullerResource())
+v1_api.register(InformasiTanahResource()) # Izin Lokasi
+v1_api.register(SertifikatTanahResource()) # Izin Lokasi
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())

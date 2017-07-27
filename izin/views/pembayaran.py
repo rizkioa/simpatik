@@ -33,12 +33,11 @@ def detil_pembayaran_save(request):
 			pembayaran = DetilPembayaranForm(request.POST, instance=pengajuan_)
 		except ObjectDoesNotExist:
 			pembayaran = DetilPembayaranForm(request.POST)
-
 		if pembayaran.is_valid():
 			if request.user.groups.filter(name='Kasir') or request.user.is_superuser:
 				p = pembayaran.save(commit=False)
 				p.save()
-				sk_izin_.status = 4
+				sk_izin_.status = 9
 				sk_izin_.save()
 				pengajuan_izin.status = 2
 				pengajuan_izin.save()
@@ -56,7 +55,7 @@ def detil_pembayaran_save(request):
 			else:
 				p = pembayaran.save(commit=False)
 				p.save()
-				pengajuan_izin.status = 4
+				pengajuan_izin.status = 5
 				pengajuan_izin.save()
 				riwayat_ = Riwayat(
 					pengajuan_izin_id = pengajuan_izin.id,
