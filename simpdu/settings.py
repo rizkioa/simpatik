@@ -114,11 +114,11 @@ WSGI_APPLICATION = 'simpdu.wsgi.application'
 DATABASES = {  
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', 
-        'NAME': 'simpatik',
-        'USER': 'simpatik', 
+        'NAME': 'simpatik_demo',
+        'USER': 'simpatik_demo', 
         'PASSWORD': '!QAZ@WSX',                
         'HOST': 'localhost',                  
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
