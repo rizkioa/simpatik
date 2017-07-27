@@ -64,10 +64,9 @@ class KendaraanResource(CORSModelResource):
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = Kendaraan.objects.all()
-		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua_id', 'berkas_stnk', 'berkas_kartu_pengawasan']
+		# fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'pengajuan_izin_id', 'berkas_stnk', 'berkas_kartu_pengawasan']
 		filtering = {
 			'pengajuan_izin_id': ['contains'],
-			# 'status': ALL,
 		}
 
 class KategoriKendaraanRecource(CORSModelResource):
@@ -157,7 +156,6 @@ class IzinLainResource(CORSModelResource):
 		queryset = IzinLain.objects.all()
 		filtering = {
 			'pengajuan_izin_id': ['contains'],
-			
 		}
 		excludes = ['updated_at', 'verified_at', 'status', 'rejected_at', 'created_at']
 
@@ -223,6 +221,8 @@ class DetilHullerResource(CORSModelResource):
 	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
 	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	pemilik_desa_lokasi_lengkap = fields.CharField(attribute="pemilik_desa__lokasi_lengkap", null=True, blank=True)
+	pengusaha_desa_lokasi_lengkap = fields.CharField(attribute="pengusaha_desa__lokasi_lengkap", null=True, blank=True)
 	
 	class Meta:
 		queryset = DetilHuller.objects.all()
