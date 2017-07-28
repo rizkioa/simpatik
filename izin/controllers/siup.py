@@ -47,10 +47,10 @@ def add_wizard_siup(request):
 			# else:
 
 			kode_izin_ = request.POST.get('nama_izin') # Get name 'nama_izin' in request.POST
-			print kode_izin_
+			# print kode_izin_
 			try:
 				id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_izin_, aktif=True)
-				print id_kelompok_list
+				# print id_kelompok_list
 				if len(id_kelompok_list) > 1:
 					id_kelompok_ = request.POST.get('kelompok_izin')
 					id_kelompok_list = KelompokJenisIzin.objects.filter(id=id_kelompok_).last()
@@ -64,9 +64,9 @@ def add_wizard_siup(request):
 				messages.warning(request, msg_, extra_tags='safe')
 				return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
 
-			print id_kelompok_list
-			print "asdasjdkaskdjasjdk"
-			print "###############"
+			# print id_kelompok_list
+			# print "asdasjdkaskdjasjdk"
+			# print "###############"
 			if kode_izin_ == "Reklame":
 				url_ = reverse('admin:izin_proses_reklame')
 			elif id_kelompok_list.kode == "503.02/":
@@ -114,7 +114,7 @@ def add_wizard_siup(request):
 			else:
 				url_ = "#"
 
-			print id_kelompok_list.kode
+			# print id_kelompok_list.kode
 			response = HttpResponseRedirect(url_) # Redirect to url
 			delete_cookie(response)
 			if id_kelompok_list.kode:

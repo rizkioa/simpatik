@@ -1132,12 +1132,28 @@
 				}
 			});
 		}
+
 		function change_edit_pengajuan(){
 			$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
 			$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
 			setTimeout(function(){
 				window.location.replace('{% url 'admin:izin_proses_tdp_pt' %}');
 			}, 1000);
+		}
+
+		function push_pengajuan_dishub(id_pengajuan){
+			if(id_pengajuan && id_pengajuan != null){
+				$.ajax({
+					url: __base_url__+'/admin/izin/pengajuanizin/push-api-dishub/'+id_pengajuan,
+					type: 'GET',
+					success: function(respon){
+						console.log(respon)
+					},
+					error: function(respon){
+
+					}
+				})
+			}
 		}
 	</script>
 {% endblock %}
