@@ -382,7 +382,7 @@ def get_model_detil(kode):
 
 import drest, json
 def push_api_dishub(request, id_pengajuan):
-	from izin.models import PengajuanIzin
+	from izin.models import PengajuanIzin, Riwayat
 	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan'}
 	if request.user.groups.filter(name='Kabid'):
 		if id_pengajuan:
@@ -413,13 +413,19 @@ def push_api_dishub(request, id_pengajuan):
 										id=pengajuan_obj.id,
 										perusahaan=perusahaan,
 										no_pengajuan=pengajuan_obj.no_pengajuan,
-										tgl_pengajuan=pengajuan_obj.created_at.strftime("%Y-%d-%m")
+										tgl_pengajuan=pengajuan_obj.created_at.strftime("%Y-%m-%d")
 									)
 									response = api.izin.post(data_izin)
 									if response.status in (200, 201, 202):
 										data = {'success': True, 'pesan': 'Berhasil mengirim rekomendasi ke Dishub.'}
-										# pengajuan_obj.status = 8 # Survey
-										# pengajuan_obj.save()
+										riwayat_obj = Riwayat(
+											pengajuan_izin_id = pengajuan_obj.id,
+											created_by_id = request.user.id,
+											keterangan = "Survey Pengajuan Izin"
+											)
+										riwayat_obj.save()
+										pengajuan_obj.status = 8 # Survey
+										pengajuan_obj.save()
 								except drest.exc.dRestAPIError as e:
 									# resp.pesan = '[E002] '+str(e.msg)
 									data = {'success': False, 'pesan': str(e.msg)}

@@ -167,20 +167,20 @@ def iua_upload_dokument(request):
 										berkas = form.save(commit=False)
 										kode = request.POST.get('kode')
 										if kode == 'Akte Pendirian':
-											berkas.nama_berkas = "Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan "+p.perusahaan.npwp
 										elif kode == 'Domisili':
-											berkas.nama_berkas = "Scan Surat Keterangan Domisili"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Surat Keterangan Domisili"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Surat Keterangan Domisili "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Surat Keterangan Domisili "+p.perusahaan.npwp
 										elif kode == 'Pernyataan Kesanggupan Memilkik':
-											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat "+p.perusahaan.npwp
 										elif kode == 'Pernyataan Kesanggupan Menyediakan':
-											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan "+p.perusahaan.npwp
 										elif kode == 'Buku Uji Berkala':
-											berkas.nama_berkas = "Buku Uji Berkala Kendaraan Bermotor"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Buku Uji Berkala Kendaraan Bermotor"+p.perusahaan.npwp
+											berkas.nama_berkas = "Buku Uji Berkala Kendaraan Bermotor "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Buku Uji Berkala Kendaraan Bermotor "+p.perusahaan.npwp
 										if request.user.is_authenticated():
 											berkas.created_by_id = request.user.id
 										else:
@@ -242,35 +242,35 @@ def ajax_load_berkas_iua(request, id_pengajuan):
 					id_berkas.append(npwp_perusahaan.id)
 					
 			if berkas_:
-				akte_pendirian = berkas_.filter(keterangan='File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan'+perusahaan_.npwp).last()
+				akte_pendirian = berkas_.filter(keterangan='File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan '+perusahaan_.npwp).last()
 				if akte_pendirian:
 					url_berkas.append(akte_pendirian.berkas.url)
 					id_elemen.append('akte_pendirian')
 					nm_berkas.append(akte_pendirian.nama_berkas)
 					id_berkas.append(akte_pendirian.id)
 
-				domisili = berkas_.filter(keterangan='File Scan Surat Keterangan Domisili'+perusahaan_.npwp).last()
+				domisili = berkas_.filter(keterangan='File Scan Surat Keterangan Domisili '+perusahaan_.npwp).last()
 				if domisili:
 					url_berkas.append(domisili.berkas.url)
 					id_elemen.append('domisili')
 					nm_berkas.append(domisili.nama_berkas)
 					id_berkas.append(domisili.id)
 
-				pernyataan_kesanggupan_memiliki = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat'+perusahaan_.npwp).last()
+				pernyataan_kesanggupan_memiliki = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat '+perusahaan_.npwp).last()
 				if pernyataan_kesanggupan_memiliki:
 					url_berkas.append(pernyataan_kesanggupan_memiliki.berkas.url)
 					id_elemen.append('pernyataan_kesanggupan_memiliki')
 					nm_berkas.append(pernyataan_kesanggupan_memiliki.nama_berkas)
 					id_berkas.append(pernyataan_kesanggupan_memiliki.id)
 
-				pernyataan_kesanggupan_menyediakan = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan'+perusahaan_.npwp).last()
+				pernyataan_kesanggupan_menyediakan = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan '+perusahaan_.npwp).last()
 				if pernyataan_kesanggupan_menyediakan:
 					url_berkas.append(pernyataan_kesanggupan_menyediakan.berkas.url)
 					id_elemen.append('pernyataan_kesanggupan_menyediakan')
 					nm_berkas.append(pernyataan_kesanggupan_menyediakan.nama_berkas)
 					id_berkas.append(pernyataan_kesanggupan_menyediakan.id)
 
-				buku_uji_berkala = berkas_.filter(keterangan='File Buku Uji Berkala Kendaraan Bermotor'+perusahaan_.npwp).last()
+				buku_uji_berkala = berkas_.filter(keterangan='File Buku Uji Berkala Kendaraan Bermotor '+perusahaan_.npwp).last()
 				if buku_uji_berkala:
 					url_berkas.append(buku_uji_berkala.berkas.url)
 					id_elemen.append('buku_uji_berkala')
