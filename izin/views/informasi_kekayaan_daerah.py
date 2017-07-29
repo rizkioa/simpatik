@@ -207,6 +207,7 @@ def informasi_kekayaan_daerah_upload_berkas_pendukung(request):
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
 								p.berkas_tambahan.add(berkas)
+								p.berkas_terkait_izin.add(berkas)
 
 								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 										{'status_upload': 'ok'},

@@ -374,12 +374,12 @@
 				</div>
 				<div id="minimize_2">
 					<div class="tile-body">
-						{% if status == 2 %}
+						{% if pengajuan.status == 8 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
 										<h3>
-											TERVERIFIKASI
+											Berhasil mengirim rekomendasi ke Dishub.
 										</h3>
 									</center>
 								</div>
@@ -399,15 +399,15 @@
 						{% if status == 4 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
-									<h4>MENERUSKAN PENGAJUAN KE KEPALA DPMPTSP</h4>
+									<h4>MENERUSKAN PENGAJUAN UNTUK MEMINTA REKOMENDASI KE DISHUB</h4>
 									<br>
 									<label class="checkbox checkbox-custom-alt">
-										<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+										<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke DISHUB untuk ditindaklanjuti.
 									</label>
 								</div>
 								<div class="panel-footer">
 									<center>
-										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										<a type="button" onclick="push_pengajuan_dishub({{ pengajuan.id }})" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 									</center>
 								</div>
 							</div>
@@ -1132,12 +1132,36 @@
 				}
 			});
 		}
+
 		function change_edit_pengajuan(){
 			$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
 			$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
 			setTimeout(function(){
 				window.location.replace('{% url 'admin:izin_proses_tdp_pt' %}');
 			}, 1000);
+		}
+
+		function push_pengajuan_dishub(id_pengajuan){
+			if(id_pengajuan && id_pengajuan != null){
+				$.ajax({
+					url: __base_url__+'/admin/izin/pengajuanizin/push-api-dishub/'+id_pengajuan,
+					type: 'GET',
+					success: function(respon){
+						respon = JSON.parse(respon)
+						console.log(respon)
+						if(respon.success == true){
+							toastr["success"](respon.pesan)
+							window.location.reload();
+						}
+						else{
+							toastr["error"](respon.pesan)
+						}
+					},
+					error: function(){
+						toast_server_error()
+					}
+				})
+			}
 		}
 	</script>
 {% endblock %}
@@ -1422,7 +1446,7 @@
 						</tr>
 					</table>
 					<br>
-					<table class="table table-bordered" id="id_data_kendaraan">
+					<table class="table table-bordered">
 						<thead>
 							<tr>
 								<th>Tanda Nomor Kendaraan</th>
@@ -1436,8 +1460,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							{% if kendaraan %}
-								{% for k in kandaraan %}
+							{% if kendaraan_list %}
+								{% for k in kendaraan_list %}
 									<tr>
 										<td>{{k.nomor_kendaraan}}</td>
 										<td>{{k.nomor_uji_berkala}}</td>

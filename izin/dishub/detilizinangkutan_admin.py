@@ -38,7 +38,7 @@ class DetilIUAAdmin(admin.ModelAdmin):
 			if riwayat_:
 				extra_context.update({'riwayat': riwayat_ })
 			skizin_ = pengajuan_.skizin_set.last()
-			extra_context.update({'pengajuan':pengajuan_, 'pemohon': pengajuan_.pemohon, 'perusahaan':pengajuan_.perusahaan, 'status': pengajuan_.status, 'kendaraan': kendaraan_list, 'kendaraan_count':kendaraan_count, 'skizin':skizin_})
+			extra_context.update({'pengajuan':pengajuan_, 'pemohon': pengajuan_.pemohon, 'perusahaan':pengajuan_.perusahaan, 'status': pengajuan_.status, 'kendaraan_list': kendaraan_list, 'kendaraan_count':kendaraan_count, 'skizin':skizin_})
 		template = loader.get_template("admin/izin/pengajuanizin/dishub/view_izin_angkutan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
