@@ -868,28 +868,31 @@ def siup_upload_berkas_akta_pendirian(request):
 							else:
 								try:
 									pengajuan_obj = PengajuanIzin.objects.get(id=request.COOKIES.get('id_pengajuan'))
-									# a = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-									if pengajuan_obj.perusahaan:
-										berkas = form.save(commit=False)
-										berkas.nama_berkas = "Berkas Akta Pendirian "+pengajuan_obj.perusahaan.nama_perusahaan
-										berkas.keterangan = "akta pendirian "+pengajuan_obj.perusahaan.npwp
-										if request.user.is_authenticated():
-											berkas.created_by_id = request.user.id
+									try:
+										perusahaan_obj = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+										if perusahaan_obj:
+											berkas = form.save(commit=False)
+											berkas.nama_berkas = "Berkas Akta Pendirian "+perusahaan_obj.nama_perusahaan
+											berkas.keterangan = "akta pendirian "+perusahaan_obj.npwp
+											if request.user.is_authenticated():
+												berkas.created_by_id = request.user.id
+											else:
+												berkas.created_by_id = request.COOKIES['id_pemohon']
+											berkas.save()
+											# update model yang lain.
+											try:
+												p = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
+												p.berkas = berkas
+												p.save()
+											except ObjectDoesNotExist:
+												pass
+											pengajuan_obj.berkas_terkait_izin.add(berkas)
+											data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+												{'status_upload': 'ok'},
+											]}
 										else:
-											berkas.created_by_id = request.COOKIES['id_pemohon']
-										berkas.save()
-										# update model yang lain.
-										try:
-											p = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
-											p.berkas = berkas
-											p.save()
-										except ObjectDoesNotExist:
-											pass
-										pengajuan_obj.berkas_terkait_izin.add(berkas)
-										data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
-											{'status_upload': 'ok'},
-										]}
-									else:
+											data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
+									except ObjectDoesNotExist:
 										data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
 								except ObjectDoesNotExist:
 									data = {'Terjadi Kesalahan': [{'message': 'Perusahaan tidak ada dalam daftar'}]}
