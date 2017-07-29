@@ -178,24 +178,10 @@
 	</div>
 
 	<page size="F4">
-		<div id="kop_surat_id">
-			<div class="row">
-				
-				<div class="col-2">
-					<img src="{% static 'images/kabkediri.png' %}" height="120px">
-				</div>
-				<div class="col-9">
-					<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
-						<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
-						<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
-						<br/>
-						<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
-						<span style="font-size: 19px;"><b>KEDIRI</b></span>
-					</p>
-				</div>
-			</div>
+		{% include 'front-end/include/skizin/cop_surat.html' %}
+		<div style="display: none; width: 100%;" class="printpadding">
+			
 		</div>
-		<hr class="style14">
 		
 		<br>
 		<div class="row">
