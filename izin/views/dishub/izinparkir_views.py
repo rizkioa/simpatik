@@ -124,6 +124,7 @@ def upload_berkas_save(request):
 												berkas.created_by_id = request.COOKIES['id_pemohon']
 											berkas.save()
 											pengajuan_obj.berkas_tambahan.add(berkas)
+											pengajuan_obj.berkas_terkait_izin.add(berkas)
 
 											data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 													{'status_upload': 'ok'},

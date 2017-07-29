@@ -359,7 +359,7 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilTDP')
 		elif kode == "503.01.06/":
 			objects_ = getattr(app_models, 'DetilIMBPapanReklame')
-		elif kode == "503.01.05/" or kode == "503.01.04/" :
+		elif kode == "503.01.05/" or kode == "503.01.04/":
 			objects_ = getattr(app_models, 'DetilIMB')
 		elif kode == "503.06.01/":
 			objects_ = getattr(app_models, 'InformasiKekayaanDaerah')

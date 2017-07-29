@@ -24,6 +24,13 @@ class Pemohon(Account):
 	berkas_foto = models.ManyToManyField(Berkas, verbose_name="Berkas Foto", related_name='berkas_foto_pemohon', blank=True)
 	berkas_npwp = models.ForeignKey(Berkas, verbose_name="Berkas NPWP", related_name='berkas_npwp_pemohon', blank=True, null=True)
 
+	def get_obj_ktp(self):
+		ktp = None
+		ktp_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=1).last()
+		if ktp_obj:
+			ktp = ktp_obj
+		return ktp
+
 	def get_berkas_ktp(self):
 		berkas = None
 		ktp_obj = self.nomoridentitaspengguna_set.filter(jenis_identitas=1).last()
