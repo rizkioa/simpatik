@@ -408,6 +408,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('ktp_paspor')
                 nm_berkas.append("Berkas Foto KTP/PASPOR"+p.pemohon.username)
                 id_berkas.append(ktp_paspor.id)
+                p.berkas_terkait_izin.add(ktp_paspor)
 
             kartu_keluarga  = Berkas.objects.filter(nama_berkas="Kartu Keluarga"+p.no_pengajuan)
             if kartu_keluarga.exists():
@@ -416,6 +417,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('kartu_keluarga')
                 nm_berkas.append("Kartu Keluarga"+p.no_pengajuan)
                 id_berkas.append(kartu_keluarga.id)
+                p.berkas_terkait_izin.add(kartu_keluarga)
 
             npwp_pribadi = Berkas.objects.filter(nama_berkas="NPWP Pribadi"+p.no_pengajuan)
             if npwp_pribadi.exists():
@@ -424,6 +426,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('npwp_pribadi')
                 nm_berkas.append("NPWP Pribadi"+p.no_pengajuan)
                 id_berkas.append(npwp_pribadi.id)
+                p.berkas_terkait_izin.add(npwp_pribadi)
 
             npwp_perusahaan = Berkas.objects.filter(nama_berkas="NPWP Perusahaan"+p.no_pengajuan)
             if npwp_perusahaan.exists():
@@ -432,6 +435,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('npwp_perusahaan')
                 nm_berkas.append("NPWP Perusahaan"+p.no_pengajuan)
                 id_berkas.append(npwp_perusahaan.id)
+                p.berkas_terkait_izin.add(npwp_perusahaan)
 
             sketsa_tanah_yang_dimohon = Berkas.objects.filter(nama_berkas="Sketsa Lokasi Tanah Yang Dimohon"+p.no_pengajuan)
             if sketsa_tanah_yang_dimohon.exists():
@@ -440,6 +444,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('sketsa_tanah_yang_dimohon')
                 nm_berkas.append("Sketsa Lokasi Tanah Yang Dimohon"+p.no_pengajuan)
                 id_berkas.append(sketsa_tanah_yang_dimohon.id)
+                p.berkas_terkait_izin.add(sketsa_tanah_yang_dimohon)
 
             gambar_rencana_penggunaan_tanah = Berkas.objects.filter(nama_berkas="Gambar / Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
             if gambar_rencana_penggunaan_tanah.exists():
@@ -448,6 +453,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('gambar_rencana_penggunaan_tanah')
                 nm_berkas.append("Gambar / Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
                 id_berkas.append(gambar_rencana_penggunaan_tanah.id)
+                p.berkas_terkait_izin.add(gambar_rencana_penggunaan_tanah)
 
             sertifikat_rumah = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah 01"+p.no_pengajuan)
             if sertifikat_rumah.exists():
@@ -456,6 +462,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('sertifikat_rumah')
                 nm_berkas.append("Bukti Kepemilikan Tanah 01"+p.no_pengajuan)
                 id_berkas.append(sertifikat_rumah.id)
+                p.berkas_terkait_izin.add(sertifikat_rumah)
 
             akta_jual_beli = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah 02"+p.no_pengajuan)
             if akta_jual_beli.exists():
@@ -464,6 +471,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('akta_jual_beli')
                 nm_berkas.append("Bukti Kepemilikan Tanah 02"+p.no_pengajuan)
                 id_berkas.append(akta_jual_beli.id)
+                p.berkas_terkait_izin.add(akta_jual_beli)
 
             site_plan = Berkas.objects.filter(nama_berkas="Bukti Kepemilikan Tanah 03"+p.no_pengajuan)
             if site_plan.exists():
@@ -472,6 +480,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('site_plan')
                 nm_berkas.append("Bukti Kepemilikan Tanah 03"+p.no_pengajuan)
                 id_berkas.append(site_plan.id)
+                p.berkas_terkait_izin.add(site_plan)
 
             sppt_tahun_terakhir = Berkas.objects.filter(nama_berkas="SPPT Tahun Terakhir"+p.no_pengajuan)
             if sppt_tahun_terakhir.exists():
@@ -480,6 +489,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('sppt_tahun_terakhir')
                 nm_berkas.append("SPPT Tahun Terakhir"+p.no_pengajuan)
                 id_berkas.append(sppt_tahun_terakhir.id)
+                p.berkas_terkait_izin.add(sppt_tahun_terakhir)
 
             rekomendasi_bupati = Berkas.objects.filter(nama_berkas="Rekomendasi Bupati / Izin-izin lain yang diperoleh"+p.no_pengajuan)
             if rekomendasi_bupati.exists():
@@ -488,6 +498,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('rekomendasi_bupati')
                 nm_berkas.append("Rekomendasi Bupati / Izin-izin lain yang diperoleh"+p.no_pengajuan)
                 id_berkas.append(rekomendasi_bupati.id)
+                p.berkas_terkait_izin.add(rekomendasi_bupati)
 
             rencana_jadwal_perencanaan = Berkas.objects.filter(nama_berkas="Rencana Jadwal Pelaksanaan"+p.no_pengajuan)
             if rencana_jadwal_perencanaan.exists():
@@ -496,6 +507,7 @@ def ajax_load_berkas_ipptusaha(request, id_pengajuan):
                 id_elemen.append('rencana_jadwal_perencanaan')
                 nm_berkas.append("Rencana Jadwal Pelaksanaan"+p.no_pengajuan)
                 id_berkas.append(rencana_jadwal_perencanaan.id)
+                p.berkas_terkait_izin.add(rencana_jadwal_perencanaan)
 
             data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
         except ObjectDoesNotExist:

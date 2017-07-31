@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 import json
 import os
 
-from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, Syarat, Klasifikasi
+from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, Syarat, Klasifikasi, PengajuanIzin
 from izin.utils import formatrupiah
 from perusahaan.models import Perusahaan, Legalitas
 from master.models import Berkas
@@ -1358,29 +1358,34 @@ def ajax_load_berkas(request, id_pengajuan):
 
 def ajax_delete_berkas(request, id_berkas, kode):
 	if id_berkas:
-		if kode == 'akta_pendirian':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
-			legalitas_pendirian.berkas = None
-			legalitas_pendirian.save()
-		elif kode == 'akta_perubahan':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
-			legalitas_perubahan.berkas = None
-			legalitas_perubahan.save()
-		elif kode == 'npwp':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			p.berkas_npwp = None
-			p.save()
-		else:
-			pass
-
 		try:
-			b = Berkas.objects.get(id=id_berkas)
-			data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
-			b.delete()
+			pengajuan_obj = PengajuanIzin.objects.get(id=request.COOKIES.get('id_pengajuan'))
+			if kode == 'akta_pendirian':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas__id=2)).last()
+				legalitas_pendirian.berkas = None
+				legalitas_pendirian.save()
+			elif kode == 'akta_perubahan':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas__id=2).last()
+				legalitas_perubahan.berkas = None
+				legalitas_perubahan.save()
+			elif kode == 'npwp':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				p.berkas_npwp = None
+				p.save()
+			else:
+				pass
+
+			try:
+				b = Berkas.objects.get(id=id_berkas)
+				data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
+				pengajuan_obj.berkas_terkait_izin.remove(b)
+				b.delete()
+			except ObjectDoesNotExist:
+				data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
 		except ObjectDoesNotExist:
-			data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
+			data = {'success': False, 'pesan': 'Pengajuan Izin tidak ditemukan.' }
 			
 		response = HttpResponse(json.dumps(data))
 		return response

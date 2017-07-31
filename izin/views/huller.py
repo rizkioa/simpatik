@@ -688,6 +688,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('keputusan_izin_gangguan')
         nm_berkas.append("Keputusan Izin Gangguan (HO)"+p.no_pengajuan)
         id_berkas.append(keputusan_izin_gangguan.id)
+        p.berkas_terkait_izin.add(keputusan_izin_gangguan)
 
       akta_pendirian_perusahaan = Berkas.objects.filter(nama_berkas="Akta Pendirian Perusahaan"+p.no_pengajuan)
       if akta_pendirian_perusahaan.exists():
@@ -696,6 +697,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('akta_pendirian_perusahaan')
         nm_berkas.append("Akta Pendirian Perusahaan"+p.no_pengajuan)
         id_berkas.append(akta_pendirian_perusahaan.id)
+        p.berkas_terkait_izin.add(akta_pendirian_perusahaan)
 
       upload_gambar_ktp = Berkas.objects.filter(nama_berkas="File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
       if upload_gambar_ktp.exists():
@@ -704,6 +706,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('file_ktp_paspor')
         nm_berkas.append("File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
         id_berkas.append(upload_gambar_ktp.id)
+        p.berkas_terkait_izin.add(upload_gambar_ktp)
 
       foto_4x6 = Berkas.objects.filter(nama_berkas="Foto 4x6cm"+p.no_pengajuan)
       if foto_4x6.exists():
@@ -712,6 +715,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('file_ktp_4x6')
         nm_berkas.append("Foto 4x6cm"+p.no_pengajuan)
         id_berkas.append(foto_4x6.id)
+        p.berkas_terkait_izin.add(foto_4x6)
 
       denah_bangunan = Berkas.objects.filter(nama_berkas="Denah Bangunan dan Tata Letak Bangunan"+p.no_pengajuan)
       if denah_bangunan.exists():
@@ -720,6 +724,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('denah_bangunan')
         nm_berkas.append("Denah Bangunan dan Tata Letak Bangunan"+p.no_pengajuan)
         id_berkas.append(denah_bangunan.id)
+        p.berkas_terkait_izin.add(denah_bangunan)
 
       rekomendasi_dinas_pertanian = Berkas.objects.filter(nama_berkas="Rekomendasi dari Dinas Pertanian Kabupaten Kediri"+p.no_pengajuan)
       if rekomendasi_dinas_pertanian.exists():
@@ -728,6 +733,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('rekomendasi_dinas_pertanian')
         nm_berkas.append("Rekomendasi dari Dinas Pertanian Kabupaten Kediri"+p.no_pengajuan)
         id_berkas.append(rekomendasi_dinas_pertanian.id)
+        p.berkas_terkait_izin.add(rekomendasi_dinas_pertanian)
 
       struktur_organisasi_pemilik = Berkas.objects.filter(nama_berkas="Struktur Organisasi Pemilik jika berupa badan usaha"+p.no_pengajuan)
       if struktur_organisasi_pemilik.exists():
@@ -736,6 +742,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('struktur_organisasi_pemilik')
         nm_berkas.append("Struktur Organisasi Pemilik jika berupa badan usaha"+p.no_pengajuan)
         id_berkas.append(struktur_organisasi_pemilik.id)
+        p.berkas_terkait_izin.add(struktur_organisasi_pemilik)
 
       struktur_organisasi_pengusaha = Berkas.objects.filter(nama_berkas="Struktur Organisasi Pengusaha jika berupa badan usaha"+p.no_pengajuan)
       if struktur_organisasi_pengusaha.exists():
@@ -744,6 +751,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('struktur_organisasi_pengusaha')
         nm_berkas.append("Struktur Organisasi Pengusaha jika berupa badan usaha"+p.no_pengajuan)
         id_berkas.append(struktur_organisasi_pengusaha.id)
+        p.berkas_terkait_izin.add(struktur_organisasi_pengusaha)
 
       akta_perusahaan_pemilik = Berkas.objects.filter(nama_berkas="Akta Pendirian Perusahaan Pemilik jika berupa badan usaha"+p.no_pengajuan)
       if akta_perusahaan_pemilik.exists():
@@ -752,6 +760,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('akta_pendirian_perusahaan_pemilik_badan_usaha')
         nm_berkas.append("Akta Pendirian Perusahaan Pemilik jika berupa badan usaha"+p.no_pengajuan)
         id_berkas.append(akta_perusahaan_pemilik.id)
+        p.berkas_terkait_izin.add(akta_perusahaan_pemilik)
 
       akta_perusahaan_pengusaha = Berkas.objects.filter(nama_berkas="Akta Pendirian Perusahaan Pengusaha jika berupa badan usaha"+p.no_pengajuan)
       if akta_perusahaan_pengusaha.exists():
@@ -760,6 +769,7 @@ def ajax_load_berkas_detilhuller(request, id_pengajuan):
         id_elemen.append('akta_pendirian_perusahaan_pengusaha_badan_usaha')
         nm_berkas.append("Akta Pendirian Perusahaan Pengusaha jika berupa badan usaha"+p.no_pengajuan)
         id_berkas.append(akta_perusahaan_pengusaha.id)
+        p.berkas_terkait_izin.add(akta_perusahaan_pengusaha)
 
       data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
     except ObjectDoesNotExist:

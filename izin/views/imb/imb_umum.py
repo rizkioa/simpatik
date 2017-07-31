@@ -805,6 +805,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('ktp_paspor')
 			  nm_berkas.append("Berkas Foto KTP/PASPOR"+p.pemohon.username)
 			  id_berkas.append(foto_ktp_paspor.id)
+			  p.berkas_terkait_izin.add(foto_ktp_paspor)
 
 		  surat_kepemilikan_tanah  = Berkas.objects.filter(nama_berkas="Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah"+p.no_pengajuan)
 		  if surat_kepemilikan_tanah.exists():
@@ -813,6 +814,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('surat_kepemilikan_tanah')
 			  nm_berkas.append("Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah"+p.no_pengajuan)
 			  id_berkas.append(surat_kepemilikan_tanah.id)
+			  p.berkas_terkait_izin.add(surat_kepemilikan_tanah)
 
 		  npwp = Berkas.objects.filter(nama_berkas="NPWP"+p.no_pengajuan)
 		  if npwp.exists():
@@ -821,6 +823,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('npwp')
 			  nm_berkas.append("NPWP"+p.no_pengajuan)
 			  id_berkas.append(npwp.id)
+			  p.berkas_terkait_izin.add(npwp)
 
 		  cetak_biru_bangunan = Berkas.objects.filter(nama_berkas="Cetak Biru Bangunan"+p.no_pengajuan)
 		  if cetak_biru_bangunan.exists():
@@ -829,6 +832,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('cetak_biru_bangunan')
 			  nm_berkas.append("Cetak Biru Bangunan"+p.no_pengajuan)
 			  id_berkas.append(cetak_biru_bangunan.id)
+			  p.berkas_terkait_izin.add(cetak_biru_bangunan)
 
 		  surat_persetujuan_pemilik_tanah = Berkas.objects.filter(nama_berkas="Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan diatas tanah yang bukan miliknya"+p.no_pengajuan)
 		  if surat_persetujuan_pemilik_tanah.exists():
@@ -837,6 +841,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('surat_persetujuan')
 			  nm_berkas.append("Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan diatas tanah yang bukan miliknya"+p.no_pengajuan)
 			  id_berkas.append(surat_persetujuan_pemilik_tanah.id)
+			  p.berkas_terkait_izin.add(surat_persetujuan_pemilik_tanah)
 
 		  surat_persetujuan_rekomendasi_fkub = Berkas.objects.filter(nama_berkas="Surat Persetujuan/Rekomendasi dari FKUB (Forum Komunikasi Umat Beragam) bagi bangunan fungsi keagamaan"+p.no_pengajuan)
 		  if surat_persetujuan_rekomendasi_fkub.exists():
@@ -845,6 +850,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('surat_persetujuan_rekomendasi_fkub')
 			  nm_berkas.append("Surat Persetujuan/Rekomendasi dari FKUB (Forum Komunikasi Umat Beragam) bagi bangunan fungsi keagamaan"+p.no_pengajuan)
 			  id_berkas.append(surat_persetujuan_rekomendasi_fkub.id)
+			  p.berkas_terkait_izin.add(surat_persetujuan_rekomendasi_fkub)
 
 		  surat_rekomendasi_instansi_teknis = Berkas.objects.filter(nama_berkas="Rekomendasi dari Instansi Teknis sesuai kegiatan/bangunan yang dimohonkan"+p.no_pengajuan)
 		  if surat_rekomendasi_instansi_teknis.exists():
@@ -853,6 +859,7 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_elemen.append('rekomendasi_instansi_teknis')
 			  nm_berkas.append("Rekomendasi dari Instansi Teknis sesuai kegiatan/bangunan yang dimohonkan"+p.no_pengajuan)
 			  id_berkas.append(surat_rekomendasi_instansi_teknis.id)
+			  p.berkas_terkait_izin.add(surat_rekomendasi_instansi_teknis)
 
 		  data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 	  except ObjectDoesNotExist:
@@ -862,30 +869,32 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 	return response
 
 def ajax_delete_berkas_imbumum(request, id_berkas):
-  if id_berkas:
-	  try:
-		if request.COOKIES['nomor_ktp'] != '':
-		  p = Pemohon.objects.get(username = request.COOKIES['nomor_ktp'])
-		  ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
-		  nomr_ktp = ktp_.nomor
-		  jenis_nomor = ktp_.jenis_identitas.id
-
-		  b = Berkas.objects.get(id=id_berkas)
-		  data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
-		  b.delete()
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan.' } 
+	if id_berkas:
 		try:
-		  i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
-		except ObjectDoesNotExist:
-		  i, created = NomorIdentitasPengguna.objects.get_or_create(
-				nomor = nomr_ktp,
-				jenis_identitas_id=jenis_nomor, # untuk KTP harusnya membutuhkan kode lagi
-				user_id=p.id,
-				)
-	  except ObjectDoesNotExist:  
-		  data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
-			
-	  response = HttpResponse(json.dumps(data))
-	  return response
+			pengajuan_obj = PengajuanIzin.objects.get(id=request.COOKIES.get('id_pengajuan'))
+			try:
+				if request.COOKIES['nomor_ktp'] != '':
+					p = Pemohon.objects.get(username = request.COOKIES['nomor_ktp'])
+					ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
+					nomr_ktp = ktp_.nomor
+					jenis_nomor = ktp_.jenis_identitas.id
 
-  return False
-		
+					b = Berkas.objects.get(id=id_berkas)
+					pengajuan_obj.berkas_terkait_izin.remove(b)
+					data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
+					b.delete()
+				try:
+					i = NomorIdentitasPengguna.objects.get(nomor = ktp_)
+				except ObjectDoesNotExist:
+					i, created = NomorIdentitasPengguna.objects.get_or_create(
+						nomor = nomr_ktp,
+						jenis_identitas_id=jenis_nomor, # untuk KTP harusnya membutuhkan kode lagi
+						user_id=p.id,
+						)
+			except ObjectDoesNotExist:  
+				data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': 'Pengajuan Izin tidak ditemukan.' } 
+	response = HttpResponse(json.dumps(data))
+	return response

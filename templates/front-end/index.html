@@ -12,7 +12,6 @@
   }*/
 
   .div-icon {
-    background: #ffc100;
     padding: 15px 10px 23px;
     width: 100%;
     height: 100%;
@@ -27,9 +26,26 @@
     border-radius: 10px;
   }
   .div-icon:hover{
-    background: #428bca;
-    border: 5px solid #333;
-    color: #333;
+    /*background: #428bca;*/
+    /*border: 5px solid #333;*/
+    border: 5px solid rgba(51, 51, 51, 0.01);
+    /*color: #333;*/
+  }
+
+  .kuning{
+    background: #ffc100;
+  }
+
+  .biru{
+    background: #418bca;
+  }
+
+  .hijau{
+    background: #16a085;
+  }
+
+  .abu{
+    background: #3f4e62;
   }
 </style>
 {% endblock %}
@@ -46,7 +62,7 @@
 </div>
 <br>
 <div class="row">
-  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+  <!-- <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
       <div class="card-container col-lg-3 col-sm-6 col-sm-12" >
         <div class="card">
             <div class="front bg-greensea">
@@ -68,7 +84,7 @@
             </div>
         </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
       <div class="card-container col-lg-3 col-sm-6 col-sm-12" >
@@ -118,7 +134,7 @@
       </div>
   </div> -->
   
-  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+  <!-- <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
       <div class="card-container col-lg-3 col-sm-6 col-sm-12">
           <div class="card">
               <div class="front bg-blue">
@@ -140,7 +156,7 @@
               </div>
           </div>
       </div>
-  </div> 
+  </div>  -->
   <!-- <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
       <div class="card-container col-lg-3 col-sm-6 col-sm-12">
           <div class="card">
@@ -191,10 +207,43 @@
 
   <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
       <div class="col-lg-3 col-sm-6 col-sm-12">
+          <a href="{% url 'layanan' %}">
+            <div class="div-icon hijau">
+              <i class="fa fa-building-o fa-4x"></i><br>
+              <span><b>Pengajuan Izin</b></span>
+            </div>
+          </a>
+      </div>
+  </div>
+
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="col-lg-3 col-sm-6 col-sm-12">
+          <a href="{% url 'cari_pengajuan' %}">
+            <div class="div-icon biru">
+              <i class="fa fa-desktop fa-4x"></i><br>
+              <span><b>Monitoring Pengajuan</b></span>
+            </div>
+          </a>
+      </div>
+  </div>
+
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="col-lg-3 col-sm-6 col-sm-12">
           <a href="{% url 'call_center' %}">
-            <div class="div-icon">
+            <div class="div-icon kuning">
               <i class="fa fa-phone fa-4x"></i><br>
               <span><b>Call Center DPM</b></span>
+            </div>
+          </a>
+      </div>
+  </div>
+
+  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+      <div class="col-lg-3 col-sm-6 col-sm-12">
+          <a href="http://bpmp2tsp.kedirikab.go.id/" target="_blank">
+            <div class="div-icon abu">
+              <i class="fa fa-globe fa-4x"></i><br>
+              <span><b>Website DPMPTSP</b></span>
             </div>
           </a>
       </div>
@@ -224,7 +273,7 @@
       </div>
   </div> -->
   
-  <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
+  <!-- <div class="wow littleFadeInUp" data-wow-duration="2s" data-wow-delay="1s">
       <div class="card-container col-lg-3 col-sm-6 col-sm-12">
           <div class="card">
               <div class="front bg-slategray">
@@ -246,7 +295,7 @@
               </div>
           </div>
       </div>
-  </div>
+  </div> -->
 
 
   

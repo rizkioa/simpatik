@@ -1300,6 +1300,7 @@ def ajax_load_berkas_siup(request, id_pengajuan):
 				id_elemen.append('foto')
 				nm_berkas.append(foto.nama_berkas)
 				id_berkas.append(foto.id)
+				siup.berkas_terkait_izin.add(foto)
 
 			nomor_ktp = request.COOKIES['nomor_ktp']
 			if nomor_ktp:

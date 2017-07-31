@@ -311,6 +311,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('gambar_konstruksi_pemasangan_reklame')
 				nm_berkas.append("Gambar Kontruksi Pemasangan Reklame "+p.no_pengajuan)
 				id_berkas.append(gambar_kontruksi.id)
+				p.berkas_terkait_izin.add(gambar_kontruksi)
 
 			gambar_foto_lokasi = Berkas.objects.filter(nama_berkas="Gambar Foto Lokasi Pemasangan Reklame "+p.no_pengajuan)
 			if gambar_foto_lokasi.exists():
@@ -319,6 +320,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('gambar_foto_lokasi_pemasangan_reklame')
 				nm_berkas.append("Gambar Foto Lokasi Pemasangan Reklame "+p.no_pengajuan)
 				id_berkas.append(gambar_foto_lokasi.id)
+				p.berkas_terkait_izin.add(gambar_foto_lokasi)
 
 			gambar_denah_lokasi = Berkas.objects.filter(nama_berkas="Gambar Denah Lokasi Pemasangan Rekalame "+p.no_pengajuan)
 			if gambar_denah_lokasi.exists():
@@ -327,6 +329,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('gambar_denah_lokasi_pemasangan_reklame')
 				nm_berkas.append("Gambar Denah Lokasi Pemasangan Rekalame "+p.no_pengajuan)
 				id_berkas.append(gambar_denah_lokasi.id)
+				p.berkas_terkait_izin.add(gambar_denah_lokasi)
 
 			surat_ketetapan_pajak = Berkas.objects.filter(nama_berkas="Surat Ketetapan Pajak Daerah (SKPD) "+p.no_pengajuan)
 			if surat_ketetapan_pajak.exists():
@@ -335,6 +338,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('surat_ketetapan_pajak_daerah')
 				nm_berkas.append("Surat Ketetapan Pajak Daerah (SKPD) "+p.no_pengajuan)
 				id_berkas.append(surat_ketetapan_pajak.id)
+				p.berkas_terkait_izin.add(surat_ketetapan_pajak)
 
 			surat_setoran_pajak_daerah = Berkas.objects.filter(nama_berkas="Surat Setoran Pajak Daerah (SSPD) "+p.no_pengajuan)
 			if surat_setoran_pajak_daerah.exists():
@@ -343,6 +347,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('surat_setoran_pajak_daerah')
 				nm_berkas.append("Surat Setoran Pajak Daerah (SSPD) "+p.no_pengajuan)
 				id_berkas.append(surat_setoran_pajak_daerah.id)
+				p.berkas_terkait_izin.add(surat_setoran_pajak_daerah)
 
 			rekomendasi_satpo_pp = Berkas.objects.filter(nama_berkas="Rekomendasi dari Kantor SATPOL PP "+p.no_pengajuan)
 			if rekomendasi_satpo_pp.exists():
@@ -351,6 +356,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('rekomendasi_satpol_pp')
 				nm_berkas.append("Rekomendasi dari Kantor SATPOL PP "+p.no_pengajuan)
 				id_berkas.append(rekomendasi_satpo_pp.id)
+				p.berkas_terkait_izin.add(rekomendasi_satpo_pp)
 
 			bap_perizinan = Berkas.objects.filter(nama_berkas="Berita Acara Perusahaan(BAP) Tim Perizinan "+p.no_pengajuan)
 			if bap_perizinan.exists():
@@ -359,6 +365,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('berita_acara_perusahaan')
 				nm_berkas.append("Berita Acara Perusahaan(BAP) Tim Perizinan "+p.no_pengajuan)
 				id_berkas.append(bap_perizinan.id)
+				p.berkas_terkait_izin.add(bap_perizinan)
 
 			surat_perjanjian_kesepakatan = Berkas.objects.filter(nama_berkas="Surat Perjanjian Kesepakatan "+p.no_pengajuan)
 			if surat_perjanjian_kesepakatan.exists():
@@ -367,6 +374,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('surat_perjanjian')
 				nm_berkas.append("Surat Perjanjian Kesepakatan "+p.no_pengajuan)
 				id_berkas.append(surat_perjanjian_kesepakatan.id)
+				p.berkas_terkait_izin.add(surat_perjanjian_kesepakatan)
 
 			berkas_tambahan = Berkas.objects.filter(nama_berkas="Berkas Tambahan Reklame"+p.no_pengajuan)
 			if berkas_tambahan.exists():
@@ -375,6 +383,7 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 				id_elemen.append('tambahan')
 				nm_berkas.append("Berkas Tambahan Reklame"+p.no_pengajuan)
 				id_berkas.append(berkas_tambahan.id)
+				p.berkas_terkait_izin.add(berkas_tambahan)
 
 			data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 		except ObjectDoesNotExist:
@@ -385,15 +394,21 @@ def ajax_load_berkas_reklame(request, id_pengajuan):
 	return response
 
 def ajax_delete_berkas_reklame(request, id_berkas):
+	data = {'success': False, 'pesan': 'Terjadi kesalahan, data tidak ditemukan.' }
 	if id_berkas:
 		try:
-			b = Berkas.objects.get(id=id_berkas)
-			data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
-			b.delete()
+			pengajuan_obj = PengajuanIzin.objects.get(id=request.COOKIES.get('id_pengajuan'))
+			try:
+				b = Berkas.objects.get(id=id_berkas)
+				data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
+				pengajuan_obj.berkas_terkait_izin.remove(b)
+				b.delete()
+			except ObjectDoesNotExist:
+				data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
 		except ObjectDoesNotExist:
-			data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
+			data = {'success': False, 'pesan': 'Pengajuan Izin tidak ditemukan.'}
 			
-			response = HttpResponse(json.dumps(data))
+		response = HttpResponse(json.dumps(data))
 		return response
 		
 def load_data_detail_izin_reklame(request,id_detail_izin_reklame):

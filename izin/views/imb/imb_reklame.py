@@ -335,6 +335,7 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
               id_elemen.append('ktp_paspor')
               nm_berkas.append("Berkas Foto KTP/PASPOR"+p.pemohon.username)
               id_berkas.append(foto_ktp_paspor.id)
+              p.berkas_terkait_izin.add(foto_ktp_paspor)
 
           gambar_rencana_teknis  = Berkas.objects.filter(nama_berkas="Gambar Rencana Teknis/Konstruksi Bangunan Reklame"+p.no_pengajuan)
           if gambar_rencana_teknis.exists():
@@ -343,6 +344,7 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
               id_elemen.append('rencana_teknis_kontruksi_bangunan_reklame')
               nm_berkas.append("Gambar Rencana Teknis/Konstruksi Bangunan Reklame"+p.no_pengajuan)
               id_berkas.append(gambar_rencana_teknis.id)
+              p.berkas_terkait_izin.add(gambar_rencana_teknis)
 
           surat_persetujuan_pemilik_tanah = Berkas.objects.filter(nama_berkas="Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan diatas tanah yang bukan miliknya"+p.no_pengajuan)
           if surat_persetujuan_pemilik_tanah.exists():
@@ -351,6 +353,7 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
               id_elemen.append('surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya')
               nm_berkas.append("Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan diatas tanah yang bukan miliknya"+p.no_pengajuan)
               id_berkas.append(surat_persetujuan_pemilik_tanah.id)
+              p.berkas_terkait_izin.add(surat_persetujuan_pemilik_tanah)
 
           surat_ketetapan_pajak = Berkas.objects.filter(nama_berkas="Surat Ketetapan Pajak Daerah (SKPD) IMB Papan Reklame"+p.no_pengajuan)
           if surat_ketetapan_pajak.exists():
@@ -359,6 +362,7 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
               id_elemen.append('surat_ketetapan_pajak_daerah_imb')
               nm_berkas.append("Surat Ketetapan Pajak Daerah (SKPD) IMB Papan Reklame"+p.no_pengajuan)
               id_berkas.append(surat_ketetapan_pajak.id)
+              p.berkas_terkait_izin.add(surat_ketetapan_pajak)
 
           surat_setoran_pajak_daerah = Berkas.objects.filter(nama_berkas="Surat Setoran Pajak Daerah (SSPD) IMB Papan Reklame"+p.no_pengajuan)
           if surat_setoran_pajak_daerah.exists():
@@ -367,6 +371,7 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
               id_elemen.append('surat_setoran_pajak_daerah_imb')
               nm_berkas.append("Surat Setoran Pajak Daerah (SSPD) IMB Papan Reklame "+p.no_pengajuan)
               id_berkas.append(surat_setoran_pajak_daerah.id)
+              p.berkas_terkait_izin.add(surat_setoran_pajak_daerah)
 
           surat_rekomendasi = Berkas.objects.filter(nama_berkas="Rekomendasi/Retribusi Sewa Tanah, apabila bangunan diatas tanah milik pemerintah"+p.no_pengajuan)
           if surat_rekomendasi.exists():
@@ -375,6 +380,7 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
               id_elemen.append('rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah')
               nm_berkas.append("Rekomendasi/Retribusi Sewa Tanah, apabila bangunan diatas tanah milik pemerintah"+p.no_pengajuan)
               id_berkas.append(surat_rekomendasi.id)
+              p.berkas_terkait_izin.add(surat_rekomendasi)
 
           data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
       except ObjectDoesNotExist:
@@ -385,7 +391,10 @@ def ajax_load_berkas_imbreklame(request, id_pengajuan):
   return response
 
 def ajax_delete_berkas_imbreklame(request, id_berkas):
+  data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan.' }
   if id_berkas:
+    try:
+      pengajuan_obj = PengajuanIzin.objects.get(id=request.COOKIES.get('id_pengajuan'))
       try:
         if request.COOKIES['nomor_ktp'] != '':
           p = Pemohon.objects.get(username = request.COOKIES['nomor_ktp'])
@@ -394,6 +403,7 @@ def ajax_delete_berkas_imbreklame(request, id_berkas):
           jenis_nomor = ktp_.jenis_identitas.id
 
           b = Berkas.objects.get(id=id_berkas)
+          pengajuan_obj.berkas_terkait_izin.remove(b)
           data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
           b.delete()
         try:
@@ -405,10 +415,9 @@ def ajax_delete_berkas_imbreklame(request, id_berkas):
                 user_id=p.id,
                 )
       except ObjectDoesNotExist:  
-          data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
-            
-      response = HttpResponse(json.dumps(data))
-      return response
+        data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
+    except ObjectDoesNotExist:  
+      data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
 
-  return False
-        
+  response = HttpResponse(json.dumps(data))
+  return response

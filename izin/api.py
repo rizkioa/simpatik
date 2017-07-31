@@ -1,5 +1,5 @@
 from mobile.cors import CORSModelResource, CORSHttpResponse
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, JenisMesin, MesinHuller, MesinPerusahaan
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
@@ -115,12 +115,17 @@ class PengajuanIzinAllResource(CORSModelResource):
 	jenis_permohonan = fields.ToOneField(JenisPermohonanIzinResource, 'jenis_permohonan', full=True, null=True)
 	class Meta:
 		queryset = PengajuanIzin.objects.all()
-		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
+		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'updated_at']
 		authentication = ApiKeyAuthentication()
 		filtering = {
 			"no_pengajuan" : ALL,
 			"pemohon" : ALL_WITH_RELATIONS,
 		}
+
+	def get_object_list(self, request):
+		data = super(PengajuanIzinAllResource, self).get_object_list(request)
+		data = data.order_by('-updated_at')
+		return data
 
 class DetilTDPResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
@@ -226,6 +231,31 @@ class DetilHullerResource(CORSModelResource):
 	
 	class Meta:
 		queryset = DetilHuller.objects.all()
+
+class JenisMesinResource(CORSModelResource):
+	class Meta:
+		queryset = JenisMesin.objects.all()
+		filtering = {
+			"id" : ['contains'],
+		}
+
+class MesinHullerResource(CORSModelResource):
+	jenis_mesin = fields.ToOneField(JenisMesinResource, 'jenis_mesin', full=True, null=True)
+	class Meta:
+		queryset = MesinHuller.objects.all()
+		filtering = {
+			"jenis_mesin" : ALL_WITH_RELATIONS,
+		}
+
+class MesinPerusahaanResource(CORSModelResource):
+	detil_huller_id = fields.CharField(attribute="detil_huller__id", null=True, blank=True)
+	mesin_huller = fields.ToOneField(MesinHullerResource, "mesin_huller", full=True, null=True, blank=True)
+	class Meta:
+		queryset = MesinPerusahaan.objects.all()
+		filtering = {
+			'detil_huller_id': ['contains'],
+			"mesin_huller" : ALL_WITH_RELATIONS,
+		}
 
 class InformasiTanahResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)

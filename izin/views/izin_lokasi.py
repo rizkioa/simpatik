@@ -277,6 +277,7 @@ def ajax_load_berkas_izinlokasi(request, id_pengajuan):
         id_elemen.append('bukti_kepemilikan_tanah')
         nm_berkas.append("Bukti Kepemilikan Tanah"+p.no_pengajuan)
         id_berkas.append(bukti_kepemilikan_tanah.id)
+        p.berkas_terkait_izin.add(bukti_kepemilikan_tanah)
 
       sketsa_lokasi_tanah = Berkas.objects.filter(nama_berkas="Sketsa Lokasi Tanah Yang Dimohonkan"+p.no_pengajuan)
       if sketsa_lokasi_tanah.exists():
@@ -285,6 +286,7 @@ def ajax_load_berkas_izinlokasi(request, id_pengajuan):
         id_elemen.append('sketsa_lokasi_tanah')
         nm_berkas.append("Sketsa Lokasi Tanah Yang Dimohonkan"+p.no_pengajuan)
         id_berkas.append(sketsa_lokasi_tanah.id)
+        p.berkas_terkait_izin.add(sketsa_lokasi_tanah)
 
       gambar_rencana_penggunaan_tanah = Berkas.objects.filter(nama_berkas="Gambar/Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
       if gambar_rencana_penggunaan_tanah.exists():
@@ -293,6 +295,7 @@ def ajax_load_berkas_izinlokasi(request, id_pengajuan):
         id_elemen.append('gambar_rencana_penggunaan_tanah')
         nm_berkas.append("Gambar/Denah Rencana Penggunaan Tanah"+p.no_pengajuan)
         id_berkas.append(gambar_rencana_penggunaan_tanah.id)
+        p.berkas_terkait_izin.add(gambar_rencana_penggunaan_tanah)
 
       sertifikat_tanah = Berkas.objects.filter(nama_berkas="Sertifikat Tanah"+p.no_pengajuan)
       if sertifikat_tanah.exists():
@@ -301,6 +304,7 @@ def ajax_load_berkas_izinlokasi(request, id_pengajuan):
         id_elemen.append('sertifikat_tanah')
         nm_berkas.append("Sertifikat Tanah"+p.no_pengajuan)
         id_berkas.append(sertifikat_tanah.id)
+        p.berkas_terkait_izin.add(sertifikat_tanah)
 
       akta_jual_beli = Berkas.objects.filter(nama_berkas="Akta Jual Beli"+p.no_pengajuan)
       if akta_jual_beli.exists():
@@ -309,6 +313,7 @@ def ajax_load_berkas_izinlokasi(request, id_pengajuan):
         id_elemen.append('akta_jual_beli')
         nm_berkas.append("Akta Jual Beli"+p.no_pengajuan)
         id_berkas.append(akta_jual_beli.id)
+        p.berkas_terkait_izin.add(akta_jual_beli)
 
       rekomendasi_bupati = Berkas.objects.filter(nama_berkas="Rekomendasi Bupati/Izinizin lain yang diperoleh"+p.no_pengajuan)
       if rekomendasi_bupati.exists():
@@ -317,6 +322,7 @@ def ajax_load_berkas_izinlokasi(request, id_pengajuan):
         id_elemen.append('rekomendasi_bupati')
         nm_berkas.append("Rekomendasi Bupati/Izinizin lain yang diperoleh"+p.no_pengajuan)
         id_berkas.append(rekomendasi_bupati.id)
+        p.berkas_terkait_izin.add(rekomendasi_bupati)
 
       data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
     except ObjectDoesNotExist:
