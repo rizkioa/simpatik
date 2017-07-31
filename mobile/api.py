@@ -70,6 +70,7 @@ class PengajuanIzinResource(CORSModelResource):
 			id_pengajuan_list += id_list
 			data = data.filter(id__in=id_pengajuan_list)
 			# print data
+		data = data.order_by('-updated_at')
 		return data
 
 	def prepend_urls(self):

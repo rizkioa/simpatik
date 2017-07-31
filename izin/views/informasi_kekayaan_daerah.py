@@ -207,6 +207,7 @@ def informasi_kekayaan_daerah_upload_berkas_pendukung(request):
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
 								p.berkas_tambahan.add(berkas)
+								p.berkas_terkait_izin.add(berkas)
 
 								data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 										{'status_upload': 'ok'},
@@ -250,6 +251,7 @@ def ajax_load_berkas_informasi_kekayaan_daerah(request, id_pengajuan):
 				id_elemen.append('upload_gambar_ktp')
 				nm_berkas.append("File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
 				id_berkas.append(upload_gambar_ktp.id)
+				p.berkas_terkait_izin.add(upload_gambar_ktp)
 
 			upload_gambar_surat_lunas_retribusi = Berkas.objects.filter(nama_berkas="Surat Tanda Lunas Retribusi"+p.no_pengajuan)
 			if upload_gambar_surat_lunas_retribusi.exists():
@@ -258,6 +260,7 @@ def ajax_load_berkas_informasi_kekayaan_daerah(request, id_pengajuan):
 				id_elemen.append('upload_gambar_surat_lunas_retribusi')
 				nm_berkas.append("Surat Tanda Lunas Retribusi"+p.no_pengajuan)
 				id_berkas.append(upload_gambar_surat_lunas_retribusi.id)
+				p.berkas_terkait_izin.add(upload_gambar_surat_lunas_retribusi)
 
 			upload_gambar_rekomendasi_dinas_terkait = Berkas.objects.filter(nama_berkas="Rekomendasi dari Dinas terkait (DISPENDA, BPKAD, Dinas Perhubungan/Dinas/Bagian.........)"+p.no_pengajuan)
 			if upload_gambar_rekomendasi_dinas_terkait.exists():
@@ -266,7 +269,7 @@ def ajax_load_berkas_informasi_kekayaan_daerah(request, id_pengajuan):
 				id_elemen.append('upload_gambar_rekomendasi_dinas_terkait')
 				nm_berkas.append("Rekomendasi dari Dinas terkait (DISPENDA, BPKAD, Dinas Perhubungan/Dinas/Bagian.........)"+p.no_pengajuan)
 				id_berkas.append(upload_gambar_rekomendasi_dinas_terkait.id)
-
+				p.berkas_terkait_izin.add(upload_gambar_rekomendasi_dinas_terkait)
 
 			data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 		except ObjectDoesNotExist:

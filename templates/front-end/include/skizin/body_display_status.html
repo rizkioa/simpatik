@@ -2,7 +2,6 @@
 {% if pengajuan.status == 1 or skizin.status == 2 or skizin.status == 1 %}
 	{% if request.user|has_group:'Cetak' or request.user.is_superuser %} 
 		<script>
-
 			document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
 		</script>
 	{% endif %}

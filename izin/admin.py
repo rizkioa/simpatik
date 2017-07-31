@@ -26,12 +26,11 @@ from izin.izin_forms import SurveyForm
 from izin.utils import get_nomor_pengajuan
 from pembangunan.views import get_rekomendasi_pembangunan
 from izin.detilizinparkir_admin import DetilIzinParkirIsidentilAdmin
+from izin.dishub.detilizinangkutan_admin import DetilIUAAdmin
 
 # from perusahaan.models import Perusahaan
-
 # from django.shortcuts import get_object_or_404
 # from django.core import serializers
-
 # Register your models here.
 admin.site.register(BidangUsahaPariwisata)
 admin.site.register(JenisUsahaPariwisata)
@@ -52,7 +51,7 @@ admin.site.register(Pemohon, PemohonAdmin)
 admin.site.register(KategoriKendaraan)
 admin.site.register(MerkTypeKendaraan)
 admin.site.register(Kendaraan)
-admin.site.register(DetilIUA)
+
 # admin.site.register(DetilIzinParkirIsidentil)
 admin.site.register(DataAnggotaParkir)
 

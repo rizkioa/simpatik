@@ -1020,6 +1020,7 @@ def tdp_upload_surat_keputusan(request):
 											berkas.created_by_id = request.COOKIES['id_pemohon']
 										berkas.save()
 										p.berkas_tambahan.add(berkas)
+										p.berkas_terkait_izin.add(berkas)
 
 										data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 												{'status_upload': 'ok'},
@@ -1113,6 +1114,7 @@ def tdp_upload_akta_legalitas(request):
 
 									legalitas.berkas = berkas
 									legalitas.save()
+									p.berkas_terkait_izin.add(berkas)
 
 									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 											{'status_upload': 'ok'},
@@ -1150,10 +1152,10 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 	id_berkas =[]
 	if id_pengajuan:
 		try:
-			tdp = DetilTDP.objects.get(id=id_pengajuan)
-			perusahaan_ = tdp.perusahaan
-			berkas_ = tdp.berkas_tambahan.all()
-			pemohon_ = tdp.pemohon
+			detiltdp_obj = DetilTDP.objects.get(id=id_pengajuan)
+			perusahaan_ = detiltdp_obj.perusahaan
+			berkas_ = detiltdp_obj.berkas_tambahan.all()
+			pemohon_ = detiltdp_obj.pemohon
 			legalitas_1 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=1).last()
 			legalitas_2 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=2).last()
 			legalitas_3 = perusahaan_.legalitas_set.filter(jenis_legalitas_id=3).last()
@@ -1170,6 +1172,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('npwp_pribadi')
 					nm_berkas.append(npwp_pribadi.nama_berkas)
 					id_berkas.append(npwp_pribadi.id)
+					detiltdp_obj.berkas_terkait_izin.add(npwp_pribadi)
 
 			if berkas_:
 				akta_pt = berkas_.filter(keterangan='Akta PT '+perusahaan_.npwp).last()
@@ -1178,6 +1181,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_pt')
 					nm_berkas.append(akta_pt.nama_berkas)
 					id_berkas.append(akta_pt.id)
+					detiltdp_obj.berkas_terkait_izin.add(akta_pt)
 
 				neraca_perusahaan = berkas_.filter(keterangan='Neraca Perusahaan '+perusahaan_.npwp).last()
 				if neraca_perusahaan:
@@ -1185,6 +1189,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('neraca_perusahaan')
 					nm_berkas.append(neraca_perusahaan.nama_berkas)
 					id_berkas.append(neraca_perusahaan.id)
+					detiltdp_obj.berkas_terkait_izin.add(neraca_perusahaan)
 
 				surat_keputusan = berkas_.filter(keterangan='File Surat Keputusan Pengesahan Badan Hukum Dari Departemen Hukum Dari Menteri Kehakiman Dan Hak Asasi Manusia '+perusahaan_.npwp).last()
 				if surat_keputusan:
@@ -1192,6 +1197,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('surat_keputusan')
 					nm_berkas.append(surat_keputusan.nama_berkas)
 					id_berkas.append(surat_keputusan.id)
+					detiltdp_obj.berkas_terkait_izin.add(surat_keputusan)
 
 				ijin_usaha = berkas_.filter(keterangan='File Ijin Usaha/Ijin Teknis atau SK yang dipersamakan '+perusahaan_.npwp).last()
 				if ijin_usaha:
@@ -1199,6 +1205,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('ijin_usaha')
 					nm_berkas.append(ijin_usaha.nama_berkas)
 					id_berkas.append(ijin_usaha.id)
+					detiltdp_obj.berkas_terkait_izin.add(ijin_usaha)
 
 				sertifikat_asli_tdp = berkas_.filter(keterangan='Sertifikat Asli TDP '+perusahaan_.npwp).last()
 				if sertifikat_asli_tdp:
@@ -1206,6 +1213,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('sertifikat_asli_tdp')
 					nm_berkas.append(sertifikat_asli_tdp.nama_berkas)
 					id_berkas.append(sertifikat_asli_tdp.id)
+					detiltdp_obj.berkas_terkait_izin.add(sertifikat_asli_tdp)
 
 				pendukung = berkas_.filter(keterangan='pendukung '+perusahaan_.npwp).last()
 				if pendukung:
@@ -1213,6 +1221,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('berkas_tambahan')
 					nm_berkas.append(pendukung.nama_berkas)
 					id_berkas.append(pendukung.id)
+					detiltdp_obj.berkas_terkait_izin.add(pendukung)
 
 				susunan_pengurus = berkas_.filter(keterangan='Susunan Pengurus yang telah mendapatkan pengesahan '+perusahaan_.npwp).last()
 				if susunan_pengurus:
@@ -1220,6 +1229,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('susunan_pengurus')
 					nm_berkas.append(susunan_pengurus.nama_berkas)
 					id_berkas.append(susunan_pengurus.id)
+					detiltdp_obj.berkas_terkait_izin.add(susunan_pengurus)
 
 				npwp_koperasi = berkas_.filter(keterangan='NPWP Koperasi '+perusahaan_.npwp).last()
 				if npwp_koperasi:
@@ -1227,6 +1237,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('npwp_koperasi')
 					nm_berkas.append(npwp_koperasi.nama_berkas)
 					id_berkas.append(npwp_koperasi.id)
+					detiltdp_obj.berkas_terkait_izin.add(npwp_koperasi)
 
 			if legalitas_1:
 				legalitas_1 = legalitas_1.berkas
@@ -1235,6 +1246,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_pendirian')
 					nm_berkas.append(legalitas_1.nama_berkas)
 					id_berkas.append(legalitas_1.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_1)
 
 			if legalitas_2:
 				legalitas_2 = legalitas_2.berkas
@@ -1243,6 +1255,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_perubahan')
 					nm_berkas.append(legalitas_2.nama_berkas)
 					id_berkas.append(legalitas_2.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_2)
 
 			if legalitas_3:
 				legalitas_3 = legalitas_3.berkas
@@ -1251,6 +1264,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_pengesahan_menteri')
 					nm_berkas.append(legalitas_3.nama_berkas)
 					id_berkas.append(legalitas_3.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_3)
 
 			if legalitas_4:
 				legalitas_4 = legalitas_4.berkas
@@ -1259,6 +1273,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_persetujuan_menteri')
 					nm_berkas.append(legalitas_4.nama_berkas)
 					id_berkas.append(legalitas_4.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_4)
 
 			if legalitas_6:
 				legalitas_6 = legalitas_6.berkas
@@ -1267,6 +1282,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_penerimaan_laporan')
 					nm_berkas.append(legalitas_6.nama_berkas)
 					id_berkas.append(legalitas_6.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_6)
 
 			if legalitas_7:
 				legalitas_7 = legalitas_7.berkas
@@ -1275,6 +1291,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_penerimaan_pemberitahuan')
 					nm_berkas.append(legalitas_7.nama_berkas)
 					id_berkas.append(legalitas_7.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_7)
 
 			if legalitas_8:
 				legalitas_8 = legalitas_8.berkas
@@ -1283,6 +1300,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_pengesahan_menteri_koperasi')
 					nm_berkas.append(legalitas_8.nama_berkas)
 					id_berkas.append(legalitas_8.id)
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_8)
 
 			if legalitas_9:
 				legalitas_9 = legalitas_9.berkas
@@ -1291,8 +1309,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('akta_persetujuan_menteri_koperasi')
 					nm_berkas.append(legalitas_9.nama_berkas)
 					id_berkas.append(legalitas_9.id)
-
-
+					detiltdp_obj.berkas_terkait_izin.add(legalitas_9)
 
 			nomor_ktp = request.COOKIES['nomor_ktp']
 			if nomor_ktp:
@@ -1302,6 +1319,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('ktp')
 					nm_berkas.append(ktp_.nama_berkas)
 					id_berkas.append(ktp_.id)
+					detiltdp_obj.berkas_terkait_izin.add(ktp_)
 
 			if perusahaan_:
 				npwp_perusahaan = perusahaan_.berkas_npwp
@@ -1310,6 +1328,7 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 					id_elemen.append('npwp_perusahaan')
 					nm_berkas.append(npwp_perusahaan.nama_berkas)
 					id_berkas.append(npwp_perusahaan.id)
+					detiltdp_obj.berkas_terkait_izin.add(npwp_perusahaan)
 
 			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 		except ObjectDoesNotExist:
@@ -1319,52 +1338,57 @@ def ajax_load_berkas_tdp(request, id_pengajuan):
 
 def ajax_delete_berkas_tdp(request, id_berkas, kode):
 	if id_berkas:
-		if kode == 'npwp_perusahaan':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			p.berkas_npwp = None
-			p.save()
-		elif kode == 'ktp':
-			n = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_ktp'], jenis_identitas_id=1).last()
-			n.berkas = None
-			n.save()
-		elif kode == 'akta_pendirian':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas_id=2)).last()
-			legalitas_pendirian.berkas = None
-			legalitas_pendirian.save()
-		elif kode == 'akta_perubahan':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=2).last()
-			legalitas_perubahan.berkas = None
-			legalitas_perubahan.save()
-		elif kode == 'akta_pengesahan_menteri':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=3).last()
-			legalitas_perubahan.berkas = None
-			legalitas_perubahan.save()
-		elif kode == 'akta_persetujuan_menteri':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_perubahan.berkas = None
-			legalitas_perubahan.save()
-		elif kode == 'akta_penerimaan_laporan':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=6).last()
-			legalitas_perubahan.berkas = None
-			legalitas_perubahan.save()
-		elif kode == 'akta_penerimaan_pemberitahuan':
-			p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
-			legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=7).last()
-			legalitas_perubahan.berkas = None
-			legalitas_perubahan.save()
-		else:
-			pass
 		try:
-			b = Berkas.objects.get(id=id_berkas)
-			data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
-			b.delete()
+			pengajuan_obj = PengajuanIzin.objects.get(id=request.COOKIES.get('id_pengajuan'))
+			if kode == 'npwp_perusahaan':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				p.berkas_npwp = None
+				p.save()
+			elif kode == 'ktp':
+				n = NomorIdentitasPengguna.objects.filter(nomor = request.COOKIES['nomor_ktp'], jenis_identitas_id=1).last()
+				n.berkas = None
+				n.save()
+			elif kode == 'akta_pendirian':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_pendirian = p.legalitas_set.filter(~Q(jenis_legalitas_id=2)).last()
+				legalitas_pendirian.berkas = None
+				legalitas_pendirian.save()
+			elif kode == 'akta_perubahan':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=2).last()
+				legalitas_perubahan.berkas = None
+				legalitas_perubahan.save()
+			elif kode == 'akta_pengesahan_menteri':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=3).last()
+				legalitas_perubahan.berkas = None
+				legalitas_perubahan.save()
+			elif kode == 'akta_persetujuan_menteri':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_perubahan.berkas = None
+				legalitas_perubahan.save()
+			elif kode == 'akta_penerimaan_laporan':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=6).last()
+				legalitas_perubahan.berkas = None
+				legalitas_perubahan.save()
+			elif kode == 'akta_penerimaan_pemberitahuan':
+				p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
+				legalitas_perubahan= p.legalitas_set.filter(jenis_legalitas_id=7).last()
+				legalitas_perubahan.berkas = None
+				legalitas_perubahan.save()
+			else:
+				pass
+			try:
+				b = Berkas.objects.get(id=id_berkas)
+				data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
+				# pengajuan_obj.berkas_terkait_izin.remove(b)
+				b.delete()
+			except ObjectDoesNotExist:
+				data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
 		except ObjectDoesNotExist:
-			data = {'success': False, 'pesan': 'Berkas Tidak Ada' }
+			data = {'success': False, 'pesan': 'Pengajuan Izin tidak ditemukan.' }
 			
 		response = HttpResponse(json.dumps(data))
 		return response

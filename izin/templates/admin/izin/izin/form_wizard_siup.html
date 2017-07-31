@@ -39,6 +39,15 @@
 				onTabShow: function(tab, navigation, index) {
 					var $total = navigation.find('li').length;
 					var $current = index+1;
+					if ($current == 2){
+		                load_kecamatan1('', '06', '35');
+		                if ($.cookie('npwp_perusahaan') !== '0'){
+		                  $('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
+		                  setTimeout(function(){
+		                    load_perusahaan_a($.cookie('npwp_perusahaan'))
+		                  }, 1000);
+		                } 
+	              	}
 					if($current === 5){
 						  // console.log("ok")
 						id_pengajuan = parseInt($.cookie('id_pengajuan'))
@@ -191,7 +200,12 @@
 				},
 
 				onTabClick: function(tab, navigation, index) {
-					return false;
+					if (window.location.hostname == 'localhost'){
+						return true
+					}
+					else{
+						return false;
+					}
 				}
 			});
 		});
@@ -471,60 +485,71 @@
 		// $('#id_total_nilai_saham').maskMoney({ thousands:'.', decimal:',', precision:0});
 		$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
 
-		
-		if ('{{pengajuan_}}'){
-			// alert("{{ pengajuan_.jenis_pengajuan }}");
-			// +++++++ pemohon +++++
-			$('#id_ktp').val('{{ ktp.nomor }}')
-			$('#id_paspor').val('{{ paspor.nomor }}')
-			$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
-			$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
-			
-			load_pemohon('{{ ktp.nomor }}')
-			if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
-				$('#switch_pemohon_disabled').prop( "checked", true );
-				setTimeout(function(){
-					$('.kuasa_disable').prop('disabled', false);
-					$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
-					$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
-					$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
-				}, 1000);
-			}
-			//+++++++ end pemohon +++++
+		$(document).ready(function() {
+			if ('{{pengajuan_}}'){
+				// alert("{{ pengajuan_.jenis_pengajuan }}");
+				// +++++++ pemohon +++++
+				$('#id_ktp').val('{{ pengajuan_.pemohon.get_ktp }}')
+				$('#id_paspor').val('{{ pengajuan_.pemohon.get_paspor }}')
+				$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+				
+				load_pemohon('{{ pengajuan_.pemohon.get_ktp }}')
+				if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+					$('#switch_pemohon_disabled').prop( "checked", true );
+					setTimeout(function(){
 
-			// +++++ perusahaan+++++++
-			$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
-			setTimeout(function(){
-				load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
-			}, 3000);
-			// +++++ end perusahaan+++++++
-			
-			//+++ bentuk kegiatan usaha ++++
-			$('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
-			$('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
-			if ('{{pengajuan_.kekayaan_bersih}}' == 'None'){
-				$('#id_kekayaan_bersih').val('0');
-			}
-			else{
-				$('#id_kekayaan_bersih').val(parseInt("{{pengajuan_.kekayaan_bersih}}"));
-			}
-			if ('{{pengajuan_.total_nilai_saham}}' == 'None'){
-				$('#id_total_nilai_saham').val('0');
-			}
-			else{
-				$('#id_total_nilai_saham').val(parseInt("{{pengajuan_.total_nilai_saham}}"));
-			}
-			$('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
-			$('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
-			{% for k in pengajuan_.kelembagaan.all %}
-			  $('#id_kelembagaan').append('<option selected="selected" value="{{k.id}}">{{k.kelembagaan}}</option>')
-			{% endfor %}
+						$('.kuasa_disable').prop('disabled', false);
+						$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+						$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+						$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+					}, 1000);
+				}
+				//+++++++ end pemohon +++++
 
-			{% for k in pengajuan_.kbli.all %}
-				$("#id_kbli").append('<option selected="selected" value="{{k.id}}" >{{k.kode_kbli}} - {{k.nama_kbli}}</option>');
-			{% endfor %}
-			$("#id_kbli").prop('selected',true).trigger("chosen:updated");
-		}
+				// +++++ perusahaan+++++++
+				$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+				if ('{{ pengajuan_.perusahaan }}' !== 'None'){
+	              $.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: "/"})
+	              $.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: "/" })
+	            }
+	            else{
+	              $.cookie('id_perusahaan', '0' , { path: "/"})
+	              $.cookie('npwp_perusahaan', '0' , { path: "/" })
+	            }
+	            
+				// setTimeout(function(){
+					// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				// }, 3000);
+				// +++++ end perusahaan+++++++
+				
+				//+++ bentuk kegiatan usaha ++++
+				$('#id_bentuk_kegiatan_usaha').val('{{ pengajuan_.bentuk_kegiatan_usaha.id }}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_penanaman_modal').val('{{ pengajuan_.jenis_penanaman_modal.id }}').prop('selected',true).trigger("chosen:updated");
+				if ('{{pengajuan_.kekayaan_bersih}}' == 'None'){
+					$('#id_kekayaan_bersih').val('0');
+				}
+				else{
+					$('#id_kekayaan_bersih').val("{{pengajuan_.kekayaan_bersih}}");
+				}
+				if ('{{pengajuan_.total_nilai_saham}}' == 'None'){
+					$('#id_total_nilai_saham').val('0');
+				}
+				else{
+					$('#id_total_nilai_saham').val("{{pengajuan_.total_nilai_saham}}");
+				}
+				$('#id_presentase_saham_nasional').val('{{ pengajuan_.presentase_saham_nasional }}')
+				$('#id_presentase_saham_asing').val('{{ pengajuan_.presentase_saham_asing }}')
+				{% for k in pengajuan_.kelembagaan.all %}
+				  $('#id_kelembagaan').append('<option selected="selected" value="{{k.id}}">{{k.kelembagaan}}</option>')
+				{% endfor %}
+
+				{% for k in pengajuan_.kbli.all %}
+					$("#id_kbli").append('<option selected="selected" value="{{k.id}}" >{{k.kode_kbli}} - {{k.nama_kbli}}</option>');
+				{% endfor %}
+				$("#id_kbli").prop('selected',true).trigger("chosen:updated");
+			}
+		})
 	</script>
 {% endblock %}
 
