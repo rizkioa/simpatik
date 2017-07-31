@@ -117,8 +117,9 @@ def add_wizard_siup(request):
 			# print id_kelompok_list.kode
 			response = HttpResponseRedirect(url_) # Redirect to url
 			delete_cookie(response)
-			if id_kelompok_list.kode:
-				response.set_cookie(key='kode_kelompok_jenis_izin', value=id_kelompok_list.kode) # to set cookie in browser
+			if id_kelompok_list:
+				if id_kelompok_list.kode:
+					response.set_cookie(key='kode_kelompok_jenis_izin', value=id_kelompok_list.kode) # to set cookie in browser
 
 			if id_kelompok_:
 				response.set_cookie(key='id_kelompok_izin', value=id_kelompok_) # to set cookie in browser

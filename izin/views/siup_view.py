@@ -52,9 +52,10 @@ def siup_identitas_pemohon_save_cookie(request):
 		# dan jika cookie kode kelompok jenis izin ada id query berdasarkan kode
 		# untuk memastikan keadaan benar atau tidak id itu 
 		if 'kode_kelompok_jenis_izin' in request.COOKIES.keys():
-			cookie_kelompok_jenis_izin = request.COOKIES['kode_kelompok_jenis_izin']
-			if cookie_kelompok_jenis_izin and cookie_kelompok_jenis_izin is not "":
-				k = KelompokJenisIzin.objects.filter(kode=cookie_kelompok_jenis_izin).last()
+			if request.COOKIES.get('kode_kelompok_jenis_izin', None) and request.COOKIES.get('kode_kelompok_jenis_izin', None) is not None:
+				k = KelompokJenisIzin.objects.filter(kode=request.COOKIES.get('kode_kelompok_jenis_izin', None))
+				if k.exists():
+					k = k.last()
 		
 		nomor_pengajuan_ = get_nomor_pengajuan(k.jenis_izin.kode)
 		nama_kuasa = request.POST.get('nama_kuasa', None)
