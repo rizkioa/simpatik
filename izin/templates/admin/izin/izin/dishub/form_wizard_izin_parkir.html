@@ -30,7 +30,8 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
 	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
 	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-	<script src="{% static 'scripts/js/formAjax/form_ajax_iua.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_izin_parkir.js' %}"></script>
+	
 	<script>
 		$(window).load(function(){
 			$('#rootwizard').bootstrapWizard({
@@ -39,42 +40,24 @@
 					var $current = index+1;
 					if ($current == 2){
 						load_kecamatan1('', '06', '35');
-						if ($.cookie('npwp_perusahaan') !== '0'){
-							$('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
-							setTimeout(function(){
-								load_perusahaan_a($.cookie('npwp_perusahaan'))
-							}, 1000);
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_data_izin_parkir($.cookie('id_pengajuan'))
 						} 
 					}
 					if ($current == 3){
-						pengajuan_id = $.cookie('id_pengajuan')
-						if (pengajuan_id != '' && pengajuan_id != '0'){
-							load_data_kendaraan(pengajuan_id)
-							load_detil_iua(pengajuan_id)
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_data_anggota($.cookie('id_pengajuan'))
 						}
 					}
 					if ($current == 4){
-						load_berkas($.cookie('id_pengajuan'))
-						// cek_nomor_izin_ho($.cookie('id_pengajuan'))
-						// var f = 'form-'
-						// frm1 = $('#'+f+'npwp');
-						// frm2 = $('#'+f+'akte_pendirian');
-						// frm3 = $('#'+f+'domisili');
-						// frm4 = $('#'+f+'pernyataan_kesanggupan_memiliki');
-						// frm5 = $('#'+f+'pernyataan_kesanggupan_menyediakan');
-						// frm6 = $('#'+f+'buku_uji_berkala');
-						// $('#next >').on('click', function(){
-						// 	if (!frm1.parsley().isValid() || !frm2.parsley().isValid() || !frm3.parsley().validate() || !frm4.parsley().validate() || !frm5.parsley().validate() || !frm6.parsley().validate()){
-						// 		setTimeout(function(){
-						// 			toastr["warning"]("Terjadi kesalahan, lengkapi data yang kurang.")
-						// 			tab_index = '#rootwizard a[href="#tab'+(4)+'"]';
-						// 			$(tab_index).tab('show');
-						// 		}, 1000);
-						// 	}
-						// });
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_berkas($.cookie('id_pengajuan'))
+						}
 					}
 					if($current >= $total) {
-						load_konfirmasi($.cookie('id_pengajuan'))
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_konfirmasi($.cookie('id_pengajuan'))
+						}
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
 						$('#rootwizard').find('.pager .finish').removeClass('disabled');
@@ -103,11 +86,11 @@
 			// IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
 			return (!this.length) ? this : (this[0].outerHTML || (
 				function(el){
-					var div = document.createElement('div');
-					div.appendChild(el.cloneNode(true));
-					var contents = div.innerHTML;
-					div = null;
-					return contents;
+						var div = document.createElement('div');
+						div.appendChild(el.cloneNode(true));
+						var contents = div.innerHTML;
+						div = null;
+						return contents;
 			})(this[0]));
 		}
 
@@ -128,9 +111,6 @@
 
 		function next_tab(btn){
 			var pengajuan_id = $.cookie('id_pengajuan')
-			if(pengajuan_id == ''){
-				$.cookie('id_pengajuan', '0', {path:'/'})
-			}
 			$.ajax({
 				type: 'GET',
 				url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
@@ -141,39 +121,39 @@
 						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 						var frm = $('form[name="step'+ index +'"]');
 						frm.parsley().validate();
-							if (frm.parsley().isValid()) {
-								$(".tab-content").mLoading();
-								$(btn).attr('disabled', 'disabled')
-								$.ajax({
-									type: frm.attr('method'),
-									url: frm.attr('action'),
-									data: frm.serialize(),
-									success: function (response){
-										respon = $.parseJSON(response)
-											$(btn).removeAttr('disabled')
-											if(respon.success){
-												toastr["success"](respon.pesan)
-												tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-												$(tab_index).tab('show')
-												$("html, body").animate({scrollTop: 200}, 600);
-											}
-											else{
-												var a = Object.keys(respon);
-												for (var i = 0; i < a.length; i++){
-													var c = a[i].replace("_", " ").charAt(0).toUpperCase()
-													var field = c + a[i].replace("_", " ").slice(1)
-													toastr["error"](field+" "+respon[a[i]][0]['message'])
-													$("#"+a[i]+"").addClass("has-error");
-													$("#id_"+a[i]+"_").addClass("has-error");
-												}
-											}
-											$(".tab-content").mLoading('hide');
-									},
-									error: function(response){
-										$(".tab-content").mLoading('hide');
-										$(btn).removeAttr('disabled')
-										toastr["error"]("Terjadi kesalahan pada koneksi server.")
+						if (frm.parsley().isValid()) {
+							$(".tab-content").mLoading();
+							$(btn).attr('disabled', 'disabled')
+							$.ajax({
+								type: frm.attr('method'),
+								url: frm.attr('action'),
+								data: frm.serialize(),
+								success: function (response){
+									respon = $.parseJSON(response)
+									$(btn).removeAttr('disabled')
+									if(respon.success){
+										toastr["success"](respon.pesan)
+										tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+										$(tab_index).tab('show')
+										$("html, body").animate({scrollTop: 300}, 600);
 									}
+									else{
+										var a = Object.keys(respon);
+										for (var i = 0; i < a.length; i++){
+											var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+											var field = c + a[i].replace("_", " ").slice(1)
+											toastr["error"](field+" "+respon[a[i]][0]['message'])
+											$("#"+a[i]+"").addClass("has-error");
+											$("#id_"+a[i]+"_").addClass("has-error");
+										}
+									}
+									$(".tab-content").mLoading('hide');
+								},
+								error: function(response){
+									$(".tab-content").mLoading('hide');
+									$(btn).removeAttr('disabled')
+									toastr["error"]("Terjadi kesalahan pada koneksi server.")
+								}
 							});
 						}
 					}
@@ -181,12 +161,12 @@
 						console.log('gagal')
 						$.cookie('id_pengajuan', '0', {path:'/'})
 						$.cookie('id_pemohon', '0', {path:'/'})
-						$.cookie('id_perusahaan', '0', {path:'/'})
+						// $.cookie('id_perusahaan', '0', {path:'/'})
 						$.cookie('nomor_ktp', '0', {path:'/'})
 						$.cookie('nomor_paspor', '0', {path:'/'})
-						$.cookie('npwp_perusahaan', '0', {path:'/'})
-						$.cookie('id_perusahaan_induk', '0', {path:'/'})
-						$.cookie('npwp_perusahaan_induk', '0', {path:'/'})
+						// $.cookie('npwp_perusahaan', '0', {path:'/'})
+						// $.cookie('id_perusahaan_induk', '0', {path:'/'})
+						// $.cookie('npwp_perusahaan_induk', '0', {path:'/'})
 					}
 				},
 				error: function (response){
@@ -198,7 +178,7 @@
 		document.querySelector('#alert').onclick = function(){
 			var pengajuan_cookie = $.cookie('id_pengajuan'); 
 			var pemohon_cookie = $.cookie('id_pemohon'); 
-			var perusahaan_cookie = $.cookie('id_perusahaan'); 
+			// var perusahaan_cookie = $.cookie('id_perusahaan'); 
 			if (pengajuan_cookie === ""){
 				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
 				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
@@ -209,11 +189,11 @@
 				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
 				$(tab_index).tab('show');
 			}
-			else if(perusahaan_cookie === ""){
-				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-				tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-				$(tab_index).tab('show');
-			}
+			// else if(perusahaan_cookie === ""){
+			// 	toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+			// 	tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+			// 	$(tab_index).tab('show');
+			// }
 			else{
 				swal({
 					showConfirmButton: false,
@@ -227,12 +207,12 @@
 				}
 				
 				$.ajax({
-					url: '{% url 'iua_done' %}',
+					url: '{% url 'izin_parkir_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
-							window.location.replace('{% url 'admin:verifikasi_operator' %}');
 							toastr["success"](respon.pesan)
+							window.location.replace('{% url 'admin:verifikasi_operator' %}');
 						}
 					}
 				});
@@ -246,7 +226,7 @@
 						
 				}
 				else {
-					return false;
+						return false;
 				}
 			};
 
@@ -258,12 +238,12 @@
 			if ($.cookie('id_pemohon') === undefined){
 				$.cookie('id_pemohon', "0", {path:pathname});
 			}
-			if ($.cookie('id_perusahaan') === undefined){
-				$.cookie('id_perusahaan', "0", {path:pathname});
-			}
+			// if ($.cookie('id_perusahaan') === undefined){
+			// 	$.cookie('id_perusahaan', "0", {path:pathname});
+			// }
 
 			$( "#alert" ).prop( "disabled", true );
-			$('#checkbox_iua_done').change(function() {
+			$('#checkbox_tdp_done').change(function() {
 				if ($(this).is(':checked')) {
 					$( "#alert" ).prop( "disabled", false );
 					window.onbeforeunload = null;
@@ -272,21 +252,23 @@
 					$( "#alert" ).prop( "disabled", true );
 				}
 			});
-					
+
+			// $('.path_name').val(pathname)
+				
 			pengajuan = $.cookie('id_pengajuan')
 			if (pengajuan !== '0'){
-				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
-				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
-				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_ktp').val('{{ktp}}');
+				$('#id_paspor').val('{{paspor}}');
+				load_pemohon('{{ktp}}');
 
 				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
 				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
-				$('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+				// $('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
 
 				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
 				if ('{{ pengajuan_.pemohon }}' !== 'None'){
-					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
-					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
+					$.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
 					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
 				}
 				else{
@@ -294,100 +276,122 @@
 					$.cookie('nomor_paspor', '0' , { path: pathname})
 					$.cookie('id_pemohon', '0' , { path: pathname})
 				}
-				
-				if ('{{ pengajuan_.perusahaan }}' !== 'None'){
-					$.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
-					$.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
-				}
-				else{
-					$.cookie('id_perusahaan', '0' , { path: pathname})
-					$.cookie('npwp_perusahaan', '0' , { path: pathname })
-				}
-				if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
-					$('#switch_pemohon_disabled').prop( "checked", true );
-					setTimeout(function(){
-						$('.kuasa_disable').prop('disabled', false);
-						$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
-						$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
-						$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
-					}, 1000);
-				}
 			}
 		});
 
-		$('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
-		$("#switch_pemohon_disabled").change(function() {
-			if ($(this).is(':checked')) {
-				$('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
-			}
-			else {
-				$('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
-			}
-		});
-		
-		$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
-		
+		function load_data_izin_parkir(id_pengajuan){
+			$('.tab-content').mLoading();
+			$.ajax({
+	            type: 'GET',
+	            url: __base_url__+'/layanan/izin-parkir/load-detil-izin-parkir/ajax/'+id_pengajuan,
+	            success: function (data) {
+	            	// console.log(data)
+	            	respon = JSON.parse(data)
+	            	if(respon.success == true){
+	            		$('#id_jasa_penitipan').val(respon.data.jenis_penitipan)
+	            		$('#id_ukuran_penitipan_lebar').val(respon.data.lebar_penitipan)
+	            		$('#id_ukuran_penitipan_panjang').val(respon.data.panjang_penitipan)
+	            		if(respon.data.desa.id_kecamatan){
+	            			$('#id_kecamatan1').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+	            			load_desa1(respon.data.desa.id_kecamatan)
+		            		setTimeout(function(){
+		            			$('#id_desa1').val(respon.data.desa.id_desa).prop('selected',true).trigger("chosen:updated");
+		            		}, 1000);
+	            		}
+	            		
+	            		$('#id_alamat_izin_parkir').val(respon.data.alamat)
+	            		$('#id_tanggal_penitipan').val(respon.data.tanggal_pelaksanaan_parkir)
+	            		$('#id_waktu_mulai').val(respon.data.waktu_mulai)
+	            		$('#id_waktu_akhir').val(respon.data.waktu_berakhir)
+	            		$('#id_anggota_penitipan').val(respon.data.jumlah_anggota_parkir)
+	            		$('#id_batas_sebelah_utara').val(respon.data.batas_utara)
+	            		$('#id_batas_sebelah_timur').val(respon.data.batas_timur)
+	            		$('#id_batas_sebelah_selatan').val(respon.data.batas_selatan)
+	            		$('#id_batas_sebelah_barat').val(respon.data.batas_barat)
+	            	}
+	            	else{
+	            		toastr["error"](respon.data.pesan)
+	            	}
+	            	$('.tab-content').mLoading('hide');
+	            },
+	            error:function(){
+	            	toast_server_error();
+	            	$('.tab-content').mLoading('hide');
+	            }
+	        })
+		}
+
 		$(window).load(function() {
 			var p = 'percent-'
-			$('#'+p+'npwp_perusahaan').hide()
-			$('#'+p+'akte_pendirian').hide()
-			$('#'+p+'domisili').hide()
-			$('#'+p+'pernyataan_kesanggupan_memiliki').hide()
-			$('#'+p+'pernyataan_kesanggupan_menyediakan').hide()
-			$('#'+p+'buku_uji_berkala').hide()
+			$('#'+p+'ktp').hide()
+			$('#'+p+'sketsa_lokasi').hide()
+			$('#'+p+'surat_pernyataan').hide()
 		});
 
-		function load_detil_iua(pengajuan_id){
-			if (pengajuan_id !== ""){
-				$.ajax({
-					type: 'GET',
-					url: __base_url__+'/ajax-load-detil-iua/'+pengajuan_id,
-					success: function (data) {
-						console.log(data)
-						response = data
-						$('#id_nilai_investasi').val(response.nilai_investasi)
-						$('#id_jenis_kategori_kendaraan').val(response.kategori_kendaraan_id).prop('selected',true).trigger("chosen:updated");
-						// a = data.length
-						// if(a === 0){
-						// 	$('#table_daftar_kendaraan > tbody > tr:first/').remove()
-						// 	table = '<tr><td colspan="7" aling="center">Kosong/Tidak ada...!!!<td><tr>'
-						// 	$('#table_daftar_kendaraan > tbody').prepend(table)
-						// }
-						// else{
-						// 	load_data_kendaraan(pengajuan_id)
-						// 	b = data.reverse()
-						// 	$('#table_daftar_kendaraan > tbody > tr:first').remove()
-						// 	for (var i = 0; i < a; i++){
-						// 		id = b[i].id
-						// 		tanda_nomor_kendaraan = b[i].nomor_kendaraan
-						// 		nomor_uji_berkala = b[i].nomor_uji_berkala
-						// 		merk_type = b[i].merk_type
-						// 		nomor_rangka = b[i].nomor_rangka
-						// 		nomor_mesin = b[i].nomor_mesin
-						// 		tahun_pembuatan = b[i].tahun_pembuatan
-						// 		keterangan = b[i].keterangan
-						// 		no = a
-						// 		if (a > 1){
-						// 			no = a-i
-						// 		}
-						// 		row = '<tr>'
-						// 		row += '<td>'+tanda_nomor_kendaraan+'</td>'
-						// 		row += '<td>'+nomor_uji_berkala+'</td>'
-						// 		row += '<td>'+merk_type+'</td>'
-						// 		row += '<td>'+nomor_rangka+'</td>'
-						// 		row += '<td>'+nomor_mesin+'</td>'
-						// 		row += '<td>'+tahun_pembuatan+'</td>'
-						// 		row += '<td>'+keterangan+'</td>'
-						// 		row += '</tr>'
-						// 		$('#table_daftar_kendaraan > tbody').prepend(row)
-						// 	}
-						// }
-					}
-				})
-			}
+		function load_konfirmasi(id_pengajuan){
+			$('.tab-content').mLoading();
+			$.ajax({
+	            type: 'GET',
+	            url: __base_url__+'/layanan/izin-parkir/load-konfirmasi/ajax/'+id_pengajuan,
+	            success: function (data) {
+	            	respon = JSON.parse(data)
+	            	console.log(respon)
+	            	pengajuan_obj = respon.data.pengajuan_json
+	            	pemohon_obj = respon.data.pemohon_json
+	            	detil_obj = respon.data.detil_json
+	            	data_anggota_list = respon.data.data_anggota_json
+	            	if(respon.success == true){
+	            		$('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
+	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+	            		$('#nomor_ktp_konfirmasi').text(pemohon_obj.username)
+	            		$('#nama_lengkap_konfirmasi').text(pemohon_obj.nama_lengkap)
+	            		$('#alamat_konfirmasi').text(pemohon_obj.alamat_lengkap)
+	            		$('#telephone_konfirmasi').text(pemohon_obj.telephone)
+	            		$('#hp_konfirmasi').text(pemohon_obj.hp)
+	            		$('#email_konfirmasi').text(pemohon_obj.email)
+	            		$('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
+	            		$('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
+	            		// izin parkir
+	            		$('#jenis_penitipan_konfirmasi').text(detil_obj.jenis_penitipan)
+	            		$('#ukuran_penitipan_konfirmasi').text('lebar : '+detil_obj.lebar_penitipan+' meter, panjang : '+detil_obj.panjang_penitipan+' meter')
+	            		$('#alamat_penitipan_konfirmasi').text(detil_obj.alamat_lengkap)
+	            		$('#lama_penitipan_konfirmasi').text('tanggal : '+detil_obj.tanggal_pelaksanaan_parkir + ', ' +detil_obj.waktu_mulai+' sampai dengan '+detil_obj.waktu_berakhir)
+	            		$('#jumlah_anggota_penitipan_konfirmasi').text(detil_obj.jumlah_anggota_parkir+' orang')
+	            		$('#sebelah_utara_konfirmasi').text(detil_obj.batas_utara)
+	            		$('#sebelah_timur_konfirmasi').text(detil_obj.batas_timur)
+	            		$('#sebelah_selatan_konfirmasi').text(detil_obj.batas_selatan)
+	            		$('#sebelah_barat_konfirmasi').text(detil_obj.batas_barat)
+	            		for (var i = 0; i < data_anggota_list.length; i++){
+	            			no = data_anggota_list.length
+							if (data_anggota_list.length > 1){
+								no = data_anggota_list.length-i
+							}
+	            			row = '<tr>'
+	            			row += '<td>'+no+'</td>'
+	            			row += '<td>'+data_anggota_list[i].nomor_ktp+'</td>'
+	            			row += '<td>'+data_anggota_list[i].nama_lengkap+'</td>'
+	            			row += '<td>'+data_anggota_list[i].tanggal_lahir+'</td>'
+	            			row += '<td>'+data_anggota_list[i].alamat+'</td>'
+	            			row += '<td>'+data_anggota_list[i].telephone+'</td>'
+	            			row += '<td>'+data_anggota_list[i].keterangan+'</td>'
+	            			$('#table_data_anggota_konfirmasi > tbody').prepend(row)
+	            		}
+
+	            		if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
+	            			table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
+	            			table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+	            			table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+	            			table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+	            			$('#table_kuasa_konfirmasi').prepend(table)
+	            		}
+	            		$('.tab-content').mLoading('hide');
+	            	}
+	            }
+	        })
 		}
 	</script>
-	{% include 'front-end/include/formulir_iua/popup/tambah_data_kendaraan.html' %}
+	{% include 'front-end/include/formulir_izin_parkir/popup/data_anggota.html' %}
 {% endblock %}
 
 {% block extrastyle %}
@@ -473,11 +477,11 @@
 {% block content %}
 <div id="rootwizard" class="tab-container tab-wizard">
 	<ul class="nav nav-tabs nav-justified">
-		<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">STEP #1</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">STEP #2</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">STEP #3</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">STEP #4 </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">STEP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>\
+	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Izin Parkir</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Anggota</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
 	</ul>
 	<div class="tab-content">
 	    <div class="tab-pane" id="tab1"> 
@@ -487,19 +491,19 @@
 
 		<div class="tab-pane" id="tab2">
 			<!-- Identitas perusahaan -->
-			{% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+			{% include 'front-end/include/formulir_izin_parkir/izin_parkir.html' %}
 		</div>
 
 		<div class="tab-pane" id="tab3">
-			{% include 'front-end/include/formulir_iua/data_kendaraan.html' %}
+			{% include 'front-end/include/formulir_izin_parkir/data_anggota.html' %}
 		</div>
 
 		<div class="tab-pane" id="tab4">
-			{% include 'front-end/include/formulir_iua/upload_dokumen.html' %}
+			{% include 'front-end/include/formulir_izin_parkir/upload_dokument.html' %}
 		</div>
 
 		<div class="tab-pane" id="tab5">
-			{% include 'front-end/include/formulir_iua/konfirmasi.html' %}
+			{% include 'front-end/include/formulir_izin_parkir/konfirmasi.html' %}
 		</div>
 
 	    <ul class="pager wizard">

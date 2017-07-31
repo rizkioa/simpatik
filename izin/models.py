@@ -765,7 +765,7 @@ class DetilTDP(PengajuanIzin):
 	modal_pinjaman_bank = models.CharField(max_length=255, verbose_name='Modal Pinjaman Bank', null=True, blank=True)
 	modal_pinjaman_lainnya = models.CharField(max_length=255, verbose_name='Modal Pinjaman Lainnya', null=True, blank=True)
 	jumlah_anggota = models.CharField(max_length=255, verbose_name='Jumlah Anggota', null=True, blank=True)
-	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_tdp', blank=True, null=True)
+	# berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_tdp', blank=True, null=True)
 
 	def __unicode__(self):
 		return u'Detil TDP %s - %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan), str(self.perusahaan))
@@ -1674,7 +1674,7 @@ class DetilIUA(PengajuanIzin):
 	nilai_investasi = models.CharField(max_length=255, verbose_name='Nilai Investasi', null=True, blank=True)
 	kategori_kendaraan = models.ForeignKey(KategoriKendaraan, max_length=255, verbose_name='Nama Kategori', null=True, blank=True)
 	detil_ho = models.ForeignKey(DetilHO, max_length=255, verbose_name='Nomor Izin HO', null=True, blank=True)
-	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_iua', blank=True, null=True)
+	# berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_iua', blank=True, null=True)
 
 	def as_json(self):
 		nilai_investasi = ''

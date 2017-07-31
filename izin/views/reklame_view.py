@@ -401,7 +401,7 @@ def ajax_delete_berkas_reklame(request, id_berkas):
 			try:
 				b = Berkas.objects.get(id=id_berkas)
 				data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
-				pengajuan_obj.berkas_terkait_izin.remove(b)
+				# pengajuan_obj.berkas_terkait_izin.remove(b)
 				b.delete()
 			except ObjectDoesNotExist:
 				data = {'success': False, 'pesan': 'Berkas Tidak Ada' }

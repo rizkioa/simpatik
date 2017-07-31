@@ -177,6 +177,7 @@ def load_berkas_izin_parkir(request, id_pengajuan):
 								id_elemen.append('ktp')
 								nm_berkas.append(ktp.nama_berkas)
 								id_berkas.append(ktp.id)
+								pengajuan_obj.berkas_terkait_izin.add(ktp)
 
 							sketsa_lokasi = berkas_tambahan.filter(keterangan='Sketsa Lokasi Tempat Parkir/Gambar Lokasi Tempar Parkir '+nomor_ktp.nomor).last()
 							if sketsa_lokasi:
@@ -184,6 +185,7 @@ def load_berkas_izin_parkir(request, id_pengajuan):
 								id_elemen.append('sketsa_lokasi')
 								nm_berkas.append(sketsa_lokasi.nama_berkas)
 								id_berkas.append(sketsa_lokasi.id)
+								pengajuan_obj.berkas_terkait_izin.add(sketsa_lokasi)
 
 							surat_pernyataan = berkas_tambahan.filter(keterangan='Surat Pernyataan '+nomor_ktp.nomor).last()
 							if surat_pernyataan:
@@ -191,6 +193,7 @@ def load_berkas_izin_parkir(request, id_pengajuan):
 								id_elemen.append('surat_pernyataan')
 								nm_berkas.append(surat_pernyataan.nama_berkas)
 								id_berkas.append(surat_pernyataan.id)
+								pengajuan_obj.berkas_terkait_izin.add(surat_pernyataan)
 			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 		except ObjectDoesNotExist:
 			data = {'success': False, 'pesan': 'Data tidak ditemukan/kosong.' }
@@ -207,7 +210,7 @@ def delete_berkas_izin_parkir(request, id_berkas, kode):
 					if pengajuan_obj:
 						if kode == 'ktp':
 							if pengajuan_obj.pemohon:
-								nomor_ktp = pengajuan_obj.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas=1)
+								nomor_ktp = pengajuan_obj.pemohon.nomoridentitaspengguna_set.filter(jenis_identitas=1).last()
 								if nomor_ktp:
 									nomor_ktp.berkas = None
 									nomor_ktp.save()

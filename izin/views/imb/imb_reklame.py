@@ -403,7 +403,7 @@ def ajax_delete_berkas_imbreklame(request, id_berkas):
           jenis_nomor = ktp_.jenis_identitas.id
 
           b = Berkas.objects.get(id=id_berkas)
-          pengajuan_obj.berkas_terkait_izin.remove(b)
+          # pengajuan_obj.berkas_terkait_izin.remove(b)
           data = {'success': True, 'pesan': str(b)+" berhasil dihapus" }
           b.delete()
         try:

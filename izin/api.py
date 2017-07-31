@@ -208,7 +208,7 @@ class DetilIMBResource(CORSModelResource):
 
 	class Meta:
 		queryset = DetilIMB.objects.all()
-		authentication = ApiKeyAuthentication()
+		# authentication = ApiKeyAuthentication()
 
 class InformasiKekayaanDaerahResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
