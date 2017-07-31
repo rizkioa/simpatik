@@ -23,7 +23,7 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, DetilIMB,Pemohon
-from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA
+from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,IdentifikasiJalanForm,UploadBerkasKTPForm
 from accounts.models import NomorIdentitasPengguna
@@ -51,7 +51,7 @@ def formulir_imb_perumahan(request, extra_context={}):
 	extra_context.update({'lama_penggunaan_bangunan': lama_penggunaan_bangunan })
 	extra_context.update({'kegiatan_pembangunan': kegiatan_pembangunan })
 	extra_context.update({'status_hak_tanah': STATUS_HAK_TANAH })
-	extra_context.update({'klasifikasi_jalan': KLASIFIKASI_JALAN })
+	extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
 	extra_context.update({'rumija': RUMIJA })
 	extra_context.update({'ruwasja': RUWASJA })
 	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
