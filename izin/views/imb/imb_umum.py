@@ -293,6 +293,8 @@ def load_data_imb(request,id_pengajuan):
 			nama_bangunan = pengajuan_.bangunan
 			luas_bangunan = str(pengajuan_.luas_bangunan)
 			jumlah_bangunan = str(pengajuan_.jumlah_bangunan)
+			if jumlah_bangunan == "None":
+				jumlah_bangunan = ''
 			id_lokasi = pengajuan_.lokasi
 			if pengajuan_.desa:
 			  id_kecamatan = str(pengajuan_.desa.kecamatan.id)
