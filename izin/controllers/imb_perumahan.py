@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
-from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA
+from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame,ParameterBangunan
@@ -29,7 +29,7 @@ def formulir_imb_perumahan(request):
 		lama_penggunaan_bangunan = ParameterBangunan.objects.filter(parameter="Lama Penggunaan Bangunan")
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk Reklame
 		extra_context.update({
-			'klasifikasi_jalan': KLASIFIKASI_JALAN,
+			'klasifikasi_jalan': JENIS_LOKASI_USAHA,
 			'rumija': RUMIJA,
 			'ruwasja': RUWASJA,
 			'fungsi_bangunan': fungsi_bangunan,
