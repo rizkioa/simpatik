@@ -7,35 +7,35 @@ function load_perusahaan_a(npwp_){
 		data: { csrfmiddlewaretoken: csrf_token },
 		success: function (data) {
   			$(".tab-content").mLoading('hide');
-  			respon = $.parseJSON(data)
-    		if(respon.success){
-	          	load_provinsi_reklame(respon.data.negara)
-	          	load_kabupaten_reklame(respon.data.provinsi)
-	          	load_kecamatan_reklame(respon.data.kabupaten)
-	          	load_desa_reklame(respon.data.kecamatan)
+  			respon_perusahaan = $.parseJSON(data)
+    		if(respon_perusahaan.success){
+	          	load_provinsi_reklame(respon_perusahaan.data.negara)
+	          	load_kabupaten_reklame(respon_perusahaan.data.provinsi)
+	          	load_kecamatan_reklame(respon_perusahaan.data.kabupaten)
+	          	load_desa_reklame(respon_perusahaan.data.kecamatan)
 	          	
-	              	$('#id_nama_perusahaan').val(respon.data.nama_perusahaan);
-	              	$('#alamat_perusahaan_load').val(respon.data.alamat_perusahaan);
-	              	$('#kode_pos_perusahaan_load').val(respon.data.kode_pos);
-	              	$('#no_telepon_perusahaan_load').val(respon.data.telepon);
-	              	$('#id_email_perusahaan').val(respon.data.email);
-	              	$('#id_fax_perusahaan').val(respon.data.fax)
+	              	$('#id_nama_perusahaan').val(respon_perusahaan.data.nama_perusahaan);
+	              	$('#alamat_perusahaan_load').val(respon_perusahaan.data.alamat_perusahaan);
+	              	$('#kode_pos_perusahaan_load').val(respon_perusahaan.data.kode_pos);
+	              	$('#no_telepon_perusahaan_load').val(respon_perusahaan.data.telepon);
+	              	$('#id_email_perusahaan').val(respon_perusahaan.data.email);
+	              	$('#id_fax_perusahaan').val(respon_perusahaan.data.fax)
 	            setTimeout(function(){
-					$('#id_negara_reklame').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-	              	$('#id_provinsi_reklame').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-	              	$('#id_kabupaten_reklame').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated");
-	              	$('#id_kecamatan_reklame').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-	              	$('#id_desa_reklame').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-	              	if (respon.data.npwp_perusahaan_url !== ''){
-	              		$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_perusahaan_url+"'>"+respon.data.npwp_perusahaan_nama+"</a></span>")
+					$('#id_negara_reklame').val(respon_perusahaan.data.negara).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_provinsi_reklame').val(respon_perusahaan.data.provinsi).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kabupaten_reklame').val(respon_perusahaan.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_kecamatan_reklame').val(respon_perusahaan.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+	              	$('#id_desa_reklame').val(respon_perusahaan.data.desa).prop('selected',true).trigger("chosen:updated");
+	              	if (respon_perusahaan.data.npwp_perusahaan_url !== ''){
+	              		$('#load_npwp_perusahaan').replaceWith("<span id='load_npwp_perusahaan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon_perusahaan.data.npwp_perusahaan_url+"'>"+respon_perusahaan.data.npwp_perusahaan_nama+"</a></span>")
 	              		$('#checkbox_berkas_npwp_perusahaan').prop('checked', 1)
 	              	}
-	              	if (respon.data.legalitas_pendirian_url !== ''){
-	              		$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_pendirian_url+"'>"+respon.data.legalitas_pendirian_nama+"</a></span>")
+	              	if (respon_perusahaan.data.legalitas_pendirian_url !== ''){
+	              		$('#load_akta_pendirian').replaceWith("<span id='load_akta_pendirian' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon_perusahaan.data.legalitas_pendirian_url+"'>"+respon_perusahaan.data.legalitas_pendirian_nama+"</a></span>")
 	              		$('#checkbox_berkas_akta_pendirian').prop('checked', 1)
 	              	}
-	              	if (respon.data.legalitas_perubahan_url !== ''){
-	              		$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.legalitas_perubahan_url+"'>"+respon.data.legalitas_perubahan_nama+"</a></span>")
+	              	if (respon_perusahaan.data.legalitas_perubahan_url !== ''){
+	              		$('#load_akta_perubahan').replaceWith("<span id='load_akta_perubahan' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon_perusahaan.data.legalitas_perubahan_url+"'>"+respon_perusahaan.data.legalitas_perubahan_nama+"</a></span>")
 	              		$('#checkbox_berkas_akta_pembaruan').prop('checked', 1)
 	              	}
 	            }, 2000);
