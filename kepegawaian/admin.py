@@ -21,6 +21,8 @@ class JenisUnitKerjaAdmin(MPTTModelAdmin):
 class UnitKerjaAdmin(MPTTModelAdmin):
 	mptt_level_indent = 20
 	list_display = ('nama_unit_kerja', 'keterangan', 'jenis_unit_kerja', 'unit_kerja_induk' )
+	# list_filter = ('nama_unit_kerja',)
+	search_fields = ('nama_unit_kerja', 'keterangan')
 
 class BidangStrukturalAdmin(MPTTModelAdmin):
 	mptt_level_indent = 20

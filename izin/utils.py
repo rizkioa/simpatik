@@ -439,3 +439,7 @@ def push_api_dishub(request, id_pengajuan):
 	else:
 		data = {'success': False, 'pesan': 'Terjadi Kesalahan, Anda tidak memiliki hak akses untuk memverifikasi ini.'}
 	return HttpResponse(json.dumps(data))
+
+class holder(object):
+    success = False
+    pesan = ''
