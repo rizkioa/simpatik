@@ -34,16 +34,13 @@ def detil_sk_imb_save(request):
 			Sk_ = DetilSkForm(request.POST)
 
 		if Sk_.is_valid():
-			print "HOLO"
 			p = Sk_.save(commit=False)
 			p.save()
 			data = {'success': True,
 					'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
 					'data': ['']}
-			data = json.dumps(data)
 			response = HttpResponse(json.dumps(data))
 		else:
-			print "WASEM"
 			print Sk_.errors
 			data = Sk_.errors.as_json()
 			response = HttpResponse(data)
