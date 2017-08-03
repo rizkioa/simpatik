@@ -1194,7 +1194,8 @@
 								    		<div class="img-responsi">
 		                                		{% if ext|InList:'.pdf, .PDF' %}
 									        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="">
-									        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+									        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg'
+									        	or ext|InList:'.JPG' or ext|InList:'.PNG' or ext|InList:'.jpeg'%}
 													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
 									        	{% endif %}
 								        	</div>	
@@ -1202,7 +1203,8 @@
 								        <div class="overlay">
 								           	<h2>{{ a.nama_berkas.upper }}</h2>
 								           	{% with a.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg'
+									        	or ext|InList:'.JPG' or ext|InList:'.PNG' or ext|InList:'.jpeg' %}
 								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
 		                                        	<a class="info" href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank">link here</a>
