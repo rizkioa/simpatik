@@ -1194,18 +1194,24 @@
 								    		<div class="img-responsi">
 		                                		{% if ext|InList:'.pdf, .PDF' %}
 									        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="">
-									        	{% elif ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
+									        	{% elif ext|InList:'.doc, .DOC, .docx, .DOCX' %}
+									        		<img class="imageloaderImage" src="{% static 'images/icons/doc.png' %}" alt="">
+									        	{% elif ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
+													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
+												{% else %}
 													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
 									        	{% endif %}
 								        	</div>	
 			  							{% endwith %}
 								        <div class="overlay">
-								           	<h2>{{ a.nama_berkas.upper }}</h2>
+								           	<h2>{{ a.nama_berkas.upper|split_berkas }}</h2>
 								           	{% with a.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' or ext|InList:'.jpeg' %}
-								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
-								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
+                                            	{% if ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
+								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1" data-title="{{ a.nama_berkas.upper }}">link here</a>
+								           		{% elif ext|InList:'.pdf, .PDF, .doc, .DOC, .docx, .DOCX' %}
 		                                        	<a class="info" href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank">link here</a>
+		                                        {% else %}
+		                                        	<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1" data-title="{{ a.nama_berkas.upper }}">link here</a>
 		                                        {% endif %}
                                             {% endwith %}
 								        </div>

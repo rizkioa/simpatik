@@ -240,3 +240,7 @@ REST_FRAMEWORK = {
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
 }
+
+API_URL_DISHUB = "http://192.168.100.110:8000/api/v1/"
+API_USERNAME_DISHUB = "dishub"
+API_KEY_DISHUB = "jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J"
