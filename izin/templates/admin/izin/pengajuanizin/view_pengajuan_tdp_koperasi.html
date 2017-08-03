@@ -1198,6 +1198,8 @@
 									        		<img class="imageloaderImage" src="{% static 'images/icons/doc.png' %}" alt="">
 									        	{% elif ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
 													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
+												{% else %}
+													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
 									        	{% endif %}
 								        	</div>	
 			  							{% endwith %}
@@ -1208,6 +1210,8 @@
 								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 								           		{% elif ext|InList:'.pdf, .PDF, .doc, .DOC, .docx, .DOCX' %}
 		                                        	<a class="info" href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank">link here</a>
+		                                        {% else %}
+		                                        	<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
 		                                        {% endif %}
                                             {% endwith %}
 								        </div>
