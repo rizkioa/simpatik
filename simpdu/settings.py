@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c^-$x(edvg3!dfpx^t0pf$*9n#v!#252dxgta-k+n)f*yf4&cd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -118,7 +118,7 @@ DATABASES = {
         'USER': 'simpatik', 
         'PASSWORD': '!QAZ@WSX',                
         'HOST': 'localhost',                  
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
