@@ -1575,49 +1575,7 @@
 		    </div>
 		</div>
 	</div>
-	<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-		    <div class="modal-content">
-		       	<div class="modal-header">
-		        	<h3 class="modal-title custom-font">Berkas</h3>
-		      	</div>
-		      	<div class="modal-body">
-                    <div class="row">
-                    	{% if pengajuan.berkas_terkait_izin.all %}
-                        	{% for a in pengajuan.berkas_terkait_izin.all %}
-			                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-								    <div class="hovereffect">
-								    	{% with a.berkas.name|extension|stringformat:"s" as ext %}
-								    		<div class="img-responsi">
-		                                		{% if ext|InList:'.pdf, .PDF' %}
-									        		<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="">
-									        	{% elif ext|InList:'.jpg' or ext|InList:'.png' %}
-													<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
-									        	{% endif %}
-								        	</div>	
-			  							{% endwith %}
-								        <div class="overlay">
-								           	<h2>{{ a.nama_berkas.upper }}</h2>
-								           	{% with a.berkas.name|extension|stringformat:"s" as ext %}
-                                            	{% if ext|InList:'.jpg' or ext|InList:'.png' %}
-								           			<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1">link here</a>
-								           		{% elif ext|InList:'.pdf, .doc, .docx' %}
-		                                        	<a href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank" class="info">
-		                                        {% endif %}
-                                            {% endwith %}
-								        </div>
-								    </div>
-								</div>
-							{% endfor %}
-						{% endif %}
-                    </div>
-                </div>
-		      	<div class="modal-footer">
-                    <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-                </div>
-		    </div>
-		</div>
-	</div>
+	{% include 'admin/izin/pengajuanizin/include/modal_view_berkas.html' %}
 
 	<div class="modal fade detail_imb_umum" id="detail_imb_umum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">

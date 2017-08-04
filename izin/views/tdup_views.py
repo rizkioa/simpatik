@@ -275,6 +275,7 @@ def tdup_upload_berkas(request):
 										berkas.created_by_id = request.COOKIES['id_pemohon']
 									berkas.save()
 									p.berkas_tambahan.add(berkas)
+									p.berkas_terkait_izin.add(berkas)
 
 									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
 											{'status_upload': 'ok'},
@@ -326,6 +327,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('npwp_perusahaan')
 					nm_berkas.append(npwp_perusahaan.nama_berkas)
 					id_berkas.append(npwp_perusahaan.id)
+					tdup.berkas_terkait_izin.add(npwp_perusahaan)
 
 			if berkas_:
 				surat_keputusan = berkas_.filter(keterangan='Surat Permohonan '+perusahaan_.npwp).last()
@@ -334,6 +336,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('surat_keputusan')
 					nm_berkas.append(surat_keputusan.nama_berkas)
 					id_berkas.append(surat_keputusan.id)
+					tdup.berkas_terkait_izin.add(surat_keputusan)
 
 				izin_tempat_usaha = berkas_.filter(keterangan='Izin Tempat Usaha Pariwisata yang masih berlaku berlaku '+perusahaan_.npwp).last()
 				if izin_tempat_usaha:
@@ -341,6 +344,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('izin_tempat_usaha')
 					nm_berkas.append(izin_tempat_usaha.nama_berkas)
 					id_berkas.append(izin_tempat_usaha.id)
+					tdup.berkas_terkait_izin.add(izin_tempat_usaha)
 
 				sertifikat_lahan = berkas_.filter(keterangan='Sertifikat Lahan / Surat Sewa '+perusahaan_.npwp).last()
 				if sertifikat_lahan:
@@ -348,6 +352,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('sertifikat_lahan')
 					nm_berkas.append(sertifikat_lahan.nama_berkas)
 					id_berkas.append(sertifikat_lahan.id)
+					tdup.berkas_terkait_izin.add(sertifikat_lahan)
 
 				izin_gangguan = berkas_.filter(keterangan='Izin Gangguan '+perusahaan_.npwp).last()
 				if izin_gangguan:
@@ -355,6 +360,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('izin_gangguan')
 					nm_berkas.append(izin_gangguan.nama_berkas)
 					id_berkas.append(izin_gangguan.id)
+					tdup.berkas_terkait_izin.add(izin_gangguan)
 
 				imb = berkas_.filter(keterangan='IMB '+perusahaan_.npwp).last()
 				if imb:
@@ -362,6 +368,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('imb')
 					nm_berkas.append(imb.nama_berkas)
 					id_berkas.append(imb.id)
+					tdup.berkas_terkait_izin.add(imb)
 
 				siup = berkas_.filter(keterangan='SIUP '+perusahaan_.npwp).last()
 				if siup:
@@ -369,6 +376,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('siup')
 					nm_berkas.append(siup.nama_berkas)
 					id_berkas.append(siup.id)
+					tdup.berkas_terkait_izin.add(siup)
 
 				surat_pernyataan = berkas_.filter(keterangan='Surat pernyataan tertulis dari pengusaha yang menjamin bahwa data dan dokumen yang diserahakan benar dan sah '+perusahaan_.npwp).last()
 				if surat_pernyataan:
@@ -376,6 +384,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('surat_pernyataan')
 					nm_berkas.append(surat_pernyataan.nama_berkas)
 					id_berkas.append(surat_pernyataan.id)
+					tdup.berkas_terkait_izin.add(surat_pernyataan)
 
 				dokumen_lingkungan = berkas_.filter(keterangan='Dokumen lingkungan '+perusahaan_.npwp).last()
 				if dokumen_lingkungan:
@@ -383,6 +392,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('dokumen_lingkungan')
 					nm_berkas.append(dokumen_lingkungan.nama_berkas)
 					id_berkas.append(dokumen_lingkungan.id)
+					tdup.berkas_terkait_izin.add(dokumen_lingkungan)
 
 				izin_usaha_angkutan = berkas_.filter(keterangan='Izin Usaha Angkutan Khusus untuk bidang jasa transportasi wisata '+perusahaan_.npwp).last()
 				if izin_usaha_angkutan:
@@ -390,6 +400,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('izin_usaha_angkutan')
 					nm_berkas.append(izin_usaha_angkutan.nama_berkas)
 					id_berkas.append(izin_usaha_angkutan.id)
+					tdup.berkas_terkait_izin.add(izin_usaha_angkutan)
 
 				berkas_tambahan = berkas_.filter(keterangan='Berkas Tambahan '+perusahaan_.npwp).last()
 				if berkas_tambahan:
@@ -397,6 +408,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('berkas_tambahan')
 					nm_berkas.append(berkas_tambahan.nama_berkas)
 					id_berkas.append(berkas_tambahan.id)
+					tdup.berkas_terkait_izin.add(berkas_tambahan)
 
 			if pemohon_:
 				npwp_pribadi = pemohon_.berkas_npwp
@@ -405,6 +417,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('npwp_pribadi')
 					nm_berkas.append(npwp_pribadi.nama_berkas)
 					id_berkas.append(npwp_pribadi.id)
+					tdup.berkas_terkait_izin.add(npwp_pribadi)
 
 			if legalitas_1:
 				legalitas_1 = legalitas_1.berkas
@@ -413,6 +426,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('akta_pendirian')
 					nm_berkas.append(legalitas_1.nama_berkas)
 					id_berkas.append(legalitas_1.id)
+					tdup.berkas_terkait_izin.add(legalitas_1)
 
 			if legalitas_2:
 				legalitas_2 = legalitas_2.berkas
@@ -421,6 +435,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('akta_perubahan')
 					nm_berkas.append(legalitas_2.nama_berkas)
 					id_berkas.append(legalitas_2.id)
+					tdup.berkas_terkait_izin.add(legalitas_2)
 
 			nomor_ktp = request.COOKIES['nomor_ktp']
 			if nomor_ktp:
@@ -430,6 +445,7 @@ def ajax_load_berkas_tdup(request, id_pengajuan):
 					id_elemen.append('ktp')
 					nm_berkas.append(ktp_.nama_berkas)
 					id_berkas.append(ktp_.id)
+					tdup.berkas_terkait_izin.add(ktp_)
 
 			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 		except ObjectDoesNotExist:
