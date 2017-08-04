@@ -22,7 +22,7 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, DetilIMB,Pemohon
+from izin.models import PengajuanIzin, DetilIMB,Pemohon,DetilBangunanIMB
 from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,IdentifikasiJalanForm,UploadBerkasKTPForm
@@ -260,30 +260,32 @@ def cetak_bukti_pendaftaran_imb_perumahan(request,id_pengajuan_):
             syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
             letak_ = pengajuan_.lokasi +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 
-            kegiatan_pembangunan = pengajuan_.parameter_bangunan.get(parameter="Kegiatan Pembangunan Gedung")
+            detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_).last()
+            
+            kegiatan_pembangunan = detil_bangunan_.parameter_bangunan.get(parameter="Kegiatan Pembangunan Gedung")
             nilai_kegiatan_pembangunan = str(kegiatan_pembangunan.nilai)
             
-            fungsi_bangunan = pengajuan_.parameter_bangunan.get(parameter="Fungsi Bangunan")
+            fungsi_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Fungsi Bangunan")
             nilai_fungsi_bangunan = str(fungsi_bangunan.nilai)
 
-            kompleksitas_bangunan = pengajuan_.parameter_bangunan.get(parameter="Tingkat Kompleksitas")
+            kompleksitas_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Tingkat Kompleksitas")
             nilai_kompleksitas_bangunan = str(kompleksitas_bangunan.nilai)
 
-            permanensi_bangunan = pengajuan_.parameter_bangunan.get(parameter="Tingkat Permanensi")
+            permanensi_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Tingkat Permanensi")
             nilai_permanensi_bangunan = str(permanensi_bangunan.nilai)
 
-            ketinggian_bangunan = pengajuan_.parameter_bangunan.get(parameter="Ketinggian Bangunan")
+            ketinggian_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Ketinggian Bangunan")
             nilai_ketinggian_bangunan = str(ketinggian_bangunan.nilai)
 
-            letak_bangunan = pengajuan_.parameter_bangunan.get(parameter="Lokasi Bangunan")
+            letak_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Lokasi Bangunan")
             nilai_letak_bangunan = str(letak_bangunan.nilai)
 
-            kepemilikan_bangunan = pengajuan_.parameter_bangunan.get(parameter="Kepemilikan Bangunan")
+            kepemilikan_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Kepemilikan Bangunan")
             nilai_kepemilikan_bangunan = str(kepemilikan_bangunan.nilai)
 
-            lama_penggunaan_bangunan = pengajuan_.parameter_bangunan.get(parameter="Lama Penggunaan Bangunan")
+            lama_penggunaan_bangunan = detil_bangunan_.parameter_bangunan.get(parameter="Lama Penggunaan Bangunan")
             nilai_lama_penggunaan_bangunan = str(lama_penggunaan_bangunan.nilai)
-            total_biaya = str(pengajuan_.total_biaya) 
+            total_biaya = str(detil_bangunan_.total_biaya_detil) 
 
             extra_context.update({'nama_fungsi_bangunan': fungsi_bangunan.detil_parameter})
             extra_context.update({'nilai_fungsi_bangunan': nilai_fungsi_bangunan})

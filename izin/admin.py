@@ -19,7 +19,7 @@ from izin.huller_admin import DetilHullerAdmin
 from izin.survey_admin import SurveyAdmin
 from izin.detiltdup_admin import DetilTDUPAdmin
 from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin, MesinHuller, MesinPerusahaan, PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, SertifikatTanah, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata,DetilReklameIzin, KategoriKendaraan, MerkTypeKendaraan, Kendaraan, DetilIUA,DetilIzinParkirIsidentil,DataAnggotaParkir, Trayek
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin, MesinHuller, MesinPerusahaan, PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, SertifikatTanah, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata,DetilReklameIzin, KategoriKendaraan, MerkTypeKendaraan, Kendaraan, DetilIUA,DetilIzinParkirIsidentil,DataAnggotaParkir, Trayek,DetilBangunanIMB
 from izin.pemohon_admin import PemohonAdmin
 from master.models import JenisPemohon
 from izin.izin_forms import SurveyForm
@@ -177,6 +177,7 @@ admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
 admin.site.register(JenisPermohonanIzin)
 admin.site.register(PenggunaanTanahIPPTUsaha)
 admin.site.register(PerumahanYangDimilikiIPPTUsaha)
+admin.site.register(DetilBangunanIMB)
 
 # class DataPerubahanAdmin(admin.ModelAdmin):
 # 	list_display = ('tabel_asal','nama_field','isi_field_lama','created_at')

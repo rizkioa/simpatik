@@ -53,7 +53,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB', {'fields': ('jenis_bangunan','bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')}),
+				('Detail IMB', {'fields': ('bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')}),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 
 				('Lain-lain', {'fields': ('status', 'created_by', 'created_at', 'verified_by', 'verified_at', 'updated_at')}),
@@ -67,11 +67,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				),
 				('Detail Izin', {'fields': ('kelompok_jenis_izin', 'jenis_permohonan','no_pengajuan', 'no_izin','legalitas')}),
 				('Detail Kuasa', {'fields': ('nama_kuasa','no_identitas_kuasa','telephone_kuasa',) }),
-				('Detail IMB', {'fields': ('jenis_bangunan','bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','parameter_bangunan','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')}),
+				('Detail IMB', {'fields': ('bangunan','luas_bangunan','panjang','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan','total_biaya','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')}),
 				('Berkas & Keterangan', {'fields': ('berkas_tambahan', 'keterangan',)}),
 			)
 		return add_fieldsets
-
 
 	def view_pengajuan_imb_umum(self, request, id_pengajuan_izin_):
 		extra_context = {}
@@ -92,13 +91,13 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
-				if pengajuan_.parameter_bangunan:
-					fungsi_bangunan = pengajuan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
-					detil_parameter = fungsi_bangunan.last()
-					if detil_parameter:
-						detil_ = detil_parameter.detil_parameter
+				# if pengajuan_.parameter_bangunan:
+				# 	fungsi_bangunan = pengajuan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
+				# 	detil_parameter = fungsi_bangunan.last()
+				# 	if detil_parameter:
+				# 		detil_ = detil_parameter.detil_parameter
 						
-						extra_context.update({'detil_': detil_})
+				# 		extra_context.update({'detil_': detil_})
 				try:
 					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })

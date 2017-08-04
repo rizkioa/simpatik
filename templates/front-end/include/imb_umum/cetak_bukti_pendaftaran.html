@@ -313,99 +313,25 @@
         </div>
         <div class="page">
             <div class="subpage">
-                {% if pengajuan.jenis_bangunan.kode == "BK1" %}
-                <table width="100%" class="font" border="3">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Detail Parameter</th>
-                            <th>Bobot</th>
+                {% if detil_bangunan  %}
+                <table width="100%" border="1" class="font">
+                    <tr>
+                        <td width="40%">Jenis Kontruksi</td>
+                        <td width="20%">Jenis Bangunan</td>
+                        <td width="20%">Biaya</td>
+                    </tr>
+                    {% for a in detil_bangunan %}
+                        <tr id="{{a.id}}">
+                            <td id="id_table_jenis_kontruksi">{{a.detil_bangunan_imb.jenis_kontruksi.nama_jenis_kontruksi}}</td>
+                            <td id="id_table_bangunan">{{a.detil_bangunan_imb.nama_bangunan}}</td>
+                            <td id="id_table_biaya">{{a.total_biaya_detil}}</td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><b>Kegiatan Pembangunan Gedung</b></td>
-                            <td>{{nama_fungsi_bangunan}}</td>
-                            <td>{{nilai_fungsi_bangunan}}</td>
+                    {% endfor %}
+                        <tr id="{{a.id}}">
+                            <td id="id_table_jenis_kontruksi" colspan="2">Total</td>
+                            <td id="id_table_biaya">{{total_biaya}}</td>
                         </tr>
-                        <tr>
-                            <td><b>Parameter Bangunan Gedung</b></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td>Fungsi Bangunan</td>
-                            <td>{{kegiatan_pembangunan}}</td>
-                            <td>{{nilai_kegiatan_pembangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td>Tingkat Kompleksitas (0.25)</td>
-                            <td>{{kompleksitas_bangunan}}</td>
-                            <td>{{nilai_kompleksitas_bangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td>Tingkat Permanensi (0.20)</td>
-                            <td>{{permanensi_bangunan}}</td>
-                            <td>{{nilai_permanensi_bangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td>Ketinggian Bangunan (0.10)</td>
-                            <td>{{ketinggian_bangunan}}</td>
-                            <td>{{nilai_ketinggian_bangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td>Lokasi Bangunan (0.15)</td>
-                            <td>{{letak_bangunan}}</td>
-                            <td>{{nilai_letak_bangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td>Kepemilikan  bangunan(0.05)</td>
-                            <td>{{kepemilikan_bangunan}}</td>
-                            <td>{{nilai_kepemilikan_bangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td>Lama Penggunan Bangunan</td>
-                            <td>{{lama_penggunaan_bangunan}}</td>
-                            <td>{{nilai_lama_penggunaan_bangunan}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>PERKIRAAN BIAYA</b></td>
-                            <td></td>
-                            <td>Rp. {{total_biaya|floatformat:-2|formatrupiah}}</td>
-                        </tr>
-                    </tbody>
                 </table>
-                {% elif pengajuan.jenis_bangunan.kode == "BK2" or pengajuan.jenis_bangunan.kode == "BK19"%}
-                    <table width="100%" border="0" class="font">
-                        <tr>
-                            <td width="25%">Jenis Kontruksi</td>
-                            <td width="5%">:</td>
-                            <td width="70%">{{pengajuan.jenis_bangunan.jenis_kontruksi.nama_jenis_kontruksi|default_if_none:"-"}}</td>
-                        </tr>
-                        <tr>
-                            <td width="25%">Jenis Bangunan</td>
-                            <td width="5%">:</td>
-                            <td width="70%">{{pengajuan.jenis_bangunan.nama_bangunan|default_if_none:"-"}}</td>
-                        </tr>
-                        <tr>
-                            <td width="25%">Panjang</td>
-                            <td width="5%">:</td>
-                            <td width="70%">{{pengajuan.panjang|default_if_none:"-"}} <span>M&sup2;</span></td>
-                        </tr>
-                    </table>
-                {% else %}
-                    <table width="100%" border="0" class="font">
-                        <tr>
-                            <td width="25%">Jenis Kontruksi</td>
-                            <td width="5%">:</td>
-                            <td width="70%">{{pengajuan.jenis_bangunan.jenis_kontruksi.nama_jenis_kontruksi|default_if_none:"-"}}</td>
-                        </tr>
-                        <tr>
-                            <td width="25%">Jenis Bangunan</td>
-                            <td width="5%">:</td>
-                            <td width="70%">{{pengajuan.jenis_bangunan.nama_bangunan|default_if_none:"-"}}</td>
-                        </tr>
-                    </table>
                 {% endif %}
                 <p style="font-size:13px;">Demikian pemohonan ini saya buat, saya sanggup mentaati semua Peraturan Perudang-udangan yang berlaku dan tidak akan memulai melaksanakan suatu usaha, sebelum Izin tertulis ditetapkan </p>
 
