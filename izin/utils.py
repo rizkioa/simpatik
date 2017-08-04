@@ -439,3 +439,35 @@ def push_api_dishub(request, id_pengajuan):
 	else:
 		data = {'success': False, 'pesan': 'Terjadi Kesalahan, Anda tidak memiliki hak akses untuk memverifikasi ini.'}
 	return HttpResponse(json.dumps(data))
+
+class holder(object):
+	success = False
+	pesan = ''
+
+
+def render_to_pdf(template_src, context_dict, extra_context, request):
+	import pdfkit, datetime, os
+	from django.template import RequestContext, loader
+	from django.http import HttpResponse
+	options = {
+			'page-width': '21.1cm',
+			'page-height': '33cm',
+			'margin-top': '2cm',
+			'margin-right': '2.5cm',
+			'margin-left': '1.5cm',
+		}
+	template = loader.get_template(template_src)
+	context = RequestContext(request, extra_context)
+	html = template.render(context)
+	date_time = datetime.datetime.now().strftime("%Y-%B-%d %H:%M:%S")
+	attachment_file_name = context_dict+'['+str(date_time)+'].pdf'
+	output_file_name = 'files/media/'+str(attachment_file_name)
+
+	pdfkit.from_string(html, output_file_name, options=options)
+	pdf = open(output_file_name)
+
+	response = HttpResponse(pdf.read(), content_type='application/pdf')
+	response['Content-Disposition'] = 'filename='+str(attachment_file_name)
+	pdf.close()
+	os.remove(output_file_name)  # remove the locally created pdf file.
+	return response

@@ -337,7 +337,7 @@ def formulir_tdp_bul(request):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
-		extra_context.update({'title': 'TDP PERORANGAN (PO)'})
+		extra_context.update({'title': 'TDP BADAN USAHA LAINNYA (BUL)'})
 		negara = Negara.objects.all()
 		provinsi = Provinsi.objects.all()
 		kecamatan = Kecamatan.objects.all()
