@@ -261,7 +261,7 @@ def detil_bangunan_save_cookie(request):
 					if BangunanIMBForm.is_valid():
 						jenis_bangunan  = request.POST.get('jenis_bangunan')
 						bangunan = BangunanJenisKontruksi.objects.get(kode=jenis_bangunan)
-						total_ = request.POST.get('total_biaya')
+						total_ = request.POST.get('total_biaya_detil')
 						p = BangunanIMBForm.save(commit=False)
 						p.detil_izin_imb_id = request.COOKIES['id_pengajuan']
 						p.detil_bangunan_imb = bangunan
