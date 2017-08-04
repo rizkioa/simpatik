@@ -263,10 +263,17 @@ urlpatterns = [
     url(r'^layanan/imb-umum/formulir$', imb_umum.formulir_imb_umum, name='formulir_imb_umum'),
     url(r'^layanan/imbumum/save/$', imb_umum.imb_save_cookie, name='imb_save'),
     url(r'^layanan/parameterbangunan/save/$', imb_umum.parameter_bangunan_save_cookie, name='parameter_bangunan_save'),
+    url(r'^layanan/detil-bangunan-imb/save/$', imb_umum.detil_bangunan_save_cookie, name='detil_bangunan_save_cookie'),
+    url(r'^layanan/detil-bangunan-imb/delete/(?P<id_detil_bangunan>[0-9]+)$', imb_umum.delete_detil_bangunan, name='delete_detil_bangunan'),
+    url(r'^layanan/detil-bangunan-imb/load/(?P<id_detil_bangunan>[0-9]+)$', imb_umum.load_data_tabel_detil_bangunan, name='load_data_tabel_detil_bangunan'),
+
+
     url(r'^layanan/jenisbangunan/save/$', imb_umum.jenis_bangunan_save_cookie, name='jenis_bangunan_save'),
     url(r'^imbumum/berkas/save/$', imb_umum.imbumum_upload_berkas_pendukung, name='reklame_imbumum_berkaspendukung'),
     url(r'^imb/load/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_data_imb , name='load_data_imb'),
     url(r'^imb/identifikasi-bangunan/load/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_identifikasi_bangunan_imb , name='load_identifikasi_bangunan_imb'),
+    url(r'^imb/parameter-bangunan/load/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_parameter_detil_bangunan , name='load_parameter_detil_bangunan'),
+
     url(r'^imb/identifikasi-bangunan/konfirmasi/load/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_konfirmasi_identifikasi_bangunan_imb , name='load_konfirmasi_identifikasi_bangunan_imb'),
     url(r'^imb/identifikasi-jalan/load/(?P<id_pengajuan>[0-9]+)$', imb_umum.load_identifikasi_jalan_imb , name='load_identifikasi_jalan_imb'),
     url(r'^ajax-load-berkas-imb-umum/(?P<id_pengajuan>[0-9]+)$', imb_umum.ajax_load_berkas_imbumum, name='ajax_load_berkas_imbumum'),

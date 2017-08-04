@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP, DetilReklameIzin, DetilIzinParkirIsidentil
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP, DetilReklameIzin, DetilIzinParkirIsidentil,DetilBangunanIMB
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -156,11 +156,23 @@ class DetilIMBForm(forms.ModelForm):
 		model = DetilIMB
 		fields = ('bangunan','luas_bangunan','jumlah_bangunan','luas_tanah','no_surat_tanah','tanggal_surat_tanah','lokasi','desa','status_hak_tanah','kepemilikan_tanah','luas_bangunan_lama','no_imb_lama','tanggal_imb_lama','batas_utara','batas_timur','batas_selatan','batas_barat')
 
-class ParameterBangunanForm(forms.ModelForm):
+class TotalBiayaBangunanForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
 	class Meta:
 		model = DetilIMB
-		fields = ('parameter_bangunan','total_biaya')
+		fields = ('total_biaya',)
+
+class DetilBangunanIMBForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = DetilBangunanIMB
+		fields = ('detil_izin_imb','detil_bangunan_imb','parameter_bangunan','total_luas','total_biaya_detil')
+
+class DetilBangunanIMBTanpaParameterForm(forms.ModelForm):
+	"""docstring for UploadBerkasPendukungForm"""
+	class Meta:
+		model = DetilBangunanIMB
+		fields = ('detil_izin_imb','detil_bangunan_imb','total_luas','total_biaya_detil')
 
 class IdentifikasiJalanForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
@@ -168,12 +180,12 @@ class IdentifikasiJalanForm(forms.ModelForm):
 		model = DetilIMB
 		fields = ('klasifikasi_jalan','ruang_milik_jalan','ruang_pengawasan_jalan')
 
-class JenisBangunanForm(forms.ModelForm):
-	"""docstring for JenisBangunanForm"""
-	panjang = forms.DecimalField(label="Panjang Bangunan", required=False,)
-	class Meta:
-		model = DetilIMB
-		fields = ('jenis_bangunan','panjang')
+# class BiayaBangunanForm(forms.ModelForm):
+# 	"""docstring for JenisBangunanForm"""
+# 	panjang = forms.DecimalField(label="Panjang Bangunan", required=False,)
+# 	class Meta:
+# 		model = DetilIMB
+# 		fields = ('panjang',)
 
 class InformasiKekayaanDaerahForm(forms.ModelForm):
 	class Meta:

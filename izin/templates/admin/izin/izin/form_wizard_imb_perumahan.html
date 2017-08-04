@@ -286,7 +286,7 @@
       // swal("Good job!", "You clicked the button!", "success");
       var pengajuan_cookie = $.cookie('id_pengajuan'); 
       var pemohon_cookie = $.cookie('id_pemohon'); 
-      var perusahaan_cookie = $.cookie('id_perusahaan'); 
+      // var perusahaan_cookie = $.cookie('id_perusahaan'); 
       if (pengajuan_cookie === ""){
         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
@@ -296,11 +296,12 @@
         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
         $(tab_index).tab('show');
-      }else if(perusahaan_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-        $(tab_index).tab('show');
       }
+      // else if(perusahaan_cookie === ""){
+      //   toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+      //   tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+      //   $(tab_index).tab('show');
+      // }
       else{
         swal({
           showConfirmButton: false,

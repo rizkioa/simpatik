@@ -78,11 +78,113 @@ function load_data_imb(id_pengajuan){
 }
 
 
+function load_data_detil_bangunan_imb(id_detil_bangunan){
+  if (id_detil_bangunan !== ""){
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/layanan/detil-bangunan-imb/load/'+id_detil_bangunan,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+        if(a === 0){
+          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          // table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_detil_bangunan_imb > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            id_detil_bangunan = b[i].id
+            jenis_kontruksi = b[i].jenis_kontruksi
+            bangunan_imb = b[i].bangunan_imb
+            total_biaya_detil = b[i].total_biaya_detil
+
+            row = '<tr id='+id_detil_bangunan+'>'
+            row += '<td>'+jenis_kontruksi+'</td>'
+            row += '<td>'+bangunan_imb+'</td>'
+            row += '<td class="biaya">'+total_biaya_detil+'</td>'
+            row += '<td><a href="#" id='+id_detil_bangunan+' onclick="deleteRowdetil_bangunan_imb(this); return false;" class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-trash"></i><span>Delete</span></a></td>'
+            row += '</tr>'
+            $('#id_detil_bangunan_imb > tbody').prepend(row);
+            var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
+            var sum = 0;
+            for (var i = 0; i < MyRows.length; i++) {
+              var MyIndexValue = $(MyRows[i]).find('.biaya').html();
+              sum = sum + parseInt(MyIndexValue);
+              
+            }
+            $("#id_total").val(sum);
+            $("#id_total_biaya").val(sum);
+
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    // $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
+  }
+}
+
+function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
+  if (id_detil_bangunan !== ""){
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/layanan/detil-bangunan-imb/load/'+id_detil_bangunan,
+      success: function (data) {
+        a = data.length
+        // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+        // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
+        if(a === 0){
+          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          // table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_detil_bangunan_imb > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            id_detil_bangunan = b[i].id
+            jenis_kontruksi = b[i].jenis_kontruksi
+            bangunan_imb = b[i].bangunan_imb
+            total_biaya_detil = b[i].total_biaya_detil
+
+            row = '<tr id='+id_detil_bangunan+'>'
+            row += '<td>'+jenis_kontruksi+'</td>'
+            row += '<td>'+bangunan_imb+'</td>'
+            row += '<td class="biaya">'+total_biaya_detil+'</td>'
+            row += '<td></td>'
+            row += '</tr>'
+            $('#id_detil_bangunan_imb > tbody').prepend(row);
+            var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
+            var sum = 0;
+            for (var i = 0; i < MyRows.length; i++) {
+              var MyIndexValue = $(MyRows[i]).find('.biaya').html();
+              sum = sum + parseInt(MyIndexValue);
+              
+            }
+            $("#id_total").val(sum);
+            $("#id_total_biaya").val(sum);
+            
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    // $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
+  }
+}
+
 function load_data_identifikasi_bangunan_imb(id_pengajuan){
   $(".tab-content").mLoading;
   if (id_pengajuan>0){
     $.ajax({
-      url: __base_url__+'/imb/identifikasi-bangunan/load/'+id_pengajuan,    
+      url: __base_url__+'/imb/parameter-bangunan/load/'+id_pengajuan,    
       success: function (response){
         respon = $.parseJSON(response)  
         if (respon.success){
@@ -99,7 +201,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
             $('#total').val(respon.data.total_biaya)
             $('#id_total_biaya').val(respon.data.total_biaya)
               if ((respon.data.id_kontruksi) != "") {
-                load_bangunan(respon.data.id_kontruksi)
+                // load_bangunan(respon.data.id_kontruksi)
               }
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");
@@ -116,7 +218,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
               }, 1000);
           }else if ((respon.data.kode_kontruksi_bangunan == "BK2")||(respon.data.kode_kontruksi_bangunan == "BK17")) {
               if ((respon.data.id_kontruksi) != "") {
-                load_bangunan(respon.data.id_kontruksi)
+                // load_bangunan(respon.data.id_kontruksi)
               }
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");
@@ -127,7 +229,7 @@ function load_data_identifikasi_bangunan_imb(id_pengajuan){
               $('#id_panjang').val(respon.data.id_panjang)
           }else{
               if ((respon.data.id_kontruksi) != "") {
-                load_bangunan(respon.data.id_kontruksi)
+                // load_bangunan(respon.data.id_kontruksi)
               }
               setTimeout(function(){
                 $('#id_kontruksi').val(respon.data.id_kontruksi).prop('selected',true).trigger("chosen:updated");

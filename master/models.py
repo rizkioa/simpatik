@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 from datetime import datetime
 
 from accounts.utils import STATUS, get_status_color
-# from accounts.models import Account
+# from izin.models import DetilIMB
 
 class Template(models.Model):
 	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="survey_iujk", blank=True, null=True)
@@ -316,9 +316,10 @@ class BangunanJenisKontruksi(MetaAtribut):
 	jenis_kontruksi = models.ForeignKey(JenisKontruksi,verbose_name="Jenis Kontruksi")
 	kode = models.CharField(verbose_name="Kode Bangunan Jenis Kontruksi", max_length=10)
 	nama_bangunan = models.CharField(verbose_name="Nama Bangunan", max_length=50)
+	biaya_bangunan = models.IntegerField(verbose_name="Ret./Satuan", null=True, blank=True)
 
 	def as_option(self):
-		return "<option value='"+str(self.id)+"'>"+str(self.nama_bangunan)+"</option>"
+		return "<option value='"+str(self.kode)+"'>"+str(self.nama_bangunan)+"</option>"
 		
 	def __unicode__(self):
 		return u'Bangunan %s - %s' % (str(self.kode), str(self.nama_bangunan))

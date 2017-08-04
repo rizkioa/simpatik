@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account, IdentitasPribadi
-from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, BangunanJenisKontruksi, JenisKualifikasi
+from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, JenisKualifikasi, BangunanJenisKontruksi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -906,7 +906,6 @@ class DetilIMB(PengajuanIzin):
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	status_hak_tanah = models.CharField(verbose_name='Status Hak Tanah', choices=STATUS_HAK_TANAH, max_length=20, null=True, blank=True)
 	kepemilikan_tanah = models.CharField(verbose_name='Kepemilikan Tanah', choices=KEPEMILIKAN_TANAH, max_length=20, null=True, blank=True)
-	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
 	klasifikasi_jalan = models.CharField(verbose_name='Klasifikasi Jalan', choices=JENIS_LOKASI_USAHA, max_length=19, null=True, blank=True)
 	ruang_milik_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Milik Jalan', choices=RUMIJA, null=True, blank=True)
 	ruang_pengawasan_jalan = models.PositiveSmallIntegerField(verbose_name='Ruang Pengawasan Jalan', choices=RUWASJA, null=True, blank=True)
@@ -914,7 +913,7 @@ class DetilIMB(PengajuanIzin):
 	luas_bangunan_lama = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True,verbose_name='Luas Bangunan Yang Sudah Ada')
 	no_imb_lama = models.CharField(max_length=255, verbose_name='No. IMB Bangunan Yang Sudah Ada', null=True, blank=True)
 	tanggal_imb_lama =models.DateField(verbose_name='Tanggal IMB Bangunan Yang Sudah Ada', null=True, blank=True)
-	jenis_bangunan = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Jenis Bangunan",blank=True,null=True)
+	# jenis_bangunan = models.ManyToManyField('BangunanJenisKontruksi',verbose_name="Jenis Bangunan",blank=True,null=True)
 	panjang = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Panjang')
 
 	batas_utara = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Utara')
@@ -1863,6 +1862,32 @@ class DataAnggotaParkir(IdentitasPribadi):
 	class Meta:
 		verbose_name = 'Data Anggota Izin Parkir Isidentil'
 		verbose_name_plural = 'Data Anggota Parkir Isidentil'
+
+
+class DetilBangunanIMB(MetaAtribut):
+	detil_izin_imb = models.ForeignKey(DetilIMB,verbose_name="Detil Izin IMB",blank=True, null=True,)
+	detil_bangunan_imb = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Detil Bangunan IMB",blank=True, null=True,)
+	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
+	total_luas = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Luas')
+	total_biaya_detil = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Biaya')
+
+	def as_json(self):
+		jenis_kontruksi = '-'
+		if self.detil_bangunan_imb:
+			jenis_kontruksi = self.detil_bangunan_imb.jenis_kontruksi.nama_jenis_kontruksi
+		bangunan_imb = '-'
+		if self.detil_bangunan_imb:
+			bangunan_imb = self.detil_bangunan_imb.nama_bangunan
+		total_biaya_detil = '-'
+		if self.total_biaya_detil:
+			total_biaya_detil = str(self.total_biaya_detil)
+
+		return dict(id=self.id, jenis_kontruksi=jenis_kontruksi, bangunan_imb=bangunan_imb, total_biaya_detil=total_biaya_detil,)
+
+	class Meta:
+		verbose_name = 'Detil Bangunan IMB'
+		verbose_name_plural = 'Detil Bangunan IMB'
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 
