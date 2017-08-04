@@ -52,6 +52,22 @@ def detil_pembayaran_save(request):
 						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
 						'data': {}}
 				response = HttpResponse(json.dumps(data))
+			elif request.user.groups.filter(name='Operator') or request.user.is_superuser:
+				p = pembayaran.save(commit=False)
+				p.save()
+				pengajuan_izin.status = 4
+				pengajuan_izin.save()
+				riwayat_ = Riwayat(
+					pengajuan_izin_id = pengajuan_izin.id,
+					created_by_id = request.user.id,
+					keterangan = "Operator Verified"
+				)
+				riwayat_.save()
+
+				data = {'success': True,
+						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+						'data': {}}
+				response = HttpResponse(json.dumps(data))
 			else:
 				p = pembayaran.save(commit=False)
 				p.save()
