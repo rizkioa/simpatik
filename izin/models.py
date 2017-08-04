@@ -1869,7 +1869,7 @@ class DetilBangunanIMB(MetaAtribut):
 	detil_bangunan_imb = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Detil Bangunan IMB",blank=True, null=True,)
 	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
 	total_luas = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Luas')
-	total_biaya_detil = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Biaya')
+	total_biaya_detil = models.CharField(max_length=20, null=True, blank=True, verbose_name='Total Biaya')
 
 	def as_json(self):
 		jenis_kontruksi = '-'

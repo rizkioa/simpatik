@@ -724,8 +724,8 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
     var indeks_terintegrasi = (fungsi_bangunan*indeks)
     var luas_bangunan = $('#id_luas_bangunan').val()
     var biaya = luas_bangunan * indeks_terintegrasi * kegiatan_bangunan * 8000 * lama_bangunan 
-    $('#total').val(toRp(biaya))
-    $('#id_total_biaya').val(biaya.toFixed(2))
+    $('#total').val(biaya.toFixed(2))
+    $('#id_total_biaya').val(biaya)
   }
 
     function load_bangunan(id_kontruksi){
@@ -1230,11 +1230,12 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                         <span class="input-group-addon">
                             <span>Rp</span>
                         </span> 
-                         <input type="text" disabled="" class="form-control" style="width:150px;" id="total">
+                         <!-- <input type="text" disabled="" class="form-control" style="width:150px;" id="total"> -->
+                         <input type="text" class="form-control" style="width:150px;" id="total" name="total_biaya_detil">
                     </div>
                   </div>
                 </div>    
-                <input type="text" hidden="" id="id_total_biaya" name="total_biaya">
+                
               </div>
             </form>
           </div>
