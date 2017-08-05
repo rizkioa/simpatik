@@ -139,13 +139,13 @@ function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
         // tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
         // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
         if(a === 0){
-          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          $('#id_detil_bangunan_imb_table > tbody > tr:first').remove()
           // table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
-          $('#id_detil_bangunan_imb > tbody').prepend(table)
+          $('#id_detil_bangunan_imb_table > tbody').prepend(table)
         }
         else{
           b = data.reverse()
-          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          $('#id_detil_bangunan_imb_table > tbody > tr:first').remove()
           for (var i = 0; i < a; i++){
             id_detil_bangunan = b[i].id
             jenis_kontruksi = b[i].jenis_kontruksi
@@ -158,8 +158,8 @@ function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
             row += '<td class="biaya">'+total_biaya_detil+'</td>'
             row += '<td></td>'
             row += '</tr>'
-            $('#id_detil_bangunan_imb > tbody').prepend(row);
-            var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
+            $('#id_detil_bangunan_imb_table > tbody').prepend(row);
+            var MyRows = $('table#id_detil_bangunan_imb_table').find('tbody').find('tr');
             var sum = 0;
             for (var i = 0; i < MyRows.length; i++) {
               var MyIndexValue = $(MyRows[i]).find('.biaya').html();

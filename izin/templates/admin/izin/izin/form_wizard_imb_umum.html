@@ -826,8 +826,23 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                 $('#detil_bangunan_imb').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
                 $('#detil_bangunan_imb').find('.btn-success').attr('onclick','detil_bangunan_imb_add(this)')
                 $('#detil_bangunan_imb').find('.btn-success').text("Simpan")
-                $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+                $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/layanan/detil-bangunan-imb/save/')
                 $("#id_detil_bangunan_imb_form").resetForm()
+                $('#id_kontruksi').val("").prop('selected',true).trigger("chosen:updated");
+                $('#id_jenis_bangunan').val("").prop('selected',true).trigger("chosen:updated");
+
+                $('#id_kegiatan_pembangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_fungsi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_tingkat_kompleksitas').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_tingkat_permanensi').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_ketinggian_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_lokasi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_kepemilikan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_lama_penggunaan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+
+                $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'none')
+                $(".field-detil-bangunan").css('display', 'none')
+                $(".field-panjang_bangunan").css('display', 'none')
                 $("#detil_bangunan_imb").modal('hide');
                 var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
                 var sum = 0;
@@ -875,9 +890,23 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
         $('#detil_bangunan_imb').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
         $('#detil_bangunan_imb').find('.btn-primary').attr('onclick','detil_bangunan_imb_add(this)')
         $('#detil_bangunan_imb').find('.btn-success').text("Simpan")
-        $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+        $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/layanan/detil-bangunan-imb/save/')
         $("#id_detil_bangunan_imb_form").resetForm()
         $('#id_kontruksi').val("").prop('selected',true).trigger("chosen:updated");
+        $('#id_jenis_bangunan').val("").prop('selected',true).trigger("chosen:updated");
+
+        $('#id_kegiatan_pembangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_fungsi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_tingkat_kompleksitas').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_tingkat_permanensi').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_ketinggian_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_lokasi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_kepemilikan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_lama_penggunaan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+
+        $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'none')
+        $(".field-detil-bangunan").css('display', 'none')
+        $(".field-panjang_bangunan").css('display', 'none')
         $("#detil_bangunan_imb").modal('hide');
     }
 
