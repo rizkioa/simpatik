@@ -140,7 +140,12 @@
 	            },
 
 	            onTabClick: function(tab, navigation, index) {
-	              return false;
+	              	if (window.location.hostname == 'localhost'){
+						return true
+					}
+					else{
+						return false;
+					}
 	            }
 
 	        });

@@ -264,8 +264,8 @@
     	<br>
     	<div style="float: left; width: 50%">
     		<div style="padding-left: 70%;padding-top: 46px;">
-    			{% if pengajuan.pemohon.berkas_foto.last %}
-    				<img src="{{pengajuan.pemohon.berkas_foto.last.url}}" style="width: 3cm;height: 4cm;">
+    			{% if pengajuan.pemohon.get_berkas_ktp %}
+    				<img src="{{pengajuan.pemohon.get_berkas_ktp.get_file_url}}" style="width: 3cm;height: 4cm;">
     			{% else %}
     				<img src="{% static 'images/no-avatar.jpg' %}" style="width: 3cm;height: 4cm;">
     			{% endif %}

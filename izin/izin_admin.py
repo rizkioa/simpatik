@@ -30,6 +30,7 @@ from izin.controllers.izin_lokasi import formulir_izin_lokasi
 from izin.controllers.ippt_rumah import formulir_ippt_rumah 
 from izin.controllers.huller import formulir_detilhuller 
 from izin.controllers.ippt_usaha import formulir_ippt_usaha 
+from izin.controllers.dishub.izin_usaha_angkutan import formulir_iua
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
@@ -354,7 +355,9 @@ class IzinAdmin(admin.ModelAdmin):
 		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
 			link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IZINPARKIR":
-			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})	
+			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IUA":
+			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})	
 		btn = mark_safe("""
 				<a href="%s" target="_blank" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Detil</span> </a>
 				""" % link_ )
@@ -402,6 +405,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_tdup', kwargs={'id_pengajuan_izin_': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IZINPARKIR":
 			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IUA":
+			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -822,7 +827,33 @@ class IzinAdmin(admin.ModelAdmin):
 							"pesan": "SKIzin berhasil di verifikasi.",
 							"redirect": '',
 						}
-					
+					elif request.POST.get('aksi') == '_submit_skizin_kadin_to_kasir':
+						pejabat = Pegawai.objects.filter(id=request.user.id).last()
+						obj_skizin.status = 5
+						obj_skizin.nama_pejabat = str(pejabat.get_full_name())
+						obj_skizin.nip_pejabat = str(pejabat.username)
+						if pejabat.jabatan:
+							obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+						else:
+							obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+						obj_skizin.keterangan = "Pembina Tk.l"
+						obj_skizin.save()
+						obj.status = 5
+						obj.verified_by_id = request.user.id
+						obj.verified_at = datetime.datetime.now()
+						obj.save()
+						riwayat_ = Riwayat(
+							sk_izin_id = obj_skizin.id ,
+							pengajuan_izin_id = id_pengajuan_izin,
+							created_by_id = request.user.id,
+							keterangan = "Kadin Verified (Izin)"
+						)
+						riwayat_.save()
+						response = {
+							"success": True,
+							"pesan": "SKIzin berhasil di verifikasi.",
+							"redirect": '',
+						}
 					#Digunakan untuk verifikasi Bupati
 					elif request.POST.get('aksi') == '_submit_skizin_kadin_to_bupati':
 						pejabat = Pegawai.objects.filter(id=request.user.id).last()
@@ -832,60 +863,60 @@ class IzinAdmin(admin.ModelAdmin):
 						#Untuk Izin IMB jika biaya retribusi lebih dari 2 juta maka perlu verifikasi Bupati
 						if obj.kelompok_jenis_izin.jenis_izin.kode == "IMB" or obj.kelompok_jenis_izin.jenis_izin.kode == "HO":
 							try:
-								detil_pembayaran = DetilPembayaran.objects.get(pengajuan_izin__id=obj.id)
-								n = ''.join(detil_pembayaran.jumlah_pembayaran.split('.')[::1])
-								if int(n) > 2000000:
-									obj_skizin.status = 12
-									obj_skizin.nama_pejabat = str(pejabat.get_full_name())
-									obj_skizin.nip_pejabat = str(pejabat.username)
-									if pejabat.jabatan:
-										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
-									else:
-										obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
-
-									obj_skizin.keterangan = "Pembina Tk.l"
-									obj_skizin.save()
-									obj.status = 12
-									obj.verified_by_id = request.user.id
-									obj.verified_at = datetime.datetime.now()
-									obj.save()
-									riwayat_ = Riwayat(
-										sk_izin_id = obj_skizin.id ,
-										pengajuan_izin_id = id_pengajuan_izin,
-										created_by_id = request.user.id,
-										keterangan = "Kadin Verified (Izin)"
-									)
-									riwayat_.save()
-									response = {
-										"success": True,
-										"pesan": "SKIzin berhasil di verifikasi.",
-										"redirect": '',
-									}
+								# detil_pembayaran = DetilPembayaran.objects.get(pengajuan_izin__id=obj.id)
+								# n = ''.join(detil_pembayaran.jumlah_pembayaran.split('.')[::1])
+								# if int(n) > 2000000:
+								obj_skizin.status = 12
+								obj_skizin.nama_pejabat = str(pejabat.get_full_name())
+								obj_skizin.nip_pejabat = str(pejabat.username)
+								if pejabat.jabatan:
+									obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
 								else:
-									obj_skizin.status = 9
-									obj_skizin.nama_pejabat = str(pejabat.get_full_name())
-									obj_skizin.nip_pejabat = str(pejabat.username)
-									if pejabat.jabatan:
-										obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
-									else:
-										obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
-									obj_skizin.keterangan = "Pembina Tk.l"
-									obj_skizin.save()
-									obj.verified_by_id = request.user.id
-									obj.verified_at = datetime.datetime.now()
-									obj.save()
-									riwayat_ = Riwayat(
-										sk_izin_id = obj_skizin.id ,
-										pengajuan_izin_id = id_pengajuan_izin,
-										created_by_id = request.user.id,
-										keterangan = "Kadin Verified (Izin)"
-									)
-									riwayat_.save()
-									response = {
-										"success": True,
-										"pesan": "SKIzin berhasil di verifikasi.",
-										"redirect": '',
-									}
+									obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+
+								obj_skizin.keterangan = "Pembina Tk.l"
+								obj_skizin.save()
+								obj.status = 12
+								obj.verified_by_id = request.user.id
+								obj.verified_at = datetime.datetime.now()
+								obj.save()
+								riwayat_ = Riwayat(
+									sk_izin_id = obj_skizin.id ,
+									pengajuan_izin_id = id_pengajuan_izin,
+									created_by_id = request.user.id,
+									keterangan = "Kadin Verified (Izin)"
+								)
+								riwayat_.save()
+								response = {
+									"success": True,
+									"pesan": "SKIzin berhasil di verifikasi.",
+									"redirect": '',
+								}
+								# else:
+								# 	obj_skizin.status = 9
+								# 	obj_skizin.nama_pejabat = str(pejabat.get_full_name())
+								# 	obj_skizin.nip_pejabat = str(pejabat.username)
+								# 	if pejabat.jabatan:
+								# 		obj_skizin.jabatan_pejabat = str(pejabat.jabatan.nama_jabatan.upper())+" DPMPTSP"
+								# 	else:
+								# 		obj_skizin.jabatan_pejabat = "Kepala Dinas DPMPTSP"
+								# 	obj_skizin.keterangan = "Pembina Tk.l"
+								# 	obj_skizin.save()
+								# 	obj.verified_by_id = request.user.id
+								# 	obj.verified_at = datetime.datetime.now()
+								# 	obj.save()
+								# 	riwayat_ = Riwayat(
+								# 		sk_izin_id = obj_skizin.id ,
+								# 		pengajuan_izin_id = id_pengajuan_izin,
+								# 		created_by_id = request.user.id,
+								# 		keterangan = "Kadin Verified (Izin)"
+								# 	)
+								# 	riwayat_.save()
+								# 	response = {
+								# 		"success": True,
+								# 		"pesan": "SKIzin berhasil di verifikasi.",
+								# 		"redirect": '',
+								# 	}
 							except ObjectDoesNotExist:
 								response = {
 										"success": False,
@@ -1258,6 +1289,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/ippt-usaha/$', self.admin_site.admin_view(formulir_ippt_usaha), name='izin_proses_ippt_usaha'),
 			url(r'^wizard/add/proses/penggilingan-padi-&-huller/$', self.admin_site.admin_view(formulir_detilhuller), name='izin_proses_huller'),
 			url(r'^wizard/add/proses/tdup/$', self.admin_site.admin_view(formulir_tdup), name='izin_proses_tdup'),
+			url(r'^wizard/add/proses/izin-usaha-angkutan/$', self.admin_site.admin_view(formulir_iua), name='izin_proses_izin_usaha_angkutan'),
 
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),

@@ -25,7 +25,7 @@ class LegalitasResource(CORSModelResource):
 	jenis_legalitas = fields.CharField(attribute="jenis_legalitas__jenis_legalitas", null=True, blank=True)
 	class Meta:
 		queryset = Legalitas.objects.all()
-		authentication = ApiKeyAuthentication()
+		# authentication = ApiKeyAuthentication()
 		filtering = {
 			'perusahaan_id': ['contains'],
 			# 'status': ALL,

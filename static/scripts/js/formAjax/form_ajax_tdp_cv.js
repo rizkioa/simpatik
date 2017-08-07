@@ -33,30 +33,34 @@ $("#switch_stap3_bagi_unit_disabled").change(function() {
 
 $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_pendirian').hide()
+$('.akta_pendirian_disable').prop('required',false);
 $("#switch_akta_pendirian_disabled").change(function() {
-if ($(this).is(':checked')) {
-  $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
-  $('#form-akta_pendirian').show()
-}
-else {
-  $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
-  $('#form-akta_pendirian').hide()
-}
+  if ($(this).is(':checked')) {
+    $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
+    $('.akta_pendirian_disable').prop('required',true);
+    $('#form-akta_pendirian').show()
+  }
+  else {
+    $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+    $('.akta_pendirian_disable').prop('required',false);
+    $('#form-akta_pendirian').hide()
+  }
 });
 
 $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
 $('#form-akta_perubahan').hide()
+$('.akta_perubahan_disable').prop('required',false);
 $("#switch_akta_perubahan_disabled").change(function() {
-if ($(this).is(':checked')) {
-  $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
-  $('#form-akta_perubahan').show()
-
-}
-else {
-  $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
-  $('#form-akta_perubahan').hide()
-
-}
+  if ($(this).is(':checked')) {
+    $('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
+    $('#form-akta_perubahan').show()
+    $('.akta_perubahan_disable').prop('required',true);
+  }
+  else {
+    $('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+    $('#form-akta_perubahan').hide()
+    $('.akta_perubahan_disable').prop('required',false);
+  }
 });
 
 make_disabled($( "#id_kabupaten-3" ), true)

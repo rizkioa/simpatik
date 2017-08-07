@@ -485,52 +485,46 @@ def siup_legalitas_perusahaan_save_cookie(request):
 
 								if request.POST.get('onoffswitch') == 'on':
 									# formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
-									if request.COOKIES['id_legalitas_perubahan'] == "":
-										formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
-									else:
-										try:
-											lp = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
-											formperubahan = LegalitasPerusahaanPerubahanForm(request.POST, instance=lp)
-										except ObjectDoesNotExist:
-											formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+									# if request.COOKIES['id_legalitas_perubahan'] == "":
+									# 	formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
+									# else:
+									# 	try:
+									# 		lp = Legalitas.objects.get(id=request.COOKIES['id_legalitas_perubahan'])
+									# 		formperubahan = LegalitasPerusahaanPerubahanForm(request.POST, instance=lp)
+									# 	except ObjectDoesNotExist:
+									# 		formperubahan = LegalitasPerusahaanPerubahanForm(request.POST)
 									
-									if formperubahan.is_valid():
-										if request.user.is_authenticated():
-											created = request.user.id
-										else:
-											created = request.COOKIES['id_pemohon']
-										legalitas = formperubahan.save(commit=False)
-										legalitas.perusahaan_id = request.COOKIES['id_perusahaan']
-										legalitas.jenis_legalitas_id = 2
-										legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
-										legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
-										legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
-										legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
-										legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
-										legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
+									# if formperubahan.is_valid():
+									legalitas, created = Legalitas.objects.get_or_create(id=request.COOKIES.get('id_legalitas_perubahan', None), perusahaan_id=request.COOKIES.get('id_perusahaan', None))
+									legalitas.perusahaan_id = request.COOKIES['id_perusahaan']
+									legalitas.jenis_legalitas_id = 2
+									legalitas.nama_notaris = request.POST.get('nama_notaris_perubahan')
+									legalitas.alamat = request.POST.get('alamat_notaris_perubahan')
+									legalitas.nomor_akta = request.POST.get('nomor_akta_perubahan')
+									legalitas.tanggal_akta = datetime.datetime.strptime(request.POST.get('tanggal_akta_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
+									legalitas.telephone = request.POST.get('telephone_notaris_perubahan')
+									legalitas.nomor_pengesahan = request.POST.get('nomor_pengesahan_perubahan')
+									if request.POST.get('tanggal_pengesahan_perubahan', None) is not None:
 										legalitas.tanggal_pengesahan = datetime.datetime.strptime(request.POST.get('tanggal_pengesahan_perubahan'), '%d-%m-%Y').strftime('%Y-%m-%d')
-										if request.user.is_authenticated():
-											legalitas.created_by_id = request.user.id
-										else:
-											legalitas.created_by_id = request.COOKIES['id_pemohon']
-										legalitas.save()
-										pengajuan_.legalitas.add(legalitas)
-										data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
-											# # legalitas perubahaan
-											{'jenis_legalitas_perubahan': legalitas.jenis_legalitas.jenis_legalitas},
-											{'nama_notaris_perubahan': legalitas.nama_notaris},
-											{'alamat_notaris_perubahan': legalitas.alamat},
-											{'telephone_notaris_perubahan': legalitas.telephone},
-											{'nomor_pengesahan_perubahan': legalitas.nomor_pengesahan},
-											{'tanggal_pengesahan_perubahan': str(legalitas.tanggal_pengesahan)}
-											]}
-										data = json.dumps(data)
-										response = HttpResponse(data)
-										response.set_cookie(key='id_legalitas_perubahan', value=legalitas.id)
-										response.set_cookie(key='id_legalitas', value=f.id)
+									if request.user.is_authenticated():
+										legalitas.created_by_id = request.user.id
 									else:
-										data = formperubahan.errors.as_json()
-										response = HttpResponse(data)
+										legalitas.created_by_id = request.COOKIES['id_pemohon']
+									legalitas.save()
+									pengajuan_.legalitas.add(legalitas)
+									data = {'success': True, 'pesan': 'Legalitas Perusahaan berhasil disimpan. Proses Selanjutnya.', 'data': [
+										# # legalitas perubahaan
+										{'jenis_legalitas_perubahan': legalitas.jenis_legalitas.jenis_legalitas},
+										{'nama_notaris_perubahan': legalitas.nama_notaris},
+										{'alamat_notaris_perubahan': legalitas.alamat},
+										{'telephone_notaris_perubahan': legalitas.telephone},
+										{'nomor_pengesahan_perubahan': legalitas.nomor_pengesahan},
+										{'tanggal_pengesahan_perubahan': str(legalitas.tanggal_pengesahan)}
+										]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+									response.set_cookie(key='id_legalitas_perubahan', value=legalitas.id)
+									response.set_cookie(key='id_legalitas', value=f.id)
 
 							else:
 								data = form.errors.as_json()

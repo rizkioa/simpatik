@@ -1,6 +1,7 @@
 from mobile.cors import CORSModelResource, CORSHttpResponse
 from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah
 from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, DetilIUJK
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
@@ -65,10 +66,9 @@ class KendaraanResource(CORSModelResource):
 	class Meta:
 		# authentication = ApiKeyAuthentication()
 		queryset = Kendaraan.objects.all()
-		fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'iua_id', 'berkas_stnk', 'berkas_kartu_pengawasan']
+		# fields = ['id', 'nomor_kendaraan', 'nomor_uji_berkala', 'merk_kendaraan', 'berat_diperbolehkan', 'nomor_rangka', 'nomor_mesin', 'tahun_pembuatan', 'keterangan', 'pengajuan_izin_id', 'berkas_stnk', 'berkas_kartu_pengawasan']
 		filtering = {
 			'pengajuan_izin_id': ['contains'],
-			# 'status': ALL,
 		}
 
 class KategoriKendaraanRecource(CORSModelResource):
@@ -120,9 +120,9 @@ class PengajuanIzinAllResource(CORSModelResource):
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
 		authentication = ApiKeyAuthentication()
 		filtering = {
-            "no_pengajuan" : ALL,
-            "pemohon" : ALL_WITH_RELATIONS,
-        }
+			"no_pengajuan" : ALL,
+			"pemohon" : ALL_WITH_RELATIONS,
+		}
 
 class DetilTDPResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
@@ -147,9 +147,9 @@ class DetilTDPResource(CORSModelResource):
 		limit = 10
 		authentication = ApiKeyAuthentication()
 		filtering = {
-            "no_pengajuan" : ALL,
-            "pemohon" : ALL_WITH_RELATIONS,
-        }
+			"no_pengajuan" : ALL,
+			"pemohon" : ALL_WITH_RELATIONS,
+		}
 
 class IzinLainResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
@@ -158,7 +158,6 @@ class IzinLainResource(CORSModelResource):
 		queryset = IzinLain.objects.all()
 		filtering = {
 			'pengajuan_izin_id': ['contains'],
-			
 		}
 		excludes = ['updated_at', 'verified_at', 'status', 'rejected_at', 'created_at']
 
@@ -224,6 +223,8 @@ class DetilHullerResource(CORSModelResource):
 	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
 	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	pemilik_desa_lokasi_lengkap = fields.CharField(attribute="pemilik_desa__lokasi_lengkap", null=True, blank=True)
+	pengusaha_desa_lokasi_lengkap = fields.CharField(attribute="pengusaha_desa__lokasi_lengkap", null=True, blank=True)
 	
 	class Meta:
 		queryset = DetilHuller.objects.all()
@@ -243,5 +244,21 @@ class SertifikatTanahResource(CORSModelResource):
 	class Meta:
 		queryset = SertifikatTanah.objects.all()
 		filtering = {
-            "informasi_tanah_id" : ['contains'],
-        }
+			"informasi_tanah_id" : ['contains'],
+		}
+
+class PenggunaanTanahIPPTUsahaResource(CORSModelResource):
+	informasi_tanah_id = fields.IntegerField(attribute="informasi_tanah__id", null=True, blank=True)
+	class Meta:
+		queryset = PenggunaanTanahIPPTUsaha.objects.all()
+		filtering = {
+			"informasi_tanah_id" : ['contains'],
+		}
+
+class PerumahanYangDimilikiIPPTUsahaResource(CORSModelResource):
+	informasi_tanah_id = fields.IntegerField(attribute="informasi_tanah__id", null=True, blank=True)
+	class Meta:
+		queryset = PerumahanYangDimilikiIPPTUsaha.objects.all()
+		filtering = {
+			"informasi_tanah_id" : ['contains'],
+		}

@@ -167,20 +167,20 @@ def iua_upload_dokument(request):
 										berkas = form.save(commit=False)
 										kode = request.POST.get('kode')
 										if kode == 'Akte Pendirian':
-											berkas.nama_berkas = "Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan "+p.perusahaan.npwp
 										elif kode == 'Domisili':
-											berkas.nama_berkas = "Scan Surat Keterangan Domisili"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Surat Keterangan Domisili"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Surat Keterangan Domisili "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Surat Keterangan Domisili "+p.perusahaan.npwp
 										elif kode == 'Pernyataan Kesanggupan Memilkik':
-											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat "+p.perusahaan.npwp
 										elif kode == 'Pernyataan Kesanggupan Menyediakan':
-											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan"+p.perusahaan.npwp
+											berkas.nama_berkas = "Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan "+p.perusahaan.npwp
 										elif kode == 'Buku Uji Berkala':
-											berkas.nama_berkas = "Buku Uji Berkala Kendaraan Bermotor"+p.perusahaan.nama_perusahaan
-											berkas.keterangan = "File Buku Uji Berkala Kendaraan Bermotor"+p.perusahaan.npwp
+											berkas.nama_berkas = "Buku Uji Berkala Kendaraan Bermotor "+p.perusahaan.nama_perusahaan
+											berkas.keterangan = "File Buku Uji Berkala Kendaraan Bermotor "+p.perusahaan.npwp
 										if request.user.is_authenticated():
 											berkas.created_by_id = request.user.id
 										else:
@@ -242,35 +242,35 @@ def ajax_load_berkas_iua(request, id_pengajuan):
 					id_berkas.append(npwp_perusahaan.id)
 					
 			if berkas_:
-				akte_pendirian = berkas_.filter(keterangan='File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan'+perusahaan_.npwp).last()
+				akte_pendirian = berkas_.filter(keterangan='File Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan '+perusahaan_.npwp).last()
 				if akte_pendirian:
 					url_berkas.append(akte_pendirian.berkas.url)
 					id_elemen.append('akte_pendirian')
 					nm_berkas.append(akte_pendirian.nama_berkas)
 					id_berkas.append(akte_pendirian.id)
 
-				domisili = berkas_.filter(keterangan='File Scan Surat Keterangan Domisili'+perusahaan_.npwp).last()
+				domisili = berkas_.filter(keterangan='File Scan Surat Keterangan Domisili '+perusahaan_.npwp).last()
 				if domisili:
 					url_berkas.append(domisili.berkas.url)
 					id_elemen.append('domisili')
 					nm_berkas.append(domisili.nama_berkas)
 					id_berkas.append(domisili.id)
 
-				pernyataan_kesanggupan_memiliki = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat'+perusahaan_.npwp).last()
+				pernyataan_kesanggupan_memiliki = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat '+perusahaan_.npwp).last()
 				if pernyataan_kesanggupan_memiliki:
 					url_berkas.append(pernyataan_kesanggupan_memiliki.berkas.url)
 					id_elemen.append('pernyataan_kesanggupan_memiliki')
 					nm_berkas.append(pernyataan_kesanggupan_memiliki.nama_berkas)
 					id_berkas.append(pernyataan_kesanggupan_memiliki.id)
 
-				pernyataan_kesanggupan_menyediakan = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan'+perusahaan_.npwp).last()
+				pernyataan_kesanggupan_menyediakan = berkas_.filter(keterangan='File Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan '+perusahaan_.npwp).last()
 				if pernyataan_kesanggupan_menyediakan:
 					url_berkas.append(pernyataan_kesanggupan_menyediakan.berkas.url)
 					id_elemen.append('pernyataan_kesanggupan_menyediakan')
 					nm_berkas.append(pernyataan_kesanggupan_menyediakan.nama_berkas)
 					id_berkas.append(pernyataan_kesanggupan_menyediakan.id)
 
-				buku_uji_berkala = berkas_.filter(keterangan='File Buku Uji Berkala Kendaraan Bermotor'+perusahaan_.npwp).last()
+				buku_uji_berkala = berkas_.filter(keterangan='File Buku Uji Berkala Kendaraan Bermotor '+perusahaan_.npwp).last()
 				if buku_uji_berkala:
 					url_berkas.append(buku_uji_berkala.berkas.url)
 					id_elemen.append('buku_uji_berkala')
@@ -331,31 +331,28 @@ def load_data_konfirmasi(request, pengajuan_id):
 	return response
 
 def cetak_iua(request, id_pengajuan):
-    extra_context = {}
-    if id_pengajuan:
-        pengajuan_obj = get_object_or_404(DetilIUA, id=id_pengajuan)
-        if pengajuan_obj:
-            extra_context.update({'pengajuan':pengajuan_obj})
-    return render(request, "front-end/include/formulir_iua/cetak.html", extra_context)
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_obj = get_object_or_404(DetilIUA, id=id_pengajuan)
+		if pengajuan_obj:
+			extra_context.update({'pengajuan':pengajuan_obj})
+	return render(request, "front-end/include/formulir_iua/cetak.html", extra_context)
 
 def cetak_bukti_pendaftaran_iua(request, id_pengajuan):
-    extra_context = {}
-    extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN USAHA ANGKUTAN'})
-    if id_pengajuan:
-        pengajuan_ = get_object_or_404(DetilIUA, id=id_pengajuan)
-        if pengajuan_:
-            nilai_investasi = pengajuan_.nilai_investasi
-            kategori_kendaraan = pengajuan_.kategori_kendaraan.nama_kategori
-            kendaraan_ = Kendaraan.objects.filter(iua_id=pengajuan_.id)
-            if kendaraan_:
-            	kendaraan_jumlah = kendaraan_.count()
-
-            
-            # rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
-            # id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
-            syarat_ = Syarat.objects.filter(jenis_izin__kode="IUA")
-            extra_context.update({ 'nilai_investasi': nilai_investasi, 'kategori_kendaraan': kategori_kendaraan, 'kendaraan_jumlah': kendaraan_jumlah, 'kendaraan': kendaraan_,  'pengajuan_':pengajuan_, 'syarat': syarat_})
-    return render(request, "front-end/include/formulir_iua/cetak_bukti_pendaftaran.html", extra_context)
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN USAHA ANGKUTAN'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(DetilIUA, id=id_pengajuan)
+		if pengajuan_:
+			nilai_investasi = pengajuan_.nilai_investasi
+			kategori_kendaraan = pengajuan_.kategori_kendaraan.nama_kategori
+			kendaraan_ = pengajuan_.kendaraan_set.all()
+			kendaraan_jumlah = kendaraan_.count()
+			# rincian_perusahaan_ = RincianPerusahaan.objects.filter(detil_tdp_id=pengajuan_.id).last()
+			# id_kelompok_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=25)
+			syarat_ = Syarat.objects.filter(jenis_izin__kode="IUA")
+			extra_context.update({ 'nilai_investasi': nilai_investasi, 'kategori_kendaraan': kategori_kendaraan, 'kendaraan_jumlah': kendaraan_jumlah, 'kendaraan': kendaraan_,  'pengajuan_':pengajuan_, 'syarat': syarat_})
+	return render(request, "front-end/include/formulir_iua/cetak_bukti_pendaftaran.html", extra_context)
 
 def iua_done(request):
 	data = {'success': False, 'pesan': 'Terjadi Kesalahan. Data pengajuan tidak terdaftar.'}
