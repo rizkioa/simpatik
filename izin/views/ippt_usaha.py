@@ -316,9 +316,9 @@ def ipptusaha_upload_berkas_pendukung(request):
                         else:
                             try:
                                 p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
-                                print p
+                                # print p
                                 ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
-                                print ktp_
+                                # print ktp_
                                 berkas = form.save(commit=False)
                                 if request.POST.get('aksi') == "1":
                                     berkas.nama_berkas = "Berkas Foto KTP/PASPOR"+ktp_.nomor

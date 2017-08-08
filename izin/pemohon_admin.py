@@ -117,7 +117,7 @@ class PemohonAdmin(admin.ModelAdmin):
 		results = False
 		if email_:
 			pemohon = Pemohon.objects.filter(email=email_)
-			print pemohon.count()
+			# print pemohon.count()
 			if pemohon.count() > 0:
 				results = False
 			else:

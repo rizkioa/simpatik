@@ -333,7 +333,7 @@ class IzinAdmin(admin.ModelAdmin):
 	def linkdetilizin(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
-		print jenis_izin_
+		# print jenis_izin_
 		if jenis_izin_ == "503.08":
 			link_ = reverse('admin:detil_siup_view', kwargs={'id_pengajuan_izin_': obj.id})
 		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
@@ -695,7 +695,7 @@ class IzinAdmin(admin.ModelAdmin):
 					if status_pusat:
 						try:
 							p = DetilTDP.objects.get(id=id_pengajuan_izin)
-							print status_pusat
+							# print status_pusat
 							p.status_waralaba = status_pusat
 							p.save()
 							response = {

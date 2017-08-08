@@ -41,7 +41,7 @@ def detil_sk_imb_save(request):
 					'data': ['']}
 			response = HttpResponse(json.dumps(data))
 		else:
-			print Sk_.errors
+			# print Sk_.errors
 			data = Sk_.errors.as_json()
 			response = HttpResponse(data)
 

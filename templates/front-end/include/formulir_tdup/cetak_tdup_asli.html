@@ -243,7 +243,13 @@
     			<td align="center"><b>8.</b></td>
     			<td class="tdnone"><b>Nama Pengurus Badan Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">
+    				{% if pengurusbadanusaha_list %}
+    					{% for i in pengurusbadanusaha_list %}
+    						{{i.nama_lengkap}} {% if not forloop.last %}, {% endif %}
+    					{% endfor %}
+    				{% endif %}
+    			</td>
     		</tr>
     		<tr>
     			<td align="center"><b>9.</b></td>
@@ -271,7 +277,7 @@
     			<td class="tdnone">
     				{% if izinlaintdup %}
     					{% for i in izinlaintdup %}
-    						{{i.no_izin.upper}} TANGGAL {{i.tanggal_izin|date:'d-m-Y'}},<br>
+    						{{i.no_izin.upper}} TANGGAL {{i.tanggal_izin|date:'d-m-Y'}}{% if not forloop.last %},<br> {% endif %}
     					{% endfor %}
     				{% endif %}
     			</td>
@@ -282,11 +288,61 @@
     			<td class="tdnone">:</td>
     			<td class="tdnone">{{pengajuan.nomor_dokumen_pengelolaan.upper}} TANGGAL {{pengajuan.tanggal_dokumen_pengelolaan|date:'d-m-Y'}}</td>
     		</tr>
+    		{% if pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata == "Bidang Usaha Jasa Transportasi Pariwisata" %}
     		<tr>
     			<td align="center"><b>14.</b></td>
+    			<td class="tdnone"><b>Jumlah Unit</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">
+					{% if pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Jalan Wisata" %}
+                        {{pengajuan.rincian_sub_jenis.jumlah_unit_angkutan_jalan_wisata}}
+                    {% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Kereta Api Wisata" %}
+                        {{pengajuan.rincian_sub_jenis.jumlah_unit_angkutan_kereta_api_wisata}}
+                    {% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Sungai dan Danau Wisata" %}
+                        {{pengajuan.rincian_sub_jenis.jumlah_unit_angkutan_sungai_dan_danau_wisata}}
+                    {% endif %}
+					UNIT
+    			</td>
+    		</tr>
+    		{% endif %}
+    		<tr>
+    			<td align="center"><b>
+    				{% if pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata == "Bidang Usaha Jasa Transportasi Pariwisata" %}
+    				15.
+    				{% else %}
+    				14.
+    				{% endif %}
+    			</b></td>
     			<td class="tdnone"><b>Kapasitas</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone"></td>
+    			<td class="tdnone">
+					{% if pengajuan.rincian_sub_jenis %}
+    					{% if pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Restoran"  %}
+    						{{pengajuan.rincian_sub_jenis.jumlah_kursi_restoran}} KURSI
+    					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Rumah Makan" %}
+    						{{pengajuan.rincian_sub_jenis.jumlah_kursi_rumah_makan}} KURSI
+    					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Bar / Rumah Minum" %}
+    						{{pengajuan.rincian_sub_jenis.jumlah_kursi_bar_atau_rumah_minum}} KURSI
+    					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Kafe" %}
+    						{{pengajuan.rincian_sub_jenis.jumlah_kursi_kafe}} KURSI
+    					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Pusat Makanan" %}
+    						{{pengajuan.rincian_sub_jenis.jumlah_stand_pusat_makanan}} STAND
+    					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Jasa Boga" %}
+    						{{pengajuan.rincian_sub_jenis.kapasitas_produksi_jasa_boga}} UNIT/BULAN
+
+    					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Jalan Wisata" %}
+							{{pengajuan.rincian_sub_jenis.kapasitas_angkutan_jalan_wisata}}
+						{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Kereta Api Wisata" %}
+							{{pengajuan.rincian_sub_jenis.kapasitas_angkutan_kereta_api_wisata}}
+						{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Sungai dan Danau Wisata" %}
+							{{pengajuan.rincian_sub_jenis.kapasitas_angkutan_sungai_dan_danau_wisata}}
+						{% else %}
+						
+    					{% endif %}
+    				{% else %}
+    					-
+    				{% endif %}
+    			</td>
     		</tr>
     	</table>
     	<br>

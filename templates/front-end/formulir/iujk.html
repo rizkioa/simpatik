@@ -348,10 +348,11 @@
 		        		respon = $.parseJSON(response)
 		        		if(respon.success){
 		        			toastr["success"](respon.pesan)
+		        			window.location.replace("/layanan/iujk/formulir/cetak/"+id_pengajuan_);
 		        		}
 		        	}
 	        	});
-	        	window.location.replace("/layanan/iujk/formulir/cetak/"+id_pengajuan_);
+	        	
 	      	}
     	};
 	</script>

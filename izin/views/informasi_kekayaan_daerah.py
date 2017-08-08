@@ -44,10 +44,10 @@ def formulir_kekayaan(request, extra_context={}):
 		if request.COOKIES['id_pengajuan'] != "" and request.COOKIES['id_pengajuan'] != "0":
 			try:
 				kekayaan_obj = InformasiKekayaanDaerah.objects.get(id=request.COOKIES['id_pengajuan'])
-				print kekayaan_obj
-				print "###############"
-				print request.COOKIES['id_pengajuan']
-				print "###############"
+				# print kekayaan_obj
+				# print "###############"
+				# print request.COOKIES['id_pengajuan']
+				# print "###############"
 				if kekayaan_obj:
 					extra_context.update({'pengajuan_': kekayaan_obj })
 			except ObjectDoesNotExist:

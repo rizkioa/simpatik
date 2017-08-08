@@ -646,6 +646,7 @@ def upload_sertifikat_badan_usaha(request):
 								berkas.save()
 
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Sertifikat Badan Usaha '+p.nama_perusahaan+' berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -702,6 +703,7 @@ def upload_kartu_teknis_badan_usaha(request):
 								berkas.save()
 
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Kartu Teknis Badan Usaha '+p.nama_perusahaan+'Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -759,6 +761,7 @@ def upload_pernyataan_pengikat_badan_usaha(request):
 								berkas.save()
 
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Surat Pernyataaan Pengikatan Diri PJT-BU '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -815,6 +818,7 @@ def upload_pernyataan_badan_usaha(request):
 								berkas.save()
 
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -859,7 +863,7 @@ def upload_npwp_badan_usaha(request):
 							response = HttpResponse(data)
 						else:
 							try:
-								# d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
+								d = DetilIUJK.objects.get(id=request.COOKIES['id_pengajuan'])
 								p = Perusahaan.objects.get(id=request.COOKIES['id_perusahaan'])
 								berkas = form.save(commit=False)
 								berkas.nama_berkas = "NPWP "+p.nama_perusahaan
@@ -871,6 +875,7 @@ def upload_npwp_badan_usaha(request):
 								berkas.save()
 								p.berkas_npwp = berkas
 								p.save()
+								d.berkas_terkait_izin.add(berkas)
 
 								data = {'success': True, 'pesan': 'NPWP '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -927,6 +932,7 @@ def upload_keterangan_domisili_badan_usaha(request):
 								berkas.save()
 
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -983,6 +989,7 @@ def upload_denah_lokasi_badan_usaha(request):
 								berkas.save()
 
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Gambar denah lokasi/posisi badan usaha '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -1039,6 +1046,7 @@ def upload_foto_papan_badan_usaha(request):
 								berkas.save()
 								
 								d.berkas_tambahan.add(berkas)
+								d.berkas_terkait_izin.add(berkas)
 								# d.save()
 								data = {'success': True, 'pesan': 'Gambar/foto papan nama badan usaha '+p.nama_perusahaan+' Berhasil diupload' ,'data': [
 									{'status_upload': 'ok'},
@@ -1093,6 +1101,8 @@ def upload_akta_pendirian_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
+
+								d.berkas_terkait_izin.add(berkas)
 
 								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
 								l.berkas = berkas
@@ -1151,6 +1161,7 @@ def upload_akta_perubahan_badan_usaha(request):
 								else:
 									berkas.created_by_id = request.COOKIES['id_pemohon']
 								berkas.save()
+								d.berkas_terkait_izin.add(berkas)
 
 								l = Legalitas.objects.get(id=request.COOKIES['id_legalitas'])
 								l.berkas = berkas
@@ -1274,6 +1285,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('npwp')
 				nm_berkas.append("NPWP "+p.nama_perusahaan)
 				id_berkas.append(npwp.id)
+				iujk.berkas_terkait_izin.add(npwp)
 
 			# print legalitas_pendirian
 			if legalitas_pendirian:
@@ -1283,6 +1295,7 @@ def ajax_load_berkas(request, id_pengajuan):
 					id_elemen.append('akta_pendirian')
 					nm_berkas.append(legalitas_pendirian.berkas.nama_berkas)
 					id_berkas.append(legalitas_pendirian.berkas.id)
+					iujk.berkas_terkait_izin.add(legalitas_pendirian.berkas)
 
 			if legalitas_perubahan:
 				if legalitas_perubahan.berkas:
@@ -1291,6 +1304,7 @@ def ajax_load_berkas(request, id_pengajuan):
 					id_elemen.append('akta_perubahan')
 					nm_berkas.append(legalitas_perubahan.berkas.nama_berkas)
 					id_berkas.append(legalitas_perubahan.berkas.id)
+					iujk.berkas_terkait_izin.add(legalitas_perubahan.berkas)
 
 			sertifikat = berkas_.filter(nama_berkas="Sertifikat Badan Usaha "+p.nama_perusahaan)
 			if sertifikat.exists():
@@ -1299,6 +1313,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('sertifikat')
 				nm_berkas.append("Sertifikat Badan Usaha "+p.nama_perusahaan)
 				id_berkas.append(sertifikat.id)
+				iujk.berkas_terkait_izin.add(sertifikat)
 
 			kartu_teknis = berkas_.filter(nama_berkas="Kartu Teknis Badan Usaha "+p.nama_perusahaan)
 			if kartu_teknis.exists():
@@ -1307,6 +1322,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('kartu_teknis_bu')
 				nm_berkas.append("Kartu Teknis Badan Usaha "+p.nama_perusahaan)
 				id_berkas.append(kartu_teknis.id)
+				iujk.berkas_terkait_izin.add(kartu_teknis)
 
 			pernyataan = berkas_.filter(nama_berkas="Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
 			if pernyataan.exists():
@@ -1315,6 +1331,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('pernyataan_pengikat')
 				nm_berkas.append("Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
 				id_berkas.append(pernyataan.id)
+				iujk.berkas_terkait_izin.add(pernyataan)
 
 			pernyataan2 = berkas_.filter(nama_berkas="Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
 			if pernyataan2.exists():
@@ -1323,6 +1340,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('pernyataan')
 				nm_berkas.append("Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
 				id_berkas.append(pernyataan2.id)
+				iujk.berkas_terkait_izin.add(pernyataan2)
 
 			domisli = berkas_.filter(nama_berkas="Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
 			if domisli.exists():
@@ -1331,6 +1349,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('keterangan_domisili')
 				nm_berkas.append("Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
 				id_berkas.append(domisli.id)
+				iujk.berkas_terkait_izin.add(domisli)
 
 			lokasi = berkas_.filter(nama_berkas="Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
 			if lokasi.exists():
@@ -1339,6 +1358,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('denah_lokasi')
 				nm_berkas.append("Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
 				id_berkas.append(lokasi.id)
+				iujk.berkas_terkait_izin.add(lokasi)
 
 			papan = berkas_.filter(nama_berkas="Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
 			if papan.exists():
@@ -1347,6 +1367,7 @@ def ajax_load_berkas(request, id_pengajuan):
 				id_elemen.append('foto_papan')
 				nm_berkas.append("Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
 				id_berkas.append(papan.id)
+				iujk.berkas_terkait_izin.add(papan)
 
 			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 		except ObjectDoesNotExist:

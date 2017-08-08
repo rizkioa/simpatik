@@ -146,7 +146,7 @@ class Pegawai(Account):
 				self.username = re.sub('[^0-9a-zA-Z]+', '', username)
 
 	def __unicode__(self):
-		return u'%s' % (self.nama_lengkap)
+		return u'%s' % (self.get_full_name())
 
 	class Meta:
 		verbose_name = 'Pegawai'
