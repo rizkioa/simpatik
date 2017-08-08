@@ -392,6 +392,11 @@ urlpatterns = [
     url(r'^layanan/tdup/data-izin-lain/save$', tdup_views.save_data_izin_lain, name='tdup_save_data_izin_lain'),
     url(r'^layanan/tdup/data-izin-lain/delete/(?P<id_izin_lain>[0-9]+)$', tdup_views.delete_data_izin_lain, name='tdup_delete_data_izin_lain'),
     url(r'^layanan/tdup/data-izin-lain/load/(?P<id_pengajuan>[0-9]+)$', tdup_views.load_data_izin_lain, name='tdup_load_data_izin_lain'),
+
+    url(r'^layanan/tdup/pengurus-badan-usaha/save$', tdup_views.save_pengurus_badan_usaha, name="save_pengurus_badan_usaha"),
+    url(r'^layanan/tdup/pengurus-badan-usaha/load/(?P<id_pengajuan>[0-9]+)$', tdup_views.load_pengurus_badan_usaha, name="load_pengurus_badan_usaha"),
+    url(r'^layanan/tdup/pengurus-badan-usaha/load-edit/(?P<id_pengurusbadanusaha>[0-9]+)$', tdup_views.load_edit_pengurus_badan_usaha, name="load_edit_pengurus_badan_usaha"),
+    url(r'^layanan/tdup/pengurus-badan-usaha/delete/(?P<id_pengurusbadanusaha>[0-9]+)$', tdup_views.delete_pengurus_badan_usaha, name="delete_pengurus_badan_usaha"),
     ########################## end save tdup ##########################
 
     url(r'^list-track-pengajuan/(?P<id_pengajuan>[0-9]+)$', views.list_track_pengajuan, name='list_track_pengajuan'),
