@@ -40,7 +40,7 @@ class DetilIzinParkirIsidentilAdmin(admin.ModelAdmin):
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
 					# print s.survey_iujk.all()
-				print s.survey_reklame_ho.all()
+				# print s.survey_reklame_ho.all()
 				extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 			except ObjectDoesNotExist:
 				s = ''

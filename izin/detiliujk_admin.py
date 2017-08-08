@@ -93,7 +93,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 					s = Survey.objects.get(pengajuan=pengajuan_)
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
-					print s.survey_iujk.all()
+					# print s.survey_iujk.all()
 			except ObjectDoesNotExist:
 				s = ''
 

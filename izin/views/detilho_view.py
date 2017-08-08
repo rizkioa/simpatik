@@ -42,10 +42,10 @@ def formulir_ho(request, extra_context={}):
     extra_context.update({'jenis_pemohon': jenis_pemohon})
     if 'id_pengajuan' in request.COOKIES.keys():
       if request.COOKIES['id_pengajuan'] != "":
-        print request.COOKIES['id_pengajuan']
+        # print request.COOKIES['id_pengajuan']
         try:
           pengajuan_ = DetilHO.objects.get(id=request.COOKIES['id_pengajuan'])
-          print pengajuan_
+          # print pengajuan_
           alamat_ = ""
           alamat_perusahaan_ = ""
           if pengajuan_.pemohon:

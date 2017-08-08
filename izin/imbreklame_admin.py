@@ -153,7 +153,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					s = Survey.objects.get(pengajuan=pengajuan_)
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
-					print s.survey_iujk.all()
+					# print s.survey_iujk.all()
 			except ObjectDoesNotExist:
 				s = ''
 
@@ -221,7 +221,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
 					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
 					terbilang_ = terbilang(n)
