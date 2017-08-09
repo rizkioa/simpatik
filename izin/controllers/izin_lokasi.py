@@ -8,7 +8,7 @@ from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH
 from accounts.utils import KETERANGAN_PEKERJAAN
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, JenisPemohon, JenisReklame,ParameterBangunan
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah,SertifikatTanah
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah,SertifikatTanah,AktaJualBeliTanah,NoPTP
 
 def formulir_izin_lokasi(request):
 	extra_context={}
@@ -22,7 +22,12 @@ def formulir_izin_lokasi(request):
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != '':
 			  sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+			  akta_jual_beli_list = AktaJualBeliTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+			  no_ptp_list = NoPTP.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+
 			  extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+			  extra_context.update({'akta_jual_beli_list': akta_jual_beli_list})
+			  extra_context.update({'no_ptp_list': no_ptp_list})
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})

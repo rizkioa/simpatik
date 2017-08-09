@@ -233,7 +233,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				pass
 			try:
 				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
-				# print detil_bangunan_
+				bk_1 = detil_bangunan_.filter(detil_bangunan_imb__kode="BK23").last()
+				if bk_1:
+					extra_context.update({'bk_1': bk_1 })
 				if detil_bangunan_:
 					extra_context.update({'detil_bangunan': detil_bangunan_ })
 			except ObjectDoesNotExist:
@@ -352,7 +354,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
 					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
 					terbilang_ = terbilang(n)
