@@ -329,6 +329,7 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
             $('#id_alamat').val(respon.data.id_alamat)
             $('#id_luas').val(respon.data.id_luas)
             $('#id_status_tanah').val(respon.data.id_status_tanah)
+            $('#id_no_surat_pemberitahuan').val(respon.data.id_no_surat_pemberitahuan)
             $('#id_no_sertifikat_petak').val(respon.data.id_no_sertifikat_petak)
             $('#id_luas_sertifikat_petak').val(respon.data.id_luas_sertifikat_petak)
             $('#id_atas_nama_sertifikat_petak').val(respon.data.id_atas_nama_sertifikat_petak)
