@@ -234,6 +234,8 @@ class DetilReklameAdmin(admin.ModelAdmin):
 				extra_context.update({'sisi_': sisi_})
 				
 			extra_context.update({'detil_reklame_list': ", ".join(x.desa.nama_desa for x in detail_list)})	
+			extra_context.update({'detail_list_count': detail_list.count()})
+			extra_context.update({'detail_wilayah_list': detail_list })
 			extra_context.update({'letak_pemasangan': letak_})
 			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
 				tanggal_mulai = pengajuan_.tanggal_mulai

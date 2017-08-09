@@ -250,7 +250,7 @@
 	        		<tr>
 	        			<td style="vertical-align: top;padding-top: 1px;"><b>Letak pemasangan</b></td>
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
-	        			<td colspan="2">{{detil_reklame_list|title}}</td>
+	        			<td colspan="2">{% if detail_list_count > 10 %} Terlampir{% else %}{{detil_reklame_list|title}}{% endif %}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="4">
@@ -336,6 +336,27 @@
 	        </div>    
 	    </div>
 	</div>
+	{% if detail_list_count > 10 %}
+	<div class="book">
+	    <div class="page">
+	        <div class="subpage">
+	        <h4>Lampiran</h4>
+	        	<table class="table table-bordered font" width="100%" border="1">
+	        		<tr>
+	        			<td align="center">Nama Kecamatan</td>
+	        			<td align="center">Nama Desa</td>
+	        		</tr>
+	        		{% for j in detail_wilayah_list%}
+	        		<tr>
+	        			<td>{{j.desa.kecamatan.nama_kecamatan}}</td>
+	        			<td>{{j.desa.nama_desa}}	</td>
+	        		</tr>
+	        		{% endfor %}
+	        	</table>
+	        </div>    
+	    </div>
+	</div>
+	{% endif %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
 	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>

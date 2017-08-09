@@ -325,6 +325,20 @@ urlpatterns = [
     url(r'^layanan/izin-lokasi/selesai/$', izin_lokasi.izinlokasi_done , name='izinlokasi_done'),
     # ++++++++++++++++++++++++ end for ajax Izin Lokasi   ++++++++++++++++++++++
 
+    # ++++++++++++++++++++++++ for ajax Akta Jual Beli ++++++++++++++++++++++
+    url(r'^akta-jual-beli/save/$', ippt_rumah.akta_jual_beli_save_cookie, name='akta_jual_beli_save'),
+    url(r'^akta-jual-beli/edit/(?P<id_akta_jual_beli>[0-9]+)/$', ippt_rumah.edit_akta_jual_beli , name='edit_akta_jual_beli'),
+    url(r'^akta-jual-beli/delete/(?P<id_akta_jual_beli>[0-9]+)$', ippt_rumah.delete_akta_jual_beli , name='delete_akta_jual_beli'),
+    url(r'^akta-jual-beli/load/(?P<id_akta_jual_beli>[0-9]+)$', ippt_rumah.load_data_tabel_akta_jual_beli, name='load_data_tabel_akta_jual_beli'),
+    # ++++++++++++++++++++++++ end for ajax Akta Jual Beli ++++++++++++++++++++++
+
+    # ++++++++++++++++++++++++ for ajax No. PTP ++++++++++++++++++++++
+    url(r'^no-ptp/save/$', ippt_rumah.no_ptp_save_cookie, name='no_ptp_save'),
+    url(r'^no-ptp/edit/(?P<id_no_ptp>[0-9]+)/$', ippt_rumah.edit_no_ptp , name='edit_no_ptp'),
+    url(r'^no-ptp/delete/(?P<id_no_ptp>[0-9]+)$', ippt_rumah.delete_no_ptp , name='delete_no_ptp'),
+    url(r'^no-ptp/load/(?P<id_no_ptp>[0-9]+)$', ippt_rumah.load_data_tabel_ptp, name='load_data_tabel_ptp'),
+    # ++++++++++++++++++++++++ end for ajax No. PTP ++++++++++++++++++++++
+
     # ++++++++++++++++++++++++ for ajax IPPT Rumah ++++++++++++++++++++++
     url(r'^layanan/ippt-rumah/formulir$', ippt_rumah.formulir_ippt_rumah, name='formulir_ippt_rumah'),
     url(r'^informasitanah/load/(?P<id_pengajuan>[0-9]+)$', ippt_rumah.load_informasi_tanah, name='load_informasi_tanah'),

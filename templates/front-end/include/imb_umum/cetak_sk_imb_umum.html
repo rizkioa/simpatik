@@ -219,7 +219,7 @@
 	</script>
 	{% endif %}
 </head>
-{% if pengajuan.jenis_bangunan.kode == 'BK23' %}
+{% if bk_1 == 'BK23' %}
 	<body id="body">
 	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
 		<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
@@ -1141,9 +1141,30 @@
 		        			<td  colspan="3">Bangunan sebagaimana dimaksud dalam diktum KESATU, adalah :</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 121px;" align="left" width="150">a. Seluas</td>
-		        			<td width="10">:</td>
-		        			<td>{{pengajuan.luas_bangunan}} M&sup2;</td>
+		        			<td colspan="3" style="vertical-align: top;padding-top: 1px;padding-left: 121px;" align="left" width="150">a. Seluas</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td>
+		        			{% if detil_bangunan %}
+		        				{{pengajuan.luas_bangunan}} M&sup2;
+		        			{% for j in detil_bangunan %} 
+			        			{% if j.detil_bangunan_imb.nama_bangunan == "Gedung" %} 
+			        			
+			        			{% else %}
+			        				{{j.detil_bangunan_imb.nama_bangunan}} : {{j.total_luas}} 
+			        				{% if j.satuan_luas == "M" %}
+			        					{{j.satuan_luas}}
+			        				{% elif j.satuan_luas == "M1"%}
+			        					M&sup1;
+			        				{% else %}
+			        					M&sup2;
+			        				{% endif %}
+			        				{% if forloop.last %}{% endif %} 
+			        			{% endif %}
+		        			{% endfor %}
+		        			{% else %}
+		        				{{pengajuan.luas_bangunan}} M&sup2;
+		        			{% endif %}
+		        			</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left" width="140">b. Bertempat di</td>

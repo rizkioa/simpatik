@@ -5,7 +5,7 @@ from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, 
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
-from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN, JENIS_PENGGUNAAN
+from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_BADAN_USAHA, JENIS_PERMOHONAN, STATUS_HAK_TANAH, KEPEMILIKAN_TANAH, KLASIFIKASI_JALAN, RUMIJA, RUWASJA, JENIS_LOKASI_USAHA, JENIS_BANGUNAN, JENIS_GANGGUAN, JENIS_MESIN_PERALATAN, JENIS_PENGGUNAAN,SATUAN
 # from mptt.models import MPTTModel
 # from mptt.fields import TreeForeignKey
 # from django.utils.deconstruct import deconstructible
@@ -1177,6 +1177,54 @@ class SertifikatTanah(MetaAtribut):
 		verbose_name_plural = 'Sertifikat Tanah'
 
 # meta
+class AktaJualBeliTanah(MetaAtribut):
+	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
+	no_jual_beli = models.CharField(max_length=255, verbose_name='No Jual Beli', null=True, blank=True)
+	tanggal_jual_beli = models.DateField(verbose_name='Tanggal Jual Beli', null=True, blank=True)
+	atas_nama_jual_beli = models.CharField(max_length=255, verbose_name='Atas Nama Jual Beli', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.no_jual_beli))
+	
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"no_jual_beli": self.no_jual_beli,
+			"tanggal_jual_beli": str(self.tanggal_jual_beli.strftime("%d-%m-%Y")),
+			"atas_nama_jual_beli": self.atas_nama_jual_beli,
+		}
+
+	def as_json(self):
+		return dict(no_jual_beli=self.no_jual_beli, tanggal_jual_beli=self.tanggal_jual_beli.strftime("%d-%m-%Y"),atas_nama_jual_beli=self.atas_nama_jual_beli)
+
+	class Meta:
+		# ordering = ['-status']
+		verbose_name = 'Akta Jual Beli Tanah'
+		verbose_name_plural = 'Akta Jual Beli tanah'
+
+# meta
+class NoPTP(MetaAtribut):
+	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
+	no_ptp = models.CharField(max_length=255, verbose_name='No PTP', null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % (str(self.no_ptp))
+	
+	def as_dict(self):
+		return {
+			# "id": self.id,
+			"no_ptp": self.no_ptp,
+		}
+
+	def as_json(self):
+		return dict(no_ptp=self.no_ptp,)
+
+	class Meta:
+		# ordering = ['-status']
+		verbose_name = 'No PTP'
+		verbose_name_plural = 'No PTP'
+
+# meta
 class PenggunaanTanahIPPTUsaha(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	nama_penggunaan = models.CharField(max_length=20, verbose_name='Penggunaan Tanah', blank=True, null=True)
@@ -1869,6 +1917,7 @@ class DetilBangunanIMB(MetaAtribut):
 	detil_bangunan_imb = models.ForeignKey(BangunanJenisKontruksi,verbose_name="Detil Bangunan IMB",blank=True, null=True,)
 	parameter_bangunan = models.ManyToManyField(ParameterBangunan,verbose_name="Parameter Bangunan",blank=True)
 	total_luas = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, verbose_name='Total Luas')
+	satuan_luas = models.CharField(verbose_name='Satuan Luas', choices=SATUAN, max_length=10, null=True, blank=True)
 	total_biaya_detil = models.CharField(max_length=20, null=True, blank=True, verbose_name='Total Biaya')
 
 	def as_json(self):
