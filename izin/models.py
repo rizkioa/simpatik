@@ -1473,6 +1473,25 @@ class DetilTDUP(PengajuanIzin):
 		verbose_name = 'TDUP'
 		verbose_name_plural = 'TDUP'
 
+class PengurusBadanUsaha(models.Model):
+	detil_tdup = models.ForeignKey(DetilTDUP, max_length=255, verbose_name='Detil TDUP', null=True, blank=True)
+	nama_lengkap = models.CharField("Nama Lengkap", max_length=100, null=True, blank=True)
+	alamat = models.CharField(max_length=255, null=True, blank=True)
+	telephone = models.CharField(verbose_name='Telepon', max_length=50, null=True, blank=True)
+	nomor_ktp = models.CharField(max_length=50, blank=True, null=True, verbose_name='Nomor KTP')
+	keterangan = models.CharField(max_length=255, blank=True, null=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_lengkap)
+
+	def as_json(self):
+		return dict(id=self.id, nomor_ktp=self.nomor_ktp, nama_lengkap=self.nama_lengkap, alamat=self.alamat, telephone=self.telephone, keterangan=self.keterangan)
+
+	class Meta:
+		# ordering = ['-status']
+		verbose_name = 'Pengurus Badan Usaha'
+		verbose_name_plural = 'Pengurus Badan Usaha'
+
 class IzinLainTDUP(models.Model):
 	detil_tdup = models.ForeignKey(DetilTDUP, related_name='detil_tdup_izin_lain')
 	no_izin = models.CharField(max_length=255, verbose_name='Nomor Izin')

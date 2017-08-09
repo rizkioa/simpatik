@@ -63,6 +63,8 @@
 		          elem.html(response);
 		          elem.trigger("chosen:updated");
 		          $( "#anggotatim" ).mLoading('hide');
+		          // frm_anggotatim = $('#anggotatim') 
+		          // frm_anggotatim.find('select[name="pegawai"]').val('').trigger("chosen:updated");
 		      },
 		      error: function(data) {                
 		          toast_server_error()
@@ -142,7 +144,7 @@
 	    };
 
 	    function save_anggota(){
-	        $('#anggotatim').ajaxSubmit(options); 
+	        $('#anggotatim').ajaxSubmit(options);
 	    }
 
 	    function hapus_anggotatim(id){
@@ -171,6 +173,8 @@
 	        // console.log(response)
 	        if(response.success){
 	          toastr["success"](response.pesan)
+	          frm_anggotatim = $('#anggotatim') 
+	          frm_anggotatim.find('select[name="pegawai"]').val('').trigger("chosen:updated");
 	          $('#id_koordinator').prop('checked', false)
 	        }else{
 	          var key = Object.keys(response); // Mencari key json

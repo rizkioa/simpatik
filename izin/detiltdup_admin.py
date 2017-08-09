@@ -36,6 +36,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 			pengajuan_ = get_object_or_404(DetilTDUP, id=id_pengajuan_izin_)
 			alamat_ = ""
 			alamat_perusahaan_ = ""
+			pengurusbadanusaha_list = pengajuan_.pengurusbadanusaha_set.all()
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
 					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
@@ -44,6 +45,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
 				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
 				extra_context.update({'nomor_identitas': nomor_identitas_ })
+
 				try:
 					try:
 						ktp_ = NomorIdentitasPengguna.objects.get(user_id=pengajuan_.pemohon.id)
@@ -94,7 +96,13 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 			extra_context.update({'survey': s })
 			# END UNTUK SURVEY
 
-			extra_context.update({'pengajuan_id': pengajuan_id })
+			izinlaintdup_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
+
+			extra_context.update({
+				'pengajuan_id': pengajuan_id,
+				'pengurusbadanusaha_list': pengurusbadanusaha_list,
+				'izinlaintdup_list': izinlaintdup_list
+				 })
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
 			#+++++++++++++ end page logout ++++++++++
@@ -139,7 +147,8 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 			izinlaintdup_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, 'alamat': alamat_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'izinlaintdup': izinlaintdup_list})
+			pengurusbadanusaha_list = pengajuan_.pengurusbadanusaha_set.all()
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, 'alamat': alamat_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
 		template = loader.get_template("front-end/include/formulir_tdup/cetak_tdup_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
