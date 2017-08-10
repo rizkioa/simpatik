@@ -480,9 +480,10 @@
                   $('#'+id_penggunaan+'').remove()
                 }
                 var id_no_ptp = $("#id_no_ptp").val()
+                var id_tanggal_ptp = $("#id_tanggal_ptp").val()
 
                 var rows = "";
-                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_ptp'>"+id_no_ptp+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRownoptp(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRownoptp(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_ptp'>"+id_no_ptp+"</td><td id='id_table_tanggal_ptp'>"+id_tanggal_ptp+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRownoptp(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRownoptp(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
                     $(rows).appendTo("#id_no_ptp_table","tbody");
                 $('#id_no_ptp_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
                 $('#id_no_ptp_modal').find('.btn-success').attr('onclick','no_ptp_add(this)')
@@ -504,9 +505,11 @@
         id_button = btn.id
         var parent_tr = $('#'+id_button+'')
         var id_no_ptp = parent_tr.find('#id_table_no_ptp').text();
+        var id_tanggal_ptp = parent_tr.find('#id_table_tanggal_ptp').text();
 
         $('#id_no_ptp_modal').modal('show');
         $('#id_no_ptp_modal').find('#id_no_ptp').val(id_no_ptp) 
+        $('#id_no_ptp_modal').find('#id_tanggal_ptp').val(id_tanggal_ptp) 
 
 
         $('#id_no_ptp_modal').find('.btn-success').attr('onclick','').unbind('click');
@@ -561,11 +564,12 @@
         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
         $(tab_index).tab('show');
-      }else if(perusahaan_cookie === ""){
-        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-        $(tab_index).tab('show');
       }
+      // else if(perusahaan_cookie === ""){
+      //   toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+      //   tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+      //   $(tab_index).tab('show');
+      // }
       else{
         swal({
           showConfirmButton: false,
@@ -994,6 +998,17 @@ function load_data_sertifikat_tanah(id_sertifikat_tanah){
                   <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
                   <div class="col-sm-4">
                     <input type="text" id="id_no_ptp" name="no_ptp" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label">Tanggal PTP</label>
+                  <div class="col-sm-3">
+                      <div class="input-group datepicker w-360 tanggal-awal"> 
+                        <input type="text" class="form-control" data-date-format="DD-MM-YYYY" id="id_tanggal_ptp" name="tanggal_ptp" style="width: 170px;">
+                        <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                        </span>
+                      </div>
                   </div>
                 </div>
               </div>

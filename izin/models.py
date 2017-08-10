@@ -1021,6 +1021,7 @@ class InformasiTanah(PengajuanIzin):
 	luas = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Tanah')
 	status_tanah = models.CharField(verbose_name='Status Tanah', max_length=20,)
 	no_surat_pemberitahuan =  models.CharField(max_length=30, verbose_name='No. Surat Pemberitahuan', null=True, blank=True)
+	tanggal_surat_pemberitahuan = models.DateField(verbose_name='Tanggal Surat Pemberitahuan', null=True, blank=True)
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
 	atas_nama_sertifikat_petak =  models.CharField(max_length=255, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
@@ -1207,6 +1208,7 @@ class AktaJualBeliTanah(MetaAtribut):
 class NoPTP(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	no_ptp = models.CharField(max_length=255, verbose_name='No PTP', null=True, blank=True)
+	tanggal_ptp = models.DateField(verbose_name='Tanggal Jual Beli', null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % (str(self.no_ptp))
@@ -1215,10 +1217,11 @@ class NoPTP(MetaAtribut):
 		return {
 			# "id": self.id,
 			"no_ptp": self.no_ptp,
+			"tanggal_ptp": str(self.tanggal_ptp.strftime("%d-%m-%Y")),
 		}
 
 	def as_json(self):
-		return dict(no_ptp=self.no_ptp,)
+		return dict(no_ptp=self.no_ptp,tanggal_ptp=self.tanggal_ptp.strftime("%d-%m-%Y"))
 
 	class Meta:
 		# ordering = ['-status']

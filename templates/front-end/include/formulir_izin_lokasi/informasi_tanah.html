@@ -67,13 +67,26 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Surat Pemberitahuan DPM</label>
+      <div class="col-sm-3">
+          <div class="input-group datepicker w-360 tanggal-awal"> 
+            <input type="text" name="tanggal_surat_pemberitahuan" class="form-control" data-date-format="DD-MM-YYYY" id="id_tanggal_surat_pemberitahuan"  style="width: 170px;">
+            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+            </span>
+          </div>
+      </div>
+    </div>
+
+
     <div class="row">
       <div class="form-group">
         <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Sertifikat/Petok D</label> 
         <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
           <thead>
             <tr>
-              <td>No Sertifikat</td>
+              <td>No Sertifikat/Petok D</td>
               <td>Luas</td>
               <td>Atas Nama</td>
               <td>Tahun</td>
@@ -138,6 +151,7 @@
           <thead>
             <tr>
               <td>No PTP</td>
+              <td>Tanggal PTP</td>
               <td>Aksi</td>
             </tr>
           </thead>
@@ -146,6 +160,7 @@
             {% for p in no_ptp_list %}
               <tr id="{{p.id}}">
                 <td id="id_table_no_ptp">{{p.no_ptp}}</td>
+                <td id="id_table_id_table_tanggal_ptp">{{p.tanggal_ptp|date:"d-m-Y"}}</td>
                 <td align='center'> <a href='#' id={{p.id}} onclick="editRownoptp(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{p.id}} onclick="deleteRownoptp(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
             {% endfor %}
           {% endif %}
