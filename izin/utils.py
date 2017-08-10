@@ -342,6 +342,8 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilHO')
 	elif kode_ijin == "TDUP":
 		objects_ = getattr(app_models, 'DetilTDUP')
+	elif kode_ijin == "503.07/" or kode_ijin == "IPPT-Rumah" or kode_ijin == "IPPT-Usaha":
+		objects_ = getattr(app_models, 'InformasiTanah')
 
 	return objects_
 
