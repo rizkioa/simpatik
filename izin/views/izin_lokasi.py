@@ -342,6 +342,7 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
       kabupaten = str(pengajuan_.desa.kecamatan.kabupaten)
       luas = str(pengajuan_.luas)
       status_tanah = pengajuan_.status_tanah
+      no_surat_pemberitahuan = pengajuan_.no_surat_pemberitahuan
       no_sertifikat_petak = pengajuan_.no_sertifikat_petak
       luas_sertifikat_petak = str(pengajuan_.luas_sertifikat_petak)
       atas_nama_sertifikat_petak = pengajuan_.atas_nama_sertifikat_petak
@@ -368,6 +369,7 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
           {'kabupaten': kabupaten},
           {'luas': luas},
           {'status_tanah': status_tanah},
+          {'no_surat_pemberitahuan': no_surat_pemberitahuan},
           {'no_sertifikat_petak': no_sertifikat_petak},
           {'luas_sertifikat_petak': luas_sertifikat_petak},
           {'atas_nama_sertifikat_petak': atas_nama_sertifikat_petak},

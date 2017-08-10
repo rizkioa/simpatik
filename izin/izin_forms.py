@@ -1,6 +1,6 @@
 from django import forms
 from izin.utils import JENIS_IZIN
-from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP, DetilReklameIzin, DetilIzinParkirIsidentil,DetilBangunanIMB
+from izin.models import Pemohon, KelompokJenisIzin, JenisIzin, DetilSIUP, DetilReklame, DetilIMBPapanReklame, Survey,DetilIMB, InformasiKekayaanDaerah, DetilHO, InformasiTanah, DetilHuller, MesinPerusahaan, MesinHuller, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, SertifikatTanah, DetilSk, SKIzin, DetilPembayaran, RincianSubJenis, DetilTDUP, DetilReklameIzin, DetilIzinParkirIsidentil,DetilBangunanIMB,AktaJualBeliTanah,NoPTP
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, Berkas
 from accounts.models import NomorIdentitasPengguna
 from perusahaan.models import Perusahaan, Legalitas
@@ -172,7 +172,7 @@ class DetilBangunanIMBTanpaParameterForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
 	class Meta:
 		model = DetilBangunanIMB
-		fields = ('detil_izin_imb','detil_bangunan_imb','total_luas','total_biaya_detil')
+		fields = ('detil_izin_imb','detil_bangunan_imb','total_luas','satuan_luas','total_biaya_detil')
 
 class IdentifikasiJalanForm(forms.ModelForm):
 	"""docstring for UploadBerkasPendukungForm"""
@@ -200,15 +200,25 @@ class DetilHOForm(forms.ModelForm):
 class InformasiTanahForm(forms.ModelForm):
 	"""docstring for InformasiTanahForm"""
 	luas_sertifikat_petak = forms.DecimalField(label="Luas Sertifikat/Petok D", required=False,)
-
+	tanggal_jual_beli = forms.DateField(label="Tanggal Jual Beli", required=False,)
 	class Meta:
 		model = InformasiTanah
-		fields = ('alamat','desa','luas','status_tanah','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli','penggunaan_sekarang','rencana_penggunaan','penggunaan_tanah_sebelumnya','arahan_fungsi_kawasan')
+		fields = ('alamat','desa','luas','status_tanah','no_surat_pemberitahuan','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli','penggunaan_sekarang','rencana_penggunaan','penggunaan_tanah_sebelumnya','arahan_fungsi_kawasan')
 
 class SertifikatTanahForm(forms.ModelForm):
 	class Meta:
 		model = SertifikatTanah
 		fields = ('no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat')
+
+class AktaJualBeliTanahForm(forms.ModelForm):
+	class Meta:
+		model = AktaJualBeliTanah
+		fields = ('no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli')
+
+class NoPTPForm(forms.ModelForm):
+	class Meta:
+		model = NoPTP
+		fields = ('no_ptp',)
 
 class DetilHullerForm(forms.ModelForm):
 	"""docstring for DetilHullerForm"""
