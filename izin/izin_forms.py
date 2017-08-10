@@ -203,7 +203,7 @@ class InformasiTanahForm(forms.ModelForm):
 	tanggal_jual_beli = forms.DateField(label="Tanggal Jual Beli", required=False,)
 	class Meta:
 		model = InformasiTanah
-		fields = ('alamat','desa','luas','status_tanah','no_surat_pemberitahuan','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli','penggunaan_sekarang','rencana_penggunaan','penggunaan_tanah_sebelumnya','arahan_fungsi_kawasan')
+		fields = ('alamat','desa','luas','status_tanah','no_surat_pemberitahuan','tanggal_surat_pemberitahuan','no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat','no_persil','klas_persil','atas_nama_persil','no_jual_beli','tanggal_jual_beli','atas_nama_jual_beli','penggunaan_sekarang','rencana_penggunaan','penggunaan_tanah_sebelumnya','arahan_fungsi_kawasan')
 
 class SertifikatTanahForm(forms.ModelForm):
 	class Meta:
@@ -218,7 +218,7 @@ class AktaJualBeliTanahForm(forms.ModelForm):
 class NoPTPForm(forms.ModelForm):
 	class Meta:
 		model = NoPTP
-		fields = ('no_ptp',)
+		fields = ('no_ptp','tanggal_ptp')
 
 class DetilHullerForm(forms.ModelForm):
 	"""docstring for DetilHullerForm"""

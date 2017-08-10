@@ -363,7 +363,8 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
               $('#id_tanggal_jual_beli').val(respon.data.id_tanggal_jual_beli)
             }
             $('#id_atas_nama_jual_beli').val(respon.data.id_atas_nama_jual_beli)
-
+            $('#id_no_surat_pemberitahuan').val(respon.data.id_no_surat_pemberitahuan)
+            $('#id_tanggal_surat_pemberitahuan').val(respon.data.id_tanggal_surat_pemberitahuan)
             $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
             $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
                     
@@ -571,9 +572,11 @@ function load_data_no_ptp(id_sertifikat_tanah){
           $('#id_table_no_ptp_konfirmasi > tbody > tr:first').remove()
           for (var i = 0; i < a; i++){
             no_ptp = b[i].no_ptp
+            tanggal_ptp = b[i].tanggal_ptp
 
             row = '<tr>'
             row += '<td>'+no_ptp+'</td>'
+            row += '<td>'+tanggal_ptp+'</td>'
             row += '</tr>'
             $('#id_table_no_ptp_konfirmasi > tbody').prepend(row);
           }
