@@ -289,19 +289,23 @@ class SurveyAdmin(admin.ModelAdmin):
 						r = Riwayat.objects.filter(pengajuan_izin=queryset_.pengajuan).last()
 						sent_ = 0
 						if r.created_by:
-							emailto = r.created_by.email
-							if r.created_by.notifikasi_email:
-								if emailto:
-									subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
-									html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
-									sent_ = send_email_notifikasi(emailto, subject, html_content)
-									# print sent_
-							if r.created_by.notifikasi_telegram:
-								try:
-									noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
-									kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
-								except NotifikasiTelegram.DoesNotExist:
-									pass
+							try:
+								creadted_obj = Pegawai.objects.get(id=request.user.id)
+								emailto = creadted_obj.email
+								if creadted_obj.notifikasi_email:
+									if emailto:
+										subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+										html_content = str(get_pegawai_skpd)+"-"+str(get_pegawai_skpd.unit_kerja)+" Telah mengisi berita acara."
+										sent_ = send_email_notifikasi(emailto, subject, html_content)
+										# print sent_
+								if creadted_obj.notifikasi_telegram:
+									try:
+										noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
+										kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
+									except NotifikasiTelegram.DoesNotExist:
+										pass
+							except ObjectDoesNotExist:
+								pass
 						if sent_ == 1:
 							messages.success(request, str(queryset_.no_survey)+" Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
 						else:

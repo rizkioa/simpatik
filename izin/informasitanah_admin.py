@@ -186,6 +186,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

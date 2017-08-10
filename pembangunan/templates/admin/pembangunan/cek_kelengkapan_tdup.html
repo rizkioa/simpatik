@@ -422,10 +422,10 @@
     <section class="tile">
         <!-- tile body -->
         <div class="tile-body">
-          <h3>Laporan Survey</h3>
+          <!-- <h3>Laporan Survey</h3> -->
            <form class="form_rekomendasi form-horizontal" role="form" action="" method="POST" enctype="multipart/form-data">
            {% csrf_token %}
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-md-6">
                 <div class="form-group {% if form_detil.kondisi_lahan_usaha.errors %} has-error {% endif %}">
                     <label class="col-sm-3 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha</label>
@@ -507,7 +507,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
             <h3>REKOMENDASI</h3>
             <div class="row">
               <div class="col-md-12">
@@ -547,10 +547,10 @@
         <!-- tile body -->
         <div class="tile-body">
           
-          <h3>Laporan Survey</h3>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
+          <!-- <h3>Laporan Survey</h3> -->
+          <!-- <div class="row"> -->
+            <!-- <div class="col-md-6"> -->
+              <!-- <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
 
               </div>
@@ -568,9 +568,9 @@
               </div>
               <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
-              </div>
-            </div>
-            <div class="col-md-6">
+              </div> -->
+            <!-- </div> -->
+            <!-- <div class="col-md-6">
               <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
               </div>
@@ -583,8 +583,8 @@
               <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
               </div>
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
           <h3>REKOMENDASI</h3>
             {% if user|has_group:"Tim Teknis" %}
               {% if rekom.status != 1 %}
