@@ -425,8 +425,8 @@
           <!-- <h3>Laporan Survey</h3> -->
            <form class="form_rekomendasi form-horizontal" role="form" action="" method="POST" enctype="multipart/form-data">
            {% csrf_token %}
-            <!-- <div class="row">
-              <div class="col-md-6">
+            <!-- <div class="row"> -->
+              <!-- <div class="col-md-6">
                 <div class="form-group {% if form_detil.kondisi_lahan_usaha.errors %} has-error {% endif %}">
                     <label class="col-sm-3 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha</label>
                     <div class="col-sm-9">
@@ -527,16 +527,13 @@
               {{form_berkas.as_p}}
             {% endif %}
            
-              <hr>
-              <button name="simpan" value="draft" class="btn btn-rounded btn-info btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Simpan & Draft</button>
-              <button name="simpan" value="submit" class="btn btn-rounded btn-success btn-sm simpan"><i class="fa  fa-paper-plane"></i> Simpan & Kirim </button>
+            <hr>
+            <button name="simpan" value="draft" class="btn btn-rounded btn-info btn-sm"><i class="glyphicon glyphicon-floppy-disk"></i> Simpan & Draft</button>
+            <button name="simpan" value="submit" class="btn btn-rounded btn-success btn-sm simpan"><i class="fa  fa-paper-plane"></i> Simpan & Kirim </button>
               
-            </form>
+          </form>
         </div>
-        <!-- /tile body -->
-
     </section>
-    <!-- /tile -->
   </div>
 </div>
 {% else %}
@@ -548,9 +545,9 @@
         <div class="tile-body">
           
           <!-- <h3>Laporan Survey</h3> -->
-          <!-- <div class="row"> -->
-            <!-- <div class="col-md-6"> -->
-              <!-- <div class="form-group">
+          <div class="row">
+            <!-- <div class="col-md-6">
+              <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
 
               </div>
@@ -568,9 +565,9 @@
               </div>
               <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
-              </div> -->
-            <!-- </div> -->
-            <!-- <div class="col-md-6">
+              </div>
+            </div>
+            <div class="col-md-6">
               <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
               </div>
@@ -583,9 +580,10 @@
               <div class="form-group">
                 <label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
               </div>
-            </div> -->
-          <!-- </div> -->
-          <h3>REKOMENDASI</h3>
+            </div>
+          </div> -->
+          <div class="col-md-12">
+            <h3>REKOMENDASI</h3>
             {% if user|has_group:"Tim Teknis" %}
               {% if rekom.status != 1 %}
                 <form class="form_rekomendasi" role="form" action="" method="POST" enctype="multipart/form-data">
@@ -614,6 +612,8 @@
                 <a data-toggle="popover" data-trigger="hover" title="Preview Berkas" data-html="true" data-content="<img src='{{rekom.berkas.get_file_url }}' width='200' />" class="btn btn-rounded btn-success btn-sm" href="{{rekom.berkas.get_file_url }}" target="_blank"> <i class="fa fa-paperclip" ></i> {{rekom.berkas }}</a>
               {% endif %}
             {% endif %}
+          </div>
+          
         </div>
         <!-- /tile body -->
 
@@ -627,9 +627,9 @@
 
 {% block extrajs %}
 {{ block.super }}
-  <script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+  <script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %} " ></script>
-  <script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
-  <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-  <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+  <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 {% endblock %}

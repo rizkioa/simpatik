@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.min.css' %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/lightbox/css/lightbox.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		.label-color{
 			color: white;
@@ -397,8 +398,6 @@
 							</div>
 
 							{% include "admin/izin/survey_1.html" %}
-
-							
 
 							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
@@ -1213,7 +1212,9 @@
 	<script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
+	<script src="{% static 'scripts/js/iujk.js' %}"></script>
 	<script>
         function change_edit_pengajuan(){
         	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
