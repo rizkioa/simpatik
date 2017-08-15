@@ -59,7 +59,14 @@
     }
     /* END HALAMAN */
    
-    
+    #qrcodeTable canvas{
+        padding: 2px;
+        border-radius: 3px;
+        border: 3px solid #000;
+        /*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+        width: 110px;
+        height: 110px;
+    }
 </style>
 
 <page size="F4">
@@ -75,7 +82,7 @@
         <div class="row">
             <div class="col-12">
                 <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
-                <font color="red">Masa berlaku pengajuan s/d {{ pengajuan.created_at|add_date:3|date:"d F Y" }}</font></h5>
+                <font color="red">Masa berlaku pengajuan s/d {% if pengajuan.created_at %}{{ pengajuan.created_at|add_date:3|date:"d F Y" }}{% endif %}</font></h5>
             </div>
         </div>
         <div>
@@ -265,4 +272,68 @@
             FR.readAsDataURL( this.files[0] );
         }
     }
+</script>
+<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+<script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
+<script type="text/javascript">
+    function Exit() {
+        var x=confirm('Are You sure want to exit:');
+        if(x) window.close();
+    }
+    {% if pengajuan.no_izin %}
+        $('#qrcodeTable').qrcode({
+            // render method: 'canvas', 'image' or 'div'
+            render: 'canvas',
+            
+            // qrsize: 1,
+            // version range somewhere in 1 .. 40
+
+            // width    : 110,
+            // height   : 110,
+
+            minVersion: 1,
+            maxVersion: 40,
+
+            // error correction level: 'L', 'M', 'Q' or 'H'
+            ecLevel: 'Q',
+            // offset in pixel if drawn onto existing canvas
+            left: 0,
+            top: 0,
+            // size in pixel
+            size: 500,
+
+            // code color or image element
+            fill: '#000',
+
+            // background color or image element, null for transparent background
+            // background: '#707aec',
+            // background : logo,
+            // mSize: 0.4,
+
+            text    : "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+
+            radius: 0.5,
+
+            // quiet zone in modules
+            quiet: 0,
+
+            // modes
+            // 0: normal
+            // 1: label strip
+            // 2: label box
+            // 3: image strip
+            // 4: image box
+            mode: 0,
+
+            mSize: 0.2,
+            mPosX: 0.5,
+            mPosY: 0.5,
+
+            label: 'no label',
+            fontname: 'sans',
+            fontcolor: '#000',
+
+            // image: logo,
+        });
+    {% endif %}
 </script>

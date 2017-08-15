@@ -522,7 +522,7 @@ class SKIzin(MetaAtribut):
 		created_at = ''
 		if self.created_at:
 			created_at = self.created_at.strftime('%d-%m-%Y')
-		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan, keterangan=keterangan, created_at=created_at)
+		return dict(nama_pejabat=nama_pejabat, jabatan_pejabat=jabatan_pejabat, nip_pejabat=nip_pejabat, masa_berlaku_izin=masa_berlaku_izin, status_pendaftaran=status_pendaftaran, status_pembaharuan_ke=status_pembaharuan_ke, status_perusahaan=status_perusahaan, keterangan=keterangan, created_at=created_at, status=self.status)
 
 	class Meta:
 		# ordering = ['-status', '-updated_at',]
