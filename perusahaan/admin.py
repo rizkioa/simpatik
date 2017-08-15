@@ -26,6 +26,30 @@ class JenisPerusahaanAdmin(admin.ModelAdmin):
 class KBLIAdmin(admin.ModelAdmin):
 	list_display = ('kode_kbli','nama_kbli', 'versi')
 	search_fields = ('nama_kbli',)
+	actions = ('get_export_csv',)
+
+	def get_export_csv(modeladmin, request, queryset):
+		import csv
+		from django.utils.encoding import smart_str
+		response = HttpResponse(content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename=kbli.csv'
+		writer = csv.writer(response, csv.excel)
+		response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+		writer.writerow([
+			smart_str(u"ID"),
+			smart_str(u"Kode KBLI"),
+			smart_str(u"Nama KBLI"),
+			smart_str(u"Versi"),
+		])
+		for obj in queryset:
+			writer.writerow([
+				smart_str(obj.pk),
+				smart_str(obj.kode_kbli),
+				smart_str(obj.nama_kbli),
+				smart_str(obj.versi),
+			])
+		return response
+	get_export_csv.short_description = u"Export CSV"
 
 class KelembagaanAdmin(admin.ModelAdmin):
 	list_display = ('kelembagaan','keterangan')
