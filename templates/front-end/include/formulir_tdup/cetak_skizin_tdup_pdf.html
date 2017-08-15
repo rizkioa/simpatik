@@ -1,0 +1,375 @@
+{% load i18n admin_static staticfiles widgets access %}
+
+<style type="text/css">
+	page[size="F4"] {  
+		width: 8.27in;
+		height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
+	}
+	.row::after {
+		content: "";
+		clear: both;
+		display: block;
+		/*padding-block-start: 20px;*/
+		/*padding: 20px;*/
+	}
+	[class*="col-"] {
+		float: left;
+		padding: 10px;
+		/*border: 1px solid red;*/
+	}
+	.col-1 {width: 8.33%;}
+	.col-2 {width: 16.66%;}
+	.col-3 {width: 25%;}
+	.col-4 {width: 33.33%;}
+	.col-5 {width: 41.66%;}
+	.col-6 {width: 50%;}
+	.col-7 {width: 58.33%;}
+	.col-8 {width: 66.66%;}
+	.col-9 {width: 75%;}
+	.col-10 {width: 83.33%;}
+	.col-11 {width: 91.66%;}
+	.col-12 {width: 100%;}
+
+	.skizin{
+		font-size: 14px;
+		padding: 5px;
+	}
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	th, td {
+		padding: 7px;
+	}
+	.tdnone{
+		border-left: none;
+		border-right: none;
+	}
+
+	#qrcodeTable canvas{
+		padding: 2px;
+		border-radius: 3px;
+		border: 3px solid #000;
+		/*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+		width: 90px;
+		height: 90px;
+	}
+</style>
+
+<page size="F4">
+	<div id="kop_surat_id" class="printhide">
+		<table>
+			<tr>
+				<td width="10%">
+					<img id="logo" src="http://{{request.META.HTTP_HOST}}{% static 'images/kabkediri.png' %}" width="120px"><p id="logo_"></p>
+				</td>
+				<td width="90%">
+					<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
+						<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+						<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+						<br/>
+						<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
+						<span style="font-size: 19px; padding-left: 220px;"><b>KEDIRI</b></span>
+						<span style="font-size: 15px; padding-left: 105px;">Kode Pos : 64182</span>
+					</p>
+				</td>
+			</tr>
+		</table>
+		<hr style="border-top: 4px double #8c8b8b;border-width: 3px;">
+	</div>
+	<br>
+	<div style="display: none; width: 100%;" class="printpadding">
+	</div>
+	<br>
+	<center>
+		<br>
+		<font style="font-size: 22px"><b>TANDA DAFTAR USAHA PARIWISATA</b></font><br><!-- 
+		<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
+		<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br> -->
+	</center>
+	<br>
+	<br>
+	<table width="100%" class="skizin" border="2">
+		<tr>
+			<td width="5%" align="center"><b>1.</b></td>
+			<td width="40%" class="tdnone"><b>Nomor Pendaftaran Usaha Pariwisata</b></td>
+			<td width="5%" class="tdnone">:</td>
+			<td width="50%" class="tdnone">{% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>2.</b></td>
+			<td class="tdnone"><b>Tanggal Pendaftaran Usaha Pariwisata</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>3.</b></td>
+			<td class="tdnone"><b>Nama Perusahaan</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}}</b></td>
+		</tr>
+		<tr>
+			<td align="center"><b>4.</b></td>
+			<td class="tdnone"><b>Alamat Perusahaan</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{{pengajuan.perusahaan.alamat_perusahaan.upper}}, {{pengajuan.perusahaan.desa.lokasi_lengkap.upper}}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>5.</b></td>
+			<td class="tdnone"><b>Alamat Lokasi Usaha</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{{pengajuan.lokasi_usaha_pariwisata.upper}}, {{pengajuan.desa_lokasi.lokasi_lengkap.upper}}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>6.</b></td>
+			<td class="tdnone"><b>Nama Pengusaha</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone"><b>{{pengajuan.pemohon.nama_lengkap.upper}}</b></td>
+		</tr>
+		<tr>
+			<td align="center"><b>7.</b></td>
+			<td class="tdnone"><b>Nomor Telepon</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{% if pengajuan.telephone %}{{pengajuan.telephone}}{% else %}{{pengajuan.pemohon.telephone}}{% endif %}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>8.</b></td>
+			<td class="tdnone"><b>Nama Pengurus Badan Usaha</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">
+				{% if pengurusbadanusaha_list %}
+					{% for i in pengurusbadanusaha_list %}
+						{{i.nama_lengkap.upper}} {% if not forloop.last %}, {% endif %}
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td align="center"><b>9.</b></td>
+			<td class="tdnone"><b>Bidang Usaha Jenis Usaha</b></td>
+			<td class="tdnone" valign="top">:</td>
+			<td class="tdnone" valign="top">{{pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata.upper}}{% if pengajuan.jenis_usaha_pariwisata %}, <br>{{pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata.upper}}{% if pengajuan.sub_jenis_usaha_pariwisata %}, <br>{{pengajuan.sub_jenis_usaha_pariwisata.nama_sub_jenis.upper}}{% endif %}{% endif %}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>10.</b></td>
+			<td class="tdnone"><b>Merk Usaha</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{{pengajuan.nama_usaha.upper}}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>11.</b></td>
+			<td class="tdnone"><b>Nomor dan Tanggal Akta Pendirian Badan Usaha Beserta Perubahannya Bila Ada</b></td>
+			<td class="tdnone" valign="top">:</td>
+			<td class="tdnone" valign="top">{% if legalitas_1 %}{{legalitas_1.nomor_pengesahan.upper}} TANGGAL {{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}{% endif %}
+			{% if legalitas_2 %}, <br>{{legalitas_2.nomor_pengesahan.upper}} TANGGAL {{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}{% endif %}</td>
+		</tr>
+		<tr>
+			<td align="center"><b>12.</b></td>
+			<td class="tdnone"><b>Nama Izin dan Nomor Ijin Teknis</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">
+				{% if izinlaintdup %}
+					{% for i in izinlaintdup %}
+						{{i.no_izin.upper}} TANGGAL {{i.tanggal_izin|date:'d-m-Y'}}{% if not forloop.last %},<br> {% endif %}
+					{% endfor %}
+				{% endif %}
+			</td>
+		</tr>
+		<tr>
+			<td align="center"><b>13.</b></td>
+			<td class="tdnone"><b>Nomor Dokumen Lingkungan Hidup</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{{pengajuan.nomor_dokumen_pengelolaan.upper}} TANGGAL {{pengajuan.tanggal_dokumen_pengelolaan|date:'d-m-Y'}}</td>
+		</tr>
+		{% if pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata == "Bidang Usaha Jasa Transportasi Pariwisata" %}
+		<tr>
+			<td align="center"><b>14.</b></td>
+			<td class="tdnone"><b>Jumlah Unit</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">
+				{% if pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Jalan Wisata" %}
+                    {{pengajuan.rincian_sub_jenis.jumlah_unit_angkutan_jalan_wisata}}
+                {% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Kereta Api Wisata" %}
+                    {{pengajuan.rincian_sub_jenis.jumlah_unit_angkutan_kereta_api_wisata}}
+                {% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Sungai dan Danau Wisata" %}
+                    {{pengajuan.rincian_sub_jenis.jumlah_unit_angkutan_sungai_dan_danau_wisata}}
+                {% endif %}
+				UNIT
+			</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<td align="center"><b>
+				{% if pengajuan.bidang_usaha_pariwisata.nama_bidang_usaha_pariwisata == "Bidang Usaha Jasa Transportasi Pariwisata" %}
+				15.
+				{% else %}
+				14.
+				{% endif %}
+			</b></td>
+			<td class="tdnone"><b>Kapasitas</b></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">
+				{% if pengajuan.rincian_sub_jenis %}
+					{% if pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Restoran"  %}
+						{{pengajuan.rincian_sub_jenis.jumlah_kursi_restoran}} KURSI
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Rumah Makan" %}
+						{{pengajuan.rincian_sub_jenis.jumlah_kursi_rumah_makan}} KURSI
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Bar / Rumah Minum" %}
+						{{pengajuan.rincian_sub_jenis.jumlah_kursi_bar_atau_rumah_minum}} KURSI
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Kafe" %}
+						{{pengajuan.rincian_sub_jenis.jumlah_kursi_kafe}} KURSI
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Pusat Makanan" %}
+						{{pengajuan.rincian_sub_jenis.jumlah_stand_pusat_makanan}} STAND
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Jasa Boga" %}
+						{{pengajuan.rincian_sub_jenis.kapasitas_produksi_jasa_boga}} UNIT/BULAN
+
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Jalan Wisata" %}
+						{{pengajuan.rincian_sub_jenis.kapasitas_angkutan_jalan_wisata}}
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Kereta Api Wisata" %}
+						{{pengajuan.rincian_sub_jenis.kapasitas_angkutan_kereta_api_wisata}}
+					{% elif pengajuan.jenis_usaha_pariwisata.nama_jenis_usaha_pariwisata == "Angkutan Sungai dan Danau Wisata" %}
+						{{pengajuan.rincian_sub_jenis.kapasitas_angkutan_sungai_dan_danau_wisata}}
+					{% else %}
+					
+					{% endif %}
+				{% else %}
+					-
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+	<table width="100%" border="0" style="font-size: 13px; padding: 2px;">
+		<tr>
+			<td valign="top">1.</td>
+			<td align="justify">Tanda Daftar Usaha Pariwisata ini berlaku selama perusahaan masih menjalankan kegiatan usaha pariwisata sesuai dengan Tanda Daftar Usaha Pariwisata ini.</td>
+		</tr>
+		<tr>
+			<td valign="top">2.</td>
+			<td>Tanda Daftar Usaha Pariwisata ini dapat dibatalkan apabila:</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>a. Terkena sanksi penghentian tetap kegiatan usaha sesuai dengan ketentuan peraturan perundang-undangan;</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>b. Tidak menyelenggarakan kegiatan usaha secara terus menerus untuk jangka waktu 1 (satu) tahun lebih;</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>c. Membubarkan usahanya.</td>
+		</tr>
+		<tr>
+			<td valign="top">3.</td>
+			<td>Pengusaha wajib mengembalikan Tanda Daftar Usaha Pariwisata yang telah dibatalkan.</td>
+		</tr>
+		<tr>
+			<td valign="top">4.</td>
+			<td align="justify">Pengusaha wajib mengajukan permohonan pemutakhiran Tanda Daftar Usaha Pariwisata apabila terdapat suatu perubahan kondisi terhadap hal yang tercantum di dalam Tanda Daftar Usaha Pariwisata paling lambat 30 (tiga puluh) hari kerja setelah suatu perubahan terjadi.</td>
+		</tr>
+	</table>
+	<div style="float: left; width: 50%">
+		<div style="padding-left: 10%;padding-top: 46px;">
+			<div id="qrcodeTable">
+			</div>
+		</div>
+	</div>
+	<div style="float: right; width: 50%">
+		<p style="font-size:17px; padding-left: 0%;" align="center">
+			{% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
+
+			{% if skizin.nama_pejabat %}
+			<br>Kepala DPMPTSP
+			<br>KABUPATEN KEDIRI
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<u><b>{{ skizin.nama_pejabat }}</b></u><br>
+			<span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
+			<span>NIP: {{skizin.nip_pejabat}}</span>
+			{% endif %}
+		</p>
+	</div>
+</page>
+
+<script src="http://{{request.META.HTTP_HOST}}{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+<script src="http://{{request.META.HTTP_HOST}}{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
+<script type="text/javascript">
+	// readFile("logo", "logo_")
+    function readFile(encode_, decode_) {
+        if (this.files && this.files[0]) {
+            var FR= new FileReader();
+            
+            FR.addEventListener("load", function(e) {
+                document.getElementById(encode_).src       = e.target.result;
+                document.getElementById(decode_).innerHTML = e.target.result;
+            }); 
+            
+            FR.readAsDataURL( this.files[0] );
+        }
+    }
+</script>
+<script type="text/javascript">
+	function Exit() {
+	    var x=confirm('Are You sure want to exit:');
+	    if(x) window.close();
+    }
+    {% if pengajuan.no_izin %}
+	    $('#qrcodeTable').qrcode({
+	    	// render method: 'canvas', 'image' or 'div'
+	    	render: 'canvas',
+			
+			// qrsize: 1,
+			// version range somewhere in 1 .. 40
+
+			// width 	: 110,
+			// height 	: 110,
+
+		    minVersion: 1,
+		    maxVersion: 40,
+
+		    // error correction level: 'L', 'M', 'Q' or 'H'
+		    ecLevel: 'Q',
+		    // offset in pixel if drawn onto existing canvas
+		    left: 0,
+		    top: 0,
+		    // size in pixel
+		    size: 500,
+
+		    // code color or image element
+		    fill: '#000',
+
+		    // background color or image element, null for transparent background
+			// background: '#707aec',
+			// background : logo,
+			// mSize: 0.4,
+
+			text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+
+			radius: 0.5,
+
+			// quiet zone in modules
+			quiet: 0,
+
+			// modes
+		    // 0: normal
+		    // 1: label strip
+		    // 2: label box
+		    // 3: image strip
+		    // 4: image box
+		    mode: 0,
+
+		    mSize: 0.2,
+		    mPosX: 0.5,
+		    mPosY: 0.5,
+
+			label: 'no label',
+			fontname: 'sans',
+			fontcolor: '#000',
+
+			// image: logo,
+		});
+	{% endif %}
+</script>

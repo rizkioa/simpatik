@@ -72,13 +72,15 @@ class PengajuanIzinResource(CORSModelResource):
 			data = data.filter(id__in=id_pengajuan_list)
 		elif request.user.groups.filter(name='Bupati'):
 			# print "DISINI"
+			kode = ['503.08', 'TDP-PT', 'TDP-CV', 'TDP-FIRMA', 'TDP-PERORANGAN', 'TDP-KOPERASI', 'TDP-BUL']
 			data = data.filter(status=12)
 			# print data
 			id_list = SKIzin.objects.filter(status=12).values_list('pengajuan_izin_id', flat=True)
 			# print id_list
 			id_pengajuan_list += id_list
 			data = data.filter(id__in=id_pengajuan_list)
-			print data
+			data = data.filter(kelompok_jenis_izin__kode__in=kode)
+			# print data
 			# print data
 		data = data.order_by('-updated_at')
 		return data
