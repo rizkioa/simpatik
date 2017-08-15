@@ -896,6 +896,7 @@ class DetilIMBPapanReklame(PengajuanIzin):
 		verbose_name_plural = 'Detil IMB Papan Reklame'
 
 class DetilIMB(PengajuanIzin):
+	perusahaan= models.ForeignKey('perusahaan.Perusahaan', related_name='detilimb_perusahaan', blank=True, null=True)
 	bangunan = models.CharField(verbose_name="Bangunan", max_length=150)
 	luas_bangunan = models.DecimalField(max_digits=6, decimal_places=2, default=0,verbose_name='Luas Bangunan')
 	jumlah_bangunan = models.IntegerField(verbose_name="Jumlah Bangunan", null=True, blank=True)

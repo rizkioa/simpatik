@@ -121,9 +121,9 @@ class SurveyAdmin(admin.ModelAdmin):
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
 				perusahaan_ = pengajuan_.perusahaan
-				if pengajuan_.perusahaan.desa:
-					kec = pengajuan_.perusahaan.desa.kecamatan
-
+				if pengajuan_.perusahaan:	
+					if pengajuan_.perusahaan.desa:
+						kec = pengajuan_.perusahaan.desa.kecamatan
 		return kec
 	get_perusahaan_lokasi.short_description = "Kec. Lokasi"
 
@@ -145,7 +145,12 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_tdup', args=(obj.id, ))
 		elif kode_ijin == "503.07/":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
-
+		elif kode_ijin == "503.01.06/":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
+		elif kode_ijin == "503.01.04/":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
+		elif kode_ijin == "503.01.05/":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
 		if status == 4 or status == 8:
 			aksi = mark_safe("""
 				<a href="%s" data-toggle='tooltip' data-container='body' data-original-title='Lihat Detail' > %s </a>
@@ -412,9 +417,12 @@ class SurveyAdmin(admin.ModelAdmin):
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=queryset_.pengajuan.id)
-				perusahaan_ = pengajuan_.perusahaan
+				try:
+					perusahaan_ = pengajuan_.perusahaan
+					extra_context.update({ 'perusahaan': perusahaan_ })
+				except ObjectDoesNotExist:
+					pass
 
-				extra_context.update({ 'perusahaan': perusahaan_ })
 
 			try:
 				status = queryset_.survey_iujk.get(pegawai=request.user)
