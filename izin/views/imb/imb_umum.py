@@ -185,14 +185,16 @@ def imb_save_cookie(request):
 			pengajuan_ = DetilIMB.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			IMBUmum = DetilIMBForm(request.POST, instance=pengajuan_)
 			if IMBUmum.is_valid():
+				print "valid"
 				if 'id_perusahaan' in request.COOKIES.keys():
 					if request.COOKIES['id_perusahaan'] != '0':
+						print "perusahaan"
 						pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
 						pengajuan_.pemohon_id  = request.COOKIES['id_pemohon']
 						pengajuan_.save()
-				else:
-					pengajuan_.pemohon_id  = request.COOKIES['id_pemohon']
-					pengajuan_.save()	
+					else:
+						pengajuan_.pemohon_id  = request.COOKIES['id_pemohon']
+						pengajuan_.save()	
 				letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 				ukuran_ = "Luas Bangunan = "+str(int(pengajuan_.luas_bangunan))+", Luas Tanah"+str(int(pengajuan_.luas_tanah))      
 				data = {'success': True,
