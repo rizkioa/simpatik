@@ -112,13 +112,13 @@
 			<td align="center"><b>4.</b></td>
 			<td class="tdnone"><b>Alamat Perusahaan</b></td>
 			<td class="tdnone">:</td>
-			<td class="tdnone">{{alamat.upper}}</td>
+			<td class="tdnone">{{pengajuan.perusahaan.alamat_perusahaan.upper}}, {{pengajuan.perusahaan.desa.lokasi_lengkap.upper}}</td>
 		</tr>
 		<tr>
 			<td align="center"><b>5.</b></td>
 			<td class="tdnone"><b>Alamat Lokasi Usaha</b></td>
 			<td class="tdnone">:</td>
-			<td class="tdnone">{{lokasi_usaha_pariwisata.upper}}</td>
+			<td class="tdnone">{{pengajuan.lokasi_usaha_pariwisata.upper}}, {{pengajuan.desa_lokasi.lokasi_lengkap.upper}}</td>
 		</tr>
 		<tr>
 			<td align="center"><b>6.</b></td>
@@ -139,7 +139,7 @@
 			<td class="tdnone">
 				{% if pengurusbadanusaha_list %}
 					{% for i in pengurusbadanusaha_list %}
-						{{i.nama_lengkap}} {% if not forloop.last %}, {% endif %}
+						{{i.nama_lengkap.upper}} {% if not forloop.last %}, {% endif %}
 					{% endfor %}
 				{% endif %}
 			</td>
