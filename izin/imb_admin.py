@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 
-from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey,DetilBangunanIMB
 from kepegawaian.models import Pegawai,UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
@@ -148,13 +148,13 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				h = h.last()
 			h = h.user_set.all()
 			extra_context.update({'pegawai_list' : h })
-
+			
 			try:
 				try:
 					s = Survey.objects.get(pengajuan=pengajuan_)
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
-					print s.survey_iujk.all()
+					# print s.survey_iujk.all()
 			except ObjectDoesNotExist:
 				s = ''
 
@@ -167,8 +167,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
 			except ObjectDoesNotExist:
-				print "WASEM"
-			
+				pass
+				# print "WASEM"
+
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_umum.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -222,7 +223,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
 					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
 					terbilang_ = terbilang(n)
@@ -230,6 +231,16 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'terbilang': terbilang_ })
 			except ObjectDoesNotExist:
 				pass
+			try:
+				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
+				bk_1 = detil_bangunan_.filter(detil_bangunan_imb__kode="BK23").last()
+				if bk_1:
+					extra_context.update({'bk_1': bk_1 })
+				if detil_bangunan_:
+					extra_context.update({'detil_bangunan': detil_bangunan_ })
+			except ObjectDoesNotExist:
+				pass
+
 		template = loader.get_template("front-end/include/imb_umum/cetak_sk_imb_umum.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -343,7 +354,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
 					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
 					terbilang_ = terbilang(n)

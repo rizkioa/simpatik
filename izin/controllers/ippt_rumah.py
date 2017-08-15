@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, JenisPemohon, JenisReklame,ParameterBangunan
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, InformasiTanah, SertifikatTanah,AktaJualBeliTanah,NoPTP
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_ippt_rumah(request):
@@ -46,6 +46,15 @@ def formulir_ippt_rumah(request):
 						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
 						extra_context.update({ 'paspor': paspor_ })
 						extra_context.update({'cookie_file_ktp': ktp_.berkas })
+					if 'id_pengajuan' in request.COOKIES.keys():
+						if request.COOKIES['id_pengajuan'] != '':
+						  sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+						  akta_jual_beli_list = AktaJualBeliTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+						  no_ptp_list = NoPTP.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+
+						  extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+						  extra_context.update({'akta_jual_beli_list': akta_jual_beli_list})
+						  extra_context.update({'no_ptp_list': no_ptp_list})
 
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })

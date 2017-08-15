@@ -79,6 +79,12 @@ RUWASJA = (
 	(3, 3),
 )
 
+SATUAN = (
+	('M','M'),
+	('M1','M1'),
+	('M2','M2'),
+)
+
 import datetime
 
 def get_tahun_choices(sejak):

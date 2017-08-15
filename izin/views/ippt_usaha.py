@@ -316,9 +316,9 @@ def ipptusaha_upload_berkas_pendukung(request):
                         else:
                             try:
                                 p = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
-                                print p
+                                # print p
                                 ktp_ = NomorIdentitasPengguna.objects.get(nomor=request.COOKIES['nomor_ktp'])
-                                print ktp_
+                                # print ktp_
                                 berkas = form.save(commit=False)
                                 if request.POST.get('aksi') == "1":
                                     berkas.nama_berkas = "Berkas Foto KTP/PASPOR"+ktp_.nomor
@@ -519,14 +519,14 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
             pengajuan_ = InformasiTanah.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
-            if pengajuan_.no_surat_kuasa:
-                id_no_surat_kuasa = pengajuan_.no_surat_kuasa
-            else:
-                id_no_surat_kuasa = ""
-            if pengajuan_.tanggal_surat_kuasa:
-                id_tanggal_surat_kuasa = pengajuan_.tanggal_surat_kuasa.strftime("%d-%m-%Y")
-            else:
-                id_tanggal_surat_kuasa = ""
+            # if pengajuan_.no_surat_kuasa:
+            #     id_no_surat_kuasa = pengajuan_.no_surat_kuasa
+            # else:
+            #     id_no_surat_kuasa = ""
+            # if pengajuan_.tanggal_surat_kuasa:
+            #     id_tanggal_surat_kuasa = pengajuan_.tanggal_surat_kuasa.strftime("%d-%m-%Y")
+            # else:
+            #     id_tanggal_surat_kuasa = ""
             if pengajuan_.tahun_sertifikat:
                 id_tahun_sertifikat = pengajuan_.tahun_sertifikat.strftime("%d-%m-%Y")
             else:
@@ -594,8 +594,8 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             id_jumlah_tanah_sudah_dikuasai = str(pengajuan_.jumlah_tanah_sudah_dikuasai)
 
             data = {'success': True,'data': {
-            'id_no_surat_kuasa': id_no_surat_kuasa,
-            'id_tanggal_surat_kuasa': id_tanggal_surat_kuasa,
+            # 'id_no_surat_kuasa': id_no_surat_kuasa,
+            # 'id_tanggal_surat_kuasa': id_tanggal_surat_kuasa,
             'id_alamat': id_alamat,
             'id_kecamatan': id_kecamatan,
             'id_desa': id_desa,
@@ -745,10 +745,12 @@ def load_data_pembiayaan_dan_pemodalan_ipptusaha(request,id_pengajuan):
             id_modal_kerja_lainnya = pengajuan_.modal_kerja_lainnya
             id_jumlah_modal_kerja = pengajuan_.jumlah_modal_kerja
 
+            id_jumlah_rencana_biaya = 0
             if pengajuan_.jumlah_modal_tetap or pengajuan_.jumlah_modal_kerja != '':
-                id_jumlah_rencana_biaya = int(id_jumlah_modal_tetap.replace(".",""))+int(id_jumlah_modal_kerja.replace(".",""))
-            else:
-                id_jumlah_rencana_biaya = 0
+                try:
+                    id_jumlah_rencana_biaya = int(id_jumlah_modal_tetap.replace(".",""))+int(id_jumlah_modal_kerja.replace(".",""))
+                except AttributeError:
+                    id_jumlah_rencana_biaya = 0
 
             id_modal_dasar = pengajuan_.modal_dasar
             id_modal_ditetapkan = pengajuan_.modal_ditetapkan
@@ -759,10 +761,12 @@ def load_data_pembiayaan_dan_pemodalan_ipptusaha(request,id_pengajuan):
             id_modal_lembaga_non_bank = pengajuan_.modal_lembaga_non_bank
             id_modal_pihak_ketiga = pengajuan_.modal_pihak_ketiga
 
+            id_jumlah_pinjaman_dalam = 0
             if id_modal_bank_pemerintah or id_modal_bank_swasta or id_modal_lembaga_non_bank or id_modal_pihak_ketiga != '':
-                id_jumlah_pinjaman_dalam = int(id_modal_bank_pemerintah.replace(".",""))+int(id_modal_bank_swasta.replace(".",""))+int(id_modal_lembaga_non_bank.replace(".",""))+int(id_modal_pihak_ketiga.replace(".",""))
-            else:
-                id_jumlah_pinjaman_dalam = 0
+                try:
+                    id_jumlah_pinjaman_dalam = int(id_modal_bank_pemerintah.replace(".",""))+int(id_modal_bank_swasta.replace(".",""))+int(id_modal_lembaga_non_bank.replace(".",""))+int(id_modal_pihak_ketiga.replace(".",""))
+                except AttributeError:
+                    id_jumlah_pinjaman_dalam = 0
 
             id_modal_pinjaman_luar_negeri = pengajuan_.modal_pinjaman_luar_negeri
             id_jumlah_investasi = pengajuan_.jumlah_investasi

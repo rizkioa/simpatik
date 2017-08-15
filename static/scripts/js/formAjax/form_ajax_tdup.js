@@ -476,7 +476,7 @@ function set_value_keterangan_usaha(pengajuan_id){
       url: __base_url__+'/layanan/tdup/keterangan-usaha/ajax/'+pengajuan_id,
       success: function (data) {
         respon_keterangan_usaha = $.parseJSON(data)
-        console.log(respon_keterangan_usaha)
+        // console.log(respon_keterangan_usaha)
         if (respon_keterangan_usaha.success){
           $('#id_nama_usaha').val(respon_keterangan_usaha.data.nama_usaha);
           $('#id_lokasi_usaha_pariwisata').val(respon_keterangan_usaha.data.lokasi_usaha_pariwisata);
@@ -596,7 +596,7 @@ function load_konfirmasi_tdup(pengajuan_id){
     url: __base_url__+'/layanan/tdup/konfirmasi/ajax/'+pengajuan_id,
     success: function (data) {
       resp = $.parseJSON(data)
-      console.log(resp)
+      // console.log(resp)
       if (resp[0].success){
         // Pemohon
         $('#jenis_permohonan_konfirmasi').html(resp[1].pemohon.jenis_pengajuan)
@@ -677,6 +677,43 @@ function load_konfirmasi_tdup(pengajuan_id){
           $('#sub_jasa_boga_konfirmasi').html('Kapasitas produksi/pack: '+resp[5].data_usaha.kapasitas_produksi_jasa_boga+' unit/buah')
         }
 
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/layanan/tdup/pengurus-badan-usaha/load/'+pengajuan_id,
+          success: function (respon) {
+            // console.log(respon)
+            respon = JSON.parse(respon)
+            if(respon.data.length > 0){
+              $.each( respon.data, function( index ) {
+                row = '<tr>'
+                no = index+1
+                row += '<td>'+no+'</td>'
+                row += '<td>'+respon.data[index].nomor_ktp+'</td>'
+                row += '<td>'+respon.data[index].nama_lengkap+'</td>'
+                row += '<td>'+respon.data[index].alamat+'</td>'
+                if(respon.data[index].telephone != ""){
+                  row += '<td>'+respon.data[index].telephone+'</td>'
+                }
+                else{
+                  row += '<td>-</td>'
+                }
+                if(respon.data[index].keterangan){
+                  row += '<td>'+respon.data[index].keterangan+'</td>'
+                }
+                else{
+                  row += '<td>-</td>'
+                }
+                row += '</tr>'
+                $('#table_pengurus_badan_usaha_konfirmasi > tbody').append(row)
+              })
+            }
+            else{
+              row = '<tr><td colspan="6" align="center">Kosong</td></tr>'
+              $('#table_pengurus_badan_usaha_konfirmasi > tbody').append(row)
+            }
+          },
+        })
+
         $('#nama_usaha_konfirmasi').html(resp[3].keterangan_usaha.nama_usaha)
         $('#lokasi_usaha_pariwisata_konfirmasi').html(resp[3].keterangan_usaha.lokasi_usaha_pariwisata)
         $('#telephone_usaha_konfirmasi').html(resp[3].keterangan_usaha.telephone)
@@ -690,7 +727,7 @@ function load_konfirmasi_tdup(pengajuan_id){
             if(izin_lain_json.length > 1){
               no = i+1
             }
-            console.log(no)
+            // console.log(no)
             
             row = '<tr>'
             row += '<td width="10%" style="padding-left:10px;">'+no+'</td>'
@@ -781,6 +818,7 @@ $(window).load(function(){
         }
         if($current == 3){
           set_value_data_usaha_pariwisata($.cookie('id_pengajuan'))
+          load_pengurus_badan_usaha($.cookie('id_pengajuan'))
         }
         if($current == 4){
           load_provinsi_(1, '#id_provinsi-3')

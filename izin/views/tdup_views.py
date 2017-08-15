@@ -1,7 +1,7 @@
 import os, json, datetime
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
-from izin.models import DetilTDUP, RincianSubJenis, IzinLainTDUP
+from izin.models import DetilTDUP, RincianSubJenis, IzinLainTDUP, PengurusBadanUsaha
 from izin.izin_forms import RincianSubJenisForm, KeteranganUsahaTDUPForm
 from izin.tdp_forms import BerkasForm
 from master.models import Berkas
@@ -705,11 +705,82 @@ def delete_data_izin_lain(request, id_izin_lain):
 	return HttpResponse(data)
 
 def load_data_izin_lain(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan.'}
 	izin_lain_json = []
 	if id_pengajuan:
 		izin_lain_list = IzinLainTDUP.objects.filter(detil_tdup_id=id_pengajuan)
 		if izin_lain_list:
 			izin_lain_json = [x.as_json() for x in izin_lain_list]
-	data = {'success': True, 'pesan': 'load konfirmasi berhasil', 'izin_lain_json': izin_lain_json}
-	response = HttpResponse(json.dumps(data))
-	return response
+			data = {'success': True, 'pesan': 'load konfirmasi berhasil', 'izin_lain_json': izin_lain_json}
+	return HttpResponse(json.dumps(data))
+
+
+def save_pengurus_badan_usaha(request):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan.'}
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES.get('id_pengajuan', None) is not None and request.COOKIES.get('id_pengajuan', None):
+			try:
+				pengajuan_obj = DetilTDUP.objects.get(id=request.COOKIES.get('id_pengajuan'))
+				try:
+					print "edit"
+					id_pengurusbadanusaha = None
+					if request.POST.get('id_pengurusbadanusaha', "") != "":
+						id_pengurusbadanusaha = request.POST.get('id_pengurusbadanusaha')
+					pengurus_badan_usaha_obj = PengurusBadanUsaha.objects.get(id=id_pengurusbadanusaha)
+					pengurus_badan_usaha_obj.nama_lengkap = request.POST.get('nama_lengkap')
+					pengurus_badan_usaha_obj.nomor_ktp = request.POST.get('nomor_ktp')
+					pengurus_badan_usaha_obj.alamat = request.POST.get('alamat')
+					pengurus_badan_usaha_obj.telephone = request.POST.get('telephone')
+					pengurus_badan_usaha_obj.keterangan = request.POST.get('keterangan')
+				except ObjectDoesNotExist:
+					print "add"
+					pengurus_badan_usaha_obj = PengurusBadanUsaha(
+						nomor_ktp = request.POST.get('nomor_ktp'),
+						nama_lengkap = request.POST.get('nama_lengkap'),
+						alamat = request.POST.get('alamat'),
+						telephone = request.POST.get('telephone'),
+						keterangan = request.POST.get('keterangan'),
+						detil_tdup_id = pengajuan_obj.id,
+						# created_at=datetime.datetime.now()
+						)
+				# pengurus_badan_usaha_obj, created = PengurusBadanUsaha.objects.get_or_create(id=request.POST.get('id_pengurusbadanusaha'), detil_tdup_id=pengajuan_obj.id, nama_lengkap=request.POST.get('nama_lengkap'), created_at=datetime.datetime.now())
+				# pengurus_badan_usaha_obj.detil_tdup_id = pengajuan_obj.id
+				
+				pengurus_badan_usaha_obj.save()
+				data = {'success': True, 'pesan': 'Proses simpan pengurus badan usaha berhasil.'}
+			except ObjectDoesNotExist:
+				pass
+	return HttpResponse(json.dumps(data))
+
+def load_pengurus_badan_usaha(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan.'}
+	pengurus_badan_usaha_json = []
+	if id_pengajuan:
+		pengurus_badan_usaha_list = PengurusBadanUsaha.objects.filter(detil_tdup_id=id_pengajuan)
+		if pengurus_badan_usaha_list.exists():
+			pengurus_badan_usaha_json = [x.as_json() for x in pengurus_badan_usaha_list]
+			data = {'success': True, 'pesan': 'load konfirmasi berhasil', 'data': pengurus_badan_usaha_json}
+	return HttpResponse(json.dumps(data))
+
+def load_edit_pengurus_badan_usaha(request, id_pengurusbadanusaha):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	as_json = {}
+	if id_pengurusbadanusaha:
+		try:
+			i = PengurusBadanUsaha.objects.get(id=id_pengurusbadanusaha)
+			as_json = i.as_json()
+			data = {'success': True, 'pesan': 'Data berhasil dihapus.', 'data':as_json}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
+
+def delete_pengurus_badan_usaha(request, id_pengurusbadanusaha):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	if id_pengurusbadanusaha:
+		try:
+			i = PengurusBadanUsaha.objects.get(id=id_pengurusbadanusaha)
+			i.delete()
+			data = {'success': True, 'pesan': 'Data berhasil dihapus.'}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))

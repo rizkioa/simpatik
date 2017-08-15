@@ -329,6 +329,7 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
             $('#id_alamat').val(respon.data.id_alamat)
             $('#id_luas').val(respon.data.id_luas)
             $('#id_status_tanah').val(respon.data.id_status_tanah)
+            $('#id_no_surat_pemberitahuan').val(respon.data.id_no_surat_pemberitahuan)
             $('#id_no_sertifikat_petak').val(respon.data.id_no_sertifikat_petak)
             $('#id_luas_sertifikat_petak').val(respon.data.id_luas_sertifikat_petak)
             $('#id_atas_nama_sertifikat_petak').val(respon.data.id_atas_nama_sertifikat_petak)
@@ -358,9 +359,12 @@ function load_data_informasi_tanah_izin_lokasi_dan_ippt_rumah(id_pengajuan){
             $('#id_status_tanah').val(respon.data.id_status_tanah)
 
             $('#id_no_jual_beli').val(respon.data.id_no_jual_beli)
-            $('#id_tanggal_jual_beli').val(respon.data.id_tanggal_jual_beli)
+            if (respon.data.id_tanggal_jual_beli != ""){
+              $('#id_tanggal_jual_beli').val(respon.data.id_tanggal_jual_beli)
+            }
             $('#id_atas_nama_jual_beli').val(respon.data.id_atas_nama_jual_beli)
-
+            $('#id_no_surat_pemberitahuan').val(respon.data.id_no_surat_pemberitahuan)
+            $('#id_tanggal_surat_pemberitahuan').val(respon.data.id_tanggal_surat_pemberitahuan)
             $('#id_penggunaan_sekarang').val(respon.data.id_penggunaan_sekarang)
             $('#id_rencana_penggunaan').val(respon.data.id_rencana_penggunaan)
                     
@@ -507,6 +511,82 @@ function load_data_tabel_sertifikat_tanah(id_sertifikat_tanah){
       }
     });
     $('#id_sertifikat_tanah_konfirmasi').mLoading('hide');
+  }
+}
+
+function load_data_tabel_akta_jual_beli(id_sertifikat_tanah){
+  if (id_sertifikat_tanah !== ""){
+    $('#id_table_akta_jual_beli_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/akta-jual-beli/load/'+id_sertifikat_tanah,
+      success: function (data) {
+        a = data.length
+
+        if(a === 0){
+          $('#id_table_akta_jual_beli_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_table_akta_jual_beli_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_table_akta_jual_beli_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            no_jual_beli = b[i].no_jual_beli
+            tanggal_jual_beli = b[i].tanggal_jual_beli
+            atas_nama_jual_beli = b[i].atas_nama_jual_beli
+
+            row = '<tr>'
+            row += '<td>'+no_jual_beli+'</td>'
+            row += '<td>'+tanggal_jual_beli+'</td>'
+            row += '<td>'+atas_nama_jual_beli+'</td>'
+            row += '</tr>'
+            $('#id_table_akta_jual_beli_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_table_akta_jual_beli_konfirmasi').mLoading('hide');
+  }
+}
+
+function load_data_no_ptp(id_sertifikat_tanah){
+  if (id_sertifikat_tanah !== ""){
+    $('#id_table_no_ptp_konfirmasi').mLoading();
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/no-ptp/load/'+id_sertifikat_tanah,
+      success: function (data) {
+        a = data.length
+
+        if(a === 0){
+          $('#id_table_no_ptp_konfirmasi > tbody > tr:first').remove()
+          table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#id_table_no_ptp_konfirmasi > tbody').prepend(table)
+        }
+        else{
+          b = data.reverse()
+          $('#id_table_no_ptp_konfirmasi > tbody > tr:first').remove()
+          for (var i = 0; i < a; i++){
+            no_ptp = b[i].no_ptp
+            tanggal_ptp = b[i].tanggal_ptp
+
+            row = '<tr>'
+            row += '<td>'+no_ptp+'</td>'
+            row += '<td>'+tanggal_ptp+'</td>'
+            row += '</tr>'
+            $('#id_table_no_ptp_konfirmasi > tbody').prepend(row);
+          }
+        }
+      },
+      error: function(data) {
+        toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+      }
+    });
+    $('#id_table_no_ptp_konfirmasi').mLoading('hide');
   }
 }
 

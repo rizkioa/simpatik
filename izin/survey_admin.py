@@ -280,7 +280,7 @@ class SurveyAdmin(admin.ModelAdmin):
 						form_rekom = form_rekom.save(commit=False)
 						form_rekom.survey_iujk = queryset_
 						form_rekom.unit_kerja = get_pegawai_skpd.unit_kerja
-						form_rekom.created_by = request.user
+						form_rekom.created_by_id = request.user.id
 						form_rekom.status = 1
 						form_rekom.berkas = b
 
@@ -738,19 +738,23 @@ class SurveyAdmin(admin.ModelAdmin):
 								r = Riwayat.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
 								sent_ = 0
 								if r.created_by:
-									emailto = r.created_by.email
-									if r.created_by.notifikasi_email:
-										if emailto:
-											subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
-											html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
-											sent_ = send_email_notifikasi(emailto, subject, html_content)
-											print sent_
-									if r.created_by.notifikasi_telegram:
-										try:
-											noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
-											kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
-										except NotifikasiTelegram.DoesNotExist:
-											pass
+									try:
+										creadted_obj = Pegawai.objects.get(id=r.created_by_id)
+										emailto = r.created_by.email
+										if creadted_obj.notifikasi_email:
+											if emailto:
+												subject = "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"]"
+												html_content = "Silahkan buka akun anda atau klik link berikut <a href='http://"+str(request.META['HTTP_HOST'])+"/admin/izin/detiliujk/view-pengajuan-iujk/"+str(id_pengajuan_izin_)+"'>Berita Acara</a> <br> <img src='http://simpatik.kedirikab.go.id:8889/static/images/wwa.png' style='background-color: darkgrey;'>"
+												sent_ = send_email_notifikasi(emailto, subject, html_content)
+												print sent_
+										if creadted_obj.notifikasi_telegram:
+											try:
+												noti = NotifikasiTelegram.objects.get(pegawai=r.created_by)
+												kirim_notifikasi_telegram(noti.chat_id, "Berita Acara Telah dibuat ["+str(queryset_.pengajuan.no_pengajuan)+"] oleh "+str(request.user), "Proses Pembuatan Rekomendasi", request.user)
+											except NotifikasiTelegram.DoesNotExist:
+												pass
+									except ObjectDoesNotExist:
+										messages.error(request, "Data pegawai tidak ditemukan.")
 										
 								if sent_ == 1:
 									messages.success(request, "Berhasil Di Simpan dan Berhasil Kirim Email Notifikasi")
@@ -865,6 +869,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			p.tanggal_survey = datetime.now()
 			# p.skpd = unit_kerja
 			p.status = 4
+			p.created_by_id = request.user.id
 			# p.kelompok_jenis_izin_id = request.POST.get('kelompok_jenis_izin_id')
 			p.save()
 

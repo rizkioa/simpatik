@@ -14,6 +14,7 @@ from django.db.models import Q
 from datetime import datetime
 from django.conf import settings
 from django.views import generic
+from django.shortcuts import get_object_or_404 
 import base64
 import time
 import json
@@ -21,9 +22,9 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, InformasiTanah,Pemohon
+from izin.models import PengajuanIzin, InformasiTanah,Pemohon,AktaJualBeliTanah,NoPTP
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.izin_forms import LuasTanahYangDisetujuiForm
+from izin.izin_forms import LuasTanahYangDisetujuiForm,AktaJualBeliTanahForm, NoPTPForm
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_ippt_rumah(request, extra_context={}):
@@ -108,6 +109,7 @@ def load_informasi_tanah(request,id_pengajuan):
           id_desa = ""
         id_luas = str(pengajuan_.luas)
         id_status_tanah = pengajuan_.status_tanah
+        id_no_surat_pemberitahuan = pengajuan_.no_surat_pemberitahuan
         id_no_sertifikat_petak = pengajuan_.no_sertifikat_petak
         id_luas_sertifikat_petak = str(pengajuan_.luas_sertifikat_petak)
         id_atas_nama_sertifikat_petak = pengajuan_.atas_nama_sertifikat_petak
@@ -117,6 +119,11 @@ def load_informasi_tanah(request,id_pengajuan):
         else:
           id_tahun_sertifikat = ""
 
+        if pengajuan_.tanggal_surat_pemberitahuan:
+          id_tanggal_surat_pemberitahuan = pengajuan_.tanggal_surat_pemberitahuan.strftime("%d-%m-%Y")
+        else:
+          id_tanggal_surat_pemberitahuan = ""
+
         id_no_persil = pengajuan_.no_persil
         id_klas_persil = pengajuan_.klas_persil
         id_atas_nama_persil = pengajuan_.atas_nama_persil
@@ -125,7 +132,7 @@ def load_informasi_tanah(request,id_pengajuan):
         id_penggunaan_tanah_sebelumnya = pengajuan_.penggunaan_tanah_sebelumnya
         id_arahan_fungsi_kawasan = pengajuan_.arahan_fungsi_kawasan
 
-        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan,'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan}}
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_surat_pemberitahuan':id_no_surat_pemberitahuan,'id_tanggal_surat_pemberitahuan':id_tanggal_surat_pemberitahuan,'id_no_sertifikat_petak':id_no_sertifikat_petak,'id_luas_sertifikat_petak':id_luas_sertifikat_petak,'id_atas_nama_sertifikat_petak':id_atas_nama_sertifikat_petak,'id_tahun_sertifikat':id_tahun_sertifikat,'id_no_persil':id_no_persil,'id_klas_persil':id_klas_persil,'id_atas_nama_persil':id_atas_nama_persil,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan,'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan}}
 
       elif pengajuan_.kelompok_jenis_izin.kode == "503.07/":
         kode_izin = pengajuan_.kelompok_jenis_izin.kode
@@ -144,13 +151,20 @@ def load_informasi_tanah(request,id_pengajuan):
         if pengajuan_.tanggal_jual_beli:
           id_tanggal_jual_beli = pengajuan_.tanggal_jual_beli.strftime("%d-%m-%Y")
         else:
-          id_tanggal_jual_beli = " "
+          id_tanggal_jual_beli = ""
         id_atas_nama_jual_beli = pengajuan_.atas_nama_jual_beli
+        id_no_surat_pemberitahuan = pengajuan_.no_surat_pemberitahuan
 
+        if pengajuan_.tanggal_surat_pemberitahuan:
+          id_tanggal_surat_pemberitahuan = pengajuan_.tanggal_surat_pemberitahuan.strftime("%d-%m-%Y")
+        else:
+          id_tanggal_surat_pemberitahuan = ""
+          
         id_penggunaan_sekarang = pengajuan_.penggunaan_sekarang
         id_rencana_penggunaan = pengajuan_.rencana_penggunaan
 
-        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_jual_beli':id_no_jual_beli,'id_tanggal_jual_beli':id_tanggal_jual_beli,'id_atas_nama_jual_beli':id_atas_nama_jual_beli,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
+
+        data = {'success': True,'data':{'kode_izin':kode_izin,'id_alamat':id_alamat ,'id_kecamatan':id_kecamatan ,'id_desa':id_desa,'id_no_surat_pemberitahuan':id_no_surat_pemberitahuan,'id_tanggal_surat_pemberitahuan':id_tanggal_surat_pemberitahuan,'id_luas':id_luas,'id_status_tanah':id_status_tanah,'id_no_jual_beli':id_no_jual_beli,'id_tanggal_jual_beli':id_tanggal_jual_beli,'id_atas_nama_jual_beli':id_atas_nama_jual_beli,'id_penggunaan_sekarang':id_penggunaan_sekarang,'id_rencana_penggunaan':id_rencana_penggunaan}}
 
       else:
         data = {'success': True,'data':{}}
@@ -269,3 +283,168 @@ def luas_tanah_yang_disetujui_save(request):
       response = HttpResponse(data)
 
   return response
+
+def akta_jual_beli_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            akta_jual_beli = AktaJualBeliTanahForm(request.POST)
+            if request.method == 'POST':
+                if akta_jual_beli.is_valid():
+                    p = akta_jual_beli.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_akta_jual_beli':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(data)
+                else:
+                    data = akta_jual_beli.errors.as_json()
+                    response = HttpResponse(json.dumps(data))
+            else:
+                akta_jual_beli = AktaJualBeliTanahForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(json.dumps(data))
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        response = HttpResponse(json.dumps(data))
+    return response
+
+def edit_akta_jual_beli(request,id_akta_jual_beli):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            p = AktaJualBeliTanah.objects.get(id=id_akta_jual_beli)
+            akta_jual_beli = AktaJualBeliTanahForm(request.POST,instance=p)
+            if request.method == 'POST':
+                if akta_jual_beli.is_valid():
+                    p = akta_jual_beli.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_akta_jual_beli':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(json.dumps(data))
+                else:
+                    data = akta_jual_beli.errors.as_json()
+            else:
+                akta_jual_beli = AktaJualBeliTanahForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
+def delete_akta_jual_beli(request,id_akta_jual_beli):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+        tag_to_delete = get_object_or_404(AktaJualBeliTanah, id=id_akta_jual_beli)
+        tag_to_delete.delete()
+        data = {'success': True,
+                'pesan': 'Data berhasil Dihapus.'}
+        response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
+def no_ptp_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            no_ptp = NoPTPForm(request.POST)
+            if request.method == 'POST':
+                if no_ptp.is_valid():
+                    p = no_ptp.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_no_ptp':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(data)
+                else:
+                    data = no_ptp.errors.as_json()
+                    response = HttpResponse(json.dumps(data))
+            else:
+                no_ptp = NoPTPForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(json.dumps(data))
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        response = HttpResponse(json.dumps(data))
+    return response
+
+def edit_no_ptp(request,id_no_ptp):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            p = NoPTP.objects.get(id=id_no_ptp)
+            no_ptp = NoPTPForm(request.POST,instance=p)
+            if request.method == 'POST':
+                if no_ptp.is_valid():
+                    p = no_ptp.save(commit=False)
+                    p.informasi_tanah_id = request.COOKIES['id_pengajuan']
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_no_ptp':p.id}}
+                    data = json.dumps(data)
+                    response = HttpResponse(json.dumps(data))
+                else:
+                    data = no_ptp.errors.as_json()
+            else:
+                no_ptp = AktaJualBeliTanahForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(data)
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        data = json.dumps(data)
+    response = HttpResponse(data)
+    return response
+
+def delete_no_ptp(request,id_no_ptp):
+  if 'id_pengajuan' in request.COOKIES.keys():
+    if request.COOKIES['id_pengajuan'] != '':
+        tag_to_delete = get_object_or_404(NoPTP, id=id_no_ptp)
+        tag_to_delete.delete()
+        data = {'success': True,
+                'pesan': 'Data berhasil Dihapus.'}
+        response = HttpResponse(json.dumps(data))
+    else:
+      data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+      data = json.dumps(data)
+      response = HttpResponse(data)
+  else:
+    data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+    data = json.dumps(data)
+    response = HttpResponse(data)
+  return response
+
+
+def load_data_tabel_akta_jual_beli(request,id_akta_jual_beli):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            data = []
+            i = AktaJualBeliTanah.objects.filter(informasi_tanah_id=request.COOKIES['id_pengajuan'])
+            data = [ob.as_json() for ob in i]
+            response = HttpResponse(json.dumps(data), content_type="application/json")
+    return response
+
+def load_data_tabel_ptp(request,id_no_ptp):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            data = []
+            i = NoPTP.objects.filter(informasi_tanah_id=request.COOKIES['id_pengajuan'])
+            data = [ob.as_json() for ob in i]
+            response = HttpResponse(json.dumps(data), content_type="application/json")
+    return response

@@ -16,7 +16,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, DetilTrayek, DetilReklameIzin
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, DetilTrayek, DetilReklameIzin, JenisKualifikasi
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 

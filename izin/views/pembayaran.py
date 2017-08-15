@@ -28,13 +28,13 @@ def detil_pembayaran_save(request):
 		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
 		pengajuan_izin = PengajuanIzin.objects.get(id=pengajuan_izin_id)
 		try:
-			pengajuan_ = DetilPembayaran.objects.get(pengajuan_izin__id=pengajuan_izin_id)
+			pengajuan_ = DetilPembayaran.objects.filter(pengajuan_izin__id=pengajuan_izin_id).last()
 			sk_izin_ = SKIzin.objects.get(pengajuan_izin__id=pengajuan_izin_id)
 			pembayaran = DetilPembayaranForm(request.POST, instance=pengajuan_)
 		except ObjectDoesNotExist:
 			pembayaran = DetilPembayaranForm(request.POST)
 		if pembayaran.is_valid():
-			if request.user.groups.filter(name='Kasir') or request.user.is_superuser:
+			if request.user.groups.filter(name='Kasir'):
 				p = pembayaran.save(commit=False)
 				p.save()
 				sk_izin_.status = 9

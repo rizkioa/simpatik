@@ -60,13 +60,33 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Surat Pemberitahuan DPM</label>
+      <div class="col-sm-4">
+        <input class="form-control" name="no_surat_pemberitahuan" id="id_no_surat_pemberitahuan"></input>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Surat Pemberitahuan DPM</label>
+      <div class="col-sm-3">
+          <div class="input-group datepicker w-360 tanggal-awal"> 
+            <input type="text" name="tanggal_surat_pemberitahuan" class="form-control" data-date-format="DD-MM-YYYY" id="id_tanggal_surat_pemberitahuan"  style="width: 170px;">
+            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+            </span>
+          </div>
+      </div>
+    </div>
+
+
     <div class="row">
       <div class="form-group">
         <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Sertifikat/Petok D</label> 
         <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
           <thead>
             <tr>
-              <td>No Sertifikat</td>
+              <td>No Sertifikat/Petok D</td>
               <td>Luas</td>
               <td>Atas Nama</td>
               <td>Tahun</td>
@@ -94,34 +114,65 @@
     <br>
 
     <div class="row">
-      <label class="col-sm-2 control-label">Akta Jual Beli</label> 
       <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">No.</label>
-        <div class="col-sm-4">
-          <input type="text" id="id_no_jual_beli" name="no_jual_beli" class="form-control" data-parsley-trigger="change">
-        </div>
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Akta Jual Beli</label> 
+        <table id="id_akta_jual_beli" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No Jual Beli</td>
+              <td>Tanggal</td>
+              <td>Atas Nama</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if akta_jual_beli_list %}
+            {% for j in akta_jual_beli_list %}
+              <tr id="{{j.id}}">
+                <td id="id_table_no_jual_beli">{{j.no_jual_beli}}</td>
+                <td id="id_table_tanggal_jual_beli">{{j.tanggal_jual_beli|date:"d-m-Y"}}</td>
+                <td id="id_table_atas_nama_jual_beli">{{j.atas_nama_jual_beli}}</td>
+                <td align='center'> <a href='#' id={{j.id}} onclick="editRowaktajualbeli(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{j.id}} onclick="deleteRowaktajualbeli(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
       </div>
-
-      <label for="input01" class="col-sm-2 control-label"></label>
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Tanggal</label>
-        <div class="col-sm-3">
-            <div class="input-group datepicker w-360 tanggal-awal"> 
-              <input type="text" class="form-control" data-date-format="DD-MM-YYYY" id="id_tanggal_jual_beli" name="tanggal_jual_beli" style="width: 170px;">
-              <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-                <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
-              </span>
-            </div>
-        </div>
-      </div>
-      <label for="input01" class="col-sm-2 control-label"></label>
-      <div class="form-group">
-        <label for="input01" class="col-sm-2 control-label">Atas Nama</label>
-        <div class="col-sm-4">
-          <input type="text" id="id_atas_nama_jual_beli" name="atas_nama_jual_beli" class="form-control" data-parsley-trigger="change">
-        </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah_akta_jual_beli(this);return false;">Tambah Akta Jual Beli<i class="fa fa-plus"></i></a>
       </div>
     </div>
+    <br>
+
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">No. PTP</label> 
+        <table id="id_no_ptp_table" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No PTP</td>
+              <td>Tanggal PTP</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if no_ptp_list %}
+            {% for p in no_ptp_list %}
+              <tr id="{{p.id}}">
+                <td id="id_table_no_ptp">{{p.no_ptp}}</td>
+                <td id="id_table_id_table_tanggal_ptp">{{p.tanggal_ptp|date:"d-m-Y"}}</td>
+                <td align='center'> <a href='#' id={{p.id}} onclick="editRownoptp(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{p.id}} onclick="deleteRownoptp(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah_no_ptp(this);return false;">Tambah No. PTP<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+    <br>
+
      <div class="form-group">
       <label for="input01" class="col-sm-2 control-label">Penggunaan Sekarang</label>
       <div class="col-sm-7">

@@ -1423,6 +1423,34 @@
 					    {% endif %}
 				  	</table>
 				  	<br>
+
+			  		<h5>PENGURUS BADAN USAHA</h5>
+				  	<table class="table table-striped" width="100%">
+					    <thead>
+					      <tr>
+					        <td>No.</td>
+					        <td>No KTP</td>
+					        <td>Nama Lengkap</td>
+					        <td>Alamat</td>
+					        <td>Telephone</td>
+					        <td>Keterangan</td>
+					      </tr>
+					    </thead>
+					    <tbody>
+					    	{% if pengurusbadanusaha_list %}
+					    		{% for i in pengurusbadanusaha_list %}
+							    	<tr>
+							    		<td>{{forloop.counter}}</td>
+							    		<td>{{i.nomor_ktp}}</td>
+							    		<td>{{i.nama_lengkap}}</td>
+							    		<td>{{i.alamat}}</td>
+							    		<td>{{i.telephone}}</td>
+							    		<td>{{i.keterangan}}</td>
+							    	</tr>
+					    		{% endfor %}
+					    	{% endif %}
+					    </tbody>
+					</table>
 				  	<h4><u>#4. KETERANGAN USAHA PARIWISATA</u></h4>
 				  	<table width="100%" border="0">
 					    <tr>
@@ -1441,19 +1469,6 @@
 					      <td width="70%">{{ pengajuan.telephone|default_if_none:'-' }}</td>
 					    </tr>
 					    <tr>
-					      <td colspan="3"><strong>Izin Gangguan</strong></td>
-					    </tr>
-					    <tr>
-					      <td width="25%" style="padding-left: 3%;">Nomor Izin</td>
-					      <td width="5%" style="padding-left: 3%;">:</td>
-					      <td width="70%" style="padding-left: 3%;">{{pengajuan.nomor_izin_gangguan}}</td>
-					    </tr>
-					    <tr>
-					      <td width="25%" style="padding-left: 3%;">Tanggal Izin</td>
-					      <td width="5%" style="padding-left: 3%;">:</td>
-					      <td width="70%" style="padding-left: 3%;">{{pengajuan.tanggal_izin_gangguan|date:'d-m-Y'}}</td>
-					    </tr>
-					    <tr>
 					      <td colspan="3"><strong>Dokumen Pengelolaan Lingkungan</strong></td>
 					    </tr>
 					    <tr>
@@ -1466,6 +1481,28 @@
 					      <td width="5%" style="padding-left: 3%;">:</td>
 					      <td width="70%" style="padding-left: 3%;">{{pengajuan.tanggal_dokumen_pengelolaan|date:'d-m-Y'}}</td>
 					    </tr>
+				  	</table>
+				  	<br>
+				  	<h5>Izin Lainnya</h5>
+				  	<table class="table table-striped" width="100%">
+				  		<thead>
+				  			<tr>
+				  				<td>No</td>
+				  				<td>Nomor Iziin</td>
+				  				<td>Tanggal Izin</td>
+				  			</tr>
+				  		</thead>
+				  		<tbody>
+				  			{% if izinlaintdup_list %}
+				  				{% for i in izinlaintdup_list %}
+						  			<tr>
+						  				<td>{{forloop.counter}}</td>
+						  				<td>{{i.no_izin}}</td>
+						  				<td>{{i.tanggal_izin|date:'d-m-Y'}}</td>
+						  			</tr>
+					  			{% endfor %}
+				  			{% endif %}
+				  		</tbody>
 				  	</table>
 				  	<br>
 				  	<h4>#5. LEGILITAS PERUSAHAAN</h4>
