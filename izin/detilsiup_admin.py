@@ -1,6 +1,7 @@
 import base64
 import json
 from datetime import date
+from django.http import Http404
 from django.db.models import Q
 from django.contrib import admin
 from django.core.urlresolvers import reverse, resolve
@@ -13,9 +14,10 @@ from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
 from perusahaan.models import Perusahaan, KBLI
 from accounts.models import NomorIdentitasPengguna
-from izin.utils import formatrupiah, detil_pengajuan_siup_view
+from izin.utils import formatrupiah, detil_pengajuan_siup_view, terbilang
 from izin import models as app_models
 from izin.izin_forms import SKIzinForm
+from kepegawaian.models import Pegawai
 
 class DetilSIUPAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -171,12 +173,66 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cek_apikey(self, apikey, username):
+		# from izin.detilsiup_admin import cek_apikey
+		respon = False
+		if apikey and username:
+			try:
+				accounts_obj = Pegawai.objects.get(username=username)
+				if accounts_obj.api_key:
+					if accounts_obj.api_key.key:
+						# print accounts_obj.api_key.key
+						# print apikey
+						if str(accounts_obj.api_key.key) == str(apikey):
+							respon = True
+			except ObjectDoesNotExist:
+				pass
+		return respon
+
+	def cetak_siup_pdf(self, request, id_pengajuan):
+		from izin.utils import render_to_pdf
+		extra_context = {}
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				try:
+					pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan)
+					extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+					extra_context.update({'pengajuan': pengajuan_ })
+					extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+					# kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
+					# extra_context.update({'kelembagaan': kelembagaan })
+					if pengajuan_.kekayaan_bersih:
+						kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
+						terbilang_ = terbilang(int(kekayaan_))
+						extra_context.update({'terbilang': str(terbilang_) })
+						extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
+					skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+					if skizin_:
+						extra_context.update({'skizin': skizin_ })
+						extra_context.update({'skizin_status': skizin_.status })
+					kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas").last()
+					if kepala_:
+						extra_context.update({'kepala_dinas': kepala_ })
+						extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+				except ObjectDoesNotExist:
+					raise Http404
+			else:
+				raise Http404
+		else:
+			raise Http404
+		response = render_to_pdf("front-end/include/formulir_siup/cetak_skizin_siup_pdf.html", "Cetak Bukti SIUP", extra_context, request)
+		return response
+
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilSIUPAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^ajax-dashboard/$', self.ajax_dashboard, name='ajax_dashboard'),
+			url(r'^cetak-siup-pdf/(?P<id_pengajuan>[0-9]+)/$', self.cetak_siup_pdf, name='cetak_siup_pdf'),
 			url(r'^ajax-load-pengajuan-siup/(?P<id_pengajuan_>[0-9]+)/$', self.admin_site.admin_view(self.ajax_load_pengajuan_siup), name='ajax_load_pengajuan_siup'),
 			url(r'^view-pengajuan-siup/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_siup), name='view_pengajuan_siup'),
 			url(r'^detil-siup-view/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.detil_siup_view), name='detil_siup_view'),

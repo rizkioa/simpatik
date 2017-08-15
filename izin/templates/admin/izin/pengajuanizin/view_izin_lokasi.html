@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<!-- <link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}"> -->
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/lightbox/css/lightbox.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		.label-color{
 			color: white;
@@ -113,6 +114,73 @@
 			background-size:contain;
 			background-repeat:no-repeat;
 			background-position:center;
+		}
+
+		.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
+			padding: 5px;
+		}
+		thead th, tfoot td {
+			background: url("{% static 'images/nav-bg.gif' %}") repeat-x scroll left top #e1e1e1 !important;
+			border-top: 0 none !important;
+			color: #666 !important;
+			font-size: 11px !important;
+			line-height: 1.42857 !important;
+			padding: 8px !important;
+			font-weight: bold !important;
+			border-bottom-width: 1px !important;
+			text-align: center !important;
+			vertical-align: middle !important;
+		}
+		table thead th.sorted .sortoptions {
+			float: none;
+			padding: 0;
+			text-align: center;
+			display: block;
+		}
+		table thead th.sorted .sortoptions a {
+			display: inline-block;
+			height: 12px;
+			width: 14px;
+		}
+		thead th.sorted a.sortremove {
+			visibility: visible;
+		}
+		thead th a:link, thead th a:visited {
+			color: #666;
+		}
+		table thead th.sorted .sortpriority {
+			font-size: 0.8em;
+			min-width: 12px;
+			text-align: center;
+			vertical-align: top;
+		}
+		.table > tbody > tr.inactive > td, .table > tbody > tr.inactive > th, .table > tbody > tr > td.inactive, .table > tbody > tr > th.inactive, .table > tfoot > tr.inactive > td, .table > tfoot > tr.inactive > th, .table > tfoot > tr > td.inactive, .table > tfoot > tr > th.inactive, .table > thead > tr.inactive > td, .table > thead > tr.inactive > th, .table > thead > tr > td.inactive, .table > thead > tr > th.inactive {
+			background-color: #aaaaaa;
+			color: #fff;
+		}
+		.table-hover tbody tr:hover td.inactive, .table-hover tbody tr:hover th.inactive {
+			background-color: #ebcccc;
+			color: #000;
+		}
+		.table > tbody > tr.danger > td, .table > tbody > tr.danger > th, .table > tbody > tr > td.danger, .table > tbody > tr > th.danger, .table > tfoot > tr.danger > td, .table > tfoot > tr.danger > th, .table > tfoot > tr > td.danger, .table > tfoot > tr > th.danger, .table > thead > tr.danger > td, .table > thead > tr.danger > th, .table > thead > tr > td.danger, .table > thead > tr > th.danger {
+			background-color: #f2dede;
+		}
+		.table > thead > tr > th.danger, .table > tbody > tr > th.danger, .table > tfoot > tr > th, .table > thead > tr > td.danger, .table > tbody > tr > td.danger, .table > tfoot > tr > td.danger {
+			border-color: #f5f5f5;
+			border-width: 1px;
+			color: #666;
+		}
+		.table>tbody>tr.warning>td, .table>tbody>tr.warning>th, .table>tbody>tr>td.warning, .table>tbody>tr>th.warning, .table>tfoot>tr.warning>td, .table>tfoot>tr.warning>th, .table>tfoot>tr>td.warning, .table>tfoot>tr>th.warning, .table>thead>tr.warning>td, .table>thead>tr.warning>th, .table>thead>tr>td.warning, .table>thead>tr>th.warning {
+			background-color: #fcf8e3;
+		}
+		.table > tbody > tr.info > td, .table > tbody > tr.info > th, .table > tbody > tr > td.info, .table > tbody > tr > th.info, .table > tfoot > tr.info > td, .table > tfoot > tr.info > th, .table > tfoot > tr > td.info, .table > tfoot > tr > th.info, .table > thead > tr.info > td, .table > thead > tr.info > th, .table > thead > tr > td.info, .table > thead > tr > th.info {
+			background-color: #d9edf7;
+		}
+		.table > tbody > tr.success > td, .table > tbody > tr.success > th, .table > tbody > tr > td.success, .table > tbody > tr > th.success, .table > tfoot > tr.success > td, .table > tfoot > tr.success > th, .table > tfoot > tr > td.success, .table > tfoot > tr > th.success, .table > thead > tr.success > td, .table > thead > tr.success > th, .table > thead > tr > td.success, .table > thead > tr > th.success {
+			background-color: #dff0d8;
+		}
+		.table > tbody > tr.libur > td, .table > tbody > tr.libur > th, .table > tbody > tr > td.libur, .table > tbody > tr > th.libur, .table > tfoot > tr.libur > td, .table > tfoot > tr.libur > th, .table > tfoot > tr > td.libur, .table > tfoot > tr > th.libur, .table > thead > tr.libur > td, .table > thead > tr.libur > th, .table > thead > tr > td.libur, .table > thead > tr > th.libur {
+			background-color: silver;
 		}
 	</style>
 {% endblock %}
@@ -413,7 +481,9 @@
 									</div>
 								</div>
 
-								<div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
+								{% include "admin/izin/survey_1.html" %}
+
+								<!-- <div class="panel panel-darkgray" style="background-color: #f0ad4e !important;color: white;border: 0;border-radius: 6px;">
 									<form>
 										<div class="panel-body">
 											<h4>SURVEY</h4>
@@ -464,7 +534,7 @@
 											</center>
 										</div>
 									</form>
-								</div>
+								</div> -->
 
 								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
@@ -491,6 +561,122 @@
 									</form>
 								</div>
 							{% endif %}
+							{% if status == 8 %}
+							<!-- <section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;"> -->
+							<section class="tile">
+
+								<!-- tile header -->
+								<div class="tile-header">
+									<h1 class="custom-font"><strong>Survey Izin </strong></h1>
+								</div>
+								<!-- /tile header -->
+
+								<!-- tile body -->
+								<div class="tile-body">
+									<table id="" class="table table-striped table-bordered table-hover table-condensed">
+										<thead>
+										  <tr>
+											  <th scope="col" class="">SKPD</th>
+											  <th scope="col" class="">NAMA</th>
+											  <th scope="col" class="">KOORDINATOR</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  {% for q in survey.survey_iujk.all %}
+											<tr>
+											  <td>{{q.pegawai.unit_kerja}}</td>
+											  <td>{{q.pegawai}} [{{q.pegawai.username}}]</td>
+											  <td>{{q.koordinator|true_or_false|safe}}</td>
+											</tr>
+										  {% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<!-- /tile body -->
+
+							</section>
+							<section class="tile">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label class="col-sm-2 control-label">Deadline Survey</label>
+										<div class="col-sm-4"> {{ survey_pengajuan.deadline_survey }}
+										</div>
+									</div>
+								</div>
+							</section>
+							<section class="tile">
+
+								<!-- tile header -->
+								<div class="tile-header">
+									<h1 class="custom-font"><strong>Pertimbangan Dan Saran </strong></h1>
+								</div>
+								<!-- /tile header -->
+
+								<!-- tile body -->
+								<div class="tile-body">
+									<table id="" class="table table-striped table-bordered table-hover table-condensed">
+										<thead>
+										  <tr>
+											  <th scope="col" class="">SKPD</th>
+											  <th scope="col" class="">NAMA</th>
+											  <th scope="col" class="">Rekomendasi/Saran</th>
+											  <th scope="col" class="">Lampiran</th>
+										  </tr>
+										</thead>
+										<tbody>
+										  {% for q in survey.survey_iujk.all %}
+											<tr>
+												<td>{{q.pegawai.unit_kerja}}</td>
+												<td>{{q.pegawai}} ({{q.pegawai.username}})</td>
+												<td>{{survey|get_rekomendasi:q.pegawai.id|safe}}</td>
+												<td>{{survey|get_berkas:q.pegawai.id|safe}}</td>
+											</tr>
+										  {% endfor %}
+										</tbody>
+									</table>
+								</div>
+								<!-- /tile body -->
+
+							</section>
+							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+								<div class="panel-body">
+									<h4>MENERUSKAN PENGAJUAN KE KEPALA DPMPTSP</h4>
+									<br>
+									<label class="checkbox checkbox-custom-alt">
+										<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+									</label>
+								</div>
+								<div class="panel-footer">
+									<center>
+										<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+									</center>
+								</div>
+							</div>
+							<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+								<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
+								{% csrf_token %}
+									<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
+									<div class="panel-body">
+										<h4>MENOLAK PENGAJUAN</h4>
+										<br>
+										<div class="form-group">
+											<label for="input01">Alasan </label>
+											<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+										</div>
+										<div class="form-group">
+											<label for="input01">Lampiran </label>
+											<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+										</div>
+									</div>
+
+									<div class="panel-footer">
+										<center>
+											<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
+										</center>
+									</div>
+								</form>
+							</div>
+						{% endif %}
 						</div>
 					</div>
 				</section>
@@ -1161,6 +1347,8 @@
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<!-- <script src="{% static 'scripts/js/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script> -->
 	<!-- <script src="{% static 'scripts/js/vendor/mixitup/jquery.mixitup.min.js' %}"></script> -->
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/iujk.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
 	<script>
 		
@@ -1169,6 +1357,46 @@
 
 {% block extracontent %}
 	{{ block.super }}
+
+
+	<div class="modal fade bs-sinkron-modal-lg" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+		<div class="modal-dialog modal-lg">
+		  <div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalSinkronLabel"></h4>
+			</div>
+			<div class="modal-body">
+			<form class="form-horizontal" role="form" action="" method="POST" id="anggotatim">
+			{% csrf_token %}
+			<input type="hidden" id="id_survey_iujk" value="{{survey.id}}" name="survey_iujk"></input>
+			  <div class="form-group">
+				<label  class="col-sm-2 control-label" for="skpd">SKPD</label>
+				<div class="col-sm-10">
+					<select class="form-control chosen-select" name="skpd" onchange="load_pegawai(this); return false">
+					  <option>---Pilih SKPD---</option>
+					  {% for p in skpd_list %}
+					  <option value="{{p.id}}">{{p}} </option>
+					  {% endfor %}
+					</select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label  class="col-sm-2 control-label" for="Pengawai">Pegawai</label>
+				<div class="col-sm-10">
+					<select class="form-control chosen-select" name="pegawai" id="id_pegawai">
+					  <option>---Pilih Pegawai---</option>
+					</select>
+				</div>
+			  </div>
+			</form>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-success" onclick="save_anggota();return false;">Simpan dan Tambahkan Lagi</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal" >Selesai</button>
+			  </div>
+			</div>
+		</div>
+	</div>
 
 	{% if kelompok_jenis_izin.kode == "503.07/" %}
 	<div class="modal fade" id="edit_skizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

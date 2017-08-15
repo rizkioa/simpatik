@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from tastypie.api import Api
 from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
-from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource, InformasiKekayaanDaerahResource, DetilHOResource, DetilReklameResource, DetilReklameIzinResource, DetilIMBPapanReklameResource, DetilIMBResource, DetilHullerResource, InformasiTanahResource, SertifikatTanahResource, PenggunaanTanahIPPTUsahaResource, PerumahanYangDimilikiIPPTUsahaResource, MesinPerusahaanResource, DetilIzinParkirIsidentilResource, DataAnggotaParkirResource
+from izin.api import KendaraanResource, DetilIUAResource, PemohonResource, SKIzinResource, PengajuanIzinAllResource, DetilTDPResource, IzinLainResource, InformasiKekayaanDaerahResource, DetilHOResource, DetilReklameResource, DetilReklameIzinResource, DetilIMBPapanReklameResource, DetilIMBResource, DetilHullerResource, InformasiTanahResource, SertifikatTanahResource, PenggunaanTanahIPPTUsahaResource, PerumahanYangDimilikiIPPTUsahaResource, MesinPerusahaanResource, DetilIzinParkirIsidentilResource, DataAnggotaParkirResource, BerkasTerkalitIzin
 from perusahaan.api import PerusahaanResource, LegalitasResource, DataPimpinanResource, PemegangSahamResource
 from master.api import BerkasResource, DesaResource
 
@@ -51,6 +51,7 @@ v1_api.register(PerumahanYangDimilikiIPPTUsahaResource()) # IPPT
 v1_api.register(MesinPerusahaanResource()) # Huller
 v1_api.register(DetilIzinParkirIsidentilResource()) # Izin Parkir Dishub
 v1_api.register(DataAnggotaParkirResource()) # Izin Parkir Dishub
+v1_api.register(BerkasTerkalitIzin()) 
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())

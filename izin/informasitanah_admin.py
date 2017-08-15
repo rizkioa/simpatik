@@ -1,5 +1,6 @@
 import base64, datetime
 from django.contrib import admin
+from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.http import HttpResponse
@@ -7,8 +8,8 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404
 
-from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat,SertifikatTanah,DetilSk
-from kepegawaian.models import Pegawai
+from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat, SertifikatTanah, DetilSk, Survey
+from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
 class InformasiTanahAdmin(admin.ModelAdmin):
@@ -136,6 +137,24 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			extra_context.update({'pengajuan_id': pengajuan_id })
 			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
+
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
+			try:
+				try:
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					# print s.survey_iujk.all()
+			except ObjectDoesNotExist:
+				s = ''
+
+			extra_context.update({'survey': s })
+			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
 			#+++++++++++++ end page logout ++++++++++
 
 			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
@@ -167,6 +186,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			extra_context.update({'title': 'Proses Pengajuan'})
 			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:

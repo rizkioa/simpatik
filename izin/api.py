@@ -13,6 +13,12 @@ from tastypie.authorization import Authorization
 from django.conf.urls import url
 import json
 
+class BerkasTerkalitIzin(CORSModelResource):
+	berkas_terkait_izin = fields.OneToManyField(BerkasResource, 'berkas_terkait_izin', full=True, null=True, blank=True)
+	class Meta:
+		queryset = PengajuanIzin.objects.all()
+		fields = ['id', 'berkas_terkait_izin']
+
 class SKIzinResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
 	masa_berlaku = fields.CharField(attribute="get_masa_berlaku_izin", null=True, blank=True)
