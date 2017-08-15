@@ -350,8 +350,13 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilTDUP')
 	elif kode_ijin == "503.07/" or kode_ijin == "IPPT-Rumah" or kode_ijin == "IPPT-Usaha":
 		objects_ = getattr(app_models, 'InformasiTanah')
-
+	elif kode_ijin == "503.01.06/":
+		objects_ = getattr(app_models, 'DetilIMBPapanReklame')
+	elif kode_ijin == "503.01.04/" or kode_ijin == "503.01.05/":
+		objects_ = getattr(app_models, 'DetilIMB')
 	return objects_
+
+
 
 def get_model_detil(kode):
 	from izin import models as app_models

@@ -186,6 +186,7 @@
                     </div>
                 </div>
             </div>
+            {% if perusahaan %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
@@ -208,7 +209,7 @@
                     </div>
                 </div>
             </div>
-
+            {% endif %}
             {% if pengajuan.legalitas.all %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">

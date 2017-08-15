@@ -65,16 +65,16 @@
                   });
                 }
               else{
-              if ($current == 2) {
+              if ($current == 3) {
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_data_imb(id_pengajuan)
-              }else if ($current == 3) {
-                id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_data_identifikasi_bangunan_imb(id_pengajuan)
               }else if ($current == 4) {
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
+                load_data_identifikasi_bangunan_imb(id_pengajuan)
+              }else if ($current == 5) {
+                id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_data_identifikasi_jalan_imb(id_pengajuan)
-              }else if($current == 5){
+              }else if($current == 6){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_imb_perumahan(id_pengajuan)
               }
@@ -286,7 +286,7 @@
       // swal("Good job!", "You clicked the button!", "success");
       var pengajuan_cookie = $.cookie('id_pengajuan'); 
       var pemohon_cookie = $.cookie('id_pemohon'); 
-      // var perusahaan_cookie = $.cookie('id_perusahaan'); 
+      var perusahaan_cookie = $.cookie('id_perusahaan'); 
       if (pengajuan_cookie === ""){
         toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
@@ -297,11 +297,11 @@
         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
         $(tab_index).tab('show');
       }
-      // else if(perusahaan_cookie === ""){
-      //   toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-      //   tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-      //   $(tab_index).tab('show');
-      // }
+      else if(perusahaan_cookie === ""){
+        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+        $(tab_index).tab('show');
+      }
       else{
         swal({
           showConfirmButton: false,
@@ -391,7 +391,9 @@
       if ('{{pengajuan_}}'){
         
             {% include 'front-end/load_pengajuan.html' %}
-
+          if ('{{pengajuan_.perusahaan.npwp}}' != 0 ) {
+            load_perusahaan_a('{{pengajuan_.perusahaan.npwp}}')
+          }
             $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");
             $('#id_judul_reklame').val('{{ pengajuan_.judul_reklame }}');
             $('#id_panjang').val('{{ panjang }}');
@@ -732,7 +734,7 @@
       	.checkbox-custom-alt input[disabled] + i {
 	        border-color: #0e0d0d;
 	        background-color: #fbf6f6;
-      	}
+      	}      
       	.checkbox-custom-alt input[disabled] + i::before {
 	        background-color: transparent;
 	        color: #0c0c0c;
@@ -748,35 +750,39 @@
 	    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
 	    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
       <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-	    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+      <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+	    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
   	</ul>
   	<div class="tab-content">
       <div class="tab-pane" id="tab1"> 
         <!-- Identitas pemohon --> 
         {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
-      </div>
+      </div>  
 
       <div class="tab-pane" id="tab2">
         <!-- Identitas perusahaan -->
+        {% include 'front-end/include/formulir_imb_perumahan/identitas_perusahaan.html' %}
+      </div>
+      <div class="tab-pane" id="tab3">
+        <!-- Identitas perusahaan -->
         {% include 'front-end/include/formulir_imb_perumahan/data_imb.html' %}
       </div>
-
-      <div class="tab-pane" id="tab3">
+      <div class="tab-pane" id="tab4">
         <!-- Legalitas perusahaan -->
         {% include 'front-end/include/formulir_imb_perumahan/identifikasi_bangunan.html' %}
       </div>
 
-      <div class="tab-pane" id="tab4">
+      <div class="tab-pane" id="tab5">
         <!-- Kekayaan -->
         {% include 'front-end/include/formulir_imb_perumahan/identifikasi_jalan.html' %}
       </div>
 
-      <div class="tab-pane" id="tab5">
+      <div class="tab-pane" id="tab6">
         <!-- Dokumen upload -->
         {% include 'front-end/include/formulir_imb_perumahan/upload_dokumen.html' %}
       </div>
 
-      <div class="tab-pane" id="tab6">
+      <div class="tab-pane" id="tab7">
         <!-- Konfirmasi -->
         {% include 'front-end/include/formulir_imb_perumahan/konfirmasi.html' %}
       </div>
