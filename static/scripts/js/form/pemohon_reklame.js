@@ -8,46 +8,51 @@ function load_pemohon(ktp_){
         success: function (data) {
             // console.log(data)
             $(".tab-content").mLoading('hide');
-            respon = $.parseJSON(data)
+            reklame_response = $.parseJSON(data)
             // console.log(respon)
-            if(respon.success === true){
-                load_provinsi(respon.data.negara)
-                load_kabupaten(respon.data.provinsi)
-                load_kecamatan(respon.data.kabupaten)
-                load_desa(respon.data.kecamatan)
-                
-                $('#id_paspor').val(respon.data.paspor);
-                // $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
-                $('#id_nama_lengkap').val(respon.data.nama_lengkap);
-                $('#id_tempat_lahir').val(respon.data.tempat_lahir);
-                $('#id_tanggal_lahir').val(respon.data.tanggal_lahir);
-                $('#alamat_pemohon_load').val(respon.data.alamat);
-                $('#no_telepon_pemohon_load').val(respon.data.telephone);
-                $('#hp_load').val(respon.data.hp);
-                $('#email_pemohon_load').val(respon.data.email);
-                $('#kewarganegaraan_pemohon_load').val(respon.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
-                $('#pekerjaan_pemohon_load').val(respon.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
-                $('#id_keterangan_pekerjaan').val(respon.data.keterangan_pekerjaan)
+            if(reklame_response.success === true){  
+
                 setTimeout(function(){
-                    $('#id_negara').val(respon.data.negara).prop('selected',true).trigger("chosen:updated");
-                    $('#id_provinsi').val(respon.data.provinsi).prop('selected',true).trigger("chosen:updated");
-                    $('#id_kabupaten').val(respon.data.kabupaten).prop('selected',true).trigger("chosen:updated")
-                    $('#id_kecamatan').val(respon.data.kecamatan).prop('selected',true).trigger("chosen:updated");
-                    $('#id_desa').val(respon.data.desa).prop('selected',true).trigger("chosen:updated");
-                    // alert(respon.data.desa)
-                    if (respon.data.foto_url !== ''){
-                        $('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.foto_url+"'>"+respon.data.foto_nama+"</a></span>")
+                    $('#id_provinsi').val(reklame_response.data.provinsi).prop('selected',true).trigger("chosen:updated");
+                }, 1000);
+                load_kabupaten(reklame_response.data.provinsi)
+                setTimeout(function(){
+                    $('#id_kabupaten').val(reklame_response.data.kabupaten).prop('selected',true).trigger("chosen:updated")
+                }, 1000);
+                load_kecamatan(reklame_response.data.kabupaten)
+                setTimeout(function(){
+                    $('#id_kecamatan').val(reklame_response.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+                }, 1000);
+                load_desa(reklame_response.data.kecamatan)
+                setTimeout(function(){
+                    $('#id_desa').val(reklame_response.data.desa).prop('selected',true).trigger("chosen:updated");
+                }, 1000);
+                $('#id_paspor').val(reklame_response.data.paspor);
+                // $('#id_jabatan_pemohon').val(respon.data.jabatan_pemohon);
+                $('#id_nama_lengkap').val(reklame_response.data.nama_lengkap);
+                $('#id_tempat_lahir').val(reklame_response.data.tempat_lahir);
+                $('#id_tanggal_lahir').val(reklame_response.data.tanggal_lahir);
+                $('#alamat_pemohon_load').val(reklame_response.data.alamat);
+                $('#no_telepon_pemohon_load').val(reklame_response.data.telephone);
+                $('#hp_load').val(reklame_response.data.hp);
+                $('#email_pemohon_load').val(reklame_response.data.email);
+                $('#kewarganegaraan_pemohon_load').val(reklame_response.data.kewarganegaraan).prop('selected',true).trigger("chosen:updated");
+                $('#pekerjaan_pemohon_load').val(reklame_response.data.pekerjaan).prop('selected',true).trigger("chosen:updated");
+                $('#id_keterangan_pekerjaan').val(reklame_response.data.keterangan_pekerjaan)
+                setTimeout(function(){
+                    if (reklame_response.data.foto_url !== ''){
+                        $('#load_foto_pemohon').replaceWith("<span id='load_foto_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+reklame_response.data.foto_url+"'>"+reklame_response.data.foto_nama+"</a></span>")
                         $('#checkbox_berkas_foto').prop('checked', 1)
                     }
-                    if (respon.data.ktp_url !== ''){
-                        $('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.ktp_url+"'>"+respon.data.ktp_nama+"</a></span>")
+                    if (reklame_response.data.ktp_url !== ''){
+                        $('#load_ktp_pemohon').replaceWith("<span id='load_ktp_pemohon' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+reklame_response.data.ktp_url+"'>"+reklame_response.data.ktp_nama+"</a></span>")
                         $('#checkbox_berkas_ktp').prop('checked', 1)
                     }
-                    if (respon.data.npwp_pribadi_url !== ''){
-                        $('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+respon.data.npwp_pribadi_url+"'>"+respon.data.npwp_pribadi_nama+"</a></span>");
+                    if (reklame_response.data.npwp_pribadi_url !== ''){
+                        $('#load_npwp_pribadi').replaceWith("<span id='load_npwp_pribadi' class='help-block' style='color:blue;'> file : <a target='_blank' href='"+reklame_response.data.npwp_pribadi_url+"'>"+reklame_response.data.npwp_pribadi_nama+"</a></span>");
                         $('#checkbox_berkas_npwp_pribadi').prop('checked', 1)
                     }
-                }, 1000);
+                }, 4000);
             }
             else{
                 $('#id_nama_lengkap').val("");

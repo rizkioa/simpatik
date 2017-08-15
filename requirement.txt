@@ -24,3 +24,4 @@ django-daterange-filter
 django-ckeditor
 pyTelegramBotAPI==2.3.0
 psycopg2
+django-pdfkit==0.2.1

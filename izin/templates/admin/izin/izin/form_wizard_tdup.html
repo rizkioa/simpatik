@@ -14,142 +14,179 @@
 {% block extrajs_site %}
 	{{block.super}}
 	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
-  	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
-  	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
-  	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
-    <script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
-    <script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
-    <script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-    <script src="{% static 'scripts/js/formAjax/form_ajax_tdup.js' %}"></script>
-    <script type="text/javascript">
-    	document.querySelector('#alert').onclick = function(){
-	        var pengajuan_cookie = $.cookie('id_pengajuan'); 
-	        var pemohon_cookie = $.cookie('id_pemohon'); 
-	        var perusahaan_cookie = $.cookie('id_perusahaan'); 
-	        if (pengajuan_cookie === ""){
-	          toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
-	          tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-	          $(tab_index).tab('show');
-	        }
-	        else if(pemohon_cookie === ""){
-	          toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
-	          tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
-	          $(tab_index).tab('show');
-	        }
-	        else if(perusahaan_cookie === ""){
-	          toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-	          tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-	          $(tab_index).tab('show');
-	        }
-	        else{
-	          swal({
-	            showConfirmButton: false,
-	            type: 'success',
-	            title: 'Pendaftaran Berhasil Tersimpan',
-	            timer: 2000
-	          })
-	          pengajuan_id = $.cookie('id_pengajuan')
-	          if ($.cookie('id_pengajuan') === undefined){
-	            pengajuan_id = 0
-	          }
-	          
-	          $.ajax({
-	            url: '{% url 'tdup_done' %}',
-	            success: function(response) {
-	              respon = $.parseJSON(response)
-	              if(respon.success){
-	                toastr["success"](respon.pesan)
-	                window.location.replace('{% url 'admin:verifikasi_operator' %}');
-	              }
-	              else{
-	                toastr["error"](respon.pesan)
-	              }
-	            }
-	          });
-	        }
-      	};
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_tdup.js' %}"></script>
+	<script type="text/javascript">
+		document.querySelector('#alert').onclick = function(){
+			var pengajuan_cookie = $.cookie('id_pengajuan'); 
+			var pemohon_cookie = $.cookie('id_pemohon'); 
+			var perusahaan_cookie = $.cookie('id_perusahaan'); 
+			if (pengajuan_cookie === ""){
+			  toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+			  tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+			  $(tab_index).tab('show');
+			}
+			else if(pemohon_cookie === ""){
+			  toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+			  tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+			  $(tab_index).tab('show');
+			}
+			else if(perusahaan_cookie === ""){
+			  toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+			  tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+			  $(tab_index).tab('show');
+			}
+			else{
+			  swal({
+				showConfirmButton: false,
+				type: 'success',
+				title: 'Pendaftaran Berhasil Tersimpan',
+				timer: 2000
+			  })
+			  pengajuan_id = $.cookie('id_pengajuan')
+			  if ($.cookie('id_pengajuan') === undefined){
+				pengajuan_id = 0
+			  }
+			  
+			  $.ajax({
+				url: '{% url 'tdup_done' %}',
+				success: function(response) {
+				  respon = $.parseJSON(response)
+				  if(respon.success){
+					toastr["success"](respon.pesan)
+					window.location.replace('{% url 'admin:verifikasi_operator' %}');
+				  }
+				  else{
+					toastr["error"](respon.pesan)
+				  }
+				}
+			  });
+			}
+		};
 
-      	$(document).ready(function() {
-	        window.onbeforeunload = function ref() {
-	          var r = confirm( "Do you want to leave?" );
-	          if (r == true) {
-	              
-	          }
-	          else {
-	              return false;
-	          }
-	        };
+		$(document).ready(function() {
+			window.onbeforeunload = function ref() {
+			  var r = confirm( "Do you want to leave?" );
+			  if (r == true) {
+				  
+			  }
+			  else {
+				  return false;
+			  }
+			};
 
-	        var pathname = "/";
+			var pathname = "/";
 
-	        if ($.cookie('id_pengajuan') === undefined){
-	          $.cookie('id_pengajuan', "0", {path:pathname});
-	        }
-	        if ($.cookie('id_pemohon') === undefined){
-	          $.cookie('id_pemohon', "0", {path:pathname});
-	        }
-	        if ($.cookie('id_perusahaan') === undefined){
-	          $.cookie('id_perusahaan', "0", {path:pathname});
-	        }
+			if ($.cookie('id_pengajuan') === undefined){
+			  $.cookie('id_pengajuan', "0", {path:pathname});
+			}
+			if ($.cookie('id_pemohon') === undefined){
+			  $.cookie('id_pemohon', "0", {path:pathname});
+			}
+			if ($.cookie('id_perusahaan') === undefined){
+			  $.cookie('id_perusahaan', "0", {path:pathname});
+			}
 
-	        $( "#alert" ).prop( "disabled", true );
-	        $('#checkbox_tdp_done').change(function() {
-	          if ($(this).is(':checked')) {
-	            $( "#alert" ).prop( "disabled", false );
-	            window.onbeforeunload = null;
-	          }
-	          else{
-	            $( "#alert" ).prop( "disabled", true );
-	          }
-	        });
+			$( "#alert" ).prop( "disabled", true );
+			$('#checkbox_tdp_done').change(function() {
+			  if ($(this).is(':checked')) {
+				$( "#alert" ).prop( "disabled", false );
+				window.onbeforeunload = null;
+			  }
+			  else{
+				$( "#alert" ).prop( "disabled", true );
+			  }
+			});
 
-	        pengajuan = $.cookie('id_pengajuan')
-	          if (pengajuan !== '0'){
-	            $('#id_ktp').val('{{ktp}}');
-	            $('#id_paspor').val('{{paspor}}');
-	            load_pemohon('{{ktp}}');
+			
+			if ('{{pengajuan_}}'){
+				// alert('{{pengajuan_}}')
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
 
-	            $('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
-	            $('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
-	            $('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+				$('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
 
-	            $.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
-	            if ('{{ pengajuan_.pemohon }}' !== 'None'){
-	              $.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
-	              $.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
-	              $.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
-	            }
-	            else{
-	              $.cookie('nomor_ktp', '0' , { path: pathname })
-	              $.cookie('nomor_paspor', '0' , { path: pathname})
-	              $.cookie('id_pemohon', '0' , { path: pathname})
-	            }
-	            
-	            if ('{{ pengajuan_.perusahaan }}' !== 'None'){
-	              $.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
-	              $.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
-	              // alert('{{ pengajuan_.perusahaan.npwp  }}')
-	            }
-	            else{
-	              $.cookie('id_perusahaan', '0' , { path: pathname})
-	              $.cookie('npwp_perusahaan', '0' , { path: pathname })
-	            }
-	          }
-      	})
+				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
+				if ('{{ pengajuan_.pemohon }}' !== 'None'){
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
+					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
+				}
+				else{
+					$.cookie('nomor_ktp', '0' , { path: pathname })
+					$.cookie('nomor_paspor', '0' , { path: pathname})
+					$.cookie('id_pemohon', '0' , { path: pathname})
+				}
 
-      	$( "#jenis_usaha_pariwisata" ).fadeOut().hide();
+				if ('{{ pengajuan_.perusahaan }}' !== 'None'){
+					$.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
+					$.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
+				  // alert('{{ pengajuan_.perusahaan.npwp  }}')
+				}
+				else{
+					$.cookie('id_perusahaan', '0' , { path: pathname})
+					$.cookie('npwp_perusahaan', '0' , { path: pathname })
+				}
+			}
+		})
+
+		$( "#jenis_usaha_pariwisata" ).fadeOut().hide();
 		$( "#sub_jenis_usaha_pariwisata" ).fadeOut().hide();
-    </script>
+	</script>
+	<div class="modal fade" id="izin_lain" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h3 class="modal-title custom-font">Tambah Izin Lain</h3>
+		  </div>
+		  <div class="modal-body">
+			<form class="form-horizontal">
+			  <input type="hidden" name="id_izin_lain" id="id_izin_lain">
+			  <div class="form-group" id="nomor_izin_gangguan" >
+				<label class="col-sm-2 control-label text-left">Nomor Izin</label>
+				<div class="col-sm-8">
+				  <input type="text" class="form-control " name="nomor_izin_gangguan" id="id_nomor_izin_gangguan">
+				</div>
+			  </div>
+
+			  <div class="form-group" id="tanggal_izin_gangguan">
+				<label class="col-sm-2 control-label text-left"">Tanggal</label>
+				<div class="col-sm-8">
+				  <div class="input-group datepicker" data-format="L">
+					<input type="text" class="form-control" id="id_tanggal_izin_gangguan" name="tanggal_izin_gangguan" required="" data-parsley-trigger="change">
+					<span class="input-group-addon">
+					  <span class="fa fa-calendar"></span>
+					</span>
+				  </div>
+				</div>
+			  </div>
+			</form>
+		  </div>
+		  <div class="modal-footer">
+			<button onclick="save_izin_lain()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+			<button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
 {% endblock %}
 
 {% block extrastyle %}
@@ -163,140 +200,140 @@
 
 {% block custom_style %}
 	<style type="text/css">
-	  	@media only screen and (max-width: 1280px){
-		    .hidden_title{
-		       display: none !important;
-		    }
-		    .tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
-		      padding-bottom: 24px
-		    }
-		    .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
-		      padding-bottom: 24px;
-		    }
-	  	}
-	  	@media only screen and (max-width: 844px){
-		    .hidden_title{
-		      display: block !important;
-		    }
- 	 	}
+		@media only screen and (max-width: 1280px){
+			.hidden_title{
+			   display: none !important;
+			}
+			.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+			  padding-bottom: 24px
+			}
+			.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			  padding-bottom: 24px;
+			}
+		}
+		@media only screen and (max-width: 844px){
+			.hidden_title{
+			  display: block !important;
+			}
+		}
 
-	  	hr.style14 { 
-		    border: 0; 
-		    height: 2px; 
-		    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-		    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-		    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-		    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
-	  	}
+		hr.style14 { 
+			border: 0; 
+			height: 2px; 
+			background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+			background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+			background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+			background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+		}
 
-	  	.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
-		    background-color: #22beef;
-		    color: aliceblue;
-	  	}
+		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+			background-color: #22beef;
+			color: aliceblue;
+		}
 
-	  	.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
-	    	background-color: #616f77;
-	  	}
+		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			background-color: #616f77;
+		}
 
-	  	.tab-wizard .nav-tabs > li:before {
-	    	background-color: #333;
-	  	}
+		.tab-wizard .nav-tabs > li:before {
+			background-color: #333;
+		}
 
-	  	.table-responsive {
-      		width: 100%;
-	      	margin-bottom: 15px;
-	      	overflow-y: hidden;
-	        -ms-overflow-style: -ms-autohiding-scrollbar;
-	        border: 1px solid #ddd;
-	  	}
+		.table-responsive {
+			width: 100%;
+			margin-bottom: 15px;
+			overflow-y: hidden;
+			-ms-overflow-style: -ms-autohiding-scrollbar;
+			border: 1px solid #ddd;
+		}
 
-	  	.onoffswitch.labeled .onoffswitch-inner:before {
-	    	content: "Ada";
-	  	}
+		.onoffswitch.labeled .onoffswitch-inner:before {
+			content: "Ada";
+		}
 
-	  	.onoffswitch.labeled .onoffswitch-inner:after {
-	    	content: "Tidak";
-	  	}
+		.onoffswitch.labeled .onoffswitch-inner:after {
+			content: "Tidak";
+		}
 
-	  	.onoffswitch.labeled {
-	    	width: 59px;
-	  	}
+		.onoffswitch.labeled {
+			width: 59px;
+		}
 
-	  	.onoffswitch.labeled .onoffswitch-switch {
-	    	right: 34px;
-	  	}
+		.onoffswitch.labeled .onoffswitch-switch {
+			right: 34px;
+		}
 
-	  	label, h4, h3 {
-	    	color: black;
-	  	}
+		label, h4, h3 {
+			color: black;
+		}
 
-	  	tr, th{
-	    	color: black;
-	  	}
+		tr, th{
+			color: black;
+		}
 
-	  	#id_kegiatan_usaha_pokok_chosen .search-field input{
-	    	min-width: 125px;
-	  	}
+		#id_kegiatan_usaha_pokok_chosen .search-field input{
+			min-width: 125px;
+		}
 	</style>
 {% endblock %}
 
 {% block content %}
 	<div id="rootwizard" class="tab-container tab-wizard">
 		<ul class="nav nav-tabs nav-justified">
-		    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-		    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-		    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
-		    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-	      <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
-		    <li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
-		    <li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
-	  	</ul>
-	  	<div class="tab-content">
-		    <div class="tab-pane" id="tab1"> 
-		      <!-- Identitas pemohon --> 
-		      {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
-		    </div>
+			<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+			<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+			<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+			<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+		  <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+			<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+			<li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane" id="tab1"> 
+			  <!-- Identitas pemohon --> 
+			  {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+			</div>
 
-		    <div class="tab-pane" id="tab2">
-		      <!-- Identitas perusahaan -->
-		      {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
-		    </div>
+			<div class="tab-pane" id="tab2">
+			  <!-- Identitas perusahaan -->
+			  {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+			</div>
 
-		    <div class="tab-pane" id="tab3">
-		      <!-- Identitas perusahaan -->
-		      {% include 'front-end/include/formulir_tdup/data_usaha_pariwisata.html' %}
-		    </div>
+			<div class="tab-pane" id="tab3">
+			  <!-- Identitas perusahaan -->
+			  {% include 'front-end/include/formulir_tdup/data_usaha_pariwisata.html' %}
+			</div>
 
-		    <div class="tab-pane" id="tab4">
-	        <!-- Identitas perusahaan -->
-	        {% include 'front-end/include/formulir_tdup/keterangan_usaha.html' %}
-	      </div>
+			<div class="tab-pane" id="tab4">
+			<!-- Identitas perusahaan -->
+			{% include 'front-end/include/formulir_tdup/keterangan_usaha.html' %}
+		  </div>
 
-	      <div class="tab-pane" id="tab5">
-		      <!-- Identitas perusahaan -->
-		      {% include 'front-end/include/formulir_tdup/legalitas_perusahaan.html' %}
-		    </div>
+		  <div class="tab-pane" id="tab5">
+			  <!-- Identitas perusahaan -->
+			  {% include 'front-end/include/formulir_tdup/legalitas_perusahaan.html' %}
+			</div>
 
-		    <div class="tab-pane" id="tab6">
-		      <!-- Identitas perusahaan -->
-		      {% include 'front-end/include/formulir_tdup/upload_dokument.html' %}
-		    </div>
+			<div class="tab-pane" id="tab6">
+			  <!-- Identitas perusahaan -->
+			  {% include 'front-end/include/formulir_tdup/upload_dokument.html' %}
+			</div>
 
-		    <div class="tab-pane" id="tab7">
-		      <!-- Identitas perusahaan -->
-	        {% include 'front-end/include/formulir_tdup/konfirmasi.html' %}
-		    </div>
+			<div class="tab-pane" id="tab7">
+			  <!-- Identitas perusahaan -->
+			{% include 'front-end/include/formulir_tdup/konfirmasi.html' %}
+			</div>
 
-		    <ul class="pager wizard">
-		      <li class="previous"><a class="btn btn-default">Kembali</a></li>
-		      <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
-		      <li class="next finish" style="display:none;">
-		        <button id="alert" onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
-		          <i class="fa fa-arrow-right"></i>
-		          <span>Selesai</span>
-		        </button>
-		      </li>
-		    </ul>
-	  	</div>
+			<ul class="pager wizard">
+			  <li class="previous"><a class="btn btn-default">Kembali</a></li>
+			  <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+			  <li class="next finish" style="display:none;">
+				<button id="alert" onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
+				  <i class="fa fa-arrow-right"></i>
+				  <span>Selesai</span>
+				</button>
+			  </li>
+			</ul>
+		</div>
 	</div>
 {% endblock %}

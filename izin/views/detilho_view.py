@@ -288,6 +288,7 @@ def detilho_upload_berkas_pendukung(request):
                   berkas.created_by_id = request.COOKIES['id_pemohon']
                 berkas.save()
                 p.berkas_tambahan.add(berkas)
+                p.berkas_terkait_izin.add(berkas)
 
                 data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
                     {'status_upload': 'ok'},
@@ -332,6 +333,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('file_izin_mendirikan_bangunan')
         nm_berkas.append("File Izin Mendirikan Bangunan (IMB)"+p.no_pengajuan)
         id_berkas.append(file_izin_mendirikan_bangunan.id)
+        p.berkas_terkait_izin.add(file_izin_mendirikan_bangunan)
 
       kepemilikan_tanah = Berkas.objects.filter(nama_berkas="Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)"+p.no_pengajuan)
       if kepemilikan_tanah.exists():
@@ -340,6 +342,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('kepemilikan_tanah')
         nm_berkas.append("Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akta Jual Beli / Petok D / Surat Keterangan Tanah)"+p.no_pengajuan)
         id_berkas.append(kepemilikan_tanah.id)
+        p.berkas_terkait_izin.add(kepemilikan_tanah)
 
       cetak_biru = Berkas.objects.filter(nama_berkas="File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi"+p.no_pengajuan)
       if cetak_biru.exists():
@@ -348,6 +351,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('cetak_biru')
         nm_berkas.append("File Rencana Teknis Bangunan Gedung(Denah Bangunan, Site Plan, Spesifikasi Teknis) yang disahkan oleh Instansi Teknis yang membidangi"+p.no_pengajuan)
         id_berkas.append(cetak_biru.id)
+        p.berkas_terkait_izin.add(cetak_biru)
 
       upload_gambar_ktp = Berkas.objects.filter(nama_berkas="File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
       if upload_gambar_ktp.exists():
@@ -356,6 +360,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('upload_gambar_ktp')
         nm_berkas.append("File KTP/Paspor (Dirut / Pemilik / Pengurus / Penanggung Jawab)"+p.no_pengajuan)
         id_berkas.append(upload_gambar_ktp.id)
+        p.berkas_terkait_izin.add(upload_gambar_ktp)
 
       file_npwp_pribadi = Berkas.objects.filter(nama_berkas="File NPWP Pribadi"+p.no_pengajuan)
       if file_npwp_pribadi.exists():
@@ -364,6 +369,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('file_npwp_pribadi')
         nm_berkas.append("File NPWP Pribadi"+p.no_pengajuan)
         id_berkas.append(file_npwp_pribadi.id)
+        p.berkas_terkait_izin.add(file_npwp_pribadi)
 
       file_npwp_perusahaan = Berkas.objects.filter(nama_berkas="File NPWP Perusahaan"+p.no_pengajuan)
       if file_npwp_perusahaan.exists():
@@ -372,6 +378,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('file_npwp_perusahaan')
         nm_berkas.append("File NPWP Perusahaan"+p.no_pengajuan)
         id_berkas.append(file_npwp_perusahaan.id)
+        p.berkas_terkait_izin.add(file_npwp_perusahaan)
 
       file_surat_kuasa = Berkas.objects.filter(nama_berkas="File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum"+p.no_pengajuan)
       if file_surat_kuasa.exists():
@@ -380,6 +387,7 @@ def ajax_load_berkas_detilho(request, id_pengajuan):
         id_elemen.append('file_surat_kuasa')
         nm_berkas.append("File Surat Kuasa bagi yang Mewakili Perusahaan/Badan Hukum"+p.no_pengajuan)
         id_berkas.append(file_surat_kuasa.id)
+        p.berkas_terkait_izin.add(file_surat_kuasa)
 
       data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
     except ObjectDoesNotExist:

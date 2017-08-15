@@ -1,8 +1,8 @@
-<form method="POST" name="step3" action="{% url 'parameter_bangunan_save' %}" role="form" class="form-horizontal">
+<form method="POST" name="step3" action="{% url 'detil_bangunan_save_cookie' %}" role="form" class="form-horizontal">
   {% csrf_token %}
     <h3>IDENTIFIKASI BANGUNAN</h3>
     <hr class="style14">
-
+    <input type="text" name="jenis_bangunan" hidden="" value="BK1">
     <div class="form-group">
         <label f class="col-sm-3 control-label text-left">A. Kegiatan Pembangunan Gedung</label>
         <div class="col-sm-5">
@@ -148,5 +148,5 @@
       </div>
     </div>   
     <span>Biaya bisa berubah setelah survey</span>  
-    <input type="text" hidden="" id="id_total_biaya" name="total_biaya">
+    <input type="text" hidden="" id="id_total_biaya" name="total_biaya_detil">
 </form>

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
-	<title>Cetak SKIZIN TDUP - {{pengajuan.no_izin}}</title>
+	<title>Cetak SKIZIN TDUP - {{pengajuan.no_izin|default_if_none:'-'}}</title>
 	<link rel="icon" type="image/ico" href="{% static "images/SIMPATIK.ico" %}" />
 	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
 	<style type="text/css">
@@ -268,7 +268,13 @@
     			<td align="center"><b>12.</b></td>
     			<td class="tdnone"><b>Nama Izin dan Nomor Ijin Teknis</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{pengajuan.nomor_izin_gangguan.upper}} TANGGAL {{pengajuan.tanggal_izin_gangguan|date:'d-m-Y'}}</td>
+    			<td class="tdnone">
+    				{% if izinlaintdup %}
+    					{% for i in izinlaintdup %}
+    						{{i.no_izin.upper}} TANGGAL {{i.tanggal_izin|date:'d-m-Y'}},<br>
+    					{% endfor %}
+    				{% endif %}
+    			</td>
     		</tr>
     		<tr>
     			<td align="center"><b>13.</b></td>

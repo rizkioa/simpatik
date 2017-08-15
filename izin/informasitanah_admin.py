@@ -349,6 +349,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
+				sk_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+				if sk_:
+					extra_context.update({'sk_': sk_ })
+			except ObjectDoesNotExist:
+				pass
+			try:
 				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
 				if kepala_:
 					extra_context.update({'gelar_depan': kepala_.gelar_depan })

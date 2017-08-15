@@ -426,7 +426,7 @@
       });
 
       if ('{{pengajuan_}}'){
-        
+            load_perusahaan_a('{{pengajuan_.perusahaan.npwp}}')
             {% include 'front-end/load_pengajuan.html' %}
 
             $('#id_jenis_reklame').val('{{ pengajuan_.jenis_reklame.id }}').prop('selected',true).trigger("chosen:updated");

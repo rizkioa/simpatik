@@ -15,9 +15,6 @@ from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, P
 def formulir_izin_gangguan(request):
 	extra_context={}
 	if 'id_kelompok_izin' in request.COOKIES.keys():
-		print "kjasdkajhsdkjhasd"
-		print "kjasdkajhsdkjhasd"
-		print "kjasdkajhsdkjhasd"
 		extra_context.update({'title': 'Izin Gangguan (HO)'})
 		negara = Negara.objects.all()
 		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
@@ -52,10 +49,8 @@ def formulir_izin_gangguan(request):
 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES['id_pengajuan'] != "":
-				print request.COOKIES['id_pengajuan']
 				try:
 					pengajuan_ = DetilHO.objects.get(id=request.COOKIES['id_pengajuan'])
-					print pengajuan_
 					alamat_ = ""
 					alamat_perusahaan_ = ""
 					if pengajuan_.pemohon:

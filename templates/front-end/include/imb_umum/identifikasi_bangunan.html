@@ -2,182 +2,50 @@
   {% csrf_token %}
     <h3>IDENTIFIKASI BANGUNAN</h3>
     <hr class="style14">
-    <div class="form-group">
-        <label f class="col-sm-3 control-label text-left">Jenis Kontruksi</label>
-        <div class="col-sm-5">
-          <select required="" id="id_kontruksi" class="form-control chosen-select">
-            <option value="0" >-- Pilih Jenis Kontruksi --</option>
-            {% for j in jenis_kontruksi_list %}
-             <option value="{{ j.id }}">{{ j.nama_jenis_kontruksi }}</option>
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 150px;padding-right: 32px;"></label> 
+        <table id="id_detil_bangunan_imb" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>Jenis Kontruksi</td>
+              <td>Bangunan</td>
+              <td>Biaya</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+<!--           {% if detil_bangunan_list %}
+            {% for a in detil_bangunan_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_jenis_kontruksi">{{a.detil_bangunan_imb.jenis_kontruksi.nama_jenis_kontruksi}}</td>
+                <td id="id_table_bangunan">{{a.detil_bangunan_imb.nama_bangunan}}</td>
+                <td id="id_table_biaya">{{a.total_biaya_detil}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowdetil_bangunan_imb(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowdetil_bangunan_imb(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
             {% endfor %}
-          </select>
-        </div>
+          {% endif %} -->
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 380px;padding-left: 160px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah(this);return false;">Tambah Identifikasi Bangunan<i class="fa fa-plus"></i></a>
+      </div>
     </div>
-    <div class="form-group field-jenis_bangunan" style="display: none">
-        <label f class="col-sm-3 control-label text-left">Jenis Bangunan</label>
-        <div class="col-sm-5">
-          <select required="" id="id_jenis_bangunan" name="jenis_bangunan" class="form-control chosen-select">
-          </select>
-        </div>
-    </div>
-    <div class="form-group field-panjang_bangunan" style="display: none">
-      <label for="input01" class="col-sm-2 control-label">Panjang</label>
-      <div class="col-sm-3">
+    <br>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Total Biaya</label>
+      <div class="col-sm-4">
         <div class="input-group">
-          <input type="text" class="form-control no_ktp" id="id_panjang" name="panjang">
           <span class="input-group-addon">
-            <span>M&sup2;</span>
+            <span>Rp</span>
           </span>
+          <input type="text" class="form-control no_ktp" id="id_total" data-parsley-trigger="change" disabled="">
+          <input type="text" class="form-control no_ktp" id="id_total_biaya" name="total_biaya" required="" style="display: none;">
         </div>
       </div>
     </div>
-</form>
-<form method="POST" id="id_parameter_bangunan" name="step3" action="{% url 'parameter_bangunan_save' %}" role="form" class="form-horizontal" style="display:none">
-  {% csrf_token %}
-  	<div class="form-group">
-        <label f class="col-sm-3 control-label text-left">A. Kegiatan Pembangunan Gedung</label>
-        <div class="col-sm-5">
-          <select required="" id="id_kegiatan_pembangunan" name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0" >-- Pilih Kegiatan Pembangunan Gedung --</option>
-            {% for j in kegiatan_pembangunan %}
-             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-            {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_kegiatan_pembangunan" class="form-control">
-	    </div>
-    </div>
 
-    <h5>B. Parameter Bangunan Gedung</h5>
-    <div class="form-group">
-        <label f class="col-sm-3 control-label">Fungsi Bangunan</label>
-        <div class="col-sm-5">
-          <select required="" id="id_fungsi_bangunan"  name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0">-- Pilih Fungsi Bangunan --</option>
-            {% for j in fungsi_bangunan %}
-             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-            {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_fungsi_bangunan" class="form-control" >
-	    </div>
-    </div>
 
-    <div class="form-group">
-        <label f class="col-sm-3 control-label">Tingkat Kompleksitas (0,25)</label>
-        <div class="col-sm-5">
-            <select required="" id="id_tingkat_kompleksitas" name="parameter_bangunan" class="form-control chosen-select">
-                <option value="0">-- Pilih Tingkat Kompleksitas --</option>
-                {% for j in kompleksitas_bangunan %}
-                 <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-                {% endfor %}
-            </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_tingkat_kompleksitas" class="form-control" >
-	    </div>
-    </div>
-
-	<div class="form-group">
-        <label f class="col-sm-3 control-label">Tingkat Permanensi (0,20)</label>
-        <div class="col-sm-5">
-          <select required="" id="id_tingkat_permanensi" name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0">-- Pilih Tingkat Permanensi --</option>
-                {% for j in permanensi_bangunan %}
-                 <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-                {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_tingkat_permanensi" class="form-control" >
-	    </div>
-    </div>
-
-    <div class="form-group">
-        <label f class="col-sm-3 control-label">Ketinggian Bangunan (0,10)</label>
-        <div class="col-sm-5">
-          <select required="" id="id_ketinggian_bangunan" name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0">-- Pilih Ketinggian Bangunan --</option>
-                {% for j in ketinggian_bangunan %}
-                 <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-                {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_ketinggian_bangunan" class="form-control" >
-	    </div>
-    </div>
-
-    <div class="form-group">
-        <label f class="col-sm-3 control-label">Lokasi Bangunan (0,15)</label>
-        <div class="col-sm-5">
-          <select required="" id="id_lokasi_bangunan" name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0">-- Pilih Lokasi Bangunan --</option>
-                {% for j in lokasi_bangunan %}
-                 <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-                {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_lokasi_bangunan" class="form-control" >
-	    </div>
-    </div>
-
-    <div class="form-group">
-        <label f class="col-sm-3 control-label">Kepemilikan Bangunan (0,05)</label>
-        <div class="col-sm-5">
-          <select required="" id="id_kepemilikan_bangunan" name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0">-- Pilih Kepemilikan Bangunan --</option>
-                {% for j in kepemilikan_bangunan %}
-                 <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-                {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_kepemilikan_bangunan" class="form-control" >
-	    </div>
-    </div>
-
-    <div class="form-group">
-        <label f class="col-sm-3 control-label">Lama Penggunaan Bangunan</label>
-        <div class="col-sm-5">
-          <select required="" id="id_lama_penggunaan_bangunan" name="parameter_bangunan" class="form-control chosen-select">
-            <option value="0">-- Pilih Lama Penggunaan Bangunan --</option>
-                {% for j in lama_penggunaan_bangunan %}
-                 <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
-                {% endfor %}
-          </select>
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
-	    <div class="col-sm-1">
-	        <input type="text" disabled="" id="id_bobot_lama_penggunaan_bangunan" class="form-control" >
-	    </div>
-    </div>
-
-    <div class="form-group">
-        <label class="col-sm-3 control-label">Perkiraan Biaya<br><i>//Biaya bisa berubah setelah survey</i></label>
-        <div class="col-sm-4">
-
-        </div>
-        <label class="col-sm-1 control-label" style="width:47px;"></label>
-      <div class="col-sm-3">
-        <div class="input-group">
-            <span class="input-group-addon">
-                <span>Rp</span>
-            </span> 
-             <input type="text" disabled="" class="form-control" style="width:150px;" id="total">
-        </div>
-      </div>
-    </div>    
-    <input type="text" hidden="" id="id_total_biaya" name="total_biaya">
 </form>
 

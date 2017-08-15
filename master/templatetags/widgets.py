@@ -209,3 +209,14 @@ def get_css(args):
 		string = '/static/styles/css/'+str(uk)+'.css'
 
 	return string
+
+@register.filter(name='alfabet')
+def atrialfabetbut(counter_):
+    """Template Tags untuk menampilkan looping a-h"""
+    list_alfabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'o', 'p', 'q', 'r']
+    alfabet = list_alfabet[counter_]
+    return alfabet
+
+@register.filter(name='split_berkas')
+def split_berkas(data):
+	return (data[:50] + '...') if len(data) > 75 else data
