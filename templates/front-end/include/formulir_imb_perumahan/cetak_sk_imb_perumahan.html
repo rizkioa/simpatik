@@ -349,7 +349,7 @@
 		        		<tr>
 		        			<td width="30" style="width: 105px;">KESATU</td>
 		        			<td width="10" >:</td>
-		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{{ pengajuan.bangunan|default_if_none:"" }}</b>:</td>
+		        			<td colspan="3">Memberikan Izin Mendirikan Bangunan untuk <b>{% if pengajuan.perusahaan %}{{pengajuan.perusahaan|upper}}{% else %}{{pengajuan.pemohon|upper}}{% endif %}</b>:</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" align="left" style="padding-left: 120px;">Kepada :</td>
@@ -380,8 +380,8 @@
 		        			{% endif %}
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 121px;" align="left">d. Alamat</td>
-		        			<td width="10">:</td>
+		        			<td colspan="3" style="padding-left: 121px;vertical-align: top;padding-top: 1px;" align="left">d. Alamat</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">:</td>
 		        			<td>{{pengajuan.pemohon.alamat}} Desa {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</td>
 		        		</tr>
 		        		<tr>
