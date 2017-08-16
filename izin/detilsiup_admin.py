@@ -173,28 +173,28 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cek_apikey(self, apikey, username):
-		# from izin.detilsiup_admin import cek_apikey
-		respon = False
-		if apikey and username:
-			try:
-				accounts_obj = Pegawai.objects.get(username=username)
-				if accounts_obj.api_key:
-					if accounts_obj.api_key.key:
-						# print accounts_obj.api_key.key
-						# print apikey
-						if str(accounts_obj.api_key.key) == str(apikey):
-							respon = True
-			except ObjectDoesNotExist:
-				pass
-		return respon
+	# def cek_apikey(self, apikey, username):
+	# 	# from izin.detilsiup_admin import cek_apikey
+	# 	respon = False
+	# 	if apikey and username:
+	# 		try:
+	# 			accounts_obj = Pegawai.objects.get(username=username)
+	# 			if accounts_obj.api_key:
+	# 				if accounts_obj.api_key.key:
+	# 					# print accounts_obj.api_key.key
+	# 					# print apikey
+	# 					if str(accounts_obj.api_key.key) == str(apikey):
+	# 						respon = True
+	# 		except ObjectDoesNotExist:
+	# 			pass
+	# 	return respon
 
 	def cetak_siup_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				try:
