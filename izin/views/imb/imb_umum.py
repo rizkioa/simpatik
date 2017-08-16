@@ -188,7 +188,6 @@ def imb_save_cookie(request):
 				print "valid"
 				if 'id_perusahaan' in request.COOKIES.keys():
 					if request.COOKIES['id_perusahaan'] != '0':
-						print "perusahaan"
 						pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
 						pengajuan_.pemohon_id  = request.COOKIES['id_pemohon']
 						pengajuan_.save()
