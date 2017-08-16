@@ -565,11 +565,11 @@
         tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
         $(tab_index).tab('show');
       }
-      // else if(perusahaan_cookie === ""){
-      //   toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-      //   tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-      //   $(tab_index).tab('show');
-      // }
+      else if(perusahaan_cookie === ""){
+        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+        $(tab_index).tab('show');
+      }
       else{
         swal({
           showConfirmButton: false,

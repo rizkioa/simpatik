@@ -1,0 +1,158 @@
+{% load i18n admin_static staticfiles widgets access %}
+
+<style type="text/css">
+	page[size="F4"] {  
+		width: 8.27in;
+		height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
+	}
+	.row::after {
+		content: "";
+		clear: both;
+		display: block;
+		/*padding-block-start: 20px;*/
+		/*padding: 20px;*/
+	}
+	[class*="col-"] {
+		float: left;
+		padding: 10px;
+		/*border: 1px solid red;*/
+	}
+	.col-1 {width: 8.33%;}
+	.col-2 {width: 16.66%;}
+	.col-3 {width: 25%;}
+	.col-4 {width: 33.33%;}
+	.col-5 {width: 41.66%;}
+	.col-6 {width: 50%;}
+	.col-7 {width: 58.33%;}
+	.col-8 {width: 66.66%;}
+	.col-9 {width: 75%;}
+	.col-10 {width: 83.33%;}
+	.col-11 {width: 91.66%;}
+	.col-12 {width: 100%;}
+
+	.skizin{
+		font-size: 14px;
+		padding: 5px;
+	}
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	th, td {
+		padding: 7px;
+	}
+	.tdnone{
+		border-left: none;
+		border-right: none;
+	}
+
+	#qrcodeTable canvas{
+		padding: 2px;
+		border-radius: 3px;
+		border: 3px solid #000;
+		/*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+		width: 90px;
+		height: 90px;
+	}
+</style>
+
+<page size="F4">
+	<div id="kop_surat_id">
+		<div class="row">
+			
+			<div class="col-2">
+				<img src="{% static 'images/kabkediri.png' %}" height="120px">
+			</div>
+			<div class="col-9">
+				<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
+					<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+					<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+					<br/>
+					<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
+					<span style="font-size: 19px;"><b>KEDIRI</b></span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<hr class="style14">
+	{{html|safe}}
+</page>
+<script src="http://{{request.META.HTTP_HOST}}{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+<script src="http://{{request.META.HTTP_HOST}}{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
+<script type="text/javascript">
+	// readFile("logo", "logo_")
+    function readFile(encode_, decode_) {
+        if (this.files && this.files[0]) {
+            var FR= new FileReader();
+            
+            FR.addEventListener("load", function(e) {
+                document.getElementById(encode_).src       = e.target.result;
+                document.getElementById(decode_).innerHTML = e.target.result;
+            }); 
+            
+            FR.readAsDataURL( this.files[0] );
+        }
+    }
+</script>
+<script type="text/javascript">
+	function Exit() {
+	    var x=confirm('Are You sure want to exit:');
+	    if(x) window.close();
+    }
+    {% if pengajuan.no_izin %}
+	    $('#qrcodeTable').qrcode({
+	    	// render method: 'canvas', 'image' or 'div'
+	    	render: 'canvas',
+			
+			// qrsize: 1,
+			// version range somewhere in 1 .. 40
+
+			// width 	: 110,
+			// height 	: 110,
+
+		    minVersion: 1,
+		    maxVersion: 40,
+
+		    // error correction level: 'L', 'M', 'Q' or 'H'
+		    ecLevel: 'Q',
+		    // offset in pixel if drawn onto existing canvas
+		    left: 0,
+		    top: 0,
+		    // size in pixel
+		    size: 500,
+
+		    // code color or image element
+		    fill: '#000',
+
+		    // background color or image element, null for transparent background
+			// background: '#707aec',
+			// background : logo,
+			// mSize: 0.4,
+
+			text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+
+			radius: 0.5,
+
+			// quiet zone in modules
+			quiet: 0,
+
+			// modes
+		    // 0: normal
+		    // 1: label strip
+		    // 2: label box
+		    // 3: image strip
+		    // 4: image box
+		    mode: 0,
+
+		    mSize: 0.2,
+		    mPosX: 0.5,
+		    mPosY: 0.5,
+
+			label: 'no label',
+			fontname: 'sans',
+			fontcolor: '#000',
+
+			// image: logo,
+		});
+	{% endif %}
+</script>

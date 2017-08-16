@@ -249,8 +249,12 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		extra_context = {}
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
+			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
+
+			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
 			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan_izin_)
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
 					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
@@ -264,7 +268,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass
-			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				letak_ = ''
+				if pengajuan_.lokasi:
+					letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
 			extra_context.update({'letak_pemasangan': letak_})
@@ -297,6 +303,24 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'riwayat': riwayat_ })
 			except ObjectDoesNotExist:
 				pass
+
+			h = Group.objects.filter(name="Cek Lokasi")
+			if h.exists():
+				h = h.last()
+			h = h.user_set.all()
+			extra_context.update({'pegawai_list' : h })
+
+			try:
+				try:
+					s = Survey.objects.get(pengajuan=pengajuan_)
+				except Survey.MultipleObjectsReturned:
+					s = Survey.objects.filter(pengajuan=pengajuan_).last()
+					# print s.survey_iujk.all()
+			except ObjectDoesNotExist:
+				s = ''
+
+			extra_context.update({'survey': s })
+
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_perumahan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))

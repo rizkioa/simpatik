@@ -132,8 +132,8 @@
 			border-radius: 3px;
 		    border: 3px solid #000;
 		    /*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-		    width: 110px;
-			height: 110px;
+		    width: 90px;
+			height: 90px;
 		}
 		.skizin{
 			font-size: 14px;
@@ -179,26 +179,28 @@
 	</div>
 
 	<page size="F4">
-			{% include 'front-end/include/skizin/cop_surat.html' %}
+		{% include 'front-end/include/skizin/cop_surat.html' %}
 		<div style="display: none; width: 100%;" class="printpadding">
 			
 		</div>
-		<br>
-		<div class="row">
-			<div class="col-1">
-				</div>
-        	<div class="col-8">
-	        	<center>
-	        		<font style="font-size: 22px"><b>TANDA DAFTAR PERUSAHAAN</b></font><br>
-	        		<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
-	        		<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br>
-	        	</center>
-	        </div>
-	        <div class="col-2 qrcode" style="padding-left: 0px;">
-	        	<div id="qrcodeTable">
-	        	</div>
-	        </div>
-    	</div>
+		<table>
+			<tr>
+				<td width="20%"></td>
+				<td width="60%">
+					<center>
+						<font style="font-size: 22px"><b>TANDA DAFTAR PERUSAHAAN</b></font><br>
+						<font style="font-size: 17px; color: red;"><strong><i>PERSEROAN TERBATAS (PT)</i></strong></font><br>
+						<font style="font-size: 12px"><strong>BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982<br>TENTANG WAJIB DAFTAR PERUSAHAAN</strong></font><br>
+					</center>
+				</td>
+				<td width="20%">
+					<div class="qrcode" style="padding-left: 0px;">
+						<div id="qrcodeTable" >
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
     	<br>
     	<table width="100%" class="skizin" border="2">
     		<tr>
@@ -219,10 +221,10 @@
     	<br>
     	<table width="100%" border="2" class="skizin" >
     		<tr>
-    			<td class="tdnone" rowspan="2" ><strong>NAMA PERUSAHAAN</strong></td>
-    			<td class="tdnone" rowspan="2" >:</td>
-    			<td class="tdnone" rowspan="2" style="border: 1;"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}} </b></td>
-    			<td><strong>{{skizin.status_perusahaan.upper}}</strong></td>
+    			<td width="20%" class="tdnone" rowspan="2" ><strong>NAMA PERUSAHAAN</strong></td>
+    			<td width="10%" class="tdnone" rowspan="2" >:</td>
+    			<td width="40%" class="tdnone" rowspan="2" style="border: 1;"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}} </b></td>
+    			<td width="20%"><strong>{{skizin.status_perusahaan.upper}}</strong></td>
     		</tr>
     		<tr>
     			<td><span style="color: red;"><i>{{pengajuan.status_waralaba.upper}}</i></span></td>
@@ -255,7 +257,7 @@
     			<td valign="top"><strong>KBLI :</strong></td>
     		</tr>
     		<tr>
-    			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
+    			<td><center>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</center></td>
     		</tr>
     		<tr>
     			<td colspan="4"><strong>PENGESAHAN MENTERI KEHAKIMAN</strong></td>
