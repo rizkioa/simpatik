@@ -265,6 +265,10 @@ class DetilHOAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	# def cetak_ho_pdf(self, request, id_pengajuan):
+	# 	from izin.utils import render_to_pdf
+	# 	extra_context ={}
+	# 	username = request.GET.get()
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
