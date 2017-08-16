@@ -56,7 +56,6 @@ def siup_identitas_pemohon_save_cookie(request):
 				k = KelompokJenisIzin.objects.filter(kode=request.COOKIES.get('kode_kelompok_jenis_izin', None))
 				if k.exists():
 					k = k.last()
-		
 		nomor_pengajuan_ = get_nomor_pengajuan(k.jenis_izin.kode)
 		nama_kuasa = request.POST.get('nama_kuasa', None)
 		no_identitas_kuasa = request.POST.get('no_identitas_kuasa', None)
@@ -131,7 +130,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		# 	objects_ = getattr(app_models, 'DetilIUA')
 
 		objects_ = get_model_detil(k.kode)
-		
+		print objects_
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:
@@ -239,6 +238,7 @@ def siup_identitas_perusahan_save_cookie(request):
 			objects_ = get_model_detil(k.kode)
 			try:
 				get_perusahaan = Perusahaan.objects.get(npwp=request.POST.get('npwp'))
+				print get_perusahaan
 				perusahaan = PerusahaanForm(request.POST, instance=get_perusahaan)
 				if perusahaan.is_valid():
 					per = perusahaan.save(commit=False)
