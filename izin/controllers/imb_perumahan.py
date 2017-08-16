@@ -88,6 +88,7 @@ def formulir_imb_perumahan(request):
 				pengajuan_ = DetilIMB.objects.get(id=request.COOKIES['id_pengajuan'])
 				if pengajuan_.pemohon:
 					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+					response.set_cookie(key='kode_kelompok_jenis_izin', value=pengajuan_.kelompok_jenis_izin.kode)
 				if ktp_:
 					response.set_cookie(key='nomor_ktp', value=ktp_)
 		return response

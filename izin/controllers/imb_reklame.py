@@ -89,6 +89,7 @@ def formulir_imb_reklame(request):
 				pengajuan_ = DetilIMBPapanReklame.objects.get(id=request.COOKIES['id_pengajuan'])
 				if pengajuan_.pemohon:
 					response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+					response.set_cookie(key='kode_kelompok_jenis_izin', value=pengajuan_.kelompok_jenis_izin.kode)
 				if pengajuan_.perusahaan:
 					response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
 				if ktp_:

@@ -1357,8 +1357,13 @@
 	<script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
 	<script>
 		function change_edit_pengajuan(){
+			// var kode_izin = "{{pengajuan.kelompok_jenis_izin.kode}}";
+			// var str_kode_izin = "\""+kode_izin+"\""
+			// alert(str_kode_izin)
 			$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
 			$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
+			// $.cookie('kode_kelompok_jenis_izin', "\'"+kode_izin.replace(/%2F/gi, "/")+"\'", {path:"/"});
+
 		}
 
 		function sk_imb_add(btn){

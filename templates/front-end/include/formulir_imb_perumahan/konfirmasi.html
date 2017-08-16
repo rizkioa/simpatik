@@ -65,7 +65,46 @@
   </table>
   <br>
 
-  <h4><u>#2 DATA IMB</u></h4>
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#3 DATA IMB</u></h4>
 
   <div class="row">
       <div class="col-md-3">
@@ -197,7 +236,7 @@
   </div>
 
   <br>
-  <h4><u><strong>#3 IDENTIFIKASI BANGUNAN</strong></u></h4>
+  <h4><u><strong>#4 IDENTIFIKASI BANGUNAN</strong></u></h4>
   <div class="table-responsive">
       <table class="table table-bordered">
           <thead>
@@ -263,7 +302,7 @@
       </table>
   </div>    
     <br>
-  <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN</u></h4>
+  <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>
   <table class="table table-bordered">
       <thead>
         <tr >

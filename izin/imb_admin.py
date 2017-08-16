@@ -268,7 +268,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass
-			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				letak_ = ''
+				if pengajuan_.lokasi:
+					letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
 			extra_context.update({'letak_pemasangan': letak_})
@@ -307,7 +309,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				h = h.last()
 			h = h.user_set.all()
 			extra_context.update({'pegawai_list' : h })
-			
+
 			try:
 				try:
 					s = Survey.objects.get(pengajuan=pengajuan_)
