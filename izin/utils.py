@@ -469,8 +469,9 @@ def render_to_pdf(template_src, context_dict, extra_context, request):
 	options = {
 			'page-width': '21.1cm',
 			'page-height': '33cm',
-			'margin-top': '2cm',
-			'margin-right': '2.5cm',
+			'margin-top': '1cm',
+			'margin-bottom': '1cm',
+			'margin-right': '1.5cm',
 			'margin-left': '1.5cm',
 		}
 	template = loader.get_template(template_src)

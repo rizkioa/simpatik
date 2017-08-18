@@ -9,7 +9,7 @@ from django.utils.safestring import mark_safe
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
 from perusahaan.models import Perusahaan, KBLI
@@ -195,36 +195,36 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
 		cek = cek_apikey(apikey, username)
-		if cek == True:
-			if id_pengajuan:
-				try:
-					pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan)
-					extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-					extra_context.update({'pengajuan': pengajuan_ })
-					extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-					# kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
-					# extra_context.update({'kelembagaan': kelembagaan })
-					if pengajuan_.kekayaan_bersih:
-						kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
-						terbilang_ = terbilang(int(kekayaan_))
-						extra_context.update({'terbilang': str(terbilang_) })
-						extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
-					skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-					if skizin_:
-						extra_context.update({'skizin': skizin_ })
-						extra_context.update({'skizin_status': skizin_.status })
-					kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas").last()
-					if kepala_:
-						extra_context.update({'kepala_dinas': kepala_ })
-						extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
-				except ObjectDoesNotExist:
-					raise Http404
-			else:
+		# if cek == True:
+		if id_pengajuan:
+			try:
+				pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan)
+				extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+				extra_context.update({'pengajuan': pengajuan_ })
+				extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				# kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
+				# extra_context.update({'kelembagaan': kelembagaan })
+				if pengajuan_.kekayaan_bersih:
+					kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
+					terbilang_ = terbilang(int(kekayaan_))
+					extra_context.update({'terbilang': str(terbilang_) })
+					extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+				kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas").last()
+				if kepala_:
+					extra_context.update({'kepala_dinas': kepala_ })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+			except ObjectDoesNotExist:
 				raise Http404
 		else:
 			raise Http404
-		response = render_to_pdf("front-end/include/formulir_siup/cetak_skizin_siup_pdf.html", "Cetak Bukti SIUP", extra_context, request)
-		return response
+		# else:
+			# raise Http404
+		# response = render_to_pdf("front-end/include/formulir_siup/cetak_skizin_siup_pdf.html", "Cetak Bukti SIUP", extra_context, request)
+		return render(request, "front-end/include/formulir_siup/cetak_skizin_siup_pdf.html", extra_context)
 
 
 	def get_urls(self):
