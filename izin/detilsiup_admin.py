@@ -194,32 +194,6 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-<<<<<<< HEAD
-		cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			try:
-				pengajuan_ = DetilSIUP.objects.get(id=id_pengajuan)
-				extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-				extra_context.update({'pengajuan': pengajuan_ })
-				extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-				# kelembagaan = pengajuan_.kelembagaan.kelembagaan.upper()
-				# extra_context.update({'kelembagaan': kelembagaan })
-				if pengajuan_.kekayaan_bersih:
-					kekayaan_ = pengajuan_.kekayaan_bersih.replace('.', '')
-					terbilang_ = terbilang(int(kekayaan_))
-					extra_context.update({'terbilang': str(terbilang_) })
-					extra_context.update({ 'kekayaan_bersih': "Rp "+str(pengajuan_.kekayaan_bersih) })
-				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-				kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas").last()
-				if kepala_:
-					extra_context.update({'kepala_dinas': kepala_ })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
-			except ObjectDoesNotExist:
-=======
 		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
@@ -246,7 +220,6 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 				except ObjectDoesNotExist:
 					raise Http404
 			else:
->>>>>>> a25572e0bbb3f3b7438b8d634258889f0fecc4e0
 				raise Http404
 		else:
 			raise Http404

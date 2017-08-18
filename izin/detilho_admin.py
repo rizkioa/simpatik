@@ -6,11 +6,12 @@ from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404
-
+from django.http import Http404
 from izin.models import DetilHO, Syarat, SKIzin, Riwayat, Survey, DetilSk, DetilPembayaran
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import*
+from kepegawaian.models import Pegawai
 
 class DetilHOAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -215,14 +216,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 					luas_lahan_usaha_ = ("%.0f" % pengajuan_.luas_lahan_usaha)
 				else:
 					luas_lahan_usaha_ = pengajuan_.luas_lahan_usaha
-				extra_context.update({'luas_lahan_usaha_': luas_lahan_usaha_})			
-			# ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
-			# jumlah_ = str(int(pengajuan_.jumlah))
-			# klasifikasi_ = pengajuan_.klasifikasi_jalan
-
-			# extra_context.update({'jumlah': jumlah_ })
-			# extra_context.update({'klasifikasi_jalan': klasifikasi_ })
-			# extra_context.update({'ukuran': ukuran_})
+				extra_context.update({'luas_lahan_usaha_': luas_lahan_usaha_})
 			extra_context.update({'letak': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
 			extra_context.update({'nomor_identitas': nomor_identitas_ })
@@ -265,10 +259,95 @@ class DetilHOAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	# def cetak_ho_pdf(self, request, id_pengajuan):
-	# 	from izin.utils import render_to_pdf
-	# 	extra_context ={}
-	# 	username = request.GET.get()
+	def cetak_ho_pdf(self, request, id_pengajuan):
+		from izin.utils import render_to_pdf
+		extra_context ={}
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		# if cek == True
+		if id_pengajuan:
+			# extra_context.update({'salinan': salinan_})
+			pengajuan_ = DetilHO.objects.get(id=id_pengajuan)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+			if pengajuan_.perusahaan:
+				if pengajuan_.perusahaan.desa:
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+				extra_context.update({'perusahaan': pengajuan_.perusahaan })
+			letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			if pengajuan_.luas_ruang_tempat_usaha:
+				luas_ruang_tempat_usaha_ = '{0:f}'.format(pengajuan_.luas_ruang_tempat_usaha)
+				luas_ruang_tempat_ = luas_ruang_tempat_usaha_.split(".")[1]
+				if luas_ruang_tempat_ == "00":
+					luas_ruang_tempat_usaha_ = ("%.0f" % pengajuan_.luas_ruang_tempat_usaha)
+				else:
+					luas_ruang_tempat_usaha_ = pengajuan_.luas_ruang_tempat_usaha
+				extra_context.update({'luas_ruang_tempat_usaha_': luas_ruang_tempat_usaha_})
+			if pengajuan_.luas_lahan_usaha:
+				luas_lahan_usaha_ = '{0:f}'.format(pengajuan_.luas_lahan_usaha)
+				luas_lahan_ = luas_lahan_usaha_.split(".")[1]
+				if luas_lahan_ == "00":
+					luas_lahan_usaha_ = ("%.0f" % pengajuan_.luas_lahan_usaha)
+				else:
+					luas_lahan_usaha_ = pengajuan_.luas_lahan_usaha
+				extra_context.update({'luas_lahan_usaha_': luas_lahan_usaha_})			
+			# ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
+			# jumlah_ = str(int(pengajuan_.jumlah))
+			# klasifikasi_ = pengajuan_.klasifikasi_jalan
+
+			# extra_context.update({'jumlah': jumlah_ })
+			# extra_context.update({'klasifikasi_jalan': klasifikasi_ })
+			# extra_context.update({'ukuran': ukuran_})
+			extra_context.update({'letak': letak_})
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'pengajuan': pengajuan_ })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+			except ObjectDoesNotExist:
+				pass
+			try:
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan)
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+
+			try:
+				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan)
+				if retribusi_:
+					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					terbilang_ = terbilang(n)
+					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'terbilang': terbilang_ })
+			except ObjectDoesNotExist:
+				pass
+		else:
+			raise Http404
+		# else:
+		# 	raise Http404
+		response = render_to_pdf("front-end/include/formulir_ho/cetak_ho_pdf.html", "Cetak Bukti Izin Gangguan", extra_context, request)
+		return response
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -277,6 +356,7 @@ class DetilHOAdmin(admin.ModelAdmin):
 			url(r'^cetak-sk-izin-gangguan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_gangguan), name='cetak_sk_izin_gangguan'),
 			url(r'^cetak-sk-izin-gangguan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_sk_izin_gangguan), name='cetak_sk_izin_gangguan'),
 			url(r'^view-pengajuan-izin-gangguan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_gangguan), name='view_pengajuan_izin_gangguan'),
+			url(r'^cetak-izin-gangguan-pdf/(?P<id_pengajuan>[0-9]+)/$', self.cetak_ho_pdf, name='cetak_ho_pdf'),
 
 			)
 		return my_urls + urls
