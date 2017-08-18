@@ -390,6 +390,78 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_skizin_imb_umum_pdf(self, request, id_pengajuan):
+		from izin.utils import render_to_pdf
+		extra_context = {}
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = cek_apikey(apikey, username)
+		if id_pengajuan:
+			# extra_context.update({'salinan': salinan_})
+			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
+			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan)
+			alamat_ = ""
+			alamat_perusahaan_ = ""
+			if pengajuan_.pemohon:
+				if pengajuan_.pemohon.desa:
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					extra_context.update({'alamat_pemohon': alamat_})
+				extra_context.update({'pemohon': pengajuan_.pemohon})
+				
+			letak_ = pengajuan_.lokasi+", Desa "+str(pengajuan_.desa)+", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
+
+			extra_context.update({'ukuran': ukuran_})
+			extra_context.update({'letak_pemasangan': letak_})
+			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+			extra_context.update({'nomor_identitas': nomor_identitas_ })
+			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+			extra_context.update({'pengajuan': pengajuan_ })
+			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+			try:
+				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					extra_context.update({'skizin_status': skizin_.status })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+				if kepala_:
+					extra_context.update({'gelar_depan': kepala_.gelar_depan })
+					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+			except ObjectDoesNotExist:
+				pass
+			try:
+				sk_imb_ = DetilSk.objects.get(pengajuan_izin_id = id_pengajuan )
+				if sk_imb_:
+					extra_context.update({'sk_imb': sk_imb_ })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan).last()
+				if retribusi_:
+					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					terbilang_ = terbilang(n)
+					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'terbilang': terbilang_ })
+			except ObjectDoesNotExist:
+				pass
+			try:
+				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
+				bk_1 = detil_bangunan_.filter(detil_bangunan_imb__kode="BK23").last()
+				if bk_1:
+					extra_context.update({'bk_1': bk_1 })
+				if detil_bangunan_:
+					extra_context.update({'detil_bangunan': detil_bangunan_ })
+			except ObjectDoesNotExist:
+				pass
+		else:
+			raise Http404
+		response = render_to_pdf("front-end/include/formulir_reklame/cetak_reklame_pdf.html", "Cetak Bukti Pemasangan Reklame", extra_context, request)
+		return response
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -401,6 +473,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			url(r'^cetak-sk-imb-perumahan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_imb_perumahan), name='cetak_sk_imb_perumahan'),
 			url(r'^view-pengajuan-imb-umum/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_umum), name='view_pengajuan_imb_umum'),
 			url(r'^view-pengajuan-imb-perumahan/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_imb_perumahan), name='view_pengajuan_imb_perumahan'),
+			url(r'^cetak-skizin-imb-umum-pdf/(?P<id_pengajuan>[0-9]+)/$', self.cetak_skizin_imb_umum_pdf, name='cetak_skizin_imb_umum_pdf'),
 
 			)
 		return my_urls + urls

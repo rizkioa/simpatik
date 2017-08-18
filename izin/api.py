@@ -1,4 +1,7 @@
 from mobile.cors import CORSModelResource, CORSHttpResponse
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, DetilIUJK
+from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha
 from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, JenisMesin, MesinHuller, MesinPerusahaan
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
@@ -269,6 +272,7 @@ class InformasiTanahResource(CORSModelResource):
 	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	
 	class Meta:
 		queryset = InformasiTanah.objects.all()
 

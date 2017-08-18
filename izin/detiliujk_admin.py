@@ -517,7 +517,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			pegawai_list = pegawai_list.filter(unit_kerja_id=unit_kerja_id, groups__name="Tim Teknis")
 		pilihan = "<option value=''>-- Pilih Pegawai --</option>"
 		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in pegawai_list)));
-
+	
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIUJKAdmin, self).get_urls()

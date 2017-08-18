@@ -1,0 +1,205 @@
+{% load i18n admin_static staticfiles widgets access %}
+
+<style type="text/css">
+	page[size="F4"] {  
+		width: 8.27in;
+		height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
+	}
+	.row::after {
+		content: "";
+		clear: both;
+		display: block;
+		/*padding-block-start: 20px;*/
+		/*padding: 20px;*/
+	}
+	[class*="col-"] {
+		float: left;
+		padding: 10px;
+		/*border: 1px solid red;*/
+	}
+	.col-1 {width: 8.33%;}
+	.col-2 {width: 16.66%;}
+	.col-3 {width: 25%;}
+	.col-4 {width: 33.33%;}
+	.col-5 {width: 41.66%;}
+	.col-6 {width: 50%;}
+	.col-7 {width: 58.33%;}
+	.col-8 {width: 66.66%;}
+	.col-9 {width: 75%;}
+	.col-10 {width: 83.33%;}
+	.col-11 {width: 91.66%;}
+	.col-12 {width: 100%;}
+
+	.skizin{
+		font-size: 14px;
+		padding: 5px;
+	}
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+	th, td {
+		padding: 7px;
+	}
+	.tdnone{
+		border-left: none;
+		border-right: none;
+	}
+
+	#qrcodeTable canvas{
+		padding: 2px;
+		border-radius: 3px;
+		border: 3px solid #000;
+		/*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+		width: 90px;
+		height: 90px;
+	}
+</style>
+
+<page size="F4">
+	<div id="kop_surat_id" class="printhide">
+		<table>
+			<tr>
+				<td width="10%">
+					<img id="logo" src="http://{{request.META.HTTP_HOST}}{% static 'images/kabkediri.png' %}" width="120px"><p id="logo_"></p>
+				</td>
+				<td width="90%">
+					<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
+						<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+						<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+						<br/>
+						<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
+						<span style="font-size: 19px; padding-left: 220px;"><b>KEDIRI</b></span>
+						<span style="font-size: 15px; padding-left: 105px;">Kode Pos : 64182</span>
+					</p>
+				</td>
+			</tr>
+		</table>
+		<hr style="border-top: 4px double #8c8b8b;border-width: 3px;">
+	</div>
+	<br>
+	<div style="display: none; width: 100%;" class="printpadding">
+	</div>
+	<br>
+	<table>
+		<tr>
+			<td width="20%"></td>
+			<td width="60%">
+				<center>
+					<b>
+						<span style="font-size: 23px;">TANDA DAFTAR PERUSAHAAN</span><br>
+						<span style="font-size: 18px; color: red;">PERSEROAN TERBATAS (PT)</span><br>
+						<span style="font-size: 13px">BERDASARKAN UNDANG-UNDANG REPUBLIK INDONESIA NOMOR 3 TAHUN 1982 <br>TENTANG WAJIB DAFTAR PERUSAHAAN</span>
+					</b>
+				</center>
+			</td>
+			<td width="20%">
+				<div class="qrcode" style="padding-left: 0px">
+					<div id="qrcodeTable">
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="100%" class="skizin" border="2">
+		<tr>
+			<td><b>NOMOR TDP</b></td>
+			<td><b>BERLAKU S/D TGL</b></td>
+			<td class="tdnone"><b>PENDAFTARAN</b></td>
+			<td class="tdnone"><b>:</b></td>
+			<td class="tdnone"><b>{{skizin.status_pendaftaran.upper}}</b></td>
+		</tr>
+		<tr>
+			<td><b>{{pengajuan.no_izin|default_if_none:'-'}}</b></td>
+			<td><b>{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}</td>
+			<td class="tdnone"><b>PEMBAHARUAN KE</b></td>
+			<td class="tdnone"><b>:</b></td>
+			<td class="tdnone"><b>{{skizin.status_pembaharuan_ke}}</b></td>
+		</tr>
+	</table>
+	<br>
+	<br>
+	<table width="100%" border="2" class="skizin" >
+		<tr>
+			<td class="tdnone" rowspan="2" ><strong>NAMA PERUSAHAAN</strong></td>
+			<td class="tdnone" rowspan="2" >:</td>
+			<td class="tdnone" rowspan="2" style="border: 1;"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}} </b></td>
+			<td width="18%"><strong>STATUS: {{skizin.status_perusahaan.upper}}</strong></td>
+		</tr>
+		<tr>
+			<td><span style="color: red;">{{pengajuan.status_waralaba.upper}}</span></td>
+		</tr>
+		<tr>
+			<td class="tdnone"><strong>NAMA PENGURUS / PENANGGUNGJAWAB</strong></td>
+			<td class="tdnone" style="border: none;">:</td>
+			<td class="tdnone" colspan="2">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper}})</td>
+		</tr>
+		<tr>
+			<td class="tdnone"><strong>ALAMAT PERUSAHAAN</strong></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone" colspan="2">{{pengajuan.perusahaan.alamat_perusahaan.upper}}, {{pengajuan.perusahaan.desa.lokasi_lengkap.upper}}</td>
+		</tr>
+		<tr>
+			<td class="tdnone"><strong>NPWP</strong></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone" colspan="2"><strong>{{pengajuan.perusahaan.npwp}}</strong></td>
+		</tr>
+		<tr>
+			<td class="tdnone"><strong>NOMOR TELEPON</strong></td>
+			<td class="tdnone">:</td>
+			<td class="tdnone">{{pengajuan.perusahaan.telepon}}</td>
+			<td><strong>FAX :</strong> {% if pengajuan.perusahaan.fax %}{{pengajuan.perusahaan.fax}}{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<td class="tdnone" rowspan="2" valign="top"><strong>KEGIATAN USAHA POKOK</strong></td>
+			<td class="tdnone" rowspan="2" valign="top">:</td>
+			<td class="tdnone" rowspan="2" valign="top">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %} </td>
+			<td valign="top" align="center"><strong>KBLI :</strong></td>
+		</tr>
+		<tr>
+			<td>{% for kbli in pengajuan.kegiatan_usaha_pokok.all %} ({{ kbli.kode_kbli }}) {% endfor %}</td>
+		</tr>
+		<tr>
+			<td colspan="4"><strong>PENGESAHAN MENTERI KEHAKIMAN</strong></td>
+		</tr>
+		<tr>
+			<td colspan="2"><strong>NOMOR :</strong> {% if legalitas_1.nomor_pengesahan %}{{legalitas_1.nomor_pengesahan}}{% else %}-{% endif %}</td>
+			<td colspan="2"><strong>TANGGAL :</strong> {% if legalitas_1.tanggal_pengesahan %}{{legalitas_1.tanggal_pengesahan|date:'d-m-Y'}}{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<td colspan="4"><strong>PERSETUJUAN MENTERI KEHAKIMAN ATAS AKTA PERUBAHAN ANGGARAN DASAR</strong></td>
+		</tr>
+		<tr>
+			<td colspan="2"><strong>NOMOR :</strong> {% if legalitas_2.nomor_pengesahan %}{{legalitas_2.nomor_pengesahan}}{% else %}-{% endif %}</td>
+			<td colspan="2"><strong>TANGGAL :</strong> {% if legalitas_2.tanggal_pengesahan %}{{legalitas_2.tanggal_pengesahan|date:'d-m-Y'}}{% else %}-{% endif %}</td>
+		</tr>
+		<tr>
+			<td colspan="4"><strong>PENERIMAAN LAPORAN PERUBAHAN ANGGARAN DASAR</strong></td>
+		</tr>
+		<tr>
+			<td colspan="2"><strong>NOMOR :</strong> {% if legalitas_3.nomor_pengesahan %}{{legalitas_3.nomor_pengesahan}}{% else %}-{% endif %}</td>
+			<td colspan="2"><strong>TANGGAL :</strong> {% if legalitas_3.tanggal_pengesahan %}{{legalitas_3.tanggal_pengesahan|date:'d-m-Y'}}{% else %}-{% endif %}</td>
+		</tr>
+	</table>
+	<br>
+	<br>
+	<div style="float: right; width: 50%">
+		<p style="font-size:17px; padding-left: 0%;" align="center">
+			{% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
+
+			{% if skizin.nama_pejabat %}
+			<br>Kepala DPMPTSP
+			<br>KABUPATEN KEDIRI
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<u><b>{{ skizin.nama_pejabat }}</b></u><br>
+			<span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
+			<span>NIP: {{skizin.nip_pejabat}}</span>
+			{% endif %}
+		</p>
+	</div>
+</page>

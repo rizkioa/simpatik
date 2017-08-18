@@ -226,7 +226,6 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		# response = render_to_pdf("front-end/include/formulir_siup/cetak_skizin_siup_pdf.html", "Cetak Bukti SIUP", extra_context, request)
 		return render(request, "front-end/include/formulir_siup/cetak_skizin_siup_pdf.html", extra_context)
 
-
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilSIUPAdmin, self).get_urls()
