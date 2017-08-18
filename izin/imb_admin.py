@@ -404,11 +404,13 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+pengajuan_.pemohon.desa.lokasi_lengkap()
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
-				
-			letak_ = pengajuan_.lokasi+", Desa "+str(pengajuan_.desa)+", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+			
+			letak_ = pengajuan_.lokasi+", "
+			if pengajuan_.desa:
+				letak_ += pengajuan_.desa.lokasi_lengkap()
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
 			extra_context.update({'ukuran': ukuran_})
@@ -479,22 +481,3 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		return my_urls + urls
 
 admin.site.register(DetilIMB, DetilIMBAdmin)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
