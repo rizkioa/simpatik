@@ -405,15 +405,17 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					alamat_ = str(pengajuan_.pemohon.alamat)+", "+pengajuan_.pemohon.desa.lokasi_lengkap()
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", "+pengajuan_.perusahaan.desa.lokasi_lengkap()
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
-			letak_ = pengajuan_.alamat +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			letak_ = pengajuan_.alamat
+			if pengajuan_.desa:
+				letak_ = pengajuan_.alamat +", "+pengajuan_.desa.lokasi_lengkap()
 
 			extra_context.update({'letak': letak_})
 			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
