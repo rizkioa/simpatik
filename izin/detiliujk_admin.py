@@ -4,10 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils.safestring import mark_safe
-
-
 from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi, PengajuanIzin
 from izin.utils import formatrupiah, JENIS_PERMOHONAN, formatrupiah
 from accounts.models import NomorIdentitasPengguna
@@ -153,14 +151,21 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_iujk_pdf_depan(self, request, id_pengajuan_izin_, salinan_=None):
-		from master.models import Template as tpls
-		from izin.utils import render_to_pdf
-		from django.template import Context
 		extra_context = {}
+
+		from django.template import Context, Template
+		from master.models import Template as tpls
+		from dateutil.relativedelta import relativedelta
+
 		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
 		unit_kerja = get_object_or_404(UnitKerja, id=72)
+		# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
+
 		skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
+
+
 		tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
+
 		extra_context.update({'html':tpl.body_html})
 		extra_context.update({'pengajuan': pengajuan_})
 		if pengajuan_.no_izin:
@@ -168,7 +173,9 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			extra_context.update({'nomor': no_izin[0]})
 		if skizin_:
 			extra_context.update({'skizin_status': skizin_.status})
+
 		paket = pengajuan_.paket_pekerjaan_iujk.all()
+
 		kla = []
 		tr = ''
 		no = 0
@@ -211,6 +218,14 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		# print tr
 		extra_context.update({'klasifikasi_tr': mark_safe(tr) })
+
+		# template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html")
+		ec = RequestContext(request, extra_context)
+		# print template.render(ec)
+
+		
+
 		direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
 		if direktur.exists():
 			direktur_bu = direktur.last()
@@ -230,6 +245,9 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			teknis = ''
 			no_pjt_bu = ''
 
+				
+
+		subject_template = template.render(ec)
 		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
 		extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
 		extra_context.update({'desa': pengajuan_.perusahaan.desa})
@@ -244,11 +262,29 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'no_pjt_bu': no_pjt_bu})
 		extra_context.update({'salinan':salinan_})
 
+		
 		li = ''
 		for x in list(set(kla)):
 			k =  "<li>"+str(x)+"</li>"
 			li += k
+		# for x in paket:
+		# 	if x.subklasifikasi.klasifikasi in kla:
+
+		# 		k = ''
+		# 	else:
+		# 		k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+		# 	
+		# li += k
+
 		extra_context.update({'klasifikasi': mark_safe(li) })
+		# if pengajuan_.jenis_permohonan_id == 1 : #Baru
+		# 	masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
+		# 	masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
+		# else:
+		# 	masa_berlaku = ''
+
+		# masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
+		# masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
 		masa_berlaku = '-'
 		tanggal_ = '-'
 		if skizin_:
@@ -266,7 +302,10 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'nip': "NIP. "+str(unit_kerja.kepala.username)})
 		extra_context.update({'pengajuan': pengajuan_ })
 
-		return render_to_pdf("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html", "Cetak SKIzin IUJK", Context(extra_context), request)
+		template = Template(subject_template).render(Context(extra_context))
+		return HttpResponse(template)
+		return render(request, "front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html", extra_context)
+		# return render_to_pdf("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html", "Cetak SKIzin IUJK", Context(extra_context), request)
 
 
 	def cetak_iujk_asli(self, request, id_pengajuan_izin_, salinan_=None):

@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
+from django.http import Http404
 
 from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey,DetilBangunanIMB
 from kepegawaian.models import Pegawai,UnitKerja
@@ -391,7 +392,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_imb_umum_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
@@ -469,7 +470,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		return render(request, "front-end/include/imb_umum/cetak_skizin_imb_umum_pdf.html", extra_context)
 		
 	def cetak_skizin_imb_perumahan_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
