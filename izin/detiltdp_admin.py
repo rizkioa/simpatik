@@ -483,7 +483,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
@@ -514,7 +514,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
@@ -545,7 +545,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
@@ -576,7 +576,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
@@ -607,7 +607,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
@@ -638,7 +638,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		cek = self.cek_apikey(apikey, username)
+		cek = cek_apikey(apikey, username)
 		if cek == True:
 			if id_pengajuan:
 				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
