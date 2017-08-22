@@ -1,6 +1,14 @@
 {% extends "front-end/include/skizin/cetak_skizin_printer.html" %}
 {% load i18n admin_static staticfiles widgets access %}
 
+{% block style %}
+<style type="text/css">
+	.table-isi th, td {
+	    padding: 2px;
+	}
+</style>
+{% endblock %}
+
 {% block page %}
 <page size="F4">
 	<div id="kop_surat_id">
