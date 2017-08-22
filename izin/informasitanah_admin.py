@@ -436,6 +436,14 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
+	def cetak_skizin_ippt_rumah_pdf(self, request, id_pengajuan_izin_, salinan_=None):
+		respon = cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None)
+		return respon
+
+	def cetak_skizin_ippt_usaha_pdf(self, request, id_pengajuan_izin_, salinan_=None):
+		respon = cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None)
+		return respon
+
 	def cetak_sk_izin_lokasi_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
@@ -504,8 +512,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
 			url(r'^cetak-sk-izin-lokasi/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_lokasi), name='cetak_sk_izin_lokasi'),
 			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
+			url(r'^cetak-sk-izin-ippt-rumah-pdf/(?P<id_pengajuan_izin_>[0-9]+)$', self.cetak_skizin_ippt_rumah_pdf, name='cetak_skizin_ippt_rumah_pdf'),
 			url(r'^cetak-sk-izin-ippt-rumah/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_rumah), name='cetak_sk_izin_ippt_rumah'),
 			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
+			url(r'^cetak-sk-izin-ippt-usaha-pdf/(?P<id_pengajuan_izin_>[0-9]+)$', self.cetak_skizin_ippt_usaha_pdf, name='cetak_skizin_ippt_usaha_pdf'),
 			url(r'^cetak-sk-izin-ippt-usaha/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)/$', self.admin_site.admin_view(self.cetak_sk_izin_ippt_usaha), name='cetak_sk_izin_ippt_usaha'),
 			url(r'^view-pengajuan-izin/(?P<id_pengajuan_izin_>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_lokasi), name='view_pengajuan_izin_lokasi'),
 			url(r'^cetak-sk-izin-lokasi-pdf/(?P<id_pengajuan>[0-9]+)/$', self.cetak_sk_izin_lokasi_pdf, name='cetak_sk_izin_lokasi_pdf'),
