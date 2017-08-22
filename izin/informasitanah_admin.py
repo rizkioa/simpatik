@@ -390,6 +390,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		extra_context = {}
 		extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
 		extra_context.update({'salinan': salinan_})
+		extra_context.update({'print': "oke"})
 		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
