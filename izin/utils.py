@@ -354,6 +354,8 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilIMBPapanReklame')
 	elif kode_ijin == "503.01.04/" or kode_ijin == "503.01.05/":
 		objects_ = getattr(app_models, 'DetilIMB')
+	elif kode_ijin == "HULLER":
+		objects_ = getattr(app_models, 'DetilHuller')
 	return objects_
 
 
@@ -467,8 +469,9 @@ def render_to_pdf(template_src, context_dict, extra_context, request):
 	options = {
 			'page-width': '21.1cm',
 			'page-height': '33cm',
-			'margin-top': '2cm',
-			'margin-right': '2.5cm',
+			'margin-top': '1cm',
+			'margin-bottom': '1cm',
+			'margin-right': '1.5cm',
 			'margin-left': '1.5cm',
 		}
 	template = loader.get_template(template_src)
@@ -486,3 +489,21 @@ def render_to_pdf(template_src, context_dict, extra_context, request):
 	pdf.close()
 	os.remove(output_file_name)  # remove the locally created pdf file.
 	return response
+
+
+def cek_apikey(apikey, username):
+	# from izin.detilsiup_admin import cek_apikey
+	from kepegawaian.models import Pegawai
+	respon = False
+	if apikey and username:
+		try:
+			accounts_obj = Pegawai.objects.get(username=username)
+			if accounts_obj.api_key:
+				if accounts_obj.api_key.key:
+					# print accounts_obj.api_key.key
+					# print apikey
+					if str(accounts_obj.api_key.key) == str(apikey):
+						respon = True
+		except ObjectDoesNotExist:
+			pass
+	return respon

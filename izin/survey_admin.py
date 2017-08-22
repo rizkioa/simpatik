@@ -151,6 +151,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
 		elif kode_ijin == "503.01.05/":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
+		elif kode_ijin == "HULLER":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
 		if status == 4 or status == 8:
 			aksi = mark_safe("""
 				<a href="%s" data-toggle='tooltip' data-container='body' data-original-title='Lihat Detail' > %s </a>
@@ -1101,7 +1103,7 @@ class SurveyAdmin(admin.ModelAdmin):
 
 	def save_survey_ajax(self, request):
 		frm = SurveyForm(request.POST)
-		print "#########masuk"
+		# print "#########masuk"
 		pengajuan_id_ = request.POST.get('pengajuan_id')
 		# id_unit_kerja = request.POST.get('id_unit_kerja')
 		# unit_kerja = UnitKerja.objects.get(pk=id_unit_kerja)
@@ -1115,9 +1117,9 @@ class SurveyAdmin(admin.ModelAdmin):
 			p.created_by_id = request.user.id
 			# p.kelompok_jenis_izin_id = request.POST.get('kelompok_jenis_izin_id')
 			p.save()
-			print "#####################################"
-			print "#####################################"
-			print "#####################################"
+			# print "#####################################"
+			# print "#####################################"
+			# print "#####################################"
 
 			# ANGGOTA TIM
 			at = AnggotaTim(
