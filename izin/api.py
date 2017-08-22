@@ -1,8 +1,5 @@
 from mobile.cors import CORSModelResource, CORSHttpResponse
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, DetilIUJK
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha
-from izin.models import Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Pemohon, KategoriKendaraan, DetilHO, MerkTypeKendaraan, SKIzin, PengajuanIzin, DetilTDP, IzinLain, DetilReklame, DetilReklameIzin, DetilIMBPapanReklame, DetilIMB, InformasiKekayaanDaerah, DetilHuller, InformasiTanah, SertifikatTanah, PenggunaanTanahIPPTUsaha, PerumahanYangDimilikiIPPTUsaha, JenisMesin, MesinHuller, MesinPerusahaan
+from izin.models import *
 from mobile.api import KelompokJenisIzinRecource, JenisPermohonanIzinResource, KepegawaianResource
 from tastypie import fields
 from perusahaan.api import PerusahaanResource, KBLIResource, LegalitasResource
@@ -299,3 +296,25 @@ class PerumahanYangDimilikiIPPTUsahaResource(CORSModelResource):
 		filtering = {
 			"informasi_tanah_id" : ['contains'],
 		}
+
+class DetilIUJKResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	perusahaan = fields.ToOneField(PerusahaanResource, 'perusahaan', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	kualifikasi = fields.CharField(attribute="kualifikasi__nama_kualifikasi", null=True, blank=True)
+	class Meta:
+		queryset = DetilIUJK.objects.all()
+
+class KlasifikasiResource(CORSModelResource):
+	class Meta:
+		queryset = Klasifikasi.objects.all()
+
+class SubklasifikasiResource(CORSModelResource):
+	kualifikasi = fields.ToOneField(KlasifikasiResource, 'kualifikasi', full = True, null=True)
+	class Meta:
+		queryset = Subklasifikasi.objects.all()
+
+class PaketPekerjaanResource(CORSModelResource):
+	sub_kualifikasi = fields.ToOneField(SubklasifikasiResource, 'sub_kualifikasi', full = True, null=True)
+	class Meta:
+		queryset = PaketPekerjaan.objects.all()
