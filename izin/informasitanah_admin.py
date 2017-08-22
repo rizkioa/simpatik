@@ -388,7 +388,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
-		extra_context = cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
+		extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
 		extra_context.update({'salinan': salinan_})
 		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
 		ec = RequestContext(request, extra_context)
@@ -443,7 +443,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 	def cetak_skizin_ippt_rumah_pdf(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
-		extra_context = cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
+		extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
 		extra_context.update({'salinan': salinan_})
 		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
 		ec = RequestContext(request, extra_context)
