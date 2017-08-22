@@ -395,10 +395,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None):
+	def cetak_skizin_ippt_usaha_super(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
-			extra_context.update({'salinan': salinan_})
+			# extra_context.update({'salinan': salinan_})
 			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -437,7 +437,13 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
+		return extra_context
 
+	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None):
+		extra_context = {}
+		extra_context = self.cetak_skizin_ippt_usaha_super(request, id_pengajuan_izin_)
+		extra_context.update({'salinan': salinan_})
+		extra_context.update({'print': "oke"})
 		template = loader.get_template("front-end/include/formulir_ippt_usaha/cetak_sk_izin_ippt_usaha.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -451,8 +457,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_ippt_usaha_pdf(self, request, id_pengajuan_izin_, salinan_=None):
-		respon = self.cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None)
-		return respon
+		extra_context = {}
+		extra_context = self.cetak_skizin_ippt_usaha_super(request, id_pengajuan_izin_)
+		extra_context.update({'salinan': salinan_})
+		template = loader.get_template("front-end/include/formulir_ippt_usaha/cetak_sk_izin_ippt_usaha.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
 
 	def cetak_sk_izin_lokasi_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf, cek_apikey
