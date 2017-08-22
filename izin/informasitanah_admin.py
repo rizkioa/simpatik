@@ -437,11 +437,11 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_ippt_rumah_pdf(self, request, id_pengajuan_izin_, salinan_=None):
-		respon = cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None)
+		respon = self.cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None)
 		return respon
 
 	def cetak_skizin_ippt_usaha_pdf(self, request, id_pengajuan_izin_, salinan_=None):
-		respon = cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None)
+		respon = self.cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None)
 		return respon
 
 	def cetak_sk_izin_lokasi_pdf(self, request, id_pengajuan):
