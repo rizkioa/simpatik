@@ -2,6 +2,7 @@ from mobile.cors import CORSModelResource
 from tastypie import fields
 from models import Berkas, ParameterBangunan, JenisKontruksi, Desa
 from izin.models import BangunanJenisKontruksi
+
 class BerkasResource(CORSModelResource):
 	# get_file_url = fields.CharField(attribute="get_file_url", null=True, blank=True)
 	class Meta:

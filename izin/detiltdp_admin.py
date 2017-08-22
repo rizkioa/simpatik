@@ -6,7 +6,7 @@ from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, resolve
 from dateutil.relativedelta import relativedelta
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.http import Http404
 from accounts.models import NomorIdentitasPengguna
 from izin.models import DetilTDP, Syarat, SKIzin, Riwayat, IzinLain
@@ -495,7 +495,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			extra_context.update({'pengajuan': pengajuan_})
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
-				print skizin_
+				# print skizin_
 			masa_berlaku = ''
 			if skizin_:
 				masa_berlakua = skizin_.created_at + relativedelta(years=5)
@@ -504,7 +504,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			raise Http404
 		# else:
 		# 	raise Http404
-		return render_to_pdf("front-end/include/formulir_tdp_cv/cetak_tdp_cv_pdf.html", "Cetak Bukti TDP CV", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_tdp_cv/cetak_tdp_cv_pdf.html", "Cetak Bukti TDP CV", extra_context, request)
+		return render(request, "front-end/include/formulir_tdp_cv/cetak_tdp_cv_pdf.html", extra_context)
 
 	def cetak_tdp_pt_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf
@@ -532,7 +533,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			raise Http404
 		# else:
 		# 	raise Http404
-		return render_to_pdf("front-end/include/formulir_tdp_pt/cetak_tdp_pt_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_tdp_pt/cetak_tdp_pt_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		return render(request, "front-end/include/formulir_tdp_pt/cetak_tdp_pt_pdf.html", extra_context)
 
 	def cetak_tdp_po_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf
@@ -560,7 +562,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			raise Http404
 		# else:
 		# 	raise Http404
-		return render_to_pdf("front-end/include/formulir_tdp_po/cetak_tdp_po_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_tdp_po/cetak_tdp_po_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		return render(request, "front-end/include/formulir_tdp_po/cetak_tdp_po_pdf.html", extra_context)
 
 	def cetak_tdp_koperasi_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf
@@ -588,7 +591,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			raise Http404
 		# else:
 		# 	raise Http404
-		return render_to_pdf("front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		return render(request, "front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_pdf.html", extra_context)
 
 	def cetak_tdp_bul_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf
@@ -616,7 +620,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			raise Http404
 		# else:
 		# 	raise Http404
-		return render_to_pdf("front-end/include/formulir_tdp_bul/cetak_tdp_bul_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_tdp_bul/cetak_tdp_bul_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		return render(request, "front-end/include/formulir_tdp_bul/cetak_tdp_bul_pdf.html", extra_context)
 
 	def cetak_tdp_firma_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf
@@ -644,7 +649,8 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			raise Http404
 		# else:
 		# 	raise Http404
-		return render_to_pdf("front-end/include/formulir_tdp_firma/cetak_tdp_firma_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_tdp_firma/cetak_tdp_firma_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
+		return render(request, "front-end/include/formulir_tdp_firma/cetak_tdp_firma_pdf.html", extra_context)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
