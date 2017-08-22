@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.shortcuts import get_object_or_404
+from django.http import Http404, HttpResponseForbidden
 from django.template import RequestContext, loader
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import Pegawai, UnitKerja

@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, resolve
 from dateutil.relativedelta import relativedelta
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from accounts.models import NomorIdentitasPengguna
 from izin.models import DetilTDP, Syarat, SKIzin, Riwayat, IzinLain
 from perusahaan.models import DataPimpinan, PemegangSaham, Perusahaan, Legalitas
@@ -483,170 +483,182 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		# cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			extra_context.update({'pengajuan': pengajuan_})
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				# print skizin_
-			masa_berlaku = ''
-			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				extra_context.update({'pengajuan': pengajuan_})
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					# print skizin_
+				masa_berlaku = ''
+				if skizin_:
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 		# 	raise Http404
 		# return render_to_pdf("front-end/include/formulir_tdp_cv/cetak_tdp_cv_pdf.html", "Cetak Bukti TDP CV", extra_context, request)
 		return render(request, "front-end/include/formulir_tdp_cv/cetak_tdp_cv_pdf.html", extra_context)
 
 	def cetak_tdp_pt_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		# cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			extra_context.update({'pengajuan': pengajuan_})
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				print skizin_
-			masa_berlaku = ''
-			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				extra_context.update({'pengajuan': pengajuan_})
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					# print skizin_
+				masa_berlaku = ''
+				if skizin_:
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 		# 	raise Http404
 		# return render_to_pdf("front-end/include/formulir_tdp_pt/cetak_tdp_pt_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
 		return render(request, "front-end/include/formulir_tdp_pt/cetak_tdp_pt_pdf.html", extra_context)
 
 	def cetak_tdp_po_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		# cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			extra_context.update({'pengajuan': pengajuan_})
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				print skizin_
-			masa_berlaku = ''
-			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				extra_context.update({'pengajuan': pengajuan_})
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					print skizin_
+				masa_berlaku = ''
+				if skizin_:
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 		# 	raise Http404
 		# return render_to_pdf("front-end/include/formulir_tdp_po/cetak_tdp_po_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
 		return render(request, "front-end/include/formulir_tdp_po/cetak_tdp_po_pdf.html", extra_context)
 
 	def cetak_tdp_koperasi_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		# cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			extra_context.update({'pengajuan': pengajuan_})
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				print skizin_
-			masa_berlaku = ''
-			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				extra_context.update({'pengajuan': pengajuan_})
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					print skizin_
+				masa_berlaku = ''
+				if skizin_:
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 		# 	raise Http404
 		# return render_to_pdf("front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
 		return render(request, "front-end/include/formulir_tdp_koperasi/cetak_tdp_koperasi_pdf.html", extra_context)
 
 	def cetak_tdp_bul_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		# cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			extra_context.update({'pengajuan': pengajuan_})
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				print skizin_
-			masa_berlaku = ''
-			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				extra_context.update({'pengajuan': pengajuan_})
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					print skizin_
+				masa_berlaku = ''
+				if skizin_:
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 		# 	raise Http404
 		# return render_to_pdf("front-end/include/formulir_tdp_bul/cetak_tdp_bul_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
 		return render(request, "front-end/include/formulir_tdp_bul/cetak_tdp_bul_pdf.html", extra_context)
 
 	def cetak_tdp_firma_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
-		# cek = self.cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			extra_context.update({'pengajuan': pengajuan_})
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				print skizin_
-			masa_berlaku = ''
-			if skizin_:
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+		cek = self.cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+				legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				extra_context.update({'pengajuan': pengajuan_})
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					print skizin_
+				masa_berlaku = ''
+				if skizin_:
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 		# 	raise Http404
 		# return render_to_pdf("front-end/include/formulir_tdp_firma/cetak_tdp_firma_pdf.html", "Cetak Bukti TDP PT", extra_context, request)
