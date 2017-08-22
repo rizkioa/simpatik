@@ -336,10 +336,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
+	def cetak_skizin_ippt_rumah_super(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
-			extra_context.update({'salinan': salinan_})
+			# extra_context.update({'salinan': salinan_})
 			# pengajuan_ = InformasiTanah.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(InformasiTanah, id=id_pengajuan_izin_)
 			alamat_ = ""
@@ -384,7 +384,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
+		return extra_context
 
+	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
+		extra_context = {}
+		extra_context = cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
+		extra_context.update({'salinan': salinan_})
 		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -436,9 +441,13 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
 
-	def cetak_skizin_ippt_rumah_pdf(self, request, id_pengajuan_izin_):
-		respon = self.cetak_sk_izin_ippt_rumah(id_pengajuan_izin_, None)
-		return respon
+	def cetak_skizin_ippt_rumah_pdf(self, request, id_pengajuan_izin_, salinan_=None):
+		extra_context = {}
+		extra_context = cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
+		extra_context.update({'salinan': salinan_})
+		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
+		ec = RequestContext(request, extra_context)
+		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_ippt_usaha_pdf(self, request, id_pengajuan_izin_, salinan_=None):
 		respon = self.cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None)
