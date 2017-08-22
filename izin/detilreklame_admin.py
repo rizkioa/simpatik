@@ -4,15 +4,12 @@ from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
-from django.http import HttpResponse
-import base64
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-import datetime
-import collections
+import datetime, collections, base64
 from izin.utils import *
-from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.http import Http404, HttpResponseForbidden, HttpResponse
+from django.shortcuts import get_object_or_404, render
 
 class DetilReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -358,105 +355,108 @@ class DetilReklameAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_reklame_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		username = request.GET.get('username')
 		apikey = request.GET.get('api_key')
 		cek = cek_apikey(apikey, username)
-		if id_pengajuan:
-			pengajuan_ = DetilReklame.objects.get(id=id_pengajuan)
-			detail_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan)
-			detail_list_by_tipe = detail_list.values_list('tipe_reklame__jenis_tipe_reklame', flat=True)
-			detil_reklame_list = [item for item, count in collections.Counter(detail_list_by_tipe).items() if count >= 1]	
-			alamat_ = ""
-			alamat_perusahaan_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-				extra_context.update({'perusahaan': pengajuan_.perusahaan })
-			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-			extra_context.update({'nomor_identitas': nomor_identitas_ })
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'pengajuan': pengajuan_ })
-			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			if pengajuan_.desa:
-				letak_ = pengajuan_.letak_pemasangan + ",Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
-			else:
-				letak_ = pengajuan_.letak_pemasangan
-			
-			if pengajuan_.panjang:
-				panjang_ = '{0:f}'.format(pengajuan_.panjang)
-				p = panjang_.split(".")[1]
-				if p == "00":
-					panjang_ = ("%.0f" % pengajuan_.panjang)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = DetilReklame.objects.get(id=id_pengajuan)
+				detail_list = DetilReklameIzin.objects.filter(detil_reklame_id=id_pengajuan)
+				detail_list_by_tipe = detail_list.values_list('tipe_reklame__jenis_tipe_reklame', flat=True)
+				detil_reklame_list = [item for item, count in collections.Counter(detail_list_by_tipe).items() if count >= 1]	
+				alamat_ = ""
+				alamat_perusahaan_ = ""
+				if pengajuan_.pemohon:
+					if pengajuan_.pemohon.desa:
+						alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+						extra_context.update({'alamat_pemohon': alamat_})
+					extra_context.update({'pemohon': pengajuan_.pemohon})
+				if pengajuan_.perusahaan:
+					if pengajuan_.perusahaan.desa:
+						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+						extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+					extra_context.update({'perusahaan': pengajuan_.perusahaan })
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+				extra_context.update({'nomor_identitas': nomor_identitas_ })
+				extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+				extra_context.update({'pengajuan': pengajuan_ })
+				extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				if pengajuan_.desa:
+					letak_ = pengajuan_.letak_pemasangan + ",Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 				else:
-					panjang_ = pengajuan_.panjang
-				extra_context.update({'panjang_': panjang_})
-			if pengajuan_.lebar:
-				lebar_ = '{0:f}'.format(pengajuan_.lebar)
-				l = lebar_.split(".")[1]
-				if l == "00":
-					lebar_ = ("%.0f" % pengajuan_.lebar)
-				else:
-					lebar_ = pengajuan_.lebar
-				extra_context.update({'lebar_': lebar_})
-			if pengajuan_.sisi:
-				sisi_ = '{0:f}'.format(pengajuan_.sisi)
-				s = sisi_.split(".")[1]
-				if s == "00":
-					sisi_ = ("%.0f" % pengajuan_.sisi)
-				else:
-					sisi_ = pengajuan_.sisi
-				extra_context.update({'sisi_': sisi_})
+					letak_ = pengajuan_.letak_pemasangan
 				
-			extra_context.update({'detil_reklame_list': ", ".join(x.desa.nama_desa for x in detail_list)})	
-			extra_context.update({'detail_list_count': detail_list.count()})
-			extra_context.update({'detail_wilayah_list': detail_list })
-			extra_context.update({'letak_pemasangan': letak_})
-			if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
-				tanggal_mulai = pengajuan_.tanggal_mulai
-				tanggal_akhir = pengajuan_.tanggal_akhir
-
-				jumlah_lama =  tanggal_akhir-tanggal_mulai
-				extra_context.update({'jumlah_lama': jumlah_lama})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
-				if kepala_:
-					extra_context.update({'gelar_depan': kepala_.gelar_depan })
-					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
-
-			except ObjectDoesNotExist:
-				pass
-			try:
-				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan)
-				if retribusi_:
-					if retribusi_.jumlah_pembayaran:
-						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-						terbilang_ = terbilang(n)
-						extra_context.update({'retribusi': retribusi_ })
-						extra_context.update({'terbilang': terbilang_ })
-						extra_context.update({'retribusi_': retribusi_ })
+				if pengajuan_.panjang:
+					panjang_ = '{0:f}'.format(pengajuan_.panjang)
+					p = panjang_.split(".")[1]
+					if p == "00":
+						panjang_ = ("%.0f" % pengajuan_.panjang)
+					else:
+						panjang_ = pengajuan_.panjang
+					extra_context.update({'panjang_': panjang_})
+				if pengajuan_.lebar:
+					lebar_ = '{0:f}'.format(pengajuan_.lebar)
+					l = lebar_.split(".")[1]
+					if l == "00":
+						lebar_ = ("%.0f" % pengajuan_.lebar)
+					else:
+						lebar_ = pengajuan_.lebar
+					extra_context.update({'lebar_': lebar_})
+				if pengajuan_.sisi:
+					sisi_ = '{0:f}'.format(pengajuan_.sisi)
+					s = sisi_.split(".")[1]
+					if s == "00":
+						sisi_ = ("%.0f" % pengajuan_.sisi)
+					else:
+						sisi_ = pengajuan_.sisi
+					extra_context.update({'sisi_': sisi_})
 					
-			except ObjectDoesNotExist:
-				pass
+				extra_context.update({'detil_reklame_list': ", ".join(x.desa.nama_desa for x in detail_list)})	
+				extra_context.update({'detail_list_count': detail_list.count()})
+				extra_context.update({'detail_wilayah_list': detail_list })
+				extra_context.update({'letak_pemasangan': letak_})
+				if pengajuan_.tanggal_mulai and pengajuan_.tanggal_akhir:
+					tanggal_mulai = pengajuan_.tanggal_mulai
+					tanggal_akhir = pengajuan_.tanggal_akhir
+
+					jumlah_lama =  tanggal_akhir-tanggal_mulai
+					extra_context.update({'jumlah_lama': jumlah_lama})
+				try:
+					skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan )
+					if skizin_:
+						extra_context.update({'skizin': skizin_ })
+						extra_context.update({'skizin_status': skizin_.status })
+				except ObjectDoesNotExist:
+					pass
+				try:
+					kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+					if kepala_:
+						extra_context.update({'gelar_depan': kepala_.gelar_depan })
+						extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+						extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
+				except ObjectDoesNotExist:
+					pass
+				try:
+					retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan)
+					if retribusi_:
+						if retribusi_.jumlah_pembayaran:
+							n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+							terbilang_ = terbilang(n)
+							extra_context.update({'retribusi': retribusi_ })
+							extra_context.update({'terbilang': terbilang_ })
+							extra_context.update({'retribusi_': retribusi_ })
+						
+				except ObjectDoesNotExist:
+					pass
+			else:
+				raise Http404
 		else:
-			raise Http404
-		response = render_to_pdf("front-end/include/formulir_reklame/cetak_reklame_pdf.html", "Cetak Bukti Pemasangan Reklame", extra_context, request)
-		return response
+			return HttpResponseForbidden()
+		# response = render_to_pdf("front-end/include/formulir_reklame/cetak_reklame_pdf.html", "Cetak Bukti Pemasangan Reklame", extra_context, request)
+		return render(request, "front-end/include/formulir_reklame/cetak_reklame_pdf.html", extra_context)
 			
 	def get_urls(self):
 		from django.conf.urls import patterns, url

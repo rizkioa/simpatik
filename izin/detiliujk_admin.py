@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.http import Http404, HttpResponseForbidden
 from django.utils.safestring import mark_safe
 from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi, Subklasifikasi, PengajuanIzin
 from izin.utils import formatrupiah, JENIS_PERMOHONAN, formatrupiah
@@ -156,155 +157,161 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		from django.template import Context, Template
 		from master.models import Template as tpls
 		from dateutil.relativedelta import relativedelta
+		from izin.utils import render_to_pdf, cek_apikey
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = cek_apikey(apikey, username)
+		if cek == True:
+			pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
+			unit_kerja = get_object_or_404(UnitKerja, id=72)
+			# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
 
-		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
-		unit_kerja = get_object_or_404(UnitKerja, id=72)
-		# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
-
-		skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
-
-
-		tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
-
-		extra_context.update({'html':tpl.body_html})
-		extra_context.update({'pengajuan': pengajuan_})
-		if pengajuan_.no_izin:
-			no_izin = pengajuan_.no_izin.split("/")
-			extra_context.update({'nomor': no_izin[0]})
-		if skizin_:
-			extra_context.update({'skizin_status': skizin_.status})
-
-		paket = pengajuan_.paket_pekerjaan_iujk.all()
-
-		kla = []
-		tr = ''
-		no = 0
-		total_ = len(paket)
-		css = 'hidden-border-tr'
-		for p in paket:
-			total_ = total_ - 1
-			# print total_
-			if total_ == 0:
-				css = ''
-			tr += '<tr style="border: 1px solid black;" class="'+css+'">'
-			if p.subklasifikasi.klasifikasi in kla:
-				tr += '<td style="border: 1px solid black;"></td>'
-				tr += '<td style="border: 1px solid black;"></td>'
-			else:
-				k = p.subklasifikasi.klasifikasi
-				no = no+1
-				tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
-				tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
-				kla.append(p.subklasifikasi.klasifikasi)
-			tahun = '0'
-			if p.tahun:
-				tahun = str(p.tahun)
-			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+tahun+'</td>'
-			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
-				nilai_paket = 0
-			else:
-				nilai_paket = formatrupiah(p.nilai_paket_pekerjaan)
-			tr += '<td style="border: 1px solid black;">'+str(nilai_paket)+'</td>'
-			
-			if p.keterangan is None or p.keterangan == '-':
-				keterangan = ''
-			else:
-				keterangan = p.keterangan	
-			tr += '<td style="border: 1px solid black;">'+str(keterangan)+'</td>'
-			tr += '</tr>'
+			skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
 
 
-		# print tr
-		extra_context.update({'klasifikasi_tr': mark_safe(tr) })
+			tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
 
-		# template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
-		template = loader.get_template("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html")
-		ec = RequestContext(request, extra_context)
-		# print template.render(ec)
+			extra_context.update({'html':tpl.body_html})
+			extra_context.update({'pengajuan': pengajuan_})
+			if pengajuan_.no_izin:
+				no_izin = pengajuan_.no_izin.split("/")
+				extra_context.update({'nomor': no_izin[0]})
+			if skizin_:
+				extra_context.update({'skizin_status': skizin_.status})
 
-		
+			paket = pengajuan_.paket_pekerjaan_iujk.all()
 
-		direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
-		if direktur.exists():
-			direktur_bu = direktur.last()
-			direktur = direktur_bu.nama
-			
-		else:
-			direktur = ''
-			
-		no_pjt_bu = '0'
-		teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
-		if teknis.exists():
-			teknis_ = teknis.last()
-			teknis = teknis_.nama
-			if teknis_.no_pjt_bu:
-				no_pjt_bu = str(teknis_.no_pjt_bu)
-		else:
-			teknis = ''
-			no_pjt_bu = ''
-
+			kla = []
+			tr = ''
+			no = 0
+			total_ = len(paket)
+			css = 'hidden-border-tr'
+			for p in paket:
+				total_ = total_ - 1
+				# print total_
+				if total_ == 0:
+					css = ''
+				tr += '<tr style="border: 1px solid black;" class="'+css+'">'
+				if p.subklasifikasi.klasifikasi in kla:
+					tr += '<td style="border: 1px solid black;"></td>'
+					tr += '<td style="border: 1px solid black;"></td>'
+				else:
+					k = p.subklasifikasi.klasifikasi
+					no = no+1
+					tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
+					tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
+					kla.append(p.subklasifikasi.klasifikasi)
+				tahun = '0'
+				if p.tahun:
+					tahun = str(p.tahun)
+				tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
+				tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
+				tr += '<td style="border: 1px solid black;">'+tahun+'</td>'
+				if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
+					nilai_paket = 0
+				else:
+					nilai_paket = formatrupiah(p.nilai_paket_pekerjaan)
+				tr += '<td style="border: 1px solid black;">'+str(nilai_paket)+'</td>'
 				
+				if p.keterangan is None or p.keterangan == '-':
+					keterangan = ''
+				else:
+					keterangan = p.keterangan	
+				tr += '<td style="border: 1px solid black;">'+str(keterangan)+'</td>'
+				tr += '</tr>'
 
-		subject_template = template.render(ec)
-		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
-		extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
-		extra_context.update({'desa': pengajuan_.perusahaan.desa})
-		extra_context.update({'kecamatan': pengajuan_.perusahaan.desa.kecamatan})
-		extra_context.update({'kabupaten': pengajuan_.perusahaan.desa.kecamatan.kabupaten})
-		extra_context.update({'provinsi': pengajuan_.perusahaan.desa.kecamatan.kabupaten.provinsi})
-		extra_context.update({'telp': pengajuan_.perusahaan.telepon})
-		extra_context.update({'direktur': direktur})
-		extra_context.update({'npwp': pengajuan_.perusahaan.npwp})
-		extra_context.update({'kualifikasi': pengajuan_.kualifikasi })
-		extra_context.update({'penanggung_jawab_teknis': teknis})
-		extra_context.update({'no_pjt_bu': no_pjt_bu})
-		extra_context.update({'salinan':salinan_})
 
-		
-		li = ''
-		for x in list(set(kla)):
-			k =  "<li>"+str(x)+"</li>"
-			li += k
-		# for x in paket:
-		# 	if x.subklasifikasi.klasifikasi in kla:
+			# print tr
+			extra_context.update({'klasifikasi_tr': mark_safe(tr) })
 
-		# 		k = ''
-		# 	else:
-		# 		k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
-		# 	
-		# li += k
+			# template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
+			template = loader.get_template("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html")
+			ec = RequestContext(request, extra_context)
+			# print template.render(ec)
 
-		extra_context.update({'klasifikasi': mark_safe(li) })
-		# if pengajuan_.jenis_permohonan_id == 1 : #Baru
-		# 	masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
-		# 	masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
-		# else:
-		# 	masa_berlaku = ''
+			
 
-		# masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
-		# masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
-		masa_berlaku = '-'
-		tanggal_ = '-'
-		if skizin_:
-			if skizin_.masa_berlaku_izin:
-				# print "asdsfd"
-				masa_berlaku = skizin_.masa_berlaku_izin.strftime('%d-%m-%Y')
-				tanggal_ = skizin_.masa_berlaku_izin-relativedelta(years=3)
-				tanggal_ = tanggal_.strftime('%d-%m-%Y')
-		extra_context.update({'masa_berlaku': masa_berlaku})
-		# extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
-		extra_context.update({'tanggal': tanggal_})
-		extra_context.update({'satker': unit_kerja})
-		extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
-		extra_context.update({'jabatan': "Pembina Tingkat I"})
-		extra_context.update({'nip': "NIP. "+str(unit_kerja.kepala.username)})
-		extra_context.update({'pengajuan': pengajuan_ })
+			direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
+			if direktur.exists():
+				direktur_bu = direktur.last()
+				direktur = direktur_bu.nama
+				
+			else:
+				direktur = ''
+				
+			no_pjt_bu = '0'
+			teknis = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Penanggung Jawab Teknik Badan Usaha")
+			if teknis.exists():
+				teknis_ = teknis.last()
+				teknis = teknis_.nama
+				if teknis_.no_pjt_bu:
+					no_pjt_bu = str(teknis_.no_pjt_bu)
+			else:
+				teknis = ''
+				no_pjt_bu = ''
 
-		template = Template(subject_template).render(Context(extra_context))
-		return HttpResponse(template)
-		return render(request, "front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html", extra_context)
+					
+
+			subject_template = template.render(ec)
+			extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
+			extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
+			extra_context.update({'desa': pengajuan_.perusahaan.desa})
+			extra_context.update({'kecamatan': pengajuan_.perusahaan.desa.kecamatan})
+			extra_context.update({'kabupaten': pengajuan_.perusahaan.desa.kecamatan.kabupaten})
+			extra_context.update({'provinsi': pengajuan_.perusahaan.desa.kecamatan.kabupaten.provinsi})
+			extra_context.update({'telp': pengajuan_.perusahaan.telepon})
+			extra_context.update({'direktur': direktur})
+			extra_context.update({'npwp': pengajuan_.perusahaan.npwp})
+			extra_context.update({'kualifikasi': pengajuan_.kualifikasi })
+			extra_context.update({'penanggung_jawab_teknis': teknis})
+			extra_context.update({'no_pjt_bu': no_pjt_bu})
+			extra_context.update({'salinan':salinan_})
+
+			
+			li = ''
+			for x in list(set(kla)):
+				k =  "<li>"+str(x)+"</li>"
+				li += k
+			# for x in paket:
+			# 	if x.subklasifikasi.klasifikasi in kla:
+
+			# 		k = ''
+			# 	else:
+			# 		k = "<li>"+str(x.subklasifikasi.klasifikasi)+"</li>"
+			# 	
+			# li += k
+
+			extra_context.update({'klasifikasi': mark_safe(li) })
+			# if pengajuan_.jenis_permohonan_id == 1 : #Baru
+			# 	masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
+			# 	masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
+			# else:
+			# 	masa_berlaku = ''
+
+			# masa_berlaku = pengajuan_.created_at+relativedelta(years=3)
+			# masa_berlaku = masa_berlaku.strftime('%d-%m-%Y')
+			masa_berlaku = '-'
+			tanggal_ = '-'
+			if skizin_:
+				if skizin_.masa_berlaku_izin:
+					# print "asdsfd"
+					masa_berlaku = skizin_.masa_berlaku_izin.strftime('%d-%m-%Y')
+					tanggal_ = skizin_.masa_berlaku_izin-relativedelta(years=3)
+					tanggal_ = tanggal_.strftime('%d-%m-%Y')
+			extra_context.update({'masa_berlaku': masa_berlaku})
+			# extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
+			extra_context.update({'tanggal': tanggal_})
+			extra_context.update({'satker': unit_kerja})
+			extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
+			extra_context.update({'jabatan': "Pembina Tingkat I"})
+			extra_context.update({'nip': "NIP. "+str(unit_kerja.kepala.username)})
+			extra_context.update({'pengajuan': pengajuan_ })
+
+			template = Template(subject_template).render(Context(extra_context))
+			return HttpResponse(template)
+		else:
+			return HttpResponseForbidden()
+		# return render(request, "front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html", extra_context)
 		# return render_to_pdf("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html", "Cetak SKIzin IUJK", Context(extra_context), request)
 
 

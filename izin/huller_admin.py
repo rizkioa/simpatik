@@ -5,11 +5,11 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from izin.models import DetilHuller, Syarat, SKIzin, Riwayat,MesinPerusahaan,DetilSk
 from kepegawaian.models import Pegawai
 from accounts.models import NomorIdentitasPengguna
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 
 class DetilHullerAdmin(admin.ModelAdmin):
 	list_display = ('id','get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -219,84 +219,87 @@ class DetilHullerAdmin(admin.ModelAdmin):
 		apikey = request.GET.get('api_key')
 		extra_context = {}
 		cek = cek_apikey(apikey, username)
-		# if cek == True:
-		if id_pengajuan_izin_:
-			extra_context.update({'salinan': salinan_})
-			pengajuan_ = get_object_or_404(DetilHuller, id=id_pengajuan_izin_)
-			alamat_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+pengajuan_.pemohon.desa.lokasi_lengkap()
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-				extra_context.update({'nomor_identitas': nomor_identitas_ })
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'pengajuan': pengajuan_ })
-			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
+		if cek == True:
+			if id_pengajuan_izin_:
+				extra_context.update({'salinan': salinan_})
+				pengajuan_ = get_object_or_404(DetilHuller, id=id_pengajuan_izin_)
+				alamat_ = ""
+				if pengajuan_.pemohon:
+					if pengajuan_.pemohon.desa:
+						alamat_ = str(pengajuan_.pemohon.alamat)+", "+pengajuan_.pemohon.desa.lokasi_lengkap()
+						extra_context.update({'alamat_pemohon': alamat_})
+					extra_context.update({'pemohon': pengajuan_.pemohon})
+					nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+					extra_context.update({'nomor_identitas': nomor_identitas_ })
+				extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+				extra_context.update({'pengajuan': pengajuan_ })
+				extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				try:
+					skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+					if skizin_:
+						extra_context.update({'skizin': skizin_ })
+						extra_context.update({'skizin_status': skizin_.status })
+				except ObjectDoesNotExist:
+					pass
 
-			try:
-				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
-				if kepala_:
-					extra_context.update({'gelar_depan': kepala_.gelar_depan })
-					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+				try:
+					kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+					if kepala_:
+						extra_context.update({'gelar_depan': kepala_.gelar_depan })
+						extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+						extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
-			except ObjectDoesNotExist:
-				pass
-			try:
-				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
-				if sk_imb_:
-					extra_context.update({'sk_imb': sk_imb_ })
-			except ObjectDoesNotExist:
-				pass
+				except ObjectDoesNotExist:
+					pass
+				try:
+					sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
+					if sk_imb_:
+						extra_context.update({'sk_imb': sk_imb_ })
+				except ObjectDoesNotExist:
+					pass
 
-			try:
-				data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_izin_)
-				motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
-				motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
-				diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
-				rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
-				flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
-				gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
-				dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
-				screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
-				mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
-				mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
-				paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
-				mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
-				grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
-				kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
-				
-				extra_context.update({'data_mesin': data_mesin })
-				extra_context.update({'motor_bensin': motor_bensin })
-				extra_context.update({'motor_diesel': motor_diesel })
-				extra_context.update({'diesel_generating_set': diesel_generating_set })
-				extra_context.update({'rubber_roll': rubber_roll })
-				extra_context.update({'flash_type': flash_type })
-				extra_context.update({'gedogan': gedogan })
-				extra_context.update({'dimple_plate': dimple_plate })
-				extra_context.update({'screen': screen })
-				extra_context.update({'mesin_slip_horisontal': mesin_slip_horisontal })
-				extra_context.update({'mesin_slip_vertikal': mesin_slip_vertikal })
-				extra_context.update({'paddy_cleaner': paddy_cleaner })
-				extra_context.update({'mesin_polis': mesin_polis })
-				extra_context.update({'grader': grader })
-				extra_context.update({'kualitas': kualitas })
-			except ObjectDoesNotExist:
-				pass
+				try:
+					data_mesin = MesinPerusahaan.objects.filter(detil_huller=id_pengajuan_izin_)
+					motor_bensin = data_mesin.get(mesin_huller__mesin_huller="Motor Bensin")
+					motor_diesel = data_mesin.get(mesin_huller__mesin_huller="Motor Diesel")
+					diesel_generating_set = data_mesin.get(mesin_huller__mesin_huller="Diesel Generating Set")
+					rubber_roll = data_mesin.get(mesin_huller__mesin_huller="Rubber Roll / Roll Karet")
+					flash_type = data_mesin.get(mesin_huller__mesin_huller="Flash Type / Type Banting")
+					gedogan = data_mesin.get(mesin_huller__mesin_huller="Gedogan")
+					dimple_plate = data_mesin.get(mesin_huller__mesin_huller="Dimple Plate")
+					screen = data_mesin.get(mesin_huller__mesin_huller="Screen")
+					mesin_slip_horisontal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Horizontal")
+					mesin_slip_vertikal = data_mesin.get(mesin_huller__mesin_huller="Mesin Slip Vertikal")
+					paddy_cleaner = data_mesin.get(mesin_huller__mesin_huller="Paddy Cleaner / Pembersih Gabah (Blower)")
+					mesin_polis = data_mesin.get(mesin_huller__mesin_huller="Mesin Polis Brushe")
+					grader = data_mesin.get(mesin_huller__mesin_huller="Grader / Mesin Pemisah")
+					kualitas = data_mesin.get(mesin_huller__mesin_huller="Kualitas")
+					
+					extra_context.update({'data_mesin': data_mesin })
+					extra_context.update({'motor_bensin': motor_bensin })
+					extra_context.update({'motor_diesel': motor_diesel })
+					extra_context.update({'diesel_generating_set': diesel_generating_set })
+					extra_context.update({'rubber_roll': rubber_roll })
+					extra_context.update({'flash_type': flash_type })
+					extra_context.update({'gedogan': gedogan })
+					extra_context.update({'dimple_plate': dimple_plate })
+					extra_context.update({'screen': screen })
+					extra_context.update({'mesin_slip_horisontal': mesin_slip_horisontal })
+					extra_context.update({'mesin_slip_vertikal': mesin_slip_vertikal })
+					extra_context.update({'paddy_cleaner': paddy_cleaner })
+					extra_context.update({'mesin_polis': mesin_polis })
+					extra_context.update({'grader': grader })
+					extra_context.update({'kualitas': kualitas })
+				except ObjectDoesNotExist:
+					pass
+			else:
+				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		# else:
 			# raise Http404
-		return render_to_pdf("front-end/include/formulir_huller/cetak_skizin_huller_pdf.html", "Cetak Bukti SIUP", extra_context, request)
+		# return render_to_pdf("front-end/include/formulir_huller/cetak_skizin_huller_pdf.html", "Cetak Bukti SIUP", extra_context, request)
+		return render(request, "front-end/include/formulir_huller/cetak_skizin_huller_pdf.html", extra_context)
 
 	def cetak_sk_izin_huller(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}

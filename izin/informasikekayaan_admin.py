@@ -2,7 +2,7 @@ import base64, datetime
 from django.contrib import admin
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseForbidden
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404, render
@@ -137,61 +137,70 @@ class InformasiKekayaanDaerahAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_pemakaian_kekayaan_daerah_pdf(self, request, id_pengajuan_izin_, salinan_=None):
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
 		# id_pengajuan_izin_ = base64.b64decode(id_pengajuan_izin_)
 		# print id_pengajuan_izin_
-		if id_pengajuan_izin_:
-			extra_context.update({'salinan': salinan_})
-			# pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
-			pengajuan_ = get_object_or_404(InformasiKekayaanDaerah, id=id_pengajuan_izin_)
-			alamat_ = ""
-			alamat_perusahaan_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
-				extra_context.update({'perusahaan': pengajuan_.perusahaan })
-			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan_izin_:
+				extra_context.update({'salinan': salinan_})
+				# pengajuan_ = InformasiKekayaanDaerah.objects.get(id=id_pengajuan_izin_)
+				pengajuan_ = get_object_or_404(InformasiKekayaanDaerah, id=id_pengajuan_izin_)
+				alamat_ = ""
+				alamat_perusahaan_ = ""
+				if pengajuan_.pemohon:
+					if pengajuan_.pemohon.desa:
+						alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+						extra_context.update({'alamat_pemohon': alamat_})
+					extra_context.update({'pemohon': pengajuan_.pemohon})
+				if pengajuan_.perusahaan:
+					if pengajuan_.perusahaan.desa:
+						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
+						extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
+					extra_context.update({'perusahaan': pengajuan_.perusahaan })
+				letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 
-			extra_context.update({'letak': letak_})
-			nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
-			extra_context.update({'nomor_identitas': nomor_identitas_ })
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'pengajuan': pengajuan_ })
-			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
+				extra_context.update({'letak': letak_})
+				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all()
+				extra_context.update({'nomor_identitas': nomor_identitas_ })
+				extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
+				extra_context.update({'pengajuan': pengajuan_ })
+				extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
+				
+				try:
+					skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+					if skizin_:
+						extra_context.update({'skizin': skizin_ })
+						extra_context.update({'skizin_status': skizin_.status })
+				except ObjectDoesNotExist:
+					pass
 
-			try:
-				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
-				if kepala_:
-					extra_context.update({'gelar_depan': kepala_.gelar_depan })
-					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+				try:
+					kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
+					if kepala_:
+						extra_context.update({'gelar_depan': kepala_.gelar_depan })
+						extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+						extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
-			except ObjectDoesNotExist:
-				pass
-			try:
-				retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
-				if retribusi_:
-					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-					terbilang_ = terbilang(n)
-					extra_context.update({'retribusi': retribusi_ })
-					extra_context.update({'terbilang': terbilang_ })
-			except ObjectDoesNotExist:
-				pass
-		return render(request, "front-end/include/formulir_kekayaan/cetak_sk_izin_kekayaan_daerah.html", extra_context)
+				except ObjectDoesNotExist:
+					pass
+				try:
+					retribusi_ = DetilPembayaran.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+					if retribusi_:
+						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+						terbilang_ = terbilang(n)
+						extra_context.update({'retribusi': retribusi_ })
+						extra_context.update({'terbilang': terbilang_ })
+				except ObjectDoesNotExist:
+					pass
+				return render(request, "front-end/include/formulir_kekayaan/cetak_sk_izin_kekayaan_daerah.html", extra_context)
+			else:
+				raise Http404
+		else:
+			return HttpResponseForbidden()
 
 	def cetak_sk_pemakaian_kekayaan_daerah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}

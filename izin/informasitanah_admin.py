@@ -3,11 +3,10 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
-from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden, HttpResponse
 
 from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat, SertifikatTanah, DetilSk, Survey
 from kepegawaian.models import Pegawai, UnitKerja
@@ -451,20 +450,40 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_skizin_ippt_rumah_pdf(self, request, id_pengajuan_izin_, salinan_=None):
-		extra_context = {}
-		extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
-		extra_context.update({'salinan': salinan_})
-		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
-		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
+		from izin.utils import render_to_pdf, cek_apikey
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan_izin_:
+				extra_context = {}
+				extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
+				extra_context.update({'salinan': salinan_})
+				template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
+				ec = RequestContext(request, extra_context)
+				return HttpResponse(template.render(ec))
+			else:
+				raise Http404
+		else:
+			return HttpResponseForbidden()
 
 	def cetak_skizin_ippt_usaha_pdf(self, request, id_pengajuan_izin_, salinan_=None):
-		extra_context = {}
-		extra_context = self.cetak_skizin_ippt_usaha_super(request, id_pengajuan_izin_)
-		extra_context.update({'salinan': salinan_})
-		template = loader.get_template("front-end/include/formulir_ippt_usaha/cetak_sk_izin_ippt_usaha.html")
-		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
+		from izin.utils import render_to_pdf, cek_apikey
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan_izin_:
+				extra_context = {}
+				extra_context = self.cetak_skizin_ippt_usaha_super(request, id_pengajuan_izin_)
+				extra_context.update({'salinan': salinan_})
+				template = loader.get_template("front-end/include/formulir_ippt_usaha/cetak_sk_izin_ippt_usaha.html")
+				ec = RequestContext(request, extra_context)
+				return HttpResponse(template.render(ec))
+			else:
+				raise Http404
+		else:
+			return HttpResponseForbidden()
 
 	def cetak_sk_izin_lokasi_pdf(self, request, id_pengajuan):
 		from izin.utils import render_to_pdf, cek_apikey
@@ -521,11 +540,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 				except ObjectDoesNotExist:
 					pass
+				return render(request, "front-end/include/formulir_izin_lokasi/cetak_skizin_izin_lokasi_pdf.html", extra_context)
 			else:
 				raise Http404
 		else:
-			raise Http404
-		return render(request, "front-end/include/formulir_izin_lokasi/cetak_skizin_izin_lokasi_pdf.html", extra_context)
+			return HttpResponseForbidden()
+		
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url

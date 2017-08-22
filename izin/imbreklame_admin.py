@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404, render
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 from izin.utils import*
 
 class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
@@ -307,7 +307,8 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			else:
 				raise Http404
 		else:
-			raise Http404
+			# raise Http404
+			return HttpResponseForbidden()
 		return render(request, "front-end/include/formulir_imb_reklame/cetak_skizin_imb_reklame_pdf.html", extra_context)
 
 

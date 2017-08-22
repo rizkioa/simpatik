@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden
 
 from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey,DetilBangunanIMB
 from kepegawaian.models import Pegawai,UnitKerja
@@ -466,7 +466,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			else:
 				raise Http404
 		else:
-			raise Http404
+			return HttpResponseForbidden()
 		return render(request, "front-end/include/imb_umum/cetak_skizin_imb_umum_pdf.html", extra_context)
 		
 	def cetak_skizin_imb_perumahan_pdf(self, request, id_pengajuan):
@@ -544,7 +544,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			else:
 				raise Http404
 		else:
-			raise Http404
+			# raise Http404
+			return HttpResponseForbidden()
 		return render(request, "front-end/include/formulir_imb_perumahan/cetak_skizin_imb_perumahan_pdf.html", extra_context)
 		
 
