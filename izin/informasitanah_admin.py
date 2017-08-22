@@ -235,8 +235,8 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			jumlah_kebutuhan_air = str(pengajuan_.air_untuk_rumah_tangga + pengajuan_.air_untuk_produksi + pengajuan_.air_lainnya)
 			jumlah_minimal_kebutuhan_air = str(pengajuan_.air_dari_pdam + pengajuan_.air_dari_sumber + pengajuan_.air_dari_sungai)
 
-			if pengajuan_.tenaga_kerja_wni or pengajuan_.tenaga_kerja_wna or pengajuan_.tenaga_kerja_tetap or pengajuan_.tenaga_kerja_tidak_tetap != None:
-				jumlah_tenaga_kerja = int(pengajuan_.tenaga_kerja_wni) + int(pengajuan_.tenaga_kerja_wna) + int(pengajuan_.tenaga_kerja_tetap) + int(pengajuan_.tenaga_kerja_tidak_tetap)
+			if pengajuan_.tenaga_kerja_wni or pengajuan_.tenaga_kerja_wna or pengajuan_.tenaga_kerja_tetap or pengajuan_.tenaga_kerja_tidak_tetap:
+				jumlah_tenaga_kerja = pengajuan_.tenaga_kerja_wni + pengajuan_.tenaga_kerja_wna + pengajuan_.tenaga_kerja_tetap + pengajuan_.tenaga_kerja_tidak_tetap
 			else:
 				jumlah_tenaga_kerja = ""
 			pengajuan_id = pengajuan_.id
