@@ -1,9 +1,8 @@
 import json
 from django.contrib import admin
-from django.http import HttpResponse
-from django.http import Http404
+from django.http import Http404, HttpResponseForbidden, HttpResponse
 from django.utils.safestring import mark_safe
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
@@ -155,25 +154,32 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_tdup_pdf(self, request, id_pengajuan):
-		from izin.utils import render_to_pdf
+		from izin.utils import render_to_pdf, cek_apikey
 		extra_context = {}
-		if id_pengajuan:
-			pengajuan_ = get_object_or_404(DetilTDUP, id=id_pengajuan)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
-			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
-			masa_berlaku = ''
-			if skizin_:
-				extra_context.update({'skizin': skizin_ })
-				masa_berlakua = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
-			izinlaintdup_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
-			pengurusbadanusaha_list = pengajuan_.pengurusbadanusaha_set.all()
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, 'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
+		username = request.GET.get('username')
+		apikey = request.GET.get('api_key')
+		cek = cek_apikey(apikey, username)
+		if cek == True:
+			if id_pengajuan:
+				pengajuan_ = get_object_or_404(DetilTDUP, id=id_pengajuan)
+				legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=1).last()
+				# print legalitas_1.tanggal_pengesahan
+				legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
+				skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan ).last()
+				masa_berlaku = ''
+				if skizin_:
+					extra_context.update({'skizin': skizin_ })
+					masa_berlakua = skizin_.created_at + relativedelta(years=5)
+					masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
+				izinlaintdup_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
+				pengurusbadanusaha_list = pengajuan_.pengurusbadanusaha_set.all()
+				extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, 'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
+				return render(request, "front-end/include/formulir_tdup/cetak_skizin_tdup_pdf.html", "Cetak Bukti SIUP", extra_context)
+			else:
+				raise Http404
 		else:
-			raise Http404
-		return render_to_pdf("front-end/include/formulir_tdup/cetak_skizin_tdup_pdf.html", "Cetak Bukti SIUP", extra_context, request)
+			return HttpResponseForbidden()
+		# return render_to_pdf("front-end/include/formulir_tdup/cetak_skizin_tdup_pdf.html", "Cetak Bukti SIUP", extra_context, request)
 
 	def option_jenis_usaha(self, request):
 		jenis_usaha_list = get_jenis_usaha(request)
