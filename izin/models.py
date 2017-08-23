@@ -1463,6 +1463,7 @@ class DetilTDUP(PengajuanIzin):
 	nomor_dokumen_pengelolaan = models.CharField(max_length=255, verbose_name="Nomor Dokumen Pengelolaan Lingkungan", null=True, blank=True)
 	tanggal_dokumen_pengelolaan = models.DateField(verbose_name="Tanggal Dokumen Pengelolaan Lingkungan", null=True, blank=True)
 	berkas_npwp_perusahaan = models.ForeignKey(Berkas, verbose_name="Berkas NPWP Perusahaan", related_name='berkas_npwp_perusahaan_tdup', blank=True, null=True)
+	kapasitas = models.CharField(max_length=255, verbose_name="Kapasitas", null=True, blank=True)
 
 	def __unicode__(self):
 		return u'Detil TDUP %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
@@ -1511,6 +1512,19 @@ class IzinLainTDUP(models.Model):
 	class Meta:
 		verbose_name = 'Izin Lain TDUP'
 		verbose_name_plural = 'Izin Lain TDUP'
+
+class VasilitasTDUP(models.Model):
+	detil_tdup = models.ForeignKey(DetilTDUP, related_name='detil_tdup_vasilitas_perusahaan')
+	nama_vasilitas = models.CharField(max_length=255, verbose_name="Nama Vasilitas", null=True, blank=True)
+	jumlah = models.IntegerField(verbose_name="Jumlah Vasilitas", default=0, null=True, blank=True)
+
+	def as_json(self):
+		return dict(id=self.id, nama_vasilitas=self.nama_vasilitas, jumlah=self.jumlah)
+
+	class Meta:
+		verbose_name = 'Vasilitas TDUP'
+		verbose_name_plural = 'Vasilitas TDUP'
+
 
 # ++++++++++++ end TDUP ++++++++++++
 

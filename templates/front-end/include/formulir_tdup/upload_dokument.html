@@ -59,7 +59,7 @@
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdup_upload_berkas' %}" id="form-sertifikat_lahan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Sertifikat Lahan / Surat Sewa</strong></label>
+      <label class="col-sm-3 control-label">Sertifikat Lahan / Surat Sewa</label>
       <span id="field-sertifikat_lahan">
         <div class="col-sm-5">
           <input type="hidden" name="kode" value="Sertifikat Lahan">
@@ -155,7 +155,7 @@
   </form>
 
   <!-- SIUP -->
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdup_upload_berkas' %}" id="form-siup">
+  <!-- <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdup_upload_berkas' %}" id="form-siup">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>SIUP</strong></label>
@@ -169,7 +169,7 @@
       </span>
       <span class="col-sm-6" id="load-siup"></span>
     </div>
-  </form>
+  </form> -->
 
   <!-- Surat pernyataan tertulis dari pengusaha yang menjamin bahwa data dan dokumen yang diserahakan benar dan sah -->
   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'tdup_upload_berkas' %}" id="form-surat_pernyataan">

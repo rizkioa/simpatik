@@ -1,0 +1,156 @@
+{% load i18n %}
+<div class="modal fade" id="modal_vasilitas_tdup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title custom-font">Vasilitas</h3>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal form-vasilitas-tdup" method="POST" action="{% url 'save_vasilitas_tdup' %}">
+					{% csrf_token %}
+					<input type="hidden" name="id_vasilitas" id="id_vasilitas">
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left"><strong>Nama Vasilitas</strong></label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control data-vasilitas" name="nama_vasilitas" required="" data-parsley-trigger="change">
+						</div>
+					</div>
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left">Jumlah</label>
+						<div class="col-sm-8">
+							<input type="number" class="form-control data-vasilitas" name="jumlah">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button onclick="save_vasilitas_tdup()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+				<button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function save_vasilitas_tdup(){
+		frm = $('.form-vasilitas-tdup')
+		frm.parsley().validate();
+		if (frm.parsley().isValid()){
+			frm.ajaxSubmit({
+				method: 'POST',
+				data: frm.serialize(),
+				url: frm.attr('action'),
+				beforeSend: function() {
+					frm.mLoading();
+				},
+				success: function(response){
+					respon = JSON.parse(response)
+					if(respon.success == true){
+						toastr["success"](respon.pesan)
+						$('#modal_vasilitas_tdup').modal('hide')
+						// frm.find('.data-anggota').val('')
+						// $('#id_form_data_kendaraan').find('input').val('');
+						frm.find('.data-vasilitas').val('').trigger("chosen:updated");
+						load_vasilitas_tdup($.cookie('id_pengajuan'))
+					}
+					else{
+						toastr["error"](respon.pesan)
+					}
+					frm.mLoading('hide');
+				},
+				error: function(){
+					frm.mLoading('hide');
+					toast_server_error();
+				}
+			})
+		}
+	}
+
+	function load_vasilitas_tdup(pengajuan_id){
+		if (pengajuan_id !== ""){
+			$('.table-vasilitas-tdup > tbody').html('')
+			$('.table-vasilitas-tdup').mLoading();
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/layanan/tdup/vasilitas/load/'+pengajuan_id,
+				success: function (respon) {
+					// console.log(respon)
+					respon = JSON.parse(respon)
+					if(respon.success == true && respon.data.length > 0){
+						$.each( respon.data, function( index ) {
+							row = '<tr>'
+							no = index+1
+							row += '<td>'+no+'</td>'
+							row += '<td>'+respon.data[index].nama_vasilitas+'</td>'
+							row += '<td>'+respon.data[index].jumlah+'</td>'
+							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon.data[index].id+'" type="button" onclick="tambah_vasilitas_tdup($(this).val())"><i class="fa fa-pencil"></i><span>Edit</span></button> | <button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon.data[index].id+'" type="button" onclick="delete_vasilitas_tdup($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
+							row += '</tr>'
+							$('.table-vasilitas-tdup > tbody').append(row)
+						})
+					}
+					else{
+						row = '<tr>'
+						row += '<td colspan="9" align="center">Kosong</td>'
+						row += '</tr>'
+						$('.table-vasilitas-tdup > tbody').append(row)
+					}
+					// $('#table_daftar_kendaraan > tbody').html(row)
+				},
+				error: function(){
+					toast_server_error();
+				}
+			})
+			$('.table-vasilitas-tdup').mLoading('hide');
+		}
+	}
+
+	function delete_vasilitas_tdup(val_){
+		$.ajax({
+			type: 'GET',
+			url: __base_url__+'/layanan/tdup/vasilitas/delete/'+val_,
+			success: function (data) {
+				resp = $.parseJSON(data)
+				if (resp.success){
+					toastr["success"](resp.pesan)
+					load_vasilitas_tdup($.cookie('id_pengajuan'))
+				}
+				else{
+					toastr["error"](resp.pesan)
+				}
+			},
+			error: function(){
+				toast_server_error();
+			}
+		})
+	}
+
+	function tambah_vasilitas_tdup(id_vasilitas){
+		$('#modal_vasilitas_tdup').modal('show');
+		frm = $('.form-vasilitas-tdup');
+		frm.find('.data-vasilitas').val('').trigger("chosen:updated");
+		frm.find('input[name="id_vasilitas"]').attr('disabled', true);
+		if(id_vasilitas && id_vasilitas > 0){
+			$.ajax({
+				url: __base_url__+'/layanan/tdup/vasilitas/load-edit/'+id_vasilitas,
+				type: 'GET',
+				success: function(respon){
+					console.log(respon)
+					respon = JSON.parse(respon)
+					if(respon.success == true){
+						frm.find('input[name="id_vasilitas"]').attr('disabled', false);
+						frm.find('input[name="id_vasilitas"]').val(respon.data.id);
+						frm.find('input[name="nama_vasilitas"]').val(respon.data.nama_vasilitas);
+						frm.find('input[name="jumlah"]').val(respon.data.jumlah);
+					}
+				},
+				error: function(){
+					toast_server_error();
+				}
+			})
+		}
+		else{
+			frm.find('input[name="id_vasilitas"]').val('')
+		}
+	}
+</script>

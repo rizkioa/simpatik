@@ -434,27 +434,28 @@ function set_value_data_usaha_pariwisata(pengajuan_id){
               $('#id_sub_jenis_usaha_pariwisata').val(respon_data_usaha.data.sub_jenis_usaha_pariwisata).prop('selected',true).trigger("chosen:updated");
             }, 1000);
             subjenis(respon_data_usaha.data.jenis_usaha_pariwisata)
-            setTimeout(function(){
+            $('#kapasitas').val(respon_data_usaha.data.kapasitas)
+            // setTimeout(function(){
 
-              // transportasi wisata
-              $('#id_jumlah_unit_angkutan_jalan').val(respon_data_usaha.data.jumlah_unit_angkutan_jalan_wisata)
-              $('#id_kapasitas_angkutan_jalan_wisata').val(respon_data_usaha.data.kapasitas_angkutan_jalan_wisata)
-              $('#id_jumlah_unit_angkutan_kereta_api_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_kereta_api_wisata)
-              $('#id_kapasitas_angkutan_kereta_api_wisata').val(respon_data_usaha.data.kapasitas_angkutan_kereta_api_wisata)
-              $('#id_jumlah_unit_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_sungai_dan_danau_wisata)
-              $('#id_kapasitas_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.kapasitas_angkutan_sungai_dan_danau_wisata)
-              // $('#id_jumlah_unit_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_domestik_wisata)
-              // $('#id_kapasitas_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_domestik_wisata)
-              // $('#id_jumlah_unit_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_internasional_wisata)
-              // $('#id_kapasitas_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_internasional_wisata)
-              // makanan dan minuman
-              $('#id_jumlah_kursi_restoran').val(respon_data_usaha.data.jumlah_kursi_restoran)
-              $('#id_jumlah_kursi_rumah_makan').val(respon_data_usaha.data.jumlah_kursi_rumah_makan)
-              $('#id_jumlah_kursi_bar').val(respon_data_usaha.data.jumlah_kursi_bar_atau_rumah_minum)
-              $('#id_jumlah_kursi_kafe').val(respon_data_usaha.data.jumlah_kursi_kafe)
-              $('#id_jumlah_stand_pusat_makanan').val(respon_data_usaha.data.jumlah_stand_pusat_makanan)
-              $('#id_kapasitas_produksi_jasa_boga').val(respon_data_usaha.data.kapasitas_produksi_jasa_boga)
-            }, 1000);
+            //   // transportasi wisata
+            //   $('#id_jumlah_unit_angkutan_jalan').val(respon_data_usaha.data.jumlah_unit_angkutan_jalan_wisata)
+            //   $('#id_kapasitas_angkutan_jalan_wisata').val(respon_data_usaha.data.kapasitas_angkutan_jalan_wisata)
+            //   $('#id_jumlah_unit_angkutan_kereta_api_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_kereta_api_wisata)
+            //   $('#id_kapasitas_angkutan_kereta_api_wisata').val(respon_data_usaha.data.kapasitas_angkutan_kereta_api_wisata)
+            //   $('#id_jumlah_unit_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_sungai_dan_danau_wisata)
+            //   $('#id_kapasitas_angkutan_sungai_dan_danau_wisata').val(respon_data_usaha.data.kapasitas_angkutan_sungai_dan_danau_wisata)
+            //   // $('#id_jumlah_unit_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_domestik_wisata)
+            //   // $('#id_kapasitas_angkutan_laut_domestik_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_domestik_wisata)
+            //   // $('#id_jumlah_unit_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.jumlah_unit_angkutan_laut_internasional_wisata)
+            //   // $('#id_kapasitas_angkutan_laut_internasional_wisata').val(respon_data_usaha.data.kapasitas_angkutan_laut_internasional_wisata)
+            //   // makanan dan minuman
+            //   $('#id_jumlah_kursi_restoran').val(respon_data_usaha.data.jumlah_kursi_restoran)
+            //   $('#id_jumlah_kursi_rumah_makan').val(respon_data_usaha.data.jumlah_kursi_rumah_makan)
+            //   $('#id_jumlah_kursi_bar').val(respon_data_usaha.data.jumlah_kursi_bar_atau_rumah_minum)
+            //   $('#id_jumlah_kursi_kafe').val(respon_data_usaha.data.jumlah_kursi_kafe)
+            //   $('#id_jumlah_stand_pusat_makanan').val(respon_data_usaha.data.jumlah_stand_pusat_makanan)
+            //   $('#id_kapasitas_produksi_jasa_boga').val(respon_data_usaha.data.kapasitas_produksi_jasa_boga)
+            // }, 1000);
           }
           else{
             
@@ -639,43 +640,72 @@ function load_konfirmasi_tdup(pengajuan_id){
           $('#tr-sub_jenis_usaha_pariwisata').show()
           $('#sub_jenis_usaha_pariwisata_konfirmasi').html(resp[5].data_usaha.sub_jenis_usaha_pariwisata)
         }
+        if (resp[5].data_usaha.kapasitas){
+          $('#kapasitas_konfirmasi').text(resp[5].data_usaha.kapasitas)
+        }
 
-        if (resp[5].data_usaha.jumlah_unit_angkutan_jalan_wisata){
-          $('#tr-sub_angkutan_sungai_dan_danau_wisata').show()
-          $('#sub_angkutan_sungai_dan_danau_wisata_konfirmasi').html('Jumlah Unit: '+resp[5].data_usaha.jumlah_unit_angkutan_jalan_wisata+' Kapasitas: '+resp[5].data_usaha.kapasitas_angkutan_jalan_wisata)
-        }
-        if (resp[5].data_usaha.jumlah_unit_angkutan_kereta_api_wisata){
-          $('#tr-sub_angkutan_kereta_api_wisata').show()
-          $('#sub_angkutan_kereta_api_wisata_konfirmasi').html('Jumlah Unit: '+resp[5].data_usaha.jumlah_unit_angkutan_kereta_api_wisata+' Kapasitas: '+resp[5].data_usaha.kapasitas_angkutan_kereta_api_wisata)
-        }
-        if (resp[5].data_usaha.jumlah_unit_angkutan_sungai_dan_danau_wisata){
-          $('#tr-sub_angkutan_jalan_wisata').show()
-          $('#sub_angkutan_jalan_wisata_konfirmasi').html('Jumlah Unit: '+resp[5].data_usaha.jumlah_unit_angkutan_sungai_dan_danau_wisata+' Kapasitas: '+resp[5].data_usaha.kapasitas_angkutan_sungai_dan_danau_wisata)
-        }
-        if (resp[5].data_usaha.jumlah_kursi_restoran){
-          $('#tr-sub_restoran').show()
-          $('#sub_restoran_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_restoran+' buah')
-        }
-        if (resp[5].data_usaha.jumlah_kursi_rumah_makan){
-          $('#tr-sub_rumah_makan').show()
-          $('#sub_rumah_makan_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_rumah_makan+' buah')
-        }
-        if (resp[5].data_usaha.jumlah_kursi_bar_atau_rumah_minum){
-          $('#tr-sub_bar').show()
-          $('#sub_bar_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_bar_atau_rumah_minum+' buah')
-        }
-        if (resp[5].data_usaha.jumlah_kursi_kafe){
-          $('#tr-sub_kafe').show()
-          $('#sub_kafe_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_kafe+' buah')
-        }
-        if (resp[5].data_usaha.jumlah_stand_pusat_makanan){
-          $('#tr-sub_pusat_makanan').show()
-          $('#sub_pusat_makanan_konfirmasi').html('Jumlah Stand: '+resp[5].data_usaha.jumlah_stand_pusat_makanan+' buah')
-        }
-        if (resp[5].data_usaha.kapasitas_produksi_jasa_boga){
-          $('#tr-sub_jasa_boga').show()
-          $('#sub_jasa_boga_konfirmasi').html('Kapasitas produksi/pack: '+resp[5].data_usaha.kapasitas_produksi_jasa_boga+' unit/buah')
-        }
+        // if (resp[5].data_usaha.jumlah_unit_angkutan_jalan_wisata){
+        //   $('#tr-sub_angkutan_sungai_dan_danau_wisata').show()
+        //   $('#sub_angkutan_sungai_dan_danau_wisata_konfirmasi').html('Jumlah Unit: '+resp[5].data_usaha.jumlah_unit_angkutan_jalan_wisata+' Kapasitas: '+resp[5].data_usaha.kapasitas_angkutan_jalan_wisata)
+        // }
+        // if (resp[5].data_usaha.jumlah_unit_angkutan_kereta_api_wisata){
+        //   $('#tr-sub_angkutan_kereta_api_wisata').show()
+        //   $('#sub_angkutan_kereta_api_wisata_konfirmasi').html('Jumlah Unit: '+resp[5].data_usaha.jumlah_unit_angkutan_kereta_api_wisata+' Kapasitas: '+resp[5].data_usaha.kapasitas_angkutan_kereta_api_wisata)
+        // }
+        // if (resp[5].data_usaha.jumlah_unit_angkutan_sungai_dan_danau_wisata){
+        //   $('#tr-sub_angkutan_jalan_wisata').show()
+        //   $('#sub_angkutan_jalan_wisata_konfirmasi').html('Jumlah Unit: '+resp[5].data_usaha.jumlah_unit_angkutan_sungai_dan_danau_wisata+' Kapasitas: '+resp[5].data_usaha.kapasitas_angkutan_sungai_dan_danau_wisata)
+        // }
+        // if (resp[5].data_usaha.jumlah_kursi_restoran){
+        //   $('#tr-sub_restoran').show()
+        //   $('#sub_restoran_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_restoran+' buah')
+        // }
+        // if (resp[5].data_usaha.jumlah_kursi_rumah_makan){
+        //   $('#tr-sub_rumah_makan').show()
+        //   $('#sub_rumah_makan_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_rumah_makan+' buah')
+        // }
+        // if (resp[5].data_usaha.jumlah_kursi_bar_atau_rumah_minum){
+        //   $('#tr-sub_bar').show()
+        //   $('#sub_bar_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_bar_atau_rumah_minum+' buah')
+        // }
+        // if (resp[5].data_usaha.jumlah_kursi_kafe){
+        //   $('#tr-sub_kafe').show()
+        //   $('#sub_kafe_konfirmasi').html('Jumlah Kursi: '+resp[5].data_usaha.jumlah_kursi_kafe+' buah')
+        // }
+        // if (resp[5].data_usaha.jumlah_stand_pusat_makanan){
+        //   $('#tr-sub_pusat_makanan').show()
+        //   $('#sub_pusat_makanan_konfirmasi').html('Jumlah Stand: '+resp[5].data_usaha.jumlah_stand_pusat_makanan+' buah')
+        // }
+        // if (resp[5].data_usaha.kapasitas_produksi_jasa_boga){
+        //   $('#tr-sub_jasa_boga').show()
+        //   $('#sub_jasa_boga_konfirmasi').html('Kapasitas produksi/pack: '+resp[5].data_usaha.kapasitas_produksi_jasa_boga+' unit/buah')
+        // }
+
+        $.ajax({
+          type: 'GET',
+          url: __base_url__+'/layanan/tdup/vasilitas/load/'+pengajuan_id,
+          success: function (respon) {
+            elem = $('#table_vasilitas_konfirmasi > tbody')
+            respon = JSON.parse(respon)
+            if(respon.success == true && respon.data.length > 0){
+              $.each( respon.data, function( index ) {
+                row = '<tr>'
+                no = index+1
+                row += '<td>'+no+'</td>'
+                row += '<td>'+respon.data[index].nama_vasilitas+'</td>'
+                row += '<td>'+respon.data[index].jumlah+'</td>'
+                row += '</tr>'
+                elem.append(row)
+              })
+            }
+            else{
+              row = '<tr>'
+              row += '<td colspan="3" align="center">Kosong</td>'
+              row += '</tr>'
+              elem.append(row)
+            }
+          }
+        })
 
         $.ajax({
           type: 'GET',
@@ -819,6 +849,7 @@ $(window).load(function(){
         if($current == 3){
           set_value_data_usaha_pariwisata($.cookie('id_pengajuan'))
           load_pengurus_badan_usaha($.cookie('id_pengajuan'))
+          load_vasilitas_tdup($.cookie('id_pengajuan'))
         }
         if($current == 4){
           load_provinsi_(1, '#id_provinsi-3')
