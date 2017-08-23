@@ -315,6 +315,20 @@ class SubklasifikasiResource(CORSModelResource):
 		queryset = Subklasifikasi.objects.all()
 
 class PaketPekerjaanResource(CORSModelResource):
+	detil_iujk_id = fields.IntegerField(attribute="detil_iujk__id", null=True, blank=True)
 	sub_kualifikasi = fields.ToOneField(SubklasifikasiResource, 'sub_kualifikasi', full = True, null=True)
 	class Meta:
 		queryset = PaketPekerjaan.objects.all()
+		filtering = {
+			"detil_iujk_id" : ['contains'],
+		}
+
+class AnggotaBadanUsaha(CORSModelResource):
+	detil_iujk_id = fields.IntegerField(attribute="detil_iujk__id", null=True, blank=True)
+	berkas_tambahan = fields.OneToManyField(BerkasResource, 'berkas_tambahan', full=True, null=True, blank=True)
+	class Meta:
+		queryset = AnggotaBadanUsaha.objects.all()
+		filtering = {
+			"detil_iujk_id" : ['contains'],
+			"jenis_anggota_badan" : ['contains'],
+		}
