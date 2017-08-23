@@ -51,9 +51,10 @@ v1_api.register(PerumahanYangDimilikiIPPTUsahaResource()) # IPPT
 v1_api.register(MesinPerusahaanResource()) # Huller
 v1_api.register(DetilIzinParkirIsidentilResource()) # Izin Parkir Dishub
 v1_api.register(DataAnggotaParkirResource()) # Izin Parkir Dishub
-v1_api.register(BerkasTerkalitIzin())
-v1_api.register(DetilIUJKResource())
-v1_api.register(PaketPekerjaanResource())
+v1_api.register(BerkasTerkalitIzin()) # Pengajuan Izin
+v1_api.register(DetilIUJKResource()) #IUJK
+v1_api.register(PaketPekerjaanResource()) #IUJK
+v1_api.register(AnggotaBadanUsaha()) #IUJK
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())

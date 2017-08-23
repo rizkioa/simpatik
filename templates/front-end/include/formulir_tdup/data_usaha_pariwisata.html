@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="form-group" id="sub_angkutan_jalan_wisata">
+  <!-- <div class="form-group" id="sub_angkutan_jalan_wisata">
     <label class="col-sm-3 control-label text-left">Angkutan Jalan Wisata</label>
     <div class="col-sm-3">
       <div class="input-group">
@@ -143,8 +143,41 @@
         <span class="input-group-addon">unit/bulan</span>
       </div>
     </div>
-  </div>
+  </div> -->
 
+  <div class="form-group">
+    <label class="col-sm-2 control-label text-left">Kapasitas</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control"  name="kapasitas" id="kapasitas">
+      <label class="help-text" style="color: gray;">Contoh : 10 Kamar / 10 Kursi / 10 Buah / 10 Stand</label>
+    </div>
+  </div>
+  
+  <h4>Vasilitas</h4>
+  <div class="form-group">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-vasilitas-tdup">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Vaslitas</th>
+              <th>Jumlah</th>
+              <th width="20%">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-12">
+      <a onclick="tambah_vasilitas_tdup()" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Vasilitas</a>
+    </div>
+  </div>
 
   <h4>Pengurus Badan Usaha</h4>
   <div class="form-group">
@@ -168,7 +201,11 @@
       </div>
     </div>
   </div>
-
-  <a onclick="tambah_pengurus_badan_usaha()" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pengurus</a>
+  
+  <div class="form-group">
+    <div class="col-md-12">
+      <a onclick="tambah_pengurus_badan_usaha()" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pengurus</a>
+    </div>
+  </div>
   <br>
 </form>
