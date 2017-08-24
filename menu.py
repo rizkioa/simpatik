@@ -522,7 +522,7 @@ class CustomMenu(Menu):
                 ),
             ]
         )
-        if request.user.is_superuser:
+        if request.user.is_superuser or request.user.groups.filter(name="Admin Sistem").exists():
             self.children += [
                 menu_pengguna,      
                 menu_dinas_perhubungan,        
@@ -530,27 +530,27 @@ class CustomMenu(Menu):
                 
             ]
 
-        if request.user.groups.filter(name="Admin Simpatik").exists():
-            items.MenuItem(
-                title=_('Manajemen Pengguna'),
-                description='Manajemen Pengguna',
-                accesskey='menuPengguna',
-                children= [
-                    items.MenuItem(
-                        title='Daftar Pengguna',
-                        icon='icon-user',
-                        children= [
-                            items.MenuItem(
-                                title='Pegawai',
-                                icon='fa fa-user-md',
-                                url=reverse('admin:kepegawaian_pegawai_changelist'),
-                            ),
-                        ]
-                    ),
-                ]
-            )
-            self.children += [             
-                menu_pengaturan,
-            ]
+        # if request.user.groups.filter(name="Admin Sistem").exists():
+        #     items.MenuItem(
+        #         title=_('Manajemen Pengguna'),
+        #         description='Manajemen Pengguna',
+        #         accesskey='menuPengguna',
+        #         children= [
+        #             items.MenuItem(
+        #                 title='Daftar Pengguna',
+        #                 icon='icon-user',
+        #                 children= [
+        #                     items.MenuItem(
+        #                         title='Pegawai',
+        #                         icon='fa fa-user-md',
+        #                         url=reverse('admin:kepegawaian_pegawai_changelist'),
+        #                     ),
+        #                 ]
+        #             ),
+        #         ]
+        #     )
+        #     self.children += [             
+        #         menu_pengaturan,
+        #     ]
         
         return super(CustomMenu, self).init_with_context(context)
