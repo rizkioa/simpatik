@@ -42,6 +42,72 @@ class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
 	list_filter = ('kelompok_jenis_izin', ('created_at', DateRangeFilter))
 	search_fields = ('no_izin', 'pemohon__nama_lengkap', 'no_pengajuan')
+	actions = ('get_export_csv', 'get_export_xls')
+
+	def get_export_csv(modeladmin, request, queryset):
+		import csv
+		from django.utils.encoding import smart_str
+		response = HttpResponse(content_type='text/csv')
+		response['Content-Disposition'] = 'attachment; filename=kbli.csv'
+		writer = csv.writer(response, csv.excel)
+		response.write(u'\ufeff'.encode('utf8')) # BOM (optional...Excel needs it to open UTF-8 file properly)
+		writer.writerow([
+			smart_str(u"No Pengajuan"),
+			smart_str(u"No Izin"),
+			smart_str(u"Nama Pemohon"),
+			# smart_str(u"Nama Perusahaan"),
+		])
+		for obj in queryset:
+			writer.writerow([
+				smart_str(obj.no_pengajuan),
+				smart_str(obj.no_izin),
+				smart_str(obj.pemohon.nama_lengkap),
+				# smart_str(obj.perusahaan.perusahaan),
+			])
+		return response
+	get_export_csv.short_description = u"Export CSV"
+
+	def get_export_xls(modeladmin, request, queryset):
+		import xlwt
+		response = HttpResponse(content_type='application/ms-excel')
+		response['Content-Disposition'] = 'attachment; filename=Pengajuan.xls'
+		wb = xlwt.Workbook(encoding='utf-8')
+		ws = wb.add_sheet("PengajuanIzin")
+
+		row_num = 0
+
+		columns = [
+			(u"No Pengajuan", 2000),
+			(u"No Izin", 6000),
+			(u"Nama Pemohon", 8000),
+		]
+
+		font_style = xlwt.XFStyle()
+		font_style.font.bold = True
+
+		for col_num in xrange(len(columns)):
+			ws.write(row_num, col_num, columns[col_num][0], font_style)
+		# set column width
+		ws.col(col_num).width = columns[col_num][1]
+
+		font_style = xlwt.XFStyle()
+		font_style.alignment.wrap = 1
+		
+		for obj in queryset:
+			row_num += 1
+			row = [
+				obj.no_pengajuan,
+				obj.no_izin,
+				obj.pemohon.nama_lengkap,
+			]
+			for col_num in xrange(len(row)):
+				ws.write(row_num, col_num, row[col_num], font_style)
+				
+		wb.save(response)
+		return response
+		
+	get_export_xls.short_description = u"Export XLS"
+
 	
 
 	def changelist_view(self, request, extra_context={}):
