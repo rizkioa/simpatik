@@ -105,13 +105,19 @@ class PegawaiAdmin(admin.ModelAdmin):
 		else:
 			pegawai_list = Pegawai.objects.none()
 		pilihan = "<option></option>"
-		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in pegawai_list)));
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in pegawai_list)))
+
+	def option_pegawai_operator(self, request):
+		pegawai_list = Pegawai.objects.filter(groups__name="Operator")
+		# pilihan = "<option></option>"
+		return HttpResponse(x.as_json() for x in pegawai_list)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(PegawaiAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^option/$', self.admin_site.admin_view(self.option_pegawai), name='option_pegawai'),
+			url(r'^option-operator/$', self.option_pegawai_operator, name='option_pegawai_operator'),
 		)
 		return my_urls + urls
 
@@ -172,6 +178,3 @@ class PegawaiAdmin(admin.ModelAdmin):
 
 	def save_model(self, request, obj, form, change):
 		obj.save()
-	
-
-

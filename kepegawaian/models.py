@@ -121,6 +121,9 @@ class Pegawai(Account):
 
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_lengkap)+" - "+str(self.username)+"</option>"
+
+	def as_json(self):
+		return dict(nama_lengkap=self.nama_lengkap)
 		
 	def set_username(self):
 		nomor_list = self.nomoridentitaspengguna_set.all()

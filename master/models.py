@@ -393,3 +393,26 @@ def mymodel_delete(sender, instance, **kwargs):
 	# Pass false so FileField doesn't save the model.
 	if instance:
 		instance.berkas.delete(False)
+
+class ChatRoom(models.Model):
+	operator = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_operator", verbose_name="Operator", blank=True, null=True)
+	no_ktp = models.CharField(max_length=255, verbose_name="Nomor KTP")
+	nama_pemohon = models.CharField(max_length=255, verbose_name="Nama Lengkap")
+
+
+	class Meta:
+		verbose_name='Chat Room'
+		verbose_name_plural='Chat Room'
+
+class Chat(models.Model):
+	chat_room = models.ForeignKey(ChatRoom, verbose_name="Chat Room")
+	isi_pesan = models.TextField(verbose_name="Isi Pesan", null=True, blank=True)
+	berkas = models.ManyToManyField(Berkas, related_name='berkas_chat', verbose_name="Berkas Chat", blank=True)
+	created_at = models.DateTimeField(editable=False)
+	status = models.IntegerField(verbose_name="Status", null=True, blank=True) # 1 (dari Operator) 2 (dari pemohon)
+
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		if not self.id:
+			self.created_at = datetime.now()
+		return super(Chat, self).save(*args, **kwargs)
