@@ -137,6 +137,29 @@ class PegawaiForm(KepegawaianForm):
 			self.fields['desa'].widget.attrs = {}
 			self.fields['desa'].initial = self.instance.desa
 
+			negara = self.request.POST.get('negara', None)
+			if negara:
+				self.fields['provinsi'].widget = forms.Select()
+				self.fields['provinsi'].queryset = Provinsi.objects.filter(negara__id=negara)
+				provinsi = self.request.POST.get('provinsi', None)
+				if provinsi:
+					self.fields['provinsi'].initial = provinsi
+					self.fields['kabupaten'].widget = forms.Select()
+					self.fields['kabupaten'].queryset = Kabupaten.objects.filter(provinsi__id=provinsi)
+					kabupaten = self.request.POST.get('kabupaten', None)
+					if kabupaten:
+						self.fields['kabupaten'].initial = kabupaten
+						self.fields['kecamatan'].widget = forms.Select()
+						self.fields['kecamatan'].queryset = Kecamatan.objects.filter(kabupaten__id=kabupaten)
+						kecamatan = self.request.POST.get('kecamatan', None)
+						if kecamatan:
+							self.fields['kecamatan'].initial = kecamatan
+							self.fields['desa'].widget = forms.Select()
+							self.fields['desa'].queryset = Desa.objects.filter(kecamatan__id=kecamatan)
+							desa = self.request.POST.get('desa', None)
+							if desa:
+								self.fields['desa'].initial = desa
+
 	class Meta:
 		model = Pegawai
 		fields = '__all__'
