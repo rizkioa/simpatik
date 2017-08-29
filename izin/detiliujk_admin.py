@@ -497,36 +497,36 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				css = ''
 			tr += '<tr style="border: 1px solid black;" class="'+css+'">'
 			if p.subklasifikasi.klasifikasi in kla:
-				tr += '<td style="border: 1px solid black;"></td>'
-				tr += '<td style="border: 1px solid black;"></td>'
+				tr += '<td style="border: 1px solid black;" valign="top"></td>'
+				tr += '<td style="border: 1px solid black;" valign="top"></td>'
 			else:
 				k = p.subklasifikasi.klasifikasi
 				no = no+1
-				tr += '<td style="border: 1px solid black;">'+str(no)+'.</td>'
-				tr += '<td style="border: 1px solid black;">'+str(k)+'</td>'			
+				tr += '<td style="border: 1px solid black;" valign="top">'+str(no)+'.</td>'
+				tr += '<td style="border: 1px solid black;" valign="top">'+str(k)+'</td>'			
 				kla.append(p.subklasifikasi.klasifikasi)
 			tahun = '0'
 			if p.tahun:
 				tahun = str(p.tahun)
-			tr += '<td style="border: 1px solid black;">'+str(p.subklasifikasi)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+str(p.nama_paket_pekerjaan)+'</td>'
-			tr += '<td style="border: 1px solid black;">'+tahun+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.subklasifikasi)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.nama_paket_pekerjaan)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+tahun+'</td>'
 			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
 				nilai_paket = 0
 			else:
 				nilai_paket = formatrupiah(p.nilai_paket_pekerjaan)
-			tr += '<td style="border: 1px solid black;">'+str(nilai_paket)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(nilai_paket)+'</td>'
 			
 			if p.keterangan is None or p.keterangan == '-':
 				keterangan = ''
 			else:
 				keterangan = p.keterangan	
-			tr += '<td style="border: 1px solid black;">'+str(keterangan)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(keterangan)+'</td>'
 			tr += '</tr>'
 
 
 		# print tr
-		extra_context.update({'klasifikasi_tr': mark_safe(tr) })
+		extra_context.update({'klasifikasi_tr': mark_safe(tr) , 'pengajuan_':pengajuan_})
 
 		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman2.html")
 		ec = RequestContext(request, extra_context)
