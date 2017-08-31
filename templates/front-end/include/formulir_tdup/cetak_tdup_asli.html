@@ -219,13 +219,13 @@
     			<td align="center"><b>4.</b></td>
     			<td class="tdnone"><b>Alamat Perusahaan</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{pengajuan.perusahaan.alamat_perusahaan}}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.alamat_perusahaan.upper}}, {{pengajuan.perusahaan.desa.lokasi_lengkap.upper}}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>5.</b></td>
     			<td class="tdnone"><b>Alamat Lokasi Usaha</b></td>
     			<td class="tdnone">:</td>
-    			<td class="tdnone">{{lokasi_usaha_pariwisata.upper}}</td>
+    			<td class="tdnone">{{pengajuan.lokasi_usaha_pariwisata.upper}}, {{pengajuan.desa_lokasi.lokasi_lengkap.upper}}</td>
     		</tr>
     		<tr>
     			<td align="center"><b>6.</b></td>
@@ -248,6 +248,8 @@
     					{% for i in pengurusbadanusaha_list %}
     						{{i.nama_lengkap}} {% if not forloop.last %}, {% endif %}
     					{% endfor %}
+    				{% else %}
+    				-
     				{% endif %}
     			</td>
     		</tr>
@@ -279,6 +281,8 @@
     					{% for i in izinlaintdup %}
     						{{i.no_izin.upper}} TANGGAL {{i.tanggal_izin|date:'d-m-Y'}}{% if not forloop.last %},<br> {% endif %}
     					{% endfor %}
+    				{% else %}
+    				-
     				{% endif %}
     			</td>
     		</tr>
@@ -296,7 +300,7 @@
     			<td class="tdnone"><b>Kapasitas</b></td>
     			<td class="tdnone">:</td>
     			<td class="tdnone">
-					{{pengajuan.kapasitas}}
+					{% if pengajuan.kapasitas %}{{pengajuan.kapasitas}}{% else %}-{% endif %}
     			</td>
     		</tr>
     	</table>

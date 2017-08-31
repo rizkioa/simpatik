@@ -351,8 +351,15 @@
 
                 $('#button-chat').on('click', function() {
                     // alert(this.id);
-                    $('#widget-chat-login').fadeIn();
-                    $('#button-chat').hide();
+                    // $('#widget-chat-login').fadeIn();
+                    // $('#button-chat').hide();
+                    if (localStorage.getItem('chat_no_ktp') == null && localStorage.getItem('chat_nama_pemohon') == null){
+                        $('#widget-chat-login').fadeIn();
+                        $('#button-chat').hide();
+                    }else{
+                       $('#widget-chat').fadeIn();
+                        $('#button-chat').hide(); 
+                    }
                 });
 
                 $('.remove-chat').on('click', function() {
