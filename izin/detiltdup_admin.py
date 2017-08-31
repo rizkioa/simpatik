@@ -138,8 +138,8 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 			# print legalitas_1.tanggal_pengesahan
 			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=2).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-			alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
-			lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata) + ', Ds. ' +str(pengajuan_.desa_lokasi)+', Kec. '+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)+', Prov. '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten.provinsi)
+			# alamat_ = str(pengajuan_.perusahaan.alamat_perusahaan) + ", Ds." + str(pengajuan_.perusahaan.desa.nama_desa) + ", Kec." +str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan) + ", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten)
+			# lokasi_usaha_pariwisata = str(pengajuan_.lokasi_usaha_pariwisata) + ', Ds. ' +str(pengajuan_.desa_lokasi)+', Kec. '+str(pengajuan_.desa_lokasi.kecamatan)+', '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten)+', Prov. '+str(pengajuan_.desa_lokasi.kecamatan.kabupaten.provinsi)
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
@@ -148,7 +148,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 			izinlaintdup_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
 			pengurusbadanusaha_list = pengajuan_.pengurusbadanusaha_set.all()
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, 'alamat': alamat_, 'lokasi_usaha_pariwisata': lokasi_usaha_pariwisata, 'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, ,'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
 		template = loader.get_template("front-end/include/formulir_tdup/cetak_tdup_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
