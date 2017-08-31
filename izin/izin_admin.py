@@ -578,7 +578,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url = "/admin/izin/pengajuanizin/penomoran-skizin/"
 			total = pengajuan_ + total
 		if request.user.groups.filter(name='Kadin'):
-			skizin = len(SKIzin.objects.filter(status=4).values('pengajuan_izin_id'))
+			skizin = len(SKIzin.objects.filter(status=4, ~Q(pengajuan_izin__status=11)).values('pengajuan_izin_id'))
 			id_elemet.append('kadin_skizin')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kadin/"
