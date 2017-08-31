@@ -148,7 +148,7 @@ class DetilTDUPAdmin(admin.ModelAdmin):
 				masa_berlaku = masa_berlakua.strftime('%d-%m-%Y')
 			izinlaintdup_list = IzinLainTDUP.objects.filter(detil_tdup_id=pengajuan_.id)
 			pengurusbadanusaha_list = pengajuan_.pengurusbadanusaha_set.all()
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku, ,'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
+			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'masa_berlaku':masa_berlaku,'izinlaintdup': izinlaintdup_list, 'pengurusbadanusaha_list':pengurusbadanusaha_list})
 		template = loader.get_template("front-end/include/formulir_tdup/cetak_tdup_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
