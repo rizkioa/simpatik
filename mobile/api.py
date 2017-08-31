@@ -49,6 +49,7 @@ class PengajuanIzinResource(CORSModelResource):
 	verified_by = fields.ToOneField(KepegawaianResource, 'verified_by', full=True, null=True)
 	created_by = fields.ToOneField(KepegawaianResource, 'created_by', full=True, null=True)
 	jenis_permohonan = fields.ToOneField(JenisPermohonanIzinResource, 'jenis_permohonan', full=True, null=True)
+	
 	class Meta:
 		queryset = PengajuanIzin.objects.filter(~Q(status=11))
 		# queryset = PengajuanIzin.objects.all()
@@ -66,7 +67,7 @@ class PengajuanIzinResource(CORSModelResource):
 		data = super(PengajuanIzinResource, self).get_object_list(request)
 		if request.user.groups.filter(name='Kadin'):
 			# return object_list.filter(status=1)
-			data = data.filter(status=2)
+			# data = data.filter(status=2)
 			id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
 			id_pengajuan_list += id_list
 			data = data.filter(id__in=id_pengajuan_list)

@@ -163,6 +163,15 @@
                 float:right;
                 margin-left:10px;
             }
+            .button_login {
+                background-color: white;
+                color: black;
+                border: 2px solid #008CBA; 
+            }
+            .input_text{
+                border: none;
+                border-bottom: 0.5px solid red;
+            }
         </style>
     </head>
     <body id="minovate" class="appWrapper hz-menu device-lg header-fixed aside-fixed rightbar-hidden lightred-scheme-color scheme-light">
@@ -254,36 +263,53 @@
                     <!-- tile body -->
                     <div class="tile-body slim-scroll" style="max-height: 320px;overflow:auto;">
 
-                        <ul class="chats p-0">
-                            <li class="in">
-                                <div class="media">
-                                    <div class="pull-left thumb thumb-sm">
-                                        <img class="media-object img-circle" src="{% static 'images/SIMPATIK.png' %}" alt="">
+                        <div class="login" id="login_chat_room">
+                            <form id="id_form_login_chat_room">
+                                <center>
+                                    <p style="font-size:18px"><b>LOGIN</b></p>
+                                    <input align="center" type="text" class="input_text" name="nomor_ktp" id="nomor_ktp" placeholder="Nomor KTP">
+                                    <br>
+                                    <br>
+                                    <input type="text" name="nama_lengkap" class="input_text" id="nama_lengkap" placeholder="Nama Lengkap">
+                                    <br>
+                                    <br>
+                                    <button class="btn button_login" type="button" onclick="addStorage(); return false">login</button>
+                                </center>
+                            </form>
+                        </div>
+
+                        <div class="chat hide">
+                            <ul class="chats p-0">
+                                <li class="in">
+                                    <div class="media">
+                                        <div class="pull-left thumb thumb-sm">
+                                            <img class="media-object img-circle" src="{% static 'images/SIMPATIK.png' %}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="media-heading"><a role="button" tabindex="0" class="name">John Douey </a><span class="datetime">at 12.10.2014</span></p>
+                                            <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                                        </div>
                                     </div>
-                                    <div class="media-body">
-                                        <p class="media-heading"><a role="button" tabindex="0" class="name">John Douey </a><span class="datetime">at 12.10.2014</span></p>
-                                        <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                                </li>
+                                <li class="out">
+                                    <div class="media">
+                                        <div class="pull-right thumb thumb-sm">
+                                            <img class="media-object img-circle" src="{% static 'images/SIMPATIK.png' %}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <p class="media-heading"><a role="button" tabindex="0" class="name">You </a><span class="datetime">2 hours ago</span></p>
+                                            <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="out">
-                                <div class="media">
-                                    <div class="pull-right thumb thumb-sm">
-                                        <img class="media-object img-circle" src="{% static 'images/SIMPATIK.png' %}" alt="">
-                                    </div>
-                                    <div class="media-body">
-                                        <p class="media-heading"><a role="button" tabindex="0" class="name">You </a><span class="datetime">2 hours ago</span></p>
-                                        <span class="body">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </span>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
                         </ul>
+                        </div>
 
                     </div>
                     <!-- /tile body -->
 
                     <!-- tile footer -->
-                    <div class="tile-footer">
+                    <div class="tile-footer hide">
                         <div class="chat-form">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Type your message here...">
@@ -426,6 +452,24 @@
                     }
                 }
             });
+
+            // if(localStorage.getItem('login') == null){
+            //     localStorage.setItem('login','false');
+            // }
+
+            function addStorage() {
+                var nomor_ktp = document.getElementById('nomor_ktp');
+                var nama_lengkap = document.getElementById('nama_lengkap');
+
+
+                //localStorage setItem
+                if ("localStorage" in window) {
+                    localStorage.setItem(nomor_ktp.value, nama_lengkap.value);
+                } else {
+                    alert("no localStorage in window");
+                }
+            }
+
         </script>
     </body>
 </html>
