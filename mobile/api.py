@@ -66,10 +66,10 @@ class PengajuanIzinResource(CORSModelResource):
 		id_pengajuan_list = []
 		data = super(PengajuanIzinResource, self).get_object_list(request)
 		if request.user.groups.filter(name='Kadin'):
-			# id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
+			id_list = SKIzin.objects.filter(status=4).values_list('pengajuan_izin_id', flat=True)
 			# id_pengajuan_list += id_list
-			# data = data.filter(id__in=id_pengajuan_list)
-			data = data
+			data = data.filter(id__in=id_list)
+			# data = data
 		elif request.user.groups.filter(name='Bupati'):
 			# print "DISINI"
 			kode = ['503.08', 'TDP-PT', 'TDP-CV', 'TDP-FIRMA', 'TDP-PERORANGAN', 'TDP-KOPERASI', 'TDP-BUL']
