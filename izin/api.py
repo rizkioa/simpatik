@@ -191,6 +191,9 @@ class DetilReklameIzinResource(CORSModelResource):
 
 	class Meta:
 		queryset = DetilReklameIzin.objects.all()
+		filtering = {
+			'detil_reklame_id': ['contains']
+		}
 		authentication = ApiKeyAuthentication()
 
 class DetilIMBPapanReklameResource(CORSModelResource):
