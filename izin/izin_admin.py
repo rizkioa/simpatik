@@ -533,21 +533,22 @@ class IzinAdmin(admin.ModelAdmin):
 		pesan = []
 		url = []
 		total = 0
+		pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11))
 		if request.user.groups.filter(name='Operator'):
-			pengajuan_ = PengajuanIzin.objects.filter(status=6).count()
+			pengajuan_ = pengajuan_.objects.filter(status=6).count()
 			id_elemet.append('operator')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
 			total = pengajuan_
 		if request.user.groups.filter(name='Kasir'):
-			pengajuan_ = PengajuanIzin.objects.filter(status=5).count()
+			pengajuan_ = pengajuan_.objects.filter(status=5).count()
 			id_elemet.append('kasir')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/kasir/"
 			total = pengajuan_
 		if request.user.groups.filter(name='Kabid'):
 			# verifikasi pengajuan
-			pengajuan_ = PengajuanIzin.objects.filter(status=4).count()
+			pengajuan_ = pengajuan_.objects.filter(status=4).count()
 			id_elemet.append('kabid_pengajuan')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
@@ -559,13 +560,13 @@ class IzinAdmin(admin.ModelAdmin):
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kabid/"
 			total = skizin + total
 		if request.user.groups.filter(name='Pembuat Surat'):
-			pengajuan_ = PengajuanIzin.objects.filter(skizin__isnull=True, status=2).count()
+			pengajuan_ = pengajuan_.objects.filter(skizin__isnull=True, status=2).count()
 			id_elemet.append('pembuat_surat')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-pembuat-surat/"
 			total = pengajuan_ + total
 			# perbaikan draf sk
-			pengajuan_ = PengajuanIzin.objects.filter(skizin__status=13, status=2).count()
+			pengajuan_ = pengajuan_.objects.filter(skizin__status=13, status=2).count()
 			id_elemet.append('perbaikan_surat')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-perbaikan-surat/"
