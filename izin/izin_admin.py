@@ -345,6 +345,7 @@ class IzinAdmin(admin.ModelAdmin):
 			pengajuan_ = qs.filter(id__in=id_pengajuan_list)
 		else:
 			pengajuan_ = qs
+		pengajuan_ = pengajuan_.filter(~Q(status=11))
 		return pengajuan_.order_by('-updated_at')
 
 	def get_perusahaan(self, obj):
