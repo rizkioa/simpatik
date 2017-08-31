@@ -109,8 +109,8 @@ class PegawaiAdmin(admin.ModelAdmin):
 
 	def option_pegawai_operator(self, request):
 		pegawai_list = Pegawai.objects.filter(groups__name="Operator")
-		# pilihan = "<option></option>"
-		return HttpResponse(x.as_json() for x in pegawai_list)
+		pilihan = "<option></option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option_option() for x in pegawai_list)))
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url

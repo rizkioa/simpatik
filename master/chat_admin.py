@@ -13,8 +13,16 @@ class ChatRoomAdmin(admin.ModelAdmin):
 		operator = request.POST.get('operator')
 		chatroom_list = ChatRoom.objects.filter(no_ktp=no_ktp)
 		if chatroom_list.exists():
-			chatroom_obj = ChatRoom()
-		data = {'success':True, 'pesan': 'Berhasil Login'}
+			chatroom_obj = chatroom_list.last()
+		else:
+			chatroom_obj = ChatRoom(
+				operator_id = operator,
+				no_ktp = no_ktp,
+				nama_pemohon = nama_pemohon
+				)
+			chatroom_obj.save()
+		data = {'success':True, 'pesan': 'Berhasil Login', 'nomor_ktp':chatroom_obj.nama_pemohon, 'nomor_ktp':chatroom_obj.nomor_ktp}
+		# data = {}
 		return HttpResponse(json.dumps(data))
 
 	def json_login_chat(self, request):
@@ -27,7 +35,7 @@ class ChatRoomAdmin(admin.ModelAdmin):
 		urls = super(ChatRoomAdmin, self).get_urls()
 		my_urls = patterns('',
 			# url(r'^option/$', self.option_provinsi, name='option_provinsi'),
-			url(r'^admin/master/chatroom/chatroom$', self.login_chat, name='login_chat')
+			url(r'^login$', self.login_chat, name='login_chat')
 			)
 		return my_urls + urls
 

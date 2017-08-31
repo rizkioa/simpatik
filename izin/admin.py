@@ -27,11 +27,13 @@ from izin.utils import get_nomor_pengajuan
 from pembangunan.views import get_rekomendasi_pembangunan
 from izin.detilizinparkir_admin import DetilIzinParkirIsidentilAdmin
 from izin.dishub.detilizinangkutan_admin import DetilIUAAdmin
+# from izin.chat_admin import ChatRoomAdmin
 
 # from perusahaan.models import Perusahaan
 # from django.shortcuts import get_object_or_404
 # from django.core import serializers
 # Register your models here.
+# admin.site.register(ChatRoom, ChatRoomAdmin)
 admin.site.register(BidangUsahaPariwisata)
 admin.site.register(JenisUsahaPariwisata)
 admin.site.register(SubJenisUsahaPariwisata)
