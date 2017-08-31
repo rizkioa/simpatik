@@ -19,7 +19,7 @@
 		  display: block;
 		  margin: 0 auto;
 		  margin-bottom: 0.5cm;
-		  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+		  /*box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);*/
 		  padding: 60px;
 		  border-radius: 6px;
 		}
@@ -182,24 +182,42 @@
 	</div>
 
 	<page size="F4" layout="landscape">
+		<table width="50%">
+			<tr>
+				<td width="30%">Nama Badan Usaha</td>
+				<td width="10%">:</td>
+				<td width="60%">{{pengajuan_.perusahaan.nama_perusahaan}}</td>
+			</tr>
+			<tr>
+				<td>Nomor IUJK</td>
+				<td>:</td>
+				<td>{{pengajuan_.no_izin}}</td>
+			</tr>
+			<tr>
+				<td>Jenis Usaha</td>
+				<td>:</td>
+				<td>{{pengajuan_.jenis_iujk}}</td>
+			</tr>
+		</table>
+		<br>
 		<table style="border: 2px solid black;">
 		<tr style="border: 1px solid black; height: 50px;"> 
-			<th style="border: 1px solid black;">No</th>
-			<th style="border: 1px solid black;">Klasifikasi Usaha</th>
-			<th style="border: 1px solid black;">Sub Klasifikasi Pekerjaan</th>
-			<th style="border: 1px solid black;">Nama Paket Pekerjaan Tertinggi</th>
-			<th style="border: 1px solid black;">Tahun Pelaksanaan Proyek</th>
-			<th style="border: 1px solid black;">Nilai Pekerjaan (Rp.)</th>
-			<th style="border: 1px solid black;">Keterangan</th>
+			<th style="border: 1px solid black;" valign="top">No</th>
+			<th style="border: 1px solid black;" valign="top">Klasifikasi Usaha</th>
+			<th style="border: 1px solid black;" valign="top">Sub Klasifikasi Pekerjaan</th>
+			<th style="border: 1px solid black;" valign="top">Nama Paket Pekerjaan Tertinggi</th>
+			<th style="border: 1px solid black;" valign="top">Tahun Pelaksanaan Proyek</th>
+			<th style="border: 1px solid black;" valign="top">Nilai Pekerjaan (Rp.)</th>
+			<th style="border: 1px solid black;" valign="top">Keterangan</th>
 		</tr>
 		<tr style="border: 1px solid black; text-align: center;">
-			<th style="border: 1px solid black;">1</th>
-			<th style="border: 1px solid black;">2</th>
-			<th style="border: 1px solid black;">3</th>
-			<th style="border: 1px solid black;">4</th>
-			<th style="border: 1px solid black;">5</th>
-			<th style="border: 1px solid black;">6</th>
-			<th style="border: 1px solid black;">7</th>
+			<th style="border: 1px solid black;" valign="top">1</th>
+			<th style="border: 1px solid black;" valign="top">2</th>
+			<th style="border: 1px solid black;" valign="top">3</th>
+			<th style="border: 1px solid black;" valign="top">4</th>
+			<th style="border: 1px solid black;" valign="top">5</th>
+			<th style="border: 1px solid black;" valign="top">6</th>
+			<th style="border: 1px solid black;" valign="top">7</th>
 		</tr>
 		{{ klasifikasi_tr }}
 		</table>
