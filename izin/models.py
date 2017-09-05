@@ -1209,7 +1209,7 @@ class AktaJualBeliTanah(MetaAtribut):
 class NoPTP(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
 	no_ptp = models.CharField(max_length=255, verbose_name='No PTP', null=True, blank=True)
-	tanggal_ptp = models.DateField(verbose_name='Tanggal Jual Beli', null=True, blank=True)
+	tanggal_ptp = models.DateField(verbose_name='Tanggal PTP', null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % (str(self.no_ptp))
