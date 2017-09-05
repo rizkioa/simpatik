@@ -1,7 +1,7 @@
 from master.models import ChatRoom
 from django.contrib import admin
 from django.http import HttpResponse
-
+import json
 
 class ChatRoomAdmin(admin.ModelAdmin):
 	list_login_chat = ('operator', 'no_ktp', 'nama_pemohon')
@@ -21,7 +21,7 @@ class ChatRoomAdmin(admin.ModelAdmin):
 				nama_pemohon = nama_pemohon
 				)
 			chatroom_obj.save()
-		data = {'success':True, 'pesan': 'Berhasil Login', 'nomor_ktp':chatroom_obj.nama_pemohon, 'nomor_ktp':chatroom_obj.nomor_ktp}
+		data = {'success':True, 'pesan': 'Berhasil Login', 'nama_pemohon':chatroom_obj.nama_pemohon, 'nomor_ktp':chatroom_obj.no_ktp}
 		# data = {}
 		return HttpResponse(json.dumps(data))
 

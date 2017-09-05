@@ -1449,6 +1449,10 @@
 							    		<td>{{i.keterangan}}</td>
 							    	</tr>
 					    		{% endfor %}
+					    	{% else %}
+					    		<tr>
+					    			<td colspan="6" align="center">Kosong</td>
+					    		</tr>
 					    	{% endif %}
 					    </tbody>
 					</table>
@@ -1502,6 +1506,10 @@
 						  				<td>{{i.tanggal_izin|date:'d-m-Y'}}</td>
 						  			</tr>
 					  			{% endfor %}
+					  		{% else %}
+					  			<tr>
+					  				<td colspan="3" align="center">Kosong</td>
+					  			</tr>
 				  			{% endif %}
 				  		</tbody>
 				  	</table>
@@ -1538,7 +1546,7 @@
 							{% endfor %}
 						{% else %}
 							<tr>
-								<td colspan="8" align="center">Kosong...!!!</td>
+								<td colspan="9" align="center">Kosong...!!!</td>
 							</tr>
 						{% endif %}
 					    </tbody>

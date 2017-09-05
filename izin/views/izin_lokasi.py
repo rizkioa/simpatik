@@ -363,6 +363,8 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
 
       penggunaan_sekarang = pengajuan_.penggunaan_sekarang
       rencana_penggunaan = pengajuan_.rencana_penggunaan
+      penggunaan_tanah_sebelumnya = pengajuan_.penggunaan_tanah_sebelumnya
+      arahan_fungsi_kawasan = pengajuan_.arahan_fungsi_kawasan
 
       data = {'success': True,
           'data': [
@@ -382,6 +384,8 @@ def load_konfirmasi_izin_lokasi(request,id_pengajuan):
           {'tanggal_jual_beli': tanggal_jual_beli},
           {'atas_nama_jual_beli': atas_nama_jual_beli},
           {'penggunaan_sekarang': penggunaan_sekarang},
+          {'penggunaan_tanah_sebelumnya': penggunaan_tanah_sebelumnya},
+          {'arahan_fungsi_kawasan': arahan_fungsi_kawasan},
           {'rencana_penggunaan': rencana_penggunaan}]}
       response = HttpResponse(json.dumps(data))
     else:

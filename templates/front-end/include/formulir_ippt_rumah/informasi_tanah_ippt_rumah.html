@@ -131,6 +131,7 @@
           <thead>
             <tr>
               <td>No PTP</td>
+              <td>Tanggal PTP</td>
               <td>Aksi</td>
             </tr>
           </thead>
@@ -139,6 +140,7 @@
             {% for p in no_ptp_list %}
               <tr id="{{p.id}}">
                 <td id="id_table_no_ptp">{{p.no_ptp}}</td>
+                <td id="id_table_id_table_tanggal_ptp">{{p.tanggal_ptp|date:"d-m-Y"}}</td>
                 <td align='center'> <a href='#' id={{p.id}} onclick="editRownoptp(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{p.id}} onclick="deleteRownoptp(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
             {% endfor %}
           {% endif %}

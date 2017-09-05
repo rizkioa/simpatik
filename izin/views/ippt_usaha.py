@@ -611,6 +611,8 @@ def load_data_informasi_tanah_ipptusaha(request,id_pengajuan):
             'id_klas_persil': id_klas_persil,
             'id_atas_nama_persil': id_atas_nama_persil,
             'id_rencana_penggunaan': id_rencana_penggunaan,
+            'id_penggunaan_tanah_sebelumnya': id_penggunaan_tanah_sebelumnya,
+            'id_arahan_fungsi_kawasan': id_arahan_fungsi_kawasan,
             'id_batas_utara': id_batas_utara,
             'id_batas_timur': id_batas_timur,
             'id_batas_selatan': id_batas_selatan,
