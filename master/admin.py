@@ -8,6 +8,7 @@ from provinsi_admin import ProvinsiAdmin
 from kabupaten_admin import KabupatenAdmin
 from kecamatan_admin import KecamatanAdmin
 from desa_admin import DesaAdmin
+from chat_admin import ChatRoomAdmin, ChatAdmin
 from django.db.models import Q
 
 import json

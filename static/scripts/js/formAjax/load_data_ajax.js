@@ -94,7 +94,8 @@ function load_data_detil_bangunan_imb(id_detil_bangunan){
         }
         else{
           b = data.reverse()
-          $('#id_detil_bangunan_imb > tbody > tr:first').remove()
+          $('#id_detil_bangunan_imb > tbody > tr').remove()
+          row = ''
           for (var i = 0; i < a; i++){
             id_detil_bangunan = b[i].id
             jenis_kontruksi = b[i].jenis_kontruksi
@@ -108,17 +109,16 @@ function load_data_detil_bangunan_imb(id_detil_bangunan){
             row += '<td><a href="#" id='+id_detil_bangunan+' onclick="deleteRowdetil_bangunan_imb(this); return false;" class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-trash"></i><span>Delete</span></a></td>'
             row += '</tr>'
             $('#id_detil_bangunan_imb > tbody').prepend(row);
-            var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
-            var sum = 0;
-            for (var i = 0; i < MyRows.length; i++) {
-              var MyIndexValue = $(MyRows[i]).find('.biaya').html();
-              sum = sum + parseInt(MyIndexValue);
-              
-            }
-            $("#id_total").val(sum);
-            $("#id_total_biaya").val(sum);
-
           }
+          var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
+          var sum = 0;
+          for (var i = 0; i < MyRows.length; i++) {
+            var MyIndexValue = $(MyRows[i]).find('.biaya').html();
+            sum = sum + parseInt(MyIndexValue);
+            
+          }
+          $("#id_total").val(sum);
+          $("#id_total_biaya").val(sum);
         }
       },
       error: function(data) {
@@ -145,7 +145,8 @@ function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
         }
         else{
           b = data.reverse()
-          $('#id_detil_bangunan_imb_table > tbody > tr:first').remove()
+          $('#id_detil_bangunan_imb_table > tbody > tr').remove()
+          row = ''
           for (var i = 0; i < a; i++){
             id_detil_bangunan = b[i].id
             jenis_kontruksi = b[i].jenis_kontruksi
@@ -158,7 +159,8 @@ function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
             row += '<td class="biaya">'+total_biaya_detil+'</td>'
             row += '<td></td>'
             row += '</tr>'
-            $('#id_detil_bangunan_imb_table > tbody').prepend(row);
+            $('#id_detil_bangunan_imb_table > tbody').prepend(row);            
+          }
             var MyRows = $('table#id_detil_bangunan_imb_table').find('tbody').find('tr');
             var sum = 0;
             for (var i = 0; i < MyRows.length; i++) {
@@ -168,8 +170,6 @@ function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
             }
             $("#id_total").val(sum);
             $("#id_total_biaya").val(sum);
-            
-          }
         }
       },
       error: function(data) {

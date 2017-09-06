@@ -150,6 +150,7 @@ def get_berkas(qs_, user_):
 @register.filter(name='formatrupiah')
 def formatrupiah(uang):
 	y = str(uang)
+	y = y.replace(".00","")
 	if len(y) <= 3 :
 		return y     
 	else :

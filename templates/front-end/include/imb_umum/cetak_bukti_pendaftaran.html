@@ -431,7 +431,237 @@
                 <hr>
                 <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
             </div>
-        </div>    
+        </div>   
+        <div class="page">
+            <div class="subpage">
+            <h5 align="center"><u>PERNYATAAN PERSETUJUAN LINGKUNGAN</u></h5>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td style="text-indent:30px;font-size:13px">Yang bertanda tangan di bawah ini menyatakan dengan sesungguhnya bahwa kami tidak keberatan / menyetujui adanya pendirian Usaha {{pengajuan.bangunan|default_if_none:"-"}} yang terletak di {{pengajuan.pemohon.alamat}} Desa {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }};<td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="2"><b><u>Batas - batas :</u></b><td>
+                </tr>
+                <tr>
+                    <td colspan="2">Sebelah U T A R A<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td colspan="2">Sebelah T I M U R<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                <tr>
+                    <td colspan="2">Sebelah S E L A T A N<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td colspan="2">Sebelah B A R A T<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+            </table>
+            <br>
+            <br>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td align="right" style="padding-right: 100px;">Pemohon Izin<br><br><br><br><br><br><td>
+                </tr>
+                <tr>
+                    <td align="right" style="padding-right: 80px;">{{pengajuan.pemohon}}<td>
+                </tr>
+            </table>
+            <p align="center" style="font-size:13px"> Mengetahui dan Menyetujui</p>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td align="center">CAMAT_______________<br><br><br><br><br><br>_______________<td>
+                    <td align="center">KEPALA DESA / KELURAHAN<br>__________________________<br><br><br><br><br><br>_______________</td>
+
+                </tr>
+            </table>
+            </div>
+        </div>  
+        <div class="page">
+            <div class="subpage">
+            <h5 align="center">SURAT PERNYATAAN KESANGGUPAN <br>UPAYA PENGELOLAAN LINGKUNGAN HIDUP DAN <br>PEMANTAUAN LINGKUNGAN HIDUP (SPPL)</h5>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="5">Kami yang bertanda tangan di bawah ini:<td>
+                </tr>
+                <tr>
+                    <td width="20%">Nama<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.pemohon.nama_lengkap}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Jabatan<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.pekerjaan}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Alamat<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.alamat_pemohon}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Nomor Telepon<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.telephone}}<td>
+                </tr>
+                <tr>
+                    <td colspan="5">Selaku penanggung jawab atas pengelolaan lingkungan dari :<td>
+                </tr>
+                <tr>
+                    <td colspan="5"><td>
+                </tr>
+                <tr>
+                    <td width="20%">Nama Perusahaan/Usaha<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td width="20%">Alamat Perusahaan/Usaha<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td width="20%">Nomor Telp. Perusahaan<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td width="20%">Jenis Usaha/Sifat Usaha<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.bangunan|default_if_none:"-"}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Kapasitas Usaha/Produksi<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td colspan="5">Selaku penanggung jawab atas pengelolaan lingkungan dari :<td>
+                </tr>
+            </table>
+            <table width="100%" class="font" border="2">
+                <tr>
+                    <td align="center">No.</td>
+                    <td align="center">Sumber Dampak</td>
+                    <td align="center">Dampak Lingkungan</td>
+                    <td align="center">Rencana Pengelolaan dan <br>Pemantauan Dampak Lingkungan</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;padding-top: 1px;height: 160px">1.</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="2">Kami menyatakan sanggup untuk:</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">1.</td>
+                    <td>Bersungguh-sungguh untuk melaksanakan seluruh pengelolaan dan pemantauan dampak lingkungan sebagaimana tersebut di atas, dan bersedia diawasi oelh instansi yang berwenang.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">2.</td>
+                    <td>Menjaga kelestarian sumber daya alam dan lingkunga hidup di lokasi dan sekitar tempat usaha dan/atau kegiatan.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">3.</td>
+                    <td>Apabila kami lalai untuk melaksanakan pernyataan pada angka 1 dan 2 di atas, kami bersedia bertanggung jawab sesuai dengan peraturan perundang-undangan yang berlaku.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">4.</td>
+                    <td>Kerusakan liongkungan yang ditimbulkan oleh kegiatan dimaksud menjadi tanggung jawab sepenuhnya pemohon/pemrakarsa.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">5.</td>
+                    <td>Surat Pernyataan ini hanya berlaku untuk usaha tersebut di atas, selam tidak ada perubahan kapasitas usaha/produksi.</td>
+                </tr>
+            </table>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td align="center" width="42%">Mengetahui,<br>a.n KEPELA DINAS LINGKUNGAN HIDUP<br>KABUPATEN KEDIRI<br>Plt. Kepala Bidang Perlindungan dan Pengelolaan<br>Lingkungan Hidup<br><br><br><br><br><b><u>ACH. SAIFUDIN, ST, MM</u></b><br>NIP 19740805 199803 1 009<td>
+                    <td align="center" width="42%">Kediri,&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2017<br>Yang Menyatakan<br><br><font color="blue" style="font-size:10px"><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font><br><br><br><br>(......................................)</td>
+
+                </tr>
+            </table>
+            <br>
+            <table width="70%" class="font" border="2">
+                <tr>
+                    <td width="42%">No. Bukti Penerimaan oleh Dinas LH</td>
+                    <td width="2%">:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="42%">Hari/Tanggal</td>
+                    <td width="2%">:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="42%">Penerima</td>
+                    <td width="2%">:</td>
+                    <td></td>
+                </tr>
+            </table>
+            </div>
+        </div>  
+        <div class="page">
+            <div class="subpage">
+            <h5 align="center"><b><u>PAKTA INTEGRITAS</u></b></h5>
+
+            </div>
+        </div>  
     </div>
 </body>
 </html>

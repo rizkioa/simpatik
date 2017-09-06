@@ -999,7 +999,11 @@ function load_konfirmasi_informasi_tanah(id_pengajuan){
           $('#id_no_persil_konfirmasi').text(respon.data.id_no_persil)
           $('#id_klas_persil_konfirmasi').text(respon.data.id_klas_persil)
           $('#id_atas_nama_persil_konfirmasi').text(respon.data.id_atas_nama_persil)
+
+          $('#id_penggunaan_tanah_sebelumnya_konfirmasi').text(respon.data.id_penggunaan_tanah_sebelumnya)
+          $('#id_arahan_fungsi_kawasan_konfirmasi').text(respon.data.id_arahan_fungsi_kawasan)
           $('#id_rencana_penggunaan_konfirmasi').text(respon.data.id_rencana_penggunaan)
+
           $('#id_batas_utara_konfirmasi').text(respon.data.id_batas_utara)
           $('#id_batas_timur_konfirmasi').text(respon.data.id_batas_timur)
           $('#id_batas_selatan_konfirmasi').text(respon.data.id_batas_selatan)

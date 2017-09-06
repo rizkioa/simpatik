@@ -205,14 +205,14 @@
 	        			<td  colspan="2">{{ perusahaan.nama_perusahaan }}</td>
 	        		</tr>
 	        		<tr>
-	        			<td><b>2. Nama dan Alamat tempat usaha</b></td>
-	        			<td>:</td>
+	        			<td style="vertical-align: top;padding-top: 1px;"><b>2. Nama dan Alamat tempat usaha</b></td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        			<td  colspan="2">{{ pemohon.nama_lengkap|default_if_none:"-" }} 
 	        			{% if pemohon.jabatan_pemohon %}
 	        			({{ pemohon.jabatan_pemohon }})
 	        			{% else %}
 	        			
-	        			{% endif %}
+	        			{% endif %} / {{ alamat_perusahaan|default_if_none:"-" }}
 	        			</td>
 	        		</tr>
 	        		<tr>
@@ -258,7 +258,7 @@
 	        		<tr>
 	        			<td style="vertical-align: top;padding-top: 1px;"><b>Letak pemasangan</b></td>
 	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
-	        			<td colspan="2">{% if detail_list_count > 10	 %} Terlampir{% else %}{{detil_reklame_list|title}}{% endif %}</td>
+	        			<td colspan="2">{% if detail_list_count > 10 %} Terlampir{% else %}{{detil_reklame_list|title}}{% endif %}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="4">
@@ -316,9 +316,12 @@
 	  							<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
 	  							</td>
 	  						</tr>
+	  						<tr style="font-size:15px;">
+	  							<td>Tembusan :</td>
+	  						</tr>
 	  						<tr>
-	  							<td>Tembusan :<br> 
-								Yth. 	Sdr. Anggota Tim Perizinan	    
+  								<td style="font-size:15px;text-indent:-30px;padding-left: 30px;"> 
+								Yth. Sdr. Anggota Tim Perizinan	    
 									Pemasangan Reklame Kab. Kediri  
 								</td>
 	  						</tr>
@@ -326,8 +329,8 @@
 	        			</td>
 
 	        			<td width="50%">
-	        				<p style="font-size:12px; padding-left: 20%;" align="center">
-			                    <font size="2pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
+	        				<p style="font-size:14px; padding-left: 20%;" align="center">
+			                    <font size="3pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
 			                    KEPALA DPMPTSP <br>KAB. KEDIRI
 			                    <br>
 			                    <br>
