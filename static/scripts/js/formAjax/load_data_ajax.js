@@ -161,15 +161,15 @@ function load_data_detil_bangunan_imb_konfirmasi(id_detil_bangunan){
             row += '</tr>'
             $('#id_detil_bangunan_imb_table > tbody').prepend(row);            
           }
-          var MyRows = $('table#id_detil_bangunan_imb_table').find('tbody').find('tr');
-          var sum = 0;
-          for (var i = 0; i < MyRows.length; i++) {
-            var MyIndexValue = $(MyRows[i]).find('.biaya').html();
-            sum = sum + parseInt(MyIndexValue);
-            
-          }
-          $("#id_total").val(sum);
-          $("#id_total_biaya").val(sum);
+            var MyRows = $('table#id_detil_bangunan_imb_table').find('tbody').find('tr');
+            var sum = 0;
+            for (var i = 0; i < MyRows.length; i++) {
+              var MyIndexValue = $(MyRows[i]).find('.biaya').html();
+              sum = sum + parseInt(MyIndexValue);
+              
+            }
+            $("#id_total").val(sum);
+            $("#id_total_biaya").val(sum);
         }
       },
       error: function(data) {
