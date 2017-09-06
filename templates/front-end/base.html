@@ -221,10 +221,10 @@
                         <div class="tile-header dvd dvd-btm">
                             <h1 class="custom-font">Chat Login</h1>
                             <ul class="controls">
-                                <li class="dropdown" style="margin-top: 4px;">
+                                <!-- <li class="dropdown" style="margin-top: 4px;">
                                     <select class="form-control option-operator" id="chat_operator" style="width: 200px;" required="True">
                                     </select>
-                                </li>
+                                </li> -->
                                 <li class="remove remove-chat"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
                             </ul>
                         </div>
@@ -232,7 +232,7 @@
                             <div class="login_chat_room form-horizontal" id="id_login_chat_room">
                                 
                                 {% csrf_token %}
-                                <h1 align="center">Login</h1>
+                                <!-- <h2 align="center">Login</h2> -->
                                 <div class="form-group" >
                                     <div class="col-md-12">
                                         <input align="center" id="nomor_ktp" type="text" class="form-control" name="nomor_ktp" placeholder="Nomor KTP" required="True">
@@ -243,7 +243,17 @@
                                         <input type="text" id="nama_lengkap" name="nama_lengkap" class="form-control" placeholder="Nama Lengkap" required="True">
                                     </div>
                                 </div>
-                                <button class="btn button_login" type="button" onclick="chat_room();">login</button>
+                                <div class="form-group" >
+                                    <div class="col-md-12">
+                                        <select class="form-control option-kelompokjenisizin" required="True" name="login_kelompokjenisizin">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" >
+                                    <div class="col-md-12">
+                                        <button class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10 pull-right button-login-chat" type="button"><i class="fa fa-sign-in"></i> Login</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -253,14 +263,14 @@
                     <form class="form-chat" method="POST" action="{% url 'admin:chat' %}">
                          <!-- tile header -->
                         <div class="tile-header dvd dvd-btm">
-                            <h1 class="custom-font">Chat Login</h1>
-                                <ul class="controls">
-                                    <li class="dropdown" style="margin-top: 4px;">
-                                        <select class="form-control option-operator" id="chat_operator_room" style="width: 200px;" required="True">
-                                        </select>
-                                    </li>
-                                    <li class="remove remove-chat"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
-                                </ul>
+                            <h1 class="custom-font">Chat</h1>
+                            <ul class="controls">
+                                <!-- <li class="dropdown" style="margin-top: 4px;">
+                                    <select class="form-control option-operator" id="chat_operator_room" style="width: 200px;" required="True">
+                                    </select>
+                                </li> -->
+                                <li class="remove remove-chat"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
+                            </ul>
                         </div>
                         <!-- /tile header -->
 
@@ -355,13 +365,21 @@
                     // alert(this.id);
                     // $('#widget-chat-login').fadeIn();
                     // $('#button-chat').hide();
-                    if (localStorage.getItem('nomor_ktp') == null){
+                    if (localStorage.getItem('chatroom_id') == null){
                         $('#widget-chat-login').fadeIn();
                         $('#button-chat').hide();
-                    }else{
-                        $('#widget-chat').fadeIn();
-                        $('#button-chat').hide(); 
                     }
+                    else{
+                        $('#widget-chat').fadeIn();
+                        $('#button-chat').hide();
+                    }
+                    // if (localStorage.getItem('nomor_ktp') == null){
+                    //     $('#widget-chat-login').fadeIn();
+                    //     $('#button-chat').hide();
+                    // }else{
+                    //     $('#widget-chat').fadeIn();
+                    //     $('#button-chat').hide(); 
+                    // }
                 });
 
                 $('.remove-chat').on('click', function() {
@@ -370,8 +388,31 @@
                     $('#button-chat').show();
                 });
 
+                $('.button-login-chat').on('click', function(){
+                    frm = $('.form_login_chat_room')
+                    frm.parsley().validate();
+                    if (frm.parsley().isValid()){
+                        frm.ajaxSubmit({
+                            method: 'POST',
+                            data: frm.serialize(),
+                            url: frm.attr('action'),
+                            beforeSend: function() {
+                                frm.mLoading();
+                            },
+                            success: function(response){
+                                frm.mLoading('hide');
+                                respon = JSON.parse(response)
+                                localStorage.setItem('chatroom_id', respon.id)
+                                $('#widget-chat-login').fadeOut();
+                                $('#widget-chat').fadeIn();
+                                // console.log(response)
+                            },
+                        });
+                    }
+                })
+
             });
-            option_operator()
+            // option_operator()
             function option_operator(){
                 $.ajax({
                     url:__base_url__+'/admin/kepegawaian/pegawai/option-operator/',
@@ -469,6 +510,19 @@
                 }
             });
 
+            get_option_kelompokjenisizin()
+            function get_option_kelompokjenisizin(){
+                $.ajax({
+                    url : __base_url__+'/admin/izin/kelompokjenisizin/option/',
+                    type: "GET",
+                    success: function(response){
+                        $('.option-kelompokjenisizin').html(response)
+                        $('.option-kelompokjenisizin').append('<option value selected>Pilih Jenis Izin</option>')
+
+                    }
+                })
+            }
+
 
             // function addStorage() {
             //     var nomor_ktp = document.getElementById('nomor_ktp');
@@ -487,83 +541,83 @@
                 frm = $('.form_login_chat_room')
                 frm.parsley().validate();
                 if (frm.parsley().isValid()){
-                    frm.ajaxSubmit({
-                        method: 'POST',
-                        data: frm.serialize(),
-                        url: frm.attr('action'),
-                        beforeSend: function() {
-                            frm.mLoading();
-                        },
-                        success: function(response){
-                            respon = JSON.parse(response)
-                            if(respon.success == true){
-                                toastr["success"](respon.pesan)
-                                // ketika berhasil simpan localstorage
-                                chat_no_ktp = document.getElementById('nomor_ktp');
-                                chat_nama_pemohon = document.getElementById('nama_lengkap');
-                                select_operator= document.getElementById('chat_operator');
-                                 if ("localStorage" in window) {
-                                    localStorage.setItem('nomor_ktp', chat_no_ktp.value)
-                                    operator_room = select_operator.options[select_operator.selectedIndex].value;
-                                    operator_nama_text = select_operator.options[select_operator.selectedIndex].text;
-                                    nomor_ktp = chat_no_ktp.value;
-                                    console.log(nomor_ktp)
-                                    $("#chat_operator_room").val(operator_room)
-                                    $("#id_nama_operator").text(operator_nama_text)
-                                    $("#chat_room_no_ktp").val(nomor_ktp)
-                                    $('#widget-chat').show();
-                                    $('#widget-chat-login').hide();
-                                 } else {
-                                    alert("no localStorage in window");
-                                 }
-                            }
-                            else{
-                                toastr['error'](respon.pesan)
-                            }
-                            frm.mLoading('hide')
-                        },
-                        error: function(){
-                            frm.mLoading('hide')
-                            // toastr_server_error();
-                        }
-                    })
+                    // frm.ajaxSubmit({
+                    //     method: 'POST',
+                    //     data: frm.serialize(),
+                    //     url: frm.attr('action'),
+                    //     beforeSend: function() {
+                    //         frm.mLoading();
+                    //     },
+                    //     success: function(response){
+                    //         respon = JSON.parse(response)
+                    //         if(respon.success == true){
+                    //             toastr["success"](respon.pesan)
+                    //             // ketika berhasil simpan localstorage
+                    //             chat_no_ktp = document.getElementById('nomor_ktp');
+                    //             chat_nama_pemohon = document.getElementById('nama_lengkap');
+                    //             select_operator= document.getElementById('chat_operator');
+                    //              if ("localStorage" in window) {
+                    //                 localStorage.setItem('nomor_ktp', chat_no_ktp.value)
+                    //                 operator_room = select_operator.options[select_operator.selectedIndex].value;
+                    //                 operator_nama_text = select_operator.options[select_operator.selectedIndex].text;
+                    //                 nomor_ktp = chat_no_ktp.value;
+                    //                 console.log(nomor_ktp)
+                    //                 $("#chat_operator_room").val(operator_room)
+                    //                 $("#id_nama_operator").text(operator_nama_text)
+                    //                 $("#chat_room_no_ktp").val(nomor_ktp)
+                    //                 $('#widget-chat').show();
+                    //                 $('#widget-chat-login').hide();
+                    //              } else {
+                    //                 alert("no localStorage in window");
+                    //              }
+                    //         }
+                    //         else{
+                    //             toastr['error'](respon.pesan)
+                    //         }
+                    //         frm.mLoading('hide')
+                    //     },
+                    //     error: function(){
+                    //         frm.mLoading('hide')
+                    //         // toastr_server_error();
+                    //     }
+                    // })
                 }
             }
 
 
-            function chat(){
-                frm = $('.form-chat')
-                frm.parsley().validate();
-                if (frm.parsley().isValid()){
-                    frm.ajaxSubmit({
-                        method: 'POST',
-                        data: frm.serialize(),
-                        url: frm.attr('action'),
-                        beforeSend: function() {
-                            frm.mLoading();
-                        },
-                        success: function(response){
-                            respon = JSON.parse(response)
-                            if(respon.success == true){
-                                toastr["success"](respon.pesan)
-                                isi_pesan_pemohon = $("#isi_pesan").val()
-                                nomor_ktp = $("#chat_room_no_ktp").val()
+            // function chat(){
+            //     frm = $('.form-chat')
+            //     frm.parsley().validate();
+            //     if (frm.parsley().isValid()){
+            //         frm.ajaxSubmit({
+            //             method: 'POST',
+            //             data: frm.serialize(),
+            //             url: frm.attr('action'),
+            //             beforeSend: function() {
+            //                 frm.mLoading();
+            //             },
+            //             success: function(response){
+            //                 respon = JSON.parse(response)
+            //                 if(respon.success == true){
+            //                     toastr["success"](respon.pesan)
+            //                     isi_pesan_pemohon = $("#isi_pesan").val()
+            //                     nomor_ktp = $("#chat_room_no_ktp").val()
                                 
-                                $("$chat_pemohon").val(isi_pesan_pemohon)
+            //                     $("$chat_pemohon").val(isi_pesan_pemohon)
 
-                            }
-                            else{
-                                toastr['error'](respon.pesan)
-                            }
-                            frm.mLoading('hide')
-                        },
-                        error: function(){
-                            frm.mLoading('hide')
-                            // toastr_server_error();
-                        }
-                    })
-                }
-            }
+            //                 }
+            //                 else{
+            //                     toastr['error'](respon.pesan)
+            //                 }
+            //                 frm.mLoading('hide')
+            //             },
+            //             error: function(){
+            //                 frm.mLoading('hide')
+            //                 // toastr_server_error();
+            //             }
+            //         })
+            //     }
+            // }
 
 
         </script>

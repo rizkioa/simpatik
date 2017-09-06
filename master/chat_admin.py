@@ -25,12 +25,32 @@ class ChatRoomAdmin(admin.ModelAdmin):
 	# 	# data = {}
 	# 	return HttpResponse(json.dumps(data))
 
+	def login_chat(self, request):
+		data = {"success": False, "pesan": "Terjadi Kesalahan"}
+		no_ktp = request.POST.get('nomor_ktp')
+		nama_pemohon = request.POST.get('nama_lengkap')
+		kelompokjenisizin = request.POST.get('login_kelompokjenisizin')
+		chatroom_list = ChatRoom.objects.filter(no_ktp=no_ktp, nama_pemohon=nama_pemohon, kelompok_jenis_izin_id=kelompokjenisizin)
+		if chatroom_list.exists():
+			chatroom_obj = chatroom_list.last()
+			data = {"success": True, "pesan": "Berhasil Get", "id": chatroom_obj.id}
+		else:
+			chatroom_obj = ChatRoom(
+				no_ktp=no_ktp,
+				nama_pemohon=nama_pemohon,
+				kelompok_jenis_izin_id=kelompokjenisizin
+				)
+			chatroom_obj.save()
+			data = {"success": True, "pesan": "Berhasil", "id": chatroom_obj.id}
+		return HttpResponse(json.dumps(data))
+
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(ChatRoomAdmin, self).get_urls()
 		my_urls = patterns('',
 			# url(r'^option/$', self.option_provinsi, name='option_provinsi'),
-			# url(r'^login$', self.login_chat, name='login_chat')
+			url(r'^login$', self.login_chat, name='login_chat')
 			)
 		return my_urls + urls
 
@@ -60,7 +80,7 @@ class ChatAdmin(admin.ModelAdmin):
 				)
 			chat_obj.save()
 		data = {'success': True, 'pesan': 'Berhasil disimpan', 'isi_pesan': chat_obj.isi_pesan}
-		return HttpResponse(json.dumps(request))
+		return HttpResponse(json.dumps(data))
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url

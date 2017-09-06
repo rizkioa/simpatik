@@ -165,6 +165,11 @@ class KelompokJenisIzinAdmin(admin.ModelAdmin):
 	hargabeli.short_description = 'Biaya'
 	hargabeli.admin_order_field = 'biaya'
 
+	def option_kelompokjenisizin(self, request):		
+		kelompokjenisizin_list = KelompokJenisIzin.objects.filter(aktif=True)
+		pilihan = "<option></option>"
+		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)))
+
 	def get_aktif(self, obj):
 		if obj.aktif == True:
 			btn = mark_safe("""
@@ -176,6 +181,14 @@ class KelompokJenisIzinAdmin(admin.ModelAdmin):
 				""")
 		return btn
 	get_aktif.short_description = "Aktif"
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(KelompokJenisIzinAdmin, self).get_urls()
+		my_urls = patterns('',
+			url(r'^option/$', self.option_kelompokjenisizin, name='option_kelompokjenisizin'),
+			)
+		return my_urls + urls
 
 admin.site.register(KelompokJenisIzin, KelompokJenisIzinAdmin)
 admin.site.register(JenisPermohonanIzin)
