@@ -1,4 +1,4 @@
-from master.models import ChatRoom
+from master.models import ChatRoom, Chat
 from django.contrib import admin
 from django.http import HttpResponse
 import json
@@ -25,11 +25,6 @@ class ChatRoomAdmin(admin.ModelAdmin):
 		# data = {}
 		return HttpResponse(json.dumps(data))
 
-	def json_login_chat(self, request):
-		login_chat_list = get_login_chat(request)
-		request = [ob.as_json() for ob in login_chat_list]
-		return  HttpResponse(json.dumps(request))
-
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(ChatRoomAdmin, self).get_urls()
@@ -39,5 +34,42 @@ class ChatRoomAdmin(admin.ModelAdmin):
 			)
 		return my_urls + urls
 
+# def get_chat(request):
+# 	chat_list = Chat.objects.all()
+
+# 	nomor_ktp = request.POST.get('nomor_ktp', None)
+
+
+
+class ChatAdmin(admin.ModelAdmin):
+	list_chat = ('chat_room', 'isi_pesan')
+	search_login_chat = ('isi_pesan')
+
+	def chat(self, request):
+		chat_room_list = ChatRoom.objects.last()
+		chat_room_id = chat_room_list.id
+		print chat_room_id
+		isi_pesan = request.POST.get('isi_pesan')
+		chat_list = Chat.objects.filter(isi_pesan=isi_pesan)
+		if chat_list.exists():
+			chat_obj = chat_list.last()
+		else:
+			chat_obj = Chat(
+				chat_room_id= chat_room_id,
+				isi_pesan = isi_pesan,
+				)
+			chat_obj.save()
+		data = {'success': True, 'pesan': 'Berhasil disimpan', 'isi_pesan': chat_obj.isi_pesan}
+		return HttpResponse(json.dumps(request))
+
+	def get_urls(self):
+		from django.conf.urls import patterns, url
+		urls = super(ChatAdmin, self).get_urls()
+		my_urls = patterns('',
+			# url(r'^option/$', self.option_provinsi, name='option_provinsi'),
+			url(r'^chat$', self.chat, name='chat')
+			)
+		return my_urls + urls
 
 admin.site.register(ChatRoom, ChatRoomAdmin)
+admin.site.register(Chat, ChatAdmin)
