@@ -629,19 +629,19 @@ class IzinAdmin(admin.ModelAdmin):
 
 		return HttpResponse(json.dumps(response))
 
-	def option_kelompokjenisizin(self, request):
-		kode_jenis_izin = request.POST.get('param', None)
-		if kode_jenis_izin:
-			kelompokjenisizin_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_jenis_izin, aktif=True)
-		else:
-			kelompokjenisizin_list = KelompokJenisIzin.objects.none()
-		pilihan = "<option></option>"
-		response = {
-			"count": len(kelompokjenisizin_list),
-			"data": pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)
-		}
+	# def option_kelompokjenisizin(self, request):
+	# 	kode_jenis_izin = request.POST.get('param', None)
+	# 	if kode_jenis_izin:
+	# 		kelompokjenisizin_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_jenis_izin, aktif=True)
+	# 	else:
+	# 		kelompokjenisizin_list = KelompokJenisIzin.objects.none()
+	# 	pilihan = "<option></option>"
+	# 	response = {
+	# 		"count": len(kelompokjenisizin_list),
+	# 		"data": pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)
+	# 	}
 
-		return HttpResponse(json.dumps(response))
+	# 	return HttpResponse(json.dumps(response))
 		
 	def create_skizin(self, request):
 		id_detil_siup = request.POST.get('id_detil_siup', None)
@@ -1340,7 +1340,7 @@ class IzinAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^wizard/add/$', self.admin_site.admin_view(add_wizard_siup), name='add_wizard_izin'),
 			url(r'^option/izin/$', self.admin_site.admin_view(self.option_namaizin), name='option_namaizin'),
-			url(r'^option/kelompokizin/$', self.admin_site.admin_view(self.option_kelompokjenisizin), name='option_kelompokjenisizin'),
+			# url(r'^option/kelompokizin/$', self.admin_site.admin_view(self.option_kelompokjenisizin), name='option_kelompokjenisizin'),
 			url(r'^wizard/add/proses/siup/$', self.admin_site.admin_view(formulir_siup), name='izin_proses_siup'),
 			url(r'^wizard/add/proses/reklame/$', self.admin_site.admin_view(formulir_reklame), name='izin_proses_reklame'),
 			url(r'^wizard/add/proses/imb-reklame/$', self.admin_site.admin_view(formulir_imb_reklame), name='izin_proses_imb_reklame'),

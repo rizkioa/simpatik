@@ -165,10 +165,19 @@ class KelompokJenisIzinAdmin(admin.ModelAdmin):
 	hargabeli.short_description = 'Biaya'
 	hargabeli.admin_order_field = 'biaya'
 
-	def option_kelompokjenisizin(self, request):		
-		kelompokjenisizin_list = KelompokJenisIzin.objects.filter(aktif=True)
+	def option_kelompokjenisizin(self, request):	
+		kode_jenis_izin = request.POST.get('param', None)
+		if kode_jenis_izin:
+			kelompokjenisizin_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_jenis_izin, aktif=True)
+		else:
+			kelompokjenisizin_list = KelompokJenisIzin.objects.none()
 		pilihan = "<option></option>"
-		return HttpResponse(mark_safe(pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)))
+		response = {
+			"count": len(kelompokjenisizin_list),
+			"data": pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)
+		}
+
+		return HttpResponse(json.dumps(response))
 
 	def get_aktif(self, obj):
 		if obj.aktif == True:
