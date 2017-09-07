@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404, HttpResponseForbidden, HttpResponse
 
-from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat, SertifikatTanah, DetilSk, Survey
+from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat, SertifikatTanah, DetilSk, Survey,NoPTP
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
@@ -126,8 +126,12 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 				letak_ = pengajuan_.alamat +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			else:
 				letak_ = pengajuan_.alamat
+
+			no_ptp_list = NoPTP.objects.filter(informasi_tanah=pengajuan_)
+
 			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
 			pengajuan_id = pengajuan_.id
+			extra_context.update({'no_ptp_list': no_ptp_list})
 			extra_context.update({'letak': letak_})
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'created_at': pengajuan_.created_at})

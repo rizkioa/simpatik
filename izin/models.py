@@ -969,6 +969,7 @@ class InformasiKekayaanDaerah(PengajuanIzin):
 	jenis_penggunaan = models.CharField(verbose_name='Jenis Penggunaan', choices=JENIS_PENGGUNAAN, max_length=10, null=True, blank=True)
 	luas = models.DecimalField(max_digits=8, decimal_places=2, default=0, verbose_name='Luas')
 	penggunaan = models.CharField(verbose_name="Penggunaan", max_length=150, null=True, blank=True)
+	no_rekomendasi = models.CharField(verbose_name="NO. Rekomendasi", max_length=150, null=True, blank=True)
 
 	def __unicode__(self):
 		return u'Detil Informasi Kekayaan Daerah %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

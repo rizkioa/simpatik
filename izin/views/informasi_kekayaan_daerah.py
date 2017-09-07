@@ -122,6 +122,7 @@ def load_informasi_kekayaan_daerah(request,id_pengajuan):
 			id_lokasi = pengajuan_.lokasi
 			id_luas = str(pengajuan_.luas)
 			id_penggunaan = pengajuan_.penggunaan
+			id_no_rekomendasi = pengajuan_.no_rekomendasi
 			if pengajuan_.desa:
 				id_desa = str(pengajuan_.desa.id) 
 				id_kecamatan = str(pengajuan_.desa.kecamatan.id)
@@ -130,7 +131,7 @@ def load_informasi_kekayaan_daerah(request,id_pengajuan):
 				id_kecamatan = ""
 
 			data = {'success': True,
-					'data': {'id_lokasi':id_lokasi,'id_luas': id_luas,'id_penggunaan': id_penggunaan,'id_desa': id_desa,'id_kecamatan':id_kecamatan}}
+					'data': {'id_lokasi':id_lokasi,'id_luas': id_luas,'id_penggunaan': id_penggunaan,'id_desa': id_desa,'id_kecamatan':id_kecamatan,'id_no_rekomendasi':id_no_rekomendasi}}
 			response = HttpResponse(json.dumps(data))
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
@@ -150,6 +151,7 @@ def load_konfirmasi_informasi_kekayaan_daerah(request,id_pengajuan):
 			if pengajuan_:
 				luas = str(pengajuan_.luas)
 				penggunaan = pengajuan_.penggunaan
+				no_rekomendasi = pengajuan_.no_rekomendasi
 				lokasi = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 
 				data = {'success': True,
@@ -157,7 +159,8 @@ def load_konfirmasi_informasi_kekayaan_daerah(request,id_pengajuan):
 						{'luas': luas},
 						{'penggunaan': penggunaan},
 						{'lokasi': lokasi},
-						{'jenis_penggunaan': pengajuan_.jenis_penggunaan}
+						{'jenis_penggunaan': pengajuan_.jenis_penggunaan},
+						{'no_rekomendasi': pengajuan_.no_rekomendasi}
 						]}
 				response = HttpResponse(json.dumps(data))
 			else:
