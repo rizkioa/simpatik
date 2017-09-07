@@ -98,7 +98,214 @@
       <!-- Konfirmasi -->
       {% include 'front-end/include/imb_umum/konfirmasi.html' %}
     </div>
+    <div class="modal fade" id="detil_bangunan_imb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">Detil Bangunan IMB</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_detil_bangunan_imb_form" name="detil_bangunan_imb_form" role="form" action="{% url 'detil_bangunan_save_cookie' %}" class="form-horizontal"  data-parsley-validate novalidate>
+            {% csrf_token %}
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Jenis Kontruksi</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_kontruksi" class="form-control chosen-select">
+                        <option value="0">-- Pilih Fungsi Bangunan --</option>
+                        {% for j in jenis_kontruksi_list %}
+                         <option value="{{ j.pk }}">{{ j.nama_jenis_kontruksi }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                </div>
+                <div class="form-group field-jenis_bangunan" style="display: none">
+                    <label f class="col-sm-3 control-label text-left">Jenis Bangunan</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_jenis_bangunan" name="jenis_bangunan" class="form-control chosen-select">
+                      </select>
+                    </div>
+                </div>
+                <div class="form-group field-panjang_atau_luas_bangunan" style="display: none">
+                  <label for="input01" class="col-sm-2 control-label">Total Keliling / Tinggi</label>
+                  <div class="col-sm-3">
+                    <div class="input-group">
+                      <input type="text" class="form-control no_ktp" id="id_total_luas" name="total_luas">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group field-satuan" style="display: none"">
+                  <label for="input01" class="col-sm-2 control-label">Satuan</label>
+                  <div class="form-group">
+                    <div class="col-sm-7">
+                      <select id="id_satuan_luas" name="satuan_luas" class="form-control chosen-select mb-20">
+                        <option>-- Pilih Satuan</option>
+                          {% for j in satuan %}
+                           <option value="{{j.0}}">{{j.1}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              <div class="form-group field-detil-bangunan" style="display: none">
 
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label text-left">A. Kegiatan Pembangunan Gedung</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_kegiatan_pembangunan" name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0" >-- Pilih Kegiatan Pembangunan Gedung --</option>
+                        {% for j in kegiatan_pembangunan %}
+                         <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_kegiatan_pembangunan" class="form-control">
+                    </div>
+                </div>
+
+                <h5>B. Parameter Bangunan Gedung</h5>
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Fungsi Bangunan</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_fungsi_bangunan"  name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0">-- Pilih Fungsi Bangunan --</option>
+                        {% for j in fungsi_bangunan %}
+                         <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_fungsi_bangunan" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Tingkat Kompleksitas (0,25)</label>
+                    <div class="col-sm-5">
+                        <select required="" id="id_tingkat_kompleksitas" name="parameter_bangunan" class="form-control chosen-select">
+                            <option value="0">-- Pilih Tingkat Kompleksitas --</option>
+                            {% for j in kompleksitas_bangunan %}
+                             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_tingkat_kompleksitas" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Tingkat Permanensi (0,20)</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_tingkat_permanensi" name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0">-- Pilih Tingkat Permanensi --</option>
+                            {% for j in permanensi_bangunan %}
+                             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                            {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_tingkat_permanensi" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Ketinggian Bangunan (0,10)</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_ketinggian_bangunan" name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0">-- Pilih Ketinggian Bangunan --</option>
+                            {% for j in ketinggian_bangunan %}
+                             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                            {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_ketinggian_bangunan" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Lokasi Bangunan (0,15)</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_lokasi_bangunan" name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0">-- Pilih Lokasi Bangunan --</option>
+                            {% for j in lokasi_bangunan %}
+                             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                            {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_lokasi_bangunan" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Kepemilikan Bangunan (0,05)</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_kepemilikan_bangunan" name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0">-- Pilih Kepemilikan Bangunan --</option>
+                            {% for j in kepemilikan_bangunan %}
+                             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                            {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_kepemilikan_bangunan" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label f class="col-sm-3 control-label">Lama Penggunaan Bangunan</label>
+                    <div class="col-sm-5">
+                      <select required="" id="id_lama_penggunaan_bangunan" name="parameter_bangunan" class="form-control chosen-select">
+                        <option value="0">-- Pilih Lama Penggunaan Bangunan --</option>
+                            {% for j in lama_penggunaan_bangunan %}
+                             <option value="{{ j.id }}">{{ j.detil_parameter }}({{j.nilai}})</option>
+                            {% endfor %}
+                      </select>
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;">Bobot</label>
+                    <div class="col-sm-1">
+                        <input type="text" disabled="" id="id_bobot_lama_penggunaan_bangunan" class="form-control" >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Perkiraan Biaya<br><i>//Biaya bisa berubah setelah survey</i></label>
+                    <div class="col-sm-4">
+
+                    </div>
+                    <label class="col-sm-1 control-label" style="width:47px;"></label>
+                    <div class="col-sm-3">
+                      <div class="input-group">
+                          <span class="input-group-addon">
+                              <span>Rp</span>
+                          </span> 
+                           <!-- <input type="text" disabled="" class="form-control" style="width:150px;" id="total"> -->
+                           <input type="text" class="form-control" style="width:150px;" id="total" name="total_biaya_detil" readonly>
+                      </div>
+                    </div>
+                </div> 
+
+              </div>     
+                
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="detil_bangunan_imb_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowdetil_bangunan_imb(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
 
 {% block extratools %}
@@ -108,6 +315,7 @@
   <script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
   <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/form_ajax_reklame.js' %}"></script>
+  <script src="{% static 'scripts/js/formAjax/form_upload.js' %}"></script>
   <script src="{% static 'scripts/js/formAjax/load_data_ajax.js' %}"></script>
   <script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
   <script src="{% static 'scripts/js/form/pemohon_reklame.js' %}"></script>
@@ -150,7 +358,7 @@
                 load_data_imb(id_pengajuan)
               }else if ($current == 3) {
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
-                load_data_identifikasi_bangunan_imb(id_pengajuan)
+                load_data_detil_bangunan_imb(id_pengajuan)
               }else if ($current == 4) {
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_data_identifikasi_jalan_imb(id_pengajuan)
@@ -232,6 +440,8 @@
           $('#percent-surat_persetujuan_rekomendasi_fkub').hide()
           $('#percent-rekomendasi_instansi_teknis').hide()
           $('#percent-berkas_pendukung').hide()
+          $('#percent-surat_kematian').hide()
+          $('#percent-surat_ahli_waris').hide()
           // $.removeCookie('id_pengajuan', { path: '/' });`
           // 
           if ($.cookie('id_pengajuan') === undefined){
@@ -487,6 +697,381 @@
       }
     });
 
+     set_chosen_element($('#id_kegiatan_pembangunan'))    
+    $('#id_kegiatan_pembangunan').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_kegiatan_pembangunan" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })
+
+     set_chosen_element($('#id_fungsi_bangunan'))    
+    $('#id_fungsi_bangunan').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_fungsi_bangunan" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })
+
+     set_chosen_element($('#id_tingkat_kompleksitas'))    
+    $('#id_tingkat_kompleksitas').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_tingkat_kompleksitas" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })
+
+     set_chosen_element($('#id_tingkat_permanensi'))    
+    $('#id_tingkat_permanensi').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_tingkat_permanensi" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })
+
+     set_chosen_element($('#id_ketinggian_bangunan'))    
+    $('#id_ketinggian_bangunan').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_ketinggian_bangunan" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })  
+
+     set_chosen_element($('#id_lokasi_bangunan'))    
+    $('#id_lokasi_bangunan').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_lokasi_bangunan" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })  
+
+     set_chosen_element($('#id_kepemilikan_bangunan'))    
+    $('#id_kepemilikan_bangunan').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_kepemilikan_bangunan" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })  
+
+     set_chosen_element($('#id_lama_penggunaan_bangunan'))    
+    $('#id_lama_penggunaan_bangunan').change(function(event) {
+      var id_parameter = $(this).val()
+      $.ajax({ // create an AJAX call...
+          data: { csrfmiddlewaretoken: csrf_token, id_parameter: id_parameter }, // get the form data
+          type: 'POST', // GET or POST
+          url: '{% url 'get_nilai_parameter' %}',
+          success: function(response) { // on success..
+              elem = $( "#id_bobot_lama_penggunaan_bangunan" )
+              elem.val(response);
+              if ($('#id_luas_bangunan').val()==""){
+                alert("Inputkan Luas Bangunan Dahulu Di Data IMB")
+              }
+              totalbiaya()
+          },
+          error: function(data) {                
+              toast_server_error()
+          }
+      });
+    })  
+
+  function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+',00'}
+
+    function totalbiaya(){
+      var kegiatan_bangunan =  $('#id_bobot_kegiatan_pembangunan').val()
+      var fungsi_bangunan =  $('#id_bobot_fungsi_bangunan').val()
+      var kompleksitas_bangunan =  $('#id_bobot_tingkat_kompleksitas').val()
+      var permanensi_bangunan =  $('#id_bobot_tingkat_permanensi').val()
+      var ketinggian_bangunan =  $('#id_bobot_ketinggian_bangunan').val()
+      var lokasi_bangunan =  $('#id_bobot_lokasi_bangunan').val()
+      var kepemilikan_bangunan =  $('#id_bobot_kepemilikan_bangunan').val()
+      var lama_bangunan =  $('#id_bobot_lama_penggunaan_bangunan').val()
+      var indeks = ((kompleksitas_bangunan*0.25)+(permanensi_bangunan*0.20)+(lokasi_bangunan*0.15)+(ketinggian_bangunan*0.10)+(kepemilikan_bangunan*0.05))
+      var indeks_terintegrasi = (fungsi_bangunan*indeks)
+      var luas_bangunan = $('#id_luas_bangunan').val()
+      var biaya = luas_bangunan * indeks_terintegrasi * kegiatan_bangunan * 8000 * lama_bangunan 
+      $('#total').val(biaya.toFixed(2))
+      $('#id_total_biaya').val(biaya)
+    }
+
+      function load_bangunan(id_kontruksi){
+        csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        // $( "#id_kontruksi_chosen" ).mLoading();
+        $( "#id_kontruksi_chosen .loadmask-msg" ).css('top', '2px')
+        $.ajax({ // create an AJAX call...
+            data: { csrfmiddlewaretoken: csrf_token, id_kontruksi: id_kontruksi }, // get the form data
+            type: 'POST', // GET or POST
+            url: __base_url__+'/admin/master/bangunanjeniskontruksi/option/',
+            success: function(response) { // on success..
+              $(".field-detil-bangunan").css('display', 'none')
+              $(".field-panjang_atau_luas_bangunan").css('display', 'none')
+              $(".field-satuan").css('display', 'none')
+
+              $('#id_total_luas').removeClass('required')
+                var json = $.parseJSON(response);
+                var elem_ = $('#id_jenis_bangunan')
+                // elem_.html(response)
+                // console.log(json.count)
+                elem_.html(json.data);
+                make_disabled(elem_, false)
+                // $('#id_kontruksi_chosen').unmask()
+                
+                if (json.count > 0){
+                    $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'block')
+                }else{
+                    $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'none')
+                }
+            },
+            error: function(data) {                
+                toast_server_error("Ada Kesalahan Server")
+            }
+        });
+    }
+
+    $("#id_kontruksi").on('change', function() {
+      $this = $(this)
+      id_kontruksi = $(this).val()
+      if (id_kontruksi != "" ){
+        load_bangunan(id_kontruksi)
+      }else{
+        $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'none')
+        $(".field-detil-bangunan").css('display', 'none')
+        $(".field-panjang_atau_luas_bangunan").css('display', 'none')
+        $(".field-satuan").css('display', 'none')
+        
+      } 
+    })
+
+    $("#id_jenis_bangunan").change(function(){
+      $this = $(this)
+      id_jenis_bangunan = $(this).val()
+      if ((id_jenis_bangunan == 'BK1')||(id_jenis_bangunan == 'BK23')) {
+            $(".field-detil-bangunan").css('display', 'block')
+      }else if ((id_jenis_bangunan != 'BK1')) {
+            $(".field-detil-bangunan").css('display', 'none')
+            $(".field-panjang_atau_luas_bangunan").css('display', 'block')
+            $(".field-satuan").css('display', 'block')
+            $('#id_total_luas').addClass('required')
+            $('#id_kegiatan_pembangunan').removeClass('required')
+            $('#id_fungsi_bangunan').removeClass('required')
+            $('#id_tingkat_kompleksitas').removeClass('required')
+            $('#id_tingkat_permanensi').removeClass('required')
+            $('#id_ketinggian_bangunan').removeClass('required')
+            $('#id_lokasi_bangunan').removeClass('required')
+            $('#id_kepemilikan_bangunan').removeClass('required')
+            $('#id_lama_penggunaan_bangunan').removeClass('required')
+
+      }else{
+            $(".field-detil-bangunan").css('display', 'none')
+            $(".field-panjang_atau_luas_bangunan").css('display', 'block')
+            $(".field-satuan").css('display', 'none')
+            $('#id_total_luas').removeClass('required')
+      }
+    })
+
+
+    function tambah(btn){
+        $('#detil_bangunan_imb').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#detil_bangunan_imb').find('.btn-success').attr('onclick','detil_bangunan_imb_add(this)')
+        $('#detil_bangunan_imb').find('.btn-success').text("Simpan")
+        $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/layanan/detil-bangunan-imb/save/')
+        $("#id_detil_bangunan_imb_form").resetForm()
+        $("#detil_bangunan_imb").modal('show');
+    }
+
+    function detil_bangunan_imb_add(btn){
+        var frm = $('#id_detil_bangunan_imb_form');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_penggunaan = res.data.id_detil_bangunan_imb
+                if ($('#id_detil_bangunan_imb_form').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var id_jenis_kontruksi = res.data.kontruksi
+                var id_bangunan = res.data.bangunan
+                var id_biaya = res.data.total_biaya
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_jenis_kontruksi'>"+id_jenis_kontruksi+"</td><td id='id_table_bangunan'>"+id_bangunan+"</td><td id='id_table_biaya' class='biaya'>"+id_biaya+"</td><td align='center'><a href='#' id='"+id_penggunaan+"' onclick='deleteRowdetil_bangunan_imb(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_detil_bangunan_imb","tbody");
+                $('#detil_bangunan_imb').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#detil_bangunan_imb').find('.btn-success').attr('onclick','detil_bangunan_imb_add(this)')
+                $('#detil_bangunan_imb').find('.btn-success').text("Simpan")
+                $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/layanan/detil-bangunan-imb/save/')
+                $("#id_detil_bangunan_imb_form").resetForm()
+                $('#id_kontruksi').val("").prop('selected',true).trigger("chosen:updated");
+                $('#id_jenis_bangunan').val("").prop('selected',true).trigger("chosen:updated");
+
+                $('#id_kegiatan_pembangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_fungsi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_tingkat_kompleksitas').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_tingkat_permanensi').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_ketinggian_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_lokasi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_kepemilikan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+                $('#id_lama_penggunaan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+
+                $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'none')
+                $(".field-detil-bangunan").css('display', 'none')
+                $(".field-panjang_atau_luas_bangunan").css('display', 'none')
+                $("#detil_bangunan_imb").modal('hide');
+                var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
+                var sum = 0;
+                for (var i = 0; i < MyRows.length; i++) {
+                  var MyIndexValue = $(MyRows[i]).find('.biaya').html();
+                  sum = sum + parseInt(MyIndexValue);
+                  
+                }
+                $("#id_total").val(sum);
+                $("#id_total_biaya").val(sum);
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+    function deleteRowdetil_bangunan_imb(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/layanan/detil-bangunan-imb/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    var MyRows = $('table#id_detil_bangunan_imb').find('tbody').find('tr');
+                    var sum = 0;
+                    for (var i = 0; i < MyRows.length; i++) {
+                      var MyIndexValue = $(MyRows[i]).find('.biaya').html();
+                      sum = sum + parseInt(MyIndexValue);
+                      
+                    }
+                    $("#id_total").val(sum);
+                    $("#id_total_biaya").val(sum);
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+
+    function batalRowdetil_bangunan_imb(btn){
+        $('#detil_bangunan_imb').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#detil_bangunan_imb').find('.btn-primary').attr('onclick','detil_bangunan_imb_add(this)')
+        $('#detil_bangunan_imb').find('.btn-success').text("Simpan")
+        $('#detil_bangunan_imb').find('#id_detil_bangunan_imb_form').attr('action','/layanan/detil-bangunan-imb/save/')
+        $("#id_detil_bangunan_imb_form").resetForm()
+        $('#id_kontruksi').val("").prop('selected',true).trigger("chosen:updated");
+        $('#id_jenis_bangunan').val("").prop('selected',true).trigger("chosen:updated");
+
+        $('#id_kegiatan_pembangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_fungsi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_tingkat_kompleksitas').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_tingkat_permanensi').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_ketinggian_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_lokasi_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_kepemilikan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+        $('#id_lama_penggunaan_bangunan').val(0).prop('selected',true).trigger("chosen:updated");
+
+        $('#id_detil_bangunan_imb_form').find(".field-jenis_bangunan" ).css('display', 'none')
+        $(".field-detil-bangunan").css('display', 'none')
+        $(".field-panjang_atau_luas_bangunan").css('display', 'none')
+        $("#detil_bangunan_imb").modal('hide');
+    }
+
       $(document).ready(function() {
         window.onbeforeunload = function ref() {
               var r = confirm( "Do you want to leave?" );
@@ -515,6 +1100,8 @@
           $('#percent-surat_persetujuan_rekomendasi_fkub').hide()
           $('#percent-rekomendasi_instansi_teknis').hide()
           $('#konfirmasi_legalitas_perubahan').hide();
+          $('#percent-surat_kematian').hide()
+          $('#percent-surat_ahli_waris').hide()
 
           if ($.cookie('id_pengajuan') === undefined){
             $.cookie('id_pengajuan', "0", {path:"/"});
@@ -789,25 +1376,6 @@
     });
   })  
 
-function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=e(parseInt(a,10).toString());for(c=0,d='';c<b.length;c++){d+=b[c];if((c+1)%3===0&&c!==(b.length-1)){d+='.';}}return'Rp.\t'+e(d)+',00'}
-
-  function totalbiaya(){
-    var kegiatan_bangunan =  $('#id_bobot_kegiatan_pembangunan').val()
-    var fungsi_bangunan =  $('#id_bobot_fungsi_bangunan').val()
-    var kompleksitas_bangunan =  $('#id_bobot_tingkat_kompleksitas').val()
-    var permanensi_bangunan =  $('#id_bobot_tingkat_permanensi').val()
-    var ketinggian_bangunan =  $('#id_bobot_ketinggian_bangunan').val()
-    var lokasi_bangunan =  $('#id_bobot_lokasi_bangunan').val()
-    var kepemilikan_bangunan =  $('#id_bobot_kepemilikan_bangunan').val()
-    var lama_bangunan =  $('#id_bobot_lama_penggunaan_bangunan').val()
-    var indeks = ((kompleksitas_bangunan*0.25)+(permanensi_bangunan*0.20)+(lokasi_bangunan*0.15)+(ketinggian_bangunan*0.10)+(kepemilikan_bangunan*0.05))
-    var indeks_terintegrasi = (fungsi_bangunan*indeks)
-    var luas_bangunan = $('#id_luas_bangunan').val()
-    var biaya = luas_bangunan * indeks_terintegrasi * kegiatan_bangunan * 8000 * lama_bangunan 
-    $('#total').val(toRp(biaya))
-    $('#id_total_biaya').val(biaya.toFixed(2))
-  }
-
     function load_bangunan(id_kontruksi){
       csrf_token = $("input[name='csrfmiddlewaretoken']").val();
       // $( "#id_kontruksi_chosen" ).mLoading();
@@ -818,7 +1386,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
           url: __base_url__+'/admin/master/bangunanjeniskontruksi/option/',
           success: function(response) { // on success..
             $("#id_parameter_bangunan").css('display', 'none')
-            $(".field-panjang_bangunan").css('display', 'none')
+            $(".field-panjang_atau_luas_bangunan").css('display', 'none')
             $('#id_panjang').removeClass('required')
               var json = $.parseJSON(response);
               var elem_ = $('#id_jenis_bangunan')
@@ -848,19 +1416,7 @@ $("#id_kontruksi").change(function(){
       }
     })
 
-$("#id_jenis_bangunan").change(function(){
-    $this = $(this)
-    id_jenis_bangunan = $(this).val()
-    if((id_jenis_bangunan == 3)||(id_jenis_bangunan == 25)){
-         $("#id_parameter_bangunan").css('display', 'block')
-      }else if ((id_jenis_bangunan == 4)||(id_jenis_bangunan == 19)) {
-        $(".field-panjang_bangunan").css('display', 'block')
-        $('#id_panjang').addClass('required')
-      }else{
-        $(".field-panjang_bangunan").css('display', 'none')
-        $('#id_panjang').removeClass('required')
-      }
-    })
+
 
     $(function() {
       $('#id_imb_data_umum').on('keydown', '#id_luas_bangunan', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});

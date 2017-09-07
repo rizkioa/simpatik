@@ -24,14 +24,14 @@ import os
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan,JenisKontruksi,BangunanJenisKontruksi
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, DetilIMB,Pemohon,DetilBangunanIMB
-from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA
+from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA,SATUAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasKTPForm,UploadBerkasPendukungForm,DetilIMBForm,TotalBiayaBangunanForm,TotalBiayaBangunanForm,DetilBangunanIMBForm,DetilBangunanIMBTanpaParameterForm
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_imb_umum(request, extra_context={}):
 	negara = Negara.objects.all()
-	kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+	kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 	jenis_pemohon = JenisPemohon.objects.all()
 	kegiatan_pembangunan = ParameterBangunan.objects.filter(parameter="Kegiatan Pembangunan Gedung")
 	fungsi_bangunan = ParameterBangunan.objects.filter(parameter="Fungsi Bangunan")
@@ -42,7 +42,9 @@ def formulir_imb_umum(request, extra_context={}):
 	kepemilikan_bangunan = ParameterBangunan.objects.filter(parameter="Kepemilikan Bangunan")
 	lama_penggunaan_bangunan = ParameterBangunan.objects.filter(parameter="Lama Penggunaan Bangunan")
 	jenis_kontruksi_list = JenisKontruksi.objects.all()
-	
+
+	extra_context.update({'negara': negara})
+	extra_context.update({'kecamatan': kecamatan})
 	extra_context.update({'jenis_kontruksi_list': jenis_kontruksi_list})
 	extra_context.update({'fungsi_bangunan': fungsi_bangunan })
 	extra_context.update({'kompleksitas_bangunan': kompleksitas_bangunan })
@@ -54,21 +56,48 @@ def formulir_imb_umum(request, extra_context={}):
 	extra_context.update({'kegiatan_pembangunan': kegiatan_pembangunan })
 	extra_context.update({'status_hak_tanah': STATUS_HAK_TANAH })
 	extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
+	extra_context.update({'satuan': SATUAN})
 	extra_context.update({'rumija': RUMIJA })
 	extra_context.update({'ruwasja': RUWASJA })
 	extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
-	extra_context.update({'negara': negara})
-	extra_context.update({'kecamatan': kecamatan})
 	extra_context.update({'jenis_pemohon': jenis_pemohon})
+
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) 
 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})	
 	else:
 		return HttpResponseRedirect(reverse('layanan'))
-	# if 'id_pengajuan' in request.COOKIES.keys():
-	# 	if request.COOKIES['id_pengajuan'] != '':
-	# 		detil_bangunan_list = DetilBangunanIMB.objects.filter(detil_izin_imb__id=request.COOKIES['id_pengajuan'])
-	# 		extra_context.update({'detil_bangunan_list': detil_bangunan_list})	 
+
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != "":
+			try:
+				pengajuan_ = DetilIMB.objects.get(id=request.COOKIES['id_pengajuan'])
+				alamat_ = ""
+				alamat_perusahaan_ = ""
+				if pengajuan_.pemohon:
+					if pengajuan_.pemohon.desa:
+						alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+						extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+					extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+					extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+					extra_context.update({ 'ktp': ktp_ })
+					paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+					extra_context.update({ 'paspor': paspor_ })
+					extra_context.update({'cookie_file_ktp': ktp_.berkas })
+
+				extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+				extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+				extra_context.update({ 'pengajuan_': pengajuan_ })
+
+				if pengajuan_.desa:
+					letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+				else:
+					letak_ = ""
+				extra_context.update({ 'letak': letak_ })
+			except ObjectDoesNotExist:
+				pass
+
 	return render(request, "front-end/formulir/imb_umum.html", extra_context)
 
 def cetak_imb_umum(request, id_pengajuan_):
