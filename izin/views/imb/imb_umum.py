@@ -999,10 +999,16 @@ def imbumum_upload_berkas_pendukung(request):
 						elif request.POST.get('aksi') == "6":
 							berkas.nama_berkas = "Surat Persetujuan/Rekomendasi dari FKUB (Forum Komunikasi Umat Beragam) bagi bangunan fungsi keagamaan"+p.no_pengajuan
 							berkas.keterangan = "Surat Persetujuan/Rekomendasi dari FKUB (Forum Komunikasi Umat Beragam) bagi bangunan fungsi keagamaan"
-						else:
+						elif request.POST.get('aksi') == "7":
 							berkas.nama_berkas = "Rekomendasi dari Instansi Teknis sesuai kegiatan/bangunan yang dimohonkan"+p.no_pengajuan
 							berkas.keterangan = "Rekomendasi dari Instansi Teknis sesuai kegiatan/bangunan yang dimohonkan"
-							
+						elif request.POST.get('aksi') == "8":
+							berkas.nama_berkas = "Surat Kematian jika status hak tanah milik orang tua"+p.no_pengajuan
+							berkas.keterangan = "Surat Kematian jika status hak tanah milik orang tua"
+						else:
+							berkas.nama_berkas = "Surat Ahli waris  jika status hak tanah milik orang tua"+p.no_pengajuan
+							berkas.keterangan = "Surat Ahli waris  jika status hak tanah milik orang tua"
+
 						if request.user.is_authenticated():
 						  berkas.created_by_id = request.user.id
 						else:
@@ -1110,6 +1116,24 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  nm_berkas.append("Rekomendasi dari Instansi Teknis sesuai kegiatan/bangunan yang dimohonkan"+p.no_pengajuan)
 			  id_berkas.append(surat_rekomendasi_instansi_teknis.id)
 			  p.berkas_terkait_izin.add(surat_rekomendasi_instansi_teknis)
+
+		  surat_kematian = Berkas.objects.filter(nama_berkas="Surat Kematian jika status hak tanah milik orang tua"+p.no_pengajuan)
+		  if surat_kematian.exists():
+			  surat_kematian = surat_kematian.last()
+			  url_berkas.append(surat_kematian.berkas.url)
+			  id_elemen.append('surat_kematian')
+			  nm_berkas.append("Surat Kematian jika status hak tanah milik orang tua"+p.no_pengajuan)
+			  id_berkas.append(surat_kematian.id)
+			  p.berkas_terkait_izin.add(surat_kematian)
+
+		  surat_ahli_waris = Berkas.objects.filter(nama_berkas="Surat Ahli waris  jika status hak tanah milik orang tua"+p.no_pengajuan)
+		  if surat_ahli_waris.exists():
+			  surat_ahli_waris = surat_ahli_waris.last()
+			  url_berkas.append(surat_ahli_waris.berkas.url)
+			  id_elemen.append('surat_ahli_waris')
+			  nm_berkas.append("Surat Ahli waris  jika status hak tanah milik orang tua"+p.no_pengajuan)
+			  id_berkas.append(surat_ahli_waris.id)
+			  p.berkas_terkait_izin.add(surat_ahli_waris)
 
 		  data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 	  except ObjectDoesNotExist:

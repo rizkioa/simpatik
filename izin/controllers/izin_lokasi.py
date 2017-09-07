@@ -28,6 +28,7 @@ def formulir_izin_lokasi(request):
 			  extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
 			  extra_context.update({'akta_jual_beli_list': akta_jual_beli_list})
 			  extra_context.update({'no_ptp_list': no_ptp_list})
+
 		extra_context.update({'negara': negara})
 		extra_context.update({'kecamatan': kecamatan})
 		extra_context.update({'jenis_pemohon': jenis_pemohon})
