@@ -23,7 +23,7 @@ import os
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, InformasiTanah,Pemohon,SertifikatTanah
+from izin.models import PengajuanIzin, InformasiTanah,Pemohon,SertifikatTanah,AktaJualBeliTanah,NoPTP
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm,SertifikatTanahForm
 from accounts.utils import KETERANGAN_PEKERJAAN
@@ -43,9 +43,43 @@ def formulir_izin_lokasi(request, extra_context={}):
     else:
         return HttpResponseRedirect(reverse('layanan'))
     if 'id_pengajuan' in request.COOKIES.keys():
-        if request.COOKIES['id_pengajuan'] != '':
-          sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
-          extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+      if request.COOKIES['id_pengajuan'] != "":
+        try:
+          pengajuan_ = InformasiTanah.objects.get(id=request.COOKIES['id_pengajuan'])
+          alamat_ = ""
+          alamat_perusahaan_ = ""
+          if pengajuan_.pemohon:
+            if pengajuan_.pemohon.desa:
+              alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
+              extra_context.update({ 'alamat_pemohon_konfirmasi': alamat_ })
+            extra_context.update({ 'pemohon_konfirmasi': pengajuan_.pemohon })
+            extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
+            ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+            extra_context.update({ 'ktp': ktp_ })
+            paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+            extra_context.update({ 'paspor': paspor_ })
+            extra_context.update({'cookie_file_ktp': ktp_.berkas })
+
+          extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
+          extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
+          extra_context.update({ 'pengajuan_': pengajuan_ })
+
+          if pengajuan_.desa:
+            letak_ = pengajuan_.alamat + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
+          else:
+            letak_ = ""
+          extra_context.update({ 'letak': letak_ })
+        except ObjectDoesNotExist:
+          pass
+    if 'id_pengajuan' in request.COOKIES.keys():
+      if request.COOKIES['id_pengajuan'] != '':
+        sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+        akta_jual_beli_list = AktaJualBeliTanah.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+        no_ptp_list = NoPTP.objects.filter(informasi_tanah=request.COOKIES['id_pengajuan'])
+
+        extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+        extra_context.update({'akta_jual_beli_list': akta_jual_beli_list})
+        extra_context.update({'no_ptp_list': no_ptp_list})
 
     return render(request, "front-end/formulir/izin_lokasi.html", extra_context)
 

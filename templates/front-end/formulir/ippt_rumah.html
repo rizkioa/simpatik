@@ -341,6 +341,277 @@
       })
     }
 
+    function tambah(btn){
+        $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
+        $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+        $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+        $("#id_sertifikat_tanah_form").resetForm()
+        $("#sertifikat_tanah").modal('show');
+    }
+
+    function sertifikat_tanah_add(btn){
+        var frm = $('#id_sertifikat_tanah_form');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_penggunaan = res.data.id_sertifikat_tanah
+                if ($('#id_sertifikat_tanah').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var id_no_sertifikat_petak = $("#id_no_sertifikat_petak").val()
+                var id_luas_sertifikat_petak = $("#id_luas_sertifikat_petak").val()
+                var id_atas_nama_sertifikat_petak = $("#id_atas_nama_sertifikat_petak").val()
+                var id_tahun_sertifikat = $("#id_tahun_sertifikat").val()
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowsertifikattanah(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_sertifikat_tanah","tbody");
+                $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
+                $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+                $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+                $("#id_sertifikat_tanah_form").resetForm()
+                $("#sertifikat_tanah").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+    function deleteRowsertifikattanah(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/informasitanah/sertifikat-tanah/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    $('#id_no_sertifikat_petak').clearFields()
+                    $('#id_luas_sertifikat_petak').clearFields()
+                    $('#id_atas_nama_sertifikat_petak').clearFields()
+                    $('#id_tahun_sertifikat').clearFields()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+    function editRowsertifikattanah(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+        var id_no_sertifikat_petak = parent_tr.find('#id_table_no_sertifikat_petak').text();
+        var id_luas_sertifikat_petak = parent_tr.find('#id_table_luas_sertifikat_petak').text();
+        var id_atas_nama_sertifikat_petak = parent_tr.find('#id_table_atas_nama_sertifikat_petak').text();
+        var id_tahun_sertifikat = parent_tr.find('#id_table_tahun_sertifikat').text();
+
+        $('#sertifikat_tanah').modal('show');
+        $('#sertifikat_tanah').find('#id_no_sertifikat_petak').val(id_no_sertifikat_petak) 
+        $('#sertifikat_tanah').find('#id_luas_sertifikat_petak').val(id_luas_sertifikat_petak)
+        $('#sertifikat_tanah').find('#id_atas_nama_sertifikat_petak').val(id_atas_nama_sertifikat_petak)
+        $('#sertifikat_tanah').find('#id_tahun_sertifikat').val(id_tahun_sertifikat)
+
+        $('#sertifikat_tanah').find('.btn-success').attr('onclick','').unbind('click');
+        $('#sertifikat_tanah').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#sertifikat_tanah').find('.btn-primary').attr('id',id_button)
+        $('#sertifikat_tanah').find('.btn-primary').text("Edit")
+        $('#sertifikat_tanah').find('.btn-primary').attr('onclick','sertifikat_tanah_add(this)')
+        $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/edit/'+id_button+'/')        
+    }
+
+    function batalRowsertifikattanah(btn){
+        $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#sertifikat_tanah').find('.btn-primary').attr('onclick','sertifikat_tanah_add(this)')
+        $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+        $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah/save/')
+        $("#id_sertifikat_tanah_form").resetForm()
+        $("#sertifikat_tanah").modal('hide');
+    }
+
+
+    function tambah_akta_jual_beli(btn){
+        $('#id_akta_jual_beli_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_akta_jual_beli_modal').find('.btn-success').attr('onclick','akta_jual_beli_add(this)')
+        $('#id_akta_jual_beli_modal').find('.btn-success').text("Simpan")
+        $('#id_akta_jual_beli_modal').find('#id_akta_jual_beli_form').attr('action','/akta-jual-beli/save/')
+        $("#id_akta_jual_beli_form").resetForm()
+        $("#id_akta_jual_beli_modal").modal('show');
+    }
+
+    function akta_jual_beli_add(btn){
+        var frm = $('#id_akta_jual_beli_form');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_penggunaan = res.data.id_akta_jual_beli
+                if ($('#id_akta_jual_beli').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var id_no_akta_jual_beli = $("#id_no_jual_beli").val()
+                var id_tahun_akta_jual_beli = $("#id_tanggal_jual_beli").val()
+                var id_atas_nama_akta_jual_beli = $("#id_atas_nama_jual_beli").val()
+
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_jual_beli'>"+id_no_akta_jual_beli+"</td><td id='id_table_tanggal_jual_beli'>"+id_tahun_akta_jual_beli+"</td><td id='id_table_atas_nama_jual_beli'>"+id_atas_nama_akta_jual_beli+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowaktajualbeli(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowaktajualbeli(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_akta_jual_beli","tbody");
+                $('#id_akta_jual_beli_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#id_akta_jual_beli_modal').find('.btn-success').attr('onclick','akta_jual_beli_add(this)')
+                $('#id_akta_jual_beli_modal').find('.btn-success').text("Simpan")
+                $('#id_akta_jual_beli_modal').find('#id_akta_jual_beli_form').attr('action','/akta-jual-beli/save/')
+                $("#id_akta_jual_beli_form").resetForm()
+                $("#id_akta_jual_beli_modal").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+
+    function editRowaktajualbeli(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+        var id_no_jual_beli = parent_tr.find('#id_table_no_jual_beli').text();
+        var id_tanggal_jual_beli = parent_tr.find('#id_table_tanggal_jual_beli').text();
+        var id_atas_nama_jual_beli = parent_tr.find('#id_table_atas_nama_jual_beli').text();
+
+        $('#id_akta_jual_beli_modal').modal('show');
+        $('#id_akta_jual_beli_modal').find('#id_no_jual_beli').val(id_no_jual_beli) 
+        $('#id_akta_jual_beli_modal').find('#id_tanggal_jual_beli').val(id_tanggal_jual_beli)
+        $('#id_akta_jual_beli_modal').find('#id_atas_nama_jual_beli').val(id_atas_nama_jual_beli)
+
+        $('#id_akta_jual_beli_modal').find('.btn-success').attr('onclick','').unbind('click');
+        $('#id_akta_jual_beli_modal').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_akta_jual_beli_modal').find('.btn-primary').attr('id',id_button)
+        $('#id_akta_jual_beli_modal').find('.btn-primary').text("Edit")
+        $('#id_akta_jual_beli_modal').find('.btn-primary').attr('onclick','akta_jual_beli_add(this)')
+        $('#id_akta_jual_beli_modal').find('#id_akta_jual_beli_form').attr('action','/akta-jual-beli/edit/'+id_button+'/')        
+    }
+
+    function deleteRowaktajualbeli(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/akta-jual-beli/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    $('#id_no_jual_beli').clearFields()
+                    $('#id_tanggal_jual_beli').clearFields()
+                    $('#id_atas_nama_jual_beli').clearFields()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+
+    function batalRowaktajualbeli(btn){
+        $('#id_akta_jual_beli_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_akta_jual_beli_modal').find('.btn-primary').attr('onclick','sertifikat_tanah_add(this)')
+        $('#id_akta_jual_beli_modal').find('.btn-success').text("Simpan")
+        $('#id_akta_jual_beli_modal').find('#id_akta_jual_beli_form').attr('action','/akta-jual-beli/save/')
+        $("#id_akta_jual_beli_form").resetForm()
+        $("#id_akta_jual_beli_modal").modal('hide');
+    }
+
+
+    function tambah_no_ptp(btn){
+        $('#id_no_ptp_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_no_ptp_modal').find('.btn-success').attr('onclick','no_ptp_add(this)')
+        $('#id_no_ptp_modal').find('.btn-success').text("Simpan")
+        $('#id_no_ptp_modal').find('#id_no_ptp_form').attr('action','/no-ptp/save/')
+        $("#id_no_ptp_form").resetForm()
+        $("#id_no_ptp_modal").modal('show');
+    }
+
+    function no_ptp_add(btn){
+        var frm = $('#id_no_ptp_form');
+         if (frm.parsley().validate()){
+            frm.ajaxSubmit({
+             success: function(response) {  // on success..
+                var res = $.parseJSON(response);  
+                id_penggunaan = res.data.id_no_ptp
+                if ($('#id_no_ptp').find('#'+id_penggunaan+'')){
+                  $('#'+id_penggunaan+'').remove()
+                }
+                var id_no_ptp = $("#id_no_ptp").val()
+                var id_tanggal_ptp = $("#id_tanggal_ptp").val()
+
+                var rows = "";
+                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_ptp'>"+id_no_ptp+"</td><td id='id_table_tanggal_ptp'>"+id_tanggal_ptp+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRownoptp(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRownoptp(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows).appendTo("#id_no_ptp_table","tbody");
+                $('#id_no_ptp_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+                $('#id_no_ptp_modal').find('.btn-success').attr('onclick','no_ptp_add(this)')
+                $('#id_no_ptp_modal').find('.btn-success').text("Simpan")
+                $('#id_no_ptp_modal').find('#id_no_ptp_form').attr('action','/no-ptp/save/')
+                $("#id_no_ptp_form").resetForm()
+                $("#id_no_ptp_modal").modal('hide');
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });
+            }
+      }
+
+
+    function editRownoptp(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        var parent_tr = $('#'+id_button+'')
+        var id_no_ptp = parent_tr.find('#id_table_no_ptp').text();
+        var id_tanggal_ptp = parent_tr.find('#id_table_tanggal_ptp').text();
+
+        $('#id_no_ptp_modal').modal('show');
+        $('#id_no_ptp_modal').find('#id_no_ptp').val(id_no_ptp) 
+        $('#id_no_ptp_modal').find('#id_tanggal_ptp').val(id_tanggal_ptp) 
+
+
+        $('#id_no_ptp_modal').find('.btn-success').attr('onclick','').unbind('click');
+        $('#id_no_ptp_modal').find('.btn-success').attr('class','btn btn-primary btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_no_ptp_modal').find('.btn-primary').attr('id',id_button)
+        $('#id_no_ptp_modal').find('.btn-primary').text("Edit")
+        $('#id_no_ptp_modal').find('.btn-primary').attr('onclick','no_ptp_add(this)')
+        $('#id_no_ptp_modal').find('#id_no_ptp_form').attr('action','/no-ptp/edit/'+id_button+'/')        
+    }
+
+    function deleteRownoptp(btn){
+        var row = btn.parentNode.parentNode;
+        id_button = btn.id
+        $('#'+id_button+'').mask('loading')
+           $.ajax({
+            url: __base_url__+'/no-ptp/delete/'+id_button,
+            success: function(response) {  // on success..
+                    row.parentNode.removeChild(row);
+                    $('#id_no_jual_beli').clearFields()
+                    $('#id_tanggal_jual_beli').clearFields()
+                    $('#id_atas_nama_jual_beli').clearFields()
+                },
+                error: function(data) {       
+                  toast_server_error()
+                }
+              });  
+    }
+
+
+    function batalRownoptp(btn){
+        $('#id_no_ptp_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+        $('#id_no_ptp_modal').find('.btn-primary').attr('onclick','sertifikat_tanah_add(this)')
+        $('#id_no_ptp_modal').find('.btn-success').text("Simpan")
+        $('#id_no_ptp_modal').find('#id_no_ptp_form').attr('action','/no-ptp/save/')
+        $("#id_no_ptp_form").resetForm()
+        $("#id_no_ptp_modal").modal('hide');
+    }
+
     document.querySelector('#alert').onclick = function(){
       // swal("Good job!", "You clicked the button!", "success");
       var pengajuan_cookie = $.cookie('id_pengajuan'); 
