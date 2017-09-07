@@ -61,7 +61,6 @@
                 url: url_, // the file to call
                 success: function(response) { // on success..
                     var json = $.parseJSON(response);
-                    // console.log(json.count)
                     elem_.html(json.data);
                     make_disabled(elem_, false)
                     elem_chosen_.unmask()
