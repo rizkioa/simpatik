@@ -529,7 +529,21 @@ class CustomMenu(Menu):
                 menu_pengaturan,
                 
             ]
-
+        if request.user.groups.filter(Q(name="Cek Lokasi")).exists():
+            self.children += [
+            items.MenuItem(
+                title=_('Manajemen Pengguna'),
+                description='Manajemen Pengguna',
+                accesskey='menuPengguna',
+                children= [
+                    items.MenuItem(
+                        title='Pegawai',
+                        icon='fa fa-user-md',
+                        url=reverse('admin:kepegawaian_pegawai_changelist'),
+                    ),
+                ]
+            )
+            ]
         # if request.user.groups.filter(name="Admin Sistem").exists():
         #     items.MenuItem(
         #         title=_('Manajemen Pengguna'),
