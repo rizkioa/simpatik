@@ -18,23 +18,19 @@ def reklame_detilreklame_save_cookie(request):
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
 			if detilReklame.is_valid():
-				if pengajuan_.jenis_reklame.jenis_reklame == "Permanen":
-					pengajuan_.kelompok_jenis_izin = kelompok_izin
-					pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-					pengajuan_.save()
-				else:
-					pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-					pengajuan_.save()
-				# if pengajuan_.tanggal_mulai:
-				# 	awal = pengajuan_.tanggal_mulai
-				# else:
-				# 	awal = 0
-				# if pengajuan_.tanggal_akhir:
-				# 	akhir = pengajuan_.tanggal_akhir
-				# else:
-				# 	akhir = 0
-				
-				# selisih = akhir-awal
+
+				if 'id_perusahaan' in request.COOKIES.keys():
+					if request.COOKIES['id_perusahaan'] != '0':
+						if pengajuan_.jenis_reklame.jenis_reklame == "Permanen":
+							pengajuan_.kelompok_jenis_izin = kelompok_izin
+							pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+							pengajuan_.save()
+						else:
+							pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+							pengajuan_.save()
+					else:
+						pengajuan_.save()
+
 				data = {'success': True,
 						'pesan': 'Data Reklame berhasil disimpan. Proses Selanjutnya.',
 						'data': {}}
@@ -67,8 +63,17 @@ def reklame_detilreklame_permanen_save_cookie(request):
 				pengajuan_ = DetilReklame.objects.create(status=11,pemohon_id=request.COOKIES['id_pemohon'],kelompok_jenis_izin_id=14,jenis_permohonan_id=id_jenis_pengajuan_,created_by_id=created_by)
 			detilReklame = PengajuanReklameForm(request.POST, instance=pengajuan_)
 			if detilReklame.is_valid():
-				pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
-				pengajuan_.save()
+				if 'id_perusahaan' in request.COOKIES.keys():
+					if request.COOKIES['id_perusahaan'] != '0':
+						if pengajuan_.jenis_reklame.jenis_reklame == "Permanen":
+							pengajuan_.kelompok_jenis_izin = kelompok_izin
+							pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+							pengajuan_.save()
+						else:
+							pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
+							pengajuan_.save()
+					else:
+						pengajuan_.save()
 				letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 				ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
 				if pengajuan_.tanggal_mulai:

@@ -96,7 +96,7 @@ function load_konfirmasi_informasi_kekayaan(id_pengajuan){
             for (var i = 0; i < total; i++){
               var key = Object.keys(respon.data[i]); // Mencari key json
               var val = respon.data[i][key[0]] // mencari value json
-              var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 komfirmasi
+              var id = "#"+key[0]+"_konfirmasi" // membuat variabel id untuk sett ke id masing2 
               $(id).text(val);
             }
         }

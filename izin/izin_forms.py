@@ -190,7 +190,7 @@ class IdentifikasiJalanForm(forms.ModelForm):
 class InformasiKekayaanDaerahForm(forms.ModelForm):
 	class Meta:
 		model = InformasiKekayaanDaerah
-		fields = ('lokasi','desa','luas','jenis_penggunaan','penggunaan')
+		fields = ('lokasi','desa','luas','no_rekomendasi','jenis_penggunaan','penggunaan')
 
 class DetilHOForm(forms.ModelForm):
 	class Meta:

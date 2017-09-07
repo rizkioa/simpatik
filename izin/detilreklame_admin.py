@@ -156,7 +156,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 			# print lama_pemasangan
 			banyak = len(DetilReklame.objects.all())
 			extra_context.update({'banyak': banyak})
-			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
+			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="Reklame")
 			extra_context.update({'syarat': syarat_})
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
@@ -297,7 +297,7 @@ class DetilReklameAdmin(admin.ModelAdmin):
 						alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
 						extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 					extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
-					syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
+				syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="Reklame")
 				if pengajuan_.desa:
 					letak_ = pengajuan_.letak_pemasangan + ",Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 				else:

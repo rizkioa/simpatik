@@ -1703,6 +1703,28 @@
 							  <td width="70%">{{pengajuan.atas_nama_persil|default_if_none:"-"}}</td>
 							</tr>
 						{% endif %}
+						<tr>
+							<td colspan="3">
+								<table id="id_no_ptp" class="table table-bordered" style="width: 762px;">
+								  <thead>
+									<tr>
+									  <td>No PTP</td>
+									  <td>Tanggal PTP</td>
+									</tr>
+								  </thead>
+								  <tbody>
+								  	{% if no_ptp_list%}
+										{% for a in no_ptp_list %}
+										  <tr id="{{a.id}}">
+							                <td id="id_table_no_ptp">{{a.no_ptp}}</td>
+							                <td id="id_table_id_table_tanggal_ptp">{{a.tanggal_ptp|date:"d-m-Y"}}</td>
+										  </tr>
+										{% endfor %}
+									{% endif %}
+								  </tbody>
+								</table>
+							</td>
+						</tr>
 					    <tr>
 					      <td width="25%">Penggunaan Tanah Sebelumnya</td>
 					      <td width="5%">:</td>

@@ -85,44 +85,92 @@
         success: function (response){
 			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 			var frm = $('form[name="step'+ index +'"]');
-			frm.parsley().validate();
-			if (frm.parsley().isValid()) {
-				$(".tab-content").mLoading();
-				$(btn).attr('disabled', 'disabled')
-				$.ajax({
-					type: frm.attr('method'),
-					url: frm.attr('action'),
-					data: frm.serialize(),
-					success: function (response){
-						respon = $.parseJSON(response)
-			            $(btn).removeAttr('disabled')
-			            if(respon.success){
-			            	toastr["success"](respon.pesan)
-			            	for (var i = 0; i < respon.data.length; i++){
-			            		var key = Object.keys(respon.data[i]); // Mencari key json
-			            		var val = respon.data[i][key[0]]
-			            		var id = "#"+key[0]+"_konfirmasi"
-			            		$(id).text(val);
-			            	}
-							$(".tab-content").mLoading('hide');
-							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
-							$(tab_index).tab('show')
-			            }else{
-			            	var a = Object.keys(respon);
-			            	for (var i = 0; i < a.length; i++){
-			            		var field = a[i].replace("_", " ").capitalize();
-			            		toastr["error"](field+", "+respon[a[i]][0]['message'])
-			            		$("#"+a[i]+"").addClass("has-error");
-			            	}
-			            	$(".tab-content").mLoading('hide');
-			            }
-					},
-					error: function(response){
-						$(".tab-content").mLoading('hide');
-						$(btn).removeAttr('disabled')
-						toastr["error"]("Terjadi kesalahan pada koneksi server.")
+			frm.parsley().validate();		
+			if (index == 2) {
+				var npwp_perusahaan = frm.find('#id_npwp_perusahaan').val()
+				if ( npwp_perusahaan != "") {
+					if (frm.parsley().isValid()) {
+						$(".tab-content").mLoading();
+						$(btn).attr('disabled', 'disabled')
+						$.ajax({
+							type: frm.attr('method'),
+							url: frm.attr('action'),
+							data: frm.serialize(),
+							success: function (response){
+								respon = $.parseJSON(response)
+					            $(btn).removeAttr('disabled')
+					            if(respon.success){
+					            	toastr["success"](respon.pesan)
+					            	for (var i = 0; i < respon.data.length; i++){
+					            		var key = Object.keys(respon.data[i]); // Mencari key json
+					            		var val = respon.data[i][key[0]]
+					            		var id = "#"+key[0]+"_konfirmasi"
+					            		$(id).text(val);
+					            	}
+									$(".tab-content").mLoading('hide');
+									tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+									$(tab_index).tab('show')
+					            }else{
+					            	var a = Object.keys(respon);
+					            	for (var i = 0; i < a.length; i++){
+					            		var field = a[i].replace("_", " ").capitalize();
+					            		toastr["error"](field+", "+respon[a[i]][0]['message'])
+					            		$("#"+a[i]+"").addClass("has-error");
+					            	}
+					            	$(".tab-content").mLoading('hide');
+					            }
+							},
+							error: function(response){
+								$(".tab-content").mLoading('hide');
+								$(btn).removeAttr('disabled')
+								toastr["error"]("Terjadi kesalahan pada koneksi server.")
+							}
+						});
 					}
-				});
+				}else{
+					$(".tab-content").mLoading('hide');
+					tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+					$(tab_index).tab('show')
+				}
+			}else{
+				if (frm.parsley().isValid()) {
+					$(".tab-content").mLoading();
+					$(btn).attr('disabled', 'disabled')
+					$.ajax({
+						type: frm.attr('method'),
+						url: frm.attr('action'),
+						data: frm.serialize(),
+						success: function (response){
+							respon = $.parseJSON(response)
+				            $(btn).removeAttr('disabled')
+				            if(respon.success){
+				            	toastr["success"](respon.pesan)
+				            	for (var i = 0; i < respon.data.length; i++){
+				            		var key = Object.keys(respon.data[i]); // Mencari key json
+				            		var val = respon.data[i][key[0]]
+				            		var id = "#"+key[0]+"_konfirmasi"
+				            		$(id).text(val);
+				            	}
+								$(".tab-content").mLoading('hide');
+								tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+								$(tab_index).tab('show')
+				            }else{
+				            	var a = Object.keys(respon);
+				            	for (var i = 0; i < a.length; i++){
+				            		var field = a[i].replace("_", " ").capitalize();
+				            		toastr["error"](field+", "+respon[a[i]][0]['message'])
+				            		$("#"+a[i]+"").addClass("has-error");
+				            	}
+				            	$(".tab-content").mLoading('hide');
+				            }
+						},
+						error: function(response){
+							$(".tab-content").mLoading('hide');
+							$(btn).removeAttr('disabled')
+							toastr["error"]("Terjadi kesalahan pada koneksi server.")
+						}
+					});
+				}
 			}
 		},
         error: function (response){
@@ -134,7 +182,7 @@
 		document.querySelector('#alert').onclick = function(){
 		    var pengajuan_cookie = $.cookie('id_pengajuan'); 
 		    var pemohon_cookie = $.cookie('id_pemohon'); 
-		    var perusahaan_cookie = $.cookie('id_perusahaan'); 
+		    // var perusahaan_cookie = $.cookie('id_perusahaan'); 
 		    if (pengajuan_cookie === ""){
 		       	toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
 		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
@@ -145,11 +193,11 @@
 		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
 		        $(tab_index).tab('show');
 	      	}
-	      	else if(perusahaan_cookie === ""){
-		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
-		        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
-		        $(tab_index).tab('show');
-	      	}
+	      	// else if(perusahaan_cookie === ""){
+		      //   toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+		      //   tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+		      //   $(tab_index).tab('show');
+	      	// }
 	      	else{
 		        swal({
 		          showConfirmButton: false,
