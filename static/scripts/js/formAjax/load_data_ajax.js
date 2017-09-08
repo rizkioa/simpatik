@@ -458,6 +458,7 @@ function load_data_informasi_kekayaan(id_pengajuan){
             $('#id_panjang').val(respon.data.id_panjang)
             $('#id_lebar').val(respon.data.id_lebar)
             $('#id_penggunaan').val(respon.data.id_penggunaan)
+            $('#id_no_rekomendasi').val(respon.data.id_no_rekomendasi)
           }      
         },
         error: function(response){

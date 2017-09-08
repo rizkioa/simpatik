@@ -1,5 +1,6 @@
 from django import template
 from django import forms
+from master.models import ChatRoom, Chat
 import datetime
 import os
 register = template.Library()
@@ -221,3 +222,28 @@ def atrialfabetbut(counter_):
 @register.filter(name='split_berkas')
 def split_berkas(data):
 	return (data[:50] + '...') if len(data) > 75 else data
+
+@register.assignment_tag
+def as_null():
+	value = 0
+	return value
+
+@register.assignment_tag
+def chatroom():
+	chatroom_list = ChatRoom.objects.all().last()
+	chatroom_nama_pemohon = chatroom_list.nama_pemohon
+	id_ = chatroom_list.id
+	chat_isi = Chat.objects.get(chat_room__id = id_).isi_pesan
+	# for i in chatroom_list:
+	# 	chatroom_id = i.id
+	# 	chatroom_nama_pemohon = i.nama_pemohon
+	# 	chat_list = Chat.objects.filter(chat_room=chatroom_id)
+
+
+		
+
+	c  = {
+		'chatroom_nama_pemohon' : chatroom_nama_pemohon,
+		'chat_isi_pesan' : chat_isi,
+	}
+	return c

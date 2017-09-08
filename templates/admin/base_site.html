@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block extrastyle %}
-    <link rel="stylesheet" href="{% static "styles/css/vendor/simple-line-icons.css" %}">
-    <link rel="stylesheet" href="{% static "styles/css/main_site.css" %}">
-    <link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.min.css" %}">
+    <link rel="stylesheet" href="{% static 'styles/css/vendor/simple-line-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/css/main_site.css' %}">
+    <link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
     <style type="text/css">
         #header .list-group-item {
             display: inline-flex;
@@ -280,6 +280,23 @@
             {% block usertools %}
             <ul class="nav-right pull-right list-inline">
                 {% if has_permission %}
+                <li class="dropdown">
+                    <a href="#" class="hasnotifications dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="icon-bg"><i class="fa fa-envelope"></i></span><span class="badge badge-info"></span><div class="ripple-container"></div></a>
+                    <ul class="dropdown-menu animated littleFadeInRight" role="menu">
+                        <li class="media notification-message">
+                            <a href="#">
+                                <div class="media-left">
+                                    <!-- <img class="img-circle avatar" src="assets/demo/avatar/avatar_01.png" alt=""> -->
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="notification-heading"><strong></strong></h5>
+                                    <p><span class="text-gray">‒ Integer vitae libero ac risus egestas placerat.</span></p>
+                                    <span class="notification-time">2 mins ago</span>
+                                </div>
+                            <div class="ripple-container"></div></a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="dropdown messages">
                     {% load logs %}
                     {% get_logs user 4 as admin_log %}
