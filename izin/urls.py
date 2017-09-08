@@ -93,6 +93,10 @@ urlpatterns = [
     url(r'^call-center/$', views.call_center, name='call_center'),
     url(r'^cari-pengajuan-izin/$', views.cari_pengajuan, name='cari_pengajuan'),
     url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
+
+    #pengaduan_izin
+    url(r'^pengaduan_izin/$', views.pengaduan_izin, name='pengaduan_izin'),
+    url(r'^ajax-save-pengaduan/$', views.ajax_save_pengaduan, name='ajax_save_pengaduan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),
     # url(r'^layanan/ho-daftar-ulang/formulir$', views.formulir_ho_daftar_ulang, name='formulir_ho_daftar_ulang'),

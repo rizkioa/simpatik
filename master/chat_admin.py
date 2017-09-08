@@ -41,7 +41,7 @@ class ChatRoomAdmin(admin.ModelAdmin):
 				kelompok_jenis_izin_id=kelompokjenisizin
 				)
 			chatroom_obj.save()
-			data = {"success": True, "pesan": "Berhasil", "id": chatroom_obj.id}
+		data = {"success": True, "pesan": "Berhasil", "id": chatroom_obj.id}
 		return HttpResponse(json.dumps(data))
 
 
@@ -68,7 +68,6 @@ class ChatAdmin(admin.ModelAdmin):
 	def chat(self, request):
 		chat_room_list = ChatRoom.objects.last()
 		chat_room_id = chat_room_list.id
-		print chat_room_id
 		isi_pesan = request.POST.get('isi_pesan')
 		chat_list = Chat.objects.filter(isi_pesan=isi_pesan)
 		if chat_list.exists():

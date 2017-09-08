@@ -296,7 +296,7 @@
                                             </div>
                                             <div class="media-body">
                                                 <p class="media-heading"><a role="button" tabindex="0" class="name"><input type="hidden" name="chat_room_no_ktp" id="chat_room_no_ktp"> You </a><span class="datetime">2 hours ago</span></p>
-                                                <span class="body" id="chat_pemohon"></span>
+                                                <span class="body" id="chat_pemohon" name="chat_p"></span>
                                             </div>
                                         </div>
                                     </li>
@@ -585,39 +585,39 @@
             }
 
 
-            // function chat(){
-            //     frm = $('.form-chat')
-            //     frm.parsley().validate();
-            //     if (frm.parsley().isValid()){
-            //         frm.ajaxSubmit({
-            //             method: 'POST',
-            //             data: frm.serialize(),
-            //             url: frm.attr('action'),
-            //             beforeSend: function() {
-            //                 frm.mLoading();
-            //             },
-            //             success: function(response){
-            //                 respon = JSON.parse(response)
-            //                 if(respon.success == true){
-            //                     toastr["success"](respon.pesan)
-            //                     isi_pesan_pemohon = $("#isi_pesan").val()
-            //                     nomor_ktp = $("#chat_room_no_ktp").val()
+            function chat(){
+                frm = $('.form-chat')
+                frm.parsley().validate();
+                if (frm.parsley().isValid()){
+                    frm.ajaxSubmit({
+                        method: 'POST',
+                        data: frm.serialize(),
+                        url: frm.attr('action'),
+                        beforeSend: function() {
+                            frm.mLoading();
+                        },
+                        success: function(response){
+                            respon = JSON.parse(response)
+                            if(respon.success == true){
+                                toastr["success"](respon.pesan)
+                                isi_pesan_pemohon = $("#isi_pesan").val()
+                                nomor_ktp = $("#chat_room_no_ktp").val()
                                 
-            //                     $("$chat_pemohon").val(isi_pesan_pemohon)
+                                $("#chat_pemohon").val(isi_pesan_pemohon)
 
-            //                 }
-            //                 else{
-            //                     toastr['error'](respon.pesan)
-            //                 }
-            //                 frm.mLoading('hide')
-            //             },
-            //             error: function(){
-            //                 frm.mLoading('hide')
-            //                 // toastr_server_error();
-            //             }
-            //         })
-            //     }
-            // }
+                            }
+                            else{
+                                toastr['error'](respon.pesan)
+                            }
+                            frm.mLoading('hide')
+                        },
+                        error: function(){
+                            frm.mLoading('hide')
+                            // toastr_server_error();
+                        }
+                    })
+                }
+            }
 
 
         </script>
