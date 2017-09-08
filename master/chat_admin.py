@@ -1,7 +1,8 @@
-from master.models import ChatRoom, Chat
+from master.models import ChatRoom, Chat, ChatUserPemohon
 from django.contrib import admin
 from django.http import HttpResponse
-import json
+import json, datetime
+from django.core.exceptions import ObjectDoesNotExist
 
 class ChatRoomAdmin(admin.ModelAdmin):
 	list_login_chat = ('operator', 'no_ktp', 'nama_pemohon')
@@ -27,21 +28,59 @@ class ChatRoomAdmin(admin.ModelAdmin):
 
 	def login_chat(self, request):
 		data = {"success": False, "pesan": "Terjadi Kesalahan"}
-		no_ktp = request.POST.get('nomor_ktp')
-		nama_pemohon = request.POST.get('nama_lengkap')
-		kelompokjenisizin = request.POST.get('login_kelompokjenisizin')
-		chatroom_list = ChatRoom.objects.filter(no_ktp=no_ktp, nama_pemohon=nama_pemohon, kelompok_jenis_izin_id=kelompokjenisizin)
-		if chatroom_list.exists():
-			chatroom_obj = chatroom_list.last()
-			data = {"success": True, "pesan": "Berhasil Get", "id": chatroom_obj.id}
+		no_ktp = request.POST.get('chat_nomor_ktp', '')
+		nama_lengkap = request.POST.get('chat_nama_lengkap', '')
+		operator = request.POST.get('chat_operator', None)
+		# user_id = None
+		# chat_room_id = None
+		# try:
+		user_list = ChatUserPemohon.objects.filter(no_ktp=no_ktp)
+		if user_list.exists():
+			user_obj = user_list.last()
+			user_obj.nama_pemohon = nama_lengkap
 		else:
-			chatroom_obj = ChatRoom(
-				no_ktp=no_ktp,
-				nama_pemohon=nama_pemohon,
-				kelompok_jenis_izin_id=kelompokjenisizin
+			user_obj = ChatUserPemohon(
+				no_ktp = no_ktp,
+				nama_pemohon = nama_lengkap,
 				)
-			chatroom_obj.save()
-			data = {"success": True, "pesan": "Berhasil", "id": chatroom_obj.id}
+		user_obj.save()
+
+		chat_room_list = ChatRoom.objects.filter(userpemohon_id=user_obj.id)
+		if chat_room_list.exists() and chat_room_list:
+			chat_room_list = chat_room_list.filter(operator_id=operator)
+			# print chat_room_list
+			if chat_room_list.exists() and chat_room_list:
+				chat_room_obj = chat_room_obj.last()
+			else:
+				# print "masuk add"
+				chat_room_obj = ChatRoom(
+					operator_id = operator,
+					userpemohon_id = user_obj.id,
+					created_at = datetime.datetime.now()
+				)
+		else:
+			chat_room_obj = ChatRoom(
+				operator_id = operator,
+				userpemohon_id = user_obj.id,
+				created_at = datetime.datetime.now()
+				)
+			# print "masuk"
+		chat_room_obj.save()
+		# nama_pemohon = request.POST.get('nama_lengkap')
+		# kelompokjenisizin = request.POST.get('login_kelompokjenisizin')
+		# chatroom_list = ChatRoom.objects.filter(no_ktp=no_ktp, nama_pemohon=nama_pemohon, kelompok_jenis_izin_id=kelompokjenisizin)
+		# if chatroom_list.exists():
+		# 	chatroom_obj = chatroom_list.last()
+		# 	data = {"success": True, "pesan": "Berhasil Get", "id": chatroom_obj.id}
+		# else:
+		# 	chatroom_obj = ChatRoom(
+		# 		no_ktp=no_ktp,
+		# 		nama_pemohon=nama_pemohon,
+		# 		kelompok_jenis_izin_id=kelompokjenisizin
+		# 		)
+		# 	chatroom_obj.save()
+		if user_obj:
+			data = {"success": True, "pesan": "Berhasil", "user_id": user_obj.id, "chat_room_id": chat_room_obj.id}
 		return HttpResponse(json.dumps(data))
 
 
