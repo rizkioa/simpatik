@@ -1,0 +1,17 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls access admin_static parameters %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<div class="modal fade" id="create_cabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title custom-font">Tambah Kantor Cabang/Pembantu/Perwakilan</h3>
+				</div>
+				<div class="modal-body">
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
