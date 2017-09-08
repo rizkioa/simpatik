@@ -58,8 +58,12 @@ def call_center(request):
 def cari_pengajuan(request):
 	return render(request, "front-end/cari_pengajuan.html")
 
-def pengaduan_izin(request):
-	return render(request, "front-end/pengaduan_izin.html")
+def pengaduan_izin(request, extra_context={}):
+	kelompokjenisizin_list = KelompokJenisIzin.objects.filter(aktif=True)
+	extra_context.update({
+		'kelompokjenisizin' : kelompokjenisizin_list
+		})
+	return render(request, "front-end/pengaduan_izin.html", extra_context)
 
 def formulir_siup(request, extra_context={}):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
@@ -1395,7 +1399,7 @@ def list_track_pengajuan(request, id_pengajuan, extra_context={}):
 		pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan)
 		if pengajuan:
 			riwayat = Riwayat.objects.filter(pengajuan_izin_id=pengajuan.id)
-			print riwayat
+			# print riwayat
 			extra_context.update({'pengajuan':pengajuan, 'riwayats':riwayat})
 			template = loader.get_template("front-end/list_track_pengajuan.html")
 			ec = RequestContext(request, extra_context)
@@ -1406,9 +1410,9 @@ def list_track_pengajuan(request, id_pengajuan, extra_context={}):
 def ajax_save_pengaduan(request):
 	data = {"success": False, "pesan": "Terjadi Kesalahan"}
 	no_ktp = request.POST.get('no_ktp_')
-	print no_ktp
+	# print no_ktp
 	nama_lengkap = request.POST.get('nama_lengkap_')
-	print nama_lengkap
+	# print nama_lengkap
 	no_telp = request.POST.get('no_telp_')
 	email = request.POST.get('email_')
 	kelompok_jenis_izin = request.POST.get('kategori_pengajuan_')

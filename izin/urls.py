@@ -95,7 +95,7 @@ urlpatterns = [
     url(r'^ajax-cek-pengajuan/$', views.ajax_cek_pengajuan, name='ajax_cek_pengajuan'),
 
     #pengaduan_izin
-    url(r'^pengaduan_izin/$', views.pengaduan_izin, name='pengaduan_izin'),
+    url(r'^pengaduan-izin/$', views.pengaduan_izin, name='pengaduan_izin'),
     url(r'^ajax-save-pengaduan/$', views.ajax_save_pengaduan, name='ajax_save_pengaduan'),
     
     url(r'^layanan/siup/formulir$', views.formulir_siup, name='formulir_siup'),

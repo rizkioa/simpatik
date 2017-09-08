@@ -78,13 +78,20 @@
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Kategori Pengajuan</label>
                       <div class="col-sm-8">
-                         <select class="form-control option-kelompokjenisizin" required="True" name="kategori_pengajuan" id="id_kategori_pengaduan"></select>
+                         <select class="form-control" required="True" name="kategori_pengajuan">
+                            <option value>Pilih Kelompok Jenis Izin</option>
+                           {% if kelompokjenisizin %}
+                            {% for k in kelompokjenisizin %}
+                              <option value="{{k.id}}">{{k.jenis_izin}}</option>
+                            {% endfor %}
+                           {% endif %}
+                         </select>
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Isi Pengaduan</label>
                       <div class="col-sm-8">
-                        <textarea class="form-group" id="id_isi_pengaduan" name="isi_pengaduan" style="margin: 0px 0px 15px; width: 335px; height: 81px;"></textarea>
+                        <textarea class="form-control" name="isi_pengaduan"></textarea>
                       </div>
                     </div>
                     <div class="form-group col-md-12">

@@ -447,6 +447,7 @@ class PengaduanIzin(MetaAtribut):
 	email = models.EmailField(unique=True, blank=True, null=True)
 	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="kelompok_jenis_izin_pengaduan", blank=True, null=True)
 	isi_pengdauan = models.TextField(max_length=255, verbose_name= "Isi Pengaduan")
+	balas = models.TextField(max_length=255, verbose_name= "Balas", blank=True, null=True)
 
 	class Meta:
 		verbose_name = "Pengaduan Izin"
