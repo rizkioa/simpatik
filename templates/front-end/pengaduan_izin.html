@@ -48,19 +48,19 @@
                 </div>
               </div>
               <div class="panel-body">
-                <form method="POST">
+                <form method="POST" class="frm_pengaduan">
                 {% csrf_token %}
                   <div class="row">
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Nomor KTP</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="id_nomor_ktp" name="nomor_ktp">
+                        <input type="text" required="" class="form-control" id="id_nomor_ktp" name="nomor_ktp">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Nama Lengkap</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="id_nama_lengkap" name="nama_lengkap">
+                        <input type="text" required class="form-control" id="id_nama_lengkap" name="nama_lengkap">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
@@ -72,13 +72,13 @@
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Nomor Telphone</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="id_nomor_telphone" name="nomor_telphone">
+                        <input type="text" required="" class="form-control" id="id_nomor_telphone" name="nomor_telphone">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Kategori Pengajuan</label>
                       <div class="col-sm-8">
-                         <select class="form-control" required="True" name="kategori_pengajuan">
+                         <select class="form-control" required="" name="kategori_pengajuan">
                             <option value>Pilih Kelompok Jenis Izin</option>
                            {% if kelompokjenisizin %}
                             {% for k in kelompokjenisizin %}
@@ -91,13 +91,13 @@
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Isi Pengaduan</label>
                       <div class="col-sm-8">
-                        <textarea class="form-control" name="isi_pengaduan"></textarea>
+                        <textarea class="form-control" required="" name="isi_pengaduan"></textarea>
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <div class="col-sm-12" align="center">
                         <hr class="style14">
-                        <button onclick="save_pengaduan();" type="button" class="btn btn-success btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-eye"></i> <span>Lihat Status Pengajuan</span></button>
+                        <button onclick="save_pengaduan();" type="button" class="btn btn-success"><i class="fa fa-eye"></i> <span>Pengaduan</span></button>
                       </div>
                     </div>
                   </div>
@@ -118,40 +118,64 @@
   <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
   <script type="text/javascript">
   function save_pengaduan(){
+    frm = $('.frm_pengaduan')
+    frm.parsley().validate();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    no_ktp_ = $('#id_nomor_ktp').val();
+    no_ktp_ = $('input[name=nomor_ktp]').val();
     nama_lengkap_ = $('#id_nama_lengkap').val();
     email_ = $('#id_email').val();
     no_telp_ = $('#id_nomor_telphone').val();
     kategori_pengaduan_ = $('#id_kategori_pengaduan').val();
-    isi_pengaduan_ = $('#id_isi_pengaduan').val();
+    isi_pengaduan_ = $('textarea[name=isi_pengaduan]').val();
     // response = $('#g-recaptcha-response').val();
     // recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
     // recaptcha_response_field = $('input[name=recaptcha_response_field]').val()
-    $.ajax({
-      type: 'POST',
-      url: '{% url 'ajax_save_pengaduan' %}',
-      data: { csrfmiddlewaretoken: csrf_token, no_ktp_: no_ktp_, nama_lengkap_: nama_lengkap_, email_: email_, no_telp_: no_telp_, kategori_pengaduan_:kategori_pengaduan_, isi_pengaduan_:isi_pengaduan_ },
-        success: function (data) {
-          respon = $.parseJSON(data)
-            if(respon.success){
-              toastr["success"](respon.pesan)
-              setTimeout(function(){ 
-                // alert("Hello");
-                window.location.reload()
+    // $.ajax({
+    //   type: 'POST',
+    //   url: '{% url 'ajax_save_pengaduan' %}',
+    //   data: { csrfmiddlewaretoken: csrf_token, no_ktp_: no_ktp_, nama_lengkap_: nama_lengkap_, email_: email_, no_telp_: no_telp_, kategori_pengaduan_:kategori_pengaduan_, isi_pengaduan_:isi_pengaduan_ },
+    //     success: function (data) {
+    //       respon = $.parseJSON(data)
+    //         if(respon.success){
+    //           toastr["success"](respon.pesan)
+    //           setTimeout(function(){ 
+    //             // alert("Hello");
+    //             window.location.reload()
 
-              }, 3000);
+    //           }, 3000);
+    //         }
+    //         else{
+    //           toastr["warning"](respon.pesan)
+    //           // alert("error")
+    //           // window.location.replace(respon.url)
+    //         }
+    //     }
+    //     // error: function(data) {                
+    //     //   toastr["error"]("Terjadi kesalahan server.")
+    //     // }
+    // })
+    if (frm.parsley().isValid()){
+        frm.ajaxSubmit({
+            method: 'POST',
+            data: frm.serialize(),
+            url: '{% url 'ajax_save_pengaduan' %}',
+            beforeSend: function() {
+                frm.mLoading();
+            },
+            success: function(response){
+                frm.mLoading('hide');
+                respon = JSON.parse(response)
+                console.log(respon)
+                // localStorage.setItem('chatroom_id', respon.id)
+                // $('#widget-chat-login').fadeOut();
+                // $('#widget-chat').fadeIn();
+                // console.log(response)
+            },
+            error: function(){
+                frm.mLoading('hide');
             }
-            else{
-              toastr["warning"](respon.pesan)
-              // alert("error")
-              // window.location.replace(respon.url)
-            }
-        }
-        // error: function(data) {                
-        //   toastr["error"]("Terjadi kesalahan server.")
-        // }
-      })
+        });
+    }
   }
 
   get_option_kelompokjenisizin()

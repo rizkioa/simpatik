@@ -444,7 +444,7 @@ class PengaduanIzin(MetaAtribut):
 	no_ktp = models.CharField(max_length=255, verbose_name="Nomor KTP")
 	nama_lengkap = models.CharField(max_length=255, verbose_name="Nama Lengkap")
 	no_telp = models.CharField(max_length=50, verbose_name="Nomor Telphone")
-	email = models.EmailField(unique=True, blank=True, null=True)
+	email = models.EmailField(blank=True, null=True)
 	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="kelompok_jenis_izin_pengaduan", blank=True, null=True)
 	isi_pengdauan = models.TextField(max_length=255, verbose_name= "Isi Pengaduan")
 	balas = models.TextField(max_length=255, verbose_name= "Balas", blank=True, null=True)
