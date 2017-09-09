@@ -3,15 +3,38 @@
 
 {% block extrastyle %}
 	{{ block.super }}
-	<div class="modal fade" id="create_cabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="modal_pengaduan_izin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h3 class="modal-title custom-font">Tambah Kantor Cabang/Pembantu/Perwakilan</h3>
 				</div>
 				<div class="modal-body">
+				<h4>Pengajuan Izin</h4>
+				<table id="result_list" class="table table-striped table-bordered table-hover table-condensed">
+					<thead>
+						<tr>
+							<td>Nomor KTP</td>
+							<td>Nama Lengkap</td>
+							<td>Nomor Telphone</td>
+							<td>Email</td>
+							<td>Kategori Pengaduan</td>
+							<td>Isi Pengaduan</td>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+
+{% block extrajs_site %}
+	{{ block.super }}
+	<script type="text/javascript">
+		function modal_pengaduan(){
+			$('#modal_pengaduan_izin').modal('show')
+		}
+	</script>
 {% endblock %}
