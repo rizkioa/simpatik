@@ -161,7 +161,7 @@ class PegawaiAdmin(admin.ModelAdmin):
 
 	def get_queryset(self, request):
 		qs = super(PegawaiAdmin, self).get_queryset(request)
-		if request.user.groups.filter(name="Cek Lokasi"):
+		if request.user.groups.filter(name="Cek Lokasi") and not request.user.groups.filter(name="Admin Sistem"):
 			qs = qs.filter(unit_kerja=request.user.pegawai.unit_kerja)
 		return qs.order_by('-jabatan_id')
 
