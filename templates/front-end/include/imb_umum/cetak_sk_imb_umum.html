@@ -572,19 +572,9 @@
 		        			<td>{{ pengajuan.pemohon|default_if_none:"-" }}</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 119px;" align="left">
-		        			<table border="0">
-			        			<tr>
-			        				<td>b.</td>
-			        				<td>Nomor Sertifikat/</td>
-			        			</tr>
-			        			<tr>
-			        				<td colspan="2" style="padding-left: 19px;" align="left">Petok/Persil</td>
-			        			</tr>
-		        			</table>
-		        			</td>
-		        			<td width="10">:</td>
-		        			<td>{{ pengajuan.no_surat_tanah|default_if_none:"-" }} {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        			<td colspan="3" style="padding-left: 138px;width: 300px;text-indent:-18px;" align="left">b. Nomor Sertifikat/ Petok/Persil</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
@@ -1192,7 +1182,7 @@
 		        			<td></td>
 		        		</tr> -->
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 490px;">a. Nama</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 990px;">a. Nama</td>
 		        			<td width="10">:</td>
 		        			<td>{{pengajuan.pemohon.nama_lengkap}}</td>
 		        		</tr>
@@ -1206,7 +1196,7 @@
 		        			{% endif %}
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" align="left" style="padding-left: 120px;width: 380px;">c. Pekerjaan</td>
+		        			<td colspan="3" align="left" style="padding-left: 120px;width: 500px;">c. Pekerjaan</td>
 		        			<td width="10">:</td>
 		        			{% if pengajuan.pemohon.pekerjaan == 'PNS' %}
 		        				<td>{{pengajuan.pemohon.pekerjaan|default_if_none:""}}</td>
@@ -1303,24 +1293,14 @@
 		        			<td  colspan="3">Bangunan, sebagaimana dimaksud dalam diktum KEDUA terletak di atas tanah :</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 121px;" align="left">a. Milik</td>
+		        			<td colspan="3" style="padding-left: 121px;width: 300px" align="left">a. Milik</td>
 		        			<td width="10">:</td>
 		        			<td>{{ pengajuan.pemohon|default_if_none:"-" }}</td>
 		        		</tr>
 		        		<tr>
-		        			<td colspan="3" style="padding-left: 119px;" align="left">
-		        			<table border="0">
-			        			<tr>
-			        				<td>b.</td>
-			        				<td>Nomor Sertifikat/</td>
-			        			</tr>
-			        			<tr>
-			        				<td colspan="2" style="padding-left: 19px;" align="left">Petok/Persil</td>
-			        			</tr>
-		        			</table>
-		        			</td>
-		        			<td width="10" style="vertical-align: bottom;padding-bottom: 4px;">:</td>
-		        			<td style="vertical-align: bottom;padding-bottom: 4px;">{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
+		        			<td colspan="3" style="padding-left: 138px;width: 300px;text-indent:-18px;" align="left">b. Nomor Sertifikat/ Petok/Persil</td>
+		        			<td width="10" style="vertical-align: top;padding-top: 1px;">:</td>
+		        			<td style="vertical-align: top;padding-top: 1px;">{{ pengajuan.no_surat_tanah|default_if_none:"-" }} Tanggal {{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:""}}</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>

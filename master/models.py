@@ -402,11 +402,21 @@ class KategoriPengaduan(models.Model):
 		verbose_name = "Kategori Pengaduan"
 		verbose_name_plural = "Kategori Pengaduan"
 
-class ChatRoom(MetaAtribut):
-	# operator = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_operator", verbose_name="Operator", blank=True, null=True)
-	email = models.EmailField(unique=True, blank=True, null=True)
+class ChatUserPemohon(models.Model):
+	# email = models.EmailField(unique=True, blank=True, null=True)
 	no_ktp = models.CharField(max_length=255, verbose_name="Nomor KTP")
 	nama_pemohon = models.CharField(max_length=255, verbose_name="Nama Lengkap")
+
+	def __unicode__(self):
+		return self.no_ktp
+
+	class Meta:
+		verbose_name = "Chat User Pemohon"
+		verbose_name_plural = "Chat User Pemohon"
+
+class ChatRoom(MetaAtribut):
+	operator = models.ForeignKey("accounts.Account", related_name="%(app_label)s_%(class)s_operator", verbose_name="Operator", blank=True, null=True)
+	userpemohon = models.ForeignKey(ChatUserPemohon, verbose_name="Chat User Pemohon", null=True, blank=True)
 	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="kelompok_jenis_izin_chat", blank=True, null=True)
 
 	class Meta:
@@ -429,3 +439,16 @@ class Chat(MetaAtribut):
 	# 	if not self.id:
 	# 		self.created_at = datetime.now()
 	# 	return super(Chat, self).save(*args, **kwargs)
+
+class PengaduanIzin(MetaAtribut):
+	no_ktp = models.CharField(max_length=255, verbose_name="Nomor KTP")
+	nama_lengkap = models.CharField(max_length=255, verbose_name="Nama Lengkap")
+	no_telp = models.CharField(max_length=50, verbose_name="Nomor Telphone")
+	email = models.EmailField(blank=True, null=True)
+	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="kelompok_jenis_izin_pengaduan", blank=True, null=True)
+	isi_pengdauan = models.TextField(max_length=255, verbose_name= "Isi Pengaduan")
+	balas = models.TextField(max_length=255, verbose_name= "Balas", blank=True, null=True)
+
+	class Meta:
+		verbose_name = "Pengaduan Izin"
+		verbose_name_plural = "Pengaduan Izin"

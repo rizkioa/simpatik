@@ -535,20 +535,20 @@ class IzinAdmin(admin.ModelAdmin):
 		total = 0
 		pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11))
 		if request.user.groups.filter(name='Operator'):
-			pengajuan_ = pengajuan_.objects.filter(status=6).count()
+			pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11)).filter(status=6).count()
 			id_elemet.append('operator')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
 			total = pengajuan_
 		if request.user.groups.filter(name='Kasir'):
-			pengajuan_ = pengajuan_.objects.filter(status=5).count()
+			pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11)).filter(status=5).count()
 			id_elemet.append('kasir')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/kasir/"
 			total = pengajuan_
 		if request.user.groups.filter(name='Kabid'):
 			# verifikasi pengajuan
-			pengajuan_ = pengajuan_.objects.filter(status=4).count()
+			pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11)).filter(status=4).count()
 			id_elemet.append('kabid_pengajuan')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
@@ -560,43 +560,43 @@ class IzinAdmin(admin.ModelAdmin):
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kabid/"
 			total = skizin + total
 		if request.user.groups.filter(name='Pembuat Surat'):
-			pengajuan_ = pengajuan_.objects.filter(skizin__isnull=True, status=2).count()
+			pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11)).filter(skizin__isnull=True, status=2).count()
 			id_elemet.append('pembuat_surat')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-pembuat-surat/"
 			total = pengajuan_ + total
 			# perbaikan draf sk
-			pengajuan_ = pengajuan_.objects.filter(skizin__status=13, status=2).count()
+			pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11)).filter(skizin__status=13, status=2).count()
 			id_elemet.append('perbaikan_surat')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-perbaikan-surat/"
 			total = pengajuan_ + total
 		if request.user.groups.filter(name='Penomoran'):
-			pengajuan_ = len(SKIzin.objects.filter(status=9))
+			pengajuan_ = SKIzin.objects.filter(status=9).filter(~Q(pengajuan_izin__status=11)).count()
 			id_elemet.append('penomoran')
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/penomoran-skizin/"
 			total = pengajuan_ + total
 		if request.user.groups.filter(name='Kadin'):
-			skizin = len(SKIzin.objects.filter(status=4).filter(~Q(pengajuan_izin__status=11)))
+			skizin = SKIzin.objects.filter(status=4).filter(~Q(pengajuan_izin__status=11)).count()
 			id_elemet.append('kadin_skizin')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-kadin/"
 			total = skizin + total
 		if request.user.groups.filter(name='Bupati'):
-			skizin = len(SKIzin.objects.filter(status=12).filter(~Q(pengajuan_izin__status=11)))
+			skizin = SKIzin.objects.filter(status=12).filter(~Q(pengajuan_izin__status=11)).count()
 			id_elemet.append('bupati_skizin')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-bupati/"
 			total = skizin + total
 		if request.user.groups.filter(name='Cetak'):
-			skizin = len(SKIzin.objects.filter(status=10).filter(~Q(pengajuan_izin__status=11)))
+			skizin = SKIzin.objects.filter(status=10).filter(~Q(pengajuan_izin__status=11)).count()
 			id_elemet.append('cetak')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/pengajuanizin/verifikasi-skizin-cetak"
 			total = skizin + total
 		if request.user.groups.filter(name='Selesai'):
-			skizin = len(SKIzin.objects.filter(status=2).filter(~Q(pengajuan_izin__status=11)))
+			skizin = SKIzin.objects.filter(status=2).filter(~Q(pengajuan_izin__status=11)).count()
 			id_elemet.append('selesai')
 			jumlah_izin.append(skizin)
 			url = "/admin/izin/pengajuanizin/stemple-skizin/"

@@ -5,8 +5,8 @@
 
 {% block extrastyle %}
 	{{ block.super }}
-	<link rel="stylesheet" href="{% static "scripts/js/vendor/morris/morris.css" %}">
-	<link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.min.css" %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/morris/morris.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
 
 {% endblock %}
 
@@ -23,10 +23,10 @@
 {% endblock %}
 
 {% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/raphael/raphael-min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/morris/morris.min.js" %}"></script>
+	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/raphael/raphael-min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/morris/morris.min.js' %}"></script>
 	<script type="text/javascript">
 		$(window).load(function(){
 			toastr.options = {
@@ -80,7 +80,7 @@
 	<!-- ============================================
     ============== Custom JavaScripts ===============
     ============================================= -->
-    <script src="{% static "scripts/js/main.js" %}"></script>
+    <script src="{% static 'scripts/js/main.js' %}"></script>
     <!--/ custom javascripts -->
 {% endblock %}
 

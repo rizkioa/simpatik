@@ -290,8 +290,8 @@
 
 {% block extrastyle %}
 	{{ block.super }}
-	<link rel="stylesheet" type="text/css" href="{% static "admin/css/widgets.css" %}" />
-	<link rel="stylesheet" href="{% static "scripts/js/vendor/chosen/chosen.css" %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'admin/css/widgets.css' %}" />
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
 {% endblock %}
 
 {% block extrajs %}
@@ -315,12 +315,12 @@
 {% endblock %}
 
 {% block extrajs_site %}
-	<script src="{% static "scripts/js/vendor/screenfull/screenfull.min.js" %}"></script>
-	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
 	<!-- ============================================
     ============== Custom JavaScripts ===============
     ============================================= -->
-    <script src="{% static "scripts/js/main.js" %}"></script>
+    <script src="{% static 'scripts/js/main.js' %}"></script>
     <!--/ custom javascripts -->
     <script type="text/javascript">
         function open_splash(btnEl){

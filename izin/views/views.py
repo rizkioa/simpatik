@@ -17,7 +17,7 @@ from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, DetilTrayek, DetilReklameIzin, JenisKualifikasi
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame, PengaduanIzin
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
 from izin.utils import formatrupiah,JENIS_IUJK, get_tahun_choices
@@ -57,6 +57,13 @@ def call_center(request):
 
 def cari_pengajuan(request):
 	return render(request, "front-end/cari_pengajuan.html")
+
+def pengaduan_izin(request, extra_context={}):
+	kelompokjenisizin_list = KelompokJenisIzin.objects.filter(aktif=True)
+	extra_context.update({
+		'kelompokjenisizin' : kelompokjenisizin_list
+		})
+	return render(request, "front-end/pengaduan_izin.html", extra_context)
 
 def formulir_siup(request, extra_context={}):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
@@ -1392,10 +1399,37 @@ def list_track_pengajuan(request, id_pengajuan, extra_context={}):
 		pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan)
 		if pengajuan:
 			riwayat = Riwayat.objects.filter(pengajuan_izin_id=pengajuan.id)
-			print riwayat
+			# print riwayat
 			extra_context.update({'pengajuan':pengajuan, 'riwayats':riwayat})
 			template = loader.get_template("front-end/list_track_pengajuan.html")
 			ec = RequestContext(request, extra_context)
 			return HttpResponse(template.render(ec))
 		# else:
 		#     return redirect(reverse('cari_pengajuan'))
+
+def ajax_save_pengaduan(request):
+	data = {"success": False, "pesan": "Terjadi Kesalahan"}
+	no_ktp = request.POST.get('no_ktp_')
+	# print no_ktp
+	nama_lengkap = request.POST.get('nama_lengkap_')
+	# print nama_lengkap
+	no_telp = request.POST.get('no_telp_')
+	email = request.POST.get('email_')
+	kelompok_jenis_izin = request.POST.get('kategori_pengajuan_')
+	isi_pengdauan = request.POST.get('isi_pengaduan_')
+	pengaduan_list = PengaduanIzin.objects.filter(no_ktp=no_ktp, nama_lengkap=nama_lengkap, no_telp=no_telp, email=email, kelompok_jenis_izin=kelompok_jenis_izin, isi_pengdauan=isi_pengdauan)
+	if pengaduan_list.exists():
+		pengaduan_obj = PengaduanIzin.objects.last()
+		data = {"success": True, "pesan": "Berhasil", "id": pengaduan_obj.id}
+	else:
+		pengaduan_obj = PengaduanIzin(
+			no_ktp=no_ktp,
+			nama_lengkap=nama_lengkap,
+			no_telp=no_telp,
+			email=email,
+			kelompok_jenis_izin=kelompok_jenis_izin,
+			isi_pengdauan=isi_pengdauan
+			)
+		pengaduan_obj.save()
+	data = {"success": True, "pesan": "berhasil", "nomor_ktp": pengaduan_obj.no_ktp}
+	return HttpResponse(json.dumps(data))
