@@ -1409,19 +1409,13 @@ def list_track_pengajuan(request, id_pengajuan, extra_context={}):
 
 def ajax_save_pengaduan(request):
 	data = {"success": False, "pesan": "Terjadi Kesalahan"}
-	no_ktp = request.POST.get("no_ktp_")
-	print no_ktp
+	no_ktp = request.POST.get("no_ktp_", None)
 	nama_lengkap = request.POST.get('nama_lengkap_')
-	# print nama_lengkap
 	no_telp = request.POST.get('no_telp_')
 	email = request.POST.get('email_')
 	kelompok_jenis_izin = request.POST.get('kategori_pengajuan_')
 	isi_pengaduan = request.POST.get('isi_pengaduan_')
-	pengaduan_list = PengaduanIzin.objects.filter(no_ktp=no_ktp, nama_lengkap=nama_lengkap, no_telp=no_telp, email=email, kelompok_jenis_izin=kelompok_jenis_izin, isi_pengaduan=isi_pengaduan)
-	if pengaduan_list.exists():
-		pengaduan_obj = PengaduanIzin.objects.last()
-		data = {"success": True, "pesan": "Berhasil", "id": pengaduan_obj.id}
-	else:
+	if no_ktp and no_ktp is not None and isi_pengaduan:
 		pengaduan_obj = PengaduanIzin(
 			no_ktp=no_ktp,
 			nama_lengkap=nama_lengkap,
@@ -1431,5 +1425,5 @@ def ajax_save_pengaduan(request):
 			isi_pengaduan=isi_pengaduan
 			)
 		pengaduan_obj.save()
-	data = {"success": True, "pesan": "berhasil", "nomor_ktp": pengaduan_obj.no_ktp}
+		data = {"success": True, "pesan": "berhasil", "nomor_ktp": pengaduan_obj.no_ktp}
 	return HttpResponse(json.dumps(data))
