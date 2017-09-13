@@ -1416,7 +1416,7 @@ def ajax_save_pengaduan(request):
 	no_telp = request.POST.get('no_telp_')
 	email = request.POST.get('email_')
 	kelompok_jenis_izin = request.POST.get('kategori_pengajuan_')
-	isi_pengdauan = request.POST.get('isi_pengaduan_')
+	isi_pengadauan = request.POST.get('isi_pengaduan_')
 	pengaduan_list = PengaduanIzin.objects.filter(no_ktp=no_ktp, nama_lengkap=nama_lengkap, no_telp=no_telp, email=email, kelompok_jenis_izin=kelompok_jenis_izin, isi_pengdauan=isi_pengdauan)
 	if pengaduan_list.exists():
 		pengaduan_obj = PengaduanIzin.objects.last()
@@ -1428,7 +1428,7 @@ def ajax_save_pengaduan(request):
 			no_telp=no_telp,
 			email=email,
 			kelompok_jenis_izin=kelompok_jenis_izin,
-			isi_pengdauan=isi_pengdauan
+			isi_pengadauan=isi_pengadauan
 			)
 		pengaduan_obj.save()
 	data = {"success": True, "pesan": "berhasil", "nomor_ktp": pengaduan_obj.no_ktp}
