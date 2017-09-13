@@ -441,12 +441,12 @@ class Chat(MetaAtribut):
 	# 	return super(Chat, self).save(*args, **kwargs)
 
 class PengaduanIzin(MetaAtribut):
-	no_ktp = models.CharField(max_length=255, verbose_name="Nomor KTP")
-	nama_lengkap = models.CharField(max_length=255, verbose_name="Nama Lengkap")
-	no_telp = models.CharField(max_length=50, verbose_name="Nomor Telphone")
+	no_ktp = models.CharField(max_length=255, verbose_name="Nomor KTP", null=True, blank=True)
+	nama_lengkap = models.CharField(max_length=255, verbose_name="Nama Lengkap", null=True, blank=True)
+	no_telp = models.CharField(max_length=50, verbose_name="Nomor Telphone", null=True, blank=True)
 	email = models.EmailField(blank=True, null=True)
 	kelompok_jenis_izin = models.ForeignKey('izin.KelompokJenisIzin', verbose_name='Kelompok Jenis Izin', related_name="kelompok_jenis_izin_pengaduan", blank=True, null=True)
-	isi_pengaduan = models.TextField(max_length=255, verbose_name= "Isi Pengaduan")
+	isi_pengaduan = models.TextField(max_length=255, verbose_name= "Isi Pengaduan", null=True, blank=True)
 	balas = models.TextField(max_length=255, verbose_name= "Balas", blank=True, null=True)
 
 	def as_json(self):

@@ -1409,19 +1409,21 @@ def list_track_pengajuan(request, id_pengajuan, extra_context={}):
 
 def ajax_save_pengaduan(request):
 	data = {"success": False, "pesan": "Terjadi Kesalahan"}
-	no_ktp = request.POST.get("no_ktp_", None)
-	nama_lengkap = request.POST.get('nama_lengkap_')
-	no_telp = request.POST.get('no_telp_')
-	email = request.POST.get('email_')
-	kelompok_jenis_izin = request.POST.get('kategori_pengajuan_')
-	isi_pengaduan = request.POST.get('isi_pengaduan_')
-	if no_ktp and no_ktp is not None and isi_pengaduan:
+	no_ktp = request.POST.get("no_ktp", None)
+	nama_lengkap = request.POST.get('nama_lengkap')
+	no_telp = request.POST.get('no_telp')
+	email = request.POST.get('email', None)
+	kelompok_jenis_izin = request.POST.get('kategori_pengajuan')
+	isi_pengaduan = request.POST.get('isi_pengaduan')
+	# print no_ktp
+	# print isi_pengaduan
+	if no_ktp and isi_pengaduan:
 		pengaduan_obj = PengaduanIzin(
-			no_ktp=no_ktp,
-			nama_lengkap=nama_lengkap,
-			no_telp=no_telp,
-			email=email,
-			kelompok_jenis_izin=kelompok_jenis_izin,
+			no_ktp = no_ktp,
+			nama_lengkap = nama_lengkap,
+			no_telp = no_telp,
+			email = email,
+			kelompok_jenis_izin_id = kelompok_jenis_izin,
 			isi_pengaduan=isi_pengaduan
 			)
 		pengaduan_obj.save()
