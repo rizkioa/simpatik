@@ -103,6 +103,9 @@
                   </div>
                 </form>
               </div>
+              <div class="panel-footer">
+                <p align="center"><strong>Untuk Melihat Lebih Lanjut Pengaduan Anda</strong><span class="no_ktp"></span></p>
+              </div>
             </div>
           </div>
         </div>
@@ -118,10 +121,9 @@
   <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
   <script type="text/javascript">
   function save_pengaduan(){
-    frm = $('.frm_pengaduan')
-    frm.parsley().validate();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    no_ktp_ = $('input[name=nomor_ktp]').val();
+    no_ktp_ = $('#id_nomor_ktp').val();
+    console.log(no_ktp_)
     nama_lengkap_ = $('#id_nama_lengkap').val();
     email_ = $('#id_email').val();
     no_telp_ = $('#id_nomor_telphone').val();
@@ -154,6 +156,8 @@
     //     //   toastr["error"]("Terjadi kesalahan server.")
     //     // }
     // })
+    frm = $('.frm_pengaduan')
+    frm.parsley().validate();
     if (frm.parsley().isValid()){
         frm.ajaxSubmit({
             method: 'POST',
@@ -165,7 +169,8 @@
             success: function(response){
                 frm.mLoading('hide');
                 respon = JSON.parse(response)
-                console.log(respon)
+                // console.log(respon)
+                // no_ktp = no_ktp_
                 // localStorage.setItem('chatroom_id', respon.id)
                 // $('#widget-chat-login').fadeOut();
                 // $('#widget-chat').fadeIn();
