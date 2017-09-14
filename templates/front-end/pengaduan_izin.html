@@ -54,25 +54,25 @@
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Nomor KTP</label>
                       <div class="col-sm-8">
-                        <input type="text" required="" class="form-control" id="id_nomor_ktp" name="nomor_ktp">
+                        <input type="text" required="" class="form-control" name="no_ktp">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Nama Lengkap</label>
                       <div class="col-sm-8">
-                        <input type="text" required class="form-control" id="id_nama_lengkap" name="nama_lengkap">
+                        <input type="text" required class="form-control" name="nama_lengkap">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Email</label>
                       <div class="col-sm-8">
-                        <input type="text" class="form-control" id="id_email" name="email">
+                        <input type="text" class="form-control" name="email">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
                       <label for="input01" class="col-sm-4 control-label">Nomor Telphone</label>
                       <div class="col-sm-8">
-                        <input type="text"  class="form-control" id="id_nomor_telphone" name="nomor_telphone">
+                        <input type="text"  class="form-control" name="nomor_telphone">
                       </div>
                     </div>
                     <div class="form-group col-md-12">
@@ -103,6 +103,9 @@
                   </div>
                 </form>
               </div>
+              <div class="panel-footer">
+                <p align="center"><strong>Untuk Melihat Lebih Lanjut Pengaduan Anda</strong><span class="no_ktp"></span></p>
+              </div>
             </div>
           </div>
         </div>
@@ -118,10 +121,9 @@
   <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
   <script type="text/javascript">
   function save_pengaduan(){
-    frm = $('.frm_pengaduan')
-    frm.parsley().validate();
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    no_ktp_ = $('input[name=nomor_ktp]').val();
+    no_ktp_ = $('#id_nomor_ktp').val();
+    console.log(no_ktp_)
     nama_lengkap_ = $('#id_nama_lengkap').val();
     email_ = $('#id_email').val();
     no_telp_ = $('#id_nomor_telphone').val();
@@ -154,25 +156,29 @@
     //     //   toastr["error"]("Terjadi kesalahan server.")
     //     // }
     // })
+    frm = $('.frm_pengaduan')
+    frm.parsley().validate();
     if (frm.parsley().isValid()){
         frm.ajaxSubmit({
             method: 'POST',
             data: frm.serialize(),
             url: '{% url 'ajax_save_pengaduan' %}',
             beforeSend: function() {
-                frm.mLoading();
+              frm.mLoading();
             },
             success: function(response){
                 frm.mLoading('hide');
                 respon = JSON.parse(response)
-                console.log(respon)
-                // localStorage.setItem('chatroom_id', respon.id)
-                // $('#widget-chat-login').fadeOut();
-                // $('#widget-chat').fadeIn();
-                // console.log(response)
+                if (respon.success == true){
+                  toastr["success"](respon.pesan)
+                }
+                else{
+                  toastr["warning"](respon.pesan)
+                }
             },
             error: function(){
-                frm.mLoading('hide');
+              frm.mLoading('hide');
+              toastr["error"]("Terjadi Kesalahan Server.")
             }
         });
     }
