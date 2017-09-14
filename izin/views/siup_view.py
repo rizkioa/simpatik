@@ -328,6 +328,7 @@ def siup_identitas_perusahan_save_cookie(request):
 					data = json.dumps(data)
 					response = HttpResponse(data)
 					response.set_cookie(key='id_perusahaan', value=p.id)
+					response.set_cookie(key='npwp_perusahaan', value=p.npwp)
 				else:
 					data = perusahaan.errors.as_json()
 					response = HttpResponse(data)
@@ -1046,7 +1047,7 @@ def siup_upload_berkas_pendukung(request):
 									if pengajuan_obj.pemohon:
 										berkas = form.save(commit=False)
 										berkas.nama_berkas = "Berkas Pendukung "+pengajuan_obj.pemohon.nama_lengkap
-										berkas.keterangan = "pendukung "+request.COOKIES.get('npwp_perusahaan', None)
+										berkas.keterangan = "pendukung "+str(request.COOKIES.get('npwp_perusahaan', ""))
 										if request.user.is_authenticated():
 											berkas.created_by_id = request.user.id
 										else:
