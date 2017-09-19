@@ -37,6 +37,7 @@
     <section class="tile">
       <div class="tile-body">
         <div class="row">
+          <button class="pull-right btn btn-info" onclick="show_modal()" id="button_modal_pengaduan" style="margin-right: 10px">Cek Pengaduan</button>
           <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-darkgray">
               <div class="panel-header">
@@ -104,7 +105,10 @@
                 </form>
               </div>
               <div class="panel-footer">
-                <p align="center"><strong>Untuk Melihat Lebih Lanjut Pengaduan Anda</strong><span id="id_sp_no_ktp"></span></p>
+                <p align="center">Untuk Melihat Lebih Lanjut Pengaduan Anda<span hidden="" id="id_sp_no_ktp"></span>
+                <br>
+                <a href="{% url 'cek_pengaduan_izin' %}" id="button_cek_pengaduan" class="btn btn-primary">Cek disini</a>
+                </p>
               </div>
             </div>
           </div>
@@ -146,37 +150,28 @@
       </div>
     </section>
   </div>
-</div>
+</div> -->
 
 <div class="modal fade" id="pengaduan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <form method="POST" class="form-horizontal">
         <div class="modal-header">
-          <h3 class="modal-title costom-font">Pengaduan</h3>
+          <h3 class="modal-title costom-font">Cek Pengaduan</h3>
         </div>
         <div class="row">
           <div class="col-md-12">
             <section class="tile">
               <div class="tile-body">
                 <div class="row">
-                  <div class="col-md-6 col-md-offset-3">
-                    <div class="panel panel-darkgray">
-                      <div class="panel-header">
-                        <div class="row">
-                          <div class="col-sm-12">
-                            <h2 class="text-center">Pengaduan Izin</h2>
-                            <hr class="style14">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="panel-body">
-                        <div class="row">
-                          <h3 align="center">Pengaduan</h3>
-                          <p class="cek_isi_pengaduan"></p>
-                        </div>
-                      </div>
-                    </div>
+                  <div align="center">
+                    <h4 align="center">Masukan Nomor KTP untuk mengecek pengajuan anda</h4>
+                    <br>
+                    <hr>
+                    <input type="text" id="id_cek_no_ktp" class="control-label" name="cek_no_ktp" placeholder="Masukan Nomor KTP Anda">
+                    <br>
+                    <br>
+                    <a onclick="cek_pengaduan();" href="{% url 'cek_pengaduan_izin' %}" class="btn btn-success">Cek Pengaduan</a>
                   </div>
                 </div>
               </div>
@@ -187,7 +182,7 @@
       </form>
     </div>
   </div>
-</div>  -->           
+</div>          
 {% endblock %}
 
 {% block extratools %}
@@ -195,6 +190,7 @@
   <script src='https://www.google.com/recaptcha/api.js'></script>
   <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
   <script type="text/javascript">
+  $(".panel-footer").hide()
   function save_pengaduan(request){
     // response = $('#g-recaptcha-response').val();
     // recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
@@ -239,6 +235,7 @@
                 if (respon.success == true){
                   toastr["success"](respon.pesan)
                   nomor_ktp = $("input[name=no_ktp]").val()
+                  localStorage.setItem("no_ktp", nomor_ktp);
                   $("#id_sp_no_ktp").text(nomor_ktp)
                   $("input[name=no_ktp]").val('')
                   $("input[name=nama_lengkap]").val('')
@@ -246,6 +243,7 @@
                   $("input[name=no_telp]").val('')
                   $("input[name=nomor_telphone]").val('')
                   $("textarea[name=isi_pengaduan]").val('')
+                  $(".panel-footer").show()
                 }
                 else{
                   toastr["warning"](respon.pesan)
@@ -272,28 +270,31 @@
       })
   }
 
+  function show_modal(){
+    $("#pengaduan_modal").modal('show')
+  }
+
+  function cek_pengaduan(){
+    nomor_ktp = $("#id_cek_no_ktp").val()
+    localStorage.setItem("no_ktp", nomor_ktp);
+  }
+
+  // no_ktp = $("input[name=no_ktp]").val()
 
   // $('#button_cek_pengaduan').click(function(){
   //   $.ajax({
-  //     url: __base_url__+'/ajax-cek-pengaduan/'+$("#cek_nomor_ktp"),
-  //     type: 'GET',
-  //     // data: { csrfmiddlewaretoken: csrf_token, cek_no_ktp: cek_no_ktp },
-  //     success: function(respon){
-  //       respon = JSON.parse(respon)
-  //       console.log(respon)
-  //       if (respon.success == true){
-  //         if (respon.data){
-  //           $('cek_isi_pengaduan').text(respon.data.isi_pengaduan)
-  //         }
-  //         $('#pengaduan_modal').modal('show');
+  //       type: 'GET',
+  //       url: __base_url__+'/ajax-cek-pengaduan/'+no_ktp,
+  //       success: function(respon){
+  //           console.log(respon)
+  //           $.each(respon, function(data) {
+
+  //               $("#id_sp_isi_pengaduan").text(respon[data].isi_pengaduan)
+  //               $("#id_sp_balasan").text(respon[data].balas)
+  //           })
   //       }
-  //     }
-        
   //   })
   // })
-
-
-
     
   </script>
 {% endblock %}

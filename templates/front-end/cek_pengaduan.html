@@ -198,7 +198,7 @@ padding-left:90px;
 {{ block.super }}
 <script type="text/javascript">
     // no_ktp = getUrlParameter('no_ktp')
-    no_ktp = '2424'
+    no_ktp = localStorage.getItem('no_ktp')
     if(no_ktp != ''){
         load_cek_pengaduan(no_ktp)
     }
