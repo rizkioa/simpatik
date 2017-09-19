@@ -184,7 +184,7 @@ def layanan_tdp_firma(request, extra_context={}):
 	return response
 
 def layanan_tdp_perorangan(request, extra_context={}):
-	kelompok = get_object_or_404(KelompokJenisIzin, kode="PERORANGAN")
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="TDP-PERORANGAN")
 	extra_context.update({'kelompok': kelompok})
 	extra_context.update({'title_long': "Tanda Daftar Perusahaan (TDP) - Perorangan"})
 	extra_context.update({'title_short': "TDP - Perorangan"})
