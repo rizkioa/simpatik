@@ -65,6 +65,9 @@ def pengaduan_izin(request, extra_context={}):
 		})
 	return render(request, "front-end/pengaduan_izin.html", extra_context)
 
+def cek_pengaduan_izin(request):
+	return render(request, "front-end/cek_pengaduan.html")
+
 def formulir_siup(request, extra_context={}):
 	if 'id_kelompok_izin' in request.COOKIES.keys():
 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin']) # Untuk SIUP
@@ -1411,9 +1414,9 @@ def ajax_save_pengaduan(request):
 	data = {"success": False, "pesan": "Terjadi Kesalahan"}
 	no_ktp = request.POST.get("no_ktp", None)
 	nama_lengkap = request.POST.get('nama_lengkap')
-	no_telp = request.POST.get('no_telp')
+	no_telp = request.POST.get('nomor_telphone')
 	email = request.POST.get('email', None)
-	kelompok_jenis_izin = request.POST.get('kategori_pengajuan')
+	kelompok_jenis_izin = request.POST.get('kategori_pengaduan')
 	isi_pengaduan = request.POST.get('isi_pengaduan')
 	# print no_ktp
 	# print isi_pengaduan
@@ -1429,3 +1432,12 @@ def ajax_save_pengaduan(request):
 		pengaduan_obj.save()
 		data = {"success": True, "pesan": "berhasil", "nomor_ktp": pengaduan_obj.no_ktp}
 	return HttpResponse(json.dumps(data))
+
+def cek_pengaduan(request, no_ktp):
+	data = []
+	if no_ktp:
+		p = PengaduanIzin.objects.filter(no_ktp=no_ktp)
+		# p = p.last()
+		data = [ob.as_json() for ob in p]
+		response = HttpResponse(json.dumps(data), content_type="application/json")
+		return response
