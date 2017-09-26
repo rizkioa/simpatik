@@ -160,9 +160,9 @@ def formatrupiah(uang):
 		p = j[-3:]
 		q = j[:-3]
 		if len(y) > 1:
-			return   formatrupiah(q) + '.' + p + ','+y[1]
+			return   formatrupiah(q) + '.' + p 
 		else:
-			return   formatrupiah(q) + '.' + p + ',00'
+			return   formatrupiah(q) + '.' + p 
 @register.filter()
 def get_alamat_lengkap(obj, filter):
 	if filter == 'perusahaan':
