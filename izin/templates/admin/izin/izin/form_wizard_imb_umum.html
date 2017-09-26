@@ -858,7 +858,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                 var sum = 0;
                 for (var i = 0; i < MyRows.length; i++) {
                   var MyIndexValue = $(MyRows[i]).find('.biaya').html();
-                  sum = sum + parseInt(MyIndexValue);
+                  sum = sum + parseFloat(MyIndexValue);
                   
                 }
                 $("#id_total").val(sum);
@@ -883,7 +883,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                     var sum = 0;
                     for (var i = 0; i < MyRows.length; i++) {
                       var MyIndexValue = $(MyRows[i]).find('.biaya').html();
-                      sum = sum + parseInt(MyIndexValue);
+                      sum = sum + parseFloat(MyIndexValue);
                       
                     }
                     $("#id_total").val(sum);

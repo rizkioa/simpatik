@@ -742,8 +742,8 @@
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar
-					        			{% if retribusi.jumlah_pembayaran %}
-					        				Rp {{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
+					        			{% if retribusi %}
+					        				Rp {{retribusi|formatrupiah}} ({{terbilang}})
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
@@ -1495,8 +1495,8 @@
 					        		<tr>
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar 
-					        			{% if retribusi.jumlah_pembayaran %}
-					        				Rp {{retribusi.jumlah_pembayaran}},00 ({{terbilang}} Rupiah)
+					        			{% if retribusi %}
+					        				Rp {{retribusi|formatrupiah}} ({{terbilang}} Rupiah)
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
@@ -1606,7 +1606,7 @@
 			        				<p style="font-size:14px; padding-left: 9%;" align="center">
 				                    <font size="3pt">Disalin sesuai dengan aslinya <br> 
 										yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
-				                    <p align="center" style="font-size:15px;margin-top: 50px;padding-left: 8%;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+				                    <p align="center" style="font-size:15px;margin-top: 35px;padding-left: 8%;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
 										<font size="3pt">Pembina Tk.l<br>
 					                    NIP: {{nip_kepala_dinas}}</font>
 					                </p>
