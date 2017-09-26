@@ -151,14 +151,18 @@ def get_berkas(qs_, user_):
 @register.filter(name='formatrupiah')
 def formatrupiah(uang):
 	y = str(uang)
-	y = y.replace(".00","")
-	if len(y) <= 3 :
-		return y     
+	y = y.split('.')
+	j = y[0]
+	# y = y.replace(".00","")
+	if len(j) <= 3 :
+		return j  
 	else :
-		p = y[-3:]
-		q = y[:-3]
-		return   formatrupiah(q) + '.' + p
-
+		p = j[-3:]
+		q = j[:-3]
+		if len(y) > 1:
+			return   formatrupiah(q) + '.' + p + ','+y[1]
+		else:
+			return   formatrupiah(q) + '.' + p + ',00'
 @register.filter()
 def get_alamat_lengkap(obj, filter):
 	if filter == 'perusahaan':

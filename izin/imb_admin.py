@@ -15,6 +15,8 @@ from accounts.models import NomorIdentitasPengguna
 
 from izin.utils import*
 
+import math
+
 class DetilIMBAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
 	search_fields = ('no_izin', 'pemohon__nama_lengkap')
@@ -171,6 +173,18 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				pass
 				# print "WASEM"
 
+			try:
+				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_,parameter_bangunan__parameter="Fungsi Bangunan").last()
+				if detil_bangunan_:
+					fungsi_bangunan = detil_bangunan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
+					detil_parameter = fungsi_bangunan.last()
+					# print detil_parameter.detil_parameter
+					if detil_parameter:
+						detil_ = detil_parameter.detil_parameter
+						extra_context.update({'detil_': detil_})
+			except ObjectDoesNotExist:
+				pass
+
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_umum.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -226,9 +240,13 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			try:
 				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
-					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					j = retribusi_.jumlah_pembayaran.replace(".", "")
+					p = j.replace(",", ".")
+					q = math.ceil(float(p))
+					n = int(str(q).replace(".0", ""))
+					print n
 					terbilang_ = terbilang(n)
-					extra_context.update({'retribusi': retribusi_ })
+					extra_context.update({'retribusi': n })
 					extra_context.update({'terbilang': terbilang_ })
 			except ObjectDoesNotExist:
 				pass
@@ -321,6 +339,17 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				s = ''
 
 			extra_context.update({'survey': s })
+			try:
+				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_,parameter_bangunan__parameter="Fungsi Bangunan").last()
+				if detil_bangunan_:
+					fungsi_bangunan = detil_bangunan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
+					detil_parameter = fungsi_bangunan.last()
+					# print detil_parameter.detil_parameter
+					if detil_parameter:
+						detil_ = detil_parameter.detil_parameter
+						extra_context.update({'detil_': detil_})
+			except ObjectDoesNotExist:
+				pass
 
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_perumahan.html")
 		ec = RequestContext(request, extra_context)

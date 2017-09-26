@@ -335,6 +335,9 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 
+			no_ptp_list = NoPTP.objects.filter(informasi_tanah=pengajuan_)
+			extra_context.update({'no_ptp_list': ", ".join(x.no_ptp +" "+ x.tanggal_ptp.strftime('%d %B %Y') for x in no_ptp_list)})
+
 		template = loader.get_template("front-end/include/formulir_izin_lokasi/cetak_sk_izin_lokasi.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -392,6 +395,9 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
+
+		no_ptp_list = NoPTP.objects.filter(informasi_tanah=id_pengajuan_izin_)
+		extra_context.update({'no_ptp_list': ", ".join(x.no_ptp +" "+ x.tanggal_ptp.strftime('%d %B %Y') for x in no_ptp_list)})
 		extra_context.update({'salinan': salinan_})
 		extra_context.update({'print': "oke"})
 		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")

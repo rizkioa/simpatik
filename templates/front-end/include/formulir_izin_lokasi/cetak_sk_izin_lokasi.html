@@ -234,15 +234,13 @@
                   <td>{{sk_.sk_menimbang_b}}</td>
                 </tr>
                 {% endif %}
-                {% if sk_.sk_menimbang_c %}
                 <tr>
                   <td></td>
                   <td style="vertical-align: top;padding-top: 1px;"></td>
                   <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                  <td>{{sk_.sk_menimbang_c}}
+                  <td>bahwa risalah Pertimbangan Teknis Pertanahan Dalam Penerbitan Izin Perubahan Penggunaan Tanah Nomor : {{no_ptp_list}};
                   </td>
                 </tr>
-                {% endif %}
                 {% if sk_.sk_menimbang_d %}
                 <tr>
                   <td></td>
@@ -420,29 +418,29 @@
               </tr>
             </table>
             {% if salinan == 'True' %}
-              <table width="100%" border="0" class="font">
-                <tr>
-                  <td colspan="3" style="width: 900px;">
-                    <table border="0" align="left">
-                    <tr>
-                      <td>
-                      <br><br>
-                        <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
-                      </td>
-                    </tr>
-                  </table>
-                  </td>
-                  <td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-                    <p style="font-size:14px; padding-left: 10%;">
-                            <font size="3pt">Ditetapkan di Kediri <br> 
-                    pada tanggal</font><br></p>
-                            <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
-                            <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
-                            </p>
+                <table width="100%" border="0" class="font">
+                  <tr>
+                    <td colspan="3" style="width: 900px;">
+                      <table border="0" align="left">
+                      <tr>
+                        <td>
+                        <br><br>
+                          <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+                        </td>
+                      </tr>
+                    </table>
                     </td>
-                </tr>
-                <tr>
-                  <td><br><br><br><br>
+                    <td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+                      <p style="font-size:14px; padding-left: 10%;">
+                              <font size="3pt">Ditetapkan di Kediri <br> 
+                      pada tanggal</font><br></p>
+                              <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
+                              <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
+                              </p>
+                      </td>
+                  </tr>
+                  <tr>
+                <td><br><br><br><br>
                     <table border="0" align="left" style="font-size:15px;">
                       <tr>
                         <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
@@ -469,24 +467,24 @@
                           <!-- {{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }} -->
                         </td>
                       </tr>   
-                    </table>      
-                  </td>
-                </tr>
-              </table>
-              <hr>
-              <table align="center">
-                <tr>
-                  <td style="width:400px;">
-f                    <p style="font-size:14px; padding-left: 10%;" align="center">
-                          <font size="3pt">Disalin sesuai dengan aslinya <br> 
-                  yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
-                          <p align="center" style="font-size:15px;margin-top: 50px;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
-                  <font size="3pt">Pembina Tk.l<br>
-                            NIP: {{nip_kepala_dinas}}</font>
-                        </p>
-                    </td>
-                </tr>               
-              </table>
+                    </table>          
+                </td>
+                  </tr>
+                </table>
+                <hr>
+                <table align="center">
+                  <tr>
+                    <td style="width:400px;">
+                      <p style="font-size:14px; padding-left: 9%;" align="center">
+                            <font size="3pt">Disalin sesuai dengan aslinya <br> 
+                    yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
+                            <p align="center" style="font-size:15px;margin-top: 50px;padding-left: 8%;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+                    <font size="3pt">Pembina Tk.l<br>
+                              NIP: {{nip_kepala_dinas}}</font>
+                          </p>
+                      </td>
+                  </tr>               
+                </table>
             {% else %}
               <table width="100%" border="0" class="font">
                 <tr>
@@ -501,17 +499,15 @@ f                    <p style="font-size:14px; padding-left: 10%;" align="center
                     </table>
                   </td>
                   <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-                    <p style="font-size:14px; padding-left: 20%;">
-                      <font size="3pt">Ditetapkan di Kab. Kediri<br> pada tanggal</font><br></p>
-                        <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}
-                        <!-- Pembina Tk.l<br>
-                        NIP: {{nip_kepala_dinas}} -->
-                        </p>
+                      <p style="font-size:14px; padding-left: 10%;">
+                              <font size="3pt">Ditetapkan di Kediri <br> 
+                      pada tanggal</font><br></p>
+                              <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</p><br>
+                              <br>
+                              <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
+                  <!--  Pembina Tk.l<br>
+                              NIP: {{nip_kepala_dinas}} -->
+                              </p>
                     </td>
                 </tr>
                 <tr>
