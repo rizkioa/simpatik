@@ -242,6 +242,14 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 				jumlah_tenaga_kerja = pengajuan_.tenaga_kerja_wni + pengajuan_.tenaga_kerja_wna + pengajuan_.tenaga_kerja_tetap + pengajuan_.tenaga_kerja_tidak_tetap
 			else:
 				jumlah_tenaga_kerja = ""
+
+
+			sertifikat_tanah_list = SertifikatTanah.objects.filter(informasi_tanah__id=id_pengajuan_izin_)
+			no_ptp_list = NoPTP.objects.filter(informasi_tanah=pengajuan_)
+			
+			extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+			extra_context.update({'no_ptp_list': no_ptp_list})
+
 			pengajuan_id = pengajuan_.id
 			extra_context.update({ 'legalitas_list': legalitas_list })
 			extra_context.update({ 'penggunaan_tanah_list': penggunaan_tanah_list })
