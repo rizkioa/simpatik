@@ -574,9 +574,9 @@
                 var id_luas_sertifikat_petak = $("#id_luas_sertifikat_petak").val()
                 var id_atas_nama_sertifikat_petak = $("#id_atas_nama_sertifikat_petak").val()
                 var id_tahun_sertifikat = $("#id_tahun_sertifikat").val()
-                var rows = "";
-                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowsertifikattanah(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
-                    $(rows).appendTo("#id_sertifikat_tanah","tbody");
+                var rows_sertifikat = "";
+                    rows_sertifikat += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td align='center'> <a href='#' id='"+id_penggunaan+"' onclick='editRowsertifikattanah(this); return false;' class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                    $(rows_sertifikat).appendTo("#id_sertifikat_tanah","tbody");
                 $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
                 $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
                 $('#sertifikat_tanah').find('.btn-success').text("Simpan")
@@ -642,7 +642,6 @@
         $("#sertifikat_tanah").modal('hide');
     }
 
-
     function tambah_akta_jual_beli(btn){
         $('#id_akta_jual_beli_modal').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
         $('#id_akta_jual_beli_modal').find('.btn-success').attr('onclick','akta_jual_beli_add(this)')
@@ -681,8 +680,7 @@
                 }
               });
             }
-      }
-
+    }
 
     function editRowaktajualbeli(btn){
         var row = btn.parentNode.parentNode;
@@ -821,7 +819,6 @@
         $("#id_no_ptp_form").resetForm()
         $("#id_no_ptp_modal").modal('hide');
     }
-
 
     document.querySelector('#alert').onclick = function(){
       // swal("Good job!", "You clicked the button!", "success");
