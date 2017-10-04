@@ -29,6 +29,8 @@ def reklame_detilreklame_save_cookie(request):
 							pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
 							pengajuan_.save()
 					else:
+						if pengajuan_.jenis_reklame.jenis_reklame == "Permanen":
+							pengajuan_.kelompok_jenis_izin = kelompok_izin
 						pengajuan_.save()
 
 				data = {'success': True,
@@ -272,11 +274,11 @@ def reklame_upload_dokumen_cookie(request):
 	return HttpResponse(json.dumps(data))
 
 def reklame_done(request):
-	print request.COOKIES.keys()
+	# print request.COOKIES.keys()
 	if 'id_pengajuan' in request.COOKIES.keys():
-		print "HALo"
+		# print "HALo"
 		if request.COOKIES['id_pengajuan'] != '':
-			print "ASEM"
+			# print "ASEM"
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
