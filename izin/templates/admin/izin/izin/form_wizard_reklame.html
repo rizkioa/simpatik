@@ -52,8 +52,12 @@
 						}
 						if($current == 3){
 						// alert("OK")
-							id_pengajuan = parseInt($.cookie('id_pengajuan'))
-							load_data_detail_izin_reklame(id_pengajuan)
+							
+							if ($.cookie('id_pengajuan') != '') {
+								id_pengajuan = parseInt($.cookie('id_pengajuan'))
+								load_data_detail_izin_reklame(id_pengajuan)
+							}
+							
 
 						}
 						$('#rootwizard').find('.pager .next').show();
