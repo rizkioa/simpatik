@@ -16,10 +16,8 @@ from datetime import datetime
 from django.conf import settings
 from django.views import generic
 from django.shortcuts import get_object_or_404
-import base64
-import time
-import json
-import os
+import base64, time, json, os
+from decimal import *
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan,JenisKontruksi,BangunanJenisKontruksi
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
@@ -327,7 +325,7 @@ def detil_bangunan_save_cookie(request):
 						bangunan = BangunanJenisKontruksi.objects.get(kode=jenis_bangunan)
 						total_luas  = request.POST.get('total_luas')
 						biaya_bangunan = bangunan.biaya_bangunan
-						total_ = str(int(biaya_bangunan) * int(total_luas))
+						total_ = str(int(biaya_bangunan) * Decimal(total_luas))
 
 						p = BangunanIMBForm.save(commit=False)
 						p.detil_izin_imb_id = request.COOKIES['id_pengajuan']
