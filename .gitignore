@@ -1,5 +1,4 @@
 *.pyc
-.gitignore
 *.fuse*
 files/
 venv/
@@ -14,3 +13,5 @@ izin/migrations/
 perusahaan/migrations/
 pembangunan/migrations/
 mobile/migrations/
+.cache
+.vscode
