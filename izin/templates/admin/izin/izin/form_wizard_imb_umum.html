@@ -858,11 +858,12 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                 var sum = 0;
                 for (var i = 0; i < MyRows.length; i++) {
                   var MyIndexValue = $(MyRows[i]).find('.biaya').html();
-                  sum = sum + parseFloat(MyIndexValue);
-                  
+                  if (typeof MyIndexValue != 'undefined') {
+                    sum = parseFloat(sum) + parseFloat(MyIndexValue);
+                  }
                 }
-                $("#id_total").val(sum);
-                $("#id_total_biaya").val(sum);
+                $("#id_total").val(parseFloat(sum));
+                $("#id_total_biaya").val(parseFloat(sum));
                 },
                 error: function(data) {       
                   toast_server_error()
