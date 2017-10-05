@@ -89,7 +89,7 @@ function load_data_detil_bangunan_imb(id_detil_bangunan){
         // $('#id_penggunaan_tanah_ippt > tbody').html(tablekosong)
         if(a === 0){
           $('#id_detil_bangunan_imb > tbody > tr:first').remove()
-          // table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          table = '<tr><td colspan="9" align="center"></td></tr>'
           $('#id_detil_bangunan_imb > tbody').prepend(table)
         }
         else{

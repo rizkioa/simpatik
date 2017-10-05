@@ -29,6 +29,8 @@ def reklame_detilreklame_save_cookie(request):
 							pengajuan_.perusahaan_id  = request.COOKIES['id_perusahaan']
 							pengajuan_.save()
 					else:
+						if pengajuan_.jenis_reklame.jenis_reklame == "Permanen":
+							pengajuan_.kelompok_jenis_izin = kelompok_izin
 						pengajuan_.save()
 
 				data = {'success': True,
@@ -272,11 +274,11 @@ def reklame_upload_dokumen_cookie(request):
 	return HttpResponse(json.dumps(data))
 
 def reklame_done(request):
-	print request.COOKIES.keys()
+	# print request.COOKIES.keys()
 	if 'id_pengajuan' in request.COOKIES.keys():
-		print "HALo"
+		# print "HALo"
 		if request.COOKIES['id_pengajuan'] != '':
-			print "ASEM"
+			# print "ASEM"
 			pengajuan_ = DetilReklame.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
@@ -419,62 +421,63 @@ def ajax_delete_berkas_reklame(request, id_berkas):
 def load_data_detail_izin_reklame(request,id_detail_izin_reklame):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilReklame.objects.get(id=id_detail_izin_reklame)
-			if pengajuan_.tipe_reklame:
-				id_tipe_reklame = str(pengajuan_.tipe_reklame.id)
-			else:
-				id_tipe_reklame = ""
+			try:
+				pengajuan_ = DetilReklame.objects.get(id=id_detail_izin_reklame)
+				if pengajuan_.tipe_reklame:
+					id_tipe_reklame = str(pengajuan_.tipe_reklame.id)
+				else:
+					id_tipe_reklame = ""
 
-			id_judul_reklame = pengajuan_.judul_reklame
+				id_judul_reklame = pengajuan_.judul_reklame
 
-			if pengajuan_.jenis_reklame:
-				id_jenis_reklame = str(pengajuan_.jenis_reklame.id)
-			else:
-				id_jenis_reklame = ""
+				if pengajuan_.jenis_reklame:
+					id_jenis_reklame = str(pengajuan_.jenis_reklame.id)
+				else:
+					id_jenis_reklame = ""
 
-			id_panjang = str(pengajuan_.panjang)
-			id_lebar = str(pengajuan_.lebar)
-			id_sisi = str(pengajuan_.sisi)
-			id_letak_pemasangan = pengajuan_.letak_pemasangan
-			id_jumlah = pengajuan_.jumlah
-			if pengajuan_.desa:
-				id_kecamatan = str(pengajuan_.desa.kecamatan.id)
-				id_desa = str(pengajuan_.desa.id)
-			else:
-				id_desa = ""
-				id_kecamatan = ""
-			if pengajuan_.tanggal_mulai:
-				id_tanggal_mulai = pengajuan_.tanggal_mulai.strftime("%d-%m-%Y")
-			else:
-				id_tanggal_mulai = ""
-			if pengajuan_.tanggal_akhir:
-				id_tanggal_akhir = pengajuan_.tanggal_akhir.strftime("%d-%m-%Y")
-			else:
-				id_tanggal_akhir = ""
+				id_panjang = str(pengajuan_.panjang)
+				id_lebar = str(pengajuan_.lebar)
+				id_sisi = str(pengajuan_.sisi)
+				id_letak_pemasangan = pengajuan_.letak_pemasangan
+				id_jumlah = pengajuan_.jumlah
+				if pengajuan_.desa:
+					id_kecamatan = str(pengajuan_.desa.kecamatan.id)
+					id_desa = str(pengajuan_.desa.id)
+				else:
+					id_desa = ""
+					id_kecamatan = ""
+				if pengajuan_.tanggal_mulai:
+					id_tanggal_mulai = pengajuan_.tanggal_mulai.strftime("%d-%m-%Y")
+				else:
+					id_tanggal_mulai = ""
+				if pengajuan_.tanggal_akhir:
+					id_tanggal_akhir = pengajuan_.tanggal_akhir.strftime("%d-%m-%Y")
+				else:
+					id_tanggal_akhir = ""
 
-			data = {'success': True,'data': {
-			'id_tipe_reklame': id_tipe_reklame,
-			'id_jenis_reklame': id_jenis_reklame,
-			'id_judul_reklame': id_judul_reklame,
-			'id_panjang': id_panjang,
-			'id_lebar': id_lebar,
-			'id_sisi': id_sisi,
-			'id_letak_pemasangan': id_letak_pemasangan,
-			'id_jumlah': id_jumlah,
-			'id_kecamatan': id_kecamatan,
-			'id_desa': id_desa,
-			'id_tanggal_mulai': id_tanggal_mulai,
-			'id_tanggal_akhir': id_tanggal_akhir,
-			}}
-			response = HttpResponse(json.dumps(data))
+				data = {'success': True,'data': {
+				'id_tipe_reklame': id_tipe_reklame,
+				'id_jenis_reklame': id_jenis_reklame,
+				'id_judul_reklame': id_judul_reklame,
+				'id_panjang': id_panjang,
+				'id_lebar': id_lebar,
+				'id_sisi': id_sisi,
+				'id_letak_pemasangan': id_letak_pemasangan,
+				'id_jumlah': id_jumlah,
+				'id_kecamatan': id_kecamatan,
+				'id_desa': id_desa,
+				'id_tanggal_mulai': id_tanggal_mulai,
+				'id_tanggal_akhir': id_tanggal_akhir,
+				}}
+				response = HttpResponse(json.dumps(data))
+			except ObjectDoesNotExist:
+				data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
 		else:
 			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
 			data = json.dumps(data)
 			response = HttpResponse(data)
-	else:
-		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
-		data = json.dumps(data)
-		response = HttpResponse(data)
 	return response
 
 def load_data_lokasi_detail_izin_reklame(request, id_detail_izin_reklame):

@@ -1242,6 +1242,64 @@
 							</table>
 							</td>
 						</tr>
+						<tr>
+						  <td width="25%">Sertifikat Tanah</td>
+						  <td width="5%">:</td>
+						  <td width="70%"></td>
+						</tr>
+						<tr>
+							<td colspan="3" width="80%" style="padding-left: 10%;">
+								<table id="id_sertifikat_tanah" border="1" style="width: 762px;">
+								  <thead>
+									<tr>
+									  <td>No Sertifikat</td>
+									  <td>Luas</td>
+									  <td>Atas Nama</td>
+									  <td>Tahun</td>
+									</tr>
+								  </thead>
+								  <tbody>
+								  {% if sertifikat_tanah_list %}
+									{% for a in sertifikat_tanah_list %}
+									  <tr id="{{a.id}}">
+										<td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+										<td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+										<td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+										<td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
+									  </tr>
+									{% endfor %}
+								  {% endif %}
+								  </tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+						  <td width="25%">No. PTP</td>
+						  <td width="5%">:</td>
+						  <td width="70%"></td>
+						</tr>
+						<tr>
+							<td colspan="3" width="80%" style="padding-left: 10%;">
+								<table id="id_no_ptp" border="1" style="width: 762px;">
+								  <thead>
+									<tr>
+									  <td>No PTP</td>
+									  <td>Tanggal PTP</td>
+									</tr>
+								  </thead>
+								  <tbody>
+								  	{% if no_ptp_list%}
+										{% for a in no_ptp_list %}
+										  <tr id="{{a.id}}">
+							                <td id="id_table_no_ptp">{{a.no_ptp}}</td>
+							                <td id="id_table_id_table_tanggal_ptp">{{a.tanggal_ptp|date:"d-m-Y"}}</td>
+										  </tr>
+										{% endfor %}
+									{% endif %}
+								  </tbody>
+								</table>
+							</td>
+						</tr>
 					    <tr>
 					      <td width="25%">Arahan Fungsi Kawasan</td>
 					      <td width="5%">:</td>

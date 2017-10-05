@@ -228,24 +228,20 @@
                 <td style="vertical-align: top;padding-top: 1px;">b.</td>
                 <td>bahwa perubahan penggunaan tanah harus sesuai dengan Peraturan Daerah Kabupaten Kediri Nomor 14 tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010 – 2030 ;</td>
               </tr>
-              {% if sk_.sk_menimbang_c %}
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                <td>{{sk_.sk_menimbang_c}}
+                <td>bahwa risalah Pertimbangan Teknis Pertanahan Dalam Penerbitan Izin Perubahan Penggunaan Tanah Nomor : {{no_ptp_list}};
                 </td>
               </tr>
-              {% endif %}
-              {% if sk_.sk_menimbang_d %}
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">d.</td>
-                <td>{{sk_.sk_menimbang_d}}
+                <td>bahwa berdasarkan pertimbangan sebagaimana dimaksud dalam huruf a, huruf b dan c di atas, maka perlu ditetapkan Izin Perubahan Penggunaan Tanah (IPPT).
                 </td>
               </tr>
-              {% endif %}
               <tr>
                 <td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
@@ -497,29 +493,29 @@
                 </tr>
               </table>
             {% if salinan == 'True' %}
-              <table width="100%" border="0" class="font">
-                <tr>
-                  <td colspan="3" style="width: 900px;">
-                    <table border="0" align="left">
-                    <tr>
-                      <td>
-                      <br><br>
-                        <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
-                      </td>
-                    </tr>
-                  </table>
-                  </td>
-                  <td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
-                    <p style="font-size:14px; padding-left: 10%;">
-                            <font size="3pt">Ditetapkan di Kediri <br> 
-                    pada tanggal</font><br></p>
-                            <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
-                            <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
-                            </p>
+                <table width="100%" border="0" class="font">
+                  <tr>
+                    <td colspan="3" style="width: 900px;">
+                      <table border="0" align="left">
+                      <tr>
+                        <td>
+                        <br><br>
+                          <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+                        </td>
+                      </tr>
+                    </table>
                     </td>
-                </tr>
-                <tr>
-                  <td><br><br><br><br>
+                    <td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+                      <p style="font-size:14px; padding-left: 10%;">
+                              <font size="3pt">Ditetapkan di Kediri <br> 
+                      pada tanggal</font><br></p>
+                              <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
+                              <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
+                              </p>
+                      </td>
+                  </tr>
+                  <tr>
+                <td><br><br><br><br>
                     <table border="0" align="left" style="font-size:15px;">
                       <tr>
                         <td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
@@ -529,24 +525,24 @@
                         <td style="vertical-align: top;padding-top: 1px;">1.</td>
                         <td width="100%">Sdr. Kepala Kantor Pertanahan Kabupaten Kediri  ;</td>
                       </tr>    
-                    </table>        
-                  </td>
-                </tr>
-              </table>
-              <hr>
-              <table align="center">
-                <tr>
-                  <td style="width:400px;">
-                    <p style="font-size:14px; padding-left: 10%;" align="center">
-                          <font size="3pt">Disalin sesuai dengan aslinya <br> 
-                  yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
-                          <p align="center" style="font-size:15px;margin-top: 50px;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
-                  <font size="3pt">Pembina Tk.l<br>
-                            NIP: {{nip_kepala_dinas}}</font>
-                        </p>
-                    </td>
-                </tr>               
-              </table>
+                    </table>           
+                </td>
+                  </tr>
+                </table>
+                <hr>
+                <table align="center">
+                  <tr>
+                    <td style="width:400px;">
+                      <p style="font-size:14px; padding-left: 9%;" align="center">
+                            <font size="3pt">Disalin sesuai dengan aslinya <br> 
+                    yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
+                            <p align="center" style="font-size:15px;margin-top: 50px;padding-left: 8%;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+                    <font size="3pt">Pembina Tk.l<br>
+                              NIP: {{nip_kepala_dinas}}</font>
+                          </p>
+                      </td>
+                  </tr>               
+                </table>
             {% else %}
               <table width="100%" border="0" class="font">
                 <tr>
@@ -563,8 +559,7 @@
                   <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
                     <p style="font-size:14px; padding-left: 20%;">
                       <font size="3pt">Ditetapkan di Kab. Kediri <br> pada tanggal</font><br></p>
-                        <p style="font-size:15px;" align="center"> <font size="2pt">KEPALA DPMPTSP </font></p><br>
-                        <br>
+                        <p style="font-size:15px;" align="center"> KEPALA DPMPTSP</p><br>
                         <br>
                         <br>
                         <br>
