@@ -579,7 +579,7 @@ function load_konfirmasi(id_pengajuan){
             }else{
               // console.log("hahah")
             }
-            str = '<tr>'
+            str += '<tr>'
             str += '<td>'+respon.paket[i].klasifikasi+'</td>'
             str += '<td>'+respon.paket[i].subklasifikasi+'</td>'
             str += '<td>'+respon.paket[i].nama_paket_pekerjaan+'</td>'
@@ -587,11 +587,9 @@ function load_konfirmasi(id_pengajuan){
             str += '<td>'+respon.paket[i].tahun+'</td>'
             str += '<td>'+respon.paket[i].nilai_paket_pekerjaan+'</td>'
             str += '</tr>'
-            $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').prepend(str);
-            $('#tabel_klasifikasi_pekerjaan-loading').remove();
-
           }
-          
+          $('#tabel_klasifikasi_pekerjaan-konfirmasi > tbody').html(str);
+          $('#tabel_klasifikasi_pekerjaan-loading').remove();
         }
       }
     })
