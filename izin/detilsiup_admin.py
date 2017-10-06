@@ -11,7 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext, loader
 from django.shortcuts import get_object_or_404, render
 from mobile.cors import CORSHttpResponse
-from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin
+from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin, InformasiTanah
 from perusahaan.models import Perusahaan, KBLI
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import formatrupiah, detil_pengajuan_siup_view, terbilang
@@ -104,20 +104,29 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		return rf
 
 	def ajax_dashboard(self, request):
+		from izin.utils import get_model_detil
 		tahun_sekarang = date.today().year
 		pemohon = len(Pemohon.objects.all())
 		perusahaan = len(Perusahaan.objects.all())
 		pengajuan_selesai = len(PengajuanIzin.objects.filter(status=1))
 		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1) and ~Q(status=6) and ~Q(status=11)))
 		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
-		pengajuan_siup = len(DetilSIUP.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		pengajuan_reklame = len(DetilReklame.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		pengajuan_tdp = len(DetilTDP.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		pengajuan_uijk = len(DetilIUJK.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		pengajuan_imb = len(DetilIMB.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		pengajuan_ho = len(DetilHO.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		pengajuan_huller = len(DetilHuller.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)))
-		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_reklame': pengajuan_reklame, 'pengajuan_tdp': pengajuan_tdp, 'pengajuan_uijk':pengajuan_uijk, 'pengajuan_imb':pengajuan_imb, 'pengajuan_ho':pengajuan_ho, 'pengajuan_huller':pengajuan_huller }
+
+		pengajuan_siup = get_model_detil("503.08").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_iujk = get_model_detil("IUJK").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_reklame = DetilReklame.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_tdp = DetilTDP.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_imbpapanreklame = get_model_detil("503.01.06/").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_imb = DetilIMB.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_informasikekayaandaerah = get_model_detil("503.06.01/").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_ho = get_model_detil("503.02/").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_informasitanah = InformasiTanah.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_huller = DetilHuller.objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_tdup = get_model_detil("TDUP").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_iua = get_model_detil("IUA").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_trayek = get_model_detil("TRAYEK").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		pengajuan_izinparkir = get_model_detil("IZINPARKIR").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
+		data = { 'success': True, 'pemohon': pemohon, 'perusahaan': perusahaan, 'pengajuan_selesai': pengajuan_selesai, 'pengajuan_proses': pengajuan_proses, 'pengajuan_siup': pengajuan_siup, 'pengajuan_iujk': pengajuan_iujk, 'pengajuan_reklame': pengajuan_reklame, 'pengajuan_tdp': pengajuan_tdp, 'pengajuan_imbpapanreklame': pengajuan_imbpapanreklame, 'pengajuan_imb':pengajuan_imb, 'pengajuan_informasikekayaandaerah':pengajuan_informasikekayaandaerah, 'pengajuan_ho':pengajuan_ho, 'pengajuan_informasitanah': pengajuan_informasitanah, 'pengajuan_huller':pengajuan_huller, 'pengajuan_tdup':pengajuan_tdup,  'pengajuan_iua':pengajuan_iua, 'pengajuan_trayek': pengajuan_trayek, 'pengajuan_izinparkir':pengajuan_izinparkir}
 		return CORSHttpResponse(json.dumps(data))
 
 	def ajax_load_pengajuan_siup(self, request, id_pengajuan_):
