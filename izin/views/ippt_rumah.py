@@ -312,6 +312,12 @@ def luas_tanah_yang_disetujui_save(request):
       p.save()
       pengajuan_.status = 2
       pengajuan_.save()
+      riwayat_ = Riwayat(
+        pengajuan_izin_id = pengajuan_izin_id,
+        created_by_id = request.user.id,
+        keterangan = "Kabid Verified (Pengajuan)"
+      )
+      riwayat_.save()
       data = {'success': True,
           'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
           'data': ['']}

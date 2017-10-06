@@ -937,7 +937,7 @@ def load_konfirmasi_imb(request,id_pengajuan):
 				luas_bangunan = str(pengajuan_.luas_bangunan)
 				jumlah_bangunan = ""
 				lokasi_bangunan = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-				luas_tanah = ""
+				luas_tanah =  str(pengajuan_.luas_tanah)
 				status_tanah = pengajuan_.status_hak_tanah
 				no_surat_tanah = pengajuan_.no_surat_tanah
 				if pengajuan_.tanggal_surat_tanah:
