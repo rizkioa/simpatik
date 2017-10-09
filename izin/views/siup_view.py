@@ -130,7 +130,7 @@ def siup_identitas_pemohon_save_cookie(request):
 		# 	objects_ = getattr(app_models, 'DetilIUA')
 
 		objects_ = get_model_detil(k.kode)
-		# print objects_
+		# print objects_	
 		if request.user.is_anonymous():
 			created_by = p.id
 		else:

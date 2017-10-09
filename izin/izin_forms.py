@@ -210,6 +210,12 @@ class SertifikatTanahForm(forms.ModelForm):
 		model = SertifikatTanah
 		fields = ('no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat')
 
+class SertifikatTanahBerkasForm(forms.ModelForm):
+	berkas = forms.FileField(label="Lampiran", required=False,)
+	class Meta:
+		model = SertifikatTanah
+		fields = ('no_sertifikat_petak','luas_sertifikat_petak','atas_nama_sertifikat_petak','tahun_sertifikat', 'berkas')
+
 class AktaJualBeliTanahForm(forms.ModelForm):
 	class Meta:
 		model = AktaJualBeliTanah

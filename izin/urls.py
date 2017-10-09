@@ -325,6 +325,7 @@ urlpatterns = [
     url(r'^ajax-load-berkas-izin-lokasi/(?P<id_pengajuan>[0-9]+)$', izin_lokasi.ajax_load_berkas_izinlokasi, name='ajax_load_berkas_izinlokasi'),
     url(r'^layanan/izin-lokasi/konfirmasi/(?P<id_pengajuan>[0-9]+)$', izin_lokasi.load_konfirmasi_izin_lokasi , name='load_konfirmasi_izin_lokasi'),
     url(r'^informasitanah/sertifikat-tanah/save/$', izin_lokasi.sertifikat_tanah_save_cookie, name='sertifikat_tanah_save'),
+    url(r'^informasitanah/sertifikat-tanah-berkas/save/$', izin_lokasi.sertifikat_tanah_berkas_save_cookie, name='sertifikat_tanah_berkas_save'),
     url(r'^informasitanah/sertifikat-tanah/edit/(?P<id_sertifikat_tanah>[0-9]+)/$', izin_lokasi.edit_sertifikat_tanah , name='edit_sertifikat_tanah'),
     url(r'^informasitanah/sertifikat-tanah/delete/(?P<id_sertifikat_tanah>[0-9]+)$', izin_lokasi.delete_sertifikat_tanah , name='delete_sertifikat_tanah'),
     url(r'^informasitanah/sertifikat-tanah/load/(?P<id_sertifikat_tanah>[0-9]+)$', izin_lokasi.load_data_tabel_sertifikat_tanah, name='load_data_tabel_sertifikat_tanah'),

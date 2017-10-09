@@ -94,25 +94,41 @@
         </div>
   </div>
 
-  <div class="form-group">
-		<label for="input01" class="col-sm-2 control-label">No. Surat Tanah</label>
-		<div class="col-sm-3">
-		  <input type="text" class="form-control" required="" id="id_no_surat_tanah" name="no_surat_tanah">
-		</div>
-	</div>
-
-	<div class="form-group">
-      <label for="input01" class="col-sm-2 control-label">Tanggal surat tanah</label>
-      <div class="col-sm-5">
-        <div class="input-group datepicker" data-format="L">
-          <input type="text" class="form-control" required="" id="id_tanggal_surat_tanah" name="tanggal_surat_tanah">
-          <span class="input-group-addon">
-            <span class="fa fa-calendar"></span>
-          </span>
-        </div>
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Sertifikat/Petok D</label> 
+        <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No Sertifikat</td>
+              <td>Luas</td>
+              <td>Atas Nama</td>
+              <td>Tahun</td>
+              <td>Berkas</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if sertifikat_tanah_list %}
+            {% for a in sertifikat_tanah_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+                <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+                <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+                <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
+                <td id="id_table_berkas_sertifikat">{% if a.berkas_sertifikat %}<a href="#" class="myIcon icon-success icon-ef-1 icon-ef-1a hover-color" style="width: 20px;height: 20px;"><i class="fa fa-check" style="font-size: 15px;line-height: 22px;"></i></a>{% else %} <a href="#" class="myIcon icon-danger icon-ef-1 icon-ef-1a hover-color" style="width: 20px;height: 20px;"><i class="fa fa-times" style="font-size: 15px;line-height: 22px;"></i></a> {% endif %}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="deleteRowsertifikattanah(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah_sertifikat_tanah(this);return false;">Tambah Sertifikat Tanah<i class="fa fa-plus"></i></a>
       </div>
     </div>
-
+    <br>
+    
     <div class="form-group">
       <label for="input01" class="col-sm-2 control-label"><u><b>Batas-batas</b></u></label>
     </div>
