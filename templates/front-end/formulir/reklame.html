@@ -349,7 +349,7 @@
                 respon = $.parseJSON(response)
                 if(respon.success){
                   toastr["success"](respon.pesan)
-                  window.location.replace(__base_url__+'/layanan/reklame/formulir/cetak/'+pengajuan_id);
+                  window.location.replace(__base_url__+'/layanan/reklame/formulir/cetak/'+id_pengajuan_);
                 }
               }
             });
