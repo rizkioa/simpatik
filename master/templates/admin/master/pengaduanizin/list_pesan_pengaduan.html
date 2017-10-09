@@ -1,0 +1,241 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls access admin_static parameters %}
+
+{% block extrastyle %}
+	{{block.super}}
+	<style type="text/css">
+	  hr.style14 { 
+		border: 0; 
+		height: 1px; 
+		background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+	  
+	  }
+	</style>
+	<style type="text/css">
+		.timeline {
+			list-style: none;
+			padding: 20px 0 20px;
+			position: relative;
+		}
+		.timeline:before {
+			top: 0;
+			bottom: 0;
+			position: absolute;
+			content: " ";
+			width: 3px;
+			background-color: #eeeeee;
+			left: 50%;
+			margin-left: -1.5px;
+		}
+		.timeline > li {
+			margin-bottom: 20px;
+			position: relative;
+		}
+		.timeline > li:before,
+		.timeline > li:after {
+			content: " ";
+			display: table;
+		}
+		.timeline > li:after {
+			clear: both;
+		}
+		.timeline > li:before,
+		.timeline > li:after {
+			content: " ";
+			display: table;
+		}
+		.timeline > li:after {
+			clear: both;
+		}
+		.timeline > li > .timeline-panel {
+			width: 50%;
+			float: left;
+			border: 1px solid #d4d4d4;
+			border-radius: 2px;
+			padding: 20px;
+			position: relative;
+			-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+			box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+		}
+		.timeline > li.timeline-inverted + li:not(.timeline-inverted),
+		.timeline > li:not(.timeline-inverted) + li.timeline-inverted {
+			margin-top: -60px;
+		}
+
+		.timeline > li:not(.timeline-inverted) {
+			padding-right:90px;
+		}
+
+		.timeline > li.timeline-inverted {
+			padding-left:90px;
+		}
+		.timeline > li > .timeline-panel:before {
+			position: absolute;
+			top: 26px;
+			right: -15px;
+			display: inline-block;
+			border-top: 15px solid transparent;
+			border-left: 15px solid #ccc;
+			border-right: 0 solid #ccc;
+			border-bottom: 15px solid transparent;
+			content: " ";
+		}
+		.timeline > li > .timeline-panel:after {
+			position: absolute;
+			top: 27px;
+			right: -14px;
+			display: inline-block;
+			border-top: 14px solid transparent;
+			border-left: 14px solid #fff;
+			border-right: 0 solid #fff;
+			border-bottom: 14px solid transparent;
+			content: " ";
+		}
+		.timeline > li > .timeline-badge {
+			color: #fff;
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+			font-size: 1.4em;
+			text-align: center;
+			position: absolute;
+			top: 16px;
+			left: 50%;
+			margin-left: -25px;
+			background-color: #999999;
+			z-index: 100;
+			border-top-right-radius: 50%;
+			border-top-left-radius: 50%;
+			border-bottom-right-radius: 50%;
+			border-bottom-left-radius: 50%;
+		}
+		.timeline > li.timeline-inverted > .timeline-panel {
+			float: right;
+		}
+		.timeline > li.timeline-inverted > .timeline-panel:before {
+			border-left-width: 0;
+			border-right-width: 15px;
+			left: -15px;
+			right: auto;
+		}
+		.timeline > li.timeline-inverted > .timeline-panel:after {
+			border-left-width: 0;
+			border-right-width: 14px;
+			left: -14px;
+			right: auto;
+		}
+		.timeline-badge.primary {
+			background-color: #2e6da4 !important;
+		}
+		.timeline-badge.success {
+			background-color: #3f903f !important;
+		}
+		.timeline-badge.warning {
+			background-color: #f0ad4e !important;
+		}
+		.timeline-badge.danger {
+			background-color: #d9534f !important;
+		}
+		.timeline-badge.info {
+			background-color: #5bc0de !important;
+		}
+		.timeline-title {
+			margin-top: 0;
+			color: inherit;
+		}
+		.timeline-body > p,
+		.timeline-body > ul {
+			margin-bottom: 0;
+		}
+		.timeline-body > p + p {
+			margin-top: 5px;
+		}
+		.timeline-pesan{
+			/*position: absolute;
+			width: 100%;
+			margin-top: -100px;
+			z-index: 10;
+			height: 100%;
+			max-height: 1340px;*/
+			height: 400px;
+			overflow-y: scroll;
+		}
+	</style>
+{% endblock %}
+
+{% block extrajs %}
+	{{block.super}}
+	<script type="text/javascript">
+		$('.timeline-pesan').scrollTop($('.timeline-pesan')[0].scrollHeight);
+	</script>
+{% endblock %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-md-12">
+			<section class="tile">
+				<div class="tile-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="timeline-pesan">
+								<!-- <div class="page-header">
+									<h1 id="timeline"><span id="id_sp_isi_pengaduan"></span></h1>
+								</div> -->
+								{% if pesan_pengaduan_list %}
+									<ul class="timeline">
+										{% for p in pesan_pengaduan_list %}
+											{% if p.status_pemohon == True %}
+												<li>
+													<div class="timeline-badge"><i class="icon-user"></i></div>
+													<div class="timeline-panel">
+														<div class="timeline-heading">
+															<h4 class="timeline-title"><span>Pemohon</span></h4>
+															<p><small class="text-muted"><i class="fa fa-clock-o"></i> <span>{{p.pretty_tanggal}}</span></small></p>
+														</div>
+														<div class="timeline-body">
+															<p>{{p.pesan}}</p>
+														</div>
+													</div>
+												</li>
+											{% else %}
+												<li class="timeline-inverted">
+													<div class="timeline-badge warning"><i class="icon-users"></i></div>
+													<div class="timeline-panel">
+														<div class="timeline-heading">
+															<h4 class="timeline-title"><span>Anda</span></h4>
+															<p><small class="text-muted"><i class="fa fa-clock-o"></i> <span>{{p.pretty_tanggal}}</span></small></p>
+														</div>
+														<div class="timeline-body">
+															<p>{{p.pesan}}</p>
+														</div>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								{% endif %}
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tile-footer">
+					<form method="POST">
+						{% csrf_token %}
+						<div class="chat-form">
+	                        <div class="input-group">
+	                            <input class="form-control" placeholder="Type your message here..." type="text" name="pesan">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="fa fa-chevron-right"></i></button>
+                                </span>
+	                        </div>
+	                    </div>
+                    </form>
+				</div>
+			</section>
+		</div>
+	</div>
+{% endblock %}
