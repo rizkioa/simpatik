@@ -17,6 +17,10 @@ from izin.utils import*
 
 import math
 
+import locale, datetime
+
+locale.setlocale(locale.LC_ALL,'id_ID.UTF-8')
+
 class DetilIMBAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
 	search_fields = ('no_izin', 'pemohon__nama_lengkap')
@@ -266,7 +270,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 
 	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
 
-	  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ x.tahun_sertifikat.strftime('%d %F %Y') for x in sertifikat_tanah_list)})
+	  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ x.tahun_sertifikat.strftime('%d %B %Y') for x in sertifikat_tanah_list)})
 
 		template = loader.get_template("front-end/include/imb_umum/cetak_sk_imb_umum.html")
 		ec = RequestContext(request, extra_context)
