@@ -12,6 +12,10 @@ from izin.models import InformasiTanah, Syarat, SKIzin, Riwayat, SertifikatTanah
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
+import locale, datetime
+
+locale.setlocale(locale.LC_ALL,'id_ID.UTF-8')
+
 class InformasiTanahAdmin(admin.ModelAdmin):
 	list_display = ('id','get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
 	search_fields = ('no_izin', 'pemohon__nama_lengkap')
