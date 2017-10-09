@@ -239,7 +239,7 @@ def perumahan_yang_sudah_dimiliki_save_cookie(request):
                             'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
                             'data': {'id_perumahan_yang_sudah_dimiliki':p.id}}
                     data = json.dumps(data)
-                    response = HttpResponse(json.dumps(data))
+                    response = HttpResponse(data)
                 else:
                     data = perumahan_yang_sudah_dimiliki.errors.as_json()
             else:
@@ -268,7 +268,7 @@ def edit_perumahan_yang_sudah_dimiliki(request,id_perumahan):
                             'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
                             'data': {'id_perumahan_yang_sudah_dimiliki':p.id}}
                     data = json.dumps(data)
-                    response = HttpResponse(json.dumps(data))
+                    response = HttpResponse(data)
                 else:
                     data = perumahan_yang_sudah_dimiliki.errors.as_json()
             else:
