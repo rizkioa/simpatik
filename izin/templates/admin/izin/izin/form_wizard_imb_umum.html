@@ -365,44 +365,124 @@
         $('#sertifikat_tanah').find('.btn-success').text("Simpan")
         $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah-berkas/save/')
         $("#id_sertifikat_tanah_form").resetForm()
+        // $('#load-id_sertifikat_tanah_form').hide();
+        // $('#field-id_sertifikat_tanah_form').show();
         $("#sertifikat_tanah").modal('show');
     }
 
-    function sertifikat_tanah_add(btn){
-        var frm = $('#id_sertifikat_tanah_form');
-         if (frm.parsley().validate()){
-            frm.ajaxSubmit({
-             success: function(response) {  // on success..
-                var res = $.parseJSON(response);  
-                id_penggunaan = res.data.id_sertifikat_tanah
-                url_berkas = res.data.url_berkas
-                if ($('#id_sertifikat_tanah').find('#'+id_penggunaan+'')){
-                  $('#'+id_penggunaan+'').remove()
-                }
-                var id_no_sertifikat_petak = $("#id_no_sertifikat_petak").val()
-                var id_luas_sertifikat_petak = $("#id_luas_sertifikat_petak").val()
-                var id_atas_nama_sertifikat_petak = $("#id_atas_nama_sertifikat_petak").val()
-                var id_tahun_sertifikat = $("#id_tahun_sertifikat").val()
-                var berkas = '<a href="#" class="myIcon icon-danger icon-ef-1 icon-ef-1a hover-color" style="width: 20px;height: 20px;"><i class="fa fa-times" style="font-size: 15px;line-height: 22px;"></i></a>'
-                if (url_berkas != '') {
-                   berkas = '<a href="#" class="myIcon icon-success icon-ef-1 icon-ef-1a hover-color"><i class="fa fa-check"></i></a>'
-                }
-                var rows = "";
-                    rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td id='id_table_berkas_sertifikat'>"+berkas+"</td><td align='center'><a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
-                    $(rows).appendTo("#id_sertifikat_tanah","tbody");
-                $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
-                $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
-                $('#sertifikat_tanah').find('.btn-success').text("Simpan")
-                $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah-berkas/save/')
-                $("#id_sertifikat_tanah_form").resetForm()
-                $("#sertifikat_tanah").modal('hide');
-                },
-                error: function(data) {       
-                  toast_server_error()
-                }
-              });
+    function sertifikat_tanah_add(elem_){
+      // console.log(elem_[0])
+      var split_ = 'id_sertifikat_tanah_form'
+      // var split_ = elem_.split('-')[1]
+      var frm = $('#id_sertifikat_tanah_form');
+      
+      frm.ajaxSubmit({
+        method: 'POST',
+        data: frm.serialize(),
+        url: frm.attr('action'),
+        beforeSend: function() {
+          $('#field-'+split_).hide();
+          var percentVal = '0%';
+          $('#load-'+split_).html(percentVal);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+          var percentVal = percentComplete + '%';
+          $('#field-'+split_).hide();
+          $('#load-'+split_).show();
+          $('#load-'+split_).html(percentVal);
+        },
+        success: function(response){
+          var res = $.parseJSON(response); 
+          if(respon.success){
+            toastr["success"](res.pesan)
+
+            var percentVal = '100%';
+            $('#load-'+split_).html(percentVal);  
+             
+            id_penggunaan = res.data.id_sertifikat_tanah
+            url_berkas = res.data.url_berkas
+            if ($('#id_sertifikat_tanah').find('#'+id_penggunaan+'')){
+              $('#'+id_penggunaan+'').remove()
             }
-      }
+            var id_no_sertifikat_petak = $("#id_no_sertifikat_petak").val()
+            var id_luas_sertifikat_petak = $("#id_luas_sertifikat_petak").val()
+            var id_atas_nama_sertifikat_petak = $("#id_atas_nama_sertifikat_petak").val()
+            var id_tahun_sertifikat = $("#id_tahun_sertifikat").val()
+            var berkas = '<a href="#" class="myIcon icon-danger icon-ef-1 icon-ef-1a hover-color" style="width: 20px;height: 20px;"<i class="fa fa-times" style="font-size: 15px;line-height: 22px;"></i></a>'
+            if (url_berkas != '') {
+               berkas = '<a href="#" class="myIcon icon-success icon-ef-1 icon-ef-1a hover-color" style="width: 20px;height: 20px;"><i class="fa fa-check" style="font-size: 15px;line-height: 22px;"></i></a>'
+            }
+            var rows = "";
+                rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td id='id_table_berkas_sertifikat'>"+berkas+"</td><td align='center'><a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+                $(rows).appendTo("#id_sertifikat_tanah","tbody");
+            $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+            $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
+            $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+            $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah-berkas/save/')
+            $("#id_sertifikat_tanah_form").resetForm()
+            $('#load-'+split_).hide();
+            $('#field-'+split_).show();
+            $("#sertifikat_tanah").modal('hide');             
+          }
+          else{
+            // $('#checkbox_berkas_foto').prop('checked', false);
+            if (respon["Terjadi Kesalahan"]) {
+              toastr["warning"](respon["Terjadi Kesalahan"][0]['message'])
+              frm.trigger('reset');
+              frm.parsley().reset();
+              $('#load-'+split_).hide();
+              $('#field-'+split_).show();
+            }else{
+              toast_server_error()
+              $('#load-'+split_).hide();
+              $('#field-'+split_).show();
+            }
+          }
+        },
+        error: function(response){
+          toast_server_error()
+          $('#percent-'+split_).hide();
+          $('#btn-'+split_).show();
+        }
+      })
+    }
+
+
+    // function sertifikat_tanah_add(btn){
+    //     var frm = $('#id_sertifikat_tanah_form');
+    //      if (frm.parsley().validate()){
+    //         frm.ajaxSubmit({
+    //          success: function(response) {  // on success..
+    //             var res = $.parseJSON(response);  
+    //             id_penggunaan = res.data.id_sertifikat_tanah
+    //             url_berkas = res.data.url_berkas
+    //             if ($('#id_sertifikat_tanah').find('#'+id_penggunaan+'')){
+    //               $('#'+id_penggunaan+'').remove()
+    //             }
+    //             var id_no_sertifikat_petak = $("#id_no_sertifikat_petak").val()
+    //             var id_luas_sertifikat_petak = $("#id_luas_sertifikat_petak").val()
+    //             var id_atas_nama_sertifikat_petak = $("#id_atas_nama_sertifikat_petak").val()
+    //             var id_tahun_sertifikat = $("#id_tahun_sertifikat").val()
+    //             var berkas = '<a href="#" class="myIcon icon-danger icon-ef-1 icon-ef-1a hover-color" style="width: 20px;height: 20px;"><i class="fa fa-times" style="font-size: 15px;line-height: 22px;"></i></a>'
+    //             if (url_berkas != '') {
+    //                berkas = '<a href="#" class="myIcon icon-success icon-ef-1 icon-ef-1a hover-color"><i class="fa fa-check"></i></a>'
+    //             }
+    //             var rows = "";
+    //                 rows += "<tr id='"+id_penggunaan+"'><td id='id_table_no_sertifikat_petak'>"+id_no_sertifikat_petak+"</td><td id='id_table_luas_sertifikat_petak'>"+id_luas_sertifikat_petak+"</td><td id='id_table_atas_nama_sertifikat_petak'>"+id_atas_nama_sertifikat_petak+"</td><td id='id_table_tahun_sertifikat'>"+id_tahun_sertifikat+"</td><td id='id_table_berkas_sertifikat'>"+berkas+"</td><td align='center'><a href='#' id='"+id_penggunaan+"' onclick='deleteRowsertifikattanah(this); return false;' class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td></tr>";
+    //                 $(rows).appendTo("#id_sertifikat_tanah","tbody");
+    //             $('#sertifikat_tanah').find('.btn-primary').attr('class','btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan')
+    //             $('#sertifikat_tanah').find('.btn-success').attr('onclick','sertifikat_tanah_add(this)')
+    //             $('#sertifikat_tanah').find('.btn-success').text("Simpan")
+    //             $('#sertifikat_tanah').find('#id_sertifikat_tanah_form').attr('action','/informasitanah/sertifikat-tanah-berkas/save/')
+    //             $("#id_sertifikat_tanah_form").resetForm()
+    //             $("#sertifikat_tanah").modal('hide');
+    //             },
+    //             error: function(data) {       
+    //               toast_server_error()
+    //             }
+    //           });
+    //         }
+    //   }
 
     function deleteRowsertifikattanah(btn){
         var row = btn.parentNode.parentNode;
@@ -1206,7 +1286,7 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                       <select id="id_satuan_luas" name="satuan_luas" class="form-control chosen-select mb-20">
                         <option>-- Pilih Satuan</option>
                           {% for j in satuan %}
-                           <option value="{{j.0}}">{{j.1}}</option>
+                           <option value="{{j.0}}">{{j.1|safe}}</option>
                           {% endfor %}
                       </select>
                     </div>
@@ -1377,54 +1457,58 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
               <h3 class="modal-title custom-font">Sertifikat/Petok D</h3>
           </div>
           <div class="modal-body">
-            <form method="POST" id="id_sertifikat_tanah_form" name="sertifikat_tanah_form" role="form" class="form-horizontal" action="{% url 'sertifikat_tanah_berkas_save' %}"  data-parsley-validate novalidate>
-            {% csrf_token %}
-              <div class="row">
-                <div class="form-group">
-                  <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
-                  <div class="col-sm-4">
-                    <input type="text" id="id_no_sertifikat_petak" name="no_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="input01" class="col-sm-2 control-label">Luas</label>
-                  <div class="col-sm-2">
-                    <div class="input-group">
-                      <input type="text" class="form-control float-type" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
-                      <span class="input-group-addon">
-                        <span>M&sup2;</span>
-                      </span>
+            <span id="field-id_sertifikat_tanah_form">
+              <form method="POST" id="id_sertifikat_tanah_form" name="sertifikat_tanah_form" role="form" class="form-horizontal" action="{% url 'sertifikat_tanah_berkas_save' %}"  data-parsley-validate novalidate>
+              {% csrf_token %}
+                <div class="row">
+                  <div class="form-group">
+                    <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+                    <div class="col-sm-4">
+                      <input type="text" id="id_no_sertifikat_petak" name="no_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
                     </div>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
-                  <div class="col-sm-4">
-                    <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
-                  <div class="col-sm-3">
-                      <div class="input-group datepicker w-360 tanggal-awal"> 
-                        <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tahun_sertifikat" name="tahun_sertifikat" style="width: 170px;">
-                        <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-                          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                  <div class="form-group">
+                    <label for="input01" class="col-sm-2 control-label">Luas</label>
+                    <div class="col-sm-2">
+                      <div class="input-group">
+                        <input type="text" class="form-control float-type" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
+                        <span class="input-group-addon">
+                          <span>M&sup2;</span>
                         </span>
                       </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
+                    <div class="col-sm-4">
+                      <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
+                    <div class="col-sm-3">
+                        <div class="input-group datepicker w-360 tanggal-awal"> 
+                          <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tahun_sertifikat" name="tahun_sertifikat" style="width: 170px;">
+                          <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                            <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                          </span>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-sm-3 control-label"><strong>Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akte Jual Beli / Petok D / Surat Keterangan Status Tanah)</strong></label>
+                        <div class="col-sm-5">
+                          <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
+                        </div>
                   </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-3 control-label"><strong>Surat Kepemilikan Tanah atau Surat Penguasaan Hak atas Tanah (Sertifikat / Akte Jual Beli / Petok D / Surat Keterangan Status Tanah)</strong></label>
-                      <div class="col-sm-5">
-                        <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
-                      </div>
-                </div>
-              </div>
-            </form>
+              </form>
+            </span>
+            <span class="col-sm-6" id="load-id_sertifikat_tanah_form"></span>
           </div>
           <div class="modal-footer">
-            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="sertifikat_tanah_add(this)" >Simpan</a>
+            <!-- <a  id="id_sertifikat_tanah"  >Simpan</a> -->
+            <button href="#" id="id_sertifikat_tanah_form" onclick="sertifikat_tanah_add($(this)); return false;" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan"><i class="fa fa-upload"></i>Simpan</button>
             <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowsertifikattanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
           </div>
         </div>

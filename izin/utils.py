@@ -81,8 +81,8 @@ RUWASJA = (
 
 SATUAN = (
 	('M','M'),
-	('M1','M1'),
-	('M2','M2'),
+	('M&sup1;','M&sup1;'),
+	('M&sup2;','M&sup2;'),
 )
 
 import datetime
