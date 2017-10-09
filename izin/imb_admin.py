@@ -9,13 +9,17 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.http import Http404, HttpResponseForbidden
 
-from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey,DetilBangunanIMB
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey,DetilBangunanIMB,SertifikatTanah
 from kepegawaian.models import Pegawai,UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
 from izin.utils import*
 
 import math
+
+import locale, datetime
+
+locale.setlocale(locale.LC_ALL,'id_ID.UTF-8')
 
 class DetilIMBAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -173,6 +177,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				pass
 				# print "WASEM"
 
+	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_id)
+
+	  		extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+
 			try:
 				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_,parameter_bangunan__parameter="Fungsi Bangunan").last()
 				if detil_bangunan_:
@@ -259,6 +267,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'detil_bangunan': detil_bangunan_ })
 			except ObjectDoesNotExist:
 				pass
+
+	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
+
+	  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ x.tahun_sertifikat.strftime('%d %B %Y') for x in sertifikat_tanah_list)})
 
 		template = loader.get_template("front-end/include/imb_umum/cetak_sk_imb_umum.html")
 		ec = RequestContext(request, extra_context)
