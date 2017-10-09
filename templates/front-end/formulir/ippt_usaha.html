@@ -123,123 +123,259 @@
   </div>
 
 
-  <div class="modal fade" id="penggunaan_tanah_sekarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title custom-font">Penggunaan Tanah Sekarang</h3>
-        </div>
-        <div class="modal-body">
-          <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
+    <div class="modal fade" id="penggunaan_tanah_sekarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">Penggunaan Tanah Sekarang</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_form_pengggunaan_tanah_sekarang" name="form_pengggunaan_tanah_sekarang" role="form" class="form-horizontal" action="{% url 'informasi_penggunaan_tanah_sekarang_save' %}" data-parsley-validate novalidate>
             {% csrf_token %}
-            <div class="row">
+              <div class="row">
+                  <div class="form-group">
+                    <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
+                    <div class="col-sm-4">
+                      <input type="text" class="form-control" id="id_nama_penggunaan" required="" name="nama_penggunaan">
+                    </div>
+                  </div>
+              </div><br>
+              <div class="row">
+                  <div class="form-group">
+                    <label for="input01" class="col-sm-3 control-label">Ukuran Penggunaan Tanah</label>
+                    <div class="col-sm-4">
+                      <div class="input-group">
+                        <input type="text" class="form-control no_ktp" id="id_ukuran_penggunaan" name="ukuran_penggunaan" required="" data-parsley-trigger="change">
+                        <span class="input-group-addon">
+                          <span>M&sup2;</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="perumahan_yang_dimiliki" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">Perumahan Yang Dimiliki</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_form_perumahan_yang_dimiliki_sekarang" name="form_perumahan_yang_dimiliki_sekarang" role="form" class="form-horizontal" action="{% url 'perumahan_yang_sudah_dimiliki_save' %}" data-parsley-validate novalidate>
+            {% csrf_token %}
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Nama Perumahan</label>
+            <div class="col-sm-7">
+              <input type="text" id="id_nama_perumahan" name="nama_perumahan" class="form-control" required="" data-parsley-trigger="">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
+            <div class="col-sm-3">
+              <div class="input-group">
+                <input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control no_ktp" required="" data-parsley-trigger="">
+                <span class="input-group-addon">
+                  <span>M&sup2;</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input01" class="col-sm-2 control-label">Status Tanah</label>
+            <div class="col-sm-7">
+            <input type="text" id="id_status_tanah" name="status_tanah" class="form-control" required="" data-parsley-trigger="">
+            </div>
+          </div>
+
+
+            <div class="form-group">
+              <label for="input01" class="col-sm-2 control-label">Lokasi</label>
+              <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+              <div class="col-sm-5">
+                  <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+                      <option value="1">Kabupaten Kediri</option>
+                  </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label for="input01" class="col-sm-4 control-label"><strong>Kecamatan</strong></label>
+              <div class="col-sm-5">
+                <select id="id_kecamatan_ippt_usaha" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+                  <option value>-- Pilih Kecamatan --</option>
+                  {% if kecamatan %}
+                  {% for k in kecamatan %}
+                  <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-4 control-label"><strong>Kelurahan/Desa</strong></label>
+              <div class="col-sm-5">
+                <select class="form-control chosen-select mb-10" name="desa" id="id_desa_ippt_usaha" required="" data-parsley-trigger="change">
+                </select>
+              </div>
+            </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="perumahan_yang_dimiliki_sekarang_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowperumahan_yang_dimiliki(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="sertifikat_tanah" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">Sertifikat/Petok D</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_sertifikat_tanah_form" name="sertifikat_tanah_form" role="form" class="form-horizontal" action="{% url 'sertifikat_tanah_save' %}"  data-parsley-validate novalidate>
+            {% csrf_token %}
+              <div class="row">
                 <div class="form-group">
-                  <label for="input01" class="col-sm-3 control-label">Penggunaan Tanah</label>
+                  <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
                   <div class="col-sm-4">
-                    <input type="text" class="form-control" id="id_nama_penggunaan" required="" name="nama_penggunaan">
+                    <input type="text" id="id_no_sertifikat_petak" name="no_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
                   </div>
                 </div>
-            </div><br>
-            <div class="row">
                 <div class="form-group">
-                  <label for="input01" class="col-sm-3 control-label">Ukuran Penggunaan Tanah</label>
-                  <div class="col-sm-4">
+                  <label for="input01" class="col-sm-2 control-label">Luas</label>
+                  <div class="col-sm-2">
                     <div class="input-group">
-                      <input type="text" class="form-control no_ktp" id="id_ukuran_penggunaan" name="ukuran_penggunaan" required="" data-parsley-trigger="change">
+                      <input type="text" class="form-control float-type" id="id_luas_sertifikat_petak" name="luas_sertifikat_petak" required="" data-parsley-trigger="change">
                       <span class="input-group-addon">
                         <span>M&sup2;</span>
                       </span>
                     </div>
                   </div>
                 </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="penggunaan_tanah_sekarang_add(this)" >Simpan</a>
-          <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowpenggunaantanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="perumahan_yang_dimiliki" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h3 class="modal-title custom-font">Perumahan Yang Dimiliki</h3>
-        </div>
-        <div class="modal-body">
-          <form method="POST" id="id_form_perumahan_yang_dimiliki_sekarang" name="form_perumahan_yang_dimiliki_sekarang" role="form" class="form-horizontal" action="{% url 'perumahan_yang_sudah_dimiliki_save' %}" data-parsley-validate novalidate>
-          {% csrf_token %}
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Nama Perumahan</label>
-          <div class="col-sm-7">
-            <input type="text" id="id_nama_perumahan" name="nama_perumahan" class="form-control" required="" data-parsley-trigger="">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Luas Tanah</label>
-          <div class="col-sm-3">
-            <div class="input-group">
-              <input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control no_ktp" required="" data-parsley-trigger="">
-              <span class="input-group-addon">
-                <span>M&sup2;</span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="input01" class="col-sm-2 control-label">Status Tanah</label>
-          <div class="col-sm-7">
-          <input type="text" id="id_status_tanah" name="status_tanah" class="form-control" required="" data-parsley-trigger="">
-          </div>
-        </div>
-
-
-          <div class="form-group">
-            <label for="input01" class="col-sm-2 control-label">Lokasi</label>
-            <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
-            <div class="col-sm-5">
-                <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
-                    <option value="1">Kabupaten Kediri</option>
-                </select>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
+                  <div class="col-sm-4">
+                    <input type="text" id="id_atas_nama_sertifikat_petak" name="atas_nama_sertifikat_petak" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
+                  <div class="col-sm-3">
+                      <div class="input-group datepicker w-360 tanggal-awal"> 
+                        <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tahun_sertifikat" name="tahun_sertifikat" style="width: 170px;">
+                        <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                        </span>
+                      </div>
+                  </div>
+                </div>
               </div>
+            </form>
           </div>
-
-          <div class="form-group">
-            <label for="input01" class="col-sm-4 control-label"><strong>Kecamatan</strong></label>
-            <div class="col-sm-5">
-              <select id="id_kecamatan_ippt_usaha" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
-                <option value>-- Pilih Kecamatan --</option>
-                {% if kecamatan %}
-                {% for k in kecamatan %}
-                <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
-                {% endfor %}
-                {% endif %}
-              </select>
-            </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="sertifikat_tanah_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowsertifikattanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
           </div>
-
-          <div class="form-group">
-            <label class="col-sm-4 control-label"><strong>Kelurahan/Desa</strong></label>
-            <div class="col-sm-5">
-              <select class="form-control chosen-select mb-10" name="desa" id="id_desa_ippt_usaha" required="" data-parsley-trigger="change">
-              </select>
-            </div>
-          </div>
-
-          </form>
-        </div>
-        <div class="modal-footer">
-          <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="perumahan_yang_dimiliki_sekarang_add(this)" >Simpan</a>
-          <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowperumahan_yang_dimiliki(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="modal fade" id="id_akta_jual_beli_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">Akta Jual Beli</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_akta_jual_beli_form" name="akta_jual_beli_form" role="form" class="form-horizontal" action="{% url 'akta_jual_beli_save' %}"  data-parsley-validate novalidate>
+            {% csrf_token %}
+              <div class="row">
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+                  <div class="col-sm-4">
+                    <input type="text" id="id_no_jual_beli" name="no_jual_beli" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>Tanggal</strong></label>
+                  <div class="col-sm-3">
+                      <div class="input-group datepicker w-360 tanggal-awal"> 
+                        <input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_jual_beli" name="tanggal_jual_beli" style="width: 170px;">
+                        <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                        </span>
+                      </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>Atas Nama</strong></label>
+                  <div class="col-sm-4">
+                    <input type="text" id="id_atas_nama_jual_beli" name="atas_nama_jual_beli" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="akta_jual_beli_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowaktajualbeli(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="id_no_ptp_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title custom-font">No PTP</h3>
+          </div>
+          <div class="modal-body">
+            <form method="POST" id="id_no_ptp_form" name="akta_jual_beli_form" role="form" class="form-horizontal" action="{% url 'no_ptp_save' %}"  data-parsley-validate novalidate>
+            {% csrf_token %}
+              <div class="row">
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label"><strong>No.</strong></label>
+                  <div class="col-sm-4">
+                    <input type="text" id="id_no_ptp" name="no_ptp" class="form-control" required="" data-parsley-trigger="change">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="input01" class="col-sm-2 control-label">Tanggal PTP</label>
+                  <div class="col-sm-3">
+                      <div class="input-group datepicker w-360 tanggal-awal"> 
+                        <input type="text" class="form-control" data-date-format="DD-MM-YYYY" id="id_tanggal_ptp" name="tanggal_ptp" style="width: 170px;">
+                        <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+                          <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+                        </span>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan" onclick="no_ptp_add(this)" >Simpan</a>
+            <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRownoptp(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
 
 {% block extratools %}
