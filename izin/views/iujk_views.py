@@ -559,40 +559,40 @@ def upload_berkas_next(request):
 				b = berkas_.filter(nama_berkas="Sertifikat Badan Usaha "+p.nama_perusahaan)
 				if b.exists():
 					b = berkas_.filter(nama_berkas="Kartu Teknis Badan Usaha "+p.nama_perusahaan)
+					# if b.exists():
+					# 	b = berkas_.filter(nama_berkas="Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
+					# 	if b.exists():
+					# 		b = berkas_.filter(nama_berkas="Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
 					if b.exists():
-						b = berkas_.filter(nama_berkas="Surat Pernyataaan Pengikatan Diri PJT-BU "+p.nama_perusahaan)
-						if b.exists():
-							b = berkas_.filter(nama_berkas="Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK "+p.nama_perusahaan)
+						# b = berkas_.filter(nama_berkas="NPWP "+p.nama_perusahaan)
+						npwp = p.berkas_npwp
+						if npwp:
+							b = berkas_.filter(nama_berkas="Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
 							if b.exists():
-								# b = berkas_.filter(nama_berkas="NPWP "+p.nama_perusahaan)
-								npwp = p.berkas_npwp
-								if npwp:
-									b = berkas_.filter(nama_berkas="Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat "+p.nama_perusahaan)
+								b = berkas_.filter(nama_berkas="Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
+								if b.exists():
+									b = berkas_.filter(nama_berkas="Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
 									if b.exists():
-										b = berkas_.filter(nama_berkas="Gambar denah lokasi/posisi badan usaha "+p.nama_perusahaan)
-										if b.exists():
-											b = berkas_.filter(nama_berkas="Gambar/foto papan nama badan usaha "+p.nama_perusahaan)
-											if b.exists():
-												data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
-												data = json.dumps(data)
-											else:
-												data = {'Terjadi Kesalahan': [{'message': 'Gambar/foto papan nama badan usaha '+p.nama_perusahaan+' tidak ada'}]}
-												data = json.dumps(data)
-										else:
-											data = {'Terjadi Kesalahan': [{'message': 'Gambar denah lokasi/posisi badan usaha '+p.nama_perusahaan+' tidak ada'}]}
-											data = json.dumps(data)
+										data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+										data = json.dumps(data)
 									else:
-										data = {'Terjadi Kesalahan': [{'message': 'Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat '+p.nama_perusahaan+' tidak ada'}]}
+										data = {'Terjadi Kesalahan': [{'message': 'Gambar/foto papan nama badan usaha '+p.nama_perusahaan+' tidak ada'}]}
 										data = json.dumps(data)
 								else:
-									data = {'Terjadi Kesalahan': [{'message': 'NPWP '+p.nama_perusahaan+' tidak ada'}]}
+									data = {'Terjadi Kesalahan': [{'message': 'Gambar denah lokasi/posisi badan usaha '+p.nama_perusahaan+' tidak ada'}]}
 									data = json.dumps(data)
 							else:
-								data = {'Terjadi Kesalahan': [{'message': 'Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK '+p.nama_perusahaan+' tidak ada'}]}
+								data = {'Terjadi Kesalahan': [{'message': 'Surat Keterangan Domisili Badan Usaha dari Kantor Desa Setempat '+p.nama_perusahaan+' tidak ada'}]}
 								data = json.dumps(data)
 						else:
-							data = {'Terjadi Kesalahan': [{'message': 'Surat Pernyataaan Pengikatan Diri PJT-BU '+p.nama_perusahaan+' tidak ada'}]}
+							data = {'Terjadi Kesalahan': [{'message': 'NPWP '+p.nama_perusahaan+' tidak ada'}]}
 							data = json.dumps(data)
+						# 	else:
+						# 		data = {'Terjadi Kesalahan': [{'message': 'Surat Peryataan Pengikatan Diri Penanggung Jawab BUJK '+p.nama_perusahaan+' tidak ada'}]}
+						# 		data = json.dumps(data)
+						# else:
+						# 	data = {'Terjadi Kesalahan': [{'message': 'Surat Pernyataaan Pengikatan Diri PJT-BU '+p.nama_perusahaan+' tidak ada'}]}
+						# 	data = json.dumps(data)
 					else:
 						data = {'Terjadi Kesalahan': [{'message': 'Kartu Teknis Badan Usaha '+p.nama_perusahaan+' tidak ada'}]}
 						data = json.dumps(data)
