@@ -1223,8 +1223,8 @@
 		        		<tr>
 		        			<td colspan="3" style="vertical-align: top;padding-top: 1px;padding-left: 121px;" align="left" width="150">a. Seluas</td>
 		        			<td width="10" style="vertical-align: top;padding-top: 1px;">:</td>
-		        			<td>
-		        			{% if detil_bangunan %}
+		        			<td>{{detil_bangunan|safe}}
+<!-- 		        			{% if detil_bangunan %}
 		        				{{pengajuan.luas_bangunan}} M&sup2;
 		        			{% for j in detil_bangunan %} 
 			        			{% if j.detil_bangunan_imb.nama_bangunan == "Gedung" %} 
@@ -1243,7 +1243,7 @@
 		        			{% endfor %}
 		        			{% else %}
 		        				{{pengajuan.luas_bangunan}} M&sup2;
-		        			{% endif %}
+		        			{% endif %} -->
 		        			</td>
 		        		</tr>
 		        		<tr>
@@ -1305,7 +1305,7 @@
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left">c. Seluas</td>
 		        			<td width="10">:</td>
-		        			<td>{{ pengajuan.luas_tanah|default_if_none:"-" }} M&sup2;</td>
+		        			<td>{{luas_sertifikat_tanah_list|safe}}</td>
 		        		</tr>
 		        		<tr>
 		        			<td colspan="3" style="padding-left: 121px;" align="left" width="140">d. Dengan batas tanah</td>
