@@ -95,7 +95,7 @@ def get_tahun_choices(sejak):
 def get_nomor_pengajuan(kode_):
 	now = datetime.datetime.now()
 	nomor = ""
-	print now.strftime("%f")[:4]
+	# print now.strftime("%f")[:4]
 	if kode_:
 		nomor += str(kode_)
 		nomor += "/"+str(now.strftime("%f")[:4])
@@ -125,7 +125,7 @@ def terbilang_(bil):
 	# bil = bil.replace(".", "")
 	satuan = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
-	print bil
+	# print bil
 	n = int(bil)
 	if n >= 0 and n <= 11:
 		hasil = [satuan[n]]
@@ -175,7 +175,7 @@ def konversi(x):
 
 
 def terbilang(n):
-	print n
+	# print n
 	if n == 0:
 		return 'nol'
 	t = terbilang_(n)

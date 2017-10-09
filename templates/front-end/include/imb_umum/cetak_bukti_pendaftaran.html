@@ -267,16 +267,6 @@
                         <td width="5%">:</td>
                         <td width="75%">{{pengajuan.status_hak_tanah|default_if_none:"-"}}</td>
                     </tr>
-                    <tr>
-                        <td width="25%" style="vertical-align: top;padding-top: 1px;">No. Surat Tanah</td>
-                        <td width="5%" style="vertical-align: top;padding-top: 1px;">:</td>
-                        <td width="75%" style="vertical-align: top;padding-top: 1px;">{{pengajuan.no_surat_tanah|default_if_none:"-"}}</td>
-                    </tr>
-                    <tr>
-                        <td width="25%">Tgl. Surat Tanah</td>
-                        <td width="5%">:</td>
-                        <td width="75%">{{pengajuan.tanggal_surat_tanah|date:"d F Y"|default_if_none:"-"}}</td>
-                    </tr>
                 </table>
                 <br>
 
@@ -313,8 +303,29 @@
         </div>
         <div class="page">
             <div class="subpage">
-                {% if detil_bangunan  %}
-                <br>
+                {% if sertifikat_tanah_list  %}
+                <table width="100%" border="1" class="font">
+                  <thead>
+                    <tr>
+                      <td>No Sertifikat</td>
+                      <td>Luas</td>
+                      <td>Atas Nama</td>
+                      <td>Tahun</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for a in sertifikat_tanah_list %}
+                      <tr id="{{a.id}}">
+                        <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+                        <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+                        <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+                        <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% endif %}
+
+                {% if detil_bangunan_list  %}
                 <br>
                 <table width="100%" border="1" class="font">
                     <tr>
@@ -322,7 +333,7 @@
                         <td width="20%">Jenis Bangunan</td>
                         <td width="20%">Biaya</td>
                     </tr>
-                    {% for a in detil_bangunan %}
+                    {% for a in detil_bangunan_list %}
                         <tr id="{{a.id}}">
                             <td id="id_table_jenis_kontruksi">{{a.detil_bangunan_imb.jenis_kontruksi.nama_jenis_kontruksi}}</td>
                             <td id="id_table_bangunan">{{a.detil_bangunan_imb.nama_bangunan}}</td>
@@ -381,10 +392,10 @@
 
                 <hr class="style14">
                 
-                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<!--                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <br><br><br>
                 <hr>
-                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 73%;">simpatik.kedirikab.go.id</font></i>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 73%;">simpatik.kedirikab.go.id</font></i> -->
             </div>    
         </div>
 

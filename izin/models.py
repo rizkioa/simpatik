@@ -901,7 +901,7 @@ class DetilIMB(PengajuanIzin):
 	luas_bangunan = models.DecimalField(max_digits=6, decimal_places=2, default=0,verbose_name='Luas Bangunan')
 	jumlah_bangunan = models.IntegerField(verbose_name="Jumlah Bangunan", null=True, blank=True)
 	luas_tanah = models.DecimalField(max_digits=6, decimal_places=2, default=0, verbose_name='Luas Tanah')
-	no_surat_tanah = models.CharField(max_length=255, verbose_name='No Surat Tanah')
+	no_surat_tanah = models.CharField(max_length=255, verbose_name='No Surat Tanah', null=True, blank=True)
 	tanggal_surat_tanah = models.DateField(verbose_name='Tanggal Surat Tanah', null=True, blank=True)
 	lokasi = models.CharField(verbose_name="Lokasi", max_length=150, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
@@ -1153,15 +1153,22 @@ class InformasiTanah(PengajuanIzin):
 
 # meta
 class SertifikatTanah(MetaAtribut):
-	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah")
+	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah", null=True, blank=True)
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True, related_name="sertifikat_tanah_pengajuan_izin")
 	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
 	atas_nama_sertifikat_petak =  models.CharField(max_length=255, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
 	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
+	berkas_sertifikat = models.ForeignKey(Berkas, verbose_name="Berkas Sertifikat Tanah", related_name='berkas_sertifikat_tanah', blank=True, null=True)
 
 	def __unicode__(self):
 		return u'%s' % (str(self.no_sertifikat_petak))
-	
+
+	def get_file_url(self):
+		if self.berkas_sertifikat:
+			return self.berkas_sertifikat.get_file_url()
+		return "#"
+
 	def as_dict(self):
 		return {
 			# "id": self.id,

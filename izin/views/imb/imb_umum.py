@@ -20,8 +20,7 @@ import base64, time, json, os
 from decimal import *
 
 from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,ParameterBangunan,JenisKontruksi,BangunanJenisKontruksi
-from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
-from izin.models import PengajuanIzin, DetilIMB,Pemohon,DetilBangunanIMB
+from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat,PengajuanIzin, DetilIMB,Pemohon,DetilBangunanIMB,SertifikatTanah
 from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA,SATUAN
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import UploadBerkasKTPForm,UploadBerkasPendukungForm,DetilIMBForm,TotalBiayaBangunanForm,TotalBiayaBangunanForm,DetilBangunanIMBForm,DetilBangunanIMBTanpaParameterForm
@@ -144,7 +143,8 @@ def cetak_bukti_pendaftaran_imb_umum(request,id_pengajuan_):
 			extra_context.update({ 'ktp': ktp_ })
 			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
-			detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
+			detil_bangunan_list = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
+			sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
 			# kegiatan_pembangunan = pengajuan_.parameter_bangunan.get(parameter="Kegiatan Pembangunan Gedung")
 			# nilai_kegiatan_pembangunan = str(kegiatan_pembangunan.nilai)
 			
@@ -187,7 +187,9 @@ def cetak_bukti_pendaftaran_imb_umum(request,id_pengajuan_):
 			# extra_context.update({'lama_penggunaan_bangunan': lama_penggunaan_bangunan.detil_parameter})
 			# extra_context.update({'nilai_lama_penggunaan_bangunan': nilai_lama_penggunaan_bangunan})
 
-			extra_context.update({'detil_bangunan': detil_bangunan_})
+			extra_context.update({'detil_bangunan_list': detil_bangunan_list})
+			extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+
 			extra_context.update({'letak_pembangunan': letak_})
 			extra_context.update({ 'pengajuan': pengajuan_ })
 			extra_context.update({ 'syarat': syarat })

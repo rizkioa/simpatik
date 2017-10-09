@@ -25,7 +25,7 @@ from master.models import Negara, Kecamatan, JenisPemohon,JenisReklame,Berkas,Pa
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin,Riwayat
 from izin.models import PengajuanIzin, InformasiTanah,Pemohon,SertifikatTanah,AktaJualBeliTanah,NoPTP
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
-from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm,SertifikatTanahForm
+from izin.izin_forms import UploadBerkasPendukungForm,InformasiTanahForm,SertifikatTanahForm, SertifikatTanahBerkasForm
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_izin_lokasi(request, extra_context={}):
@@ -141,6 +141,45 @@ def sertifikat_tanah_save_cookie(request):
         response = HttpResponse(json.dumps(data))
     return response
 
+def sertifikat_tanah_berkas_save_cookie(request):
+    if 'id_pengajuan' in request.COOKIES.keys():
+        if request.COOKIES['id_pengajuan'] != '':
+            sertifikat_tanah = SertifikatTanahBerkasForm(request.POST, request.FILES)
+            berkas_ = request.FILES.get('berkas')
+            if request.method == 'POST':
+              if berkas_:
+                if sertifikat_tanah.is_valid():
+                  ext = os.path.splitext(berkas_.name)[1]
+                  valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
+                  if not ext in valid_extensions:
+                    data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+                  else:
+                    nama_berkas = "Surat Sertifikat Tanah "+sertifikat_tanah.cleaned_data.get('no_sertifikat_petak')
+                    instance_berkas = Berkas(nama_berkas=nama_berkas,berkas=request.FILES['berkas'], keterangan=nama_berkas)
+                    instance_berkas.save()
+
+                    p = sertifikat_tanah.save(commit=False)
+                    p.pengajuan_izin_id = request.COOKIES['id_pengajuan']
+                    p.berkas_sertifikat = instance_berkas
+                    p.save()
+                    data = {'success': True,
+                            'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+                            'data': {'id_sertifikat_tanah':p.id, 'url_berkas': p.get_file_url()}}
+                    data = json.dumps(data)
+                    response = HttpResponse(data)
+                else:
+                    data = sertifikat_tanah.errors.as_json()
+                    response = HttpResponse(json.dumps(data))
+            else:
+                sertifikat_tanah = SertifikatTanahBerkasForm()
+        else:
+            data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
+            data = json.dumps(json.dumps(data))
+    else:
+        data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+        response = HttpResponse(json.dumps(data))
+    return response
+
 def edit_sertifikat_tanah(request,id_sertifikat_tanah):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
@@ -173,6 +212,8 @@ def delete_sertifikat_tanah(request,id_sertifikat_tanah):
   if 'id_pengajuan' in request.COOKIES.keys():
     if request.COOKIES['id_pengajuan'] != '':
         tag_to_delete = get_object_or_404(SertifikatTanah, id=id_sertifikat_tanah)
+        if tag_to_delete.berkas_sertifikat:
+          tag_to_delete.berkas_sertifikat.delete()
         tag_to_delete.delete()
         data = {'success': True,
                 'pesan': 'Data berhasil Dihapus.'}
@@ -191,8 +232,13 @@ def load_data_tabel_sertifikat_tanah(request,id_sertifikat_tanah):
     if 'id_pengajuan' in request.COOKIES.keys():
         if request.COOKIES['id_pengajuan'] != '':
             data = []
-            i = SertifikatTanah.objects.filter(informasi_tanah_id=request.COOKIES['id_pengajuan'])
-            data = [ob.as_json() for ob in i]
+            try:
+              SertifikatTanah.objects.get(informasi_tanah_id=request.COOKIES['id_pengajuan'])
+              i = SertifikatTanah.objects.filter(informasi_tanah_id=request.COOKIES['id_pengajuan'])
+              data = [ob.as_json() for ob in i]
+            except ObjectDoesNotExist:
+              i = SertifikatTanah.objects.filter(pengajuan_izin_id=request.COOKIES['id_pengajuan'])
+              data = [ob.as_json() for ob in i]
             response = HttpResponse(json.dumps(data), content_type="application/json")
     return response
   

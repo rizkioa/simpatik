@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import NomorIdentitasPengguna
 from izin.utils import STATUS_HAK_TANAH,KLASIFIKASI_JALAN,RUMIJA,RUWASJA,JENIS_LOKASI_USAHA,SATUAN
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame,ParameterBangunan,JenisKontruksi
-from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilIMB
+from izin.models import PengajuanIzin, JenisPermohonanIzin, KelompokJenisIzin, Pemohon, DetilIMB, SertifikatTanah
 from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_imb_umum(request):
@@ -73,6 +73,10 @@ def formulir_imb_umum(request):
 						paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
 						extra_context.update({ 'paspor': paspor_ })
 						extra_context.update({'cookie_file_ktp': ktp_.berkas })
+
+			  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=request.COOKIES['id_pengajuan'])
+
+			  		extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
 
 					extra_context.update({ 'no_pengajuan_konfirmasi': pengajuan_.no_pengajuan })
 					extra_context.update({ 'jenis_permohonan_konfirmasi': pengajuan_.jenis_permohonan })
