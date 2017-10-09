@@ -458,3 +458,22 @@ class PengaduanIzin(MetaAtribut):
 	class Meta:
 		verbose_name = "Pengaduan Izin"
 		verbose_name_plural = "Pengaduan Izin"
+
+class PesanPengaduan(MetaAtribut):
+	pengaduan_izin = models.ForeignKey(PengaduanIzin, verbose_name="Base Pengaduan Izin")
+	pesan = models.TextField(verbose_name="Pesan", null=True, blank=True)
+	status_pemohon = models.BooleanField(verbose_name="Apakah pesan ini dari pemohon", default=True) # Jika True dari Pemohon, False dari Operator
+	berkas = models.ManyToManyField(Berkas, related_name='berkas_pesan_pengaduan', verbose_name="Berkas Pesan Pengaduan", blank=True)
+
+	def pretty_tanggal(self):
+		from izin.utils import pretty_date
+		import pendulum
+		t2 = pendulum.timezone('Asia/Jakarta')
+		t2 = t2.convert(self.created_at)
+		t2 = t2.replace(tzinfo=None)
+		pretty = pretty_date(t2)
+		return pretty
+
+	class Meta:
+		verbose_name = "Pesan Pengaduan"
+		verbose_name_plural = "Pesan Pengaduan"
