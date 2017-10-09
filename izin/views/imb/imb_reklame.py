@@ -31,7 +31,7 @@ from accounts.utils import KETERANGAN_PEKERJAAN
 def formulir_imb_reklame(request, extra_context={}):
     jenis_pemohon = JenisPemohon.objects.all()
     negara = Negara.objects.all()
-    kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+    kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
     
     extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
     extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
