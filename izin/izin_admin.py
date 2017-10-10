@@ -540,6 +540,15 @@ class IzinAdmin(admin.ModelAdmin):
 			jumlah_izin.append(pengajuan_)
 			url = "/admin/izin/pengajuanizin/verifikasi-operator/"
 			total = pengajuan_
+
+			########################################################
+			from master.models import PengaduanIzin
+			pengaduanizin_obj = PengaduanIzin.objects.filter(status=6).count()
+			id_elemet.append('pengaduanizin')
+			jumlah_izin.append(pengaduanizin_obj)
+			url = "/admin/master/pengaduanizin/pengaduan-draft/"
+			total = pengaduanizin_obj
+			########################################################
 		if request.user.groups.filter(name='Kasir'):
 			pengajuan_ = PengajuanIzin.objects.filter(~Q(status=11)).filter(status=5).count()
 			id_elemet.append('kasir')
