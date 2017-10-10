@@ -381,24 +381,25 @@
         data: frm.serialize(),
         url: frm.attr('action'),
         beforeSend: function() {
-          $('#field-'+split_).hide();
           var percentVal = '0%';
-          $('#load-'+split_).html(percentVal);
+          $('.progres').show();
+          $('#dataprogresupload').html(0);
+          $('#progresupload').css('width',percentVal);
+          $('#progresupload').attr('data-percentage',percentVal);
         },
         uploadProgress: function(event, position, total, percentComplete) {
           var percentVal = percentComplete + '%';
-          $('#field-'+split_).hide();
-          $('#load-'+split_).show();
-          $('#load-'+split_).html(percentVal);
+          $('#dataprogresupload').html(percentComplete);
+          $('#progresupload').css('width',percentVal);
+          $('#progresupload').attr('data-percentage',percentVal);
         },
         success: function(response){
           var res = $.parseJSON(response); 
           if(respon.success){
             toastr["success"](res.pesan)
 
-            var percentVal = '100%';
-            $('#load-'+split_).html(percentVal);  
-             
+            $('.progres').hide();
+                         
             id_penggunaan = res.data.id_sertifikat_tanah
             url_berkas = res.data.url_berkas
             if ($('#id_sertifikat_tanah').find('#'+id_penggunaan+'')){
@@ -426,16 +427,13 @@
           }
           else{
             // $('#checkbox_berkas_foto').prop('checked', false);
-            if (respon["Terjadi Kesalahan"]) {
-              toastr["warning"](respon["Terjadi Kesalahan"][0]['message'])
+            if (resp["Terjadi Kesalahan"]) {
+              toastr["warning"](resp["Terjadi Kesalahan"][0]['message'])
               frm.trigger('reset');
               frm.parsley().reset();
-              $('#load-'+split_).hide();
-              $('#field-'+split_).show();
+              $('.progres').hide();
             }else{
-              toast_server_error()
-              $('#load-'+split_).hide();
-              $('#field-'+split_).show();
+              
             }
           }
         },
@@ -1457,7 +1455,6 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
               <h3 class="modal-title custom-font">Sertifikat/Petok D</h3>
           </div>
           <div class="modal-body">
-            <span id="field-id_sertifikat_tanah_form">
               <form method="POST" id="id_sertifikat_tanah_form" name="sertifikat_tanah_form" role="form" class="form-horizontal" action="{% url 'sertifikat_tanah_berkas_save' %}"  data-parsley-validate novalidate>
               {% csrf_token %}
                 <div class="row">
@@ -1503,11 +1500,20 @@ function toRp(a,b,c,d,e){e=function(f){return f.split('').reverse().join('')};b=
                   </div>
                 </div>
               </form>
-            </span>
-            <span class="col-sm-6" id="load-id_sertifikat_tanah_form"></span>
           </div>
           <div class="modal-footer">
-            <!-- <a  id="id_sertifikat_tanah"  >Simpan</a> -->
+            <div class="progress-list progres" style="display: none;">
+                      <div class="details">
+                          <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                      </div>
+                      <div class="status pull-right">
+                          <span class="counter" data-from="0" data-to="0" id="dataprogresupload" data-speed="1000">0</span>%
+                      </div>
+                      <div class="clearfix"></div>
+                      <div class="progress progress-xs no-radius">
+                          <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresupload" data-percentage=""></div>
+                      </div>
+                  </div>
             <button href="#" id="id_sertifikat_tanah_form" onclick="sertifikat_tanah_add($(this)); return false;" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan"><i class="fa fa-upload"></i>Simpan</button>
             <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="batalRowsertifikattanah(this)" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
           </div>
