@@ -395,7 +395,7 @@
         },
         success: function(response){
           var res = $.parseJSON(response); 
-          if(respon.success){
+          if(res.success){
             toastr["success"](res.pesan)
 
             $('.progres').hide();
