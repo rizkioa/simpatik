@@ -366,117 +366,104 @@
 {% endblock %}
 
 {% block extratools %}
-  {{ block.super }}
-  <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
-  <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
-  <script type="text/javascript">
-  $(".panel-footer").hide()
-  $('.timeline-pesan').scrollTop($('.timeline-pesan')[0].scrollHeight);
-  function save_pengaduan(request){
-	// response = $('#g-recaptcha-response').val();
-	// recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
-	// recaptcha_response_field = $('input[name=recaptcha_response_field]').val()
-	// $.ajax({
-	//   type: 'POST',
-	//   url: '{% url 'ajax_save_pengaduan' %}',
-	//   data: { csrfmiddlewaretoken: csrf_token, no_ktp_: no_ktp_, nama_lengkap_: nama_lengkap_, email_: email_, no_telp_: no_telp_, kategori_pengaduan_:kategori_pengaduan_, isi_pengaduan_:isi_pengaduan_ },
-	//     success: function (data) {
-	//       respon = $.parseJSON(data)
-	//         if(respon.success){
-	//           toastr["success"](respon.pesan)
-	//           setTimeout(function(){ 
-	//             // alert("Hello");
-	//             window.location.reload()
+	{{ block.super }}
+	<script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script type="text/javascript">
+		{% if pengaduan_izin_obj %}
+			setTimeout(function() {
+				location.reload();
+			}, 30000);
+		{% endif %}
+		$(".panel-footer").hide()
+		$('.timeline-pesan').scrollTop($('.timeline-pesan')[0].scrollHeight);
+  		function save_pengaduan(request){
+			// response = $('#g-recaptcha-response').val();
+			// recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
+			// recaptcha_response_field = $('input[name=recaptcha_response_field]').val()
+			// $.ajax({
+			//   type: 'POST',
+			//   url: '{% url 'ajax_save_pengaduan' %}',
+			//   data: { csrfmiddlewaretoken: csrf_token, no_ktp_: no_ktp_, nama_lengkap_: nama_lengkap_, email_: email_, no_telp_: no_telp_, kategori_pengaduan_:kategori_pengaduan_, isi_pengaduan_:isi_pengaduan_ },
+			//     success: function (data) {
+			//       respon = $.parseJSON(data)
+			//         if(respon.success){
+			//           toastr["success"](respon.pesan)
+			//           setTimeout(function(){ 
+			//             // alert("Hello");
+			//             window.location.reload()
 
-	//           }, 3000);
-	//         }
-	//         else{
-	//           toastr["warning"](respon.pesan)
-	//           // alert("error")
-	//           // window.location.replace(respon.url)
-	//         }
-	//     }
-	//     // error: function(data) {                
-	//     //   toastr["error"]("Terjadi kesalahan server.")
-	//     // }
-	// })
-	frm = $('.frm_pengaduan')
-	frm.parsley().validate();
-	if (frm.parsley().isValid()){
-		frm.ajaxSubmit({
-			method: 'POST',
-			data: frm.serialize(),
-			url: '{% url 'ajax_save_pengaduan' %}',
-			beforeSend: function() {
-			  frm.mLoading();
-			},
-			success: function(response){
-				frm.mLoading('hide');
-				respon = JSON.parse(response)
-				if (respon.success == true){
-					toastr["success"](respon.pesan)
-					nomor_ktp = $("input[name=no_ktp]").val()
-					// $("#id_sp_no_ktp").text(nomor_ktp)
-					$("input[name=no_ktp]").val('')
-					$("input[name=nama_lengkap]").val('')
-					$("input[name=email]").val('')
-					$("input[name=no_telp]").val('')
-					$("input[name=nomor_telphone]").val('')
-					$("textarea[name=isi_pengaduan]").val('')
-					$(".panel-footer").show()
-					$.cookie('no_ktp_pengaduan', respon.nomor_ktp , {path:'/'})
-					window.location.reload()
-				}
-				else{
-				  toastr["warning"](respon.pesan)
-				}
-			},
-			error: function(){
-			  frm.mLoading('hide');
-			  toastr["error"]("Terjadi Kesalahan Server.")
+			//           }, 3000);
+			//         }
+			//         else{
+			//           toastr["warning"](respon.pesan)
+			//           // alert("error")
+			//           // window.location.replace(respon.url)
+			//         }
+			//     }
+			//     // error: function(data) {                
+			//     //   toastr["error"]("Terjadi kesalahan server.")
+			//     // }
+			// })
+			frm = $('.frm_pengaduan')
+			frm.parsley().validate();
+			if (frm.parsley().isValid()){
+				frm.ajaxSubmit({
+					method: 'POST',
+					data: frm.serialize(),
+					url: '{% url 'ajax_save_pengaduan' %}',
+					beforeSend: function() {
+					  frm.mLoading();
+					},
+					success: function(response){
+						frm.mLoading('hide');
+						respon = JSON.parse(response)
+						if (respon.success == true){
+							toastr["success"](respon.pesan)
+							nomor_ktp = $("input[name=no_ktp]").val()
+							// $("#id_sp_no_ktp").text(nomor_ktp)
+							$("input[name=no_ktp]").val('')
+							$("input[name=nama_lengkap]").val('')
+							$("input[name=email]").val('')
+							$("input[name=no_telp]").val('')
+							$("input[name=nomor_telphone]").val('')
+							$("textarea[name=isi_pengaduan]").val('')
+							$(".panel-footer").show()
+							$.cookie('no_ktp_pengaduan', respon.nomor_ktp , {path:'/'})
+							window.location.reload()
+						}
+						else{
+						  toastr["warning"](respon.pesan)
+						}
+					},
+					error: function(){
+					  frm.mLoading('hide');
+					  toastr["error"]("Terjadi Kesalahan Server.")
+					}
+				});
 			}
-		});
-	}
-  }
+	  	}
 
-  get_option_kelompokjenisizin()
-  function get_option_kelompokjenisizin(){
-	  $.ajax({
-		  url : __base_url__+'/admin/izin/kelompokjenisizin/option/',
-		  type: "GET",
-		  success: function(response){
-			  $('.option-kelompokjenisizin').html(response)
-			  $('.option-kelompokjenisizin').append('<option value selected>Pilih Jenis Izin</option>')
+	  	get_option_kelompokjenisizin()
+	  	function get_option_kelompokjenisizin(){
+			  $.ajax({
+				  url : __base_url__+'/admin/izin/kelompokjenisizin/option/',
+				  type: "GET",
+				  success: function(response){
+					  $('.option-kelompokjenisizin').html(response)
+					  $('.option-kelompokjenisizin').append('<option value selected>Pilih Jenis Izin</option>')
 
-		  }
-	  })
-  }
+				  }
+			  })
+	  	}
 
-  function show_modal(){
-	$("#pengaduan_modal").modal('show')
-  }
+	  	function show_modal(){
+			$("#pengaduan_modal").modal('show')
+	  	}
 
-  function cek_pengaduan(){
-	nomor_ktp = $("#id_cek_no_ktp").val()
-	localStorage.setItem("no_ktp", nomor_ktp);
-  }
-
-  // no_ktp = $("input[name=no_ktp]").val()
-
-  // $('#button_cek_pengaduan').click(function(){
-  //   $.ajax({
-  //       type: 'GET',
-  //       url: __base_url__+'/ajax-cek-pengaduan/'+no_ktp,
-  //       success: function(respon){
-  //           console.log(respon)
-  //           $.each(respon, function(data) {
-
-  //               $("#id_sp_isi_pengaduan").text(respon[data].isi_pengaduan)
-  //               $("#id_sp_balasan").text(respon[data].balas)
-  //           })
-  //       }
-  //   })
-  // })
-	
-  </script>
+	  	function cek_pengaduan(){
+			nomor_ktp = $("#id_cek_no_ktp").val()
+			localStorage.setItem("no_ktp", nomor_ktp);
+	  	}
+</script>
 {% endblock %}

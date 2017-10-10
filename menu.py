@@ -127,7 +127,6 @@ class CustomMenu(Menu):
         #     ]
 
         if request.user.groups.filter(name="Operator").exists():
-
             menu_utama.children += [
                 items.MenuItem(
                         title='Pengajuan Baru',
@@ -139,6 +138,41 @@ class CustomMenu(Menu):
                     icon='icon-check',
                     css_classes='operator',
                     url=reverse('admin:verifikasi_operator'),  
+                ),
+                # items.MenuItem(
+                #     title='Pengaduan Izin',
+                #     icon='icon-microphone',
+                #     css_classes='pengaduanizin',
+                #     url=reverse('admin:verifikasi_operator'),  
+                # )
+                items.MenuItem(
+                    title='Pengaduan Izin',
+                    icon='fa fa-file-text',
+                    url="#",
+                    css_classes='pengaduanizin',
+                    children= [
+                        items.MenuItem(
+                            title='Semua Pengaduan',
+                            icon='icon-globe',
+                            url=reverse('admin:master_pengaduanizin_changelist'),
+                        ),
+                        items.MenuItem(
+                            title='Pengaduan aktif',
+                            icon='icon-globe',
+                            url=reverse('admin:change_list__pengaduan_aktif'),
+                        ),
+                        items.MenuItem(
+                            title='Pengaduan draft',
+                            icon='icon-globe',
+                            css_classes='pengaduanizin',
+                            url=reverse('admin:change_list__pengaduan_draft'),
+                        ),
+                        items.MenuItem(
+                            title='Pengaduan archive',
+                            icon='icon-globe',
+                            url=reverse('admin:change_list__pengaduan_archive'),
+                        ),
+                    ]
                 )
             ]
 
@@ -155,9 +189,7 @@ class CustomMenu(Menu):
                         icon='fa fa-file-text', 
                         url=reverse('admin:survey_selesai'),                        
                     ),
-             ]
-
-
+            ]
 
         if request.user.groups.filter(name="Kabid").exists():
             menu_utama.children += [
