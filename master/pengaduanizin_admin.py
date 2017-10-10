@@ -4,13 +4,42 @@ from django.utils.safestring import mark_safe
 from django.core.exceptions import ObjectDoesNotExist
 import json, datetime
 from django.http import HttpResponse
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 
 
 class PengaduanIzinAdmin(admin.ModelAdmin):
 	list_display = ('no_ktp', 'nama_lengkap', 'kelompok_jenis_izin', 'dibalas_oleh', 'status_data', 'detil')
+
+	def change_list__pengaduan_aktif(self, request, extra_context={}):
+		self.request = request
+		return super(PengaduanIzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def change_list__pengaduan_archive(self, request, extra_context={}):
+		self.request = request
+		return super(PengaduanIzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def change_list__pengaduan_draft(self, request, extra_context={}):
+		self.request = request
+		return super(PengaduanIzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def changelist_view(self, request, extra_context={}):
+		self.request = request
+		return super(PengaduanIzinAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def get_queryset(self, request):
+		func_view, func_view_args, func_view_kwargs = resolve(request.path)
+		qs = super(PengaduanIzinAdmin, self).get_queryset(request)
+		if func_view.__name__ == 'change_list__pengaduan_aktif':
+			qs = qs.filter(status=1)
+		elif func_view.__name__ == 'change_list__pengaduan_archive':
+			qs = qs.filter(status=2)
+		elif func_view.__name__ == 'change_list__pengaduan_draft':
+			qs = qs.filter(status=6)
+		elif func_view.__name__ == 'changelist_view':
+			qs = qs
+		return qs
 
 	def dibalas_oleh(self, obj):
 		dibalas = "-"
@@ -32,7 +61,14 @@ class PengaduanIzinAdmin(admin.ModelAdmin):
 	status_data.short_description = 'Status'
 
 	def detil(self, obj):
-		return mark_safe('''<button type="button" class="btn btn-info" onclick="detilpengaduan('''+str(obj.id)+''')" tittle="Lihat Detil">Lihat Detil</button> | <a href="%s" class="btn btn-success">Balas</a> | <a href="%s" class="btn btn-danger">Tutup Pengaduan</a>''' % (reverse('admin:list_pesan_pengaduan', kwargs={'id_pengaduan': obj.id}), reverse('admin:tutup_pengaduan', kwargs={'id_pengaduan': obj.id})))
+		btn_detil = '<button type="button" class="btn btn-info" onclick="detilpengaduan('+str(obj.id)+')" tittle="Lihat Detil">Lihat Detil</button>'
+		btn_balas = '<a href="'+reverse('admin:list_pesan_pengaduan', kwargs={'id_pengaduan': obj.id})+'" class="btn btn-success">Balas</a>'
+		btn_tutup = '<a href="'+reverse('admin:tutup_pengaduan', kwargs={'id_pengaduan': obj.id})+'" class="btn btn-danger">Tutup Pengaduan</a>'
+		if obj.status == 2:
+			link = btn_detil
+		else:
+			link = btn_detil+' | '+btn_balas+' | '+btn_tutup
+		return mark_safe(link)
 	detil.short_description = 'Aksi'
 
 	def json_pengaduanizin(self, request, id_pengaduan):
@@ -74,6 +110,7 @@ class PengaduanIzinAdmin(admin.ModelAdmin):
 
 	def list_pesan_pengaduan(self, request, id_pengaduan):
 		extra_context = {}
+		extra_context.update({'has_permission': True })
 		pengaduan_obj = get_object_or_404(PengaduanIzin, id=id_pengaduan)
 		if pengaduan_obj:
 			pesan_pengaduan_list = pengaduan_obj.pesanpengaduan_set.all()
@@ -116,6 +153,9 @@ class PengaduanIzinAdmin(admin.ModelAdmin):
 			url(r'^pesan/(?P<id_pengaduan>[0-9]+)$', self.admin_site.admin_view(self.list_pesan_pengaduan), name='list_pesan_pengaduan'),
 			url(r'^tutup-pengaduan/(?P<id_pengaduan>[0-9]+)$', self.admin_site.admin_view(self.tutup_pengaduan), name='tutup_pengaduan'),
 			url(r'^balas/$', self.admin_site.admin_view(self.balas_pengaduanizin), name='balas_pengaduanizin'),
+			url(r'^pengaduan-aktif/$', self.admin_site.admin_view(self.change_list__pengaduan_aktif), name='change_list__pengaduan_aktif'),
+			url(r'^pengaduan-archive/$', self.admin_site.admin_view(self.change_list__pengaduan_archive), name='change_list__pengaduan_archive'),
+			url(r'^pengaduan-draft/$', self.admin_site.admin_view(self.change_list__pengaduan_draft), name='change_list__pengaduan_draft'),
 			)
 		return my_urls + urls
 
