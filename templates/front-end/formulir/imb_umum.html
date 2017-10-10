@@ -787,8 +787,8 @@
           }
           else{
             // $('#checkbox_berkas_foto').prop('checked', false);
-            if (resp["Terjadi Kesalahan"]) {
-              toastr["warning"](resp["Terjadi Kesalahan"][0]['message'])
+            if (res["Terjadi Kesalahan"]) {
+              toastr["warning"](res["Terjadi Kesalahan"][0]['message'])
               frm.trigger('reset');
               frm.parsley().reset();
               $('.progres').hide();
