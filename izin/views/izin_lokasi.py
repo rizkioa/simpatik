@@ -174,7 +174,8 @@ def sertifikat_tanah_berkas_save_cookie(request):
                 sertifikat_tanah = SertifikatTanahBerkasForm()
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-            data = json.dumps(json.dumps(data))
+            # data = json.dumps(json.dumps(data))
+            response = HttpResponse(json.dumps(data))
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         response = HttpResponse(json.dumps(data))
