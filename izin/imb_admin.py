@@ -272,7 +272,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				  	detil_ = str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2;")
 				  	for x in detil_bangunan_:
 				  		if x.detil_bangunan_imb.nama_bangunan == "Gedung":
-				  			detil_ = detil_ +", "+str(x.detil_bangunan_imb.nama_bangunan)
+				  			detil_ = detil_
 				  		else:
 				  			detil_ = detil_ +", "+str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas)
 				  	# + " ,  ".join( if x.detil_bangunan_imb.nama_bangunan == "Gedung" str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) )+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")
