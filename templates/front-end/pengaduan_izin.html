@@ -188,6 +188,7 @@
 				<div class="tile-body">
 					<div class="row">
 						<div class="col-md-12">
+							<a href="?tutup-pengaduan=true" class="btn btn-danger pull-right">Logout Pengaduan</a>
 							<div class="container timeline-pesan">
 								<!-- <div class="page-header">
 									<h1 id="timeline"><span id="id_sp_isi_pengaduan"></span></h1>
@@ -352,7 +353,7 @@
 				  <input type="text" id="id_cek_no_ktp" class="form-control" name="cek_no_ktp" placeholder="Masukan Nomor KTP Anda">
 				  <br>
 				  <br>
-				  <a onclick="cek_pengaduan();" href="{% url 'cek_pengaduan_izin' %}" class="btn btn-success">Cek Pengaduan</a>
+				  <a onclick="cek_pengaduan();" class="btn btn-success">Cek Pengaduan</a>
 				</div>
 			  </div>
 			</section>
@@ -463,7 +464,9 @@
 
 	  	function cek_pengaduan(){
 			nomor_ktp = $("#id_cek_no_ktp").val()
-			localStorage.setItem("no_ktp", nomor_ktp);
+			// localStorage.setItem("no_ktp", nomor_ktp);
+			$.cookie('no_ktp_pengaduan', nomor_ktp , {path:'/'})
+			window.location.reload()
 	  	}
 </script>
 {% endblock %}

@@ -70,11 +70,9 @@ def pengaduan_izin(request, extra_context={}):
 	no_ktp_pengaduan = request.COOKIES.get('no_ktp_pengaduan')
 	if no_ktp_pengaduan:
 		pengaduan_izin_obj = PengaduanIzin.objects.filter(no_ktp=no_ktp_pengaduan)
-		print no_ktp_pengaduan
 		if pengaduan_izin_obj :
 			pengaduan_izin_obj = pengaduan_izin_obj.last()
-			print pengaduan_izin_obj
-			if pengaduan_izin_obj.status != 2:
+			if pengaduan_izin_obj:
 				pesan_pengaduan_list = pengaduan_izin_obj.pesanpengaduan_set.all()
 				extra_context.update({
 					'pengaduan_izin_obj': pengaduan_izin_obj,
@@ -82,21 +80,28 @@ def pengaduan_izin(request, extra_context={}):
 					})
 				if request.POST:
 					if request.POST.get('pesan') is not None:
-						# print datetime.datetime.now()
 						pesan_pengaduan_obj = PesanPengaduan(
 							pengaduan_izin_id = pengaduan_izin_obj.id,
 							pesan = request.POST.get('pesan'),
-							# created_at = datetime.datetime.now()
 							)
 						pesan_pengaduan_obj.save()
-						# print pesan_pengaduan_obj.created_at
+				if request.GET:
+					if request.GET.get('tutup-pengaduan'):
+						if request.GET.get('tutup-pengaduan') == "true":
+							extra_context.update({
+							'pengaduan_izin_obj': None,})
+							response = HttpResponseRedirect('/pengaduan-izin/')
+							response.delete_cookie('no_ktp_pengaduan')
+							return response
 			else:
-				print "masuk 2"
+				extra_context.update({
+					'pengaduan_izin_obj': None,})
 				response = HttpResponseRedirect('/pengaduan-izin/')
 				response.delete_cookie('no_ktp_pengaduan')
 				return response
 		else:
-			print "masuk nggak ada"
+			extra_context.update({
+				'pengaduan_izin_obj': None,})
 			response = HttpResponseRedirect('/pengaduan-izin/')
 			response.delete_cookie('no_ktp_pengaduan')
 			return response
