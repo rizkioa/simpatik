@@ -4,279 +4,461 @@
 {{ block.super }}
 <style type="text/css">
   hr.style14 { 
-    border: 0; 
-    height: 1px; 
-    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
-    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+	border: 0; 
+	height: 1px; 
+	background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+  
   }
 </style>
-<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+<style type="text/css">
+	.timeline {
+		list-style: none;
+		padding: 20px 0 20px;
+		position: relative;
+	}
+	.timeline:before {
+		top: 0;
+		bottom: 0;
+		position: absolute;
+		content: " ";
+		width: 3px;
+		background-color: #eeeeee;
+		left: 50%;
+		margin-left: -1.5px;
+	}
+	.timeline > li {
+		margin-bottom: 20px;
+		position: relative;
+	}
+	.timeline > li:before,
+	.timeline > li:after {
+		content: " ";
+		display: table;
+	}
+	.timeline > li:after {
+		clear: both;
+	}
+	.timeline > li:before,
+	.timeline > li:after {
+		content: " ";
+		display: table;
+	}
+	.timeline > li:after {
+		clear: both;
+	}
+	.timeline > li > .timeline-panel {
+		width: 50%;
+		float: left;
+		border: 1px solid #d4d4d4;
+		border-radius: 2px;
+		padding: 20px;
+		position: relative;
+		-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+		box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+	}
+	.timeline > li.timeline-inverted + li:not(.timeline-inverted),
+	.timeline > li:not(.timeline-inverted) + li.timeline-inverted {
+		margin-top: -60px;
+	}
+
+	.timeline > li:not(.timeline-inverted) {
+		padding-right:90px;
+	}
+
+	.timeline > li.timeline-inverted {
+		padding-left:90px;
+	}
+	.timeline > li > .timeline-panel:before {
+		position: absolute;
+		top: 26px;
+		right: -15px;
+		display: inline-block;
+		border-top: 15px solid transparent;
+		border-left: 15px solid #ccc;
+		border-right: 0 solid #ccc;
+		border-bottom: 15px solid transparent;
+		content: " ";
+	}
+	.timeline > li > .timeline-panel:after {
+		position: absolute;
+		top: 27px;
+		right: -14px;
+		display: inline-block;
+		border-top: 14px solid transparent;
+		border-left: 14px solid #fff;
+		border-right: 0 solid #fff;
+		border-bottom: 14px solid transparent;
+		content: " ";
+	}
+	.timeline > li > .timeline-badge {
+		color: #fff;
+		width: 50px;
+		height: 50px;
+		line-height: 50px;
+		font-size: 1.4em;
+		text-align: center;
+		position: absolute;
+		top: 16px;
+		left: 50%;
+		margin-left: -25px;
+		background-color: #999999;
+		z-index: 100;
+		border-top-right-radius: 50%;
+		border-top-left-radius: 50%;
+		border-bottom-right-radius: 50%;
+		border-bottom-left-radius: 50%;
+	}
+	.timeline > li.timeline-inverted > .timeline-panel {
+		float: right;
+	}
+	.timeline > li.timeline-inverted > .timeline-panel:before {
+		border-left-width: 0;
+		border-right-width: 15px;
+		left: -15px;
+		right: auto;
+	}
+	.timeline > li.timeline-inverted > .timeline-panel:after {
+		border-left-width: 0;
+		border-right-width: 14px;
+		left: -14px;
+		right: auto;
+	}
+	.timeline-badge.primary {
+		background-color: #2e6da4 !important;
+	}
+	.timeline-badge.success {
+		background-color: #3f903f !important;
+	}
+	.timeline-badge.warning {
+		background-color: #f0ad4e !important;
+	}
+	.timeline-badge.danger {
+		background-color: #d9534f !important;
+	}
+	.timeline-badge.info {
+		background-color: #5bc0de !important;
+	}
+	.timeline-title {
+		margin-top: 0;
+		color: inherit;
+	}
+	.timeline-body > p,
+	.timeline-body > ul {
+		margin-bottom: 0;
+	}
+	.timeline-body > p + p {
+		margin-top: 5px;
+	}
+	.timeline-pesan{
+		/*position: absolute;
+		width: 100%;
+		margin-top: -100px;
+		z-index: 10;
+		height: 100%;
+		max-height: 1340px;*/
+		height: 400px;
+		overflow-y: scroll;
+	}
+</style>
 {% endblock %}
 
 {% block section %}
 <div class="pageheader">
-  <h2>Pengaduan Izin
-    <span>Berikut adalah info Cari Pengajuan Izin SIMPATIK Kabupaten Kediri.</span>
-  </h2>
-  <div class="page-bar">
-    <ul class="page-breadcrumb">
-      <li>
-        <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
-      </li>
-      <li>
-        <a href="#"> Pengaduan Izin</a>
-      </li>
-    </ul>
-  </div>
+	<h2>Pengaduan Izin
+		<span>Berikut adalah Pengaduan Izin SIMPATIK Kabupaten Kediri.</span>
+	</h2>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+			</li>
+			<li>
+				<a href="#"> Pengaduan Izin</a>
+			</li>
+		</ul>
+	</div>
 </div>
+{% if pengaduan_izin_obj %}
+	<div class="row">
+		<div class="col-md-12">
+			<section class="tile">
+				<div class="tile-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="container timeline-pesan">
+								<!-- <div class="page-header">
+									<h1 id="timeline"><span id="id_sp_isi_pengaduan"></span></h1>
+								</div> -->
+								{% if pesan_pengaduan_list %}
+									<ul class="timeline">
+										{% for p in pesan_pengaduan_list %}
+											{% if p.status_pemohon == False %}
+												<li>
+													<div class="timeline-badge"><i class="icon-users"></i></div>
+													<div class="timeline-panel">
+														<div class="timeline-heading">
+															<h4 class="timeline-title"><span>Operator</span></h4>
+															<p><small class="text-muted"><i class="fa fa-clock-o"></i> <span>{{p.pretty_tanggal}}</span></small></p>
+														</div>
+														<div class="timeline-body">
+															<p>{{p.pesan}}</p>
+														</div>
+													</div>
+												</li>
+											{% else %}
+												<li class="timeline-inverted">
+													<div class="timeline-badge warning"><i class="icon-user"></i></div>
+													<div class="timeline-panel">
+														<div class="timeline-heading">
+															<h4 class="timeline-title"><span>Anda</span></h4>
+															<p><small class="text-muted"><i class="fa fa-clock-o"></i> <span>{{p.pretty_tanggal}}</span></small></p>
+														</div>
+														<div class="timeline-body">
+															<p>{{p.pesan}}</p>
+														</div>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								{% endif %}
 
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tile-footer">
+					<form method="POST">
+						{% csrf_token %}
+						<div class="chat-form">
+	                        <div class="input-group">
+	                            <input class="form-control" placeholder="Type your message here..." type="text" name="pesan">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="fa fa-chevron-right"></i></button>
+                                </span>
+	                        </div>
+	                    </div>
+                    </form>
+				</div>
+			</section>
+		</div>
+	</div>
+{% else %}
 <div class="row">
-  <div class="col-md-12">
-    <section class="tile">
-      <div class="tile-body">
-        <div class="row">
-          <button class="pull-right btn btn-info" onclick="show_modal()" id="button_modal_pengaduan" style="margin-right: 10px">Cek Pengaduan</button>
-          <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-darkgray">
-              <div class="panel-header">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h2 class="text-center">Pengaduan Izin</h2>
-                    <hr class="style14">
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-                <form method="POST" class="frm_pengaduan">
-                {% csrf_token %}
-                  <div class="row">
-                    <div class="form-group col-md-12">
-                      <label for="input01" class="col-sm-4 control-label">Nomor KTP</label>
-                      <div class="col-sm-8">
-                        <input type="text" required="" class="form-control" name="no_ktp">
-                      </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="input01" class="col-sm-4 control-label">Nama Lengkap</label>
-                      <div class="col-sm-8">
-                        <input type="text" required class="form-control" name="nama_lengkap">
-                      </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="input01" class="col-sm-4 control-label">Email</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control" name="email">
-                      </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="input01" class="col-sm-4 control-label">Nomor Telphone</label>
-                      <div class="col-sm-8">
-                        <input type="text"  class="form-control" name="nomor_telphone">
-                      </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="input01" class="col-sm-4 control-label">Kategori Pengajuan</label>
-                      <div class="col-sm-8">
-                         <select class="form-control" required="" name="kategori_pengaduan">
-                            <option value>Pilih Kelompok Jenis Izin</option>
-                           {% if kelompokjenisizin %}
-                            {% for k in kelompokjenisizin %}
-                              <option value="{{k.id}}">{{k.jenis_izin}}</option>
-                            {% endfor %}
-                           {% endif %}
-                         </select>
-                      </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                      <label for="input01" class="col-sm-4 control-label">Isi Pengaduan</label>
-                      <div class="col-sm-8">
-                        <textarea class="form-control" required="" name="isi_pengaduan"></textarea>
-                      </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                      <div class="col-sm-12" align="center">
-                        <hr class="style14">
-                        <button onclick="save_pengaduan();" type="button" class="btn btn-success"><i class="fa fa-eye"></i> <span>Pengaduan</span></button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div class="panel-footer">
-                <p align="center">Untuk Melihat Lebih Lanjut Pengaduan Anda<span hidden="" id="id_sp_no_ktp"></span>
-                <br>
-                <a href="{% url 'cek_pengaduan_izin' %}" id="button_cek_pengaduan" class="btn btn-primary">Cek disini</a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
+	<div class="col-md-12">
+		<section class="tile">
+			<div class="tile-body">
+				<div class="row">
+					<button class="pull-right btn btn-info" onclick="show_modal()" id="button_modal_pengaduan" style="margin-right: 10px">Cek Pengaduan</button>
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-darkgray">
+							<div class="panel-header">
+								<div class="row">
+									<div class="col-sm-12">
+										<h2 class="text-center">Pengaduan Izin</h2>
+										<hr class="style14">
+									</div>
+								</div>
+							</div>
+							<div class="panel-body">
+								<form method="POST" class="frm_pengaduan">
+									{% csrf_token %}
+									<div class="row">
+										<div class="form-group col-md-12">
+											<label for="input01" class="col-sm-4 control-label">Nomor KTP</label>
+											<div class="col-sm-8">
+												<input type="text" required="" class="form-control" name="no_ktp">
+											</div>
+										</div>
+										<div class="form-group col-md-12">
+											<label for="input01" class="col-sm-4 control-label">Nama Lengkap</label>
+											<div class="col-sm-8">
+												<input type="text" required class="form-control" name="nama_lengkap">
+											</div>
+										</div>
+										<div class="form-group col-md-12">
+											<label for="input01" class="col-sm-4 control-label">Email</label>
+											<div class="col-sm-8">
+												<input type="text" class="form-control" name="email">
+											</div>
+										</div>
+										<div class="form-group col-md-12">
+											<label for="input01" class="col-sm-4 control-label">Nomor Telphone</label>
+											<div class="col-sm-8">
+												<input type="text"  class="form-control" name="nomor_telphone">
+											</div>
+										</div>
+										<div class="form-group col-md-12">
+											<label for="input01" class="col-sm-4 control-label">Kategori Pengajuan</label>
+											<div class="col-sm-8">
+												<select class="form-control" required="" name="kategori_pengaduan">
+													<option value>Pilih Kelompok Jenis Izin</option>
+													{% if kelompokjenisizin %}
+													{% for k in kelompokjenisizin %}
+													<option value="{{k.id}}">{{k.jenis_izin}}</option>
+													{% endfor %}
+													{% endif %}
+												</select>
+											</div>
+										</div>
+										<div class="form-group col-md-12">
+											<label for="input01" class="col-sm-4 control-label">Isi Pengaduan</label>
+											<div class="col-sm-8">
+												<textarea class="form-control" required="" name="isi_pengaduan"></textarea>
+											</div>
+										</div>
+										<div class="form-group col-md-12">
+											<div class="col-sm-12" align="center">
+												<hr class="style14">
+												<button onclick="save_pengaduan();" type="button" class="btn btn-success"><i class="fa fa-paper-plane"></i> <span>Pengaduan</span></button>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div class="panel-footer">
+								<p align="center">Untuk Melihat Lebih Lanjut Pengaduan Anda<span hidden="" id="id_sp_no_ktp"></span>
+									<br>
+									<a href="{% url 'cek_pengaduan_izin' %}" id="button_cek_pengaduan" class="btn btn-primary">Cek disini</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
-
-<!-- <div class="row">
-  <div class="col-md-12">
-    <section class="tile">
-      <div class="tile-body">
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-darkgray">
-              <div class="panel-header">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <h2 class="text-center">Cek Pengadauan Anda</h2>
-                    <hr class="style14">
-                  </div>
-                </div>
-              </div>
-              <div class="panel-body">
-              {% csrf_token %}
-                <div class="form-group col-md-12" align="center">
-                  <input type="text" align="center" class="form-group" id="cek_nomor_ktp" name="cek_nomor_ktp" placeholder="Nomor KTP">
-                </div>
-                <div class="form-group col-md-12">
-                  <div class="col-sm-12" align="center">
-                    <button type="button" id="button_cek_pengaduan" class="btn btn-success"><i class="fa fa-eye"></i><span>Cek Pengaduan</span></button>
-                  </div>
-                </div> 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div> -->
+{% endif %}
 
 <div class="modal fade" id="pengaduan_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form method="POST" class="form-horizontal">
-        <div class="modal-header">
-          <h3 class="modal-title costom-font">Cek Pengaduan</h3>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <section class="tile">
-              <div class="tile-body">
-                <div class="row">
-                  <div align="center">
-                    <h4 align="center">Masukan Nomor KTP untuk mengecek pengajuan anda</h4>
-                    <br>
-                    <hr>
-                    <input type="text" id="id_cek_no_ktp" class="control-label" name="cek_no_ktp" placeholder="Masukan Nomor KTP Anda">
-                    <br>
-                    <br>
-                    <a onclick="cek_pengaduan();" href="{% url 'cek_pengaduan_izin' %}" class="btn btn-success">Cek Pengaduan</a>
-                  </div>
-                </div>
-              </div>
-            </section>
-            </div>
-        </div>
-        
-      </form>
-    </div>
+	<div class="modal-content">
+	  <form method="POST" class="form-horizontal">
+		<div class="modal-header">
+		  <h3 class="modal-title costom-font">Cek Pengaduan</h3>
+		</div>
+		<div class="row">
+		  <div class="col-md-12">
+			<section class="tile">
+			  <div class="tile-body">
+				<div align="center">
+				  <h4 align="center">Masukan Nomor KTP untuk mengecek pengajuan anda</h4>
+				  <br>
+				  <hr>
+				  <input type="text" id="id_cek_no_ktp" class="form-control" name="cek_no_ktp" placeholder="Masukan Nomor KTP Anda">
+				  <br>
+				  <br>
+				  <a onclick="cek_pengaduan();" href="{% url 'cek_pengaduan_izin' %}" class="btn btn-success">Cek Pengaduan</a>
+				</div>
+			  </div>
+			</section>
+			</div>
+		</div>
+		
+	  </form>
+	</div>
   </div>
 </div>          
 {% endblock %}
 
 {% block extratools %}
   {{ block.super }}
-  <script src='https://www.google.com/recaptcha/api.js'></script>
   <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+  <script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
   <script type="text/javascript">
   $(".panel-footer").hide()
+  $('.timeline-pesan').scrollTop($('.timeline-pesan')[0].scrollHeight);
   function save_pengaduan(request){
-    // response = $('#g-recaptcha-response').val();
-    // recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
-    // recaptcha_response_field = $('input[name=recaptcha_response_field]').val()
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '{% url 'ajax_save_pengaduan' %}',
-    //   data: { csrfmiddlewaretoken: csrf_token, no_ktp_: no_ktp_, nama_lengkap_: nama_lengkap_, email_: email_, no_telp_: no_telp_, kategori_pengaduan_:kategori_pengaduan_, isi_pengaduan_:isi_pengaduan_ },
-    //     success: function (data) {
-    //       respon = $.parseJSON(data)
-    //         if(respon.success){
-    //           toastr["success"](respon.pesan)
-    //           setTimeout(function(){ 
-    //             // alert("Hello");
-    //             window.location.reload()
+	// response = $('#g-recaptcha-response').val();
+	// recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
+	// recaptcha_response_field = $('input[name=recaptcha_response_field]').val()
+	// $.ajax({
+	//   type: 'POST',
+	//   url: '{% url 'ajax_save_pengaduan' %}',
+	//   data: { csrfmiddlewaretoken: csrf_token, no_ktp_: no_ktp_, nama_lengkap_: nama_lengkap_, email_: email_, no_telp_: no_telp_, kategori_pengaduan_:kategori_pengaduan_, isi_pengaduan_:isi_pengaduan_ },
+	//     success: function (data) {
+	//       respon = $.parseJSON(data)
+	//         if(respon.success){
+	//           toastr["success"](respon.pesan)
+	//           setTimeout(function(){ 
+	//             // alert("Hello");
+	//             window.location.reload()
 
-    //           }, 3000);
-    //         }
-    //         else{
-    //           toastr["warning"](respon.pesan)
-    //           // alert("error")
-    //           // window.location.replace(respon.url)
-    //         }
-    //     }
-    //     // error: function(data) {                
-    //     //   toastr["error"]("Terjadi kesalahan server.")
-    //     // }
-    // })
-    frm = $('.frm_pengaduan')
-    frm.parsley().validate();
-    if (frm.parsley().isValid()){
-        frm.ajaxSubmit({
-            method: 'POST',
-            data: frm.serialize(),
-            url: '{% url 'ajax_save_pengaduan' %}',
-            beforeSend: function() {
-              frm.mLoading();
-            },
-            success: function(response){
-                frm.mLoading('hide');
-                respon = JSON.parse(response)
-                if (respon.success == true){
-                  toastr["success"](respon.pesan)
-                  nomor_ktp = $("input[name=no_ktp]").val()
-                  localStorage.setItem("no_ktp", nomor_ktp);
-                  $("#id_sp_no_ktp").text(nomor_ktp)
-                  $("input[name=no_ktp]").val('')
-                  $("input[name=nama_lengkap]").val('')
-                  $("input[name=email]").val('')
-                  $("input[name=no_telp]").val('')
-                  $("input[name=nomor_telphone]").val('')
-                  $("textarea[name=isi_pengaduan]").val('')
-                  $(".panel-footer").show()
-                }
-                else{
-                  toastr["warning"](respon.pesan)
-                }
-            },
-            error: function(){
-              frm.mLoading('hide');
-              toastr["error"]("Terjadi Kesalahan Server.")
-            }
-        });
-    }
+	//           }, 3000);
+	//         }
+	//         else{
+	//           toastr["warning"](respon.pesan)
+	//           // alert("error")
+	//           // window.location.replace(respon.url)
+	//         }
+	//     }
+	//     // error: function(data) {                
+	//     //   toastr["error"]("Terjadi kesalahan server.")
+	//     // }
+	// })
+	frm = $('.frm_pengaduan')
+	frm.parsley().validate();
+	if (frm.parsley().isValid()){
+		frm.ajaxSubmit({
+			method: 'POST',
+			data: frm.serialize(),
+			url: '{% url 'ajax_save_pengaduan' %}',
+			beforeSend: function() {
+			  frm.mLoading();
+			},
+			success: function(response){
+				frm.mLoading('hide');
+				respon = JSON.parse(response)
+				if (respon.success == true){
+					toastr["success"](respon.pesan)
+					nomor_ktp = $("input[name=no_ktp]").val()
+					// $("#id_sp_no_ktp").text(nomor_ktp)
+					$("input[name=no_ktp]").val('')
+					$("input[name=nama_lengkap]").val('')
+					$("input[name=email]").val('')
+					$("input[name=no_telp]").val('')
+					$("input[name=nomor_telphone]").val('')
+					$("textarea[name=isi_pengaduan]").val('')
+					$(".panel-footer").show()
+					$.cookie('no_ktp_pengaduan', respon.nomor_ktp , {path:'/'})
+					window.location.reload()
+				}
+				else{
+				  toastr["warning"](respon.pesan)
+				}
+			},
+			error: function(){
+			  frm.mLoading('hide');
+			  toastr["error"]("Terjadi Kesalahan Server.")
+			}
+		});
+	}
   }
 
   get_option_kelompokjenisizin()
   function get_option_kelompokjenisizin(){
-      $.ajax({
-          url : __base_url__+'/admin/izin/kelompokjenisizin/option/',
-          type: "GET",
-          success: function(response){
-              $('.option-kelompokjenisizin').html(response)
-              $('.option-kelompokjenisizin').append('<option value selected>Pilih Jenis Izin</option>')
+	  $.ajax({
+		  url : __base_url__+'/admin/izin/kelompokjenisizin/option/',
+		  type: "GET",
+		  success: function(response){
+			  $('.option-kelompokjenisizin').html(response)
+			  $('.option-kelompokjenisizin').append('<option value selected>Pilih Jenis Izin</option>')
 
-          }
-      })
+		  }
+	  })
   }
 
   function show_modal(){
-    $("#pengaduan_modal").modal('show')
+	$("#pengaduan_modal").modal('show')
   }
 
   function cek_pengaduan(){
-    nomor_ktp = $("#id_cek_no_ktp").val()
-    localStorage.setItem("no_ktp", nomor_ktp);
+	nomor_ktp = $("#id_cek_no_ktp").val()
+	localStorage.setItem("no_ktp", nomor_ktp);
   }
 
   // no_ktp = $("input[name=no_ktp]").val()
@@ -295,6 +477,6 @@
   //       }
   //   })
   // })
-    
+	
   </script>
 {% endblock %}

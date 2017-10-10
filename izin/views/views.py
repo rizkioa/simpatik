@@ -18,7 +18,7 @@ from django.utils.safestring import mark_safe
 
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.models import JenisIzin, Syarat, KelompokJenisIzin, JenisPermohonanIzin, PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, IzinLain, Riwayat, PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, JenisKoperasi, BentukKoperasi, DetilTDUP, BidangUsahaPariwisata, KategoriKendaraan, MerkTypeKendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, DetilTrayek, DetilReklameIzin, JenisKualifikasi
-from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame, PengaduanIzin
+from master.models import Negara, Provinsi, Kabupaten, Kecamatan, Desa, JenisPemohon, JenisReklame, ParameterBangunan, JenisTipeReklame, PengaduanIzin, PesanPengaduan
 from perusahaan.models import BentukKegiatanUsaha, JenisPenanamanModal, Kelembagaan, KBLI, JenisLegalitas, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan, JenisKedudukan, DataPimpinan, PemegangSaham, Perusahaan
 
 from izin.utils import formatrupiah,JENIS_IUJK, get_tahun_choices
@@ -60,10 +60,41 @@ def cari_pengajuan(request):
 	return render(request, "front-end/cari_pengajuan.html")
 
 def pengaduan_izin(request, extra_context={}):
+	import locale, datetime
+	locale.setlocale(locale.LC_ALL,'id_ID.UTF-8')
+	from master.models import PengaduanIzin, PesanPengaduan
 	kelompokjenisizin_list = KelompokJenisIzin.objects.filter(aktif=True)
 	extra_context.update({
 		'kelompokjenisizin' : kelompokjenisizin_list
 		})
+	no_ktp_pengaduan = request.COOKIES.get('no_ktp_pengaduan', None)
+	if no_ktp_pengaduan and no_ktp_pengaduan is not None:
+		pengaduan_izin_obj = PengaduanIzin.objects.filter(no_ktp=no_ktp_pengaduan).last()
+		if pengaduan_izin_obj :
+			if pengaduan_izin_obj != 2:
+				pesan_pengaduan_list = pengaduan_izin_obj.pesanpengaduan_set.all()
+				extra_context.update({
+					'pengaduan_izin_obj': pengaduan_izin_obj,
+					'pesan_pengaduan_list': pesan_pengaduan_list
+					})
+				if request.POST:
+					if request.POST.get('pesan') is not None:
+						# print datetime.datetime.now()
+						pesan_pengaduan_obj = PesanPengaduan(
+							pengaduan_izin_id = pengaduan_izin_obj.id,
+							pesan = request.POST.get('pesan'),
+							# created_at = datetime.datetime.now()
+							)
+						pesan_pengaduan_obj.save()
+						# print pesan_pengaduan_obj.created_at
+			else:
+				response = HttpResponseRedirect('/pengaduan-izin/')
+				response.delete_cookie('no_ktp_pengaduan')
+				return response
+		else:
+			response = HttpResponseRedirect('/pengaduan-izin/')
+			response.delete_cookie('no_ktp_pengaduan')
+			return response
 	return render(request, "front-end/pengaduan_izin.html", extra_context)
 
 def cek_pengaduan_izin(request):
@@ -1431,6 +1462,11 @@ def ajax_save_pengaduan(request):
 			isi_pengaduan=isi_pengaduan
 			)
 		pengaduan_obj.save()
+		pesan_pengaduan_obj = PesanPengaduan(
+			pengaduan_izin_id = pengaduan_obj.id,
+			pesan = isi_pengaduan,
+			)
+		pesan_pengaduan_obj.save()
 		data = {"success": True, "pesan": "berhasil", "nomor_ktp": pengaduan_obj.no_ktp}
 	return HttpResponse(json.dumps(data))
 
