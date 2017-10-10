@@ -269,7 +269,14 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			  			if x.total_luas != None:
 				  			total_luas_tanah_detil = Decimal(total_luas_tanah_detil)+x.total_luas
 
-			  		extra_context.update({'detil_bangunan': " "+str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2; , ")+ " ,  ".join( str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) for x in detil_bangunan_)+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")})
+				  	detil_ = str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2;")
+				  	for x in detil_bangunan_:
+				  		if x.detil_bangunan_imb.nama_bangunan == "Gedung":
+				  			detil_ = detil_
+				  		else:
+				  			detil_ = detil_ +", "+str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas)
+				  	# + " ,  ".join( if x.detil_bangunan_imb.nama_bangunan == "Gedung" str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) )+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")
+			  		extra_context.update({'detil_bangunan': detil_ +", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")})
 					# extra_context.update({'detil_bangunan': detil_bangunan_ })
 
 			except ObjectDoesNotExist:
