@@ -266,8 +266,17 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				if detil_bangunan_:
 			  		total_luas_tanah_detil = pengajuan_.luas_bangunan
 			  		for x in detil_bangunan_:
-			  			total_luas_tanah_detil = Decimal(total_luas_tanah_detil)+x.total_luas
-			  		extra_context.update({'detil_bangunan': " "+str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2; , ")+ " ,  ".join( str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) for x in detil_bangunan_)+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")})
+			  			if x.total_luas != None:
+				  			total_luas_tanah_detil = Decimal(total_luas_tanah_detil)+x.total_luas
+
+				  	detil_ = str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2;")
+				  	for x in detil_bangunan_:
+				  		if x.detil_bangunan_imb.nama_bangunan == "Gedung":
+				  			detil_ = detil_
+				  		else:
+				  			detil_ = detil_ +", "+str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas)
+				  	# + " ,  ".join( if x.detil_bangunan_imb.nama_bangunan == "Gedung" str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) )+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")
+			  		extra_context.update({'detil_bangunan': detil_ +", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")})
 					# extra_context.update({'detil_bangunan': detil_bangunan_ })
 
 			except ObjectDoesNotExist:
@@ -275,14 +284,18 @@ class DetilIMBAdmin(admin.ModelAdmin):
 
 	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
 
-	  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ x.tahun_sertifikat.strftime('%d %B %Y') for x in sertifikat_tanah_list)})
-	  		total_luas_tanah = 0
-	  		for x in sertifikat_tanah_list:
-	  			total_luas_tanah = Decimal(total_luas_tanah)+x.luas_sertifikat_petak
-	  		if sertifikat_tanah_list.count() > 1:
-	  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)+", Luas Keseluruhan = "+str(total_luas_tanah)+" "+mark_safe("M&sup2;")})
-	  		else:
-	  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)})
+	  		if sertifikat_tanah_list.exists():
+		  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ x.tahun_sertifikat.strftime('%d %B %Y') for x in sertifikat_tanah_list)})
+		  		total_luas_tanah = 0
+		  		for x in sertifikat_tanah_list:
+		  			total_luas_tanah = Decimal(total_luas_tanah)+x.luas_sertifikat_petak
+		  		if sertifikat_tanah_list.count() > 1:
+		  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)+", Luas Keseluruhan = "+str(total_luas_tanah)+" "+mark_safe("M&sup2;")})
+		  		else:
+		  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)})
+		  	else:
+		  		extra_context.update({'sertifikat_tanah_list': pengajuan_.no_surat_tanah +" Tanggal "+ pengajuan_.tanggal_surat_tanah.strftime('%d %B %Y')})
+		  		extra_context.update({'luas_sertifikat_tanah_list': str(pengajuan_.luas_tanah)+" "+mark_safe("M&sup2;")})
 
 		template = loader.get_template("front-end/include/imb_umum/cetak_sk_imb_umum.html")
 		ec = RequestContext(request, extra_context)
