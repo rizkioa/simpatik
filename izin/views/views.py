@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from django.contrib.admin import site
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 from django.template import RequestContext, loader
 from django.utils.decorators import method_decorator, available_attrs
 from django.views.decorators.cache import cache_page
