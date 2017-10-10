@@ -266,7 +266,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				if detil_bangunan_:
 			  		total_luas_tanah_detil = pengajuan_.luas_bangunan
 			  		for x in detil_bangunan_:
-			  			total_luas_tanah_detil = Decimal(total_luas_tanah_detil)+x.total_luas
+			  			if x.total_luas != None:
+				  			total_luas_tanah_detil = Decimal(total_luas_tanah_detil)+x.total_luas
+				  		
 			  		extra_context.update({'detil_bangunan': " "+str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2; , ")+ " ,  ".join( str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) for x in detil_bangunan_)+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")})
 					# extra_context.update({'detil_bangunan': detil_bangunan_ })
 
