@@ -271,7 +271,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			  				if x.satuan_luas != "M2" or x.satuan_luas != "M&sup2;":
 					  			total_luas_tanah_detil = Decimal(total_luas_tanah_detil)+x.total_luas
 
-					detil_total_luas_keseluruhan = ", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")
+					# detil_total_luas_keseluruhan = ", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")
 					 		
 				  	detil_ = str(pengajuan_.luas_bangunan)+""+mark_safe(" M&sup2;")
 				  	for x in detil_bangunan_:
@@ -286,7 +286,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				  				satuan = x.satuan_luas				  			
 				  			detil_ = detil_ +", "+str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(satuan)
 				  	# + " ,  ".join( if x.detil_bangunan_imb.nama_bangunan == "Gedung" str(x.detil_bangunan_imb.nama_bangunan)+" : "+str(x.total_luas)+" "+mark_safe(x.satuan_luas) )+", Luas Keseluruhan = "+str(total_luas_tanah_detil)+" "+mark_safe("M&sup2;")
-			  		extra_context.update({'detil_bangunan': detil_ + detil_total_luas_keseluruhan})
+			  		extra_context.update({'detil_bangunan': detil_ })
 					# extra_context.update({'detil_bangunan': detil_bangunan_ })
 
 			except ObjectDoesNotExist:
@@ -300,7 +300,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		  		for x in sertifikat_tanah_list:
 		  			total_luas_tanah = Decimal(total_luas_tanah)+x.luas_sertifikat_petak
 		  		if sertifikat_tanah_list.count() > 1:
-		  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)+", Luas Keseluruhan = "+str(total_luas_tanah)+" "+mark_safe("M&sup2;")})
+		  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)})
 		  		else:
 		  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)})
 		  	else:
