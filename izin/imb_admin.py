@@ -303,10 +303,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 		  		else:
 		  			extra_context.update({'luas_sertifikat_tanah_list': ", ".join(str(x.luas_sertifikat_petak)+" "+mark_safe("M&sup2;") for x in sertifikat_tanah_list)})
 		  		if x.tahun_sertifikat:
-		  			tahun_sertifikat_ = x.tahun_sertifikat.strftime('%d %B %Y')
+		  			tahun_sertifikat_ = " Tanggal "+ x.tahun_sertifikat.strftime('%d %B %Y')
 		  		else:
 		  			tahun_sertifikat_ = '-'
-		  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ tahun_sertifikat_)})
+		  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +""+ tahun_sertifikat_)})
 
 		  	else:
 		  		extra_context.update({'sertifikat_tanah_list': pengajuan_.no_surat_tanah +" Tanggal "+ pengajuan_.tanggal_surat_tanah.strftime('%d %B %Y')})
