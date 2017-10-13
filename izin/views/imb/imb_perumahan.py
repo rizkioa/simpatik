@@ -31,7 +31,7 @@ from accounts.utils import KETERANGAN_PEKERJAAN
 
 def formulir_imb_perumahan(request, extra_context={}):
 	negara = Negara.objects.all()
-	kecamatan = Kecamatan.objects.filter(kabupaten_id=1083)
+	kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
 	jenis_pemohon = JenisPemohon.objects.all()
 	kegiatan_pembangunan = ParameterBangunan.objects.filter(parameter="Kegiatan Pembangunan Gedung")
 	fungsi_bangunan = ParameterBangunan.objects.filter(parameter="Fungsi Bangunan")
