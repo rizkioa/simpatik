@@ -228,24 +228,20 @@
                 <td style="vertical-align: top;padding-top: 1px;">b.</td>
                 <td>bahwa perubahan penggunaan tanah harus sesuai dengan Peraturan Daerah Kabupaten Kediri Nomor 14 tahun 2011 tentang Rencana Tata Ruang Wilayah Kabupaten Kediri Tahun 2010 – 2030 ;</td>
               </tr>
-              {% if sk_.sk_menimbang_c %}
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">c.</td>
-                <td>{{sk_.sk_menimbang_c}}
+                <td>bahwa risalah Pertimbangan Teknis Pertanahan Dalam Penerbitan Izin Perubahan Penggunaan Tanah Nomor : {{no_ptp_list}};
                 </td>
               </tr>
-              {% endif %}
-              {% if sk_.sk_menimbang_d %}
               <tr>
                 <td></td>
                 <td style="vertical-align: top;padding-top: 1px;"></td>
                 <td style="vertical-align: top;padding-top: 1px;">d.</td>
-                <td>{{sk_.sk_menimbang_d}}
+                <td>bahwa berdasarkan pertimbangan sebagaimana dimaksud dalam huruf a, huruf b dan c di atas, maka perlu ditetapkan Izin Perubahan Penggunaan Tanah (IPPT).
                 </td>
               </tr>
-              {% endif %}
               <tr>
                 <td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
                 <td style="vertical-align: top;padding-top: 1px;">:</td>
@@ -486,7 +482,7 @@
                <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KELIMA</td>
                   <td style="vertical-align: top;padding-top: 1px;">:</td>
-                  <td colspan="3">Bahwa apabila ada perubahan penggunaan tanah selain untuk pendirian RUMAH TINGGAL harus memperoleh Izin/Persetujuan dari Bupati Kediri;</td>
+                  <td colspan="3">Bahwa apabila ada perubahan penggunaan tanah selain untuk pendirian {{pengajuan.rencana_penggunaan|upper}} harus memperoleh Izin/Persetujuan dari Bupati Kediri;</td>
                 </tr>
                <tr>
                   <td style="vertical-align: top;padding-top: 1px;width: 105px;">KEENAM</td>

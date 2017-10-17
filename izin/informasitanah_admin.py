@@ -402,14 +402,16 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
+
+			no_ptp_list = NoPTP.objects.filter(informasi_tanah=id_pengajuan_izin_)
+			extra_context.update({'no_ptp_list': ", ".join(x.no_ptp +" Tanggal "+ x.tanggal_ptp.strftime('%d %B %Y') for x in no_ptp_list)})
+
 		return extra_context
 
 	def cetak_sk_izin_ippt_rumah(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		extra_context = self.cetak_skizin_ippt_rumah_super(request, id_pengajuan_izin_)
 
-		no_ptp_list = NoPTP.objects.filter(informasi_tanah=id_pengajuan_izin_)
-		extra_context.update({'no_ptp_list': ", ".join(x.no_ptp +" Tanggal "+ x.tanggal_ptp.strftime('%d %B %Y') for x in no_ptp_list)})
 		extra_context.update({'salinan': salinan_})
 		extra_context.update({'print': "oke"})
 		template = loader.get_template("front-end/include/formulir_ippt_rumah/cetak_sk_izin_ippt_rumah.html")
@@ -466,6 +468,10 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 					extra_context.update({'sk_': sk_ })
 			except ObjectDoesNotExist:
 				pass
+			
+			no_ptp_list = NoPTP.objects.filter(informasi_tanah=id_pengajuan_izin_)
+			extra_context.update({'no_ptp_list': ", ".join(x.no_ptp +" Tanggal "+ x.tanggal_ptp.strftime('%d %B %Y') for x in no_ptp_list)})
+
 		return extra_context
 
 	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None):
