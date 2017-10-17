@@ -460,12 +460,19 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 			except ObjectDoesNotExist:
 				pass
+			try:
+				sk_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_)
+				if sk_:
+					extra_context.update({'sk_': sk_ })
+			except ObjectDoesNotExist:
+				pass
 		return extra_context
 
 	def cetak_sk_izin_ippt_usaha(self, request, id_pengajuan_izin_, salinan_=None):
 		extra_context = {}
 		extra_context = self.cetak_skizin_ippt_usaha_super(request, id_pengajuan_izin_)
 		extra_context.update({'salinan': salinan_})
+
 		extra_context.update({'print': "oke"})
 		template = loader.get_template("front-end/include/formulir_ippt_usaha/cetak_sk_izin_ippt_usaha.html")
 		ec = RequestContext(request, extra_context)
