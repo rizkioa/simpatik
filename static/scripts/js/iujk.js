@@ -47,8 +47,6 @@ function survey_save(elem_){
         url: frm.attr('action'),
         success: function(response){
           resp = $.parseJSON(response)
-          console.log(resp)
-
           if (resp.success){
             location.reload();
           }else{
