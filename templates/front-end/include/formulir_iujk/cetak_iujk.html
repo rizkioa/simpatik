@@ -172,6 +172,17 @@
 		.table-isi th, td {
 		    padding: 2px;
 		}
+		@media print {
+			.printhide { 
+	 			display: none !important; 
+	 			/*color: white;
+	 			background-color: white;*/
+			}
+			.printpadding{
+				display: block !important;
+				padding-bottom: 5cm;
+			} 
+		}
 	</style>
 </head>
 <body>
@@ -186,7 +197,7 @@
 	</div>
 
 	<page size="F4">
-		<div id="kop_surat_id">
+		<!-- <div id="kop_surat_id">
 			<div class="row">
 				
 				<div class="col-2">
@@ -203,7 +214,8 @@
 				</div>
 			</div>
 		</div>
-		<hr class="style14">
+		<hr class="style14"> -->
+		{% include 'front-end/skizin/cop_surat.html' %}
 		{{html|safe}}
 	</page>
 	<!-- <page size="F4" layout="landscape">
