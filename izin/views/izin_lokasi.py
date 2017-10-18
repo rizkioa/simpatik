@@ -153,6 +153,7 @@ def sertifikat_tanah_berkas_save_cookie(request):
                   valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
                   if not ext in valid_extensions:
                     data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+                    response = HttpResponse(json.dumps(data))
                   else:
                     nama_berkas = "Surat Sertifikat Tanah "+sertifikat_tanah.cleaned_data.get('no_sertifikat_petak')
                     instance_berkas = Berkas(nama_berkas=nama_berkas,berkas=request.FILES['berkas'], keterangan=nama_berkas)
@@ -172,9 +173,11 @@ def sertifikat_tanah_berkas_save_cookie(request):
                     response = HttpResponse(json.dumps(data))
             else:
                 sertifikat_tanah = SertifikatTanahBerkasForm()
+
         else:
             data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/data kosong'}]}
-            data = json.dumps(json.dumps(data))
+            # data = json.dumps(json.dumps(data))
+            response = HttpResponse(json.dumps(data))
     else:
         data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
         response = HttpResponse(json.dumps(data))

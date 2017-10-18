@@ -1030,19 +1030,13 @@ class IzinAdmin(admin.ModelAdmin):
 								"redirect": '',
 							}
 							
-					elif request.POST.get('aksi') == '_submit_skizin_bupati':
-						pejabat = Pegawai.objects.filter(id=request.user.id).last()
-						# print request.user.id
-						# print pejabat.nama_lengkap
-						obj_skizin.status = 9
-
-						#Keterangan Yang Digunakan Untuk Sk Izin	
-						obj_skizin.keterangan = "Pembina Tk.l"
-
-						obj_skizin.save()
+					elif request.POST.get('aksi') == '_submit_skizin_bupati_imb':
+						obj.status = 5
 						obj.verified_by_id = request.user.id
 						obj.verified_at = datetime.datetime.now()
 						obj.save()
+						obj_skizin.status = 5
+						obj_skizin.save()
 						riwayat_ = Riwayat(
 							sk_izin_id = obj_skizin.id ,
 							pengajuan_izin_id = id_pengajuan_izin,
@@ -1056,6 +1050,21 @@ class IzinAdmin(admin.ModelAdmin):
 							"redirect": '',
 						}
 
+					elif request.POST.get('aksi') == '_submit_skizin_bupati':
+						obj_skizin.status = 9
+						obj_skizin.save()
+						riwayat_ = Riwayat(
+							sk_izin_id = obj_skizin.id ,
+							pengajuan_izin_id = id_pengajuan_izin,
+							created_by_id = request.user.id,
+							keterangan = "Bupati Verified (Izin)"
+						)
+						riwayat_.save()
+						response = {
+							"success": True,
+							"pesan": "SKIzin berhasil di verifikasi.",
+							"redirect": '',
+						}
 					# elif request.POST.get('aksi') == '_submit_sk_kasir_kadin':
 					# 	pejabat = Pegawai.objects.filter(id=request.user.id).last()
 					# 	obj.status = 5
