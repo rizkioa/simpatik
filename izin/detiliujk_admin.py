@@ -458,6 +458,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				masa_berlaku = skizin_.masa_berlaku_izin.strftime('%d-%m-%Y')
 				tanggal_ = skizin_.masa_berlaku_izin-relativedelta(years=3)
 				tanggal_ = tanggal_.strftime('%d-%m-%Y')
+
 		extra_context.update({'masa_berlaku': masa_berlaku})
 		# extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
 		extra_context.update({'tanggal': tanggal_})
