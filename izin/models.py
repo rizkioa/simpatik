@@ -941,6 +941,7 @@ class DetilSk(MetaAtribut):
 	sk_menetapkan_a = models.CharField(max_length=255, verbose_name='SK Menetapkan A', null=True, blank=True)
 	sk_menetapkan_b = models.CharField(max_length=255, verbose_name='SK Menetapkan B', null=True, blank=True)
 	sk_menetapkan_c = models.CharField(max_length=255, verbose_name='SK Menetapkan C', null=True, blank=True)
+	sk_menetapkan_d = models.CharField(max_length=255, verbose_name='SK Menetapkan D', null=True, blank=True)
 
 	sk_diktum2_g = models.CharField(max_length=255, verbose_name='SK Diktum Ke 2 G', null=True, blank=True)
 	sk_diktum2_h = models.CharField(max_length=255, verbose_name='SK Diktum Ke 2 H', null=True, blank=True)
