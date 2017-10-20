@@ -211,7 +211,7 @@
     			<td class="tdnone"><strong>{{skizin.status_pendaftaran.upper}}</strong></td>
     		</tr>
     		<tr>
-    			<td><strong>{{pengajuan.no_izin|default_if_none:'-'}}</strong></td>
+    			<td><strong>{{pengajuan.get_no_skizin}}</strong></td>
     			<td><strong>{{skizin.masa_berlaku_izin|date:'d-m-Y'}}</strong></td>
     			<td class="tdnone"><strong>PEMBAHARUAN KE</strong></td>
     			<td class="tdnone">:</td>
