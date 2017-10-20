@@ -13,5 +13,6 @@ izin/migrations/
 perusahaan/migrations/
 pembangunan/migrations/
 mobile/migrations/
+izin_dinkes/
 .cache
 .vscode
