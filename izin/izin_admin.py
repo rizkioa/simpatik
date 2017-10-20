@@ -251,7 +251,7 @@ class IzinAdmin(admin.ModelAdmin):
 		if request.user.is_superuser:
 			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan','get_status_pengajuan', 'button_cetak_pendaftaran')
 		elif func_view.__name__ == 'izinterdaftar':
-			list_display = ('get_no_pengajuan', 'no_izin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan')
+			list_display = ('get_no_pengajuan', 'get_no_skizin', 'get_kelompok_jenis_izin', 'pemohon', 'get_telephone_pemohon', 'jenis_permohonan')
 		elif func_view.__name__ == 'semua_pengajuan':
 			list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan','get_status_pengajuan', 'button_cetak_pendaftaran')
 		# elif func_view.__name__ == 'verifikasi_skizin_kadin':
@@ -1144,8 +1144,14 @@ class IzinAdmin(admin.ModelAdmin):
 						try:
 							nomor = request.POST.get('nomor')
 							if nomor:
-								obj.no_izin = nomor
-								obj.save()
+								if obj.jenis_permohonan_id == 2 or obj.jenis_permohonan_id == 3:
+									print "masuk perubahan"
+									obj.no_izin = nomor+"/PERUBAHAN"
+									obj.save()
+								else:
+									print "masuk bukan perubahan"
+									obj.no_izin = nomor
+									obj.save()
 
 								if obj.kelompok_jenis_izin.kode == "IUJK":
 									from dateutil.relativedelta import relativedelta

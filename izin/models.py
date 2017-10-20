@@ -300,6 +300,14 @@ class PengajuanIzin(MetaAtribut):
 	def __unicode__(self):
 		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
+	def get_no_skizin(self):
+		no_izin = "-"
+		if self.jenis_permohonan_id == 2 or self.jenis_permohonan_id == 3:
+			no_izin = self.no_izin.replace("/PERUBAHAN", "")
+		else:
+			no_izin = self.no_izin
+		return no_izin
+
 	def as_json(self):
 		jenis_permohonan = ''
 		if self.jenis_permohonan:

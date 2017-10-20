@@ -57,7 +57,7 @@
 				<td class="tdnone"><b>{{skizin.status_pendaftaran.upper}}</b></td>
 			</tr>
 			<tr>
-				<td><b>{{pengajuan.no_izin|default_if_none:'-'}}</b></td>
+				<td><b>{{pengajuan.get_no_skizin}}</b></td>
 				<td><b>{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}</td>
 				<td class="tdnone"><b>PEMBAHARUAN KE</b></td>
 				<td class="tdnone"><b>:</b></td>
