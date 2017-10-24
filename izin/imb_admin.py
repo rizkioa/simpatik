@@ -248,12 +248,15 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			try:
 				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
-					j = retribusi_.jumlah_pembayaran.replace(".", "")
-					p = j.replace(",", ".")
-					q = math.ceil(float(p))
-					n = int(str(q).replace(".0", ""))
-					print n
-					terbilang_ = terbilang(n)
+					if int(retribusi_.jumlah_pembayaran) != 0:
+						j = retribusi_.jumlah_pembayaran.replace(".", "")
+						p = j.replace(",", ".")
+						q = math.ceil(float(p))
+						n = int(str(q).replace(".0", ""))
+						terbilang_ = terbilang(n)
+					else:
+						n = int(retribusi_.jumlah_pembayaran)
+						terbilang_ = terbilang(n)
 					extra_context.update({'retribusi': n })
 					extra_context.update({'terbilang': terbilang_ })
 			except ObjectDoesNotExist:
@@ -466,8 +469,12 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			try:
 				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
-					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-					terbilang_ = terbilang(n)
+					if retribusi.jumlah_pembayaran != '0':
+						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+						terbilang_ = terbilang(n)
+					else:
+						n = int(retribusi_.jumlah_pembayaran)
+						terbilang_ = terbilang(n)
 					extra_context.update({'retribusi': retribusi_ })
 					extra_context.update({'terbilang': terbilang_ })
 			except ObjectDoesNotExist:
