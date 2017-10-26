@@ -240,7 +240,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				sk_imb_ = DetilSk.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+				sk_imb_ = DetilSk.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
 			except ObjectDoesNotExist:
