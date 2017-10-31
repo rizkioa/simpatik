@@ -1,4 +1,4 @@
-	JENIS_IZIN = (
+JENIS_IZIN = (
 	('Izin Daerah', 'IZIN DAERAH'),
 	('Izin Penanaman Modal', 'IZIN PENANAMAN MODAL'),
 	('Izin Pembangunan', 'IZIN PEMBANGUNAN'),
