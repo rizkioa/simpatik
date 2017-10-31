@@ -470,7 +470,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			try:
 				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
-					if retribusi.jumlah_pembayaran != '0':
+					j = retribusi_.jumlah_pembayaran.replace(".", "")
+					if int(j) != 0:
 						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
 						terbilang_ = terbilang(n)
 					else:
