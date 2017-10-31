@@ -1,4 +1,4 @@
-JENIS_IZIN = (
+	JENIS_IZIN = (
 	('Izin Daerah', 'IZIN DAERAH'),
 	('Izin Penanaman Modal', 'IZIN PENANAMAN MODAL'),
 	('Izin Pembangunan', 'IZIN PEMBANGUNAN'),
@@ -123,12 +123,12 @@ JENIS_MESIN_PERALATAN = (
 
 def terbilang_(bil):
 	# bil = bil.replace(".", "")
-	satuan = ['nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
+	satuan = ['','nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
 	# print bil
 	n = int(bil)
 	if n == 0:
-		hasil = [satuan[n]]
+		hasil = [satuan[1]]
 	elif n >= 0 and n <= 11:
 		hasil = [satuan[n]]
 	elif n >= 12 and n <= 19:
