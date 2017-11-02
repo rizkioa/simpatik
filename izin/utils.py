@@ -123,32 +123,28 @@ JENIS_MESIN_PERALATAN = (
 
 def terbilang_(bil):
 	# bil = bil.replace(".", "")
-	satuan_dengan_nol = ['','nol','satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	satuan = ['','satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
 	# print bil
 	n = int(bil)
-	if n == 0:
-		hasil = [satuan_dengan_nol[1]]
+	if n >= 0 and n <= 11:
+		hasil = [satuan[n]]
+	elif n >= 12 and n <= 19:
+		hasil = terbilang_(n % 10) + ['belas']
+	elif n >= 20 and n <= 99:
+		hasil = terbilang_(n / 10) + ['puluh'] + terbilang_(n % 10)
+	elif n >= 100 and n <= 199:
+		hasil = ['seratus'] + terbilang_(n - 100)
+	elif n >= 200 and n <= 999:
+		hasil = terbilang_(n / 100) + ['ratus'] + terbilang_(n % 100)
+	elif n >= 1000 and n <= 1999:
+		hasil = ['seribu'] + terbilang_(n - 1000)
+	elif n >= 2000 and n <= 999999:
+		hasil = terbilang_(n / 1000) + ['ribu'] + terbilang_(n % 1000)
+	elif n >= 1000000 and n <= 999999999:
+		hasil = terbilang_(n / 1000000) + ['juta'] + terbilang_(n % 1000000)
 	else:
-		if n >= 0 and n <= 11:
-			hasil = [satuan[n]]
-		elif n >= 12 and n <= 19:
-			hasil = terbilang_(n % 10) + ['belas']
-		elif n >= 20 and n <= 99:
-			hasil = terbilang_(n / 10) + ['puluh'] + terbilang_(n % 10)
-		elif n >= 100 and n <= 199:
-			hasil = ['seratus'] + terbilang_(n - 100)
-		elif n >= 200 and n <= 999:
-			hasil = terbilang_(n / 100) + ['ratus'] + terbilang_(n % 100)
-		elif n >= 1000 and n <= 1999:
-			hasil = ['seribu'] + terbilang_(n - 1000)
-		elif n >= 2000 and n <= 999999:
-			hasil = terbilang_(n / 1000) + ['ribu'] + terbilang_(n % 1000)
-		elif n >= 1000000 and n <= 999999999:
-			hasil = terbilang_(n / 1000000) + ['juta'] + terbilang_(n % 1000000)
-		else:
-			hasil = terbilang_(n / 1000000000) + ['milyar'] + terbilang_(n % 100000000)
+		hasil = terbilang_(n / 1000000000) + ['milyar'] + terbilang_(n % 100000000)
 	return hasil
 
 def konversi(x):
@@ -180,8 +176,8 @@ def konversi(x):
 
 def terbilang(n):
 	# print n
-	# if n == 0:
-	# 	t = terbilang_(n)
+	if n == 0:
+		return 'nol'
 	t = terbilang_(n)
 	while '' in t:
 		t.remove('')
