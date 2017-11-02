@@ -180,8 +180,8 @@ def konversi(x):
 
 def terbilang(n):
 	# print n
-	if n == 0:
-		return ''
+	# if n == 0:
+	# 	t = terbilang_(n)
 	t = terbilang_(n)
 	while '' in t:
 		t.remove('')
