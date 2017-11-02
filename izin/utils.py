@@ -181,7 +181,7 @@ def konversi(x):
 def terbilang(n):
 	# print n
 	if n == 0:
-		return 'nol'
+		return ''
 	t = terbilang_(n)
 	while '' in t:
 		t.remove('')
