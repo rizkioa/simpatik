@@ -123,12 +123,13 @@ JENIS_MESIN_PERALATAN = (
 
 def terbilang_(bil):
 	# bil = bil.replace(".", "")
+	satuan_dengan_nol = ['','nol','satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	satuan = ['','satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh','delapan', 'sembilan', 'sepuluh', 'sebelas']
 	Hasil = " "
 	# print bil
 	n = int(bil)
 	if n == 0:
-		hasil = [satuan[1]]
+		hasil = [satuan_dengan_nol[1]]
 	else:
 		if n >= 0 and n <= 11:
 			hasil = [satuan[n]]
