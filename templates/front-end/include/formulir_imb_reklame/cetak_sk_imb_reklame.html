@@ -369,7 +369,12 @@
 	        		<tr>
 	        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">Nama</td>
 	        			<td width="10">:</td>
-	        			<td>{{perusahaan.nama_perusahaan}}</td>
+	        			<td>{% if perusahaan.nama_perusahaan != '-' %}
+	        					{{ perusahaan.nama_perusahaan }}
+	        				{% else %}
+	        					{{pengajuan.pemohon.get_full_name}}
+	        				{% endif %}
+	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 121px;" align="left">Alamat Kantor</td>
@@ -509,7 +514,7 @@
 	        				Rp {{retribusi.jumlah_pembayaran}},00 ({{terbilang}})
 	        			{% else %} 
 	        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
-	        			{% endif%}
+	        			{% endif %}
 	        			</td>
 	        		</tr>
 	        		<tr>
