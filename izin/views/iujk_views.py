@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.template import RequestContext, loader
 import json
 import os
+import datetime
 
 from izin.models import PaketPekerjaan, DetilIUJK, AnggotaBadanUsaha, Syarat, Klasifikasi, PengajuanIzin
 from izin.utils import formatrupiah
