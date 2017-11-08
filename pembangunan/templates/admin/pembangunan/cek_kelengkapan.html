@@ -317,7 +317,7 @@
             </tr>
             </thead>
             <tbody>
-              <tr class="">
+              <!-- <tr class="">
                   <td class="">{{perusahaan.berkas_npwp}}</td>
                   <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{perusahaan.berkas_npwp.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat</a></td>
               </tr>
@@ -350,7 +350,15 @@
                     <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{b.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
                 </tr>
                 {% endfor %}
-              {% endfor %}
+              {% endfor %} -->
+              {% if pengajuan.berkas_terkait_izin %}
+                {% for b in pengajuan.berkas_terkait_izin.all %}
+                  <tr class="">
+                    <td class="">{{b.nama_berkas}}</td>
+                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{b.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
+                  </tr>
+                {% endfor %}
+              {% endif %}
             </tbody>
           </table>
         </div>
