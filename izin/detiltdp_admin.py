@@ -229,19 +229,19 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			# pengajuan_ = DetilTDP.objects.get_object_or_404(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_izin_)
-			legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
+			# legalitas_1 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 			# print legalitas_1.tanggal_pengesahan
-			legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
-			legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
+			# legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
+			# legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
 			masa_berlaku = ''
-			if skizin_:
-				masa_berlaku_ = skizin_.created_at + relativedelta(years=5)
-				masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
+			# if skizin_:
+			# 	masa_berlaku_ = skizin_.created_at + relativedelta(years=5)
+			# 	masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
 
-			extra_context.update({'pengajuan': pengajuan_ , 'legalitas_1':legalitas_1, 'legalitas_2':legalitas_2, 'legalitas_3':legalitas_3, 'masa_berlaku':masa_berlaku})
+			extra_context.update({'pengajuan': pengajuan_ , 'masa_berlaku':masa_berlaku})
 		template = loader.get_template("front-end/include/formulir_tdp_po/cetak_tdp_po_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
