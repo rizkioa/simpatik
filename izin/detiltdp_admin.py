@@ -224,7 +224,7 @@ class DetilTDPAdmin(admin.ModelAdmin):
 		return HttpResponse(template.render(ec))
 
 	def cetak_tdp_perorangan_asli(self, request, id_pengajuan_izin_):
-		
+		print "masuk sini"
 		extra_context = {}
 		if id_pengajuan_izin_:
 			# pengajuan_ = DetilTDP.objects.get_object_or_404(id=id_pengajuan_izin_)
@@ -233,15 +233,14 @@ class DetilTDPAdmin(admin.ModelAdmin):
 			# print legalitas_1.tanggal_pengesahan
 			# legalitas_2 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=4).last()
 			# legalitas_3 = pengajuan_.perusahaan.legalitas_set.filter(jenis_legalitas_id=6).last()
-			skizin_ = SKIzin.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+			extra_context.update({'pengajuan': pengajuan_ })
+			skizin_ = pengajuan_.skizin_set.last()
 			if skizin_:
 				extra_context.update({'skizin': skizin_ })
-			masa_berlaku = ''
+			# masa_berlaku = ''
 			# if skizin_:
 			# 	masa_berlaku_ = skizin_.created_at + relativedelta(years=5)
-			# 	masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')
-
-			extra_context.update({'pengajuan': pengajuan_ , 'masa_berlaku':masa_berlaku})
+			# 	masa_berlaku = masa_berlaku_.strftime('%d-%m-%Y')			
 		template = loader.get_template("front-end/include/formulir_tdp_po/cetak_tdp_po_asli.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
