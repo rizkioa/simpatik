@@ -243,20 +243,7 @@
     	</div>
     	<div style="float: right; width: 50%">
         	<p style="font-size:17px; padding-left: 0%;" align="center">
-                {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
                 
-                {% if skizin.nama_pejabat %}
-                    <br>Kepala DPMPTSP
-                    <br>KABUPATEN KEDIRI
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <u><b>{{ skizin.nama_pejabat }}</b></u><br>
-                    <span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
-                    <span>NIP: {{skizin.nip_pejabat}}</span>
-                {% endif %}
             </p>
         </div>
 	</page>
