@@ -1,0 +1,63 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<h3>IZIN LABORATORIUM</h3>
+			<hr class="style14">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="klasifikasi_lab" class="col-sm-2 control-label">Klasifikasi Laboratorium</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_klasifikasi_lab" name="klasifikasi_lab" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_lab" class="col-sm-2 control-label">Nama Laboratorium </label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" id="id_nama_lab"  name="nama_lab">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="alamat_lab" class="col-sm-2 control-label">Alamat Laboratorium</label>
+		<div class="col-sm-6">
+			<textarea  id="id_alamat_lab" rows="5" name="alamat_lab" class="form-control"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group" id="kabupaten">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten" required="" data-parsley-trigger="change"> 
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="kecamatan">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan" required="" data-parsley-trigger="change">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="desa">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="desa" id="id_desa" required="" data-parsley-trigger="change">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+		<label for="nama_penanggung_jawab" class="col-sm-2 control-label">Nama Penanggung Jawab </label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" id="id_nama_penanggung_jawab"  name="nama_penanggung_jawab">
+		</div>
+	</div>
+	
+
+</form>

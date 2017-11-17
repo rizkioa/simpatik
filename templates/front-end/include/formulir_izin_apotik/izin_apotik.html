@@ -1,0 +1,87 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<h3>IZIN APOTEK</h3>
+			<hr class="style14">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_apotik" class="col-sm-2 control-label">Nama Apotik</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_nama_apotik" name="nama_apotik" class="form-control" required="">
+		</div>
+	</div>
+
+	<div class="form-group" id="alamat">
+		<label for="input01" class="col-sm-2 control-label">Alamat </label>
+		<div class="col-sm-6">
+			<textarea class="form-control" id="id_alamat_izin_parkir" rows="5" name="alamat" required=""></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_apotik" class="col-sm-2 control-label">Nomor Telepon</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_no_telpon" name="no_telpon" class="form-control" required="">
+		</div>
+	</div>
+
+	<div class="form-group" id="kecamatan1">
+		<label for="input01" class="col-sm-2 control-label">Provinsi </label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="provinsi" id="id_provinsi" required="">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="kecamatan1">
+		<label for="input01" class="col-sm-2 control-label">Kecamatan </label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan1" required="">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="desa">
+		<label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="desa" id="id_desa1" required="">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="desa">
+		<label for="input01" class="col-sm-2 control-label">Sarana</label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="sarana" id="id_sarana" required="">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_pemilik_sarana" class="col-sm-2 control-label">Nama Pemilik Sarana</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_nama_pemilik_sarana" name="nama_pemilik_sarana" class="form-control" required="">
+		</div>
+	</div>
+
+	<div class="form-group" id="alamat">
+		<label for="input01" class="col-sm-2 control-label">Alamat Pemilik Sarana</label>
+		<div class="col-sm-6">
+			<textarea class="form-control" id="id_alamat_pemilik_apotik" rows="5" name="alamat_pemilik_sarana" required=""></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="npwp" class="col-sm-2 control-label">NPWP</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_npwp" name="npwp" class="form-control" required="">
+		</div>
+	</div>
+	
+
+	
+
+</form>
