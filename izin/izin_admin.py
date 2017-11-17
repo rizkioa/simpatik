@@ -1364,6 +1364,13 @@ class IzinAdmin(admin.ModelAdmin):
 				}
 		return HttpResponse(json.dumps(response))
 
+	def export_pengajuan(self, request):
+		extra_context = {}
+		extra_context.update({
+			'title':'Export Data Pengajuan Izin'
+			})
+		return render(request, "admin/izin/export_pengajuan.html", extra_context)
+
 	def get_urls(self):
 		
 		from django.conf.urls import patterns, url
@@ -1424,6 +1431,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^total-pengajuan/$', self.admin_site.admin_view(self.total_izin), name='total_izin'),
 			url(r'^wizard/iujk/$', self.admin_site.admin_view(IUJKWizard), name='izin_iujk'),
 			url(r'^push-api-dishub/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(push_api_dishub), name='push_api_dishub'),
+			url(r'^export-pengajuan/$', self.admin_site.admin_view(self.export_pengajuan), name='export_pengajuan'),
 
 			)
 		return my_urls + urls
