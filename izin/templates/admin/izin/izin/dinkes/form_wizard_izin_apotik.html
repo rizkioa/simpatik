@@ -39,9 +39,9 @@
 					var $total = navigation.find('li').length;
 					var $current = index+1;
 					if ($current == 2){
-						load_provinsi('1');
-					  	load_kabupaten('15')
-					  	load_kecamatan('233')
+						load_provinsi1('1');
+					  	load_kabupaten1('15')
+					  	load_kecamatan1('233')
 					}
 					if($current >= $total) {
 						if ($.cookie('id_pengajuan') !== '0'){
@@ -346,7 +346,7 @@ function make_disabled(elem_, dis_){
     elem_.trigger("chosen:updated");
 }
 
-function load_provinsi(id_negara){
+function load_provinsi1(id_negara){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     $( "#id_provinsi_chosen" ).mLoading();
     // $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
@@ -365,7 +365,7 @@ function load_provinsi(id_negara){
                 $this = $(this)
                 id_provinsi = $(this).val()
                 if(id_provinsi.length > 0){
-                    load_kabupaten(id_provinsi)
+                    load_kabupaten1(id_provinsi)
                 }else{
                     elem = $( "#id_kabupaten1" )
                     make_disabled(elem, true)
@@ -378,7 +378,7 @@ function load_provinsi(id_negara){
     });
 }
 
-function load_kabupaten(id_provinsi){
+function load_kabupaten1(id_provinsi){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     $( "#id_kabupaten1_chosen" ).mLoading();
     $( "#id_kabupaten1_chosen .loadmask-msg" ).css('top', '2px')
@@ -396,7 +396,7 @@ function load_kabupaten(id_provinsi){
                 $this = $(this)
                 id_kabupaten = $(this).val()
                 if(id_kabupaten.length > 0){
-                    load_kecamatan(id_kabupaten)
+                    load_kecamatan1(id_kabupaten)
                 }else{
                     elem = $( "#id_kecamatan1" )
                     make_disabled(elem, true)
@@ -408,7 +408,7 @@ function load_kabupaten(id_provinsi){
         }
     });
 }
-function load_kecamatan(id_kabupaten){
+function load_kecamatan1(id_kabupaten){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     $( "#id_kecamatan1_chosen" ).mLoading();
     $( "#id_kecamatan1_chosen .loadmask-msg" ).css('top', '2px')
@@ -427,7 +427,7 @@ function load_kecamatan(id_kabupaten){
                 
                 id_kecamatan = $(this).val()
                 if(id_kecamatan.length > 0){
-                    load_desa(id_kecamatan)
+                    load_desa1(id_kecamatan)
                 }else{
                     elem = $( "#id_desa1" )
                     make_disabled(elem, true)
@@ -439,7 +439,7 @@ function load_kecamatan(id_kabupaten){
         }
     });
 }
-function load_desa(id_kecamatan){
+function load_desa1(id_kecamatan){
     csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     $( "#id_desa1_chosen" ).mLoading();
     $( "#id_desa1_chosen .loadmask-msg" ).css('top', '2px')
@@ -550,8 +550,8 @@ function load_desa(id_kecamatan){
 	<ul class="nav nav-tabs nav-justified">
 	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
 		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Izin Apotik</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Upload </i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
 	</ul>
 	<div class="tab-content">
 	    <div class="tab-pane" id="tab1"> 
@@ -564,11 +564,11 @@ function load_desa(id_kecamatan){
 			{% include 'front-end/include/formulir_izin_apotik/izin_apotik.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab4">
+		<div class="tab-pane" id="tab3">
 			{% include 'front-end/include/formulir_izin_apotik/upload_dokumen.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab5">
+		<div class="tab-pane" id="tab4">
 			{% include 'front-end/include/formulir_izin_apotik/konfirmasi.html' %}
 		</div>
 

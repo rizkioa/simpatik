@@ -362,6 +362,7 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 
 def get_model_detil(kode):
 	from izin import models as app_models
+	from izin_dinkes import models as app_models_dinkes
 	objects_ = None
 	if kode and kode is not None:
 		if kode == "503.08":
@@ -394,8 +395,8 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 		elif kode == "503.01.04/" or kode == "503.01.05/":
 			objects_ = getattr(app_models, 'DetilIMB')
-		elif kode == "Apotek":
-			objects_ = getattr(app_models, 'Apotek')
+		elif kode == "APOTEK":
+			objects_ = getattr(app_models_dinkes, 'Apotek')
 	return objects_
 
 
