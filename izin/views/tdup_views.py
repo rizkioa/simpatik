@@ -235,9 +235,6 @@ def tdup_upload_berkas(request):
 									p = DetilTDUP.objects.get(id=request.COOKIES['id_pengajuan'])
 									berkas = form.save(commit=False)
 									kode = request.POST.get('kode')
-									print '++++++++'
-									print kode
-									print '++++++++'
 									if kode == 'Surat Permohonan':
 										berkas.nama_berkas = "Surat Permohonan "+p.perusahaan.nama_perusahaan
 										berkas.keterangan = "Surat Permohonan "+p.perusahaan.npwp
