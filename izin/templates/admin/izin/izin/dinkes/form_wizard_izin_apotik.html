@@ -40,19 +40,6 @@
 					var $current = index+1;
 					if ($current == 2){
 						load_kecamatan1('', '06', '35');
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_data_izin_parkir($.cookie('id_pengajuan'))
-						} 
-					}
-					if ($current == 3){
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_data_anggota($.cookie('id_pengajuan'))
-						}
-					}
-					if ($current == 4){
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_berkas($.cookie('id_pengajuan'))
-						}
 					}
 					if($current >= $total) {
 						if ($.cookie('id_pengajuan') !== '0'){
@@ -117,7 +104,7 @@
 				success: function (response){
 					respon = $.parseJSON(response)
 					if (respon.success == true){
-						console.log('berhasil')
+						// console.log('berhasil')
 						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
 						var frm = $('form[name="step'+ index +'"]');
 						frm.parsley().validate();
@@ -158,7 +145,7 @@
 						}
 					}
 					else{
-						console.log('gagal')
+						// console.log('gagal')
 						$.cookie('id_pengajuan', '0', {path:'/'})
 						$.cookie('id_pemohon', '0', {path:'/'})
 						// $.cookie('id_perusahaan', '0', {path:'/'})
@@ -279,48 +266,6 @@
 			}
 		});
 
-		function load_data_izin_parkir(id_pengajuan){
-			$('.tab-content').mLoading();
-			$.ajax({
-	            type: 'GET',
-	            url: __base_url__+'/layanan/izin-parkir/load-detil-izin-parkir/ajax/'+id_pengajuan,
-	            success: function (data) {
-	            	// console.log(data)
-	            	respon = JSON.parse(data)
-	            	if(respon.success == true){
-	            		$('#id_jasa_penitipan').val(respon.data.jenis_penitipan)
-	            		$('#id_ukuran_penitipan_lebar').val(respon.data.lebar_penitipan)
-	            		$('#id_ukuran_penitipan_panjang').val(respon.data.panjang_penitipan)
-	            		if(respon.data.desa.id_kecamatan){
-	            			$('#id_kecamatan1').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
-	            			load_desa1(respon.data.desa.id_kecamatan)
-		            		setTimeout(function(){
-		            			$('#id_desa1').val(respon.data.desa.id_desa).prop('selected',true).trigger("chosen:updated");
-		            		}, 1000);
-	            		}
-	            		
-	            		$('#id_alamat_izin_parkir').val(respon.data.alamat)
-	            		$('#id_tanggal_penitipan').val(respon.data.tanggal_pelaksanaan_parkir)
-	            		$('#id_waktu_mulai').val(respon.data.waktu_mulai)
-	            		$('#id_waktu_akhir').val(respon.data.waktu_berakhir)
-	            		$('#id_anggota_penitipan').val(respon.data.jumlah_anggota_parkir)
-	            		$('#id_batas_sebelah_utara').val(respon.data.batas_utara)
-	            		$('#id_batas_sebelah_timur').val(respon.data.batas_timur)
-	            		$('#id_batas_sebelah_selatan').val(respon.data.batas_selatan)
-	            		$('#id_batas_sebelah_barat').val(respon.data.batas_barat)
-	            	}
-	            	else{
-	            		toastr["error"](respon.data.pesan)
-	            	}
-	            	$('.tab-content').mLoading('hide');
-	            },
-	            error:function(){
-	            	toast_server_error();
-	            	$('.tab-content').mLoading('hide');
-	            }
-	        })
-		}
-
 		$(window).load(function() {
 			var p = 'percent-'
 			$('#'+p+'ktp').hide()
@@ -391,7 +336,6 @@
 	        })
 		}
 	</script>
-	{% include 'front-end/include/formulir_izin_parkir/popup/data_anggota.html' %}
 {% endblock %}
 
 {% block extrastyle %}

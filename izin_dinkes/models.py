@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+# Pengajuan Apotik
 class Sarana(models.Model):
 	nama_sarana = models.CharField(verbose_name='Nama Sarana', max_length=100)
 	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
@@ -13,13 +13,13 @@ class Sarana(models.Model):
 		verbose_name_plural = 'Sarana'
 
 class Apotek(PengajuanIzin):
-	nama_apotek = models.CharField(verbose_name='Nama Apotek', max_length=100)
-	alamat_apotek = models.CharField(verbose_name='Nama Apotik', max_length=256)
-	no_telepon = models.CharField(verbose_name='Nama Apotik', max_length=100)
+	nama_apotek = models.CharField(verbose_name='Nama Apotek', max_length=100, null=True, blank=True)
+	alamat_apotek = models.CharField(verbose_name='Nama Apotik', max_length=256, null=True, blank=True)
+	no_telepon = models.CharField(verbose_name='Nama Apotik', max_length=100, null=True, blank=True)
 	sarana = models.ForeignKey(Sarana, verbose_name="Sarana", null=True, blank=True)
-	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100)
+	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
 	alama_saranat = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
-	npwp = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100)
+	npwp = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_apotek)
@@ -27,6 +27,7 @@ class Apotek(PengajuanIzin):
 	class Meta:
 		verbose_name = 'Apotek'
 		verbose_name_plural = 'Apotek'
+# Pengajuan Apotik
 
 class TokoObat(PengajuanIzin):
 	nama_toko_obat = models.CharField(verbose_name='Nama Toko Obat', max_length=100)

@@ -394,6 +394,8 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 		elif kode == "503.01.04/" or kode == "503.01.05/":
 			objects_ = getattr(app_models, 'DetilIMB')
+		elif kode == "Apotek":
+			objects_ = getattr(app_models, 'Apotek')
 	return objects_
 
 
