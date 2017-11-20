@@ -18,7 +18,7 @@ class Apotek(PengajuanIzin):
 	no_telepon = models.CharField(verbose_name='Nama Apotik', max_length=100)
 	sarana = models.ForeignKey(Sarana, verbose_name="Sarana", null=True, blank=True)
 	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100)
-	alama_saranat = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
+	alama_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
 	npwp = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100)
 
 	def __unicode__(self):
