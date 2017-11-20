@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 
 from izin_dinkes.forms import ApotekForm
+from izin_dinkes.models import TokoObat
 
 # Create your views here.
 
@@ -28,3 +29,14 @@ def save_izin_apotek(request):
 					data = {'success': False, 'pesan': 'Data Izin Apotek gagal.', 'data': data}
 					response = HttpResponse(json.dumps(data))
 	return response
+
+def save_izin_toko_obat(request):
+	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES.get('id_pengajuan') != '':
+			if 'id_kelompok_izin' in request.COOKIES.keys():
+				pengajuan_obj = TokoObat.objects.filter(id=request.COOKIES.get('id_pengajuan')).last()
+				if pengajuan_obj:
+					pass
+
+	return HttpResponse(json.dumps(data))
