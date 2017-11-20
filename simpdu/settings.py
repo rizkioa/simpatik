@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'kepegawaian',
     'perusahaan',
     'izin',
+    'izin_dinkes',
     'pembangunan',
     # 'telebot',
     'raven.contrib.django.raven_compat',

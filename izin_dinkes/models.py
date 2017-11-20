@@ -1,4 +1,5 @@
 from django.db import models
+from izin.models import PengajuanIzin
 
 # Pengajuan Apotik
 class Sarana(models.Model):
@@ -14,12 +15,12 @@ class Sarana(models.Model):
 
 class Apotek(PengajuanIzin):
 	nama_apotek = models.CharField(verbose_name='Nama Apotek', max_length=100, null=True, blank=True)
-	alamat_apotek = models.CharField(verbose_name='Nama Apotik', max_length=256, null=True, blank=True)
-	no_telepon = models.CharField(verbose_name='Nama Apotik', max_length=100, null=True, blank=True)
+	alamat_apotek = models.CharField(verbose_name='Alamat Apotek', max_length=256, null=True, blank=True)
+	no_telepon = models.CharField(verbose_name='No Telepon', max_length=100, null=True, blank=True)
 	sarana = models.ForeignKey(Sarana, verbose_name="Sarana", null=True, blank=True)
 	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
-	alama_saranat = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
-	npwp = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
+	alamat_sarana = models.CharField(verbose_name='Alamat Sarana', max_length=100, null=True, blank=True)
+	npwp = models.CharField(verbose_name='NPWP', max_length=100, null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_apotek)

@@ -476,4 +476,5 @@ urlpatterns = [
 
     # ===============================IZIN APOTIK DINKES=======================================
     # url(r'^layanan/izin-apotik$', layanan_view.layanan_izin_angkutan_trayek, name='layanan_izin_angkutan_trayek'),
+    url(r'^izin-dinkes/', include('izin_dinkes.urls')),
     ]

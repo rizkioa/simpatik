@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'izin_dinkes__save_izin_apotek' %}" data-parsley-validate novalidate>
 {% csrf_token %}
 	<div class="row">
 		<div class="col-md-12">
@@ -29,14 +29,6 @@
 	</div>
 
 	<div class="form-group" id="kecamatan1">
-		<label for="provinsi" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
-		<div class="col-sm-6">
-			<select class="form-control chosen-select mb-10" name="provinsi" id="id_provinsi" required="">
-			</select>
-		</div>
-	</div>
-
-	<div class="form-group" id="kecamatan1">
 		<label for="kecamatan" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
 		<div class="col-sm-6">
 			<select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan1" required="">
@@ -55,7 +47,7 @@
 	<div class="form-group" id="desa">
 		<label for="sarana" class="col-sm-2 control-label"><strong>Sarana</strong></label>
 		<div class="col-sm-6">
-			<select class="form-control chosen-select mb-10" name="sarana" id="id_sarana" required="">
+			<select class="form-control chosen-select mb-10" name="sarana" id="id_sarana">
 			</select>
 		</div>
 	</div>
