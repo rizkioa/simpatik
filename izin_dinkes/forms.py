@@ -11,4 +11,4 @@ EMPTY_JENIS_IZIN = (('', 'Select an Option'),)+JENIS_IZIN
 class ApotekForm(forms.ModelForm):
 	class Meta:
 		model = Apotek
-		fields = ('nama_apotek', 'alamat_apotek', 'no_telepon', 'sarana', 'nama_pemilik_sarana', 'alamat_sarana', 'npwp')
+		fields = ('nama_apotek', 'alamat_apotek', 'desa', 'no_telepon', 'sarana', 'nama_pemilik_sarana', 'alamat_sarana', 'npwp')

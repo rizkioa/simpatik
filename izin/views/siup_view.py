@@ -24,7 +24,7 @@ from perusahaan.models import Legalitas, KBLI, Perusahaan
 from accounts.models import NomorIdentitasPengguna, Account
 from master.models import Berkas
 from django.db import connection
-from izin_dinkes.models import *
+from izin_dinkes.models import Apotek
 
 def set_cookie(response, key, value, days_expire = 7):
   if days_expire is None:

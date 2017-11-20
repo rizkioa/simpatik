@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 
 from izin_dinkes.forms import ApotekForm
+from izin_dinkes.models import Apotek
 
 # Create your views here.
 
