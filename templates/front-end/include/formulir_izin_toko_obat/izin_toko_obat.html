@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'izin_dinkes__save_izin_toko_obat' %}" data-parsley-validate novalidate>
 {% csrf_token %}
 	<div class="row">
 		<div class="col-md-12">
@@ -10,31 +10,28 @@
 	<div class="form-group">
 		<label for="toko_obat" class="col-sm-2 control-label">Nama Toko Obat Berizin</label>
 		<div class="col-sm-6">
-			<input type="text" id="id_toko_obat" name="nama_toko_obat" class="form-control">
+			<input type="text" name="nama_toko_obat" class="form-control" required="" value="{{pengajuan_.nama_toko_obat}}">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="ttk_penanggung_jawab" class="col-sm-2 control-label">Nama TTK Penanggung Jawab </label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" id="id_ttk_penanggung_jawab"  name="ttk_penanggung_jawab">
+			<input type="text" class="form-control"  name="nama_ttk_penanggung_jawab" required="" value="{{pengajuan_.nama_ttk_penanggung_jawab}}">
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="alamat_ttk" class="col-sm-2 control-label">Alamat TTK</label>
 		<div class="col-sm-6">
-			<textarea  id="id_alamat_ttk" rows="5" name="alamat_ttk" class="form-control"></textarea>
+			<textarea rows="5" name="alamat_ttk" class="form-control" required="">{{pengajuan_.alamat_ttk}}</textarea>
 		</div>
 	</div>
 
 	<div class="form-group">
 		<label for="alamat_usaha" class="col-sm-2 control-label">Alamat Tempat Usaha </label>
 		<div class="col-sm-6">
-			<textarea  id="id_alamat_usaha" rows="5" name="alamat_usaha" class="form-control"></textarea>
+			<textarea rows="5" name="alamat_tempat_usaha" class="form-control" required="">{{pengajuan_.alamat_tempat_usaha}}</textarea>
 		</div>
 	</div>
-
-	
-
 </form>

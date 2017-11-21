@@ -397,7 +397,7 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilIMB')
 		elif kode == "APOTEK":
 			objects_ = getattr(app_models_dinkes, 'Apotek')
-		elif kode == "TOKOOBAT":
+		elif kode == "TOKO-OBAT":
 			objects_ = getattr(app_models_dinkes, 'TokoObat')
 	return objects_
 

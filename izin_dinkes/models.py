@@ -33,10 +33,10 @@ class Apotek(PengajuanIzin):
 # Pengajuan Apotik
 
 class TokoObat(PengajuanIzin):
-	nama_toko_obat = models.CharField(verbose_name='Nama Toko Obat', max_length=100)
-	nama_ttk_penanggung_jawab = models.CharField(verbose_name='Nama TTK Penanggung Jawab', max_length=100)
-	alamat_ttk = models.CharField(verbose_name='Alamat TTK', max_length=100)
-	alamat_tempat_usaha = models.CharField(verbose_name='Alamat Tempat Usaha', max_length=100)
+	nama_toko_obat = models.CharField(verbose_name='Nama Toko Obat', max_length=100, null=True, blank=True)
+	nama_ttk_penanggung_jawab = models.CharField(verbose_name='Nama TTK Penanggung Jawab', max_length=100, null=True, blank=True)
+	alamat_ttk = models.CharField(verbose_name='Alamat TTK', max_length=100, null=True, blank=True)
+	alamat_tempat_usaha = models.CharField(verbose_name='Alamat Tempat Usaha', max_length=100, null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_toko_obat)
