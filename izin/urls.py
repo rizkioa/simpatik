@@ -473,4 +473,8 @@ urlpatterns = [
     url(r'^layanan/izin-angkutan-trayek/load-berkas-pengajuanizin/(?P<id_pengajuan>[0-9]+)$', trayek_views.ajax_load_berkas_trayek, name='ajax_load_berkas_trayek'),
     ################################ END Izin Angkutan Trayek ###################################
     
+
+    # ===============================IZIN APOTIK DINKES=======================================
+    # url(r'^layanan/izin-apotik$', layanan_view.layanan_izin_angkutan_trayek, name='layanan_izin_angkutan_trayek'),
+    url(r'^izin-dinkes/', include('izin_dinkes.urls')),
     ]

@@ -115,6 +115,14 @@ def add_wizard_siup(request):
 				url_ = reverse('admin:izin_proses_izin_parkir')
 			elif id_kelompok_list.kode == "TRAYEK":
 				url_ = reverse('admin:izin_proses_izin_trayek')
+			elif id_kelompok_list.kode == "APOTEK":
+				url_ = reverse('admin:izin_proses_izin_apotik')
+			elif id_kelompok_list.kode == "TOKO-OBAT":
+				url_ = reverse('admin:izin_proses_izin_toko_obat')	
+			elif id_kelompok_list.kode == "IZINLAB":
+				url_ = reverse('admin:izin_proses_izin_laboratorium')
+			elif id_kelompok_list.kode == "TUTUP-APOTEK":
+				url_ = reverse('admin:izin_proses_izin_penutupan_apotek')	
 			else:
 				url_ = "#"
 

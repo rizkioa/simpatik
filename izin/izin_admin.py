@@ -33,6 +33,12 @@ from izin.controllers.ippt_usaha import formulir_ippt_usaha
 from izin.controllers.dishub.izin_usaha_angkutan import formulir_iua
 from izin.controllers.dishub.izin_parkir import formulir_izin_parkir
 from izin.controllers.dishub.izin_angkutan_trayek import formulir_trayek
+from izin.controllers.dinkes.izin_apotik import formulir_izin_apotik
+from izin.controllers.dinkes.izin_toko_obat import formulir_izin_toko_obat
+from izin.controllers.dinkes.izin_laboratorium import formulir_izin_laboratorium
+from izin.controllers.dinkes.izin_penutupan_apotek import formulir_izin_penutupan_apotek
+from izin.controllers.dinkes.izin_optikal import formulir_izin_optikal
+
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
@@ -1366,6 +1372,7 @@ class IzinAdmin(admin.ModelAdmin):
 		return render(request, "admin/izin/export_pengajuan.html", extra_context)
 
 	def get_urls(self):
+		
 		from django.conf.urls import patterns, url
 		urls = super(IzinAdmin, self).get_urls()
 		my_urls = patterns('',
@@ -1393,6 +1400,11 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/izin-usaha-angkutan/$', self.admin_site.admin_view(formulir_iua), name='izin_proses_izin_usaha_angkutan'),
 			url(r'^wizard/add/proses/izin-parkir/$', self.admin_site.admin_view(formulir_izin_parkir), name='izin_proses_izin_parkir'),
 			url(r'^wizard/add/proses/izin-angkutan-trayek/$', self.admin_site.admin_view(formulir_trayek), name='izin_proses_izin_trayek'),
+			url(r'^wizard/add/proses/izin-apotik/$', self.admin_site.admin_view(formulir_izin_apotik), name='izin_proses_izin_apotik'),
+			url(r'^wizard/add/proses/izin-toko-obat/$', self.admin_site.admin_view(formulir_izin_toko_obat), name='izin_proses_izin_toko_obat'),
+			url(r'^wizard/add/proses/izin-laboratorium/$', self.admin_site.admin_view(formulir_izin_laboratorium), name='izin_proses_izin_laboratorium'),
+			url(r'^wizard/add/proses/izin-penutupan-apotek/$', self.admin_site.admin_view(formulir_izin_penutupan_apotek), name='izin_proses_izin_penutupan_apotek'),
+			url(r'^wizard/add/proses/izin-optikal/$', self.admin_site.admin_view(formulir_izin_optikal), name='izin_proses_izin_optical'),
 
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
