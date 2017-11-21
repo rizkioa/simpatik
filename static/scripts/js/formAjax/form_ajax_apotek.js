@@ -70,9 +70,10 @@ function load_berkas(id_pengajuan){
   $(".tab-content").mLoading;
   if (id_pengajuan>0){
     $.ajax({
-      url: __base_url__+'/layanan/tdup/load-berkas/ajax/'+id_pengajuan,
+      url: __base_url__+'/izin-dinkes/apotek/load-berkas/ajax/'+id_pengajuan,
       success: function (response){
         respon = $.parseJSON(response)
+        console.log(respon)
         if (respon.success) {
           len = respon.berkas.length
           for (var i = 0; i < len; i++) {

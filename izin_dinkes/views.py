@@ -172,3 +172,182 @@ def upload_berkas(request):
 def apotek_upload_dokumen_cookie(request):
 	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
 	return HttpResponse(json.dumps(data))
+
+def ajax_load_berkas_apotek(request, id_pengajuan):
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			apotek = Apotek.objects.get(id=id_pengajuan)
+			npwp = apotek.npwp
+			berkas_ = apotek.berkas_terkait_izin.all()
+			pemohon_ = apotek.pemohon
+
+			if berkas_:
+				ijazah_apoteker = berkas_.filter(keterangan='Ijazah Apoteker '+npwp).last()
+				if ijazah_apoteker:
+					url_berkas.append(ijazah_apoteker.berkas.url)
+					id_elemen.append('ijazah_apoteker')
+					nm_berkas.append(ijazah_apoteker.nama_berkas)
+					id_berkas.append(ijazah_apoteker.id)
+					apotek.berkas_terkait_izin.add(ijazah_apoteker)
+
+				stra_apoteker = berkas_.filter(keterangan='STRA Apoteker '+npwp).last()
+				if stra_apoteker:
+					url_berkas.append(stra_apoteker.berkas.url)
+					id_elemen.append('ijazah_apoteker')
+					nm_berkas.append(stra_apoteker.nama_berkas)
+					id_berkas.append(stra_apoteker.id)
+					apotek.berkas_terkait_izin.add(stra_apoteker)
+
+				rekom_iai = berkas_.filter(keterangan='Surat Rekomendasi IAI '+npwp).last()
+				if rekom_iai:
+					url_berkas.append(rekom_iai.berkas.url)
+					id_elemen.append('rekom_iai')
+					nm_berkas.append(rekom_iai.nama_berkas)
+					id_berkas.append(rekom_iai.id)
+					apotek.berkas_terkait_izin.add(rekom_iai)
+
+				ktp = berkas_.filter(keterangan='KTP '+npwp).last()
+				if ktp:
+					url_berkas.append(ktp.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp.nama_berkas)
+					id_berkas.append(ktp.id)
+					apotek.berkas_terkait_izin.add(ktp)
+
+				denah_lokasi = berkas_.filter(keterangan='Denah Lokasi '+npwp).last()
+				if denah_lokasi:
+					url_berkas.append(denah_lokasi.berkas.url)
+					id_elemen.append('denah_lokasi')
+					nm_berkas.append(denah_lokasi.nama_berkas)
+					id_berkas.append(denah_lokasi.id)
+					apotek.berkas_terkait_izin.add(denah_lokasi)
+
+				denah_bangunan = berkas_.filter(keterangan='Denah Bangunan '+npwp).last()
+				if denah_bangunan:
+					url_berkas.append(denah_bangunan.berkas.url)
+					id_elemen.append('denah_bangunan')
+					nm_berkas.append(denah_bangunan.nama_berkas)
+					id_berkas.append(denah_bangunan.id)
+					apotek.berkas_terkait_izin.add(denah_bangunan)
+
+				status_bangunan = berkas_.filter(keterangan='Status Bangunan '+npwp).last()
+				if status_bangunan:
+					url_berkas.append(status_bangunan.berkas.url)
+					id_elemen.append('status_bangunan')
+					nm_berkas.append(status_bangunan.nama_berkas)
+					id_berkas.append(status_bangunan.id)
+					apotek.berkas_terkait_izin.add(status_bangunan)
+
+				izin_gangguan = berkas_.filter(keterangan='IMB dan Izin Gangguan '+npwp).last()
+				if izin_gangguan:
+					url_berkas.append(izin_gangguan.berkas.url)
+					id_elemen.append('izin_gangguan')
+					nm_berkas.append(izin_gangguan.nama_berkas)
+					id_berkas.append(izin_gangguan.id)
+					apotek.berkas_terkait_izin.add(izin_gangguan)
+
+				ijazah_strttk = berkas_.filter(keterangan='Ijazah STRTTK '+npwp).last()
+				if ijazah_strttk:
+					url_berkas.append(ijazah_strttk.berkas.url)
+					id_elemen.append('ijazah_strttk')
+					nm_berkas.append(ijazah_strttk.nama_berkas)
+					id_berkas.append(ijazah_strttk.id)
+					apotek.berkas_terkait_izin.add(ijazah_strttk)
+
+				daftar_tenaga_teknis = berkas_.filter(keterangan='Ijazah STRTTK '+npwp).last()
+				if daftar_tenaga_teknis:
+					url_berkas.append(daftar_tenaga_teknis.berkas.url)
+					id_elemen.append('daftar_tenaga_teknis')
+					nm_berkas.append(daftar_tenaga_teknis.nama_berkas)
+					id_berkas.append(daftar_tenaga_teknis.id)
+					apotek.berkas_terkait_izin.add(daftar_tenaga_teknis)
+
+				daftar_tenaga_teknis = berkas_.filter(keterangan='Daftar Tenaga Teknis '+npwp).last()
+				if daftar_tenaga_teknis:
+					url_berkas.append(daftar_tenaga_teknis.berkas.url)
+					id_elemen.append('daftar_tenaga_teknis')
+					nm_berkas.append(daftar_tenaga_teknis.nama_berkas)
+					id_berkas.append(daftar_tenaga_teknis.id)
+					apotek.berkas_terkait_izin.add(daftar_tenaga_teknis)
+
+				alat_perlengkapan_apotek = berkas_.filter(keterangan='Daftar Perlengkapan Apotek '+npwp).last()
+				if alat_perlengkapan_apotek:
+					url_berkas.append(alat_perlengkapan_apotek.berkas.url)
+					id_elemen.append('alat_perlengkapan_apotek')
+					nm_berkas.append(alat_perlengkapan_apotek.nama_berkas)
+					id_berkas.append(alat_perlengkapan_apotek.id)
+					apotek.berkas_terkait_izin.add(alat_perlengkapan_apotek)
+
+				izin_atasan = berkas_.filter(keterangan='Surat Izin Atasan '+npwp).last()
+				if izin_atasan:
+					url_berkas.append(izin_atasan.berkas.url)
+					id_elemen.append('izin_atasan')
+					nm_berkas.append(izin_atasan.nama_berkas)
+					id_berkas.append(izin_atasan.id)
+					apotek.berkas_terkait_izin.add(izin_atasan)
+
+				perjanjian_apoteker = berkas_.filter(keterangan='Akta Perjanjian Kerjasama Apoteker '+npwp).last()
+				if perjanjian_apoteker:
+					url_berkas.append(perjanjian_apoteker.berkas.url)
+					id_elemen.append('perjanjian_apoteker')
+					nm_berkas.append(perjanjian_apoteker.nama_berkas)
+					id_berkas.append(perjanjian_apoteker.id)
+					apotek.berkas_terkait_izin.add(perjanjian_apoteker)
+
+				pernyataan_peraturan_apoteker = berkas_.filter(keterangan='Surat Pernyataan Apoteker (Peraturan) '+npwp).last()
+				if pernyataan_peraturan_apoteker:
+					url_berkas.append(pernyataan_peraturan_apoteker.berkas.url)
+					id_elemen.append('pernyataan_peraturan_apoteker')
+					nm_berkas.append(pernyataan_peraturan_apoteker.nama_berkas)
+					id_berkas.append(pernyataan_peraturan_apoteker.id)
+					apotek.berkas_terkait_izin.add(pernyataan_peraturan_apoteker)
+
+				sia = berkas_.filter(keterangan='SIA '+npwp).last()
+				if sia:
+					url_berkas.append(sia.berkas.url)
+					id_elemen.append('sia')
+					nm_berkas.append(sia.nama_berkas)
+					id_berkas.append(sia.id)
+					apotek.berkas_terkait_izin.add(sia)
+
+				sipa = berkas_.filter(keterangan='SIPA '+npwp).last()
+				if sipa:
+					url_berkas.append(sipa.berkas.url)
+					id_elemen.append('sipa')
+					nm_berkas.append(sipa.nama_berkas)
+					id_berkas.append(sipa.id)
+					apotek.berkas_terkait_izin.add(sipa)
+
+				sipttk = berkas_.filter(keterangan='SIPTTK(AA) '+npwp).last()
+				if sipttk:
+					url_berkas.append(sipttk.berkas.url)
+					id_elemen.append('sipttk')
+					nm_berkas.append(sipttk.nama_berkas)
+					id_berkas.append(sipttk.id)
+					apotek.berkas_terkait_izin.add(sipttk)
+
+				pernyataan_pemilik = berkas_.filter(keterangan='Surat Pernyataan Pemilik '+npwp).last()
+				if pernyataan_pemilik:
+					url_berkas.append(pernyataan_pemilik.berkas.url)
+					id_elemen.append('pernyataan_pemilik')
+					nm_berkas.append(pernyataan_pemilik.nama_berkas)
+					id_berkas.append(pernyataan_pemilik.id)
+					apotek.berkas_terkait_izin.add(pernyataan_pemilik)
+				
+				pernyataan_apoteker = berkas_.filter(keterangan='Surat Pernyataan Apoteker '+npwp).last()
+				if pernyataan_apoteker:
+					url_berkas.append(pernyataan_apoteker.berkas.url)
+					id_elemen.append('pernyataan_apoteker')
+					nm_berkas.append(pernyataan_apoteker.nama_berkas)
+					id_berkas.append(pernyataan_apoteker.id)
+					apotek.berkas_terkait_izin.add(pernyataan_apoteker)
+
+			data = {'success': True, 'pesan': 'Sukses.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }
+	response = HttpResponse(json.dumps(data))
+	return response
