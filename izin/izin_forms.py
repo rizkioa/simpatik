@@ -346,7 +346,7 @@ class KeteranganUsahaTDUPForm(forms.ModelForm):
 		model = DetilTDUP
 		fields = ('nama_usaha', 'lokasi_usaha_pariwisata', 'desa_lokasi', 'telephone', 'nomor_dokumen_pengelolaan', 'tanggal_dokumen_pengelolaan')
 
-class BerkasFom(forms.ModelForm):
+class BerkasForm(forms.ModelForm):
 	"""docstring for BerkasFom"""
 	class Meta:
 		model = Berkas

@@ -55,7 +55,7 @@ def save_izin_toko_obat(request):
 				# 		data = {'success': False, 'pesan': 'Data Izin Apotek gagal.', 'data': data_error}
 	return HttpResponse(json.dumps(data))
 
-
+<<<<<<< HEAD
 def upload_berkas_toko_obat(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
@@ -95,3 +95,130 @@ def upload_berkas_toko_obat(request):
 								except TokoObat.ObjectDoesNotExist:
 									pass
 
+
+def upload_berkas(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			form = BerkasForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if berkas_._size > 4*1024*1024:
+				data = {'Terjadi Kesalahan': [{'message': 'Ukuran file tidak boleh melebihi dari 4mb.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+			else:
+				if request.method == "POST":
+					if berkas_:
+						if form.is_valid():
+							ext = os.path.splitext(berkas_.name)[1]
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
+							if not ext in valid_extensions:
+								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+							else:
+								try:
+									p = Apotek.objects.get(id=request.COOKIES['id_pengajuan'])
+									berkas = form.save(commit=False)
+									kode = request.POST.get('kode')
+									if kode == 'Ijazah Apoteker':
+										berkas.nama_berkas = "Ijazah Apoteker "+p.nama_apotek
+										berkas.keterangan = "Ijazah Apoteker "+p.npwp
+									elif kode == 'STRA Apoteker':
+										berkas.nama_berkas = "STRA Apoteker "+p.nama_apotek
+										berkas.keterangan = "STRA Apoteker "+p.npwp
+									elif kode == 'Surat Rekomendasi IAI':
+										berkas.nama_berkas = "Surat Rekomendasi IAI "+p.nama_apotek
+										berkas.keterangan = "Surat Rekomendasi IAI "+p.npwp
+									elif kode == 'Izin Gangguan':
+										berkas.nama_berkas = "Izin Gangguan "+p.nama_apotek
+										berkas.keterangan = "Izin Gangguan "+p.npwp
+									elif kode == 'KTP':
+										berkas.nama_berkas = "NO KTP "+p.nama_apotek
+										berkas.keterangan = "NO KTP "+p.npwp
+									elif kode == 'Denah Lokasi':
+										berkas.nama_berkas = "Denah Lokasi "+p.nama_apotek
+										berkas.keterangan = "Denah Lokasi "+p.npwp
+									elif kode == 'Denah Bangunan':
+										berkas.nama_berkas = "Denah Bangunan "+p.nama_apotek
+										berkas.keterangan = "Denah Bangunan "+p.npwp
+									elif kode == 'Status Bangunan':
+										berkas.nama_berkas = "Status Bangunan "+p.nama_apotek
+										berkas.keterangan = "Status Bangunan "+p.npwp
+									elif kode == 'IMB dan Izin Gangguan':
+										berkas.nama_berkas = "IMB dan Izin Gangguan "+p.nama_apotek
+										berkas.keterangan = "IMB dan Izin Gangguan "+p.npwp
+									elif kode == 'Ijazah STRTTK':
+										berkas.nama_berkas = "Ijazah STRTTK "+p.nama_apotek
+										berkas.keterangan = "Ijazah STRTTK "+p.npwp
+									elif kode == 'Daftar Tenaga Teknis':
+										berkas.nama_berkas = "Daftar Tenaga Teknis "+p.nama_apotek
+										berkas.keterangan = "Daftar Tenaga Teknis "+p.npwp
+									elif kode == 'Daftar Perlengkapan Apotek':
+										berkas.nama_berkas = "Daftar Perlengkapan Apotek "+p.nama_apotek
+										berkas.keterangan = "Daftar Perlengkapan Apotek "+p.npwp
+									elif kode == 'Surat Izin Atasan':
+										berkas.nama_berkas = "Surat Izin Atasan "+p.nama_apotek
+										berkas.keterangan = "Surat Izin Atasan "+p.npwp
+									elif kode == 'Akta Perjanjian Kerjasama Apoteker':
+										berkas.nama_berkas = "Akta Perjanjian Kerjasama Apoteker "+p.nama_apotek
+										berkas.keterangan = "Akta Perjanjian Kerjasama Apoteker "+p.npwp
+									elif kode == 'Surat Pernyataan Apoteker (Peraturan)':
+										berkas.nama_berkas = "Surat Pernyataan Apoteker (Peraturan) "+p.nama_apotek
+										berkas.keterangan = "Surat Pernyataan Apoteker (Peraturan) "+p.npwp
+									elif kode == 'Surat Pernyataan Pemilik (Peraturan)':
+										berkas.nama_berkas = "Surat Pernyataan Pemilik (Peraturan) "+p.nama_apotek
+										berkas.keterangan = "Surat Pernyataan Pemilik (Peraturan) "+p.npwp
+									elif kode == 'SIA':
+										berkas.nama_berkas = "SIA "+p.nama_apotek
+										berkas.keterangan = "SIA "+p.npwp
+									elif kode == 'SIPA':
+										berkas.nama_berkas = "SIPA "+p.nama_apotek
+										berkas.keterangan = "SIPA "+p.npwp
+									elif kode == 'SIPTTK(AA)':
+										berkas.nama_berkas = "SIPTTK(AA) "+p.nama_apotek
+										berkas.keterangan = "SIPTTK(AA) "+p.npwp
+									elif kode == 'Surat Pernyataan Pemilik':
+										berkas.nama_berkas = "Surat Pernyataan Pemilik "+p.nama_apotek
+										berkas.keterangan = "Surat Pernyataan Pemilik "+p.npwp
+									elif kode == 'Surat Pernyataan Apoteker':
+										berkas.nama_berkas = "Surat Pernyataan Apoteker "+p.nama_apotek
+										berkas.keterangan = "Surat Pernyataan Apoteker "+p.npwp
+									if request.user.is_authenticated():
+										berkas.created_by_id = request.user.id
+									else:
+										berkas.created_by_id = request.COOKIES['id_pemohon']
+									berkas.save()
+									p.berkas_terkait_izin.add(berkas)
+
+									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+											{'status_upload': 'ok'},
+										]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+								except ObjectDoesNotExist:
+									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+						else:
+							data = form.errors.as_json()
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = form.errors.as_json()
+					response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def apotek_upload_dokumen_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+	return HttpResponse(json.dumps(data))
