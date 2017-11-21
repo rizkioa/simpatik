@@ -55,7 +55,6 @@ def save_izin_toko_obat(request):
 				# 		data = {'success': False, 'pesan': 'Data Izin Apotek gagal.', 'data': data_error}
 	return HttpResponse(json.dumps(data))
 
-<<<<<<< HEAD
 def upload_berkas_toko_obat(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
