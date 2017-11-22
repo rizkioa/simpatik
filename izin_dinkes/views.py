@@ -42,7 +42,7 @@ def save_izin_toko_obat(request):
 					pengajuan_obj.alamat_tempat_usaha = request.POST.get("alamat_tempat_usaha")
 					pengajuan_obj.save()
 					data = {'success':True, 'pesan': 'Data izin toko obat berhasil disimpan.'}
-				except TokoObat.ObjectDoesNotExist:
+				except ObjectDoesNotExist:
 					data = {'success': False, 'pesan': 'Proses simpaan data izin toko obat terjadi kesalahan.', 'data': ""}
 				# if pengajuan_obj:
 				# 	form_ = TokoObatForm(request.POST, instance=pengajuan_obj)
@@ -80,20 +80,210 @@ def upload_berkas_toko_obat(request):
 									berkas = form.save(commit=False)
 									kode = request.POST.get('kode')
 									if kode == 'Ijazah STRTTK':
-										berkas.nama_berkas = "Ijazah STRTTK "+p.nama_toko_obat
-										berkas.keterangan = "Ijazah STRTTK "+p.nama_toko_obat
+										berkas.nama_berkas = "Ijazah STRTTK "+p.no_pengajuan
+										berkas.keterangan = "Ijazah STRTTK "+p.no_pengajuan
 									elif kode == 'Denah Lokasi':
-										berkas.nama_berkas = "Denah Lokasi "+p.nama_toko_obat
-										berkas.keterangan = "Denah Lokasi "+p.nama_toko_obat
+										berkas.nama_berkas = "Denah Lokasi "+p.no_pengajuan
+										berkas.keterangan = "Denah Lokasi "+p.no_pengajuan
 									elif kode == 'Denah Bangunan':
-										berkas.nama_berkas = "Denah Bangunan "+p.nama_toko_obat
-										berkas.keterangan = "Denah Bangunan "+p.nama_toko_obat
+										berkas.nama_berkas = "Denah Bangunan "+p.no_pengajuan
+										berkas.keterangan = "Denah Bangunan "+p.no_pengajuan
 									elif kode == 'KTP':
-										berkas.nama_berkas = "KTP "+p.pemohon.nama_lengkap
-										berkas.keterangan = "KTP "+p.pemohon.nama_lengkap
-								except TokoObat.ObjectDoesNotExist:
-									pass
+										berkas.nama_berkas = "KTP "+p.pemohon.get_ktp()
+										berkas.keterangan = "KTP "+p.pemohon.get_ktp()
+									elif kode == 'Status Bangunan':
+										berkas.nama_berkas = "Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak "+p.no_pengajuan
+										berkas.keterangan = "Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak "+p.no_pengajuan
+									elif kode == 'IMB dan Izin Gangguan':
+										berkas.nama_berkas = "IMB dan Izin Gangguan "+p.no_pengajuan
+										berkas.keterangan = "IMB dan Izin Gangguan "+p.no_pengajuan
+									elif kode == 'Akte Perjanjian Kerjasama':
+										berkas.nama_berkas = "Akte Perjanjian Kerjasama Tenaga Teknis Kefarmasian dengan Pemilik Sarana "+p.no_pengajuan
+										berkas.keterangan = "Akte Perjanjian Kerjasama Tenaga Teknis Kefarmasian dengan Pemilik Sarana "+p.no_pengajuan
+									elif kode == 'Pernyataan dari Tenaga Teknis':
+										berkas.nama_berkas = "Surat Pernyataan dari Tenaga Teknis Kefarmasian sebagai Penanggung jawab teknis (bermaterai) "+p.no_pengajuan
+										berkas.keterangan = "Surat Pernyataan dari Tenaga Teknis Kefarmasian sebagai Penanggung jawab teknis (bermaterai) "+p.no_pengajuan
+									elif kode == 'Surat Pernyataan Peraturan':
+										berkas.nama_berkas = "Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana bersedia mematuhi Peraturan Perundang undangan yang berlaku "+p.no_pengajuan
+										berkas.keterangan = "Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana bersedia mematuhi Peraturan Perundang undangan yang berlaku "+p.no_pengajuan
+									elif kode == 'Pernyataan Pelanggaran':
+										berkas.nama_berkas = "Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana tidak terlibat pelanggaran Peraturan Perundang undangan yang berlaku dibidang obat "+p.no_pengajuan
+										berkas.keterangan = "Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana tidak terlibat pelanggaran Peraturan Perundang undangan yang berlaku dibidang obat "+p.no_pengajuan
+									elif kode == 'Rekomendasi Organisasi':
+										berkas.nama_berkas = "Rekomendasi dari organisasi profesi PAFI untuk asisten Apoteker Penanggung jawab Toko Obat "+p.no_pengajuan
+										berkas.keterangan = "Rekomendasi dari organisasi profesi PAFI untuk asisten Apoteker Penanggung jawab Toko Obat "+p.no_pengajuan
+									if request.user.is_authenticated():
+										berkas.created_by_id = request.user.id
+									else:
+										berkas.created_by_id = request.COOKIES['id_pemohon']
+									berkas.save()
+									p.berkas_terkait_izin.add(berkas)
 
+									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+											{'status_upload': 'ok'},
+										]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+								except ObjectDoesNotExist:
+									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+						else:
+							data = form.errors.as_json()
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = form.errors.as_json()
+					response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def load_berkas_toko_obat(request, id_pengajuan):
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			pengajuan_obj = TokoObat.objects.get(id=id_pengajuan)
+			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
+
+			if berkas_:
+				ijazah_strttk = berkas_.filter(keterangan="Ijazah STRTTK "+pengajuan_obj.no_pengajuan).last()
+				if ijazah_strttk:
+					url_berkas.append(ijazah_strttk.berkas.url)
+					id_elemen.append('ijazah_strttk')
+					nm_berkas.append(ijazah_strttk.nama_berkas)
+					id_berkas.append(ijazah_strttk.id)
+					pengajuan_obj.berkas_terkait_izin.add(ijazah_strttk)
+
+				denah_lokasi = berkas_.filter(keterangan="Denah Lokasi "+pengajuan_obj.no_pengajuan).last()
+				if denah_lokasi:
+					url_berkas.append(denah_lokasi.berkas.url)
+					id_elemen.append('denah_lokasi')
+					nm_berkas.append(denah_lokasi.nama_berkas)
+					id_berkas.append(denah_lokasi.id)
+					pengajuan_obj.berkas_terkait_izin.add(denah_lokasi)
+
+				denah_bangunan = berkas_.filter(keterangan="Denah Bangunan "+pengajuan_obj.no_pengajuan).last()
+				if denah_bangunan:
+					url_berkas.append(denah_bangunan.berkas.url)
+					id_elemen.append('denah_bangunan')
+					nm_berkas.append(denah_bangunan.nama_berkas)
+					id_berkas.append(denah_bangunan.id)
+					pengajuan_obj.berkas_terkait_izin.add(denah_bangunan)
+
+				ktp = berkas_.filter(keterangan="KTP "+pengajuan_obj.pemohon.get_ktp()).last()
+				if ktp:
+					url_berkas.append(ktp.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp.nama_berkas)
+					id_berkas.append(ktp.id)
+					pengajuan_obj.berkas_terkait_izin.add(ktp)
+
+				status_bangunan = berkas_.filter(keterangan="Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak "+pengajuan_obj.no_pengajuan).last()
+				if status_bangunan:
+					url_berkas.append(status_bangunan.berkas.url)
+					id_elemen.append('status_bangunan')
+					nm_berkas.append(status_bangunan.nama_berkas)
+					id_berkas.append(status_bangunan.id)
+					pengajuan_obj.berkas_terkait_izin.add(status_bangunan)
+
+				izin_gangguan = berkas_.filter(keterangan="IMB dan Izin Gangguan "+pengajuan_obj.no_pengajuan).last()
+				if izin_gangguan:
+					url_berkas.append(izin_gangguan.berkas.url)
+					id_elemen.append('izin_gangguan')
+					nm_berkas.append(izin_gangguan.nama_berkas)
+					id_berkas.append(izin_gangguan.id)
+					pengajuan_obj.berkas_terkait_izin.add(izin_gangguan)
+
+				perjanjian_kerjasama = berkas_.filter(keterangan="Akte Perjanjian Kerjasama Tenaga Teknis Kefarmasian dengan Pemilik Sarana "+pengajuan_obj.no_pengajuan).last()
+				if perjanjian_kerjasama:
+					url_berkas.append(perjanjian_kerjasama.berkas.url)
+					id_elemen.append('perjanjian_kerjasama')
+					nm_berkas.append(perjanjian_kerjasama.nama_berkas)
+					id_berkas.append(perjanjian_kerjasama.id)
+					pengajuan_obj.berkas_terkait_izin.add(perjanjian_kerjasama)
+
+				pernyataan_tenaga_teknis = berkas_.filter(keterangan="Surat Pernyataan dari Tenaga Teknis Kefarmasian sebagai Penanggung jawab teknis (bermaterai) "+pengajuan_obj.no_pengajuan).last()
+				if pernyataan_tenaga_teknis:
+					url_berkas.append(pernyataan_tenaga_teknis.berkas.url)
+					id_elemen.append('pernyataan_tenaga_teknis')
+					nm_berkas.append(pernyataan_tenaga_teknis.nama_berkas)
+					id_berkas.append(pernyataan_tenaga_teknis.id)
+					pengajuan_obj.berkas_terkait_izin.add(pernyataan_tenaga_teknis)
+
+				surat_pernyataan_peraturan = berkas_.filter(keterangan="Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana bersedia mematuhi Peraturan Perundang undangan yang berlaku "+pengajuan_obj.no_pengajuan).last()
+				if surat_pernyataan_peraturan:
+					url_berkas.append(surat_pernyataan_peraturan.berkas.url)
+					id_elemen.append('surat_pernyataan_peraturan')
+					nm_berkas.append(surat_pernyataan_peraturan.nama_berkas)
+					id_berkas.append(surat_pernyataan_peraturan.id)
+					pengajuan_obj.berkas_terkait_izin.add(surat_pernyataan_peraturan)
+
+				pernyataan_pelanggaran = berkas_.filter(keterangan="Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana tidak terlibat pelanggaran Peraturan Perundang undangan yang berlaku dibidang obat "+pengajuan_obj.no_pengajuan).last()
+				if pernyataan_pelanggaran:
+					url_berkas.append(pernyataan_pelanggaran.berkas.url)
+					id_elemen.append('pernyataan_pelanggaran')
+					nm_berkas.append(pernyataan_pelanggaran.nama_berkas)
+					id_berkas.append(pernyataan_pelanggaran.id)
+					pengajuan_obj.berkas_terkait_izin.add(pernyataan_pelanggaran)
+
+				rekomendasi_organisasi = berkas_.filter(keterangan="Rekomendasi dari organisasi profesi PAFI untuk asisten Apoteker Penanggung jawab Toko Obat "+pengajuan_obj.no_pengajuan).last()
+				if rekomendasi_organisasi:
+					url_berkas.append(rekomendasi_organisasi.berkas.url)
+					id_elemen.append('rekomendasi_organisasi')
+					nm_berkas.append(rekomendasi_organisasi.nama_berkas)
+					id_berkas.append(rekomendasi_organisasi.id)
+					pengajuan_obj.berkas_terkait_izin.add(rekomendasi_organisasi)
+
+			data = {'success': True, 'pesan': 'Perusahaan Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }
+	return HttpResponse(json.dumps(data))
+
+def validasi_berkas_toko_obat(request):
+	data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ditemukan.'}]}
+	id_pengajuan = request.COOKIES.get("id_pengajuan")
+	if id_pengajuan:
+		try:
+			pengajuan_obj = TokoObat.objects.get(id=request.COOKIES.get("id_pengajuan"))
+			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
+			if berkas_:
+				if berkas_.filter(keterangan="Ijazah STRTTK "+pengajuan_obj.no_pengajuan).last():
+					if berkas_.filter(keterangan="Denah Lokasi "+pengajuan_obj.no_pengajuan).last():
+						if berkas_.filter(keterangan="Denah Bangunan "+pengajuan_obj.no_pengajuan).last():
+							if berkas_.filter(keterangan="KTP "+pengajuan_obj.pemohon.get_ktp()).last():
+								if berkas_.filter(keterangan="Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak "+pengajuan_obj.no_pengajuan).last():
+									if berkas_.filter(keterangan="IMB dan Izin Gangguan "+pengajuan_obj.no_pengajuan).last():
+										data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+									else:
+										data = {'Terjadi Kesalahan': [{'message': 'Berkas IMB dan Izin Gangguan tidak ada'}]}
+								else:
+									data = {'Terjadi Kesalahan': [{'message': 'Berkas Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak tidak ada'}]}
+							else:
+								data = {'Terjadi Kesalahan': [{'message': 'Berkas KTP tidak ada'}]}
+						else:
+							data = {'Terjadi Kesalahan': [{'message': 'Berkas Denah Bangunan tidak ada'}]}
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas Denah Lokasi tidak ada'}]}
+				else:
+					data = {'Terjadi Kesalahan': [{'message': 'Berkas Ijazah STRTTK tidak ada'}]}
+			else:
+				data = {'Terjadi Kesalahan': [{'message': 'Berkas yang diwajibkan belum terisi.'}]}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
 
 def upload_berkas(request):
 	if 'id_pengajuan' in request.COOKIES.keys():

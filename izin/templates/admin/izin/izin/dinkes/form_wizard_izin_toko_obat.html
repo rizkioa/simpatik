@@ -38,8 +38,13 @@
 				onTabShow: function(tab, navigation, index) {
 					var $total = navigation.find('li').length;
 					var $current = index+1;
-					if ($current == 2){
-						load_kecamatan1('', '06', '35');
+					// if ($current == 2){
+					// 	load_kecamatan1('', '06', '35');
+					// }
+					if($current == 3){
+						if($.cookie("id_pengajuan")){
+							load_berkas($.cookie("id_pengajuan"));
+						}
 					}
 					if($current >= $total) {
 						// if ($.cookie('id_pengajuan') !== '0'){
@@ -414,7 +419,7 @@
 		  $(".tab-content").mLoading;
 		  if (id_pengajuan>0){
 			$.ajax({
-			  url: __base_url__+'/layanan/tdup/load-berkas/ajax/'+id_pengajuan,
+			  url: __base_url__+'/izin-dinkes/toko-obat/load-berkas/'+id_pengajuan,
 			  success: function (response){
 				respon = $.parseJSON(response)
 				if (respon.success) {

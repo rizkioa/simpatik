@@ -8,6 +8,10 @@ urlpatterns = [
 	url(r'^apotek/upload-berkas/$', views.upload_berkas, name='izin_dinkes__upload_berkas'),
 	url(r'^apotek/upload-berkas/save/$', views.apotek_upload_dokumen_cookie, name='izin_dinkes__upload_berkas_save'),
 
-	url(r'^save-izin-toko-obat/$', views.save_izin_toko_obat, name='izin_dinkes__save_izin_toko_obat'),
-	
+	############### Izin Toko Obat ###############
+	url(r'^toko-obat/save-izin-toko-obat/$', views.save_izin_toko_obat, name='izin_dinkes__save_izin_toko_obat'),
+	url(r'^toko-obat/load-berkas/(?P<id_pengajuan>[0-9]+)$', views.load_berkas_toko_obat, name='izin_dinkes__load_berkas_toko_obat'),
+	url(r'^toko-obat/validasi-berkas/$', views.validasi_berkas_toko_obat, name='izin_dinkes__validasi_berkas_toko_obat'),
+	url(r'^toko-obat/upload-berkas/$', views.upload_berkas_toko_obat, name='izin_dinkes__upload_berkas_toko_obat'),
+	############### end Izin Toko Obat ###########
 ]
