@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from izin_dinkes.forms import ApotekForm, TokoObatForm
 from izin_dinkes.models import Apotek, TokoObat
 from izin.izin_forms import BerkasForm
+from izin.models import PengajuanIzin
 
 def save_izin_apotek(request):
 	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
@@ -350,4 +351,54 @@ def ajax_load_berkas_apotek(request, id_pengajuan):
 		except ObjectDoesNotExist:
 			data = {'success': False, 'pesan': '' }
 	response = HttpResponse(json.dumps(data))
+	return response
+
+def load_konfirmasi_apotek(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan.' }
+	if id_pengajuan:
+		try:
+			pengajuan_obj = PengajuanIzin.objects.get(id=id_pengajuan)
+			apotek_obj = Apotek.objects.filter(id=id_pengajuan).last()
+			pengajuan_json = {}
+			pemohon_json = {}
+			apotek_json = {}
+			data_anggota_json = []
+			if pengajuan_obj:
+				pengajuan_json = pengajuan_obj.as_json()
+				if pengajuan_obj.pemohon:
+					pemohon_json = pengajuan_obj.pemohon.as_json()
+
+				if apotek_obj:
+					apotek_json = apotek_obj.as_json()
+			data = {'success': True, 'pesan': 'Sukses.', 'data': { 'pengajuan_json':pengajuan_json, 'pemohon_json': pemohon_json, 'apotek_json': apotek_json}}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
+
+def apotek_done(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = Apotek.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+					
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+			response.delete_cookie(key='id_pengajuan') # set cookie	
+			response.delete_cookie(key='id_perusahaan') # set cookie	
+			response.delete_cookie(key='nomor_ktp') # set cookie	
+			response.delete_cookie(key='nomor_paspor') # set cookie	
+			response.delete_cookie(key='id_pemohon') # set cookie	
+			response.delete_cookie(key='id_kelompok_izin') # set cookie
+			response.delete_cookie(key='npwp_perusahaan') # set cookie
+			response.delete_cookie(key='id_jenis_pengajuan') # set cookie
+			response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
 	return response

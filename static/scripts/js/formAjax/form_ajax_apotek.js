@@ -128,3 +128,47 @@ function delete_berkas_upload(id, elemen){
   })
   $(".tab-content").mLoading('hide');
 }
+
+function load_konfirmasi_apotek(pengajuan_id){
+  $(".tab-content").mLoading();
+  $.ajax({
+    type: 'GET',
+    url: __base_url__+'/izin-dinkes/apotek/load-konfirmasi-apotek/ajax/'+pengajuan_id,
+    success: function (data) {
+      respon = $.parseJSON(data)
+      pengajuan_obj = respon.data.pengajuan_json
+      pemohon_obj = respon.data.pemohon_json
+      apotek_json = respon.data.apotek_json
+      if(respon.success == true){
+        $('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
+        $('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+        $('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+        $('#nomor_ktp_konfirmasi').text(pemohon_obj.username)
+        $('#nama_lengkap_konfirmasi').text(pemohon_obj.nama_lengkap)
+        $('#alamat_konfirmasi').text(pemohon_obj.alamat_lengkap)
+        $('#telephone_konfirmasi').text(pemohon_obj.telephone)
+        $('#hp_konfirmasi').text(pemohon_obj.hp)
+        $('#email_konfirmasi').text(pemohon_obj.email)
+        $('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
+        $('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
+
+        $('#nama_apotek_konfirmasi').text(apotek_json.nama_apotek)
+        $('#alamat_apotek_konfirmasi').text(apotek_json.alamat_apotek)
+        $('#no_telepon_konfirmasi').text(apotek_json.no_telepon)
+        $('#sarana_konfirmasi').text(apotek_json.sarana)
+        $('#nama_pemilik_sarana_konfirmasi').text(apotek_json.nama_pemilik_sarana)
+        $('#alamat_sarana_konfirmasi').text(apotek_json.alamat_sarana)
+        $('#npwp_konfirmasi').text(apotek_json.npwp)
+
+        if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
+            table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
+            table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+            table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+            table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+            $('#table_kuasa_konfirmasi').prepend(table)
+          }
+        $('.tab-content').mLoading('hide');
+      }
+    }
+  })
+}

@@ -24,6 +24,19 @@ class Apotek(PengajuanIzin):
 	alamat_sarana = models.CharField(verbose_name='Alamat Sarana', max_length=100, null=True, blank=True)
 	npwp = models.CharField(verbose_name='NPWP', max_length=100, null=True, blank=True)
 
+	def as_json(self):
+		alamat_lengkap = ''
+		if self.desa and self.alamat_apotek:
+			alamat_lengkap = str(self.alamat_apotek)+self.desa.lokasi_lengkap()
+		desa = ''
+		if self.desa:
+			desa = self.desa.as_json()
+		sarana = ''
+		if self.sarana:
+			sarana = self.sarana.nama_sarana
+
+		return dict(nama_apotek=self.nama_apotek, alamat_apotek=alamat_lengkap, desa=desa, no_telepon=self.no_telepon, sarana=sarana, nama_pemilik_sarana=self.nama_pemilik_sarana, alamat_sarana=self.alamat_sarana, npwp=self.npwp)
+
 	def __unicode__(self):
 		return u'%s' % str(self.nama_apotek)
 

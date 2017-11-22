@@ -43,9 +43,14 @@
 					  	load_kabupaten1('15')
 					  	load_kecamatan1('233')
 					}
+			        if($current == 3){
+			          if ($.cookie('id_pengajuan') != ''){
+			            load_berkas($.cookie('id_pengajuan'))
+			          }
+			        }
 					if($current >= $total) {
 						if ($.cookie('id_pengajuan') !== '0'){
-							load_konfirmasi($.cookie('id_pengajuan'))
+							load_konfirmasi_apotek($.cookie('id_pengajuan'))
 						}
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
@@ -196,10 +201,11 @@
 				}
 				
 				$.ajax({
-					url: '{% url 'izin_parkir_done' %}',
+					url: '{% url 'izin_dinkes__apotek_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
+							console.log('masuk')
 							toastr["success"](respon.pesan)
 							window.location.replace('{% url 'admin:verifikasi_operator' %}');
 						}
