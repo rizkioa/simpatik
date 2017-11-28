@@ -41,6 +41,9 @@ class TokoObat(PengajuanIzin):
 	def __unicode__(self):
 		return u'%s' % str(self.nama_toko_obat)
 
+	def as_json__toko_obat(self):
+		return dict(nama_toko_obat=self.nama_toko_obat, nama_ttk_penanggung_jawab=self.nama_ttk_penanggung_jawab, alamat_ttk=self.alamat_ttk, alamat_tempat_usaha=self.alamat_tempat_usaha)
+
 	class Meta:
 		verbose_name = 'Toko Obat'
 		verbose_name_plural = 'Toko Obat'

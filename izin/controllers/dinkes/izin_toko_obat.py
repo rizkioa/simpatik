@@ -26,6 +26,8 @@ def formulir_izin_toko_obat(request):
 			if request.COOKIES.get('id_pengajuan', None) is not None and request.COOKIES.get('id_pengajuan') != '0' and request.COOKIES.get('id_pengajuan'):
 				try:
 					pengajuan_obj = TokoObat.objects.get(id=request.COOKIES.get('id_pengajuan'))
+					print pengajuan_obj
+					print request.COOKIES.get('id_pengajuan')
 					extra_context.update({'pengajuan_': pengajuan_obj})
 					extra_context.update({'pengajuan_id': pengajuan_obj.id})
 				except ObjectDoesNotExist:

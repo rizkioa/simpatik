@@ -285,6 +285,18 @@ def validasi_berkas_toko_obat(request):
 			pass
 	return HttpResponse(json.dumps(data))
 
+def load_konfirmasi_toko_obat(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan. Pengajuan Izin tidak ditemukan atau tidak ada dalam daftar.'}
+	try:
+		pengajuan_obj = TokoObat.objects.get(id=id_pengajuan)
+		pemohon_json = {}
+		if pengajuan_obj.pemohon:
+			pemohon_json = pengajuan_obj.pemohon.as_json()
+		data = {'success': True, 'pesan': 'Berhasil load data pengajuan izin.', 'data': {'pemohon_json': pemohon_json, 'pengajuan_json': pengajuan_obj.as_json(), 'detil_json': pengajuan_obj.as_json__toko_obat()}}
+	except ObjectDoesNotExist:
+		pass
+	return HttpResponse(json.dumps(data))
+
 def upload_berkas(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':

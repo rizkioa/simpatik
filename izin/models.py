@@ -1993,6 +1993,29 @@ class DetilBangunanIMB(MetaAtribut):
 		verbose_name = 'Detil Bangunan IMB'
 		verbose_name_plural = 'Detil Bangunan IMB'
 
+
+class Retribusi(MetaAtribut):
+	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Pengajuan Izin")
+	kode = models.CharField(max_length=255, verbose_name="Kode Retribusi", unique=True)
+	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
+	total_bayar = models.CharField(max_length=100, verbose_name="Total Bayar")
+	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
+	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
+	bank = models.CharField(max_length=255, verbose_name="BANK", null=True, blank=True)
+
+	def as_json(self):
+		tanggal_bayar = ""
+		if self.tanggal_bayar:
+			tanggal_bayar = self.tanggal_akhir.strftime("%d-%m-%Y")
+		tanggal_deadline = ""
+		if self.tanggal_deadline:
+			tanggal_deadline = self.tanggal_deadline.strftime("%d-%m-%Y")
+		return dict(kode=self.kode, peruntukan=self.peruntukan, total_bayar=self.total_bayar, tanggal_bayar=tanggal_bayar, tanggal_deadline=tanggal_deadline)
+
+	class Meta:
+		verbose_name = "Retribusi"
+		verbose_name_plural = "Retribusi"
+
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')
 

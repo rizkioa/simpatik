@@ -56,6 +56,11 @@ v1_api.register(DetilIUJKResource()) #IUJK
 v1_api.register(PaketPekerjaanResource()) #IUJK
 v1_api.register(AnggotaBadanUsaha()) #IUJK
 
+# Retribusi
+v1_api.register(RetribusiResource())
+
+
+
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())
 
