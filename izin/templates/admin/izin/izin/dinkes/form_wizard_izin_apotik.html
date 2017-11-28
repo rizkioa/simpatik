@@ -30,7 +30,7 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
 	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
 	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-	<!-- <script src="{% static 'scripts/js/formAjax/form_ajax_izin_parkir.js' %}"></script> -->
+	<script src="{% static 'scripts/js/formAjax/form_ajax_apotek.js' %}"></script>
 	
 	<script>
 		$(window).load(function(){
@@ -41,11 +41,19 @@
 					if ($current == 2){
 						load_provinsi1('1');
 					  	load_kabupaten1('15')
-					  	load_kecamatan1('233')
+					  	if (!$( "#id_kecamatan1").val()){
+					  		load_kecamatan1('233')
+					  	}
+					  	
 					}
+			        if($current == 3){
+			          if ($.cookie('id_pengajuan') != ''){
+			            load_berkas($.cookie('id_pengajuan'))
+			          }
+			        }
 					if($current >= $total) {
 						if ($.cookie('id_pengajuan') !== '0'){
-							load_konfirmasi($.cookie('id_pengajuan'))
+							load_konfirmasi_apotek($.cookie('id_pengajuan'))
 						}
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
@@ -196,10 +204,11 @@
 				}
 				
 				$.ajax({
-					url: '{% url 'izin_parkir_done' %}',
+					url: '{% url 'izin_dinkes__apotek_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
+							console.log('masuk')
 							toastr["success"](respon.pesan)
 							window.location.replace('{% url 'admin:verifikasi_operator' %}');
 						}
@@ -270,9 +279,27 @@
 
 		$(window).load(function() {
 			var p = 'percent-'
+			$('#'+p+'ijazah_apoteker').hide()
+			$('#'+p+'stra_apoteker').hide()
+			$('#'+p+'rekom_iai').hide()
+			$('#'+p+'rekom_iai').hide()
 			$('#'+p+'ktp').hide()
-			$('#'+p+'sketsa_lokasi').hide()
-			$('#'+p+'surat_pernyataan').hide()
+			$('#'+p+'denah_lokasi').hide()
+			$('#'+p+'denah_bangunan').hide()
+			$('#'+p+'status_bangunan').hide()
+			$('#'+p+'izin_gangguan').hide()
+			$('#'+p+'ijazah_strttk').hide()
+			$('#'+p+'daftar_tenaga_teknis').hide()
+			$('#'+p+'alat_perlengkapan_apotek').hide()
+			$('#'+p+'izin_atasan').hide()
+			$('#'+p+'perjanjian_apoteker').hide()
+			$('#'+p+'pernyataan_peraturan_apoteker').hide()
+			$('#'+p+'pernyataan_peraturan_pemilik').hide()
+			$('#'+p+'sia').hide()
+			$('#'+p+'sipa').hide()
+			$('#'+p+'sipttk').hide()
+			$('#'+p+'pernyataan_pemilik').hide()
+			$('#'+p+'pernyataan_apoteker').hide()
 		});
 
 		function load_konfirmasi(id_pengajuan){

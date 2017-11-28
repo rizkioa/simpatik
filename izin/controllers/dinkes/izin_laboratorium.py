@@ -9,6 +9,8 @@ from izin.models import DetilIzinParkirIsidentil, JenisPermohonanIzin, JenisPemo
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan
 from accounts.models import NomorIdentitasPengguna
 
+from izin_dinkes.models import Laboratorium, JenisKelengkapanBangunan
+
 def formulir_izin_laboratorium(request):
 	extra_context={}
 	if 'id_kelompok_izin' in request.COOKIES.keys():
@@ -20,11 +22,12 @@ def formulir_izin_laboratorium(request):
 		kabupaten = Kabupaten.objects.all()
 		kecamatan = Kecamatan.objects.all()
 		jenis_pemohon = JenisPemohon.objects.all()
-		extra_context.update({'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
+		jenis_kelengkapan_lab = JenisKelengkapanBangunan.objects.all()
+		extra_context.update({'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon, 'jenis_kelengkapan_lab': jenis_kelengkapan_lab})
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES.get('id_pengajuan', None) is not None and request.COOKIES.get('id_pengajuan') != '0':
 				try:
-					pengajuan_obj = DetilIzinParkirIsidentil.objects.get(id=request.COOKIES.get('id_pengajuan'))
+					pengajuan_obj = Laboratorium.objects.get(id=request.COOKIES.get('id_pengajuan'))
 					extra_context.update({'pengajuan_': pengajuan_obj})
 					extra_context.update({'pengajuan_id': pengajuan_obj.id})
 				except ObjectDoesNotExist:
