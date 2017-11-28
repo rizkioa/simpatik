@@ -19,7 +19,7 @@ urlpatterns = [
 	url(r'^toko-obat/upload-berkas/$', views.upload_berkas_toko_obat, name='izin_dinkes__upload_berkas_toko_obat'),
 	############### end Izin Toko Obat ###########
 
-	############### Izin Toko Obat ###############
+	############### Izin Lab ###############
 	url(r'^laboratorium/save-izin-laboratorium/$', views.save_izin_laboratorium, name='izin_dinkes__save_izin_laboratorium'),
 
 	url(r'^laboratorium/save-peralatan-laboratorium/$', views.save_peralatan_lab, name='izin_dinkes__save_peralatan_lab'),
@@ -40,5 +40,5 @@ urlpatterns = [
     url(r'^laboratorium/load-konfirmasi-laboratorium/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_laboratorium, name='izin_dinkes__load_konfirmasi_laboratorium'),
     url(r'^laboratorium/laboratorium-done/$', views.laboratorium_done, name='izin_dinkes__laboratorium_done'),
 
-	############### end Izin Toko Obat ###########
+	############### end Izin Lab ##########
 ]
