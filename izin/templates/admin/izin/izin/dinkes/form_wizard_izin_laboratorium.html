@@ -30,7 +30,7 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
 	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
 	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-	<!-- <script src="{% static 'scripts/js/formAjax/form_ajax_izin_parkir.js' %}"></script> -->
+	<script src="{% static 'scripts/js/formAjax/form_ajax_lab.js' %}"></script>
 	
 	<script>
 		$(window).load(function(){
@@ -39,19 +39,20 @@
 					var $total = navigation.find('li').length;
 					var $current = index+1;
 					if ($current == 2){
-						load_kecamatan1('', '06', '35');
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_data_izin_parkir($.cookie('id_pengajuan'))
-						} 
+						load_provinsi1('1');
+					  	load_kabupaten1('15')
+					  	if (!$( "#id_kecamatan1").val()){
+					  		load_kecamatan1('233')
+					  	}
 					}
 					if ($current == 3){
 						if ($.cookie('id_pengajuan') !== '0'){
-							load_data_anggota($.cookie('id_pengajuan'))
+							load_peralatan_lab($.cookie('id_pengajuan'))
 						}
 					}
 					if ($current == 4){
 						if ($.cookie('id_pengajuan') !== '0'){
-							load_berkas($.cookie('id_pengajuan'))
+							load_bangunan_lab($.cookie('id_pengajuan'))
 						}
 					}
 					if($current >= $total) {
@@ -207,7 +208,7 @@
 				}
 				
 				$.ajax({
-					url: '{% url 'izin_parkir_done' %}',
+					url: '{% url 'izin_dinkes__laboratorium_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
@@ -257,9 +258,9 @@
 				
 			pengajuan = $.cookie('id_pengajuan')
 			if (pengajuan !== '0'){
-				$('#id_ktp').val('{{ktp}}');
-				$('#id_paspor').val('{{paspor}}');
-				load_pemohon('{{ktp}}');
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
 
 				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
 				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
@@ -267,8 +268,8 @@
 
 				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
 				if ('{{ pengajuan_.pemohon }}' !== 'None'){
-					$.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
-					$.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
 					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
 				}
 				else{
@@ -279,67 +280,26 @@
 			}
 		});
 
-		function load_data_izin_parkir(id_pengajuan){
-			$('.tab-content').mLoading();
-			$.ajax({
-	            type: 'GET',
-	            url: __base_url__+'/layanan/izin-parkir/load-detil-izin-parkir/ajax/'+id_pengajuan,
-	            success: function (data) {
-	            	// console.log(data)
-	            	respon = JSON.parse(data)
-	            	if(respon.success == true){
-	            		$('#id_jasa_penitipan').val(respon.data.jenis_penitipan)
-	            		$('#id_ukuran_penitipan_lebar').val(respon.data.lebar_penitipan)
-	            		$('#id_ukuran_penitipan_panjang').val(respon.data.panjang_penitipan)
-	            		if(respon.data.desa.id_kecamatan){
-	            			$('#id_kecamatan1').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
-	            			load_desa1(respon.data.desa.id_kecamatan)
-		            		setTimeout(function(){
-		            			$('#id_desa1').val(respon.data.desa.id_desa).prop('selected',true).trigger("chosen:updated");
-		            		}, 1000);
-	            		}
-	            		
-	            		$('#id_alamat_izin_parkir').val(respon.data.alamat)
-	            		$('#id_tanggal_penitipan').val(respon.data.tanggal_pelaksanaan_parkir)
-	            		$('#id_waktu_mulai').val(respon.data.waktu_mulai)
-	            		$('#id_waktu_akhir').val(respon.data.waktu_berakhir)
-	            		$('#id_anggota_penitipan').val(respon.data.jumlah_anggota_parkir)
-	            		$('#id_batas_sebelah_utara').val(respon.data.batas_utara)
-	            		$('#id_batas_sebelah_timur').val(respon.data.batas_timur)
-	            		$('#id_batas_sebelah_selatan').val(respon.data.batas_selatan)
-	            		$('#id_batas_sebelah_barat').val(respon.data.batas_barat)
-	            	}
-	            	else{
-	            		toastr["error"](respon.data.pesan)
-	            	}
-	            	$('.tab-content').mLoading('hide');
-	            },
-	            error:function(){
-	            	toast_server_error();
-	            	$('.tab-content').mLoading('hide');
-	            }
-	        })
-		}
-
 		$(window).load(function() {
 			var p = 'percent-'
 			$('#'+p+'ktp').hide()
 			$('#'+p+'sketsa_lokasi').hide()
 			$('#'+p+'surat_pernyataan').hide()
 		});
-
+		
 		function load_konfirmasi(id_pengajuan){
 			$('.tab-content').mLoading();
 			$.ajax({
 	            type: 'GET',
-	            url: __base_url__+'/layanan/izin-parkir/load-konfirmasi/ajax/'+id_pengajuan,
+	            url: __base_url__+'/izin-dinkes/laboratorium/load-konfirmasi-laboratorium/ajax/'+id_pengajuan,
 	            success: function (data) {
 	            	respon = JSON.parse(data)
 	            	console.log(respon)
 	            	pengajuan_obj = respon.data.pengajuan_json
 	            	pemohon_obj = respon.data.pemohon_json
-	            	detil_obj = respon.data.detil_json
-	            	data_anggota_list = respon.data.data_anggota_json
+	            	laboratorium_obj = respon.data.laboratorium_json
+	            	peralatan_obj = respon.data.peralatan_json
+	            	bangunan_obj = respon.data.bangunan_json
 	            	if(respon.success == true){
 	            		$('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
 	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
@@ -352,46 +312,187 @@
 	            		$('#email_konfirmasi').text(pemohon_obj.email)
 	            		$('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
 	            		$('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
-	            		// izin parkir
-	            		$('#jenis_penitipan_konfirmasi').text(detil_obj.jenis_penitipan)
-	            		$('#ukuran_penitipan_konfirmasi').text('lebar : '+detil_obj.lebar_penitipan+' meter, panjang : '+detil_obj.panjang_penitipan+' meter')
-	            		$('#alamat_penitipan_konfirmasi').text(detil_obj.alamat_lengkap)
-	            		$('#lama_penitipan_konfirmasi').text('tanggal : '+detil_obj.tanggal_pelaksanaan_parkir + ', ' +detil_obj.waktu_mulai+' sampai dengan '+detil_obj.waktu_berakhir)
-	            		$('#jumlah_anggota_penitipan_konfirmasi').text(detil_obj.jumlah_anggota_parkir+' orang')
-	            		$('#sebelah_utara_konfirmasi').text(detil_obj.batas_utara)
-	            		$('#sebelah_timur_konfirmasi').text(detil_obj.batas_timur)
-	            		$('#sebelah_selatan_konfirmasi').text(detil_obj.batas_selatan)
-	            		$('#sebelah_barat_konfirmasi').text(detil_obj.batas_barat)
-	            		for (var i = 0; i < data_anggota_list.length; i++){
-	            			no = data_anggota_list.length
-							if (data_anggota_list.length > 1){
-								no = data_anggota_list.length-i
-							}
-	            			row = '<tr>'
-	            			row += '<td>'+no+'</td>'
-	            			row += '<td>'+data_anggota_list[i].nomor_ktp+'</td>'
-	            			row += '<td>'+data_anggota_list[i].nama_lengkap+'</td>'
-	            			row += '<td>'+data_anggota_list[i].tanggal_lahir+'</td>'
-	            			row += '<td>'+data_anggota_list[i].alamat+'</td>'
-	            			row += '<td>'+data_anggota_list[i].telephone+'</td>'
-	            			row += '<td>'+data_anggota_list[i].keterangan+'</td>'
-	            			$('#table_data_anggota_konfirmasi > tbody').prepend(row)
-	            		}
 
-	            		if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
-	            			table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			$('#table_kuasa_konfirmasi').prepend(table)
-	            		}
+	            		$('#klasifikasi_umum_konfirmasi').text(laboratorium_obj.klasifikasi_laboratorium)
+	            		$('#nama_lab_konfirmasi').text(laboratorium_obj.nama_laboratorium)
+	            		$('#alamat_lab_konfirmasi').text(laboratorium_obj.alamat_laboratorium)
+	            		$('#nama_pananggung_jawab_konformasi').text(laboratorium_obj.penanggung_jawab_teknis)
+	            		
+	            		$.ajax({
+				            type: 'GET',
+				            url: __base_url__+'/api/v1/peralatanlaboratorium/?format=json&laboratorium_id='+id_pengajuan,
+				            success: function (data) {
+				            	if (data.meta.total_count > 0){
+				            		for(var i =0; i < data.meta.total_count; i++){
+				            			console.log(data.objects[i])
+				            			no = data.meta.total_count
+										if (data.meta.total_count > 1){
+											no = data.meta.total_count-i
+										}
+				            			row = '<tr>'
+				            			row += '<td>'+no+'</td>'
+				            			row += '<td>'+data.objects[i].jenis_peralatan+'</td>'
+				            			row += '<td>'+data.objects[i].jumlah+'</td>'
+				            			row += '<td>'+data.objects[i].keterangan+'</td>'
+				            			$('.table-peralatan-lab-konfirmasi > tbody').prepend(row)
+				            		}
+				            	}
+				            }
+				        })
+
+	            		$.ajax({
+				            type: 'GET',
+				            url: __base_url__+'/api/v1/bangunanlaboratorium/?format=json&laboratorium_id='+id_pengajuan,
+				            success: function (data) {
+				            	if (data.meta.total_count > 0){
+				            		for(var i =0; i < data.meta.total_count; i++){
+				            			no = data.meta.total_count
+										if (data.meta.total_count > 1){
+											no = data.meta.total_count-i
+										}
+				            			row = '<tr>'
+				            			row += '<td>'+no+'</td>'
+				            			row += '<td>'+data.objects[i].nama_jenis_bangunan+'</td>'
+				            			row += '<td>'+data.objects[i].nama_kelengkapan_bangunan+'</td>'
+				            			row += '<td>'+data.objects[i].keterangan+'</td>'
+				            			$('.table-bangunan-lab-konfirmasi > tbody').prepend(row)
+				            		}
+				            	}
+				            }
+				        })
+
 	            		$('.tab-content').mLoading('hide');
 	            	}
 	            }
 	        })
 		}
+function make_disabled(elem_, dis_){
+    if (dis_ == true){
+        elem_.empty();
+    }
+    elem_.prop( "disabled", dis_);
+    elem_.trigger("chosen:updated");
+}
+
+function load_provinsi1(id_negara){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_provinsi_chosen" ).mLoading();
+    // $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_provinsi' %}', // the file to call
+        url: __base_url__+'/admin/master/provinsi/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_provinsi1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            // $( "#id_provinsi_chosen" ).unmask()
+            $( "#id_provinsi1_chosen" ).mLoading('hide');
+            $( "#id_provinsi1" ).change(function(){
+                $this = $(this)
+                id_provinsi = $(this).val()
+                if(id_provinsi.length > 0){
+                    load_kabupaten1(id_provinsi)
+                }else{
+                    elem = $( "#id_kabupaten1" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+
+function load_kabupaten1(id_provinsi){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_kabupaten1_chosen" ).mLoading();
+    $( "#id_kabupaten1_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_kabupaten' %}',
+        url: __base_url__+'/admin/master/kabupaten/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_kabupaten1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_kabupaten1_chosen" ).mLoading('hide');
+            $( "#id_kabupaten1" ).change(function(){
+                $this = $(this)
+                id_kabupaten = $(this).val()
+                if(id_kabupaten.length > 0){
+                    load_kecamatan1(id_kabupaten)
+                }else{
+                    elem = $( "#id_kecamatan1" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+function load_kecamatan1(id_kabupaten){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_kecamatan1_chosen" ).mLoading();
+    $( "#id_kecamatan1_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        url: __base_url__+'/admin/master/kecamatan/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_kecamatan1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_kecamatan1_chosen" ).mLoading('hide');
+            $( "#id_kecamatan1" ).change(function(){
+                $this = $(this)
+                
+                id_kecamatan = $(this).val()
+                if(id_kecamatan.length > 0){
+                    load_desa1(id_kecamatan)
+                }else{
+                    elem = $( "#id_desa1" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+function load_desa1(id_kecamatan){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_desa1_chosen" ).mLoading();
+    $( "#id_desa1_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_desa' %}', // the file to call
+        url: __base_url__+'/admin/master/desa/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_desa1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_desa1_chosen" ).mLoading('hide');
+            $( "#id_desa1" ).change(function(){
+                $this = $(this)
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
 	</script>
-	{% include 'front-end/include/formulir_izin_parkir/popup/data_anggota.html' %}
+	{% include 'front-end/include/formulir_izin_laboratorium/popup/popup_peralatan_lab.html' %}
+	{% include 'front-end/include/formulir_izin_laboratorium/popup/popup_bangunan_lab.html' %}
 {% endblock %}
 
 {% block extrastyle %}

@@ -397,8 +397,10 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilIMB')
 		elif kode == "APOTEK":
 			objects_ = getattr(app_models_dinkes, 'Apotek')
-		elif kode == "TOKOOBAT":
+		elif kode == "TOKO-OBAT":
 			objects_ = getattr(app_models_dinkes, 'TokoObat')
+		elif kode == "IZINLAB":
+			objects_ = getattr(app_models_dinkes, 'Laboratorium')
 	return objects_
 
 
@@ -498,11 +500,12 @@ def render_to_pdf(template_src, context_dict, extra_context, request):
 
 def cek_apikey(apikey, username):
 	# from izin.detilsiup_admin import cek_apikey
-	from kepegawaian.models import Pegawai
+	# from kepegawaian.models import Pegawai
+	from accounts.models import Account
 	respon = False
 	if apikey and username:
 		try:
-			accounts_obj = Pegawai.objects.get(username=username)
+			accounts_obj = Account.objects.get(username=username)
 			if accounts_obj.api_key:
 				if accounts_obj.api_key.key:
 					# print accounts_obj.api_key.key

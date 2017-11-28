@@ -24,6 +24,19 @@ class Apotek(PengajuanIzin):
 	alamat_sarana = models.CharField(verbose_name='Alamat Sarana', max_length=100, null=True, blank=True)
 	npwp = models.CharField(verbose_name='NPWP', max_length=100, null=True, blank=True)
 
+	def as_json(self):
+		alamat_lengkap = ''
+		if self.desa and self.alamat_apotek:
+			alamat_lengkap = str(self.alamat_apotek)+self.desa.lokasi_lengkap()
+		desa = ''
+		if self.desa:
+			desa = self.desa.as_json()
+		sarana = ''
+		if self.sarana:
+			sarana = self.sarana.nama_sarana
+
+		return dict(nama_apotek=self.nama_apotek, alamat_apotek=alamat_lengkap, desa=desa, no_telepon=self.no_telepon, sarana=sarana, nama_pemilik_sarana=self.nama_pemilik_sarana, alamat_sarana=self.alamat_sarana, npwp=self.npwp)
+
 	def __unicode__(self):
 		return u'%s' % str(self.nama_apotek)
 
@@ -33,13 +46,16 @@ class Apotek(PengajuanIzin):
 # Pengajuan Apotik
 
 class TokoObat(PengajuanIzin):
-	nama_toko_obat = models.CharField(verbose_name='Nama Toko Obat', max_length=100)
-	nama_ttk_penanggung_jawab = models.CharField(verbose_name='Nama TTK Penanggung Jawab', max_length=100)
-	alamat_ttk = models.CharField(verbose_name='Alamat TTK', max_length=100)
-	alamat_tempat_usaha = models.CharField(verbose_name='Alamat Tempat Usaha', max_length=100)
+	nama_toko_obat = models.CharField(verbose_name='Nama Toko Obat', max_length=100, null=True, blank=True)
+	nama_ttk_penanggung_jawab = models.CharField(verbose_name='Nama TTK Penanggung Jawab', max_length=100, null=True, blank=True)
+	alamat_ttk = models.CharField(verbose_name='Alamat TTK', max_length=100, null=True, blank=True)
+	alamat_tempat_usaha = models.CharField(verbose_name='Alamat Tempat Usaha', max_length=100, null=True, blank=True)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_toko_obat)
+
+	def as_json__toko_obat(self):
+		return dict(nama_toko_obat=self.nama_toko_obat, nama_ttk_penanggung_jawab=self.nama_ttk_penanggung_jawab, alamat_ttk=self.alamat_ttk, alamat_tempat_usaha=self.alamat_tempat_usaha)
 
 	class Meta:
 		verbose_name = 'Toko Obat'
@@ -49,7 +65,18 @@ class Laboratorium(PengajuanIzin):
 	klasifikasi_laboratorium = models.CharField(verbose_name='Klasifikasi Laboratorium', max_length=256)
 	nama_laboratorium = models.CharField(verbose_name='Nama Laboratorium', max_length=256)
 	alamat_laboratorium = models.CharField(verbose_name='Alamat Laboratorium', max_length=256)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	penanggung_jawab_teknis = models.CharField(verbose_name='Penanggung Jawab Teknis', max_length=256)
+
+	def as_json(self):
+		alamat_lengkap = ''
+		if self.desa and self.alamat_laboratorium:
+			alamat_lengkap = str(self.alamat_laboratorium)+self.desa.lokasi_lengkap()
+		desa = ''
+		if self.desa:
+			desa = self.desa.as_json()
+
+		return dict(klasifikasi_laboratorium=self.klasifikasi_laboratorium, nama_laboratorium=self.nama_laboratorium, alamat_laboratorium=alamat_lengkap, desa=desa, penanggung_jawab_teknis=self.penanggung_jawab_teknis)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_laboratorium)
@@ -64,6 +91,12 @@ class PeralatanLaboratorium(models.Model):
 	jumlah = models.CharField(verbose_name='Jumlah', max_length=256)
 	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
 
+	def as_json(self):
+		laboratorium = ''
+		if self.laboratorium:
+			laboratorium = self.laboratorium.nama_laboratorium
+		return dict(id=self.id, laboratorium=laboratorium, jenis_peralatan=self.jenis_peralatan, jumlah=self.jumlah, keterangan=self.keterangan)
+
 	def __unicode__(self):
 		return u'%s' % str(self.jenis_peralatan)
 
@@ -76,7 +109,7 @@ class JenisKelengkapanBangunan(models.Model):
 	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
 
 	def __unicode__(self):
-		return u'%s' % str(self.nama_kelengkapan_bangunan)
+		return u'%s' % str(self.nama_jenis_kelengkapan_bangunan)
 
 	class Meta:
 		verbose_name = 'Nama Kelengkapan Bangunan'
@@ -84,10 +117,20 @@ class JenisKelengkapanBangunan(models.Model):
 
 class BangunanLaboratorium(models.Model):
 	laboratorium = models.ForeignKey(Laboratorium, verbose_name='Laboratorium')
-	jenis_kelengkapan_bangunan = models.ForeignKey(JenisKelengkapanBangunan, verbose_name='Jenis Kelegkapan Bangunan')
+	jenis_kelengkapan_bangunan = models.ForeignKey(JenisKelengkapanBangunan, verbose_name='Jenis Kelegkapan Bangunan', null=True, blank=True)
 	nama_kelengkapan_bangunan = models.CharField(verbose_name='Nama Kelengkapan Bangunan', max_length=256)
 	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
 
+	def as_json(self):
+		laboratorium = ''
+		if self.laboratorium:
+			laboratorium = self.laboratorium.nama_laboratorium
+		if self.jenis_kelengkapan_bangunan:
+			jenis_kelengkapan_bangunan_id = self.jenis_kelengkapan_bangunan.id
+		if self.jenis_kelengkapan_bangunan:
+			jenis_kelengkapan_bangunan = self.jenis_kelengkapan_bangunan.nama_jenis_kelengkapan_bangunan
+
+		return dict(id=self.id, laboratorium=laboratorium, jenis_kelengkapan_bangunan_id=jenis_kelengkapan_bangunan_id, jenis_kelengkapan_bangunan=jenis_kelengkapan_bangunan, nama_kelengkapan_bangunan=self.nama_kelengkapan_bangunan, keterangan=self.keterangan)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_kelengkapan_bangunan)

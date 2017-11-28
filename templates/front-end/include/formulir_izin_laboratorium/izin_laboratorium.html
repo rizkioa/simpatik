@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'izin_dinkes__save_izin_laboratorium' %}" data-parsley-validate novalidate>
 {% csrf_token %}
 	<div class="row">
 		<div class="col-md-12">
@@ -8,38 +8,30 @@
 	</div>
 
 	<div class="form-group">
-		<label for="klasifikasi_lab" class="col-sm-2 control-label">Klasifikasi Laboratorium</label>
+		<label for="klasifikasi_lab" class="col-sm-2 control-label"><strong>Klasifikasi Laboratorium</strong></label>
 		<div class="col-sm-6">
-			<input type="text" id="id_klasifikasi_lab" name="klasifikasi_lab" class="form-control">
+			<input type="text" id="id_klasifikasi_lab" name="klasifikasi_laboratorium" class="form-control" required="">
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="nama_lab" class="col-sm-2 control-label">Nama Laboratorium </label>
+		<label for="nama_lab" class="col-sm-2 control-label"><strong>Nama Laboratorium</strong></label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" id="id_nama_lab"  name="nama_lab">
+			<input type="text" class="form-control" id="id_nama_lab"  name="nama_laboratorium" required="">
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="alamat_lab" class="col-sm-2 control-label">Alamat Laboratorium</label>
+		<label for="alamat_lab" class="col-sm-2 control-label"><strong>Alamat Laboratorium</strong></label>
 		<div class="col-sm-6">
-			<textarea  id="id_alamat_lab" rows="5" name="alamat_lab" class="form-control"></textarea>
+			<textarea  id="id_alamat_lab" rows="5" name="alamat_laboratorium" class="form-control" required=""></textarea>
 		</div>
 	</div>
-
-	<div class="form-group" id="kabupaten">
-    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
-    <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten" required="" data-parsley-trigger="change"> 
-      </select>
-    </div>
-  </div>
 
   <div class="form-group" id="kecamatan">
     <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" name="kecamatan1" id="id_kecamatan1" required="" data-parsley-trigger="change" required="">
       </select>
     </div>
   </div>
@@ -47,15 +39,15 @@
   <div class="form-group" id="desa">
     <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
     <div class="col-sm-5">
-      <select class="form-control chosen-select mb-10" name="desa" id="id_desa" required="" data-parsley-trigger="change">
+      <select class="form-control chosen-select mb-10" name="desa1" id="id_desa1" required="" data-parsley-trigger="change" required="">
       </select>
     </div>
   </div>
 
   <div class="form-group">
-		<label for="nama_penanggung_jawab" class="col-sm-2 control-label">Nama Penanggung Jawab </label>
+		<label for="penanggung_jawab_teknis" class="col-sm-2 control-label"><strong>Nama Penanggung Jawab</strong> </label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" id="id_nama_penanggung_jawab"  name="nama_penanggung_jawab">
+			<input type="text" class="form-control" id="id_nama_penanggung_jawab"  name="penanggung_jawab_teknis" required="">
 		</div>
 	</div>
 	
