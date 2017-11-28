@@ -1,15 +1,16 @@
-<form method="POST" name="step5" enctype="multipart/form-data" id="myForm_upload" action="{% url 'siup_upload_dokumen' %}" data-parsley-validate novalidate>
+<form method="POST" name="step3" enctype="multipart/form-data" id="myForm_upload" action="{% url 'izin_dinkes__validasi_berkas_toko_obat' %}" data-parsley-validate novalidate>
   {% csrf_token %}
   <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
   <hr class="style14" style="height:2px">
 </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_foto_pemohon' %}" data-parsley-validate novalidate id="form-ijazah_strttk">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" data-parsley-validate novalidate id="form-ijazah_strttk">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label text-left"><strong>Salinan/Fotocopy Ijazah STRTTK</strong></label>
+      <label class="col-sm-3 control-label"><strong>Ijazah STRTTK</strong></label>
       <span id="field-ijazah_strttk">
         <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Ijazah STRTTK">
           <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         </div>
         <a href="#" id="btn-ijazah_strttk" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
@@ -19,10 +20,10 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-denah_lokasi">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" data-parsley-validate novalidate id="form-denah_lokasi">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Salinan/Fotocopy Denah Lokasi</strong></label>
+      <label class="col-sm-3 control-label"><strong>Denah Lokasi</strong></label>
       <span id="field-denah_lokasi">
         <div class="col-sm-5">
           <input type="hidden" name="kode" value="Denah Lokasi">
@@ -35,10 +36,10 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-denah_bangunan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" data-parsley-validate novalidate id="form-denah_bangunan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Salinan/Fotocopy Denah Bangunan</strong></label>
+      <label class="col-sm-3 control-label"><strong>Denah Bangunan</strong></label>
       <span id="field-denah_bangunan">
         <div class="col-sm-5">
           <input type="hidden" name="kode" value="Denah Bangunan">
@@ -51,10 +52,10 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-ktp">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" data-parsley-validate novalidate id="form-ktp">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Salinan/Fotocopy KTP</strong></label>
+      <label class="col-sm-3 control-label"><strong>KTP</strong></label>
       <span id="field-ktp">
         <div class="col-sm-5">
           <input type="hidden" name="kode" value="KTP">
@@ -67,7 +68,7 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-status_bangunan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" data-parsley-validate novalidate id="form-status_bangunan">
   {% csrf_token %}
     <div class="form-group">
       <label class="col-sm-3 control-label"><strong>Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak</strong></label>
@@ -83,10 +84,10 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'upload_berkas_save_izin_parkir' %}" data-parsley-validate novalidate id="form-izin_gangguan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" data-parsley-validate novalidate id="form-izin_gangguan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label"><strong>Fotocopy IMB dan Izin gangguan</strong></label>
+      <label class="col-sm-3 control-label"><strong>IMB dan Izin gangguan</strong></label>
       <span id="field-izin_gangguan">
         <div class="col-sm-5">
           <input type="hidden" name="kode" value="IMB dan Izin Gangguan">
@@ -100,12 +101,13 @@
   </form>
 
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-perjanjian_kerjasama">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" id="form-perjanjian_kerjasama">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label text-left">Akte Perjanjian Kerjasama Tenaga Teknis Kefarmasian dengan Pemilik Sarana</label>
+      <label class="col-sm-3 control-label">Akte Perjanjian Kerjasama Tenaga Teknis Kefarmasian dengan Pemilik Sarana</label>
       <span id="field-perjanjian_kerjasama">
         <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Akte Perjanjian Kerjasama">
           <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         </div>
         <a href="#" id="btn-perjanjian_kerjasama" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
@@ -115,12 +117,13 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-pernyataan_tenaga_teknis">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" id="form-pernyataan_tenaga_teknis">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label text-left">Surat Pernyataan dari Tenaga Teknis Kefarmasian sebagai Penanggung jawab teknis (bermaterai)</label>
+      <label class="col-sm-3 control-label">Surat Pernyataan dari Tenaga Teknis Kefarmasian sebagai Penanggung jawab teknis (bermaterai)</label>
       <span id="field-pernyataan_tenaga_teknis">
         <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Pernyataan dari Tenaga Teknis">
           <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         </div>
         <a href="#" id="btn-pernyataan_tenaga_teknis" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
@@ -130,12 +133,13 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-surat_pernyataan_peraturan">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" id="form-surat_pernyataan_peraturan">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label text-left">Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana bersedia mematuhi Peraturan Perundang undangan yang berlaku</label>
+      <label class="col-sm-3 control-label">Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana bersedia mematuhi Peraturan Perundang undangan yang berlaku</label>
       <span id="field-surat_pernyataan_peraturan">
         <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Surat Pernyataan Peraturan">
           <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         </div>
         <a href="#" id="btn-surat_pernyataan_peraturan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
@@ -145,12 +149,13 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-pernyataan_pelanggaran">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" id="form-pernyataan_pelanggaran">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label text-left">Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana tidak terlibat pelanggaran Peraturan Perundang undangan yang berlaku dibidang obat</label>
+      <label class="col-sm-3 control-label">Surat Tenaga Teknis Kefarmasian dan Pemilik Sarana tidak terlibat pelanggaran Peraturan Perundang undangan yang berlaku dibidang obat</label>
       <span id="field-pernyataan_pelanggaran">
         <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Pernyataan Pelanggaran">
           <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         </div>
         <a href="#" id="btn-pernyataan_pelanggaran" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
@@ -160,12 +165,13 @@
     </div>
   </form>
 
-  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_pendukung' %}" id="form-rekomendasi_organisasi">
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_toko_obat' %}" id="form-rekomendasi_organisasi">
   {% csrf_token %}
     <div class="form-group">
-      <label class="col-sm-3 control-label text-left">Rekomendasi dari organisasi profesi PAFI untuk asisten Apoteker Penanggung jawab Toko Obat</label>
+      <label class="col-sm-3 control-label">Rekomendasi dari organisasi profesi PAFI untuk asisten Apoteker Penanggung jawab Toko Obat</label>
       <span id="field-rekomendasi_organisasi">
         <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Rekomendasi Organisasi">
           <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
         </div>
         <a href="#" id="btn-rekomendasi_organisasi" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>

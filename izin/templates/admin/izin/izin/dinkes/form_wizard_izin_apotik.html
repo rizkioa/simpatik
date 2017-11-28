@@ -41,7 +41,10 @@
 					if ($current == 2){
 						load_provinsi1('1');
 					  	load_kabupaten1('15')
-					  	load_kecamatan1('233')
+					  	if (!$( "#id_kecamatan1").val()){
+					  		load_kecamatan1('233')
+					  	}
+					  	
 					}
 			        if($current == 3){
 			          if ($.cookie('id_pengajuan') != ''){
