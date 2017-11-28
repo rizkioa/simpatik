@@ -399,6 +399,8 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models_dinkes, 'Apotek')
 		elif kode == "TOKO-OBAT":
 			objects_ = getattr(app_models_dinkes, 'TokoObat')
+		elif kode == "IZINLAB":
+			objects_ = getattr(app_models_dinkes, 'Laboratorium')
 	return objects_
 
 

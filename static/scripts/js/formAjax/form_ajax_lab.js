@@ -70,7 +70,7 @@ function load_berkas(id_pengajuan){
   $(".tab-content").mLoading;
   if (id_pengajuan>0){
     $.ajax({
-      url: __base_url__+'/izin-dinkes/apotek/load-berkas/ajax/'+id_pengajuan,
+      url: __base_url__+'/izin-dinkes/laboratorium/load-berkas/ajax/'+id_pengajuan,
       success: function (response){
         respon = $.parseJSON(response)
         console.log(respon)
@@ -133,7 +133,7 @@ function load_konfirmasi_apotek(pengajuan_id){
   $(".tab-content").mLoading();
   $.ajax({
     type: 'GET',
-    url: __base_url__+'/izin-dinkes/apotek/load-konfirmasi-apotek/ajax/'+pengajuan_id,
+    url: __base_url__+'/izin-dinkes/laboratorium/load-konfirmasi-laboratorium/ajax/'+pengajuan_id,
     success: function (data) {
       respon = $.parseJSON(data)
       pengajuan_obj = respon.data.pengajuan_json
