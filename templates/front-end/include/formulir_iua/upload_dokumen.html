@@ -1,0 +1,140 @@
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+</form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'siup_upload_berkas_npwp_perusahaan' %}" id="form-npwp_perusahaan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan NPWP</strong></label>
+      <span id="field-npwp_perusahaan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="NPWP Perusahaan IUA">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-npwp_perusahaan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp_perusahaan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-npwp_perusahaan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-akte_pendirian">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan Akte Pendirian Perusahaan / Koperasi / Tanda Jati Diri Perorangan</strong></label>
+      <span id="field-akte_pendirian">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Akte Pendirian">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" name="berkas">
+        </div>
+        <a href="#" id="btn-akte_pendirian" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-akte_pendirian" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-akte_pendirian"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-domisili">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan Surat Keterangan Domisili</strong></label>
+      <span id="field-domisili">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Domisili">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-domisili" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-domisili" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-domisili"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-pernyataan_kesanggupan_memiliki">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan Surat Pernyataan Kesanggupan Untuk Memiliki / Menguasai Kendaraan Berat</strong></label>
+      <span id="field-pernyataan_kesanggupan_memiliki">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Pernyataan Kesanggupan Memilkik">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-pernyataan_kesanggupan_memiliki" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-pernyataan_kesanggupan_memiliki" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-pernyataan_kesanggupan_memiliki"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-pernyataan_kesanggupan_menyediakan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Scan Surat Pernyataan Kesanggupan Menyediakan Kendaraan</strong></label>
+      <span id="field-pernyataan_kesanggupan_menyediakan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Pernyataan Kesanggupan Menyediakan">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" name="berkas">
+        </div>
+        <a href="#" id="btn-pernyataan_kesanggupan_menyediakan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this)); return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-pernyataan_kesanggupan_menyediakan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-pernyataan_kesanggupan_menyediakan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-izin_gangguan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Izin Gangguan</strong></label>
+      <span id="field-akta_pengesahan_menteri">
+        <div class="col-sm-5">
+
+          <input type="text" name="izin_gangguan" id="id_izin_gangguan" class="form-control">
+          <!--Proses cek IZIN GANGGUAN-->
+        </div>
+        <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick="cek_nomor_izin_ho()">Cek Nomor Izin</a>
+      </span>
+      <span class="col-sm-4" id="load-izin_gangguan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'iua_upload_dokument' %}" id="form-buku_uji_berkala">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Buku Uji Berkala Kendaraan Bermotor</strong></label>
+      <span id="field-buku_uji_berkala">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Buku Uji Berkala">
+          <input type="file" class="filestyle berkas_kosong" data-buttonText="Browse" data-iconName="fa fa-inbox" required="True" data-parsley-trigger="change" name="berkas">
+        </div>
+        <a href="#" id="btn-buku_uji_berkala" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this));return false;"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-buku_uji_berkala" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-buku_uji_berkala"></span>
+    </div>
+  </form>
+
+  <script type="text/javascript">
+    function cek_nomor_izin_ho(){
+      nomor_izin_ho =  $('#id_izin_gangguan').val()
+
+      $.ajax({
+        url: __base_url__+'/layanan/iua/ajax-load-izin-ho/',
+        method: 'POST',
+        data : { nomor_izin_ho: nomor_izin_ho, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+        success: function(response){
+          console.log(response)
+          respon = JSON.parse(response)
+          // console.log(respon)
+          // console.log(respon.data)
+            url = '<a id="btn-load-'+respon.data+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" target="blank_"> <i class="fa fa-check"></i> '+respon.data+' </a>'
+
+          $('#load-izin_gangguan').html(url)
+          $('#id_izin_gangguan').hide()
+          $('#btn-izin_gangguan').hide()
+        }
+      })
+    }
+  </script>

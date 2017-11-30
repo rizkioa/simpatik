@@ -1,0 +1,150 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls access admin_static parameters %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content_title %}
+    Daftar {{ title }}
+{% endblock %}
+	
+	{% block extrastyle %}
+		{{ block.super }}
+		<!-- <meta http-equiv="refresh" content="60"> -->
+		<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	{% endblock %}
+
+	{% block extrajs_site %}
+		{{ block.super }}
+		<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+		<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+		<script type="text/javascript">
+			// $(document).ready(function() {
+			// 	moment().format()
+			// }
+			
+	        function check_form(form_){
+	        	$('.cari').attr('data-loading-text', '<i class="fa fa-spinner fa-spin"></i> Tunggu...')
+	        	$('.cari').button('loading');
+
+	            if($("input[name='q']").val() == ''){
+	                $("input[name='q']").attr("disabled", "disabled");
+	            }
+	            if($("#kecamatan").val() == ''){
+	                $("#kecamatan").attr("disabled", "disabled");
+	            }
+	            if($("#perusahaan").val() == ''){
+	                $("#perusahaan").attr("disabled", "disabled");
+	            }
+	            if($("input[name='drf__deadline_survey__gte']").val() == ''){
+	                $("input[name='drf__deadline_survey__gte']").attr("disabled", "disabled");
+	            }
+	            if($("input[name='drf__deadline_survey__lte']").val() == ''){
+	                $("input[name='drf__deadline_survey__lte']").attr("disabled", "disabled");
+	            }
+	            if($("input[name='drf__tanggal_survey__gte']").val() == ''){
+	                $("input[name='drf__tanggal_survey__gte']").attr("disabled", "disabled");
+	            }
+	            if($("input[name='drf__tanggal_survey__lte']").val() == ''){
+	                $("input[name='drf__tanggal_survey__lte']").attr("disabled", "disabled");
+	            }
+	            
+	            return true;
+	        }
+	        $(".filter").chosen({ width: '100%' });
+	    </script>
+	{% endblock %}
+	
+	<!-- untuk override/dihapus untuk pengcustomen template cari -->
+	{% block search %}
+	{% endblock %}
+	{% block filters %}
+	{% endblock %}
+	<!-- end -->
+
+	{% block extra-tools %}
+	<section class="tile">
+
+        <!-- tile header -->
+        <!-- <div class="tile-header dvd dvd-btm">
+            <h1 class="custom-font"><strong>Example:</strong> Stacked-to-horizontal</h1>
+           
+        </div> -->
+        <!-- /tile header -->
+
+        <!-- tile body -->
+        <div class="tile-body">
+        	<form action="" method="GET" onsubmit="return check_form($(this))">
+	            <div class="row">
+	                <div class="col-xs-12 col-md-6">
+	                	<div class="input-group mb-5">
+		                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+		                    <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" placeholder="Cari berdasarkan No. Survey dan No. Pengajuan...">
+	                    </div>
+	                </div>
+	                <div class="col-md-3 col-xs-12">
+	                	<select class="chosen-select filter" id="perusahaan" name="pengajuan__perusahaan__atributtambahan_ptr__exact" title="Semua Perusahaan">
+	                		<option value="">Semua Perusahaan</option>
+	                		{% for k in perusahaan %}
+	                			{% with k.id|stringformat:"s" as id %}
+	                				<option {% if request.GET.pengajuan__perusahaan__atributtambahan_ptr__exact == id %}selected=selected{% endif %} value="{{k.id}}">{{k.nama_perusahaan}}</option>
+	                			{% endwith %}
+	                		{% endfor %}
+	                	</select>
+	                </div>
+	                <div class="col-md-3 col-xs-12">
+	                	<select class="chosen-select filter" id="kecamatan" name="kecamatan" title="Semua Kecamatan">
+	                		<option value="">Semua Kecamatan</option>
+	                		{% for k in kecamatan %}
+	                			{% with k.id|stringformat:"s" as id %}
+	                				<option {% if request.GET.kecamatan == id %}selected=selected{% endif %} value="{{k.id}}">{{k.nama_kecamatan}}</option>
+                                {% endwith %}
+	                		{% endfor %}
+	                	</select>
+	                </div>
+	            </div>
+	            <div class="row">
+	                <div class="col-md-3 col-xs-12">
+	                	<div class="input-group datepicker" data-format="L">
+			                <input type="text" class="form-control" value="{{ request.GET.drf__deadline_survey__gte }}" name="drf__deadline_survey__gte" placeholder="Tgl Deadline Awal">
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			            </div>
+	                </div>
+	                <div class="col-md-3 col-xs-12">
+	                	<div class="input-group datepicker" data-format="L">
+			                <input type="text" class="form-control" value="{{ request.GET.drf__deadline_survey__lte }}" name="drf__deadline_survey__lte" placeholder="Tgl Deadline Akhir">
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			            </div>
+	                </div>
+	                <div class="col-md-3 col-xs-12">
+	                	<div class="input-group datepicker" data-format="L">
+			                <input type="text" class="form-control" value="{{ request.GET.drf__tanggal_survey__gte }}" name="drf__tanggal_survey__gte" placeholder="Tanggal Survey Awal">
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			            </div>
+	                </div>
+	                <div class="col-md-3 col-xs-12">
+	                	<div class="input-group datepicker" data-format="L">
+			                <input type="text" class="form-control" value="{{ request.GET.drf__tanggal_survey__lte }}" name="drf__tanggal_survey__lte" placeholder="Tanggal Survey Akhir">
+			                <span class="input-group-addon">
+			                    <span class="fa fa-calendar"></span>
+			                </span>
+			            </div>
+	                </div>
+	            </div>
+	            <br>
+	            <div class="row">
+	            	<div class="col-md-12 col-xs-12">
+	            		<button type="submit" class="btn btn-rounded btn-success btn-sm pull-right cari"><i class="fa fa-search"></i> Cari</button>
+	            	</div>
+	            </div>
+	            
+            </form>
+        </div>
+        <!-- /tile body -->
+
+    </section>
+	{% endblock %}

@@ -1,0 +1,51 @@
+<form method="POST" name="step3" id="id_jenis" role="form" class="form-horizontal" action="{% url 'jenis_bangunan_save' %}">
+  {% csrf_token %}
+    <h3>IDENTIFIKASI BANGUNAN</h3>
+    <hr class="style14">
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 150px;padding-right: 32px;"></label> 
+        <table id="id_detil_bangunan_imb" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>Jenis Kontruksi</td>
+              <td>Bangunan</td>
+              <td>Biaya</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+<!--           {% if detil_bangunan_list %}
+            {% for a in detil_bangunan_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_jenis_kontruksi">{{a.detil_bangunan_imb.jenis_kontruksi.nama_jenis_kontruksi}}</td>
+                <td id="id_table_bangunan">{{a.detil_bangunan_imb.nama_bangunan}}</td>
+                <td id="id_table_biaya">{{a.total_biaya_detil}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowdetil_bangunan_imb(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowdetil_bangunan_imb(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %} -->
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 380px;padding-left: 160px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah(this);return false;">Tambah Identifikasi Bangunan<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+    <br>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Total Biaya</label>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <span class="input-group-addon">
+            <span>Rp</span>
+          </span>
+          <input type="text" class="form-control no_ktp" id="id_total" data-parsley-trigger="change" disabled="">
+          <input type="text" class="form-control no_ktp" id="id_total_biaya" name="total_biaya" required="" style="display: none;">
+        </div>
+      </div>
+    </div>
+
+
+</form>
+

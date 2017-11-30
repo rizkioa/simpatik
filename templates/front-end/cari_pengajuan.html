@@ -1,0 +1,125 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<style type="text/css">
+  hr.style14 { 
+    border: 0; 
+    height: 1px; 
+    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+  }
+</style>
+<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+{% endblock %}
+
+{% block section %}
+<div class="pageheader">
+  <h2>Cari Pengajuan Izin
+    <span>Berikut adalah info Cari Pengajuan Izin SIMPATIK Kabupaten Kediri.</span>
+  </h2>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+      </li>
+      <li>
+        <a href="#"> Cari Pengajuan Izin</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <section class="tile">
+      <div class="tile-body">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-darkgray">
+              <div class="panel-header">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <h2 class="text-center">Cari Pengajuan Izin</h2>
+                    <hr class="style14">
+                  </div>
+                </div>
+              </div>
+              <div class="panel-body">
+                <form method="POST">
+                {% csrf_token %}
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label for="input01" class="col-sm-4 control-label"><strong>No. Reg Pengajuan</strong></label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="id_no_pengajuan">
+                      </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                      <label for="input01" class="col-sm-4 control-label"></label>
+                      <div class="col-sm-8">
+                        <!-- <input type="text" class="form-control" id="input01"> -->
+                        <div class="g-recaptcha" data-sitekey="6LfucQkUAAAAAC1GWzAKr8kx-fjDvEbtsocbAujS"></div>
+                      </div>
+                    </div>
+                    <!-- <div class="form-group col-md-12">
+                      <label for="input01" class="col-sm-4 control-label"><strong>Ulangi Kode diatas</strong></label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="input01">
+                      </div>
+                    </div> -->
+                    <div class="form-group col-md-12">
+                      <div class="col-sm-12" align="center">
+                        <hr class="style14">
+                        <button onclick="cek_pengajuan();" type="button" class="btn btn-success btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-eye"></i> <span>Lihat Status Pengajuan</span></button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extratools %}
+  {{ block.super }}
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <script type="text/javascript" src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+  <script type="text/javascript">
+  function cek_pengajuan(){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    no_pengajuan_ = $('#id_no_pengajuan').val();
+    // response = $('#g-recaptcha-response').val();
+    // recaptcha_challenge_field = $('input[name=recaptcha_challenge_field]').val()
+    // recaptcha_response_field = $('input[name=recaptcha_response_field]').val()
+    $.ajax({
+      type: 'POST',
+      url: '{% url 'ajax_cek_pengajuan' %}',
+      data: { csrfmiddlewaretoken: csrf_token, no_pengajuan_: no_pengajuan_ },
+        success: function (data) {
+          respon = $.parseJSON(data)
+            if(respon.success){
+              toastr["success"](respon.pesan)
+              window.location.replace(respon.url)
+            }
+            else{
+              toastr["warning"](respon.pesan)
+              // alert("error")
+              // window.location.replace(respon.url)
+            }
+        }
+        // error: function(data) {                
+        //   toastr["error"]("Terjadi kesalahan server.")
+        // }
+      })
+  }
+    
+  </script>
+{% endblock %}

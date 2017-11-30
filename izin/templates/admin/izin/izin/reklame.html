@@ -1,0 +1,471 @@
+{% extends "admin/izin/izin/formulir_izin.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block customstyle %}
+  {{ block.super }}
+  <style type="text/css">
+    .tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+        background-color: #22beef;
+        color: aliceblue;
+      }
+      .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+        background-color: #616f77;
+      }
+      .tab-wizard .nav-tabs > li:before {
+        background-color: #333;
+      }
+      .onoffswitch.labeled .onoffswitch-inner:before {
+        content: "Ya";
+      }
+      .onoffswitch.labeled .onoffswitch-inner:after {
+        content: "Tidak";
+      }
+      .onoffswitch.labeled {
+        width: 59px;
+      }
+      .onoffswitch.labeled .onoffswitch-switch {
+        right: 34px;
+      }
+  </style>
+{% endblock %}
+
+{% block pageheader %}
+  <h2>Surat Izin Pemasangan Reklame
+      <span>Berikut adalah info pendaftaran perizinan SIUP Kabupaten Kediri.</span>
+    </h2>
+    <div class="page-bar">
+      <ul class="page-breadcrumb">
+        <li>
+          <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+        </li>
+        <li>
+          <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+        </li>
+        <li>
+          <a href="#"> Reklame</a>
+        </li>
+        <li>
+          <a href="#">Formulir Reklame</a>
+        </li>
+      </ul>
+    </div>
+{% endblock %}
+
+{% block rootwizard %}
+  <ul class="nav nav-tabs nav-justified">
+    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Identitas Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+    <li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Identitas Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+    <li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Data Reklame</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+    <li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+    <li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+  </ul>
+{% endblock %}
+
+{% block tab-content %}
+  <div class="tab-pane" id="tab1">
+    <!-- Identitas perusahaan -->
+    {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab2">
+    <!-- Identitas perusahaan -->
+    {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab3">
+    <!-- Data reklame -->
+    {% include 'front-end/include/formulir_siup/data_siup.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab4">
+    <!-- Dokumen upload -->
+    {% include 'front-end/include/formulir_siup/legalitas_perusahaan.html' %}
+  </div>
+
+  <div class="tab-pane" id="tab5">
+    <!-- Konfirmasi -->
+    {% include 'front-end/include/formulir_siup/upload_dokumen.html' %}
+  </div>
+{% endblock %}
+
+{% block extratools %}
+  {{ block.super }}
+
+  <!-- ajax alamat load -->
+  <script type="text/javascript">
+    function make_disabled(elem_, dis_){
+      if (dis_ == true){
+          elem_.empty();
+      }
+      elem_.prop( "disabled", dis_);
+      elem_.trigger("chosen:updated");
+    }
+
+    function load_provinsi(id_negara){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_provinsi_chosen" ).mask('loading')
+      $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_provinsi" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_provinsi_chosen" ).unmask()
+          $( "#id_provinsi" ).change(function(){
+            $this = $(this)
+
+            id_provinsi = $(this).val()
+            if(id_provinsi.length > 0){
+              load_kabupaten(id_provinsi)
+            }else{
+              elem = $( "#id_kabupaten" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    make_disabled($( "#id_provinsi" ), true)
+    make_disabled($( "#id_kabupaten" ), true)
+    make_disabled($( "#id_kecamatan" ), true)
+    make_disabled($( "#id_desa" ), true)
+
+    $( "#id_negara" ).change(function(){
+      $this = $(this)
+
+      id_negara = $(this).val()
+      if(id_negara.length > 0){
+          load_provinsi(id_negara)
+      }else{
+        elem = $( "#id_provinsi" )
+        make_disabled(elem, true)
+        make_disabled($( "#id_provinsi" ), true)
+        make_disabled($( "#id_kabupaten" ), true)
+        make_disabled($( "#id_kecamatan" ), true)
+        make_disabled($( "#id_desa" ), true)
+      }
+    })
+
+    function load_kabupaten(id_provinsi){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_kabupaten_chosen" ).mask('loading')
+      $( "#id_kabupaten_chosen .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_kabupaten" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_kabupaten_chosen" ).unmask()
+          $( "#id_kabupaten" ).change(function(){
+            $this = $(this)
+
+            id_kabupaten = $(this).val()
+            if(id_kabupaten.length > 0){
+              load_kecamatan(id_kabupaten)
+            }else{
+              elem = $( "#id_kecamatan" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    function load_kecamatan(id_kabupaten){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_kecamatan_chosen" ).mask('loading')
+      $( "#id_kecamatan_chosen .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_kecamatan" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_kecamatan_chosen" ).unmask()
+          $( "#id_kecamatan" ).change(function(){
+            $this = $(this)
+            
+            id_kecamatan = $(this).val()
+            if(id_kecamatan.length > 0){
+              load_desa(id_kecamatan)
+            }else{
+              elem = $( "#id_desa" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    function load_desa(id_kecamatan){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_desa_chosen" ).mask('loading')
+      $( "#id_desa_chosen .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_desa' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_desa" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_desa_chosen" ).unmask()
+          $( "#id_desa" ).change(function(){
+              $this = $(this)
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+  </script>
+  <!-- end ajax alamat load -->
+  <!-- masking input -->
+  <script>
+    $(function() {
+      $(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
+      $(".npwp").mask("99.999.999.9-999.999");
+      $(".kodepos").mask("99999");
+      $(".no_hp").mask("+6299999999999",{placeholder:"+6299999999999"});
+      $('.no_ktp').on('keydown', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+    })
+  </script>
+  <!-- end masking input -->
+  <!-- ajax alamat perusahaan load -->
+  <script type="text/javascript">
+
+    function load_provinsi1(id_negara1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_provinsi_chosen1" ).mask('loading')
+      $( "#id_provinsi_chosen1.loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, negara1: id_negara1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_provinsi' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_provinsi1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_provinsi_chosen1" ).unmask()
+          $( "#id_provinsi1" ).change(function(){
+            $this = $(this)
+
+            id_provinsi1 = $(this).val()
+            if(id_provinsi1.length > 0){
+              load_kabupaten1(id_provinsi1)
+            }else{
+              elem = $( "#id_kabupaten1" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    make_disabled($( "#id_provinsi1" ), true)
+    make_disabled($( "#id_kabupaten1" ), true)
+    make_disabled($( "#id_kecamatan1" ), true)
+    make_disabled($( "#id_desa1" ), true)
+
+    $( "#id_negara1" ).change(function(){
+      $this = $(this)
+
+      id_negara1 = $(this).val()
+      if(id_negara1.length > 0){
+          load_provinsi1(id_negara1)
+      }else{
+        elem = $( "#id_provinsi1" )
+        make_disabled(elem, true)
+        make_disabled($( "#id_provinsi1" ), true)
+        make_disabled($( "#id_kabupaten1" ), true)
+        make_disabled($( "#id_kecamatan1" ), true)
+        make_disabled($( "#id_desa1" ), true)
+      }
+    })
+
+    function load_kabupaten1(id_provinsi1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_kabupaten_chosen1" ).mask('loading')
+      $( "#id_kabupaten_chosen1 .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_kabupaten' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_kabupaten1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_kabupaten_chosen1" ).unmask()
+          $( "#id_kabupaten1" ).change(function(){
+            $this = $(this)
+
+            id_kabupaten1 = $(this).val()
+            if(id_kabupaten1.length > 0){
+              load_kecamatan1(id_kabupaten1)
+            }else{
+              elem = $( "#id_kecamatan1" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    function load_kecamatan1(id_kabupaten1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_kecamatan_chosen1" ).mask('loading')
+      $( "#id_kecamatan_chosen1 .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten1: id_kabupaten1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_kecamatan1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_kecamatan_chosen1" ).unmask()
+          $( "#id_kecamatan1" ).change(function(){
+            $this = $(this)
+            
+            id_kecamatan1 = $(this).val()
+            if(id_kecamatan1.length > 0){
+              load_desa1(id_kecamatan1)
+            }else{
+              elem = $( "#id_desa1" )
+              make_disabled(elem, true)
+            }
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+
+    function load_desa1(id_kecamatan1){
+      csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+      $( "#id_desa_chosen1" ).mask('loading')
+      $( "#id_desa_chosen1 .loadmask-msg" ).css('top', '2px')
+      $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan1: id_kecamatan1 }, // get the form data
+        type: 'POST', // GET or POST
+        url: '{% url 'admin:option_desa' %}', // the file to call
+        success: function(response) { // on success..
+          elem = $( "#id_desa1" )
+          elem.html(response);
+          make_disabled(elem, false)
+          $( "#id_desa_chosen1" ).unmask()
+          $( "#id_desa1" ).change(function(){
+              $this = $(this)
+          })
+        },
+        error: function(data) {                
+          toast_server_error()
+        }
+      });
+    }
+  </script>
+  <!-- end ajax alamat load -->
+  <script >
+    document.querySelector('#alert').onclick = function(){
+      // swal("Good job!", "You clicked the button!", "success");
+      swal({
+        showConfirmButton: false,
+        type: 'success',
+        title: 'Pendaftaran Berhasil Tersimpan',
+        timer: 2000
+      })
+    };
+  </script>
+
+  <script>
+    // function make_disabled(elem_){
+    //     elem_.prop( "disabled", "disabled");
+    //     elem_.trigger("chosen:updated");
+    // }
+
+    // function make_enabled(elem_){
+    //       elem_.removeAttr('disabled')
+    //       elem_.trigger("chosen:updated");
+    // }
+
+    function form_akta_perubahan_make_disabled(){
+      make_disabled($('#akta_pengesahan'), true)
+      make_disabled($('#nama_notaris_akta_perubahan'), true)
+      make_disabled($('#alamat_notaris'), true)
+      make_disabled($('#telp_notaris'), true)
+      make_disabled($('#no_akta_notaris'), true)
+      make_disabled($('#tanggal_akta_akta_perubahan'), true)
+      make_disabled($('#no_pengesahan'), true)
+      make_disabled($('#tanggal_pengesahan'), true)
+    }
+
+    form_akta_perubahan_make_disabled();
+
+    function form_akta_perubahan_make_enabled(){
+      make_disabled($('#akta_pengesahan'), false)
+      make_disabled($('#nama_notaris_akta_perubahan'), false)
+      make_disabled($('#alamat_notaris'), false)
+      make_disabled($('#telp_notaris'), false)
+      make_disabled($('#no_akta_notaris'), false)
+      make_disabled($('#tanggal_akta_akta_perubahan'), false)
+      make_disabled($('#no_pengesahan'), false)
+      make_disabled($('#tanggal_pengesahan'), false)
+    }
+
+    $("#switch_akta_perubahan").change(function(){
+      if($(this).is(':checked')){
+        form_akta_perubahan_make_enabled();
+      }else{
+        form_akta_perubahan_make_disabled();
+      }
+    })
+
+    function form_pemohon_kuasa_make_disabled(){
+      make_disabled($('#nama_kuasa'), true)
+      make_disabled($('#no_identitas_kuasa'), true)
+      make_disabled($('#telp_kuasa'), true)
+    }
+
+    form_pemohon_kuasa_make_disabled();
+
+    function form_pemohon_kuasa_make_enabled(){
+      make_disabled($('#nama_kuasa'), false)
+      make_disabled($('#no_identitas_kuasa'), false)
+      make_disabled($('#telp_kuasa'), false)
+    }
+
+    $("#switch_pemohon").change(function(){
+      if($(this).is(':checked')){
+        form_pemohon_kuasa_make_enabled();
+      }else{
+        form_pemohon_kuasa_make_disabled();
+      }
+    })
+  </script>
+{% endblock %}
+

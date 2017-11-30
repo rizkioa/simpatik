@@ -1,0 +1,53 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<h3>IZIN PENUTUPAN APOTEK</h3>
+			<hr class="style14">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_apotik" class="col-sm-2 control-label">Nama Apotek</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_nama_apotik" name="nama_apotik" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="alamat_apotek" class="col-sm-2 control-label">Alamat Apotek </label>
+		<div class="col-sm-6">
+			<textarea  id="id_alamat_apotek" rows="5" name="alamat_apotek" class="form-control"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nomor_telepon" class="col-sm-2 control-label">Nomor Telepon</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" id="id_nomor_telepon"  name="nomor_telepon">
+			
+		</div>
+	</div>
+
+	<div class="form-group" id="kabupaten">
+    <label for="nomor_sia" class="col-sm-2 control-label"><strong>Nomor SIA</strong> </label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="id_nomor_sia"  name="nomor_sia">
+    </div>
+  </div>
+
+  <div class="form-group" id="kecamatan">
+    <label for="nama_pemilik_sarana" class="col-sm-2 control-label"><strong>Nama Pemilik Sarana</strong> </label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="id_nama_pemilik_sarana"  name="nama_pemilik_sarana">
+    </div>
+  </div>
+
+  <div class="form-group" id="desa">
+    <label for="alamat_sarana" class="col-sm-2 control-label"><strong>Alamat Sarana</strong> </label>
+    <div class="col-sm-5">
+      <textarea  id="id_alamat_sarana" rows="5" name="alamat_sarana" class="form-control"></textarea>
+    </div>
+  </div>
+
+</form>

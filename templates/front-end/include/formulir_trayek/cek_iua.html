@@ -1,0 +1,41 @@
+<form method="POST" name="step1" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+  {% csrf_token %}
+  <!-- <input type="hidden" name="path_name" class="path_name"> -->
+  <div class="row">
+    <div class="col-md-12">
+      <h3>CEK IZIN USAHA Angkutan</h3>
+      <hr class="style14">
+    </div>
+  </div>
+  <input type="hidden" id="id_status" name="status" value="2">
+
+  <div class="form-group" id="nama_lengkap">
+    <label for="input01" class="col-sm-2 control-label">No. Izin Angkutan</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="id_no_izin_iua" name="no_izin_iua">
+    </div>
+    <a href="#" id="btn-izin_iua" class="btn btn-success mb-10" onclick="cek_nomor_izin_iua()">Cek Nomor Izin</a>
+  </div>
+
+  <center>
+    <div class="table-responsive result-cek-izin-iua">
+      <table class="table table-bordered">
+        <tr>
+          <td>No Izin</td>
+          <td>:</td>
+          <td><span class="cek-no_izin"></span></td>
+        </tr>
+        <tr>
+          <td>Nama Pemohon</td>
+          <td>:</td>
+          <td><span class="cek-nama_pemohon"></span></td>
+        </tr>
+        <tr>
+          <td>Nama Perusahaan</td>
+          <td>:</td>
+          <td><span class="cek-nama_perusahaan"></span></td>
+        </tr>
+      </table>
+    </div>
+  </center>
+</form>

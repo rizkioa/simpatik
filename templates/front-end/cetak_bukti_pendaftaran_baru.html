@@ -1,0 +1,339 @@
+{% load i18n admin_static staticfiles widgets %}
+<style>
+    
+
+    /* HALAMAN */
+    .row {
+        margin-left: 0cm;
+        margin-right: 0cm;
+    }
+    .row::after {
+        content: "";
+        clear: both;
+        display: block;
+        /*padding-block-start: 20px;*/
+    }
+
+    #kop_surat_id {
+        display: inline-block;
+        margin-bottom: 5px;
+        margin-top: 0cm;
+        text-align: center;
+        width: 100%;
+    }
+
+    [class*="col-"] {
+        float: left;
+        padding: 10px;
+        /*border: 1px solid red;*/
+    }
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+
+    hr.style14 { 
+        /*border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); */
+        border-top: 3px double #8c8b8b;
+    }
+    .style2 {
+        border-top: 3px double #8c8b8b;
+    }
+    .sk-justify {
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: 18px;
+    }
+    /* END HALAMAN */
+   
+    #qrcodeTable canvas{
+        padding: 2px;
+        border-radius: 3px;
+        border: 3px solid #000;
+        /*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+        width: 110px;
+        height: 110px;
+    }
+</style>
+
+<page size="F4">
+    <div id="kop_surat_id">
+        <div class="row">
+            <div class="col-2">
+                <img id="logo" src="http://simpatik.kedirikab.go.id/{% static 'images/SIMPATIK.png' %}" width="50px"><p id="logo_"></p>
+            </div>
+            <div class="col-8"><p"><b style="font-size: 25px;">SIMPATIK</b><br>Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
+                <font color="red">Masa berlaku pengajuan s/d {% if pengajuan.created_at %}{{ pengajuan.created_at|add_date:3|date:"d F Y" }}{% endif %}</font></h5>
+            </div>
+        </div>
+        <div>
+            <h4 align="center"><u>PERMOHONAN SURAT IZIN USAHA PERDAGANGAN</u></h4>
+            <p style="font-size: 12px;text-indent: 30px;">
+                Yang bertanda tangan dibawah ini mengajukan permohonan Surat Izin Usaha Perdagangan (Mikro/Kecil/Menengah/Besar*) sebagaimana dimaksud dalam Peraturan Menteri Perdagangan RI No. 36/M-DAG/PER/9/2007 tanggal 4 September 2007 tentang Ketentuan Penerbitan Surat Izin Usaha Perdagangan (SIUP) sebagaimana diubah dengan Peraturan Menteri Perdagangan RI No. 46/M-DAG/PER/9/2009 tanggal 16 September 2009 sebagaimana diubah dengan Peraturan Menteri Perdagangan RI No. 39/M-DAG/PER/12/2011 tanggal 9 Desember 2011
+            </p>
+        </div>
+        <table width="100%" border="0" class="font">
+            <tr>
+                <td width="25%">Jenis Pengajuan</td>
+                <td width="10%">:</td>
+                <td width="65%">{{pengajuan.jenis_permohonan}}</td>
+            </tr>
+        </table>
+        {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon_.html' %}
+        {% include 'front-end/include/cetak_bukti_pendaftaran/perusahaan.html' %}
+        <h5><u>DATA SIUP</u></h5>
+        <table class="font" width="100%">
+            <tr>
+                <td width="25%">Bentuk Kegiatan Usaha</td>
+                <td width="10%">:</td>
+                <td width="65%">{{ pengajuan.bentuk_kegiatan_usaha }}</td>
+            </tr>
+            <tr>
+                <td width="25%">Status Penanaman Modal</td>
+                <td width="10%">:</td>
+                <td width="65%">{{ pengajuan.jenis_penanaman_modal }}</td>
+            </tr>
+        </table>
+        <h5><u>Kekayaan Bersih dan Saham </u></h5>
+        <table class="font" width="100%">
+            <tr>
+                <td width="40%">Kekayaan Bersih Perusahaan</td>
+                <td width="10%">:</td>
+                <td width="50%">Rp. {{ pengajuan.kekayaan_bersih }}</td>
+            </tr>
+            <tr>
+                <td colspan="3">(tidak termasuk tanah dan bangunan tempat usaha)</td>
+            </tr>
+            <tr>
+                <td width="100%" colspan="3">Saham (Khusus Untuk Penanaman Modal Asing)</td>
+            </tr>
+            <tr>
+                <td width="40%" style="padding-left: 30px;">a. Total Nilai Saham</td>
+                <td width="10%">:</td>
+                <td width="50%">{{ pengajuan.total_nilai_saham }}</td>
+            </tr>
+            <tr>
+                <td width="30%" style="padding-left: 30px;">b. Komposisi Kepemilikan Saham</td>
+                <td width="10%"></td>
+                <td width="60%"></td>
+            </tr>
+            <tr>
+                <td width="30%" style="padding-left: 20%;">Dalam</td>
+                <td width="10%">:</td>
+                <td width="60%">{{ pengajuan.presentase_saham_nasional }} %</td>
+            </tr>
+            <tr>
+                <td width="30%" style="padding-left: 20%;">Asing</td>
+                <td width="10%">:</td>
+                <td width="60%">{% if pengajuan.presentase_saham_asing %}{{ pengajuan.presentase_saham_asing }} %{% else %}-{% endif %}</td>
+            </tr>
+        </table>
+        <h5><u>Kegiatan Usaha</u></h5>
+        <table class="font" width="100%">
+            <tr>
+                <td width="30%">Kelembagaan</td>
+                <td width="5%">:</td>
+                <td width="65%">{% for kelembagaan in pengajuan.kelembagaan.all %} {{kelembagaan.kelembagaan}}, {% endfor %}</td>
+            </tr>
+            <tr>
+                <td width="30%">KBLI / Barang Jasa</td>
+                <td width="5%">:</td>
+                <td width="65%">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli}}-{{kbli.nama_kbli}}) {% endfor %}</td>
+            </tr>
+            <!-- <tr>
+                <td width="30%">Barang/jasa dagang utama</td>
+                <td width="5%">:</td>
+                <td width="65%">{% for produk_utama in pengajuan.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %} 
+            {% endfor %}</td>
+            </tr> -->
+        </table>
+        {% if pengajuan.legalitas.all %}
+        <h5><u>LEGALITAS PERUSAHAAN</u></h5>
+        <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+            <thead>
+                <tr align="center">
+                    <td>Jenis Akta dan Pengesahaan</td>
+                    <td>Nama Notaris</td>
+                    <td>Alamat Notaris</td>
+                    <td>Telp. Notaris</td>
+                    <td>No. Pengesahaan</td>
+                    <td>Tgl Pengesahaan</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for l in pengajuan.legalitas.all %}
+                <tr align="center">
+                    <td><span>{{ l.jenis_legalitas.jenis_legalitas }}</span></td>
+                    <td><span>{{ l.nama_notaris }}</span></td>
+                    <td><span>{{ l.alamat }}</span></td>
+                    <td><span>{{ l.telephone }}</span></td>
+                    <td><span>{{ l.nomor_pengesahan }}</span></td>
+                    <td><span>{{ l.tanggal_pengesahan|date:'d-m-Y' }}</span></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <br>
+        {% endif %}
+
+        <p style="font-size: 12px;text-indent: 30px;">
+            Demikian Surat permohonan SIUP ini kami buat dengan sebenarnya dan apabila di kemudian hari ternyata data/informasi dan keterangan tersebut tidak benar, maka kami menyatakan bersedia dibatalkan SIUP yang telah kami miliki dan dituntut sesuani dengan kententuan peraturan perundang-undangan.
+        </p>
+        <p align="center" style="font-size:13px;padding-left:75%">
+            Kediri,.......................
+            <br>
+            Nama dan Tanda tangan
+            <br>
+            Pemilik
+            <br>
+            {{ pengajuan.perusahaan.nama_perusahaan }}
+            <br>
+            <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+            <br>
+            <br>
+            <br>
+            <u class="font"><b>{{ pengajuan.pemohon.nama_lengkap }}</b></u>
+        </p>
+        <br>
+        <br>
+        <h5>Syarat SIUP:</h5>
+        <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+            <thead>
+                <tr>
+                    <td width="5%">No</td>
+                    <td width="650%">Syarat</td>
+                    <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                    <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% if syarat %}
+                    {% for s in syarat %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ s.syarat }}</td>
+                        <td align="center"><input type="checkbox"></td>
+                        <td align="center"><input type="checkbox"></td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        <br>
+        <table border="0" width="100%" style="font-size: 15px;">
+            <tr>
+                <td width="48%" >
+                    
+                </td>
+                <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                    <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                </td>
+                <td width="2%">
+                    
+                </td>
+                <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                    <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</page>
+<script type="text/javascript">
+    readFile("logo", "logo_")
+    function readFile(encode_, decode_) {
+        if (this.files && this.files[0]) {
+            var FR= new FileReader();
+            
+            FR.addEventListener("load", function(e) {
+                document.getElementById(encode_).src       = e.target.result;
+                document.getElementById(decode_).innerHTML = e.target.result;
+            }); 
+            
+            FR.readAsDataURL( this.files[0] );
+        }
+    }
+</script>
+<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+<script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
+<script type="text/javascript">
+    function Exit() {
+        var x=confirm('Are You sure want to exit:');
+        if(x) window.close();
+    }
+    {% if pengajuan.no_izin %}
+        $('#qrcodeTable').qrcode({
+            // render method: 'canvas', 'image' or 'div'
+            render: 'canvas',
+            
+            // qrsize: 1,
+            // version range somewhere in 1 .. 40
+
+            // width    : 110,
+            // height   : 110,
+
+            minVersion: 1,
+            maxVersion: 40,
+
+            // error correction level: 'L', 'M', 'Q' or 'H'
+            ecLevel: 'Q',
+            // offset in pixel if drawn onto existing canvas
+            left: 0,
+            top: 0,
+            // size in pixel
+            size: 500,
+
+            // code color or image element
+            fill: '#000',
+
+            // background color or image element, null for transparent background
+            // background: '#707aec',
+            // background : logo,
+            // mSize: 0.4,
+
+            text    : "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+
+            radius: 0.5,
+
+            // quiet zone in modules
+            quiet: 0,
+
+            // modes
+            // 0: normal
+            // 1: label strip
+            // 2: label box
+            // 3: image strip
+            // 4: image box
+            mode: 0,
+
+            mSize: 0.2,
+            mPosX: 0.5,
+            mPosY: 0.5,
+
+            label: 'no label',
+            fontname: 'sans',
+            fontcolor: '#000',
+
+            // image: logo,
+        });
+    {% endif %}
+</script>

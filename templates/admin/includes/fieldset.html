@@ -1,0 +1,131 @@
+{% load widgets %}
+
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title custom-font"><strong>{{ fieldset.name }}</strong> 
+                    {% if fieldset.description %}
+                        : <span class="description">{{ fieldset.description|safe }}</span>
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="panel-body">
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row form-group {% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if field.field.is_hidden %} field-hidden hide{% endif %}{% endfor %}">
+            
+            {% for field in line %}
+                {% if not line.fields|length_is:'1' and forloop.first %}
+                    <label class="{% if field.field.field.required %}required{% endif %} col-sm-2 control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
+                    <div class="col-sm-10">
+                {% endif %}
+                <div{% if not line.fields|length_is:'1' %} class="field-box{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if field.is_checkbox %}
+                        <label class="{% if field.field.field.required %}required{% endif %} col-sm-2 control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
+                        <div class="col-sm-10">
+                            <div class="onoffswitch greensea inline-block">
+                                {{ field.field|addcls:"onoffswitch-checkbox" }}
+                                <label class="onoffswitch-label" for="{{ field.field.auto_id }}">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                            {% if field.field.help_text %}
+                                <span class="help-block mb-0">{{ field.field.help_text|safe }}</span>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        {% if field.field.is_hidden %}
+                            {{ field.field }}
+                        {% else %}
+                            {% if not line.fields|length_is:'1' and forloop.first %}
+                            {% else %}
+                                <label class="{% if field.field.field.required %}required{% endif %} {% if line.fields|length_is:'1' %}col-sm-2{% endif %} control-label" for="{{ field.field.auto_id }}">{{ field.field.label|capfirst }}</label>
+                            {% endif %}
+                            <div class="{% if line.fields|length_is:'1' %}col-sm-10{% endif %}">
+
+                                {% if field.is_readonly %}
+                                    <p>{{ field.contents|linebreaksbr }}</p>
+                                {% elif field.field.help_text.readonly %}
+                                    {% if field.field.value %}
+                                        {% if field.field|is_file %}
+                                            <p><a href="{{MEDIA_URL}}{{ field.field.value|linebreaksbr }}" class="btn btn-primary btn-rounded-10 btn-ef btn-ef-3 btn-ef-3b mb-10"><i class="fa fa-download"></i> Download</a></p>
+                                        {% else %}
+                                            <p>{{ field.field.value|linebreaksbr }}</p>
+                                        {% endif %}
+                                    {% else %}
+                                        <p>-</p>
+                                    {% endif %}
+                                    
+                                {% else %}
+                                    {% if field.field|is_readonlypassword %}
+                                        {{field.field|atribut:"disabled:disabled|class:form-control"}}
+                                    {# File #}
+                                    {% elif field.field|is_file %}
+                                        {% if field.field.errors %}
+                                            {{ field.field|addcls:"parsley-error" }}
+                                        {% else %}
+                                            {{ field.field }}
+                                        {% endif %}
+                                    {# Combo Box #}
+                                    {% elif field.field|is_select %}
+                                        {% if field.field.errors %}
+                                            {{ field.field|addcls:"chosen-select parsley-error" }}
+                                        {% else %}
+                                            {{ field.field|addcls:"chosen-select" }}
+                                        {% endif %}
+                                    {# Lainnya #}
+                                    {% else %}       
+                                        {% if field.field|is_date or field.field|is_time or field.field|is_datetime %}
+                                            <div class="related-date-wrapper">
+                                                {% if field.field.errors %}
+                                                    {{ field.field }}
+                                                {% else %}
+                                                    {{ field.field }}
+                                                {% endif %}
+                                            </div>
+                                        {% else %}
+                                            {% if field.field.errors %}
+                                                {{ field.field|addcls:"form-control parsley-error" }}
+                                            {% else %}
+                                                {{ field.field|addcls:"form-control" }}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if field.field.help_text.change_code %}
+                                    {{ field.field.help_text.change_code|safe }}
+                                {% endif %}
+
+                                {% if field.field.help_text.add_code %}
+                                    {{ field.field.help_text.add_code|safe }}
+                                {% endif %}
+                                {% if field.field.errors %}
+                                    <ul id="parsley-id-{{ field.field.auto_id }}" class="parsley-errors-list">
+                                        {% for error in field.field.errors %}
+                                                <li><strong>{{ error|escape }}</strong></li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                {% if field.field.help_text.info %}
+                                    <span class="help-block mb-0">{{ field.field.help_text.info|safe }}</span>
+                                {% elif field.field.help_text and not field.field.help_text.values %}
+                                    <span class="help-block mb-0">{{ field.field.help_text|safe }}</span>
+                                {% endif %}
+                                
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {% if not line.fields|length_is:'1' and forloop.last %}
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+    {% if fieldset.name %}
+    </div> <!-- end of panel body -->
+    </div> <!-- end of panel -->
+    {% endif %}
+</fieldset>

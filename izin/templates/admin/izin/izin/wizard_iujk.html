@@ -1,0 +1,970 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static widgets %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% endblock %}
+
+{% block icotitle %}<i class="icon-book-open"></i>&nbsp;{% endblock %}
+
+{% block content_title %}
+	{{ title }}
+{% endblock %}
+
+
+
+{% block extrajs_site %}
+	<script src="{% static "scripts/js/vendor/chosen/chosen.jquery.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/parsley/parsley.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js" %}"></script>
+	<script src="{% static "scripts/js/main.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/filestyle/bootstrap-filestyle.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/daterangepicker/moment.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/validation/jquery.maskedinput.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/alert/sweetalert-dev.js" %}"></script>
+	<script src="{% static "scripts/js/mloading/jquery.mloading.js" %}"></script>
+	
+	<script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/countTo/jquery.countTo.js" %}"></script>
+
+	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+  	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+  	<script src="{% static "scripts/js/iujk.js" %}"></script>
+
+
+	<script type="text/javascript">
+	$(window).load(function(){
+		$('#percent-sertifikat').hide()
+        $('#percent-kartu_teknis_bu').hide()
+        $('#percent-pernyataan_pengikat').hide()
+        $('#percent-pernyataan').hide()
+        $('#percent-npwp').hide()
+        $('#percent-keterangan_domisili').hide()
+        $('#percent-denah_lokasi').hide()
+        $('#percent-foto_papan').hide()
+        $('#percent-akta_pendirian').hide()
+        $('#percent-akta_perubahan').hide();
+        $('#parsley-id-multiple-chkbox').remove();
+
+        if ($.cookie('id_pengajuan') === undefined){
+			$.cookie('id_pengajuan', "0", {path:"/"});
+		}
+		if ($.cookie('id_pemohon') === undefined){
+			$.cookie('id_pemohon', "0", {path:"/"});
+		}
+		if ($.cookie('id_perusahaan') === undefined){
+			$.cookie('id_perusahaan', "0", {path:"/"});
+		}
+		if ($.cookie('id_legalitas') === undefined){
+        	$.cookie('id_legalitas', "0", {path:"/"});
+        }
+        if ($.cookie('id_legalitas_perubahan') === undefined){
+        	$.cookie('id_legalitas_perubahan', "0", {path:"/"});
+        }
+        
+		$(".tanggal").mask("99-99-9999",{placeholder:"dd-mm-yyyy"});
+		$(".npwp").mask("99.999.999.9-999.999");
+		$(".kodepos").mask("99999");
+		$('.no_ktp').on('keydown', function(e){-1!==$.inArray(e.keyCode,[46,8,9,27,13,110,190])||/65|67|86|88/.test(e.keyCode)&&(!0===e.ctrlKey||!0===e.metaKey)||35<=e.keyCode&&40>=e.keyCode||(e.shiftKey||48>e.keyCode||57<e.keyCode)&&(96>e.keyCode||105<e.keyCode)&&e.preventDefault()});
+
+		if ($.cookie('id_pengajuan') === undefined){
+			$.cookie('id_pengajuan', "0", {path:"/"});
+		}
+		if ($.cookie('id_pemohon') === undefined){
+			$.cookie('id_pemohon', "0", {path:"/"});
+		}
+		if ($.cookie('id_perusahaan') === undefined){
+			$.cookie('id_perusahaan', "0", {path:"/"});
+		}
+
+		$('#rootwizard').bootstrapWizard({
+			onTabShow: function(tab, navigation, index) {
+				var $total = navigation.find('li').length;
+				var $current = index+1;
+				if($current >= $total) {
+					$('#rootwizard').find('.pager .next').hide();
+					$('#rootwizard').find('.pager .finish').show();
+					$('#rootwizard').find('.pager .finish').removeClass('disabled');
+					id_pengajuan = parseInt($.cookie('id_pengajuan'))
+					load_konfirmasi(id_pengajuan);
+				} else {
+					// 
+					if($current == 6){
+						// alert("OK")
+						id_pengajuan = parseInt($.cookie('id_pengajuan'))
+						load_berkas(id_pengajuan)
+
+					}
+					if($current == 1){
+						ktp = '{{ktp}}'
+						if( ktp != '' ){
+							$('#id_ktp').val('{{ ktp.nomor }}')
+					    	$('#id_paspor').val('{{ paspor.nomor }}')
+					    	$('#id_jenis_pengajuan').val('{{ pengajuan_.jenis_permohonan.id }}').prop('selected',true).trigger("chosen:updated");
+					    	$('#id_jenis_pemohon').val('{{ pengajuan_.pemohon.jenis_pemohon.id }}').prop('selected',true).trigger("chosen:updated");
+					    	
+				  			load_pemohon('{{ ktp.nomor }}')
+				          	if ('{{pengajuan_.nama_kuasa}}' !== 'None'){
+				          		$('#switch_pemohon_disabled').prop( "checked", true );
+				          		setTimeout(function(){
+				          			$('.kuasa_disable').prop('disabled', false);
+					          		$('#id_nama_kuasa').val('{{pengajuan_.nama_kuasa}}');
+					          		$('#id_no_identitas_kuasa').val('{{pengajuan_.no_identitas_kuasa}}');
+					          		$('#id_telephone_kuasa').val('{{pengajuan_.telephone_kuasa}}');
+				          		}, 1000);
+				          	}
+						}
+						
+					}
+					if($current == 2){
+						npwp = '{{perusahaan_konfirmasi.npwp}}'
+						if (npwp != ''){
+							$('#id_npwp_perusahaan').val('{{perusahaan_konfirmasi.npwp}}')
+							// load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	setTimeout(function(){
+				          		load_perusahaan_a('{{perusahaan_konfirmasi.npwp}}')
+				          	}, 3000);
+						}
+						
+					}
+					
+					$('#rootwizard').find('.pager .next').show();
+					$('#rootwizard').find('.pager .finish').hide();
+				}
+			},
+
+			onNext: function(tab, navigation, index) {
+				// var form = $('form[name="step'+ index +'"]');
+
+				// form.parsley().validate();
+
+				// if (!form.parsley().isValid()) {
+				//     return true;
+				// }
+				// 
+
+				return false;
+
+			},
+
+			onTabClick: function(tab, navigation, index) {
+
+				// return true;
+				return false;
+			}
+		});
+
+		window.onbeforeunload = function ref() {
+				var r = confirm( "Do you want to leave?" );
+				if (r == true) {
+					
+				}
+				else {
+					return false;
+				}
+			};
+
+			$('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+			$('#btn-akta_pendirian').hide()
+			  $("#switch_akta_pendirian_disabled").change(function() {
+				if ($(this).is(':checked')) {
+				  $('#btn-akta_pendirian').show()
+				  $('.akta_pendirian_disable').prop('disabled', false).trigger("chosen:updated");
+				}
+				else {
+				  $('#btn-akta_pendirian').hide()
+				  $('.akta_pendirian_disable').prop('disabled', true).trigger("chosen:updated");
+				}
+			});
+
+			$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+			$('#btn-akta_perubahan').hide()
+			$("#switch_akta_perubahan_disabled").change(function() {
+			  if ($(this).is(':checked')) {
+			  	$('#btn-akta_perubahan').hide()
+				$('.akta_perubahan_disable').prop('disabled', false).trigger("chosen:updated");
+			  }
+			  else {
+			  	$('#btn-akta_perubahan').show()
+				$('.akta_perubahan_disable').prop('disabled', true).trigger("chosen:updated");
+			  }
+			});
+
+			$('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+			$("#switch_pemohon_disabled").change(function() {
+			  if ($(this).is(':checked')) {
+				$('.kuasa_disable').prop('disabled', false).trigger("chosen:updated");
+			  }
+			  else {
+				$('.kuasa_disable').prop('disabled', true).trigger("chosen:updated");
+			  }
+			});
+
+			
+
+			$( "#alert" ).prop( "disabled", true );
+			$('#checkbox_siup_done').change(function() {
+				if ($(this).is(':checked')) {
+				  $( "#alert" ).prop( "disabled", false );
+				  window.onbeforeunload = null;
+				}
+				else{
+				  $( "#alert" ).prop( "disabled", true );
+				}
+			});
+
+			if($('#switch_akta_perubahan_disabled').is(':checked')){
+				$('#konfirmasi_legalitas_perubahan').show();
+			}
+			else{
+				$('#konfirmasi_legalitas_perubahan').hide();
+			}
+	});
+
+	
+	</script>
+	<!-- handling field -->
+	<script type="text/javascript">
+		function make_disabled(elem_, dis_){
+			if (dis_ == true){
+				elem_.empty();
+			}
+			elem_.prop( "disabled", dis_);
+			elem_.trigger("chosen:updated");
+		}
+		
+		// Function to capitalize for string
+		// String.prototype.capitalize = function() {
+		// 	return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+		// };
+
+		function next_tab(btn){
+			var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+			var frm = $('form[name="step'+ index +'"]');
+			console.log(frm.parsley())
+			console.log(frm)
+			frm.parsley().validate();
+			if (frm.parsley().isValid()) {
+				// $( ".tab-content #tab"+index ).mask('loading')
+				$(".tab-content").mLoading();
+				$(btn).attr('disabled', 'disabled')
+				$.ajax({
+					type: frm.attr('method'),
+					url: frm.attr('action'),
+					data: frm.serialize(),
+					success: function (response){
+						respon = $.parseJSON(response)
+						$(btn).removeAttr('disabled')
+						if(respon.success){
+							toastr["success"](respon.pesan)
+							// $.cookie("keys", "value"); set cookie
+							for (var i = 0; i < respon.data.length; i++){
+								var key = Object.keys(respon.data[i]); // Mencari key json
+								// console.log(key[0]);
+
+								var val = respon.data[i][key[0]]
+								var id = "#"+key[0]+"_konfirmasi"
+								$(id).text(val);
+
+								if(key[0] === "jenis_legalitas_perubahan"){
+									$('#konfirmasi_legalitas_perubahan').hide();
+								}
+								else{
+									$('#konfirmasi_legalitas_perubahan').show();
+								}
+							}
+							// $( ".tab-content #tab"+index ).unmask()
+							$(".tab-content").mLoading('hide');
+							tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+							$(tab_index).tab('show')
+						}else{
+							// console.log(respon);
+							// console.log(typeof respon);
+							var a = Object.keys(respon);
+							// console.log(respon['nama_lengkap'][0]['message']);
+							// console.log(a.length);
+							for (var i = 0; i < a.length; i++){
+								// console.log(a[i]);
+								// console.log(respon[a[i]]);
+								// var field = a[i].replace("_", " ").capitalize();
+								var field = a[i].replace("_", " ");
+								toastr["error"](field+", "+respon[a[i]][0]['message'])
+								$("#"+a[i]+"").addClass("has-error");
+								// console.log($("#"+a[i]+"").addClass("parsley-error"));
+							}
+							// $( ".tab-content #tab"+index ).unmask()
+							$(".tab-content").mLoading('hide');
+						}
+					},
+					error: function(response){
+						$( ".tab-content #tab"+index ).unmask()
+						$(btn).removeAttr('disabled')
+						toastr["error"]("Terjadi kesalahan pada koneksi server.")
+					}
+				});
+			}
+		}
+
+		document.querySelector('#alert').onclick = function(){
+	    // swal("Good job!", "You clicked the button!", "success");
+		    var pengajuan_cookie = $.cookie('id_pengajuan'); 
+		    var pemohon_cookie = $.cookie('id_pemohon'); 
+		    var perusahaan_cookie = $.cookie('id_perusahaan'); 
+		    if (pengajuan_cookie === ""){
+		       	toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+		        $(tab_index).tab('show');
+		   	}
+	      	else if(pemohon_cookie === ""){
+		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+		        tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+		        $(tab_index).tab('show');
+	      	}
+	      	else if(perusahaan_cookie === ""){
+		        toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+		        tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+		        $(tab_index).tab('show');
+	      	}
+	      	else{
+		        swal({
+		          showConfirmButton: false,
+		          type: 'success',
+		          title: 'Pendaftaran Berhasil Tersimpan',
+		          timer: 2000
+		        })
+		        
+		      	window.location.href = '{% url 'admin:verifikasi_operator' %}';
+		      	$.ajax({
+		        	url: '{% url 'iujk_done' %}',
+		        	success: function(response) {
+		        		respon = $.parseJSON(response)
+		        		if(respon.success){
+		        			toastr["success"](respon.pesan)
+		        		}
+		        	}
+	        	});
+	      	}
+    	};
+	</script>
+	<!-- load data if exists -->
+
+	<!-- Modal Form -->
+	<script type="text/javascript">
+
+		function deleteRow(tableID) {
+			$("#hapus_paket").html("Tunggu...")
+			$("#hapus_paket").attr('disabled',true)
+			try {
+				var table = document.getElementById(tableID);
+				var rowCount = table.rows.length;
+				if ($( 'input[name="chkbox[]"]:checked' ).val()){
+					for(var i=0; i<rowCount; i++) {
+						var row = table.rows[i];
+						var chkbox = row.cells[0].childNodes[0];
+						if(null != chkbox && true == chkbox.checked) {
+							$.ajax({
+								type: 'POST',
+								data: { csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(), 'id_paket_pekerjaan': $( 'input[name="chkbox[]"]:checked' ).val()},
+								url: '{% url 'admin:delete_paketpekerjaan' %}',
+								success: function(response){
+									response = $.parseJSON(response)
+									if (response.success){
+										toastr["success"](response.pesan)
+										table.deleteRow(i); //Hapus Tabel
+									}else{
+										toastr["error"](response.pesan)
+										// console.log("2");
+									}
+
+								},
+								error: function(response){
+									toast_server_error()
+									// console.log("3");
+								}
+							});
+
+							// table.deleteRow(i);	
+							rowCount--;
+							i--;
+						}
+					}
+				}else{
+					toastr["error"]("Anda Belum memasukkan pilihan")
+				}
+				
+			}catch(e) {
+				alert(e);
+				toastr["error"](e)
+			}
+			$("#hapus_paket").html('Hapus <i class="fa fa-trash"></i>')
+			$("#hapus_paket").attr('disabled',false)
+		}
+
+
+		function show_modal_add(){
+			if ($.cookie('id_pengajuan') === undefined){
+				toastr["error"]("Pengajuan Belum Terdaftar, Silahkan Melakukan Pengajuan Terlebih Dahulu")
+			}else{
+				$("#modal_save_").attr('disabled',false)
+				$("#modal_save_").html('<i class="fa fa-arrow-right"></i> Simpan')
+				$("#modal_form").attr("action", "{% url 'iujk_paketpekerjaan_save' %}")
+				// load_klasifikasi($.cookie('id_pengajuan'))
+				load_klasifikasi()
+				$('#modal_form').parsley().reset();
+				$('input[name="detil_iujk"]').val('')
+				$("#subklasifikasi").html('<option value="">-- Pilih Sub Klasifikasi --</option>')
+				$('input[name="klasifikasi_usaha"]').val('')
+				$('textarea[name="nama_paket_pekerjaan"]').val('')
+				$('select[name="tahun"]').val('')
+				$('select[name="keterangan"]').val('')
+				$('input[name="nilai_paket_pekerjaan"]').val(0)
+				$('#myModal2').modal('show');
+			}
+		}
+
+		$('#klasifikasi').change(function() {
+			var val = $(this).val()
+			// alert(val);
+			if(val != ''){
+				load_subklasifikasi(val)
+			}else{
+				toastr["warning"]("Pilih Klasifikasi Terlebih Dahulu")
+				$("#subklasifikasi").html('<option value="">-- Pilih Sub Klasifikasi --</option>')
+			}
+		});
+
+		function show_modal_edit(id_, klasifikasi_, nama_paket_, tahun_, nilai_){
+			$("#modal_save_").attr('disabled',false)
+			$("#modal_save_").html('<i class="fa fa-arrow-right"></i> Simpan')
+			$('#modal_form').parsley().reset();
+			$("#modal_form").attr("action", __base_url__+'/layanan/iujk/paketpekerjaan/edit/'+id_)	
+			
+
+			$('#'+id_).prop("checked",true)
+
+			$('input[name="detil_iujk"]').val(id_)
+			$('input[name="klasifikasi_usaha"]').val(klasifikasi_)
+			$('textarea[name="nama_paket_pekerjaan"]').val(nama_paket_)
+			$('select[name="tahun"]').val(tahun_)
+			$('input[name="nilai_paket_pekerjaan"]').val(parseInt(nilai_))
+
+			$('#myModal2').modal('show');
+		}
+
+		$("#close_modal_").on('click', function(){
+			$('#modal_form').parsley().reset();
+			$('input[name="detil_iujk"]').val('')
+			$('input[name="klasifikasi_usaha"]').val('')
+			$('textarea[name="nama_paket_pekerjaan"]').val('')
+			$('select[name="tahun"]').val('')
+			$('input[name="nilai_paket_pekerjaan"]').val(0)
+			$('input[name="chkbox[]"]').prop("checked",false)
+			$('#myModal2').modal('hide');
+		});
+
+		$("#modal_save_").on('click', function(){
+			$(this).attr('disabled',true)
+			$(this).html('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>Tunggu..')
+			var frm = $("#modal_form");
+
+			frm.parsley().validate();
+
+			if (frm.parsley().isValid()) {
+				$.ajax({
+					type: 'POST',
+					data: frm.serialize(),
+					// url: '{% url 'iujk_paketpekerjaan_save' %}',
+					url: frm.attr('action'),
+					success: function(response){
+						resp = $.parseJSON(response)
+						console.log(resp)
+						if (resp.success){
+
+							var table = document.getElementById('tabel_klasifikasi_pekerjaan');
+							var rowCount = table.rows.length;
+							if (resp.data[6].delete){
+								var rowCount = table.rows.length;
+								if ($( 'input[name="chkbox[]"]:checked' ).val()){
+									for(var i=0; i<rowCount; i++) {
+										var row = table.rows[i];
+										var chkbox = row.cells[0].childNodes[0];
+										if(null != chkbox && true == chkbox.checked) {
+											table.deleteRow(i);	
+											rowCount--;
+											i--;
+										}
+									}
+								}
+							}
+							
+							
+							var row = table.insertRow(rowCount);
+
+							var cell1 = row.insertCell(0);
+							var element1 = document.createElement("input");
+							element1.type = "checkbox";
+							element1.name="chkbox[]";
+							element1.id=resp.data[0].id;
+							element1.value=resp.data[0].id;
+							cell1.appendChild(element1);
+
+							var cell2 = row.insertCell(1);
+							cell2.innerHTML = resp.data[1].klasifikasi
+
+							var cell3 = row.insertCell(2);
+							cell3.innerHTML = resp.data[2].subklasifikasi
+
+							var cell4 = row.insertCell(3);
+							cell4.innerHTML = resp.data[3].nama_paket_pekerjaan
+
+							var cell5 = row.insertCell(4);
+							cell5.innerHTML = resp.data[4].keterangan
+
+							var cell6 = row.insertCell(5);
+							cell6.innerHTML = resp.data[5].tahun
+
+							var cell7 = row.insertCell(6);
+							cell7.innerHTML = resp.data[6].nilai_paket_pekerjaan
+
+							// var ce7l6 = row.insertCell(5);
+							// cell6.innerHTML = '<a href="#" onclick="show_modal_edit(\''+resp.data[0].id+'\',\''+resp.data[1].klasifikasi_usaha+'\',\''+resp.data[2].nama_paket_pekerjaan+'\',\''+resp.data[3].tahun+'\',\''+resp.data[5].nilai_str+'\')" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>'
+
+							toastr["success"](resp.pesan)
+
+							$('input[name="klasifikasi_usaha"]').val('')
+							$('textarea[name="nama_paket_pekerjaan"]').val('')
+							$('select[name="tahun"]').val('')
+							$('input[name="nilai_paket_pekerjaan"]').val('')
+
+							$('#myModal2').modal('hide');
+							$(this).attr('disabled',false)
+							$(this).html('<i class="fa fa-arrow-right"></i> Simpan')
+						}else{
+							var a = Object.keys(resp);
+							for (var i = 0; i < a.length; i++){
+								// var field = a[i].split("_").join(" ").capitalize();
+								var field = a[i].split("_").join(" ");
+								toastr["error"](field+", "+resp[a[i]][0]['message'])
+								$("#"+a[i]+"").addClass("has-error");
+							}
+							console.log("disnin");
+							$("#modal_save_").attr('disabled',false)
+							$("#modal_save_").html('<i class="fa fa-arrow-right"></i> Simpan')
+						}
+					},
+					error: function(response){
+						toast_server_error()
+					}
+				})
+			}else{
+				$(this).attr('disabled',false)
+				$(this).html('<i class="fa fa-arrow-right"></i> Simpan')
+			}
+		});
+	</script>
+{% endblock %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+	<!-- blueimp Gallery styles -->
+	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+	<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui.css' %}">
+	<!-- CSS adjustments for browsers with JavaScript disabled -->
+	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-noscript.css' %}"></noscript>
+	<noscript><link rel="stylesheet" href="{% static 'scripts/js/vendor/file-upload/css/jquery.fileupload-ui-noscript.css' %}"></noscript>
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">
+		.progress { position:relative; height: 28px; border: 1px solid #ddd; padding: 1px; border-radius: 3px; }
+		.bar { background-color: #8FF28F; width:0%; height:28px; border-radius: 3px; }
+		.percent { position:absolute; display:inline-block; top:3px; left:48%; }
+	</style>
+	<style type="text/css">
+		@media only screen and (max-width: 1280px){
+			.hidden_title{
+			   display: none !important;
+			}
+			.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+			  padding-bottom: 24px
+			}
+			.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			  padding-bottom: 24px;
+			}
+			
+		}
+		@media only screen and (max-width: 844px){
+		  .hidden_title{
+			display: block !important;
+		  }
+		}
+
+		.chosen-container{
+			min-width: 400px;
+		}
+		.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+			background-color: #22beef;
+			color: aliceblue;
+		}
+		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			background-color: #616f77;
+		}
+		.tab-wizard .nav-tabs > li:before {
+			background-color: #333;
+		}
+		.onoffswitch.labeled .onoffswitch-inner:before {
+			content: "Ya";
+		}
+		.onoffswitch.labeled .onoffswitch-inner:after {
+			content: "Tidak";
+		}
+		.onoffswitch.labeled {
+			width: 59px;
+		}
+		.onoffswitch.labeled .onoffswitch-switch {
+			right: 34px;
+		}
+
+	</style>
+{% endblock %}
+
+{% block content %}
+<div id="rootwizard" class="tab-container tab-wizard">
+  <ul class="nav nav-tabs nav-justified">
+	<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Step</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+	<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+	<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+	<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Step </i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+	<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+	<li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">Step</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+	<li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
+  </ul>
+  <div class="tab-content">
+	<div class="tab-pane" id="tab1"> 
+		{% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab2">
+	  <!-- Identitas perusahaan -->
+		{% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab3">
+	  <!-- klasifikasi klasifikasi -->
+		{% include 'front-end/include/formulir_iujk/jenis_iujk.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab4">
+	  <!-- klasifikasi klasifikasi -->
+		{% include 'front-end/include/formulir_iujk/klasifikasi_pekerjaan.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab5">
+	  <!-- legalitas perushaan -->
+	  {% include 'front-end/include/formulir_iujk/legalitas_perusahaan.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab6">
+	  <!-- Data anggota -->
+	  {% include 'front-end/include/formulir_iujk/data_anggota.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab7">
+	  <!-- Konfirmasi -->
+	  {% include 'front-end/include/formulir_iujk/upload_dokumen.html' %}
+	</div>
+
+	<div class="tab-pane" id="tab8">
+	  <!-- Konfirmasi -->
+	  {% include 'front-end/include/formulir_iujk/konfirmasi.html' %}
+	</div>
+
+	<ul class="pager wizard">
+	  <li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
+	  <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+	  <li class="next finish" style="display:none;">
+		<button type="submit" class="btn btn-success pull-right" id="alert">
+		  <i class="fa fa-arrow-right"></i>
+		  <span>Selesai</span>
+		</button>
+		</form>
+	  </li>
+	</ul>
+  </div>
+  <br>
+  <br>
+  <br>
+</div>
+
+
+{% endblock %}
+
+{% block extracontent %}
+{{ block.super }}
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Klasifikasi Paket Pekerjaan</h3>
+		</div>
+		<div class="modal-body">
+			<p class="text-muted">Paket pekerjaan yang pernah dilaksanakan (Bila belum punya - tulis belum punya, manfaatkan nilai paket tertinggi) - 10 tahun lau</p>
+			
+			  <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title custom-font"><strong>Paket Pekerjaan</strong></h3>
+				</div>
+				<div class="panel-body">
+				<form name="form1" role="form" id="modal_form">
+				{% csrf_token %}
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for=""><strong>Klasifikasi </strong></label>
+							<select class="form-control mb-10" id="klasifikasi" name="klasifikasi" required data-parsley-trigger="change">
+							<option value>-- Ambil Data Klasifikasi --</option>
+							</select>
+						  </select>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for=""><strong>SubKlasifikasi </strong></label>
+							<select class="form-control mb-10" id="subklasifikasi" name="subklasifikasi" required data-parsley-trigger="change">
+							<option value>-- Pilih Klasifikasi Dulu --</option>
+							</select>
+						</div>
+
+					</div>
+
+					<!-- <div class="form-group">
+						<label for=""><strong>Klasifikasi/Sub Klasifikasi Usaha Yang Diinginkan</strong> <em>*) Lihat Klasifikasi/Sub Klasifikasi Usaha pada SBU</em></label>
+						<input type="text" name="klasifikasi_usaha" id="username" class="form-control" data-parsley-trigger="change" required="" >
+					</div> -->
+					<div class="form-group">
+						<label for=""><strong>Nama Paket Pekerjaan </strong> <em>*) Sesuaikan Klasifikasi/Sub Klasifikasi pekerjaan pada SBU dengan Klasifikasi/Sub Klasifikasi usaha</em></label>
+						<textarea class="form-control" name="nama_paket_pekerjaan" data-parsley-trigger="change"></textarea>
+					</div>
+					<div class="form-group">
+						<label for=""><strong>Keterangan</label>
+						<textarea class="form-control" name="keterangan" data-parsley-trigger="change"></textarea>
+					</div>
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for=""><strong>Tahun Pelaksanaan </strong></label>
+							<select class="form-control mb-10" name="tahun" data-parsley-trigger="change">
+							<option value>-- Pilih Tahun --</option>
+							{% for tahun in tahun_choices %}
+								<option value="{{tahun.0}}">{{ tahun.1 }}</option>
+							{% endfor %}
+						  </select>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for=""><strong>Nilai Paket Pekerjaan : </strong></label>
+							<div class="input-group">
+								<span class="input-group-addon">Rp. </span>
+								<input type="number" name="nilai_paket_pekerjaan" class="form-control" data-parsley-trigger="change" >
+							</div>
+						</div>
+
+					</div>
+				</form>
+				</div>
+			  </div>
+		</div>
+		<div class="modal-footer">
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" id="close_modal_"><i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="penanggung_jawab" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-md">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Direktur / Penanggung Jawab Badan Usaha</h3>
+		</div>
+		<div class="modal-body">
+			<form name="penanggung_jawab_form" role="form" id="penanggung_jawab_form" action="{% url 'penanggung_jawab_save_bu' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for=""><strong>Nama </strong></label>
+					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
+				</div>
+				<!-- <div class="form-group">
+					<label for=""><strong>NPWP </strong></label>
+					<input type="text" name="npwp" class="form-control" data-parsley-trigger="change" required="" >
+				</div> -->
+				<!-- <div class="form-group">
+					<label for=""><strong>NO PJT-BU </strong></label>
+					<input type="text" name="no_pjt_bu" class="form-control" data-parsley-trigger="change" required="" >
+				</div> -->
+				<div class="form-group">
+					<label for=""><strong>Foto 4X6 </strong></label>
+					<input name="berkas_foto" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>KTP </strong></label>
+					<input name="berkas_ktp" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Surat Pernyataan bukan PNS/TNI/POLRI </strong></label>
+					<input name="berkas_pernyataan" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Surat Pernyataan tidak merangkap/bekerja pada Badan Usaha Lain </strong></label>
+					<input name="berkas_merangkap" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div class="progress-list progresdirektur" style="display: none;">
+                <div class="details">
+                    <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                </div>
+                <div class="status pull-right">
+                    <span class="counter" data-from="0" data-to="0" id="dataprogresuploaddirektur" data-speed="1000">0</span>%
+                </div>
+                <div class="clearfix"></div>
+                <div class="progress progress-xs no-radius">
+                    <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresuploaddirektur" data-percentage=""></div>
+                </div>
+            </div>
+			<button onclick="penanggung_jawab_save($(this))" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="penanggung_jawab_cancel()"><i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="teknik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-md">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Tambah Penanggung Jawab Teknik Badan Usaha</h3>
+		</div>
+		<div class="modal-body">			
+			<form name="teknik_form" role="form" id="teknik_form" action="{% url 'penanggung_jawab_teknik_save_bu' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for=""><strong>Nama </strong></label>
+					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
+				</div>
+				<div class="form-group">
+					<label for=""><strong>NO PJT-BU </strong></label>
+					<input type="text" name="no_pjt_bu" class="form-control" data-parsley-trigger="change" required="" >
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Foto 4X6 </strong></label>
+					<input name="berkas_foto" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>KTP </strong></label>
+					<input name="berkas_ktp" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Ijazah SMA </strong></label>
+					<input name="ijazah_sma" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>SKA / SKT </strong></label>
+					<input name="ska_skt" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Surat Pernyataan tidak merangkap/bekerja pada Badan Usaha Lain </strong></label>
+					<input name="berkas_merangkap" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div class="progress-list progresteknik" style="display: none;">
+                <div class="details">
+                    <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                </div>
+                <div class="status pull-right">
+                    <span class="counter" data-from="0" data-to="0" id="dataprogresteknik" data-speed="1000">0</span>%
+                </div>
+                <div class="clearfix"></div>
+                <div class="progress progress-xs no-radius">
+                    <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresteknik" data-percentage=""></div>
+                </div>
+            </div>
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" onclick="penanggung_jawab_teknik_save($(this))"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="tenaga_teknik_cancel()"><i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="non_teknik" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-md">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h3 class="modal-title custom-font">Tambah Penanggung Jawab Teknik Badan Usaha</h3>
+		</div>
+		<div class="modal-body">
+			<form name="teknik_form" role="form" id="non_teknik_form" action="{% url 'penanggung_jawab_non_teknik_save_bu' %}" enctype="multipart/form-data">
+			{% csrf_token %}
+				<div class="form-group">
+					<label for=""><strong>Nama </strong></label>
+					<input type="text" name="nama" class="form-control" data-parsley-trigger="change" required="" >
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Foto 4X6 </strong></label>
+					<input name="berkas_foto" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>KTP </strong></label>
+					<input name="berkas_ktp" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+				<div class="form-group">
+					<label for=""><strong>Ijazah SMA </strong></label>
+					<input name="ijazah_sma" accept=".pdf,.doc,.docx,.jpg,.png" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<div class="progress-list progresnonteknik" style="display: none;">
+                <div class="details">
+                    <div class="title"><strong>Mengunggah</strong> berkas..</div>
+                </div>
+                <div class="status pull-right">
+                    <span class="counter" data-from="0" data-to="0" id="dataprogresnonteknik" data-speed="1000">0</span>%
+                </div>
+                <div class="clearfix"></div>
+                <div class="progress progress-xs no-radius">
+                    <div class="progress-bar progress-bar-orange animate-progress-bar" id="progresnonteknik" data-percentage=""></div>
+                </div>
+            </div>
+			<button id="modal_save_" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c" onclick="penanggung_jawab_non_teknik_save($(this))"><i class="fa fa-arrow-right"></i> Simpan</button>
+			<button class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" onclick="tenaga_non_teknik_cancel()"> <i class="fa fa-arrow-left"></i> Batal</button>
+		</div>
+	</div>
+</div>
+</div>
+
+{% endblock %}

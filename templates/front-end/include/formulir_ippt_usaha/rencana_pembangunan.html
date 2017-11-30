@@ -1,0 +1,354 @@
+;<form method="POST" name="step5" role="form" class="form-horizontal" action="{% url 'ippt_usaha_rencana_pembangunan_save' %}">
+  {% csrf_token %}
+  <h3>Rencana Pembangunan</h3>
+  <hr class="style14">
+
+  <div class="row">
+  	<label style="font-size:16px;" class="col-sm-2 control-label"><b>1. Perincian penggunaan Tanah</b></label>
+  </div>
+
+  <div class="form-group">
+  	<label class="col-sm-1 control-label">tipe</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_tipe1" name="tipe1" class="form-control" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>/Gudang1</span>
+        </span>
+      </div>
+    </div>
+  	<div class="col-sm-2">
+      <div class="input-group">
+    		<input type="text" id="id_gudang1" name="gudang1" class="form-control no_ktp" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>unit</span>
+        </span>
+      </div>
+  	</div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_luas_tipe1" name="luas_tipe1" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_presentase_luas_tipe1" name="presentase_luas_tipe1" class="form-control no_ktp sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+  	<label class="col-sm-1 control-label">tipe</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_tipe2" name="tipe2" class="form-control" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>/Gudang2</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_gudang2" name="gudang2" class="form-control no_ktp" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>unit</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_luas_tipe2" name="luas_tipe2" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+  	<div class="col-sm-2">
+      <div class="input-group">
+    		<input type="text" id="id_presentase_luas_tipe2" name="presentase_luas_tipe2" class="form-control no_ktp sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+  	</div>
+  </div>
+
+  <div class="form-group">
+  	<label class="col-sm-1 control-label">tipe</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_tipe3" name="tipe3" class="form-control" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>/Gudang3</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_gudang3" name="gudang3" class="form-control no_ktp" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>unit</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_luas_tipe3" name="luas_tipe3" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+  	<div class="col-sm-2">
+      <div class="input-group">
+    		<input type="text" id="id_presentase_luas_tipe3" name="presentase_luas_tipe3" class="form-control no_ktp sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+  	</div>
+  </div>
+
+  <div class="form-group">
+    <label for="input01" class="col-sm-5 control-label">Lapangan Halaman</label>
+    <div class="col-sm-2">
+      <div class="input-group"> 
+        <input type="text" id="id_luas_lapangan" name="luas_lapangan" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_presentase_luas_lapangan" name="presentase_luas_lapangan" class="form-control no_ktp sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="input01" class="col-sm-5 control-label">Kantor</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_luas_kantor" name="luas_kantor" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_presentase_luas_kantor" name="presentase_luas_kantor" class="form-control no_ktp sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="input01" class="col-sm-5 control-label">Saluran</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_luas_saluran" name="luas_saluran" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_presentase_luas_saluran" name="presentase_luas_saluran" class="form-control no_ktp sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="input01" class="col-sm-5 control-label">Taman</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_luas_taman" name="luas_taman" class="form-control no_ktp sum-perincian-tanah" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_presentase_luas_taman" name="presentase_luas_taman" class="form-control sum-presentase-perincian-tanah" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="input01" class="col-sm-5 control-label ">Jumlah</label>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_perincian_penggunaan_tanah" name="jumlah_perincian_penggunaan_tanah" class="form-control no_ktp" required="" data-parsley-trigger="change" disabled="">
+        <input type="hidden" id="id_jumlah_perincian_penggunaan_tanah" name="jumlah_perincian_penggunaan_tanah" class="form-control no_ktp" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>M&sup2;</span>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" id="id_presentase_perincian_penggunaan_tanah" name="presentase_jumlah_perincian_penggunaan_tanah" class="form-control no_ktp" data-parsley-trigger="change" disabled="">
+        <input type="hidden" id="id_presentase_jumlah_perincian_penggunaan_tanah" name="presentase_jumlah_perincian_penggunaan_tanah" class="form-control no_ktp" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span>%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <label style="font-size:16px;" class="col-sm-2 control-label"><b>2. Tahap Pelaksanaan</b></label>
+  </div>
+
+  <div style="padding-left:5%">
+    <div class="row">
+      <label class="col-sm-5 control-label">a. Pematang tanah dan penyelesaian prasarana / lingkungan</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+      <div class="row">
+        <label class="col-sm-3 control-label">Tahap pertama</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" id="id_pematangan_tanah_tahap1" name="pematangan_tanah_tahap1" class="form-control no_ktp" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>bulan</span>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="row">
+        <label class="col-sm-3 control-label">Tahap kedua</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" id="id_pematangan_tanah_tahap2" name="pematangan_tanah_tahap2" class="form-control no_ktp" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>bulan</span>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="row">
+        <label class="col-sm-3 control-label">Tahap ketiga</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" id="id_pematangan_tanah_tahap3" name="pematangan_tanah_tahap3" class="form-control no_ktp" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>bulan</span>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div style="padding-left:3%">
+    <div class="row">
+      <label class="col-sm-3 control-label">b. Pembangunan Gedung</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+      <div class="row">
+        <label class="col-sm-3 control-label">Tahap pertama</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" id="id_pembangunan_gedung_tahap1" name="pembangunan_gedung_tahap1" class="form-control no_ktp" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>bulan</span>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="row">
+        <label class="col-sm-3 control-label">Tahap kedua</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" id="id_pembangunan_gedung_tahap2" name="pembangunan_gedung_tahap2" class="form-control no_ktp" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>bulan</span>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="form-group">
+      <div class="row">
+        <label class="col-sm-3 control-label">Tahap ketiga</label>
+        <div class="col-sm-2">
+          <div class="input-group">
+            <input type="text" id="id_pembangunan_gedung_tahap3" name="pembangunan_gedung_tahap3" class="form-control no_ktp" required="" data-parsley-trigger="change">
+            <span class="input-group-addon">
+              <span>bulan</span>
+            </span>
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <div class="row">
+    <div style="padding-left:2%">
+    <label class="col-sm-4 control-label">c. Jangka Waktu Penyelesaian Seluruhnya</label>
+      <div class="form-group">
+          <div class="col-sm-2">
+            <div class="input-group">
+              <input type="text" id="id_jangka_waktu_selesai" name="jangka_waktu_selesai" class="form-control no_ktp" required="" data-parsley-trigger="change">
+              <span class="input-group-addon">
+                <span>bulan</span>
+              </span>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div style="padding-left:6%">
+      <label class="col-sm-3 control-label">d. Rencana Jadwal Pelaksanaan</label>
+    </div>
+    <div>
+      <label class="col-sm-1 control-label">: Terlampir</label>
+    </div>
+  </div>
+  <div class="row">
+    <div style="padding-left:56px;">
+      <label class="col-sm-3 control-label">e. Block plan / Rencana Tapak</label>
+    </div>
+    <div style="padding-right:43%;">
+      <label class="col-sm-2 control-label">: Terlampir</label>
+    </div>
+  </div>
+
+</form>

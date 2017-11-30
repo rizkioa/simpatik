@@ -1,0 +1,148 @@
+<form method="POST" name="step6" role="form" class="form-horizontal" action="{% url 'penanggung_jawab_next' %}">
+    {% csrf_token %}
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title custom-font"><strong>Direktur / Penanggung Jawab Badan Usaha</strong></h3>
+  </div>
+  <div class="panel-body">
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="tabel_penanggung_jawab">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Nama</th>
+                  <th>File Foto 4X6 </th>
+                  <th>KTP</th>
+                  <th>Surat Pernyataan Bukan PNS/TNI/POLRI</th>
+                  <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
+                </tr>
+              </thead>
+              <tbody>   
+              {% if anggota_list_deriktur %}
+                {% for a in anggota_list_deriktur %}
+                  <tr id="{{a.id}}">
+                    <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
+                    <td>{{a.nama}}</td>
+                    {% for b in a.berkas_tambahan.all %}
+
+                      <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endif %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="show_modal_dataanggota_add($('#penanggung_jawab'))">Tambah Direktur / Penanggung Jawab Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="direktur_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab'))">Hapus <i class="fa fa-trash"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title custom-font"><strong>Penanggung Jawab Teknik Badan Usaha</strong></h3>
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="tabel_penanggung_jawab_teknik">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Nama</th>
+                  <th>No PJT-BU</th>
+                  <th>File Foto 4X6 </th>
+                  <th>KTP</th>
+                  <th>Ijazah</th>
+                  <th>SKA/SKT</th>
+                  <th>Surat Tidak Merangkap/Bekerja pada Badan Usaha Lain</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% if anggota_list_teknik %}
+                {% for a in anggota_list_teknik %}
+                  <tr id="{{a.id}}">
+                    <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
+                    <td>{{a.nama}}</td>
+                    <td>{{a.no_pjt_bu}}</td>
+                    {% for b in a.berkas_tambahan.all %}
+
+                      <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endif %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="show_modal_dataanggota_add($('#teknik'))">Tambah Penanggung Jawab Teknik Badan Usaha <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="teknik_hapus" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab_teknik'))">Hapus <i class="fa fa-trash"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title custom-font"><strong>Tenaga Non Teknik</strong></h3>
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="tabel_penanggung_jawab_non_teknik">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>Nama</th>
+                  <th>File Foto 4X6 </th>
+                  <th>KTP</th>
+                  <th>Ijazah</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% if anggota_list_non %}
+                {% for a in anggota_list_non %}
+                  <tr id="{{a.id}}">
+                    <td><input type="checkbox" value="{{a.id}}" id="chkbox"></input></td>
+                    <td>{{a.nama}}</td>
+                    {% for b in a.berkas_tambahan.all %}
+
+                      <td align="center"><a class="btn btn-success btn-xs" href="{{b.berkas.url}}" target="blank_"> <i class="fa fa-check"></i> Berkas </a></td>
+                    {% endfor %}
+                  </tr>
+                {% endfor %}
+              {% endif %}
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="show_modal_dataanggota_add($('#non_teknik'))">Tambah Tenaga Non Teknik <i class="fa fa-plus"></i></a>
+        <a href="#"  class="btn btn-danger btn-sm btn-ef btn-ef-4 btn-ef-4b mb-10 pull-right" id="tenaga_non_teknik" onclick="penanggung_jawab_delete($(this), $('#tabel_penanggung_jawab_non_teknik'))">Hapus <i class="fa fa-trash"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+</form> 

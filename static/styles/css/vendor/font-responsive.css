@@ -1,0 +1,72 @@
+.col_sm_12{
+  height: 125px;
+}
+.border_tambah {
+  border-width: 4px;
+  border-bottom-width: 3px;
+  background-color: #4caf50;
+}
+.font_modal {
+  font-size: 24px;
+}
+a{
+  color: #ffffff;
+}
+a:focus, a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+
+@media only screen and (max-width: 1361px){
+  .pa{
+    font-size: 21px;
+  }
+}
+
+@media only screen and (min-width: 1360px){
+  .pa{
+    font-size: 21px;
+  }
+}
+
+@media only screen and (min-width: 1277px){
+  .pa{
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 1229px){
+  .pa{
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 1100px){
+  .pa{
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 1008px){
+  .pa{
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 993px){
+  .pa{
+    font-size: 19px;
+  }
+}
+
+@media only screen and (max-width: 991px){
+  .pa{
+    font-size: 25px;
+  }
+}
+
+@media only screen and (max-width: 406px){
+  .pa{
+    font-size: 21px;
+  }
+}

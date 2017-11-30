@@ -1,0 +1,500 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak Bukti Pendaftaran - {{pengajuan_.no_pengajuan}}</title>
+</head>
+<style type="text/css">
+    hr.style18 {
+        border-top: 3px double #8c8b8b;
+    }
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+	body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    .subpage {
+        padding: 0.5cm;
+        /*border: 5px red solid;*/
+        height: 257mm;
+        /*outline: 2cm #FFEAEA solid;*/
+    }
+    
+    @page {
+        size: F4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .title, .tabel{
+		border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+    	margin-top: 0px;
+    }
+    .tabel{
+    	padding-top: 0px;
+    	padding-bottom: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+	}
+
+	.ceklist {
+	    border: 1px solid black;
+	}
+    .font {
+        font-size: 12px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+
+    .style2 {
+        border-top: 3px double #8c8b8b;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+    .tables  tr  td {
+        padding: 3px;
+        text-align: left;
+        border: 2px solid #ddd;
+        /*border-radius:10px;*/
+    }
+
+    .syarat tr  td{
+        padding: 1px;
+    }
+    
+    .tables tr:nth-child(even){background-color: #f2f2f2}
+    .printfooter{
+        position: absolute;
+        bottom: 0;
+        width: 723px;
+        padding-bottom: 30px;
+    }
+</style>
+<body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
+    <div class="book">
+        <div class="page">
+            <div class="subpage">
+                <div class="title">
+                    <div class="tabel">
+                        <table>
+                            <tr>
+                                <td width="15%"><img src="{% static 'images/SIMPATIK.png' %}" width="50px"></td>
+                                <td>
+                                    <h3 style="font-size: 25px;line-height: 10px;padding-top: 10px;">SIMPATIK</h3><p style="line-height:1px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <h5>No. Pengajuan Izin : {{pengajuan_.no_pengajuan}}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d-m-Y" }}</font></h5>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4 align="center"><u>{{formulir_judul}}</u></h4>
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="10%"></td>
+                            <td width="40%">
+                                
+                            </td>
+                            <td width="50%">
+                                <p align="left" style="font-size:13px;padding-left:25%">
+                                    Kepada
+                                    <br>
+                                    Yth. Bupati Kediri
+                                    <b></b>
+                                    Lewat
+                                    <br>
+                                    Yth. Kepala DPMPTSP Kab. Kediri
+                                    <br>
+                                    di
+                                    <br>
+                                    KEDIRI
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="font-size:13px">Yang bertanda tangan di bawah ini mengajukan permintaan pendaftaran perusahaan sebagai dimaksud Undang-Undang Nomor 3 Tahun 1982 tentang Wajib Daftar Perusahaan :</p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pengajuan</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{ pengajuan_.jenis_permohonan }}</td>
+                    </tr>
+                </table>
+
+                {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon.html' %}
+
+                <h5>IDENTITAS PERUSAHAAN</h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">NPWP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.npwp}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.nama_perusahaan}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.alamat_perusahaan}}, {{pengajuan_.perusahaan.desa.lokasi_lengkap}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kode Pos</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.kode_pos}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.telepon}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Fax</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.fax}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.perusahaan.email|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+
+                <h5>DATA USAHA PARIWISATA</h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Bidang Usaha Pariwisata</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.bidang_usaha_pariwisata}}</td>
+                    </tr>
+                    {% if pengajuan_.jenis_usaha_pariwisata %}
+                        <tr>
+                            <td width="25%" style="padding-left: 2%;">Jenis Usaha Pariwisata</td>
+                            <td width="10%" style="padding-left: 2%;">:</td>
+                            <td width="65%" style="padding-left: 2%;">{{pengajuan_.jenis_usaha_pariwisata}}</td>
+                        </tr>
+                        {% if pengajuan_.sub_jenis_usaha_pariwisata %}
+                            <tr>
+                                <td width="25%" style="padding-left: 4%;">Sub Jenis Usaha Pariwisata</td>
+                                <td width="10%" style="padding-left: 4%;">:</td>
+                                <td width="65%" style="padding-left: 4%;">{{pengajuan_.sub_jenis_usaha_pariwisata}}</td>
+                            </tr>
+                            {% if rincian.jumlah_unit_angkutan_jalan_wisata %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Angkutan Jalan Wisata</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah Unit: {{rincian.jumlah_unit_angkutan_jalan_wisata}} Kapasitas: {{rincian.kapasitas_angkutan_jalan_wisata}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_unit_angkutan_kereta_api_wisata %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Angkutan Kereta Api Wisata</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah Unit: {{rincian.jumlah_unit_angkutan_kereta_api_wisata}} Kapasitas: {{rincian.kapasitas_angkutan_kereta_api_wisata}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_unit_angkutan_sungai_dan_danau_wisata %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Angkutan Sungai dan Danau Wisata</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah Unit: {{rincian.jumlah_unit_angkutan_sungai_dan_danau_wisata}} Kapasitas: {{rincian.kapasitas_angkutan_sungai_dan_danau_wisata}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_kursi_restoran %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Restoran</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah kursi: {{rincian.jumlah_kursi_restoran}} buah</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_kursi_rumah_makan %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Rumah Makan</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah kursi: {{rincian.jumlah_kursi_rumah_makan}} buah</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_kursi_bar_atau_rumah_minum %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Bar/Rumah Minum</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah kursi: {{rincian.jumlah_kursi_bar_atau_rumah_minum}} buah</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_kursi_kafe %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Kafe</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah kursi: {{rincian.jumlah_kursi_kafe}} buah</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.jumlah_stand_pusat_makanan %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Pusat Makanan</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Jumlah stand: {{rincian.jumlah_stand_pusat_makanan}} buah</td>
+                                </tr>
+                            {% endif %}
+                            {% if rincian.kapasitas_produksi_jasa_boga %}
+                                <tr>
+                                    <td width="25%" style="padding-left: 4%;">Jasa Boga</td>
+                                    <td width="10%" style="padding-left: 4%;">:</td>
+                                    <td width="65%" style="padding-left: 4%;">Kapasitas produksi/pack: {{rincian.kapasitas_produksi_jasa_boga}} unit/buah</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </table>
+                <br>
+                <!-- <div class="printfooter">
+                    <hr class="style18">
+                    <i class="font" align="right">
+                        <font color="red">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d-M-Y" }}</font> 
+                        <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                    </i>
+                </div> -->
+            </div>
+        </div>
+        <div class="page">
+            <div class="subpage">
+                <h5>Keterangan Usaha</h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Nama Usaha</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.nama_usaha}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Lokasi Usaha Pariwisata</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.lokasi_usaha_pariwisata}}, {{pengajuan_.desa_lokasi.lokasi_lengkap}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Telephone</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{pengajuan_.telephone}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Izin Gangguan</td>
+                    </tr>
+                    <tr>
+                        <td width="25%" style="padding-left: 4%;">Nomor Izin</td>
+                        <td width="10%" style="padding-left: 4%;">:</td>
+                        <td width="65%" style="padding-left: 4%;">{{pengajuan_.nomor_izin_gangguan}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%" style="padding-left: 4%;">Tanggal Izin</td>
+                        <td width="10%" style="padding-left: 4%;">:</td>
+                        <td width="65%" style="padding-left: 4%;">{{pengajuan_.tanggal_izin_gangguan|date:'d-m-Y'}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Dokumen Pengelolaan Lingkungan</td>
+                    </tr>
+                    <tr>
+                        <td width="25%" style="padding-left: 4%;">Nomor Izin</td>
+                        <td width="10%" style="padding-left: 4%;">:</td>
+                        <td width="65%" style="padding-left: 4%;">{{pengajuan_.nomor_dokumen_pengelolaan}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%" style="padding-left: 4%;">Tanggal Izin</td>
+                        <td width="10%" style="padding-left: 4%;">:</td>
+                        <td width="65%" style="padding-left: 4%;">{{pengajuan_.tanggal_dokumen_pengelolaan|date:'d-m-Y'}}</td>
+                    </tr>
+                </table>
+                <h5>LEGILITAS PERUSAHAAN</h5>
+                <table width="100%" class="font tables" border="1" style="border:2px;padding: 1px;">
+                    <thead>
+                        <tr>
+                            <td>No.</td>
+                            <td>Jenis Akta dan Pengesahan</td>
+                            <td>Nama Notaris</td>
+                            <td>Alamat Notaris</td>
+                            <td>Telp. Notaris</td>
+                            <td>No.Akta</td>
+                            <td>Tgl. Akta</td>
+                            <td>No. Pengesahan</td>
+                            <td>Tgl. Pengesahan</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if legalitas %}
+                            {% for l in legalitas %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{l.jenis_legalitas}}</td>
+                                    <td>{{l.nama_notaris|default_if_none:"-"}}</td>
+                                    <td>{{l.alamat|default_if_none:"-"}}</td>
+                                    <td>{{l.telephone|default_if_none:"-"}}</td>
+                                    <td>{{l.nomor_akta|default_if_none:"-"}}</td>
+                                    <td>{{l.tanggal_akta|date:'d-m-Y'|default_if_none:"-"}}</td>
+                                    <td>{{l.nomor_pengesahan}}</td>
+                                    <td>{{l.tanggal_pengesahan|date:'d-m-Y'}}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="9" align="center">Kosong...!!!</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>                    
+                </table>
+                <p style="font-size: 12px;text-indent: 30px;">
+                    Demikian Surat permohonan {{pengajuan_.kelompok_jenis_izin.keterangan}}  ini kami buat dengan sebenarnya dan apabila di kemudian hari ternyata data/informasi dan keterangan tersebut tidak benar, maka kami menyatakan bersedia dibatalkan {{pengajuan_.kelompok_jenis_izin.keterangan}} yang telah kami miliki dan dituntut sesuani dengan kententuan peraturan perundang-undangan.
+                </p>
+                <p align="center" style="font-size:13px;padding-left:75%">
+                    Kediri,.......................
+                    <br>
+                    Nama dan Tanda tangan
+                    <br>
+                    Pemilik
+                    <br>
+                    {{ pengajuan_.perusahaan.nama_perusahaan }}
+                    <br>
+                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+                    <br>
+                    <br>
+                    <br>
+                    <u class="font"><b>{{ pengajuan_.pemohon.nama_lengkap }}</b></u>
+                </p>
+            </div>
+        </div>
+        <div class="page">
+            <div class="subpage">
+                <h5>Syarat {{pengajuan_.kelompok_jenis_izin.keterangan}}:</h5>
+                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <td width="5%">No</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if syarat %}
+                            {% for s in syarat %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ s.syarat }}</td>
+                                <td align="center"><input type="checkbox"></td>
+                                <td align="center"><input type="checkbox"></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <br>
+                <table border="0" width="100%" style="font-size: 15px;">
+                    <tr>
+                        <td width="48%" >
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                        <td width="2%">
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

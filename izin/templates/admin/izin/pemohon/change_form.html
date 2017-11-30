@@ -1,0 +1,257 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_static access admin_urls %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/loadmask/jquery.loadmask.css" %}">
+	<link rel="stylesheet" href="{% static "scripts/js/vendor/toastr/toastr.min.css" %}">
+{% endblock %}
+
+{% block extrajs_site %}
+	{{ block.super }}
+	<script src="{% static "scripts/js/vendor/loadmask/jquery.loadmask.js" %}"></script>
+	<script src="{% static "scripts/js/vendor/toastr/toastr.min.js" %}"></script>
+{% endblock %}
+
+{% block extrajs %}
+	{{ block.super }}
+	<script type="text/javascript">
+		function chosen_change(elem_){
+			var siblings = elem_.nextAll('.change-related, .delete-related');
+	        if (!siblings.length) return;
+	        var value = elem_.val();
+	        if (value) {
+	            siblings.each(function(){
+	                var elm = $(this);
+	                elm.attr('href', elm.attr('data-href-template').replace('__fk__', value));
+	            });
+	        } else siblings.removeAttr('href');
+		}
+
+		function update_related(elm){
+			if($(elm).prop( "disabled")){
+				$(elm).nextAll(".change-related, .add-related").css('display', 'None')
+			}else{
+				$(elm).nextAll(".change-related, .add-related").css('display', 'inline-block')
+			}
+		}
+		update_related($( "#id_negara" ))
+		update_related($( "#id_provinsi" ))
+		update_related($( "#id_kabupaten" ))
+		update_related($( "#id_kecamatan" ))
+		update_related($( "#id_desa" ))
+
+		chosen_change($( "#id_negara" ))
+		chosen_change($( "#id_provinsi" ))
+		chosen_change($( "#id_kabupaten" ))
+		chosen_change($( "#id_kecamatan" ))
+		chosen_change($( "#id_desa" ))
+
+		function make_disabled(elem_, dis_){
+	        elem_.prop( "disabled", dis_);
+	        elem_.trigger("chosen:updated");
+	        update_related(elem_)
+		}
+
+		function toast_server_error(){
+			toastr.options = {
+			  "closeButton": true,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-right",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+			}
+			toastr["error"]("Terjadi kesalahan pada koneksi server.")
+		}
+
+		function load_desa(id_kecamatan){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+	        $( "#id_desa_chosen" ).mask('loading')
+	        $( "#id_desa_chosen .loadmask-msg" ).css('top', '2px')
+	        $.ajax({ // create an AJAX call...
+                data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
+                type: 'POST', // GET or POST
+                url: '{% url 'admin:option_desa' %}', // the file to call
+                success: function(response) { // on success..
+                    elem = $( "#id_desa" )
+                    elem.html(response);
+			        make_disabled(elem, false)
+			        $( "#id_desa_chosen" ).unmask()
+			        $( "#id_desa" ).change(function(){
+						$this = $(this)
+				        chosen_change($this)
+				        
+				        /*id_kabupaten = $(this).val()
+						if(id_kabupaten.length > 0){
+					        load_kabupaten(id_kabupaten)
+				        }else{
+				        	elem = $( "#id_kabupaten" )
+				        	make_disabled(elem, true)
+				        }*/
+					})
+                },
+                error: function(data) {                
+                    toast_server_error()
+                }
+            });
+		}
+
+		function load_kecamatan(id_kabupaten){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+	        $( "#id_kecamatan_chosen" ).mask('loading')
+	        $( "#id_kecamatan_chosen .loadmask-msg" ).css('top', '2px')
+	        $.ajax({ // create an AJAX call...
+                data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
+                type: 'POST', // GET or POST
+                url: '{% url 'admin:option_kecamatan' %}', // the file to call
+                success: function(response) { // on success..
+                    elem = $( "#id_kecamatan" )
+                    elem.html(response);
+			        make_disabled(elem, false)
+			        $( "#id_kecamatan_chosen" ).unmask()
+			        $( "#id_kecamatan" ).change(function(){
+						$this = $(this)
+				        chosen_change($this)
+				        
+				        id_kecamatan = $(this).val()
+						if(id_kecamatan.length > 0){
+					        load_desa(id_kecamatan)
+				        }else{
+				        	elem = $( "#id_desa" )
+				        	make_disabled(elem, true)
+				        }
+					})
+                },
+                error: function(data) {                
+                    toast_server_error()
+                }
+            });
+		}
+
+		function load_kabupaten(id_provinsi){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+	        $( "#id_kabupaten_chosen" ).mask('loading')
+	        $( "#id_kabupaten_chosen .loadmask-msg" ).css('top', '2px')
+	        $.ajax({ // create an AJAX call...
+                data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
+                type: 'POST', // GET or POST
+                url: '{% url 'admin:option_kabupaten' %}', // the file to call
+                success: function(response) { // on success..
+                    elem = $( "#id_kabupaten" )
+                    elem.html(response);
+			        make_disabled(elem, false)
+			        $( "#id_kabupaten_chosen" ).unmask()
+			        $( "#id_kabupaten" ).change(function(){
+						$this = $(this)
+				        chosen_change($this)
+
+				        id_kabupaten = $(this).val()
+						if(id_kabupaten.length > 0){
+					        load_kecamatan(id_kabupaten)
+				        }else{
+				        	elem = $( "#id_kecamatan" )
+				        	make_disabled(elem, true)
+				        }
+					})
+                },
+                error: function(data) {                
+                    toast_server_error()
+                }
+            });
+		}
+
+		function load_provinsi(id_negara){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+	        $( "#id_provinsi_chosen" ).mask('loading')
+	        $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
+            $.ajax({ // create an AJAX call...
+                data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
+                type: 'POST', // GET or POST
+                url: '{% url 'admin:option_provinsi' %}', // the file to call
+                success: function(response) { // on success..
+                    elem = $( "#id_provinsi" )
+                    elem.html(response);
+			        make_disabled(elem, false)
+			        $( "#id_provinsi_chosen" ).unmask()
+			        $( "#id_provinsi" ).change(function(){
+						$this = $(this)
+				        chosen_change($this)
+
+				        id_provinsi = $(this).val()
+						if(id_provinsi.length > 0){
+					        load_kabupaten(id_provinsi)
+				        }else{
+				        	elem = $( "#id_kabupaten" )
+				        	make_disabled(elem, true)
+				        }
+					})
+                },
+                error: function(data) {                
+                    toast_server_error()
+                }
+            });
+		}
+
+		$( "#id_negara" ).change(function(){
+			$this = $(this)
+	        chosen_change($this)
+
+	        id_negara = $(this).val()
+			if(id_negara.length > 0){
+		        load_provinsi(id_negara)
+	        }else{
+	        	elem = $( "#id_provinsi" )
+	        	make_disabled(elem, true)
+	        }
+		})
+		$( "#id_provinsi" ).change(function(){
+			$this = $(this)
+	        chosen_change($this)
+
+	        id_provinsi = $(this).val()
+			if(id_provinsi.length > 0){
+		        load_kabupaten(id_provinsi)
+	        }else{
+	        	elem = $( "#id_kabupaten" )
+	        	make_disabled(elem, true)
+	        }
+		})
+		$( "#id_kabupaten" ).change(function(){
+			$this = $(this)
+	        chosen_change($this)
+
+	        id_kabupaten = $(this).val()
+			if(id_kabupaten.length > 0){
+		        load_kecamatan(id_kabupaten)
+	        }else{
+	        	elem = $( "#id_kecamatan" )
+	        	make_disabled(elem, true)
+	        }
+		})
+	</script>
+{% endblock %}
+
+{% block extra-object-tools-items %}
+	{% if user.is_superuser or user|has_group:"Admin Sistem" %}
+    <li>
+        {% url 'admin:accounts_account_change' original.pk as change_password_url %}
+        <a href="{{ change_password_url }}password" class="change-password">{% trans "Change password" %}</a>
+    </li>
+    {% endif %}
+    {% if user.is_superuser %}
+        <li>
+            {% url 'loginas-user-login' original.pk as login_sebagai_url %}
+            <a href="{{ login_sebagai_url }}" class="loginas">{% trans "Login Sebagai" %} {{ original.nama_lengkap }}</a>
+        </li>
+    {% endif %}
+{% endblock %}

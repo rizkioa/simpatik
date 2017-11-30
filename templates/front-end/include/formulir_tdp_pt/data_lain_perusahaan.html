@@ -1,0 +1,105 @@
+<form method="POST" name="step7" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+{% csrf_token %}
+    <h3>DATA LAIN PERUSAHAAN</h3>
+    <hr class="style14">
+
+    <h4><u>DATA PIMPINAN PERUSAHAAN</u></h4>
+    <h5>Jumlah Pimpinan Perusahaan : Dirut / Dir Cabang / Penanggung Jawab: <span id="jumlah_dirut"></span>
+    Direktur : <span id="jumlah_direktur"></span>  Komisaris : <span id="jumlah_komisaris"></span>
+    </h5>
+
+    <div class="row">
+    	<div class="col-md-12">
+    		<div class="table-responsive">
+		    	<table class="table table-striped" id="table_data_pimpinan">
+		    		<thead>
+		    			<tr>
+		    				<th>No</th>
+		    				<th>Kedudukan dalam perusahaan</th>
+		    				<th>Nama Lengkap</th>
+		    				<th>Tempat & Tgl Lahir</th>
+		    				<th>Alamat Tetap</th>
+		    				<th>No. Telepon</th>
+		    				<th>No. Hp</th>
+		    				<th>Email</th>
+		    				<th>Kewarganegaraan</th>
+		    				<th>Tgl Mulai Menduduki Jabatan</th>
+		    				<th>(Khusus Komisaris / Direktur) Jumlah saham yang memiliki (lembar)</th>
+		    				<th>(Khusus Komisaris / Direktur) Jumlah modal disetor (Rp.)</th>
+		    				<th>Kedudukan dalam perusahaan lain</th>
+		    				<th>Nama Perusahaan</th>
+		    				<th>Alamat Perusahaan</th>
+		    				<th>Kode Pos</th>
+		    				<th>No. Telp</th>
+		    				<th>Tgl Mulai Menduduki Jabatan</th>
+		    				<th>Aksi</th>
+		    			</tr>
+		    		</thead>
+		    		<tbody>
+		    		</tbody>
+		    	</table>
+		    </div>
+    	</div>
+    </div>
+
+	<a onclick="add_data_pimpinan()" data-toggle="modal" data-target="#create_pimpinan" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pimpinan Perusahaan</a>
+
+    <h4><u>PEMEGANG SAHAM</u></h4>
+    <div class="row">
+    	<div class="col-md-12">
+    		<div class="table-responsive">
+		    	<table class="table table-striped" id="table_pemegang_saham">
+		    		<thead>
+		    			<tr>
+		    				<th>No.</th>
+		    				<th>Nama lengkap</th>
+		    				<!-- <th>Tempat & Tgl. lahir</th> -->
+		    				<th>Alamat Tetap</th>
+		    				<!-- <th>Kode Pos</th> -->
+		    				<th>No. Telp</th>
+		    				<th>Kewarganegaraan</th>
+		    				<th>NPWP</th>
+		    				<th>Jumlah saham yang dimiliki (lembar)</th>
+		    				<th>Jumlah modal disetor (Rp)</th>
+		    				<th>Aksi</th>
+		    			</tr>
+		    		</thead>
+		    		<tbody>
+		    		</tbody>
+		    	</table>
+		    </div>
+		</div>
+	</div>
+
+	<a onclick="add_pemegang_saham()" data-toggle="modal" data-target="#create_pemegang_saham" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pemegang Saham</a>
+
+	<h4><u>KATEGORI PERUSAHAAN (Kantor Tunggal tidak perlu mengisi)</u></h4>
+	<h5>Apabila pendaftaran ini dilakukan oleh Kantor Pusat/Induk, agar disebutkan Kantor Cabang/Kantor Pembantu/ Perwakilan</h5>
+	<div class="row">
+    	<div class="col-md-12">
+    		<div class="table-responsive">
+		    	<table class="table table-striped" id="table_perusahaan_cabang">
+		    		<thead>
+		    			<tr>
+		    				<th>No.</th>
+		    				<th>Nama Perusahaan</th>
+		    				<th>Alamat Lengkap</th>
+		    				<th>Nomor TDP</th>
+		    				<th>Kabupaten/Kota</th>
+		    				<th>Propinsi</th>
+		    				<th>Kode Pos</th>
+		    				<th>No. Telp</th>
+		    				<th>Status Perusahaan</th>
+		    				<th>Jenis Kegiatan Usaha</th>
+		    				<th>Aksi</th>
+		    			</tr>
+		    		</thead>
+		    		<tbody>
+		    		</tbody>
+		    	</table>
+		    </div>
+		</div>
+	</div>
+
+	<a onclick="add_perusahaan_cabang();" data-toggle="modal" data-target="#create_cabang" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Kantor Cabang/Pembantu/Perwakilan</a>
+</form>

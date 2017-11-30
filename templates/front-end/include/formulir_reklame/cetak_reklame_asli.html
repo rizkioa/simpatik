@@ -1,0 +1,386 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+    
+	    hr.style14 { 
+	        border: 0; 
+	        height: 1px; 
+	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+	      }
+	    * {
+	      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	    }
+		body {
+	        width: 100%;
+	        height: 100%;
+	        margin: 0;
+	        padding: 0;
+	        background-color: #FAFAFA;
+	        font: 12pt "Open Sans";
+	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	    }
+	    * {
+	        box-sizing: border-box;
+	        -moz-box-sizing: border-box;
+	    }
+	    .page {
+	        width: 21.5cm;
+	        min-height: 33cm;
+	        padding: 5mm;
+	        margin: 5mm auto;
+	        border: 1px #D3D3D3 solid;
+	        border-radius: 5px;
+	        background: white;
+	        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	    }
+	    .subpage {
+	        padding: 0.5cm;
+	        /*border: 5px red solid;*/
+	        height: 350mm;
+	        /*outline: 2cm #FFEAEA solid;*/
+	    }
+	    @-moz-document url-prefix() {
+	        .subpage {
+	            height:  378mm;
+	        }
+	    }   
+	    @page {
+	        size: F4;
+	        margin: 0;
+	    }
+	    @media print {
+	        html, body {
+	            width: 210mm;
+	            height: 297mm;        
+	        }
+	        .page {
+	            margin: 0;
+	            border: initial;
+	            border-radius: initial;
+	            width: initial;
+	            min-height: initial;
+	            box-shadow: initial;
+	            background: initial;
+	            page-break-after: always;
+	        }
+	    }
+
+	    /*.title, .tabel{
+			border-bottom: 1px solid #7d7d7d;
+	    }
+	    .title h3{
+	    	margin-top: 0px;
+	    }
+	    .tabel{
+	    	padding-top: 0px;
+	    	padding-bottom: 10px;
+	    }
+
+	    table {
+	        border-collapse: collapse;
+		}*/
+
+		.ceklist {
+		    border: 1px solid black;
+		}
+	    .font {
+	        font-size: 12px;
+	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	    }
+	    #print-modal {
+	        margin: 0 0 0 -393px;
+	    }
+	    .style2 {
+			border-top: 3px double #8c8b8b;
+		}
+		.button {
+		    background-color: #4CAF50; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    border-radius: 8px;
+		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+		.button-close {
+		    background-color: #f32818; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    border-radius: 8px;
+		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+		@media print {
+		  .hidden-print {
+		    display: none !important;
+		  }
+		}
+		#qrcodeTable canvas{
+			padding: 2px;
+			border-radius: 3px;
+			border: 3px solid #000;
+			/*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+			width: 90px;
+			height: 90px;
+		}
+/*		th, td {
+		    padding: 5px;
+		}*/
+	</style>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+	<script type="text/javascript">
+		
+	</script>
+	{% else %}
+	<script>
+		document.querySelector('style').textContent += "@media print { body { display: none !important; } }"
+	</script>
+	{% endif %}
+</head>
+<body id="body">
+{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+		<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+			<img src="{% static 'images/icon-print.png' %}">
+		</a>
+		<br>
+		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+			<img src="{% static 'images/icon-close.png' %}">
+		</a>
+	</div>
+{% endif %}
+	<div class="book">
+	    <div class="page">
+	        <div class="subpage">
+	        	<table>
+	        		<tr>
+	        			<td></td>
+	        		</tr>
+	        	</table>
+	        	<table width="100%" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+	        		<tr>
+	        			<td><img src="{% static 'images/kabkediri.png' %}" width="100px"></td>
+	        			<td>
+	        				<center>
+	        					<p>
+	        						<font style="font-size: 20px;"><b>PEMERINTAHAN KABUPATEN KEDIRI<br>DINAS PENANAMAN MODAL DAN PELAYANAN <br>TERPADU SATU PINTU</b></font><br>
+	        						<font>Jalan Soekarno Hatta Nomor 14 Telepon 681227, 681741 fax. 0354 681227<br>
+	        						Email : dpmptsp@kedirikab.go.id Website : kedirikab.go.id</font><br>
+	        						<font style="font-size: 20px;">KEDIRI</font>
+	        					</p>
+	        				</center>
+	        			</td>
+	        		</tr>
+	        	</table>
+	        	<hr class="style2">
+	        	<!-- <div style="padding-left: 11px;">
+	        		<table frame="box" rules="rows" style="padding-left: 10px">
+		        		<tr>
+		        			<td><strong>ASLI</strong></td>
+		        		</tr>
+		        	</table>
+	        	</div> -->
+	        	
+	        	<center>
+	        		<font style="font-size: 20px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
+	        		<font style="font-size: 18px">NOMOR : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+	        	</center>
+	        	<table width="100%" border="0" frame="box" rules="rows" style="padding: 10px;">
+	        		<tr>
+	        			<td style="width: 297px;"><b>1. Nama Perusahaan/Instansi</b></td>
+	        			<td>:</td>
+	        			<td  colspan="2">{{ perusahaan.nama_perusahaan }}</td>
+	        		</tr>
+	        		<tr>
+	        			<td style="vertical-align: top;padding-top: 1px;"><b>2. Nama dan Alamat tempat usaha</b></td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td  colspan="2">{{ pemohon.nama_lengkap|default_if_none:"-" }} 
+	        			{% if pemohon.jabatan_pemohon %}
+	        			({{ pemohon.jabatan_pemohon }})
+	        			{% else %}
+	        			
+	        			{% endif %} / {{ alamat_perusahaan|default_if_none:"-" }}
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td><b>Dasar pertimbangan pemberian izin</b></td>
+	        			<td>:</td>
+	        			<td colspan="2">Permohonan Per Tanggal {{ pengajuan.created_at|date:"d F Y" }}</td>
+	        		</tr>
+	        		<tr>
+	        			<td><b>Dasar hukum pemberian izin</b></td>
+	        			<td>:</td>
+	        			<td colspan="2"></td>
+	        		</tr>
+	        			<b> </b></p>
+	        		<tr>
+	        			<td colspan="4">
+	        				<table border="0">
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>a.</b></td>
+	        						<td><b>Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>b.</b></td>
+	        						<td><b>Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></td>
+	        					</tr>
+	        				</table>
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td><b>Jenis reklame yang dipasang/Judul</b></td>
+	        			<td>:</td>
+	        			<td colspan="2">{{pengajuan.tipe_reklame}} / "{{pengajuan.judul_reklame}}"</td>
+	        		</tr>
+	        		<tr>
+	        			<td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
+	        			<td>:</td>
+	        			<td colspan="2">{{panjang_|default_if_none:"-"}} M x {{lebar_|default_if_none:"-"}} M x {{sisi_|default_if_none:"-"}} M / {{pengajuan.jumlah|floatformat:-2|default_if_none:"-"}}</td>
+	        		</tr>
+	        		<tr>
+	        			<td><b>Jangka waktu izin</b></td>
+	        			<td>:</td>
+	        			<td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
+	        		</tr>
+	        		<tr>
+	        			<td style="vertical-align: top;padding-top: 1px;"><b>Letak pemasangan</b></td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td colspan="2">{% if detail_list_count > 10 %} Terlampir{% else %}{{detil_reklame_list|title}}{% endif %}</td>
+	        		</tr>
+	        		<tr>
+	        			<td colspan="4">
+	        				<table border="0">
+	        					<tr>
+	        						<td colspan="2"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>1. </b></td>
+	        						<td><b>Tidak bertentangan dengan kepentingan umum : kesusilaan,keindahan, kesopanan,ketertiban umum dan keamanan.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>2. </b></td>
+	        						<td><b>Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>3. </b></td>
+	        						<td><b>Tidak mengganggu ketertiban lalu lintas.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>4. </b></td>
+	        						<td><b>Pemasangan reklame tempel pada tembok-tembok/dinding-dinding rumah, kantor, toko harus memperoleh izin terlebih dahulu dari penguasa rumah, kantor, toko dan sebagainya.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>5. </b></td>
+	        						<td><b>Pemasangan reklame spanduk dan banner dilarang merusak pohon (antara lain dengan menancapkan paku) dan dilarang ditalikan pada tiang listrik.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>6. </b></td>
+	        						<td><b>Kerusakan dan semua akibat yang ditimbulkan atas pemasangan reklame, harus diperbaiki, ditanggung oleh dan atas biaya pemasang/pemilik reklame.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>7. </b></td>
+	        						<td><b>Reklame yang sudah terpasang dapat dicabut/ dibongkar, apabila tempat-tempat tersebut diperlukan oleh pemerintah atau untuk kepentingan umum/sosial. Biaya pembongkaran papan Reklame dimaksud menjadi tanggung jawab Pemohon.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>8. </b></td>
+	        						<td><b>Setelah habis masa pemasangan, reklame harus segera dibongkar kecuali jika diperpanjang waktu pemasangannya setelah terlebih dahulu menyelesaikan segala persyaratannya.</b></td>
+	        					</tr>
+	        					<tr>
+	        						<td style="vertical-align: top;padding-top: 5px;"><b>9. </b></td>
+	        						<td><b>Pelanggaran atas ketentuan dalam pemasangan reklame akan dikenakan sanksi sesuai dengan peraturan yang berlaku.</b></td>
+	        					</tr>
+	        				</table>
+	        		</tr>
+	        	</table>
+	        	<div style="">
+	        	</div>
+	        	<table width="100%" border="0" class="font">
+	        		<tr>
+	        			<td>
+	        			<table border="0">
+	  						<tr>
+	  							<td>
+	  							<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+	  							</td>
+	  						</tr>
+	  						<tr style="font-size:15px;">
+	  							<td>Tembusan :</td>
+	  						</tr>
+	  						<tr>
+  								<td style="font-size:15px;text-indent:-30px;padding-left: 30px;"> 
+								Yth. Sdr. Anggota Tim Perizinan	    
+									Pemasangan Reklame Kab. Kediri  
+								</td>
+	  						</tr>
+	  					</table>
+	        			</td>
+
+	        			<td width="50%">
+	        				<p style="font-size:14px; padding-left: 20%;" align="center">
+			                    <font size="3pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
+			                    KEPALA DPMPTSP <br>KAB. KEDIRI
+			                    <br>
+			                    <br>
+			                    <br>
+			                    <br>
+			                    <br>
+			                    <u><b>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
+			                    Pembina Tk.l<br>
+			                    NIP: {{nip_kepala_dinas}}
+			                </p>
+	        			</td>
+	        		</tr>
+	        	</table>
+	        </div>    
+	    </div>
+	</div>
+	{% if detail_list_count > 10 %}
+	<div class="book">
+	    <div class="page">
+	        <div class="subpage">
+	        <h4>Lampiran</h4>
+	        	<table class="table table-bordered font" width="100%" border="1">
+	        		<tr>
+	        			<td align="center">Nama Kecamatan</td>
+	        			<td align="center">Nama Desa</td>
+	        		</tr>
+	        		{% for j in detail_wilayah_list%}
+	        		<tr>
+	        			<td>{{j.desa.kecamatan.nama_kecamatan}}</td>
+	        			<td>{{j.desa.nama_desa}}	</td>
+	        		</tr>
+	        		{% endfor %}
+	        	</table>
+	        </div>    
+	    </div>
+	</div>
+	{% endif %}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
+	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
+	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
+	<script type="text/javascript">
+		function Exit() {
+		    var x=confirm('Are You sure want to exit:');
+		    if(x) window.close();
+	    }
+	    jQuery('#qrcodeTable').qrcode({
+			text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+			size: 500,
+		});	
+	</script>
+</body>
+</html>

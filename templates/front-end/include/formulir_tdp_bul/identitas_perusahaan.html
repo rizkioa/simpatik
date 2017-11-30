@@ -1,0 +1,215 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'siup_identitas_perusahan_save' %}">
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>IDENTITAS PERUSAHAAN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">NPWP</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Nama Perusahaan</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Nama Group/Kelompok (jika ada)</label>
+      <div class="col-sm-7">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Bentuk kegiatan usaha</label>
+      <div class="col-sm-4">
+        <select class="form-control chosen-select mb-10">
+          <option>-- Pilih Bentuk Kegiatan Usaha</option>
+          <option>Kecil</option>
+          <option>Menengah</option>
+          <option>Besar</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" name="alamat" placeholder="Isi alamat lengkap rumah anda"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Provinsi</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Provinsi --</option>
+          {% if provinsi %}
+          {% for p in provinsi %}
+          <option value="{{ p.id }}">{{ p.nama_provinsi }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kota/Kabupaten --</option>
+          {% if kabupaten %}
+          {% for k in kabupaten %}
+          <option value="{{ k.id }}">{{ k.nama_kabupaten }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kecamatan</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kecamatan --</option>
+          {% if kecamatan %}
+          {% for k in kecamatan %}
+          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kelurahan/Desa --</option>
+          {% if desa %}
+          {% for d in desa %}
+          <option value="{{ d.id }}">{{ d.nama_desa }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kode Pos</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Telp</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Fax</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">E-mail</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" id="input01">
+      </div>
+    </div>
+
+   <!--  <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Status penanaman modal</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>-- Pilih Status penanaman modal --</option>
+          <option>PMA (Penanaman Modal Asing)</option>
+          <option>PMDN (Penanaman Modal Dalam Negeri)</option>
+          <option>Lain-lain</option>
+        </select>
+      </div>
+    </div> -->
+
+   <!--  <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Jenis badan usaha perusahaan</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>PERSERO TERBATAS (PT)</option>
+          <option>PERSEKUTUAN KOMANDITER (CV)</option>
+          <option>FIRMA</option>
+          <option>PERUSAHAAN PERORANGAN (PO)</option>
+          <option>KOPERASI</option>
+          <option>BENTUK USAHA LAINNYA (BUL)</option>
+        </select>
+      </div>
+    </div> -->
+
+    <!-- <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Status perusahaan</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>Kantor Tunggal</option>
+          <option>Kantor Pusat</option>
+          <option>Kantor Pembantu</option>
+          <option>Perwakilan</option>
+        </select>
+      </div>
+    </div> -->
+
+    <!-- <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kegiatan usaha</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>Perdagangan mikro</option>
+          <option>Perdagangan kecil</option>
+          <option>Perdagangan menengah</option>
+          <option>Perdagangan besar</option>
+        </select>
+      </div>
+    </div> -->
+
+    <!-- <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kegiatan usaha (KBLI)</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>KBLI</option>
+        </select>
+      </div>
+    </div> -->
+
+    <!-- <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Barang/jasa dagangan utama</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>Produk</option>
+        </select>
+      </div>
+    </div> -->
+
+   <!--  <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Bentuk kerjasama</label>
+      <div class="col-sm-6">
+        <select class="form-control chosen-select mb-10">
+          <option>mandiri</option>
+          <option>jaringan internasional</option>
+          <option>jaringan nasional</option>
+          <option>waralaba internasional</option>
+          <option>waralaba nasional</option>
+          <option>kso</option>
+        </select>
+      </div>
+    </div> -->
+</form>

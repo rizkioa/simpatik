@@ -1,0 +1,140 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<h3>IZIN PARKIR</h3>
+			<hr class="style14">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="jasa_penitipan" class="col-sm-2 control-label">Jenis Penitipan</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_jasa_penitipan" name="jenis_penitipan" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="jasa_penitipan" class="col-sm-2 control-label">Ukuran Penitipan</label>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<span class="input-group-addon">Lebar</span>
+				<input type="text" class="form-control" name="lebar_penitipan" id="id_ukuran_penitipan_lebar">
+				<span class="input-group-addon">M</span>
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<span class="input-group-addon">Panjang</span>
+				<input type="text" class="form-control" name="panjang_penitipan" id="id_ukuran_penitipan_panjang">
+				<span class="input-group-addon">M</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- <div class="form-group" id="kabupaten">
+		<label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten"> 
+			</select>
+		</div>
+	</div> -->
+
+	<div class="form-group" id="kecamatan1">
+		<label for="input01" class="col-sm-2 control-label">Kecamatan </label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan1">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="desa">
+		<label for="input01" class="col-sm-2 control-label">Kelurahan/Desa</label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="desa" id="id_desa1">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="alamat">
+		<label for="input01" class="col-sm-2 control-label">Alamat </label>
+		<div class="col-sm-6">
+			<textarea class="form-control" id="id_alamat_izin_parkir" rows="5" name="alamat"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="input01" class="col-sm-2 control-label">Lama Penitipan</label>
+		<div class="col-sm-6">
+			<div class="input-group datepicker mt-10" data-format="L" data-locale="ru">
+				<input type="text" class="form-control" id="id_tanggal_penitipan" name="tanggal_pelaksanaan_parkir" required="" data-parsley-trigger="change">
+				<span class="input-group-addon">
+					<span class="fa fa-calendar"></span>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<span class="col-sm-2"></span>
+		<label for="input01" class="col-sm-1 control-label">Jam</label>
+		<div class="col-sm-2">
+			<div class="input-group datepicker mt-10" data-format="HH:mm">
+				<input type="text" class="form-control" id="id_waktu_mulai" name="waktu_mulai" required="" data-parsley-trigger="change">
+				<span class="input-group-addon">
+					<span class="fa fa-clock-o"></span>
+				</span>
+			</div>
+		</div>
+		<span class="col-sm-1 mt-10" style="text-align: center;">s/d</span>
+		<div class="col-sm-2">
+			<div class="input-group datepicker mt-10" data-format="HH:mm">
+				<input type="text" class="form-control" id="id_waktu_akhir" name="waktu_berakhir" required="" data-parsley-trigger="change">
+				<span class="input-group-addon">
+					<span class="fa fa-clock-o"></span>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="" class="col-sm-2 control-label">Anggota Penitipan</label>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<input type="text" class="form-control" name="jumlah_anggota_parkir" id="id_anggota_penitipan">
+				<span class="input-group-addon">Orang</span>
+			</div>
+		</div>
+	</div>
+
+	<h3><u>Batas-batas</u></h3>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Sebelah Utara</label>
+		<div class="col-sm-3">
+			<input type="text" class="form-control" name="batas_utara" id="id_batas_sebelah_utara">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Sebelah Timur</label>
+		<div class="col-sm-3">
+			<input type="text" class="form-control" name="batas_timur" id="id_batas_sebelah_timur">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Sebelah Selatan</label>
+		<div class="col-sm-3">
+			<input type="text" class="form-control" name="batas_selatan" id="id_batas_sebelah_selatan">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Sebelah Barat</label>
+		<div class="col-sm-3">
+			<input type="text" class="form-control" name="batas_barat" id="id_batas_sebelah_barat">
+		</div>
+	</div>
+
+</form>

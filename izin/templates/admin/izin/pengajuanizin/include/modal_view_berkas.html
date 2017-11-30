@@ -1,0 +1,83 @@
+{% load i18n admin_static widgets access %}
+<div class="modal fade view_berkas" id="view_berkas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title custom-font">Berkas</h3>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					{% if pengajuan.berkas_terkait_izin.all %}
+						{% for a in pengajuan.berkas_terkait_izin.all %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+								<div class="hovereffect">
+									{% with a.berkas.name|extension|stringformat:"s" as ext %}
+										<div class="img-responsi">
+											{% if ext|InList:'.pdf, .PDF' %}
+												<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="">
+											{% elif ext|InList:'.doc, .DOC, .docx, .DOCX' %}
+												<img class="imageloaderImage" src="{% static 'images/icons/doc.png' %}" alt="">
+											{% elif ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
+												<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
+											{% else %}
+												<img class="imageloaderImage" src="{{a.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
+											{% endif %}
+										</div>	
+									{% endwith %}
+									<div class="overlay">
+										<h2>{{ a.nama_berkas.upper|split_berkas }}</h2>
+										{% with a.berkas.name|extension|stringformat:"s" as ext %}
+											{% if ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
+												<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1" data-title="{{ a.nama_berkas.upper }}">link here</a>
+											{% elif ext|InList:'.pdf, .PDF, .doc, .DOC, .docx, .DOCX' %}
+												<a class="info" href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank">link here</a>
+											{% else %}
+												<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1" data-title="{{ a.nama_berkas.upper }}">link here</a>
+											{% endif %}
+										{% endwith %}
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+					{% if sertifikat_tanah_list %}
+						{% for a in sertifikat_tanah_list %}
+							<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+								<div class="hovereffect">
+									{% with a.berkas_sertifikat.berkas.name|extension|stringformat:"s" as ext %}
+										<div class="img-responsi">
+											{% if ext|InList:'.pdf, .PDF' %}
+												<img class="imageloaderImage" src="{% static 'images/icons/pdf.png' %}" alt="">
+											{% elif ext|InList:'.doc, .DOC, .docx, .DOCX' %}
+												<img class="imageloaderImage" src="{% static 'images/icons/doc.png' %}" alt="">
+											{% elif ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
+												<img class="imageloaderImage" src="{{a.berkas_sertifikat.berkas.url}}" alt="{{ a.nama_berkas.upper }}" >
+											{% else %}
+												<img class="imageloaderImage" src="{{a.berkas_sertifikat.berkas.url}}" alt="{{ a.berkas_sertifikat.nama_berkas.upper }}" >
+											{% endif %}
+										</div>	
+									{% endwith %}
+									<div class="overlay">
+										<h2>{{ a.berkas_sertifikat.nama_berkas.upper|split_berkas }}</h2>
+										{% with a.berkas.name|extension|stringformat:"s" as ext %}
+											{% if ext|InList:'.jpg, .png, .jpeg, .JPG, .PNG, .JPEG' %}
+												<a class="info example-image-link" href="{{a.berkas_sertifikat.berkas.url}}" data-lightbox="example-1" data-title="{{ a.berkas_sertifikat.nama_berkas.upper }}">link here</a>
+											{% elif ext|InList:'.pdf, .PDF, .doc, .DOC, .docx, .DOCX' %}
+												<a class="info" href="http://docs.google.com/gview?url=http://{{ request.get_host }}/media/{{ a.berkas }}&embedded=true" target="_blank">link here</a>
+											{% else %}
+												<a class="info example-image-link" href="{{a.berkas.url}}" data-lightbox="example-1" data-title="{{ a.berkas_sertifikat.nama_berkas.upper }}">link here</a>
+											{% endif %}
+										{% endwith %}
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+			</div>
+		</div>
+	</div>
+</div>

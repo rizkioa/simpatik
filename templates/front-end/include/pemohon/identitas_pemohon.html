@@ -1,0 +1,219 @@
+<form method="POST" name="step1" role="form" class="form-horizontal form-pemohon" action="{% url 'siup_pemohon_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+  <!-- <input type="hidden" name="path_name" class="path_name"> -->
+  <div class="form-group">
+    <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pengajuan</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" id="id_jenis_pengajuan" name="jenis_pengajuan" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Jenis Pengajuan --</option>
+        {% if jenispermohonanizin_list %}
+          {% for jenis in jenispermohonanizin_list %}
+            <option value="{{ jenis.id }}">{{ jenis.jenis_permohonan_izin }}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>IDENTITAS PEMOHON</h3>
+      <hr class="style14">
+    </div>
+  </div>
+  <input type="hidden" id="id_status" name="status" value="2">
+
+  <div class="form-group" id="jenis_pemohon">
+    <label for="input01" class="col-sm-2 control-label"><strong>Jenis Pemohon</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" id="id_jenis_pemohon" name="jenis_pemohon" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Jenis Pemohon --</option>
+        {% if jenis_pemohon %}
+        {% for j in jenis_pemohon %}
+        <option value="{{ j.id }}">{{ j.jenis_pemohon }}</option>
+        {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="ktp">
+    <label for="input01" class="col-sm-2 control-label"><strong>No. KTP</strong> </label>
+    <div class="col-sm-5">
+      <input onchange="load_pemohon($(this).val())" type="text" class="form-control no_ktp" id="id_ktp" name="ktp" required="" data-parsley-trigger="change">
+    </div>
+  </div>
+  <div class="form-group" id="paspor">
+    <label for="input01" class="col-sm-2 control-label">Paspor </label>
+    <div class="col-sm-5">
+      <input type="text" class="form-control" id="id_paspor" name="paspor">
+    </div>
+  </div>
+
+  <div class="form-group" id="nama_lengkap">
+    <label for="input01" class="col-sm-2 control-label"><strong>Nama Lengkap</strong> </label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="id_nama_lengkap" name="nama_lengkap" required="" data-parsley-trigger="change">
+    </div>
+  </div>
+
+  <div class="form-group" id="nama_lengkap">
+    <label for="input01" class="col-sm-2 control-label">Tempat Lahir</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control" id="id_tempat_lahir" name="tempat_lahir">
+    </div>
+  </div>
+
+<div class="form-group">
+  <label for="input01" class="col-sm-2 control-label">Tanggal Lahir</label>
+  <div class="col-sm-5">
+    <div class="input-group datepicker" data-format="L">
+      <input type="text" class="form-control" id="id_tanggal_lahir" name="tanggal_lahir">
+      <span class="input-group-addon">
+      <span class="fa fa-calendar"></span>
+      </span>
+    </div>
+  </div>
+</div>
+
+  <div class="form-group" id="alamat">
+    <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong> </label>
+    <div class="col-sm-7">
+      <textarea class="form-control" id="alamat_pemohon_load" rows="5" name="alamat" required="" data-parsley-trigger="change"></textarea>
+    </div>
+  </div>
+
+  <div class="form-group" id="negara">
+    <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="negara" id="id_negara" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Negara --</option>
+        {% if negara %}
+          {% for p in negara %}
+          <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="provinsi">
+    <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="provinsi" id="id_provinsi" required="" data-parsley-trigger="change">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="kabupaten">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten" required="" data-parsley-trigger="change"> 
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="kecamatan">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan" required="" data-parsley-trigger="change">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="desa">
+    <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="desa" id="id_desa" required="" data-parsley-trigger="change">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="telephone">
+    <label for="input01" class="col-sm-2 control-label"><strong>Telepon</strong></label>
+    <div class="col-sm-6">
+      <input type="text" id="no_telepon_pemohon_load" class="form-control no_ktp" name="telephone" required="" data-parsley-trigger="change">
+    </div>
+  </div>
+
+  <div class="form-group" id="hp">
+    <label for="input01" class="col-sm-2 control-label">No. HP</label>
+    <div class="col-sm-6">
+      <input id="hp_load" type="text" class="form-control no_hp no_ktp" name="hp">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">E-mail</label>
+    <div class="col-sm-6">
+      <input id="email_pemohon_load" type="email" class="form-control" name="email" data-parsley-trigger="change">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Kewarganegraan</strong></label>
+    <div class="col-sm-4">
+      <!-- <input id="kewarganegaraan_pemohon_load" class="form-control" name="kewarganegaraan" type="text" required="" data-parsley-trigger="change"> -->
+      <select id="kewarganegaraan_pemohon_load" class="form-control chosen-select mb-10" name="kewarganegaraan" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Kewarganegaraan --</option>
+        <option value="WNI">WNI</option>
+        <option value="WNA">WNA</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Pekerjaan</strong></label>
+    <div class="col-sm-4">
+      <select id="pekerjaan_pemohon_load" class="form-control chosen-select mb-10" name="pekerjaan" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Pekerjaan --</option>
+        <option value="PNS">PNS</option>
+        <option value="Swasta">Swasta</option>
+        <option class="Wiraswasta">Wiraswasta</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Keterangan Pekerjaan</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" name="keterangan_pekerjaan" id="id_keterangan_pekerjaan">
+    </div>
+  </div>
+
+  <div class="row">
+    <h4 class="custom-font col-sm-2"><strong>Apakah anda kuasa ?</strong></h4> 
+    <div class="col-sm-9" style="padding-bottom: 10px; padding-top: 8px;">
+      <div class="onoffswitch labeled greensea inline-block">
+        <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox switch_pemohon_disabled" id="switch_pemohon_disabled" >
+        <label class="onoffswitch-label" for="switch_pemohon_disabled">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Nama Kuasa</strong></label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control kuasa_disable" name="nama_kuasa" id="id_nama_kuasa">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Nomor Identitas Kuasa</strong></label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control kuasa_disable" name="no_identitas_kuasa" id="id_no_identitas_kuasa">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Telp Kuasa</strong></label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control kuasa_disable" name="telephone_kuasa" id="id_telephone_kuasa">
+    </div>
+  </div>
+</form>
+
+

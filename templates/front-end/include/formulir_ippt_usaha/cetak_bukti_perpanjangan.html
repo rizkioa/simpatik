@@ -1,0 +1,447 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak Bukti Pendaftaran</title>
+</head>
+<!--[if ]>
+<style>
+.page{
+    min-height: 309mm;
+}
+</style>
+<![endif]-->
+<style type="text/css">
+    
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+	body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+        padding: 0.5cm;
+        /*border: 5px red solid;*/
+        height: 257mm;
+        /*outline: 2cm #FFEAEA solid;*/
+    }
+    
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .title, .tabel{
+		border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+    	margin-top: 0px;
+    }
+    .tabel{
+    	padding-top: 0px;
+    	padding-bottom: 10px;
+    }
+
+    table {
+    border-collapse: collapse;
+	}
+
+	.ceklist {
+	    border: 1px solid black;
+	}
+    .font {
+        font-size: 12px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+</style>
+<body>
+    <div class="book">
+        <div class="page">
+            <div class="subpage">
+            	<div class="title">
+                    <div class="tabel">
+                        <table>
+                            <tr>
+                                <td width="15%"><img src="{% static 'images/SIMPATIK.png' %}" width="50px"></td>
+                                <td>
+                                    <h3 style="font-size: 25px;line-height: 10px;padding-top: 10px;">SIMPATIK</h3><p style="line-height:1px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <h5>No. Pengajuan Izin : HO/1001/0802/2016<br>
+                                <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font></h5>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4 align="center"><u>PERMOHONAN SURAT IZIN GANGGUAN</u></h4>
+                    <p align="left" style="font-size:13px;padding-left:75%">
+                        Kepada
+                        <br>
+                        Yth. Bupati Kediri
+                    </p>
+                    <p style="font-size:13px">
+                        Perihal :       Formulir Izin Gangguan
+                    </p>
+                    <p align="left" style="font-size:13px;padding-left:75%">
+                        Lewat
+                        <br>
+                        Yth. Kepala DPMPTSP Kab. Kediri
+                        <br>
+                        di
+                        <br>
+                        KEDIRI
+                    </p>
+                </div>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pengajuan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Baru</td>
+                    </tr>
+                </table>
+                <h5><u>IDENTITAS PEMOHON</u></h5>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pemohon</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Pemilik</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nomor KTP/Paspor</td>
+                        <td width="10%">:</td>
+                        <td width="65%">350001010010101001</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Hartato</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. HP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">085736662908</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kewarganegaraan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Indonesia</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Pekerjaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Swasta</td>
+                    </tr>
+                </table>
+                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">NPWP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">1234567890</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">UD. MAKMUR JAYA</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Jl. Erlangga No.2, Kel. Sukorejo, Kec Ngasem, Kab.Kediri Jawa Timur</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kode Pos</td>
+                        <td width="10%">:</td>
+                        <td width="65%"></td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">087895172617</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Fax</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">-</td>
+                    </tr>
+                </table>
+                <h5><u>DATA KEGIATAN GANGGUAN</u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="40%">Rencana Perkiraan Modal</td>
+                        <td width="10%">:</td>
+                        <td width="50%">Rp.</td>
+                    </tr>
+                </table>
+                <p style="font-size:13px;">
+                    Bedasarkan Peraturan Daerah Kabupaten Kediri Nomor 5 Tahun 2012 tentang Retribusi Izin Gangguan Bersama ini mengajukan permohonan Izin Gangguan Untuk _____________________________ ______________________________________ dengan keterangan sebagai berikut :
+                </p>
+                <br>
+                <br>
+                
+                <hr>
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>    
+        </div>
+        <div class="page">
+            <div class="subpage">
+                <h6><u>Lokasi</u></h6>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="30%">Alamat</td>
+                        <td width="10%">:</td>
+                        <td width="65%">Jl. _____________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Desa / Kelurahan</td>
+                        <td width="10%">:</td>
+                        <td width="60%">___________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Kecamatan</td>
+                        <td width="10%">:</td>
+                        <td width="60%">___________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Kabupaten / Kota</td>
+                        <td width="10%"></td>
+                        <td width="60%">Kab. Kediri</td>
+                    </tr>
+                </table>
+                <h6><u>Dalam Kegiatan Perusahaan</u></h6>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="30%">Bahan Baku dan Penolong</td>
+                        <td width="10%">:</td>
+                        <td width="65%">_____________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Proses Produksi</td>
+                        <td width="10%">:</td>
+                        <td width="60%">________________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Jenis Produksi</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Kapasitas Produksi</td>
+                        <td width="10%">:</td>
+                        <td width="60%">_______________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Jumlah Tenaga Kerja</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Jumlah Mesin</td>
+                        <td width="10%">:</td>
+                        <td width="60%">_____</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Merk Mesin</td>
+                        <td width="10%">:</td>
+                        <td width="60%">___________________</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Daya</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Kekuatan</td>
+                        <td width="10%">:</td>
+                        <td width="60%">_______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Luas Ruang Tempat Usaha / Bangunan</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Luas Lahan Usaha</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Jenis Limbah / Gangguan</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Jenis Lokasi Usaha</td>
+                        <td width="10%">:</td>
+                        <td width="60%">______</td>
+                    </tr>
+                    <tr>
+                        <td width="30%">Jenis Bangunan</td>
+                        <td width="10%">:</td>
+                        <td width="60%">_______________</td>
+                    </tr>
+                </table>
+                <p style="font-size:13px">Demikian permohonan ini saya buat, dan saya sanggup mentaati semua Peraturan Perundangan - udangan yang berlaku dan tidak akan memulai melaksanakan sesuatu usaha, sebelum Izin tertulis ditetapkan</p>
+                <br>
+                <br>
+                <p align="center" style="font-size:13px;padding-left:75%">
+                    Kediri,.......................
+                    <br>
+                    Hormat Kami
+                    <br>
+                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+                    <br>
+                    <br>
+                    <br>
+                    <u class="font"><b>HARTATO</b></u>
+                </p>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+            </div>    
+        </div>
+
+        <div class="page">
+            <div class="subpage">
+                <hr class="style14">
+                <h5>Syarat HO:</h5>
+                <table class="font" width="100%" border="1" style="border:2px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <td width="5%">No</td>
+                            <td width="80%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (diisi Petugas)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if syarat %}
+                            {% for s in syarat %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ s.syarat }}</td>
+                                <td align="center"><input type="checkbox"></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <table width="100%">
+                    <tr>
+                        <td width="25%"></td>
+                        <td width="25%"></td>
+                        <td width="25%">
+                            <p align="center" style="font-size:13px;">
+                                Kediri,.......................
+                                <br>
+                                Petugas 1
+                                <br>
+                                Cap BPM
+                                <br>
+                                <br>
+                                <br>
+                                (...........................................)
+                            </p>
+                        </td>
+                        <td width="25%"><p align="center" style="font-size:13px;">
+                                Kediri,.......................
+                                <br>
+                                Petugas 2
+                                <br>
+                                Cap BPM
+                                <br>
+                                <br>
+                                <br>
+                                (...........................................)
+                            </p></td>
+                    </tr>
+                </table>
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d 10 September 2016</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+            </div>    
+        </div>
+    </div>
+</body>
+</html>

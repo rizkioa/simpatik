@@ -1,0 +1,227 @@
+<div class="modal fade" id="create_pemegang_saham" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title custom-font">Tambah Pemegang Saham</h3>
+      </div>
+      <div class="modal-body">
+        <form role="form" class="form-horizontal">
+          <input type="hidden" id="id_pemegang_saham">
+          <div class="form-group">
+            <label class="col-sm-3 control-label"><strong>Nama Lengkap</strong></label>
+            <div class="col-sm-7">
+              <input type="text" class="form-control" id="nama_lengkap_pemegang_saham">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-sm-3 control-label"><strong>Alamat</strong></label>
+            <div class="col-sm-7">
+              <textarea class="form-control" rows="5" id="alamat_pemegang_saham"></textarea>
+            </div>
+          </div>
+          <!-- <div class="form-group">
+            <label  class="col-sm-3 control-label">Kode Pos</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control">
+            </div>
+          </div> -->
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">No.Telp</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="no_telp_pemegang_saham">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Kewarganegaraan</label>
+            <div class="col-sm-7">
+              <select class="form-control chosen-select mb-10" id="kewarganegaraan_pemegang_saham">
+                <option value>-- Pilih Kewarganegaraan --</option>
+                <option value="WNI" >WNI</option>
+                <option value="WNA">WNA</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">NPWP</label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control" id="npwp_pemegang_saham">
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Jumlah saham yang dimiliki</label>
+            <div class="col-sm-5">
+              <div class="input-group">
+                <input type="text" class="form-control" id="jumlah_dimiliki_pemegang_saham">
+                <span class="input-group-addon">Lembar</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label  class="col-sm-3 control-label">Jumlah modal disetor</label>
+            <div class="col-sm-5">
+              <div class="input-group">
+                <span class="input-group-addon">Rp.</span>
+                <input type="text" class="form-control rupiah" id="jumlah_disetor_pemegang_saham">
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="save_pemegang_saham()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+        <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#jumlah_disetor_pemegang_saham').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
+  function save_pemegang_saham(){
+    var id = $('#id_pemegang_saham').val()
+    var nama_lengkap = $('#nama_lengkap_pemegang_saham').val()
+    var alamat = $('#alamat_pemegang_saham').val()
+    var no_telp = $('#no_telp_pemegang_saham').val()
+    var kewarganegaraan = $('#kewarganegaraan_pemegang_saham').val()
+    var npwp = $('#npwp_pemegang_saham').val()
+    var dimiliki = $('#jumlah_dimiliki_pemegang_saham').val()
+    var disetor = $('#jumlah_disetor_pemegang_saham').val()
+    $.ajax({
+      method: 'POST',
+      data: {id:id, nama_lengkap:nama_lengkap, alamat:alamat, telephone:no_telp, kewarganegaraan:kewarganegaraan, npwp:npwp, jumlah_saham_dimiliki:dimiliki, jumlah_saham_disetor:disetor, csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+      url: __base_url__+'/ajax-save-pemegang-saham/',
+      success: function(response){
+        resp = $.parseJSON(response)
+        if (resp.success){
+          toastr["success"](resp.pesan)
+          $('#create_pemegang_saham').modal('hide')
+          load_data_pemegang_saham($.cookie('id_pengajuan'))
+        }
+        else{
+          var a = Object.keys(resp);
+          for (var i = 0; i < a.length; i++){
+            var field = a[i].replace("_", " ");
+            console.log(a[i][0]['message'])
+            toastr["error"](field+", "+resp[a[i]][0]['message'])
+          //   $("#"+a[i]+"").addClass("has-error");
+          }
+        }
+      },
+      error: function(response){
+        toastr["error"]("Terjadi kesalahan server.")
+      } 
+    });
+  }
+
+  function load_data_pemegang_saham(pengajuan_id){
+    if (pengajuan_id !== ""){
+      $('#table_pemegang_saham').mLoading();
+      $.ajax({
+        type: 'GET',
+        url: __base_url__+'/ajax-load-data-pemegang-saham/'+pengajuan_id,
+        success: function (data) {
+          a = data.length
+          
+          // resp = $.parseJSON(data)
+          tablekosong = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+          $('#table_pemegang_saham > tbody').html(tablekosong)
+
+          if(a === 0){
+            $('#table_pemegang_saham > tbody > tr:first').remove()
+            table = '<tr><td colspan="9" align="center">Kosong/Tidak ada...!!!</td></tr>'
+            $('#table_pemegang_saham > tbody').prepend(table)
+          }
+          else{
+            b = data.reverse()
+            $('#table_pemegang_saham > tbody > tr:first').remove()
+            // console.log(data)
+            for (var i = 0; i < a; i++){
+              id = b[i].id
+              nama_lengkap = b[i].nama_lengkap
+              alamat = b[i].alamat
+              telephone = b[i].telephone
+              kewarganegaraan = b[i].kewarganegaraan
+              npwp = b[i].npwp
+              dimiliki = b[i].jumlah_saham_dimiliki
+              disetor = b[i].jumlah_saham_disetor
+              no = a
+              if (a > 1){
+                no = a-i
+              }
+              // console.log(no)
+              row = '<tr>'
+              row += '<td>'+no+'</td>'
+              row += '<td>'+nama_lengkap+'</td>'
+              row += '<td>'+alamat+'</td>'
+              row += '<td>'+telephone+'</td>'
+              row += '<td>'+kewarganegaraan+'</td>'
+              row += '<td>'+npwp+'</td>'
+              row += '<td>'+dimiliki+' lembar</td>'
+              row += '<td> Rp '+disetor+',-</td>'
+              row += '<td><button onclick="edit_pemegang_saham($(this).val())" type="button" class="btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'"><i class="fa fa-edit"></i> <span>Edit</span></button>&nbsp;&nbsp;<button class="btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+id+'" type="button" onclick="delete_pemegang_saham($(this).val())"><i class="fa fa-trash"></i> <span>Delete</span></button></td>'
+              row += '</tr>'
+              $('#table_pemegang_saham > tbody').prepend(row);
+            }
+          }
+        },
+        error: function(data) {
+          toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+        }
+      });
+      
+      $('#table_pemegang_saham').mLoading('hide');
+    }
+  }
+
+  function edit_pemegang_saham(val_){
+    $('#create_pemegang_saham').modal('show')
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ajax-edit-pemegang-saham/'+val_,
+      success: function (data) {
+        resp = $.parseJSON(data)
+        $('#id_pemegang_saham').val(val_)
+        $('#nama_lengkap_pemegang_saham').val(resp.data.nama_lengkap)
+        $('#alamat_pemegang_saham').val(resp.data.alamat)
+        $('#no_telp_pemegang_saham').val(resp.data.telephone)
+        $('#kewarganegaraan_pemegang_saham').val(resp.data.kewarganegaraan).prop('disabled', false).trigger("chosen:updated");
+        $('#npwp_pemegang_saham').val(resp.data.npwp)
+        $('#jumlah_dimiliki_pemegang_saham').val(resp.data.dimiliki)
+        $('#jumlah_disetor_pemegang_saham').val(resp.data.disetor)
+      },
+      error: function(data){
+        toastr["error"]("Terjadi kesalahan server.")
+      }
+    });
+  }
+
+  function delete_pemegang_saham(val_){
+    $.ajax({
+      type: 'GET',
+      url: __base_url__+'/ajax-delete-pemegang-saham/'+val_,
+      success: function (data) {
+        resp = $.parseJSON(data)
+        if (resp.success){
+          toastr["success"](resp.pesan)
+          load_data_pemegang_saham($.cookie('id_pengajuan'))
+        }
+        else{
+          toastr["error"](resp.pesan)
+        }
+      },
+      error: function(data){
+        toastr["error"]("Terjadi kesalahan server.")
+      }
+    });
+  }
+
+  function add_pemegang_saham(){
+    $('#id_pemegang_saham').val("0")
+    $('#nama_lengkap_pemegang_saham').val("")
+    $('#alamat_pemegang_saham').val("")
+    $('#no_telp_pemegang_saham').val("")
+    $('#kewarganegaraan_pemegang_saham').val("").prop('disabled', false).trigger("chosen:updated");
+    $('#npwp_pemegang_saham').val("")
+    $('#jumlah_dimiliki_pemegang_saham').val("")
+    $('#jumlah_disetor_pemegang_saham').val("")
+  }
+</script>

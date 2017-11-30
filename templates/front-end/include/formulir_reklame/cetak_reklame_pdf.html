@@ -1,0 +1,320 @@
+{% load i18n admin_static staticfiles widgets access %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<style type="text/css">
+		body {
+			font: 12pt "Open Sans";
+			font-family: "Open Sans", Helvetica, Arial, sans-serif;
+		}
+		page[size="F4"] {  
+			width: 8.27in;
+			height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
+		}
+		.row::after {
+			content: "";
+			clear: both;
+			display: block;
+			/*padding-block-start: 20px;*/
+			/*padding: 20px;*/
+		}
+		[class*="col-"] {
+			float: left;
+			padding: 10px;
+			/*border: 1px solid red;*/
+		}
+		.col-1 {width: 8.33%;}
+		.col-2 {width: 16.66%;}
+		.col-3 {width: 25%;}
+		.col-4 {width: 33.33%;}
+		.col-5 {width: 41.66%;}
+		.col-6 {width: 50%;}
+		.col-7 {width: 58.33%;}
+		.col-8 {width: 66.66%;}
+		.col-9 {width: 75%;}
+		.col-10 {width: 83.33%;}
+		.col-11 {width: 91.66%;}
+		.col-12 {width: 100%;}
+
+		.skizin{
+			font-size: 14px;
+			padding: 5px;
+		}
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			padding: 3px;
+		}
+		.tdnone{
+			border-left: none;
+			border-right: none;
+		}
+
+		#qrcodeTable canvas{
+			padding: 2px;
+			border-radius: 3px;
+			border: 3px solid #000;
+			/*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+			width: 90px;
+			height: 90px;
+		}
+	</style>
+</head>
+<body>
+
+	<page size="F4">
+  	<div id="kop_surat_id" class="printhide">
+  		<table>
+  			<tr>
+  				<td width="10%">
+  					<img id="logo" src="http://{{request.META.HTTP_HOST}}{% static 'images/kabkediri.png' %}" width="120px"><p id="logo_"></p>
+  				</td>
+  				<td width="90%">
+  					<p style="text-align: center; margin-bottom: 0; margin-top: 0;">
+  						<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+  						<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+  						<br/>
+  						<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
+  						<span style="font-size: 19px; padding-left: 220px;"><b>KEDIRI</b></span>
+  						<span style="font-size: 15px; padding-left: 105px;">Kode Pos : 64182</span>
+  					</p>
+  				</td>
+  			</tr>
+  		</table>
+  		<hr style="border-top: 4px double #8c8b8b;border-width: 3px;">
+  	</div>
+  	<div style="display: none; width: 100%;" class="printpadding">
+  	</div>
+  	<br>
+  	<table>
+  		<tr>
+  			<td width="20%"></td>
+  			<td width="60%">
+            <center>
+              <font style="font-size: 20px"><b>SURAT IZIN PEMASANGAN REKLAME</b></font><br>
+              <font style="font-size: 18px">NOMOR : {{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+            </center>    	
+            <br>
+  			</td>
+  			<td width="20%">
+  				<div class="qrcode" style="padding-left: 0px">
+  					<div id="qrcodeTable">
+  					</div>
+  				</div>
+  			</td>
+  		</tr>
+  	</table>
+  	<br>
+
+    <table width="100%" border="0" frame="box" rules="rows" style="padding: 10px;">
+      <tr>
+        <td style="width: 297px;"><b>1. Nama Perusahaan/Instansi</b></td>
+        <td>:</td>
+        <td  colspan="2">{{ perusahaan.nama_perusahaan }}</td>
+      </tr>
+      <tr>
+        <td><b>2. Nama dan Alamat tempat usaha</b></td>
+        <td>:</td>
+        <td  colspan="2">{{ pemohon.nama_lengkap|default_if_none:"-" }} 
+        {% if pemohon.jabatan_pemohon %}
+        ({{ pemohon.jabatan_pemohon }})
+        {% else %}
+        
+        {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <td><b>Dasar pertimbangan pemberian izin</b></td>
+        <td>:</td>
+        <td colspan="2">Permohonan Per Tanggal {{ pengajuan.created_at|date:"d F Y" }}</td>
+      </tr>
+      <tr>
+        <td><b>Dasar hukum pemberian izin</b></td>
+        <td>:</td>
+        <td colspan="2"></td>
+      </tr>
+        <b> </b></p>
+      <tr>
+        <td colspan="4">
+          <table border="0">
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>a.</b></td>
+              <td><b>Peraturan Daerah Kabupaten Kediri Nomor 1 Tahun 2011 tentang Pajak Daerah.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>b.</b></td>
+              <td><b>Peraturan Bupati Kediri Nomor 16 Tahun 2012 tentang Petunjuk Pelaksanaan Pemungutan Pajak Reklame.</b></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Jenis reklame yang dipasang/Judul</b></td>
+        <td>:</td>
+        <td colspan="2">{{pengajuan.tipe_reklame}} / "{{pengajuan.judul_reklame}}"</td>
+      </tr>
+      <tr>
+        <td><b>Ukuran (PanjangxLebarxSisi) /Jumlah</b></td>
+        <td>:</td>
+        <td colspan="2">{{panjang_|default_if_none:"-"}} M x {{lebar_|default_if_none:"-"}} M x {{sisi_|default_if_none:"-"}} M / {{pengajuan.jumlah|floatformat:-2|default_if_none:"-"}}</td>
+      </tr>
+      <tr>
+        <td><b>Jangka waktu izin</b></td>
+        <td>:</td>
+        <td colspan="2">{{pengajuan.tanggal_mulai|date:"d F Y"}} s/d {{pengajuan.tanggal_akhir|date:"d F Y"}}</td>
+      </tr>
+      <tr>
+        <td style="vertical-align: top;padding-top: 1px;"><b>Letak pemasangan</b></td>
+        <td style="vertical-align: top;padding-top: 1px;">:</td>
+        <td colspan="2">{% if detail_list_count > 10   %} Terlampir{% else %}{{detil_reklame_list|title}}{% endif %}</td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <table border="0">
+            <tr>
+              <td colspan="2"><b>Dengan ketentuan yang harus diperhatikan/dilaksanakan :</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>1. </b></td>
+              <td><b>Tidak bertentangan dengan kepentingan umum : kesusilaan,keindahan, kesopanan,ketertiban umum dan keamanan.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>2. </b></td>
+              <td><b>Konstruksi harus kuat dan sesuai dengan standart pemasangan reklame.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>3. </b></td>
+              <td><b>Tidak mengganggu ketertiban lalu lintas.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>4. </b></td>
+              <td><b>Pemasangan reklame tempel pada tembok-tembok/dinding-dinding rumah, kantor, toko harus memperoleh izin terlebih dahulu dari penguasa rumah, kantor, toko dan sebagainya.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>5. </b></td>
+              <td><b>Pemasangan reklame spanduk dan banner dilarang merusak pohon (antara lain dengan menancapkan paku) dan dilarang ditalikan pada tiang listrik.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>6. </b></td>
+              <td><b>Kerusakan dan semua akibat yang ditimbulkan atas pemasangan reklame, harus diperbaiki, ditanggung oleh dan atas biaya pemasang/pemilik reklame.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>7. </b></td>
+              <td><b>Reklame yang sudah terpasang dapat dicabut/ dibongkar, apabila tempat-tempat tersebut diperlukan oleh pemerintah atau untuk kepentingan umum/sosial. Biaya pembongkaran papan Reklame dimaksud menjadi tanggung jawab Pemohon.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>8. </b></td>
+              <td><b>Setelah habis masa pemasangan, reklame harus segera dibongkar kecuali jika diperpanjang waktu pemasangannya setelah terlebih dahulu menyelesaikan segala persyaratannya.</b></td>
+            </tr>
+            <tr>
+              <td style="vertical-align: top;padding-top: 5px;"><b>9. </b></td>
+              <td><b>Pelanggaran atas ketentuan dalam pemasangan reklame akan dikenakan sanksi sesuai dengan peraturan yang berlaku.</b></td>
+            </tr>
+          </table>
+      </tr>
+    </table>
+    <br>
+
+    <table width="100%" border="0" class="font">
+      <tr>
+        <td>
+        <table border="0">
+        <tr>
+          <td>
+          <div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+          </td>
+        </tr>
+        <tr>
+          <td>Tembusan :<br> 
+        Yth.  Sdr. Anggota Tim Perizinan      
+          Pemasangan Reklame Kab. Kediri  
+        </td>
+        </tr>
+      </table>
+        </td>
+
+        <td width="50%">
+          <p style="font-size:12px; padding-left: 20%;" align="center">
+                  <font size="2pt">Kediri,&nbsp;&nbsp;<u>{{ skizin.created_at|date:"d-m-Y" }}</u></font><br>
+                  KEPALA DPMPTSP <br>KAB. KEDIRI
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <u><b>{{gelar_depan}} {{ nama_kepala_dinas }}</b></u><br>
+                  Pembina Tk.l<br>
+                  NIP: {{nip_kepala_dinas}}
+              </p>
+        </td>
+      </tr>
+    </table>
+  </page>
+<script src="http://{{request.META.HTTP_HOST}}{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+<script src="http://{{request.META.HTTP_HOST}}{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
+<script type="text/javascript">
+	function Exit() {
+	    var x=confirm('Are You sure want to exit:');
+	    if(x) window.c	lose();
+    }
+    $('#qrcodeTable').qrcode({
+    	// render method: 'canvas', 'image' or 'div'
+    	render: 'canvas',
+		
+		// qrsize: 1,
+		// version range somewhere in 1 .. 40
+
+		// width 	: 110,
+		// height 	: 110,
+
+	    minVersion: 1,
+	    maxVersion: 40,
+
+	    // error correction level: 'L', 'M', 'Q' or 'H'
+	    ecLevel: 'Q',
+	    // offset in pixel if drawn onto existing canvas
+	    left: 0,
+	    top: 0,
+	    // size in pixel
+	    size: 500,
+
+	    // code color or image element
+	    fill: '#000',
+
+	    // background color or image element, null for transparent background
+		// background: '#707aec',
+		// background : logo,
+		// mSize: 0.4,
+
+		text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+
+		radius: 0.5,
+
+		// quiet zone in modules
+		quiet: 0,
+
+		// modes
+	    // 0: normal
+	    // 1: label strip
+	    // 2: label box
+	    // 3: image strip
+	    // 4: image box
+	    mode: 0,
+
+	    mSize: 0.2,
+	    mPosX: 0.5,
+	    mPosY: 0.5,
+
+		label: 'no label',
+		fontname: 'sans',
+		fontcolor: '#000',
+
+		// image: logo,
+	});
+</script>
+</body>
+</html>

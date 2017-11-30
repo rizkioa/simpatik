@@ -1,0 +1,364 @@
+{% load i18n admin_static staticfiles widgets access %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+	<title>Cetak SKIZIN SIUP - {{pengajuan.no_izin}}</title>
+	<link rel="icon" type="image/ico" href="{% static "images/SIMPATIK.ico" %}" />
+	<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"></script>
+	<style type="text/css">
+		body {
+  			/*background: rgb(204,204,204);*/
+  			background-color: #FAFAFA; 
+		}
+		* {
+	      font-family: Arial;
+	    }
+		/*page {
+		  background: white;
+		  display: block;
+		  margin: 0 auto;
+		  margin-bottom: 0.5cm;
+		  box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+		  padding: 60px;
+		  border-radius: 6px;
+		}*/
+		page[size="F4"] {  
+		  width: 8.27in;
+		  height: 12.98in; /* kalau disamakan dengan @media print @page akan masuk page baru */ 
+		}
+
+		/*page[size="F4"][layout="portrait"] {
+		  width: 12.99in;
+		  height: 8.26in; 
+		}*/
+		@media print {
+		  body, page {
+		    margin: 0;
+		    box-shadow: 0;
+		  }
+		  @page { 
+		  	margin: 0; /* Menghapus header & Footer browser */
+		  	size: 8.27in 12.99in; /* Ngefixkan kertas ke F4 Landscape*/
+		  }
+		  page{
+		  	border-radius: 0;
+		  }
+		}
+		.button {
+		    background-color: #4CAF50; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    border-radius: 8px;
+		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+		.button-close {
+		    background-color: #f32818; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    border-radius: 8px;
+		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+		/* HALAMAN */
+		#kop_surat_id {
+			display: inline-block;
+		    margin-bottom: 5px;
+    		margin-top: 15px;
+		    text-align: center;
+		    width: 100%;
+		}
+		.isi_kop_surat {
+		    display: inline-block;
+		    margin-left: 21px;
+		    max-width: 740px;
+		}
+		.double-lines div {
+		    /*border-bottom: 2px solid gray;
+    		border-top: 2px solid black;
+    		height: 1px; 
+    		width: 900px; 
+    		display: inline-block;*/
+    		border-top: 3px double #8c8b8b;
+		}
+		hr.style14 { 
+	        /*border: 0; 
+	        height: 1px; 
+	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); */
+	        border-top: 3px double #8c8b8b;
+	      }
+		/*.row{
+			padding: 20px;
+		}*/
+		.row::after {
+		    content: "";
+		    clear: both;
+		    display: block;
+		    /*padding-block-start: 20px;*/
+		    /*padding: 20px;*/
+		}
+		[class*="col-"] {
+		    float: left;
+		    padding: 10px;
+		    /*border: 1px solid red;*/
+		}
+		.col-1 {width: 8.33%;}
+		.col-2 {width: 16.66%;}
+		.col-3 {width: 25%;}
+		.col-4 {width: 33.33%;}
+		.col-5 {width: 41.66%;}
+		.col-6 {width: 50%;}
+		.col-7 {width: 58.33%;}
+		.col-8 {width: 66.66%;}
+		.col-9 {width: 75%;}
+		.col-10 {width: 83.33%;}
+		.col-11 {width: 91.66%;}
+		.col-12 {width: 100%;}
+
+		#qrcodeTable canvas{
+			padding: 2px;
+			border-radius: 3px;
+		    border: 3px solid #000;
+		    /*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+		    width: 110px;
+			height: 110px;
+		}
+		.skizin{
+			font-size: 14px;
+			padding: 5px;
+		}
+		table {
+		    border-collapse: collapse;
+		    width: 100%;
+		}
+		th, td {
+		    padding: 7px;
+		}
+		.tdnone{
+			border-left: none;
+			border-right: none;
+		}
+		@media print { 
+			body { 
+				display: none !important; 
+			}
+			.printhide { 
+	 			display: none !important; 
+	 			/*color: white;
+	 			background-color: white;*/
+			}
+			.printpadding{
+				display: block !important;
+				padding-bottom: 5cm;
+			} 
+		}
+	</style>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+		{% if request.user|has_group:'Cetak' or request.user.is_superuser %} 
+			<script>
+				document.querySelector('style').textContent += "@media print { body { display: block !important; } }"
+			</script>
+		{% endif %}
+	{% endif %}
+</head>
+<body>
+	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px; position:fixed; left:0; top:0">
+		<a class="button hidden-print" onclick="$(this).parent().css('display', 'none'); window.print(); $(this).parent().css('display', 'block');" href="#" style="margin-bottom: 10px;">
+			<img src="{% static 'images/icon-print.png' %}">
+		</a>
+		<br>
+		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()">
+			<img src="{% static 'images/icon-close.png' %}">
+		</a>
+	</div>
+
+	<page size="F4">
+		{% include 'front-end/include/skizin/cop_surat.html' %}
+		<div style="display: none; width: 100%;" class="printpadding">
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-1">
+			</div>
+        	<div class="col-8">
+	        	<center>
+	        		<b>
+	        		<span style="font-size: 23px;">SURAT IZIN USAHA PERDAGANGAN</span><br>
+	        		<span style="font-size: 18px;">( {{pengajuan.bentuk_kegiatan_usaha.kegiatan_usaha.upper }} )</span><br>
+	        		<span style="font-size: 18px;">Nomor : {% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}TIDAK ADA{% endif %}</span><br>
+	        		</b>
+	        	</center>
+	        </div>
+	        <div class="col-2 qrcode" style="padding-left: 0px;">
+	        	<div id="qrcodeTable">
+	        	</div>
+	        </div>
+    	</div>
+    	<br>
+    	<table width="100%" class="skizin" border="2">
+    		<tr>
+    			<td class="tdnone" width="40%"><b>NAMA PERUSAHAAN</b></td>
+    			<td class="tdnone" width="5%">:</td>
+    			<td class="tdnone" width="55%"><b>{{pengajuan.perusahaan.nama_perusahaan.upper}}</b></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>NAMA PENANGGUNGJAWAB & JABATAN</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><b>{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})</b></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>ALAMAT PERUSAHAAN</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.alamat_perusahaan.upper}}, {{pengajuan.perusahaan.desa.lokasi_lengkap.upper}}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>NPWP</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.npwp}}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>NOMOR TELEPON</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{{pengajuan.perusahaan.telepon}}  {% if pengajuan.perusahaan.fax %}FAX : {{pengajuan.perusahaan.fax}}{% endif %}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>KEKAYAAN BERSIH PERUSAHAAN (TIDAK TERMASUK TANAH & BANGUNAN)</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><b>{{pengajuan.kekayaan_bersih}},-</b><br>({{pengajuan.get_terbilang.upper}} RUPIAH)</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>KELEMBAGAAN</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone"><b>{% if pengajuan.kelembagaan %}{% for k in pengajuan.kelembagaan.all %}{{k.kelembagaan.upper}}{% endfor %}{% endif %}</b></td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>KEGIATAN USAHA (KBLI/*)</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{% for kbli in pengajuan.kbli.all %} ({{ kbli.kode_kbli.upper }}) {% endfor %}</td>
+    		</tr>
+    		<tr>
+    			<td class="tdnone"><b>BARANG/JASA DAGANGAN UTAMA</b></td>
+    			<td class="tdnone">:</td>
+    			<td class="tdnone">{% if pengajuan.produk_utama %}{{pengajuan.produk_utama.upper }}{% else %}{% for kbli in pengajuan.kbli.all %} {{ kbli.nama_kbli.upper }} {% if not forloop.last %}, {% endif %}  {% endfor %}{% endif %}</td>
+    		</tr>
+    		<tr>
+    			<td colspan="3" align="justify">
+    				<b>IZIN INI BERLAKU UNTUK MELAKUKAN KEGIATAN USAHA PERDAGANGAN DI SELURUH WILAYAH REPUBLIK INDONESIA, SELAMA PERUSAHAAN MASIH MENJALANKAN USAHANYA, DAN TIDAK MENGALAMI PERUBAHAN.</b>
+    			</td>
+    		</tr>
+    	</table>
+    	<br>
+    	<br>
+    	<br>
+    	<div style="float: left; width: 50%">
+    		<div style="padding-left: 70%;padding-top: 46px;">
+    			{% if pengajuan.pemohon.berkas_foto.last %}
+    				<img src="{{pengajuan.pemohon.berkas_foto.last.get_file_url}}" style="width: 3cm;height: 4cm;">
+    			{% else %}
+    				<img src="{% static 'images/no-avatar.jpg' %}" style="width: 3cm;height: 4cm;">
+    			{% endif %}
+    		</div>
+    	</div>
+    	<div style="float: right; width: 50%">
+        	<p style="font-size:17px; padding-left: 0%;" align="center">
+                {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
+                
+                {% if skizin.nama_pejabat %}
+                    <br>Kepala DPMPTSP
+                    <br>KABUPATEN KEDIRI
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <u><b>{{ skizin.nama_pejabat }}</b></u><br>
+                    <span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
+                    <span>NIP: {{skizin.nip_pejabat}}</span>
+                {% endif %}
+            </p>
+        </div>
+	</page>
+	<script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
+	<script type="text/javascript">
+        lokasi = document.createElement("a");
+        lokasi.href = location.href;
+        window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
+    </script>
+
+	<script type="text/javascript">
+		function Exit() {
+		    var x=confirm('Are You sure want to exit:');
+		    if(x) window.close();
+	    }
+	    {% if pengajuan.no_izin %}
+	    	var logo = $(new Image()).attr('src', '{% static 'images/SIMPATIK.png' %}').get(0);
+		    $('#qrcodeTable').qrcode({
+		    	// render method: 'canvas', 'image' or 'div'
+		    	render: 'canvas',
+				
+				// qrsize: 1,
+				// version range somewhere in 1 .. 40
+
+				// width 	: 110,
+				// height 	: 110,
+
+			    minVersion: 1,
+			    maxVersion: 40,
+
+			    // error correction level: 'L', 'M', 'Q' or 'H'
+			    ecLevel: 'Q',
+			    // offset in pixel if drawn onto existing canvas
+			    left: 0,
+			    top: 0,
+			    // size in pixel
+			    size: 500,
+
+			    // code color or image element
+			    fill: '#000',
+
+			    // background color or image element, null for transparent background
+    			// background: '#707aec',
+    			// background : logo,
+    			// mSize: 0.4,
+
+    			text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+
+    			radius: 0.5,
+
+    			// quiet zone in modules
+    			quiet: 0,
+
+    			// modes
+			    // 0: normal
+			    // 1: label strip
+			    // 2: label box
+			    // 3: image strip
+			    // 4: image box
+			    mode: 0,
+
+			    mSize: 0.2,
+			    mPosX: 0.5,
+			    mPosY: 0.5,
+
+				label: 'no label',
+				fontname: 'sans',
+    			fontcolor: '#000',
+
+    			// image: logo,
+			});
+		{% endif %}
+	</script>
+</body>
+</html>

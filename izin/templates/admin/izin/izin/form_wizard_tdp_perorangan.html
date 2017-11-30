@@ -1,0 +1,934 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% endblock %}
+
+{% block icotitle %}<i class="icon-book-open"></i>&nbsp;{% endblock %}
+
+{% block content_title %}
+	{{ title }}
+{% endblock %}
+
+{% block extrajs_site %}
+	{{block.super}}
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_tdp_po.js' %}"></script>
+	<script>
+		$(window).load(function(){
+
+			$('#rootwizard').bootstrapWizard({
+				onTabShow: function(tab, navigation, index) {
+					var $total = navigation.find('li').length;
+					var $current = index+1;
+					if ($current == 2){
+					  load_kecamatan1('', '06', '35');
+					  if ($.cookie('npwp_perusahaan') !== '0'){
+						$('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
+						setTimeout(function(){
+						  load_perusahaan_a($.cookie('npwp_perusahaan'))
+						}, 1000);
+					  } 
+					}
+					if ($current == 3){
+					  perusahaan_induk = $.cookie('npwp_perusahaan_induk')
+					  if (perusahaan_induk !== '0'){
+						load_perusahaan_induk($.cookie('npwp_perusahaan_induk'))
+					  }
+					  setTimeout(function(){
+						load_data_umum_perusahaan($.cookie('id_pengajuan'))
+					  }, 1000);
+					}
+					if($current == 4){
+					  load_data_kegiatan_perusahaan($.cookie('id_pengajuan'))
+					  set_chosen_element($('select#id_kegiatan_usaha_pokok'))
+					  $('#id_kegiatan_usaha_pokok_chosen .search-field input').keyup(function(event) {
+
+						var event = window.event ? window.event : event;
+						value_ = $(this).val()
+						if(value_.length > 1 && event.keyCode != 37 && event.keyCode != 38 && event.keyCode != 39 && event.keyCode != 40){
+						  csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+						  $( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading();
+						  select = "["+$("#id_kegiatan_usaha_pokok option:selected").map(function(){ return this.value }).get().join(", ")+"]"
+						  $.ajax({ // create an AJAX call...
+							  data: { csrfmiddlewaretoken: csrf_token, kbli: value_, select: select }, // get the form data
+							  type: 'POST', // GET or POST
+							  url: __base_url__+'/option-kbli/', // the file to call
+							  success: function(response) { // on success..
+								  selected = $("#id_kegiatan_usaha_pokok option:selected").map(function(){ elm=$(this).attr('selected', 'selected'); return elm.outerHTML() }).get().join("");
+								  // console.log(selected+response)
+								  elem = $( "select#id_kegiatan_usaha_pokok" )
+								  elem.html(selected+response);
+								  $( "#id_kegiatan_usaha_pokok_chosen .chosen-results" ).mLoading('hide');
+								  $('select#id_kegiatan_usaha_pokok').trigger("chosen:updated");
+								  $('#id_kegiatan_usaha_pokok_chosen .search-field input').val(value_); 
+								  // $(this).css("width,"+value_.length+"00px")
+								  set_chosen_element($('select#id_kegiatan_usaha_pokok'))
+							  },
+							  error: function(data) {                
+								  toast_server_error()
+							  }
+						  });
+						}
+						event.preventDefault();
+					  });
+					}
+					if ($current ===5){
+					  load_data_izin_lain($.cookie('id_pengajuan'))
+					}
+					if ($current == 6) {
+					  load_provinsi_(1, '#id_provinsi-5')
+					  load_data_pimpinan_perusahaan($.cookie('id_pengajuan'))
+					  load_data_perusahaan_cabang($.cookie('id_pengajuan'))
+					}
+					if ($current === 7){
+						load_berkas($.cookie('id_pengajuan'))
+					}
+					if($current >= $total) {
+					  load_konfirmasi_tdp($.cookie('id_pengajuan'))
+					  $('#rootwizard').find('.pager .next').hide();
+					  $('#rootwizard').find('.pager .finish').show();
+					  $('#rootwizard').find('.pager .finish').removeClass('disabled');
+					} else {
+					  $('#rootwizard').find('.pager .next').show();
+					  $('#rootwizard').find('.pager .finish').hide();
+					}
+
+				},
+
+				onNext: function(tab, navigation, index) {
+				  return false;
+
+				},
+
+				onTabClick: function(tab, navigation, index) {
+				  	if (window.location.hostname == 'localhost'){
+						return true
+					}
+					else{
+						return false;
+					}
+				}
+
+			});
+
+		});
+
+		$.fn.outerHTML = function(){
+			// IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
+			return (!this.length) ? this : (this[0].outerHTML || (
+			  function(el){
+				  var div = document.createElement('div');
+				  div.appendChild(el.cloneNode(true));
+				  var contents = div.innerHTML;
+				  div = null;
+				  return contents;
+			})(this[0]));
+
+		}
+
+		function set_chosen_element(chosenEl){
+			$chosenEl = $(chosenEl)
+			if ($chosenEl.length > 0) {             
+				$chosenEl.each(function() {
+				  var element = $(this);
+				  element.on('chosen:ready', function(e, chosen) {
+					var width = element.css("width");
+					element.next().find('.chosen-choices').addClass('form-control');
+					element.next().css("width", width);
+					element.next().find('.search-field input').css("width", "125px");
+				  }).chosen();                
+				});
+			}
+		}
+
+		function next_tab(btn){
+			var pengajuan_id = $.cookie('id_pengajuan')
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+				success: function (response){
+					respon = $.parseJSON(response)
+					if (respon.success == true){
+						console.log('berhasil')
+						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+						var frm = $('form[name="step'+ index +'"]');
+						frm.parsley().validate();
+						if (frm.parsley().isValid()) {
+							  $(".tab-content").mLoading();
+							  $(btn).attr('disabled', 'disabled')
+							  $.ajax({
+								type: frm.attr('method'),
+								url: frm.attr('action'),
+								data: frm.serialize(),
+								success: function (response){
+								  	respon = $.parseJSON(response)
+									$(btn).removeAttr('disabled')
+									if(respon.success){
+									  toastr["success"](respon.pesan)
+									  tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+									  $(tab_index).tab('show')
+									}
+									else{
+									  var a = Object.keys(respon);
+									  for (var i = 0; i < a.length; i++){
+										var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+										var field = c + a[i].replace("_", " ").slice(1)
+										toastr["error"](field+" "+respon[a[i]][0]['message'])
+										$("#"+a[i]+"").addClass("has-error");
+										$("#id_"+a[i]+"_").addClass("has-error");
+									  }
+									}
+									$(".tab-content").mLoading('hide');
+								},
+								error: function(response){
+								  $(".tab-content").mLoading('hide');
+								  $(btn).removeAttr('disabled')
+								  toastr["error"]("Terjadi kesalahan pada koneksi server.")
+								}
+							});
+						}
+					}
+					else{
+						console.log('gagal')
+						$.cookie('id_pengajuan', '0', {path:'/'})
+						$.cookie('id_pemohon', '0', {path:'/'})
+						$.cookie('id_perusahaan', '0', {path:'/'})
+						$.cookie('nomor_ktp', '0', {path:'/'})
+						$.cookie('nomor_paspor', '0', {path:'/'})
+						$.cookie('npwp_perusahaan', '0', {path:'/'})
+						$.cookie('npwp_perusahaan', '0', {path:'/'})
+						$.cookie('id_perusahaan_induk', '0', {path:'/'})
+						$.cookie('npwp_perusahaan_induk', '0', {path:'/'})
+					}
+				},
+				error: function (response){
+					console.log('terjadi kesalahan')
+				}
+			})
+		};
+
+		document.querySelector('#alert').onclick = function(){
+		  var pengajuan_cookie = $.cookie('id_pengajuan'); 
+		  var pemohon_cookie = $.cookie('id_pemohon'); 
+		  var perusahaan_cookie = $.cookie('id_perusahaan'); 
+		  if (pengajuan_cookie === ""){
+			toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+			tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+			$(tab_index).tab('show');
+		  }
+		  else if(pemohon_cookie === ""){
+			toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+			tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+			$(tab_index).tab('show');
+		  }
+		  else if(perusahaan_cookie === ""){
+			toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+			tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+			$(tab_index).tab('show');
+		  }
+		  else{
+			swal({
+			  showConfirmButton: false,
+			  type: 'success',
+			  title: 'Pendaftaran Berhasil Tersimpan',
+			  timer: 2000
+			})
+			pengajuan_id = $.cookie('id_pengajuan')
+			if ($.cookie('id_pengajuan') === undefined){
+			  pengajuan_id = 0
+			}
+			
+			$.ajax({
+			  url: '{% url 'tdp_pt_done' %}',
+			  success: function(response) {
+				respon = $.parseJSON(response)
+				if(respon.success){
+				  toastr["success"](respon.pesan)
+				  window.location.replace('{% url 'admin:verifikasi_operator' %}');
+				}
+			  }
+			});
+		  }
+		};
+
+		$(document).ready(function() {
+			window.onbeforeunload = function ref() {
+			  var r = confirm( "Do you want to leave?" );
+			  if (r == true) {
+				  
+			  }
+			  else {
+				  return false;
+			  }
+			};
+
+			var pathname = "/";
+
+			if ($.cookie('id_pengajuan') === undefined){
+			  $.cookie('id_pengajuan', "0", {path:pathname});
+			}
+			if ($.cookie('id_pemohon') === undefined){
+			  $.cookie('id_pemohon', "0", {path:pathname});
+			}
+			if ($.cookie('id_perusahaan') === undefined){
+			  $.cookie('id_perusahaan', "0", {path:pathname});
+			}
+
+			$( "#alert" ).prop( "disabled", true );
+			$('#checkbox_tdp_done').change(function() {
+			  if ($(this).is(':checked')) {
+				$( "#alert" ).prop( "disabled", false );
+				window.onbeforeunload = null;
+			  }
+			  else{
+				$( "#alert" ).prop( "disabled", true );
+			  }
+			});
+
+			// $('.path_name').val(pathname)
+			  
+			pengajuan = $.cookie('id_pengajuan')
+			if (pengajuan !== '0'){
+			  $('#id_ktp').val('{{ktp}}');
+			  $('#id_paspor').val('{{paspor}}');
+			  load_pemohon('{{ktp}}');
+
+			  $('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
+			  $('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+			  $('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+
+			  $.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
+			  if ('{{ pengajuan_.pemohon }}' !== 'None'){
+				$.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
+				$.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
+				$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
+			  }
+			  else{
+				$.cookie('nomor_ktp', '0' , { path: pathname })
+				$.cookie('nomor_paspor', '0' , { path: pathname})
+				$.cookie('id_pemohon', '0' , { path: pathname})
+			  }
+			  
+			  if ('{{ pengajuan_.perusahaan }}' !== 'None'){
+				$.cookie('id_perusahaan', '{{ pengajuan_.perusahaan.id  }}' , { path: pathname})
+				$.cookie('npwp_perusahaan', '{{ pengajuan_.perusahaan.npwp  }}' , { path: pathname })
+			  }
+			  else{
+				$.cookie('id_perusahaan', '0' , { path: pathname})
+				$.cookie('npwp_perusahaan', '0' , { path: pathname })
+			  }
+			  
+			  if ('{{ pengajuan_.perusahaan.perusahaan_induk }}' !== 'None'){
+				$.cookie('id_perusahaan_induk', '{{ pengajuan_.perusahaan.perusahaan_induk.id  }}' , { path: pathname})
+				$.cookie('npwp_perusahaan_induk', '{{ pengajuan_.perusahaan.perusahaan_induk.npwp  }}' , { path: pathname})
+			  }
+			  else{
+				$.cookie('id_perusahaan_induk', '0' , { path: pathname})
+				$.cookie('npwp_perusahaan_induk', '0' , { path: pathname})
+			  }
+			}
+		});
+
+		function jumlah_karyawan(){
+		  var wni = parseInt($('#id_jumlah_karyawan_wni').val());
+		  var wna = parseInt($('#id_jumlah_karyawan_wna').val());
+		  if (!wni){
+			wni = 0;
+			$('#id_jumlah_karyawan_wni').val('0')
+		  }
+		  if (!wna){
+			wna = 0;
+			$('#id_jumlah_karyawan_wna').val('0')
+		  }
+		  // console.log(wna)
+		  var total = wni+wna;
+		  $('#id_total_wni_wna').val(total);
+		}
+
+		function total_n_a(){
+		  var nasional = parseFloat($('#id_presentase_kandungan_produk_lokal').val())
+		  var asing = parseFloat($('#id_presentase_kandungan_produk_import').val())
+		  var total_a_n = nasional+asing
+		  if (total_a_n.toFixed(2) > 100.00){
+			$('.presentase').addClass('has-error')
+			$('<div class="form-group"><span class="col-sm-12 help-block mb-0 error-presentase"><center><font color="red">Jumlah persen kandungan produk lokal dan import tidak boleh melebihi 100%.</font></center></span></div>').insertAfter('#presentase')
+		  }
+		  else{
+			$('.presentase').removeClass('has-error')
+			$('.error-presentase').remove()
+		  }
+		}
+
+		$('.rupiah').mask("000.000.000.000.000.000.000.000.000",{reverse:true});
+
+		$(window).load(function() {
+			  var p = 'percent-'
+			  $('#'+p+'ijin_usaha').hide()
+			  $('#'+p+'ktp').hide()
+			  $('#'+p+'npwp_pribadi').hide()
+			  $('#'+p+'sertifikat_asli_tdp').hide()
+			  $('#'+p+'berkas_tambahan').hide()
+		  });
+
+		function load_perusahaan_induk(npwp_){
+		  if (npwp_ !== ""){
+			$(".tab-content").mLoading();
+			$.ajax({
+			  type: 'GET',
+			  url: __base_url__+'/load-perusahaan/'+npwp_,
+			  success: function (data) {
+				  $(".tab-content").mLoading('hide');
+				  respon_induk = $.parseJSON(data)
+				  if(respon_induk.success){
+					$('#switch_data_umum_kantor_cabang_disabled').attr('checked', 1)
+					$('.data_umum_kantor_cabang').prop('disabled', false).trigger("chosen:updated");
+					
+					$('#id_nama_perusahaan_induk').val(respon_induk.data.nama_perusahaan);
+					$('#id_alamat_perusahaan_induk').val(respon_induk.data.alamat_perusahaan);
+					$('#no_tdp_induk').val(respon_induk.data.nomor_tdp)
+					load_provinsi_(1, '#id_provinsi-3')
+					load_kabupaten_(respon_induk.data.provinsi, '#id_kabupaten-3')
+					load_kecamatan_(respon_induk.data.kabupaten, '#id_kecamatan-3')
+					load_desa_(respon_induk.data.kecamatan, '#id_desa-3')
+					setTimeout(function(){
+					  $('#id_provinsi-3').val(respon_induk.data.provinsi).prop('selected',true).trigger("chosen:updated");
+					  $('#id_kabupaten-3').val(respon_induk.data.kabupaten).prop('selected',true).trigger("chosen:updated");
+					  $('#id_kecamatan-3').val(respon_induk.data.kecamatan).prop('selected',true).trigger("chosen:updated");
+					  $('#id_desa-3').val(respon_induk.data.desa).prop('selected',true).trigger("chosen:updated");
+					}, 1000);
+				  }
+				  else{
+					$('#switch_data_umum_kantor_cabang_disabled').attr('checked', false);
+					$('.data_umum_kantor_cabang').prop('disabled', true).trigger("chosen:updated");
+					// $('#id_nama_perusahaan_induk').val("");
+					// $('#id_alamat_perusahaan_induk').val("");
+					// $('#id_provinsi3').val("").prop('selected',true).trigger("chosen:updated");
+					// $('#id_kabupaten3').val("").prop('selected',true).trigger("chosen:updated");
+					// $('#id_kecamatan3').val("").prop('selected',true).trigger("chosen:updated");
+					// $('#id_desa3').val("").prop('selected',true).trigger("chosen:updated");
+				  }
+				},
+				error: function(data) {
+				  toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+				  $(".tab-content").mLoading('hide');
+				}
+			});
+		  }
+		}
+
+		function load_data_umum_perusahaan(pengajuan_id){
+		  if (pengajuan_id !== ""){
+			$(".tab-content").mLoading();
+			$.ajax({
+			  type: 'GET',
+			  url: __base_url__+'/ajax-load-data-umum-perusahaan-tdp/'+pengajuan_id,
+			  success: function (data) {
+				  respon_data_umum = $.parseJSON(data)
+				  if(respon_data_umum.success){
+					$('#id_status_perusahaan').val(respon_data_umum.data.status_perusahaan).prop('selected',true).trigger("chosen:updated");
+					// bagian unit produksi
+					if (respon_data_umum.data.alamat_unit_produksi !== ""){
+					  $('.STEP3_bagian_unit').prop('disabled', false).trigger("chosen:updated");
+					  $('#switch_STEP3_bagi_unit_disabled').attr('checked', 1)
+					  $('#id_alamat_unit_produksi').val(respon_data_umum.data.alamat_unit_produksi);
+					  load_provinsi_(1, '#id_provinsi-4');
+					  setTimeout(function(){
+						$('#id_provinsi-4').val(respon_data_umum.data.provinsi).prop('disabled', false).trigger("chosen:updated");
+					  }, 1000);
+					  load_kabupaten_(respon_data_umum.data.provinsi, '#id_kabupaten-4');
+					  setTimeout(function(){
+						$('#id_kabupaten-4').val(respon_data_umum.data.kabupaten).prop('disabled', false).trigger("chosen:updated");
+					  }, 1000);
+					  load_kecamatan_(respon_data_umum.data.kabupaten, '#id_kecamatan-4');
+					  setTimeout(function(){
+						$('#id_kecamatan-4').val(respon_data_umum.data.kecamatan).prop('disabled', false).trigger("chosen:updated");
+					  }, 1000);
+					  load_desa_(respon_data_umum.data.kecamatan, '#id_desa-4');
+					  setTimeout(function(){
+						$('#id_desa-4').val(respon_data_umum.data.desa).prop('disabled', false).trigger("chosen:updated");
+					  }, 1000);
+					}
+
+					$('#id_jumlah_bank').val(respon_data_umum.data.jumlah_bank);
+					$('#id_nasabah_utama_bank_1').val(respon_data_umum.data.nasabah_utama_bank_1);
+					$('#id_nasabah_utama_bank_2').val(respon_data_umum.data.nasabah_utama_bank_2);
+					$('#id_jenis_penanaman_modal').val(respon_data_umum.data.jenis_penanaman_modal).prop('disabled', false).trigger("chosen:updated");
+					$('#id_tanggal_pendirian').val(respon_data_umum.data.tanggal_pendirian);
+					$('#id_tanggal_mulai_kegiatan').val(respon_data_umum.data.tanggal_mulai_kegiatan);
+					$('#id_jangka_waktu_berdiri').val(respon_data_umum.data.jangka_waktu_berdiri);
+					$('#id_bentuk_kerjasama').val(respon_data_umum.data.bentuk_kerjasama).prop('disabled', false).trigger("chosen:updated");
+					$('#id_merek_dagang').val(respon_data_umum.data.merek_dagang);
+					$('#id_no_merek_dagang').val(respon_data_umum.data.no_merek_dagang);
+					$('#id_pemegang_hak_cipta').val(respon_data_umum.data.pemegang_hak_cipta);
+					$('#id_no_hak_cipta').val(respon_data_umum.data.no_hak_cipta);
+					$('#id_pemegang_hak_paten').val(respon_data_umum.data.pemegang_hak_paten);
+					$('#id_no_hak_paten').val(respon_data_umum.data.no_hak_paten);
+				  }
+				  else{
+					
+				  }
+				},
+				error: function(data) {
+				  toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+				}
+			});
+			$(".tab-content").mLoading('hide');
+		  }
+		}
+
+		function load_data_kegiatan_perusahaan(pengajuan_id){
+		  if (pengajuan_id !== ""){
+			$(".tab-content").mLoading();
+			$.ajax({
+			  type: 'GET',
+			  url: __base_url__+'/ajax-load-data-kegiatan-perusahaan-tdp/'+pengajuan_id,
+				success: function (data) {
+				  respon_data_kegiatan = $.parseJSON(data)
+				  if(respon_data_kegiatan.success){
+					$('#id_kegiatan_usaha_pokok').find('option').remove()
+					$("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
+					a = respon_data_kegiatan.data.kbli_json.length
+					for (var i = 0; i < a; i++){
+					  $("#id_kegiatan_usaha_pokok").append('<option selected="selected" value="'+respon_data_kegiatan.data.kbli_json[i].id+'" >'+respon_data_kegiatan.data.kbli_json[i].kode_kbli+' - '+respon_data_kegiatan.data.kbli_json[i].nama_kbli+'</option>');
+					}
+					$("#id_kegiatan_usaha_pokok").prop('selected',true).trigger("chosen:updated");
+					$('#id_omset_per_tahun').val(respon_data_kegiatan.data.omset_per_tahun);
+					$('#id_total_aset').val(respon_data_kegiatan.data.total_aset);
+					$('#id_jumlah_karyawan_wni').val(respon_data_kegiatan.data.jumlah_karyawan_wni);
+					$('#id_jumlah_karyawan_wna').val(respon_data_kegiatan.data.jumlah_karyawan_wna);
+					$('#id_total_wni_wna').val(respon_data_kegiatan.data.jumlah_karyawan_wni+respon_data_kegiatan.data.jumlah_karyawan_wna);
+					$('#id_kapasitas_mesin_terpasang').val(respon_data_kegiatan.data.kapasitas_mesin_terpasang);
+					$('#id_satuan_kapasitas_mesin_terpasang').val(respon_data_kegiatan.data.satuan_kapasitas_mesin_terpasang);
+					$('#id_kapasitas_produksi_per_tahun').val(respon_data_kegiatan.data.kapasitas_produksi_per_tahun);
+					$('#id_satuan_kapasitas_produksi_per_tahun').val(respon_data_kegiatan.data.satuan_kapasitas_produksi_per_tahun);
+					$('#id_presentase_kandungan_produk_lokal').val(respon_data_kegiatan.data.presentase_kandungan_produk_lokal);
+					$('#id_presentase_kandungan_produk_import').val(respon_data_kegiatan.data.presentase_kandungan_produk_import);
+					$('#id_kedudukan_kegiatan_usaha').val(respon_data_kegiatan.data.kedudukan_kegiatan_usaha).prop('disabled', false).trigger("chosen:updated");
+					$('#id_jenis_pengecer').val(respon_data_kegiatan.data.jenis_pengecer).prop('disabled', false).trigger("chosen:updated");
+					$('#id_jenis_perusahaan').val(respon_data_kegiatan.data.jenis_perusahaan).prop('disabled', false).trigger("chosen:updated");
+					$('#id_modal_dasar').val(respon_data_kegiatan.data.modal_dasar);
+					$('#id_modal_ditempatkan').val(respon_data_kegiatan.data.modal_ditempatkan);
+					$('#id_modal_disetor').val(respon_data_kegiatan.data.modal_disetor);
+					$('#id_banyaknya_saham').val(respon_data_kegiatan.data.banyaknya_saham);
+					$('#id_nilai_nominal_per_saham').val(respon_data_kegiatan.data.nilai_nominal_per_saham);
+				  }
+				  else{
+
+				  }
+				},
+				error: function(data) {
+				  toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+				}
+			});
+			$(".tab-content").mLoading('hide');
+		  }
+		}
+
+		function load_konfirmasi_tdp(pengajuan_id){
+			  $(".tab-content").mLoading();
+			  $.ajax({
+				type: 'GET',
+				url: __base_url__+'/ajax-load-data-konfirmasi-tdp/'+pengajuan_id,
+				success: function (data) {
+				  resp = $.parseJSON(data)
+				  if (resp[0].success){
+					// console.log(resp)
+					// Pemohon
+					$('#jenis_permohonan_konfirmasi').html(resp[1].pemohon.jenis_pengajuan)
+					$('#jenis_pemohon_konfirmasi').html(resp[1].pemohon.jenis_pemohon)
+					$('#nomor_ktp_konfirmasi').html(resp[1].pemohon.ktp_paspor)
+					$('#nama_lengkap_konfirmasi').html(resp[1].pemohon.nama_lengkap_pemohon)
+					$('#alamat_konfirmasi').html(resp[1].pemohon.alamat_lengkap_pemohon)
+					$('#telephone_konfirmasi').html(resp[1].pemohon.telephone_pemohon)
+					$('#hp_konfirmasi').html(resp[1].pemohon.hp_pemohon)
+					setTimeout(function(){
+						  $('#email_konfirmasi').html(resp[1].pemohon.email_pemohon)
+					}, 1000);
+					
+					$('#kewarganegaraan_konfirmasi').html(resp[1].pemohon.kewarganegaraan_pemohon)
+					$('#pekerjaan_konfirmasi').html(resp[1].pemohon.pekerjaan_pemohon)
+					// kuasa
+					if (resp[6].kuasa.nama_kuasa !== ''){
+						$('<h5><u>KUASA</u></h5><table width="100%" border="0"><tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+resp[6].kuasa.nama_kuasa+'</td></tr><tr><td width="25%">No Identitas </td><td width="5%">:</td><td width="70%">'+resp[6].kuasa.no_identitas_kuasa+'</td></tr><tr><td width="25%">Telephone </td><td width="5%">:</td><td width="70%">'+resp[6].kuasa.telephone_kuasa+'</td></tr></table>').insertAfter('#table_pemohon_konfirmasi')
+					}
+					// Perusahaan
+					$('#npwp_konfirmasi').html(resp[2].perusahaan.npwp_perusahaan)
+					$('#nama_perusahaan_konfirmasi').html(resp[2].perusahaan.nama_perusahaan)
+					$('#alamat_perusahaan_konfirmasi').html(resp[2].perusahaan.alamat_lengkap_perusahaan)
+					$('#kode_pos_konfirmasi').html(resp[2].perusahaan.kode_pos_perusahaan)
+					$('#telepon_konfirmasi').html(resp[2].perusahaan.telephone_perusahaan)
+					$('#fax_konfirmasi').html(resp[2].perusahaan.fax_perusahaan)
+					setTimeout(function(){
+					  $('#email_perusahaan_konfirmasi').html(resp[2].perusahaan.email_perusahaan)
+					}, 1000);
+					// data umum perusahaan
+					$('#dup_jenis_badan_usaha').html(resp[3].dup.jenis_badan_usaha)
+					$('#dup_status_perusahaan').html(resp[3].dup.status_perusahaan)
+					$('#dup_jumlah_bank').html(resp[3].dup.jumlah_bank)
+					$('#dup_nasabah_1').html(resp[3].dup.nasabah_utama_bank_1)
+					$('#dup_nasabah_2').html(resp[3].dup.nasabah_utama_bank_2)
+					$('#dup_status_penanaman_modal').html(resp[3].dup.jenis_penanaman_modal)
+					$('#dup_tanggal_pendirian').html(resp[3].dup.tanggal_pendirian)
+					$('#dup_tanggal_mulai').html(resp[3].dup.tanggal_mulai_kegiatan)
+					$('#dup_jangka_waktu_berdiri').html(resp[3].dup.jangka_waktu_berdiri)
+					$('#dup_bentuk_kerjasama').html(resp[3].dup.bentuk_kerjasama)
+					$('#dup_merk_dagang').html(resp[3].dup.merek_dagang)
+					$('#dup_no_merk_dagang').html(resp[3].dup.no_merek_dagang)
+					$('#dup_pemegang_hak_cipta').html(resp[3].dup.pemegang_hak_cipta)
+					$('#dup_no_hak_cipta').html(resp[3].dup.no_hak_cipta)
+					$('#dup_pemegang_hak_paten').html(resp[3].dup.pemegang_hak_paten)
+					$('#dup_no_hak_paten').html(resp[3].dup.no_hak_paten)
+					// data kegiatan perusahaan
+					// $('#dkp_kegiatan_usaha_pokok').html(resp[4].dkp.kegiatan_usaha_pokok)
+					// $('#dkp_kegiatan_usaha1').html(resp[4].dkp.kegiatan_usaha_lain_1)
+					// $('#dkp_kegiatan_usaha2').html(resp[4].dkp.kegiatan_usaha_lain_2)
+					$('#dkp_kegiatan_usaha_pokok').html('<span></span>')
+					a = resp[4].dkp.kbli_json.length
+					for (var i = 0; i < a; i++){
+					  str = resp[4].dkp.kbli_json[i].kode_kbli+' - '+resp[4].dkp.kbli_json[i].nama_kbli+'<br>'
+					  // console.log(str)
+					  $('#dkp_kegiatan_usaha_pokok').append('<span>'+str+'</span>')
+					}
+					$('#dkp_komoditi_pokok').html(resp[4].dkp.komoditi_produk_pokok)
+					$('#dkp_komoditi1').html(resp[4].dkp.komoditi_produk_lain_1)
+					$('#dkp_komoditi2').html(resp[4].dkp.komoditi_produk_lain_2)
+					$('#dkp_omset_pertahun').html(resp[4].dkp.omset_per_tahun)
+					$('#dkp_total_asset').html(resp[4].dkp.total_aset)
+					$('#dkp_jumlah_wni').html(resp[4].dkp.jumlah_karyawan_wni)
+					$('#dkp_jumlah_wna').html(resp[4].dkp.jumlah_karyawan_wna)
+					$('#dkp_total_karyawan').html(resp[4].dkp.total_karyawan)
+					$('#dkp_kapasitas_terpasang').html(resp[4].dkp.kapasitas_mesin_terpasang)
+					$('#dkp_kapasitas_produksi').html(resp[4].dkp.kapasitas_produksi_per_tahun)
+					$('#dkp_kandungan_lokal').html(resp[4].dkp.presentase_kandungan_produk_lokal)
+					$('#dkp_kandungan_import').html(resp[4].dkp.presentase_kandungan_produk_import)
+					$('#dkp_jenid_pengecer').html(resp[4].dkp.jenis_pengecer)
+					$('#dkp_jenis_perusahaan').html(resp[4].dkp.jenis_perusahaan)
+					// Rincian Perusahaan
+					$('#modal_dasar_konfirmasi').html(resp[5].rincian.modal_dasar)
+					$('#modal_ditempatkan_konfirmasi').html(resp[5].rincian.modal_ditempatkan)
+					$('#modal_disetor_konfirmasi').html(resp[5].rincian.modal_disetor)
+					$('#banyak_saham_konfirmasi').html(resp[5].rincian.banyaknya_saham)
+					$('#nilai_nominal_konfirmasi').html(resp[5].rincian.nilai_nominal_per_saham)
+
+					
+					load_data_izin_lain_konfirmasi($.cookie('id_pengajuan'))
+				  }
+				},
+				error: function(data){
+				  toastr["error"]("Terjadi kesalahan server.")
+				}
+			  });
+
+			  $.ajax({
+				type: 'GET',
+				url: __base_url__+'/ajax-load-data-data-pimpinan/'+pengajuan_id,
+				success: function (data) {
+				  a = data.length
+				  if(a === 0){
+					$('#table_data_pimpinan_konfirmasi > tbody > tr:first').remove()
+					table = '<tr><td colspan="18" align="center">Kosong/Tidak ada...!!!</td></tr>'
+					$('#table_data_pimpinan_konfirmasi > tbody').prepend(table)
+				  }
+				  else{
+					b = data.reverse()
+					$('#table_data_pimpinan_konfirmasi > tbody > tr:first').remove()
+					for (var i = 0; i < a; i++){
+					  id = b[i].id
+					  nama_lengkap = b[i].nama_lengkap
+					  tempat_lahir = b[i].tempat_lahir
+					  tanggal_lahir = b[i].tanggal_lahir
+					  alamat = b[i].alamat
+					  hp = b[i].hp
+					  email = b[i].email
+					  telephone = b[i].telephone
+					  kewarganegaraan = b[i].kewarganegaraan
+					  kedudukan = b[i].kedudukan
+					  tanggal_menduduki_jabatan = b[i].tanggal_menduduki_jabatan
+					  jumlah_saham_dimiliki = b[i].jumlah_saham_dimiliki
+					  jumlah_saham_disetor = b[i].jumlah_saham_disetor
+					  kedudukan_diperusahaan_lain = b[i].kedudukan_diperusahaan_lain
+					  nama_perusahaan_lain = b[i].nama_perusahaan_lain
+					  alamat_perusahaan_lain = b[i].alamat_perusahaan_lain
+					  kode_pos_perusahaan_lain = b[i].kode_pos_perusahaan_lain
+					  telepon_perusahaan_lain = b[i].telepon_perusahaan_lain
+					  tanggal_menduduki_jabatan_perusahaan_lain = b[i].tanggal_menduduki_jabatan_perusahaan_lain
+					  no = a
+					  if (a > 1){
+						no = a-i
+					  }
+					  row = '<tr>'
+					  row += '<td>'+no+'</td>'
+					  row += '<td>'+kedudukan+'</td>'
+					  row += '<td>'+nama_lengkap+'</td>'
+					  row += '<td>'+tempat_lahir+', '+tanggal_lahir+'</td>'
+					  row += '<td>'+alamat+'</td>'
+					  row += '<td>'+telephone+'</td>'
+					  row += '<td>'+hp+'</td>'
+					  row += '<td>'+email+'</td>'
+					  row += '<td>'+kewarganegaraan+'</td>'
+					  row += '<td>'+tanggal_menduduki_jabatan+'</td>'
+					  row += '<td>'+jumlah_saham_dimiliki+'</td>'
+					  row += '<td>'+jumlah_saham_disetor+'</td>'
+					  row += '<td>'+kedudukan_diperusahaan_lain+'</td>'
+					  row += '<td>'+nama_perusahaan_lain+'</td>'
+					  row += '<td>'+alamat_perusahaan_lain+'</td>'
+					  row += '<td>'+kode_pos_perusahaan_lain+'</td>'
+					  row += '<td>'+telepon_perusahaan_lain+'</td>'
+					  row += '<td>'+tanggal_menduduki_jabatan_perusahaan_lain+'</td>'
+					  row += '</tr>'
+					  $('#table_data_pimpinan_konfirmasi > tbody').prepend(row)
+					}
+				  }
+				},
+				error: function(data){
+				  toastr["error"]("Terjadi kesalahan server.")
+				}
+			  });
+
+			  $(".tab-content").mLoading('hide');
+		  }
+
+		  function load_data_izin_lain_konfirmasi(pengajuan_id){
+			  $.ajax({
+				type: 'GET',
+				url: __base_url__+'/ajax-load-data-izin-lain-tdp/'+pengajuan_id,
+				success: function (data) {
+				  tablekosong = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+				  $('#table_izin_lain_konfirmasi > tbody').html(tablekosong)
+				  a = data.length
+				  if(a === 0){
+					$('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
+					table = '<tr><td colspan="7" align="center">Kosong/Tidak ada...!!!</td></tr>'
+					$('#table_izin_lain_konfirmasi > tbody').prepend(table)
+				  }
+				  else{
+					$('#table_izin_lain_konfirmasi > tbody > tr:first').remove()
+					b = data.reverse()
+					$('#switch_stap6_lainnya_disabled').prop( "checked", true );
+					$('.stap6_lainnya').prop('disabled', false);
+					if (data){
+					  for (var i = 0; i < a; i++){
+						id = b[i].id
+						id_jenis_izin = b[i].id_jenis_izin
+						nama_jenis_izin = b[i].nama_jenis_izin
+						no_izin = b[i].no_izin
+						dikeluarkan_oleh = b[i].dikeluarkan_oleh
+						tanggal_dikeluarkan = b[i].tanggal_dikeluarkan
+						masa_berlaku = b[i].masa_berlaku
+						no = a
+						if (a > 1){
+						  no = a-i
+						}
+						row = '<tr><td>'+no+'</td>'
+						row += '<td>'+nama_jenis_izin+'</td>'
+						row += '<td>'+no_izin+'</td>'
+						row += '<td>'+dikeluarkan_oleh+'</td>'
+						row += '<td>'+tanggal_dikeluarkan+'</td>'
+						row += '<td>'+masa_berlaku+'</td>'
+						row += '</tr>'
+						$('#table_izin_lain_konfirmasi > tbody').prepend(row);
+					  }
+					}
+				  }
+				},
+				error: function(data){
+				  toastr["error"]("Terjadi kesalahan server.")
+				}
+			  });
+
+			  $.ajax({
+				type: 'GET',
+				url: __base_url__+'/ajax-load-data-perusahaan-cabang/'+pengajuan_id,
+				success: function (data) {
+				  a = data.length
+				  if(a === 0){
+					$('#table_perusahaan_cabang_konfirmasi > tbody > tr:first').remove()
+					table = '<tr><td colspan="18" align="center">Kosong/Tidak ada...!!!</td></tr>'
+					$('#table_perusahaan_cabang_konfirmasi > tbody').prepend(table)
+				  }
+				  else{
+					b = data.reverse()
+					$('#table_perusahaan_cabang_konfirmasi > tbody > tr:first').remove()
+					for (var i = 0; i < a; i++){
+					  id = b[i].id
+					  no = a
+					  if (a > 1){
+						no = a-i
+					  }
+					  nama = b[i].nama_perusahaan
+					  alamat = b[i].alamat_perusahaan
+					  no_tdp = b[i].nomor_tdp
+					  nama_kabupaten = b[i].nama_kabupaten
+					  nama_provinsi = b[i].nama_provinsi
+					  kode_pos = b[i].kode_pos
+					  telepon = b[i].telepon
+					  status_perusahaan = b[i].status_perusahaan
+					  kegiatan_usaha = b[i].kegiatan_usaha
+					  row = '<tr>'
+					  row += '<td>'+no+'</td>'
+					  row += '<td>'+nama+'</td>'
+					  row += '<td>'+alamat+'</td>'
+					  row += '<td>'+no_tdp+'</td>'
+					  row += '<td>'+nama_kabupaten+'</td>'
+					  row += '<td>'+nama_provinsi+'</td>'
+					  row += '<td>'+kode_pos+'</td>'
+					  row += '<td>'+telepon+'</td>'
+					  row += '<td>'+status_perusahaan+'</td>'
+					  row += '<td>'+kegiatan_usaha+'</td>'
+					  row += '</tr>'
+					  $('#table_perusahaan_cabang_konfirmasi > tbody').prepend(row)
+					}
+				  }
+				},
+				error: function(data) {
+				  toastr["error"]("Terjadi kesalahan pada koneksi server. Coba reload ulang browser Anda. ")
+				}
+			  });
+		  }
+	</script>
+	{% include 'front-end/include/formulir_tdp_pt/popup/tambah_pimpinan_perusahaan.html' %}
+	{% include 'front-end/include/formulir_tdp_pt/popup/tambah_cabang.html' %}
+	{% include 'front-end/include/formulir_tdp_pt/popup/tambah_legalitas_lain.html' %}
+{% endblock %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+{% endblock %}
+
+{% block custom_style %}
+<style type="text/css">
+  @media only screen and (max-width: 1280px){
+	.hidden_title{
+	   display: none !important;
+	}
+	.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+	  padding-bottom: 24px
+	}
+	.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+	  padding-bottom: 24px;
+	}
+  }
+  @media only screen and (max-width: 844px){
+	.hidden_title{
+	  display: block !important;
+	}
+  }
+
+  hr.style14 { 
+	border: 0; 
+	height: 1px; 
+	background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+  }
+  .tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+	background-color: #22beef;
+	color: aliceblue;
+  }
+  .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+	background-color: #616f77;
+  }
+  .tab-wizard .nav-tabs > li:before {
+	background-color: #333;
+  }
+  /*@media screen and (max-width: 767px)*/
+  .table-responsive {
+	  width: 100%;
+	  margin-bottom: 15px;
+	  overflow-y: hidden;
+	  -ms-overflow-style: -ms-autohiding-scrollbar;
+	  border: 1px solid #ddd;
+  }
+  #id_kegiatan_usaha_pokok_chosen .search-field input{
+	min-width: 125px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="rootwizard" class="tab-container tab-wizard">
+	<ul class="nav nav-tabs nav-justified">
+		<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">STEP #1</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">STEP #2</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">STEP #3</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">STEP #4 </i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">STEP #5</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+		<li><a disabled href="#tab6" data-toggle="tab"><i class="hidden_title">STEP #6</i><span class="badge badge-default pull-right wizard-step">6</span></a></li>
+		<li><a disabled href="#tab7" data-toggle="tab"><i class="hidden_title">STEP #7</i><span class="badge badge-default pull-right wizard-step">7</span></a></li>
+		<li><a disabled href="#tab8" data-toggle="tab"><i class="hidden_title">STEP #8</i><span class="badge badge-default pull-right wizard-step">8</span></a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane" id="tab1"> 
+		  <!-- Identitas pemohon --> 
+		  {% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab2">
+		  <!-- Identitas perusahaan -->
+		  {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+		</div>
+		  <!-- Data umum perusahaan -->
+		<div class="tab-pane" id="tab3">
+		  {% include 'front-end/include/formulir_tdp_po/data_umum_perusahaan.html' %}
+		</div>
+		<!-- Data kegiatan perusahaan -->
+		<div class="tab-pane" id="tab4">
+		  {% include 'front-end/include/formulir_tdp_po/data_kegiatan_perusahaan.html' %}
+		</div>
+		<!-- Izin - izin dan legalitas lainnya -->
+		<div class="tab-pane" id="tab5">
+		  {% include 'front-end/include/formulir_tdp_po/izin_lain.html' %}
+		</div>
+		<!-- Data lain perusahaan -->
+		<div class="tab-pane" id="tab6">
+		  {% include 'front-end/include/formulir_tdp_po/data_lain_perusahaan.html' %}
+		</div>
+		<!-- Upload dokumen persyaratan -->
+		<div class="tab-pane" id="tab7">
+		  {% include 'front-end/include/formulir_tdp_po/upload_dokumen_persyaratan.html' %}
+		</div>
+		<!-- Konfirmasi -->
+		<div class="tab-pane" id="tab8">
+		  {% include 'front-end/include/formulir_tdp_po/konfirmasi.html' %}
+		</div>
+
+		<ul class="pager wizard">
+		  <li class="previous"><a class="btn btn-default">Kembali</a></li>
+		  <li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+		  <li class="next finish" style="display:none;">
+			<button id="alert" onclick="next_tab(this)"  value="Submit" type="submit" class="btn btn-success pull-right">
+			  <i class="fa fa-arrow-right"></i>
+			  <span>Selesai</span>
+			</button>
+		  </li>
+		</ul>
+	</div>
+	<br>
+	<br>
+	<br>
+</div>
+{% endblock %}

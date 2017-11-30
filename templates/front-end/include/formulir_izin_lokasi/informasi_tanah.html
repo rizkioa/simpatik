@@ -1,0 +1,188 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'informasitanah_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+      <h3>Informasi Tanah</h3>
+    <hr class="style14">
+
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" id="id_alamat" name="alamat" placeholder="Isi alamat lengkap" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+      <div class="col-sm-5">
+        <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+          <option value="1">Kabupaten Kediri</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="kecamatan3">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
+      <div class="col-sm-5">
+        <select id="id_kecamatan_data_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kecamatan --</option>
+          {% if kecamatan %}
+          {% for k in kecamatan %}
+          <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+          {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="desa3">
+      <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_data_reklame" required="" data-parsley-trigger="change">
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Status Tanah</label>
+      <div class="col-sm-4">
+        <input class="form-control" required="" name="status_tanah" id="id_status_tanah"></input>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Luas</label>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <input type="text" class="form-control float-type" id="id_luas" name="luas" required="" data-parsley-trigger="change">
+          <span class="input-group-addon">
+            <span>M&sup2;</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">No. Surat Pemberitahuan DPM</label>
+      <div class="col-sm-4">
+        <input class="form-control" name="no_surat_pemberitahuan" id="id_no_surat_pemberitahuan"></input>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Tanggal Surat Pemberitahuan DPM</label>
+      <div class="col-sm-3">
+          <div class="input-group datepicker w-360 tanggal-awal"> 
+            <input type="text" name="tanggal_surat_pemberitahuan" class="form-control" data-date-format="DD-MM-YYYY" id="id_tanggal_surat_pemberitahuan"  style="width: 170px;">
+            <span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
+              <a class="btn btn-default" type="button"><i class="fa fa-calendar"></i></a>
+            </span>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Sertifikat/Petok D</label> 
+        <table id="id_sertifikat_tanah" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No Sertifikat/Petok D</td>
+              <td>Luas</td>
+              <td>Atas Nama</td>
+              <td>Tahun</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if sertifikat_tanah_list %}
+            {% for a in sertifikat_tanah_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+                <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+                <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+                <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowsertifikattanah(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowsertifikattanah(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah(this);return false;">Tambah Sertifikat Tanah<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Akta Jual Beli</label> 
+        <table id="id_akta_jual_beli" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No Jual Beli</td>
+              <td>Tanggal</td>
+              <td>Atas Nama</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if akta_jual_beli_list %}
+            {% for j in akta_jual_beli_list %}
+              <tr id="{{j.id}}">
+                <td id="id_table_no_jual_beli">{{j.no_jual_beli}}</td>
+                <td id="id_table_tanggal_jual_beli">{{j.tanggal_jual_beli|date:"d-m-Y"}}</td>
+                <td id="id_table_atas_nama_jual_beli">{{j.atas_nama_jual_beli}}</td>
+                <td align='center'> <a href='#' id={{j.id}} onclick="editRowaktajualbeli(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{j.id}} onclick="deleteRowaktajualbeli(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah_akta_jual_beli(this);return false;">Tambah Akta Jual Beli<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+    <br>
+
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">No. PTP</label> 
+        <table id="id_no_ptp_table" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>No PTP</td>
+              <td>Tanggal PTP</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if no_ptp_list %}
+            {% for p in no_ptp_list %}
+              <tr id="{{p.id}}">
+                <td id="id_table_no_ptp">{{p.no_ptp}}</td>
+                <td id="id_table_id_table_tanggal_ptp">{{p.tanggal_ptp|date:"d-m-Y"}}</td>
+                <td align='center'> <a href='#' id={{p.id}} onclick="editRownoptp(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{p.id}} onclick="deleteRownoptp(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" onclick="tambah_no_ptp(this);return false;">Tambah No. PTP<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+    <br>
+
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Penggunaan Sekarang</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" id="id_penggunaan_sekarang" name="penggunaan_sekarang" placeholder="Isi penggunaan sekarang" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+     <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Rencana Penggunaan</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" id="id_rencana_penggunaan" name="rencana_penggunaan" placeholder="Isi rencana penggunaan" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+</form>

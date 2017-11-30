@@ -1,0 +1,51 @@
+{% load admin_tools_menu_tags i18n %}
+{% spaceless %}
+{% if item.accesskey %}
+	<div class="panel panel-default">
+	    <div class="panel-heading" role="tab">
+	        <h4 class="panel-title">
+	            <a data-toggle="collapse" href="#sidebar{{ item.accesskey }}">
+	                {{ item.title }} <i class="fa fa-angle-up"></i>
+	            </a>
+	        </h4>
+	    </div>
+	    <div id="sidebar{{ item.accesskey }}" class="panel-collapse collapse in" role="tabpanel">
+		    <div class="panel-body">
+			    <ul class="navigation" id="navigation">
+			    	{% if item.children and item.enabled %}
+			    		{% with index=index|add:"1" %}
+							{% for child_item in item.children %}
+							{% admin_tools_render_menu_item child_item index %}
+							{% endfor %}
+						{% endwith %}
+			    	{% endif %}
+			    </ul>
+				<!--/ NAVIGATION Content -->
+	        </div>
+	    </div>
+	</div>
+{% else %}
+	{% if not item.is_empty %}
+		<li class="menu-item{% ifequal index 1 %} first{% endifequal %}{% if not item.enabled %} disabled{% endif %}{% if selected %} selected active{% endif %}{% if item.css_classes %} {{ item.css_classes }}{% endif %}{% if item.children and item.enabled %} dropdown xn-openable{% endif %}">
+			<a href="{% if item.url and item.enabled %}{{ item.url }}{% else %}#{% endif %}"{% if item.description %} title="{{ item.description }}"{% endif %}{% if item.accesskey %} accesskey="{{ item.accesskey }}"{% endif %}>
+				{% if item.icon %}
+					<i class="{{ item.icon }}"></i>
+				{% endif %} 
+				<span class="xn-text">{% trans item.title %}</span>
+			</a>
+			{% if item.description == "Baru!" %}
+				<div class="informer informer-danger">New!</div>
+			{% endif %}
+			{% if item.children and item.enabled %}
+			<ul>
+				{% with index=index|add:"1" %}
+					{% for child_item in item.children %}
+					{% admin_tools_render_menu_item child_item index %}
+					{% endfor %}
+				{% endwith %}
+			</ul>
+			{% endif %}
+		</li>
+	{% endif %}
+{% endif %}
+{% endspaceless %}

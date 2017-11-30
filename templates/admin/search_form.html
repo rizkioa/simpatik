@@ -1,0 +1,49 @@
+{% load i18n admin_static %}
+{% if cl.search_fields %}
+<div id="toolbar">
+	<form id="changelist-search" action="" method="get">
+	<div><!-- DIV needed for valid HTML -->
+		<div class="row">
+		  <div class="col-md-12">
+		  	<div class="panel panel-default" style="margin-bottom: 0px;">
+				<div class="panel-body panel-body-search">
+					<div class="form-group input-group">
+			            <input type="text" class="form-control" placeholder="{% trans "Search" %}..." size="40" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar">
+			            <span class="input-group-btn">
+			                <button type="submit" class="btn btn-success"><i class="fa fa-search"></i>
+			                </button>
+			            </span>
+			        </div>			        
+		        </div>
+                {% if show_result_count %}
+                	<div class="panel-footer">
+                    	&nbsp;
+					    <span class="small quiet pull-right" style="padding-top: 5px;">
+						    {% blocktrans count counter=cl.result_count %}
+						    	<span class="badge bg-greensea">{{ counter }} result</span>{% plural %}<span class="badge bg-greensea">{{ counter }} results</span>
+						    {% endblocktrans %} 
+						    {% trans "from" %}
+						    <a href="?{% if cl.is_popup %}_popup=1{% endif %}">
+						    	{% if cl.show_full_result_count %}
+					    			{% blocktrans with full_result_count=cl.full_result_count %}
+					    				<span class="badge bg-greensea">{{ full_result_count }} total</span>
+					    			{% endblocktrans %}
+					    		{% else %}
+					    			{% trans "Show all" %}
+					    		{% endif %}
+						    </a>
+					    </span>
+					</div>
+				{% endif %}
+	        </div>	        
+		  </div>
+		</div>		
+		
+		{% for pair in cl.params.items %}
+		    {% ifnotequal pair.0 search_var %}<input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}"/>{% endifnotequal %}
+		{% endfor %}
+	</div>
+</form>
+</div>
+<script type="text/javascript">document.getElementById("searchbar").focus();</script>
+{% endif %}

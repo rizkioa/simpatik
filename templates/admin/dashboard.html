@@ -1,0 +1,218 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}
+    {{block.super}}
+    <style type="text/css">
+        .proses{
+            background-color: #ff4a43 ;
+        }
+        .selesai{
+            background-color: #a2d200 ;
+        }
+        /*.tile{
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }*/
+        .tile{
+            box-shadow: 0 12px 6px -6px #bbb;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'scripts/js/vendor/morris/morris.css' %}">
+    <link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+
+{% endblock %}
+
+{% block title %}Selamat Datang | SIMPATIK {% endblock %}
+{% block icotitle %}<i class="fa fa-dashboard"></i>&nbsp;{% endblock %}
+{% block content_title %}
+    Dashboard
+{% endblock %}
+
+{% block breadcrumbs %}
+	{% if not is_popup %}
+	<div class="page-bar">
+	    <ul class="page-breadcrumb">
+	        <li>
+	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-dashboard"></i> Dasboard</a>
+	        </li>
+	    </ul>
+	</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block content %}
+<div id="content-main">
+	<div class="row">
+        <div class="col-lg-12">
+            <section class="tile bg-greensea">
+                <div class="tile-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <center>
+                        	   <h2>Selamat Datang diaplikasi SIMPATIK <br>( Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri )</h2>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="tile bg-red loadinge">
+                <div class="tile-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-users fa-4x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <p class="text-elg text-strong mb-0"><span id="id_pemohon_widgets"></span></p>
+                            <span>Total Pemohon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="tile bg-orange loadinge">
+                <div class="tile-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-building-o fa-4x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <p class="text-elg text-strong mb-0"><span id="id_perusahaan_widgets"></span></p>
+                            <span>Total Perusahaan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="tile bg-blue loadinge">
+                <div class="tile-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa fa-rocket fa-4x"></i>
+                        </div>
+                        <div class="col-xs-8">
+                            <p class="text-elg text-strong mb-0"><span id="id_pengajuan_widgets"></span></p>
+                            <span>Total Pengajuan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="id_diagram">
+        <div class="col-lg-4">
+            <section class="tile loadinge">
+                <div class="tile-header">
+                    <center>
+                    <h3 align="centar" class="custom-font"><strong>Permohonan Izin</strong><br> <span id="total_izin"></span></h3>
+                    </center>
+                </div>
+                <div class="tile-body">
+                    <div align="center"><span id="sparkline03"></span></div>
+                    <br>
+                    <br>
+                    <!-- <span class="badge bg-red">1</span> -->
+                    <span class="badge selesai">&nbsp;</span><i> Selesai : <span id="hasil_selesai"></span></i>
+                    <br>
+                    <span class="badge proses">&nbsp;</span><i> Dalam proses : <span id="hasil_proses"></span></i>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-8">
+            <section class="tile loadinge">
+                <div class="tile-header">
+                    <center><h3 class="custom-font"><strong>Jumlah Pengajuan Setiap Izin</strong><br> <span id="tahun_sekarang"></span></h3></center>
+                </div>
+                <div class="tile-body">
+                    <div id="bar-example" style="height: 250px;"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs_site %}
+{{ block.super }}
+<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/flot/jquery.flot.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/flot/jquery.flot.pie.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/morris/morris.min.js' %}"></script>
+<script src="{% static 'scripts/js/vendor/raphael/raphael-min.js' %}"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        $('.loadinge').mLoading();
+        $.ajax({
+            type: 'GET',
+            url: '{% url 'admin:ajax_dashboard' %}',
+            success: function(response) {
+                respon = $.parseJSON(response)
+                // +++++++ set bar ++++
+                if(respon.success){
+                    // 
+                    // +++++++ set donat +++
+                    $('#sparkline03').sparkline([respon.pengajuan_proses,respon.pengajuan_selesai ], {
+                        type: 'pie',
+                        width: 'auto',
+                        height: '260px',
+                        sliceColors: ['#ff4a43','#a2d200']
+                    });
+
+                    var selesai = respon.pengajuan_selesai
+                    var proses = respon.pengajuan_proses
+                    var total_ = selesai+proses
+                    var hitung_rerata_pengajuan_selesai = selesai/total_*100
+                    var hitung_rerata_pengajuan_proses = proses/total_*100
+                    var hasil_rerata_pengajuan_selesai = hitung_rerata_pengajuan_selesai.toFixed(2)
+                    var hasil_rerata_pengajuan_proses = hitung_rerata_pengajuan_proses.toFixed(2)
+                    $('#hasil_selesai').text(hasil_rerata_pengajuan_selesai+" % ("+selesai+" izin)")
+                    $('#hasil_proses').text(hasil_rerata_pengajuan_proses+" % ("+proses+" izin)")
+                    $('#total_izin').text("(total : "+total_+" izin)")
+                    // +++++++ end set donat +++
+                    // 
+                    // Morris bar chart
+
+                    Morris.Bar({
+                        element: 'bar-example',
+                        data: [
+                            { y: 'SIUP', a: respon.pengajuan_siup },
+                            { y: 'Reklame', a: respon.pengajuan_reklame },
+                            { y: 'TDP', a: respon.pengajuan_tdp },
+                            { y: 'UIJK', a: respon.pengajuan_uijk },
+                            { y: 'IMB', a: respon.pengajuan_imb },
+                            { y: 'HO', a: respon.pengajuan_ho },
+                            { y: 'Huller', a: respon.pengajuan_huller },
+                            { y: 'IMB Papan Reklame', a: respon.pengajuan_imbpapanreklame },
+                            { y: 'Kekayaan Daerah', a: respon.pengajuan_informasikekayaandaerah },
+                            { y: 'TDUP', a: respon.pengajuan_tdup },
+                        ],
+                        xkey: 'y',
+                        ykeys: ['a'],
+                        labels: ['Jumlah'],
+                        barColors:['#262626']
+                    });
+
+                    $('#tahun_sekarang').text(new Date().getFullYear())
+                    $('#id_pemohon_widgets').text(respon.pemohon)
+                    $('#id_perusahaan_widgets').text(respon.perusahaan)
+                    $('#id_pengajuan_widgets').text(total_)
+                    $('.loadinge').mLoading('hide');
+                    
+                }
+                else{
+                    $('#id_diagram').hide()
+                }
+            }
+        })
+    }
+</script>
+{% endblock %}
+
+

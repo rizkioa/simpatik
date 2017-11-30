@@ -1,0 +1,122 @@
+<form method="POST" name="step3" role="form" id="id_imb_data_reklame" class="form-horizontal" action="{% url 'reklame_imbreklame_save' %}">
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Data IMB KONSTRUSI LAIN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="jenis_papan_reklame" class="col-sm-2 control-label">Jenis Papan Reklame</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="jenis_papan_reklame" id="id_jenis_papan_reklame" required="">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><strong>Jumlah</strong></label>
+      <div class="col-sm-7">
+        <input type="number" class="form-control" rows="5" required="" data-parsley-trigger="change" name="jumlah" placeholder="" id="id_jumlah"></input>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Ukuran</label>
+      <div class="form-group">
+        <label for="lebar" class="col-sm-2 control-label">Lebar</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" name="lebar" id="id_lebar">
+          </div>
+        <label for="tinggi" class="col-sm-2 control-label">Tinggi</label>
+          <div class="col-sm-2">
+            <input type="text" class="form-control" name="tinggi" id="id_tinggi">
+          </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Lokasi Pemasangan</label>
+      <div class="col-sm-7">
+        <textarea class="form-control" rows="5" required="" name="lokasi_pasang" id="id_lokasi_pasang" placeholder="Isi Lokasi Pasang Papan Reklame"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="milik" class="col-sm-2 control-label">Milik</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="milik" id="id_milik">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Klasifikasi Jalan</label>
+      <div class="form-group">
+        <div class="col-sm-7">
+          <select id="id_klasifikasi_jalan" name="klasifikasi_jalan" class="form-control chosen-select mb-20">
+            <option>-- Pilih Klasifikasi Jalan</option>
+              {% for j in klasifikasi_jalan %}
+               <option value="{{j.0}}">{{j.1}}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Kota/Kabupaten</label>
+      <div class="col-sm-5">
+        <select disabled="" class="form-control chosen-select mb-10" name="kabupaten">
+          <option value="1">Kabupaten Kediri</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="kecamatan3">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong></label>
+      <div class="col-sm-5">
+        <select id="id_kecamatan_imb_reklame" required="" data-parsley-trigger="change" class="form-control chosen-select mb-10">
+          <option value>-- Pilih Kecamatan --</option>
+          {% if kecamatan %}
+            {% for k in kecamatan %}
+            <option value="{{ k.id }}">{{ k.nama_kecamatan }}</option>
+            {% endfor %}
+          {% endif %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="desa3">
+      <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa_imb_reklame" required="" data-parsley-trigger="change">
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label"><u><b>Batas-batas</b></u></label>
+    </div>
+
+    <div class="form-group">
+      <label for="batas_utara" class="col-sm-2 control-label">Sebelah Utara</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_utara" id="id_batas_utara">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="batas_timur" class="col-sm-2 control-label">Sebelah Timur</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_timur" id="id_batas_timur">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="batas_selatan" class="col-sm-2 control-label">Sebelah Selatan</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_selatan" id="id_batas_selatan">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="batas_barat" class="col-sm-2 control-label">Sebelah Barat</label>
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="batas_barat" id="id_batas_barat">
+      </div>
+    </div>
+</form>

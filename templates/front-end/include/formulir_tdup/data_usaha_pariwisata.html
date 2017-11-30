@@ -1,0 +1,211 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'tdup_data_usaha_pariwisata_save' %}" data-parsley-validate novalidate>
+	{% csrf_token %}  
+	<h3>DATA USAHA PARIWISATA</h3>
+	<hr class="style14">
+
+  <div class="form-group" id="bidang_usaha_pariwisata">
+    <label class="col-sm-2 control-label text-left"><strong>Bidang Usaha Pariwisata</strong></label>
+    <div class="col-sm-10">
+      <select class="chosen-select" style="width: 340px;" name="bidang_usaha_pariwisata" id="id_bidang_usaha_pariwisata" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Bidang Usaha --</option>
+        {% for val in bidang_usaha_pariwisata %}
+          <option value="{{ val.id }}">{{ val.nama_bidang_usaha_pariwisata}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="jenis_usaha_pariwisata">
+    <label class="col-sm-2 control-label text-left"><strong>Jenis Usaha Pariwisata</strong></label>
+    <div class="col-sm-10">
+      <select class="chosen-select" style="width: 340px;" name="jenis_usaha_pariwisata" id="id_jenis_usaha_pariwisata" onchange="subjenis($(this).val());">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_jenis_usaha_pariwisata">
+    <label class="col-sm-2 control-label text-left"><strong>Sub Jenis Usaha Pariwisata</strong></label>
+    <div class="col-sm-10">
+      <select class="chosen-select" style="width: 340px;" name="sub_jenis_usaha_pariwisata" id="id_sub_jenis_usaha_pariwisata">
+      </select>
+    </div>
+  </div>
+
+  <!-- <div class="form-group" id="sub_angkutan_jalan_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Jalan Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_jalan_wisata" id="id_jumlah_unit_angkutan_jalan">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control"  name="kapasitas_angkutan_jalan_wisata" id="id_kapasitas_angkutan_jalan_wisata">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_angkutan_kereta_api_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Kereta Api Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_kereta_api_wisata" id="id_jumlah_unit_angkutan_kereta_api_wisata">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control"  name="kapasitas_angkutan_kereta_api_wisata" id="id_kapasitas_angkutan_kereta_api_wisata">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_angkutan_sungai_dan_danau_wisata">
+    <label class="col-sm-3 control-label text-left">Angkutan Sungai dan Danau Wisata</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Jumlah Unit</span>
+        <input type="text" class="form-control"  name="jumlah_unit_angkutan_sungai_dan_danau_wisata" id="id_jumlah_unit_angkutan_sungai_dan_danau_wisata">
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <span class="input-group-addon">Kapasitas</span>
+        <input type="text" class="form-control"  name="kapasitas_angkutan_sungai_dan_danau_wisata" id="id_kapasitas_angkutan_sungai_dan_danau_wisata">
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group" id="sub_restoran">
+    <label class="col-sm-3 control-label text-left">Restoran</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control"  name="jumlah_kursi_restoran" id="id_jumlah_kursi_restoran">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_rumah_makan">
+    <label class="col-sm-3 control-label text-left">Rumah Makan</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control"  name="jumlah_kursi_rumah_makan" id="id_jumlah_kursi_rumah_makan">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_bar">
+    <label class="col-sm-3 control-label text-left">Bar/Rumah Minum</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control"  name="jumlah_kursi_bar_atau_rumah_minum" id="id_jumlah_kursi_bar">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_kafe">
+    <label class="col-sm-3 control-label text-left">Kafe</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Kursi :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control"  name="jumlah_kursi_kafe" id="id_jumlah_kursi_kafe">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_pusat_makanan">
+    <label class="col-sm-3 control-label text-left">Pusat Makanan</label>
+    <label class="col-sm-2 control-label text-left">Jumlah Stand :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control"  name="jumlah_stand_pusat_makanan" id="id_jumlah_stand_pusat_makanan">
+        <span class="input-group-addon">buah</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="sub_jasa_boga">
+    <label class="col-sm-3 control-label text-left">Jasa Boga</label>
+    <label class="col-sm-2 control-label text-left">Kapasitas produksi/pack :</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+        <input type="text" class="form-control"  name="kapasitas_produksi_jasa_boga" id="id_kapasitas_produksi_jasa_boga">
+        <span class="input-group-addon">unit/bulan</span>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label text-left">Kapasitas</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control"  name="kapasitas" id="kapasitas">
+      <label class="help-text" style="color: gray;">Contoh : 10 Kamar / 10 Kursi / 10 Buah / 10 Stand</label>
+    </div>
+  </div>
+  
+  <h4>Vasilitas</h4>
+  <div class="form-group">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-vasilitas-tdup">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama Vaslitas</th>
+              <th>Jumlah</th>
+              <th width="20%">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-12">
+      <a onclick="tambah_vasilitas_tdup()" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Vasilitas</a>
+    </div>
+  </div>
+
+  <h4>Pengurus Badan Usaha</h4>
+  <div class="form-group">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-pengurus-badan-usaha">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>No KTP</th>
+              <th>Nama Lengkap</th>
+              <th>Alamat</th>
+              <th>Telephone</th>
+              <th>Keterangan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-12">
+      <a onclick="tambah_pengurus_badan_usaha()" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Pengurus</a>
+    </div>
+  </div>
+  <br>
+</form>

@@ -1,0 +1,131 @@
+{% load i18n admin_static widgets %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+{% get_current_language_bidi as LANGUAGE_BIDI %}
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}> <!--<![endif]-->
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta name="description" content="Sistem Informasi Manajemen Pelayanan Perijinan Terpadu - DPMPTSP - Kab. Kediri">
+    <meta name="keywords" content="Sistem, Informasi, Pelayanan, Perijinan, Terpadu, DPMPTSP, Kabupaten Kediri, Django, Python, angular, bootstraps">
+    <meta name="author" content="Samsul Hadi - gablooge.com | aitc.co.id">
+    <meta name="geo.position" content="-7.264905175512713;112.7578353881836">
+    <meta name="google-site-verification" content="0qbDoRHwqpTEFGBDy509ADRxd-qmeqM0TuOsw6DXHvc">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/ico" href="{% static 'images/SIMPATIK.ico' %}" />
+
+    <!-- vendor css files -->
+    <link rel="stylesheet" href="{% static 'styles/css/vendor/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/css/vendor/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/css/vendor/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'scripts/js/vendor/animsition/css/animsition.min.css' %}">
+
+    {% block extrastyle %}{% endblock %}
+
+    <!-- project main css files -->
+    <link rel="stylesheet" href="{% static 'styles/css/main.css' %}">
+    <link rel="stylesheet" href="{{ request.META.HTTP_HOST|get_css }}">
+    <!--/ stylesheets -->
+    <style type="text/css">
+        #header .branding a.brand {
+            background: rgba(0, 0, 0, 0) url("{% static 'images/SIMPATIK.png' %}") no-repeat scroll 0 12px;background-size: 20px 20px;
+        }
+        #navigation > li.active > a {
+            background-color: #607D8B;
+            color: white;
+        }
+    </style>
+
+    {% block custom_style %}{% endblock %}
+    <script src="{% static 'scripts/js/vendor/jquery/jquery-2.1.1.min.js' %}"></script>
+    <!-- ==========================================
+    ================= Modernizr ===================
+    =========================================== -->
+    <script src="{% static 'scripts/js/vendor/modernizr/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
+    <!--/ modernizr -->
+
+    
+    <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
+    {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+    <script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+    <script type="text/javascript">window.__admin_utc_offset__ = "{% filter escapejs %}{% now "Z" %}{% endfilter %}";</script>
+    {% block extrahead %}{% endblock %}
+    {% block extrascript %}
+        <script type="text/javascript">
+            lokasi = document.createElement("a");
+            lokasi.href = location.href;
+            window.__base_url__ = lokasi.protocol+"//"+lokasi.host;
+        </script>
+    {% endblock %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+{% load i18n %}
+
+<body id="minovate" class="appWrapper {% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">Anda menggunakan browser yang sangat <strong>jadul</strong>. Harap <a href="http://browsehappy.com/">memperbaruhi browser Anda</a> untuk meningkatkan kenyamanan.</p>
+    <![endif]-->
+
+    <!-- ====================================================
+    ================= Application Content ===================
+    ===================================================== -->
+    <div id="wrap" class="animsition">
+        {% block header_content %}{% endblock %}
+        {% if not is_popup %}            
+            {% block control_content %}{% endblock %}
+        {% endif %}
+        {% block page_content %}
+            {% block footer %}
+                <div id="footer" class="footer">
+                    {% include "footer.html" %}
+                </div>
+            {% endblock %}
+        {% endblock %}
+    </div>
+    <!-- END wrap -->    
+    {% block extracontent %}
+    {% endblock %}
+    {% block extrajs %}
+        <!-- ============================================
+        ============== Vendor JavaScripts ===============
+        ============================================= 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{% static "scripts/js/vendor/jquery/jquery-1.11.2.min.js" %}"><\/script>')</script>
+        -->
+        <!-- <script src="{% static "scripts/js/vendor/jquery/jquery-1.11.2.min.js" %}"></script> -->
+        
+        <!-- <script src="{% static "scripts/js/vendor/jquery/jquery-3.1.1.min.js" %}"></script> -->
+        <script src="{% static 'scripts/js/vendor/bootstrap/bootstrap.min.js' %}"></script>
+        <script src="{% static 'scripts/js/vendor/jRespond/jRespond.min.js' %}"></script>
+        <script src="{% static 'scripts/js/vendor/sparkline/jquery.sparkline.min.js' %}"></script>
+        <script src="{% static 'scripts/js/vendor/slimscroll/jquery.slimscroll.min.js' %}"></script>
+        <script src="{% static 'scripts/js/vendor/animsition/js/jquery.animsition.min.js' %}"></script>
+        <!--/ vendor javascripts -->
+
+    {% endblock %}
+    
+    <script>
+    if(window.location.hostname != 'localhost'){
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-87576217-2', 'auto');
+          ga('send', 'pageview');
+    }
+      
+    </script>
+</body>
+</html>

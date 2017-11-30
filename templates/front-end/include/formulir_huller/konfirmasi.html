@@ -1,0 +1,447 @@
+<form method="POST" name="step6" role="form">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%">{{request.COOKIES.jenis_permohonan}}</td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }}{% if paspor %} / {{ paspor }}{% endif %}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_pemohon_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
+    </tr>
+  </table>
+  <br>
+
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#3. Pemilik dan Pengusaha</u></h4>
+  <h5><u>Pemilik</u></h5>
+  <table id="pemilik" width="100%" border="0">
+    <tbody>
+    </tbody>
+  </table>
+  <h5><u>Pengusaha</u></h5>
+  <table id="pengusaha" width="100%" border="0">
+    <tbody>
+    </tbody>
+  </table>
+  <br>
+  <table id="hubungan_pemilik_dan_pengusaha" width="100%" border="0">
+    <tbody>
+    </tbody>
+  </table>
+  
+  
+  <br>
+  <h4><u>#4. DATA MESIN</u></h4>
+  <h5><u>Montor Pengerak</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td align="left">Montor Bensin</td>
+        <td><span id="id_type_model_motor_bensin_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_motor_bensin_konfirmasi"></span></td>
+        <td><span id="id_buatan_motor_bensin_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_motor_bensin_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Montor Diesel</td>
+        <td><span id="id_type_model_motor_diesel_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_motor_diesel_konfirmasi"></span></td>
+        <td><span id="id_buatan_motor_diesel_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_motor_diesel_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Diesel Generating Set</td>
+        <td><span id="id_type_model_diesel_generating_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_diesel_generating_konfirmasi"></span></td>
+        <td><span id="id_buatan_diesel_generating_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_diesel_generating_konfirmasi"></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5><u>Mesin Pecah Kulit / Pengupas Gabah</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td align="left">Rubber Roll / Roll Karet</td>
+        <td><span id="id_type_model_rubber_roll_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_rubber_roll_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_rubber_roll_konfirmasi"></span></td>
+        <td><span id="id_buatan_rubber_roll_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_rubber_roll_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Flash Type / Type Banting</td>
+        <td><span id="id_type_model_flash_type_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_flash_type_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_flash_type_konfirmasi"></span></td>
+        <td><span id="id_buatan_flash_type_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_flash_type_konfirmasi"></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5><u>Mesin Pemisah Gabah dan Beras Pecah Kulit</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td align="left">Gedogan</td>
+        <td><span id="id_type_model_gedogan_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_gedogan_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_gedogan_konfirmasi"></span></td>
+        <td><span id="id_buatan_gedogan_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_gedogan_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Dimple Plate</td>
+        <td><span id="id_type_model_dimple_plate_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_dimple_plate_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_dimple_plate_konfirmasi"></span></td>
+        <td><span id="id_buatan_dimple_plate_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_dimple_plate_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Screen</td>
+        <td><span id="id_type_model_screen_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_screen_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_screen_konfirmasi"></span></td>
+        <td><span id="id_buatan_screen_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_screen_konfirmasi"></span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h5><u>Mesin Penyosoh Beras</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td align="left">Mesin Slip Horizontal</td>
+        <td><span id="id_type_model_slip_horizontal_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_slip_horizontal_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_slip_horizontal_konfirmasi"></span></td>
+        <td><span id="id_buatan_slip_horizontal_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_slip_horizontal_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Mesin Slip Vertikal</td>
+        <td><span id="id_type_model_slip_vertikal_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_slip_vertikal_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_slip_vertikal_konfirmasi"></span></td>
+        <td><span id="id_buatan_slip_vertikal_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_slip_vertikal_konfirmasi"></span></td>
+      </tr>
+      </tbody>
+  </table>
+
+  <h5><u>Mesin Lain-lain</u></h5>
+  <table class="table table-bordered">
+    <thead>
+      <tr align="center">
+        <th> Jenis </th>
+        <th> Type / Model </th>
+        <th> PK </th>
+        <th> Kapasitas (Kw/Jam/Unit) </th>
+        <th> Buatan Merk </th>
+        <th> Jumlah Unit </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr align="center">
+        <td align="left">Paddy Cleaner / Pembersih Gabah (Blower)</td>
+        <td><span id="id_type_model_paddy_cleaner_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_paddy_cleaner_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_paddy_cleaner_konfirmasi"></span></td>
+        <td><span id="id_buatan_paddy_cleaner_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_paddy_cleaner_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Mesin Polis / Brusher</td>
+        <td><span id="id_type_model_polis_brushe_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_polis_brushe_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_polis_brushe_konfirmasi"></span></td>
+        <td><span id="id_buatan_polis_brushe_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_polis_brushe_konfirmasi"></span></td>
+      </tr>
+<!--       <tr align="center">
+        <td align="left">Brusher</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr> -->
+      <tr align="center">
+        <td align="left">Grader / Mesin Pemisah</td>
+        <td><span id="id_type_model_grader_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_grader_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_grader_konfirmasi"></span></td>
+        <td><span id="id_buatan_grader_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_grader_konfirmasi"></span></td>
+      </tr>
+      <tr align="center">
+        <td align="left">Kualitas</td>
+        <td><span id="id_type_model_kualitas_konfirmasi"></span></td>
+        <td><span id="id_pk_mesin_kualitas_konfirmasi"></span></td>
+        <td><span id="id_kapasitas_mesin_kualitas_konfirmasi"></span></td>
+        <td><span id="id_buatan_kualitas_konfirmasi"></span></td>
+        <td><span id="id_jumlah_unit_kualitas_konfirmasi"></span></td>
+      </tr>
+<!--       <tr align="center">
+        <td>Lain-lain</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+        <td>&nbsp</td>
+      </tr> -->
+      </tbody>
+  </table>
+
+
+  <br>
+  <h4><u>#4. Upload Dokumen Persyaratan</u></h4>
+    <table class="table table-bordered">
+      <thead>
+        <tr align="center">
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Keputusan Izin Gangguan (HO)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-keputusan_izin_gangguan"  disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Akta Pendirian Perusahaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-akta_pendirian_perusahaan"  disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            KTP / Paspor (Dirut/pemilik/pengurus/penanggung jawab)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-file_ktp_paspor" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Foto 4x6cm
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-file_ktp_4x6" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Denah Bangunan dan Tata letak Bangunan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-denah_bangunan" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Rekomendasi dari Dinas Pertanian Kabupanten Kediri
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-rekomendasi_dinas_pertanian" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Struktur Organisasi Pemilik jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-struktur_organisasi_pemilik" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Struktur Organisasi Pengusaha jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-struktur_organisasi_pengusaha" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Akta Pendirian Perusahaan Pemilik jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-akta_pendirian_perusahaan_pemilik_badan_usaha" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Akta Pendirian Perusahaan Pengusaha jika berupa badan usaha
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-akta_pendirian_perusahaan_pengusaha_badan_usaha" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt checkbox-custom-lg" style="color: white;">
+        <input id="checkbox_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
+</form>

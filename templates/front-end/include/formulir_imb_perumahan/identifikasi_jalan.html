@@ -1,0 +1,111 @@
+<form method="POST" name="step5" action="{% url 'identifikasi_jalan_save' %}" role="form" class="form-horizontal">
+  {% csrf_token %}   
+   <h3>IDENTIFIKASI JALAN</h3>
+    <hr class="style14">
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Klasifikasi Jalan</label>
+      <div class="form-group">
+        <div class="col-sm-7">
+          <select id="id_klasifikasi_jalan" name="klasifikasi_jalan" class="form-control chosen-select mb-20">
+            <option>-- Pilih Klasifikasi Jalan</option>
+              {% for j in klasifikasi_jalan %}
+               <option value="{{j.0}}">{{j.1}}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Ruang Milik Jalan (RUMIJA)</label>
+      <div class="form-group">
+        <div class="col-sm-7">
+          <select id="id_ruang_milik_jalan" name="ruang_milik_jalan" class="form-control chosen-select mb-20">
+            <option>-- Pilih Ruang Milik Jalan</option>
+              {% for j in rumija %}
+               <option value="{{j.0}}">{{j.1}}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Ruang Pengawasan Jalan (RUWASJA)</label>
+      <div class="form-group">
+        <div class="col-sm-7">
+          <select id="id_ruang_pengawasan_jalan" name="ruang_pengawasan_jalan" class="form-control chosen-select mb-20">
+            <option>-- Pilih Ruang Pengawasan Jalan</option>
+              {% for j in ruwasja %}
+               <option value="{{j.0}}">{{j.1}}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+</form>
+
+<div class="form-group ketentuan">
+  <span class="keterangan"><u><b>Keterangan</b></u>: Bagian sempadan jalan untuk masing-masing fungsi jalan minimal sebagai berikut</span>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered" width="100%">
+        <thead>
+          <tr>
+            <td width="10%" rowspan="2">NO.</td>
+            <td width="20%" rowspan="2" align="center">KLASIFIKASI JALAN</td>
+            <td width="30%" colspan="2" align="center">SEMPADA JALAN</td>
+            <td width="40%" rowspan="2" align="center">KETERANGAN (DISEDERHANAKAN)</td>
+          </tr>
+          <tr>
+            <td width="15%" align="center">RUMIJA</td>
+            <td width="15%" align="center">RUWASJA</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="height: 44px;">
+            <td>1</td>
+            <td> Bebas Hambatan (Arteri)</td>
+            <td> Minimal 30 M</td>
+            <td> Minimal 20 M dari TEPI BADAN JALAN</td>
+            <td> Jalan yang menghubungkan ibukota propinsi dengan ibukota kabupaten/kota</td>
+          </tr>
+          <tr style="height: 44px;">
+            <td>2</td>
+            <td> Raya (Kolektor Primer)</td>
+            <td> Minimal 25 M</td>
+            <td> Minimal 10 M dari TEPI BADAN JALAN</td>
+            <td> Jalan yang dihubungkan ibukota kabupaten/kota</td>
+          </tr>
+          <tr style="height: 44px;">
+            <td>3</td>
+            <td> Sedang (Kolektor Sekunder)</td>
+            <td> Minimal 15 M</td>
+            <td> Minimal 5 M dari TEPI BADAN JALAN</td>
+            <td> Jalan yang menghubungkan ibukota kabupaten dengan ibukota kecamatan</td>
+          </tr>
+          <tr style="height: 44px;">
+            <td>4</td>
+            <td> Sedang (Lokal Primer)</td>
+            <td> Minimal 15 M</td>
+            <td> Minimal 7 M dari TEPI BADAN JALAN</td>
+            <td> Jalan yang menghubungakan ibukota kecamatan dengan ibukota kecamatan</td>
+          </tr>
+          <tr style="height: 44px;">
+            <td>5</td>
+            <td> Kecil (Lokal Sekunder)</td>
+            <td> Minimal 11 M</td>
+            <td> Minimal 3 M dari TEPI BADAN JALAN</td>
+            <td> Jalan yang menghubungkan ibukota kecamatan dengan desa atau jalan ang menghubungkan jalan desa dengan perumahan</td>
+          </tr>
+         <tr style="height: 44px;">
+            <td>6</td>
+            <td> Strategis</td>
+            <td> Minimal 22 M</td>
+            <td> Minimal 36 M dari TERAS BANGUNAN SAMPAI TERAS BANGUNAN</td>
+            <td> Jalan yang diprioritaskan untuk kepentingan kabupaten (kawasan industri, pariwisata, perdagangan dll)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>

@@ -1,0 +1,24 @@
+#header.scheme-black{
+	background-color: #ffc100 !important;
+}
+
+#header .nav-right > li > a, #header .nav-left > li > a{
+	color: #FFF
+}
+
+#header .branding.scheme-black, #sidebar.scheme-black, #sidebar.scheme-black #navigation, #sidebar.scheme-black #sidebar-wrap:before, #header.scheme-black li.toggle-right-sidebar > a, .appWrapper.scheme-black .page-breadcrumb > li:first-child, .appWrapper.scheme-black .footer{
+	background-color: #ffc100 !important;
+}
+
+#navigation > li.active > a{
+	background-color: #2b8cbb;
+    /*color: #482626;*/
+}
+
+#navigation > li a{
+	color: #424344;
+}
+
+#sidebar .panel-group .panel > .panel-heading .panel-title > a{
+	color: #607d8b !important;
+}

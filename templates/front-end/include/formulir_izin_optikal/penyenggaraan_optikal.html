@@ -1,0 +1,70 @@
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<h3>IZIN APOTEK</h3>
+			<hr class="style14">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_optical" class="col-sm-2 control-label">Nama Optical</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_nama_optical" name="nama_optical" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="nama_pemilik" class="col-sm-2 control-label">Nama Pemilik/Perusahaan</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_nama_pemilik" name="nama_pemilik" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="jenis_usaha" class="col-sm-2 control-label">Jenis Badan usaha</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_jenis_usaha" name="jenis_usaha" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group" id="alamat">
+		<label for="alamat_perusahaan" class="col-sm-2 control-label">Alamat Perusahaan / Bidang Usaha</label>
+		<div class="col-sm-6">
+			<textarea class="form-control" id="id_alamat_perusahaan" rows="5" name="alamat_perusahaan"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="no_telpon" class="col-sm-2 control-label">Nomor Telepon/Fax</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_no_telpon" name="no_telpon" class="form-control">
+		</div>
+	</div>
+
+	<div class="form-group" id="desa">
+		<label for="jenis_kegiatan_usaha" class="col-sm-2 control-label">Jenis Kegiatan Usaha</label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="jenis_kegiatan_usaha" id="id_jenis_kegiatan_usaha">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="alamat">
+		<label for="lokasi_kegiatan_usaha" class="col-sm-2 control-label">Lokasi Kegiatan Usaha</label>
+		<div class="col-sm-6">
+			<textarea class="form-control" id="id_lokasi_kegiatan_usaha" rows="5" name="lokasi_kegiatan_usaha"></textarea>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="luas_tanah" class="col-sm-2 control-label">Luas Tanah / Luas Bangunan</label>
+		<div class="col-sm-6">
+			<input type="text" id="id_luas_tanah" name="luas_tanah" class="form-control">
+		</div>
+	</div>
+	
+
+	
+
+</form>

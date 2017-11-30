@@ -1,0 +1,295 @@
+<form method="POST" name="step5" role="form" >
+  {% csrf_token %}
+  <h3>KOMFIRMASI DATA</h3>
+  <hr class="style14">
+  <div class="row">
+    <div class="col-md-3">
+      <span>Jenis Pengajuan</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span>Baru</span>
+    </div>
+  </div>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }}{% if paspor %} / {{ paspor }}{% endif %}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_pemohon_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
+    </tr>
+  </table>
+  <br>
+
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.npwp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{% if perusahaan_konfirmasi.email %}{{ perusahaan_konfirmasi.email }}{% endif %}</span></td>
+    </tr>
+  </table>
+  <br>
+
+  <h4><u>#3. DATA IMB KONSTRUKSI LAIN</u></h4>
+  <div class="row">
+    <div class="col-md-3">
+      <span>Jenis Papan Reklame</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="jenis_papan_reklame_konfirmasi">{{ pengajuan_.jenis_papan_reklame }}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <span>Ukuran</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="ukuran_konfirmasi">{{ ukuran }}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <span>Jumlah</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="jumlah_konfirmasi">{{ jumlah }}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <span>Lokasi Pemasangan</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="letak_pemasangan_konfirmasi">{{ letak }}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <span>Klasifikasi Jalan</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="klasifikasi_jalan_konfirmasi">{{ klasifikasi }}</span>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <span class="tambahan"><u><b>Batas-Batas</b></u></span></br>
+  <div class="row">
+    <div class="col-md-3">
+      <span>Batas Utara</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="batas_utara_konfirmasi">{{ pengajuan_.batas_utara }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <span>Batas Timur</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="batas_timur_konfirmasi">{{ pengajuan_.batas_timur }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <span>Batas Selatan</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="batas_selatan_konfirmasi">{{ pengajuan_.batas_selatan }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3">
+      <span>Batas Barat</span>
+    </div>
+    <div class="col-md-1">
+      <span class="pull-right">:</span>
+    </div>
+    <div class="col-md-8">
+      <span id="batas_barat_konfirmasi"> {{ pengajuan_.batas_barat }}</span>
+    </div>
+  </div>
+  <br>
+  <h4><u>#4. UPLOAD DOKUMEN PERSYARATAN IMB PAPAN REKLAME</u></h4>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+           KTP/PASPOR
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-ktp_paspor" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+           Rencana Teknis/Konstruksi Bangunan Reklame
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-rencana_teknis_kontruksi_bangunan_reklame" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan diatas tanah yang bukan miliknya
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Ketetapan Pajak Daerah (SKPD)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-surat_ketetapan_pajak_daerah_imb" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+          Surat Setoran Pajak Daerah (SSPD)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-surat_setoran_pajak_daerah_imb" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+          Rekomendasi/Retribusi Sewa Tanah, apabila bangunan diatas tanah milik pemerintah
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input id="checkbox-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah" type="checkbox" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt checkbox-custom-lg" style="color: white;">
+        <input id="checkbox_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
+</form>

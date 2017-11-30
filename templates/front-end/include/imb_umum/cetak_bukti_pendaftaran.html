@@ -1,0 +1,777 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <title>Cetak Bukti Pendaftaran - {{no_pengajuan}}</title>
+</head>
+<!--[if ]>
+<style>
+.page{
+    min-height: 309mm;
+}
+</style>
+<![endif]-->
+<style type="text/css">
+    
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+	body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+        padding: 0.5cm;
+        /*border: 5px red solid;*/
+        height: 257mm;
+        /*outline: 2cm #FFEAEA solid;*/
+    }
+    
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .title, .tabel{
+		border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+    	margin-top: 0px;
+    }
+    .tabel{
+    	padding-top: 0px;
+    	padding-bottom: 10px;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    table {
+    border-collapse: collapse;
+	}
+
+	.ceklist {
+	    border: 1px solid black;
+	}
+    .font {
+        font-size: 15px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+   @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+</style>
+<body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
+    <div class="book">
+        <div class="page">
+            <div class="subpage">
+            	<div class="title">
+                    <div class="tabel">
+                        <table>
+                            <tr>
+                                <td width="15%"><img src="{% static 'images/SIMPATIK.png' %}" width="50px"></td>
+                                <td>
+                                    <h3 style="font-size: 25px;line-height: 10px;padding-top: 10px;">SIMPATIK</h3><p style="line-height:1px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <h5>No. Pengajuan Izin : IMB/1001/0802/2016<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4 align="center"><u>FOMULIR IZIN MENDIRIKAN BANGUNAN (IMB-Umum)</u></h4>
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="10%"><p style="font-size:15px">Perihal :<br><br><br></p></td>
+                            <td width="40%">
+                                <p style="font-size:15px">Fomulir Izin Mendirikan<br> Bangunan (IMB) / Perluasan<br> Bangunan Lama
+                                </p>
+                            </td>
+                            <td width="50%">
+                                <p align="left" style="font-size:15px;padding-left:25%">
+                                    Kepada
+                                    <br>
+                                    Yth. Bupati Kediri
+                                    <b></b>
+                                    Lewat
+                                    <br>
+                                    Yth. Kepala DPMPTSP Kab. Kediri
+                                    <br>
+                                    di
+                                    <br>
+                                    KEDIRI
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pemohon</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
+                    </tr>
+               </table>
+                <p style="font-size:15px; padding-left:5%;">Yang bertanda tangan di bawah ini</p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Nomor KTP/Paspor</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ pemohon.nama_lengkap }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ alamat_pemohon }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ pemohon.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. HP</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kewarganegaraan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ pemohon.kewarganegaraan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Pekerjaan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ pemohon.pekerjaan }}</td>
+                    </tr>
+                </table>
+
+                <p style="font-size:15px">Bersama ini kamai mengajukan pemohonan Izin Mendirikan Bangunan (IMB)</p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Nama Bangunan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{pengajuan.bangunan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Luas Bangunan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{pengajuan.luas_bangunan|default_if_none:"-"}} <span>M&sup2;</span></td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Jumlah Bangunan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{pengajuan.jumlah_bangunan|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Lokasi Pembangunan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{letak_pembangunan}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Luas Tanah</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{pengajuan.luas_tanah|default_if_none:"-"}} <span>M&sup2;</span></td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Status Hak Tanah</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{pengajuan.status_hak_tanah|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                <br>
+
+                <p style="font-size:15px"><u><b>Perluasan/Penambahan Bangunan</b></u></p>
+                <p style="font-size:15px">Isi jika peluasan/penambahan bangunan</p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%" style="vertical-align: top;padding-top: 1px;">Luas bangunan yang sudah ada</td>
+                        <td width="5%" style="vertical-align: top;padding-top: 1px;">:</td>
+                        <td width="70%" style="vertical-align: top;padding-top: 1px;">{{pengajuan.luas_bangunan_lama|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. IMB</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.no_imb_lama|default_if_none:"-"}}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Tgl. IMB</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.tanggal_imb_lama|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                <br>
+
+                <p style="font-size:15px">Berdasarkan Daerah Kabupaten Kediri Nomor 4 tahun 2012  tentang Retribusi Izin Mendirikan Bangunan, Peraturan Daerah Kabupaten Kediri Nomor 6 Tahun 2011 tentang Bangunan Gedung di Kabupaten Kediri dan Peraturan Daerah Kabupaten Kediri Nomor 5  Tahun 2011 tentang Jalan. Bersama ini di sampaikan data bangunan gedung antara lain:</p>
+                <br>
+                
+                <hr>
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font style="padding-left: 73%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>    
+        </div>
+        <div class="page">
+            <div class="subpage">
+                {% if sertifikat_tanah_list  %}
+                <table width="100%" border="1" class="font">
+                  <thead>
+                    <tr>
+                      <td>No Sertifikat</td>
+                      <td>Luas</td>
+                      <td>Atas Nama</td>
+                      <td>Tahun</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for a in sertifikat_tanah_list %}
+                      <tr id="{{a.id}}">
+                        <td id="id_table_no_sertifikat_petak">{{a.no_sertifikat_petak}}</td>
+                        <td id="id_table_luas_sertifikat_petak">{{a.luas_sertifikat_petak}}</td>
+                        <td id="id_table_atas_nama_sertifikat_petak">{{a.atas_nama_sertifikat_petak}}</td>
+                        <td id="id_table_tahun_sertifikat">{{a.tahun_sertifikat|date:"d-m-Y"}}</td>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                {% endif %}
+
+                {% if detil_bangunan_list  %}
+                <br>
+                <table width="100%" border="1" class="font">
+                    <tr>
+                        <td width="40%">Jenis Kontruksi</td>
+                        <td width="20%">Jenis Bangunan</td>
+                        <td width="20%">Biaya</td>
+                    </tr>
+                    {% for a in detil_bangunan_list %}
+                        <tr id="{{a.id}}">
+                            <td id="id_table_jenis_kontruksi">{{a.detil_bangunan_imb.jenis_kontruksi.nama_jenis_kontruksi}}</td>
+                            <td id="id_table_bangunan">{{a.detil_bangunan_imb.nama_bangunan}}</td>
+                            <td id="id_table_biaya">{{a.total_biaya_detil}}</td>
+                        </tr>
+                    {% endfor %}
+                        <tr id="{{a.id}}">
+                            <td id="id_table_jenis_kontruksi" colspan="2">Total</td>
+                            <td id="id_table_biaya">{{total_biaya}}</td>
+                        </tr>
+                </table>
+                {% endif %}
+                <p style="font-size:15px;">Demikian pemohonan ini saya buat, saya sanggup mentaati semua Peraturan Perudang-udangan yang berlaku dan tidak akan memulai melaksanakan suatu usaha, sebelum Izin tertulis ditetapkan </p>
+
+                
+                <br>
+                <p align="center" style="font-size:15.5px;padding-left:75%">
+                    Kediri,.......................
+                    <br>
+                    Hormat Kami
+                    <br>
+                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+                    <br>
+                    <br>
+                    <br>
+                    <u class="font"><b>{{ pemohon.nama_lengkap }}</b></u>
+                </p>
+                <br>
+                <p align="center" style="font-size:15px"> MENGETAHUI DAN MENYETUJUI</p>
+                <table width="100%" class="font">
+                    <tr>
+                        <td width="15%">No.Reg.</td>
+                        <td width="5%">:</td>
+                        <td width="35%">.......................</td>
+                        <td width="15%">No.Reg.</td>
+                        <td width="5%">:</td>
+                        <td width="35%">.......................</td>
+                    </tr>
+                    <tr>
+                        <td width="15%%">CAMAT</td>
+                        <td width="5%">:</td>
+                        <td width="35%">.......................</td>
+                        <td width="15%">KEPALA DESA</td>
+                        <td width="5%">:</td>
+                        <td width="35%">.......................</td>
+                    </tr>
+                    <tr>
+                        <td width="15%%"></td>
+                        <td width="5%" style="padding-bottom: 150px;"></td>
+                        <td width="35%"> ___________ </td>
+                        <td width="15%"></td>
+                        <td width="5%"></td>
+                        <td width="35%"> ___________ </td>
+                    </tr>
+                </table>
+
+                <hr class="style14">
+                
+<!--                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <br><br><br>
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 73%;">simpatik.kedirikab.go.id</font></i> -->
+            </div>    
+        </div>
+
+        <div class="page">
+            <div class="subpage">
+            <h5>Syarat IMB:</h5>
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <td width="5%">No</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if syarat %}
+                            {% for s in syarat %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ s.syarat }}</td>
+                                <td align="center"><input type="checkbox"></td>
+                                <td align="center"><input type="checkbox"></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <table border="0" width="100%" style="font-size: 15px;">
+                    <tr>
+                        <td width="48%" >
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 1<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                        <td width="2%">
+                            
+                        </td>
+                        <td width="25%" style="background-color: rgb(233, 230, 230);" align="center">
+                            <p>Kediri, .............................<br>Petugas 2<br><br><br><br><br><br>(.........................)</p>
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 73%;">simpatik.kedirikab.go.id</font></i>
+            </div>
+        </div>   
+        <div class="page">
+            <div class="subpage">
+            <h5 align="center" style="font-size:15px"><u>PERNYATAAN PERSETUJUAN LINGKUNGAN</u></h5>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td style="text-indent:30px;font-size:15px">Yang bertanda tangan di bawah ini menyatakan dengan sesungguhnya bahwa kami tidak keberatan / menyetujui adanya pendirian Usaha {{pengajuan.bangunan|default_if_none:"-"}} yang terletak di {{pengajuan.pemohon.alamat}} Desa {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }};<td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="2"><b><u>Batas - batas :</u></b><td>
+                </tr>
+                <tr>
+                    <td colspan="2">Sebelah U T A R A<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td colspan="2">Sebelah T I M U R<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                <tr>
+                    <td colspan="2">Sebelah S E L A T A N<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td colspan="2">Sebelah B A R A T<td>
+                </tr>
+                <tr>
+                    <td>1. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>2. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+                </tr>
+                <tr>
+                    <td>3. ________________________________________________<td>
+                    <td align="left">(__________________________)<td>
+            </table>
+            <br>
+            <br>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td align="right">
+                        <table width="40%" class="font" border="0">
+                            <tr>
+                                <td align="center" >Pemohon Izin<br><br><br><br><br><br><td>
+                            </tr>
+                            <tr>
+                                <td align="center" >{{pengajuan.pemohon}}<td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <p align="center" style="font-size:15px"> Mengetahui dan Menyetujui</p>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td align="center">CAMAT_______________<br><br><br><br><br><br>_______________<td>
+                    <td align="center">KEPALA DESA / KELURAHAN<br>__________________________<br><br><br><br><br><br>_______________</td>
+
+                </tr>
+            </table>
+            </div>
+        </div>  
+        <div class="page">
+            <div class="subpage">
+            <h5 align="center" style="font-size:15px"s>SURAT PERNYATAAN KESANGGUPAN <br>UPAYA PENGELOLAAN LINGKUNGAN HIDUP DAN <br>PEMANTAUAN LINGKUNGAN HIDUP (SPPL)</h5>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="5">Kami yang bertanda tangan di bawah ini:<td>
+                </tr>
+                <tr>
+                    <td width="30%">Nama<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.pemohon.nama_lengkap}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Jabatan<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.pekerjaan}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Alamat<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.alamat_pemohon}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Nomor Telepon<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.telephone}}<td>
+                </tr>
+                <tr>
+                    <td colspan="5">Selaku penanggung jawab atas pengelolaan lingkungan dari :<td>
+                </tr>
+                <tr>
+                    <td colspan="5"><td>
+                </tr>
+                <tr>
+                    <td width="20%">Nama Perusahaan/Usaha<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td width="20%">Alamat Perusahaan/Usaha<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td width="20%">Nomor Telp. Perusahaan<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td width="20%">Jenis Usaha/Sifat Usaha<td>
+                    <td width="5%">:<td>
+                    <td>{{pengajuan.bangunan|default_if_none:"-"}}<td>
+                </tr>
+                <tr>
+                    <td width="20%">Kapasitas Usaha/Produksi<td>
+                    <td width="5%">:<td>
+                    <td>..........................................<td>
+                </tr>
+                <tr>
+                    <td colspan="5">Selaku penanggung jawab atas pengelolaan lingkungan dari :<td>
+                </tr>
+            </table>
+            <table width="100%" class="font" border="2">
+                <tr>
+                    <td align="center">No.</td>
+                    <td align="center">Sumber Dampak</td>
+                    <td align="center">Dampak Lingkungan</td>
+                    <td align="center">Rencana Pengelolaan dan <br>Pemantauan Dampak Lingkungan</td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;padding-top: 1px;height: 100px">1.</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="2">Kami menyatakan sanggup untuk:</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">1.</td>
+                    <td>Bersungguh-sungguh untuk melaksanakan seluruh pengelolaan dan pemantauan dampak lingkungan sebagaimana tersebut di atas, dan bersedia diawasi oelh instansi yang berwenang.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">2.</td>
+                    <td>Menjaga kelestarian sumber daya alam dan lingkungan hidup di lokasi dan sekitar tempat usaha dan/atau kegiatan.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">3.</td>
+                    <td>Apabila kami lalai untuk melaksanakan pernyataan pada angka 1 dan 2 di atas, kami bersedia bertanggung jawab sesuai dengan peraturan perundang-undangan yang berlaku.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">4.</td>
+                    <td>Kerusakan lingkungan yang ditimbulkan oleh kegiatan dimaksud menjadi tanggung jawab sepenuhnya pemohon/pemrakarsa.</td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;">5.</td>
+                    <td>Surat Pernyataan ini hanya berlaku untuk usaha tersebut di atas, selama tidak ada perubahan kapasitas usaha/produksi.</td>
+                </tr>
+            </table>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td align="center" width="42%">Mengetahui,<br>a.n KEPELA DINAS LINGKUNGAN HIDUP<br>KABUPATEN KEDIRI<br>Plt. Kepala Bidang Perlindungan dan Pengelolaan<br>Lingkungan Hidup<br><br><br><br><b><u>ACH. SAIFUDIN, ST, MM</u></b><br>NIP 19740805 199803 1 009<td>
+                    <td align="center" width="42%">Kediri,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2017<br>Yang Menyatakan<br><br><font color="blue" style="font-size:10px"><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font><br><br><br>(......................................)</td>
+
+                </tr>
+            </table>
+            <br>
+            <table width="70%" class="font" border="2">
+                <tr>
+                    <td width="42%">No. Bukti Penerimaan oleh Dinas LH</td>
+                    <td width="2%">:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="42%">Hari/Tanggal</td>
+                    <td width="2%">:</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="42%">Penerima</td>
+                    <td width="2%">:</td>
+                    <td></td>
+                </tr>
+            </table>
+            </div>
+        </div>  
+        <div class="page">
+            <div class="subpage">
+            <h5 align="center" style="font-size:15px"><b><u>PAKTA INTEGRITAS</u></b></h5>
+            <table border="0" class="font">
+                <tr>
+                    <td>Pada hari ini...................................................tgl/bln/thn.........................................................................</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Saya atas nama......................................................................................................................................</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Beralamat di............................................................................................................................................</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Mengajukan Perizinan Izin Mendirikan Bangunan</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Untuk {{pengajuan.bangunan|default_if_none:"-"}}</td>
+                </tr>
+            </table>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td colspan="2">Dengan ini menyatakan sebagai berikut:</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">1.</td>
+                    <td>Bersedia untuk memenuhi persyaratan izin yang telah ditetapkan;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">2.</td>
+                    <td>Patuh terhadap prosedur yang telah ditetapkan mulai dari pengajuan persyaratan, pemrosessan izin dan pembayaran retribusi, apabila surat izin / surat keputusan dan pembayaran retribusi, apabila surat izin / surat keputusan dan surat keterangan sudah diterbitkan;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">3.</td>
+                    <td>Data dan informasi yang saya berikan dalam rangka pengurusan izin termasuk didalamnya data pada formulir permohonan izin adalah benar dan sesuai dengan kenyataanya (Hasil Peninjauan Lokasi);</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">4.</td>
+                    <td>Sanggup menjalankan pekerjaan / kegiatan usaha sesuai dengan hal-hal yang ditetapkan dalam klausul surat izin / surat keputusan dan surat keterangan;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">5.</td>
+                    <td>Tidak akan melakukan tindakan / perbuatan yang merugikan bagi instansi penyelenggara pelayanan perizinan maupun lingkungan sekitarnya;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td width="1%" style="vertical-align: top;padding-top: 1px;"">6.</td>
+                    <td>Apabila saya melanggar hal-hal yang telah dinyatakan dalam PAKTA INTEGRITAS ini, bersedia dikenakan sanksi administrasi dan dituntut sesuai dengan ketentuan peraturan perundang-undangan;</td>
+                </tr>
+            </table>
+            <br>
+            <br>
+            <table width="100%" class="font" border="0">
+                <tr>
+                    <td width="70%"></td>
+                    <td align="center">Yang Membuat Pernyataan<br><br><br><br><br><br>_______________</td>
+
+                </tr>
+            </table>
+            </div>
+        </div>  
+    </div>
+</body>
+</html>

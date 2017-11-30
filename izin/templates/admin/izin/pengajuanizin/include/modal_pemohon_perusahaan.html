@@ -1,0 +1,102 @@
+<table width="100%" border="0">
+	<tr>
+	  <td width="25%">Jenis Pengajuan</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.jenis_permohonan }}</td>
+	</tr>
+</table>
+<br>
+<h4><u>#1. IDENTITAS PEMOHON</u></h4>
+<table width="100%" border="0">
+	<tr>
+	  <td width="25%">Jenis Pemohon</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.jenis_pemohon }}</td>
+	</tr>
+	<tr>
+	  <td width="25%">Nomor KTP/Paspor</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{pengajuan.pemohon.get_ktp}} {% if pengajuan.pemohon.get_paspor %}{{pengajuan.pemohon.get_paspor}}{% endif %}</td>
+	</tr>
+	<tr>
+	  <td width="25%">Nama</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.nama_lengkap }}</td>
+	</tr>
+	<tr>
+	  <td width="25%">Alamat tempat tinggal</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.alamat }}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
+	</tr>
+	<tr>
+	  <td width="25%">No.Telp</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.telephone }}<span id='telephone_konfirmasi'></span></td>
+	</tr>
+	<tr>
+	  <td width="25%">No.HP</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{% if pengajuan.pemohon.hp == None or "" %}-{% else %}{{ pengajuan.pemohon.hp }}{% endif %}<span id='hp_konfirmasi'></span></td>
+	</tr>
+	<tr>
+	  <td width="25%">E-mail</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{% if pengajuan.pemohon.email == None or "" %}-{% else %}{{ pengajuan.pemohon.email }}{% endif %}<span id='email_konfirmasi'></span></td>
+	</tr>
+	<tr>
+	  <td width="25%">Kewarganegaraan</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.kewarganegaraan }}<span id='kewarganegaraan_konfirmasi'></span></td>
+	</tr>
+	<tr>
+	  <td width="25%">Pekerjaan</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.pekerjaan }}</td>
+	</tr>
+	<tr>
+	  <td width="25%">Keterangan Pekerjaan</td>
+	  <td width="5%">:</td>
+	  <td width="70%">{{ pengajuan.pemohon.keterangan_pekerjaan }}</td>
+	</tr>
+</table>
+<br>
+{% if pengajuan.perusahaan %}
+	<h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+	<table width="100%" border="0">
+		<tr>
+		  <td width="25%">NPWP</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.npwp }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">Nama Perusahaan</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.nama_perusahaan }}</span></td>
+		</tr>
+		<tr>
+		  <td width="25%">Alamat Perusahaan</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</span></td>
+		</tr>
+		<tr>
+		  <td width="25%">Kode Pos</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.kode_pos }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">No.Telp</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.telepon }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">No.Fax</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.fax }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">E-mail</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.email|default_if_none:'-' }}</td>
+		</tr>
+	</table>
+{% endif %}

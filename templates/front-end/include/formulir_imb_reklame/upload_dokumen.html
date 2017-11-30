@@ -1,0 +1,123 @@
+{% load i18n admin_static %}
+<form method="POST" name="step4" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+</form>
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-ktp_paspor" action="{% url 'reklame_imbreklame_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="1">
+      <div class="form-group">
+         <label class="col-sm-3 control-label"><strong>KTP/PASPOR</strong></label>
+        <span id="field-ktp_paspor">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <!-- <span id="berkas_1"></span> -->
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-ktp_paspor" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-ktp_paspor" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-ktp_paspor"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rencana_teknis_kontruksi_bangunan_reklame" action="{% url 'reklame_imbreklame_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="2">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Rencana Teknis/Konstruksi Bangunan Reklame</strong></label>
+        <span id="field-rencana_teknis_kontruksi_bangunan_reklame">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <!-- <span id="berkas_2"></span> -->
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-rencana_teknis_kontruksi_bangunan_reklame" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-rencana_teknis_kontruksi_bangunan_reklame" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-rencana_teknis_kontruksi_bangunan_reklame"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya" action="{% url 'reklame_imbreklame_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="3">
+      <div class="form-group">
+         <label class="col-sm-3 control-label"><strong>Surat Persetujuan/Perjanjian/Izin Pemilik tanah untuk bangunan yang didirikan diatas tanah yang bukan miliknya</strong></label>
+        <span id="field-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <!-- <span id="berkas_3"></span> -->
+                                     
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-surat_persetujuan_pemilik_tanah_untuk_bangunan_diatas_tanah_bukan_miliknya"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_ketetapan_pajak_daerah_imb" action="{% url 'reklame_imbreklame_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="4">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Surat Ketetapan Pajak Daerah (SKPD)</strong> </label>
+        <span id="field-surat_ketetapan_pajak_daerah_imb">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <!-- <span id="berkas_4"></span> -->
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-surat_ketetapan_pajak_daerah_imb" onclick="form_upload_dokumen($(this)); return false;" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-surat_ketetapan_pajak_daerah_imb" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-surat_ketetapan_pajak_daerah_imb"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_setoran_pajak_daerah_imb" action="{% url 'reklame_imbreklame_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="5">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Surat Setoran Pajak Daerah (SSPD)</strong> </label>
+        <span id="field-surat_setoran_pajak_daerah_imb">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <!-- <span id="berkas_5"></span> -->
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-surat_setoran_pajak_daerah_imb" onclick="form_upload_dokumen($(this)); return false;" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-surat_setoran_pajak_daerah_imb" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-surat_setoran_pajak_daerah_imb"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah" action="{% url 'reklame_imbreklame_berkaspendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="6">
+      <div class="form-group">
+       <label class="col-sm-3 control-label"><strong>Rekomendasi/Retribusi Sewa Tanah, apabila bangunan diatas tanah milik pemerintah</strong></label>
+        <span id="field-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+            <!-- <span id="berkas_5"></span> -->
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah" onclick="form_upload_dokumen($(this)); return false;" type="submit" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-rekomendasi_sewa_tanah_bukan_tanah_milik_pemerintah"></span>
+      </div>
+    </form>
+

@@ -1,0 +1,175 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls access admin_static parameters %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+{% endblock %}
+
+{% block extrajs_site %}
+	{{ block.super }}
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script type="text/javascript">
+		
+		function detilpengaduan(id_pengaduan){
+			$('.btn-balas-pengaduan').fadeOut()
+			$('.balas-pengaduanizin').fadeOut()
+			$.ajax({
+				url : __base_url__+'/admin/master/pengaduanizin/json/'+id_pengaduan,
+				type: 'GET',
+				success: function(respon){
+					respon = JSON.parse(respon)
+					// console.log(respon)
+					if(respon.success == true){
+						a = '.pengaduanizin-'
+						if (respon.data){
+							$(a+'noktp').text(respon.data.no_ktp)
+							$('.id_pengaduan').val(respon.data.id)
+							$(a+'namapemohon').text(respon.data.nama_lengkap)
+							$(a+'notelpon').text(respon.data.no_telp)
+							$(a+'email').text(respon.data.email)
+							$(a+'kelompokjenisizin').text(respon.data.kelompok_jenis_izin)
+							$(a+'isipengaduan').text(respon.data.isi_pengaduan)
+							if(respon.data.status == 6){
+								$('.btn-balas-pengaduan').fadeIn()
+							}
+							else{
+								$('.balas-pengaduanizin').fadeIn()
+								$('.pengaduanizin-balaspengaduan').text(respon.data.balas)
+							}
+							// console.log(respon.data.balas)
+							// $(a+'noktp').text(respon.data.no_ktp)
+						}
+						
+						$('#modal_detilpengaduan').modal('show');
+
+					}
+				}
+			})
+		}
+
+		function balaspengaduan(){
+			$('#modal_balaspengaduan').mLoading()
+			frm = $('#form_balaspengaduan')
+			frm.parsley().validate();
+			if (frm.parsley().isValid()){
+				$.ajax({
+					url : frm.attr('action'),
+					type : frm.attr('method'),
+					data : frm.serialize(),		
+					success: function(response){
+						$('#modal_balaspengaduan').mLoading('hide')
+						// console.log(response)
+						respon = JSON.parse(response)
+						if(respon.success == true){
+							toastr["success"](respon.pesan)
+							window.location.reload()
+						}
+						else{
+							toastr["warning"](respon.pesan)
+						}
+						$('#modal_balaspengaduan').modal('hide')
+					},
+					error: function(){
+						$('#modal_balaspengaduan').mLoading('hide')
+						toast_server_error()
+					}
+				})
+				// frm.ajaxSubmit({
+				// 	method: 'POST',
+				// 	data: frm.serialize(),
+				// 	url: frm.attr('action'),
+				// 	beforeSend: function() {
+				// 		frm.mLoading();
+				// 	},
+				// 	success: function(response){
+				// 		frm.mLoading('hide')
+				// 		console.log(response)
+				// 	}
+				// })
+			}
+		}
+	</script>
+	<div class="modal fade" id="modal_detilpengaduan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title custom-font">Detil Pengaduan Izin</h3>
+				</div>
+				<div class="modal-body">
+					<table width="100%" border="0">
+						<tr>
+							<td width="30%">Nomor KTP</td>
+							<td width="5%">:</td>
+							<td width="65%"><span class="pengaduanizin-noktp"></span></td>
+						</tr>
+						<tr>
+							<td>Nama Pemohon</td>
+							<td>:</td>
+							<td><span class="pengaduanizin-namapemohon"></span></td>
+						</tr>
+						<tr>
+							<td>Nomor Telpon</td>
+							<td>:</td>
+							<td><span class="pengaduanizin-notelpon"></span></td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td>:</td>
+							<td><span class="pengaduanizin-email"></span></td>
+						</tr>
+						<tr>
+							<td>Kelompok Jenis Izin</td>
+							<td>:</td>
+							<td><span class="pengaduanizin-kelompokjenisizin"></span></td>
+						</tr>
+						<tr>
+							<td valign="top">Isi Pengaduan</td>
+							<td valign="top">:</td>
+							<td valign="top"><span class="pengaduanizin-isipengaduan"></span></td>
+						</tr>
+						<tr class="balas-pengaduanizin">
+							<td valign="top">Balas Pengaduan</td>
+							<td valign="top">:</td>
+							<td valign="top"><span class="pengaduanizin-balaspengaduan"></span></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<!-- <button type="button" class="btn btn-success btn-balas-pengaduan" onclick="$('#modal_balaspengaduan').modal();$('#id_balas').val('')">Balas</button> -->
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="modal_balaspengaduan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title custom-font">Balas Pengaduan Izin</h3>
+				</div>
+				<div class="modal-body">
+					<form action="{% url 'admin:balas_pengaduanizin' %}" method="POST" id="form_balaspengaduan">
+						{% csrf_token %}
+						<input type="hidden" name="id_pengaduan" class="id_pengaduan">
+						<div class="row">
+							<div class="form-group col-md-12">
+								<label for="input01" class="col-sm-4 control-label">Pesan</label>
+								<div class="col-sm-8">
+									<textarea class="form-control" required="" name="balas" id="id_balas" rows="7"></textarea>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" onclick="balaspengaduan()">Balas</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

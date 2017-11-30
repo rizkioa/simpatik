@@ -1,0 +1,160 @@
+{% extends "admin/base_site.html" %}
+{% load staticfiles %}
+
+{% block icotitle %}<i class="fa fa-user"></i> {% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/cropper/cropper.min.css' %}">
+	<style type="text/css">
+		.chosen-container {
+			width: 515px !important;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-12" id="profile-show">
+		<section class="tile tile-simple">
+			<div class="tile-widget p-30 text-center">
+				<div class="thumb thumb-xl">
+					<img class="img-circle" src="{{ request.user.get_foto }}" alt="">
+				</div>
+				<h4 class="mb-0">{{ request.user.nama_lengkap }}</h4>
+				<span class="text-muted">{% if request.user.is_superuser %}Superuser{% endif %}</span>
+				<div class="mt-10">
+					<button id="edit-profile-button" class="btn btn-rounded-20 btn-sm btn-greensea"><i class="fa fa-pencil"></i> Edit Profile</button>
+					<a href="{% url 'admin:password_change' %}">
+						<button class="btn btn-rounded-20 btn-sm btn-red"><i class="fa fa-cog"></i> Ganti Password</button>
+					</a>
+				</div>
+			</div>
+
+			<!-- <div class="tile-body text-center bg-blue p-0">
+				<ul class="list-inline tbox m-0">
+					<li class="tcol p-10">
+						<h2 class="m-0">695</h2>
+						<span class="text-transparent-white">Tweets</span>
+					</li>
+					<li class="tcol bg-blue dker p-10">
+						<h2 class="m-0">1 269</h2>
+						<span class="text-transparent-white">Followers</span>
+					</li>
+					<li class="tcol p-10">
+						<h2 class="m-0">369</h2>
+						<span class="text-transparent-white">Following</span>
+					</li>
+				</ul>
+			</div> -->
+		</section>
+	</div>
+	<div class="col-md-12" id="profile-edit">
+		<form>
+			{% csrf_token %}
+			<section class="tile tile-simple">
+				<div class="tile-header">
+					<h1 class="custom-font"><strong>Edit</strong> Profile</h1>
+				</div>
+				<div class="tile-body">
+					<div class="row">
+						<div class="form-group col-sm-3">
+							<label for="nama-lengkap">Gelar Depan</label>
+							<input type="text" class="form-control" value="{{request.user.gelar_depan|default_if_none:''}}">
+						</div>
+						<div class="form-group col-sm-6">
+							<label for="nama-lengkap">Nama Lengkap</label>
+							<input type="text" class="form-control" value="{{request.user.nama_lengkap}}">
+						</div>
+						<div class="form-group col-sm-3">
+							<label for="nama-lengkap">Gelar Belakang</label>
+							<input type="text" class="form-control" value="{{request.user.gelar_belakang|default_if_none:''}}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label>Email</label>
+							<input type="email" class="form-control" value="{{request.user.email|default_if_none:''}}">
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Telephone</label>
+							<input type="text" class="form-control" value="{{request.user.telephone|default_if_none:''}}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-sm-6">
+							<label for="nama-lengkap">Alamat</label>
+							<textarea class="form-control" rows="8"></textarea>
+						</div>
+						<div class="form-group col-sm-6">
+							<label>Negara</label>
+							<select class="form-control chosen-select" name="negara" id="id_negara" required="" data-parsley-trigger="change">
+								<option value>-- Pilih Negara --</option>
+								{% if negara %}
+								  {% for p in negara %}
+								  <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+								  {% endfor %}
+								{% endif %}
+							</select>
+							<br>
+
+							<label>Provinsi</label>
+							<select class="form-control chosen-select" name="provinsi" id="id_provinsi" required="" data-parsley-trigger="change">
+								<option value>-- Pilih Provinsi --</option>
+							</select>
+
+							<label>Kabupaten</label>
+							<select class="form-control chosen-select" name="kabupaten" id="id_kabupaten" required="" data-parsley-trigger="change">
+								<option value>-- Pilih Kabupaten --</option>
+							</select>
+
+							<label>Kecamatan</label>
+							<select class="form-control chosen-select" name="kecamatan" id="id_kecamatan" required="" data-parsley-trigger="change">
+								<option value>-- Pilih Kecamatan --</option>
+							</select>
+
+							<label>Desa</label>
+							<select class="form-control chosen-select" name="desa" id="id_desa" required="" data-parsley-trigger="change">
+								<option value>-- Pilih Desa --</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<label>Foto</label>
+						</div>
+						<div class="col-md-6">
+							<div class="img-container">
+								  <img src="{{request.user.get_foto}}" class="img-responsive" alt="Picture" >
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label class="btn btn-primary btn-upload" for="inputImage" title="Upload image file">
+							 	<input class="sr-only" id="inputImage" name="file" type="file" accept="image/*">
+								<span class="docs-tooltip" data-toggle="tooltip" title="Import image with Blob URLs">
+							  		<span class="fa fa-upload"></span> Upload Image
+								</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="tile-footer">
+					<button class="btn btn-success btn-ef btn-ef-7 btn-ef-7b mb-10"><i class="fa fa-save"></i> Simpan</button>
+					<button id="batal" type="button" class="btn btn-red btn-ef btn-ef-7 btn-ef-7b mb-10"><i class="fa fa-power-off"></i> Batal</button>
+				</div>
+			</section>
+		</form>
+	</div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+{{ block.super }}
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/cropper/cropper.min.js' %}"></script>
+	<script src="{% static 'admin/accounts/account/profile.js' %}"></script>
+{% endblock %}

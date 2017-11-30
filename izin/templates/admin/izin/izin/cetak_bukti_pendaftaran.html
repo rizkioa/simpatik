@@ -1,0 +1,178 @@
+{% load widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak Bukti Pendaftaran</title>
+</head>
+<style type="text/css">
+	body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+        padding: 0.5cm;
+        /*border: 5px red solid;*/
+        height: 257mm;
+        /*outline: 2cm #FFEAEA solid;*/
+    }
+    
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+
+        
+    }
+
+    .title, .tabel{
+		border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+    	margin-top: 0px;
+    }
+    .tabel{
+    	padding-top: 20px;
+    	padding-bottom: 10px;
+    }
+
+    table {
+    border-collapse: collapse;
+	}
+
+	.ceklist {
+	    border: 1px solid black;
+	}
+
+</style>
+<body>
+<div class="book">
+    <div class="page">
+        <div class="subpage">
+        	<div class="title"><h3>BUKTI PENDAFTARAN</h3></div>
+        	<div class="tabel">
+        		<table style="width:100%">
+	        		<tbody>
+	        			<tr>
+	        				<td width="25%">Nama Pemohon</td>
+	        				<td>:</td>
+	        				<td>{{ pemohon }} ({{ jenis_pemohon }})</td>
+	        			</tr>
+	        			<tr>
+	        				<td width="25%">Nomor Identitas</td>
+	        				<td>:</td>
+	        				<td>
+	        				{% for n in nomor_identitas %}
+	        					{{ n.jenis_identitas.jenis_nomor_identitas }} {{ n.nomor }}
+	        				{% endfor %}
+	        				</td>
+	        			</tr>
+	        			<tr>
+	        				<td valign="top">Alamat</td>
+	        				<td valign="top">:</td>
+	        				<td>{{ alamat_pemohon }}</td>
+	        			</tr>
+	        			<tr>
+	        				<td>Jenis Permohonan</td>
+	        				<td>:</td>
+	        				<td>{{ jenis_permohonan }}</td>
+	        			</tr>
+	        			<tr>
+	        				<td valign="top">Kelompok Jenis Izin</td>
+	        				<td valign="top">:</td>
+	        				<td>{{ kelompok_jenis_izin }}</td>
+	        			</tr>
+	        			<tr>
+	        				<td>Dibuat Tanggal</td>
+	        				<td>:</td>
+	        				<td>{{ created_at|date:"d F Y" }} {{ created_at|time:"H:i" }}</td>
+	        			</tr>
+	        		</tbody>
+	        	</table>
+        	</div>
+        	<div class="title"><h4>Ceklist Persyaratan</h4></div>
+        	<div class="tabel">
+        		<table style="width:100%" >
+        			<thead>
+        				<tr>
+	        				<th class="ceklist" width="4%" align="center">No </th>
+	        				<th class="ceklist" align="center">Syarat</th>
+	        				<th class="ceklist" width="4%" align="center"><input type="checkbox"></input></th>
+	        			</tr>
+        			</thead>
+	        		<tbody>
+	        			{% if syarat %}
+	        			<tr>
+	        				<td valign="top">{{ forloop.counter }}</td>
+	        				<td>{{ syarat }}</td>
+	        				<td><input type="checkbox"></input></td>
+	        			</tr>
+	        			{% endif %}
+
+	        		</tbody>
+	        	</table>
+        	</div>
+        	<span style="color: red">Batas maksimal verifikasi s/d {{ created_at|add_date:3|date:"d F Y" }}</span>
+        </div>    
+    </div>
+    <div class="page">
+        <div class="subpage">
+        	<div class="tabel">
+        		<table style="width:100%" >
+        			<thead>
+        				<tr>
+	        				<th width="4%" align="center">No </th>
+	        				<th align="center">Syarat</th>
+	        				<th><input type="checkbox"></input></th>
+	        			</tr>
+        			</thead>
+	        		<tbody>
+	        			{% if syarat %}
+	        			<tr>
+	        				<td valign="top">{{ forloop.counter }}</td>
+	        				<td>{{ syarat }}</td>
+	        				<td><input type="checkbox"></input></td>
+	        			</tr>
+	        			{% endif %}
+	        			
+	        		</tbody>
+	        	</table>
+
+        	</div>
+        </div>    
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<form method="POST" name="step8" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>Perumahan yang Sudah Dimiliki Dalam Satu Wilayah Kabupaten Kediri</h3>
+  <hr class="style14">
+    <div class="row">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" style="width: 250px;padding-right: 32px;">Perumahan Yang Dimiliki</label> 
+        <table id="id_perumahan_yang_dimiliki" class="table table-bordered" style="width: 762px;">
+          <thead>
+            <tr>
+              <td>Nama Perumahan</td>
+              <td>Luas Tanah</td>
+              <td>Status Tanah</td>
+              <td>Aksi</td>
+            </tr>
+          </thead>
+          <tbody>
+          {% if perumahan_list %}
+            {% for a in perumahan_list %}
+              <tr id="{{a.id}}">
+                <td id="id_table_nama_perumahan">{{a.nama_perumahan}}</td>
+                <td id="id_table_luas_tanah">{{a.luas_tanah}}</td>
+                <td id="id_table_status_tanah">{{a.status_tanah}}</td>
+                <td align='center'> <a href='#' id={{a.id}} onclick="editRowperumahan_yang_dimiliki(this); return false;"" class='btn btn-primary btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'  ><i class='fa fa-edit'></i><span>Edit</span></a> <a href='#' id={{a.id}} onclick="deleteRowperumahan_yang_dimiliki(this); return false;" class='btn btn-danger btn-rounded btn-ef btn-ef-5 btn-ef-5b mb-10'><i class='fa fa-trash'></i><span>Delete</span></a></td>
+            {% endfor %}
+          {% endif %}
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group" style="width: 580px;padding-left: 249px;">
+        <a href="#" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10 btn-sm" data-toggle="modal" data-target="#perumahan_yang_dimiliki">Tambah Perumahan Yang Dimiliki<i class="fa fa-plus"></i></a>
+      </div>
+    </div>
+</form>
+
+

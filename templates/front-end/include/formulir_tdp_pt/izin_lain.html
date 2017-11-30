@@ -1,0 +1,43 @@
+<form method="POST" name="step6" role="form" class="form-horizontal" action="{% url 'siup_upload_dokumen' %}">
+{% csrf_token %}
+    <h3>IZIN-IZIN DAN LEGALITAS LAINNYA</h3>
+    <hr class="style14">
+    
+    <!-- <div class="row"> 
+      <div class="col-sm-7" style="padding-bottom: 10px; padding-top: 8px;">
+        <div class="onoffswitch labeled greensea inline-block">
+          <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_stap6_lainnya_disabled" >
+          <label class="onoffswitch-label" for="switch_stap6_lainnya_disabled">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+    </div> -->
+
+    <table class="table table-striped" id="table_izin_lain">
+	    <thead>
+	        <tr>
+	        	<th>No.</th>
+	            <th>Jenis Izin</th>
+	            <th>No. Izin</th>
+	            <th>Dikeluarkan oleh</th>
+	            <th>Tanggal keluar</th>
+	            <th>Masa berkalu</th>
+	            <th>Aksi</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+	    </tbody>
+	</table>
+	
+	<br>
+	<br>
+	<br>
+	<button onclick="add_izin_lain()" type="button" data-toggle="modal" data-target="#legalitas_lain_modal" class="btn btn-warning btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah izin lain...</button>
+
+	<br>
+	<br>
+	<br>
+	<br>
+</form>

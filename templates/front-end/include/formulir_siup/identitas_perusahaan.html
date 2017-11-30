@@ -1,0 +1,105 @@
+<form method="POST" name="step2" role="form" class="form-horizontal form-perusahaan" action="{% url 'siup_identitas_perusahan_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}   
+    <div class="row">
+      <div class="col-md-12">
+        <h3>IDENTITAS PERUSAHAAN</h3>
+        <hr class="style14">
+      </div>
+    </div>
+
+    <div class="form-group" id="npwp">
+      <label class="col-sm-2 control-label"><strong>NPWP</strong></label>
+      <div class="col-sm-5">
+        <input onchange="load_perusahaan_a($(this).val())" type="text" name="npwp" class="form-control npwp" required="" data-parsley-trigger="change" id="id_npwp_perusahaan">
+      </div>
+    </div>
+
+    <div class="form-group" id="nama_perusahaan">
+      <label for="input01" class="col-sm-2 control-label"><strong>Nama Perusahaan</strong></label>
+      <div class="col-sm-7">
+        <input type="text" id="id_nama_perusahaan" name="nama_perusahaan" class="form-control" required="" data-parsley-trigger="change">
+      </div>
+    </div>
+
+    <div class="form-group" id="alamat_perusahaan">
+      <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong></label>
+      <div class="col-sm-7">
+        <textarea class="form-control" onclick="load_alamat();" id="alamat_perusahaan_load" rows="5" name="alamat_perusahaan" required="" data-parsley-trigger="change"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group" id="negara1">
+      <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
+      <div class="col-sm-5">
+        <select disabled="" class="form-control chosen-select mb-10" name="negara" required="" data-parsley-trigger="change">
+          <option value="1">Indonesia</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="provinsi1">
+      <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+      <div class="col-sm-5">
+        <select disabled=""  class="form-control chosen-select mb-10" name="provinsi" required="" data-parsley-trigger="change">
+          <option value="1">Jawa Timur</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="kabupaten1">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+      <div class="col-sm-5">
+        <select disabled=""  class="form-control chosen-select mb-10" name="kabupaten" required="" data-parsley-trigger="change">
+          <option value="1">Kab Kediri</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="kecamatan1">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan1" required="" data-parsley-trigger="change">
+          <option value>-- Pilih Kecamatan --</option>
+          {% for k in kecamatan_perusahaan %}
+          <option value="{{ k.id }}">{{k.nama_kecamatan}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="desa1">
+      <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+      <div class="col-sm-5">
+        <select class="form-control chosen-select mb-10" name="desa" id="id_desa1" required="" data-parsley-trigger="change">
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group" id="kode_pos">
+      <label class="col-sm-2 control-label">Kode Pos</label>
+      <div class="col-sm-5">
+        <input id="kode_pos_perusahaan_load" type="text" class="form-control kodepos" name="kode_pos" >
+      </div>
+    </div>
+
+    <div class="form-group" id="telepon">
+      <label class="col-sm-2 control-label"><strong>No. Telp</strong></label>
+      <div class="col-sm-5">
+        <input type="text" onclick="load_no_telepon();" id="no_telepon_perusahaan_load" class="form-control no_ktp" name="telepon">
+      </div>
+    </div>
+
+    <div class="form-group" id="fax">
+      <label class="col-sm-2 control-label">No. Fax</label>
+      <div class="col-sm-5">
+        <input id="id_fax_perusahaan" type="text" class="form-control fax" name="fax" data-inputmask="'mask': '99-9999999'">
+      </div>
+    </div>
+
+    <div class="form-group" id="email_perusahaan">
+      <label class="col-sm-2 control-label">E-mail</label>
+      <div class="col-sm-5">
+        <input type="email" class="form-control " data-parsley-trigger="change" id="id_email_perusahaan" name="email">
+      </div>
+    </div>
+</form>

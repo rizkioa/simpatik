@@ -1,0 +1,679 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak Bukti Pendaftaran - {{no_pengajuan}}</title>
+</head>
+<!--[if ]>
+<style>
+.page{
+    min-height: 309mm;
+}
+</style>
+<![endif]-->
+<style type="text/css">
+    
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+	body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    .page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .subpage {
+        padding: 0.5cm;
+        /*border: 5px red solid;*/
+        height: 257mm;
+        /*outline: 2cm #FFEAEA solid;*/
+    }
+    
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
+
+    .title, .tabel{
+		border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+    	margin-top: 0px;
+    }
+    .tabel{
+    	padding-top: 0px;
+    	padding-bottom: 10px;
+    }
+
+    table {
+    border-collapse: collapse;
+	}
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+	.ceklist {
+	    border: 1px solid black;
+	}
+    .font {
+        font-size: 12px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+   @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+</style>
+<body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
+    <div class="book">
+        <div class="page">
+            <div class="subpage">
+            	<div class="title">
+                    <div class="tabel">
+                        <table>
+                            <tr>
+                                <td width="15%"><img src="{% static 'images/SIMPATIK.png' %}" width="50px"></td>
+                                <td>
+                                    <h3 style="font-size: 25px;line-height: 10px;padding-top: 10px;">SIMPATIK</h3><p style="line-height:1px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table>
+                        <tr>
+                            <td>
+                                <h5>No. Pengajuan Izin : {{ pengajuan.no_pengajuan }}<br>
+                                <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font></h5>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <h4 align="center"><u>PERMOHONAN SURAT Izin Usaha Perusahaan Penggilingan Padi dan Huller</u></h4>
+                    <table width="100%" border="0">
+                        <tr>
+                            <td width="10%"><p style="font-size:13px">Perihal :<br><br><br></p></td>
+                            <td width="40%">
+                                <p style="font-size:13px">Formulir Izin Usaha/Tanda Daftar Usaha *)
+                                <br> Perusahaan Penggilingan Padi, Huller <br> dan Penyosoh Beras serta Perontok<br>Padi dan Jagung Pemanen(Duduk)
+                                </p>
+                            </td>
+                            <td width="50%">
+                                <p align="left" style="font-size:13px;padding-left:25%">
+                                    Kepada
+                                    <br>
+                                    Yth. Bupati Kediri
+                                    <b></b>
+                                    Lewat
+                                    <br>
+                                    Yth. Kepala DPMPTSP Kab. Kediri
+                                    <br>
+                                    di
+                                    <br>
+                                    KEDIRI
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p style="font-size:14px">Yang bertanda tanggan di bawah ini</p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pemohon</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.jenis_pemohon }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nomor KTP/Paspor</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.nama_lengkap }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ alamat_pemohon }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.telephone }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. HP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{% if pemohon.hp %}{{ pemohon.hp }}{% else %}-{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{% if pemohon.email %}{{ pemohon.email }}{% else %}-{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kewarganegaraan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.kewarganegaraan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Pekerjaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ pemohon.pekerjaan }}</td>
+                    </tr>
+                </table>
+
+                <p style="font-size:13px">Mangajukan pemohonan Izin Usaha / Tanda Daftar Usaha *) berdasarkan Peraturan Pemerintah Republik Indonesia, Nomor 65 Tahun 1971 dan Keputusan Menteri Pertanian Nomor : 859/Kpts/TP.250/11/98 untuk :</p>
+                <table width="100%" border="0" class="font">
+                    <tr>
+                        <td width="25%">Jenis Pengajuan</td>
+                        <td width="5%">:</td>
+                        <td width="75%">{{ pengajuan.jenis_permohonan }}</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+
+                <p style="font-size:13px">Berdasarkan Keputusan Bupati Kediri Nomor 841 Tahun 2002 tentang Petunjuk Pelaksanaan Peraturan Daerah Kebupaten Kediri Nomor 23 Tahun 2001 tentang Retribusi Perusahaan Pengilingan Padi, Huller dan Penyosoh Beras serta Mesin Perontok Padi dan Jagung di Kabupaten Kediri, maka bersama ini kami sampaikan Data Usaha / Perusahaan kami sebagai berikut</p>
+                <h5><u>IDENTITAS PERUSAHAAN</u></h5>
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">NPWP</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.npwp }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.nama_perusahaan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Perusahaan</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ alamat_perusahaan }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Kode Pos</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.kode_pos }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Telp</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.telepon }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">No. Fax</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{{ perusahaan.fax }}</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Email</td>
+                        <td width="10%">:</td>
+                        <td width="65%">{% if perusahaan.email %}{{ perusahaan.email }}{% endif %}</td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                
+                <hr>
+                <i class="font" align="right">
+                    <font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> 
+                    <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font>
+                </i>
+            </div>    
+        </div>
+        
+
+        <div class="page">
+            <div class="subpage">
+                <h5><u>PEMILIK DAN PENGUSAHA</u></h5>
+                <p style="font-size:13px"><u>Pemilik</u></p>
+                {% if pengajuan.pemilik_badan_usaha == False %}
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Jenis Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">Perorangan</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.pemilik_nama_perorangan|default_if_none:"-"}}</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.pemilik_alamat|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                {% else %}
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Jenis Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">Badan Usaha</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Badan Usaha Pengusaha</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.pemilik_nama_badan_usaha|default_if_none:"-"}}</td>
+                    </tr>
+                    </tr>
+                </table>
+                {% endif %}
+                <p style="font-size:13px"><u>Pengusaha</u></p>
+                {% if pengajuan.pengusaha_badan_usaha == False %}
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Jenis Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">Pengusaha</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.pengusaha_nama_perorangan|default_if_none:"-"}}</td>
+                    </tr>
+                    </tr>
+                    <tr>
+                        <td width="25%">Alamat Pemilik</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.pengusaha_alamat|default_if_none:"-"}}</td>
+                    </tr>
+                </table>
+                {% else %}
+                <table class="font" width="100%">
+                    <tr>
+                        <td width="25%">Jenis Pengusaha</td>
+                        <td width="5%">:</td>
+                        <td width="70%">Badan Usaha</td>
+                    </tr>
+                    <tr>
+                        <td width="25%">Nama Badan Usaha Pengusaha</td>
+                        <td width="5%">:</td>
+                        <td width="70%">{{pengajuan.pengusaha_nama_badan_usaha|default_if_none:"-"}}</td>
+                    </tr>
+                    </tr>
+                </table>
+                {% endif %}
+                <p style="font-size:13px">Hubungan pemilik dan pengusaha : {{pengajuan.hubungan_pemilik_pengusaha|default_if_none:"-"}}</p>
+                <br>
+                <p style="font-size:13px">Demikian permohonan ini saya buat, dan saya sanggup mentaati semua Peraturan Perundangan - udangan yang berlaku dan tidak akan memulai melaksanakan sesuatu usaha, sebelum Izin tertulis ditetapkan</p>
+                <br>
+                <h5><u>DATA MESIN</u></h5>
+                <p style="font-size:13px"><u>Montor Penggerak</u></p>
+                <table width="100%" class="font" border="3">
+                    <thead>
+                        <tr>
+                            <th align="center">Jenis</th>
+                            <th align="center">Type / Model</th>
+                            <th align="center">PK</th>
+                            <th align="center">Buatan / Merk</th>
+                            <th align="center">Jumlah Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center">
+                            <td>Montor Bensin</td>
+                            <td>{{motor_bensin.type_model|default_if_none:"-"}}</td>
+                            <td>{{motor_bensin.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{motor_bensin.buatan|default_if_none:"-"}}</td>
+                            <td>{{motor_bensin.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Montor Diesel</td>
+                            <td>{{motor_diesel.type_model|default_if_none:"-"}}</td>
+                            <td>{{motor_diesel.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{motor_diesel.buatan|default_if_none:"-"}}</td>
+                            <td>{{motor_diesel.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Diesel Generating Set</td>
+                            <td>{{diesel_generating_set.type_model|default_if_none:"-"}}</td>
+                            <td>{{diesel_generating_set.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{diesel_generating_set.buatan|default_if_none:"-"}}</td>
+                            <td>{{diesel_generating_set.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:13px"><u>Mesin Pecah Kulit / Pengupas Gabah</u></p>
+                <table width="100%" class="font" border="3">
+                    <thead>
+                        <tr>
+                            <th align="center">Jenis</th>
+                            <th align="center">Type / Model</th>
+                            <th align="center">PK</th>
+                            <th align="center">Kapasitas</th>
+                            <th align="center">Buatan / Merk</th>
+                            <th align="center">Jumlah Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center">
+                            <td>Rubber Roll / Roll Karet</td>
+                            <td>{{rubber_roll.type_model|default_if_none:"-"}}</td>
+                            <td>{{rubber_roll.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{rubber_roll.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{rubber_roll.buatan|default_if_none:"-"}}</td>
+                            <td>{{rubber_roll.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Flash Type / Type Banting</td>
+                            <td>{{flash_type.type_model|default_if_none:"-"}}</td>
+                            <td>{{flash_type.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{flash_type.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{flash_type.buatan|default_if_none:"-"}}</td>
+                            <td>{{flash_type.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:13px"><u>Mesin Pemisah Gabah dan Beras Pecah Kulit</u></p>
+                <table width="100%" class="font" border="3">
+                    <thead>
+                        <tr>
+                            <th align="center">Jenis</th>
+                            <th align="center">Type / Model</th>
+                            <th align="center">PK</th>
+                            <th align="center">Kapasitas</th>
+                            <th align="center">Buatan / Merk</th>
+                            <th align="center">Jumlah Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center">
+                            <td>Gedongan</td>
+                            <td>{{gedogan.type_model|default_if_none:"-"}}</td>
+                            <td>{{gedogan.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{gedogan.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{gedogan.buatan|default_if_none:"-"}}</td>
+                            <td>{{gedogan.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Dimple Plate</td>
+                            <td>{{dimple_plate.type_model|default_if_none:"-"}}</td>
+                            <td>{{dimple_plate.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{dimple_plate.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{dimple_plate.buatan|default_if_none:"-"}}</td>
+                            <td>{{dimple_plate.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Screen</td>
+                            <td>{{screen.type_model|default_if_none:"-"}}</td>
+                            <td>{{screen.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{screen.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{screen.buatan|default_if_none:"-"}}</td>
+                            <td>{{screen.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size:13px"><u>Mesin Penyosoh Beras</u></p>
+                <table width="100%" class="font" border="3">
+                    <thead>
+                        <tr>
+                            <th align="center">Jenis</th>
+                            <th align="center">Type / Model</th>
+                            <th align="center">PK</th>
+                            <th align="center">Kapasitas</th>
+                            <th align="center">Buatan / Merk</th>
+                            <th align="center">Jumlah Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center">
+                            <td>Mesin Slip Horizontal</td>
+                            <td>{{mesin_slip_horisontal.type_model|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_horisontal.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_horisontal.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_horisontal.buatan|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_horisontal.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Mesin Slip Vertikal</td>
+                            <td>{{mesin_slip_vertikal.type_model|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_vertikal.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_vertikal.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_vertikal.buatan|default_if_none:"-"}}</td>
+                            <td>{{mesin_slip_vertikal.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+            </div>    
+        </div>
+
+        <div class="page">
+            <div class="subpage">
+
+                <p style="font-size:13px"><u>Mesin Lain-lain</u></p>
+                <table width="100%" class="font" border="3">
+                    <thead>
+                        <tr>
+                            <th align="center">Jenis</th>
+                            <th align="center">Type / Model</th>
+                            <th align="center">PK</th>
+                            <th align="center">Kapasitas</th>
+                            <th align="center">Buatan / Merk</th>
+                            <th align="center">Jumlah Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr align="center">
+                            <td>Paddy Cleaner / Pembersih Gabah (Blower)</td>
+                            <td>{{paddy_cleaner.type_model|default_if_none:"-"}}</td>
+                            <td>{{paddy_cleaner.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{paddy_cleaner.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{paddy_cleaner.buatan|default_if_none:"-"}}</td>
+                            <td>{{paddy_cleaner.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Mesin Polis Brushe</td>
+                            <td>{{mesin_polis.type_model|default_if_none:"-"}}</td>
+                            <td>{{mesin_polis.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{mesin_polis.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{mesin_polis.buatan|default_if_none:"-"}}</td>
+                            <td>{{mesin_polis.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Grader / Mesin Pemisah</td>
+                            <td>{{grader.type_model|default_if_none:"-"}}</td>
+                            <td>{{grader.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{grader.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{grader.buatan|default_if_none:"-"}}</td>
+                            <td>{{grader.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Kualitas</td>
+                            <td>{{kualitas.type_model|default_if_none:"-"}}</td>
+                            <td>{{kualitas.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{kualitas.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{kualitas.buatan|default_if_none:"-"}}</td>
+                            <td>{{kualitas.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+<!--                         <tr align="center">
+                            <td>Grader / Mesin Pemisah</td>
+                            <td>{{flash_type.type_model|default_if_none:"-"}}</td>
+                            <td>{{flash_type.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{flash_type.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{flash_type.buatan|default_if_none:"-"}}</td>
+                            <td>{{flash_type.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr>
+                        <tr align="center">
+                            <td>Kualitas</td>
+                            <td>{{flash_type.type_model|default_if_none:"-"}}</td>
+                            <td>{{flash_type.pk_mesin|default_if_none:"-"}}</td>
+                            <td>{{flash_type.kapasitas|default_if_none:"-"}}</td>
+                            <td>{{flash_type.buatan|default_if_none:"-"}}</td>
+                            <td>{{flash_type.jumlah_unit|default_if_none:"-"}}</td>
+                        </tr> -->
+<!--                         <tr align="center">
+                            <td>Lain-lain</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                <br>
+                <p style="font-size:13px">
+                    Kapasitas Potensial Giling keseluruhan Mesin memproduksi Beras .................. Ton setara Beras perjam dan .................. Ton setara Beras per Tahun.<br>
+                    Demikian Daftar Isian ini dibuat dengan sebenarnya di .................. pada tanggal .................. oleh kamu yang berkuasa menandatangani surat Permohonan ini sebagai Pengusaha / Wakil Pengusaha menurut ...........................................................
+                </p>
+                <br>
+                <p align="center" style="font-size:13px;padding-left:75%">
+                    Kediri,.......................
+                    <br>
+                    Hormat Kami
+                    <br>
+                    <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+                    <br>
+                    <br>
+                    <br>
+                    <u class="font"><b>{{pemohon.nama_lengkap}}</b></u>
+                </p>
+                <br>
+                <hr class="style14">
+                <h5>Syarat Perusahaan Penggilingan Padi dan Huller:</h5>
+                <table class="font" width="100%" border="0" style="border:2px solid #ddd;">
+                    <thead>
+                        <tr>
+                            <td width="5%">No</td>
+                            <td width="650%">Syarat</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 1)</td>
+                            <td align="center" width="15%">Kelengkapan (Diisi Petugas 2)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if syarat %}
+                            {% for s in syarat %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ s.syarat }}</td>
+                                <td align="center"><input type="checkbox"></td>
+                                <td align="center"><input type="checkbox"></td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                <table width="100%">
+                    <tr>
+                        <td width="25%"></td>
+                        <td width="25%"></td>
+                        <td width="25%">
+                            <p align="center" style="font-size:13px;">
+                                Kediri,.......................
+                                <br>
+                                Petugas 1
+                                <br>
+                                Cap DPM
+                                <br>
+                                <br>
+                                <br>
+                                (...........................................)
+                            </p>
+                        </td>
+                        <td width="25%"><p align="center" style="font-size:13px;">
+                                Kediri,.......................
+                                <br>
+                                Petugas 2
+                                <br>
+                                Cap DPM
+                                <br>
+                                <br>
+                                <br>
+                                (...........................................)
+                            </p></td>
+                    </tr>
+                </table>
+                <br>
+                <br>
+                <br>
+                <hr>
+                <i class="font" align="right"><font color="red">Masa berlaku pengajuan s/d {{ created_at|add_date:3|date:"d F Y" }}</font> <font style="padding-left: 43%;">simpatik.kedirikab.go.id</font></i>
+            </div>    
+        </div>
+    </div>
+</body>
+</html>

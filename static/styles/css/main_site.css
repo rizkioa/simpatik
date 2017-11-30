@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+.required label, label.required {
+    font-weight: 600 !important;
+}
+
+.page-breadcrumb .link-effect.link-effect-21 {
+    font-weight: 400;
+}
+.page-breadcrumb .link-effect {
+    font-family: "Dosis","Arial",sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin: 0;
+    outline: medium none;
+    position: relative;
+    text-decoration: none;
+    text-transform: inherit;
+    vertical-align: middle;
+}
+
+.footer {
+    margin: 0;
+    position: absolute;
+    width: 100%;
+    background-color: #493d55;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+.appWrapper.popup #content {
+    left: 0 !important;
+}

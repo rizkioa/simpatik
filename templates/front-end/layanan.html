@@ -1,0 +1,424 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/font-responsive.css' %}">
+<style type="text/css">
+  .tile{
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+</style>
+{% endblock %}
+
+{% block section %}
+<div class="pageheader">
+  <h2>Pendaftaran Perizinan Daerah
+    <span>Berikut adalah info Layanan Pendaftaran Perizinan Daerah SIMPATIK Kabupaten Kediri.</span>
+  </h2>
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+      </li>
+      <li>
+        <a href="#"> Layanan</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <section class="tile">
+      <div class="tile-body">
+        <div class="row">
+          <div class="col-md-3">
+            <a href="{% url 'layanan_siup' %}">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Surat Izin Usaha Perdagangan (SIUP)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+<!--           <div class="col-md-3">
+            <a href="{% url 'layanan_ho' %}" data-toggle="modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Gangguan (HO)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div> -->
+
+          <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#tdp">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Tanda Daftar Perusahaan (TDP)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#reklame">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Pemasangan Reklame</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_kekayaan' %}">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Pemakaian Kekayaan Daerah</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_huller' %}">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa" style="font-size: 19px;">Izin Usaha Perusahaan Penggilingan Padi dan Huller</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        <!-- </div>
+
+        <div class="row"> -->
+          <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#imb">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Mendirikan Bangunan (IMB)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_izin_lokasi' %}" data-toggle="modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Lokasi</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#ippt">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Perubahan Pemakaian Tanah (IPPT)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_iujk' %}" data-toggle="modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Ijin Usaha Jasa Konstruksi (IUJK)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_tdup' %}" data-toggle="modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Tanda Daftar Usaha Pariwisata (TDUP)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+<!--           <div class="col-md-3">
+            <a href="{% url 'layanan_izin_usaha_angkutan' %}">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Usaha Angkutan (IUA)</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_izin_angkutan_trayek' %}">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Angkutan Trayek</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-3">
+            <a href="{% url 'layanan_izin_parkir' %}">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Izin Parkir</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div> -->
+<!--           <div class="col-md-3">
+            <a href="#" data-toggle="modal" data-target="#modal">
+              <div class="panel panel-darkgray col_sm_12 border_tambah">
+                <div class="panel-body">
+                  <div class="col-xs-12">
+                    <p class="text-center text-strong pa">Penanaman Modal</p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div> -->
+        </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block extratools %}
+{{ block.super }}
+
+<div class="modal fade" id="tdp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title custom-font">Tanda Daftar Perusahaan (TDP)</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_pt' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Perseroan Terbatas (PT)</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_cv' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Persekutuan Komanditer (CV)</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_firma' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Firma</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_perorangan' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Perorangan</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_koperasi' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Koperasi</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_tdp_bul' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">TDP - Bentuk Usaha lainnya</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="reklame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Izin Pemasangan Reklame</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_reklame' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Pemasangan Reklame</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+<!--           <div class="col-md-4">
+            <a href="{% url 'layanan_imb_reklame' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">Izin Paket Reklame</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div> -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="imb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Izin Mendirikan Bangunan (IMB)</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_imb_umum' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IMB - Umum</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+<!--           <div class="col-md-4">
+            <a href="{% url 'layanan_imb_perumahan' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IMB - Perumahan</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div> -->
+          <div class="col-md-4">
+            <a href="{% url 'layanan_imb_reklame' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IMB - Papan Reklame</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="ippt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h3 class="modal-title custom-font">Izin Perubahan Pemakaian Tanah (IPPT)</h3>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'layanan_ippt_rumah' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IPPT - Rumah</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'layanan_ippt_usaha' %}">
+            <div class="panel panel-darkgray col_sm_12 border_tambah">
+              <div class="panel-body">
+                <div class="col-xs-12">
+                  <p class="text-center text-strong pa">IPPT - Usaha</p>
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

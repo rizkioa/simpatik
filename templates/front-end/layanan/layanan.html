@@ -1,0 +1,141 @@
+	{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/css/vendor/bootstrap.vertical-tabs.css' %}">
+<style type="text/css">
+	.a_warna{
+	color: #fdfeff;
+	}
+</style>
+{% endblock %}
+
+{% block section %}
+<div class="pageheader">
+    <h2>{{title_long}}
+		<span>Berikut adalah info pendaftaran perizinan {{ title_short }} Kabupaten Kediri.</span>
+	</h2>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+		  <li>
+		    <a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+		  </li>
+		  <li>
+		    <a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+		  </li>
+		  <li>
+		  	<a href="#">{{ title_short }}</a>
+		  </li>
+		</ul>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-darkgray">
+			<div class="panel-body">
+				<div class="container">
+					<br>
+					<p>Untuk mengajukan izin silahkan mengisi <a href="{{ link_formulir }}" type="button" class="btn btn-success mb-10">FORMULIR</a></p>
+					<ul class="nav nav-tabs" style="background-color: #1c2b36;">
+					  <li class="active"><a class="a_warna" data-toggle="tab" href="#home">Prosedur dan Persyaratan Pengajuan</a></li>
+					  <li><a class="a_warna" data-toggle="tab" href="#menu1">Alur Proses Pengajuan</a></li>
+					  <li><a class="a_warna" data-toggle="tab" href="#menu2">Dasar Hukum</a></li>
+					  <li><a class="a_warna" data-toggle="tab" href="#menu3">Unduh Berkas</a></li>
+					</ul>
+
+					<div class="tab-content">
+					  <div id="home" class="tab-pane fade in active">
+					    <h3>Prosedur dan Persyaratan Pengajuan</h3>
+					    <div class="panel panel-darkgray">
+							<div class="panel-body">
+								<h4>Prosedur Pendaftaran:</h4>
+								<ol id="id_list_prosedur">
+									<li>Loading...</li>
+								</ol>
+								<br>
+								<h4>Persyaratan yang perlu dibawa:</h4>
+								<ol id="id_list_syarat">
+									<li>Loading...</li>
+								</ol>
+							</div>
+						</div>
+						<div class="panel panel-darkgray">
+							<div class="panel-body">
+								<h4>Lama Waktu Pengajuan Izin:</h4>
+								<p>{{ kelompok.standart_waktu }} Hari</p>
+							</div>
+						</div>
+						<div class="panel panel-darkgray">
+							<div class="panel-body">
+								<h4>Biaya Pengajuan Izin:</h4>
+								<p>Rp. {{ kelompok.biaya }}</p>
+							</div>
+						</div>
+					  </div>
+					  <div id="menu1" class="tab-pane fade">
+					    <h3>Alur Proses Pengajuan</h3>
+					    <img src="{% static 'images/alur.png' %}" width="100%">
+					  </div>
+					  <div id="menu2" class="tab-pane fade">
+					    <h3>Dasar Hukum</h3>
+					    <div class="table-responsive">
+						    <table class="table table-bordered" id="id_table_dasar_hukum">
+							    <thead>
+							      <tr>
+							        <th>Peraturan</th>
+							        <th>Tentang</th>
+							        <th>Aksi</th>
+							      </tr>
+							    </thead>
+							    <tbody>
+							      <tr>
+							      	<td colspan="3" class="text-center loading">Loading...</td>
+							      </tr>
+							    </tbody>
+							</table>
+						</div>
+					  </div>
+					  <div id="menu3" class="tab-pane fade">
+					    <h3>Unduh Berkas</h3>
+					    <div class="table-responsive">
+						    <table class="table table-bordered">
+							    <thead>
+							      <tr>
+							        <th>No.</th>
+							        <th>Nama Berkas</th>
+							        <th>Lingkup Izin</th>
+							        <th>Aksi</th>
+							      </tr>
+							    </thead>
+							    <tbody>
+							      <tr>
+							      	<td>1.</td>
+							        <td>Petunjuk Cara mendaftarkan akun (Register)</td>
+							        <td>Semua / Umum</td>
+							        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+							      </tr>
+							      <tr>
+							      	<td>2.</td>
+							        <td>Petunjuk Penggunaan Aplikasi SIUP</td>
+							        <td>SIUP</td>
+							        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+							      </tr>
+							      <tr>
+							      	<td>3.</td>
+							        <td>Surat Pernyataan dari pemohon tentang lokasi usaha perusahaan</td>
+							        <td>SIUP</td>
+							        <td><a href="#"><i class="fa fa-download"></i> Unduh</a></td>
+							      </tr>
+							    </tbody>
+							</table>
+						</div>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,29 @@
+<form method="POST" name="step3" role="form" action="{% url 'izin_dinkes__next_tab_peralatan_cookie' %}" class="form-horizontal" data-parsley-validate novalidate>
+  {% csrf_token %}  
+  <h4>Data Peralatan Laboratorium</h4>
+  <div class="form-group">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-peralatan-lab">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Jenis Peralatan</th>
+              <th>Jumlah</th>
+              <th>Keterangan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-md-12">
+      <a onclick="tambah_peralatan_lab()" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-plus"></i> Tambah Peralatan Laboratorium</a>
+    </div>
+  </div>
+</form>

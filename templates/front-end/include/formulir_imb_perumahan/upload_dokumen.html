@@ -1,0 +1,168 @@
+{% load i18n admin_static %}
+<form method="POST" name="step6" role="form" class="form-horizontal" action="{% url 'reklame_upload_dokumen' %}">
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14">
+</form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-prinsip_penanaman_modal" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="1">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Izin Prinsip Penananaman Modal</strong></label>
+        <span id="field-prinsip_penanaman_modal">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-prinsip_penanaman_modal" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-prinsip_penanaman_modal" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-prinsip_penanaman_modal"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-perubahan_penggunaan_tanah" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="2">
+        <div class="form-group">
+          <label class="col-sm-3 control-label"><strong>Izin Perubahan Penggunaan Tanah(IPPT)</strong></label>
+          <span id="field-perubahan_penggunaan_tanah">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-perubahan_penggunaan_tanah" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-perubahan_penggunaan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-perubahan_penggunaan_tanah"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-bukti_pendaftaran_perubahan" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="3">    
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Bukti pendaftaran perubahan/penghapusan hak atas Fasum/Fasos</strong></label>
+          <span id="field-bukti_pendaftaran_perubahan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-bukti_pendaftaran_perubahan" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-bukti_pendaftaran_perubahan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-bukti_pendaftaran_perubahan"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-cetak_biru_bangunan" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="4">    
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Gambar Teknis Bangunan Gedung /Denah Bangunan/Site Plan yang disahkan oleh Dinans PU</strong></label>
+          <span id="field-cetak_biru_bangunan">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-cetak_biru_bangunan" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-cetak_biru_bangunan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-cetak_biru_bangunan"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-dokumen_ukl_upl" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="5"> 
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Dokumen UKL-UPL</strong></label>
+          <span id="field-dokumen_ukl_upl">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-dokumen_ukl_upl" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-dokumen_ukl_upl" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-dokumen_ukl_upl"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-kepemilikan_tanah" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="6"> 
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Surat Kepemilikan Tanah</strong></label>
+          <span id="field-kepemilikan_tanah">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-kepemilikan_tanah" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-kepemilikan_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-kepemilikan_tanah"></span>
+      </div>
+    </form>
+
+    <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-ktp_paspor" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="7">
+      <div class="form-group">
+         <label class="col-sm-3 control-label"><strong>KTP/PASPOR</strong></label>
+        <span id="field-ktp_paspor">
+          <div class="col-sm-5">
+            <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">                      
+          </div>
+          <div class="col-sm-4">
+            <button href="#" id="btn-ktp_paspor" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+            <a id="percent-ktp_paspor" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-ktp_paspor"></span>
+      </div>
+    </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-npwp" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+      {% csrf_token %}
+      <input type="hidden" name="aksi" value="8">
+    <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>NPWP</strong></label>
+        <span id="field-npwp">
+          <div class="col-sm-5">
+                <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
+          </div>
+          <div class="col-sm-4">
+                <button href="#" id="btn-npwp" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+                <a id="percent-npwp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+        <span class="col-sm-6" id="load-npwp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-perhitungan_kontruksi_beton" action="{% url 'imbperumahan_upload_berkas_pendukung' %}" data-parsley-validate novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="aksi" value="9">
+      <div class="form-group">
+        <label class="col-sm-3 control-label"><strong>Perhitungan Kontruksi Beton (Untuk Bangunan lebih dari satu lantai)</strong></label>
+        <span id="field-perhitungan_kontruksi_beton">
+          <div class="col-sm-5">
+             <input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">  
+          </div>
+          <div class="col-sm-4">
+                <button href="#" id="btn-perhitungan_kontruksi_beton" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+                <a id="percent-perhitungan_kontruksi_beton" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+          </div>
+        </span>
+         <span class="col-sm-6" id="load-perhitungan_kontruksi_beton"></span>
+      </div>
+    </form>

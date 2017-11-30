@@ -1,0 +1,61 @@
+{% extends "front-end/base.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block section %}
+<div class="row" style="padding-top: 2%;">
+  	<div class="col-md-12">
+	    <section class="tile">
+      		<div class="tile-body">
+      			<div class="table-responsive">
+      				<h4>Detil Pengajuan</h4>
+      				<table width="100%">
+      					<tr>
+      						<td width="20%">Nomor Pengajuan</td>
+      						<td width="5%"> : </td>
+      						<td width="75%">{{pengajuan.no_pengajuan}}</td>
+      					</tr>
+      					<tr>
+      						<td width="20%">Jenis Izin</td>
+      						<td width="5%"> : </td>
+      						<td width="75%">{{pengajuan.kelompok_jenis_izin.kelompok_jenis_izin}}</td>
+      					</tr>
+      					<tr>
+      						<td width="20%">Nama Pemohon</td>
+      						<td width="5%"> : </td>
+      						<td width="75%">{{pengajuan.pemohon.nama_lengkap}}</td>
+      					</tr>
+      				</table>
+      				<br>
+      				<br>
+      				<h4>Tracking Pengajuan Izin</h4>          
+				  	<table class="table">
+					    <thead>
+					      	<tr>
+						        <th>No.</th>
+						        <th>Tanggal Proses</th>
+						        <th>Keterangan Status</th>
+						        <th>Penanggung Jawab</th>
+					      	</tr>
+					    </thead>
+					    <tbody>
+					    	{% if riwayats %}
+						    	{% for r in riwayats %}
+							      	<tr>
+								        <td>{{ forloop.counter }}</td>
+								        <td>{{ r.created_at|date:'d-m-Y H:i a'}}</td>
+								        <td>{{ r.keterangan }}</td>
+								        <td>{{ r.created_by.nama_lengkap }}</td>
+							      	</tr>
+						      	{% endfor %}
+						    {% else %}
+						    	<tr>
+						    		<td colspan="4" align="center">Kosong...!!!</td>
+						    	</tr>
+						    {% endif %}
+					    </tbody>
+				  	</table>
+			  	</div>
+      		</div>
+	    </section>
+	</div>
+</div>
+{% endblock %}

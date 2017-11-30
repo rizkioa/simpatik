@@ -1,0 +1,289 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'tdp_pt_data_umum_perusahaan_save' %}" data-parsley-validate novalidate>
+	{% csrf_token %}  
+	<h3>DATA UMUM PERUSAHAAN</h3>
+	<hr class="style14">
+	<div class="form-group">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Jenis Badan Usaha Perusahaan</strong></label>
+	    <div class="col-sm-4">
+	      <select class="form-control chosen-select mb-10" disabled="">
+          <option value>Badan Usaha Lainnya (BUL)</option>
+	      </select>
+	    </div>
+	</div>
+
+ 	<div class="form-group" id="id_status_perusahaan_">
+	    <label for="id_status_perusahaan" class="col-sm-2 control-label"><strong>Status Perusahaan</strong></label>
+	    <div class="col-sm-4">
+	      <select class="form-control chosen-select mb-10" name="status_perusahaan" id="id_status_perusahaan">
+          <option value>-- Pilih Status Perusahaan --</option>
+  	        {% if status_perusahaan %}
+              {% for s in status_perusahaan %}
+                <option value="{{s.id}}">{{s.status_perusahaan}}</option>
+              {% endfor %}
+            {% endif %}
+	      </select>
+	    </div>
+ 	</div>
+
+  	<div class="row">
+	    <h4 class="custom-font col-sm-5">Bagi kantor cabang/kantor cabang pembantu/perwakilan, lengkapi data:</h4> 
+	    <div class="col-sm-7" style="padding-bottom: 10px; padding-top: 8px;">
+	      <div class="onoffswitch labeled greensea inline-block">
+	        <input type="checkbox" name="onoffkantorcabang" class="onoffswitch-checkbox" id="switch_data_umum_kantor_cabang_disabled" >
+	        <label class="onoffswitch-label" for="switch_data_umum_kantor_cabang_disabled">
+	            <span class="onoffswitch-inner"></span>
+	            <span class="onoffswitch-switch"></span>
+	        </label>
+	      </div>
+	    </div>
+  	</div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label">NPWP</label>
+    <div class="col-sm-7">
+      <input type="text" onchange="load_perusahaan_induk($(this).val())" class="form-control data_umum_kantor_cabang npwp" name="npwp_perusahaan_induk" id="id_npwp_perusahaan_induk">
+    </div>
+  </div>
+
+	<div class="form-group">
+    <label class="col-sm-2 control-label">Nama Perusahaan</label>
+    <div class="col-sm-7">
+      <input type="text" class="form-control data_umum_kantor_cabang" name="nama_perusahaan_induk" id="id_nama_perusahaan_induk">
+    </div>
+  </div>
+
+    <div class="form-group">
+      <label for="input01" class="col-sm-2 control-label">Alamat</label>
+      <div class="col-sm-7">
+        <textarea class="form-control data_umum_kantor_cabang" rows="5" name="alamat_perusahaan_induk" id="id_alamat_perusahaan_induk"></textarea>
+      </div>
+    </div>
+
+    <div class="form-group" id="provinsi-3">
+	    <label class="col-sm-2 control-label"><strong>Provinsi</strong></label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 data_umum_kantor_cabang" name="provinsi" id="id_provinsi-3">
+	        
+	      </select>
+	    </div>
+    </div>
+
+    <div class="form-group" id="kabupaten-3">
+	    <label class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 data_umum_kantor_cabang" name="kabupaten" id="id_kabupaten-3" >
+	        
+	      </select>
+	    </div>
+    </div>
+
+	<div class="form-group" id="kecamatan-3">
+		<label class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+		<div class="col-sm-5">
+		  <select class="form-control chosen-select mb-10 data_umum_kantor_cabang" name="kecamatan" id="id_kecamatan-3">
+		    <option value>-- Pilih Kecamatan --</option>
+		    
+		  </select>
+		</div>
+	</div>
+
+	<div class="form-group" id="desa-3">
+		<label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+		<div class="col-sm-5">
+		  <select class="form-control chosen-select mb-10 data_umum_kantor_cabang" name="desa_perusahaan_induk" id="id_desa-3">
+		    <option value>-- Pilih Kelurahan/Desa --</option>
+		    
+		  </select>
+		</div>
+	</div>
+
+	<div class="form-group">
+      <label class="col-sm-2 control-label">No. TDP</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control data_umum_kantor_cabang" name="no_tdp" id="no_tdp_induk">
+      </div>
+    </div>
+
+    <div class="row">
+      <h4 class="custom-font col-sm-5">Bagi memiliki unit Produksi, lengkapi data:</h4> 
+      <div class="col-sm-7" style="padding-bottom: 10px; padding-top: 8px;">
+        <div class="onoffswitch labeled greensea inline-block">
+          <input type="checkbox" name="onoffunitproduksi" class="onoffswitch-checkbox" id="switch_stap3_bagi_unit_disabled" >
+          <label class="onoffswitch-label" for="switch_stap3_bagi_unit_disabled">
+              <span class="onoffswitch-inner"></span>
+              <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+	<div class="form-group">
+    <label for="input01" class="col-sm-2 control-label">Alamat</label>
+    <div class="col-sm-7">
+      <textarea class="form-control stap3_bagian_unit" rows="5" name="alamat_unit_produksi" id="id_alamat_unit_produksi"></textarea>
+    </div>
+  </div>
+
+  <div class="form-group" id="provinsi-4">
+    <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10 stap3_bagian_unit" name="provinsi" id="id_provinsi-4">
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="kabupaten-4">
+    <label class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10" name="kabupaten" id="id_kabupaten-4">
+        <option value>-- Pilih Kota/Kabupaten --</option>
+        
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="kecamatan-4">
+    <label class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10 " name="kecamatan" id="id_kecamatan-4">
+        <option value>-- Pilih Kecamatan --</option>
+        
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="desa-4">
+    <label class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+    <div class="col-sm-5">
+      <select class="form-control chosen-select mb-10 " name="desa_unit_prosuksi" id="id_desa-4">
+        <option value>-- Pilih Kelurahan/Desa --</option>
+        
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="id_jumlah_bank_">
+    <label for="input01" class="col-sm-4 control-label text-left"><strong>Jumlah bank dimana perusahaan ini menjadi nasabah</strong></label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" name="jumlah_bank" id="id_jumlah_bank" value="0" required="" data-parsley-trigger="change">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_nasabah_utama_bank_1_">
+    <label for="input01" class="col-sm-2 control-label"><strong>Nasabah Utama Bank 1.</strong></label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="nasabah_utama_bank_1" id="id_nasabah_utama_bank_1" required="" data-parsley-trigger="change">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_nasabah_utama_bank_2_">
+    <label for="input01" class="col-sm-2 control-label">(isi jika ada) 2.</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="nasabah_utama_bank_2" id="id_nasabah_utama_bank_2">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_jenis_penanaman_modal_">
+    <label for="input01" class="col-sm-2 control-label"><strong>Status Penanaman Modal</strong></label>
+    <div class="col-sm-4">
+      <select class="form-control chosen-select mb-10" name="jenis_penanaman_modal" id="id_jenis_penanaman_modal" required="" data-parsley-trigger="change">
+        <option value>-- Pilih Status Penanaman Modal --</option>
+	        {% if jenis_penanaman_modal %}
+            {% for j in jenis_penanaman_modal %}
+              <option value="{{j.id}}">{{j.jenis_penanaman_modal}} {% if j.keterangan %}({{j.keterangan}}){% endif %}</option>
+            {% endfor %}
+          {% endif %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group" id="id_tanggal_pendirian_">
+    <label for="input01" class="col-sm-2 control-label"><strong>Tanggal Pendirian</strong></label>
+    <div class="col-sm-5">
+      <div class="input-group datepicker w-360 mt-10" data-format="L">
+        <input type="text" class="form-control" id="id_tanggal_pendirian" name="tanggal_pendirian" required="" data-parsley-trigger="change">
+        <span class="input-group-addon">
+          <span class="fa fa-calendar"></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group" id="id_tanggal_mulai_kegiatan_">
+      <label for="input01" class="col-sm-2 control-label">Tanggal mulai kegiatan</label>
+      <div class="col-sm-5">
+        <div class="input-group datepicker w-360 mt-10" data-format="L">
+          <input type="text" class="form-control" id="id_tanggal_mulai_kegiatan" name="tanggal_mulai_kegiatan">
+          <span class="input-group-addon">
+            <span class="fa fa-calendar"></span>
+          </span>
+        </div>
+      </div>
+  </div>
+
+	<div class="form-group" id="id_jangka_waktu_berdiri_">
+		<label class="col-sm-3 control-label text-left">Jangka waktu berdirinya perusahaan</label>
+		<div class="col-sm-2">
+      <div class="input-group">
+        <input type="text" class="form-control" name="jangka_waktu_berdiri" id="id_jangka_waktu_berdiri">
+        <span class="input-group-addon">tahun</span>
+      </div>
+		</div>
+	</div>
+
+	<div class="form-group" id="id_bentuk_kerjasama_">
+    <label for="input01" class="col-sm-2 control-label">Bentuk Kerjasama</label>
+    <div class="col-sm-4">
+      <select class="form-control chosen-select mb-10" name="bentuk_kerjasama" id="id_bentuk_kerjasama">
+        <option value>-- Pilih Bentuk Kerjasama --</option>
+        {% if bentuk_kerjasama %}
+          {% for b in bentuk_kerjasama %}
+            <option value="{{b.id}}">{{b.bentuk_kerjasama}}</option>
+          {% endfor %}
+        {% endif %}
+      </select>
+    </div>
+	 </div>
+
+	<div class="form-group" id="id_merek_dagang_">
+    <label for="input01" class="col-sm-2 control-label">Merk dagang (jika ada)</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="merek_dagang" id="id_merek_dagang">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_no_merek_dagang_">
+    <label for="input01" class="col-sm-2 control-label">No. Merk Dagang</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="no_merek_dagang" id="id_no_merek_dagang">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_pemegang_hak_cipta_">
+    <label for="input01" class="col-sm-2 control-label">Pemegang hak cipta (jika ada)</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="pemegang_hak_cipta" id="id_pemegang_hak_cipta">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_no_hak_cipta_">
+    <label for="input01" class="col-sm-2 control-label">No. Hak cipta</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="no_hak_cipta" id="id_no_hak_cipta">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_pemegang_hak_paten_">
+    <label for="input01" class="col-sm-2 control-label">Pemegang hak paten (jika ada)</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="pemegang_hak_paten" id="id_pemegang_hak_paten">
+    </div>
+  </div>
+
+  <div class="form-group" id="id_no_hak_paten_">
+    <label for="input01" class="col-sm-2 control-label">No. Hak paten</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" name="no_hak_paten" id="id_no_hak_paten">
+    </div>
+  </div>
+</form>

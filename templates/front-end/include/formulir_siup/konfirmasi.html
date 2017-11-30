@@ -1,0 +1,280 @@
+<form method="POST" name="step6" role="form" action="{% url 'siup_done' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+  
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'>{{ jenis_permohonan_konfirmasi }}</span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0" id="id_table_pemohon_komfirmasi">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'>{{ pemohon_konfirmasi.pemohon.jenis_pemohon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'>{{ ktp }} {% if paspor %}/ {{paspor}}{% endif %}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'>{{ pemohon_konfirmasi.nama_lengkap }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'>{{ alamat_pemohon_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'>{{ pemohon_konfirmasi.telephone }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'>{{ pemohon_konfirmasi.hp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'>{{ pemohon_konfirmasi.email|default_if_none:"-" }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'>{{ pemohon_konfirmasi.kewarganegaraan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'>{{ pemohon_konfirmasi.pekerjaan }}</span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.perusahaan.npwp }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.nama_perusahaan }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_perusahaan_konfirmasi'>{{ alamat_perusahaan_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kode Pos</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kode_pos_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.kode_pos }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telepon_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.telepon }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Fax</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='fax_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.fax }}</span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_perusahaan_konfirmasi'>{{ perusahaan_konfirmasi.email|default_if_none:"-" }}</span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#3. DATA SIUP</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Bentuk Kegiatan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id="bentuk_kegiatan_usaha_konfirmasi">{{ bentuk_kegiatan_usaha_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td>Status Penanaman Modal</td>
+      <td>:</td>
+      <td><span id="status_penanaman_modal_konfirmasi">{{ status_penanaman_modal_konfirmasi }}</span></td>
+    </tr>
+  </table>
+  <h5><u>Kekayaan Bersih dan Saham</u></h5>
+  <table width="100%" border="0">
+    <tr>
+      <td width="40%">Kekayaan Bersih Perusahaan</td>
+      <td width="5%">:</td>
+      <td width="55%"><span id="kekayaan_bersih_konfirmasi">{{ kekayaan_bersih_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td colspan="3">(tidak termasuk tanah dan bengunan temoat usaha)</td>
+    </tr>
+    <tr>
+      <td colspan="3">Saham (Khusus Untuk Penanaman Modal Asing):</td>
+    </tr>
+    <tr>
+      <td><p style="text-indent: 30px;">a. Total Nilai Saham</p></td>
+      <td>:</td>
+      <td><span id="total_nilai_saham_konfirmasi">{{ total_nilai_saham_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td colspan="3"><p style="text-indent: 30px;">b. Komposisi Kepemilikan Saham:</p></td>
+    </tr>
+    <tr>
+      <td><p style="text-indent: 60px;">Dalam Negeri</p></td>
+      <td>:</td>
+      <td><span id="presentase_saham_nasional_konfirmasi">{{ presentase_saham_nasional_konfirmasi }}</span></td>
+    </tr>
+    <tr>
+      <td><p style="text-indent: 60px;">Asing</p></td>
+      <td>:</td>
+      <td><span id="presentase_saham_asing_konfirmasi">{{ presentase_saham_asing_konfirmasi }}</span></td>
+    </tr>
+  </table>
+  <h5><u>Kegiatan Usaha</u></h5>
+  <table class="font" width="100%">
+      <tr>
+          <td width="25%">Kelembagaan</td>
+          <td width="5%">:</td>
+          <td width="70%"><span id="kelembagaan_konfirmasi"></span></td>
+      </tr>
+      <tr>
+          <td width="25%">KBLI / Barang atau Jasa Dagang</td>
+          <td width="5%">:</td>
+          <td width="70%"><span id="kbli_konfirmasi"></span></td>
+      </tr>
+      <!-- <tr>
+          <td width="25%">Barang/jasa dagang utama</td>
+          <td width="5%">:</td>
+          <td width="70%"><span id="produk_utama_konfirmasi">{% for produk_utama in pengajuan_.produk_utama.all %} {{ produk_utama.barang_jasa_utama}}{% if not forloop.last %}, {% endif %}{% endfor %}</span></td>
+      </tr> -->
+  </table>
+  <br>
+  <h4><u>#4. LEGALITAS PERUSAHAAN</u></h4>
+  <div class="table-responsive">
+    <table class="table table-bordered" id="legalitas_table">
+        <thead>
+          <tr>
+            <th>Jenis Akta dan Pengesahan</th>
+            <th>Nama Notaris</th>
+            <th>Alamat Notaris</th>
+            <th>Telp. Notaris</th>
+            <th>No. Akta</th>
+            <th>Tgl Akta</th>
+            <th>No. Pengesahan</th>
+            <th>Tgl Pengesahan</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        </tbody>
+    </table>
+  </div>
+  <br>
+  
+  <br>
+  <h4><u>#5. UPLOAD DOKUMEN PERSYARATAN</u></h4>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            File Foto
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-foto" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File KTP/Paspor
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-ktp" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File NPWP Pribadi
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-npwp_pribadi" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File NPWP Perusahaan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-npwp_perusahaan" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Akta Pendirian
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-akta_pendirian" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Akta Pembaruan (jika ada)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-akta_pembaruan" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            File Pendukung lainnya (jika ada)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" id="checkbox-pendukung" disabled><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <br>
+  <div class="form-group">
+    <section class="tile bg-greensea">
+      <div class="tile-body">
+        <label class="checkbox checkbox-custom-alt">
+          <input id="checkbox_siup_done" type="checkbox" ><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+        </label>
+      </div>
+    </section>
+  </div>
+</form>

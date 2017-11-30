@@ -1,0 +1,324 @@
+<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0" id="table_pemohon_konfirmasi">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <table id="table_kuasa_konfirmasi" width="100%" border="0">
+    
+  </table>
+  <br>
+  <h4><u>#2. IZIN APOTEK</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Nama Apotek</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_apotek_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_apotek_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No Telepon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='no_telepon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Sarana</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='sarana_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama Pemilik Sarana</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_pemilik_sarana_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Sarana</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_sarana_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">NPWP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='npwp_konfirmasi'></span></td>
+    </tr>
+   
+  </table>
+  <br>
+  <br>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy Ijazah Apoteker yang dilegalisir
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ijazah_apoteker"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy STRA Apoteker
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-stra_apoteker"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy Surat Rekomendasi dari IAI
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-rekom_iai"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy KTP
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ktp"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy Denah Lokasi
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-denah_lokasi"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy Denah Bangunan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-denah_bangunan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-status_bangunan"><i></i>
+            </label>
+          </td>
+        </tr>
+         <tr align="center">
+          <td>
+            Fotocopy IMB dan Izin gangguan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-izin_gangguan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Salinan/Fotocopy Ijazah yang dilegalisir, Surat Tanda Registrasi Tenaga Teknis Kefarmasian
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ijazah_strttk"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Daftar Tenaga Teknis Kefarmasian dengan mencantumkan nama,alamat,tanggal lulus, dan nomor STRTKR
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-daftar_tenaga_teknis"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Asli dan Salinan/Fotocopy daftar terperinci alat perlengapan Apotek
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-alat_perlengkapan_apotek"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Asli dan Salinan/Fotocopy Surat Izin atasan (Bagi pemohon PNS/ABRI/Pegawai pemerintahan lainnya)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-izin_atasan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Akta Perjanjian Kerjasama Apoteker pengelola Apotek bahwa tidak bekerja tetap pada perusahaan farmasi lain dan tidak menjadi apoteker pengelola apotek di apotek lain
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-perjanjian_apoteker"><i></i>
+            </label>
+          </td>
+        </tr> 
+        <tr align="center">
+          <td>
+            Surat Pernyataan Apoteker Pengelola Apotek Bersedia Mematuhi peraturan perundang udangan yang berlaku dan tidak terlibat pelanggaran peraturan dibidang obat
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pernyataan_peraturan_apoteker"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Pernyataan Pemilik Sarana bersedia mematuhi peraturan perundang udangan yang berlaku dan tidak terlibat pelanggaran peraturan dibidang obat
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pernyataan_peraturan_pemilik"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            SIA Asli (Untuk perpanjangan)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sia"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy SIPA
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sipa"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy SIPTTK(AA)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sipttk"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Pernyataan Pemilik Apotik
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pernyataan_pemilik"><i></i>
+            </label>
+          </td>
+        </tr> 
+        <tr align="center">
+          <td>
+            Surat Pernyataan Apoteker
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pernyataan_apoteker"><i></i>
+            </label>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt">
+        <input type="checkbox" id="checkbox_tdp_done"><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
+</form>

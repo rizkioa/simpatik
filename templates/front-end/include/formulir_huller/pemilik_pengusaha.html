@@ -1,0 +1,218 @@
+<form method="POST" name="step3" id="id_data_huller" role="form" class="form-horizontal" action="{% url 'detil_huller_save_cookie' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+    <h3>Pemilik Dan Pengusaha</h3>
+    <hr class="style14">
+    
+    <!-- Pemilik -->
+    <div class="row">
+      <h4 class="custom-font col-sm-2"><strong><u>Pemilik</u></strong></h4> 
+    </div>
+
+    <div class="row">
+      <h5 class="custom-font col-sm-2"><strong>Jenis Pemilik</strong></h5> 
+    </div>
+
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">
+		 <input type="radio" name="pemilik_badan_usaha" checked="" value="false" id="id_perorangan_form" >
+  		<label for="id_perorangan_form">Perorangan</label>
+	</label>
+	<div class="row">
+		<div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Nama Lengkap</strong> </label>
+		    <div class="col-sm-7">
+		      <input type="text" class="form-control" onclick="load_pemohon_1()" name="pemilik_nama_perorangan" id="id_pemilik_nama_perorangan">
+		    </div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong> </label>
+		    <div class="col-sm-7">
+		     <textarea class="form-control pemilik_disable" onclick="load_alamat_1();" rows="5" name="pemilik_alamat" id="id_pemilik_alamat"></textarea>
+		    </div>
+		</div>
+	</div>
+
+	  <div class="form-group" id="negara">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" id="id_negara_perorangan" data-parsley-trigger="change">
+	        <option value>-- Pilih Negara --</option>
+	        {% if negara %}
+	          {% for p in negara %}
+	          <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+	          {% endfor %}
+	        {% endif %}
+	      </select>
+	    </div>
+	  </div>
+
+	  <div class="form-group" id="provinsi">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" id="id_provinsi_perorangan" data-parsley-trigger="change">
+	      </select>
+	    </div>
+	  </div>
+
+	  <div class="form-group" id="kabupaten">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" id="id_kabupaten_perorangan" data-parsley-trigger="change"> 
+	      </select>
+	    </div>
+	  </div>
+
+	  <div class="form-group" id="kecamatan">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10" id="id_kecamatan_perorangan" data-parsley-trigger="change">
+	      </select>
+	    </div>
+	  </div>
+
+	<div class="form-group" id="desa">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 pemilik_disable" name="pemilik_desa" id="id_desa_perorangan" data-parsley-trigger="change">
+	      </select>
+	    </div>
+	</div>
+
+	  <div class="form-group">
+	    <label class="col-sm-2 control-label"><strong>Kewarganegraan</strong></label>
+	    <div class="col-sm-4">
+	      <select class="form-control chosen-select mb-10" name="pemilik_kewarganegaraan" id="id_pemilik_kewarganegaraan" data-parsley-trigger="change">
+	        <option value>-- Pilih Kewarganegaraan --</option>
+	        <option value="WNI">WNI</option>
+	        <option value="WNA">WNA</option>
+	      </select>
+	    </div>
+	  </div>
+
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">		
+  		<input type="radio" name="pemilik_badan_usaha" id="id_badan_hukum_perorangan_form" value="true"><label for="id_badan_hukum_perorangan_form">Badan Hukum</label> 
+	</label>
+
+	<div class="row">
+		<label for="input01" class="col-sm-2 control-label"><strong>Nama Badan Hukum</strong></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" name="pemilik_nama_badan_usaha" id="nama_badan_hukum_pemilik">
+		</div>
+	</div>
+	<!-- Pemilik -->
+
+	<!-- Pengusaha -->
+
+	<div class="row">
+      <h4 class="custom-font col-sm-2"><strong><u>Pengusaha</u></strong></h4> 
+    </div>
+
+	<div class="row">
+      <h5 class="custom-font col-sm-2"><strong>Jenis Pengusaha</strong></h5> 
+    </div>
+
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">
+		<input type="radio" name="pengusaha_badan_usaha" checked="" value="false"class="radio_pengusaha_disabled" value="Enabled" id="id_pengusaha_badan_usaha"><i></i> Perorangan
+	</label>
+
+	<div class="row">
+		<div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Nama Lengkap</strong> </label>
+		    <div class="col-sm-7">
+		      <input type="text" class="form-control pengusaha_disabled" onclick="load_pemohon_2()" id="id_pengusaha_nama_perorangan" name="pengusaha_nama_perorangan">
+		    </div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">
+		    <label for="input01" class="col-sm-2 control-label"><strong>Alamat</strong> </label>
+		    <div class="col-sm-7">
+		     <textarea class="form-control pengusaha_disabled" onclick="load_alamat_2();" rows="5" id="id_pengusaha_alamat" name="pengusaha_alamat"></textarea>
+		    </div>
+		</div>
+	</div>
+
+	<div class="form-group" id="negara">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Negara</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 pengusaha_disabled" id="id_negara_pengusaha" data-parsley-trigger="change">
+	        <option value>-- Pilih Negara --</option>
+	        {% if negara %}
+	          {% for p in negara %}
+	          <option value="{{ p.id }}">{{ p.nama_negara }}</option>
+	          {% endfor %}
+	        {% endif %}
+	      </select>
+	    </div>
+	</div>
+
+	<div class="form-group" id="provinsi">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Provinsi</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 pengusaha_disabled" id="id_provinsi_pengusaha" data-parsley-trigger="change">
+	      </select>
+	    </div>
+	</div>
+
+	<div class="form-group" id="kabupaten">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kota/Kabupaten</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 pengusaha_disabled" id="id_kabupaten_pengusaha" data-parsley-trigger="change"> 
+	      </select>
+	    </div>
+	</div>
+
+	<div class="form-group" id="kecamatan">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 pengusaha_disabled" id="id_kecamatan_pengusaha" data-parsley-trigger="change">
+	      </select>
+	    </div>
+	</div>
+
+	<div class="form-group" id="desa">
+	    <label for="input01" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong> </label>
+	    <div class="col-sm-5">
+	      <select class="form-control chosen-select mb-10 pengusaha_disabled" name="pengusaha_desa" id="pengusaha_desa" data-parsley-trigger="change">
+
+	      </select>
+	    </div>
+	</div>
+	
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><strong>Kewarganegraan</strong></label>
+    <div class="col-sm-4">
+      <select id="pengusaha_kewarganegaraan" class="form-control chosen-select mb-10" name="pengusaha_kewarganegaraan" data-parsley-trigger="change">
+        <option value>-- Pilih Kewarganegaraan --</option>
+        <option value="WNI">WNI</option>
+        <option value="WNA">WNA</option>
+      </select>
+    </div>
+  </div>
+
+    <label class="radio radio-custom-alt" style="margin-left: 20px; padding-bottom: 10px;">
+		<input type="radio" name="pengusaha_badan_usaha" value="true" class="radio_pengusaha_disabled" value="Disabled" id="switch_badan_hukum_pengusaha"><i></i> Badan Hukum
+	</label>
+
+	<div class="row">
+		<label for="input01" class="col-sm-2 control-label"><strong>Nama Badan Hukum</strong></label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control pengusaha_badan_disable" id="nama_badan_hukum_pengusaha" name="pengusaha_nama_badan_usaha">
+		</div>
+	</div>
+	<br>
+	<br>
+	<label for="input01" class="col-sm-5 control-label"><strong>Hubungan Kerjasama antara Pengusaha dengan Pemilik Perusahaan</strong> </label><br>
+	<div class="row">
+		<div class="form-group">
+		    <div class="col-sm-12">
+		     <textarea class="form-control pemilik_disable" rows="5" required="" name="hubungan_pemilik_pengusaha" id="hubungan_pemilik_pengusaha"></textarea>
+		    </div>
+		</div>
+	</div>
+
+	
+</form>
