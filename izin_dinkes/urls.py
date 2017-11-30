@@ -4,6 +4,7 @@ import views
 
 urlpatterns = [
 	url(r'^apotek/save-izin-apotek/$', views.save_izin_apotek, name='izin_dinkes__save_izin_apotek'),
+	url(r'^apotek/load-izin-apotek/(?P<id_pengajuan>[0-9]+)$', views.load_izin_apotek, name='izin_dinkes__load_izin_apotek'),
 	url(r'^apotek/upload-berkas/$', views.upload_berkas, name='izin_dinkes__upload_berkas'),
 	url(r'^apotek/upload-berkas/save/$', views.apotek_upload_dokumen_cookie, name='izin_dinkes__upload_berkas_save'),
     url(r'^apotek/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', views.ajax_load_berkas_apotek, name='izin_dinkes__ajax_load_berkas_apotek'),
@@ -39,6 +40,18 @@ urlpatterns = [
     url(r'^laboratorium/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', views.ajax_load_berkas_laboratorium, name='izin_dinkes__ajax_load_berkas_laboratorium'),
     url(r'^laboratorium/load-konfirmasi-laboratorium/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_laboratorium, name='izin_dinkes__load_konfirmasi_laboratorium'),
     url(r'^laboratorium/laboratorium-done/$', views.laboratorium_done, name='izin_dinkes__laboratorium_done'),
+
+	############### end Izin Lab ##########
+
+	############### Izin optikal ##########
+	url(r'^optikal/save-izin-optikal/$', views.save_izin_optikal, name='izin_dinkes__save_izin_optikal'),
+
+	url(r'^optikal/upload-berkas-optikal/$', views.upload_berkas_optikal, name='izin_dinkes__upload_berkas_optikal'),
+	url(r'^optikal/upload-berkas-optikal/save/$', views.optikal_upload_dokumen_cookie, name='izin_dinkes__upload_berkas_optikal_save'),
+    url(r'^optikal/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', views.ajax_load_berkas_optikal, name='izin_dinkes__ajax_load_berkas_optikal'),
+
+    url(r'^optikal/load-konfirmasi-optikal/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_optikal, name='izin_dinkes__load_konfirmasi_optikal'),
+    url(r'^optikal/optikal-done/$', views.optikal_done, name='izin_dinkes__optikal_done'),
 
 	############### end Izin Lab ##########
 ]

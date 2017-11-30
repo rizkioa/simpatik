@@ -181,6 +181,11 @@ class Optikal(PengajuanIzin):
 	lokasi_kegiatan_usaha = models.CharField(verbose_name='Lokasi Kegiatan Usaha', max_length=256)
 	luas_tanah_bangunan = models.CharField(verbose_name='Luas Tanah / Bangunan', max_length=256)
 
+	def as_json(self):
+
+		return dict(id=self.id, nama_optikal=self.nama_optikal, nama_pemilik_perusahaan=self.nama_pemilik_perusahaan, jenis_badan_usaha=self.jenis_badan_usaha, alamat_usaha=self.alamat_usaha, no_telepon=self.no_telepon, jenis_kegiatan_usaha=self.jenis_kegiatan_usaha, lokasi_kegiatan_usaha=self.lokasi_kegiatan_usaha, luas_tanah_bangunan=self.luas_tanah_bangunan)
+
+
 	def __unicode__(self):
 		return u'%s' % str(self.nama_optikal)
 

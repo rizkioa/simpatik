@@ -30,7 +30,7 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
 	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
 	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-	<!-- <script src="{% static 'scripts/js/formAjax/form_ajax_izin_parkir.js' %}"></script> -->
+	<script src="{% static 'scripts/js/formAjax/form_ajax_optik.js' %}"></script>
 	
 	<script>
 		$(window).load(function(){
@@ -38,22 +38,7 @@
 				onTabShow: function(tab, navigation, index) {
 					var $total = navigation.find('li').length;
 					var $current = index+1;
-					if ($current == 2){
-						load_kecamatan1('', '06', '35');
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_data_izin_parkir($.cookie('id_pengajuan'))
-						} 
-					}
-					if ($current == 3){
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_data_anggota($.cookie('id_pengajuan'))
-						}
-					}
-					if ($current == 4){
-						if ($.cookie('id_pengajuan') !== '0'){
-							load_berkas($.cookie('id_pengajuan'))
-						}
-					}
+
 					if($current >= $total) {
 						if ($.cookie('id_pengajuan') !== '0'){
 							load_konfirmasi($.cookie('id_pengajuan'))
@@ -207,7 +192,7 @@
 				}
 				
 				$.ajax({
-					url: '{% url 'izin_parkir_done' %}',
+					url: '{% url 'izin_dinkes__optikal_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
@@ -257,9 +242,9 @@
 				
 			pengajuan = $.cookie('id_pengajuan')
 			if (pengajuan !== '0'){
-				$('#id_ktp').val('{{ktp}}');
-				$('#id_paspor').val('{{paspor}}');
-				load_pemohon('{{ktp}}');
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
 
 				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
 				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
@@ -267,8 +252,8 @@
 
 				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
 				if ('{{ pengajuan_.pemohon }}' !== 'None'){
-					$.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
-					$.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
 					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
 				}
 				else{
@@ -279,67 +264,35 @@
 			}
 		});
 
-		function load_data_izin_parkir(id_pengajuan){
-			$('.tab-content').mLoading();
-			$.ajax({
-	            type: 'GET',
-	            url: __base_url__+'/layanan/izin-parkir/load-detil-izin-parkir/ajax/'+id_pengajuan,
-	            success: function (data) {
-	            	// console.log(data)
-	            	respon = JSON.parse(data)
-	            	if(respon.success == true){
-	            		$('#id_jasa_penitipan').val(respon.data.jenis_penitipan)
-	            		$('#id_ukuran_penitipan_lebar').val(respon.data.lebar_penitipan)
-	            		$('#id_ukuran_penitipan_panjang').val(respon.data.panjang_penitipan)
-	            		if(respon.data.desa.id_kecamatan){
-	            			$('#id_kecamatan1').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
-	            			load_desa1(respon.data.desa.id_kecamatan)
-		            		setTimeout(function(){
-		            			$('#id_desa1').val(respon.data.desa.id_desa).prop('selected',true).trigger("chosen:updated");
-		            		}, 1000);
-	            		}
-	            		
-	            		$('#id_alamat_izin_parkir').val(respon.data.alamat)
-	            		$('#id_tanggal_penitipan').val(respon.data.tanggal_pelaksanaan_parkir)
-	            		$('#id_waktu_mulai').val(respon.data.waktu_mulai)
-	            		$('#id_waktu_akhir').val(respon.data.waktu_berakhir)
-	            		$('#id_anggota_penitipan').val(respon.data.jumlah_anggota_parkir)
-	            		$('#id_batas_sebelah_utara').val(respon.data.batas_utara)
-	            		$('#id_batas_sebelah_timur').val(respon.data.batas_timur)
-	            		$('#id_batas_sebelah_selatan').val(respon.data.batas_selatan)
-	            		$('#id_batas_sebelah_barat').val(respon.data.batas_barat)
-	            	}
-	            	else{
-	            		toastr["error"](respon.data.pesan)
-	            	}
-	            	$('.tab-content').mLoading('hide');
-	            },
-	            error:function(){
-	            	toast_server_error();
-	            	$('.tab-content').mLoading('hide');
-	            }
-	        })
-		}
-
 		$(window).load(function() {
 			var p = 'percent-'
-			$('#'+p+'ktp').hide()
-			$('#'+p+'sketsa_lokasi').hide()
-			$('#'+p+'surat_pernyataan').hide()
+			$('#'+p+'akte_pendirian').hide()
+			$('#'+p+'sk_pejabat').hide()
+			$('#'+p+'izin_gangguan').hide()
+			$('#'+p+'surat_perjanjian_pemilik').hide()
+			$('#'+p+'sk_tempat_tinggal').hide()
+			$('#'+p+'ijazah_refreksionis').hide()
+			$('#'+p+'sk_sehat').hide()
+			$('#'+p+'pas_foto').hide()
+			$('#'+p+'pernyataan_kerjasama').hide()
+			$('#'+p+'daftar_sarana').hide()
+			$('#'+p+'daftar_pegawai').hide()
+			$('#'+p+'peta_lokasi').hide()
+			$('#'+p+'denah_ruangan').hide()
+			$('#'+p+'sk_organisasi_profesi').hide()
 		});
-
+		
 		function load_konfirmasi(id_pengajuan){
 			$('.tab-content').mLoading();
 			$.ajax({
 	            type: 'GET',
-	            url: __base_url__+'/layanan/izin-parkir/load-konfirmasi/ajax/'+id_pengajuan,
+	            url: __base_url__+'/izin-dinkes/optikal/load-konfirmasi-optikal/ajax/'+id_pengajuan,
 	            success: function (data) {
 	            	respon = JSON.parse(data)
 	            	console.log(respon)
 	            	pengajuan_obj = respon.data.pengajuan_json
 	            	pemohon_obj = respon.data.pemohon_json
-	            	detil_obj = respon.data.detil_json
-	            	data_anggota_list = respon.data.data_anggota_json
+	            	optikal_obj = respon.data.optikal_json
 	            	if(respon.success == true){
 	            		$('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
 	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
@@ -352,46 +305,19 @@
 	            		$('#email_konfirmasi').text(pemohon_obj.email)
 	            		$('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
 	            		$('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
-	            		// izin parkir
-	            		$('#jenis_penitipan_konfirmasi').text(detil_obj.jenis_penitipan)
-	            		$('#ukuran_penitipan_konfirmasi').text('lebar : '+detil_obj.lebar_penitipan+' meter, panjang : '+detil_obj.panjang_penitipan+' meter')
-	            		$('#alamat_penitipan_konfirmasi').text(detil_obj.alamat_lengkap)
-	            		$('#lama_penitipan_konfirmasi').text('tanggal : '+detil_obj.tanggal_pelaksanaan_parkir + ', ' +detil_obj.waktu_mulai+' sampai dengan '+detil_obj.waktu_berakhir)
-	            		$('#jumlah_anggota_penitipan_konfirmasi').text(detil_obj.jumlah_anggota_parkir+' orang')
-	            		$('#sebelah_utara_konfirmasi').text(detil_obj.batas_utara)
-	            		$('#sebelah_timur_konfirmasi').text(detil_obj.batas_timur)
-	            		$('#sebelah_selatan_konfirmasi').text(detil_obj.batas_selatan)
-	            		$('#sebelah_barat_konfirmasi').text(detil_obj.batas_barat)
-	            		for (var i = 0; i < data_anggota_list.length; i++){
-	            			no = data_anggota_list.length
-							if (data_anggota_list.length > 1){
-								no = data_anggota_list.length-i
-							}
-	            			row = '<tr>'
-	            			row += '<td>'+no+'</td>'
-	            			row += '<td>'+data_anggota_list[i].nomor_ktp+'</td>'
-	            			row += '<td>'+data_anggota_list[i].nama_lengkap+'</td>'
-	            			row += '<td>'+data_anggota_list[i].tanggal_lahir+'</td>'
-	            			row += '<td>'+data_anggota_list[i].alamat+'</td>'
-	            			row += '<td>'+data_anggota_list[i].telephone+'</td>'
-	            			row += '<td>'+data_anggota_list[i].keterangan+'</td>'
-	            			$('#table_data_anggota_konfirmasi > tbody').prepend(row)
-	            		}
 
-	            		if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
-	            			table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			$('#table_kuasa_konfirmasi').prepend(table)
-	            		}
+	            		$('#nama_optikal_konfirmasi').text(optikal_obj.nama_optikal)
+	            		$('#alamat_optikal_konfirmasi').text(optikal_obj.alamat_usaha)
+	            		$('#no_telepon_konfirmasi').text(optikal_obj.no_telepon)
+	            		$('#jenis_kegiatan_konfirmasi').text(optikal_obj.jenis_kegiatan_usaha)
+	            		$('#luas_tanah_konfirmasi').text(optikal_obj.luas_tanah_bangunan)
+
 	            		$('.tab-content').mLoading('hide');
 	            	}
 	            }
 	        })
 		}
 	</script>
-	{% include 'front-end/include/formulir_izin_parkir/popup/data_anggota.html' %}
 {% endblock %}
 
 {% block extrastyle %}
@@ -478,9 +404,9 @@
 <div id="rootwizard" class="tab-container tab-wizard">
 	<ul class="nav nav-tabs nav-justified">
 	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
-		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Penyenggaraan Optical</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
-		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
-		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">5</span></a></li>
+		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Penyenggaraan Optikal</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Upload Dokumen</i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
 	</ul>
 	<div class="tab-content">
 	    <div class="tab-pane" id="tab1"> 
@@ -493,12 +419,12 @@
 			{% include 'front-end/include/formulir_izin_optikal/penyenggaraan_optikal.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab4">
+		<div class="tab-pane" id="tab3">
 			{% include 'front-end/include/formulir_izin_optikal/upload.html' %}
 		</div>
 
-		<div class="tab-pane" id="tab5">
-			{% include 'front-end/include/formulir_izin_apotik/konfirmasi.html' %}
+		<div class="tab-pane" id="tab4">
+			{% include 'front-end/include/formulir_izin_optikal/konfirmasi.html' %}
 		</div>
 
 	    <ul class="pager wizard">

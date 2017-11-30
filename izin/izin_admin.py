@@ -1404,7 +1404,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/izin-toko-obat/$', self.admin_site.admin_view(formulir_izin_toko_obat), name='izin_proses_izin_toko_obat'),
 			url(r'^wizard/add/proses/izin-laboratorium/$', self.admin_site.admin_view(formulir_izin_laboratorium), name='izin_proses_izin_laboratorium'),
 			url(r'^wizard/add/proses/izin-penutupan-apotek/$', self.admin_site.admin_view(formulir_izin_penutupan_apotek), name='izin_proses_izin_penutupan_apotek'),
-			url(r'^wizard/add/proses/izin-optikal/$', self.admin_site.admin_view(formulir_izin_optikal), name='izin_proses_izin_optical'),
+			url(r'^wizard/add/proses/izin-optikal/$', self.admin_site.admin_view(formulir_izin_optikal), name='izin_proses_izin_optikal'),
 
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
