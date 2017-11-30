@@ -107,8 +107,10 @@
 	          }else{
 	            toastr["error"](respon.pesan)
 	          }
+	          $btn.button("reset");
 	        },error: function(response){
 	          toast_server_error()
+	          $btn.button("reset");
 	        }
 	      });
 	    }

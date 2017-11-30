@@ -1,0 +1,864 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static widgets access %}
+
+
+{% block title %}
+  {{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% endblock %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.min.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/lightbox/css/lightbox.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<style type="text/css">
+		.label-color{
+			color: white;
+		}
+		.style14 { 
+			border: 0; 
+			height: 1px; 
+			background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+			background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+			background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+			background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+		}
+		.hovereffect {
+		  width: 100%;
+		  height: 100%;
+		  float: left;
+		  overflow: hidden;
+		  position: relative;
+		  text-align: center;
+		  cursor: default;
+		  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+		}
+
+		.hovereffect .overlay {
+		  width: 100%;
+		  height: 100%;
+		  position: absolute;
+		  overflow: hidden;
+		  top: 0;
+		  left: 0;
+		}
+
+		.hovereffect img {
+		  display: block;
+		  position: relative;
+		  -webkit-transition: all 0.4s ease-in;
+		  transition: all 0.4s ease-in;
+		}
+
+		.hovereffect:hover img {
+		  filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /><feGaussianBlur stdDeviation="3" /></filter></svg>#filter');
+		  filter: grayscale(1) blur(3px);
+		  -webkit-filter: grayscale(1) blur(3px);
+		  -webkit-transform: scale(1.2);
+		  -ms-transform: scale(1.2);
+		  transform: scale(1.2);
+		}
+
+		.hovereffect h2 {
+		  text-transform: uppercase;
+		  text-align: center;
+		  position: relative;
+		  font-size: 17px;
+		  padding: 10px;
+		  background: rgba(0, 0, 0, 0.6);
+		}
+
+		.hovereffect a.info {
+		  display: inline-block;
+		  text-decoration: none;
+		  padding: 7px 14px;
+		  border: 1px solid #fff;
+		  margin: 0px 0 0 0;
+		  background-color: transparent;
+		}
+
+		.hovereffect a.info:hover {
+		  box-shadow: 0 0 5px #fff;
+		}
+
+		.hovereffect a.info, .hovereffect h2 {
+		  -webkit-transform: scale(0.7);
+		  -ms-transform: scale(0.7);
+		  transform: scale(0.7);
+		  -webkit-transition: all 0.4s ease-in;
+		  transition: all 0.4s ease-in;
+		  opacity: 0;
+		  filter: alpha(opacity=0);
+		  color: #fff;
+		  text-transform: uppercase;
+		}
+
+		.hovereffect:hover a.info, .hovereffect:hover h2 {
+		  opacity: 1;
+		  filter: alpha(opacity=100);
+		  -webkit-transform: scale(1);
+		  -ms-transform: scale(1);
+		  transform: scale(1);
+		}
+		.imageloaderImage{
+			height: 200px;
+			width: 100%;
+		}
+		.img-responsi{
+			float:left;
+			width:90%;
+			height:90%;
+			margin:5%;
+			background-size:contain;
+			background-repeat:no-repeat;
+			background-position:center;
+		}
+	</style>
+{% endblock %}
+
+{% block icotitle %}<i class="fa fa-gear"></i>&nbsp;{% endblock %}
+
+
+{% block content %}
+	{% csrf_token %}
+	<div class="row">
+		<div class="col-lg-12">
+			<section class="tile">
+				<div class="tile-header dvd dvd-btm">
+					<h1 class="custom-font"> {{ title }} </h1>
+					<ul class="controls">
+						<li class="dropdown">
+							<a role="button" tabindex="0" class="dropdown-toggle settings" data-toggle="dropdown">
+								<i class="fa fa-cog"></i>
+								<i class="fa fa-spinner fa-spin"></i>
+							</a>
+							<ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+								<li>
+									<a role="button" tabindex="0" class="tile-toggle">
+										<span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+										<span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+									</a>
+								</li>
+								<li>
+									<a role="button" tabindex="0" class="tile-refresh">
+										<i class="fa fa-refresh"></i> Refresh
+									</a>
+								</li>
+								<li>
+									<a role="button" tabindex="0" class="tile-fullscreen">
+										<i class="fa fa-expand"></i> Fullscreen
+									</a>
+								</li>
+							</ul>
+						</li>
+						<li class="remove"><a role="button" tabindex="0" class="tile-close"><i class="fa fa-times"></i></a></li>
+					</ul>
+				</div>
+				<div class="tile-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel panel-darkgray">
+								<div class="panel-body">
+									<div class="row">
+										{% block rincian_pengajuan %}
+											<div class="col-md-6">
+												<table class="table-responsive" width="100%" border="0">
+													<tr>
+														<td width="45%">No Pengajuan</td>
+														<td width="5%">:</td>
+														<td width="50%">{{ pengajuan.no_pengajuan }}</td>
+													</tr>
+													<tr>
+														<td>Jenis Izin</td>
+														<td>:</td>
+														<td>{{ pengajuan.kelompok_jenis_izin }}</td>
+													</tr>
+													<tr>
+														<td>Pemohon</td>
+														<td>:</td>
+														<td>{{ pengajuan.pemohon.nama_lengkap }} ({{ pengajuan.pemohon.jenis_pemohon }})</td>
+													</tr>
+												</table>
+											</div>
+											<div class="col-md-6">
+												<table class="table-responsive" width="100%" border="0">
+													<tr>
+														<td width="40%">No. Izin</td>
+														<td width="10%">:</td>
+														<td width="50%">{% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}-{% endif %}</td>
+													</tr>
+													<tr>
+														<td colspan="3">&nbsp;</td>
+													</tr>
+													<tr>
+														<td>Nama Toko Obat</td>
+														<td>:</td>
+														<td>{{ pengajuan.nama_toko_obat }}</td>
+													</tr>
+												</table>
+											</div>
+
+											<div class="col-md-12">
+												<hr class="style14">
+												<br>
+												<br>
+												<table class="table table-striped" width="100%">
+													<thead>
+														<tr>
+															<td align="center"><strong>Tanggal Proses</strong></td>
+															<td align="center"><strong>Keterangan Status</strong></td>
+															<td align="center"><strong>Penanggung Jawab</strong></td>
+														</tr>
+													</thead>
+													<tbody>
+														{% for r in riwayat %}
+															<tr>
+																<td align="center">Tanggal : {{ r.created_at|date:"d-m-Y" }} , Jam : {{ r.created_at|time:"H:i" }}</td>
+																<td align="center">{{ r.keterangan }}</td>
+																<td align="center">{{ r.created_by.nama_lengkap }}</td>
+															</tr>
+														{% endfor %}
+													</tbody>
+												</table>
+											</div>
+										{% endblock %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
+					<div class="row">
+						<div class="col-md-12" align="center">
+							{% block tools_buttons %}
+								<a data-toggle="modal" data-target="#detail_reklame" class="btn btn-greensea btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Detail Pengajuan</span></a>
+								<a data-toggle="modal" data-target="#view_berkas" class="btn btn-greensea btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Berkas Pengajuan</span></a>
+								{%  if request.user|has_group:'Operator'  %}
+									{% if pengajuan.status == 6 %}
+										<a onclick="change_edit_pengajuan()" href="{{ url_form }}" target="_blank" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
+									{% endif %}
+								{% endif %}
+							{% endblock %}
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<section class="tile">
+				<div class="tile-body">
+					<center>
+						{% block button_cetak %}
+							<a onclick="openPopupCenter('{% url 'admin:cetak_bukti_admin' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+							{% if skizin.status == 2 %}
+								<a onclick="openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SK</a>
+							{% elif skizin != None %}
+								<a onclick="openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Preview SK</a>
+							{% endif %}
+						{% endblock %}
+					</center>
+				</div>
+			</section>
+		</div>
+	</div>
+	{% if title_verifikasi %}
+		<div class="row">
+			<div class="col-lg-12">
+				<section class="tile">
+					<div class="tile-header dvd dvd-btm">
+						<h1 class="custom-font" align="center"> 
+							{{title_verifikasi}}
+						</h1>
+						<ul class="controls">
+							<li>
+								<a role="button" tabindex="0" class="tile-toggle">
+									<span class="minimize"><i class="fa fa-angle-down"></i></span>
+									<span class="expand"><i class="fa fa-angle-up"></i></span>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div id="minimize">
+						{% if request.user|has_group:'Operator' %}
+							<div class="tile-body">
+								{% if pengajuan.status == 6 or pengajuan.status == 11 %}
+									<section class="tile bg-greensea">
+										<div class="tile-body">
+											<label class="checkbox checkbox-custom-alt">
+												<input id="centang_operator" type="checkbox" ><i></i>
+												Anda telah memeriksa kebutuhan dan setuju bahwa pengajuan bisa diteruskan ke KABID untuk ditindaklanjuti.
+											</label>
+										</div>
+									</section>
+								{% elif pengajuan.status == 4 %}
+									<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+										<div class="panel-body">
+											<center>
+												<h3>
+													TERVERIFIKASI
+												</h3>
+											</center>
+										</div>
+									</div>
+								{% endif %}
+							</div>
+							{% if pengajuan.status == 6 or pengajuan.status == 11 %}
+								<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
+									<div class="row">
+										<div class="col-md-12" align="right">
+											<a type="button" onclick="verifikasi_operator({{ pengajuan.id }}, '_submit_operator')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if request.user|has_group:'Kabid' %}
+							{% if pengajuan.status == 2 and skizin == None %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												PENGAJUAN TERVERIFIKASI KE PEMBUAT SK
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% elif pengajuan.status == 2 and skizin.status == 4 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												SKIZIN TERVERIFIKASI KE KEPALA DINAS
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% elif pengajuan.status == 7 %}
+								<div class="panel panel-darkgray" style="background-color: #ff1910 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												Izin Ditolak
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% elif pengajuan.status == 4 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<h4>MENERUSKAN PENGAJUAN KE KEPALA DPMPTSP</h4>
+										<br>
+										<label class="checkbox checkbox-custom-alt">
+											<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+										</label>
+									</div>
+									<div class="panel-footer">
+										<center>
+											<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										</center>
+									</div>
+								</div>
+
+								{% include "admin/izin/survey_1.html" %}
+
+								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
+									{% csrf_token %}
+										<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
+										<div class="panel-body">
+											<h4>MENOLAK PENGAJUAN</h4>
+											<br>
+											<div class="form-group">
+												<label for="input01">Alasan </label>
+												<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+											</div>
+											<div class="form-group">
+												<label for="input01">Lampiran </label>
+												<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+											</div>
+										</div>
+
+										<div class="panel-footer">
+											<center>
+												<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
+											</center>
+										</div>
+									</form>
+								</div>
+							{% elif status == 8 %}
+								<section class="tile">
+									<div class="tile-header">
+										<h1 class="custom-font"><strong>Survey Izin </strong></h1>
+									</div>
+									<div class="tile-body">
+										<table id="" class="table table-striped table-bordered table-hover table-condensed">
+											<thead>
+											  <tr>
+												  <th scope="col" class="">SKPD</th>
+												  <th scope="col" class="">NAMA</th>
+												  <th scope="col" class="">KOORDINATOR</th>
+											  </tr>
+											</thead>
+											<tbody>
+											  {% for q in survey.survey_iujk.all %}
+												<tr>
+												  <td>{{q.pegawai.unit_kerja}}</td>
+												  <td>{{q.pegawai}} [{{q.pegawai.username}}]</td>
+												  <td>{{q.koordinator|true_or_false|safe}}</td>
+												</tr>
+											  {% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</section>
+								<section class="tile">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Deadline Survey</label>
+											<div class="col-sm-4"> {{ survey.deadline_survey }}
+											</div>
+										</div>
+									</div>
+									<div class="tile-header">
+										<h1 class="custom-font"><strong>Laporan Survey </strong></h1>
+									</div>
+									<div class="tile-body">
+										<div class="row">
+											<div class="col-md-6">
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
+
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_luas_tempat_usaha">Luas Tempat Usaha : {{detilbap.luas_tempat_usaha}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_jumlah_mesin">Jumlah Mesin : {{detilbap.jumlah_mesin}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_daya_kekuatan_mesin">Daya Kekuatan Mesin : {{detilbap.daya_kekuatan_mesin}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_jenis_bangunan">Jenis Bangunan : {{detilbap.get_jenis_bangunan_display}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
+											  </div>
+											</div>
+											<div class="col-md-6">
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_sebelah_timur">Sebelah Timur : {{ detilbap.sebelah_timur}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_sebelah_selatan">Sebelah Selatan : {{detilbap.sebelah_selatan}}</label>
+											  </div>
+											  <div class="form-group">
+												<label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
+											  </div>
+											</div>
+										  </div>
+									</div>
+								</section>
+								<section class="tile">
+									<div class="tile-header">
+										<h1 class="custom-font"><strong>Pertimbangan Dan Saran </strong></h1>
+									</div>
+									<div class="tile-body">
+										<table id="" class="table table-striped table-bordered table-hover table-condensed">
+											<thead>
+											  <tr>
+												  <th scope="col" class="">SKPD</th>
+												  <th scope="col" class="">NAMA</th>
+												  <th scope="col" class="">Rekomendasi/Saran</th>
+												  <th scope="col" class="">Lampiran</th>
+											  </tr>
+											</thead>
+											<tbody>
+											  {% for q in survey.survey_iujk.all %}
+												<tr>
+													<td>{{q.pegawai.unit_kerja}}</td>
+													<td>{{q.pegawai}} ({{q.pegawai.username}})</td>
+													<td>{{survey|get_rekomendasi:q.pegawai.id|safe}}</td>
+													<td>{{survey|get_berkas:q.pegawai.id|safe}}</td>
+												</tr>
+											  {% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</section>
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<h4>MENERUSKAN PENGAJUAN KE KEPALA DPMPTSP</h4>
+										<br>
+										<label class="checkbox checkbox-custom-alt">
+											<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+										</label>
+									</div>
+									<div class="panel-footer">
+										<center>
+											<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										</center>
+									</div>
+								</div>
+								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST" role="form">
+									{% csrf_token %}
+										<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
+										<div class="panel-body">
+											<h4>MENOLAK PENGAJUAN</h4>
+											<br>
+											<div class="form-group">
+												<label for="input01">Alasan </label>
+												<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+											</div>
+											<div class="form-group">
+												<label for="input01">Lampiran </label>
+												<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+											</div>
+										</div>
+
+										<div class="panel-footer">
+											<center>
+												<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
+											</center>
+										</div>
+									</form>
+								</div>
+							{% elif skizin.status == 6 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<h4>MEMVERIFIKASI DRAF IZIN</h4>
+										<br>
+										<label class="checkbox checkbox-custom-alt">
+											<input id="centang_skizin_kabid" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa draf izin bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+										</label>
+									</div>
+									<div class="panel-footer">
+										<center>
+											<a onclick="verifikasi_skizin_kabid({{ pengajuan.id }}, '_submit_skizin_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										</center>
+									</div>
+								</div>
+
+								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST">
+									{% csrf_token %}
+										<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
+										<div class="panel-body">
+											<h4>MENOLAK PENGAJUAN</h4>
+											<br>
+											<div class="form-group">
+												<label for="input01">Alasan </label>
+												<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+											</div>
+											<div class="form-group">
+												<label for="input01">Lampiran </label>
+												<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+											</div>
+										</div>
+
+										<div class="panel-footer">
+											<center>
+												<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
+											</center>
+										</div>
+									</form>
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if request.user|has_group:'Pembuat Surat' %}
+							{% if skizin == None and pengajuan.status == 2 %}
+								<div class="panel panel-body">
+									<center>
+										<a onclick="openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+										<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
+									</center>
+								</div>
+							{% elif skizin.status == 6 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												Draft SKizin Berhasil Dibuat.
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if request.user|has_group:'Kadin' %}
+							{% if pengajuan.status == 2 and skizin.status == 9 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												TERVERIFIKASI
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% elif pengajuan.status == 2 and skizin.status == 4 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<h4>MEMVERIFIKASI DRAF IZIN</h4>
+										<br>
+										<label class="checkbox checkbox-custom-alt">
+											<input id="centang_skizin_kadin" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa izin bisa diteruskan untuk penomoran.
+										</label>
+									</div>
+									<div class="panel-footer">
+										<center>
+											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_kadin')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										</center>
+									</div>
+								</div>
+
+								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
+									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST">
+									{% csrf_token %}
+										<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
+										<div class="panel-body">
+											<h4>MENOLAK PENGAJUAN</h4>
+											<br>
+											<div class="form-group">
+												<label for="input01">Alasan </label>
+												<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
+											</div>
+											<div class="form-group">
+												<label for="input01">Lampiran </label>
+												<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="" data-parsley-trigger="change">
+											</div>
+										</div>
+
+										<div class="panel-footer">
+											<center>
+												<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
+											</center>
+										</div>
+									</form>
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if request.user|has_group:'Penomoran' %}
+							{% if pengajuan.status == 2 and skizin.status == 9 %}
+								<form class="form-inline">
+									<center>
+										<br>
+										<div class="form-group col-md-12">
+											<label for="email">Nomor Izin  &nbsp;&nbsp;: &nbsp;&nbsp;</label>
+											<label>{{pengajuan.kelompok_jenis_izin.keterangan}}</label>
+											<input type="hidden" id="kode_jenis_izin" value="{{pengajuan.kelompok_jenis_izin.keterangan}}">
+											<input value="{{banyak}}" id="penomoran_kode_izin" type="text" class="form-control" placeholder="345">
+											<label>/418.27/</label>
+											<input type="hidden" id="nomor_izin_sk" value="418.27">
+											<input class="form-control" id="penomoran_tahun" style="width: 200px;" value='{% now "Y" %}'>
+										</div>
+										<div class="form-group">
+											<br>
+											<a onclick="penomoran_izin({{ pengajuan.id }}, '_submit_penomoran')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+										</div>
+									</center>
+								</form>
+							{% elif pengajuan.status == 2 and skizin.status == 10 %}
+								<div class="panel panel-darkgray" style="background-color: #525348  !important;color: white;border: 0;border-radius: 6px; padding-bottom: 10px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												No. Izin : {{ pengajuan.no_izin }}
+											</h3>
+										</center>
+									</div>
+								</div>
+								<br>
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												TELAH DIREGISTER
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if request.user|has_group:'Cetak' %}
+							{% if pengajuan.status == 2 and skizin.status == 10 %}
+								<center>
+									<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
+								</center>
+							{% elif pengajuan.status == 2 and skizin.status == 2 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												TELAH DICETAK
+											</h3>
+										</center>
+									</div>
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if request.user|has_group:'Selesai' %}
+							{% if pengajuan.status == 2 and skizin.status == 2 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<br>
+										<label class="checkbox checkbox-custom-alt">
+											<input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala DPMPTSP dan menyatakan proses pengajuan ini selsai.
+										</label>
+									</div>
+									<div class="panel-footer">
+										<div class="row">
+											<div class="col-md-12" align="center">
+												<a onclick="izin_selesai({{ pengajuan.id }}, '_submit_izin_selsai')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endif %}
+					</div>
+				</section>
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block extrajs_site %}
+	{{ block.super }}
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script language="javascript" type="text/javascript">
+		function openPopupCenter(url, title, w, h) {
+			var left = Math.round((screen.width/2)-(w/2));
+			var top = Math.round((screen.height/2)-(h/2));
+			return window.open(url, title, 'location=no, addressbar=no, toolbar=no, directories=no, status=no, ' + 'menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+		}
+	</script>
+	<script src="{% static 'scripts/js/verifikasi.js' %}"></script>
+	<script>
+		$('.button-tolak').prop( "disabled", true );
+		$('.alasan').keyup(function() {
+			if ($(this).val() !== "") {
+			  $('.button-tolak').prop( "disabled", false );
+			}
+			else{
+			  $('.button-tolak').prop( "disabled", true );
+			}
+		  });
+
+		function cetak_izin(id_pengajuan_izin, aksi){
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+			$.ajax({ // create an AJAX call...
+				data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi }, // get the form data
+				type: 'POST', // GET or POST
+				url: '/admin/izin/pengajuanizin/aksi/', // the file to call
+				success: function(response) { // on success..
+					respon = $.parseJSON(response)
+					if(respon.success){
+						openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+						toastr["success"](respon.pesan);
+						window.location.href= "";
+
+
+					}
+					else{
+						toastr["error"](respon.pesan)
+					}
+				},
+				error: function(data) {                
+					toast_server_error()
+				}
+			});
+		}
+	   $(document).ready(function(){
+			$(".total-bayar").each(function(){
+				$(this).keyup(function(){
+					FormatCurrency(this)
+				});
+			});
+		});
+	</script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/form/chossen_stuf.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
+	<script src="{% static 'scripts/js/iujk.js' %}"></script>
+	<script>
+		function change_edit_pengajuan(){
+			$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
+			$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
+		}
+	</script>
+{% endblock %}
+
+{% block extracontent %}
+	{{ block.super }}
+	<div class="modal fade bs-sinkron-modal-lg" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel">
+		<div class="modal-dialog modal-lg">
+		  <div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title" id="myModalSinkronLabel"></h4>
+			</div>
+			<div class="modal-body">
+			<form class="form-horizontal" role="form" action="" method="POST" id="anggotatim">
+			{% csrf_token %}
+			<input type="hidden" id="id_survey_iujk" value="{{survey.id}}" name="survey_iujk"></input>
+			  <div class="form-group">
+				<label  class="col-sm-2 control-label" for="skpd">SKPD</label>
+				<div class="col-sm-10">
+					<select class="form-control chosen-select" name="skpd" onchange="load_pegawai(this); return false">
+					  <option>---Pilih SKPD---</option>
+					  {% for p in skpd_list %}
+					  <option value="{{p.id}}">{{p}} </option>
+					  {% endfor %}
+					</select>
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label  class="col-sm-2 control-label" for="Pengawai">Pegawai</label>
+				<div class="col-sm-10">
+					<select class="form-control chosen-select" name="pegawai" id="id_pegawai">
+					  <option>---Pilih Pegawai---</option>
+					</select>
+				</div>
+			  </div>
+			</form>
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-success" onclick="save_anggota();return false;">Simpan dan Tambahkan Lagi</button>
+			  <button type="button" class="btn btn-default" data-dismiss="modal" >Selesai</button>
+			  </div>
+			</div>
+		</div>
+	</div>
+	{% include 'admin/izin/pengajuanizin/include/modal_view_berkas.html' %}
+	<div class="modal fade detail_reklame" id="detail_reklame" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title custom-font">Detail Izin</h3>
+				</div>
+				<div class="modal-body">
+					{% include 'admin/izin/pengajuanizin/include/modal_pemohon_perusahaan.html' %}
+					{% block detil_modal %}
+					{% endblock %}
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

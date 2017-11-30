@@ -107,8 +107,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				perusahaan_ = pengajuan_.perusahaan
-
+				if pengajuan_.kelompok_jenis_izin.kode != "TOKO-OBAT":
+					perusahaan_ = pengajuan_.perusahaan
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
 
@@ -120,10 +120,11 @@ class SurveyAdmin(admin.ModelAdmin):
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				perusahaan_ = pengajuan_.perusahaan
-				if pengajuan_.perusahaan:	
-					if pengajuan_.perusahaan.desa:
-						kec = pengajuan_.perusahaan.desa.kecamatan
+				if pengajuan_.kelompok_jenis_izin.kode != "TOKO-OBAT":
+					perusahaan_ = pengajuan_.perusahaan
+					if pengajuan_.perusahaan:	
+						if pengajuan_.perusahaan.desa:
+							kec = pengajuan_.perusahaan.desa.kecamatan
 		return kec
 	get_perusahaan_lokasi.short_description = "Kec. Lokasi"
 
@@ -143,6 +144,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_reklame_ho', args=(obj.id, ))
 		elif kode_ijin == "TDUP":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_tdup', args=(obj.id, ))
+		elif kode_ijin == "TOKO-OBAT":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_toko_obat', args=(obj.id, ))
 		elif kode_ijin == "503.07/":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
 		elif kode_ijin == "503.01.06/":
@@ -192,9 +195,10 @@ class SurveyAdmin(admin.ModelAdmin):
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=queryset_.pengajuan.id)
-				perusahaan_ = pengajuan_.perusahaan
+				# perusahaan_ = pengajuan_.perusahaan
 
-				extra_context.update({ 'perusahaan': perusahaan_ })
+				# extra_context.update({ 'perusahaan': perusahaan_ })
+				extra_context.update({ 'pengajuan': pengajuan_ })
 
 			try:
 				status = queryset_.survey_iujk.get(pegawai=request.user)
@@ -360,7 +364,6 @@ class SurveyAdmin(admin.ModelAdmin):
 					# CEK APAKAH KOORDINATOR
 					if status : 
 						if detilbap:
-							print "MASUK SINI"
 							detil.kondisi_lahan_usaha = kondisi
 							detil.luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha')
 							detil.jumlah_mesin = request.POST.get('BAP-jumlah_mesin')
@@ -1225,6 +1228,7 @@ class SurveyAdmin(admin.ModelAdmin):
 		return response
 
 	def do_survey(self, request, id_survey):
+		from smtplib import SMTPAuthenticationError
 		if id_survey:
 			try:
 				s = Survey.objects.get(pk=id_survey)
@@ -1250,9 +1254,14 @@ class SurveyAdmin(admin.ModelAdmin):
 					html_content += "</tbody></table>"
 					html_content += "<p>Untuk informasi lebih lanjut silahkan hubungi Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu (DPM-PTSP) Kab. Kediri</p>"
 					if not n.koordinator:
-						print "sending "+str(n.pegawai.email)
-						sent_ = send_email_notifikasi(n.pegawai.email, subject, html_content)
-						print sent_
+						# print "sending "+str(n.pegawai.email)
+						try:
+							sent_ = send_email_notifikasi(n.pegawai.email, subject, html_content)
+						except SMTPAuthenticationError:
+							data = {'success': False, 
+							'pesan': 'Survey gagal mengirim email dikirim',
+							}
+							return HttpResponse(json.dumps(data))
 				s.save()
 
 				pengajuan = PengajuanIzin.objects.get(id=s.pengajuan.id)
@@ -1357,6 +1366,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-cek-kelengkapan/(?P<id_pengajuan_izin_>[0-9]+)/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan, name="cek_kelengkapan" ),
 			url(r'^survey-cek-kelengkapan-reklame-ho/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_reklame_ho, name="cek_kelengkapan_reklame_ho" ),
 			url(r'^survey-cek-kelengkapan-tdup/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_tdup" ),
+			url(r'^survey-cek-kelengkapan-toko-obat/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_toko_obat" ),
 			url(r'^survey-cek-kelengkapan-izin-lokasi/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_izin_lokasi, name="cek_kelengkapan_pengajuan_izin_lokasi" ),
 			)
 		return my_urls + urls

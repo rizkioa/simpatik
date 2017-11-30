@@ -60,41 +60,43 @@
 	</tr>
 </table>
 <br>
-<h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
-<table width="100%" border="0">
-	<tr>
-	  <td width="25%">NPWP</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.npwp }}</td>
-	</tr>
-	<tr>
-	  <td width="25%">Nama Perusahaan</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.nama_perusahaan }}</span></td>
-	</tr>
-	<tr>
-	  <td width="25%">Alamat Perusahaan</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</span></td>
-	</tr>
-	<tr>
-	  <td width="25%">Kode Pos</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.kode_pos }}</td>
-	</tr>
-	<tr>
-	  <td width="25%">No.Telp</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.telepon }}</td>
-	</tr>
-	<tr>
-	  <td width="25%">No.Fax</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.fax }}</td>
-	</tr>
-	<tr>
-	  <td width="25%">E-mail</td>
-	  <td width="5%">:</td>
-	  <td width="70%">{{ pengajuan.perusahaan.email|default_if_none:'-' }}</td>
-	</tr>
-</table>
+{% if pengajuan.perusahaan %}
+	<h4><u>#2. IDENTITAS PERUSAHAAN</u></h4>
+	<table width="100%" border="0">
+		<tr>
+		  <td width="25%">NPWP</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.npwp }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">Nama Perusahaan</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.nama_perusahaan }}</span></td>
+		</tr>
+		<tr>
+		  <td width="25%">Alamat Perusahaan</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</span></td>
+		</tr>
+		<tr>
+		  <td width="25%">Kode Pos</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.kode_pos }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">No.Telp</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.telepon }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">No.Fax</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.fax }}</td>
+		</tr>
+		<tr>
+		  <td width="25%">E-mail</td>
+		  <td width="5%">:</td>
+		  <td width="70%">{{ pengajuan.perusahaan.email|default_if_none:'-' }}</td>
+		</tr>
+	</table>
+{% endif %}

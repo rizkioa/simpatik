@@ -186,6 +186,7 @@
                     </div>
                 </div>
             </div>
+            {% if pengajuan.perusahaan %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
@@ -208,6 +209,27 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
+
+            {% if pengajuan.kelompok_jenis_izin.kode == "TOKO-OBAT" %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Toko Obat (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
+                    <div class="panel-body">
+                        <p>Nama Toko Obat : {{pengajuan.nama_toko_obat}}</p>
+                        <p>Nama TTK Penanggung Jawab : {{pengajuan.nama_ttk_penanggung_jawab}}</p>
+                        <p>Alamat TTK : {{pengajuan.alamat_ttk}}</p>
+                        <p>Alamat Tempat Usaha : {{pengajuan.alamat_tempat_usaha}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
             {% if pengajuan.legalitas.all %}
             <div class="panel panel-default">
@@ -279,39 +301,11 @@
             </tr>
             </thead>
             <tbody>
-              <tr class="">
-                  <td class="">{{perusahaan.berkas_npwp}}</td>
-                  <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{perusahaan.berkas_npwp.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat</a></td>
-              </tr>
-              {% for k in pemohon.berkas.all %}
+              {% for i in pengajuan.berkas_terkait_izin.all %}
                 <tr class="">
-                    <td class="">{{k.jenis_identitas}}</td>
-                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{k.berkas.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
+                    <td class="">{{i.nama_berkas}}</td>
+                    <td class=""> <a target="_blank" class="btn btn-rounded btn-info btn-xs" href="{{ request.get_host }}{{i.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
                 </tr>
-              {% endfor %}
-              {% for d in pengajuan.berkas_tambahan.all %}
-              <tr class="">
-                  <td class="">{{d.nama_berkas}}</td>
-                  <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{d.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
-              </tr>
-              {% endfor %}
-
-              {% for d in pengajuan.legalitas.all %}
-                {% for b in d.berkas_tambahan.all %}
-                <tr class="">
-                    <td class="">{{b.nama_berkas}}</td>
-                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{b.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
-                </tr>
-                {% endfor %}
-              {% endfor %}
-
-              {% for d in pengajuan.anggota_badan_iujk.all %}
-                {% for b in d.berkas_tambahan.all %}
-                <tr class="">
-                    <td class="">{{b.nama_berkas}}</td>
-                    <td class=""> <a class="btn btn-rounded btn-info btn-xs" href="http://simpatik.kedirikab.go.id{{b.berkas.url}}"> <i class="fa fa-eye" ></i> Lihat </a></td>
-                </tr>
-                {% endfor %}
               {% endfor %}
             </tbody>
           </table>

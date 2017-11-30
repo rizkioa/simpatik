@@ -338,6 +338,7 @@ def get_kode_izin(obj_):
 
 def get_appmodels_based_kode_jenis(kode_ijin):
 	from izin import models as app_models
+	from izin_dinkes import models as app_models_dinkes
 	objects_ = False
 
 	if kode_ijin == "IUJK":
@@ -356,6 +357,8 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilIMB')
 	elif kode_ijin == "HULLER":
 		objects_ = getattr(app_models, 'DetilHuller')
+	elif kode_ijin == "TOKO-OBAT":
+		objects_ = getattr(app_models_dinkes, 'TokoObat')
 	return objects_
 
 

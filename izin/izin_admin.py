@@ -482,6 +482,8 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IUA":
 			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "TOKO-OBAT":
+			link_ = reverse('admin:tokoobat__view_verifikasi', kwargs={'id_pengajuan': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )
