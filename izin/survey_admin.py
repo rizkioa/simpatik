@@ -109,7 +109,6 @@ class SurveyAdmin(admin.ModelAdmin):
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
 				if pengajuan_.kelompok_jenis_izin.kode != "TOKO-OBAT":
 					perusahaan_ = pengajuan_.perusahaan
-
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
 
@@ -365,7 +364,6 @@ class SurveyAdmin(admin.ModelAdmin):
 					# CEK APAKAH KOORDINATOR
 					if status : 
 						if detilbap:
-							# print "MASUK SINI"
 							detil.kondisi_lahan_usaha = kondisi
 							detil.luas_tempat_usaha = request.POST.get('BAP-luas_tempat_usaha')
 							detil.jumlah_mesin = request.POST.get('BAP-jumlah_mesin')
@@ -1264,7 +1262,6 @@ class SurveyAdmin(admin.ModelAdmin):
 							'pesan': 'Survey gagal mengirim email dikirim',
 							}
 							return HttpResponse(json.dumps(data))
-						# print sent_
 				s.save()
 
 				pengajuan = PengajuanIzin.objects.get(id=s.pengajuan.id)
