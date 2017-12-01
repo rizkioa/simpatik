@@ -107,7 +107,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				if pengajuan_.kelompok_jenis_izin.kode != "TOKO-OBAT":
+				if pengajuan_.kelompok_jenis_izin.kode not in ['TOKO-OBAT', 'APOTEK', 'OPTIKAL']:
 					perusahaan_ = pengajuan_.perusahaan
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
@@ -120,7 +120,7 @@ class SurveyAdmin(admin.ModelAdmin):
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				if pengajuan_.kelompok_jenis_izin.kode != "TOKO-OBAT":
+				if pengajuan_.kelompok_jenis_izin.kode not in ['TOKO-OBAT', 'APOTEK', 'OPTIKAL']:
 					perusahaan_ = pengajuan_.perusahaan
 					if pengajuan_.perusahaan:	
 						if pengajuan_.perusahaan.desa:
@@ -146,6 +146,10 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_tdup', args=(obj.id, ))
 		elif kode_ijin == "TOKO-OBAT":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_toko_obat', args=(obj.id, ))
+		elif kode_ijin == "APOTEK":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_apotek', args=(obj.id, ))
+		elif kode_ijin == "OPTIKAL":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_optikal', args=(obj.id, ))
 		elif kode_ijin == "503.07/":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
 		elif kode_ijin == "503.01.06/":
@@ -1367,6 +1371,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-cek-kelengkapan-reklame-ho/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_reklame_ho, name="cek_kelengkapan_reklame_ho" ),
 			url(r'^survey-cek-kelengkapan-tdup/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_tdup" ),
 			url(r'^survey-cek-kelengkapan-toko-obat/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_toko_obat" ),
+			url(r'^survey-cek-kelengkapan-apotek/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_apotek" ),
+			url(r'^survey-cek-kelengkapan-optikal/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_optikal" ),
 			url(r'^survey-cek-kelengkapan-izin-lokasi/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_izin_lokasi, name="cek_kelengkapan_pengajuan_izin_lokasi" ),
 			)
 		return my_urls + urls

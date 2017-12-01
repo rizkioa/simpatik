@@ -359,6 +359,10 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilHuller')
 	elif kode_ijin == "TOKO-OBAT":
 		objects_ = getattr(app_models_dinkes, 'TokoObat')
+	elif kode_ijin == "APOTEK":
+		objects_ = getattr(app_models_dinkes, 'Apotek')
+	elif kode_ijin == "OPTIKAL":
+		objects_ = getattr(app_models_dinkes, 'Optikal')
 	return objects_
 
 

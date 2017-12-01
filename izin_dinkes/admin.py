@@ -1,13 +1,13 @@
 from django.contrib import admin
 from izin_dinkes.models import *
 from tokoobat_admin import TokoObatAdmin
+from apotek_admin import ApotekAdmin
+from optikal_admin import OptikalAdmin
 
 # Register your models here.
 
 
 
-class ApotekAdmin(admin.ModelAdmin):
-	list_display = ('nama_apotek', 'no_telepon', 'alamat_sarana')
 admin.site.register(Apotek, ApotekAdmin)
 
 class LaboratoriumAdmin(admin.ModelAdmin):
@@ -15,3 +15,4 @@ class LaboratoriumAdmin(admin.ModelAdmin):
 	
 admin.site.register(Laboratorium, LaboratoriumAdmin)
 admin.site.register(TokoObat, TokoObatAdmin)
+admin.site.register(Optikal, OptikalAdmin)
