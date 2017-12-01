@@ -107,7 +107,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				if pengajuan_.kelompok_jenis_izin.kode not in ['TOKO-OBAT', 'APOTEK', 'OPTIKAL']:
+				if pengajuan_.kelompok_jenis_izin.kode not in ['ITO', 'IAP', 'IOP']:
 					perusahaan_ = pengajuan_.perusahaan
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
@@ -120,7 +120,7 @@ class SurveyAdmin(admin.ModelAdmin):
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				if pengajuan_.kelompok_jenis_izin.kode not in ['TOKO-OBAT', 'APOTEK', 'OPTIKAL']:
+				if pengajuan_.kelompok_jenis_izin.kode not in ['ITO', 'IAP', 'IOP']:
 					perusahaan_ = pengajuan_.perusahaan
 					if pengajuan_.perusahaan:	
 						if pengajuan_.perusahaan.desa:
@@ -144,11 +144,11 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_reklame_ho', args=(obj.id, ))
 		elif kode_ijin == "TDUP":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_tdup', args=(obj.id, ))
-		elif kode_ijin == "TOKO-OBAT":
+		elif kode_ijin == "ITO":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_toko_obat', args=(obj.id, ))
-		elif kode_ijin == "APOTEK":
+		elif kode_ijin == "IAP":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_apotek', args=(obj.id, ))
-		elif kode_ijin == "OPTIKAL":
+		elif kode_ijin == "IOP":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_optikal', args=(obj.id, ))
 		elif kode_ijin == "503.07/":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))

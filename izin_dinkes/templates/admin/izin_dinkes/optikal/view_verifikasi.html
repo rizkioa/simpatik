@@ -1,5 +1,48 @@
 {% extends "admin/izin_dinkes/view_verifikasi.html" %}
 
+{% block detil_modal %}
+	<br>
+	<h4><u>#2. IZIN OPTIKAL</u></h4>
+	<table width="100%" border="0">
+		<tr>
+			<td width="25%">Nama Optikal</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.nama_optikal}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Nama Pemilik Optikal/Perusahaan</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.nama_pemilik_perusahaan}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Jenis Badan Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.jenis_badan_usaha}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Alamat Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.alamat_usaha}}</td>
+		</tr>
+		<tr>
+			<td width="25%">No Telepon</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.no_telepon}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Lokasi Kegiatan Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.lokasi_kegiatan_usaha}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Luas Tanah / Bangunan</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.luas_tanah_bangunan}}</td>
+		</tr>
+
+	</table>
+{% endblock %}
+
 {% block rincian_pengajuan %}
 	<div class="col-md-6">
 		<table class="table-responsive" width="100%" border="0">

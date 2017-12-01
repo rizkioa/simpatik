@@ -357,11 +357,11 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilIMB')
 	elif kode_ijin == "HULLER":
 		objects_ = getattr(app_models, 'DetilHuller')
-	elif kode_ijin == "TOKO-OBAT":
+	elif kode_ijin == "ITO":
 		objects_ = getattr(app_models_dinkes, 'TokoObat')
-	elif kode_ijin == "APOTEK":
+	elif kode_ijin == "IAP":
 		objects_ = getattr(app_models_dinkes, 'Apotek')
-	elif kode_ijin == "OPTIKAL":
+	elif kode_ijin == "IOP":
 		objects_ = getattr(app_models_dinkes, 'Optikal')
 	return objects_
 
@@ -402,13 +402,13 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 		elif kode == "503.01.04/" or kode == "503.01.05/":
 			objects_ = getattr(app_models, 'DetilIMB')
-		elif kode == "APOTEK":
+		elif kode == "IAP":
 			objects_ = getattr(app_models_dinkes, 'Apotek')
-		elif kode == "TOKO-OBAT":
+		elif kode == "ITO":
 			objects_ = getattr(app_models_dinkes, 'TokoObat')
-		elif kode == "IZINLAB":
+		elif kode == "ILB":
 			objects_ = getattr(app_models_dinkes, 'Laboratorium')
-		elif kode == "OPTIKAL":
+		elif kode == "IOP":
 			objects_ = getattr(app_models_dinkes, 'Optikal')
 	return objects_
 

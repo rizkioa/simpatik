@@ -211,7 +211,7 @@
             </div>
             {% endif %}
 
-            {% if pengajuan.kelompok_jenis_izin.kode == "TOKO-OBAT" %}
+            {% if pengajuan.kelompok_jenis_izin.kode == "ITO" %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
@@ -226,6 +226,53 @@
                         <p>Nama TTK Penanggung Jawab : {{pengajuan.nama_ttk_penanggung_jawab}}</p>
                         <p>Alamat TTK : {{pengajuan.alamat_ttk}}</p>
                         <p>Alamat Tempat Usaha : {{pengajuan.alamat_tempat_usaha}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if pengajuan.kelompok_jenis_izin.kode == "IAP" %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Apotek (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
+                    <div class="panel-body">
+                        <p>Nama Apotek : {{pengajuan.nama_apotek}}</p>
+                        <p>Alamat Apotek : {{pengajuan.alamat_apotek}}</p>
+                        <p>No Telepon : {{pengajuan.no_telepon}}</p>
+                        <p>Nama Sarana : {{pengajuan.sarana.nama_sarana}}</p>
+                        <p>Nama Pemilik Sarana : {{pengajuan.sarana.nama_pemilik_sarana}}</p>
+                        <p>Alamat Sarana : {{pengajuan.alamat_sarana}}</p>
+                        <p>NPWP : {{pengajuan.npwp}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if pengajuan.kelompok_jenis_izin.kode == "IOP" %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Optikal (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
+                    <div class="panel-body">
+                        <p>Nama Optikal : {{pengajuan.nama_optikal}}</p>
+                        <p>Alamat Optikal : {{pengajuan.nama_pemilik_perusahaan}}</p>
+                        <p>Jenis Badan Usaha : {{pengajuan.jenis_badan_usaha}}</p>
+                        <p>Alamat Usaha: {{pengajuan.alamat_usaha}}</p>
+                        <p>No Telepon : {{pengajuan.no_telepon}}</p>
+                        <p>Jenis Kegiatan Usaha: {{pengajuan.jenis_kegiatan_usaha}}</p>
+                        <p>Lokasi Kegiatan Usaha : {{pengajuan.lokasi_kegiatan_usaha}}</p>
+                        <p>Luas Tanah Bangunan : {{pengajuan.luas_tanah_bangunan}}</p>
                     </div>
                 </div>
             </div>
