@@ -59,10 +59,7 @@ v1_api.register(AnggotaBadanUsaha()) #IUJK
 v1_api.register(PeralatanLaboratoriumResource())
 v1_api.register(BangunanLaboratoriumResource())
 
-# Retribusi
-v1_api.register(RetribusiResource())
-
-
+v1_api.register(DetilPembayaranResource())
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())
