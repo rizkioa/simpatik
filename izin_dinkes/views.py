@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 
-from izin_dinkes.forms import ApotekForm, TokoObatForm, LaboratoriumForm, PeralatanLaboratoriumForm, OptikalForm
-from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal
+from izin_dinkes.forms import ApotekForm, TokoObatForm, LaboratoriumForm, PeralatanLaboratoriumForm, OptikalForm, MendirikanKlinikForm, OperasionalKlinikForm
+from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik
 from izin.izin_forms import BerkasForm
 from izin.models import PengajuanIzin
 
@@ -1416,6 +1416,608 @@ def optikal_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
 			pengajuan_ = Optikal.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+					
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+			response.delete_cookie(key='id_pengajuan') # set cookie	
+			response.delete_cookie(key='id_perusahaan') # set cookie	
+			response.delete_cookie(key='nomor_ktp') # set cookie	
+			response.delete_cookie(key='nomor_paspor') # set cookie	
+			response.delete_cookie(key='id_pemohon') # set cookie	
+			response.delete_cookie(key='id_kelompok_izin') # set cookie
+			response.delete_cookie(key='npwp_perusahaan') # set cookie
+			response.delete_cookie(key='id_jenis_pengajuan') # set cookie
+			response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def save_izin_mendirikan_klinik(request):
+	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			if 'id_kelompok_izin' in request.COOKIES.keys():
+				try:
+					pengajuan_obj = MendirikanKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+					form_mendirikan_klinik = MendirikanKlinikForm(request.POST, instance=pengajuan_obj)
+					if form_mendirikan_klinik.is_valid():
+						p = form_mendirikan_klinik.save(commit=False)
+						p.save()
+						data = {'success': True, 'pesan': 'Data Izin Mendirikan Klinik berhasil tersimpan.'}
+					else:
+						data = form_mendirikan_klinik.errors.as_json()
+						data = {'success': False, 'pesan': 'Data Izin Mendirikan Klinik gagal.', 'data': data}
+				except MendirikanKlinik.DoesNotExist:
+					pass
+	return HttpResponse(json.dumps(data))
+
+def load_izin_mendirikan_klinik(request, id_pengajuan):
+	data = {}
+	response = {'success': False, 'pesan': 'Data Mendirikan Klinik berhasil tersimpan.', 'data': data}
+	if id_pengajuan:
+		pengajuan_obj = MendirikanKlinik.objects.filter(id=id_pengajuan).last()
+		if pengajuan_obj:
+			data = pengajuan_obj.as_json()
+			response = {'success': True, 'pesan': 'Data Mendirikan Klinik berhasil tersimpan.', 'data': data}
+	return HttpResponse(json.dumps(response))
+
+def mendirikan_klinik_upload_dokumen_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+	return HttpResponse(json.dumps(data))
+
+def upload_berkas_mendirikan_klinik(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			form = BerkasForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if berkas_._size > 4*1024*1024:
+				data = {'Terjadi Kesalahan': [{'message': 'Ukuran file tidak boleh melebihi dari 4mb.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+			else:
+				if request.method == "POST":
+					if berkas_:
+						if form.is_valid():
+							ext = os.path.splitext(berkas_.name)[1]
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
+							if not ext in valid_extensions:
+								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+							else:
+								try:
+									p = MendirikanKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+									berkas = form.save(commit=False)
+									kode = request.POST.get('kode')
+									if kode == 'KTP':
+										berkas.nama_berkas = "KTP "+p.no_pengajuan
+										berkas.keterangan = "KTP "+p.no_pengajuan
+									elif kode == 'NPWP':
+										berkas.nama_berkas = "NPWP "+p.no_pengajuan
+										berkas.keterangan = "NPWP "+p.no_pengajuan
+									elif kode == 'Pendirian Badan Hukum':
+										berkas.nama_berkas = "Pendirian Badan Hukum "+p.no_pengajuan
+										berkas.keterangan = "Pendirian Badan Hukum "+p.no_pengajuan
+									elif kode == 'Sertifikat Tanah / Bangunan':
+										berkas.nama_berkas = "Sertifikat Tanah / Bangunan "+p.no_pengajuan
+										berkas.keterangan = "Sertifikat Tanah / Bangunan "+p.no_pengajuan
+									elif kode == 'Dokumen Lingkungan':
+										berkas.nama_berkas = "Dokumen Lingkungan "+p.no_pengajuan
+										berkas.keterangan = "Dokumen Lingkungan "+p.no_pengajuan
+									elif kode == 'Profil Klinik':
+										berkas.nama_berkas = "Profil Klinik "+p.no_pengajuan
+										berkas.keterangan = "Profil Klinik "+p.no_pengajuan
+									elif kode == 'Gambar/Denah Bangunan':
+										berkas.nama_berkas = "Gambar/Denah Bangunan "+p.no_pengajuan
+										berkas.keterangan = "Gambar/Denah Bangunan "+p.no_pengajuan
+									elif kode == 'IPPM':
+										berkas.nama_berkas = "IPPM "+p.no_pengajuan
+										berkas.keterangan = "IPPM "+p.no_pengajuan
+									elif kode == 'Izin Mendirikan Bangunan (IMB)':
+										berkas.nama_berkas = "Izin Mendirikan Bangunan (IMB) "+p.no_pengajuan
+										berkas.keterangan = "Izin Mendirikan Bangunan (IMB) "+p.no_pengajuan
+									elif kode == 'Izin Gangguan':
+										berkas.nama_berkas = "Izin Gangguan "+p.no_pengajuan
+										berkas.keterangan = "Izin Gangguan "+p.no_pengajuan
+									elif kode == 'Izin Mendirikan Klinik lama':
+										berkas.nama_berkas = "Izin Mendirikan Klinik lama "+p.no_pengajuan
+										berkas.keterangan = "Izin Mendirikan Klinik lama "+p.no_pengajuan
+									
+									if request.user.is_authenticated():
+										berkas.created_by_id = request.user.id
+									else:
+										berkas.created_by_id = request.COOKIES['id_pemohon']
+									berkas.save()
+									p.berkas_terkait_izin.add(berkas)
+
+									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+											{'status_upload': 'ok'},
+										]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+								except ObjectDoesNotExist:
+									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+						else:
+							data = form.errors.as_json()
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = form.errors.as_json()
+					response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def ajax_load_berkas_mendirikan_klinik(request, id_pengajuan):
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			pengajuan_obj = MendirikanKlinik.objects.get(id=id_pengajuan)
+			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
+
+			if berkas_:
+				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				if ktp:
+					url_berkas.append(ktp.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp.nama_berkas)
+					id_berkas.append(ktp.id)
+					pengajuan_obj.berkas_terkait_izin.add(ktp)
+
+				npwp = berkas_.filter(keterangan='NPWP '+pengajuan_obj.no_pengajuan).last()
+				if npwp:
+					url_berkas.append(npwp.berkas.url)
+					id_elemen.append('npwp')
+					nm_berkas.append(npwp.nama_berkas)
+					id_berkas.append(npwp.id)
+					pengajuan_obj.berkas_terkait_izin.add(npwp)
+
+				pendirian_hukum = berkas_.filter(keterangan='Pendirian Badan Hukum '+pengajuan_obj.no_pengajuan).last()
+				if pendirian_hukum:
+					url_berkas.append(pendirian_hukum.berkas.url)
+					id_elemen.append('pendirian_hukum')
+					nm_berkas.append(pendirian_hukum.nama_berkas)
+					id_berkas.append(pendirian_hukum.id)
+					pengajuan_obj.berkas_terkait_izin.add(pendirian_hukum)
+
+				sertifikat_tanah = berkas_.filter(keterangan='Sertifikat Tanah / Bangunan '+pengajuan_obj.no_pengajuan).last()
+				if sertifikat_tanah:
+					url_berkas.append(sertifikat_tanah.berkas.url)
+					id_elemen.append('sertifikat_tanah')
+					nm_berkas.append(sertifikat_tanah.nama_berkas)
+					id_berkas.append(sertifikat_tanah.id)
+					pengajuan_obj.berkas_terkait_izin.add(sertifikat_tanah)
+
+				dokumen_lingkungan = berkas_.filter(keterangan='Dokumen Lingkungan '+pengajuan_obj.no_pengajuan).last()
+				if dokumen_lingkungan:
+					url_berkas.append(dokumen_lingkungan.berkas.url)
+					id_elemen.append('dokumen_lingkungan')
+					nm_berkas.append(dokumen_lingkungan.nama_berkas)
+					id_berkas.append(dokumen_lingkungan.id)
+					pengajuan_obj.berkas_terkait_izin.add(dokumen_lingkungan)
+
+				profil_klinik = berkas_.filter(keterangan='Profil Klinik '+pengajuan_obj.no_pengajuan).last()
+				if profil_klinik:
+					url_berkas.append(profil_klinik.berkas.url)
+					id_elemen.append('profil_klinik')
+					nm_berkas.append(profil_klinik.nama_berkas)
+					id_berkas.append(profil_klinik.id)
+					pengajuan_obj.berkas_terkait_izin.add(profil_klinik)
+
+				gambar_bangunan = berkas_.filter(keterangan='Gambar/Denah Bangunan '+pengajuan_obj.no_pengajuan).last()
+				if gambar_bangunan:
+					url_berkas.append(gambar_bangunan.berkas.url)
+					id_elemen.append('gambar_bangunan')
+					nm_berkas.append(gambar_bangunan.nama_berkas)
+					id_berkas.append(gambar_bangunan.id)
+					pengajuan_obj.berkas_terkait_izin.add(gambar_bangunan)
+
+				ippm = berkas_.filter(keterangan='IPPM '+pengajuan_obj.no_pengajuan).last()
+				if ippm:
+					url_berkas.append(ippm.berkas.url)
+					id_elemen.append('ippm')
+					nm_berkas.append(ippm.nama_berkas)
+					id_berkas.append(ippm.id)
+					pengajuan_obj.berkas_terkait_izin.add(ippm)
+
+				imb = berkas_.filter(keterangan='Izin Mendirikan Bangunan (IMB) '+pengajuan_obj.no_pengajuan).last()
+				if imb:
+					url_berkas.append(imb.berkas.url)
+					id_elemen.append('imb')
+					nm_berkas.append(imb.nama_berkas)
+					id_berkas.append(imb.id)
+					pengajuan_obj.berkas_terkait_izin.add(imb)
+
+				izin_gangguan = berkas_.filter(keterangan='Izin Gangguan '+pengajuan_obj.no_pengajuan).last()
+				if izin_gangguan:
+					url_berkas.append(izin_gangguan.berkas.url)
+					id_elemen.append('izin_gangguan')
+					nm_berkas.append(izin_gangguan.nama_berkas)
+					id_berkas.append(izin_gangguan.id)
+					pengajuan_obj.berkas_terkait_izin.add(izin_gangguan)
+
+				izin_klinik_lama = berkas_.filter(keterangan='Izin Mendirikan Klinik lama '+pengajuan_obj.no_pengajuan).last()
+				if izin_klinik_lama:
+					url_berkas.append(izin_klinik_lama.berkas.url)
+					id_elemen.append('izin_klinik_lama')
+					nm_berkas.append(izin_klinik_lama.nama_berkas)
+					id_berkas.append(izin_klinik_lama.id)
+					pengajuan_obj.berkas_terkait_izin.add(izin_klinik_lama)
+
+				
+			data = {'success': True, 'pesan': 'Sukses.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def load_konfirmasi_mendirikan_klinik(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan. Pengajuan Izin tidak ditemukan atau tidak ada dalam daftar.'}
+	try:
+		pengajuan_obj = MendirikanKlinik.objects.get(id=id_pengajuan)
+		pemohon_json = {}
+		if pengajuan_obj.pemohon:
+			pemohon_json = pengajuan_obj.pemohon.as_json()
+		data = {'success': True, 'pesan': 'Berhasil load data pengajuan izin.', 'data': {'pemohon_json': pemohon_json, 'pengajuan_json': pengajuan_obj.as_json(), 'detil_json': pengajuan_obj.as_json__mendirikan_klinik()}}
+	except ObjectDoesNotExist:
+		pass
+	return HttpResponse(json.dumps(data))
+
+def mendirikan_klinik_done(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = MendirikanKlinik.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+					
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+			response.delete_cookie(key='id_pengajuan') # set cookie	
+			response.delete_cookie(key='id_perusahaan') # set cookie	
+			response.delete_cookie(key='nomor_ktp') # set cookie	
+			response.delete_cookie(key='nomor_paspor') # set cookie	
+			response.delete_cookie(key='id_pemohon') # set cookie	
+			response.delete_cookie(key='id_kelompok_izin') # set cookie
+			response.delete_cookie(key='npwp_perusahaan') # set cookie
+			response.delete_cookie(key='id_jenis_pengajuan') # set cookie
+			response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def save_izin_operasional_klinik(request):
+	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			if 'id_kelompok_izin' in request.COOKIES.keys():
+				try:
+					print 'asdasdasdasd'
+					pengajuan_obj = OperasionalKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+					form_operasional_klinik = OperasionalKlinikForm(request.POST, instance=pengajuan_obj)
+					if form_operasional_klinik.is_valid():
+						p = form_operasional_klinik.save(commit=False)
+						p.save()
+						data = {'success': True, 'pesan': 'Data Izin Operasional Klinik berhasil tersimpan.'}
+					else:
+						data = form_operasional_klinik.errors.as_json__mendirikan_klinik()
+						data = {'success': False, 'pesan': 'Data Izin Operasional Klinik gagal.', 'data': data}
+				except OperasionalKlinik.DoesNotExist:
+					pass
+	return HttpResponse(json.dumps(data))
+
+def load_izin_operasional_klinik(request, id_pengajuan):
+	data = {}
+	response = {'success': False, 'pesan': 'Data Operasional Klinik berhasil tersimpan.', 'data': data}
+	if id_pengajuan:
+		pengajuan_obj = OperasionalKlinik.objects.filter(id=id_pengajuan).last()
+		if pengajuan_obj:
+			data = pengajuan_obj.as_json__mendirikan_klinik()
+			response = {'success': True, 'pesan': 'Data Operasional Klinik berhasil tersimpan.', 'data': data}
+	return HttpResponse(json.dumps(response))
+
+def operasional_klinik_upload_dokumen_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+	return HttpResponse(json.dumps(data))
+
+def upload_berkas_operasional_klinik(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			form = BerkasForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if berkas_._size > 4*1024*1024:
+				data = {'Terjadi Kesalahan': [{'message': 'Ukuran file tidak boleh melebihi dari 4mb.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+			else:
+				if request.method == "POST":
+					if berkas_:
+						if form.is_valid():
+							ext = os.path.splitext(berkas_.name)[1]
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
+							if not ext in valid_extensions:
+								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+							else:
+								try:
+									p = OperasionalKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+									berkas = form.save(commit=False)
+									kode = request.POST.get('kode')
+									if kode == 'IMK':
+										berkas.nama_berkas = "IMK "+p.no_pengajuan
+										berkas.keterangan = "IMK "+p.no_pengajuan
+									elif kode == 'Data klinik':
+										berkas.nama_berkas = "Data klinik "+p.no_pengajuan
+										berkas.keterangan = "Data klinik "+p.no_pengajuan
+									elif kode == 'Surat Pernyataan':
+										berkas.nama_berkas = "Surat Pernyataan "+p.no_pengajuan
+										berkas.keterangan = "Surat Pernyataan "+p.no_pengajuan
+									elif kode == 'KTP':
+										berkas.nama_berkas = "KTP "+p.no_pengajuan
+										berkas.keterangan = "KTP "+p.no_pengajuan
+									elif kode == 'NPWP':
+										berkas.nama_berkas = "NPWP "+p.no_pengajuan
+										berkas.keterangan = "NPWP "+p.no_pengajuan
+									elif kode == 'Pendirian Badan Hukum':
+										berkas.nama_berkas = "Pendirian Badan Hukum "+p.no_pengajuan
+										berkas.keterangan = "Pendirian Badan Hukum "+p.no_pengajuan
+									elif kode == 'Sertifikat Tanah / Bangunan':
+										berkas.nama_berkas = "Sertifikat Tanah / Bangunan "+p.no_pengajuan
+										berkas.keterangan = "Sertifikat Tanah / Bangunan "+p.no_pengajuan
+									elif kode == 'Dokumen Lingkungan':
+										berkas.nama_berkas = "Dokumen Lingkungan "+p.no_pengajuan
+										berkas.keterangan = "Dokumen Lingkungan "+p.no_pengajuan
+									elif kode == 'Profil Klinik':
+										berkas.nama_berkas = "Profil Klinik "+p.no_pengajuan
+										berkas.keterangan = "Profil Klinik "+p.no_pengajuan
+									elif kode == 'Gambar/Denah Bangunan':
+										berkas.nama_berkas = "Gambar/Denah Bangunan "+p.no_pengajuan
+										berkas.keterangan = "Gambar/Denah Bangunan "+p.no_pengajuan
+									elif kode == 'IPPM':
+										berkas.nama_berkas = "IPPM "+p.no_pengajuan
+										berkas.keterangan = "IPPM "+p.no_pengajuan
+									elif kode == 'Izin Mendirikan Bangunan (IMB)':
+										berkas.nama_berkas = "Izin Mendirikan Bangunan (IMB) "+p.no_pengajuan
+										berkas.keterangan = "Izin Mendirikan Bangunan (IMB) "+p.no_pengajuan
+									elif kode == 'Izin Gangguan':
+										berkas.nama_berkas = "Izin Gangguan "+p.no_pengajuan
+										berkas.keterangan = "Izin Gangguan "+p.no_pengajuan
+									elif kode == 'Perjanjian Kerjasama':
+										berkas.nama_berkas = "Perjanjian Kerjasama "+p.no_pengajuan
+										berkas.keterangan = "Perjanjian Kerjasama "+p.no_pengajuan
+									elif kode == 'Izin Mendirikan Klinik lama':
+										berkas.nama_berkas = "Izin Mendirikan Klinik lama "+p.no_pengajuan
+										berkas.keterangan = "Izin Mendirikan Klinik lama "+p.no_pengajuan
+									elif kode == 'Data Perubahan Izin':
+										berkas.nama_berkas = "Data Perubahan Izin "+p.no_pengajuan
+										berkas.keterangan = "Data Perubahan Izin "+p.no_pengajuan
+									
+									if request.user.is_authenticated():
+										berkas.created_by_id = request.user.id
+									else:
+										berkas.created_by_id = request.COOKIES['id_pemohon']
+									berkas.save()
+									p.berkas_terkait_izin.add(berkas)
+
+									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+											{'status_upload': 'ok'},
+										]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+								except ObjectDoesNotExist:
+									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+						else:
+							data = form.errors.as_json()
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = form.errors.as_json()
+					response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def ajax_load_berkas_operasional_klinik(request, id_pengajuan):
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			pengajuan_obj = OperasionalKlinik.objects.get(id=id_pengajuan)
+			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
+
+			if berkas_:
+				imk = berkas_.filter(keterangan='IMK '+pengajuan_obj.no_pengajuan).last()
+				if imk:
+					url_berkas.append(imk.berkas.url)
+					id_elemen.append('imk')
+					nm_berkas.append(imk.nama_berkas)
+					id_berkas.append(imk.id)
+					pengajuan_obj.berkas_terkait_izin.add(imk)
+
+				data_klinik = berkas_.filter(keterangan='Data klinik '+pengajuan_obj.no_pengajuan).last()
+				if data_klinik:
+					url_berkas.append(data_klinik.berkas.url)
+					id_elemen.append('data_klinik')
+					nm_berkas.append(data_klinik.nama_berkas)
+					id_berkas.append(data_klinik.id)
+					pengajuan_obj.berkas_terkait_izin.add(data_klinik)
+
+				surat_pernyataan = berkas_.filter(keterangan='Surat Pernyataan '+pengajuan_obj.no_pengajuan).last()
+				if surat_pernyataan:
+					url_berkas.append(surat_pernyataan.berkas.url)
+					id_elemen.append('surat_pernyataan')
+					nm_berkas.append(surat_pernyataan.nama_berkas)
+					id_berkas.append(surat_pernyataan.id)
+					pengajuan_obj.berkas_terkait_izin.add(surat_pernyataan)
+
+				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				if ktp:
+					url_berkas.append(ktp.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp.nama_berkas)
+					id_berkas.append(ktp.id)
+					pengajuan_obj.berkas_terkait_izin.add(ktp)
+
+				npwp = berkas_.filter(keterangan='NPWP '+pengajuan_obj.no_pengajuan).last()
+				if npwp:
+					url_berkas.append(npwp.berkas.url)
+					id_elemen.append('npwp')
+					nm_berkas.append(npwp.nama_berkas)
+					id_berkas.append(npwp.id)
+					pengajuan_obj.berkas_terkait_izin.add(npwp)
+
+				pendirian_hukum = berkas_.filter(keterangan='Pendirian Badan Hukum '+pengajuan_obj.no_pengajuan).last()
+				if pendirian_hukum:
+					url_berkas.append(pendirian_hukum.berkas.url)
+					id_elemen.append('pendirian_hukum')
+					nm_berkas.append(pendirian_hukum.nama_berkas)
+					id_berkas.append(pendirian_hukum.id)
+					pengajuan_obj.berkas_terkait_izin.add(pendirian_hukum)
+
+				sertifikat_tanah = berkas_.filter(keterangan='Sertifikat Tanah / Bangunan '+pengajuan_obj.no_pengajuan).last()
+				if sertifikat_tanah:
+					url_berkas.append(sertifikat_tanah.berkas.url)
+					id_elemen.append('sertifikat_tanah')
+					nm_berkas.append(sertifikat_tanah.nama_berkas)
+					id_berkas.append(sertifikat_tanah.id)
+					pengajuan_obj.berkas_terkait_izin.add(sertifikat_tanah)
+
+				dokumen_lingkungan = berkas_.filter(keterangan='Dokumen Lingkungan '+pengajuan_obj.no_pengajuan).last()
+				if dokumen_lingkungan:
+					url_berkas.append(dokumen_lingkungan.berkas.url)
+					id_elemen.append('dokumen_lingkungan')
+					nm_berkas.append(dokumen_lingkungan.nama_berkas)
+					id_berkas.append(dokumen_lingkungan.id)
+					pengajuan_obj.berkas_terkait_izin.add(dokumen_lingkungan)
+
+				profil_klinik = berkas_.filter(keterangan='Profil Klinik '+pengajuan_obj.no_pengajuan).last()
+				if profil_klinik:
+					url_berkas.append(profil_klinik.berkas.url)
+					id_elemen.append('profil_klinik')
+					nm_berkas.append(profil_klinik.nama_berkas)
+					id_berkas.append(profil_klinik.id)
+					pengajuan_obj.berkas_terkait_izin.add(profil_klinik)
+
+				gambar_bangunan = berkas_.filter(keterangan='Gambar/Denah Bangunan '+pengajuan_obj.no_pengajuan).last()
+				if gambar_bangunan:
+					url_berkas.append(gambar_bangunan.berkas.url)
+					id_elemen.append('gambar_bangunan')
+					nm_berkas.append(gambar_bangunan.nama_berkas)
+					id_berkas.append(gambar_bangunan.id)
+					pengajuan_obj.berkas_terkait_izin.add(gambar_bangunan)
+
+				ippm = berkas_.filter(keterangan='IPPM '+pengajuan_obj.no_pengajuan).last()
+				if ippm:
+					url_berkas.append(ippm.berkas.url)
+					id_elemen.append('ippm')
+					nm_berkas.append(ippm.nama_berkas)
+					id_berkas.append(ippm.id)
+					pengajuan_obj.berkas_terkait_izin.add(ippm)
+
+				imb = berkas_.filter(keterangan='Izin Mendirikan Bangunan (IMB) '+pengajuan_obj.no_pengajuan).last()
+				if imb:
+					url_berkas.append(imb.berkas.url)
+					id_elemen.append('imb')
+					nm_berkas.append(imb.nama_berkas)
+					id_berkas.append(imb.id)
+					pengajuan_obj.berkas_terkait_izin.add(imb)
+
+				izin_gangguan = berkas_.filter(keterangan='Izin Gangguan '+pengajuan_obj.no_pengajuan).last()
+				if izin_gangguan:
+					url_berkas.append(izin_gangguan.berkas.url)
+					id_elemen.append('izin_gangguan')
+					nm_berkas.append(izin_gangguan.nama_berkas)
+					id_berkas.append(izin_gangguan.id)
+					pengajuan_obj.berkas_terkait_izin.add(izin_gangguan)
+
+				perjanjian_kerjasama = berkas_.filter(keterangan='Perjanjian Kerjasama '+pengajuan_obj.no_pengajuan).last()
+				if perjanjian_kerjasama:
+					url_berkas.append(perjanjian_kerjasama.berkas.url)
+					id_elemen.append('perjanjian_kerjasama')
+					nm_berkas.append(perjanjian_kerjasama.nama_berkas)
+					id_berkas.append(perjanjian_kerjasama.id)
+					pengajuan_obj.berkas_terkait_izin.add(perjanjian_kerjasama)
+
+				izin_klinik_lama = berkas_.filter(keterangan='Izin Mendirikan Klinik lama '+pengajuan_obj.no_pengajuan).last()
+				if izin_klinik_lama:
+					url_berkas.append(izin_klinik_lama.berkas.url)
+					id_elemen.append('izin_klinik_lama')
+					nm_berkas.append(izin_klinik_lama.nama_berkas)
+					id_berkas.append(izin_klinik_lama.id)
+					pengajuan_obj.berkas_terkait_izin.add(izin_klinik_lama)
+
+				data_perubahan_izin = berkas_.filter(keterangan='Data Perubahan Izin '+pengajuan_obj.no_pengajuan).last()
+				if data_perubahan_izin:
+					url_berkas.append(data_perubahan_izin.berkas.url)
+					id_elemen.append('data_perubahan_izin')
+					nm_berkas.append(data_perubahan_izin.nama_berkas)
+					id_berkas.append(data_perubahan_izin.id)
+					pengajuan_obj.berkas_terkait_izin.add(data_perubahan_izin)
+
+				
+			data = {'success': True, 'pesan': 'Sukses.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def load_konfirmasi_operasional_klinik(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan. Pengajuan Izin tidak ditemukan atau tidak ada dalam daftar.'}
+	try:
+		pengajuan_obj = OperasionalKlinik.objects.get(id=id_pengajuan)
+		pemohon_json = {}
+		if pengajuan_obj.pemohon:
+			pemohon_json = pengajuan_obj.pemohon.as_json()
+		data = {'success': True, 'pesan': 'Berhasil load data pengajuan izin.', 'data': {'pemohon_json': pemohon_json, 'pengajuan_json': pengajuan_obj.as_json(), 'detil_json': pengajuan_obj.as_json__mendirikan_klinik()}}
+	except ObjectDoesNotExist:
+		pass
+	return HttpResponse(json.dumps(data))
+
+def operasional_klinik_done(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = OperasionalKlinik.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
 					

@@ -363,6 +363,8 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models_dinkes, 'Apotek')
 	elif kode_ijin == "IOP":
 		objects_ = getattr(app_models_dinkes, 'Optikal')
+	elif kode_ijin == "IMK":
+		objects_ = getattr(app_models_dinkes, 'MendirikanKlinik')
 	return objects_
 
 
@@ -410,6 +412,10 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models_dinkes, 'Laboratorium')
 		elif kode == "IOP":
 			objects_ = getattr(app_models_dinkes, 'Optikal')
+		elif kode == "IMK":
+			objects_ = getattr(app_models_dinkes, 'MendirikanKlinik')
+		elif kode == "IOK":
+			objects_ = getattr(app_models_dinkes, 'OperasionalKlinik')
 	return objects_
 
 

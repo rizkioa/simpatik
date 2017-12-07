@@ -193,3 +193,47 @@ class Optikal(PengajuanIzin):
 		verbose_name = 'Optikal'
 		verbose_name_plural = 'Optikal'
 
+class MendirikanKlinik(PengajuanIzin):
+	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256)
+	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256)
+
+	def as_json__mendirikan_klinik(self):
+		alamat_lengkap = ''
+		if self.desa and self.alamat_klinik:
+			alamat_lengkap = str(self.alamat_klinik)+self.desa.lokasi_lengkap()
+		desa = ''
+		if self.desa:
+			desa = self.desa.as_json()
+		return dict(id=self.id, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
+
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_klinik)
+
+	class Meta:
+		verbose_name = 'Mendirikan Klinik'
+		verbose_name_plural = 'Mendirikan Klinik'
+
+class OperasionalKlinik(PengajuanIzin):
+	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256)
+	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256)
+	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
+	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256)
+
+	def as_json__mendirikan_klinik(self):
+		alamat_lengkap = ''
+		if self.desa and self.alamat_klinik:
+			alamat_lengkap = str(self.alamat_klinik)+self.desa.lokasi_lengkap()
+		desa = ''
+		if self.desa:
+			desa = self.desa.as_json()
+		return dict(id=self.id, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_klinik)
+
+	class Meta:
+		verbose_name = 'Operasional Klinik'
+		verbose_name_plural = 'Operasional Klinik'

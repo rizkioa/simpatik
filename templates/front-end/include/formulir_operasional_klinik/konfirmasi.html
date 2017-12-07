@@ -1,0 +1,265 @@
+<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0" id="table_pemohon_konfirmasi">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <table id="table_kuasa_konfirmasi" width="100%" border="0">
+    
+  </table>
+  <br>
+  <h4><u>#2. IZIN MENDIRIKAN KLINIK</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Nama Klinik</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_klinik_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Klinik</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_klinik_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No Telepon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='no_telepon_konfirmasi'></span></td>
+    </tr>
+    
+  </table>
+  <br>
+  <br>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Fotocopy Izin Mendirikan Klinik
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-imk"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Data Klinik
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-data_klinik"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Pernyataan mematuhi perundang-undangan di bidang kesehatan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-surat_pernyataan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy KTP
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ktp"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            fotocopy NPWP perorangan/badan usaha/badan hukum
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-npwp"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            fotocopy pendirian badan hukum atau badan usaha yang telah disahkan oleh pejabat yang berwenang, kecuali untuk kepemilikan perorangan (untuk klinik rawat inap wajib berbadan hukum)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pendirian_hukum"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            fotocopy sertifikat tanah/bukti kepemilikan lain yang disahkan oleh notaris/bukti surat kontrak minimal untuk jangka 5 (lima) tahun
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sertifikat_tanah"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Dokumen lingkungan (SPPL/UKL/UPL)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-dokumen_lingkungan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Profil klinik yang akan didirikan meliputi pengorganisasian, lokasi, bangunan, prasarana, ketenagaan, peralatan, kefarmasian, laboratorium, serta pelayanan yang diberikan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-profil_klinik"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Gambar/denah bangunan dan layout klinik yang didirikan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-gambar_bangunan"><i></i>
+            </label>
+          </td>
+        </tr>
+         <tr align="center">
+          <td>
+            IPPM jika nilai investasi 500 juta ke atas (selain tanah dan bangunan)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ippm"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy Izin Mendirikan Bangunan (IMB)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-imb"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy Izin Gangguan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-izin_gangguan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Perjanjian Kerjasama dengan pihak ketiga untuk pengangkutan limbah B3
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-perjanjian_kerjasama"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy Izin Mendirikan Klinik lama bagi yang perpanjangan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-izin_klinik_lama"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Data perubahan izin operasional Klinik dan Izin operasional Klinik asli (bila ada perubahan)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-data_perubahan_izin"><i></i>
+            </label>
+          </td>
+        </tr>
+        
+      </tbody>
+  </table>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt">
+        <input type="checkbox" id="checkbox_tdp_done"><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
+</form>
