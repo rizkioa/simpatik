@@ -430,7 +430,7 @@ def upload_berkas(request):
 		response = HttpResponse(data)
 	return response
 
-def validasi_berkas_apotek(request):
+# def validasi_berkas_apotek(request):
 	data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ditemukan.'}]}
 	id_pengajuan = request.COOKIES.get("id_pengajuan")
 	if id_pengajuan:
