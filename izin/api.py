@@ -16,6 +16,9 @@ class BerkasTerkalitIzin(CORSModelResource):
 	class Meta:
 		queryset = PengajuanIzin.objects.all()
 		fields = ['id', 'berkas_terkait_izin']
+		filtering = {
+			'id': ALL,
+		}
 
 class SKIzinResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
