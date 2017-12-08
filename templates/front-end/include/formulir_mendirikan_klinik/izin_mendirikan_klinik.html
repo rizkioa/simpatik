@@ -1,0 +1,46 @@
+<form method="POST" name="step3" role="form" class="form-horizontal" action="{% url 'izin_dinkes__save_izin_mendirikan_klinik' %}" data-parsley-validate novalidate>
+{% csrf_token %}
+	<div class="row">
+		<div class="col-md-12">
+			<h3>IZIN MENDIRIKAN KLINIK</h3>
+			<hr class="style14">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="toko_obat" class="col-sm-2 control-label"><strong>Nama Klinik</strong></label>
+		<div class="col-sm-6">
+			<input type="text" name="nama_klinik" class="form-control" required="" id="id_nama_klinik">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="ttk_penanggung_jawab" class="col-sm-2 control-label"><strong>Alamat Klinik</strong> </label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control"  name="alamat_klinik" required="" id="id_alamat_klinik">
+		</div>
+	</div>
+
+	<div class="form-group" id="kecamatan1">
+		<label for="kecamatan" class="col-sm-2 control-label"><strong>Kecamatan</strong> </label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="kecamatan" id="id_kecamatan2" required="">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group" id="desa">
+		<label for="desa" class="col-sm-2 control-label"><strong>Kelurahan/Desa</strong></label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="desa" id="id_desa2" required="">
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label for="alamat_usaha" class="col-sm-2 control-label"><strong>No Telepon</strong> </label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control no_ktp"  name="no_telepon" required="" id="id_no_telepon_klinik">
+		</div>
+	</div>
+</form>

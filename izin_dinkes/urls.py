@@ -54,4 +54,28 @@ urlpatterns = [
     url(r'^optikal/optikal-done/$', views.optikal_done, name='izin_dinkes__optikal_done'),
 
 	############### end Izin Lab ##########
+
+	############### Izin Mendirikan Klinik ##########
+	url(r'^klinik/save-izin-mendirikan-klinik/$', views.save_izin_mendirikan_klinik, name='izin_dinkes__save_izin_mendirikan_klinik'),
+	url(r'^klinik/load-izin-mendirikan-klinik/(?P<id_pengajuan>[0-9]+)$', views.load_izin_mendirikan_klinik, name='izin_dinkes__load_izin_mendirikan_klinik'),
+
+	url(r'^klinik/upload-berkas-mendirikan-klinik/$', views.upload_berkas_mendirikan_klinik, name='izin_dinkes__upload_berkas_mendirikan_klinik'),
+	url(r'^klinik/upload-berkas-mendirikan-klinik/save/$', views.mendirikan_klinik_upload_dokumen_cookie, name='izin_dinkes__upload_berkas_mendirikan_klinik_save'),
+    url(r'^klinik/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', views.ajax_load_berkas_mendirikan_klinik, name='izin_dinkes__ajax_load_berkas_mendirikan_klinik'),
+
+    url(r'^klinik/load-konfirmasi-mendirikan-klinik/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_mendirikan_klinik, name='izin_dinkes__load_konfirmasi_mendirikan_klinik'),
+    url(r'^klinik/mendirikan-klinik-done/$', views.mendirikan_klinik_done, name='izin_dinkes__mendirikan_klinik_done'),
+	############### END Izin Mendirikan Klinik ##########
+
+	############### Izin Operasional Klinik ##########
+	url(r'^klinik/save-izin-operasional-klinik/$', views.save_izin_operasional_klinik, name='izin_dinkes__save_izin_operasional_klinik'),
+	url(r'^klinik/load-izin-operasional-klinik/(?P<id_pengajuan>[0-9]+)$', views.load_izin_operasional_klinik, name='izin_dinkes__load_izin_operasional_klinik'),
+
+	url(r'^klinik/upload-berkas-operasional-klinik/$', views.upload_berkas_operasional_klinik, name='izin_dinkes__upload_berkas_operasional_klinik'),
+	url(r'^klinik/upload-berkas-operasional-klinik/save/$', views.operasional_klinik_upload_dokumen_cookie, name='izin_dinkes__upload_berkas_operasional_klinik_save'),
+    url(r'^klinik/load-berkas-operasional/ajax/(?P<id_pengajuan>[0-9]+)$', views.ajax_load_berkas_operasional_klinik, name='izin_dinkes__ajax_load_berkas_operasional_klinik'),
+
+    url(r'^klinik/load-konfirmasi-operasional-klinik/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_operasional_klinik, name='izin_dinkes__load_konfirmasi_operasional_klinik'),
+    url(r'^klinik/operasional-klinik-done/$', views.operasional_klinik_done, name='izin_dinkes__operasional_klinik_done'),
+	############### END Izin Operasional Klinik ##########
 ]

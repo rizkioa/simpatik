@@ -1,4 +1,4 @@
-<form method="POST" name="step4" role="form" action="{% url 'siup_done' %}">
+<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}">
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
@@ -63,44 +63,24 @@
     
   </table>
   <br>
-  <h4><u>#2. IZIN APOTEK</u></h4>
+  <h4><u>#2. IZIN MENDIRIKAN KLINIK</u></h4>
   <table width="100%" border="0">
     <tr>
-      <td width="25%">Nama Apotek</td>
+      <td width="25%">Nama Klinik</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_apotek_konfirmasi'></span></td>
+      <td width="70%"><span id='nama_klinik_konfirmasi'></span></td>
     </tr>
     <tr>
-      <td width="25%">Alamat</td>
+      <td width="25%">Alamat Klinik</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_apotek_konfirmasi'></span></td>
+      <td width="70%"><span id='alamat_klinik_konfirmasi'></span></td>
     </tr>
     <tr>
       <td width="25%">No Telepon</td>
       <td width="5%">:</td>
       <td width="70%"><span id='no_telepon_konfirmasi'></span></td>
     </tr>
-    <tr>
-      <td width="25%">Sarana</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='sarana_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Nama Pemilik Sarana</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='nama_pemilik_sarana_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">Alamat Sarana</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='alamat_sarana_konfirmasi'></span></td>
-    </tr>
-    <tr>
-      <td width="25%">NPWP</td>
-      <td width="5%">:</td>
-      <td width="70%"><span id='npwp_konfirmasi'></span></td>
-    </tr>
-   
+    
   </table>
   <br>
   <br>
@@ -114,37 +94,37 @@
       <tbody>
         <tr align="center">
           <td>
-            Salinan/Fotocopy Ijazah Apoteker yang dilegalisir
+            Fotocopy Izin Mendirikan Klinik
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-ijazah_apoteker"><i></i>
+              <input type="checkbox" disabled id="checkbox-imk"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Salinan/Fotocopy STRA Apoteker
+            Data Klinik
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-stra_apoteker"><i></i>
+              <input type="checkbox" disabled id="checkbox-data_klinik"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Salinan/Fotocopy Surat Rekomendasi dari IAI
+            Surat Pernyataan mematuhi perundang-undangan di bidang kesehatan
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-rekom_iai"><i></i>
+              <input type="checkbox" disabled id="checkbox-surat_pernyataan"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Salinan/Fotocopy KTP
+            Fotocopy KTP
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -154,37 +134,87 @@
         </tr>
         <tr align="center">
           <td>
-            Salinan/Fotocopy Denah Lokasi
+            fotocopy NPWP perorangan/badan usaha/badan hukum
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-denah_lokasi"><i></i>
+              <input type="checkbox" disabled id="checkbox-npwp"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Salinan/Fotocopy Denah Bangunan
+            fotocopy pendirian badan hukum atau badan usaha yang telah disahkan oleh pejabat yang berwenang, kecuali untuk kepemilikan perorangan (untuk klinik rawat inap wajib berbadan hukum)
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-denah_bangunan"><i></i>
+              <input type="checkbox" disabled id="checkbox-pendirian_hukum"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Surat yang mengatakan status bangunan dalam bentuk akta hak milik/sewa/kontrak
+            fotocopy sertifikat tanah/bukti kepemilikan lain yang disahkan oleh notaris/bukti surat kontrak minimal untuk jangka 5 (lima) tahun
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-status_bangunan"><i></i>
+              <input type="checkbox" disabled id="checkbox-sertifikat_tanah"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Dokumen lingkungan (SPPL/UKL/UPL)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-dokumen_lingkungan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Profil klinik yang akan didirikan meliputi pengorganisasian, lokasi, bangunan, prasarana, ketenagaan, peralatan, kefarmasian, laboratorium, serta pelayanan yang diberikan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-profil_klinik"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Gambar/denah bangunan dan layout klinik yang didirikan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-gambar_bangunan"><i></i>
             </label>
           </td>
         </tr>
          <tr align="center">
           <td>
-            Fotocopy IMB dan Izin gangguan
+            IPPM jika nilai investasi 500 juta ke atas (selain tanah dan bangunan)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ippm"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy Izin Mendirikan Bangunan (IMB)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-imb"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy Izin Gangguan
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
@@ -194,124 +224,35 @@
         </tr>
         <tr align="center">
           <td>
-            Salinan/Fotocopy Ijazah yang dilegalisir, Surat Tanda Registrasi Tenaga Teknis Kefarmasian
+            Perjanjian Kerjasama dengan pihak ketiga untuk pengangkutan limbah B3
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-ijazah_strttk"><i></i>
+              <input type="checkbox" disabled id="checkbox-perjanjian_kerjasama"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Daftar Tenaga Teknis Kefarmasian dengan mencantumkan nama,alamat,tanggal lulus, dan nomor STRTKR
+            Fotocopy Izin Mendirikan Klinik lama bagi yang perpanjangan
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-daftar_tenaga_teknis"><i></i>
+              <input type="checkbox" disabled id="checkbox-izin_klinik_lama"><i></i>
             </label>
           </td>
         </tr>
         <tr align="center">
           <td>
-            Asli dan Salinan/Fotocopy daftar terperinci alat perlengapan Apotek
+            Data perubahan izin operasional Klinik dan Izin operasional Klinik asli (bila ada perubahan)
           </td>
           <td>
             <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-alat_perlengkapan_apotek"><i></i>
+              <input type="checkbox" disabled id="checkbox-data_perubahan_izin"><i></i>
             </label>
           </td>
         </tr>
-        <tr align="center">
-          <td>
-            Asli dan Salinan/Fotocopy Surat Izin atasan (Bagi pemohon PNS/ABRI/Pegawai pemerintahan lainnya)
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-izin_atasan"><i></i>
-            </label>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            Akta Perjanjian Kerjasama Apoteker pengelola Apotek bahwa tidak bekerja tetap pada perusahaan farmasi lain dan tidak menjadi apoteker pengelola apotek di apotek lain
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-perjanjian_apoteker"><i></i>
-            </label>
-          </td>
-        </tr> 
-        <tr align="center">
-          <td>
-            Surat Pernyataan Apoteker Pengelola Apotek Bersedia Mematuhi peraturan perundang udangan yang berlaku dan tidak terlibat pelanggaran peraturan dibidang obat
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-pernyataan_peraturan_apoteker"><i></i>
-            </label>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            Surat Pernyataan Pemilik Sarana bersedia mematuhi peraturan perundang udangan yang berlaku dan tidak terlibat pelanggaran peraturan dibidang obat
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-pernyataan_peraturan_pemilik"><i></i>
-            </label>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            SIA Asli (Untuk perpanjangan)
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-sia"><i></i>
-            </label>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            Fotocopy SIPA
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-sipa"><i></i>
-            </label>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            Fotocopy SIPTTK(AA)
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-sipttk"><i></i>
-            </label>
-          </td>
-        </tr>
-        <tr align="center">
-          <td>
-            Surat Pernyataan Pemilik Apotik
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-pernyataan_pemilik"><i></i>
-            </label>
-          </td>
-        </tr> 
-        <tr align="center">
-          <td>
-            Surat Pernyataan Apoteker
-          </td>
-          <td>
-            <label class="checkbox checkbox-custom-alt">
-              <input type="checkbox" disabled id="checkbox-pernyataan_apoteker"><i></i>
-            </label>
-          </td>
-        </tr>
+        
       </tbody>
   </table>
   <section class="tile bg-greensea">
