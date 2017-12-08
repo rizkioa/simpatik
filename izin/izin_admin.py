@@ -490,6 +490,10 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:apotek__view_verifikasi', kwargs={'id_pengajuan': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IOP":
 			link_ = reverse('admin:optikal__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IMK":
+			link_ = reverse('admin:mendirikan_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IOK":
+			link_ = reverse('admin:operasional_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )

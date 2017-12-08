@@ -150,6 +150,10 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_apotek', args=(obj.id, ))
 		elif kode_ijin == "IOP":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_optikal', args=(obj.id, ))
+		elif kode_ijin == "IMK":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_mendirikan_klinik', args=(obj.id, ))
+		elif kode_ijin == "IOK":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_operasional_klinik', args=(obj.id, ))
 		elif kode_ijin == "503.07/":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_izin_lokasi', args=(obj.id, ))
 		elif kode_ijin == "503.01.06/":
@@ -1373,6 +1377,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-cek-kelengkapan-toko-obat/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_toko_obat" ),
 			url(r'^survey-cek-kelengkapan-apotek/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_apotek" ),
 			url(r'^survey-cek-kelengkapan-optikal/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_optikal" ),
+			url(r'^survey-cek-kelengkapan-mendirikan-klinik/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_mendirikan_klinik" ),
+			url(r'^survey-cek-kelengkapan-operasional-klinik/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_operasional_klinik" ),
 			url(r'^survey-cek-kelengkapan-izin-lokasi/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_izin_lokasi, name="cek_kelengkapan_pengajuan_izin_lokasi" ),
 			)
 		return my_urls + urls

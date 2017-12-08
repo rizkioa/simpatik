@@ -3,6 +3,8 @@ from izin_dinkes.models import *
 from tokoobat_admin import TokoObatAdmin
 from apotek_admin import ApotekAdmin
 from optikal_admin import OptikalAdmin
+from mendirikan_klinik_admin import MendirikanKlinikAdmin
+from operasional_klinik_admin import OperasionalKlinikAdmin
 
 # Register your models here.
 
@@ -16,3 +18,5 @@ class LaboratoriumAdmin(admin.ModelAdmin):
 admin.site.register(Laboratorium, LaboratoriumAdmin)
 admin.site.register(TokoObat, TokoObatAdmin)
 admin.site.register(Optikal, OptikalAdmin)
+admin.site.register(MendirikanKlinik, MendirikanKlinikAdmin)
+admin.site.register(OperasionalKlinik, OperasionalKlinikAdmin)
