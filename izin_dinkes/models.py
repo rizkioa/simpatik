@@ -63,10 +63,10 @@ class TokoObat(PengajuanIzin):
 
 class Laboratorium(PengajuanIzin):
 	klasifikasi_laboratorium = models.CharField(verbose_name='Klasifikasi Laboratorium', max_length=256)
-	nama_laboratorium = models.CharField(verbose_name='Nama Laboratorium', max_length=256)
-	alamat_laboratorium = models.CharField(verbose_name='Alamat Laboratorium', max_length=256)
+	nama_laboratorium = models.CharField(verbose_name='Nama Laboratorium', max_length=256, null=True, blank=True)
+	alamat_laboratorium = models.CharField(verbose_name='Alamat Laboratorium', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	penanggung_jawab_teknis = models.CharField(verbose_name='Penanggung Jawab Teknis', max_length=256)
+	penanggung_jawab_teknis = models.CharField(verbose_name='Penanggung Jawab Teknis', max_length=256, null=True, blank=True)
 
 	def as_json(self):
 		alamat_lengkap = ''
@@ -118,7 +118,7 @@ class JenisKelengkapanBangunan(models.Model):
 class BangunanLaboratorium(models.Model):
 	laboratorium = models.ForeignKey(Laboratorium, verbose_name='Laboratorium')
 	jenis_kelengkapan_bangunan = models.ForeignKey(JenisKelengkapanBangunan, verbose_name='Jenis Kelegkapan Bangunan', null=True, blank=True)
-	nama_kelengkapan_bangunan = models.CharField(verbose_name='Nama Kelengkapan Bangunan', max_length=256)
+	nama_kelengkapan_bangunan = models.CharField(verbose_name='Nama Kelengkapan Bangunan', max_length=256, null=True, blank=True)
 	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
 
 	def as_json(self):
@@ -172,14 +172,14 @@ class PengunduranApoteker(models.Model):
 		verbose_name_plural = 'Pengunduran Apoteker'
 
 class Optikal(PengajuanIzin):
-	nama_optikal = models.CharField(verbose_name='Nama Optikal', max_length=256)
-	nama_pemilik_perusahaan = models.CharField(verbose_name='Nama Pemilik / Perusahaan', max_length=256)
-	jenis_badan_usaha = models.CharField(verbose_name='Jenis Badan Usaha', max_length=256)
-	alamat_usaha = models.CharField(verbose_name='Alamat Perusahaan / Usaha', max_length=256)
-	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256)
-	jenis_kegiatan_usaha = models.CharField(verbose_name='Jenis Kegiatan Usaha', max_length=256)
-	lokasi_kegiatan_usaha = models.CharField(verbose_name='Lokasi Kegiatan Usaha', max_length=256)
-	luas_tanah_bangunan = models.CharField(verbose_name='Luas Tanah / Bangunan', max_length=256)
+	nama_optikal = models.CharField(verbose_name='Nama Optikal', max_length=256, null=True, blank=True)
+	nama_pemilik_perusahaan = models.CharField(verbose_name='Nama Pemilik / Perusahaan', max_length=256, null=True, blank=True)
+	jenis_badan_usaha = models.CharField(verbose_name='Jenis Badan Usaha', max_length=256, null=True, blank=True)
+	alamat_usaha = models.CharField(verbose_name='Alamat Perusahaan / Usaha', max_length=256, null=True, blank=True)
+	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256, null=True, blank=True)
+	jenis_kegiatan_usaha = models.CharField(verbose_name='Jenis Kegiatan Usaha', max_length=256, null=True, blank=True)
+	lokasi_kegiatan_usaha = models.CharField(verbose_name='Lokasi Kegiatan Usaha', max_length=256, null=True, blank=True)
+	luas_tanah_bangunan = models.CharField(verbose_name='Luas Tanah / Bangunan', max_length=256, null=True, blank=True)
 
 	def as_json(self):
 
@@ -194,10 +194,10 @@ class Optikal(PengajuanIzin):
 		verbose_name_plural = 'Optikal'
 
 class MendirikanKlinik(PengajuanIzin):
-	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256)
-	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256)
+	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256, null=True, blank=True)
+	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256)
+	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256, null=True, blank=True)
 
 	def as_json__mendirikan_klinik(self):
 		alamat_lengkap = ''
@@ -217,10 +217,10 @@ class MendirikanKlinik(PengajuanIzin):
 		verbose_name_plural = 'Mendirikan Klinik'
 
 class OperasionalKlinik(PengajuanIzin):
-	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256)
-	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256)
+	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256, null=True, blank=True)
+	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
-	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256)
+	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256, null=True, blank=True)
 
 	def as_json__mendirikan_klinik(self):
 		alamat_lengkap = ''
