@@ -1,7 +1,9 @@
 from mobile.cors import CORSModelResource, CORSHttpResponse
 from models import *
+from tastypie.authentication import ApiKeyAuthentication
 from tastypie.resources import ALL_WITH_RELATIONS, ALL
 from tastypie import fields
+from izin.api import PemohonResource
 
 class PeralatanLaboratoriumResource(CORSModelResource):
 	laboratorium_id = fields.CharField(attribute="laboratorium__id", null=True, blank=True)
@@ -23,8 +25,13 @@ class BangunanLaboratoriumResource(CORSModelResource):
 		}
 
 class ApotekResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = Apotek.objects.all()
+		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
 		}
@@ -37,8 +44,13 @@ class SaranaResource(CORSModelResource):
 		}
 
 class TokoObatResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
-		queryset = Sarana.objects.all()
+		queryset = TokoObat.objects.all()
+		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
 		}

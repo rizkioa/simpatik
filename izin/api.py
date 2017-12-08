@@ -16,6 +16,9 @@ class BerkasTerkalitIzin(CORSModelResource):
 	class Meta:
 		queryset = PengajuanIzin.objects.all()
 		fields = ['id', 'berkas_terkait_izin']
+		filtering = {
+			'id': ALL,
+		}
 
 class SKIzinResource(CORSModelResource):
 	pengajuan_izin_id = fields.IntegerField(attribute="pengajuan_izin__id", null=True, blank=True)
@@ -337,6 +340,69 @@ class AnggotaBadanUsaha(CORSModelResource):
 			"jenis_anggota_badan" : ['contains'],
 		}
 
+class DetilPembayaranResource(CORSModelResource):
+	kode = fields.CharField(attribute="nomor_kwitansi", null=True, blank=True)
+	class Meta:
+		queryset = DetilPembayaran.objects.all()
+		authentication = ApiKeyAuthentication()
+		filtering = {
+			"kode": ALL,
+		}
+
+	def prepend_urls(self):
+		return [
+			url(r"^retribusi/cek/$", self.wrap_view('cek_retribusi'), name="api__retribusi__cek_retribusi"),
+			url(r"^retribusi/update/$", self.wrap_view('update_retribusi'), name="api__retribusi__update_retribusi"),
+			]
+
+	def cek_retribusi(self, request, **kwargs):
+		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Retribusi tidak ditemukan atau tidak ada dalam daftar disistem SIMPATIK.'}
+		kode = request.GET.get('kode')
+		username = request.GET.get('username')
+		api_key = request.GET.get('api_key')
+		cek = cek_apikey(api_key, username)
+		if cek == True:
+			if kode:
+				try:
+					retribusi_obj = DetilPembayaran.objects.get(nomor_kwitansi=kode)
+					nama_pemohon = ""
+					if retribusi_obj.pengajuan_izin:
+						if retribusi_obj.pengajuan_izin.pemohon:
+							nama_pemohon = retribusi_obj.pengajuan_izin.pemohon.nama_lengkap
+					tanggal_bayar = None
+					if retribusi_obj.tanggal_bayar:
+						tanggal_bayar = retribusi_obj.tanggal_bayar.strftime("%d-%M-%Y")
+					tanggal_deadline = None
+					if retribusi_obj.tanggal_deadline:
+						tanggal_deadline = retribusi_obj.tanggal_deadline.strftime("%d-%M-%Y")
+					data = {'success': True, 'pesan': 'Sukses. Retribusi berhasil diload.', 'kode': retribusi_obj.nomor_kwitansi, 'pemohon': nama_pemohon, "peruntukan": retribusi_obj.peruntukan, 'tanggal_bayar': tanggal_bayar, 'tanggal_deadline': tanggal_deadline, 'total_bayar': retribusi_obj.jumlah_pembayaran, 'bank': retribusi_obj.bank}
+				except DetilPembayaran.DoesNotExist:
+					pass
+		else:
+			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Anda tidak memiliki akses di SIMPATIK.'}
+		return CORSHttpResponse(json.dumps(data))
+
+	def update_retribusi(self, request, **kwargs):
+		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Retribusi tidak ditemukan atau tidak ada dalam daftar disistem SIMPATIK.'}
+		kode = request.GET.get('kode')
+		username = request.GET.get('api_key')
+		cek = cek_apikey(api_key, username)
+		if cek == True:
+			if kode:
+				try:
+					retribusi_obj = DetilPembayaran.objects.get(kode=kode)
+					retribusi_obj.status = 1
+					retribusi_obj.save()
+					"Melakukan pengupdatean status pengajuan izin untuk proses selanjutnya"
+				except DetilPembayaranResource.DoesNotExist:
+					pass
+		else:
+			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Anda tidak memiliki akses di SIMPATIK.'}
+		return CORSHttpResponse(json.dumps(data))
+
+	
+
+"""
 class RetribusiResource(CORSModelResource):
 	class Meta:
 		queryset = Retribusi.objects.all()
@@ -390,12 +456,10 @@ class RetribusiResource(CORSModelResource):
 					retribusi_obj = Retribusi.objects.get(kode=kode)
 					retribusi_obj.status = 1
 					retribusi_obj.save()
-					"""
-						Melakukan pengupdatean status untuk proses sejalnjutnya
-					"""
+					"Melakukan pengupdatean status untuk proses sejalnjutnya"
 				except Retribusi.DoesNotExist:
 					pass
 		else:
 			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Anda tidak memiliki akses di SIMPATIK.'}
 		return CORSHttpResponse(json.dumps(data))
-
+"""

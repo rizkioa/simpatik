@@ -64,10 +64,7 @@ v1_api.register(TokoObatResource())
 v1_api.register(LaboratoriumResource())
 v1_api.register(OptikalResource())
 
-# Retribusi
-v1_api.register(RetribusiResource())
-
-
+v1_api.register(DetilPembayaranResource())
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())
