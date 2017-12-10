@@ -605,6 +605,7 @@ def ajax_load_berkas_apotek(request, id_pengajuan):
 					apotek.berkas_terkait_izin.add(alat_perlengkapan_apotek)
 
 				izin_atasan = berkas_.filter(keterangan='Surat Izin Atasan '+pengajuan_obj.no_pengajuan).last()
+				if izin_atasan:
 					url_berkas.append(izin_atasan.berkas.url)
 					id_elemen.append('izin_atasan')
 					nm_berkas.append(izin_atasan.nama_berkas)
