@@ -1,4 +1,4 @@
-<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'save_detil_izin_parkir' %}" data-parsley-validate novalidate>
+<form method="POST" name="step2" role="form" class="form-horizontal" action="{% url 'izin_dinkes__save_izin_penutupan_apotek' %}" data-parsley-validate novalidate>
 {% csrf_token %}
 	<div class="row">
 		<div class="col-md-12">
@@ -8,31 +8,31 @@
 	</div>
 
 	<div class="form-group">
-		<label for="nama_apotik" class="col-sm-2 control-label">Nama Apotek</label>
+		<label for="nama_apotek" class="col-sm-2 control-label"><strong>Nama Apotek</strong></label>
 		<div class="col-sm-6">
-			<input type="text" id="id_nama_apotik" name="nama_apotik" class="form-control">
+			<input type="text" id="id_nama_apotik" name="nama_apotek" class="form-control">
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="alamat_apotek" class="col-sm-2 control-label">Alamat Apotek </label>
+		<label for="alamat_apotek" class="col-sm-2 control-label"><strong>Alamat Apotek </strong></label>
 		<div class="col-sm-6">
 			<textarea  id="id_alamat_apotek" rows="5" name="alamat_apotek" class="form-control"></textarea>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label for="nomor_telepon" class="col-sm-2 control-label">Nomor Telepon</label>
+		<label for="no_telepon" class="col-sm-2 control-label"><strong>Nomor Telepon</strong></label>
 		<div class="col-sm-6">
-			<input type="text" class="form-control" id="id_nomor_telepon"  name="nomor_telepon">
+			<input type="text" class="form-control no-ktp" id="id_nomor_telepon"  name="no_telepon">
 			
 		</div>
 	</div>
 
 	<div class="form-group" id="kabupaten">
-    <label for="nomor_sia" class="col-sm-2 control-label"><strong>Nomor SIA</strong> </label>
+    <label for="no_sia" class="col-sm-2 control-label"><strong>Nomor SIA</strong> </label>
     <div class="col-sm-5">
-      <input type="text" class="form-control" id="id_nomor_sia"  name="nomor_sia">
+      <input type="text" class="form-control no-ktp" id="id_nomor_sia"  name="no_sia">
     </div>
   </div>
 

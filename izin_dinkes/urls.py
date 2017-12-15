@@ -43,6 +43,24 @@ urlpatterns = [
 
 	############### end Izin Lab ##########
 
+	############### Izin penutupan apotek ##########
+	url(r'^penutupan-apotek/save-izin-penutupan-apotek/$', views.save_izin_penutupan_apotek, name='izin_dinkes__save_izin_penutupan_apotek'),
+	url(r'^penutupan-apotek/load-izin-penutupan-apotek/(?P<id_pengajuan>[0-9]+)$', views.load_izin_penutupan_apotek, name='izin_dinkes__load_izin_penutupan_apotek'),
+
+	url(r'^penutupan-apotek/upload-berkas-penutupan-apotek/$', views.upload_berkas_penutupan_apotek, name='izin_dinkes__upload_berkas_penutupan_apotek'),
+	url(r'^penutupan-apotek/upload-berkas-penutupan-apotek/save/$', views.penutupan_apotek_upload_dokumen_cookie, name='izin_dinkes__upload_berkas_penutupan_apotek_save'),
+    url(r'^penutupan-apotek/load-berkas/ajax/(?P<id_pengajuan>[0-9]+)$', views.ajax_load_berkas_penutupan_apotek, name='izin_dinkes__ajax_load_berkas_penutupan_apotek'),
+
+    url(r'^penutupan-apotek/save-pengunduran-apoteker/$', views.save_pengunduran_apoteker, name='izin_dinkes__save_pengunduran'),
+	url(r'^penutupan-apotek/load-pengunduran-apoteker/(?P<id_pengajuan>[0-9]+)$', views.load_pengunduran_apoteker, name='izin_dinkes__load_pengunduran'),
+	url(r'^penutupan-apotek/load-edit-pengunduran-apoteker/(?P<id_pengunduran>[0-9]+)$', views.load_edit_pengunduran_apoteker, name='izin_dinkes__load_edit_pengunduran'),
+	url(r'^penutupan-apotek/delete-pengunduran-apoteker/(?P<id_pengunduran>[0-9]+)$', views.delete_pengunduran_apoteker, name='izin_dinkes__delete_pengunduran'),
+	url(r'^penutupan-apotek/pengunduran-apoteker-next/$', views.next_tab_penutupan_cookie, name='izin_dinkes__next_tab_penutupan_cookie'),
+
+    url(r'^penutupan-apotek/load-konfirmasi-penutupan-apotek/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_penutupan_apotek, name='izin_dinkes__load_konfirmasi_penutupan_apotek'),
+    url(r'^penutupan-apotek/penutupan-apotek-done/$', views.penutupan_apotek_done, name='izin_dinkes__penutupan_apotek_done'),
+	############### end Izin penutupan apotek ##########
+
 	############### Izin optikal ##########
 	url(r'^optikal/save-izin-optikal/$', views.save_izin_optikal, name='izin_dinkes__save_izin_optikal'),
 

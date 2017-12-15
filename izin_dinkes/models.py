@@ -149,8 +149,11 @@ class PenutupanApotek(PengajuanIzin):
 	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=256)
 	alamat_sarana = models.CharField(verbose_name='Alamat Sarana', max_length=256)
 
+	def as_json__penutupan_apotek(self):
+		return dict(nama_apotek=self.nama_apotek, alamat_apotek=self.alamat_apotek, no_telepon=self.no_telepon, no_sia=self.no_sia, nama_pemilik_sarana=self.nama_pemilik_sarana, alamat_sarana=self.alamat_sarana)
+
 	def __unicode__(self):
-		return u'%s' % str(self.nama_apotik)
+		return u'%s' % str(self.nama_apotek)
 
 	class Meta:
 		verbose_name = 'Penutupan Apotik'
@@ -160,10 +163,15 @@ class PengunduranApoteker(models.Model):
 	nama_apotek = models.ForeignKey(PenutupanApotek, verbose_name='Nama Apotek')
 	nama_apoteker = models.CharField(verbose_name='Nama Apoteker', max_length=256)
 	tempat_lahir = models.CharField(verbose_name='Tempat Lahir', max_length=256)
-	tanggal_lahir = models.DateField(verbose_name='Tanggal Lahir', max_length=256)
+	tanggal_lahir = models.DateField(verbose_name='Tanggal Lahir', max_length=256, null=True, blank=True)
 	alamat_apoteker = models.CharField(verbose_name='Alamat Apoteker', max_length=256)
 	telepon_apoteker = models.CharField(verbose_name='Telepon Apoteker', max_length=256)
 	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
+
+	def as_json__pengunduran_apoteker(self):
+		if self.tanggal_lahir:
+			tanggal_lahir = self.tanggal_lahir.strftime('%d-%m-%Y')
+		return dict(id=self.id, nama_apotek=self.nama_apotek.nama_apotek, nama_apoteker=self.nama_apoteker, tempat_lahir=self.tempat_lahir, tanggal_lahir=tanggal_lahir, alamat_apoteker=self.alamat_apoteker, telepon_apoteker=self.telepon_apoteker, keterangan=self.keterangan)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_apoteker)

@@ -5,8 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 
-from izin_dinkes.forms import ApotekForm, TokoObatForm, LaboratoriumForm, PeralatanLaboratoriumForm, OptikalForm, MendirikanKlinikForm, OperasionalKlinikForm
-from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik
+from izin_dinkes.forms import ApotekForm, TokoObatForm, LaboratoriumForm, PeralatanLaboratoriumForm, OptikalForm, MendirikanKlinikForm, OperasionalKlinikForm, PenutupanApotekForm
+from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik, PenutupanApotek, PengunduranApoteker
 from izin.izin_forms import BerkasForm
 from izin.models import PengajuanIzin
 
@@ -1139,6 +1139,25 @@ def laboratorium_done(request):
 		response = HttpResponse(data)
 	return response
 
+def save_izin_penutupan_apotek(request):
+	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			if 'id_kelompok_izin' in request.COOKIES.keys():
+				try:
+					pengajuan_obj = PenutupanApotek.objects.get(id=request.COOKIES['id_pengajuan'])
+					form__penutupan = PenutupanApotekForm(request.POST, instance=pengajuan_obj)
+					if form__penutupan.is_valid():
+						p = form__penutupan.save(commit=False)
+						p.save()
+						data = {'success': True, 'pesan': 'Data Izin Penutupan Apotek berhasil tersimpan.'}
+					else:
+						data = form__penutupan.errors.as_json()
+						data = {'success': False, 'pesan': 'Data Izin Penutupan Apotek gagal.', 'data': data}
+				except PenutupanApotek.DoesNotExist:
+					pass
+	return HttpResponse(json.dumps(data))
+
 def save_izin_optikal(request):
 	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
 	if 'id_pengajuan' in request.COOKIES.keys():
@@ -1146,7 +1165,7 @@ def save_izin_optikal(request):
 			if 'id_kelompok_izin' in request.COOKIES.keys():
 				try:
 					pengajuan_obj = Optikal.objects.get(id=request.COOKIES['id_pengajuan'])
-					form_optikal = OptikalForm(request.POST, instance=pengajuan_obj)
+					form_optikal = PenutupanApotekForm(request.POST, instance=pengajuan_obj)
 					if form_optikal.is_valid():
 						p = form_optikal.save(commit=False)
 						p.save()
@@ -1157,6 +1176,256 @@ def save_izin_optikal(request):
 				except Optikal.DoesNotExist:
 					pass
 	return HttpResponse(json.dumps(data))
+
+def save_pengunduran_apoteker(request):
+	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			if 'id_kelompok_izin' in request.COOKIES.keys():
+				try:
+					pengajuan_obj = PenutupanApotek.objects.get(id=request.COOKIES['id_pengajuan'])
+					print request.POST.get("id_pengunduran_apoteker")
+					if request.POST.get("id_pengunduran_apoteker") != "":
+						print 'masuk sini'
+						pengunduran_obj, created = PengunduranApoteker.objects.get_or_create(id=request.POST.get("id_pengunduran_apoteker"))
+						
+						pengunduran_obj.nama_apotek_id = pengajuan_obj.id
+						pengunduran_obj.nama_apoteker = request.POST.get("nama_apoteker")
+						pengunduran_obj.tempat_lahir = request.POST.get("tempat_lahir")
+						pengunduran_obj.tanggal_lahir = datetime.datetime.strptime(request.POST.get('tanggal_lahir'), '%d-%m-%Y')
+						pengunduran_obj.alamat_apoteker = request.POST.get("alamat")
+						pengunduran_obj.telepon_apoteker = request.POST.get("no_telepon")
+						pengunduran_obj.keterangan = request.POST.get("keterangan")
+						pengunduran_obj.save()
+						data = {'success': True, 'pesan': 'Data berhasil diperbaharui.'}
+					else:
+						print 'masuk sini'
+						pengunduran_obj = PengunduranApoteker(nama_apotek_id=pengajuan_obj.id, nama_apoteker = request.POST.get("nama_apoteker"), tempat_lahir = request.POST.get("tempat_lahir"),tanggal_lahir = datetime.datetime.strptime(request.POST.get('tanggal_lahir'), '%d-%m-%Y'), alamat_apoteker = request.POST.get("alamat"),
+							telepon_apoteker = request.POST.get("no_telepon"), keterangan = request.POST.get("keterangan"))
+						pengunduran_obj.save()
+						data = {'success': True, 'pesan': 'Data berhasil tersimpan.'}
+				except PengunduranApoteker.DoesNotExist:
+					pass
+	return HttpResponse(json.dumps(data))
+
+def load_pengunduran_apoteker(request, id_pengajuan):
+	data = []
+	response = {'success': False, 'pesan': 'Data gagal diload.', 'data': data} 
+	if id_pengajuan:
+		apoteker_list = PengunduranApoteker.objects.filter(nama_apotek_id=id_pengajuan)
+		if apoteker_list:
+			data = [x.as_json__pengunduran_apoteker() for x in apoteker_list]
+			response = {'success': True, 'pesan': 'Data berhasil diload.', 'data': data}
+	return HttpResponse(json.dumps(response))
+
+def load_edit_pengunduran_apoteker(request, id_pengunduran):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	as_json = {}
+	if id_pengunduran:
+		try:
+			i = PengunduranApoteker.objects.get(id=id_pengunduran)
+			as_json = i.as_json__pengunduran_apoteker()
+			data = {'success': True, 'pesan': 'Data berhasil diload.', 'data':as_json}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
+
+def delete_pengunduran_apoteker(request, id_pengunduran):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan.'}
+	if id_pengunduran:
+		try:
+			i = PengunduranApoteker.objects.get(id=id_pengunduran)
+			i.delete()
+			data = {'success': True, 'pesan': 'Data berhasil dihapus.'}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
+
+def load_izin_penutupan_apotek(request, id_pengajuan):
+	data = {}
+	response = {'success': False, 'pesan': 'Data Penutupan Apotek berhasil tersimpan.', 'data': data}
+	if id_pengajuan:
+		pengajuan_obj = PenutupanApotek.objects.filter(id=id_pengajuan).last()
+		if pengajuan_obj:
+			data = pengajuan_obj.as_json__penutupan_apotek()
+			response = {'success': True, 'pesan': 'Data Penutupan Apotek berhasil tersimpan.', 'data': data}
+	return HttpResponse(json.dumps(response))
+
+def upload_berkas_penutupan_apotek(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			form = BerkasForm(request.POST, request.FILES)
+			berkas_ = request.FILES.get('berkas')
+			if berkas_._size > 4*1024*1024:
+				data = {'Terjadi Kesalahan': [{'message': 'Ukuran file tidak boleh melebihi dari 4mb.'}]}
+				data = json.dumps(data)
+				response = HttpResponse(data)
+			else:
+				if request.method == "POST":
+					if berkas_:
+						if form.is_valid():
+							ext = os.path.splitext(berkas_.name)[1]
+							valid_extensions = ['.pdf','.doc','.docx', '.jpg', '.jpeg', '.png', '.PDF', '.DOC', '.DOCX', '.JPG', '.JPEG', '.PNG']
+							if not ext in valid_extensions:
+								data = {'Terjadi Kesalahan': [{'message': 'Type file tidak valid hanya boleh pdf, jpg, png, doc, docx.'}]}
+								data = json.dumps(data)
+								response = HttpResponse(data)
+							else:
+								try:
+									p = PenutupanApotek.objects.get(id=request.COOKIES['id_pengajuan'])
+									berkas = form.save(commit=False)
+									kode = request.POST.get('kode')
+									if kode == 'KTP':
+										berkas.nama_berkas = "KTP "+p.no_pengajuan
+										berkas.keterangan = "KTP "+p.no_pengajuan
+									elif kode == 'Berita Acara':
+										berkas.nama_berkas = "Berita Acara "+p.no_pengajuan
+										berkas.keterangan = "Berita Acara "+p.no_pengajuan
+									elif kode == 'Surat izin Apotek':
+										berkas.nama_berkas = "Surat izin Apotek "+p.no_pengajuan
+										berkas.keterangan = "Surat izin Apotek "+p.no_pengajuan
+									
+									if request.user.is_authenticated():
+										berkas.created_by_id = request.user.id
+									else:
+										berkas.created_by_id = request.COOKIES['id_pemohon']
+									berkas.save()
+									p.berkas_terkait_izin.add(berkas)
+
+									data = {'success': True, 'pesan': 'Berkas Berhasil diupload' ,'data': [
+											{'status_upload': 'ok'},
+										]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+								except ObjectDoesNotExist:
+									data = {'Terjadi Kesalahan': [{'message': 'Pengajuan tidak ada dalam daftar'}]}
+									data = json.dumps(data)
+									response = HttpResponse(data)
+						else:
+							data = form.errors.as_json()
+							response = HttpResponse(data)
+					else:
+						data = {'Terjadi Kesalahan': [{'message': 'Berkas kosong'}]}
+						data = json.dumps(data)
+						response = HttpResponse(data)
+				else:
+					data = form.errors.as_json()
+					response = HttpResponse(data)
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/data kosong'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Upload berkas pendukung tidak ditemukan/tidak ada'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
+def penutupan_apotek_upload_dokumen_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+	return HttpResponse(json.dumps(data))
+
+def next_tab_penutupan_cookie(request):
+	data = {'success': True, 'pesan': 'Proses Selanjutnya.', 'data': [] }
+	return HttpResponse(json.dumps(data))
+
+def ajax_load_berkas_penutupan_apotek(request, id_pengajuan):
+	url_berkas = []
+	id_elemen = []
+	nm_berkas =[]
+	id_berkas =[]
+	if id_pengajuan:
+		try:
+			pengajuan_obj = PenutupanApotek.objects.get(id=id_pengajuan)
+			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
+
+			if berkas_:
+				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				if ktp:
+					url_berkas.append(ktp.berkas.url)
+					id_elemen.append('ktp')
+					nm_berkas.append(ktp.nama_berkas)
+					id_berkas.append(ktp.id)
+					pengajuan_obj.berkas_terkait_izin.add(ktp)
+
+				berita_acara = berkas_.filter(keterangan='Berita Acara '+pengajuan_obj.no_pengajuan).last()
+				if berita_acara:
+					url_berkas.append(berita_acara.berkas.url)
+					id_elemen.append('berita_acara')
+					nm_berkas.append(berita_acara.nama_berkas)
+					id_berkas.append(berita_acara.id)
+					pengajuan_obj.berkas_terkait_izin.add(berita_acara)
+
+				surat_izin = berkas_.filter(keterangan='Surat izin Apotek '+pengajuan_obj.no_pengajuan).last()
+				if surat_izin:
+					url_berkas.append(surat_izin.berkas.url)
+					id_elemen.append('surat_izin')
+					nm_berkas.append(surat_izin.nama_berkas)
+					id_berkas.append(surat_izin.id)
+					pengajuan_obj.berkas_terkait_izin.add(surat_izin)
+
+			data = {'success': True, 'pesan': 'Sukses.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
+		except ObjectDoesNotExist:
+			data = {'success': False, 'pesan': '' }
+	response = HttpResponse(json.dumps(data))
+	return response
+
+def load_konfirmasi_penutupan_apotek(request, id_pengajuan):
+	data = {'success': False, 'pesan': 'Data tidak ditemukan.' }
+	if id_pengajuan:
+		try:
+			pengajuan_obj = PengajuanIzin.objects.get(id=id_pengajuan)
+			penutupan_obj = PenutupanApotek.objects.filter(id=id_pengajuan).last()
+			pengunduran_obj= PengunduranApoteker.objects.filter(nama_apotek_id=id_pengajuan).last()
+			pengajuan_json = {}
+			pemohon_json = {}
+			penutupan_json = {}
+			pengunduran_json = {}
+			if pengajuan_obj:
+				pengajuan_json = pengajuan_obj.as_json()
+				if pengajuan_obj.pemohon:
+					pemohon_json = pengajuan_obj.pemohon.as_json()
+
+				if penutupan_obj:
+					penutupan_json = penutupan_obj.as_json__penutupan_apotek()
+
+				if pengunduran_obj:
+					print 'asdasd'
+					pengunduran_json = pengunduran_obj.as_json__pengunduran_apoteker()
+
+			data = {'success': True, 'pesan': 'Sukses.', 'data': { 'pengajuan_json':pengajuan_json, 'pemohon_json': pemohon_json, 'penutupan_json': penutupan_json, 'pengunduran_json':pengunduran_json}}
+		except ObjectDoesNotExist:
+			pass
+	return HttpResponse(json.dumps(data))
+
+def penutupan_apotek_done(request):
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '':
+			pengajuan_ = PenutupanApotek.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			pengajuan_.status = 6
+			pengajuan_.save()
+					
+			data = {'success': True, 'pesan': 'Proses Selesai.' }
+			response = HttpResponse(json.dumps(data))
+			response.delete_cookie(key='id_pengajuan') # set cookie	
+			response.delete_cookie(key='id_perusahaan') # set cookie	
+			response.delete_cookie(key='nomor_ktp') # set cookie	
+			response.delete_cookie(key='nomor_paspor') # set cookie	
+			response.delete_cookie(key='id_pemohon') # set cookie	
+			response.delete_cookie(key='id_kelompok_izin') # set cookie
+			response.delete_cookie(key='npwp_perusahaan') # set cookie
+			response.delete_cookie(key='id_jenis_pengajuan') # set cookie
+			response.delete_cookie(key='kode_kelompok_jenis_izin') # set cookie
+		else:
+			data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+			data = json.dumps(data)
+			response = HttpResponse(data)
+	else:
+		data = {'Terjadi Kesalahan': [{'message': 'Data pengajuan tidak terdaftar.'}]}
+		data = json.dumps(data)
+		response = HttpResponse(data)
+	return response
+
 
 def upload_berkas_optikal(request):
 	if 'id_pengajuan' in request.COOKIES.keys():

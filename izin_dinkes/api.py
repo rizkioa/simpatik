@@ -24,6 +24,15 @@ class BangunanLaboratoriumResource(CORSModelResource):
 			'laboratorium_id': ALL,
 		}
 
+class PengunduranApotekerResource(CORSModelResource):
+	nama_apotek_id = fields.CharField(attribute="nama_apotek__id", null=True, blank=True)
+	class Meta:
+		queryset = PengunduranApoteker.objects.all()
+		filtering = {
+			'id': ALL,
+			'nama_apotek_id': ALL,
+		}
+
 class ApotekResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
 	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)

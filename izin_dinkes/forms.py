@@ -1,5 +1,5 @@
 from django import forms
-from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik
+from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik, PenutupanApotek
 class ApotekForm(forms.ModelForm):
 	class Meta:
 		model = Apotek
@@ -34,3 +34,8 @@ class OperasionalKlinikForm(forms.ModelForm):
 	class Meta:
 		model = OperasionalKlinik
 		fields = ('nama_klinik', 'alamat_klinik', 'desa', 'no_telepon')
+
+class PenutupanApotekForm(forms.ModelForm):
+	class Meta:
+		model = PenutupanApotek
+		fields = ('nama_apotek', 'alamat_apotek', 'no_telepon', 'no_sia', 'nama_pemilik_sarana', 'alamat_sarana')

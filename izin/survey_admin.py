@@ -150,6 +150,10 @@ class SurveyAdmin(admin.ModelAdmin):
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_apotek', args=(obj.id, ))
 		elif kode_ijin == "IOP":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_optikal', args=(obj.id, ))
+		elif kode_ijin == "ILB":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_laboratorium', args=(obj.id, ))
+		elif kode_ijin == "IPA":
+			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_penutupan_apotek', args=(obj.id, ))
 		elif kode_ijin == "IMK":
 			reverse_ = reverse('admin:cek_kelengkapan_pengajuan_mendirikan_klinik', args=(obj.id, ))
 		elif kode_ijin == "IOK":
@@ -1377,6 +1381,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			url(r'^survey-cek-kelengkapan-toko-obat/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_toko_obat" ),
 			url(r'^survey-cek-kelengkapan-apotek/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_apotek" ),
 			url(r'^survey-cek-kelengkapan-optikal/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_optikal" ),
+			url(r'^survey-cek-kelengkapan-laboratorium/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_laboratorium" ),
+			url(r'^survey-cek-kelengkapan-penutupan-apotek/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_penutupan_apotek" ),
 			url(r'^survey-cek-kelengkapan-mendirikan-klinik/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_mendirikan_klinik" ),
 			url(r'^survey-cek-kelengkapan-operasional-klinik/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_tdup, name="cek_kelengkapan_pengajuan_operasional_klinik" ),
 			url(r'^survey-cek-kelengkapan-izin-lokasi/(?P<id_survey>[0-9]+)$', self.view_cek_kelengkapan_pengajuan_izin_lokasi, name="cek_kelengkapan_pengajuan_izin_lokasi" ),

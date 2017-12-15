@@ -5,9 +5,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse, resolve
 
-from izin.models import DetilIzinParkirIsidentil, JenisPermohonanIzin, JenisPemohon
+from izin.models import JenisPermohonanIzin, JenisPemohon
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan
 from accounts.models import NomorIdentitasPengguna
+
+from izin_dinkes.models import PenutupanApotek
 
 def formulir_izin_penutupan_apotek(request):
 	extra_context={}
@@ -24,7 +26,7 @@ def formulir_izin_penutupan_apotek(request):
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES.get('id_pengajuan', None) is not None and request.COOKIES.get('id_pengajuan') != '0':
 				try:
-					pengajuan_obj = DetilIzinParkirIsidentil.objects.get(id=request.COOKIES.get('id_pengajuan'))
+					pengajuan_obj = PenutupanApotek.objects.get(id=request.COOKIES.get('id_pengajuan'))
 					extra_context.update({'pengajuan_': pengajuan_obj})
 					extra_context.update({'pengajuan_id': pengajuan_obj.id})
 				except ObjectDoesNotExist:
