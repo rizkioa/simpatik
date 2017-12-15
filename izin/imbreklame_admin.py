@@ -1,7 +1,7 @@
 import base64, datetime
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from izin.models import DetilIMBPapanReklame, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey
+from izin.models import DetilIMBPapanReklame, Syarat, SKIzin, Riwayat, DetilSk, DetilPembayaran, Survey, BankPembayaran
 from kepegawaian.models import Pegawai,UnitKerja
 from accounts.models import NomorIdentitasPengguna
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404, HttpResponseForbidden
-from izin.utils import*
+from izin.utils import *
 
 class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 	list_display = ('get_no_pengajuan', 'pemohon', 'get_kelompok_jenis_izin','jenis_permohonan', 'status')
@@ -154,10 +154,22 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
 					# print s.survey_iujk.all()
-			except ObjectDoesNotExist:
+			except Survey.DoesNotExist:
 				s = ''
 
 			extra_context.update({'survey': s })
+
+			if pengajuan_.status == 5:
+				nomor_kwitansi = get_nomor_kwitansi(pengajuan_.kelompok_jenis_izin.jenis_izin.kode,str(pengajuan_.id)+"/DPMPTSP")
+				bank_list = BankPembayaran.objects.filter(aktif=True)
+				extra_context.update({
+					'bank_pembayaran': bank_list,
+					'nomor_kwitansi': nomor_kwitansi
+					})
+			if pengajuan_.status == 2:
+				extra_context.update({
+					'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+					})
 
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_reklame.html")
 		ec = RequestContext(request, extra_context)
@@ -218,7 +230,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
 				if sk_imb_:
 					extra_context.update({'sk_imb': sk_imb_ })
-			except ObjectDoesNotExist:
+			except DetilSk.DoesNotExist:
 				pass
 			try:
 				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()

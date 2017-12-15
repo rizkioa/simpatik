@@ -28,6 +28,7 @@ class ApotekResource(CORSModelResource):
 	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
 	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	sarana = fields.CharField(attribute="sarana__nama_sarana", null=True, blank=True)
 	class Meta:
 		queryset = Apotek.objects.all()
 		authentication = ApiKeyAuthentication()
@@ -56,15 +57,51 @@ class TokoObatResource(CORSModelResource):
 		}
 
 class LaboratoriumResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = Laboratorium.objects.all()
+		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
 		}
 
 class OptikalResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = Optikal.objects.all()
+		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
+		filtering = {
+			'id': ALL,
+		}
+
+class MendirikanKlinikResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	class Meta:
+		queryset = MendirikanKlinik.objects.all()
+		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
+		filtering = {
+			'id': ALL,
+		}
+
+class OperasionalKlinikResource(CORSModelResource):
+	pemohon = fields.ToOneField(PemohonResource, 'pemohon', full = True, null=True)
+	kelompok_jenis_izin = fields.CharField(attribute="kelompok_jenis_izin__kelompok_jenis_izin", null=True, blank=True)
+	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
+	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
+	class Meta:
+		queryset = OperasionalKlinik.objects.all()
+		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
 		}

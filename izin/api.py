@@ -127,7 +127,9 @@ class PengajuanIzinAllResource(CORSModelResource):
 		queryset = PengajuanIzin.objects.all()
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status', 'updated_at']
 		authentication = ApiKeyAuthentication()
+		allowed_methods = ['get', 'put']
 		filtering = {
+			'id': ALL,
 			"no_pengajuan" : ALL,
 			"pemohon" : ALL_WITH_RELATIONS,
 		}
@@ -356,6 +358,7 @@ class DetilPembayaranResource(CORSModelResource):
 			]
 
 	def cek_retribusi(self, request, **kwargs):
+		import datetime
 		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Retribusi tidak ditemukan atau tidak ada dalam daftar disistem SIMPATIK.'}
 		kode = request.GET.get('kode')
 		username = request.GET.get('username')
@@ -365,16 +368,19 @@ class DetilPembayaranResource(CORSModelResource):
 			if kode:
 				try:
 					retribusi_obj = DetilPembayaran.objects.get(nomor_kwitansi=kode)
+					# tanggal_deadline = None
+					if retribusi_obj.tanggal_deadline:
+						tanggal_deadline = retribusi_obj.tanggal_deadline.strftime("%d-%M-%Y")
+					if tanggal_deadline < datetime.date:
+						pass
 					nama_pemohon = ""
 					if retribusi_obj.pengajuan_izin:
 						if retribusi_obj.pengajuan_izin.pemohon:
 							nama_pemohon = retribusi_obj.pengajuan_izin.pemohon.nama_lengkap
 					tanggal_bayar = None
-					if retribusi_obj.tanggal_bayar:
-						tanggal_bayar = retribusi_obj.tanggal_bayar.strftime("%d-%M-%Y")
-					tanggal_deadline = None
-					if retribusi_obj.tanggal_deadline:
-						tanggal_deadline = retribusi_obj.tanggal_deadline.strftime("%d-%M-%Y")
+					# if retribusi_obj.tanggal_bayar:
+					# 	tanggal_bayar = retribusi_obj.tanggal_bayar.strftime("%d-%M-%Y")
+
 					data = {'success': True, 'pesan': 'Sukses. Retribusi berhasil diload.', 'kode': retribusi_obj.nomor_kwitansi, 'pemohon': nama_pemohon, "peruntukan": retribusi_obj.peruntukan, 'tanggal_bayar': tanggal_bayar, 'tanggal_deadline': tanggal_deadline, 'total_bayar': retribusi_obj.jumlah_pembayaran, 'bank': retribusi_obj.bank}
 				except DetilPembayaran.DoesNotExist:
 					pass

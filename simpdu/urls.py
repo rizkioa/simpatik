@@ -63,6 +63,8 @@ v1_api.register(SaranaResource())
 v1_api.register(TokoObatResource())
 v1_api.register(LaboratoriumResource())
 v1_api.register(OptikalResource())
+v1_api.register(MendirikanKlinikResource())
+v1_api.register(OperasionalKlinikResource())
 
 v1_api.register(DetilPembayaranResource())
 
