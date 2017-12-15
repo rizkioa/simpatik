@@ -1,6 +1,7 @@
 from django.db import models
 from izin.models import PengajuanIzin
 from master.models import Desa
+from perusahaan.models import Perusahaan
 
 # Pengajuan Apotik
 class Sarana(models.Model):
@@ -194,6 +195,7 @@ class Optikal(PengajuanIzin):
 		verbose_name_plural = 'Optikal'
 
 class MendirikanKlinik(PengajuanIzin):
+	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan', null=True, blank=True)
 	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256, null=True, blank=True)
 	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
@@ -217,6 +219,7 @@ class MendirikanKlinik(PengajuanIzin):
 		verbose_name_plural = 'Mendirikan Klinik'
 
 class OperasionalKlinik(PengajuanIzin):
+	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan', null=True, blank=True)
 	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256, null=True, blank=True)
 	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
