@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from izin.models import Survey
 from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
+from simpdu.api_settings import API_URL_DINKES
 
 class TokoObatAdmin(admin.ModelAdmin):
 
@@ -41,7 +42,8 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'banyak': len(TokoObat.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
-			'url_form': reverse("admin:izin_proses_izin_toko_obat")
+			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
+			'API_URL_DINKES': API_URL_DINKES,
 			})
 		return render(request, "admin/izin_dinkes/tokoobat/view_verifikasi.html", extra_context)
 

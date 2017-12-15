@@ -248,6 +248,12 @@
 				<center>
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
+					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
+						{% if pengajuan.status == 2 %}
+							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_kwitansi' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Kwitansi</a>
+						{% endif %}
+					{% endif %}
+
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
@@ -981,41 +987,59 @@
 		            </div>
 		            <div id="minimize_3">
 		            	<div class="tile-body">
-			                <div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
+			                <div class="panel panel-darkgray" style="border: 0;border-radius: 6px;">
 			                	{% if pengajuan.status == 5 %}
 									<div class="panel-body">
 										<form method="POST" id="id_form_pembayaran" name="form_pembayaran" role="form" class="form-horizontal" action="{% url 'detil_pembayaran_save' %}" data-parsley-validate novalidate>
-										{% csrf_token %}
-												<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+											{% csrf_token %}
+											<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
 
-												<div class="form-group">
-												<label for="input01" class="col-sm-2 label-color">Tanggal Bayar</label>
-													<div class="col-sm-2">
-														<div class="input-group datepicker w-360 tanggal-awal"> 
-															<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
-															<span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-															<a class="btn btn-default" style="height:34px;" type="button"><i class="fa fa-calendar"></i></a>
-															</span>
-														</div>
+											<!-- <div class="form-group">
+												<label for="input01" class="col-sm-2">Tanggal Dateline</label>
+												<div class="col-sm-4">
+													<div class="input-group datepicker tanggal-awal"> 
+														<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar">
+														<span class="input-group-addon">
+															<span class="fa fa-calendar"></span>
+														</span>
 													</div>
 												</div>
+											</div> -->
 
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
-													<div class="col-sm-5">
-														<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;">
-													</div>
-											    </div>
+											<div class="form-group">
+												<label for="input01" class="col-sm-2">Nomor Kwitansi </label>
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" value="{{nomor_kwitansi}}">
+												</div>
+											</div>
 
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
-													<div class="col-sm-6">
-														<div class="input-group">
-															<span class="input-group-addon" style="width:34px;">Rp.</span>
-																<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
-														</div>
+											<div class="form-group">
+												<label class="col-sm-2">Peruntukan</label>
+												<div class="col-sm-4">
+													<textarea rows="5" class="form-control" name="peruntukan"></textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-sm-2">Bank Pembayaran</label>
+												<div class="col-sm-4">
+													<select class="form-control chosen-select mb-10" name="bank_pembayaran">
+														{% for b in bank_pembayaran %}
+															<option {{b.id}}>{{b.nama_bank}}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label for="input01" class="col-sm-2">Jumlah Dibayar </label>
+												<div class="col-sm-4">
+													<div class="input-group">
+														<span class="input-group-addon">Rp.</span>
+														<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
 													</div>
-											    </div>
+												</div>
+											</div>
 										</form>
 									</div>
 								    <section class="tile bg-greensea">

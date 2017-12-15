@@ -12,7 +12,7 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 # from django.db.models.signals import pre_delete
 # from django.dispatch.dispatcher import receiver
 
-from datetime import datetime
+import datetime
 from ckeditor.fields import RichTextField
 
 # from accounts.utils import KETERANGAN_PEKERJAAN
@@ -1545,18 +1545,28 @@ class VasilitasTDUP(models.Model):
 
 
 # ++++++++++++ end TDUP ++++++++++++
+class BankPembayaran(models.Model):
+	nama_bank = models.CharField(max_length=255, verbose_name="Nama Bank")
+	aktif = models.BooleanField(default=True, verbose_name="Apakah dipakai untuk pembayaran ?")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_bank)
+
+	class Meta:
+		verbose_name = 'Bank Pembayaran'
+		verbose_name_plural = 'Bank Pembayaran'
 
 # Detil Pembayaran Izin
 # meta
 class DetilPembayaran(models.Model):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
-	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar")
+	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
+	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
 	nomor_kwitansi = models.CharField(max_length=255, verbose_name='Nomor Kwitansi', null=True, blank=True)
 	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
 	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
-	# tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
-	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
-	bank = models.CharField(max_length=255, verbose_name="BANK", null=True, blank=True)
+	bank_pembayaran = models.ForeignKey(BankPembayaran, null=True, blank=True, verbose_name="Bank Pembayaran")
 
 	def __unicode__(self):
 		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))
@@ -1565,6 +1575,14 @@ class DetilPembayaran(models.Model):
 		# ordering = ['-status']
 		verbose_name = 'Detil Pembayaran'
 		verbose_name_plural = 'Detil Pembayaran'
+
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		# if not self.id:
+		""" tanggal dateline otomatis 3 bulan dari pembuatan kwitansi """
+		import datetime
+		self.tanggal_deadline = datetime.date.today() + datetime.timedelta(3*365/12)
+		return super(DetilPembayaran, self).save(*args, **kwargs)
 
 # +++++++++++++ LPK Sw ++++++++++++
 class SumberBiayaPelatihan(models.Model):
