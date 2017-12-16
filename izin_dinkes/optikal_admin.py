@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from izin.models import Survey
 from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
+from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 
 class OptikalAdmin(admin.ModelAdmin):
 
@@ -41,7 +42,8 @@ class OptikalAdmin(admin.ModelAdmin):
 			'banyak': len(Optikal.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:optikal__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
-			'url_form': reverse("admin:izin_proses_izin_optikal")
+			'url_form': reverse("admin:izin_proses_izin_optikal"),
+			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES
 			})
 		return render(request, "admin/izin_dinkes/optikal/view_verifikasi.html", extra_context)
 

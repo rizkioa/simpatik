@@ -8,7 +8,7 @@ from tastypie.resources import ALL_WITH_RELATIONS, ALL
 from tastypie.authentication import ApiKeyAuthentication
 from tastypie.authorization import Authorization
 from django.conf.urls import url
-import json
+import json, datetime
 from izin.utils import cek_apikey
 
 class BerkasTerkalitIzin(CORSModelResource):
@@ -358,7 +358,6 @@ class DetilPembayaranResource(CORSModelResource):
 			]
 
 	def cek_retribusi(self, request, **kwargs):
-		import datetime
 		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Retribusi tidak ditemukan atau tidak ada dalam daftar disistem SIMPATIK.'}
 		kode = request.GET.get('kode')
 		username = request.GET.get('username')
@@ -397,10 +396,11 @@ class DetilPembayaranResource(CORSModelResource):
 			if kode:
 				try:
 					retribusi_obj = DetilPembayaran.objects.get(kode=kode)
-					retribusi_obj.status = 1
+					retribusi_obj.pengajuan_izin.status = 2
+					retribusi_obj.tanggal_bayar = datetime.datetime.now()
 					retribusi_obj.save()
-					"Melakukan pengupdatean status pengajuan izin untuk proses selanjutnya"
-				except DetilPembayaranResource.DoesNotExist:
+					"""Melakukan pengupdatean status pengajuan izin untuk proses selanjutnya"""
+				except DetilPembayaran.DoesNotExist:
 					pass
 		else:
 			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Anda tidak memiliki akses di SIMPATIK.'}

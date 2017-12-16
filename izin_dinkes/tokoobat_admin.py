@@ -29,7 +29,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 			extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 		except Survey.DoesNotExist:
 			s = ""
-			
+		print API_URL_DINKES
 		extra_context.update({
 			'has_permission': True,
 			'title': 'Proses Verifikasi Pengajuan Izin Toko Obat',
