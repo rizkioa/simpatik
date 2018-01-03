@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'daterange_filter',
     'ckeditor',
+    'djcelery',
     # 'debug_toolbar',
     'mptt',
     'cas',
@@ -216,10 +217,10 @@ HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'mail.kedirikab.go.id'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'hariyanti@kedirikab.go.id'
-EMAIL_HOST_PASSWORD = 'kediri@4531'
+EMAIL_HOST_USER = 'simpatik.kedirikab@gmail.com'
+EMAIL_HOST_PASSWORD = 'fgtcTff62pN36ZXT'
 DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'
 
 CKEDITOR_CONFIGS = {
@@ -250,3 +251,14 @@ GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Jakarta'
+
+COMPUTER_PASSWORD = "SegoPecel"
+
+import djcelery
+djcelery.setup_loader()

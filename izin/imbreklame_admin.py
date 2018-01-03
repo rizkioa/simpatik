@@ -75,72 +75,18 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 	def view_pengajuan_imb_reklame(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
-			extra_context.update({'title': 'Proses Pengajuan'})
-			# pengajuan_ = DetilIMBPapanReklame.objects.get(id=id_pengajuan_izin_)
+			extra_context.update({'title': 'Proses Pengajuan IMB Reklame'})
 			pengajuan_ = get_object_or_404(DetilIMBPapanReklame, id=id_pengajuan_izin_)
 			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
-
-			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
-			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
-			alamat_ = ""
-			alamat_perusahaan_ = ""
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
-				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
-				extra_context.update({'nomor_identitas': nomor_identitas_ })
-				try:
-					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
-					extra_context.update({'cookie_file_ktp': ktp_.berkas })
-				except ObjectDoesNotExist:
-					pass
-			if pengajuan_.perusahaan:
-				if pengajuan_.perusahaan.desa:
-					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
-					extra_context.update({'alamat_perusahaan': alamat_perusahaan_ })
-				extra_context.update({'perusahaan': pengajuan_.perusahaan})
-
-				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
-				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
-				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
-				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
-			letak_ = pengajuan_.lokasi_pasang + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			pengajuan_id = pengajuan_.id
-			extra_context.update({'letak_pemasangan': letak_})
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
-			extra_context.update({'status': pengajuan_.status})
+			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.last()})
 			extra_context.update({'pengajuan': pengajuan_})
-			# encode_pengajuan_id = (str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': pengajuan_id })
-			#+++++++++++++ page logout ++++++++++
 			extra_context.update({'has_permission': True })
-			#+++++++++++++ end page logout ++++++++++
-
-			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
-			# print lama_pemasangan
-			banyak = len(DetilIMBPapanReklame.objects.all())
+			banyak = DetilIMBPapanReklame.objects.count()
 			extra_context.update({'banyak': banyak})
 			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
 			extra_context.update({'syarat': syarat_})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
-				if riwayat_:
-					extra_context.update({'riwayat': riwayat_ })
-			except ObjectDoesNotExist:
-				pass
-
+			skizin_ = pengajuan_.skizin_set.last()
+			extra_context.update({'skizin': skizin_ })
 			# SURVEY
 			h = Group.objects.filter(name="Cek Lokasi")
 			if h.exists():
@@ -153,18 +99,22 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					s = Survey.objects.get(pengajuan=pengajuan_)
 				except Survey.MultipleObjectsReturned:
 					s = Survey.objects.filter(pengajuan=pengajuan_).last()
-					# print s.survey_iujk.all()
 			except Survey.DoesNotExist:
 				s = ''
 
 			extra_context.update({'survey': s })
 
 			if pengajuan_.status == 5:
-				nomor_kwitansi = get_nomor_kwitansi(pengajuan_.kelompok_jenis_izin.jenis_izin.kode,str(pengajuan_.id)+"/DPMPTSP")
+				import datetime
+				jumlah_data = int(DetilPembayaran.objects.count())+1
+				nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				kode = generate_kode_bank_jatim(DetilPembayaran.objects.filter(created_at__gte=datetime.date.today()).count()+1)
 				bank_list = BankPembayaran.objects.filter(aktif=True)
 				extra_context.update({
+					'kode': kode,
 					'bank_pembayaran': bank_list,
-					'nomor_kwitansi': nomor_kwitansi
+					'nomor_kwitansi': nomor_kwitansi,
+					'peruntukan': "IMB Reklame"
 					})
 			if pengajuan_.status == 2:
 				extra_context.update({
@@ -235,10 +185,11 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			try:
 				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
 				if retribusi_:
-					n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-					terbilang_ = terbilang(n)
+					if retribusi_.jumlah_pembayaran and retribusi_.jumlah_pembayaran is not None:
+						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+						terbilang_ = terbilang(n)
+						extra_context.update({'terbilang': terbilang_ })
 					extra_context.update({'retribusi': retribusi_ })
-					extra_context.update({'terbilang': terbilang_ })
 			except ObjectDoesNotExist:
 				pass
 		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")

@@ -477,3 +477,23 @@ class PesanPengaduan(MetaAtribut):
 	class Meta:
 		verbose_name = "Pesan Pengaduan"
 		verbose_name_plural = "Pesan Pengaduan"
+
+
+class NotificationSMS(MetaAtribut):
+	"""
+		status :
+			6 = masuk antrian sms
+			1 = sms sudah dikirim
+			2 = sms error atau terjadi kesalahan saat mengirim
+	"""
+
+	pesan = models.CharField(verbose_name="Pesan", null=True, blank=True, max_length=255)
+	nomor_tujuan = models.CharField(verbose_name="Nomor Tujuan", max_length=255)
+	keterangan = models.CharField(verbose_name="Keterangan", null=True, blank=True, max_length=255)
+
+	def __unicode__(self):
+		return u'%s - %s' % (self.nomor_tujuan, self.pesan)
+
+	class Meta:
+		verbose_name = "Notification SMS"
+		verbose_name_plural = "Notification SMS"

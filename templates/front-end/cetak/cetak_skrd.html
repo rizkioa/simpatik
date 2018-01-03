@@ -1,0 +1,103 @@
+{% load i18n admin_static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cetak SKRD | {{detil.nomor_kwitansi}}</title>
+	<style type="text/css">
+		/*table.table-border {
+		    border-collapse: collapse;
+		}*/
+
+		/*table , .table-border, th, td {
+		    border: 1px solid black;
+		}*/
+	</style>
+</head>
+<body>
+	<table width="100%" border="1" style="border-collapse: collapse;">
+		<tr>
+			<td width="50%">
+				<table>
+					<tr>
+						<td width="10%"><img id="logo" src="http://{{request.META.HTTP_HOST}}{% static 'images/kabkediri.png' %}" width="60px"><p id="logo_"></p></td>
+						<td width="90%">
+							<p style="text-align: center; margin-bottom: 0; margin-top: 0;line-height: 10px;">
+								<b style="font-size: 10px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+								<b style="font-size: 10px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+								<br/>
+								<span style="font-size: 9px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
+								<span style="font-size: 10px;left: 0;">Kode Pos : 64182</span>
+							</p>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td width="50%">
+				<center>
+					<strong>SKRD</strong><br>
+					(SURAT KETETAPAN RETRIBUSI DAERAH)<br>
+					No. SKRD : {{detil.nomor_kwitansi}}<br>
+				</center>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table>
+		<tr>
+			<td>Nama</td>
+			<td>:</td>
+			<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
+		</tr>
+		<tr>
+			<td>Nama Perusahaan</td>
+			<td>:</td>
+			<td>{{detil.pengajuan_izin.perusahaan}}</td>
+		</tr>
+		<tr>
+			<td>Alamat Usaha/Perusahaan</td>
+			<td>:</td>
+			<td>{{ detil.pengajuan_izin.lokasi_pasang }}, {{detil.pengajuan_izin.desa.lokasi_lengkap}}</td>
+		</tr>
+	</table>
+	<table width="100%" border="1" style="border-collapse: collapse;">
+		<thead>
+			<tr>
+				<th>No.</th>
+				<th>Peruntukan / Urian Rincian</th>
+				<th>Retribusi Terhutang (Rp)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td width="15%">1.</td>
+				<td>{{detil.peruntukan}}</td>
+				<td align="right">{{detil.jumlah_pembayaran}}</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">Jumlah Ketetapan Retribusi Daerah</td>
+				<td align="right">{{detil.jumlah_pembayaran}}</td>
+			</tr>
+			<tr>
+				<td>Dengan Huruf</td>
+				<td colspan="2">{{terbilang_jumlah.title}}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<script type="text/javascript">
+		readFile("logo", "logo_")
+	    function readFile(encode_, decode_) {
+	        if (this.files && this.files[0]) {
+	            var FR= new FileReader();
+	            
+	            FR.addEventListener("load", function(e) {
+	                document.getElementById(encode_).src       = e.target.result;
+	                document.getElementById(decode_).innerHTML = e.target.result;
+	            }); 
+	            
+	            FR.readAsDataURL( this.files[0] );
+	        }
+	    }
+	</script>
+</body>
+</html>

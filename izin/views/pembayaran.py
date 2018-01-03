@@ -36,6 +36,7 @@ def detil_pembayaran_save(request):
 		if pembayaran.is_valid():
 			if request.user.groups.filter(name='Kasir'):
 				p = pembayaran.save(commit=False)
+				p.kode = request.POST.get('kode')
 				p.save()
 				sk_izin_.status = 9
 				sk_izin_.save()
@@ -46,7 +47,7 @@ def detil_pembayaran_save(request):
 					created_by_id = request.user.id,
 					keterangan = "Kasir Verified"
 				)
-				riwayat_.save()
+				# riwayat_.save()
 
 				data = {'success': True,
 						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
