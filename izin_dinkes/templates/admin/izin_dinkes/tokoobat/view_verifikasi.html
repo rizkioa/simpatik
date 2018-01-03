@@ -1,0 +1,30 @@
+{% extends "admin/izin_dinkes/view_verifikasi.html" %}
+
+{% block detil_modal %}
+	<br>
+	<h4><u>#2. IZIN TOKO OBAT</u></h4>
+	<table width="100%" border="0">
+		<tr>
+			<td width="25%">Nama Toko Obat</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.nama_toko_obat}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Nama TTK Penanggung Jawab</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.nama_ttk_penanggung_jawab}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Alamat TTK</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.alamat_ttk}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Alamat Tempat Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.alamat_tempat_usaha}}</td>
+		</tr>
+
+	</table>
+{% endblock %}
+

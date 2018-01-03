@@ -171,12 +171,12 @@
 											<tr>
 												<td>Jenis Izin</td>
 												<td>:</td>
-												<td>{{ kelompok_jenis_izin }}</td>
+												<td>{{ pengajuan.kelompok_jenis_izin }}</td>
 											</tr>
 											<tr>
 												<td>Pemohon</td>
 												<td>:</td>
-												<td>{{ pemohon }} ({{ pemohon.jenis_pemohon }})</td>
+												<td>{{ pengajuan.pemohon }} ({{ pengajuan.pemohon.jenis_pemohon }})</td>
 											</tr>
 										</table>
 									</div>
@@ -193,7 +193,7 @@
 											<tr>
 												<td>Perusahaan</td>
 												<td>:</td>
-												<td>{{ perusahaan }}</td>
+												<td>{{ pengajuan.perusahaan }}</td>
 											</tr>
 										</table>
 									</div>
@@ -211,9 +211,9 @@
 												</tr>
 											</thead>
 											<tbody>
-												{% for r in riwayat %}
+												{% for r in pengajuan.riwayat_set.all %}
 													<tr>
-														<td align="center">{{ r.created_at }}</td>
+														<td align="center">Tanggal {{ r.created_at|date:"d-m-Y" }}, Pukul {{r.created_at|date:"H:i"}}</td>
 														<td align="center">{{ r.keterangan }}</td>
 														<td align="center">{{ r.created_by.nama_lengkap }}</td>
 													</tr>
@@ -232,7 +232,7 @@
 					<div class="col-md-12" align="center">
 						<a data-toggle="modal" data-target="#detail_reklame" class="btn btn-warning btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Detail Pengajuan</span></a>
 						<a data-toggle="modal" data-target="#view_berkas" class="btn btn-red btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Berkas Pengajuan</span></a>
-						{%  if request.user.is_superuser or request.user|has_group:'Operator' or request.user.is_superuser and status == 6  %}
+						{%  if request.user.is_superuser or request.user|has_group:'Operator' or request.user.is_superuser and pengajuan.status == 6  %}
 						<a onclick="change_edit_pengajuan()" href="{% url 'admin:izin_proses_imb_reklame' %}" target="_blank" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 					{% endif %}
 					</div>
@@ -248,12 +248,19 @@
 				<center>
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
-					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
+						{% if pengajuan.status == 2 %}
+							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
+							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
+						{% endif %}
 					{% endif %}
-					{% if skizin_status == 1 or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
-						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan_id  True %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
+
+					{% if skizin.status == 6 or skizin.status == 4 or skizin.status == 9 or skizin.status == 10 or pengajuan.status == 2 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+					{% endif %}
+					{% if skizin.status == 1 or skizin.status == 2 %}
+						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan.id  True %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
 					{% endif %}
 
 				</center>
@@ -279,7 +286,7 @@
 	            </div>
 	            <div id="minimize">
 	            	<div class="tile-body">
-	            		{% if status != 6 %}
+	            		{% if pengajuan.status != 6 %}
 			                <!-- <table class="table table-bordered">
 						        <thead>
 							        <tr >
@@ -319,7 +326,7 @@
 					    {% endif %}
 					    <br>
 					    <br>
-					    {% if status == 6 %}
+					    {% if pengajuan.status == 6 %}
 						    <section class="tile bg-greensea">
 							    <div class="tile-body">
 							      <label class="checkbox checkbox-custom-alt">
@@ -330,7 +337,7 @@
 					    {% endif %}
 					</div>
 
-					{% if status == 6 %}
+					{% if pengajuan.status == 6 %}
 						<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 							<div class="row">
 								<div class="col-md-12" align="right">
@@ -361,7 +368,7 @@
 				</div>
 				<div id="minimize_2">
 					<div class="tile-body">
-						{% if status == 2 %}
+						{% if pengajuan.status == 2 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
@@ -372,7 +379,7 @@
 								</div>
 							</div>
 						{% endif %}
-						{% if status == 7 %}
+						{% if pengajuan.status == 7 %}
 							<div class="panel panel-darkgray" style="background-color: #ff1910 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
@@ -383,7 +390,7 @@
 								</div>
 							</div>
 						{% endif %}
-						{% if status == 4 %}
+						{% if pengajuan.status == 4 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<h4>MENERUSKAN PENGAJUAN KE KEPALA DPMPTSP</h4>
@@ -429,7 +436,7 @@
 							</div>
 						{% endif %}
 						
-						{% if status == 8 %}
+						{% if pengajuan.status == 8 %}
 							<!-- <section class="tile" style="background-color: #f0ad4e !important;border: 0;border-radius: 6px;"> -->
 							<section class="tile">
 
@@ -684,15 +691,15 @@
 				<div id="minimize_4">
 					<div class="tile-body">
 						<div class="panel-body">
-						{% if skizin == None and status == 2%}
+						{% if skizin == None and pengajuan.status == 2%}
 							<center>
-								<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+								<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 								<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 								<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 							</center>
 						</div>
 						{% endif %}
-						{% if skizin_status == 6 %}
+						{% if skizin.status == 6 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
@@ -728,7 +735,7 @@
 					</div>
 					<div id="minimize_5">
 						<div class="tile-body">
-							{% if skizin_status == 6 %}
+							{% if skizin.status == 6 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
@@ -745,7 +752,7 @@
 								</div>
 							{% endif %}
 
-							{% if status == 7 %}
+							{% if pengajuan.status == 7 %}
 								<div class="panel panel-darkgray" style="background-color: #ff1910 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -758,7 +765,7 @@
 
 							{% endif %}
 
-							{% if skizin_status == 4 %}
+							{% if skizin.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -770,7 +777,7 @@
 								</div>
 							{% endif %}
 
-							{% if skizin_status == 6 %}
+							{% if skizin.status == 6 %}
 
 								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST">
@@ -823,7 +830,7 @@
 					</div>
 					<div id="minimize_6">
 						<div class="tile-body">
-							{% if skizin_status == 12 %}
+							{% if skizin.status == 12 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -834,7 +841,7 @@
 									</div>
 								</div>
 							{% endif %}
-							{% if skizin_status == 4 %}
+							{% if skizin.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
@@ -904,7 +911,7 @@
 					</div>
 					<div id="minimize_6">
 						<div class="tile-body">
-							{% if skizin_status == 9 %}
+							{% if skizin.status == 9 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -915,7 +922,7 @@
 									</div>
 								</div>
 							{% endif %}
-							{% if skizin_status == 12 %}
+							{% if skizin.status == 12 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
@@ -981,41 +988,67 @@
 		            </div>
 		            <div id="minimize_3">
 		            	<div class="tile-body">
-			                <div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
+			                <div class="panel panel-darkgray" style="border: 0;border-radius: 6px;">
 			                	{% if pengajuan.status == 5 %}
 									<div class="panel-body">
 										<form method="POST" id="id_form_pembayaran" name="form_pembayaran" role="form" class="form-horizontal" action="{% url 'detil_pembayaran_save' %}" data-parsley-validate novalidate>
-										{% csrf_token %}
-												<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+											{% csrf_token %}
+											<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
 
-												<div class="form-group">
-												<label for="input01" class="col-sm-2 label-color">Tanggal Bayar</label>
-													<div class="col-sm-2">
-														<div class="input-group datepicker w-360 tanggal-awal"> 
-															<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
-															<span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-															<a class="btn btn-default" style="height:34px;" type="button"><i class="fa fa-calendar"></i></a>
-															</span>
-														</div>
+											<!-- <div class="form-group">
+												<label for="input01" class="col-sm-2">Tanggal Dateline</label>
+												<div class="col-sm-4">
+													<div class="input-group datepicker tanggal-awal"> 
+														<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar">
+														<span class="input-group-addon">
+															<span class="fa fa-calendar"></span>
+														</span>
 													</div>
 												</div>
+											</div> -->
 
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
-													<div class="col-sm-5">
-														<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;">
-													</div>
-											    </div>
+											<div class="form-group">
+												<label class="col-sm-2">Kode</label>
+												<div class="col-sm-4">
+													<input type="text" class="form-control" value="{{kode}}" disabled="">
+													<input type="hidden" name="kode" value="{{kode}}">
+												</div>
+											</div>
 
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
-													<div class="col-sm-6">
-														<div class="input-group">
-															<span class="input-group-addon" style="width:34px;">Rp.</span>
-																<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
-														</div>
+											<div class="form-group">
+												<label for="input01" class="col-sm-2">Nomor SKRD </label>
+												<div class="col-sm-4">
+													<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" value="{{nomor_kwitansi}}">
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-sm-2">Peruntukan</label>
+												<div class="col-sm-4">
+													<textarea rows="5" class="form-control" name="peruntukan">{{peruntukan}}</textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="col-sm-2">Bank Pembayaran</label>
+												<div class="col-sm-4">
+													<select class="form-control chosen-select mb-10" name="bank_pembayaran">
+														{% for b in bank_pembayaran %}
+															<option {{b.id}}>{{b.nama_bank}}</option>
+														{% endfor %}
+													</select>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label for="input01" class="col-sm-2">Jumlah Dibayar </label>
+												<div class="col-sm-4">
+													<div class="input-group">
+														<span class="input-group-addon">Rp.</span>
+														<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
 													</div>
-											    </div>
+												</div>
+											</div>
 										</form>
 									</div>
 								    <section class="tile bg-greensea">
@@ -1028,13 +1061,13 @@
 									<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 										<div class="row">
 											<div class="col-md-12" align="right">
-												<a type="button" class="btn btn-darkgray mb-10">Tidak Dibayar</a>
+												<a type="button" class="btn btn-danger mb-10">Tidak Dibayar</a>
 												<button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></button>
 											</div>
 										</div>
 									</div>
 								{% endif %}
-								{% if skizin_status == 9 and pengajuan.status != 5%}
+								{% if skizin.status == 9 and pengajuan.status != 5%}
 									<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								    	<div class="panel-body">
 								    		<center>
@@ -1070,7 +1103,7 @@
 				</div>
 				<div id="minimize_7">
 					<div class="tile-body">
-						{% if skizin_status == 9 %}
+						{% if skizin.status == 9 %}
 						<form class="form-inline">
 							<center>
 								<br>
@@ -1104,7 +1137,7 @@
 							</center>
 						</form>
 						{% endif %}
-						{% if skizin_status == 10 %}
+						{% if skizin.status == 10 %}
 							<!-- <a role="button" class="btn btn-lightred">
 							  <span><h3>No. Izin : {{ pengajuan.no_izin }}</h3></span>
 							</a> -->
@@ -1129,7 +1162,7 @@
 							</div>
 						{% endif %}
 					</div>
-					{% if skizin_status == 9 %}
+					{% if skizin.status == 9 %}
 					<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 						<center>
 							<a onclick="penomoran_izin({{ pengajuan.id }}, '_submit_penomoran')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
@@ -1159,12 +1192,12 @@
 				</div>
 				<div id="minimize_8">
 					<div class="tile-body">
-						{% if skizin_status == 10 %}
+						{% if skizin.status == 10 %}
 							<center>
 								<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
 							</center>
 						{% endif %}
-						{% if skizin_status == 2 %}
+						{% if skizin.status == 2 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
@@ -1200,7 +1233,7 @@
 					<div id="minimize_8">
 						<form class="form-inline">
 							<div class="tile-body">
-								{% if skizin_status == 2 %}
+								{% if skizin.status == 2 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<br>
@@ -1210,7 +1243,7 @@
 									</div>
 								</div>
 								{% endif %}
-								{% if skizin_status == 1 %}
+								{% if skizin.status == 1 %}
 									<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 										<div class="panel-body">
 											<center>
@@ -1222,7 +1255,7 @@
 									</div>
 								{% endif %}
 							</div>
-							{% if skizin_status == 2 %}
+							{% if skizin.status == 2 %}
 							<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 								<div class="row">
 									<div class="col-md-12" align="center">
@@ -1477,7 +1510,7 @@
 				<div class="modal-body">
 					<form role="form" method="POST" action="{% url 'admin:save_survey_ajax' %}" id="form-survey" data-parsley-validate novalidate>
 					{% csrf_token %}
-					<input type="hidden" name="pengajuan_id" value="{{pengajuan.id}}"></input>
+					<input type="hidden" name="pengajuan.id" value="{{pengajuan.id}}"></input>
 					<input type="hidden" name="kelompok_jenis_izin_id" value="{{pengajuan.kelompok_jenis_izin.id}}"></input>
 						<div class="form-group">
 							<label for="input01"><span style="color: black">SKPD</span> </label>
@@ -1611,34 +1644,34 @@
 						  <td width="70%">{{ pengajuan.jenis_papan_reklame|default_if_none:"-" }}</td>
 						</tr>
 						<tr>
-						  <td width="40%">Ukuran, Panjang x Lebar </td>
-						  <td width="5%">:</td>
-						  <td width="55%">Lebar = {{ pengajuan.lebar|default_if_none:"-" }} M, Tinggi = {{ pengajuan.tinggi|default_if_none:"-" }}</td>
+						  <td>Ukuran, Panjang x Lebar </td>
+						  <td>:</td>
+						  <td>Lebar = {{ pengajuan.lebar|default_if_none:"-" }} M, Tinggi = {{ pengajuan.tinggi|default_if_none:"-" }}</td>
 						</tr>
 						<tr>
-						  <td width="40%">Letak Pemasangan</td>
-						  <td width="5%">:</td>
-						  <td width="55%">{{ letak_pemasangan|default_if_none:"-" }}</td>
+						  <td>Letak Pemasangan</td>
+						  <td>:</td>
+						  <td>{{ pengajuan.lokasi_pasang }}, {{pengajuan.desa.lokasi_lengkap}}</td>
 						</tr>
 						<tr>
-						  <td width="40%">Batas Utara</td>
-						  <td width="5%">:</td>
-						  <td width="55%">{{ pengajuan.batas_utara|default_if_none:"-" }}</td>
+						  <td>Batas Utara</td>
+						  <td>:</td>
+						  <td>{{ pengajuan.batas_utara|default_if_none:"-" }}</td>
 						</tr> 
 						<tr>
-						  <td width="40%">Batas Timur</td>
-						  <td width="5%">:</td>
-						  <td width="55%">{{ pengajuan.batas_timur|default_if_none:"-" }}</td>
+						  <td>Batas Timur</td>
+						  <td>:</td>
+						  <td>{{ pengajuan.batas_timur|default_if_none:"-" }}</td>
 						</tr> 
 						<tr>
-						  <td width="40%">Batas Selatan</td>
-						  <td width="5%">:</td>
-						  <td width="55%">{{ pengajuan.batas_selatan|default_if_none:"-" }}</td>
+						  <td>Batas Selatan</td>
+						  <td>:</td>
+						  <td>{{ pengajuan.batas_selatan|default_if_none:"-" }}</td>
 						</tr> 
 						<tr>
-						  <td width="40%">Batas Barat</td>
-						  <td width="5%">:</td>
-						  <td width="55%">{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
+						  <td>Batas Barat</td>
+						  <td>:</td>
+						  <td>{{ pengajuan.batas_barat|default_if_none:"-" }}</td>
 						</tr> 
 					</table>
 					<br>

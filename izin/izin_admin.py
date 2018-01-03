@@ -38,6 +38,8 @@ from izin.controllers.dinkes.izin_toko_obat import formulir_izin_toko_obat
 from izin.controllers.dinkes.izin_laboratorium import formulir_izin_laboratorium
 from izin.controllers.dinkes.izin_penutupan_apotek import formulir_izin_penutupan_apotek
 from izin.controllers.dinkes.izin_optikal import formulir_izin_optikal
+from izin.controllers.dinkes.izin_mendirikan_klinik import formulir_izin_mendirikan_klinik
+from izin.controllers.dinkes.izin_operasional_klinik import formulir_izin_operasional_klinik
 
 
 from izin.controllers.iujk import IUJKWizard
@@ -482,6 +484,16 @@ class IzinAdmin(admin.ModelAdmin):
 			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
 		elif obj.kelompok_jenis_izin.kode == "IUA":
 			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "ITO":
+			link_ = reverse('admin:tokoobat__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IAP":
+			link_ = reverse('admin:apotek__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IOP":
+			link_ = reverse('admin:optikal__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IMK":
+			link_ = reverse('admin:mendirikan_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		elif obj.kelompok_jenis_izin.kode == "IOK":
+			link_ = reverse('admin:operasional_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )
@@ -1404,7 +1416,9 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/izin-toko-obat/$', self.admin_site.admin_view(formulir_izin_toko_obat), name='izin_proses_izin_toko_obat'),
 			url(r'^wizard/add/proses/izin-laboratorium/$', self.admin_site.admin_view(formulir_izin_laboratorium), name='izin_proses_izin_laboratorium'),
 			url(r'^wizard/add/proses/izin-penutupan-apotek/$', self.admin_site.admin_view(formulir_izin_penutupan_apotek), name='izin_proses_izin_penutupan_apotek'),
-			url(r'^wizard/add/proses/izin-optikal/$', self.admin_site.admin_view(formulir_izin_optikal), name='izin_proses_izin_optical'),
+			url(r'^wizard/add/proses/izin-optikal/$', self.admin_site.admin_view(formulir_izin_optikal), name='izin_proses_izin_optikal'),
+			url(r'^wizard/add/proses/izin-mendirikan-klinik/$', self.admin_site.admin_view(formulir_izin_mendirikan_klinik), name='izin_proses_imk'),
+			url(r'^wizard/add/proses/izin-operasional-klinik/$', self.admin_site.admin_view(formulir_izin_operasional_klinik), name='izin_proses_iok'),
 
 			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),

@@ -252,7 +252,7 @@ def load_konfirmasi(request, id_pengajuan):
 def izin_parkir_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = DetilIzinParkirIsidentil.objects.get(id=request.COOKIES['id_pengajuan'])
+			pengajuan_ = PengajuanIzin.objects.get(id=request.COOKIES['id_pengajuan'])
 			pengajuan_.status = 6
 			pengajuan_.save()
 					

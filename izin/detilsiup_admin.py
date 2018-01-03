@@ -14,7 +14,7 @@ from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, DetilSIUP, DetilReklame, DetilTDP, DetilIUJK, DetilIMB, DetilHO, DetilHuller, Pemohon, Syarat, SKIzin, Riwayat, JenisIzin, InformasiTanah
 from perusahaan.models import Perusahaan, KBLI
 from accounts.models import NomorIdentitasPengguna
-from izin.utils import formatrupiah, detil_pengajuan_siup_view, terbilang
+from izin.utils import formatrupiah, detil_pengajuan_siup_view, terbilang, get_model_detil
 from izin import models as app_models
 from izin.izin_forms import SKIzinForm
 from kepegawaian.models import Pegawai
@@ -167,15 +167,7 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 		if id_pengajuan_izin_:
 			extra_context.update({'title': 'Proses Pengajuan'})
 			pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan_izin_)
-			k = pengajuan.kelompok_jenis_izin
-			if k.kode == "TDP-PT" or k.kode == "TDP-CV" or k.kode == "TDP-FIRMA" or k.kode == "TDP-PERORANGAN" or k.kode == "TDP-BUL" or k.kode == "TDP-KOPERASI":
-				objects_ = getattr(app_models, 'DetilTDP')
-			elif k.kode == 'TDUP':
-				objects_ = getattr(app_models, 'DetilTDUP')
-			else:
-				objects_ = getattr(app_models, 'DetilSIUP')
-
-
+			objects_ = get_model_detil(pengajuan.kelompok_jenis_izin.kode)
 			pengajuan_ = get_object_or_404(objects_, id=id_pengajuan_izin_)
 			extra_context.update({'pengajuan': pengajuan_ })
 		template = loader.get_template("front-end/include/formulir_siup/cetak_bukti_pendaftaran_admin.html")

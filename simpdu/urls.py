@@ -7,7 +7,7 @@ from mobile.api import PengajuanIzinResource, AccountsResource, AuthResource
 from izin.api import *
 from perusahaan.api import PerusahaanResource, LegalitasResource, DataPimpinanResource, PemegangSahamResource
 from master.api import BerkasResource, DesaResource
-from izin_dinkes.api import PeralatanLaboratoriumResource, BangunanLaboratoriumResource
+from izin_dinkes.api import *
 
 admin.site.site_title = 'Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri'
 
@@ -58,11 +58,16 @@ v1_api.register(PaketPekerjaanResource()) #IUJK
 v1_api.register(AnggotaBadanUsaha()) #IUJK
 v1_api.register(PeralatanLaboratoriumResource())
 v1_api.register(BangunanLaboratoriumResource())
+v1_api.register(ApotekResource())
+v1_api.register(SaranaResource())
+v1_api.register(TokoObatResource())
+v1_api.register(LaboratoriumResource())
+v1_api.register(OptikalResource())
+v1_api.register(PengunduranApotekerResource())
+v1_api.register(MendirikanKlinikResource())
+v1_api.register(OperasionalKlinikResource())
 
-# Retribusi
-v1_api.register(RetribusiResource())
-
-
+v1_api.register(DetilPembayaranResource())
 
 v2_api = Api(api_name='v2')
 v2_api.register(PengajuanIzinAllResource())

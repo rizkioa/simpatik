@@ -1,4 +1,4 @@
-<form method="POST" name="step5" role="form" action="{% url 'siup_done' %}">
+<form method="POST" name="step5" role="form" action="{% url 'izin_dinkes__penutupan_apotek_done' %}">
   {% csrf_token %}
   <h3>KONFIRMASI DATA</h3>
   <hr class="style14">
@@ -68,32 +68,32 @@
     <tr>
       <td width="25%">Nama Apotek</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_apotek'></span></td>
+      <td width="70%"><span id='nama_apotek_konfirmasia'></span></td>
     </tr>
     <tr>
       <td width="25%">Alamat</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_apotek'></span></td>
+      <td width="70%"><span id='alamat_apotek_konfirmasia'></span></td>
     </tr>
     <tr>
       <td width="25%">Nomor Telepon</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='no_telepon'></span></td>
+      <td width="70%"><span id='no_telepon_konfirmasia'></span></td>
     </tr>
     <tr>
       <td width="25%">Nomor SIA</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nomor_sia'></span></td>
+      <td width="70%"><span id='nomor_sia_konfirmasia'></span></td>
     </tr>
     <tr>
       <td width="25%">Nama Pemilik Sarana</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='nama_pemilik_sarana'></span></td>
+      <td width="70%"><span id='nama_pemilik_sarana_konfirmasia'></span></td>
     </tr>
     <tr>
       <td width="25%">Alamat Pemilik Sarana</td>
       <td width="5%">:</td>
-      <td width="70%"><span id='alamat_pemilik_sarana'></span></td>
+      <td width="70%"><span id='alamat_pemilik_sarana_konfirmasia'></span></td>
     </tr>
     
   </table>
@@ -103,13 +103,13 @@
   <h4><u>#3. Data Pengunduran Apoteker</u></h4>
   <div class="col-md-12">
       <div class="table-responsive">
-        <table class="table table-striped table-vasilitas-tdup">
+        <table class="table table-striped table_pengunduran_konfirmasi">
           <thead>
             <tr>
               <th>No</th>
-              <th>Nama Pemohon</th>
-              <th>Nomor SIPA</th>
+              <th>Nama Apoteker</th>
               <th>Alamat</th>
+              <th>Keterangan</th>
             </tr>
           </thead>
           <tbody>

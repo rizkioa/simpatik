@@ -86,6 +86,7 @@ SATUAN = (
 )
 
 import datetime
+from django.shortcuts import render
 
 def get_tahun_choices(sejak):
 	tahun_list = [(x, x) for x in range(sejak, (datetime.datetime.now().year+1))]
@@ -101,6 +102,39 @@ def get_nomor_pengajuan(kode_):
 		nomor += "/"+str(now.strftime("%f")[:4])
 		nomor += "/"+str(now.strftime("%m"))+str(now.strftime("%d"))
 		nomor += "/"+str(now.strftime("%Y"))
+	return nomor
+
+def get_nomor_kwitansi(kode_, unit_kerja):
+	now = datetime.datetime.now()
+	nomor = ""
+	if kode_:
+		nomor += str(kode_)
+		nomor += "/"+unit_kerja
+		nomor += "/"+str(now.strftime("%d"))+str(now.strftime("%m"))
+		nomor += "/"+str(now.strftime("%Y"))
+	return nomor
+
+def generate_kode_bank_jatim(no_urut):
+	now = datetime.datetime.now()
+	nomor = ""
+	panjang_ = len(str(no_urut))
+	if no_urut:
+		nomor = str(now.strftime("%d"))+str(now.strftime("%m"))+str(now.strftime("%Y"))
+		if panjang_ == 1:
+			nomor += "0000000"
+		elif panjang_ == 2:
+			nomor += "000000"
+		elif panjang_ == 3:
+			nomor += "00000"
+		elif panjang_ == 4:
+			nomor += "0000"
+		elif panjang_ == 5:
+			nomor += "000"
+		elif panjang_ == 6:
+			nomor += "00"
+		elif panjang_ == 7:
+			nomor += "0"
+		nomor += str(no_urut)
 	return nomor
 
 JENIS_IUJK = (
@@ -329,6 +363,20 @@ def send_email(emailto, subject, objects_):
 
 	return res
 
+def send_email_html(emailto, subject, objects_, template_):
+	from django.core.mail import EmailMessage
+	from django.conf import settings
+	from django.template import Context
+	from django.template.loader import get_template
+
+	html_content = get_template(template_).render(Context({'obj': objects_}))
+	
+	email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
+	email.content_subtype = "html"
+	res = email.send()
+
+	return res
+
 def get_kode_izin(obj_):
 	kode = ''
 	if obj_.pengajuan.kelompok_jenis_izin:
@@ -338,6 +386,7 @@ def get_kode_izin(obj_):
 
 def get_appmodels_based_kode_jenis(kode_ijin):
 	from izin import models as app_models
+	from izin_dinkes import models as app_models_dinkes
 	objects_ = False
 
 	if kode_ijin == "IUJK":
@@ -356,6 +405,20 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilIMB')
 	elif kode_ijin == "HULLER":
 		objects_ = getattr(app_models, 'DetilHuller')
+	elif kode_ijin == "ITO":
+		objects_ = getattr(app_models_dinkes, 'TokoObat')
+	elif kode_ijin == "IAP":
+		objects_ = getattr(app_models_dinkes, 'Apotek')
+	elif kode_ijin == "IOP":
+		objects_ = getattr(app_models_dinkes, 'Optikal')
+	elif kode_ijin == "ILB":
+		objects_ = getattr(app_models_dinkes, 'Laboratorium')
+	elif kode_ijin == "IPK":
+		objects_ = getattr(app_models_dinkes, 'PenutupanApotek')
+	elif kode_ijin == "IMK":
+		objects_ = getattr(app_models_dinkes, 'MendirikanKlinik')
+	elif kode_ijin == "IOP":
+		objects_ = getattr(app_models_dinkes, 'OperasionaKlinik')
 	return objects_
 
 
@@ -395,12 +458,20 @@ def get_model_detil(kode):
 			objects_ = getattr(app_models, 'DetilIzinParkirIsidentil')
 		elif kode == "503.01.04/" or kode == "503.01.05/":
 			objects_ = getattr(app_models, 'DetilIMB')
-		elif kode == "APOTEK":
+		elif kode == "IAP":
 			objects_ = getattr(app_models_dinkes, 'Apotek')
-		elif kode == "TOKO-OBAT":
+		elif kode == "ITO":
 			objects_ = getattr(app_models_dinkes, 'TokoObat')
-		elif kode == "IZINLAB":
+		elif kode == "ILB":
 			objects_ = getattr(app_models_dinkes, 'Laboratorium')
+		elif kode == "IOP":
+			objects_ = getattr(app_models_dinkes, 'Optikal')
+		elif kode == "IMK":
+			objects_ = getattr(app_models_dinkes, 'MendirikanKlinik')
+		elif kode == "IOK":
+			objects_ = getattr(app_models_dinkes, 'OperasionalKlinik')
+		elif kode == "IPA":
+			objects_ = getattr(app_models_dinkes, 'PenutupanApotek')
 	return objects_
 
 
@@ -423,6 +494,68 @@ def push_api_dishub(request, id_pengajuan):
 								try:
 									api = drest.api.TastyPieAPI('http://192.168.100.210:8000/api/v1/')
 									api.auth('dishub', 'jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J')
+									api.request.add_header('X-CSRFToken', '{{csrf_token}}')
+									api.request.add_header('Content-Type', 'application/json')
+									nama_lengkap = ""
+									if pengajuan_obj.pemohon:
+										nama_lengkap = pengajuan_obj.pemohon.nama_lengkap
+									perusahaan = ""
+									if pengajuan_obj.perusahaan:
+										perusahaan = pengajuan_obj.perusahaan.nama_perusahaan
+									data_izin = dict(
+										pemohon=nama_lengkap,
+										jenis_pengajuan=2,
+										id=pengajuan_obj.id,
+										perusahaan=perusahaan,
+										no_pengajuan=pengajuan_obj.no_pengajuan,
+										tgl_pengajuan=pengajuan_obj.created_at.strftime("%Y-%m-%d")
+									)
+									response = api.izin.post(data_izin)
+									if response.status in (200, 201, 202):
+										data = {'success': True, 'pesan': 'Berhasil mengirim rekomendasi ke Dishub.'}
+										riwayat_obj = Riwayat(
+											pengajuan_izin_id = pengajuan_obj.id,
+											created_by_id = request.user.id,
+											keterangan = "Survey Pengajuan Izin"
+											)
+										riwayat_obj.save()
+										pengajuan_obj.status = 8 # Survey
+										pengajuan_obj.save()
+								except drest.exc.dRestAPIError as e:
+									# resp.pesan = '[E002] '+str(e.msg)
+									data = {'success': False, 'pesan': str(e.msg)}
+							except drest.exc.dRestRequestError as e:
+								# resp.pesan = '[E001] '+str(e.msg)
+								data = {'success': False, 'pesan': str(e.msg)}
+						except ObjectDoesNotExist:
+							pass
+			except ObjectDoesNotExist:
+				pass
+	else:
+		data = {'success': False, 'pesan': 'Terjadi Kesalahan, Anda tidak memiliki hak akses untuk memverifikasi ini.'}
+	return HttpResponse(json.dumps(data))
+
+
+# cdf3cb8263153760333ac3a3dfc7c18026a894d9
+def push_api_dinkes(request, id_pengajuan):
+	from izin.models import PengajuanIzin, Riwayat
+	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan'}
+	if request.user.groups.filter(name='Kabid'):
+		if id_pengajuan:
+			try:
+				pengajuan_obj = PengajuanIzin.objects.get(id=id_pengajuan)
+				if pengajuan_obj.kelompok_jenis_izin:
+					objects_ = get_model_detil(pengajuan_obj.kelompok_jenis_izin.kode)
+					# print objects_
+					# print pengajuan_obj
+					if objects_:
+						try:
+							pengajuan_obj = objects_.objects.get(id=id_pengajuan)
+							try:
+								try:
+									api = drest.api.TastyPieAPI('http://192.168.100.210:8000/api/v1/')
+									# api.auth('dishub', 'jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J')
+									api.request.add_header('Authorization', 'Token '+'9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b')
 									api.request.add_header('X-CSRFToken', '{{csrf_token}}')
 									api.request.add_header('Content-Type', 'application/json')
 									nama_lengkap = ""

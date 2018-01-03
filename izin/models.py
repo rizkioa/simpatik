@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account, IdentitasPribadi
-from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, JenisKualifikasi, BangunanJenisKontruksi
+from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut, ParameterBangunan, JenisKualifikasi, BangunanJenisKontruksi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -12,7 +12,7 @@ from izin.utils import JENIS_IZIN, get_tahun_choices, JENIS_IUJK, JENIS_ANGGOTA_
 # from django.db.models.signals import pre_delete
 # from django.dispatch.dispatcher import receiver
 
-from datetime import datetime
+import datetime
 from ckeditor.fields import RichTextField
 
 # from accounts.utils import KETERANGAN_PEKERJAAN
@@ -1545,22 +1545,56 @@ class VasilitasTDUP(models.Model):
 
 
 # ++++++++++++ end TDUP ++++++++++++
+class BankPembayaran(models.Model):
+	nama_bank = models.CharField(max_length=255, verbose_name="Nama Bank")
+	nomor_rekening = models.CharField(max_length=255, verbose_name="Nomor Rekening", null=True, blank=True)
+	aktif = models.BooleanField(default=True, verbose_name="Apakah dipakai untuk pembayaran ?")
+	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
+
+	def __unicode__(self):
+		return u'%s' % str(self.nama_bank)
+
+	class Meta:
+		verbose_name = 'Bank Pembayaran'
+		verbose_name_plural = 'Bank Pembayaran'
 
 # Detil Pembayaran Izin
 # meta
-class DetilPembayaran(models.Model):
+class DetilPembayaran(MetaAtribut):
+	kode = models.CharField(max_length=16, verbose_name="Kode", null=True, blank=True)
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
-	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar")
+	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
+	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
 	nomor_kwitansi = models.CharField(max_length=255, verbose_name='Nomor Kwitansi', null=True, blank=True)
 	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
+	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
+	bank_pembayaran = models.ForeignKey(BankPembayaran, null=True, blank=True, verbose_name="Bank Pembayaran")
+	terbayar = models.BooleanField(default=False, verbose_name="Apakah pembayaran sudah terbayar ?")
 
 	def __unicode__(self):
 		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))
+
+	def bank(self):
+		bank = None
+		if self.bank_pembayaran:
+			bank = self.bank_pembayaran.nama_bank
+		return bank
 
 	class Meta:
 		# ordering = ['-status']
 		verbose_name = 'Detil Pembayaran'
 		verbose_name_plural = 'Detil Pembayaran'
+
+	def save(self, *args, **kwargs):
+		''' On save, update timestamps '''
+		# if not self.id:
+		""" tanggal dateline otomatis 3 bulan dari pembuatan kwitansi """
+		import datetime
+		from utils import generate_kode_bank_jatim
+		self.tanggal_deadline = datetime.date.today() + datetime.timedelta(3*365/12)
+		jumlah_data = DetilPembayaran.objects.filter(created_at__gte=datetime.date.today()).count()+1
+		self.kode = generate_kode_bank_jatim(jumlah_data)
+		return super(DetilPembayaran, self).save(*args, **kwargs)
 
 # +++++++++++++ LPK Sw ++++++++++++
 class SumberBiayaPelatihan(models.Model):
@@ -1994,27 +2028,27 @@ class DetilBangunanIMB(MetaAtribut):
 		verbose_name_plural = 'Detil Bangunan IMB'
 
 
-class Retribusi(MetaAtribut):
-	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Pengajuan Izin")
-	kode = models.CharField(max_length=255, verbose_name="Kode Retribusi", unique=True)
-	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
-	total_bayar = models.CharField(max_length=100, verbose_name="Total Bayar")
-	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
-	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
-	bank = models.CharField(max_length=255, verbose_name="BANK", null=True, blank=True)
+# class Retribusi(MetaAtribut):
+# 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Pengajuan Izin")
+# 	kode = models.CharField(max_length=255, verbose_name="Kode Retribusi", unique=True)
+# 	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
+# 	total_bayar = models.CharField(max_length=100, verbose_name="Total Bayar")
+# 	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
+# 	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
+# 	bank = models.CharField(max_length=255, verbose_name="BANK", null=True, blank=True)
 
-	def as_json(self):
-		tanggal_bayar = ""
-		if self.tanggal_bayar:
-			tanggal_bayar = self.tanggal_akhir.strftime("%d-%m-%Y")
-		tanggal_deadline = ""
-		if self.tanggal_deadline:
-			tanggal_deadline = self.tanggal_deadline.strftime("%d-%m-%Y")
-		return dict(kode=self.kode, peruntukan=self.peruntukan, total_bayar=self.total_bayar, tanggal_bayar=tanggal_bayar, tanggal_deadline=tanggal_deadline)
+# 	def as_json(self):
+# 		tanggal_bayar = ""
+# 		if self.tanggal_bayar:
+# 			tanggal_bayar = self.tanggal_akhir.strftime("%d-%m-%Y")
+# 		tanggal_deadline = ""
+# 		if self.tanggal_deadline:
+# 			tanggal_deadline = self.tanggal_deadline.strftime("%d-%m-%Y")
+# 		return dict(kode=self.kode, peruntukan=self.peruntukan, total_bayar=self.total_bayar, tanggal_bayar=tanggal_bayar, tanggal_deadline=tanggal_deadline)
 
-	class Meta:
-		verbose_name = "Retribusi"
-		verbose_name_plural = "Retribusi"
+# 	class Meta:
+# 		verbose_name = "Retribusi"
+# 		verbose_name_plural = "Retribusi"
 
 # class jenisLokasiUsaha(models.Model):
 # 	jenis_lokasi_usaha = models.CharField(max_length=255,null=True, blank=True, verbose_name='Jenis Lokasi Usaha')

@@ -19,7 +19,7 @@ from izin.huller_admin import DetilHullerAdmin
 from izin.survey_admin import SurveyAdmin
 from izin.detiltdup_admin import DetilTDUPAdmin
 from izin.mesin_perusahaan_admin import MesinPerusahaanAdmin
-from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin, MesinHuller, MesinPerusahaan, PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, SertifikatTanah, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata,DetilReklameIzin, KategoriKendaraan, MerkTypeKendaraan, Kendaraan, DetilIUA,DetilIzinParkirIsidentil,DataAnggotaParkir, Trayek,DetilBangunanIMB,AktaJualBeliTanah,NoPTP
+from izin.models import Pemohon, JenisPeraturan, DasarHukum, JenisIzin, Syarat, Prosedur, KelompokJenisIzin, JenisPermohonanIzin, SKIzin, Riwayat, AnggotaBadanUsaha, PaketPekerjaan, DetilIUJK, PaketPekerjaan, Survey,JenisMesin, MesinHuller, MesinPerusahaan, PenggunaanTanahIPPTUsaha,PerumahanYangDimilikiIPPTUsaha, BentukKoperasi, JenisKoperasi, SertifikatTanah, DetilSk, DetilPembayaran, BidangUsahaPariwisata, JenisUsahaPariwisata, SubJenisUsahaPariwisata,DetilReklameIzin, KategoriKendaraan, MerkTypeKendaraan, Kendaraan, DetilIUA, DetilIzinParkirIsidentil, DataAnggotaParkir, Trayek, DetilBangunanIMB, AktaJualBeliTanah, NoPTP, BankPembayaran
 from izin.pemohon_admin import PemohonAdmin
 from master.models import JenisPemohon
 from izin.izin_forms import SurveyForm
@@ -27,6 +27,8 @@ from izin.utils import get_nomor_pengajuan
 from pembangunan.views import get_rekomendasi_pembangunan
 from izin.detilizinparkir_admin import DetilIzinParkirIsidentilAdmin
 from izin.dishub.detilizinangkutan_admin import DetilIUAAdmin
+from detil_pembayaran__admin import DetilPembayaranAdmin
+
 # from izin.chat_admin import ChatRoomAdmin
 
 # from perusahaan.models import Perusahaan
@@ -44,7 +46,7 @@ admin.site.register(SKIzin)
 admin.site.register(Riwayat)
 admin.site.register(JenisMesin)
 admin.site.register(MesinHuller)
-admin.site.register(DetilPembayaran)
+
 admin.site.register(SertifikatTanah)
 admin.site.register(AktaJualBeliTanah)
 admin.site.register(AnggotaBadanUsaha)
@@ -55,7 +57,8 @@ admin.site.register(KategoriKendaraan)
 admin.site.register(MerkTypeKendaraan)
 admin.site.register(Kendaraan)
 admin.site.register(NoPTP)
-
+admin.site.register(BankPembayaran)
+admin.site.register(DetilPembayaran, DetilPembayaranAdmin)
 # admin.site.register(DetilIzinParkirIsidentil)
 admin.site.register(DataAnggotaParkir)
 

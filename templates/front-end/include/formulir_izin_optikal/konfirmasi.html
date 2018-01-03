@@ -1,0 +1,255 @@
+<form method="POST" name="step5" role="form" action="{% url 'izin_dinkes__optikal_done' %}">
+  {% csrf_token %}
+  <h3>KONFIRMASI DATA</h3>
+  <hr class="style14">
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Jenis Pengajuan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_permohonan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <h4><u>#1. IDENTITAS PEMOHON</u></h4>
+  <table width="100%" border="0" id="table_pemohon_konfirmasi">
+    <tr>
+      <td width="25%">Jenis Pemohon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_pemohon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nomor KTP/Paspor</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nomor_ktp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Nama</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_lengkap_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat tempat tinggal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.Telp</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='telephone_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No.HP</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='hp_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">E-mail</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='email_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Kewarganegaraan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='kewarganegaraan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Pekerjaan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='pekerjaan_konfirmasi'></span></td>
+    </tr>
+  </table>
+  <br>
+  <table id="table_kuasa_konfirmasi" width="100%" border="0">
+    
+  </table>
+  <br>
+  <h4><u>#2. IZIN OPTIKAL</u></h4>
+  <table width="100%" border="0">
+    <tr>
+      <td width="25%">Nama Optikal</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='nama_optikal_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Alamat Badan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='alamat_optikal_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">No Telepon</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='no_telepon_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Jenis Kegiatan Usaha</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='jenis_kegiatan_konfirmasi'></span></td>
+    </tr>
+    <tr>
+      <td width="25%">Luas Tanah dan Bangunan</td>
+      <td width="5%">:</td>
+      <td width="70%"><span id='luas_tanah_konfirmasi'></span></td>
+    </tr>
+   
+  </table>
+  <br>
+  <br>
+  <table class="table table-bordered">
+      <thead>
+        <tr >
+          <th>Dokumen Persyaratan</th>
+          <th>Telah Terupload</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr align="center">
+          <td>
+            Akte Pendirian perusahaan optikal disahkan oleh Notarisuntuk penyelenggara yang berbentuk perusahaan bukan perorangan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-akte_pendirian"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Keterangan dari pejabat setempat yang berwenang menyatakan bahwa pemohon adalah penduduk yang bertempat tinggal tetap di daerah kewenangannya (minimal camat/fotocopy)
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sk_pejabat"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy IMB dan Izin gangguan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-izin_gangguan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Perjanjian pemilik sarana dengan refreksionis optisen tersebut
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-surat_perjanjian_pemilik"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Keterangan dari pejabat setempat yang berwenang menyatakan bahwa refreksionis optisen calon penanggung jawab bertempat tinggal / berdomisili di kabupaten/kota yang bersangkutan atau fotocopy KTP yang terlampir
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sk_tempat_tinggal"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Fotocopy ijazah refreksionis optisan yang telah dilegalisir
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-ijazah_refreksionis"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat keterangan sehat dari dokter
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sk_sehat"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+              Pas foto 3 (tiga) lembar ukuran 4 x 6 cm
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pas_foto"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Pernyataan Kerjasama dari laboratorium tempat pemrosesan lensa-lensa pesanan, bila optical tidak memiliki laboratorium sendiri
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-pernyataan_kerjasama"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Daftar sarana dan peralatan yang akan digunakan
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-daftar_sarana"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Daftar pegawai serta tugas fungsinya
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-daftar_pegawai"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Peta lokasi sebagai penunjuk wilayah tempat domisili optikal / laboratorium optik
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-peta_lokasi"><i></i>
+            </label>
+          </td>
+        </tr> 
+        <tr align="center">
+          <td>
+            Denah ruangan dibuat dengan skala 1:100
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-denah_ruangan"><i></i>
+            </label>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            Surat Keterangan dari organisasi profesi/asosiasi setempat yang menyatakan bahwa refreksionis optisen yang diajukan hanya menjadi penanggung jawab dari optikal yang mengajukan izin tersebut, dan diketahui oleh organisasi pengusaha optikal setempat
+          </td>
+          <td>
+            <label class="checkbox checkbox-custom-alt">
+              <input type="checkbox" disabled id="checkbox-sk_organisasi_profesi"><i></i>
+            </label>
+          </td>
+        </tr>
+        
+      </tbody>
+  </table>
+  <section class="tile bg-greensea">
+    <div class="tile-body">
+      <label class="checkbox checkbox-custom-alt">
+        <input type="checkbox" id="checkbox_tdp_done"><i></i> Setuju, Saya telah mengisi formulir pengajuan izin ini dengan benar.
+      </label>
+    </div>
+  </section>
+</form>

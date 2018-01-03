@@ -22,11 +22,11 @@ import os
 from izin.models import PengajuanIzin, DetilIMB,DetilPembayaran,SKIzin,Riwayat
 from accounts.models import IdentitasPribadi, NomorIdentitasPengguna
 from izin.izin_forms import DetilPembayaranForm
+from izin.utils import send_email_html
 
 def detil_pembayaran_save(request):
 	if request.POST:
 		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
-		pengajuan_izin = PengajuanIzin.objects.get(id=pengajuan_izin_id)
 		try:
 			pengajuan_ = DetilPembayaran.objects.filter(pengajuan_izin__id=pengajuan_izin_id).last()
 			sk_izin_ = SKIzin.objects.get(pengajuan_izin__id=pengajuan_izin_id)
@@ -36,6 +36,7 @@ def detil_pembayaran_save(request):
 		if pembayaran.is_valid():
 			if request.user.groups.filter(name='Kasir'):
 				p = pembayaran.save(commit=False)
+				p.kode = request.POST.get('kode')
 				p.save()
 				sk_izin_.status = 9
 				sk_izin_.save()
@@ -47,27 +48,30 @@ def detil_pembayaran_save(request):
 					keterangan = "Kasir Verified"
 				)
 				riwayat_.save()
+				if pengajuan_izin.pemohon:
+					if pengajuan_izin.pemohon.email and pengajuan_izin.pemohon.email is not None:
+						send_email_html(pengajuan_izin.pemohon.email, pengajuan_.peruntukan, pengajuan_, 'cetak/notifikasi_email.html')
 
-				data = {'success': True,
-						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-						'data': {}}
-				response = HttpResponse(json.dumps(data))
+					data = {'success': True,
+							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+							'data': {}}
+					response = HttpResponse(json.dumps(data))
 			elif request.user.groups.filter(name='Operator') or request.user.is_superuser:
-				p = pembayaran.save(commit=False)
-				p.save()
-				pengajuan_izin.status = 4
-				pengajuan_izin.save()
-				riwayat_ = Riwayat(
-					pengajuan_izin_id = pengajuan_izin.id,
-					created_by_id = request.user.id,
-					keterangan = "Operator Verified"
-				)
-				riwayat_.save()
+					p = pembayaran.save(commit=False)
+					p.save()
+					pengajuan_izin.status = 4
+					pengajuan_izin.save()
+					riwayat_ = Riwayat(
+						pengajuan_izin_id = pengajuan_izin.id,
+						created_by_id = request.user.id,
+						keterangan = "Operator Verified"
+					)
+					riwayat_.save()
 
-				data = {'success': True,
-						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-						'data': {}}
-				response = HttpResponse(json.dumps(data))
+					data = {'success': True,
+							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+							'data': {}}
+					response = HttpResponse(json.dumps(data))
 			else:
 				p = pembayaran.save(commit=False)
 				p.save()
@@ -87,5 +91,9 @@ def detil_pembayaran_save(request):
 		else:
 			data = pembayaran.errors.as_json()
 			response = HttpResponse(data)
-
-		return response
+	else:
+		data = {'success': False,
+						'pesan': 'Terjadi Kesalahan Pengajuan Tidak Ditemukan',
+						'data': {}}
+		response = HttpResponse(json.dumps(data))
+	return response
