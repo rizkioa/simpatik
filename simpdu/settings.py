@@ -213,13 +213,12 @@ HTMLVALIDATOR_ENABLED = True
 
 HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'mail.kedirikab.go.id'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'hariyanti@kedirikab.go.id'
-EMAIL_HOST_PASSWORD = 'kediri@4531'
+EMAIL_HOST_USER = 'simpatik.kedirikab@gmail.com'
+EMAIL_HOST_PASSWORD = 'fgtcTff62pN36ZXT'
 DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'
 
 CKEDITOR_CONFIGS = {

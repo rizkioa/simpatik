@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group
 from izin.models import Survey
 from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
-from simpdu.api_settings import API_URL_DINKES
+from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 
 class TokoObatAdmin(admin.ModelAdmin):
 
@@ -15,6 +15,12 @@ class TokoObatAdmin(admin.ModelAdmin):
 		pengajuan_obj = get_object_or_404(TokoObat, id=id_pengajuan)
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
+		jenis_izin = pengajuan_obj.kelompok_jenis_izin.kode
+
+		if pengajuan_obj.perusahaan:
+			perusahaan_obj = pengajuan_obj.perusahaan
+		else:
+			perusahaan_obj = pengajuan_obj.nama_toko_obat
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -36,6 +42,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'pengajuan': pengajuan_obj,
 			'riwayat': riwayat_list,
 			'skizin': skizin_obj,
+			'jenis_izin': jenis_izin,
 			'skpd_list' : UnitKerja.objects.all(),
 			'pegawai_list' : h,
 			'survey': s,
@@ -43,7 +50,8 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
-			'API_URL_DINKES': API_URL_DINKES,
+			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
+			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/tokoobat/view_verifikasi.html", extra_context)
 

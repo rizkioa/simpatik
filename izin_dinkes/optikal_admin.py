@@ -15,6 +15,11 @@ class OptikalAdmin(admin.ModelAdmin):
 		pengajuan_obj = get_object_or_404(Optikal, id=id_pengajuan)
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
+		jenis_izin = pengajuan_obj.kelompok_jenis_izin.kode
+		if pengajuan_obj.perusahaan:
+			perusahaan_obj = pengajuan_obj.perusahaan
+		else:
+			perusahaan_obj = pengajuan_obj.nama_optikal
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -35,6 +40,7 @@ class OptikalAdmin(admin.ModelAdmin):
 			'title': 'Proses Verifikasi Pengajuan Izin Optikal',
 			'pengajuan': pengajuan_obj,
 			'riwayat': riwayat_list,
+			'jenis_izin': jenis_izin,
 			'skizin': skizin_obj,
 			'skpd_list' : UnitKerja.objects.all(),
 			'pegawai_list' : h,

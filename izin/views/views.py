@@ -1488,3 +1488,11 @@ def cek_pengaduan(request, no_ktp):
 		data = [ob.as_json() for ob in p]
 		response = HttpResponse(json.dumps(data), content_type="application/json")
 		return response
+
+def cetak_notifikasi_email(request, no_pembayaran):
+	from izin.models import DetilPembayaran
+	obj = DetilPembayaran.objects.filter(nomor_kwitansi=no_pembayaran).last()
+	extra_context = {
+		'obj': obj
+	}
+	return render(request, "cetak/notifikasi_send_email.html", extra_context)

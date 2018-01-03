@@ -792,18 +792,18 @@
 
     //         }
     //     })
-    alert("{{pengajuan.created_at|date:'Y-m-d'}}")
+    alert("{{jenis_izin}}")
 
     function send_rekomendasi_dinas(){
     	$.ajax({
     		url: "{{API_URL_PENGAJUAN_DINKES}}",
     		type: "POST",
-    		data: {"id_pengajuan_simpatik": {{pengajuan.id}}, "no_pengajuan": "{{pengajuan.no_pengajuan}}", "jenis_pengajuan": "{{pengajuan.kelompok_jenis_izin.kode}}", "perusahaan": "{{pengajuan.perusahaan}}", "pemohon": "{{pengajuan.pemohon.nama_lengkap}}", "tgl_pengajuan": "{{pengajuan.created_at|date:'Y-m-d'}}"},
+    		data: {"id_pengajuan_simpatik": {{pengajuan.id}}, "no_pengajuan": "{{pengajuan.no_pengajuan}}", "perusahaan": "{{perusahaan}}", "pemohon": "{{pengajuan.pemohon.nama_lengkap}}", "jenis_pengajuan": "{{jenis_izin}}", "tgl_pengajuan": "{{pengajuan.created_at|date:'Y-m-d'}}"},
     		success: function(respon){
     			console.log(respon)
     		},
     		error: function(){
-    			console.log("Server Error")
+    			toast_server_error()
     		}
     	})
     }
