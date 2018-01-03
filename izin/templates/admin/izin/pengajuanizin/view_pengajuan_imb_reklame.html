@@ -251,6 +251,7 @@
 					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
 						{% if pengajuan.status == 2 %}
 							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
+							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
 						{% endif %}
 					{% endif %}
 

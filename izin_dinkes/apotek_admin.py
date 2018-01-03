@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 from izin.models import Survey
 from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
+from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 
 class ApotekAdmin(admin.ModelAdmin):
 
@@ -14,6 +15,9 @@ class ApotekAdmin(admin.ModelAdmin):
 		pengajuan_obj = get_object_or_404(Apotek, id=id_pengajuan)
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
+		jenis_izin = pengajuan_obj.kelompok_jenis_izin.kode
+
+		perusahaan_obj = pengajuan_obj.nama_apotek
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -28,11 +32,12 @@ class ApotekAdmin(admin.ModelAdmin):
 			extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 		except Survey.DoesNotExist:
 			s = ""
-			
+
 		extra_context.update({
 			'has_permission': True,
 			'title': 'Proses Verifikasi Pengajuan Izin Apotek',
 			'pengajuan': pengajuan_obj,
+			'jenis_izin': jenis_izin,
 			'riwayat': riwayat_list,
 			'skizin': skizin_obj,
 			'skpd_list' : UnitKerja.objects.all(),
@@ -41,7 +46,9 @@ class ApotekAdmin(admin.ModelAdmin):
 			'banyak': len(Apotek.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:apotek__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
-			'url_form': reverse("admin:izin_proses_izin_apotik")
+			'url_form': reverse("admin:izin_proses_izin_apotik"),
+			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
+			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/apotek/view_verifikasi.html", extra_context)
 

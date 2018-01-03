@@ -163,6 +163,16 @@ def formatrupiah(uang):
 			return   formatrupiah(q) + '.' + p 
 		else:
 			return   formatrupiah(q) + '.' + p 
+
+@register.filter(name='formatterbilang')
+def formatterbilang(uang):
+	from izin.utils import terbilang
+	if uang:
+		uang = uang.replace(".", "")
+		return terbilang(int(uang)).upper()
+	else:
+		return '-'
+
 @register.filter()
 def get_alamat_lengkap(obj, filter):
 	if filter == 'perusahaan':

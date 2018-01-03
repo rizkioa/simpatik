@@ -214,7 +214,6 @@ HTMLVALIDATOR_ENABLED = True
 
 HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
