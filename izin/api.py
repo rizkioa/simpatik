@@ -430,12 +430,15 @@ class DetilPembayaranResource(CORSModelResource):
 			if kode:
 				try:
 					retribusi_obj = DetilPembayaran.objects.get(kode=kode)
-					retribusi_obj.pengajuan_izin.status = 5
-					retribusi_obj.pengajuan_izin.save()
-					retribusi_obj.tanggal_bayar = None
-					retribusi_obj.terbayar = False
-					retribusi_obj.save()
-					data = {'success': True, 'pesan': 'Berhasil. Pembayaran dengan nomor pembayaran '+retribusi_obj.kode+' telah berhasil dikembalikan.'}
+					if retribusi_obj.terbayar == True:
+						retribusi_obj.pengajuan_izin.status = 5
+						retribusi_obj.pengajuan_izin.save()
+						retribusi_obj.tanggal_bayar = None
+						retribusi_obj.terbayar = False
+						retribusi_obj.save()
+						data = {'success': True, 'pesan': 'Berhasil. Pembayaran dengan nomor pembayaran '+retribusi_obj.kode+' telah berhasil direset.'}
+					else:
+						data = {'success': False, 'pesan': 'Gagal. Pembayaran dengan nomor pembayaran '+retribusi_obj.kode+' sudah direset.'}
 				except DetilPembayaran.DoesNotExist:
 					pass
 		else:

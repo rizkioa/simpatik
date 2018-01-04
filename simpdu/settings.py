@@ -120,7 +120,7 @@ DATABASES = {
         'USER': 'simpatik', 
         'PASSWORD': '!QAZ@WSX',                
         'HOST': 'localhost',                  
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 
