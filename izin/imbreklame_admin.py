@@ -108,7 +108,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				import datetime
 				jumlah_data = int(DetilPembayaran.objects.count())+1
 				nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
-				kode = generate_kode_bank_jatim(DetilPembayaran.objects.filter(created_at__gte=datetime.date.today()).count()+1)
+				kode = generate_kode_bank_jatim(jumlah_data)
 				bank_list = BankPembayaran.objects.filter(aktif=True)
 				extra_context.update({
 					'kode': kode,
