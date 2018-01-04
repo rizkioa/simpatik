@@ -355,6 +355,7 @@ class DetilPembayaranResource(CORSModelResource):
 		return [
 			url(r"^retribusi/cek/$", self.wrap_view('cek_retribusi'), name="api__retribusi__cek_retribusi"),
 			url(r"^retribusi/update/$", self.wrap_view('update_retribusi'), name="api__retribusi__update_retribusi"),
+			url(r"^retribusi/reversal/$", self.wrap_view('reversal_retribusi'), name="api__retribusi__reversal_retribusi"),
 			]
 
 	def cek_retribusi(self, request, **kwargs):
@@ -413,6 +414,28 @@ class DetilPembayaranResource(CORSModelResource):
 					else:
 						data = {'success': False, 'pesan': 'Gagal. Pembayaran dengan nomor pembayaran '+retribusi_obj.kode+' sudah terbayar.'}
 					"""Melakukan pengupdatean status pengajuan izin untuk proses selanjutnya"""
+				except DetilPembayaran.DoesNotExist:
+					pass
+		else:
+			data = {'success': False, 'pesan': 'Terjadi Kesalahan. Anda tidak memiliki akses di SIMPATIK.'}
+		return CORSHttpResponse(json.dumps(data))
+
+	def reversal_retribusi(self, request, **kwargs):
+		data = {'success': False, 'pesan': 'Terjadi Kesalahan. Retribusi tidak ditemukan atau tidak ada dalam daftar disistem SIMPATIK.'}
+		kode = request.GET.get('kode')
+		username = request.GET.get('username')
+		api_key = request.GET.get('api_key')
+		cek = cek_apikey(api_key, username)
+		if cek == True:
+			if kode:
+				try:
+					retribusi_obj = DetilPembayaran.objects.get(kode=kode)
+					retribusi_obj.pengajuan_izin.status = 5
+					retribusi_obj.pengajuan_izin.save()
+					retribusi_obj.tanggal_bayar = None
+					retribusi_obj.terbayar = False
+					retribusi_obj.save()
+					data = {'success': True, 'pesan': 'Berhasil. Pembayaran dengan nomor pembayaran '+retribusi_obj.kode+' telah berhasil dikembalikan.'}
 				except DetilPembayaran.DoesNotExist:
 					pass
 		else:
