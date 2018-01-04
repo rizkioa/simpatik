@@ -11,6 +11,12 @@
 		/*table , .table-border, th, td {
 		    border: 1px solid black;
 		}*/
+		*{
+			font-family: Arial, Helvetica, sans-serif;
+		}
+		.table tr td, .table tr th{
+			font-size: 12px;
+		}
 	</style>
 </head>
 <body>
@@ -32,7 +38,7 @@
 					</tr>
 				</table>
 			</td>
-			<td width="50%">
+			<td width="50%" style="font-size: 14px;">
 				<center>
 					<strong>SKRD</strong><br>
 					(SURAT KETETAPAN RETRIBUSI DAERAH)<br>
@@ -42,7 +48,7 @@
 		</tr>
 	</table>
 	<br>
-	<table>
+	<table class="table">
 		<tr>
 			<td>Nama</td>
 			<td>:</td>
@@ -51,15 +57,15 @@
 		<tr>
 			<td>Nama Perusahaan</td>
 			<td>:</td>
-			<td>{{detil.pengajuan_izin.perusahaan}}</td>
+			<td>{{detilpengajuan_obj.perusahaan.nama_perusahaan.upper}}</td>
 		</tr>
 		<tr>
 			<td>Alamat Usaha/Perusahaan</td>
 			<td>:</td>
-			<td>{{ detil.pengajuan_izin.lokasi_pasang }}, {{detil.pengajuan_izin.desa.lokasi_lengkap}}</td>
+			<td>{{ detilpengajuan_obj.lokasi_pasang.title }}, {{ detilpengajuan_obj.desa.lokasi_lengkap}}</td>
 		</tr>
 	</table>
-	<table width="100%" border="1" style="border-collapse: collapse;">
+	<table width="100%" border="1" style="border-collapse: collapse;" class="table">
 		<thead>
 			<tr>
 				<th>No.</th>
@@ -79,10 +85,26 @@
 			</tr>
 			<tr>
 				<td>Dengan Huruf</td>
-				<td colspan="2">{{terbilang_jumlah.title}}</td>
+				<td colspan="2">{{terbilang_jumlah.title}} Rupiah</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<div style="float: right; width: 35%">
+		<p style="font-size:11px;" align="center">
+			Kediri,&nbsp;&nbsp;{% now "d-m-Y" %}
+			<br>a.n KEPALA DPMPTSP
+			<br>KABUPATEN KEDIRI
+			<br>KEPALA BIDANG PELAYANAN PERIZINAN
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<u><b>AL INDAH, S.Sos, MM</b></u><br>
+			<span>NIP: 197210211997032004</span>
+		</p>
+	</div>
 
 	<script type="text/javascript">
 		readFile("logo", "logo_")
