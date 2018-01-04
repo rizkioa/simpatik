@@ -1592,8 +1592,8 @@ class DetilPembayaran(MetaAtribut):
 		import datetime
 		from utils import generate_kode_bank_jatim
 		self.tanggal_deadline = datetime.date.today() + datetime.timedelta(3*365/12)
-		jumlah_data = DetilPembayaran.objects.filter(created_at__gte=datetime.date.today()).count()+1
-		self.kode = generate_kode_bank_jatim(jumlah_data)
+		# jumlah_data = DetilPembayaran.objects.filter(created_at__gte=datetime.date.today()).count()+1
+		# self.kode = generate_kode_bank_jatim(jumlah_data)
 		return super(DetilPembayaran, self).save(*args, **kwargs)
 
 # +++++++++++++ LPK Sw ++++++++++++
