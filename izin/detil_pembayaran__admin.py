@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render
 import pdfkit, datetime, os
 from django.template import RequestContext, loader
 from django.http import HttpResponse
-from izin.utils import terbilang
+from izin.utils import terbilang, get_model_detil
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
@@ -14,9 +14,14 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		terbilang_jumlah = ""
 		if detil_pembayaran_obj.jumlah_pembayaran:
 			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.replace(".", "")))
+		if detil_pembayaran_obj.pengajuan_izin:
+			if detil_pembayaran_obj.pengajuan_izin.kelompok_jenis_izin:
+				objects_ = get_model_detil(detil_pembayaran_obj.pengajuan_izin.kelompok_jenis_izin.kode)
+				detilpengajuan_obj = objects_.objects.get(id=detil_pembayaran_obj.pengajuan_izin.id)
 		extra_context={}
 		extra_context.update({
 			'detil':detil_pembayaran_obj,
+			'detilpengajuan_obj': detilpengajuan_obj,
 			'terbilang_jumlah': terbilang_jumlah
 			})
 		context_dict = "Cetak Kwitansi "

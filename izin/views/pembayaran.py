@@ -28,29 +28,31 @@ def detil_pembayaran_save(request):
 	if request.POST:
 		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
 		try:
-			pengajuan_ = DetilPembayaran.objects.filter(pengajuan_izin__id=pengajuan_izin_id).last()
+			detilpembayaran_obj = DetilPembayaran.objects.filter(pengajuan_izin__id=pengajuan_izin_id).last()
 			sk_izin_ = SKIzin.objects.get(pengajuan_izin__id=pengajuan_izin_id)
-			pembayaran = DetilPembayaranForm(request.POST, instance=pengajuan_)
+			pembayaran = DetilPembayaranForm(request.POST, instance=detilpembayaran_obj)
 		except ObjectDoesNotExist:
 			pembayaran = DetilPembayaranForm(request.POST)
 		if pembayaran.is_valid():
 			if request.user.groups.filter(name='Kasir'):
 				p = pembayaran.save(commit=False)
 				p.kode = request.POST.get('kode')
+				p.peruntukan = request.POST.get('peruntukan')
+				p.pengajuan_izin_id = pengajuan_izin_id
 				p.save()
-				sk_izin_.status = 9
-				sk_izin_.save()
-				pengajuan_izin.status = 2
-				pengajuan_izin.save()
+				# sk_izin_.status = 9
+				# sk_izin_.save()
+				# detilpembayaran_obj.pengajuan_izin.status = 2
+				# detilpembayaran_obj.pengajuan_izin.save()
 				riwayat_ = Riwayat(
-					pengajuan_izin_id = pengajuan_izin.id,
+					pengajuan_izin_id = p.pengajuan_izin.id,
 					created_by_id = request.user.id,
 					keterangan = "Kasir Verified"
 				)
 				riwayat_.save()
-				if pengajuan_izin.pemohon:
-					if pengajuan_izin.pemohon.email and pengajuan_izin.pemohon.email is not None:
-						send_email_html(pengajuan_izin.pemohon.email, pengajuan_.peruntukan, pengajuan_, 'cetak/notifikasi_email.html')
+				if p.pengajuan_izin.pemohon:
+					if p.pengajuan_izin.pemohon.email and p.pengajuan_izin.pemohon.email is not None:
+						send_email_html(p.pengajuan_izin.pemohon.email, p.peruntukan, p, 'cetak/notifikasi_send_email.html')
 
 					data = {'success': True,
 							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
@@ -59,10 +61,10 @@ def detil_pembayaran_save(request):
 			elif request.user.groups.filter(name='Operator') or request.user.is_superuser:
 					p = pembayaran.save(commit=False)
 					p.save()
-					pengajuan_izin.status = 4
-					pengajuan_izin.save()
+					p.pengajuan_izin.status = 4
+					p.pengajuan_izin.save()
 					riwayat_ = Riwayat(
-						pengajuan_izin_id = pengajuan_izin.id,
+						pengajuan_izin_id = p.pengajuan_izin.id,
 						created_by_id = request.user.id,
 						keterangan = "Operator Verified"
 					)
@@ -75,10 +77,10 @@ def detil_pembayaran_save(request):
 			else:
 				p = pembayaran.save(commit=False)
 				p.save()
-				pengajuan_izin.status = 5
-				pengajuan_izin.save()
+				p.pengajuan_izin.status = 5
+				p.pengajuan_izin.save()
 				riwayat_ = Riwayat(
-					pengajuan_izin_id = pengajuan_izin.id,
+					pengajuan_izin_id = p.pengajuan_izin.id,
 					created_by_id = request.user.id,
 					keterangan = "Operator Verified"
 				)

@@ -116,10 +116,9 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					'nomor_kwitansi': nomor_kwitansi,
 					'peruntukan': "IMB Reklame"
 					})
-			if pengajuan_.status == 2:
-				extra_context.update({
-					'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
-					})
+			extra_context.update({
+				'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+				})
 
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_reklame.html")
 		ec = RequestContext(request, extra_context)
