@@ -149,6 +149,22 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 
+			if pengajuan_.status == 5:
+				import datetime
+				jumlah_data = int(DetilPembayaran.objects.count())+1
+				nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				kode = generate_kode_bank_jatim(jumlah_data)
+				bank_list = BankPembayaran.objects.filter(aktif=True)
+				extra_context.update({
+					'kode': kode,
+					'bank_pembayaran': bank_list,
+					'nomor_kwitansi': nomor_kwitansi,
+					'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) UMUM"
+					})
+			extra_context.update({
+				'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+				})
+
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_umum.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -591,6 +607,22 @@ class DetilIMBAdmin(admin.ModelAdmin):
 						extra_context.update({'detil_bangunan': detil_bangunan_ })
 				except ObjectDoesNotExist:
 					pass
+
+				if pengajuan_.status == 5:
+					import datetime
+					jumlah_data = int(DetilPembayaran.objects.count())+1
+					nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+					kode = generate_kode_bank_jatim(jumlah_data)
+					bank_list = BankPembayaran.objects.filter(aktif=True)
+					extra_context.update({
+						'kode': kode,
+						'bank_pembayaran': bank_list,
+						'nomor_kwitansi': nomor_kwitansi,
+						'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) PERUMAHAN"
+						})
+				extra_context.update({
+					'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+					})
 			else:
 				raise Http404
 		else:
