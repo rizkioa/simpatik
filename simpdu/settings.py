@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'c^-$x(edvg3!dfpx^t0pf$*9n#v!#252dxgta-k+n)f*yf4&cd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -120,7 +120,7 @@ DATABASES = {
         'USER': 'simpatik', 
         'PASSWORD': '!QAZ@WSX',                
         'HOST': 'localhost',                  
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 
@@ -242,9 +242,13 @@ REST_FRAMEWORK = {
     ),
 }
 
-API_URL_DISHUB = "http://192.168.100.110:8000/api/v1/"
+API_URL_DISHUB = "http://simpatik.kedirikab.go.id:8989/api/v1/"
 API_USERNAME_DISHUB = "dishub"
 API_KEY_DISHUB = "jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J"
+
+API_URL_DINKES = "http://simpatik.kedirikab.go.id:8877/api/v1/"
+API_USERNAME_DINKES = "dinkes"
+API_KEY_DINKES = ""
 
 GRAPH_MODELS = {
   'all_applications': True,

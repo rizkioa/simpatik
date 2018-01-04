@@ -151,7 +151,7 @@ def get_berkas(qs_, user_):
 @register.filter(name='formatrupiah')
 def formatrupiah(uang):
 	y = str(uang)
-	y = uang.replace(".", "")
+	y = y.replace(".", "")
 	y = y.split('.')
 	j = y[0]
 	# y = y.replace(".00","")
