@@ -374,6 +374,8 @@ class DetilPembayaranResource(CORSModelResource):
 							if retribusi_obj.pengajuan_izin.pemohon:
 								nama_pemohon = retribusi_obj.pengajuan_izin.pemohon.nama_lengkap
 						tanggal_bayar = None
+						if retribusi_obj.tanggal_bayar:
+							tanggal_bayar = retribusi_obj.tanggal_bayar.strftime("%d-%m-%Y")
 						if retribusi_obj.tanggal_deadline:
 							tanggal_deadline = retribusi_obj.tanggal_deadline.strftime("%d-%m-%Y")
 						bank = ""
@@ -404,7 +406,7 @@ class DetilPembayaranResource(CORSModelResource):
 					if retribusi_obj.terbayar == False:
 						retribusi_obj.pengajuan_izin.status = 2
 						retribusi_obj.pengajuan_izin.save()
-						retribusi_obj.tanggal_bayar = datetime.datetime.now()
+						retribusi_obj.tanggal_bayar = datetime.date.today()
 						retribusi_obj.terbayar = True
 						retribusi_obj.save()
 						skizin_obj = retribusi_obj.pengajuan_izin.skizin_set.last()
