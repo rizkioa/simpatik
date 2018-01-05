@@ -587,12 +587,12 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		context_dict = "Cetak Kwitansi "
 		options = {
-				'page-width': '21.1cm',
-				'page-height': '10cm',
-				'margin-top': '0.5cm',
-				'margin-bottom': '0.5cm',
-				'margin-right': '0.5cm',
-				'margin-left': '0.5cm',
+				'page-width': '33cm',
+				'page-height': '21.1cm',
+				'margin-top': '1cm',
+				'margin-bottom': '1cm',
+				'margin-right': '1.5cm',
+				'margin-left': '1.5cm',
 			}
 		# template = loader.get_template("front-end/cetak/cetak_skrd.html")
 		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman2.html")
