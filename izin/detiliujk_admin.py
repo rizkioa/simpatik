@@ -595,7 +595,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				'margin-left': '1.5cm',
 			}
 		# template = loader.get_template("front-end/cetak/cetak_skrd.html")
-		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman2.html")
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman_2_pdf.html")
 		context = RequestContext(request, extra_context)
 		html = template.render(context)
 		date_time = datetime.datetime.now().strftime("%Y-%B-%d %H:%M:%S")
