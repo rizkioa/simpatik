@@ -26,10 +26,10 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 			})
 		context_dict = "Cetak Kwitansi "
 		options = {
-				'page-width': '21.1cm',
-				'page-height': '10cm',
-				'margin-top': '0.5cm',
-				'margin-bottom': '0.5cm',
+				'page-width': '21.5cm',
+				'page-height': '9cm',
+				'margin-top': '0.3cm',
+				'margin-bottom': '0cm',
 				'margin-right': '0.5cm',
 				'margin-left': '0.5cm',
 				'encoding': "UTF-8",
@@ -64,10 +64,10 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 			})
 		context_dict = "Cetak Kwitansi "
 		options = {
-				'page-width': '21.1cm',
-				'page-height': '10cm',
-				'margin-top': '0.2cm',
-				'margin-bottom': '0.5cm',
+				'page-width': '21.5cm',
+				'page-height': '9cm',
+				'margin-top': '0.3cm',
+				'margin-bottom': '0cm',
 				'margin-right': '0.5cm',
 				'margin-left': '0.5cm',
 			}
