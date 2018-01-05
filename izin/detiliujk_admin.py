@@ -542,7 +542,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		pengajuan_obj = get_object_or_404(DetilIUJK, id=id_pengajuan)
 		extra_context = {}
 
-		paket = pengajuan_.paket_pekerjaan_iujk.all()
+		paket = pengajuan_obj.paket_pekerjaan_iujk.all()
 
 		kla = []
 		tr = ''
@@ -583,7 +583,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			tr += '<td style="border: 1px solid black;" valign="top">'+str(keterangan)+'</td>'
 			tr += '</tr>'
 
-		extra_context.update({'klasifikasi_tr': mark_safe(tr) , 'pengajuan_':pengajuan_})
+		extra_context.update({'klasifikasi_tr': mark_safe(tr) , 'pengajuan_':pengajuan_obj})
 
 		context_dict = "Cetak Kwitansi "
 		options = {
