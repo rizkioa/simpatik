@@ -32,6 +32,11 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 				'margin-bottom': '0.5cm',
 				'margin-right': '0.5cm',
 				'margin-left': '0.5cm',
+				'encoding': "UTF-8",
+				'custom-header' : [
+					('Accept-Encoding', 'gzip')
+				],
+				'no-outline': None
 			}
 		template = loader.get_template("front-end/cetak/cetak_skrd.html")
 		context = RequestContext(request, extra_context)
