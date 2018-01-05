@@ -1,4 +1,4 @@
-def send_notification_sms(pesan, nomor_tujuan):
+def send_notification_sms():
 	import gammu
 	try:
 		sm = gammu.StateMachine()
@@ -6,9 +6,9 @@ def send_notification_sms(pesan, nomor_tujuan):
 		sm.Init()
 
 		message = {
-			'Text': pesan, 
+			'Text': "hello", 
 			'SMSC': {'Location': 1},
-			'Number': nomor_tujuan,
+			'Number': "085645989229",
 		}
 
 		sm.SendSMS(message)
