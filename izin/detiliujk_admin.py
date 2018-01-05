@@ -647,6 +647,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			url(r'^cetak-iujk-pdf-depan/(?P<id_pengajuan_izin_>[0-9]+)/$', self.cetak_iujk_pdf_depan, name='cetak_iujk_pdf_depan'),
 			url(r'^cetak-iujk/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_iujk_asli), name='cetak_iujk_asli'),
 			url(r'^cetak-iujk-hal-2/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli_hal_2), name='cetak_iujk_asli_hal2'),
+			url(r'^cetak-iujk-hal-2/(?P<id_pengajuan>[0-9]+)/pdf$', self.admin_site.admin_view(self.cetak_iujk_asli_hal_2_pdf), name='cetak_iujk_asli_hal_2_pdf'),
 			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
 			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),
 			url(r'^option-pegawai/$', self.option_pegawai, name='option_pegawai'),
