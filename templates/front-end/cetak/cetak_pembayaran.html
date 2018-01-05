@@ -13,12 +13,12 @@
 <body>
 <center>
 	<table>
-		<tr>
+		<tr style="margin-bottom: 100px;">
 			<td><img id="logo" src="http://simpatik.kedirikab.go.id/static/images/SIMPATIK.png" width="50px"> <div id="logo_"></div></td>
 			<td style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 30px">SIMPATIK</td>
 		</tr>
 	</table>
-	<h3>Nomor Pembayaran : {{detil.kode}}</h3>
+	<span style="font-size: 20px"><strong>Nomor Pembayaran : {{detil.kode}}</strong></span><br>
 	<hr>
 </center>
 <table style="font-size: 13px;">
@@ -43,11 +43,14 @@
 <p style="font-size: 17px; font-family: Arial, Helvetica, sans-serif;margin-bottom: 10px;" align="center">
 	<strong>Tanggal : {{detil.tanggal_deadline|date:"d-m-Y"}}</strong>
 </p>
-<div style="background: gray; color: white; padding: 5px; border-radius: 10px; text-align: center;width: 50%;margin: auto;">
-	<span style="font-size: 13px">Lakukan pembayaran sebesar</span><br>
-	<span style="font-size: 25px"><strong>Rp. {{detil.jumlah_pembayaran}}</strong></span><br>
-	<small>( {{terbilang_jumlah.title}} Rupiah )</small>
-</div>
+<center>
+	<div style="border:3px solid;padding: 5px; border-radius: 10px; text-align: center;width: 40%;">
+		<span style="font-size: 13px">Lakukan pembayaran sebesar</span><br>
+		<span style="font-size: 20px"><strong>Rp. {{detil.jumlah_pembayaran}}</strong></span><br>
+		<small>( {{terbilang_jumlah.title}} Rupiah )</small>
+	</div>
+</center>
+
 <br>
 <div style="float: right;font-size: 13px">
 	Pembayaran dapat dilakukan di:<br>
