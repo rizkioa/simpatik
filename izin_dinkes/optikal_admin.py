@@ -16,10 +16,11 @@ class OptikalAdmin(admin.ModelAdmin):
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
 		jenis_izin = pengajuan_obj.kelompok_jenis_izin.kode
-		if pengajuan_obj.perusahaan:
-			perusahaan_obj = pengajuan_obj.perusahaan
-		else:
-			perusahaan_obj = pengajuan_obj.nama_optikal
+		perusahaan_obj = pengajuan_obj.nama_optikal
+		# if pengajuan_obj.perusahaan:
+		# 	perusahaan_obj = pengajuan_obj.perusahaan
+		# else:
+		# 	perusahaan_obj = pengajuan_obj.nama_optikal
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -49,7 +50,8 @@ class OptikalAdmin(admin.ModelAdmin):
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:optikal__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_izin_optikal"),
-			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES
+			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
+			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/optikal/view_verifikasi.html", extra_context)
 

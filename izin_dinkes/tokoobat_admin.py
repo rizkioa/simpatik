@@ -16,11 +16,11 @@ class TokoObatAdmin(admin.ModelAdmin):
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
 		jenis_izin = pengajuan_obj.kelompok_jenis_izin.kode
-
-		if pengajuan_obj.perusahaan:
-			perusahaan_obj = pengajuan_obj.perusahaan
-		else:
-			perusahaan_obj = pengajuan_obj.nama_toko_obat
+		perusahaan_obj = pengajuan_obj.nama_toko_obat
+		# if pengajuan_obj.perusahaan:
+		# 	perusahaan_obj = pengajuan_obj.perusahaan
+		# else:
+		# 	perusahaan_obj = pengajuan_obj.nama_toko_obat
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -35,7 +35,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 			extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 		except Survey.DoesNotExist:
 			s = ""
-		print API_URL_DINKES
+		# print API_URL_DINKES
 		extra_context.update({
 			'has_permission': True,
 			'title': 'Proses Verifikasi Pengajuan Izin Toko Obat',
