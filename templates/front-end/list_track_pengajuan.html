@@ -23,6 +23,13 @@
       						<td width="5%"> : </td>
       						<td width="75%">{{pengajuan.pemohon.nama_lengkap}}</td>
       					</tr>
+						{% if pengajuan.detilpembayaran_set.last %}
+	      					<tr>
+	      						<td>Cetak Pembayaran</td>
+	      						<td>:</td>
+	      						<td><a class="btn btn-primary" target="_blank" href="{% url 'admin:detil_pembayaran__cetak_pembayaran' pengajuan.detilpembayaran_set.last.kode %}">Cetak</a></td>
+	      					</tr>
+      					{% endif %}
       				</table>
       				<br>
       				<br>
@@ -37,11 +44,11 @@
 					      	</tr>
 					    </thead>
 					    <tbody>
-					    	{% if riwayats %}
-						    	{% for r in riwayats %}
+					    	{% if pengajuan.riwayat_set.all %}
+						    	{% for r in pengajuan.riwayat_set.all reversed %}
 							      	<tr>
 								        <td>{{ forloop.counter }}</td>
-								        <td>{{ r.created_at|date:'d-m-Y H:i a'}}</td>
+								        <td>Tanggal {{ r.created_at|date:'d-m-Y'}}, Pukul {{r.created_at|date:"H:i"}}</td>
 								        <td>{{ r.keterangan }}</td>
 								        <td>{{ r.created_by.nama_lengkap }}</td>
 							      	</tr>

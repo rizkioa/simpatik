@@ -1306,6 +1306,7 @@ def ajax_cek_pengajuan(request):
 	no_pengajuan_ = request.POST.get('no_pengajuan_', None)
 	# print no_pengajuan_
 	if no_pengajuan_:
+		no_pengajuan_ = no_pengajuan_.upper()
 		try:
 			pengajuan_list = PengajuanIzin.objects.get(no_pengajuan=no_pengajuan_)
 			if pengajuan_list:
@@ -1440,17 +1441,9 @@ def cek_detil_izin(request, id_pengajuan_):
 	return response
 
 def list_track_pengajuan(request, id_pengajuan, extra_context={}):
-	if id_pengajuan:
-		pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan)
-		if pengajuan:
-			riwayat = Riwayat.objects.filter(pengajuan_izin_id=pengajuan.id)
-			# print riwayat
-			extra_context.update({'pengajuan':pengajuan, 'riwayats':riwayat})
-			template = loader.get_template("front-end/list_track_pengajuan.html")
-			ec = RequestContext(request, extra_context)
-			return HttpResponse(template.render(ec))
-		# else:
-		#     return redirect(reverse('cari_pengajuan'))
+	pengajuan = get_object_or_404(PengajuanIzin, id=id_pengajuan)
+	extra_context.update({'pengajuan':pengajuan})
+	return render(request, "front-end/list_track_pengajuan.html", extra_context)
 
 def ajax_save_pengaduan(request):
 	data = {"success": False, "pesan": "Terjadi Kesalahan"}
