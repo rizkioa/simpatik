@@ -1,0 +1,638 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block title %}
+	{{ title }} | {{ site_title|default:_('Sistem Informasi Manajemen Pelayanan Perijinan Terpadu Satu Pintu Kabupaten Kediri') }}
+{% endblock %}
+
+{% block icotitle %}<i class="icon-book-open"></i>&nbsp;{% endblock %}
+
+{% block content_title %}
+	{{ title }}
+{% endblock %}
+
+{% block extrajs_site %}
+	{{block.super}}
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_operasional_klinik.js' %}"></script>
+	
+	<script>
+		$(window).load(function(){
+			$('#rootwizard').bootstrapWizard({
+				onTabShow: function(tab, navigation, index) {
+					var $total = navigation.find('li').length;
+					var $current = index+1;
+					if ($current == 2){
+				  		load_kecamatan1('', '06', '35');
+		                  if ($.cookie('npwp_perusahaan') !== '0'){
+		                    $('#id_npwp_perusahaan').val($.cookie('npwp_perusahaan'))
+		                    setTimeout(function(){
+		                      load_perusahaan_a($.cookie('npwp_perusahaan'))
+		                    }, 1000);
+		                  }
+					  	
+					}
+					if ($current == 3){
+						load_provinsi2('1');
+					  	load_kabupaten2('15')
+					  	if (!$( "#id_kecamatan2").val()){
+					  		load_kecamatan2('233')
+					  	}
+					  	if ($.cookie('id_pengajuan') !== '0'){
+							load_izin_operasional_klinik($.cookie('id_pengajuan'))
+						} 
+					  	
+					}
+			        if($current == 4){
+			          if ($.cookie('id_pengajuan') != ''){
+			            load_berkas($.cookie('id_pengajuan'))
+			          }
+			        }
+					if($current >= $total) {
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_konfirmasi($.cookie('id_pengajuan'))
+						}
+						$('#rootwizard').find('.pager .next').hide();
+						$('#rootwizard').find('.pager .finish').show();
+						$('#rootwizard').find('.pager .finish').removeClass('disabled');
+					} else {
+						$('#rootwizard').find('.pager .next').show();
+						$('#rootwizard').find('.pager .finish').hide();
+					}
+				},
+
+				onNext: function(tab, navigation, index) {
+					return false;
+				},
+
+				onTabClick: function(tab, navigation, index) {
+					if (window.location.hostname == 'localhost'){
+						return true
+					}
+					else{
+						return false;
+					}
+				}
+			});
+		});
+
+		$.fn.outerHTML = function(){
+			// IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
+			return (!this.length) ? this : (this[0].outerHTML || (
+				function(el){
+						var div = document.createElement('div');
+						div.appendChild(el.cloneNode(true));
+						var contents = div.innerHTML;
+						div = null;
+						return contents;
+			})(this[0]));
+		}
+
+		function set_chosen_element(chosenEl){
+			$chosenEl = $(chosenEl)
+			if ($chosenEl.length > 0) {             
+				$chosenEl.each(function() {
+					var element = $(this);
+					element.on('chosen:ready', function(e, chosen) {
+						var width = element.css("width");
+						element.next().find('.chosen-choices').addClass('form-control');
+						element.next().css("width", width);
+						element.next().find('.search-field input').css("width", "125px");
+					}).chosen();                
+				});
+			}
+		}
+
+		function next_tab(btn){
+			var pengajuan_id = $.cookie('id_pengajuan')
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+				success: function (response){
+					respon = $.parseJSON(response)
+					if (respon.success == true){
+						// console.log('berhasil')
+						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+						var frm = $('form[name="step'+ index +'"]');
+						frm.parsley().validate();
+						if (frm.parsley().isValid()) {
+							$(".tab-content").mLoading();
+							$(btn).attr('disabled', 'disabled')
+							$.ajax({
+								type: frm.attr('method'),
+								url: frm.attr('action'),
+								data: frm.serialize(),
+								success: function (response){
+									respon = $.parseJSON(response)
+									$(btn).removeAttr('disabled')
+									if(respon.success){
+										toastr["success"](respon.pesan)
+										tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+										$(tab_index).tab('show')
+										$("html, body").animate({scrollTop: 300}, 600);
+									}
+									else{
+										var a = Object.keys(respon);
+										for (var i = 0; i < a.length; i++){
+											var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+											var field = c + a[i].replace("_", " ").slice(1)
+											toastr["error"](field+" "+respon[a[i]][0]['message'])
+											$("#"+a[i]+"").addClass("has-error");
+											$("#id_"+a[i]+"_").addClass("has-error");
+										}
+									}
+									$(".tab-content").mLoading('hide');
+								},
+								error: function(response){
+									$(".tab-content").mLoading('hide');
+									$(btn).removeAttr('disabled')
+									toastr["error"]("Terjadi kesalahan pada koneksi server.")
+								}
+							});
+						}
+					}
+					else{
+						// console.log('gagal')
+						$.cookie('id_pengajuan', '0', {path:'/'})
+						$.cookie('id_pemohon', '0', {path:'/'})
+						// $.cookie('id_perusahaan', '0', {path:'/'})
+						$.cookie('nomor_ktp', '0', {path:'/'})
+						$.cookie('nomor_paspor', '0', {path:'/'})
+						// $.cookie('npwp_perusahaan', '0', {path:'/'})
+						// $.cookie('id_perusahaan_induk', '0', {path:'/'})
+						// $.cookie('npwp_perusahaan_induk', '0', {path:'/'})
+					}
+				},
+				error: function (response){
+					console.log('terjadi kesalahan')
+				}
+			})
+		};
+
+		document.querySelector('#alert').onclick = function(){
+			var pengajuan_cookie = $.cookie('id_pengajuan'); 
+			var pemohon_cookie = $.cookie('id_pemohon'); 
+			// var perusahaan_cookie = $.cookie('id_perusahaan'); 
+			if (pengajuan_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			else if(pemohon_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			// else if(perusahaan_cookie === ""){
+			// 	toastr["warning"]("Terjadi kesalahan, anda belum mengisi form perusahaan.")
+			// 	tab_index = '#rootwizard a[href="#tab'+(2)+'"]';
+			// 	$(tab_index).tab('show');
+			// }
+			else{
+				swal({
+					showConfirmButton: false,
+					type: 'success',
+					title: 'Pendaftaran Berhasil Tersimpan',
+					timer: 2000
+				})
+				pengajuan_id = $.cookie('id_pengajuan')
+				if ($.cookie('id_pengajuan') === undefined){
+					pengajuan_id = 0
+				}
+				
+				$.ajax({
+					url: '{% url 'izin_dinkes__operasional_klinik_done' %}',
+					success: function(response) {
+						respon = $.parseJSON(response)
+						if(respon.success){
+							console.log('masuk')
+							toastr["success"](respon.pesan)
+							window.location.replace('{% url 'admin:verifikasi_operator' %}');
+						}
+					}
+				});
+			}
+		};
+
+		function load_izin_operasional_klinik(id_pengajuan){
+			$('.tab-content').mLoading();
+			$.ajax({
+	            type: 'GET',
+	            url: __base_url__+'/izin-dinkes/klinik/load-izin-operasional-klinik/'+id_pengajuan,
+	            success: function (data) {
+	            	console.log(data)
+	            	respon = JSON.parse(data)
+	            	if(respon.success == true){
+	            		$('#id_nama_klinik').val(respon.data.nama_klinik)
+	            		$('#id_alamat_klinik').val(respon.data.alamat_klinik)
+	            		$('#id_no_telepon_klinik').val(respon.data.no_telepon)
+	            		if(respon.data.desa.id_kecamatan){
+	            			$('#id_kecamatan2').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+	            			load_desa2(respon.data.desa.id_kecamatan)
+		            		setTimeout(function(){
+		            			$('#id_desa2').val(respon.data.desa.id_desa).prop('selected',true).trigger("chosen:updated");
+		            		}, 1000);
+	            		}
+	            	}
+	            	else{
+	            		toastr["error"](respon.data.pesan)
+	            	}
+	            	$('.tab-content').mLoading('hide');
+	            },
+	            error:function(){
+	            	toast_server_error();
+	            	$('.tab-content').mLoading('hide');
+	            }
+	        })
+		}
+
+		$(document).ready(function() {
+			window.onbeforeunload = function ref() {
+				var r = confirm( "Do you want to leave?" );
+				if (r == true) {
+						
+				}
+				else {
+						return false;
+				}
+			};
+
+			var pathname = "/";
+
+			if ($.cookie('id_pengajuan') === undefined){
+				$.cookie('id_pengajuan', "0", {path:pathname});
+			}
+			if ($.cookie('id_pemohon') === undefined){
+				$.cookie('id_pemohon', "0", {path:pathname});
+			}
+			// if ($.cookie('id_perusahaan') === undefined){
+			// 	$.cookie('id_perusahaan', "0", {path:pathname});
+			// }
+
+			$( "#alert" ).prop( "disabled", true );
+			$('#checkbox_tdp_done').change(function() {
+				if ($(this).is(':checked')) {
+					$( "#alert" ).prop( "disabled", false );
+					window.onbeforeunload = null;
+				}
+				else{
+					$( "#alert" ).prop( "disabled", true );
+				}
+			});
+
+			// $('.path_name').val(pathname)
+				
+			pengajuan = $.cookie('id_pengajuan')
+			if (pengajuan !== '0'){
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
+
+				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+				// $('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+
+				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
+				if ('{{ pengajuan_.pemohon }}' !== 'None'){
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
+					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
+				}
+				else{
+					$.cookie('nomor_ktp', '0' , { path: pathname })
+					$.cookie('nomor_paspor', '0' , { path: pathname})
+					$.cookie('id_pemohon', '0' , { path: pathname})
+				}
+			}
+		});
+
+		$(window).load(function() {
+			var p = 'percent-'
+			$('#'+p+'ktp').hide()
+			$('#'+p+'npwp').hide()
+			$('#'+p+'pendirian_hukum').hide()
+			$('#'+p+'sertifikat_tanah').hide()
+			$('#'+p+'dokumen_lingkungan').hide()
+			$('#'+p+'profil_klinik').hide()
+			$('#'+p+'gambar_bangunan').hide()
+			$('#'+p+'ippm').hide()
+			$('#'+p+'imb').hide()
+			$('#'+p+'izin_gangguan').hide()
+			$('#'+p+'izin_klinik_lama').hide()
+		});
+
+		function load_konfirmasi(id_pengajuan){
+			$('.tab-content').mLoading();
+			$.ajax({
+	            type: 'GET',
+	            url: __base_url__+'/izin-dinkes/klinik/load-konfirmasi-operasional-klinik/ajax/'+id_pengajuan,
+	            success: function (data) {
+	            	respon = JSON.parse(data)
+	            	console.log(respon)
+	            	pengajuan_obj = respon.data.pengajuan_json
+	            	pemohon_obj = respon.data.pemohon_json
+	            	detil_obj = respon.data.detil_json
+	            	data_anggota_list = respon.data.data_anggota_json
+	            	if(respon.success == true){
+	            		$('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
+	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+	            		$('#nomor_ktp_konfirmasi').text(pemohon_obj.username)
+	            		$('#nama_lengkap_konfirmasi').text(pemohon_obj.nama_lengkap)
+	            		$('#alamat_konfirmasi').text(pemohon_obj.alamat_lengkap)
+	            		$('#telephone_konfirmasi').text(pemohon_obj.telephone)
+	            		$('#hp_konfirmasi').text(pemohon_obj.hp)
+	            		$('#email_konfirmasi').text(pemohon_obj.email)
+	            		$('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
+	            		$('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
+
+	            		$('#nama_klinik_konfirmasi').text(detil_obj.nama_klinik)
+	            		$('#alamat_klinik_konfirmasi').text(detil_obj.alamat_lengkap)
+	            		$('#no_telepon_konfirmasi').text(detil_obj.no_telepon)
+
+
+	            		if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
+	            			table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
+	            			table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+	            			table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+	            			table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+	            			$('#table_kuasa_konfirmasi').prepend(table)
+	            		}
+	            		$('.tab-content').mLoading('hide');
+	            	}
+	            }
+	        })
+		}
+
+function make_disabled(elem_, dis_){
+    if (dis_ == true){
+        elem_.empty();
+    }
+    elem_.prop( "disabled", dis_);
+    elem_.trigger("chosen:updated");
+}
+
+function load_provinsi2(id_negara){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_provinsi_chosen" ).mLoading();
+    // $( "#id_provinsi_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, negara: id_negara }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_provinsi' %}', // the file to call
+        url: __base_url__+'/admin/master/provinsi/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_provinsi1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            // $( "#id_provinsi_chosen" ).unmask()
+            $( "#id_provinsi1_chosen" ).mLoading('hide');
+            $( "#id_provinsi1" ).change(function(){
+                $this = $(this)
+                id_provinsi = $(this).val()
+                if(id_provinsi.length > 0){
+                    load_kabupaten2(id_provinsi)
+                }else{
+                    elem = $( "#id_kabupaten1" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+
+function load_kabupaten2(id_provinsi){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_kabupaten1_chosen" ).mLoading();
+    $( "#id_kabupaten1_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, provinsi: id_provinsi }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_kabupaten' %}',
+        url: __base_url__+'/admin/master/kabupaten/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_kabupaten1" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_kabupaten1_chosen" ).mLoading('hide');
+            $( "#id_kabupaten1" ).change(function(){
+                $this = $(this)
+                id_kabupaten = $(this).val()
+                if(id_kabupaten.length > 0){
+                    load_kecamatan2(id_kabupaten)
+                }else{
+                    elem = $( "#id_kecamatan2" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+function load_kecamatan2(id_kabupaten){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_kecamatan2_chosen" ).mLoading();
+    $( "#id_kecamatan2_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kabupaten: id_kabupaten }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_kecamatan' %}', // the file to call
+        url: __base_url__+'/admin/master/kecamatan/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_kecamatan2" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_kecamatan2_chosen" ).mLoading('hide');
+            $( "#id_kecamatan2" ).change(function(){
+                $this = $(this)
+                
+                id_kecamatan = $(this).val()
+                if(id_kecamatan.length > 0){
+                    load_desa2(id_kecamatan)
+                }else{
+                    elem = $( "#id_desa2" )
+                    make_disabled(elem, true)
+                }
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+function load_desa2(id_kecamatan){
+    csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    $( "#id_desa2_chosen" ).mLoading();
+    $( "#id_desa2_chosen .loadmask-msg" ).css('top', '2px')
+    $.ajax({ // create an AJAX call...
+        data: { csrfmiddlewaretoken: csrf_token, kecamatan: id_kecamatan }, // get the form data
+        type: 'POST', // GET or POST
+        // url: '{% url 'admin:option_desa' %}', // the file to call
+        url: __base_url__+'/admin/master/desa/option/',
+        success: function(response) { // on success..
+            elem = $( "#id_desa2" )
+            elem.html(response);
+            make_disabled(elem, false)
+            $( "#id_desa2_chosen" ).mLoading('hide');
+            $( "#id_desa2" ).change(function(){
+                $this = $(this)
+            })
+        },
+        error: function(data) {                
+            toast_server_error()
+        }
+    });
+}
+	</script>
+{% endblock %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+	<!-- <link rel="stylesheet" href="{% static 'scripts/js/vendor/loadmask/jquery.loadmask.css' %}"> -->
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.css' %}">
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">
+	  	@media only screen and (max-width: 1280px){
+		    .hidden_title{
+		       display: none !important;
+		    }
+		    .tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+		      padding-bottom: 24px
+		    }
+		    .tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+		      padding-bottom: 24px;
+		    }
+	  	}
+	  	@media only screen and (max-width: 844px){
+		    .hidden_title{
+		      display: block !important;
+		    }
+	  	}
+
+	  	hr.style14 { 
+		    border: 0; 
+		    height: 1px; 
+		    background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		    background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		    background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		    background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+	  	}
+	  	.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+		    background-color: #22beef;
+		    color: aliceblue;
+	  	}
+	  	.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+		    background-color: #616f77;
+	  	}
+	  	.tab-wizard .nav-tabs > li:before {
+		    background-color: #333;
+	  	}
+	  	/*@media screen and (max-width: 767px)*/
+	  	.table-responsive {
+      		width: 100%;
+      		margin-bottom: 15px;
+      		overflow-y: hidden;
+	        -ms-overflow-style: -ms-autohiding-scrollbar;
+  			border: 1px solid #ddd;
+	  	}
+	  	.onoffswitch.labeled .onoffswitch-inner:before {
+			content: "Ada";
+		}
+		.onoffswitch.labeled .onoffswitch-inner:after {
+			content: "Tidak";
+		}
+		.onoffswitch.labeled {
+			width: 59px;
+		}
+		.onoffswitch.labeled .onoffswitch-switch {
+			right: 34px;
+		}
+		label, h4, h3 {
+			color: black;
+		}
+		tr, th{
+		    color: black;
+	  	}
+	  	#id_kegiatan_usaha_pokok_chosen .search-field input{
+	    	min-width: 125px;
+	  	}
+	</style>
+{% endblock %}
+
+{% block content %}
+<div id="rootwizard" class="tab-container tab-wizard">
+	<ul class="nav nav-tabs nav-justified">
+	    <li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Perusahaan</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Klinik </i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Upload</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+		<li><a disabled href="#tab5" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	</ul>
+	<div class="tab-content">
+	    <div class="tab-pane" id="tab1"> 
+			<!-- Identitas pemohon --> 
+			{% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+		</div>
+
+		 <div class="tab-pane" id="tab2">
+	      <!-- Identitas perusahaan -->
+	      {% include 'front-end/include/formulir_siup/identitas_perusahaan.html' %}
+	    </div>
+
+		<div class="tab-pane" id="tab3">
+			<!-- Identitas perusahaan -->
+			{% include 'front-end/include/formulir_operasional_klinik/izin_operasional_klinik.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab4">
+			{% include 'front-end/include/formulir_operasional_klinik/upload.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab5">
+			{% include 'front-end/include/formulir_operasional_klinik/konfirmasi.html' %}
+		</div>
+
+	    <ul class="pager wizard">
+		  	<li class="previous" id="previous"><a class="btn btn-default">Kembali</a></li>
+		  	<li class="next" id="next"><a onclick="next_tab(this)" class="btn btn-default">Selanjutnya</a></li>
+		  	<li class="next finish" style="display:none;">
+				<button type="submit" class="btn btn-success pull-right" id="alert">
+			  		<i class="fa fa-arrow-right"></i>
+			  		<span>Selesai</span>
+				</button>
+		  	</li>
+		</ul>
+  	</div>
+	<br>
+	<br>
+	<br>
+</div>
+{% endblock %}

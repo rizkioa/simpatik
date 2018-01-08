@@ -30,7 +30,7 @@
 	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
 	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
 	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
-	<!-- <script src="{% static 'scripts/js/formAjax/form_ajax_izin_parkir.js' %}"></script> -->
+	<script src="{% static 'scripts/js/formAjax/form_ajax_apotek.js' %}"></script>
 	
 	<script>
 		$(window).load(function(){
@@ -41,11 +41,22 @@
 					if ($current == 2){
 						load_provinsi1('1');
 					  	load_kabupaten1('15')
-					  	load_kecamatan1('233')
+					  	if (!$( "#id_kecamatan1").val()){
+					  		load_kecamatan1('233')
+					  	}
+					  	if ($.cookie('id_pengajuan') !== '0'){
+							load_data_izin_apotek($.cookie('id_pengajuan'))
+						} 
+					  	
 					}
+			        if($current == 3){
+			          if ($.cookie('id_pengajuan') != ''){
+			            load_berkas($.cookie('id_pengajuan'))
+			          }
+			        }
 					if($current >= $total) {
 						if ($.cookie('id_pengajuan') !== '0'){
-							load_konfirmasi($.cookie('id_pengajuan'))
+							load_konfirmasi_apotek($.cookie('id_pengajuan'))
 						}
 						$('#rootwizard').find('.pager .next').hide();
 						$('#rootwizard').find('.pager .finish').show();
@@ -196,10 +207,11 @@
 				}
 				
 				$.ajax({
-					url: '{% url 'izin_parkir_done' %}',
+					url: '{% url 'izin_dinkes__apotek_done' %}',
 					success: function(response) {
 						respon = $.parseJSON(response)
 						if(respon.success){
+							console.log('masuk')
 							toastr["success"](respon.pesan)
 							window.location.replace('{% url 'admin:verifikasi_operator' %}');
 						}
@@ -207,6 +219,43 @@
 				});
 			}
 		};
+
+		function load_data_izin_apotek(id_pengajuan){
+			$('.tab-content').mLoading();
+			$.ajax({
+	            type: 'GET',
+	            url: __base_url__+'/izin-dinkes/apotek/load-izin-apotek/'+id_pengajuan,
+	            success: function (data) {
+	            	// console.log(data)
+	            	respon = JSON.parse(data)
+	            	if(respon.success == true){
+	            		$('#id_nama_apotek').val(respon.data.nama_apotek)
+	            		$('#id_alamat_apotek').val(respon.data.alamat_apotek)
+	            		$('#id_no_telpon_apotek').val(respon.data.no_telepon)
+	            		if(respon.data.desa.id_kecamatan){
+	            			$('#id_kecamatan1').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
+	            			load_desa1(respon.data.desa.id_kecamatan)
+		            		setTimeout(function(){
+		            			$('#id_desa1').val(respon.data.desa.id_desa).prop('selected',true).trigger("chosen:updated");
+		            		}, 1000);
+	            		}
+	            		
+	            		$('#id_sarana').val(respon.data.sarana)
+	            		$('#id_nama_pemilik_sarana').val(respon.data.nama_pemilik_sarana)
+	            		$('#id_alamat_pemilik_sarana_apotek').val(respon.data.alamat_sarana)
+	            		$('#id_npwp').val(respon.data.npwp)
+	            	}
+	            	else{
+	            		toastr["error"](respon.data.pesan)
+	            	}
+	            	$('.tab-content').mLoading('hide');
+	            },
+	            error:function(){
+	            	toast_server_error();
+	            	$('.tab-content').mLoading('hide');
+	            }
+	        })
+		}
 
 		$(document).ready(function() {
 			window.onbeforeunload = function ref() {
@@ -246,9 +295,9 @@
 				
 			pengajuan = $.cookie('id_pengajuan')
 			if (pengajuan !== '0'){
-				$('#id_ktp').val('{{ktp}}');
-				$('#id_paspor').val('{{paspor}}');
-				load_pemohon('{{ktp}}');
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
 
 				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
 				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
@@ -256,8 +305,8 @@
 
 				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
 				if ('{{ pengajuan_.pemohon }}' !== 'None'){
-					$.cookie('nomor_ktp', '{{ktp}}' , { path: pathname })
-					$.cookie('nomor_paspor', '{{paspor}}' , { path: pathname})
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
 					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
 				}
 				else{
@@ -270,9 +319,27 @@
 
 		$(window).load(function() {
 			var p = 'percent-'
+			$('#'+p+'ijazah_apoteker').hide()
+			$('#'+p+'stra_apoteker').hide()
+			$('#'+p+'rekom_iai').hide()
+			$('#'+p+'rekom_iai').hide()
 			$('#'+p+'ktp').hide()
-			$('#'+p+'sketsa_lokasi').hide()
-			$('#'+p+'surat_pernyataan').hide()
+			$('#'+p+'denah_lokasi').hide()
+			$('#'+p+'denah_bangunan').hide()
+			$('#'+p+'status_bangunan').hide()
+			$('#'+p+'izin_gangguan').hide()
+			$('#'+p+'ijazah_strttk').hide()
+			$('#'+p+'daftar_tenaga_teknis').hide()
+			$('#'+p+'alat_perlengkapan_apotek').hide()
+			$('#'+p+'izin_atasan').hide()
+			$('#'+p+'perjanjian_apoteker').hide()
+			$('#'+p+'pernyataan_peraturan_apoteker').hide()
+			$('#'+p+'pernyataan_peraturan_pemilik').hide()
+			$('#'+p+'sia').hide()
+			$('#'+p+'sipa').hide()
+			$('#'+p+'sipttk').hide()
+			$('#'+p+'pernyataan_pemilik').hide()
+			$('#'+p+'pernyataan_apoteker').hide()
 		});
 
 		function load_konfirmasi(id_pengajuan){

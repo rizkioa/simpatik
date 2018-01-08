@@ -1,0 +1,200 @@
+{% load i18n %}
+<div class="modal fade" id="pengunduran_apoteker_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title custom-font">Pengunduran Apoteker</h3>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal form-pengunduran-apoteker" method="POST" action="{% url 'izin_dinkes__save_pengunduran' %}">
+					{% csrf_token %}
+					<input type="hidden" name="id_pengunduran_apoteker" id="id_pengunduran_apoteker">
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left"><strong>Nama Apoteker</strong></label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control data-bangunan" name="nama_apoteker" required="" data-parsley-trigger="change">
+						</div>
+					</div>
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left"><strong>Tempat Lahir</strong></label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control data-bangunan" name="tempat_lahir" required="" data-parsley-trigger="change">
+						</div>
+					</div>
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left"><strong>Tanggal Lahir</strong></label>
+						<div class="col-sm-5">
+							<div class="input-group datepicker" data-format="L">
+						      <input type="text" class="form-control" id="id_tanggal_lahir" name="tanggal_lahir">
+						      <span class="input-group-addon">
+						      <span class="fa fa-calendar"></span>
+						      </span>
+						    </div>
+						</div>
+					</div>
+
+					<div class="form-group" id="alamat">
+						<label class="col-sm-2 control-label text-left"><strong>alamat_apoteker</strong> </label>
+						<div class="col-sm-8">
+						<textarea class="form-control data-bangunan" rows="5" name="alamat" required="" data-parsley-trigger="change"></textarea>
+						</div>
+					</div>
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left"><strong>No Telepon</strong></label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control data-bangunan" name="no_telepon" required="" data-parsley-trigger="change">
+						</div>
+					</div>
+
+					<div class="form-group" >
+						<label class="col-sm-2 control-label text-left"><strong>Keterangan</strong></label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control data-bangunan" name="keterangan" required="" data-parsley-trigger="change">
+						</div>
+					</div>
+
+					
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button onclick="save_pengunduran_apoteker()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Simpan</button>
+				<button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function save_pengunduran_apoteker(){
+		frm = $('.form-pengunduran-apoteker')
+		frm.parsley().validate();
+		if (frm.parsley().isValid()){
+			frm.ajaxSubmit({
+				method: 'POST',
+				data: frm.serialize(),
+				url: frm.attr('action'),
+				beforeSend: function() {
+					frm.mLoading();
+				},
+				success: function(response){
+					respon = JSON.parse(response)
+					if(respon.success == true){
+						toastr["success"](respon.pesan)
+						$('#pengunduran_apoteker_modal').modal('hide')
+						// frm.find('.data-anggota').val('')
+						// $('#id_form_data_kendaraan').find('input').val('');
+						load_pengunduran_apoteker($.cookie('id_pengajuan'))
+					}
+					else{
+						toastr["error"](respon.pesan)
+					}
+					frm.mLoading('hide');
+				},
+				error: function(){
+					frm.mLoading('hide');
+					toast_server_error();
+				}
+			})
+		}
+	}
+
+	function load_pengunduran_apoteker(pengajuan_id){
+		if (pengajuan_id !== ""){
+			$('.table-pengunduran_apoteker > tbody').html('')
+			$('.table-pengunduran_apoteker').mLoading();
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/izin-dinkes/penutupan-apotek/load-pengunduran-apoteker/'+pengajuan_id,
+				success: function (respon) {
+					console.log(respon)
+					respon = JSON.parse(respon)
+					if(respon.success == true && respon.data.length > 0){
+						$.each( respon.data, function( index ) {
+							row = '<tr>'
+							no = index+1
+							row += '<td>'+no+'</td>'
+							row += '<td>'+respon.data[index].nama_apoteker+'</td>'
+							row += '<td>'+respon.data[index].alamat_apoteker+'</td>'
+							if(respon.data[index].keterangan){
+								row += '<td>'+respon.data[index].keterangan+'</td>'
+							}
+							else{
+								row += '<td>-</td>'
+							}
+							row += '<td><button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon.data[index].id+'" type="button" onclick="tambah_pengunduran_apoteker($(this).val())"><i class="fa fa-pencil"></i><span>Edit</span></button> | <button class="btn btn-denger btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10" value="'+respon.data[index].id+'" type="button" onclick="delete_pengurus_badan_usaha($(this).val())"><i class="fa fa-trash"></i><span>Delete</span></button></td>'
+							row += '</tr>'
+							$('.table-pengunduran_apoteker > tbody').append(row)
+						})
+					}
+					else{
+						row = '<tr>'
+						row += '<td colspan="9" align="center">Kosong</td>'
+						row += '</tr>'
+						$('.table-pengunduran_apoteker > tbody').append(row)
+					}
+					// $('#table_daftar_kendaraan > tbody').html(row)
+				},
+				error: function(){
+					toast_server_error();
+				}
+			})
+			$('.table-pengunduran_apoteker').mLoading('hide');
+		}
+	}
+
+	function delete_pengurus_badan_usaha(val_){
+		$.ajax({
+			type: 'GET',
+			url: __base_url__+'/izin-dinkes/penutupan-apotek/delete-pengunduran-apoteker/'+val_,
+			success: function (data) {
+				resp = $.parseJSON(data)
+				if (resp.success){
+					toastr["success"](resp.pesan)
+					load_pengunduran_apoteker($.cookie('id_pengajuan'))
+				}
+				else{
+					toastr["error"](resp.pesan)
+				}
+			},
+			error: function(){
+				toast_server_error();
+			}
+		})
+	}
+
+	function tambah_pengunduran_apoteker(id_pengunduran_apoteker){
+		// console.log(id_bangunan_lab)
+		$('#pengunduran_apoteker_modal').modal('show');
+		frm = $('.form-pengunduran-apoteker');
+		frm.find('.data-bangunan').val('').trigger("chosen:updated");
+		if(id_pengunduran_apoteker && id_pengunduran_apoteker > 0){
+			$.ajax({
+				url: __base_url__+'/izin-dinkes/penutupan-apotek/load-edit-pengunduran-apoteker/'+id_pengunduran_apoteker,
+				type: 'GET',
+				success: function(respon){
+					// console.log(respon)
+					respon = JSON.parse(respon)
+					if(respon.success == true){
+						frm.find('input[name="id_pengunduran_apoteker"]').val(respon.data.id);
+						frm.find('input[name="nama_apoteker"]').val(respon.data.nama_apoteker);
+						frm.find('input[name="tempat_lahir"]').val(respon.data.tempat_lahir);
+						frm.find('input[name="tanggal_lahir"]').val(respon.data.tanggal_lahir);
+						frm.find('textarea[name="alamat"]').val(respon.data.alamat_apoteker);
+						frm.find('input[name="no_telepon"]').val(respon.data.telepon_apoteker);
+						frm.find('input[name="keterangan"]').val(respon.data.keterangan);
+					}
+				},
+				error: function(){
+					toast_server_error();
+				}
+			})
+		}
+		else{
+			frm.find('input[name="id_pengunduran_apoteker"]').val('')
+		}
+	}
+</script>

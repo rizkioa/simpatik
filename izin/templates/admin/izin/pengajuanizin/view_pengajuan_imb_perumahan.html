@@ -681,7 +681,7 @@
 				<div id="minimize_4">
 					<div class="tile-body">
 						<div class="panel-body">
-						{% if skizin == None and status == 2%}
+						{% if skizin == None and status == 2 %}
 							<center>
 								<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_perumahan' pengajuan_id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 								<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
@@ -982,37 +982,41 @@
 			                	{% if pengajuan.status == 5 %}
 									<div class="panel-body">
 										<form method="POST" id="id_form_pembayaran" name="form_pembayaran" role="form" class="form-horizontal" action="{% url 'detil_pembayaran_save' %}" data-parsley-validate novalidate>
-										{% csrf_token %}
-												<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
+											{% csrf_token %}
+											<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
 
-												<div class="form-group">
-												<label for="input01" class="col-sm-2 label-color">Tanggal Bayar</label>
-													<div class="col-sm-2">
-														<div class="input-group datepicker w-360 tanggal-awal"> 
-															<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
-															<span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-															<a class="btn btn-default" style="height:34px;" type="button"><i class="fa fa-calendar"></i></a>
-															</span>
-														</div>
+											<div class="form-group">
+												<label class="col-sm-2 label-color">Tanggal Dateline Bayar</label>
+												<div class="col-sm-2">
+													<div class="input-group datepicker w-360 tanggal-awal"> 
+														<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
+														<span class="input-group-addon">
+															<span class="fa fa-calendar"></span>
+														</span>
 													</div>
 												</div>
+											</div>
 
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
-													<div class="col-sm-5">
-														<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;">
-													</div>
-											    </div>
+											<div class="form-group">
+												<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
+												<div class="col-sm-5">
+													<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;" value="">
+												</div>
+											</div>
 
-											    <div class="form-group">
-													<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
-													<div class="col-sm-6">
-														<div class="input-group">
-															<span class="input-group-addon" style="width:34px;">Rp.</span>
-																<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
-														</div>
+											<div class="form-group">
+												<label class="col-sm-2 "></label>
+											</div>
+
+											<div class="form-group">
+												<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
+												<div class="col-sm-6">
+													<div class="input-group">
+														<span class="input-group-addon" style="width:34px;">Rp.</span>
+														<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
 													</div>
-											    </div>
+												</div>
+											</div>
 										</form>
 									</div>
 								    <section class="tile bg-greensea">

@@ -1,0 +1,270 @@
+<form method="POST" name="step4" enctype="multipart/form-data" id="myForm_upload" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik_save' %}" data-parsley-validate novalidate>
+  {% csrf_token %}
+  <h3>UPLOAD DOKUMEN PERSYARATAN</h3>
+  <hr class="style14" style="height:2px">
+</form>
+
+   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-imk">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Fotocopy Izin Mendirikan Klinik</strong></label>
+      <span id="field-imk">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="IMK">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-imk" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-imk" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-imk"></span>
+    </div>
+  </form>
+
+   <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-data_klinik">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Data Klinik Meliputi : </strong>
+      <ul>
+        <li> Struktur organisasi kepengurusan</li>
+        <li> Tenaga Kesehatan (sudah mengurus Surat Izin Praktek Tenaga Kesehatan/tanda terima kepengurusan dari Dinkes)</li>
+        <li> Sarana Prasarana</li>
+        <li> Peralatan</li>
+        <li> Pelayanan yang diberikan</li>
+      </ul>
+      </label>
+      <span id="field-data_klinik">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Data klinik">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-data_klinik" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-data_klinik" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-data_klinik"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-surat_pernyataan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Surat Pernyataan mematuhi perundang-undangan di bidang kesehatan</strong></label>
+      <span id="field-surat_pernyataan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Surat Pernyataan">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-surat_pernyataan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-surat_pernyataan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-surat_pernyataan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-ktp">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Fotocopy KTP</strong></label>
+      <span id="field-ktp">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="KTP">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-ktp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ktp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ktp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-npwp">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>fotocopy NPWP perorangan/badan usaha/badan hukum</strong></label>
+      <span id="field-npwp">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="NPWP">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-npwp" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-npwp" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-npwp"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-pendirian_hukum">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>fotocopy pendirian badan hukum atau badan usaha yang telah disahkan oleh pejabat yang berwenang, kecuali untuk kepemilikan perorangan (untuk klinik rawat inap wajib berbadan hukum) </strong></label>
+      <span id="field-pendirian_hukum">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Pendirian Badan Hukum">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-pendirian_hukum" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-pendirian_hukum" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-pendirian_hukum"></span>
+    </div>
+  </form>
+
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-sertifikat_tanah">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">fotocopy sertifikat tanah/bukti kepemilikan lain yang disahkan oleh notaris/bukti surat kontrak minimal untuk jangka 5 (lima) tahun</label>
+      <span id="field-sertifikat_tanah">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Sertifikat Tanah / Bangunan">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-sertifikat_tanah" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-sertifikat_tanah" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-sertifikat_tanah"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-dokumen_lingkungan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Dokumen lingkungan (SPPL/UKL/UPL)</label>
+      <span id="field-dokumen_lingkungan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Dokumen Lingkungan">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-dokumen_lingkungan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-dokumen_lingkungan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-dokumen_lingkungan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-profil_klinik">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Profil klinik yang akan didirikan meliputi pengorganisasian, lokasi, bangunan, prasarana, ketenagaan, peralatan, kefarmasian, laboratorium, serta pelayanan yang diberikan </label>
+      <span id="field-profil_klinik">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Profil Klinik">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-profil_klinik" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-profil_klinik" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-profil_klinik"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-gambar_bangunan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Gambar/denah bangunan dan layout klinik yang didirikan</label>
+      <span id="field-gambar_bangunan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Gambar/Denah Bangunan">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-gambar_bangunan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-gambar_bangunan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-gambar_bangunan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-ippm">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">IPPM jika nilai investasi 500 juta ke atas (selain tanah dan bangunan)</label>
+      <span id="field-ippm">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="IPPM">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-ippm" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-ippm" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-ippm"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-imb">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Fotocopy Izin Mendirikan Bangunan (IMB)</label>
+      <span id="field-imb">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Izin Mendirikan Bangunan (IMB)">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-imb" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-imb" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-imb"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-izin_gangguan">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Fotocopy Izin Gangguan</label>
+      <span id="field-izin_gangguan">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Izin Gangguan">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-izin_gangguan" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-izin_gangguan" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-izin_gangguan"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-perjanjian_kerjasama">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Perjanjian Kerjasama dengan pihak ketiga untuk pengangkutan limbah B3</strong></label>
+      <span id="field-perjanjian_kerjasama">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Perjanjian Kerjasama">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-perjanjian_kerjasama" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-perjanjian_kerjasama" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-perjanjian_kerjasama"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" id="form-izin_klinik_lama">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Fotocopy Izin Mendirikan Klinik lama bagi yang perpanjangan</label>
+      <span id="field-izin_klinik_lama">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Izin Mendirikan Klinik lama">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-izin_klinik_lama" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-izin_klinik_lama" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-izin_klinik_lama"></span>
+    </div>
+  </form>
+
+  <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" action="{% url 'izin_dinkes__upload_berkas_operasional_klinik' %}" data-parsley-validate novalidate id="form-data_perubahan_izin">
+  {% csrf_token %}
+    <div class="form-group">
+      <label class="col-sm-3 control-label"><strong>Data perubahan izin operasional Klinik dan Izin operasional Klinik asli (bila ada perubahan)</strong></label>
+      <span id="field-data_perubahan_izin">
+        <div class="col-sm-5">
+          <input type="hidden" name="kode" value="Data Perubahan Izin">
+          <input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">
+        </div>
+        <a href="#" id="btn-data_perubahan_izin" class="btn btn-success mb-10" onclick="form_upload_dokumen($(this))"><i class="fa fa-upload"></i> Upload</a>
+        <a id="percent-data_perubahan_izin" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+      </span>
+      <span class="col-sm-6" id="load-data_perubahan_izin"></span>
+    </div>
+  </form>

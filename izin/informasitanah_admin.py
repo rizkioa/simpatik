@@ -210,6 +210,7 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 					extra_context.update({'cookie_file_ktp': ktp_.berkas })
 				except ObjectDoesNotExist:
 					pass
+			legalitas_list = ""
 			if pengajuan_.perusahaan:
 				if pengajuan_.perusahaan.desa:
 					alamat_perusahaan_ = str(pengajuan_.perusahaan.alamat_perusahaan)+", Desa "+str(pengajuan_.perusahaan.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title())
@@ -218,13 +219,15 @@ class InformasiTanahAdmin(admin.ModelAdmin):
 
 				legalitas_pendirian = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta pendirian").last()
 				legalitas_perubahan = pengajuan_.perusahaan.legalitas_set.filter(berkas__keterangan="akta perubahan").last()
+				legalitas_list = pengajuan_.perusahaan.legalitas_set.all()
+
 				extra_context.update({ 'legalitas_pendirian': legalitas_pendirian })
 				extra_context.update({ 'legalitas_perubahan': legalitas_perubahan })
 			if pengajuan_.desa:
 				letak_ = pengajuan_.alamat +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
 			else:
 				letak_ = pengajuan_.alamat
-			legalitas_list = pengajuan_.perusahaan.legalitas_set.all()
+			
 			penggunaan_tanah_list = pengajuan_.penggunaantanahipptusaha_set.all()
 			perumahan_yang_dimiliki_list = pengajuan_.perumahanyangdimilikiipptusaha_set.all()
 

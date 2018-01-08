@@ -781,7 +781,7 @@ def load_edit_pengurus_badan_usaha(request, id_pengurusbadanusaha):
 		try:
 			i = PengurusBadanUsaha.objects.get(id=id_pengurusbadanusaha)
 			as_json = i.as_json()
-			data = {'success': True, 'pesan': 'Data berhasil dihapus.', 'data':as_json}
+			data = {'success': True, 'pesan': 'Data berhasil diload.', 'data':as_json}
 		except ObjectDoesNotExist:
 			pass
 	return HttpResponse(json.dumps(data))

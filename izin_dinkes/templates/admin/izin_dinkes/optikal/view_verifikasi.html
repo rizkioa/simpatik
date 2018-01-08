@@ -1,0 +1,107 @@
+{% extends "admin/izin_dinkes/view_verifikasi.html" %}
+
+{% block detil_modal %}
+	<br>
+	<h4><u>#2. IZIN OPTIKAL</u></h4>
+	<table width="100%" border="0">
+		<tr>
+			<td width="25%">Nama Optikal</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.nama_optikal}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Nama Pemilik Optikal/Perusahaan</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.nama_pemilik_perusahaan}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Jenis Badan Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.jenis_badan_usaha}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Alamat Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.alamat_usaha}}</td>
+		</tr>
+		<tr>
+			<td width="25%">No Telepon</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.no_telepon}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Lokasi Kegiatan Usaha</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.lokasi_kegiatan_usaha}}</td>
+		</tr>
+		<tr>
+			<td width="25%">Luas Tanah / Bangunan</td>
+			<td width="5%">:</td>
+			<td width="70%">{{pengajuan.luas_tanah_bangunan}}</td>
+		</tr>
+
+	</table>
+{% endblock %}
+
+{% block rincian_pengajuan %}
+	<div class="col-md-6">
+		<table class="table-responsive" width="100%" border="0">
+			<tr>
+				<td width="45%">No Pengajuan</td>
+				<td width="5%">:</td>
+				<td width="50%">{{ pengajuan.no_pengajuan }}</td>
+			</tr>
+			<tr>
+				<td>Jenis Izin</td>
+				<td>:</td>
+				<td>{{ pengajuan.kelompok_jenis_izin }}</td>
+			</tr>
+			<tr>
+				<td>Pemohon</td>
+				<td>:</td>
+				<td>{{ pengajuan.pemohon.nama_lengkap }} ({{ pengajuan.pemohon.jenis_pemohon }})</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-md-6">
+		<table class="table-responsive" width="100%" border="0">
+			<tr>
+				<td width="40%">No. Izin</td>
+				<td width="10%">:</td>
+				<td width="50%">{% if pengajuan.no_izin %}{{ pengajuan.no_izin }}{% else %}-{% endif %}</td>
+			</tr>
+			<tr>
+				<td colspan="3">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Nama Optikal</td>
+				<td>:</td>
+				<td>{{ pengajuan.nama_optikal }}</td>
+			</tr>
+		</table>
+	</div>
+
+	<div class="col-md-12">
+		<hr class="style14">
+		<br>
+		<br>
+		<table class="table table-striped" width="100%">
+			<thead>
+				<tr>
+					<td align="center"><strong>Tanggal Proses</strong></td>
+					<td align="center"><strong>Keterangan Status</strong></td>
+					<td align="center"><strong>Penanggung Jawab</strong></td>
+				</tr>
+			</thead>
+			<tbody>
+				{% for r in riwayat %}
+					<tr>
+						<td align="center">Tanggal : {{ r.created_at|date:"d-m-Y" }} , Jam : {{ r.created_at|time:"H:i" }}</td>
+						<td align="center">{{ r.keterangan }}</td>
+						<td align="center">{{ r.created_by.nama_lengkap }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

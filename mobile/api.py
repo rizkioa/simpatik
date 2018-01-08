@@ -20,6 +20,7 @@ from django.db.models import Q
 from izin import models as app_models
 from utils import get_model_detil
 from izin.utils import render_to_pdf
+from tastypie.resources import ALL_WITH_RELATIONS, ALL
 
 class KelompokJenisIzinRecource(CORSModelResource):
 	class Meta:
@@ -53,12 +54,12 @@ class PengajuanIzinResource(CORSModelResource):
 	class Meta:
 		queryset = PengajuanIzin.objects.filter(~Q(status=11))
 		# queryset = PengajuanIzin.objects.all()
-		allowed_methods = ['get', 'post']
+		allowed_methods = ['get', 'post', 'put']
 		fields = ['id', 'no_pengajuan', 'pemohon', 'kelompok_jenis_izin', 'created_at', 'created_by', 'verified_at', 'verified_by', 'jenis_permohonan', 'status']
 		authentication = ApiKeyAuthentication()
 		filtering = {
-			'no_pengajuan': ['contains'],
-			# 'status': ALL,
+			'no_pengajuan': ALL,
+			'id': ALL,
 		}
 
 	# untuk list filter berdasarkanuser
