@@ -1,7 +1,6 @@
 import json
 import base64
 import datetime
-import requests
 from izin.utils import terbilang_, terbilang, formatrupiah, push_api_dishub
 from django.db.models import Q
 from django.contrib import admin
@@ -17,7 +16,7 @@ from daterange_filter.filter import DateRangeFilter
 from mobile.cors import CORSHttpResponse
 from izin.models import PengajuanIzin, JenisIzin, KelompokJenisIzin, Syarat, DetilSIUP, SKIzin, Riwayat, DetilTDP, Survey, DetilPembayaran
 from kepegawaian.models import Pegawai
-from master.models import Template, Settings
+from master.models import Template
 from izin.controllers.siup import add_wizard_siup, formulir_siup, cetak
 from izin.controllers.reklame import formulir_reklame
 from izin.controllers.imb_reklame import formulir_imb_reklame
@@ -743,20 +742,6 @@ class IzinAdmin(admin.ModelAdmin):
 						"redirect": '',
 					}
 				elif request.POST.get('aksi') == '_submit_kabid':
-					# api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
-					# if api_url_obj:
-					# 	API_ENDPOINT = api_url_obj.url
-					# 	API_KEY = "a18a470f63073d9438140863379938ac3100db4d"
-
-					# 	data = {'api_dev_key':API_KEY,
-					# 		'api_option':'paste',
-					# 		'api_paste_code':obj,
-					# 		'api_paste_format':'python'}
-
-					# 	r = requests.post(url = API_ENDPOINT, data = data)
-					# 	pastebin_url = r.text
-					# 	print("The pastebin URL is:%s"%pastebin_url)
-
 					obj.status = 2
 					obj.verified_by_id = request.user.id
 					obj.verified_at = datetime.datetime.now()

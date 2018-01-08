@@ -536,7 +536,7 @@ def push_api_dishub(request, id_pengajuan):
 	return HttpResponse(json.dumps(data))
 
 
-# cdf3cb8263153760333ac3a3dfc7c18026a894d9
+import drest, json
 def push_api_dinkes(request, id_pengajuan):
 	from izin.models import PengajuanIzin, Riwayat
 	data = {'success': False, 'pesan': 'Terjadi Kesalahan, data tidak ditemukan'}
@@ -553,7 +553,7 @@ def push_api_dinkes(request, id_pengajuan):
 							pengajuan_obj = objects_.objects.get(id=id_pengajuan)
 							try:
 								try:
-									api = drest.api.TastyPieAPI('http://192.168.100.210:8000/api/v1/')
+									api = drest.api.TastyPieAPI('https://180.250.255.185:8877/pengajuan-izin-list/')
 									# api.auth('dishub', 'jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J')
 									api.request.add_header('Authorization', 'Token '+'9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b')
 									api.request.add_header('X-CSRFToken', '{{csrf_token}}')
@@ -567,14 +567,14 @@ def push_api_dinkes(request, id_pengajuan):
 									data_izin = dict(
 										pemohon=nama_lengkap,
 										jenis_pengajuan=2,
-										id=pengajuan_obj.id,
+										id_pengajuan_simpatik=pengajuan_obj.id,
 										perusahaan=perusahaan,
 										no_pengajuan=pengajuan_obj.no_pengajuan,
 										tgl_pengajuan=pengajuan_obj.created_at.strftime("%Y-%m-%d")
 									)
 									response = api.izin.post(data_izin)
 									if response.status in (200, 201, 202):
-										data = {'success': True, 'pesan': 'Berhasil mengirim rekomendasi ke Dishub.'}
+										data = {'success': True, 'pesan': 'Berhasil mengirim rekomendasi ke Dinkes.'}
 										riwayat_obj = Riwayat(
 											pengajuan_izin_id = pengajuan_obj.id,
 											created_by_id = request.user.id,

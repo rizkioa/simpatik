@@ -373,7 +373,7 @@
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a type="button" onclick="verifikasi_kabid_dinkes({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
@@ -799,14 +799,17 @@
 				});
 			});
 		});
-	   
+
     function send_rekomendasi_dinas(){
     	$.ajax({
-    		url: "{{API_URL_PENGAJUAN_DINKES}}",
-    		type: "POST",
-    		data: {"id_pengajuan_simpatik": {{pengajuan.id}}, "no_pengajuan": "{{pengajuan.no_pengajuan}}", "perusahaan": "{{perusahaan}}", "pemohon": "{{pengajuan.pemohon.nama_lengkap}}", "jenis_pengajuan": "{{jenis_izin}}", "tgl_pengajuan": "{{pengajuan.created_at|date:'Y-m-d'}}"},
+    		url: "{% url 'izin_dinkes__post_pengajuanizin_dinkes' pengajuan.id %}",
+    		type: "GET",
     		success: function(respon){
-    			console.log(respon)
+    			if(respon.success){
+    				toastr["success"](respon.pesan);
+    			}else{
+    				toastr["error"](respon.pesan);
+    			}
     		},
     		error: function(){
     			toast_server_error()
