@@ -45,10 +45,10 @@
 					    </thead>
 					    <tbody>
 					    	{% if pengajuan.riwayat_set.all %}
-						    	{% for r in pengajuan.riwayat_set.all %}
+						    	{% for r in pengajuan.riwayat_set.all reversed %}
 							      	<tr>
 								        <td>{{ forloop.counter }}</td>
-								        <td>{{ r.created_at|date:'d-m-Y H:i a'}}</td>
+								        <td>Tanggal {{ r.created_at|date:'d-m-Y'}}, Pukul {{r.created_at|date:"H:i"}}</td>
 								        <td>{{ r.keterangan }}</td>
 								        <td>{{ r.created_by.nama_lengkap }}</td>
 							      	</tr>
