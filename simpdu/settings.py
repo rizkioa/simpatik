@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'daterange_filter',
     'ckeditor',
+    'djcelery',
     # 'debug_toolbar',
     'mptt',
     'cas',
@@ -198,6 +199,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'files/media/')
 
 LOGIN_URL = '/admin/login/'
 
+LOGINAS_REDIRECT_URL = '/admin/'
+
 AUTH_USER_MODEL = 'accounts.Account'
 
 # ADMIN_TOOLS_MENU = 'menupembangunan.CustomMenu'
@@ -213,13 +216,12 @@ HTMLVALIDATOR_ENABLED = True
 
 HTMLVALIDATOR_VNU_JAR = './contrib/vnu.jar'
 
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'mail.kedirikab.go.id'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'hariyanti@kedirikab.go.id'
-EMAIL_HOST_PASSWORD = 'kediri@4531'
+EMAIL_HOST_USER = 'simpatik.kedirikab@gmail.com'
+EMAIL_HOST_PASSWORD = 'fgtcTff62pN36ZXT'
 DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'
 
 CKEDITOR_CONFIGS = {
@@ -242,11 +244,26 @@ REST_FRAMEWORK = {
     ),
 }
 
-API_URL_DISHUB = "http://192.168.100.110:8000/api/v1/"
+API_URL_DISHUB = "http://simpatik.kedirikab.go.id:8989/api/v1/"
 API_USERNAME_DISHUB = "dishub"
 API_KEY_DISHUB = "jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J"
+
+API_URL_DINKES = "http://simpatik.kedirikab.go.id:8877/api/v1/"
+API_USERNAME_DINKES = "dinkes"
+API_KEY_DINKES = ""
 
 GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Jakarta'
+
+COMPUTER_PASSWORD = "SegoPecel"
+
+import djcelery
+djcelery.setup_loader()

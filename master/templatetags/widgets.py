@@ -151,6 +151,7 @@ def get_berkas(qs_, user_):
 @register.filter(name='formatrupiah')
 def formatrupiah(uang):
 	y = str(uang)
+	y = y.replace(".", "")
 	y = y.split('.')
 	j = y[0]
 	# y = y.replace(".00","")
@@ -163,6 +164,16 @@ def formatrupiah(uang):
 			return   formatrupiah(q) + '.' + p 
 		else:
 			return   formatrupiah(q) + '.' + p 
+
+@register.filter(name='formatterbilang')
+def formatterbilang(uang):
+	from izin.utils import terbilang
+	if uang:
+		uang = uang.replace(".", "")
+		return terbilang(int(uang)).upper()
+	else:
+		return '-'
+
 @register.filter()
 def get_alamat_lengkap(obj, filter):
 	if filter == 'perusahaan':

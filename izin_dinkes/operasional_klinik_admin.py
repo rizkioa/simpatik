@@ -6,6 +6,8 @@ from django.contrib.auth.models import Group
 from izin.models import Survey
 from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
+from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
+from master.models import Settings
 
 class OperasionalKlinikAdmin(admin.ModelAdmin):
 
@@ -14,6 +16,16 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 		pengajuan_obj = get_object_or_404(OperasionalKlinik, id=id_pengajuan)
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
+		jenis_izin = pengajuan_obj.kelompok_jenis_izin.kode
+
+		if pengajuan_obj.perusahaan:
+			perusahaan_obj = pengajuan_obj.perusahaan
+		else:
+			perusahaan_obj = pengajuan_obj.nama_klinik
+
+		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
+		if api_url_obj:
+			api_url_dinkes = api_url_obj.url
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -34,6 +46,7 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 			'title': 'Proses Verifikasi Pengajuan Izin Operasional Klinik',
 			'pengajuan': pengajuan_obj,
 			'riwayat': riwayat_list,
+			'jenis_izin': jenis_izin,
 			'skizin': skizin_obj,
 			'skpd_list' : UnitKerja.objects.all(),
 			'pegawai_list' : h,
@@ -41,7 +54,9 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 			'banyak': len(OperasionalKlinik.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:operasional_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
-			'url_form': reverse("admin:izin_proses_iok")
+			'url_form': reverse("admin:izin_proses_iok"),
+			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/operasional_klinik/view_verifikasi.html", extra_context)
 

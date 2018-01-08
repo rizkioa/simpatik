@@ -1,0 +1,81 @@
+{% load i18n admin_static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="pdfkit-orientation" content="Portrait"/>
+	<title>Cetak Pembayaran | {{detil.kode}}</title>
+	<style type="text/css">
+		*{
+			font-family: Arial, Helvetica, sans-serif;
+		}
+	</style>
+</head>
+<body>
+<center>
+	<table>
+		<tr style="margin-bottom: 100px;">
+			<td><img id="logo" src="http://simpatik.kedirikab.go.id/static/images/SIMPATIK.png" width="50px"> <div id="logo_"></div></td>
+			<td style="font-family: Arial, Helvetica, sans-serif; font-weight: 700; font-size: 30px">SIMPATIK</td>
+		</tr>
+	</table>
+	<span style="font-size: 17px"><strong>Nomor Pembayaran : {{detil.kode}}</strong></span><br>
+	<hr>
+</center>
+<table style="font-size: 11px;">
+	<tr>
+		<td>Nama Pemohon</td>
+		<td>:</td>
+		<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
+	</tr>
+	<tr>
+		<td>Peruntukan</td>
+		<td>:</td>
+		<td>{{detil.peruntukan}}</td>
+	</tr>
+	<tr>
+		<td>Jenis Izin</td>
+		<td>:</td>
+		<td>{{detil.pengajuan_izin.kelompok_jenis_izin}}</td>
+	</tr>
+</table>
+<p style="line-height: 15px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
+    Terima kasih telah menggunakan layanan SIMPATIK, Segera lakukan pembayaran agar proses segera ditindaklanjuti, Mohon lakukan pembayaran sebelum:</p>
+<p style="line-height: 11px;font-size: 13px; font-family: Arial, Helvetica, sans-serif;" align="center">
+	<strong>Tanggal : {{detil.tanggal_deadline|date:"d-m-Y"}}</strong>
+</p>
+<center>
+	<div style="border:3px solid;padding: 5px; border-radius: 10px; text-align: center;width: 40%;">
+		<span style="font-size: 13px">Lakukan pembayaran sebesar</span><br>
+		<span style="font-size: 17px"><strong>Rp. {{detil.jumlah_pembayaran}}</strong></span><br>
+		<small>( {{terbilang_jumlah.title}} Rupiah )</small>
+	</div>
+</center>
+
+<br>
+<div style="float: right;font-size: 13px">
+	Pembayaran dapat dilakukan di:<br>
+	<img src="http://simpatik.kedirikab.go.id/static/images/bankjatim.png" width="150px" id="bankjatim"><div id="bankjatim_"></div>
+</div>
+<div style="font-size: 10px">
+	Copyright 2017 Cv Adisatya IT Consultant <br>
+	Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri <br>
+	Jalan Soekarno - Hatta Nomor 14 Telp. 681227 &amp; 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u>
+</div>
+<script type="text/javascript">
+	readFile("logo", "logo_")
+	readFile("bankjatim", "bankjatim_")
+    function readFile(encode_, decode_) {
+        if (this.files && this.files[0]) {
+            var FR= new FileReader();
+            
+            FR.addEventListener("load", function(e) {
+                document.getElementById(encode_).src       = e.target.result;
+                document.getElementById(decode_).innerHTML = e.target.result;
+            }); 
+            
+            FR.readAsDataURL( this.files[0] );
+        }
+    }
+</script>
+</body>
+</html>

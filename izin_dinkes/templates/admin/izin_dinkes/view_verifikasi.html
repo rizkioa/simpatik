@@ -265,6 +265,8 @@
 			</section>
 		</div>
 	</div>
+
+
 	{% if title_verifikasi %}
 		<div class="row">
 			<div class="col-lg-12">
@@ -347,6 +349,19 @@
 										</center>
 									</div>
 								</div>
+
+							{% elif pengajuan.status == 14 %}
+								<div class="panel panel-darkgray" style="background-color: #ff1910 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												Izin Ditolak DINKES Dengan Perincian
+											</h3>
+											<small><a href="#" onclick="">Lihat Perincian</a></small>
+										</center>
+									</div>
+								</div>
+
 							{% elif pengajuan.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
@@ -784,28 +799,22 @@
 				});
 			});
 		});
-
-	   // $.ajax({
-    //         type: 'GET',
-    //         url: +'/api/',
-    //         success: function (data) {
-
-    //         }
-    //     })
-    alert("{{pengajuan.created_at|date:'Y-m-d'}}")
-
+	   
     function send_rekomendasi_dinas(){
     	$.ajax({
     		url: "{{API_URL_PENGAJUAN_DINKES}}",
     		type: "POST",
-    		data: {"id_pengajuan_simpatik": {{pengajuan.id}}, "no_pengajuan": "{{pengajuan.no_pengajuan}}", "jenis_pengajuan": "{{pengajuan.kelompok_jenis_izin.kode}}", "perusahaan": "{{pengajuan.perusahaan}}", "pemohon": "{{pengajuan.pemohon.nama_lengkap}}", "tgl_pengajuan": "{{pengajuan.created_at|date:'Y-m-d'}}"},
+    		data: {"id_pengajuan_simpatik": {{pengajuan.id}}, "no_pengajuan": "{{pengajuan.no_pengajuan}}", "perusahaan": "{{perusahaan}}", "pemohon": "{{pengajuan.pemohon.nama_lengkap}}", "jenis_pengajuan": "{{jenis_izin}}", "tgl_pengajuan": "{{pengajuan.created_at|date:'Y-m-d'}}"},
     		success: function(respon){
     			console.log(respon)
     		},
     		error: function(){
-    			console.log("Server Error")
+    			toast_server_error()
     		}
     	})
+    }
+    function modal_detail_penolakan(){
+    	$('#detail_penolakan').modal('show')
     }
 	</script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
@@ -877,6 +886,21 @@
 					{% include 'admin/izin/pengajuanizin/include/modal_pemohon_perusahaan.html' %}
 					{% block detil_modal %}
 					{% endblock %}
+				</div>
+				<div class="modal-footer">
+					<a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade detail_penolakan" id="detail_penolakan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title custom-font">Detail Penolakan</h3>
+				</div>
+				<div class="modal-body">
+					
 				</div>
 				<div class="modal-footer">
 					<a class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</a>

@@ -11,7 +11,7 @@ from izin.models import DetilIUJK, SKIzin, Riwayat, Syarat, Survey, Klasifikasi,
 from izin.utils import formatrupiah, JENIS_PERMOHONAN, formatrupiah
 from accounts.models import NomorIdentitasPengguna
 from kepegawaian.models import UnitKerja, Pegawai
-
+import pdfkit, datetime, os
 
 class DetilIUJKAdmin(admin.ModelAdmin):
 
@@ -534,6 +534,80 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		subject_template = template.render(ec)
 		template = Template(subject_template).render(Context(extra_context))
 		return HttpResponse(template)
+
+	def cetak_iujk_asli_hal_2_pdf(self, request, id_pengajuan):
+		from django.template import Context, Template
+		from master.models import Template as tpls
+		from dateutil.relativedelta import relativedelta
+		pengajuan_obj = get_object_or_404(DetilIUJK, id=id_pengajuan)
+		extra_context = {}
+
+		paket = pengajuan_obj.paket_pekerjaan_iujk.all()
+
+		kla = []
+		tr = ''
+		no = 0
+		total_ = len(paket)
+		css = 'hidden-border-tr'
+		for p in paket:
+			total_ = total_ - 1
+			# print total_
+			if total_ == 0:
+				css = ''
+			tr += '<tr style="border: 1px solid black;" class="'+css+'">'
+			if p.subklasifikasi.klasifikasi in kla:
+				tr += '<td style="border: 1px solid black;" valign="top"></td>'
+				tr += '<td style="border: 1px solid black;" valign="top"></td>'
+			else:
+				k = p.subklasifikasi.klasifikasi
+				no = no+1
+				tr += '<td style="border: 1px solid black;" valign="top">'+str(no)+'.</td>'
+				tr += '<td style="border: 1px solid black;" valign="top">'+str(k)+'</td>'			
+				kla.append(p.subklasifikasi.klasifikasi)
+			tahun = '0'
+			if p.tahun:
+				tahun = str(p.tahun)
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.subklasifikasi)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.nama_paket_pekerjaan)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top">'+tahun+'</td>'
+			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
+				nilai_paket = 0
+			else:
+				nilai_paket = formatrupiah(p.nilai_paket_pekerjaan)
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(nilai_paket)+'</td>'
+			
+			if p.keterangan is None or p.keterangan == '-':
+				keterangan = ''
+			else:
+				keterangan = p.keterangan	
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(keterangan)+'</td>'
+			tr += '</tr>'
+
+		extra_context.update({'klasifikasi_tr': mark_safe(tr) , 'pengajuan_':pengajuan_obj})
+
+		context_dict = "Cetak Kwitansi "
+		options = {
+				'page-width': '33cm',
+				'page-height': '21.1cm',
+				'margin-top': '1cm',
+				'margin-bottom': '1cm',
+				'margin-right': '1.5cm',
+				'margin-left': '1.5cm',
+			}
+		# template = loader.get_template("front-end/cetak/cetak_skrd.html")
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman_2_pdf.html")
+		context = RequestContext(request, extra_context)
+		html = template.render(context)
+		date_time = datetime.datetime.now().strftime("%Y-%B-%d %H:%M:%S")
+		attachment_file_name = context_dict+'['+str(date_time)+'].pdf'
+		output_file_name = 'files/media/'+str(attachment_file_name)
+		pdfkit.from_string(html, output_file_name, options=options)
+		pdf = open(output_file_name)
+		response = HttpResponse(pdf.read(), content_type='application/pdf')
+		response['Content-Disposition'] = 'filename='+str(attachment_file_name)
+		pdf.close()
+		os.remove(output_file_name)  # remove the locally created pdf file.
+		return response
 		
 	def option_klasifikasi(self, request):
 		klasifikasi_list = Klasifikasi.objects.all()
@@ -573,6 +647,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			url(r'^cetak-iujk-pdf-depan/(?P<id_pengajuan_izin_>[0-9]+)/$', self.cetak_iujk_pdf_depan, name='cetak_iujk_pdf_depan'),
 			url(r'^cetak-iujk/(?P<id_pengajuan_izin_>[0-9]+)/(?P<salinan_>\w+)$', self.admin_site.admin_view(self.cetak_iujk_asli), name='cetak_iujk_asli'),
 			url(r'^cetak-iujk-hal-2/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(self.cetak_iujk_asli_hal_2), name='cetak_iujk_asli_hal2'),
+			url(r'^cetak-iujk-hal-2/(?P<id_pengajuan>[0-9]+)/pdf$', self.admin_site.admin_view(self.cetak_iujk_asli_hal_2_pdf), name='cetak_iujk_asli_hal_2_pdf'),
 			url(r'^option-klasifikasi/$', self.option_klasifikasi, name='option_klasifikasi'),
 			url(r'^option-subklasifikasi/$', self.option_subklasifikasi, name='option_subklasifikasi'),
 			url(r'^option-pegawai/$', self.option_pegawai, name='option_pegawai'),

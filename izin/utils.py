@@ -86,6 +86,7 @@ SATUAN = (
 )
 
 import datetime
+from django.shortcuts import render
 
 def get_tahun_choices(sejak):
 	tahun_list = [(x, x) for x in range(sejak, (datetime.datetime.now().year+1))]
@@ -109,10 +110,32 @@ def get_nomor_kwitansi(kode_, unit_kerja):
 	if kode_:
 		nomor += str(kode_)
 		nomor += "/"+unit_kerja
-		nomor += "/"+str(now.strftime("%m"))+str(now.strftime("%d"))
+		nomor += "/"+str(now.strftime("%d"))+str(now.strftime("%m"))
 		nomor += "/"+str(now.strftime("%Y"))
 	return nomor
 
+def generate_kode_bank_jatim(no_urut):
+	now = datetime.datetime.now()
+	nomor = ""
+	panjang_ = len(str(no_urut))
+	if no_urut:
+		nomor = str(now.strftime("%d"))+str(now.strftime("%m"))+str(now.strftime("%Y"))
+		if panjang_ == 1:
+			nomor += "0000000"
+		elif panjang_ == 2:
+			nomor += "000000"
+		elif panjang_ == 3:
+			nomor += "00000"
+		elif panjang_ == 4:
+			nomor += "0000"
+		elif panjang_ == 5:
+			nomor += "000"
+		elif panjang_ == 6:
+			nomor += "00"
+		elif panjang_ == 7:
+			nomor += "0"
+		nomor += str(no_urut)
+	return nomor
 
 JENIS_IUJK = (
 	('IUJK Perencanaan Konstruksi', 'IUJK Perencanaan Konstruksi'),
@@ -333,6 +356,20 @@ def send_email(emailto, subject, objects_):
 	from django.template.loader import get_template
 
 	html_content = get_template('admin/izin/email_template.html').render(Context({'obj': objects_}))
+	
+	email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
+	email.content_subtype = "html"
+	res = email.send()
+
+	return res
+
+def send_email_html(emailto, subject, objects_, template_):
+	from django.core.mail import EmailMessage
+	from django.conf import settings
+	from django.template import Context
+	from django.template.loader import get_template
+
+	html_content = get_template(template_).render(Context({'obj': objects_}))
 	
 	email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
 	email.content_subtype = "html"
