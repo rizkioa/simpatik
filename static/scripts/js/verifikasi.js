@@ -40,7 +40,7 @@ function verifikasi_kabid(id_detil_siup, aksi){
 					success: function(response) { // on success..
 						respon = $.parseJSON(response)
 						if(respon.success){
-							send_rekomendasi_dinas()
+							// send_rekomendasi_dinas()
 							toastr["success"](respon.pesan)
 							window.location.href= "";
 						}
