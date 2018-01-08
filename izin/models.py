@@ -1165,7 +1165,7 @@ class InformasiTanah(PengajuanIzin):
 class SertifikatTanah(MetaAtribut):
 	informasi_tanah = models.ForeignKey(InformasiTanah, verbose_name="Informasi Tanah", null=True, blank=True)
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True, related_name="sertifikat_tanah_pengajuan_izin")
-	no_sertifikat_petak =  models.CharField(max_length=30, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
+	no_sertifikat_petak =  models.CharField(max_length=60, verbose_name='No. Sertifikat/Petak D', null=True, blank=True)
 	luas_sertifikat_petak = models.DecimalField(max_digits=8, decimal_places=2,default=0, verbose_name='Luas Sertifikat/Petak D')
 	atas_nama_sertifikat_petak =  models.CharField(max_length=255, verbose_name='Atas Nama Sertifikat/Petak D', null=True, blank=True)
 	tahun_sertifikat = models.DateField(verbose_name='Tanggal Sertifikat Tanah', null=True, blank=True)
