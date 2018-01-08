@@ -150,7 +150,11 @@ admin.site.register(Provinsi, ProvinsiAdmin)
 admin.site.register(Kabupaten, KabupatenAdmin)
 admin.site.register(Kecamatan, KecamatanAdmin)
 admin.site.register(Desa, DesaAdmin)
-admin.site.register(Settings)
+
+class SettingsAdmin(admin.ModelAdmin):
+	list_display = ('parameter', 'value', 'url')
+
+admin.site.register(Settings, SettingsAdmin)
 admin.site.register(JenisNomorIdentitas)
 admin.site.register(Berkas)
 admin.site.register(JenisReklame)

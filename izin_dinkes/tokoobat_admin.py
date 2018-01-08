@@ -7,6 +7,7 @@ from izin.models import Survey
 from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
+from master.models import Settings
 
 class TokoObatAdmin(admin.ModelAdmin):
 
@@ -21,6 +22,9 @@ class TokoObatAdmin(admin.ModelAdmin):
 		# 	perusahaan_obj = pengajuan_obj.perusahaan
 		# else:
 		# 	perusahaan_obj = pengajuan_obj.nama_toko_obat
+		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
+		if api_url_obj:
+			api_url_dinkes = api_url_obj.url
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -50,7 +54,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
-			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
+			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
 			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/tokoobat/view_verifikasi.html", extra_context)

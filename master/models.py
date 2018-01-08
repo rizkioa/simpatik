@@ -139,6 +139,7 @@ class JenisNomorIdentitas(models.Model):
 class Settings(models.Model):
 	parameter = models.CharField("Nama Parameter", max_length=100)
 	value = models.CharField("Nilai", max_length=100)
+	url = models.URLField(max_length=200, verbose_name='url', null=True, blank=True)
 
 	class Meta:
 		verbose_name='Setting'

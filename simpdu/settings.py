@@ -198,6 +198,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'files/media/')
 
 LOGIN_URL = '/admin/login/'
 
+LOGINAS_REDIRECT_URL = '/admin/'
+
 AUTH_USER_MODEL = 'accounts.Account'
 
 # ADMIN_TOOLS_MENU = 'menupembangunan.CustomMenu'
