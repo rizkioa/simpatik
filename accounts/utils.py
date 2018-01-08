@@ -13,7 +13,7 @@ STATUS = (
 	(11, 'Insert'),
 	(12, 'Bupati'),
 	(13, 'Perbaikan'),
-	(14, 'BankJatim'),
+	(14, 'Rejected-dinkes'),
 )
 
 # Status Data : 

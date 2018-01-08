@@ -41,12 +41,12 @@ function verifikasi_kabid(id_detil_siup, aksi){
 						respon = $.parseJSON(response)
 						if(respon.success){
 							send_rekomendasi_dinas()
-									toastr["success"](respon.pesan)
-									window.location.href= "";
-								}
-								else{
-										toastr["error"](respon.pesan)
-								}
+							toastr["success"](respon.pesan)
+							window.location.href= "";
+						}
+						else{
+								toastr["error"](respon.pesan)
+						}
 					},
 					error: function(data) {                
 							toast_server_error()
