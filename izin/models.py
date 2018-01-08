@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from accounts.models import Account, IdentitasPribadi
-from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut,ParameterBangunan, JenisKualifikasi, BangunanJenisKontruksi
+from master.models import JenisPemohon, Berkas, JenisReklame, JenisTipeReklame, Desa, MetaAtribut, ParameterBangunan, JenisKualifikasi, BangunanJenisKontruksi
 from perusahaan.models import KBLI, Kelembagaan, JenisPenanamanModal, BentukKegiatanUsaha, Legalitas, JenisBadanUsaha, StatusPerusahaan, BentukKerjasama, JenisPengecer, KedudukanKegiatanUsaha, JenisPerusahaan
 from decimal import Decimal
 
@@ -1547,6 +1547,7 @@ class VasilitasTDUP(models.Model):
 # ++++++++++++ end TDUP ++++++++++++
 class BankPembayaran(models.Model):
 	nama_bank = models.CharField(max_length=255, verbose_name="Nama Bank")
+	nomor_rekening = models.CharField(max_length=255, verbose_name="Nomor Rekening", null=True, blank=True)
 	aktif = models.BooleanField(default=True, verbose_name="Apakah dipakai untuk pembayaran ?")
 	keterangan = models.CharField(max_length=255, verbose_name="Keterangan", null=True, blank=True)
 
@@ -1559,7 +1560,8 @@ class BankPembayaran(models.Model):
 
 # Detil Pembayaran Izin
 # meta
-class DetilPembayaran(models.Model):
+class DetilPembayaran(MetaAtribut):
+	kode = models.CharField(max_length=16, verbose_name="Kode", null=True, blank=True)
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
 	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
@@ -1567,9 +1569,16 @@ class DetilPembayaran(models.Model):
 	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
 	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
 	bank_pembayaran = models.ForeignKey(BankPembayaran, null=True, blank=True, verbose_name="Bank Pembayaran")
+	terbayar = models.BooleanField(default=False, verbose_name="Apakah pembayaran sudah terbayar ?")
 
 	def __unicode__(self):
 		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))
+
+	def bank(self):
+		bank = None
+		if self.bank_pembayaran:
+			bank = self.bank_pembayaran.nama_bank
+		return bank
 
 	class Meta:
 		# ordering = ['-status']
@@ -1581,7 +1590,10 @@ class DetilPembayaran(models.Model):
 		# if not self.id:
 		""" tanggal dateline otomatis 3 bulan dari pembuatan kwitansi """
 		import datetime
+		from utils import generate_kode_bank_jatim
 		self.tanggal_deadline = datetime.date.today() + datetime.timedelta(3*365/12)
+		# jumlah_data = DetilPembayaran.objects.filter(created_at__gte=datetime.date.today()).count()+1
+		# self.kode = generate_kode_bank_jatim(jumlah_data)
 		return super(DetilPembayaran, self).save(*args, **kwargs)
 
 # +++++++++++++ LPK Sw ++++++++++++

@@ -82,71 +82,27 @@ class DetilIMBAdmin(admin.ModelAdmin):
 	def view_pengajuan_imb_umum(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
-			extra_context.update({'title': 'Proses Pengajuan'})
-			extra_context.update({'skpd_list' : UnitKerja.objects.all() })
-
 			queryset_ = Survey.objects.filter(pengajuan__id=id_pengajuan_izin_)
-			# pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_izin_)
 			pengajuan_ = get_object_or_404(DetilIMB, id=id_pengajuan_izin_)
-			extra_context.update({'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last() })
-
-			if pengajuan_.pemohon:
-				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
-					extra_context.update({'alamat_pemohon': alamat_})
-				extra_context.update({'pemohon': pengajuan_.pemohon})
-				extra_context.update({'cookie_file_foto': pengajuan_.pemohon.berkas_foto.all().last()})
-				nomor_identitas_ = pengajuan_.pemohon.nomoridentitaspengguna_set.all().last()
-				extra_context.update({'nomor_identitas': nomor_identitas_ })
-				# if pengajuan_.parameter_bangunan:
-				# 	fungsi_bangunan = pengajuan_.parameter_bangunan.filter(parameter="Fungsi Bangunan")
-				# 	detil_parameter = fungsi_bangunan.last()
-				# 	if detil_parameter:
-				# 		detil_ = detil_parameter.detil_parameter
-						
-				# 		extra_context.update({'detil_': detil_})
-				try:
-					ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id).last()
-					extra_context.update({'cookie_file_ktp': ktp_.berkas })
-				except ObjectDoesNotExist:
-					pass
-			if pengajuan_.desa:
-				letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
-			else:
-				letak_ = ""
-			# extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			pengajuan_id = pengajuan_.id
-			extra_context.update({'letak_pemasangan': letak_})
-			extra_context.update({'klasifikasi_jalan': JENIS_LOKASI_USAHA })
-			extra_context.update({'rumija': RUMIJA })
-			extra_context.update({'ruwasja': RUWASJA })
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
-			extra_context.update({'status': pengajuan_.status})
-			extra_context.update({'pengajuan': pengajuan_})
-			# encode_pengajuan_id = (str(pengajuan_.id))
-			extra_context.update({'pengajuan_id': pengajuan_id })
-			#+++++++++++++ page logout ++++++++++
-			extra_context.update({'has_permission': True })
-			#+++++++++++++ end page logout ++++++++++
-
-			# lama_pemasangan = pengajuan_.tanggal_akhir-pengajuan_.tanggal_mulai
-			# print lama_pemasangan
-			banyak = len(DetilIMB.objects.all())
-			extra_context.update({'banyak': banyak})
-			syarat_ = Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame")
-			extra_context.update({'syarat': syarat_})
+			extra_context.update({
+				'title': 'Proses Pengajuan',
+				'skpd_list' : UnitKerja.objects.all(),
+				'klasifikasi_jalan': JENIS_LOKASI_USAHA,
+				'rumija': RUMIJA,
+				'ruwasja': RUWASJA,
+				'created_at': pengajuan_.created_at,
+				'status': pengajuan_.status,
+				'pengajuan': pengajuan_,
+				'has_permission': True,
+				'banyak': DetilIMB.objects.count(),
+				'syarat': Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame"),
+				'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last(),
+				})
 			try:
 				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
 				if skizin_:
 					extra_context.update({'skizin': skizin_ })
 					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				riwayat_ = Riwayat.objects.filter(pengajuan_izin_id = id_pengajuan_izin_).order_by('created_at')
-				if riwayat_:
-					extra_context.update({'riwayat': riwayat_ })
 			except ObjectDoesNotExist:
 				pass
 			# SURVEY
@@ -177,7 +133,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				pass
 				# print "WASEM"
 
-	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_id)
+	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
 
 	  		extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
 
@@ -192,6 +148,22 @@ class DetilIMBAdmin(admin.ModelAdmin):
 						extra_context.update({'detil_': detil_})
 			except ObjectDoesNotExist:
 				pass
+
+			if pengajuan_.status == 5:
+				import datetime
+				jumlah_data = int(DetilPembayaran.objects.count())+1
+				nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				kode = generate_kode_bank_jatim(jumlah_data)
+				bank_list = BankPembayaran.objects.filter(aktif=True)
+				extra_context.update({
+					'kode': kode,
+					'bank_pembayaran': bank_list,
+					'nomor_kwitansi': nomor_kwitansi,
+					'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) UMUM"
+					})
+			extra_context.update({
+				'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+				})
 
 		template = loader.get_template("admin/izin/pengajuanizin/view_pengajuan_imb_umum.html")
 		ec = RequestContext(request, extra_context)
@@ -635,6 +607,22 @@ class DetilIMBAdmin(admin.ModelAdmin):
 						extra_context.update({'detil_bangunan': detil_bangunan_ })
 				except ObjectDoesNotExist:
 					pass
+
+				if pengajuan_.status == 5:
+					import datetime
+					jumlah_data = int(DetilPembayaran.objects.count())+1
+					nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+					kode = generate_kode_bank_jatim(jumlah_data)
+					bank_list = BankPembayaran.objects.filter(aktif=True)
+					extra_context.update({
+						'kode': kode,
+						'bank_pembayaran': bank_list,
+						'nomor_kwitansi': nomor_kwitansi,
+						'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) PERUMAHAN"
+						})
+				extra_context.update({
+					'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+					})
 			else:
 				raise Http404
 		else:

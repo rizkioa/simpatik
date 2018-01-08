@@ -110,10 +110,32 @@ def get_nomor_kwitansi(kode_, unit_kerja):
 	if kode_:
 		nomor += str(kode_)
 		nomor += "/"+unit_kerja
-		nomor += "/"+str(now.strftime("%m"))+str(now.strftime("%d"))
+		nomor += "/"+str(now.strftime("%d"))+str(now.strftime("%m"))
 		nomor += "/"+str(now.strftime("%Y"))
 	return nomor
 
+def generate_kode_bank_jatim(no_urut):
+	now = datetime.datetime.now()
+	nomor = ""
+	panjang_ = len(str(no_urut))
+	if no_urut:
+		nomor = str(now.strftime("%d"))+str(now.strftime("%m"))+str(now.strftime("%Y"))
+		if panjang_ == 1:
+			nomor += "0000000"
+		elif panjang_ == 2:
+			nomor += "000000"
+		elif panjang_ == 3:
+			nomor += "00000"
+		elif panjang_ == 4:
+			nomor += "0000"
+		elif panjang_ == 5:
+			nomor += "000"
+		elif panjang_ == 6:
+			nomor += "00"
+		elif panjang_ == 7:
+			nomor += "0"
+		nomor += str(no_urut)
+	return nomor
 
 JENIS_IUJK = (
 	('IUJK Perencanaan Konstruksi', 'IUJK Perencanaan Konstruksi'),

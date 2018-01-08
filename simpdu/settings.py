@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'daterange_filter',
     'ckeditor',
+    'djcelery',
     # 'debug_toolbar',
     'mptt',
     'cas',
@@ -243,11 +244,26 @@ REST_FRAMEWORK = {
     ),
 }
 
-API_URL_DISHUB = "http://192.168.100.110:8000/api/v1/"
+API_URL_DISHUB = "http://simpatik.kedirikab.go.id:8989/api/v1/"
 API_USERNAME_DISHUB = "dishub"
 API_KEY_DISHUB = "jgHwLBYweHsfKSZiJHfmIQ2L5KZDNh4J"
+
+API_URL_DINKES = "http://simpatik.kedirikab.go.id:8877/api/v1/"
+API_USERNAME_DINKES = "dinkes"
+API_KEY_DINKES = ""
 
 GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,
 }
+
+BROKER_URL = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Jakarta'
+
+COMPUTER_PASSWORD = "SegoPecel"
+
+import djcelery
+djcelery.setup_loader()
