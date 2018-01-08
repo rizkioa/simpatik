@@ -66,13 +66,13 @@ function verifikasi_kabid_dinkes(id_detil_siup, aksi){
 			$.ajax({ // create an AJAX call...
 					data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, aksi: aksi }, // get the form data
 					type: 'POST', // GET or POST
-					url: '/admin/izin/pengajuanizin/aksi-dinkes/', // the file to call
+					url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 					success: function(response) { // on success..
 						respon = $.parseJSON(response)
-						send_rekomendasi_dinas()
+						// send_rekomendasi_dinas()
 						if(respon.success){
 							toastr["success"](respon.pesan)
-							// window.location.href= "";
+							window.location.href= "";
 						}
 						else{
 								toastr["error"](respon.pesan)

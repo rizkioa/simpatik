@@ -365,15 +365,15 @@
 							{% elif pengajuan.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
-										<h4>MENERUSKAN PENGAJUAN KE KEPALA DPMPTSP</h4>
+										<h4>MENERUSKAN PENGAJUAN KE DINAS KESEHATAN SEBAGAI REKOMENDASI</h4>
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-											<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala DPMPTSP untuk ditindaklanjuti.
+											<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Dinas Kesehatan untuk ditindaklanjuti.
 										</label>
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a type="button" onclick="verifikasi_kabid_dinkes({{ pengajuan.id }}, '_submit_kabid')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a type="button" onclick="send_rekomendasi_dinas()" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
@@ -801,20 +801,26 @@
 		});
 
     function send_rekomendasi_dinas(){
-    	$.ajax({
-    		url: "{% url 'izin_dinkes__post_pengajuanizin_dinkes' pengajuan.id %}",
-    		type: "GET",
-    		success: function(respon){
-    			if(respon.success){
-    				toastr["success"](respon.pesan);
-    			}else{
-    				toastr["error"](respon.pesan);
-    			}
-    		},
-    		error: function(){
-    			toast_server_error()
-    		}
-    	})
+    	var centang = $('#centang_kabid').val();
+    	if ($('#centang_kabid').is(":checked")){
+	    	$.ajax({
+	    		url: "{% url 'izin_dinkes__post_pengajuanizin_dinkes' pengajuan.id %}",
+	    		type: "GET",
+	    		success: function(respon){
+	    			respon = $.parseJSON(respon)
+	    			if(respon.success){
+	    				toastr["success"](respon.pesan);
+	    			}else{
+	    				toastr["error"](respon.pesan);
+	    			}
+	    		},
+	    		error: function(){
+	    			toast_server_error()
+	    		}
+	    	})
+	    }else{
+			toastr["warning"]("Anda belum menyentang persetujuan.")
+		}
     }
     function modal_detail_penolakan(){
     	$('#detail_penolakan').modal('show')
