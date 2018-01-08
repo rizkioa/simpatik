@@ -18,6 +18,7 @@ from izin.utils import*
 import math
 from decimal import *
 import locale, datetime
+from collections import Counter
 
 locale.setlocale(locale.LC_ALL,'id_ID.UTF-8')
 
@@ -288,9 +289,18 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			  		extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak +" Tanggal "+ x.tahun_sertifikat.strftime('%d %B %Y') for x in sertifikat_tanah_list)})
 			  	else:
 			  	 	extra_context.update({'sertifikat_tanah_list': ", ".join(x.no_sertifikat_petak for x in sertifikat_tanah_list)})
+
+
+				nama_pemilik = []
+				for x in sertifikat_tanah_list:
+					nama_pemilik.append(x.atas_nama_sertifikat_petak)
+				C = Counter(nama_pemilik)
+			  	extra_context.update({'pemilik_tanah': ", ".join(k for k,v in C.items())})
+
 		  	else:
 		  		extra_context.update({'sertifikat_tanah_list': pengajuan_.no_surat_tanah +" Tanggal "+ pengajuan_.tanggal_surat_tanah.strftime('%d %B %Y')})
 		  		extra_context.update({'luas_sertifikat_tanah_list': str(pengajuan_.luas_tanah)+" "+mark_safe("M&sup2;")})
+		  		extra_context.update({'pemilik_tanah': pengajuan_.atas_nama_sertifikat_petak })
 
 		template = loader.get_template("front-end/include/imb_umum/cetak_sk_imb_umum.html")
 		ec = RequestContext(request, extra_context)

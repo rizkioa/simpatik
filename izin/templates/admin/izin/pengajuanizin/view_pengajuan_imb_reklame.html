@@ -211,7 +211,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												{% for r in pengajuan.riwayat_set.all %}
+												{% for r in pengajuan.riwayat_set.all reversed %}
 													<tr>
 														<td align="center">Tanggal {{ r.created_at|date:"d-m-Y" }}, Pukul {{r.created_at|date:"H:i"}}</td>
 														<td align="center">{{ r.keterangan }}</td>
