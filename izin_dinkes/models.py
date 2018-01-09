@@ -233,7 +233,7 @@ class OperasionalKlinik(PengajuanIzin):
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	no_telepon = models.CharField(verbose_name='No Telepon', max_length=256, null=True, blank=True)
 
-	def as_json__mendirikan_klinik(self):
+	def as_json__operasional_klinik(self):
 		alamat_lengkap = ''
 		if self.desa and self.alamat_klinik:
 			alamat_lengkap = str(self.alamat_klinik)+self.desa.lokasi_lengkap()

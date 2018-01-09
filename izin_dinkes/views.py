@@ -1,18 +1,335 @@
 import os
 import json
 import datetime
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 
+from master.models import Negara, Kecamatan, Berkas
 from izin_dinkes.forms import ApotekForm, TokoObatForm, LaboratoriumForm, PeralatanLaboratoriumForm, OptikalForm, MendirikanKlinikForm, OperasionalKlinikForm, PenutupanApotekForm
-from izin_dinkes.models import Apotek, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik, PenutupanApotek, PengunduranApoteker
+from izin_dinkes.models import Apotek, Sarana, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik, PenutupanApotek, PengunduranApoteker
 from izin.izin_forms import BerkasForm
-from izin.models import PengajuanIzin
+from izin.models import PengajuanIzin, JenisPemohon, JenisPermohonanIzin
+from accounts.utils import KETERANGAN_PEKERJAAN
 
+def formulir_izin_apotek(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	sarana_list = Sarana.objects.all()
+	extra_context.update({
+		'sarana_list': sarana_list,
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			print request.COOKIES['id_pengajuan']
+			try:
+				pengajuan_ = Apotek.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_apotek.html", extra_context)
+
+def cetak_izin_apotek(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		print id_pengajuan
+		pengajuan_ = get_object_or_404(Apotek, id=id_pengajuan)
+		print pengajuan_
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_izin_apotik/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_apotek(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN APOTEK'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(Apotek, id=id_pengajuan)
+		if pengajuan_:
+			# sarana_list = Sarana.objects.filter(apotek_id=pengajuan_.id)
+			extra_context.update({'pengajuan_':pengajuan_})
+	return render(request, "front-end/include/formulir_izin_apotik/cetak_bukti_pendaftaran.html", extra_context)
+
+def formulir_izin_toko_obat(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = TokoObat.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_toko_obat.html", extra_context)
+
+def cetak_izin_toko_obat(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(TokoObat, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_izin_toko_obat/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_toko_obat(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN TOKO OBAT'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(TokoObat, id=id_pengajuan)
+		if pengajuan_:
+			# sarana_list = Sarana.objects.filter(apotek_id=pengajuan_.id)
+			extra_context.update({'pengajuan_':pengajuan_})
+	return render(request, "front-end/include/formulir_izin_toko_obat/cetak_bukti_pendaftaran.html", extra_context)
+
+def formulir_izin_optikal(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = Optikal.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_optikal.html", extra_context)
+
+def cetak_izin_optikal(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(Optikal, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_izin_optikal/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_optikal(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN OPTIKAL'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(Optikal, id=id_pengajuan)
+		if pengajuan_:
+			# sarana_list = Sarana.objects.filter(apotek_id=pengajuan_.id)
+			extra_context.update({'pengajuan_':pengajuan_})
+	return render(request, "front-end/include/formulir_izin_optikal/cetak_bukti_pendaftaran.html", extra_context)
+
+def formulir_izin_laboratorium(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = Laboratorium.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_laboratorium.html", extra_context)
+
+def cetak_izin_laboratorium(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(Laboratorium, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_izin_laboratorium/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_laboratorium(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN LABORATORIUM'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(Laboratorium, id=id_pengajuan)
+		if pengajuan_:
+			peralatan_list = PeralatanLaboratorium.objects.filter(laboratorium_id=pengajuan_.id)
+			bangunan_list = BangunanLaboratorium.objects.filter(laboratorium_id=pengajuan_.id)
+			extra_context.update({'pengajuan_':pengajuan_, 'peralatan_list':peralatan_list, 'bangunan_list':bangunan_list})
+	return render(request, "front-end/include/formulir_izin_laboratorium/cetak_bukti_pendaftaran.html", extra_context)
+
+def formulir_izin_penutupan_apotek(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = PenutupanApotek.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_penutupan_apotek.html", extra_context)
+
+def cetak_izin_penutupan_apotek(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(PenutupanApotek, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_izin_penutupan_apotek/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_penutupan_apotek(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN LABORATORIUM'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(PenutupanApotek, id=id_pengajuan)
+		if pengajuan_:
+			pengunduran_list = PengunduranApoteker.objects.filter(nama_apotek_id=pengajuan_.id)
+			extra_context.update({'pengajuan_':pengajuan_})
+	return render(request, "front-end/include/formulir_izin_penutupan_apotek/cetak_bukti_pendaftaran.html", extra_context)
+
+
+def formulir_izin_mendirikan_klinik(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = MendirikanKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_mendirikan_klinik.html", extra_context)
+
+def cetak_izin_mendirikan_klinik(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(MendirikanKlinik, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_mendirikan_klinik/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_mendirikan_klinik(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN MENDIRIKAN KLINIK'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(MendirikanKlinik, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan_':pengajuan_})
+	return render(request, "front-end/include/formulir_mendirikan_klinik/cetak_bukti_pendaftaran.html", extra_context)
+
+def formulir_izin_operasional_klinik(request, extra_context={}):
+	negara = Negara.objects.all()
+	jenis_pemohon = JenisPemohon.objects.all()
+	extra_context.update({
+		'negara':negara,
+		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
+		'jenis_pemohon':jenis_pemohon,
+		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		})
+	if 'id_pengajuan' in request.COOKIES.keys():
+		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
+			try:
+				pengajuan_ = OperasionalKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+				# print pengajuan_
+				extra_context.update({'pengajuan_': pengajuan_})
+				extra_context.update({'pengajuan_id': pengajuan_.id})
+			except ObjectDoesNotExist:
+				extra_context.update({'pengajuan_id': '0'})
+
+	if 'id_kelompok_izin' in request.COOKIES.keys():
+		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+	else:
+		return HttpResponseRedirect(reverse('layanan'))
+	return render(request, "front-end/formulir/dinkes/izin_operasional_klinik.html", extra_context)
+
+def cetak_izin_operasional_klinik(request, id_pengajuan):
+	extra_context = {}
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(OperasionalKlinik, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan': pengajuan_})
+	return render(request, "front-end/include/formulir_operasional_klinik/cetak.html", extra_context)
+
+def cetak_bukti_pendaftaran_izin_operasional_klinik(request, id_pengajuan):
+	extra_context = {}
+	extra_context.update({'formulir_judul': 'FORMULIR PENDAFTARAN IZIN OPERASIONAL KLINIK'})
+	if id_pengajuan:
+		pengajuan_ = get_object_or_404(OperasionalKlinik, id=id_pengajuan)
+		if pengajuan_:
+			extra_context.update({'pengajuan_':pengajuan_})
+	return render(request, "front-end/include/formulir_operasional_klinik/cetak_bukti_pendaftaran.html", extra_context)
+# ================================================================================================================
 def save_izin_apotek(request):
 	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
 	if 'id_pengajuan' in request.COOKIES.keys():
+		print request.COOKIES['id_pengajuan']	
 		if request.COOKIES['id_pengajuan'] != '':
 			if 'id_kelompok_izin' in request.COOKIES.keys():
 				try:
@@ -1165,7 +1482,7 @@ def save_izin_optikal(request):
 			if 'id_kelompok_izin' in request.COOKIES.keys():
 				try:
 					pengajuan_obj = Optikal.objects.get(id=request.COOKIES['id_pengajuan'])
-					form_optikal = PenutupanApotekForm(request.POST, instance=pengajuan_obj)
+					form_optikal = OptikalForm(request.POST, instance=pengajuan_obj)
 					if form_optikal.is_valid():
 						p = form_optikal.save(commit=False)
 						p.save()
@@ -1989,8 +2306,10 @@ def mendirikan_klinik_done(request):
 
 def save_izin_operasional_klinik(request):
 	data = {'Terjadi Kesalahan': [{'message': 'Data Pengajuan tidak ditemukan/tidak ada'}]}
+	print 'asdasdasd'
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
+			print request.COOKIES['id_pengajuan']
 			if 'id_kelompok_izin' in request.COOKIES.keys():
 				try:
 					print 'asdasdasdasd'
@@ -2001,7 +2320,7 @@ def save_izin_operasional_klinik(request):
 						p.save()
 						data = {'success': True, 'pesan': 'Data Izin Operasional Klinik berhasil tersimpan.'}
 					else:
-						data = form_operasional_klinik.errors.as_json__mendirikan_klinik()
+						data = form_operasional_klinik.errors.as_json__operasional_klinik()
 						data = {'success': False, 'pesan': 'Data Izin Operasional Klinik gagal.', 'data': data}
 				except OperasionalKlinik.DoesNotExist:
 					pass
@@ -2013,7 +2332,7 @@ def load_izin_operasional_klinik(request, id_pengajuan):
 	if id_pengajuan:
 		pengajuan_obj = OperasionalKlinik.objects.filter(id=id_pengajuan).last()
 		if pengajuan_obj:
-			data = pengajuan_obj.as_json__mendirikan_klinik()
+			data = pengajuan_obj.as_json__operasional_klinik()
 			response = {'success': True, 'pesan': 'Data Operasional Klinik berhasil tersimpan.', 'data': data}
 	return HttpResponse(json.dumps(response))
 
@@ -2283,7 +2602,7 @@ def load_konfirmasi_operasional_klinik(request, id_pengajuan):
 		pemohon_json = {}
 		if pengajuan_obj.pemohon:
 			pemohon_json = pengajuan_obj.pemohon.as_json()
-		data = {'success': True, 'pesan': 'Berhasil load data pengajuan izin.', 'data': {'pemohon_json': pemohon_json, 'pengajuan_json': pengajuan_obj.as_json(), 'detil_json': pengajuan_obj.as_json__mendirikan_klinik()}}
+		data = {'success': True, 'pesan': 'Berhasil load data pengajuan izin.', 'data': {'pemohon_json': pemohon_json, 'pengajuan_json': pengajuan_obj.as_json(), 'detil_json': pengajuan_obj.as_json__operasional_klinik()}}
 	except ObjectDoesNotExist:
 		pass
 	return HttpResponse(json.dumps(data))
@@ -2291,7 +2610,9 @@ def load_konfirmasi_operasional_klinik(request, id_pengajuan):
 def operasional_klinik_done(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
-			pengajuan_ = OperasionalKlinik.objects.get(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan'])
+			print request.COOKIES['id_pengajuan']
+			pengajuan_ = OperasionalKlinik.objects.filter(pengajuanizin_ptr_id=request.COOKIES['id_pengajuan']).last()
+			print pengajuan_
 			pengajuan_.status = 6
 			pengajuan_.save()
 					
