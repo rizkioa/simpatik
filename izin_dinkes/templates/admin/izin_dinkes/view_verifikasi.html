@@ -365,15 +365,15 @@
 							{% elif pengajuan.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
-										<h4>MENERUSKAN PENGAJUAN KE DINAS KESEHATAN SEBAGAI REKOMENDASI</h4>
+										<h4>MENERUSKAN PENGAJUAN KE KEPALA DINAS UNTUK DITINDAKLANJUTI</h4>
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-											<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Dinas Kesehatan untuk ditindaklanjuti.
+											<input id="centang_kabid" type="checkbox" ><i></i> Anda telah memeriksa kebutuhan pengajuaan dan setuju bahwa pengajuan bisa diteruskan ke Kepala Dinas untuk ditindaklanjuti.
 										</label>
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a type="button" onclick="send_rekomendasi_dinas()" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a type="button" onclick="verifikasi_kabid(({{ pengajuan.id }})" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>

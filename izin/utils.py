@@ -405,20 +405,20 @@ def get_appmodels_based_kode_jenis(kode_ijin):
 		objects_ = getattr(app_models, 'DetilIMB')
 	elif kode_ijin == "HULLER":
 		objects_ = getattr(app_models, 'DetilHuller')
-	elif kode_ijin == "ITO":
-		objects_ = getattr(app_models_dinkes, 'TokoObat')
-	elif kode_ijin == "IAP":
-		objects_ = getattr(app_models_dinkes, 'Apotek')
-	elif kode_ijin == "IOP":
-		objects_ = getattr(app_models_dinkes, 'Optikal')
-	elif kode_ijin == "ILB":
-		objects_ = getattr(app_models_dinkes, 'Laboratorium')
-	elif kode_ijin == "IPK":
-		objects_ = getattr(app_models_dinkes, 'PenutupanApotek')
-	elif kode_ijin == "IMK":
-		objects_ = getattr(app_models_dinkes, 'MendirikanKlinik')
-	elif kode_ijin == "IOP":
-		objects_ = getattr(app_models_dinkes, 'OperasionaKlinik')
+	# elif kode_ijin == "ITO":
+	# 	objects_ = getattr(app_models_dinkes, 'TokoObat')
+	# elif kode_ijin == "IAP":
+	# 	objects_ = getattr(app_models_dinkes, 'Apotek')
+	# elif kode_ijin == "IOP":
+	# 	objects_ = getattr(app_models_dinkes, 'Optikal')
+	# elif kode_ijin == "ILB":
+	# 	objects_ = getattr(app_models_dinkes, 'Laboratorium')
+	# elif kode_ijin == "IPK":
+	# 	objects_ = getattr(app_models_dinkes, 'PenutupanApotek')
+	# elif kode_ijin == "IMK":
+	# 	objects_ = getattr(app_models_dinkes, 'MendirikanKlinik')
+	# elif kode_ijin == "IOP":
+	# 	objects_ = getattr(app_models_dinkes, 'OperasionaKlinik')
 	return objects_
 
 

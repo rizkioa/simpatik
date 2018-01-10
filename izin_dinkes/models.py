@@ -20,6 +20,8 @@ class Apotek(PengajuanIzin):
 	alamat_apotek = models.CharField(verbose_name='Alamat Apotek', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	no_telepon = models.CharField(verbose_name='No Telepon', max_length=100, null=True, blank=True)
+	no_stra = models.CharField(verbose_name='No STRA', max_length=100, null=True, blank=True)
+	ni_sipa = models.CharField(verbose_name='No SIPA', max_length=100, null=True, blank=True)
 	sarana = models.ForeignKey(Sarana, verbose_name="Sarana", null=True, blank=True)
 	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
 	alamat_sarana = models.CharField(verbose_name='Alamat Sarana', max_length=100, null=True, blank=True)
@@ -48,6 +50,7 @@ class Apotek(PengajuanIzin):
 
 class TokoObat(PengajuanIzin):
 	nama_toko_obat = models.CharField(verbose_name='Nama Toko Obat', max_length=100, null=True, blank=True)
+	no_sipttk = models.CharField(verbose_name='Nomor Izin TTK', max_length=100, null=True, blank=True)
 	nama_ttk_penanggung_jawab = models.CharField(verbose_name='Nama TTK Penanggung Jawab', max_length=100, null=True, blank=True)
 	alamat_ttk = models.CharField(verbose_name='Alamat TTK', max_length=100, null=True, blank=True)
 	alamat_tempat_usaha = models.CharField(verbose_name='Alamat Tempat Usaha', max_length=100, null=True, blank=True)

@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+from izin.utils import send_email_html
 
 class ApotekAdmin(admin.ModelAdmin):
 
@@ -28,6 +29,8 @@ class ApotekAdmin(admin.ModelAdmin):
 		if h.exists():
 			h = h.last()
 		h = h.user_set.all()
+
+		send_email_html('ryanxxrizki@gmail.com', 'Surat Rekomendasi Memerlukan Survey ', pengajuan_obj, 'admin/email_template/send_email_rekom_dinkes.html')
 
 		try:
 			try:

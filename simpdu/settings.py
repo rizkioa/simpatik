@@ -252,6 +252,8 @@ API_URL_DINKES = "http://simpatik.kedirikab.go.id:8877/api/v1/"
 API_USERNAME_DINKES = "dinkes"
 API_KEY_DINKES = ""
 
+EMAIL_DINKES = "ryanxxrizki@gmail.com"
+
 GRAPH_MODELS = {
   'all_applications': True,
   'group_models': True,

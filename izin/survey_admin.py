@@ -18,7 +18,7 @@ from kepegawaian.views import kirim_notifikasi_telegram
 from master.models import Kecamatan
 from perusahaan.models import Perusahaan
 from pembangunan.models import AnggotaTim
-from izin.utils import send_email_notifikasi, get_kode_izin, get_appmodels_based_kode_jenis
+from izin.utils import send_email_notifikasi, get_kode_izin, get_appmodels_based_kode_jenis, get_model_detil
 
 
 class KecamatanFilter(admin.SimpleListFilter):
@@ -103,11 +103,11 @@ class SurveyAdmin(admin.ModelAdmin):
 	def get_perusahaan(self, obj):
 		perusahaan_ = ''
 		kode_ijin = get_kode_izin(obj)
-		if get_appmodels_based_kode_jenis(kode_ijin):
-			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
+		if get_model_detil(kode_ijin):
+			objects_ = get_model_detil(kode_ijin)
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				if pengajuan_.kelompok_jenis_izin.kode not in ['ITO', 'IAP', 'IOP']:
+				if pengajuan_.kelompok_jenis_izin.kode not in ['ITO', 'IAP', 'IOP', 'IPA', 'ILB']:
 					perusahaan_ = pengajuan_.perusahaan
 		return perusahaan_
 	get_perusahaan.short_description = "Perusahaan"
@@ -115,12 +115,12 @@ class SurveyAdmin(admin.ModelAdmin):
 	def get_perusahaan_lokasi(self, obj):
 		kec = ''
 		kode_ijin = get_kode_izin(obj)
-		if get_appmodels_based_kode_jenis(kode_ijin):
-			objects_ = get_appmodels_based_kode_jenis(kode_ijin)
+		if get_model_detil(kode_ijin):
+			objects_ = get_model_detil(kode_ijin)
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=obj.pengajuan.id)
-				if pengajuan_.kelompok_jenis_izin.kode not in ['ITO', 'IAP', 'IOP']:
+				if pengajuan_.kelompok_jenis_izin.kode not in ['ITO', 'IAP', 'IOP', 'IPA', 'ILB']:
 					perusahaan_ = pengajuan_.perusahaan
 					if pengajuan_.perusahaan:	
 						if pengajuan_.perusahaan.desa:
@@ -202,8 +202,8 @@ class SurveyAdmin(admin.ModelAdmin):
 			extra_context.update({ 'pemohon' : queryset_.pengajuan.pemohon })
 
 			kode_ijin = get_kode_izin(queryset_)
-			if get_appmodels_based_kode_jenis(kode_ijin):
-				objects_ = get_appmodels_based_kode_jenis(kode_ijin)
+			if get_model_detil(kode_ijin):
+				objects_ = get_model_detil(kode_ijin)
 
 			if objects_:
 				pengajuan_ = objects_.objects.get(id=queryset_.pengajuan.id)

@@ -18,8 +18,7 @@ def post_pengajuanizin_dinkes(request, obj_id):
 			detilizin_obj = get_model_detil(kelompok_izin).objects.get(id=pengajuan_obj.id)
 			url_api_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
 			url_api_simpatik_dinkes = str(url_api_obj.url)+'pengajuan-izin-list/'
-			print url_api_simpatik_dinkes
-
+			# print url_api_simpatik_dinkes
 			if kelompok_izin == 'IAP':
 				perusahaan = detilizin_obj.nama_apotek
 			elif kelompok_izin == 'ILB':
@@ -46,6 +45,12 @@ def post_pengajuanizin_dinkes(request, obj_id):
 			respon = r.json()
 			if respon.get('success'):
 				if respon.get('success') == True:
+					s = pengajuan_obj.survey_pengajuan.all()
+					s.status = 8
+					
+					pengajuan_obj.status = 8
+					pengajuan_obj.save()
+
 					respon_data = {'success': True, 'pesan': 'Data berhasil dikirim'}
 				else:
 					respon_data = {'success': False, 'pesan': respon.get('pesan')}

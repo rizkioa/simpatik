@@ -278,6 +278,25 @@
             </div>
             {% endif %}
 
+            {% if pengajuan.kelompok_jenis_izin.kode == "IOK" or pengajuan.kelompok_jenis_izin.kode == "IMK" %}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingThree">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            KLinik (klik untuk melihat)
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false">
+                    <div class="panel-body">
+                        <p>Nama Klinik : {{pengajuan.nama_klinik}}</p>
+                        <p>Alamat Klinik : {{pengajuan.alamat_klinik}}</p>
+                        <p>No Telepon : {{pengajuan.no_telepon}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
             {% if pengajuan.legalitas.all %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">

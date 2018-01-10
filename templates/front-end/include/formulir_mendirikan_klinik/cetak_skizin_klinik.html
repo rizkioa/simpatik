@@ -1,0 +1,612 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+    
+	    hr.style14 { 
+	        border: 0; 
+	        height: 1px; 
+	        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+	        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+	      }
+	    * {
+	      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	    }
+		body {
+	        width: 100%;
+	        height: 100%;
+	        margin: 0;
+	        padding: 0;
+	        background-color: #FAFAFA;
+	        font: 12pt "Open Sans";
+	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	    }
+	    * {
+	        box-sizing: border-box;
+	        -moz-box-sizing: border-box;
+	    }
+	    .page {
+	        width: 21.5cm;
+	        min-height: 33cm;
+	        /*padding: 5mm;*/
+	        margin: 5mm auto;
+	        border: 1px #D3D3D3 solid;
+	        border-radius: 5px;
+	        background: white;
+	        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	    }
+	    .subpage {
+	        /*padding: 5px 24px 24px 84px;*/
+	        /*border: 5px red solid;*/
+	        padding-top: 1.4cm;
+	        padding-left: 2.6cm;
+	        padding-right: 1.9cm;
+	        height: 257mm;
+	        line-height: 0.55cm;
+	        font-family:"Arial";
+	        /*outline: 2cm #FFEAEA solid;*/
+	    }
+	    @-moz-document url-prefix() {
+	        .subpage {
+	            height:  340mm;
+	        }
+	    }   
+	    @page {
+	        size: F4;
+	        margin: 0;
+	    }
+	    @media print {
+	        html, body {
+	            width: 21.5cm;
+	            height: 33cm;  
+	            font-family:"Arial";      
+	        }
+	        .page {
+	            margin: 0;
+	            border: initial;
+	            border-radius: initial;
+	            width: initial;
+	            min-height: initial;
+	            box-shadow: initial;
+	            background: initial;
+	            page-break-after: always;
+	        }
+	    }
+
+	    /*.title, .tabel{
+			border-bottom: 1px solid #7d7d7d;
+	    }
+	    .title h3{
+	    	margin-top: 0px;
+	    }
+	    .tabel{
+	    	padding-top: 0px;
+	    	padding-bottom: 10px;
+	    }
+
+	    table {
+	        border-collapse: collapse;
+		}*/
+
+		.ceklist {
+		    border: 1px solid black;
+		}
+	    .font {
+	        font-size: 11px;
+	        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	    }
+	    #print-modal {
+	        margin: 0 0 0 -393px;
+	    }
+	    .style2 {
+			border-top: 3px double #8c8b8b;
+		}
+		.button {
+		    background-color: #4CAF50; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    border-radius: 8px;
+		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+		.button-close {
+		    background-color: #f32818; /* Green */
+		    border: none;
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    border-radius: 8px;
+		    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+		.sk-justify {
+		    text-align: justify;
+		    text-justify: inter-word;
+		}
+		@media print {
+		  .hidden-print {
+		    display: none !important;
+		  }
+		}
+		#qrcodeTable canvas{
+			padding: 2px;
+			border-radius: 3px;
+			border: 3px solid #000;
+			/*box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+			width: 90px;
+			height: 90px;
+		}
+/*		th, td {
+		    padding: 5px;
+		}*/
+	</style>
+	{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+	<script type="text/javascript">
+		
+	</script>
+	{% else %}
+	<script>
+		document.querySelector('style').textContent += "@media print { body { display: none !important; } }"
+	</script>
+	{% endif %}
+</head>
+<body id="body">
+{% if pengajuan.status == 1 or skizin_status == 2 or skizin_status == 1 %}
+	<div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+		<a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+			<img src="{% static 'images/icon-print.png' %}">
+		</a>
+		<br>
+		<a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+			<img src="{% static 'images/icon-close.png' %}">
+		</a>
+	</div>
+{% endif %}
+	<div class="book">
+	    <div class="page">
+	        <div class="subpage">
+		        	<table width="100%" class="sk-justify" style="margin-top: -16px; margin-bottom: -18px;" border="0">
+		        		<tr>
+		        			<td style="vertical-align: top;padding-top: 1px;"><img src="{% static 'images/kabkediri.png' %}" width="85px"></td>
+		        			<td>
+		        				<center>
+									<p style="text-align: center; margin-bottom: 10px; margin-top: 0;letter-spacing:  0.01cm;">
+										<b style="font-size: 19px;">PEMERINTAHAN KABUPATEN KEDIRI</b><br>
+										<b style="font-size: 20px;">DINAS PENANAMAN MODAL DAN PELAYANAN<br>TERPADU SATU PINTU</b>
+										<br/>
+										<span style="font-size: 14px;"><b>Jalan Soekarno - Hatta Nomor 14 Telp. 681227 & 681741 Fax. 0354 - 681227<br>Website : <u>www.kedirikab.go.id</u> Email : <u>dpmptsp@kedirikab.go.id</u></b></span><br>
+					                    <span style="font-size: 19px; padding-left: 220px;"><b>KEDIRI</b></span>
+					                    <span style="font-size: 15px; padding-left: 105px;">Kode Pos : 64182</span>
+									</p>
+		        				</center>
+		        			</td>
+		        		</tr>
+		        	</table>
+		        	<hr class="style2">
+		        	{% if salinan == 'True' %}
+		        	<div align="right" style="margin-top: -7px;">
+		        		<font style="font-size: 15.5px;letter-spacing:  0.01cm;"><b>SALINAN<br></b></font>
+		        	</div>
+		        	{% else %}
+		        	{% endif %}
+		        	<center>
+		        		<font style="font-size: 15.5px;letter-spacing:  0.01cm;"><b>KEPUTUSAN KEPALA DINAS PENANAMAN MODAL DAN <br>
+						PELAYANAN TERPADU SATU PINTU KABUPATEN KEDIRI</b></font><br><br>
+		        		<font style="font-size: 15.5px;font-family: Arial;">NOMOR : </font><font style="font-size: 15.4px;font-family: Arial;">{{ pengajuan.no_izin|default_if_none:"-" }}</font><br>
+		        	</center>
+		        	<center>
+		        		<font style="font-size: 15.5px;font-family: Arial;letter-spacing:  0.01cm;">TENTANG<br>
+							IZIN MENDIRIKAN KLINIK 
+		        		</font><br><br>
+		        		<font style="font-size: 15.5px;letter-spacing:  0.01cm;">
+		        			KEPALA DINAS PENANAMAN MODAL DAN<br>
+							PELAYANAN TERPADU SATU PINTU,
+		        		</font>
+		        	</center><br>
+	        	<table width="100%" border="0" class="sk-justify">
+	        	<tr>
+	        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
+	        		<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
+	        		<td>bahwa berdasarkan Surat Permohonan Lengkap dari Saudara KASYANTO, SKM., MM. Kes tanggal 9 November 2017 Perihal Permohonan Perpanjangan Izin Mendirikan Klinik Pratama Rawat Jalan SUMBER WARAS yang terletak di Jl. Papar Pare No. 661 RT 002 RW 008 Desa Tegowangi Kecamatan Plemahan Kabupaten Kediri;
+	        		</td>
+	        	</tr>
+	        	<tr>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">b.</td>
+	        		<td>bahwa berdasarkan Rekomendasi dari Kepala Dinas Kesehatan Nomor 445/4677/418.25/2017 tanggal 31 Oktober 2017 tentang Izin Mendirikan Klinik Pratama Rawat Jalan yang menyatakan bahwa berdasarkan peraturan perundang-undangan yang berlaku permohonan izin dapat ditindaklanjuti dan diterbitkan izinnya;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">c.</td>
+	        		<td>bahwa berdasarkan pertimbangan sebagaimana dimaksud dalam huruf a dan huruf b, perlu menetapkan  Keputusan Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri tentang Pemberian Izin Mendirikan Klinik;
+					</td>
+	        	</tr>
+	        	<tr>
+	        		<td style="vertical-align: top;padding-top: 1px;">Mengingat</td>
+	        		<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        		<td style="vertical-align: top;padding-top: 1px;">1.</td>
+	        		<td>Undang-Undang Nomor 5 Tahun 1997 tentang Psikotropika;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">2.</td>
+	        		<td>Undang-Undang Nomor 25 Tahun 2009 tentang Pelayanan Publik;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">3.</td>
+	        		<td>Undang-Undang Nomor 32 Tahun 2009 tentang Perlindungan dan Pengelolaan Lingkungan Hidup;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">4. </td>
+	        		<td>Undang-Undang Nomor 35 Tahun 2009 tentang Narkotika;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">5.</td>
+	        		<td>Undang-Undang Nomor 36 Tahun 2009 tentang Kesehatan;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">6. </td>
+	        		<td>Undang-Undang Nomor 12 Tahun 2011 tentang Pembentukan Peraturan Perundang-undangan;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">7.</td>
+	        		<td>Undang-Undang Nomor 23 Tahun 2014 tentang Pemerintahan Daerah  sebagaimana beberapa kali telah diubah terakhir dengan Undang-Undang Nomor 9 Tahun 2015;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">8.</td>
+	        		<td>Peraturan Pemerintah Nomor 32 Tahun 1996 tentang Tenaga Kesehatan;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">9.</td>
+	        		<td>Peraturan Pemerintah Nomor 72 Tahun 1998 tentang Pengamanan Sediaan Farmasi dan Alat Kesehatan;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">10.</td>
+	        		<td>Peraturan Pemerintah Nomor 79 Tahun 2005 tentang Pedoman Pembinaan dan Pengawasan Penyelenggaraan Pemerintahan Daerah;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">11.</td>
+	        		<td>Peraturan Pemerintah Nomor 51 Tahun 2009 tentang Pekerjaan Kefarmasian; </td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">12.</td>
+	        		<td>Peraturan Menteri Negara Lingkungan Hidup Nomor 13 Tahun 2010 tentang Upaya Pengelolaan Lingkungan Hidup dan Upaya Pemantauan Lingkungan Hidup Dan Surat Pernyataan Kesanggupan Pengelolaan dan Pemantauan Lingkungan Hidup;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">13.</td>
+	        		<td>Peraturan Menteri Negara Lingkungan Hidup Nomor 14 Tahun 2010 tentang Dokumen Lingkungan Hidup Bagi Usaha dan/atau Kegiatan yang telah memiliki Izin Usaha dan/atau Kegiatan tetapi belum memiliki dokumen Lingkungan Hidup;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">14.</td>
+	        		<td>Peraturan Menteri Kesehatan Nomor Hk.02.02/Menkes/148/I/2010 tentang Izin dan Penyelenggaraan Praktik Perawat</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">15.</td>
+	        		<td>Peraturan Menteri Kesehatan Nomor 1464/Menkes/Per/X/2010 tentang Izin dan Penyelenggaraan Praktik Bidan;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">16.</td>
+	        		<td>Peraturan Menteri Kesehatan Nomor 9 Tahun 2015 tentang Klinik;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">17.</td>
+	        		<td>Peraturan Menteri Kesehatan Nomor 889/Menkes/Per/V/2011 tentang Registrasi, Izin Praktik, dan Izin Kerja Tenaga Kefarmasian;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">18.</td>
+	        		<td>Peraturan Menteri Kesehatan Nomor 2052/Menkes/Per/X/2011 tentang Izin Praktik dan Pelaksanaan Praktik Kedokteran;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">19.</td>
+	        		<td>Peraturan Daerah Kabupaten Kediri Nomor 2 Tahun 2009 tentang Pelayanan Publik di Kabupaten Kediri;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">20.</td>
+	        		<td>Peraturan Bupati Nomor 7 Tahun 2016 tentang Perizinan Klinik di Kabupaten Kediri;</td>
+	        	</tr>
+	        	<tr>
+	        		<td></td>
+	        		<td style="vertical-align: top;padding-top: 1px;"></td>
+	        		<td style="vertical-align: top;padding-top: 1px;">21.</td>
+	        		<td>Peraturan Bupati Kediri Nomor 1 Tahun 2017 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri.</td>
+	        	</tr>
+
+	        </table>
+	        </div>
+	    </div>
+		<div class="page">
+			<div class="subpage">
+			
+	        	<center>
+	        		<font><b>MEMUTUSKAN :</b>
+	        		</font>
+	        	</center>
+	        	<p>Menetapkan :</p>
+	        	<table width="100%" border="0" class="sk-justify">
+	        		<tr>
+	        			<td width="30" style="width: 105px;">KESATU</td>
+	        			<td width="10" >:</td>
+	        			<td colspan="3">Memberikan Izin Mendirikan Klinik kepada : <b>{{ pengajuan.jenis_papan_reklame|default_if_none:"" }}</b>:</td>
+	        		</tr>
+	        		<tr>
+	        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">Nama Pemohon</td>
+	        			<td width="10">:</td>
+	        			<td>KASYANTO, SKM., MM. Kes
+	        			</td>
+	        		</tr>
+	        		<tr>
+	        			<td colspan="3" style="padding-left: 121px;" align="left">Nama Usaha</td>
+	        			<td width="10">:</td>
+	        			<td>KLINIK PRATAMA RAWAT JALAN SUMBER WARAS</td>
+	        		</tr>
+	        		<tr>
+	        			<td colspan="3" style="padding-left: 121px;" align="left">Alamat Usaha </td>
+	        			<td width="10">:</td>
+	        			<td>Jl. Papar Pare No. 661 RT 002 RW 008 Desa Tegowangi Kecamatan Plemahan Kabupaten Kediri</td>
+	        		</tr>
+	        		<tr>
+	        			<td></td>
+	        			<td></td>
+	        			<td  colspan="3">Pemegang izin sebagaimana dimaksud dalam Diktum KESATU, berkewajiban :</td>
+	        		</tr>
+	        		<tr>
+	        			<td></td>
+	        			<td></td>
+	        			<td>Membangun Klinik Pratama Rawat Jalan;</td>
+	        		</tr>
+	        		<tr>
+	        			<td></td>
+	        			<td></td>
+	        			<td>Mematuhi dan melaksanakan seluruh ketentuan yang termuat dalam Dokumen lingkungan hidup, Izin Mendirikan Bangunan dan Izin Gangguan serta Rekomendasi Izin Mendirikan Klinik; </td>
+	        		</tr>
+	        		
+	        		<tr>
+	        			<td width="10">KETIGA</td>
+	        			<td style="width: 10px;">:</td>
+	        			<td  colspan="3">Pemegang izin sebagaimana dimaksud dalam Diktum KESATU, dilarang :</td>
+	        		</tr>
+	        		<tr>
+	        			<td></td>
+	        			<td></td>
+	        			<td>Menyelenggarakan Klinik Pratama Rawat Jalan sebelum mendapatkan Izin Operasional  Klinik;</td>
+	        		</tr>
+	        		<tr>
+	        			<td></td>
+	        			<td></td>
+	        			<td>Melakukan pembangunan Klinik di luar izin yang ditetapkan; dan Merusak kelestarian lingkungan.</td>
+	        		</tr>
+	        		
+	        	</table>
+	        	<table width="100%" border="0" class="sk-justify">
+	        		<tr>
+	        			<td  style="width: 105px;">KEEMPAT</td>
+	        			<td>:</td>
+	        			<td colspan="3">Semua bentuk perbuatan yang dilakukan oleh pemegang izin baik disengaja maupun tidak disengaja yang mengakibatkan penyimpangan dan/atau pelanggaran dan/atau tidak dilaksanakannya terhadap kewajiban dan larangan sebagaimana dimaksud dalam Diktum KEDUA dan KETIGA, dikenakan sanksi sesuai peraturan perundang-undangan dan dapat mengakibatkan dibatalkannya Keputusan ini</td>
+	        		</tr>
+	        		
+	        		<tr>
+	        			<td width="10" style="vertical-align: top;padding-top: 2px;">KELIMA</td>
+	        			<td style="vertical-align: top;padding-top: 1px;">:</td>
+	        			<td  colspan="3" width="2000">Izin sebagaimana dimaksud dalam Diktum KESATU, berlaku selama 6 (enam) bulan terhitung sejak 8 Juni 2017 sampai dengan 7 Desember 2017, dan apabila di kemudian hari ternyata terdapat kekeliruan akan diadakan perubahan dan dibetulkan sebagaimana mestinya.</td>
+	        		</tr>
+	        	</table>
+	        </div>
+	    </div>
+		<div class="page">
+			<div class="subpage"> 
+	        	<div style="">
+	        	</div>
+	        	{% if salinan == 'True' %}
+		        	<table width="100%" border="0" class="font">
+		        		<tr>
+		        			<td colspan="3" style="width: 900px;">
+			        			<table border="0" align="left">
+			  						<tr>
+			  							<td>
+			  							<br><br>
+			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+			  							</td>
+			  						</tr>
+			  					</table>
+		        			</td>
+		        			<td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:14px; padding-left: 10%;">
+				                    <font size="3pt">Ditetapkan di Kediri <br> 
+										pada tanggal</font><br></p>
+				                    <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
+				                    <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
+				                    </p>
+				            </td>
+		        		</tr>
+		        		<tr>
+							<td><br><br><br><br>
+								<table border="0" align="left" style="font-size:15px;">
+									<tr>
+										<td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+									</tr>
+									<tr>
+										<td style="vertical-align: top;padding-top: 1px;">Yth. </td>
+										<td style="vertical-align: top;padding-top: 1px;">1.</td>
+										<td width="100%">Sdr. Kepala Dinas Perhubungan Kabupaten Kediri  ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>2.</td>
+										<td>Sdr. Kepala Dinas PKP Kabupaten Kediri ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>3.</td>
+										<td>Sdr. Kepala Bapenda Kabupaten Kediri ;</td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>4.</td>
+										<td>Sdr. Kepala SATPOL PP Kabupaten Kediri ;  </td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>5.</td>
+										<td>Sdr. Camat {{pengajuan.desa.kecamatan|title}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>6.</td>
+										<td>Sdr. Kepala Desa {{pengajuan.desa|title}} ;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td style="vertical-align: top;padding-top: 1px;">7.</td>
+										<td>Sdr. Dir. {{pengajuan.pemohon}} <br><font style="padding-right: 30px;float: right;">{{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</font></td>
+									</tr>   
+								</table>         
+							</td>
+		        		</tr>
+		        	</table>
+	        		<hr>
+	        		<table align="center">
+		        		<tr>
+		        			<td style="width:400px;">
+		        				<p style="font-size:14px; padding-left: 9%;" align="center">
+			                    <font size="3pt">Disalin sesuai dengan aslinya <br> 
+									yang mengambil salinan<br>KEPALA DPMPTSP</font><br></p>
+			                    <p align="center" style="font-size:15px;margin-top: 35px;padding-left: 8%;"><b><u> {{gelar_depan}} {{ nama_kepala_dinas }}</u></b><br>
+									<font size="3pt">Pembina Tk.l<br>
+				                    NIP: {{nip_kepala_dinas}}</font>
+				                </p>
+				            </td>
+		        		</tr>	        			
+	        		</table>
+	        	{% else %}
+		        	<table width="100%" border="0" class="font">
+		        		<tr>
+		        			<td colspan="3" style="width: 1000px;">
+			        			<table border="0" align="left">
+			  						<tr>
+			  							<td>
+			  							<br><br>
+			  								<div id="qrcodeTable" style="float: left; padding-left: : 7mm;"></div>
+			  							</td>
+			  						</tr>
+			  					</table>
+		        			</td>
+		        			<td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
+		        				<p style="font-size:14px; padding-left: 20%;">
+				                    <font size="3pt">Ditetapkan di Kab. Kediri<br> 
+										pada tanggal</font><br></p>
+				                    <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>KABUPATEN KEDIRI</p><br>
+				                    <br>
+				                    <br>
+				                    <br>
+				                    <p align="center" style="font-size:15px;">{{ nama_kepala_dinas }}<br>
+				                    <!-- Pembina Tk.l<br> -->
+				                    <!-- NIP: {{nip_kepala_dinas}} -->
+				                    </p>
+				            </td>
+		        		</tr>
+		        		<tr>
+							<td><br><br><br><br><br>
+								<table border="0" align="left" style="font-size:15px;">
+									<tr>
+										<td colspan="3">Salinan keputusan ini disampaikan kepada :</td><br>
+									</tr> 
+									<tr>
+										<td></td>
+										<td>2.</td>
+										<td>Sdr.	Menteri Kesehatan Republik Indonesia;</td>
+									</tr>   
+									<tr>
+										<td></td>
+										<td>3.</td>
+										<td>Sdr.	Kepala Dinas Kesehatan Provinsi Jawa Timur; <font style="float: right;padding-right: 216px;">;</font></td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>4.</td>
+										<td>Sdr.	Bupati Kediri up. Kepala Dinas Kesehatan Kabupaten <font style="float: right;padding-right: 216px;">Kediri;</font></td>
+									</tr>    
+									<tr>
+										<td></td>
+										<td>5.</td>
+										<td>Sdr. 	Inspektur Kabupaten Kediri;	</td>
+									</tr>  
+									<tr>
+										<td></td>
+										<td style="vertical-align: top;padding-top: 1px;">7.</td>
+										<td>Sdr. {{pengajuan.pemohon}} <br><font style="padding-left: 30px;float: right;">{{pengajuan.pemohon.alamat}} Desa, {{ pengajuan.pemohon.desa|title }} Kec. {{ pengajuan.pemohon.desa.kecamatan|title }} {{ pengajuan.pemohon.desa.kecamatan.kabupaten|title }}</font></td>
+									</tr>   
+								</table>         
+							</td>
+		        		</tr>
+		        	</table>
+		        	<hr>
+	        	{% endif %}
+	        </div>    
+	    </div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{% static 'scripts/js/vendor/jquery/jquery-1.11.2.min.js' %}"><\/script>')</script>
+	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
+	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
+	<script type="text/javascript">
+		function Exit() {
+		    var x=confirm('Are You sure want to exit:');
+		    if(x) window.close();
+	    }
+	    jQuery('#qrcodeTable').qrcode({
+			text	: "http://simpatik.kedirikab.go.id/cek-izin-terdaftar/{{ pengajuan.no_izin }}",
+			size : 500,
+		});	
+	</script>
+</body>
+</html>
