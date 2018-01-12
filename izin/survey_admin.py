@@ -20,6 +20,8 @@ from perusahaan.models import Perusahaan
 from pembangunan.models import AnggotaTim
 from izin.utils import send_email_notifikasi, get_kode_izin, get_appmodels_based_kode_jenis, get_model_detil
 
+from izin_dinkes.views_dinkes import post_pengajuanizin_dinkes
+
 
 class KecamatanFilter(admin.SimpleListFilter):
 	title = 'Kecamatan'
@@ -1246,6 +1248,7 @@ class SurveyAdmin(admin.ModelAdmin):
 				s = Survey.objects.get(pk=id_survey)
 				s.status = 8
 				
+				
 				for n in s.survey_iujk.all():
 					subject = "Undangan Cek Lokasi"
 					html_content = "<p>Anda Diundang untuk melakukan survey dengan nomor Survey <strong>"+str(s.no_survey)+"</strong> dan nomor pengajuan izin <strong>"+str(s.pengajuan.no_pengajuan)+"</strong>, batas akhir survey tanggal "+str(s.deadline_survey)+". Berikut adalah Anggota Tim Teknis</p>"
@@ -1276,13 +1279,31 @@ class SurveyAdmin(admin.ModelAdmin):
 							return HttpResponse(json.dumps(data))
 				s.save()
 
-				pengajuan = PengajuanIzin.objects.get(id=s.pengajuan.id)
-				pengajuan.status = 8
-				pengajuan.save()
+				pengajuan = s.pengajuan
+				kode_kelompok_izin = pengajuan.kelompok_jenis_izin.kode
+				push_survey = None
+				if kode_kelompok_izin in ['IAP', 'ITO', 'ILB', 'IOP', 'IPA', 'IMK', 'IOK']:
+					# print pengajuan.id
+					push_survey = post_pengajuanizin_dinkes(pengajuan.id)
 
-				data = {'success': True, 
-				'pesan': 'Survey berhasil dikirim',
-				}
+					data = {'success': True, 
+					'pesan': 'Survey dan Rekomendasi Dinkes berhasil dikirim',
+					}
+				else:
+					push_survey = 200 #success
+					data = {'success': True, 
+					'pesan': 'Survey berhasil dikirim',
+					}
+				if push_survey:
+					if push_survey == 200:
+						pengajuan.status = 8
+						pengajuan.save()
+					elif push_survey == 201: #objects is exist
+						data = {'success': False, 'pesan': 'Data Survey sudah ada di Dinkes.',}
+					else:
+						data = {'success': False, 'pesan': 'Survey gagal mengirim.',}
+				else:
+					data = {'success': False, 'pesan': 'Survey gagal mengirim.',}
 
 			except Survey.DoesNotExist:
 				data = {'success': False, 
@@ -1293,10 +1314,7 @@ class SurveyAdmin(admin.ModelAdmin):
 			'pesan': 'Pengajuan Tidak Terdaftar.',
 			}
 
-		data = json.dumps(data)
-		response = HttpResponse(data)
-
-		return response
+		return HttpResponse(json.dumps(data))
 
 	def suit_cell_attributes(self, obj, column):
 		if column in ['get_aksi',]:

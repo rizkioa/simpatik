@@ -8,8 +8,7 @@ from master.models import Settings
 import json
 import requests
 
-@login_required
-def post_pengajuanizin_dinkes(request, obj_id):
+def post_pengajuanizin_dinkes(obj_id):
 	respon_data = {'success': False, 'pesan': 'Terjadi kesalahan server'}
 	try:
 		pengajuan_obj = PengajuanIzin.objects.get(id=obj_id)
@@ -47,19 +46,13 @@ def post_pengajuanizin_dinkes(request, obj_id):
 			respon = r.json()
 			if respon.get('success'):
 				if respon.get('success') == True:
-					s = pengajuan_obj.survey_pengajuan.all()
-					s.status = 8
-					
-					pengajuan_obj.status = 8
-					pengajuan_obj.save()
-
-					respon_data = {'success': True, 'pesan': 'Data berhasil dikirim'}
+					respon_data = 200
 				else:
-					respon_data = {'success': False, 'pesan': respon.get('pesan')}
+					respon_data = False
 			else:
-				respon_data = {'success': False, 'pesan': respon.get('pesan')}
+				respon_data = 201
 		except ObjectDoesNotExist:
-			respon_data = {'success': False, 'pesan': 'Kelompok jenis izin tidak ditemukan'}
+			respon_data = False
 	except PengajuanIzin.DoesNotExist:
-		respon_data = {'success': False, 'pesan': 'Terjadi kesalahan server'}
-	return HttpResponse(json.dumps(respon_data))
+		respon_data = False
+	return respon_data
