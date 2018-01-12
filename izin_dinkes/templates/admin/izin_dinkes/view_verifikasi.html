@@ -235,7 +235,7 @@
 							{% block tools_buttons %}
 								<a data-toggle="modal" data-target="#detail_reklame" class="btn btn-greensea btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Detail Pengajuan</span></a>
 								<a data-toggle="modal" data-target="#view_berkas" class="btn btn-greensea btn-ef btn-ef-5 btn-ef-5b mb-10"><i class="fa fa-eye"></i> <span>Lihat Berkas Pengajuan</span></a>
-								{%  if request.user|has_group:'Operator'  %}
+								{%  if request.user|has_group:'Operator' or request.user.is_superuser  %}
 									{% if pengajuan.status == 6 %}
 										<a onclick="change_edit_pengajuan()" href="{{ url_form }}" target="_blank" class="btn btn-darkgray btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="icon-pencil"></i> <span>Edit</span></a>
 									{% endif %}
@@ -267,7 +267,6 @@
 	</div>
 
 
-	{% if title_verifikasi %}
 		<div class="row">
 			<div class="col-lg-12">
 				<section class="tile">
@@ -285,7 +284,7 @@
 						</ul>
 					</div>
 					<div id="minimize">
-						{% if request.user|has_group:'Operator' %}
+						{% if request.user|has_group:'Operator' or request.user.is_superuser %}
 							<div class="tile-body">
 								{% if pengajuan.status == 6 or pengajuan.status == 11 %}
 									<section class="tile bg-greensea">
@@ -318,7 +317,7 @@
 								</div>
 							{% endif %}
 						{% endif %}
-						{% if request.user|has_group:'Kabid' %}
+						{% if request.user|has_group:'Kabid' or request.user.is_superuser %}
 							{% if pengajuan.status == 2 and skizin == None %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
@@ -588,7 +587,7 @@
 								</div>
 							{% endif %}
 						{% endif %}
-						{% if request.user|has_group:'Pembuat Surat' %}
+						{% if request.user|has_group:'Pembuat Surat' or request.user.is_superuser %}
 							{% if skizin == None and pengajuan.status == 2 %}
 								<div class="panel panel-body">
 									<center>
@@ -608,7 +607,7 @@
 								</div>
 							{% endif %}
 						{% endif %}
-						{% if request.user|has_group:'Kadin' %}
+						{% if request.user|has_group:'Kadin' or request.user.is_superuser %}
 							{% if pengajuan.status == 2 and skizin.status == 9 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
@@ -661,7 +660,7 @@
 								</div>
 							{% endif %}
 						{% endif %}
-						{% if request.user|has_group:'Penomoran' %}
+						{% if request.user|has_group:'Penomoran' or request.user.is_superuser %}
 							{% if pengajuan.status == 2 and skizin.status == 9 %}
 								<form class="form-inline">
 									<center>
@@ -703,7 +702,7 @@
 								</div>
 							{% endif %}
 						{% endif %}
-						{% if request.user|has_group:'Cetak' %}
+						{% if request.user|has_group:'Cetak' or request.user.is_superuser %}
 							{% if pengajuan.status == 2 and skizin.status == 10 %}
 								<center>
 									<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
@@ -720,7 +719,7 @@
 								</div>
 							{% endif %}
 						{% endif %}
-						{% if request.user|has_group:'Selesai' %}
+						{% if request.user|has_group:'Selesai' or request.user.is_superuser %}
 							{% if pengajuan.status == 2 and skizin.status == 2 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
@@ -743,7 +742,6 @@
 				</section>
 			</div>
 		</div>
-	{% endif %}
 {% endblock %}
 
 {% block extrajs_site %}
