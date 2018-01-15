@@ -5,6 +5,7 @@ import pdfkit, datetime, os
 from django.template import RequestContext, loader
 from django.http import HttpResponse
 from izin.utils import terbilang, get_model_detil
+from django.core.urlresolvers import reverse, resolve
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
@@ -118,12 +119,42 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 			class_attr += 'text-center'
 		return {'class': class_attr }
 
+	def pembayaran_piutang(self, request, extra_context={}):
+		self.request = request
+		# izin = KelompokJenisIzin.objects.all()
+		extra_context.update({
+			'title': "Daftar Pembayaran Piutang",
+			})
+		return super(DetilPembayaranAdmin, self).changelist_view(request, extra_context=extra_context)
+
+	def get_list_display(self, request):
+		func_view, func_view_args, func_view_kwargs = resolve(request.path)
+		# if func_view.__name__ == 'pembayaran_piutang':
+		if request.user.groups.filter(name='Kasir'):
+			return ('kode', 'nomor_kwitansi')
+
+	def get_queryset(self, request):
+		func_view, func_view_args, func_view_kwargs = resolve(request.path)
+		qs = super(DetilPembayaranAdmin, self).get_queryset(request)
+		if func_view.__name__ == 'pembayaran_piutang':
+			qs = qs.filter(piutang=True)
+		return qs
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilPembayaranAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^(?P<obj_id>[0-9]+)/cetak-skrd$', self.admin_site.admin_view(self.cetak_skrd), name='detil_pembayaran__cetak_skrd'),
 			url(r'^(?P<nomor>[0-9]+)/cetak-pembayaran$', self.cetak_pembayaran, name='detil_pembayaran__cetak_pembayaran'),
+			url(r'^piutang/$', self.admin_site.admin_view(self.pembayaran_piutang), name='detil_pembayaran__view_piutang'),
 			)
 		return my_urls + urls
+
+	def save_model(self, request, obj, form, change):
+		# clean the nomor_identitas
+		from utils import generate_kode_bank_jatim
+		if obj.piutang == True:
+			jumlah_data = DetilPembayaran.objects.count()+1
+			obj.kode = generate_kode_bank_jatim(jumlah_data)
+		obj.save()
 

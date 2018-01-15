@@ -206,7 +206,7 @@
 												</tr>
 											</thead>
 											<tbody>
-												{% for r in pengajuan.riwayat_set.all %}
+												{% for r in pengajuan.riwayat_set.all reversed %}
 													<tr>
 														<td align="center">Tanggal {{ r.created_at|date:"d-m-Y" }}, Pukul {{ r.created_at|date:"H:i" }}</td>
 														<td align="center">{{ r.keterangan }}</td>
@@ -242,6 +242,13 @@
 			<div class="tile-body">
 				<center>
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+
+					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
+						{% if pengajuan.status == 2 or pengajuan.status == 5 and detil_pembayaran %}
+							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
+							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
+						{% endif %}
+					{% endif %}
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
 						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>

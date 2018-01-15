@@ -107,14 +107,20 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			if pengajuan_.status == 5:
 				import datetime
 				jumlah_data = int(DetilPembayaran.objects.count())+1
-				nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				# nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
 				kode = generate_kode_bank_jatim(jumlah_data)
 				bank_list = BankPembayaran.objects.filter(aktif=True)
+				total_biaya = "123123"
+				total_biaya = formatrupiah(total_biaya)
+				# if pengajuan_.detilbangunanimb_set.last().total_biaya_detil:
+				# 	total_biaya = int(float(pengajuan_.detilbangunanimb_set.last().total_biaya_detil))
 				extra_context.update({
 					'kode': kode,
 					'bank_pembayaran': bank_list,
 					'nomor_kwitansi': nomor_kwitansi,
-					'peruntukan': "IMB Reklame"
+					'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) REKLAME",
+					'total_biaya': total_biaya
 					})
 			extra_context.update({
 				'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
