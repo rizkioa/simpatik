@@ -42,8 +42,9 @@ def detil_pembayaran_save(request):
 				p.save()
 				sk_izin_.status = 9
 				sk_izin_.save()
-				detilpembayaran_obj.pengajuan_izin.status = 2
-				detilpembayaran_obj.pengajuan_izin.save()
+				pengajuan_obj = detilpembayaran_obj.pengajuan_izin
+				pengajuan_obj.status = 2
+				pengajuan_obj.save()
 				riwayat_ = Riwayat(
 					pengajuan_izin_id = p.pengajuan_izin.id,
 					created_by_id = request.user.id,
@@ -58,38 +59,38 @@ def detil_pembayaran_save(request):
 							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
 							'data': {}}
 					response = HttpResponse(json.dumps(data))
-			elif request.user.groups.filter(name='Operator') or request.user.is_superuser:
-					p = pembayaran.save(commit=False)
-					p.save()
-					p.pengajuan_izin.status = 4
-					p.pengajuan_izin.save()
-					riwayat_ = Riwayat(
-						pengajuan_izin_id = p.pengajuan_izin.id,
-						created_by_id = request.user.id,
-						keterangan = "Operator Verified"
-					)
-					riwayat_.save()
+			# elif request.user.groups.filter(name='Operator') or request.user.is_superuser:
+			# 		p = pembayaran.save(commit=False)
+			# 		p.save()
+			# 		p.pengajuan_izin.status = 4
+			# 		p.pengajuan_izin.save()
+			# 		riwayat_ = Riwayat(
+			# 			pengajuan_izin_id = p.pengajuan_izin.id,
+			# 			created_by_id = request.user.id,
+			# 			keterangan = "Operator Verified"
+			# 		)
+			# 		riwayat_.save()
 
-					data = {'success': True,
-							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-							'data': {}}
-					response = HttpResponse(json.dumps(data))
-			else:
-				p = pembayaran.save(commit=False)
-				p.save()
-				p.pengajuan_izin.status = 5
-				p.pengajuan_izin.save()
-				riwayat_ = Riwayat(
-					pengajuan_izin_id = p.pengajuan_izin.id,
-					created_by_id = request.user.id,
-					keterangan = "Operator Verified"
-				)
-				riwayat_.save()
+			# 		data = {'success': True,
+			# 				'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+			# 				'data': {}}
+			# 		response = HttpResponse(json.dumps(data))
+			# else:
+			# 	p = pembayaran.save(commit=False)
+			# 	p.save()
+			# 	p.pengajuan_izin.status = 5
+			# 	p.pengajuan_izin.save()
+			# 	riwayat_ = Riwayat(
+			# 		pengajuan_izin_id = p.pengajuan_izin.id,
+			# 		created_by_id = request.user.id,
+			# 		keterangan = "Operator Verified"
+			# 	)
+			# 	riwayat_.save()
 
-				data = {'success': True,
-						'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
-						'data': {}}
-				response = HttpResponse(json.dumps(data))
+			# 	data = {'success': True,
+			# 			'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
+			# 			'data': {}}
+			# 	response = HttpResponse(json.dumps(data))
 		else:
 			data = pembayaran.errors.as_json()
 			response = HttpResponse(data)
