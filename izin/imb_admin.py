@@ -9,8 +9,8 @@ from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
 from django.http import Http404, HttpResponseForbidden
 
-from izin.models import DetilIMB, Syarat, SKIzin, Riwayat,DetilSk,DetilPembayaran,Survey,DetilBangunanIMB,SertifikatTanah
-from kepegawaian.models import Pegawai,UnitKerja
+from izin.models import DetilIMB, Syarat, SKIzin, Riwayat, DetilSk, DetilPembayaran, Survey, DetilBangunanIMB,SertifikatTanah, BankPembayaran
+from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
 from izin.utils import*
@@ -99,13 +99,17 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				'syarat': Syarat.objects.filter(jenis_izin__jenis_izin__kode="reklame"),
 				'survey_pengajuan' : pengajuan_.survey_pengajuan.all().last(),
 				})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
+			# try:
+			# 	skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
+			# 	if skizin_:
+			# 		extra_context.update({'skizin': skizin_ })
+			# 		extra_context.update({'skizin_status': skizin_.status })
+			# except SKIzin.DoesNotExist:
+			# 	pass
+			skizin_obj = pengajuan_.skizin_set.last()
+			if skizin_obj:
+				extra_context.update({'skizin': skizin_ })
+				extra_context.update({'skizin_status': skizin_.status })
 			# SURVEY
 			h = Group.objects.filter(name="Cek Lokasi")
 			if h.exists():
@@ -125,14 +129,9 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			extra_context.update({'survey': s })
 
 			# SURVEY
-
-			try:
-				sk_imb_ = DetilSk.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-				if sk_imb_:
-					extra_context.update({'sk_imb': sk_imb_ })
-			except ObjectDoesNotExist:
-				pass
-				# print "WASEM"
+			sk_imb_ = DetilSk.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
+			if sk_imb_:
+				extra_context.update({'sk_imb': sk_imb_ })
 
 	  		sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
 
@@ -196,22 +195,18 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
-				if kepala_:
-					extra_context.update({'gelar_depan': kepala_.gelar_depan })
-					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
-			except ObjectDoesNotExist:
-				pass
+			skizin_ = pengajuan_.skizin_set.last()
+			if skizin_:
+				extra_context.update({'skizin': skizin_ })
+				extra_context.update({'skizin_status': skizin_.status })
+
+			kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas", unit_kerja__nama_unit_kerja="DPMPTSP").last()
+			if kepala_:
+				extra_context.update({'gelar_depan': kepala_.gelar_depan })
+				extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+
 			try:
 				sk_imb_ = DetilSk.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
 				if sk_imb_:
