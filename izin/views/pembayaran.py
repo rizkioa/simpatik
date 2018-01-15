@@ -42,7 +42,7 @@ def detil_pembayaran_save(request):
 				p.save()
 				sk_izin_.status = 9
 				sk_izin_.save()
-				pengajuan_obj = detilpembayaran_obj.pengajuan_izin
+				pengajuan_obj = p.pengajuan_izin
 				pengajuan_obj.status = 2
 				pengajuan_obj.save()
 				riwayat_ = Riwayat(
@@ -51,9 +51,9 @@ def detil_pembayaran_save(request):
 					keterangan = "Kasir Verified"
 				)
 				riwayat_.save()
-				if p.pengajuan_izin.pemohon:
-					if p.pengajuan_izin.pemohon.email and p.pengajuan_izin.pemohon.email is not None:
-						send_email_html(p.pengajuan_izin.pemohon.email, p.peruntukan, p, 'cetak/notifikasi_send_email.html')
+				if pengajuan_obj.pemohon:
+					if pengajuan_obj.pemohon.email and pengajuan_obj.pemohon.email is not None:
+						send_email_html(pengajuan_obj.pemohon.email, p.peruntukan, p, 'cetak/notifikasi_send_email.html')
 
 					data = {'success': True,
 							'pesan': 'Data berhasil disimpan. Proses Selanjutnya.',
