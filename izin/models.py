@@ -1570,6 +1570,11 @@ class DetilPembayaran(MetaAtribut):
 	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
 	bank_pembayaran = models.ForeignKey(BankPembayaran, null=True, blank=True, verbose_name="Bank Pembayaran")
 	terbayar = models.BooleanField(default=False, verbose_name="Apakah pembayaran sudah terbayar ?")
+	# pembayaran piutang
+	nama_pemohon = models.CharField(max_length=255, verbose_name="Nama Pemohon", null=True, blank=True)
+	nama_perusahaan = models.CharField(max_length=255, verbose_name="Nama Perusahaan", null=True, blank=True)
+	alamat_usaha = models.CharField(max_length=255, verbose_name="Alamat Usaha", null=True, blank=True)
+	piutang = models.BooleanField(verbose_name="Apakah pembayaran piutang ?", default=False)
 
 	def __unicode__(self):
 		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))

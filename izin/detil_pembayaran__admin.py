@@ -9,6 +9,26 @@ from izin.utils import terbilang, get_model_detil
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
 
+	def get_fieldsets(self, request, obj=None):
+		fields = ('nomor_kwitansi', 'jumlah_pembayaran', 'peruntukan', 'bank_pembayaran', 'nama_pemohon', 'nama_perusahaan', 'alamat_usaha' , 'piutang')
+		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
+		add_fieldsets = ()
+		if request.user.is_superuser:
+			add_fieldsets = (
+				(None, {
+					'classes': ('wide',),
+					'fields': fields+fields_admin
+					}),
+			)
+		elif request.user.groups.filter(name='Kasir'):
+			add_fieldsets = (
+				(None, {
+					'classes': ('wide',),
+					'fields': fields
+					}),
+			)
+		return add_fieldsets
+
 	def cetak_skrd(self, request, obj_id):
 		detil_pembayaran_obj = get_object_or_404(DetilPembayaran, id=obj_id)
 		terbilang_jumlah = ""

@@ -40,10 +40,10 @@ def detil_pembayaran_save(request):
 				p.peruntukan = request.POST.get('peruntukan')
 				p.pengajuan_izin_id = pengajuan_izin_id
 				p.save()
-				# sk_izin_.status = 9
-				# sk_izin_.save()
-				# detilpembayaran_obj.pengajuan_izin.status = 2
-				# detilpembayaran_obj.pengajuan_izin.save()
+				sk_izin_.status = 9
+				sk_izin_.save()
+				detilpembayaran_obj.pengajuan_izin.status = 2
+				detilpembayaran_obj.pengajuan_izin.save()
 				riwayat_ = Riwayat(
 					pengajuan_izin_id = p.pengajuan_izin.id,
 					created_by_id = request.user.id,
