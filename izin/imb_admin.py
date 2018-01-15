@@ -108,8 +108,8 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			# 	pass
 			skizin_obj = pengajuan_.skizin_set.last()
 			if skizin_obj:
-				extra_context.update({'skizin': skizin_ })
-				extra_context.update({'skizin_status': skizin_.status })
+				extra_context.update({'skizin': skizin_obj })
+				extra_context.update({'skizin_status': skizin_obj.status })
 			# SURVEY
 			h = Group.objects.filter(name="Cek Lokasi")
 			if h.exists():
