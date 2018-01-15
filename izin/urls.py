@@ -5,6 +5,7 @@ from izin.views import views, layanan_view, siup_view, reklame_view, iujk_views,
 from izin.views.dishub import izinparkir_views, trayek_views, iua_views
 from django.conf.urls.static import static
 from izin.views.imb import imb_reklame,imb_umum,imb_perumahan,detil_sk_imb
+from izin_dinkes.views import formulir_izin_apotek, cetak_izin_apotek, cetak_bukti_pendaftaran_izin_apotek, formulir_izin_toko_obat, cetak_izin_toko_obat, cetak_bukti_pendaftaran_izin_toko_obat, formulir_izin_optikal, cetak_izin_optikal, cetak_bukti_pendaftaran_izin_optikal, formulir_izin_laboratorium, cetak_izin_laboratorium, cetak_bukti_pendaftaran_izin_laboratorium, formulir_izin_penutupan_apotek, cetak_izin_penutupan_apotek, cetak_bukti_pendaftaran_izin_penutupan_apotek, formulir_izin_mendirikan_klinik, cetak_izin_mendirikan_klinik, cetak_bukti_pendaftaran_izin_mendirikan_klinik, formulir_izin_operasional_klinik, cetak_izin_operasional_klinik, cetak_bukti_pendaftaran_izin_operasional_klinik
 
 urlpatterns = [
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'front-end/login.html'}, name='frontlogin'),
@@ -476,5 +477,42 @@ urlpatterns = [
     url(r'^layanan/cetak/notifikasi_email/(?P<no_pembayaran>[0-9A-Za-z_\-/]+)$', views.cetak_notifikasi_email , name='cetak_notifikasi_email'),
     # ===============================IZIN APOTIK DINKES=======================================
     # url(r'^layanan/izin-apotik$', layanan_view.layanan_izin_angkutan_trayek, name='layanan_izin_angkutan_trayek'),
+
+    ################################ Izin Angkutan apotek ###################################
+    url(r'^layanan/izin-apotek/$', layanan_view.layanan_izin_apotek, name='layanan_izin_apotek'),
+    url(r'^layanan/izin-apotek/formulir/$', formulir_izin_apotek, name='formulir_izin_apotek'),
+    url(r'^layanan/izin-apotek/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_apotek, name='cetak_izin_apotek'),
+    url(r'^layanan/izin-apotek/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_apotek, name='cetak_bukti_pendaftaran_izin_apotek'),
+
+    url(r'^layanan/izin-tokoobat/$', layanan_view.layanan_izin_toko_obat, name='layanan_toko_obat'),
+    url(r'^layanan/izin-tokoobat/formulir/$', formulir_izin_toko_obat, name='formulir_izin_toko_obat'),
+    url(r'^layanan/izin-tokoobat/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_toko_obat, name='cetak_izin_toko_obat'),
+    url(r'^layanan/izin-tokoobat/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_toko_obat, name='cetak_bukti_pendaftaran_izin_toko_obat'),
+
+    url(r'^layanan/izin-optikal/$', layanan_view.layanan_izin_optikal, name='layanan_izin_optikal'),
+    url(r'^layanan/izin-optikal/formulir/$', formulir_izin_optikal, name='formulir_izin_optikal'),
+    url(r'^layanan/izin-optikal/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_optikal, name='cetak_izin_optikal'),
+    url(r'^layanan/izin-optikal/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_optikal, name='cetak_bukti_pendaftaran_izin_optikal'),
+
+    url(r'^layanan/izin-laboratorium/$', layanan_view.layanan_izin_laboratorium, name='layanan_laboratorium'),
+    url(r'^layanan/izin-laboratorium/formulir/$', formulir_izin_laboratorium, name='formulir_izin_laboratorium'),
+    url(r'^layanan/izin-laboratorium/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_laboratorium, name='cetak_izin_laboratorium'),
+    url(r'^layanan/izin-laboratorium/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_laboratorium, name='cetak_bukti_pendaftaran_izin_laboratorium'),
+
+    url(r'^layanan/izin-penutupan-apotek/$', layanan_view.layanan_izin_penutupan_apotek, name='layanan_penutupan_apotek'),
+    url(r'^layanan/izin-penutupan-apotek/formulir/$', formulir_izin_penutupan_apotek, name='formulir_izin_penutupan_apotek'),
+    url(r'^layanan/izin-penutupan-apotek/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_penutupan_apotek, name='cetak_izin_penutupan_apotek'),
+    url(r'^layanan/izin-penutupan-apotek/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_penutupan_apotek, name='cetak_bukti_pendaftaran_izin_penutupan_apotek'),
+
+    url(r'^layanan/izin-mendirikan-klinik/$', layanan_view.layanan_izin_mendirikan_klinik, name='layanan_mendirikan_klinik'),
+    url(r'^layanan/izin-mendirikan-klinik/formulir/$', formulir_izin_mendirikan_klinik, name='formulir_izin_mendirikan_klinik'),
+    url(r'^layanan/izin-mendirikan-klinik/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_mendirikan_klinik, name='cetak_izin_mendirikan_klinik'),
+    url(r'^layanan/izin-mendirikan-klinik/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_mendirikan_klinik, name='cetak_bukti_pendaftaran_izin_mendirikan_klinik'),
+
+    url(r'^layanan/izin-operasional-klinik/$', layanan_view.layanan_izin_operasional_klinik, name='layanan_operasional_klinik'),
+    url(r'^layanan/izin-operasional-klinik/formulir/$', formulir_izin_operasional_klinik, name='formulir_izin_operasional_klinik'),
+    url(r'^layanan/izin-operasional-klinik/formulir/cetak/(?P<id_pengajuan>[0-9]+)/$', cetak_izin_operasional_klinik, name='cetak_izin_operasional_klinik'),
+    url(r'^layanan/izin-operasional-klinik/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan>[0-9]+)$', cetak_bukti_pendaftaran_izin_operasional_klinik, name='cetak_bukti_pendaftaran_izin_operasional_klinik'),
+
     url(r'^izin-dinkes/', include('izin_dinkes.urls')),
     ]

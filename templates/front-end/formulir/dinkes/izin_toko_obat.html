@@ -1,0 +1,569 @@
+{% extends "front-end/formulir/formulir_izin.html" %}
+{% load i18n admin_static staticfiles widgets %}
+{% block extratools %}
+	{{block.super}}
+	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/parsley/parsley.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/form-wizard/jquery.bootstrap.wizard.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/toastr/toastr.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/daterangepicker/moment.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/validation/jquery.maskedinput.js' %}"></script>
+	<script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/jquery/jquery.cookie.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/alert/sweetalert-dev.js' %}"></script>
+	<script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
+	<script src="{% static 'scripts/js/form/pemohon.js' %}"></script>
+	<script src="{% static 'scripts/js/form/perusahaan.js' %}"></script>
+	<script src="{% static 'scripts/js/form/validasi.js' %}"></script>
+	<script src="{% static 'scripts/js/formAjax/form_ajax_tokoobat.js' %}"></script>
+	<script>
+		$(window).load(function(){
+			$('#rootwizard').bootstrapWizard({
+				onTabShow: function(tab, navigation, index) {
+					var $total = navigation.find('li').length;
+					var $current = index+1;
+					// if ($current == 2){
+					// 	load_kecamatan1('', '06', '35');
+					// }
+					if($current == 3){
+						if($.cookie("id_pengajuan")){
+							load_berkas($.cookie("id_pengajuan"));
+						}
+					}
+					if($current >= $total) {
+						if ($.cookie('id_pengajuan') !== '0'){
+							load_konfirmasi($.cookie('id_pengajuan'))
+						}
+						$('#rootwizard').find('.pager .next').hide();
+						$('#rootwizard').find('.pager .finish').show();
+						$('#rootwizard').find('.pager .finish').removeClass('disabled');
+					} else {
+						$('#rootwizard').find('.pager .next').show();
+						$('#rootwizard').find('.pager .finish').hide();
+					}
+				},
+
+				onNext: function(tab, navigation, index) {
+					return false;
+				},
+
+				onTabClick: function(tab, navigation, index) {
+					if (window.location.hostname == 'localhost'){
+						return true
+					}
+					else{
+						return false;
+					}
+				}
+			});
+		});
+
+		$.fn.outerHTML = function(){
+			// IE, Chrome & Safari will comply with the non-standard outerHTML, all others (FF) will have a fall-back for cloning
+			return (!this.length) ? this : (this[0].outerHTML || (
+				function(el){
+						var div = document.createElement('div');
+						div.appendChild(el.cloneNode(true));
+						var contents = div.innerHTML;
+						div = null;
+						return contents;
+			})(this[0]));
+		}
+
+		function set_chosen_element(chosenEl){
+			$chosenEl = $(chosenEl)
+			if ($chosenEl.length > 0) {             
+				$chosenEl.each(function() {
+					var element = $(this);
+					element.on('chosen:ready', function(e, chosen) {
+						var width = element.css("width");
+						element.next().find('.chosen-choices').addClass('form-control');
+						element.next().css("width", width);
+						element.next().find('.search-field input').css("width", "125px");
+					}).chosen();                
+				});
+			}
+		}
+
+		function next_tab(btn){
+			var pengajuan_id = $.cookie('id_pengajuan')
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/cek-detil-izin/'+pengajuan_id,
+				success: function (response){
+					respon = $.parseJSON(response)
+					if (respon.success == true){
+						var index = $('#rootwizard').bootstrapWizard('currentIndex')+1;
+						var frm = $('form[name="step'+ index +'"]');
+						frm.parsley().validate();
+						if (frm.parsley().isValid()) {
+							$(".tab-content").mLoading();
+							$(btn).attr('disabled', 'disabled')
+							$.ajax({
+								type: frm.attr('method'),
+								url: frm.attr('action'),
+								data: frm.serialize(),
+								success: function (response){
+									respon = $.parseJSON(response)
+									$(btn).removeAttr('disabled')
+									if(respon.success){
+										toastr["success"](respon.pesan)
+										tab_index = '#rootwizard a[href="#tab'+(index+1)+'"]'
+										$(tab_index).tab('show')
+										$("html, body").animate({scrollTop: 300}, 600);
+									}
+									else{
+										var a = Object.keys(respon);
+										for (var i = 0; i < a.length; i++){
+											var c = a[i].replace("_", " ").charAt(0).toUpperCase()
+											var field = c + a[i].replace("_", " ").slice(1)
+											toastr["error"](field+" "+respon[a[i]][0]['message'])
+											$("#"+a[i]+"").addClass("has-error");
+											$("#id_"+a[i]+"_").addClass("has-error");
+										}
+									}
+									$(".tab-content").mLoading('hide');
+								},
+								error: function(response){
+									$(".tab-content").mLoading('hide');
+									$(btn).removeAttr('disabled')
+									toastr["error"]("Terjadi kesalahan pada koneksi server.")
+								}
+							});
+						}
+					}
+					else{
+						$.cookie('id_pengajuan', '0', {path:'/'})
+						$.cookie('id_pemohon', '0', {path:'/'})
+						// $.cookie('id_perusahaan', '0', {path:'/'})
+						$.cookie('nomor_ktp', '0', {path:'/'})
+						$.cookie('nomor_paspor', '0', {path:'/'})
+						// $.cookie('npwp_perusahaan', '0', {path:'/'})
+						// $.cookie('id_perusahaan_induk', '0', {path:'/'})
+						// $.cookie('npwp_perusahaan_induk', '0', {path:'/'})
+					}
+				},
+				error: function (response){
+					toast_server_error()
+				}
+			})
+		};
+
+		document.querySelector('#alert').onclick = function(){
+			var pengajuan_cookie = $.cookie('id_pengajuan'); 
+			var pemohon_cookie = $.cookie('id_pemohon');
+			if (pengajuan_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pengajuan.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			else if(pemohon_cookie === ""){
+				toastr["warning"]("Terjadi kesalahan, anda belum mengisi form pemohon.")
+				tab_index = '#rootwizard a[href="#tab'+(1)+'"]';
+				$(tab_index).tab('show');
+			}
+			else{
+				swal({
+					showConfirmButton: false,
+					type: 'success',
+					title: 'Pendaftaran Berhasil Tersimpan',
+					timer: 2000
+				})
+				pengajuan_id = $.cookie('id_pengajuan')
+				if ($.cookie('id_pengajuan') === undefined){
+					pengajuan_id = 0
+				}
+				
+				$.ajax({
+					url: '{% url 'izin_parkir_done' %}',
+					success: function(response) {
+						respon = $.parseJSON(response)
+						if(respon.success){
+							toastr["success"](respon.pesan)
+							window.location.replace(__base_url__+'/layanan/izin-tokoobat/formulir/cetak/'+pengajuan_id);
+						}
+					}
+				});
+			}
+		};
+
+		$(document).ready(function() {
+			window.onbeforeunload = function ref() {
+				var r = confirm( "Do you want to leave?" );
+				if (r == true) {
+						
+				}
+				else {
+					return false;
+				}
+			};
+
+			var pathname = "/";
+
+			if ($.cookie('id_pengajuan') === undefined){
+				$.cookie('id_pengajuan', "0", {path:pathname});
+			}
+			if ($.cookie('id_pemohon') === undefined){
+				$.cookie('id_pemohon', "0", {path:pathname});
+			}
+
+			$( "#alert" ).prop( "disabled", true );
+			$('#checkbox_tdp_done').change(function() {
+				if ($(this).is(':checked')) {
+					$( "#alert" ).prop( "disabled", false );
+					window.onbeforeunload = null;
+				}
+				else{
+					$( "#alert" ).prop( "disabled", true );
+				}
+			});
+				
+			pengajuan = $.cookie('id_pengajuan')
+			if (pengajuan !== '0'){
+				$('#id_ktp').val('{{pengajuan_.pemohon.get_ktp}}');
+				$('#id_paspor').val('{{pengajuan_.pemohon.get_paspor}}');
+				load_pemohon('{{pengajuan_.pemohon.get_ktp}}');
+
+				$('#id_jenis_pengajuan').val('{{pengajuan_.jenis_permohonan.id}}').prop('selected',true).trigger("chosen:updated");
+				$('#id_jenis_pemohon').val('{{pengajuan_.pemohon.jenis_pemohon.id}}').prop('selected',true).trigger("chosen:updated");
+				// $('#id_npwp_perusahaan_induk').val('{{pengajuan_.perusahaan.perusahaan_induk.npwp}}');
+
+				$.cookie('id_pengajuan', '{{pengajuan_id}}' , { path: pathname })
+				if ('{{ pengajuan_.pemohon }}' !== 'None'){
+					$.cookie('nomor_ktp', '{{pengajuan_.pemohon.get_ktp}}' , { path: pathname })
+					$.cookie('nomor_paspor', '{{pengajuan_.pemohon.get_paspor}}' , { path: pathname})
+					$.cookie('id_pemohon', '{{ pengajuan_.pemohon.id }}' , { path: pathname})
+				}
+				else{
+					$.cookie('nomor_ktp', '0' , { path: pathname })
+					$.cookie('nomor_paspor', '0' , { path: pathname})
+					$.cookie('id_pemohon', '0' , { path: pathname})
+				}
+			}
+		});
+
+		$(window).load(function() {
+			var p = 'percent-'
+			$('#'+p+'ijazah_strttk').hide()
+			$('#'+p+'denah_lokasi').hide()
+			$('#'+p+'denah_bangunan').hide()
+			$('#'+p+'ktp').hide()
+			$('#'+p+'status_bangunan').hide()
+			$('#'+p+'izin_gangguan').hide()
+			$('#'+p+'perjanjian_kerjasama').hide()
+			$('#'+p+'pernyataan_tenaga_teknis').hide()
+			$('#'+p+'surat_pernyataan_peraturan').hide()
+			$('#'+p+'pernyataan_pelanggaran').hide()
+			$('#'+p+'rekomendasi_organisasi').hide()
+		});
+
+		function load_konfirmasi(id_pengajuan){
+			$('.tab-content').mLoading();
+			$.ajax({
+				type: 'GET',
+				url: __base_url__+'/izin-dinkes/toko-obat/load-konfirmasi/'+id_pengajuan,
+				success: function (data) {
+					respon = JSON.parse(data)
+					pengajuan_obj = respon.data.pengajuan_json
+					pemohon_obj = respon.data.pemohon_json
+					detil_obj = respon.data.detil_json
+					if(respon.success == true){
+						$('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
+						$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+						$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
+						$('#nomor_ktp_konfirmasi').text(pemohon_obj.username)
+						$('#nama_lengkap_konfirmasi').text(pemohon_obj.nama_lengkap)
+						$('#alamat_konfirmasi').text(pemohon_obj.alamat_lengkap)
+						$('#telephone_konfirmasi').text(pemohon_obj.telephone)
+						$('#hp_konfirmasi').text(pemohon_obj.hp)
+						$('#email_konfirmasi').text(pemohon_obj.email)
+						$('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
+						$('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
+
+						$('#nama_toko_obat_konfirmasi').text(detil_obj.nama_toko_obat);
+						$('#nama_ttk_konfirmasi').text(detil_obj.nama_ttk_penanggung_jawab);
+						$('#alamat_ttk_konfirmasi').text(detil_obj.alamat_ttk);
+						$('#alamat_usaha_konformasi').text(detil_obj.alamat_tempat_usaha);
+
+						if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
+							table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
+							table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+							table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+							table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
+							$('#table_kuasa_konfirmasi').prepend(table)
+						}
+						$('.tab-content').mLoading('hide');
+					}
+				}
+			})
+		}
+
+
+		// ***** UPLOAD FORM *****
+		function form_upload_dokumen(elem_){
+			// alert("asdasd")
+			var elem_ = elem_[0].id
+			// console.log(elem_)
+			var split_ = elem_.split('-')[1]
+			$(".tab-content").mLoading();
+			var frm = $('#form-'+split_);
+			// console.log(split_)
+			// frm.parsley().validate();
+			if (!frm.parsley().isValid()) {
+				toastr["warning"]("Berkas Tidak boleh kosong!!!")
+				$(".tab-content").mLoading('hide');
+				return false;
+			}
+			else{
+				frm.ajaxSubmit({
+					method: 'POST',
+					data: frm.serialize(),
+					url: frm.attr('action'),
+					beforeSend: function() {
+						var percentVal = '0%';
+						$('#percent-'+split_).html(percentVal);
+					},
+					uploadProgress: function(event, position, total, percentComplete) {
+						var percentVal = percentComplete + '%';
+						$('#btn-'+split_).hide();
+						$('#percent-'+split_).show();
+						$('#percent-'+split_).html(percentVal);
+					},
+					success: function(response){
+						respon = $.parseJSON(response)
+						if(respon.success){
+							toastr["success"](respon.pesan)
+							// console.log($('#'+split_+'-konfirmasi').prop('checked', true))
+							var percentVal = '100%';
+							$('#percent-'+split_).html(percentVal);
+							if ($.cookie('id_pengajuan') != ''){
+								load_berkas($.cookie('id_pengajuan'))
+							}
+						}
+						else{
+						  // $('#checkbox_berkas_foto').prop('checked', false);
+							if (respon["Terjadi Kesalahan"]) {
+								toastr["warning"](respon["Terjadi Kesalahan"][0]['message'])
+								frm.trigger('reset');
+								frm.parsley().reset();
+								$('#percent-'+split_).hide();
+								$('#btn-'+split_).show();
+							}else{
+								toastr["error"]("Terjadi Kesalahan Server !!!")
+								$('#percent-'+split_).hide();
+								$('#btn-'+split_).show();
+							}
+						}
+				  	},
+					error: function(response){
+						toastr["error"]("Terjadi Kesalahan Server !!!")
+						$('#percent-'+split_).hide();
+						$('#btn-'+split_).show();
+					}
+				})
+			}
+			$(".tab-content").mLoading('hide');
+		}
+		// ***** END *****
+
+		// ***** Load Form Upload *****
+		function load_berkas(id_pengajuan){
+		  $(".tab-content").mLoading;
+		  if (id_pengajuan>0){
+			$.ajax({
+			  url: __base_url__+'/izin-dinkes/toko-obat/load-berkas/'+id_pengajuan,
+			  success: function (response){
+				respon = $.parseJSON(response)
+				if (respon.success) {
+				  len = respon.berkas.length
+				  for (var i = 0; i < len; i++) {
+					// console.log(respon.berkas[i])
+					// console.log(respon.elemen[i])
+					// console.log(respon.id_berkas[i])
+					// style="min-width: 742px;text-align: left;"
+					url = '<a id="btn-load-'+respon.elemen[i]+'" class="btn btn-success btn-sm" data-toggle="popover" data-trigger="hover" data-container="body" data-placement="bottom" href="'+respon.berkas[i]+'" target="blank_"> <i class="fa fa-check"></i> '+respon.nm_berkas[i]+' </a> <a class="btn btn-danger btn-sm" onclick="delete_berkas_upload('+respon.id_berkas[i]+',\''+respon.elemen[i]+'\');return false;" > <i class="fa fa-trash"></i> Hapus</a>'
+					// console.log(url)
+					$('#load-'+respon.elemen[i]).html(url)
+					$('#field-'+respon.elemen[i]+' .berkas_kosong').prop('required',false);
+					// $('#field-'+respon.elemen[i]+' .berkas_kosong').val(__base_url__+respon.berkas[i]);
+					$('#field-'+respon.elemen[i]).hide()
+					$('#checkbox-'+respon.elemen[i]).prop('checked', true); 
+					img = '<div id = \"image"><img src = "'+__base_url__+respon.berkas[i]+'" style="width:100px;" /></div>'
+					// console.log(img)
+					$('#btn-load-'+respon.elemen[i]).popover({
+					  trigger: "hover",
+					  html: true,
+					  content: img,
+					});
+				  }
+				}
+			  }
+			});
+		  }
+		  $(".tab-content").mLoading('hide');
+		}
+
+		function delete_berkas_upload(id, elemen){
+		  // $('#field-'+elemen).show()
+		  $(".tab-content").mLoading();
+		  
+		  $.ajax({
+			url: url = __base_url__+'/ajax-delete-berkas-upload-tdp/'+id+'/'+elemen,
+			success: function (response){
+				respon = $.parseJSON(response)
+				if (respon.success) {
+				  toastr["success"](respon.pesan)
+				  $('#form-'+elemen)[0].reset() 
+				  $('#percent-'+elemen).hide()
+				  $('#btn-'+elemen).show()
+				  $('#field-'+elemen+' .berkas_kosong').prop('required',true);
+				  $('#field-'+elemen).show()
+				  $('#load-'+elemen).html('')
+				  $('#checkbox-'+elemen).prop('checked', false)
+				}
+			},
+			  error: function(response){
+			  toast_server_error()
+			}
+		  })
+		  $(".tab-content").mLoading('hide');
+		}
+
+	</script>
+{% endblock %}
+
+{% block extrastyle %}
+	{{ block.super }}
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/chosen/chosen.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/toastr/toastr.min.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/vendor/alert/sweetalert.css' %}">
+{% endblock %}
+
+{% block custom_style %}
+	<style type="text/css">
+		@media only screen and (max-width: 1280px){
+		.hidden_title{
+			 display: none !important;
+		}
+		.tab-wizard .nav-tabs > li.active > a, .tab-wizard .nav-tabs > li.active > a:hover {
+			padding-bottom: 24px
+		}
+		.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+			padding-bottom: 24px;
+		}
+	}
+	@media only screen and (max-width: 844px){
+		.hidden_title{
+			display: block !important;
+		}
+	}
+
+	hr.style14 { 
+		border: 0; 
+		height: 2px; 
+		background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+		background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+	}
+	.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus {
+		background-color: #22beef !important; 
+		color: aliceblue !important;
+	}
+	/*.tab-wizard .nav-tabs > li > a, .tab-wizard .nav-tabs > li > a:hover, .tab-wizard .nav-tabs > li > a:focus*/
+	.tab-wizard .nav-tabs > li.active ~ li > a, .tab-wizard .nav-tabs > li.active ~ li > a:hover {
+		background-color: #616f77;
+	}
+	.tab-wizard .nav-tabs > li:before {
+		background-color: #333;
+	}
+	/*@media screen and (max-width: 767px)*/
+	.table-responsive {
+			width: 100%;
+			margin-bottom: 15px;
+			overflow-y: hidden;
+			-ms-overflow-style: -ms-autohiding-scrollbar;
+			border: 1px solid #ddd;
+	}
+	.onoffswitch.labeled .onoffswitch-inner:before {
+		content: "Ada";
+	}
+	.onoffswitch.labeled .onoffswitch-inner:after {
+		content: "Tidak";
+	}
+	.onoffswitch.labeled {
+		width: 59px;
+	}
+	.onoffswitch.labeled .onoffswitch-switch {
+		right: 34px;
+	}
+	label, h4, h3 {
+		color: black;
+	}
+	tr, th{
+		color: black;
+	}
+	#id_kegiatan_usaha_pokok_chosen .search-field input{
+		min-width: 125px;
+	}
+	</style>
+{% endblock %}
+
+{% block pageheader %}
+		<h2>Izin Toko Obat
+		<span>Berikut adalah info pendaftaran perizinan Izin Toko Obat Kabupaten Kediri.</span>
+	</h2>
+	<div class="page-bar">
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="{% url 'frontindex' %}"><i class="fa fa-home"></i> Beranda</a>
+			</li>
+			<li>
+				<a href="{% url 'layanan' %}"><i class="fa fa-sign-in"></i> Pendaftaran Perizinan Daerah</a>
+			</li>
+			<li>
+				<a href="#"> Izin Toko Obat</a>
+			</li>
+			<li>
+				<a href="#">Formulir Izin Toko Obat</a>
+			</li>
+		</ul>
+	</div>
+{% endblock %}
+{% include 'front-end/perhatian.html' %}
+
+{% block rootwizard %}
+	<ul class="nav nav-tabs nav-justified">
+		<li><a disabled href="#tab1" data-toggle="tab"><i class="hidden_title">Pemohon</i> <span class="badge badge-default pull-right wizard-step">1</span></a></li>
+		<li><a disabled href="#tab2" data-toggle="tab"><i class="hidden_title">Izin Toko Obat</i><span class="badge badge-default pull-right wizard-step">2</span></a></li>
+		<li><a disabled href="#tab3" data-toggle="tab"><i class="hidden_title">Upload </i><span class="badge badge-default pull-right wizard-step">3</span></a></li>
+		<li><a disabled href="#tab4" data-toggle="tab"><i class="hidden_title">Konfirmasi</i><span class="badge badge-default pull-right wizard-step">4</span></a></li>
+	</ul>
+{% endblock %}
+{% block tab-content %}
+	<div class="tab-content">
+	    <div class="tab-pane" id="tab1"> 
+			<!-- Identitas pemohon --> 
+			{% include 'front-end/include/pemohon/identitas_pemohon.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab2">
+			<!-- Identitas perusahaan -->
+			{% include 'front-end/include/formulir_izin_toko_obat/izin_toko_obat.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab3">
+			{% include 'front-end/include/formulir_izin_toko_obat/upload.html' %}
+		</div>
+
+		<div class="tab-pane" id="tab4">
+			{% include 'front-end/include/formulir_izin_toko_obat/konfirmasi.html' %}
+		</div>
+  	</div>
+{% endblock %}

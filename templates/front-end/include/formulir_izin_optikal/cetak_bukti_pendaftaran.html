@@ -1,0 +1,364 @@
+{% load i18n admin_static staticfiles widgets %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cetak Bukti Pendaftaran - {{no_pengajuan}}</title>
+</head>
+<style type="text/css">
+    hr.style18 {
+        border-top: 3px double #8c8b8b;
+    }
+    hr.style14 { 
+        border: 0; 
+        height: 1px; 
+        background-image: -webkit-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -moz-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -ms-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0);
+        background-image: -o-linear-gradient(left, #f0f0f0, #8c8b8b, #f0f0f0); 
+      }
+    * {
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #FAFAFA;
+        font: 12pt "Tahoma";
+    }
+    * {
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+    }
+    /*.page {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 5mm;
+        margin: 5mm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    .subpage {
+        padding: 0.5cm;
+        height: 257mm;
+    }
+    
+    @page {
+        size: F4;
+        margin: 0;
+    }
+    @media print {
+        html, body {
+            width: 210mm;
+            height: 297mm;        
+        }
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }*/
+    @media print {  
+      @page {
+        /*size: 297mm 210mm;*/
+        width: 215mm;
+        height: 330mm;
+        /* you can also specify margins here: */
+        margin: 5mm;
+        /*margin-bottom: 0mm;*/
+
+        /*margin-right: 45mm;  for compatibility with both A4 and Letter */
+      }
+    }
+
+    .title, .tabel{
+        border-bottom: 1px solid #7d7d7d;
+    }
+    .title h3{
+        margin-top: 0px;
+    }
+    .tabel{
+        padding-top: 0px;
+        padding-bottom: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    .ceklist {
+        border: 1px solid black;
+    }
+    .font {
+        font-size: 12px;
+        font-family: "Open Sans", Helvetica, Arial, sans-serif;
+    }
+
+    .style2 {
+        border-top: 3px double #8c8b8b;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    .button-close {
+        background-color: #f32818; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    }
+    @media print {
+      .hidden-print {
+        display: none !important;
+      }
+    }
+    .tables  tr  td {
+        padding: 5px;
+        text-align: left;
+        border: 2px solid #ddd;
+        /*border-radius:10px;*/
+    }
+
+    .syarat tr  td{
+        padding: 1px;
+    }
+    
+    .tables tr:nth-child(even){background-color: #f2f2f2}
+    .printfooter{
+        display: none;
+        position: absolute;
+        bottom: 0;
+        width: 723px;
+        padding-bottom: 30px;
+    }
+
+    @media print {
+        .printfooter{
+            display: block;
+        }
+        /*#footer {
+            position: fixed;
+            bottom: 0;
+        }*/
+        body {
+            margin: x x y x; (y should reflect the height of the footer);
+        }
+    }
+</style>
+<body>
+    <div style="padding: 240px 0 0 30px; height: 140px; width: 150px;position:fixed;left:0;top:0">
+        <a class="button hidden-print" onclick="window.print()" href="#" style="margin-bottom: 10px;">
+            <img src="{% static 'images/icon-print.png' %}">
+        </a>
+        <br>
+        <a class="button-close hidden-print" href="javascript:if(confirm('Close window?'))window.close()" onclick="setTimeout(function(){var ww = window.open(window.location, '_self'); ww.close(); }, 1000);">
+            <img src="{% static 'images/icon-close.png' %}">
+        </a>
+    </div>
+
+    <div style="padding: 50px;">
+        <div class="title">
+            <div class="tabel">
+                <table>
+                    <tr>
+                        <td width="15%"><img src="{% static 'images/SIMPATIK.png' %}" width="50px"></td>
+                        <td>
+                            <h3 style="font-size: 25px;line-height: 10px;padding-top: 10px;">SIMPATIK</h3><p style="line-height:1px">Sistem Informasi Perizinan Satu Pintu Kabupaten Kediri</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <h5>No. Pengajuan Izin : {{pengajuan_.no_pengajuan}}<br>
+                        <font color="red">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d-m-Y" }}</font></h5>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <h4 align="center"><u>{{formulir_judul}}</u></h4>
+            <table width="100%" border="0">
+                <tr>
+                    <td width="10%"></td>
+                    <td width="40%">
+                        
+                    </td>
+                    <td width="50%">
+                        <p align="left" style="font-size:13px;padding-left:25%">
+                            Kepada
+                            <br>
+                            Yth. Bupati Kediri
+                            <b></b>
+                            Lewat
+                            <br>
+                            Yth. Kepala DPMPTSP Kab. Kediri
+                            <br>
+                            di
+                            <br>
+                            KEDIRI
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p style="font-size:13px">Yang bertanda tangan di bawah ini mengajukan permintaan pendaftaran perusahaan sebagai dimaksud Undang-Undang Nomor 3 Tahun 1982 tentang Wajib Daftar Perusahaan :</p>
+        <table width="100%" border="0" class="font">
+            <tr>
+                <td width="25%">Jenis Pengajuan</td>
+                <td width="5%">:</td>
+                <td width="70%">{{ pengajuan_.jenis_permohonan }}</td>
+            </tr>
+        </table>
+
+        {% include 'front-end/include/cetak_bukti_pendaftaran/pemohon.html' %}
+        <h4><u>#2. IZIN OPTIKAL</u></h4>
+          <table width="100%" border="0">
+            <tr>
+              <td width="25%">Nama Optikal</td>
+              <td width="5%">:</td>
+              <td width="70%">{{ pengajuan_.nama_optikal }}</td>
+            </tr>
+            <tr>
+              <td width="25%">Alamat Badan Usaha</td>
+              <td width="5%">:</td>
+              <td width="70%">{{ pengajuan_.alamat_optikal }}</td>
+            </tr>
+            <tr>
+              <td width="25%">No Telepon</td>
+              <td width="5%">:</td>
+              <td width="70%">{{ pengajuan_.no_telepon }}</td>
+            </tr>
+            <tr>
+              <td width="25%">Jenis Kegiatan Usaha</td>
+              <td width="5%">:</td>
+              <td width="70%">{{ pengajuan_.jenis_kegiatan_usaha }}</td>
+            </tr>
+            <tr>
+              <td width="25%">Luas Tanah dan Bangunan</td>
+              <td width="5%">:</td>
+              <td width="70%">{{ pengajuan_.luas_tanah_bangunan }}</td>
+            </tr>
+           
+          </table>
+
+        <p style="font-size:13px">Demikian formulir pendaftaran perusahaan diisi dengan sebenarnya dan apabila di kemudian hari keteranga tersebut tidak benar, maka kami bersedia dituntut sesuai peraturan perudang-undangan yang berlaku.</p>
+        <p align="center" style="font-size:13px;padding-left:75%">
+            Kediri,.......................
+            <br>
+            Nama dan Tanda tangan
+            <br>
+            Pemilik
+            <br>
+            {{ pengajuan_.perusahaan.nama_perusahaan }}
+            <br>
+            <i><font color="blue" style="font-size:10px"><i style="padding-right: 50%;">cap perusahaan & </i><br> <i style="padding-right: 50%;">materai Rp. 6.000,-</i></font></i>
+            <br>
+            <br>
+            <br>
+            <u class="font"><b>{{ pengajuan_.pemohon.nama_lengkap }}</b></u>
+        </p>
+        <br>
+        <br>
+        <hr class="style14">
+        <h5>Syarat Pengajuan:</h5>
+        <table class="font tables syarat" width="100%" border="1" style="border:2px;">
+            <thead>
+                <tr>
+                    <td width="5%" style="text-align:center;">No</td>
+                    <td width="65%">Syarat</td>
+                    <td align="center" width="15%">Kelengkapan (diisi Petugas 1)</td>
+                    <td align="center" width="15%">Kelengkapan (diisi Petugas 2)</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% if syarat %}
+                    {% for s in syarat %}
+                    <tr>
+                        <td style="text-align:center;">{{ forloop.counter }}</td>
+                        <td>{{ s.syarat }}</td>
+                        <td><p align="center"><input type="checkbox"></p></td>
+                        <td><p align="center"><input type="checkbox"></p></td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+        <table width="100%">
+            <tr>
+                <td width="50%"></td>
+                <td width="25%">
+                    <p align="center" style="font-size:13px;">
+                        Kediri,.......................
+                        <br>
+                        Petugas 1
+                        <br>
+                        Cap BPM
+                        <br>
+                        <br>
+                        <br>
+                        (...........................................)
+                    </p>
+                </td>
+                <td width="25%">
+                    <p align="center" style="font-size:13px;">
+                    Kediri,.......................
+                    <br>
+                    Petugas 2
+                    <br>
+                    Cap BPM
+                    <br>
+                    <br>
+                    <br>
+                    (...........................................)
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- <div id="footer">
+        <div class="printfooter">
+            <center>
+                <table width="90%" >
+                    <tr>
+                        <td width="70%" style="border-top: 1px solid grey;"><p style="color: red;">Masa berlaku pengajuan s/d {{ pengajuan_.created_at|add_date:3|date:"d-M-Y" }}</p></td>
+                        <td width="30%" style="border-top: 1px solid grey;"><p>simpatik.kedirikab.go.id</p></td>
+                    </tr>
+                </table>
+            </center>
+        </div>
+    </div> -->
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        alert("Gunakan kertas dengan ukuran F4 width: 215mm & height: 330mm")
+    })
+</script>
+</body>
+</html>

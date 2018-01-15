@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url, include
 import views
+import views_dinkes
 
 urlpatterns = [
 	url(r'^apotek/save-izin-apotek/$', views.save_izin_apotek, name='izin_dinkes__save_izin_apotek'),
@@ -96,4 +97,6 @@ urlpatterns = [
     url(r'^klinik/load-konfirmasi-operasional-klinik/ajax/(?P<id_pengajuan>[0-9]+)$', views.load_konfirmasi_operasional_klinik, name='izin_dinkes__load_konfirmasi_operasional_klinik'),
     url(r'^klinik/operasional-klinik-done/$', views.operasional_klinik_done, name='izin_dinkes__operasional_klinik_done'),
 	############### END Izin Operasional Klinik ##########
+
+	url(r'^proses/post-pengajuanizin-dinkes/(?P<obj_id>[0-9]+)$', views_dinkes.post_pengajuanizin_dinkes, name='izin_dinkes__post_pengajuanizin_dinkes'),
 ]

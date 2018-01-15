@@ -30,3 +30,18 @@ def get_title_verifikasi(request, pengajuan_obj, skizin_obj):
 		if pengajuan_obj.status == 2 and skizin_obj.status == 2:
 			title_verifikasi = "Stample SK Izin"
 	return title_verifikasi
+
+def send_email_html(emailto, subject, objects_, template_):
+    from django.core.mail import EmailMessage
+    from django.conf import settings
+    from django.template import Context, Template
+    from django.template.loader import get_template
+    from django.template.loader import render_to_string
+
+    html_content = render_to_string(template_, {'obj': objects_})
+    
+    email = EmailMessage(subject, html_content, settings.DEFAULT_FROM_EMAIL, [emailto])
+    email.content_subtype = "html"
+    res = email.send()
+
+    return res

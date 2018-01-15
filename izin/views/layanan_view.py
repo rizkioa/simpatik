@@ -438,3 +438,101 @@ def layanan_izin_angkutan_trayek(request, extra_context={}):
 
 # def layanan_pertambangan(request, extra_context={}):
 # 	return render(request, "front-end/layanan/pertambangan.html")
+
+def layanan_izin_apotek(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IAP")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Apotek"})
+	extra_context.update({'title_short': "Izin Apotek"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_apotek") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_apotek.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
+
+def layanan_izin_toko_obat(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="ITO")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Toko Obat"})
+	extra_context.update({'title_short': "Izin Toko Obat"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_toko_obat") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_toko_obat.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
+
+def layanan_izin_optikal(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IOP")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Optikal"})
+	extra_context.update({'title_short': "Izin Optikal"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_optikal") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_optikal.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
+
+def layanan_izin_laboratorium(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="ILB")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Laboratorium"})
+	extra_context.update({'title_short': "Izin Laboratorium"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_laboratorium") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_laboratorium.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
+
+def layanan_izin_penutupan_apotek(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IPA")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Penutupan Apotek"})
+	extra_context.update({'title_short': "Izin Penutupan Apotek"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_penutupan_apotek") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_penutupan_apotek.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
+
+def layanan_izin_mendirikan_klinik(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IMK")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Mendirikan Klinik"})
+	extra_context.update({'title_short': "Izin Mendirikan Klinik"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_mendirikan_klinik") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_mendirikan_klinik.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
+
+def layanan_izin_operasional_klinik(request, extra_context={}):
+	kelompok = get_object_or_404(KelompokJenisIzin, kode="IOK")
+	extra_context.update({'kelompok': kelompok})
+	extra_context.update({'title_long': "Izin Operasional Klinik"})
+	extra_context.update({'title_short': "Izin Operasional Klinik"})
+	extra_context.update({'link_formulir': reverse("formulir_izin_operasional_klinik") })
+	extra_context.update({'id_jenis_izin': kelompok.jenis_izin_id })
+	extra_context.update({'id_kelompok_jenis_izin': kelompok.id })
+	response = render(request, "front-end/layanan/dinkes/izin_operasional_klinik.html", extra_context)
+	delete_cookie(response)
+	response.set_cookie(key='id_kelompok_izin', value=kelompok.id)
+	response.set_cookie(key='kode_kelompok_jenis_izin', value=kelompok.kode)
+	return response
