@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 
 from django.db.models import Q
 from django.conf import settings
+import datetime
 import base64
 import time
 import json
@@ -35,6 +36,7 @@ def detil_pembayaran_save(request):
 				p.peruntukan = request.POST.get('peruntukan')
 				p.pengajuan_izin_id = pengajuan_izin_id
 				p.jumlah_pembayaran = jumlah_pembayaran
+				p.tanggal_dibuat = datetime.date.today()
 				p.save()
 				sk_izin_.status = 9
 				sk_izin_.save()
