@@ -112,8 +112,9 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 				nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
 				kode = generate_kode_bank_jatim(jumlah_data)
 				bank_list = BankPembayaran.objects.filter(aktif=True)
-				total_biaya = "123123"
-				total_biaya = formatrupiah(total_biaya)
+				total_biaya = ""
+				if total_biaya:
+					total_biaya = formatrupiah(total_biaya)
 				# if pengajuan_.detilbangunanimb_set.last().total_biaya_detil:
 				# 	total_biaya = int(float(pengajuan_.detilbangunanimb_set.last().total_biaya_detil))
 				extra_context.update({

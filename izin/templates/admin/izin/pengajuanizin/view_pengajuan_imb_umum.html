@@ -1217,8 +1217,6 @@
 			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 			          	toastr["success"](respon.pesan);
 			          	window.location.href= "";
-
-
 			      	}
 			      	else{
 		              	toastr["error"](respon.pesan)
@@ -1240,15 +1238,43 @@
   			$('#button-survey').attr('disabled',false)
         	$("#tambah_skpd_survey").modal('show');
         }
-	   $(document).ready(function(){
-    	$(".total-bayar").each(
-        function(){
-	        $(this).keyup(
-	            function(){
-	            FormatCurrency(this)
-	                });
-	        });
+        $(document).ready(function(){
+        	$(".total-bayar").each(
+        		function(){
+        			$(this).keyup(
+        				function(){
+        					FormatCurrency(this)
+        				});
+        		});
         });
+
+        function pembayaran_add(btn){
+			var frm = $('#id_form_pembayaran');
+			$('.teruskan-pembayaran').button("loading")
+			$('.panel-pembayaran').mLoading()
+			toastr["info"]("Mohon untuk menunggu, karena memerlukan waktu untuk memproses")
+		 	if (frm.parsley().validate()){
+				frm.ajaxSubmit({
+			 		success: function(response) {
+						var respon = $.parseJSON(response);  
+						if(respon.success){
+						  toastr["success"](respon.pesan)
+						  window.location.href= "";
+						}
+						else{
+							toastr["error"](respon.pesan)
+							$('.teruskan-pembayaran').button("reset")
+							$('.panel-pembayaran').mLoading("hide")
+						}
+					},
+					error: function(data) {       
+					  toast_server_error()
+					  $('.teruskan-pembayaran').button("reset")
+					  $('.panel-pembayaran').mLoading("hide")
+					}
+			  	});
+			}
+		}
 	</script>
 	<script src="{% static 'scripts/js/vendor/filestyle/bootstrap-filestyle.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.js' %}"></script>

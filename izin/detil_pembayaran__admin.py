@@ -78,11 +78,12 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		detil_pembayaran_obj = get_object_or_404(DetilPembayaran, kode=nomor)
 		terbilang_jumlah = ""
 		if detil_pembayaran_obj.jumlah_pembayaran:
-			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(".")[0].replace(".", "")))
+			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(",")[0].replace(".", "")))
 		extra_context={}
 		extra_context.update({
 			'detil':detil_pembayaran_obj,
-			'terbilang_jumlah': terbilang_jumlah
+			'terbilang_jumlah': terbilang_jumlah,
+			'total_bayar': int(detil_pembayaran_obj.jumlah_pembayaran.split(",")[0].replace(".", ""))
 			})
 		context_dict = "Cetak Kwitansi "
 		options = {

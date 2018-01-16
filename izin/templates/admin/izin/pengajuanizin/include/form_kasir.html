@@ -2,7 +2,7 @@
 {% if request.user|has_group:'Kasir' or request.user.is_superuser %}
 	<div class="row">
 		<div class="col-lg-12">
-			<section class="tile">
+			<section class="tile panel-pembayaran">
 				<div class="tile-header dvd dvd-btm">
 					<h1 class="custom-font" align="center"> Pembayaran Retribusi</h1>
 					<ul class="controls">
@@ -70,10 +70,17 @@
 
 									<div class="form-group">
 										<label for="input01" class="col-sm-2">Jumlah Dibayar </label>
-										<div class="col-sm-4">
-											<div class="input-group">
+										<div class="col-sm-5">
+											<!-- <div class="input-group">
 												<span class="input-group-addon">Rp.</span>
-												<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran" value="{{total_biaya}}">
+												<input type="text" class="form-control total-bayar input-sm" id="id_jumlah_pembayaran" name="jumlah_pembayaran" value="{{total_biaya}}">
+												<input type="text" class="form-control input-sm">
+											</div> -->
+											<div class="input-group">
+											  <span class="input-group-addon">Rp.</span>
+											  <input type="text" class="form-control total-bayar" name="jumlah_pembayaran_depan" value="{{total_biaya}}" />
+											  <span class="input-group-addon" style="border-left: 0; border-right: 0;">,</span>
+											  <input style="width: 50%;" type="text" class="form-control" placeholder="00" name="jumlah_pembayaran_belakang" />
 											</div>
 										</div>
 									</div>
@@ -89,8 +96,8 @@
 							<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 								<div class="row">
 									<div class="col-md-12" align="right">
-										<a type="button" class="btn btn-danger mb-10">Tidak Dibayar</a>
-										<button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></button>
+										<!-- <a type="button" class="btn btn-danger mb-10">Tidak Dibayar</a> -->
+										<button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10 teruskan-pembayaran">Teruskan <i class="fa fa-arrow-right"></i></button>
 									</div>
 								</div>
 							</div>

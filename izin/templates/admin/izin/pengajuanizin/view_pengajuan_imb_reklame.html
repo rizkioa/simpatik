@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<!-- <link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}"> -->
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/lightbox/css/lightbox.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		.label-color{
 			color: white;
@@ -1174,6 +1175,7 @@
 {% block extrajs_site %}
 	{{ block.super }}
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
+	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
 	<script language="javascript" type="text/javascript">
 		function openPopupCenter(url, title, w, h) {
 			var left = Math.round((screen.width/2)-(w/2));
@@ -1238,15 +1240,15 @@
 
 
 	
-		$(document).ready(function() {
-		$(".total-bayar").each(
-			function(){
-			$(this).keyup(
+		$(document).ready(function(){
+			$(".total-bayar").each(
 				function(){
-				FormatCurrency(this)
-					});
+					$(this).keyup(
+						function(){
+							FormatCurrency(this)
+						});
 				});
-			});
+		});
 
 		$('.button-tolak').prop( "disabled", true );
 		$('.alasan').keyup(function() {
@@ -1320,23 +1322,30 @@
 
 		function pembayaran_add(btn){
 			var frm = $('#id_form_pembayaran');
-			 if (frm.parsley().validate()){
+			$('.teruskan-pembayaran').button("loading")
+			$('.panel-pembayaran').mLoading()
+			toastr["info"]("Mohon untuk menunggu, karena memerlukan waktu untuk memproses")
+		 	if (frm.parsley().validate()){
 				frm.ajaxSubmit({
-				 success: function(response) {  // on success..
-					var respon = $.parseJSON(response);  
+			 		success: function(response) {
+						var respon = $.parseJSON(response);  
 						if(respon.success){
 						  toastr["success"](respon.pesan)
 						  window.location.href= "";
 						}
 						else{
 							toastr["error"](respon.pesan)
+							$('.teruskan-pembayaran').button("reset")
+							$('.panel-pembayaran').mLoading("hide")
 						}
 					},
 					error: function(data) {       
 					  toast_server_error()
+					  $('.teruskan-pembayaran').button("reset")
+					  $('.panel-pembayaran').mLoading("hide")
 					}
-				  });
-				}
+			  	});
+			}
 		}
 
 		function tambah_skpd_survey(){

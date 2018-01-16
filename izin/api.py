@@ -343,7 +343,7 @@ class AnggotaBadanUsaha(CORSModelResource):
 		}
 
 class DetilPembayaranResource(CORSModelResource):
-	# kode = fields.CharField(attribute="kode", null=True, blank=True)
+	kode = fields.CharField(attribute="kode", null=True, blank=True)
 	class Meta:
 		queryset = DetilPembayaran.objects.all()
 		authentication = ApiKeyAuthentication()

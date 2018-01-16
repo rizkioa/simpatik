@@ -213,29 +213,25 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
 				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
-			try:
-				sk_imb_ = DetilSk.objects.filter(pengajuan_izin_id = id_pengajuan_izin_ ).last()
-				if sk_imb_:
-					extra_context.update({'sk_imb': sk_imb_ })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
-				if retribusi_:
-					j = retribusi_.jumlah_pembayaran.replace(".", "")
-					if int(j) != 0:
-						# j = retribusi_.jumlah_pembayaran.replace(".", "")
-						p = j.replace(",", ".")
-						q = math.ceil(float(p))
-						n = int(str(q).replace(".0", ""))
-						terbilang_ = terbilang(n)
-					else:
-						n = int(retribusi_.jumlah_pembayaran)
-						terbilang_ = terbilang(n)	
-					extra_context.update({'retribusi': n })
-					extra_context.update({'terbilang': terbilang_ })
-			except ObjectDoesNotExist:
-				pass
+			sk_imb_ = pengajuan_.detilsk_set.last()
+			if sk_imb_:
+				extra_context.update({'sk_imb': sk_imb_ })
+
+				retribusi_ = pengajuan_.detilpembayaran_set.last()
+			if retribusi_:
+				j = retribusi_.jumlah_pembayaran.replace(".", "")
+				if int(j) != 0:
+					# j = retribusi_.jumlah_pembayaran.replace(".", "")
+					p = j.replace(",", ".")
+					q = math.ceil(float(p))
+					n = int(str(q).replace(".0", ""))
+					terbilang_ = terbilang(n)
+				else:
+					n = int(retribusi_.jumlah_pembayaran)
+					terbilang_ = terbilang(n)	
+				extra_context.update({'retribusi': n })
+				extra_context.update({'terbilang': terbilang_ })
+				
 			try:
 				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
 				bk_1 = detil_bangunan_.filter(detil_bangunan_imb__kode="BK23").last()

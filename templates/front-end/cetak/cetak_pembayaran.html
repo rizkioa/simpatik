@@ -1,4 +1,4 @@
-{% load i18n admin_static %}
+{% load i18n admin_static widgets %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +46,7 @@
 <center>
 	<div style="border:3px solid;padding: 5px; border-radius: 10px; text-align: center;width: 40%;">
 		<span style="font-size: 13px">Lakukan pembayaran sebesar</span><br>
-		<span style="font-size: 17px"><strong>Rp. {{detil.jumlah_pembayaran}}</strong></span><br>
+		<span style="font-size: 17px"><strong>Rp. {{total_bayar|formatrupiah}}</strong></span><br>
 		<small>( {{terbilang_jumlah.title}} Rupiah )</small>
 	</div>
 </center>
