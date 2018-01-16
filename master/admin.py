@@ -176,9 +176,9 @@ def get_jenis_bangunan(request):
 	return bangunan_list
 
 class BangunanJenisKontruksiAdmin(admin.ModelAdmin):
-	list_display = ('kode', 'nama_bangunan')
-	list_filter = ('kode','nama_bangunan')
-	search_fields = ('kode','nama_bangunan')
+	list_display = ('kode', 'nama_bangunan', 'biaya_bangunan')
+	list_filter = ('kode', 'nama_bangunan')
+	search_fields = ('kode', 'nama_bangunan')
 
 	def option_jenis_bangunan(self, request):		
 		bangunan_list = get_jenis_bangunan(request)

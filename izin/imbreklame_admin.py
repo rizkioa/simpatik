@@ -106,7 +106,8 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 
 			if pengajuan_.status == 5:
 				import datetime
-				jumlah_data = int(DetilPembayaran.objects.count())+1
+				tahun = datetime.date.today().strftime("%Y")
+				jumlah_data = int(DetilPembayaran.objects.filter(created_at__year=tahun).count())+1
 				# nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
 				nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
 				kode = generate_kode_bank_jatim(jumlah_data)

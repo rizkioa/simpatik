@@ -34,7 +34,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		detil_pembayaran_obj = get_object_or_404(DetilPembayaran, id=obj_id)
 		terbilang_jumlah = ""
 		if detil_pembayaran_obj.jumlah_pembayaran:
-			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.replace(".", "")))
+			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(".")[0].replace(".", "")))
 		if detil_pembayaran_obj.pengajuan_izin:
 			if detil_pembayaran_obj.pengajuan_izin.kelompok_jenis_izin:
 				objects_ = get_model_detil(detil_pembayaran_obj.pengajuan_izin.kelompok_jenis_izin.kode)
@@ -77,7 +77,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		detil_pembayaran_obj = get_object_or_404(DetilPembayaran, kode=nomor)
 		terbilang_jumlah = ""
 		if detil_pembayaran_obj.jumlah_pembayaran:
-			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.replace(".", "")))
+			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(".")[0].replace(".", "")))
 		extra_context={}
 		extra_context.update({
 			'detil':detil_pembayaran_obj,
