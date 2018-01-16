@@ -133,7 +133,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
 		# if func_view.__name__ == 'pembayaran_piutang':
 		if request.user.groups.filter(name='Kasir'):
-			return ('kode', 'nomor_kwitansi', 'jumlah_pembayaran')
+			return ('kode', 'nomor_kwitansi', 'jumlah_pembayaran', 'tanggal_dibuat')
 		else:
 			return ('kode', 'nomor_kwitansi', 'jumlah_pembayaran')
 
