@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse, resolve
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
+	ordering = ("tanggal_dibuat",)
 
 	def get_fieldsets(self, request, obj=None):
 		fields = ('nomor_kwitansi', 'jumlah_pembayaran', 'peruntukan', 'bank_pembayaran', 'nama_pemohon', 'nama_perusahaan', 'alamat_usaha' , 'piutang')
