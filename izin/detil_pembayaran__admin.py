@@ -157,8 +157,10 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 	def save_model(self, request, obj, form, change):
 		# clean the nomor_identitas
 		from utils import generate_kode_bank_jatim
-		if obj.piutang == True:
-			jumlah_data = DetilPembayaran.objects.count()+1
-			obj.kode = generate_kode_bank_jatim(jumlah_data)
+		# print request.POST.get("piutang")
+		# if request.POST.get("piutang") == "on":
+		tahun = datetime.date.today().strftime("%Y")
+		jumlah_data = int(DetilPembayaran.objects.filter(created_at__year=tahun).count())+1
+		obj.kode = generate_kode_bank_jatim(jumlah_data)
 		obj.save()
 

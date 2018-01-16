@@ -1565,6 +1565,7 @@ class DetilPembayaran(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
 	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
+	tanggal_dibuat = models.DateField(verbose_name="Tanggal Dibuat", null=True, blank=True)
 	nomor_kwitansi = models.CharField(max_length=255, verbose_name='Nomor Kwitansi', null=True, blank=True)
 	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
 	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)

@@ -231,6 +231,12 @@ class CustomMenu(Menu):
                     css_classes='kasir', 
                     url=reverse('admin:kasir'),                
                 ),
+                items.MenuItem(
+                    title='Piutang Retribusi',
+                    icon='fa fa-file-text',
+                    css_classes='piutangretribusi', 
+                    url=reverse('admin:detil_pembayaran__view_piutang'),                
+                ),
             ]
 
         if request.user.groups.filter(name="Kadin").exists():
