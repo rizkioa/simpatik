@@ -152,7 +152,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			if pengajuan_.status == 5:
 				import datetime
 				tahun = datetime.date.today().strftime("%Y")
-				jumlah_data = int(DetilPembayaran.objects.filter(created_at__year=tahun).count())+1
+				jumlah_data = int(DetilPembayaran.objects.filter(tanggal_dibuat__year=tahun).count())+1
 				nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
 				kode = generate_kode_bank_jatim(jumlah_data)
 				bank_list = BankPembayaran.objects.filter(aktif=True)
@@ -231,7 +231,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					terbilang_ = terbilang(n)	
 				extra_context.update({'retribusi': n })
 				extra_context.update({'terbilang': terbilang_ })
-				
+
 			try:
 				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
 				bk_1 = detil_bangunan_.filter(detil_bangunan_imb__kode="BK23").last()
@@ -393,7 +393,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			if pengajuan_.status == 5:
 				import datetime
 				tahun = datetime.date.today().strftime("%Y")
-				jumlah_data = int(DetilPembayaran.objects.filter(created_at__year=tahun).count())+1
+				jumlah_data = int(DetilPembayaran.objects.filter(tanggal_dibuat__year=tahun).count())+1
 				# nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
 				nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
 				kode = generate_kode_bank_jatim(jumlah_data)
