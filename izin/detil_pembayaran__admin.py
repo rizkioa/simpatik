@@ -33,6 +33,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 	def cetak_skrd(self, request, obj_id):
 		detil_pembayaran_obj = get_object_or_404(DetilPembayaran, id=obj_id)
 		terbilang_jumlah = ""
+		detilpengajuan_obj = None
 		if detil_pembayaran_obj.jumlah_pembayaran:
 			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(".")[0].replace(".", "")))
 		if detil_pembayaran_obj.pengajuan_izin:

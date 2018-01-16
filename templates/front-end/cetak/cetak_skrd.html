@@ -54,11 +54,13 @@
 			<td>:</td>
 			<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
 		</tr>
+		{% if detilpengajuan_obj.perusahaan.nama_perusahaan %}
 		<tr>
 			<td>Nama Perusahaan</td>
 			<td>:</td>
 			<td>{{detilpengajuan_obj.perusahaan.nama_perusahaan.upper}}</td>
 		</tr>
+		{% endif %}
 		<tr>
 			<td>Alamat Usaha/Perusahaan</td>
 			<td>:</td>
