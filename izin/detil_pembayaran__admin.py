@@ -108,6 +108,14 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		os.remove(output_file_name)  # remove the locally created pdf file.
 		return response
 
+	def get_pemohon(self, obj):
+		nama_pemohon = None
+		if obj.pengajuan_izin:
+			if obj.pengajuan_izin.pemohon:
+				nama_pemohon = obj.pengajuan_izin.pemohon.nama_lengkap
+		return nama_pemohon
+	get_pemohon.short_description = 'Pemohon'
+
 	def get_bank(self, obj):
 		bank_ = "-"
 		if obj.bank_pembayaran:
@@ -131,11 +139,11 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 
 	def get_list_display(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
-		# if func_view.__name__ == 'pembayaran_piutang':
-		if request.user.groups.filter(name='Kasir'):
-			return ('kode', 'nomor_kwitansi', 'jumlah_pembayaran', 'tanggal_dibuat')
+		if func_view.__name__ == 'pembayaran_piutang':
+			return ('kode', 'nomor_kwitansi', 'nama_pemohon', 'nama_perusahaan', 'jumlah_pembayaran', 'terbayar')
+		# if request.user.groups.filter(name='Kasir'):
 		else:
-			return ('kode', 'nomor_kwitansi', 'jumlah_pembayaran', 'tanggal_dibuat')
+			return ('kode', 'nomor_kwitansi', 'get_pemohon', 'jumlah_pembayaran', 'tanggal_dibuat', 'terbayar')
 
 	def get_queryset(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)

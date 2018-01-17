@@ -232,6 +232,12 @@ class CustomMenu(Menu):
                     url=reverse('admin:kasir'),                
                 ),
                 items.MenuItem(
+                    title='Retribusi',
+                    icon='fa fa-file-text',
+                    css_classes='retribusi', 
+                    url=reverse('admin:izin_detilpembayaran_changelist'),                
+                ),
+                items.MenuItem(
                     title='Piutang Retribusi',
                     icon='fa fa-file-text',
                     css_classes='piutangretribusi', 
