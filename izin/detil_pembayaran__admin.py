@@ -12,8 +12,8 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
 
 	def get_fieldsets(self, request, obj=None):
-		fields = ('nomor_kwitansi', 'jumlah_pembayaran', 'peruntukan', 'bank_pembayaran', 'nama_pemohon', 'nama_perusahaan', 'alamat_usaha' , 'piutang', 'terbayar')
-		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by', 'tanggal_dibuat')
+		fields = ('kode', 'nomor_kwitansi', 'jumlah_pembayaran', 'peruntukan', 'bank_pembayaran', 'nama_pemohon', 'nama_perusahaan', 'alamat_usaha' , 'tanggal_dibuat', 'piutang', 'terbayar')
+		fields_admin = ('status', 'created_by', 'verified_by', 'rejected_by')
 		add_fieldsets = ()
 		if request.user.is_superuser:
 			add_fieldsets = (
