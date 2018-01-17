@@ -13,7 +13,7 @@ from izin.models import DetilIMB, Syarat, SKIzin, Riwayat, DetilSk, DetilPembaya
 from kepegawaian.models import Pegawai, UnitKerja
 from accounts.models import NomorIdentitasPengguna
 
-from izin.utils import*
+from izin.utils import *
 
 import math
 from decimal import *
@@ -217,20 +217,22 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			if sk_imb_:
 				extra_context.update({'sk_imb': sk_imb_ })
 
-				retribusi_ = pengajuan_.detilpembayaran_set.last()
+			retribusi_ = pengajuan_.detilpembayaran_set.last()
 			if retribusi_:
-				j = retribusi_.jumlah_pembayaran.replace(".", "")
-				if int(j) != 0:
-					# j = retribusi_.jumlah_pembayaran.replace(".", "")
-					p = j.replace(",", ".")
-					q = math.ceil(float(p))
-					n = int(str(q).replace(".0", ""))
-					terbilang_ = terbilang(n)
-				else:
-					n = int(retribusi_.jumlah_pembayaran)
-					terbilang_ = terbilang(n)	
-				extra_context.update({'retribusi': n })
-				extra_context.update({'terbilang': terbilang_ })
+				# j = retribusi_.jumlah_pembayaran.replace(".", "")
+				# if int(j) != 0:
+				# 	# j = retribusi_.jumlah_pembayaran.replace(".", "")
+				# 	p = j.replace(",", ".")
+				# 	q = math.ceil(float(p))
+				# 	n = int(str(q).replace(".0", ""))
+				# 	terbilang_ = terbilang(n)
+				# else:
+				# 	n = int(retribusi_.jumlah_pembayaran)
+				# 	terbilang_ = terbilang(n)
+				
+				terbilang_jumlah = terbilang(int(retribusi_.jumlah_pembayaran.split(",")[0].replace(".", "")))	
+				extra_context.update({'retribusi': retribusi_ })
+				extra_context.update({'terbilang': terbilang_jumlah })
 
 			try:
 				detil_bangunan_ = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)

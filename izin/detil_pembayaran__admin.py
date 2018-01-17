@@ -184,4 +184,3 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 			obj.kode = generate_kode_bank_jatim(jumlah_data)
 			tanggal_dibuat = datetime.date.today()
 		obj.save()
-
