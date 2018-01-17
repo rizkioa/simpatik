@@ -229,9 +229,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				# else:
 				# 	n = int(retribusi_.jumlah_pembayaran)
 				# 	terbilang_ = terbilang(n)
-				
+
 				terbilang_jumlah = terbilang(int(retribusi_.jumlah_pembayaran.split(",")[0].replace(".", "")))	
 				extra_context.update({'retribusi': retribusi_ })
+				extra_context.update({'jumlah_pembayaran': retribusi_.jumlah_pembayaran })
 				extra_context.update({'terbilang': terbilang_jumlah })
 
 			try:
