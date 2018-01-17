@@ -179,9 +179,9 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		# print request.POST.get("piutang")
 		# if request.POST.get("piutang") == "on":
 		tahun = datetime.date.today().strftime("%Y")
-		jumlah_data = int(DetilPembayaran.objects.filter(tanggal_dibuat__year=tahun).count())+1
-		obj.kode = generate_kode_bank_jatim(jumlah_data)
 		if not obj.id:
+			jumlah_data = int(DetilPembayaran.objects.filter(tanggal_dibuat__year=tahun).count())+1
+			obj.kode = generate_kode_bank_jatim(jumlah_data)
 			tanggal_dibuat = datetime.date.today()
 		obj.save()
 
