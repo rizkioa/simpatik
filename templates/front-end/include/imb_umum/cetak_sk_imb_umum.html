@@ -743,7 +743,7 @@
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar
 					        			{% if retribusi %}
-					        				Rp  ({{terbilang}})
+					        				Rp {{retribusi.jumlah_pembayaran}} ({{terbilang.title}})
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
@@ -1509,9 +1509,7 @@
 					        			<td width="10" style="vertical-align: top;">a.</td>
 					        			<td colspan="3">Atas pemberian izin sebagaimana dimaksud dalam diktum KESATU yang bersangkutan dikenakan retribusi sebesar 
 					        			{% if retribusi %}
-					        				Rp {{retribusi|formatrupiah}} ({{terbilang}} Rupiah)
-					        			{% elif terbilang %}
-					        				Rp {{retribusi|formatrupiah}} ({{terbilang}} Rupiah)
+					        				Rp {{retribusi.jumlah_pembayaran}} ({{terbilang.title}} Rupiah)
 					        			{% else %} 
 					        				<u>(Nilai akan keluar setelah kasir memverifikasi retribusi)</u>
 					        			{% endif%}
