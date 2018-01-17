@@ -250,7 +250,7 @@
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
 					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
-						{% if pengajuan.status == 2 or pengajuan.status == 5 and detil_pembayaran %}
+						{% if pengajuan.status == 2 and detil_pembayaran or pengajuan.status == 5 and detil_pembayaran %}
 							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
 							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
 						{% endif %}
@@ -1175,7 +1175,6 @@
 {% block extrajs_site %}
 	{{ block.super }}
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
-	<script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
 	<script language="javascript" type="text/javascript">
 		function openPopupCenter(url, title, w, h) {
 			var left = Math.round((screen.width/2)-(w/2));
