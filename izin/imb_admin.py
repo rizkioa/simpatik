@@ -473,17 +473,18 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			except ObjectDoesNotExist:
 				pass
 			try:
-				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
+				retribusi_ = pengajuan_.detilpembayaran_set.last()
 				if retribusi_:
-					j = retribusi_.jumlah_pembayaran.replace(".", "")
-					if int(j) != 0:
-						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-						terbilang_ = terbilang(n)
-					else:
-						n = int(retribusi_.jumlah_pembayaran)
-						terbilang_ = terbilang(n)
+					# j = retribusi_.jumlah_pembayaran.replace(".", "")
+					# if int(j) != 0:
+					# 	n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+					# 	terbilang_ = terbilang(n)
+					# else:
+					# 	n = int(retribusi_.jumlah_pembayaran)
+					# 	terbilang_ = terbilang(n)
+					terbilang_jumlah = terbilang(int(retribusi_.jumlah_pembayaran.split(",")[0].replace(".", "")))
 					extra_context.update({'retribusi': retribusi_ })
-					extra_context.update({'terbilang': terbilang_ })
+					extra_context.update({'terbilang': terbilang_jumlah })
 			except ObjectDoesNotExist:
 				pass
 		template = loader.get_template("front-end/include/formulir_imb_perumahan/cetak_sk_imb_perumahan.html")
@@ -641,22 +642,22 @@ class DetilIMBAdmin(admin.ModelAdmin):
 				except ObjectDoesNotExist:
 					pass
 
-				if pengajuan_.status == 5:
-					import datetime
-					jumlah_data = int(DetilPembayaran.objects.count())+1
-					# nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
-					nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
-					kode = generate_kode_bank_jatim(jumlah_data)
-					bank_list = BankPembayaran.objects.filter(aktif=True)
-					extra_context.update({
-						'kode': kode,
-						'bank_pembayaran': bank_list,
-						'nomor_kwitansi': nomor_kwitansi,
-						'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) PERUMAHAN"
-						})
-				extra_context.update({
-					'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
-					})
+				# if pengajuan_.status == 5:
+				# 	import datetime
+				# 	jumlah_data = int(DetilPembayaran.objects.count())+1
+				# 	# nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				# 	nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
+				# 	kode = generate_kode_bank_jatim(jumlah_data)
+				# 	bank_list = BankPembayaran.objects.filter(aktif=True)
+				# 	extra_context.update({
+				# 		'kode': kode,
+				# 		'bank_pembayaran': bank_list,
+				# 		'nomor_kwitansi': nomor_kwitansi,
+				# 		'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) PERUMAHAN"
+				# 		})
+				# extra_context.update({
+				# 	'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
+				# 	})
 			else:
 				raise Http404
 		else:
