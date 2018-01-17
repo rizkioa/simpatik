@@ -771,66 +771,6 @@
 	</div>
 {% endif %}
 
-{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
-	<div class="row">
-		<div class="col-lg-12">
-			<section class="tile">
-				<div class="tile-header dvd dvd-btm">
-					<h1 class="custom-font" align="center"> Pembayaran Retribusi</h1>
-					<ul class="controls">
-						<li>
-							<a role="button" tabindex="0" class="tile-toggle">
-								<span class="minimize"><i class="fa fa-angle-down"></i></span>
-								<span class="expand"><i class="fa fa-angle-up"></i></span>
-							</a>
-						</li>
-					</ul>
-				</div>
-				<div id="minimize_3">
-					<div class="tile-body">
-						<div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
-							<form>
-								<div class="panel-body">
-									<div class="form-group">	
-										<label class="label-color">Tanggal Bayar </label>
-										<div class="input-group datepicker" data-format="L">
-										  <input type="text" class="form-control" placeholder="dd-mm-yyyy">
-										  <span class="input-group-addon">
-											<span class="fa fa-calendar"></span>
-										  </span>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="label-color">Nomor Kwitansi </label>
-										<input type="text" class="form-control" name="">
-									</div>
-									<div class="form-group">
-										<label class="label-color">Jumlah Dibayar </label>
-										<div class="input-group">
-											<span class="input-group-addon">Rp.</span>
-											<input type="text" class="form-control" name="">
-										</div>
-									</div>
-									
-								</div>
-							</form>
-
-						</div>
-					</div>
-					<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
-						<div class="row">
-							<div class="col-md-12" align="right">
-								<a type="button" class="btn btn-red mb-10">Tidak Dibayar</a>
-								<a class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-		</div>
-	</div>
-{% endif %}
-
 {% if request.user|has_group:'Pembuat Surat' or request.user.is_superuser %}
 	<div class="row">
 		<div class="col-lg-12">

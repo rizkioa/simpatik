@@ -1565,11 +1565,17 @@ class DetilPembayaran(MetaAtribut):
 	pengajuan_izin = models.ForeignKey(PengajuanIzin, verbose_name="Detil Pengajuan Izin",blank=True, null=True)
 	tanggal_bayar = models.DateField(verbose_name="Tanggal Bayar", null=True, blank=True)
 	tanggal_deadline = models.DateField(verbose_name="Tanggal Deadline", null=True, blank=True)
+	tanggal_dibuat = models.DateField(verbose_name="Tanggal Dibuat", null=True, blank=True)
 	nomor_kwitansi = models.CharField(max_length=255, verbose_name='Nomor Kwitansi', null=True, blank=True)
 	jumlah_pembayaran = models.CharField(max_length=255, verbose_name='Jumlah Pembayaran', null=True, blank=True)
 	peruntukan = models.CharField(max_length=255, verbose_name="Peruntukan", null=True, blank=True)
 	bank_pembayaran = models.ForeignKey(BankPembayaran, null=True, blank=True, verbose_name="Bank Pembayaran")
 	terbayar = models.BooleanField(default=False, verbose_name="Apakah pembayaran sudah terbayar ?")
+	# pembayaran piutang
+	nama_pemohon = models.CharField(max_length=255, verbose_name="Nama Pemohon", null=True, blank=True)
+	nama_perusahaan = models.CharField(max_length=255, verbose_name="Nama Perusahaan", null=True, blank=True)
+	alamat_usaha = models.CharField(max_length=255, verbose_name="Alamat Usaha", null=True, blank=True)
+	piutang = models.BooleanField(verbose_name="Apakah pembayaran piutang ?", default=False)
 
 	def __unicode__(self):
 		return u'Detil Pembayaran %s' % (str(self.pengajuan_izin))

@@ -22,17 +22,17 @@
     </p>
     <hr>
     <p style="line-height: 24px; font-size: 14px; font-family: Arial, Helvetica, sans-serif;">Nama Pemohon, {{obj.pengajuan_izin.pemohon.nama_lengkap}} <br>
-    Terima kasih telah menggunakan layanan SIMPATIK, Segera lakukan pembayaran agar proses segera ditindaklanjuti, Mohon lakukan pembayaran sebelum:</p>
+    Terima kasih telah menggunakan layanan SIMPATIK, Segera lakukan pembayaran agar proses segera ditindaklanjuti.</p>
     
-    <p align="center" style="font-size: 17px; font-family: Arial, Helvetica, sans-serif;">
+    <!-- <p align="center" style="font-size: 17px; font-family: Arial, Helvetica, sans-serif;">
       <strong>Tanggal : {{obj.tanggal_deadline|date:'d-m-Y'}}</strong><br><br>
-    </p>
+    </p> -->
     <div style="background: gray; color: white; padding: 10px; border-radius: 10px; margin: auto;
 		width: 40%;text-align: center; font-family: Arial, Helvetica, sans-serif;">
     	<p>
 	      <span style="font-size: 13px">Lakukan pembayaran sebesar</span><br><br>
-	      <span style="font-size: 25px"><strong>Rp {{obj.jumlah_pembayaran|formatrupiah}}</strong></span><br>
-	      <small>( {{obj.jumlah_pembayaran|formatterbilang}} RUPIAH )</small>
+	      <span style="font-size: 25px"><strong>Rp {{total_bayar|formatrupiah}}</strong></span><br>
+	      <small>( {{terbilang_jumlah.title}} Rupiah )</small>
 	    </p>
     </div>
     

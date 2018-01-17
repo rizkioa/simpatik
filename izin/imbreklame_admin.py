@@ -106,15 +106,23 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 
 			if pengajuan_.status == 5:
 				import datetime
-				jumlah_data = int(DetilPembayaran.objects.count())+1
-				nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				tahun = datetime.date.today().strftime("%Y")
+				jumlah_data = int(DetilPembayaran.objects.filter(tanggal_dibuat__year=tahun).count())+1
+				# nomor_kwitansi = get_nomor_kwitansi("974/"+str(jumlah_data),str(pengajuan_.id)+"/DPMPTSP")
+				nomor_kwitansi = get_nomor_kwitansi("974", str(jumlah_data), "DPMPTSP")
 				kode = generate_kode_bank_jatim(jumlah_data)
 				bank_list = BankPembayaran.objects.filter(aktif=True)
+				total_biaya = ""
+				if total_biaya:
+					total_biaya = formatrupiah(total_biaya)
+				# if pengajuan_.detilbangunanimb_set.last().total_biaya_detil:
+				# 	total_biaya = int(float(pengajuan_.detilbangunanimb_set.last().total_biaya_detil))
 				extra_context.update({
 					'kode': kode,
 					'bank_pembayaran': bank_list,
 					'nomor_kwitansi': nomor_kwitansi,
-					'peruntukan': "IMB Reklame"
+					'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) REKLAME",
+					'total_biaya': total_biaya
 					})
 			extra_context.update({
 				'detil_pembayaran': pengajuan_.detilpembayaran_set.last()
@@ -158,39 +166,31 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
 			extra_context.update({'pengajuan': pengajuan_ })
 			extra_context.update({'foto': pengajuan_.pemohon.berkas_foto.all().last()})
-			try:
-				skizin_ = SKIzin.objects.get(pengajuan_izin_id = id_pengajuan_izin_ )
-				if skizin_:
-					extra_context.update({'skizin': skizin_ })
-					extra_context.update({'skizin_status': skizin_.status })
-			except ObjectDoesNotExist:
-				pass
-			try:
-				kepala_ =  Pegawai.objects.get(jabatan__nama_jabatan="Kepala Dinas")
-				if kepala_:
-					extra_context.update({'gelar_depan': kepala_.gelar_depan })
-					extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
-					extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
+			
+			skizin_ = pengajuan_.skizin_set.last()
+			if skizin_:
+				extra_context.update({'skizin': skizin_ })
+				extra_context.update({'skizin_status': skizin_.status })
 
-			except ObjectDoesNotExist:
-				pass
+			kepala_ =  Pegawai.objects.filter(jabatan__nama_jabatan="Kepala Dinas", unit_kerja__nama_unit_kerja="DPMPTSP").last()
+			if kepala_:
+				extra_context.update({'gelar_depan': kepala_.gelar_depan })
+				extra_context.update({'nama_kepala_dinas': kepala_.nama_lengkap })
+				extra_context.update({'nip_kepala_dinas': kepala_.nomoridentitaspengguna_set.last() })
 
-			try:
-				sk_imb_ = DetilSk.objects.get(pengajuan_izin__id = id_pengajuan_izin_ )
-				if sk_imb_:
-					extra_context.update({'sk_imb': sk_imb_ })
-			except DetilSk.DoesNotExist:
-				pass
-			try:
-				retribusi_ = DetilPembayaran.objects.filter(pengajuan_izin__id = id_pengajuan_izin_).last()
-				if retribusi_:
-					if retribusi_.jumlah_pembayaran and retribusi_.jumlah_pembayaran is not None:
-						n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
-						terbilang_ = terbilang(n)
-						extra_context.update({'terbilang': terbilang_ })
-					extra_context.update({'retribusi': retribusi_ })
-			except ObjectDoesNotExist:
-				pass
+			sk_imb_ = pengajuan_.detilsk_set.last()
+			if sk_imb_:
+				extra_context.update({'sk_imb': sk_imb_ })
+
+			retribusi_ = pengajuan_.detilpembayaran_set.last()
+			if retribusi_:
+				# if retribusi_.jumlah_pembayaran and retribusi_.jumlah_pembayaran is not None:
+				# 	n = int(retribusi_.jumlah_pembayaran.replace(".", ""))
+				# 	terbilang_ = terbilang(n)
+				# 	extra_context.update({'terbilang': terbilang_ })
+				terbilang_jumlah = terbilang(int(retribusi_.jumlah_pembayaran.split(",")[0].replace(".", "")))	
+				extra_context.update({'retribusi': retribusi_ })
+				extra_context.update({'terbilang': terbilang_jumlah })
 		template = loader.get_template("front-end/include/formulir_imb_reklame/cetak_sk_imb_reklame.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))

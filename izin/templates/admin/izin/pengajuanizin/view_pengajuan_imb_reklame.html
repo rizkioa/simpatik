@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/datetimepicker/css/bootstrap-datetimepicker.min.css'  %}">
 	<!-- <link rel="stylesheet" href="{% static 'scripts/js/vendor/magnific-popup/magnific-popup.css' %}"> -->
 	<link rel="stylesheet" href="{% static 'scripts/js/vendor/lightbox/css/lightbox.css'  %}">
+	<link rel="stylesheet" href="{% static 'scripts/js/mloading/jquery.mloading.css' %}">
 	<style type="text/css">
 		.label-color{
 			color: white;
@@ -249,7 +250,7 @@
 					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_reklame' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
 					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
-						{% if pengajuan.status == 2 or pengajuan.status == 5 and detil_pembayaran %}
+						{% if pengajuan.status == 2 and detil_pembayaran or pengajuan.status == 5 and detil_pembayaran %}
 							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
 							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
 						{% endif %}
@@ -1238,15 +1239,15 @@
 
 
 	
-		$(document).ready(function() {
-		$(".total-bayar").each(
-			function(){
-			$(this).keyup(
+		$(document).ready(function(){
+			$(".total-bayar").each(
 				function(){
-				FormatCurrency(this)
-					});
+					$(this).keyup(
+						function(){
+							FormatCurrency(this)
+						});
 				});
-			});
+		});
 
 		$('.button-tolak').prop( "disabled", true );
 		$('.alasan').keyup(function() {
@@ -1320,23 +1321,30 @@
 
 		function pembayaran_add(btn){
 			var frm = $('#id_form_pembayaran');
-			 if (frm.parsley().validate()){
+			$('.teruskan-pembayaran').button("loading")
+			$('.panel-pembayaran').mLoading()
+			toastr["info"]("Mohon untuk menunggu, karena memerlukan waktu untuk memproses")
+		 	if (frm.parsley().validate()){
 				frm.ajaxSubmit({
-				 success: function(response) {  // on success..
-					var respon = $.parseJSON(response);  
+			 		success: function(response) {
+						var respon = $.parseJSON(response);  
 						if(respon.success){
 						  toastr["success"](respon.pesan)
 						  window.location.href= "";
 						}
 						else{
 							toastr["error"](respon.pesan)
+							$('.teruskan-pembayaran').button("reset")
+							$('.panel-pembayaran').mLoading("hide")
 						}
 					},
 					error: function(data) {       
 					  toast_server_error()
+					  $('.teruskan-pembayaran').button("reset")
+					  $('.panel-pembayaran').mLoading("hide")
 					}
-				  });
-				}
+			  	});
+			}
 		}
 
 		function tambah_skpd_survey(){

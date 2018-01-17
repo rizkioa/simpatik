@@ -163,7 +163,7 @@ def formatrupiah(uang):
 		if len(y) > 1:
 			return   formatrupiah(q) + '.' + p 
 		else:
-			return   formatrupiah(q) + '.' + p 
+			return   formatrupiah(q) + '.' + p
 
 @register.filter(name='formatterbilang')
 def formatterbilang(uang):

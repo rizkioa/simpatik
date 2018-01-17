@@ -326,7 +326,7 @@ class DetilPembayaranForm(forms.ModelForm):
 	"""docstring for DetilPembayaranForm"""
 	class Meta:
 		model = DetilPembayaran
-		fields = ('pengajuan_izin','tanggal_bayar','nomor_kwitansi','jumlah_pembayaran')
+		fields = ('pengajuan_izin','tanggal_bayar','nomor_kwitansi')
 
 class LuasTanahYangDisetujuiForm(forms.ModelForm):
 	"""docstring for LuasTanahYangDisetujuiForm"""

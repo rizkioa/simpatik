@@ -104,13 +104,14 @@ def get_nomor_pengajuan(kode_):
 		nomor += "/"+str(now.strftime("%Y"))
 	return nomor
 
-def get_nomor_kwitansi(kode_, unit_kerja):
+def get_nomor_kwitansi(kode_, nomor_urut, unit_kerja):
 	now = datetime.datetime.now()
 	nomor = ""
 	if kode_:
 		nomor += str(kode_)
-		nomor += "/"+unit_kerja
-		nomor += "/"+str(now.strftime("%d"))+str(now.strftime("%m"))
+		nomor += "/"+str(nomor_urut)
+		nomor += "/"+str(unit_kerja)
+		nomor += "/"+str(now.strftime("%-m"))
 		nomor += "/"+str(now.strftime("%Y"))
 	return nomor
 

@@ -16,7 +16,7 @@
 			font-family: Arial, Helvetica, sans-serif;
 		}
 		.table tr td, .table tr th{
-			font-size: 12px;
+			font-size: 11px;
 		}
 	</style>
 </head>
@@ -54,15 +54,17 @@
 			<td>:</td>
 			<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
 		</tr>
+		{% if detilpengajuan_obj.perusahaan.nama_perusahaan %}
 		<tr>
 			<td>Nama Perusahaan</td>
 			<td>:</td>
 			<td>{{detilpengajuan_obj.perusahaan.nama_perusahaan.upper}}</td>
 		</tr>
+		{% endif %}
 		<tr>
 			<td>Alamat Usaha/Perusahaan</td>
 			<td>:</td>
-			<td>{{ detilpengajuan_obj.lokasi_pasang.title }}, {{ detilpengajuan_obj.desa.lokasi_lengkap}}</td>
+			<td>{% if detilpengajuan_obj.lokasi %}{{detilpengajuan_obj.lokasi}}{% else %}{{ detilpengajuan_obj.lokasi_pasang.title }}{% endif %}, {{ detilpengajuan_obj.desa.lokasi_lengkap}}</td>
 		</tr>
 	</table>
 	<table width="100%" border="1" style="border-collapse: collapse;" class="table">
@@ -96,8 +98,6 @@
 			<br>a.n KEPALA DPMPTSP
 			<br>KABUPATEN KEDIRI
 			<br>KEPALA BIDANG PELAYANAN PERIZINAN
-			<br>
-			<br>
 			<br>
 			<br>
 			<br>
