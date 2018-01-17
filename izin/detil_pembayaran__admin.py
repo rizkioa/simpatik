@@ -6,6 +6,7 @@ from django.template import RequestContext, loader
 from django.http import HttpResponse
 from izin.utils import terbilang, get_model_detil
 from django.core.urlresolvers import reverse, resolve
+from django.utils.safestring import mark_safe
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
@@ -108,6 +109,16 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		os.remove(output_file_name)  # remove the locally created pdf file.
 		return response
 
+	def get_cetak(self, obj):
+		link_ = "#"
+		if obj.id:
+			link_ = reverse('admin:detil_pembayaran__cetak_skrd', kwargs={'obj_id': obj.id})
+		btn = mark_safe("""
+			<a href="%s" target="_blank" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Cetak SKRD</span> </a>
+			""" % link_ )
+		return btn
+	get_cetak.short_description = 'Cetak SKRD'
+
 	def get_pemohon(self, obj):
 		nama_pemohon = None
 		if obj.pengajuan_izin:
@@ -143,7 +154,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 			return ('kode', 'nomor_kwitansi', 'nama_pemohon', 'nama_perusahaan', 'jumlah_pembayaran', 'terbayar')
 		# if request.user.groups.filter(name='Kasir'):
 		else:
-			return ('kode', 'nomor_kwitansi', 'get_pemohon', 'jumlah_pembayaran', 'tanggal_dibuat', 'terbayar')
+			return ('kode', 'nomor_kwitansi', 'get_pemohon', 'jumlah_pembayaran', 'tanggal_dibuat', 'terbayar', 'get_cetak')
 
 	def get_queryset(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
