@@ -11,6 +11,8 @@ from operasional_klinik_admin import OperasionalKlinikAdmin
 
 
 admin.site.register(Apotek, ApotekAdmin)
+admin.site.register(Sarana)
+admin.site.register(JenisKlinik)
 
 class LaboratoriumAdmin(admin.ModelAdmin):
 	list_display = ('klasifikasi_laboratorium', 'nama_laboratorium', 'alamat_laboratorium', 'penanggung_jawab_teknis')

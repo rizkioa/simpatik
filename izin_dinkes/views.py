@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 
 from master.models import Negara, Kecamatan, Berkas
 from izin_dinkes.forms import ApotekForm, TokoObatForm, LaboratoriumForm, PeralatanLaboratoriumForm, OptikalForm, MendirikanKlinikForm, OperasionalKlinikForm, PenutupanApotekForm
-from izin_dinkes.models import Apotek, Sarana, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik, PenutupanApotek, PengunduranApoteker
+from izin_dinkes.models import Apotek, Sarana, TokoObat, Laboratorium, PeralatanLaboratorium, BangunanLaboratorium, Optikal, MendirikanKlinik, OperasionalKlinik, PenutupanApotek, PengunduranApoteker, JenisKlinik
 from izin.izin_forms import BerkasForm
 from izin.models import PengajuanIzin, JenisPemohon, JenisPermohonanIzin
 from accounts.utils import KETERANGAN_PEKERJAAN
@@ -243,11 +243,13 @@ def cetak_bukti_pendaftaran_izin_penutupan_apotek(request, id_pengajuan):
 def formulir_izin_mendirikan_klinik(request, extra_context={}):
 	negara = Negara.objects.all()
 	jenis_pemohon = JenisPemohon.objects.all()
+	jenis_klinik = JenisKlinik.objects.all()
 	extra_context.update({
 		'negara':negara,
 		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
 		'jenis_pemohon':jenis_pemohon,
 		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		'jenis_klinik': jenis_klinik,
 		})
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
@@ -286,11 +288,13 @@ def cetak_bukti_pendaftaran_izin_mendirikan_klinik(request, id_pengajuan):
 def formulir_izin_operasional_klinik(request, extra_context={}):
 	negara = Negara.objects.all()
 	jenis_pemohon = JenisPemohon.objects.all()
+	jenis_klinik = JenisKlinik.objects.all()
 	extra_context.update({
 		'negara':negara,
 		'kecamatan': Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35'),
 		'jenis_pemohon':jenis_pemohon,
 		'keterangan_pekerjaan': KETERANGAN_PEKERJAAN,
+		'jenis_klinik': jenis_klinik,
 		})
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '0' and request.COOKIES['id_pengajuan'] != '':
@@ -2037,15 +2041,22 @@ def save_izin_mendirikan_klinik(request):
 		if request.COOKIES['id_pengajuan'] != '':
 			if 'id_kelompok_izin' in request.COOKIES.keys():
 				try:
-					pengajuan_obj = MendirikanKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
-					form_mendirikan_klinik = MendirikanKlinikForm(request.POST, instance=pengajuan_obj)
-					if form_mendirikan_klinik.is_valid():
-						p = form_mendirikan_klinik.save(commit=False)
-						p.save()
-						data = {'success': True, 'pesan': 'Data Izin Mendirikan Klinik berhasil tersimpan.'}
+					jenis_klinik = request.POST.get('jenis_klinik')
+					if jenis_klinik and jenis_klinik is not None:
+						pengajuan_obj = MendirikanKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+
+						form_mendirikan_klinik = MendirikanKlinikForm(request.POST, instance=pengajuan_obj)
+						if form_mendirikan_klinik.is_valid():
+							p = form_mendirikan_klinik.save(commit=False)
+							p.save()
+							pengajuan_obj.jenis_klinik_id = jenis_klinik
+							pengajuan_obj.save()
+							data = {'success': True, 'pesan': 'Data Izin Mendirikan Klinik berhasil tersimpan.'}
+						else:
+							data = form_mendirikan_klinik.errors.as_json()
+							data = {'success': False, 'pesan': 'Data Izin Mendirikan Klinik gagal.', 'data': data}
 					else:
-						data = form_mendirikan_klinik.errors.as_json()
-						data = {'success': False, 'pesan': 'Data Izin Mendirikan Klinik gagal.', 'data': data}
+						data = {'success': False, 'pesan': 'Jenis Izin Kosong, Perlu Diisi.'}
 				except MendirikanKlinik.DoesNotExist:
 					pass
 	return HttpResponse(json.dumps(data))
@@ -2056,7 +2067,7 @@ def load_izin_mendirikan_klinik(request, id_pengajuan):
 	if id_pengajuan:
 		pengajuan_obj = MendirikanKlinik.objects.filter(id=id_pengajuan).last()
 		if pengajuan_obj:
-			data = pengajuan_obj.as_json()
+			data = pengajuan_obj.as_json__mendirikan_klinik()
 			response = {'success': True, 'pesan': 'Data Mendirikan Klinik berhasil tersimpan.', 'data': data}
 	return HttpResponse(json.dumps(response))
 
@@ -2312,16 +2323,20 @@ def save_izin_operasional_klinik(request):
 			print request.COOKIES['id_pengajuan']
 			if 'id_kelompok_izin' in request.COOKIES.keys():
 				try:
-					print 'asdasdasdasd'
-					pengajuan_obj = OperasionalKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
-					form_operasional_klinik = OperasionalKlinikForm(request.POST, instance=pengajuan_obj)
-					if form_operasional_klinik.is_valid():
-						p = form_operasional_klinik.save(commit=False)
-						p.save()
-						data = {'success': True, 'pesan': 'Data Izin Operasional Klinik berhasil tersimpan.'}
+					jenis_klinik = request.POST.get('jenis_klinik')
+					if jenis_klinik and jenis_klinik is not None:
+						jenis_klinik_obj = request.POST.get('jenis_klinik')
+						pengajuan_obj = OperasionalKlinik.objects.get(id=request.COOKIES['id_pengajuan'])
+						form_operasional_klinik = OperasionalKlinikForm(request.POST, instance=pengajuan_obj)
+						if form_operasional_klinik.is_valid():
+							p = form_operasional_klinik.save(commit=False)
+							p.save()
+							data = {'success': True, 'pesan': 'Data Izin Operasional Klinik berhasil tersimpan.'}
+						else:
+							data = form_operasional_klinik.errors.as_json__operasional_klinik()
+							data = {'success': False, 'pesan': 'Data Izin Operasional Klinik gagal.', 'data': data}
 					else:
-						data = form_operasional_klinik.errors.as_json__operasional_klinik()
-						data = {'success': False, 'pesan': 'Data Izin Operasional Klinik gagal.', 'data': data}
+						data = {'success': False, 'pesan': 'Jenis Izin Kosong, Perlu Diisi.'}
 				except OperasionalKlinik.DoesNotExist:
 					pass
 	return HttpResponse(json.dumps(data))

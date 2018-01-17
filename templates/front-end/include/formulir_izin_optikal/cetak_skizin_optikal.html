@@ -197,12 +197,12 @@
         <tr>
           <td class="tdnone" width="40%"><b>Membaca </b></td>
           <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="55%"><b>Surat permohonan lengkap dari Saudara YOYOK DWI HARIYANTO tanggal 16 Oktober 2017 perihal Permohonan Izin Penyelenggaraan Optikal;</b></td>
+          <td class="tdnone" width="55%"><b>Surat permohonan lengkap dari Saudara {{pengajuan.pemohon.nama_lengkap.upper}} tanggal {{pengajuan.created_at|date:"d F Y"}} perihal Permohonan Izin Penyelenggaraan Optikal;</b></td>
         </tr>
         <tr>
           <td class="tdnone" width="40%"><b>Menimbang   </b></td>
           <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="55%"><b>bahwa berdasarkan hasil pemeriksaan administrasi dan teknis terhadap Optik “PRIMAJAYA MINGGIRAN” telah memenuhi persyaratan yang telah ditetapkan;</b></td>
+          <td class="tdnone" width="55%"><b>bahwa berdasarkan hasil pemeriksaan administrasi dan teknis terhadap Optik "{{pengajuan.nama_optikal}}" telah memenuhi persyaratan yang telah ditetapkan;</b></td>
         </tr>
         <tr>
           <td class="tdnone" width="40%"><b></b></td>
@@ -250,25 +250,25 @@
           <td class="tdnone"><b></b></td>
           <td class="tdnone"></td>
           <td class="tdnone" width="10%">Nama Penanggung Jawab</td>
-          <td class="tdnone">YOYOK DWI HARIYANTO</td>
+          <td class="tdnone">{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})</td>
         </tr>
         <tr>
           <td class="tdnone"><b></b></td>
           <td class="tdnone"></td>
           <td class="tdnone" width="10%">Nama Optik </td>
-          <td class="tdnone">PRIMA JAYA MINGGIRAN</td>
+          <td class="tdnone">{{pengajuan.nama_optikal.upper}}</td>
         </tr>
         <tr>
           <td class="tdnone"><b></b></td>
           <td class="tdnone"></td>
           <td class="tdnone" width="10%">Alamat Optik </td>
-          <td class="tdnone">Jl. Raya Minggiran No. 40 Ds. Bangsongan Kec. Kayenkidul Kab. Kediri</td>
+          <td class="tdnone">{{pengajuan.alamat_usaha.upper}}</td>
         </tr>
         <tr>
           <td class="tdnone"><b></b></td>
           <td class="tdnone"></td>
           <td class="tdnone" width="10%">Nama Pemilik </td>
-          <td class="tdnone">YOYOK DWI HARIYANTO</td>
+          <td class="tdnone">{{pengajuan.nama_pemilik_perusahaan.upper}}</td>
         </tr>
         <tr>
           <td class="tdnone"><b></b></td>
@@ -301,39 +301,22 @@
       <br>
       <br>
       <div style="float: right; width: 50%">
-          <p style="font-size:17px; padding-left: 0%;" align="center">
-                Kediri,&nbsp;&nbsp;10 - 01 - 2018
-                
-                    <br>Kepala DPMPTSP
-                    <br>KABUPATEN KEDIRI
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <u><b>Drs. INDRA TARUNA</b></u><br>
-                    <span>Pembina Tk. I</span><br>
-                    <span> NIP. 19581129 198912 1 002 </span>
-            </p>
-        </div><!-- 
-        <div style="float: right; width: 50%">
-          <p style="font-size:17px; padding-left: 0%;" align="center">
-                {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
-                
-                {% if skizin.nama_pejabat %}
-                    <br>Kepala DPMPTSP
-                    <br>KABUPATEN KEDIRI
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <u><b>{{ skizin.nama_pejabat }}</b></u><br>
-                    <span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
-                    <span>NIP: {{skizin.nip_pejabat}}</span>
-                {% endif %}
-            </p>
-        </div> -->
+        <p style="font-size:17px; padding-left: 0%;" align="center">
+          {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
+
+          {% if skizin.nama_pejabat %}
+          <br>Kepala DPMPTSP
+          <br>KABUPATEN KEDIRI
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <u><b>{{ skizin.nama_pejabat }}</b></u><br>
+          <span>{% if skizin.keterangan %}{{ skizin.keterangan }}{% endif %}</span><br>
+          <span>NIP: {{skizin.nip_pejabat}}</span>
+          {% endif %}
+        </p>
   </page>
   <script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
   <script type="text/javascript">

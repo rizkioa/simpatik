@@ -197,22 +197,22 @@
         <tr>
           <td class="tdnone" width="40%"><b>Nama Apotek</b></td>
           <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="55%"><b>{{ pengajuan_obj.nama_apotek }}</b></td>
+          <td class="tdnone" width="55%"><b>{{ pengajuan.nama_apotek }}</b></td>
         </tr>
         <tr>
           <td class="tdnone"><b>Alamat Apotek</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone"><b>Jl. Raya Wonoasri No. 57 RT 002 RW 001 Ds. Wonoasri Kec. Grogol Kab. Kediri</b></td>
+          <td class="tdnone"><b>{{ pengajuan.alamat_apotek }}, {{pengajuan.desa.lokasi_lengkap}}</b></td>
         </tr>
         <tr>
           <td class="tdnone"><b>Telepon</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">082302258253</td>
+          <td class="tdnone">{{ pengajuan.no_telepon }}</td>
         </tr>
         <tr>
           <td class="tdnone"><b>Masa berlaku SIA sampai</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">9 Juli 2021</td>
+          <td class="tdnone">-</td>
         </tr>
         <tr>
           <td class="tdnone"><b>Kepada :</b></td>
@@ -222,37 +222,32 @@
         <tr>
           <td class="tdnone"><b>Nama Lengkap</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone"><b>MOCHAMMAD YENI WAHYUDI, S.Si., Apt</b></td>
-        </tr>
-        <tr>
-          <td class="tdnone"><b>Tempat, Tanggal Lahir</b></td>
-          <td class="tdnone">:</td>
-          <td class="tdnone">Kediri, 9 Juli 1973</td>
+          <td class="tdnone"><b>{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})</b></td>
         </tr>
         <tr>
           <td class="tdnone"><b>Alamat Rumah</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">Jl. Setya Budi Timur No. 25 RT 050 RW 003 Ds. Manisrejo Kec. Taman Kota Madiun</td>
+          <td class="tdnone">{{ pengajuan.pemohon.alamat }}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
         </tr>
         <tr>
           <td class="tdnone"><b>No. STRA</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">19730709/STRA-UNAIR/1999/16425</td>
+          <td class="tdnone">{{ pengajuan.no_stra }}</td>
         </tr>
         <tr>
           <td class="tdnone"><b>Masa berlaku STRA sampai</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">9 Juli 2021</td>
+          <td class="tdnone">-</td>
         </tr>
         <tr>
           <td class="tdnone"><b>No. SIPA</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">19730709/SIPA-35.06/2017/1165</td>
+          <td class="tdnone">{{ pengajuan.no_sipa }}</td>
         </tr>
         <tr>
           <td class="tdnone"><b>Masa berlaku SIPA sampai</b></td>
           <td class="tdnone">:</td>
-          <td class="tdnone">9 Juli 2021</td>
+          <td class="tdnone">-</td>
         </tr>
         <tr>
           <td colspan="3" align="justify">
@@ -267,22 +262,6 @@
       <br>
       <br>
       <br>
-      <div style="float: right; width: 50%">
-          <p style="font-size:17px; padding-left: 0%;" align="center">
-                Kediri,&nbsp;&nbsp;10 - 01 - 2018
-                
-                    <br>Kepala DPMPTSP
-                    <br>KABUPATEN KEDIRI
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <u><b>Drs. INDRA TARUNA</b></u><br>
-                    <span>Pembina Tk. I</span><br>
-                    <span> NIP. 19581129 198912 1 002 </span>
-            </p>
-        </div><!-- 
         <div style="float: right; width: 50%">
           <p style="font-size:17px; padding-left: 0%;" align="center">
                 {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
@@ -300,7 +279,7 @@
                     <span>NIP: {{skizin.nip_pejabat}}</span>
                 {% endif %}
             </p>
-        </div> -->
+        </div>
   </page>
   <script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
   <script type="text/javascript">

@@ -163,6 +163,8 @@ function load_konfirmasi_apotek(pengajuan_id){
 
         $('#nama_apotek_konfirmasi').text(apotek_json.nama_apotek)
         $('#alamat_apotek_konfirmasi').text(apotek_json.alamat_apotek)
+        $('#no_stra_konfirmasi').text(apotek_json.no_stra)
+        $('#no_sipa_konfirmasi').text(apotek_json.no_sipa)
         $('#no_telepon_konfirmasi').text(apotek_json.no_telepon)
         $('#sarana_konfirmasi').text(apotek_json.sarana)
         $('#nama_pemilik_sarana_konfirmasi').text(apotek_json.nama_pemilik_sarana)

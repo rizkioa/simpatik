@@ -218,14 +218,14 @@
 	        		<td style="vertical-align: top;padding-top: 1px;">Menimbang</td>
 	        		<td style="vertical-align: top;padding-top: 1px;">:</td>
 	        		<td style="vertical-align: top;padding-top: 1px;">a.</td>
-	        		<td>bahwa berdasarkan Surat Permohonan Lengkap dari Saudara KASYANTO, SKM., MM. Kes tanggal 9 November 2017 Perihal Permohonan Perpanjangan Izin Mendirikan Klinik Pratama Rawat Jalan SUMBER WARAS yang terletak di Jl. Papar Pare No. 661 RT 002 RW 008 Desa Tegowangi Kecamatan Plemahan Kabupaten Kediri;
+	        		<td>bahwa berdasarkan Surat Permohonan Lengkap dari Saudara {{pengajuan.pemohon.nama_lengkap.upper}} tanggal {{pengajuan.created_at|date:"d F Y"}} Perihal Permohonan Izin Mendirikan Klinik {{ pengajuan.jenis_klinik.jenis_klinik.upper }} {{pengajuan.nama_klinik}} yang terletak di {{pengajuan.alamat_klinik}}, {{pengajuan.desa.lokasi_lengkap}};
 	        		</td>
 	        	</tr>
 	        	<tr>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;">b.</td>
-	        		<td>bahwa berdasarkan Rekomendasi dari Kepala Dinas Kesehatan Nomor 445/4677/418.25/2017 tanggal 31 Oktober 2017 tentang Izin Mendirikan Klinik Pratama Rawat Jalan yang menyatakan bahwa berdasarkan peraturan perundang-undangan yang berlaku permohonan izin dapat ditindaklanjuti dan diterbitkan izinnya;</td>
+	        		<td>bahwa berdasarkan Rekomendasi dari Kepala Dinas Kesehatan Nomor 445/4677/418.25/2017 tanggal 31 Oktober 2017 tentang Izin Mendirikan Klinik {{ pengajuan.jenis_klinik.jenis_klinik.upper }} yang menyatakan bahwa berdasarkan peraturan perundang-undangan yang berlaku permohonan izin dapat ditindaklanjuti dan diterbitkan izinnya;</td>
 	        	</tr>
 	        	<tr>
 	        		<td></td>
@@ -376,23 +376,23 @@
 	        		<tr>
 	        			<td width="30" style="width: 105px;">KESATU</td>
 	        			<td width="10" >:</td>
-	        			<td colspan="3">Memberikan Izin Mendirikan Klinik kepada : <b>{{ pengajuan.jenis_papan_reklame|default_if_none:"" }}</b>:</td>
+	        			<td colspan="3">Memberikan Izin Mendirikan Klinik {{ pengajuan.jenis_klinik.jenis_klinik.upper }} kepada : <b>{{ pengajuan.nama_klinik|default_if_none:"" }}</b>:</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" align="left" style="padding-left: 120px;width: 470px;">Nama Pemohon</td>
 	        			<td width="10">:</td>
-	        			<td>KASYANTO, SKM., MM. Kes
+	        			<td>{{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}})
 	        			</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 121px;" align="left">Nama Usaha</td>
 	        			<td width="10">:</td>
-	        			<td>KLINIK PRATAMA RAWAT JALAN SUMBER WARAS</td>
+	        			<td>KLINIK {{ pengajuan.nama_klinik|default_if_none:"" }}</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 121px;" align="left">Alamat Usaha </td>
 	        			<td width="10">:</td>
-	        			<td>Jl. Papar Pare No. 661 RT 002 RW 008 Desa Tegowangi Kecamatan Plemahan Kabupaten Kediri</td>
+	        			<td>{{pengajuan.alamat_klinik}}, {{pengajuan.desa.lokasi_lengkap}}</td>
 	        		</tr>
 	        		<tr>
 	        			<td></td>
@@ -402,7 +402,7 @@
 	        		<tr>
 	        			<td></td>
 	        			<td></td>
-	        			<td>Membangun Klinik Pratama Rawat Jalan;</td>
+	        			<td>Membangun Klinik</td>
 	        		</tr>
 	        		<tr>
 	        			<td></td>
@@ -418,7 +418,7 @@
 	        		<tr>
 	        			<td></td>
 	        			<td></td>
-	        			<td>Menyelenggarakan Klinik Pratama Rawat Jalan sebelum mendapatkan Izin Operasional  Klinik;</td>
+	        			<td>Menyelenggarakan Klinik {{ pengajuan.jenis_klinik.jenis_klinik.upper }} sebelum mendapatkan Izin Operasional  Klinik;</td>
 	        		</tr>
 	        		<tr>
 	        			<td></td>

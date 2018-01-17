@@ -42,7 +42,7 @@ function verifikasi_kabid(id_detil_siup, aksi){
 						if(respon.success){
 							// send_rekomendasi_dinas()
 							toastr["success"](respon.pesan)
-							// window.location.href= "";
+							window.location.href= "";
 						}
 						else{
 								toastr["error"](respon.pesan)
