@@ -36,7 +36,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		terbilang_jumlah = ""
 		detilpengajuan_obj = None
 		if detil_pembayaran_obj.jumlah_pembayaran:
-			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(".")[0].replace(".", "")))
+			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(",")[0].replace(".", "")))
 		if detil_pembayaran_obj.pengajuan_izin:
 			if detil_pembayaran_obj.pengajuan_izin.kelompok_jenis_izin:
 				objects_ = get_model_detil(detil_pembayaran_obj.pengajuan_izin.kelompok_jenis_izin.kode)
