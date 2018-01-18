@@ -21,7 +21,7 @@ class Apotek(PengajuanIzin):
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
 	no_telepon = models.CharField(verbose_name='No Telepon', max_length=100, null=True, blank=True)
 	no_stra = models.CharField(verbose_name='No STRA', max_length=100, null=True, blank=True)
-	ni_sipa = models.CharField(verbose_name='No SIPA', max_length=100, null=True, blank=True)
+	no_sipa = models.CharField(verbose_name='No SIPA', max_length=100, null=True, blank=True)
 	sarana = models.ForeignKey(Sarana, verbose_name="Sarana", null=True, blank=True)
 	nama_pemilik_sarana = models.CharField(verbose_name='Nama Pemilik Sarana', max_length=100, null=True, blank=True)
 	alamat_sarana = models.CharField(verbose_name='Alamat Sarana', max_length=100, null=True, blank=True)
@@ -38,7 +38,7 @@ class Apotek(PengajuanIzin):
 		if self.sarana:
 			sarana = self.sarana.nama_sarana
 
-		return dict(nama_apotek=self.nama_apotek, alamat_apotek=alamat_lengkap, desa=desa, no_telepon=self.no_telepon, sarana=sarana, nama_pemilik_sarana=self.nama_pemilik_sarana, alamat_sarana=self.alamat_sarana, npwp=self.npwp)
+		return dict(nama_apotek=self.nama_apotek, no_stra=self.no_stra, no_sipa=self.no_sipa, alamat_apotek=alamat_lengkap, desa=desa, no_telepon=self.no_telepon, sarana=sarana, nama_pemilik_sarana=self.nama_pemilik_sarana, alamat_sarana=self.alamat_sarana, npwp=self.npwp)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_apotek)
@@ -205,8 +205,24 @@ class Optikal(PengajuanIzin):
 		verbose_name = 'Optikal'
 		verbose_name_plural = 'Optikal'
 
+class JenisKlinik(models.Model):
+	kode_jenis_klinik = models.CharField(verbose_name='Kode Jenis Klinik', max_length=256)
+	jenis_klinik = models.CharField(verbose_name='Jenis Klinik', max_length=256, null=True, blank=True)
+	keterangan = models.CharField(verbose_name='Keterangan', max_length=100, null=True, blank=True)
+
+	def as_json__jenis_klinik(self):
+		return dict(id=self.id, jenis_klinik=self.jenis_klinik, keterangan=self.keterangan)
+
+	def __unicode__(self):
+		return u'%s' % str(self.jenis_klinik)
+
+	class Meta:
+		verbose_name = 'Jenis Klinik'
+		verbose_name_plural = 'Jenis Klinik'
+
 class MendirikanKlinik(PengajuanIzin):
 	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan', null=True, blank=True)
+	jenis_klinik = models.ForeignKey(JenisKlinik, verbose_name='Jenis Klinik', null=True, blank=True)
 	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256, null=True, blank=True)
 	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
@@ -219,7 +235,10 @@ class MendirikanKlinik(PengajuanIzin):
 		desa = ''
 		if self.desa:
 			desa = self.desa.as_json()
-		return dict(id=self.id, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
+		jenis_klinik = ''
+		if self.jenis_klinik:
+			jenis_klinik = self.jenis_klinik.as_json__jenis_klinik()
+		return dict(id=self.id, jenis_klinik=jenis_klinik, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
 
 
 	def __unicode__(self):
@@ -231,6 +250,7 @@ class MendirikanKlinik(PengajuanIzin):
 
 class OperasionalKlinik(PengajuanIzin):
 	perusahaan = models.ForeignKey(Perusahaan, verbose_name='Perusahaan', null=True, blank=True)
+	jenis_klinik = models.ForeignKey(JenisKlinik, verbose_name='Jenis Klinik', null=True, blank=True)
 	nama_klinik = models.CharField(verbose_name='Nama Klinik', max_length=256, null=True, blank=True)
 	alamat_klinik = models.CharField(verbose_name='Alamat Klinik', max_length=256, null=True, blank=True)
 	desa = models.ForeignKey(Desa, verbose_name='Desa', null=True, blank=True)
@@ -243,7 +263,7 @@ class OperasionalKlinik(PengajuanIzin):
 		desa = ''
 		if self.desa:
 			desa = self.desa.as_json()
-		return dict(id=self.id, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
+		return dict(id=self.id, jenis_klinik=jenis_klinik, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
 
 	def __unicode__(self):
 		return u'%s' % str(self.nama_klinik)

@@ -29,6 +29,8 @@ def get_title_verifikasi(request, pengajuan_obj, skizin_obj):
 	if request.user.groups.filter(name="Selesai"):
 		if pengajuan_obj.status == 2 and skizin_obj.status == 2:
 			title_verifikasi = "Stample SK Izin"
+		elif pengajuan_obj.status == 1 and skizin_obj.status == 1:
+			title_verifikasi = "Pengajuan Selesai"
 	return title_verifikasi
 
 def send_email_html(emailto, subject, objects_, template_):

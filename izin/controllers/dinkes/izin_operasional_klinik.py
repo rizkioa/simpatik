@@ -9,7 +9,7 @@ from izin.models import DetilIzinParkirIsidentil, JenisPermohonanIzin, JenisPemo
 from master.models import Negara, Provinsi, Kabupaten, Kecamatan
 from accounts.models import NomorIdentitasPengguna
 
-from izin_dinkes.models import OperasionalKlinik
+from izin_dinkes.models import OperasionalKlinik, JenisKlinik
 
 def formulir_izin_operasional_klinik(request):
 	extra_context={}
@@ -22,7 +22,8 @@ def formulir_izin_operasional_klinik(request):
 		kabupaten = Kabupaten.objects.all()
 		kecamatan = Kecamatan.objects.all()
 		jenis_pemohon = JenisPemohon.objects.all()
-		extra_context.update({'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
+		jenis_klinik = JenisKlinik.objects.all()
+		extra_context.update({'jenis_klinik': jenis_klinik,'negara':negara, 'provinsi':provinsi, 'kabupaten':kabupaten, 'kecamatan':kecamatan, 'jenis_pemohon':jenis_pemohon})
 		if 'id_pengajuan' in request.COOKIES.keys():
 			if request.COOKIES.get('id_pengajuan', None) is not None and request.COOKIES.get('id_pengajuan') != '0':
 				try:

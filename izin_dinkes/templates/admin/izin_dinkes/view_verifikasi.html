@@ -172,7 +172,7 @@
 													<tr>
 														<td>Jenis Izin</td>
 														<td>:</td>
-														<td>{{ pengajuan.kelompok_jenis_izin }}</td>
+														<td>{{ pengajuan.kelompok_jenis_izin }} </td>
 													</tr>
 													<tr>
 														<td>Pemohon</td>
@@ -372,7 +372,7 @@
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a type="button" onclick="verifikasi_kabid(({{ pengajuan.id }})" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a type="button" onclick="verifikasi_kabid({{ pengajuan.id }})" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
@@ -403,7 +403,7 @@
 										</div>
 									</form>
 								</div>
-							{% elif status == 8 %}
+							{% elif pengajuan.status == 8 %}
 								<section class="tile">
 									<div class="tile-header">
 										<h1 class="custom-font"><strong>Survey Izin </strong></h1>
@@ -442,42 +442,11 @@
 									</div>
 									<div class="tile-body">
 										<div class="row">
-											<div class="col-md-6">
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_kondisi_lahan_usaha">Kondisi Lahan Usaha : {{detilbap.get_kondisi_lahan_usaha_display}}</label>
-
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_luas_tempat_usaha">Luas Tempat Usaha : {{detilbap.luas_tempat_usaha}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_jumlah_mesin">Jumlah Mesin : {{detilbap.jumlah_mesin}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_daya_kekuatan_mesin">Daya Kekuatan Mesin : {{detilbap.daya_kekuatan_mesin}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_jenis_bangunan">Jenis Bangunan : {{detilbap.get_jenis_bangunan_display}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_jenis_bangunan">Klasifikasi Jalan : {{detilbap.get_klasifikasi_jalan_display}}</label>
-											  </div>
-											</div>
-											<div class="col-md-6">
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_sebelah_utara">Sebelah Utara : {{detilbap.sebelah_utara}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_sebelah_timur">Sebelah Timur : {{ detilbap.sebelah_timur}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_sebelah_selatan">Sebelah Selatan : {{detilbap.sebelah_selatan}}</label>
-											  </div>
-											  <div class="form-group">
-												<label class="col-sm-12 control-label" for="id_sebelah_barat">Sebelah Barat : {{detilbap.sebelah_barat}}</label>
-											  </div>
-											</div>
-										  </div>
+										<div class="col-md-12">
+											<a type="button" onclick="" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Lihat Survey <i class="fa fa-arrow-right"></i></a>
+										</div>
+											
+										</div>
 									</div>
 								</section>
 								<section class="tile">
@@ -734,6 +703,17 @@
 												<a onclick="izin_selesai({{ pengajuan.id }}, '_submit_izin_selsai')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 											</div>
 										</div>
+									</div>
+								</div>
+							{% endif %}
+							{% if skizin.status == 1 %}
+								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
+									<div class="panel-body">
+										<center>
+											<h3>
+												SELESAI
+											</h3>
+										</center>
 									</div>
 								</div>
 							{% endif %}

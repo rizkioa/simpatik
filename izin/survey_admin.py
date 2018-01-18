@@ -199,7 +199,7 @@ class SurveyAdmin(admin.ModelAdmin):
 		if queryset_.exists():
 			queryset_ = queryset_.last()
 
-			extra_context.update({ 'qs_survey' : queryset_ })
+			extra_context.update({ 'qs' : queryset_ })
 			extra_context.update({ 'pengajuan' : queryset_.pengajuan })
 			extra_context.update({ 'pemohon' : queryset_.pengajuan.pemohon })
 
@@ -1280,12 +1280,13 @@ class SurveyAdmin(admin.ModelAdmin):
 				s.save()
 
 				pengajuan = s.pengajuan
+				pengajuan_obj = pengajuan
 				kode_kelompok_izin = pengajuan.kelompok_jenis_izin.kode
 				push_survey = None
 				if kode_kelompok_izin in ['IAP', 'ITO', 'ILB', 'IOP', 'IPA', 'IMK', 'IOK']:
 					# print pengajuan.id
 					push_survey = post_pengajuanizin_dinkes(pengajuan.id)
-
+					# send_email_html('ryanxxrizki@gmail.com', 'Surat Rekomendasi Memerlukan Survey ', pengajuan_obj, 'admin/email_template/send_email_rekom_dinkes.html')
 					data = {'success': True, 
 					'pesan': 'Survey dan Rekomendasi Dinkes berhasil dikirim',
 					}

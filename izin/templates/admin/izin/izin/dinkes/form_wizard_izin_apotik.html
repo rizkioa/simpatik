@@ -232,6 +232,8 @@
 	            		$('#id_nama_apotek').val(respon.data.nama_apotek)
 	            		$('#id_alamat_apotek').val(respon.data.alamat_apotek)
 	            		$('#id_no_telpon_apotek').val(respon.data.no_telepon)
+	            		$('#id_no_stra').val(respon.data.no_stra)
+	            		$('#id_no_sipa').val(respon.data.no_sipa)
 	            		if(respon.data.desa.id_kecamatan){
 	            			$('#id_kecamatan1').val(respon.data.desa.id_kecamatan).prop('selected',true).trigger("chosen:updated");
 	            			load_desa1(respon.data.desa.id_kecamatan)
@@ -341,69 +343,6 @@
 			$('#'+p+'pernyataan_pemilik').hide()
 			$('#'+p+'pernyataan_apoteker').hide()
 		});
-
-		function load_konfirmasi(id_pengajuan){
-			$('.tab-content').mLoading();
-			$.ajax({
-	            type: 'GET',
-	            url: __base_url__+'/layanan/izin-parkir/load-konfirmasi/ajax/'+id_pengajuan,
-	            success: function (data) {
-	            	respon = JSON.parse(data)
-	            	console.log(respon)
-	            	pengajuan_obj = respon.data.pengajuan_json
-	            	pemohon_obj = respon.data.pemohon_json
-	            	detil_obj = respon.data.detil_json
-	            	data_anggota_list = respon.data.data_anggota_json
-	            	if(respon.success == true){
-	            		$('#jenis_permohonan_konfirmasi').text(pengajuan_obj.jenis_permohonan)
-	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
-	            		$('#jenis_pemohon_konfirmasi').text(pemohon_obj.jenis_pemohon)
-	            		$('#nomor_ktp_konfirmasi').text(pemohon_obj.username)
-	            		$('#nama_lengkap_konfirmasi').text(pemohon_obj.nama_lengkap)
-	            		$('#alamat_konfirmasi').text(pemohon_obj.alamat_lengkap)
-	            		$('#telephone_konfirmasi').text(pemohon_obj.telephone)
-	            		$('#hp_konfirmasi').text(pemohon_obj.hp)
-	            		$('#email_konfirmasi').text(pemohon_obj.email)
-	            		$('#kewarganegaraan_konfirmasi').text(pemohon_obj.kewarganegaraan)
-	            		$('#pekerjaan_konfirmasi').text(pemohon_obj.pekerjaan)
-	            		// izin parkir
-	            		$('#jenis_penitipan_konfirmasi').text(detil_obj.jenis_penitipan)
-	            		$('#ukuran_penitipan_konfirmasi').text('lebar : '+detil_obj.lebar_penitipan+' meter, panjang : '+detil_obj.panjang_penitipan+' meter')
-	            		$('#alamat_penitipan_konfirmasi').text(detil_obj.alamat_lengkap)
-	            		$('#lama_penitipan_konfirmasi').text('tanggal : '+detil_obj.tanggal_pelaksanaan_parkir + ', ' +detil_obj.waktu_mulai+' sampai dengan '+detil_obj.waktu_berakhir)
-	            		$('#jumlah_anggota_penitipan_konfirmasi').text(detil_obj.jumlah_anggota_parkir+' orang')
-	            		$('#sebelah_utara_konfirmasi').text(detil_obj.batas_utara)
-	            		$('#sebelah_timur_konfirmasi').text(detil_obj.batas_timur)
-	            		$('#sebelah_selatan_konfirmasi').text(detil_obj.batas_selatan)
-	            		$('#sebelah_barat_konfirmasi').text(detil_obj.batas_barat)
-	            		for (var i = 0; i < data_anggota_list.length; i++){
-	            			no = data_anggota_list.length
-							if (data_anggota_list.length > 1){
-								no = data_anggota_list.length-i
-							}
-	            			row = '<tr>'
-	            			row += '<td>'+no+'</td>'
-	            			row += '<td>'+data_anggota_list[i].nomor_ktp+'</td>'
-	            			row += '<td>'+data_anggota_list[i].nama_lengkap+'</td>'
-	            			row += '<td>'+data_anggota_list[i].tanggal_lahir+'</td>'
-	            			row += '<td>'+data_anggota_list[i].alamat+'</td>'
-	            			row += '<td>'+data_anggota_list[i].telephone+'</td>'
-	            			row += '<td>'+data_anggota_list[i].keterangan+'</td>'
-	            			$('#table_data_anggota_konfirmasi > tbody').prepend(row)
-	            		}
-
-	            		if (pengajuan_obj.nama_kuasa && pengajuan_obj.nama_kuasa != ''){
-	            			table_kuasa = '<tr><td width="100%"><h4>Identitas Kuasa</h4></td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Nama Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Nomor Identitas Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			table_kuasa += '<tr><td width="25%">Telephone Kuasa</td><td width="5%">:</td><td width="70%">'+pengajuan_obj.nama_kuasa+'</td></tr>'
-	            			$('#table_kuasa_konfirmasi').prepend(table)
-	            		}
-	            		$('.tab-content').mLoading('hide');
-	            	}
-	            }
-	        })
-		}
 
 function make_disabled(elem_, dis_){
     if (dis_ == true){

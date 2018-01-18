@@ -212,7 +212,7 @@
         <tr>
           <td class="tdnone" width="40%"><b></b></td>
           <td class="tdnone" width="5%"></td>
-          <td class="tdnone" width="55%"><b>Surat permohonan lengkap dari saudara PUTRI HANDAYANI tanggal 3 Nopember 2017 perihal Permohonan Izin Toko Obat;</b></td>
+          <td class="tdnone" width="55%"><b>Surat permohonan lengkap dari saudara {{pengajuan.pemohon.nama_lengkap.upper}} tanggal {{pengajuan.created_at|date:"d F Y"}} perihal Permohonan Izin Toko Obat;</b></td>
         </tr>
         <tr>
           <td class="tdnone" width="40%"><b></b></td>
@@ -230,43 +230,43 @@
           <td class="tdnone" width="35%"><b>Kepada </b></td>
           <td class="tdnone" width="5%">:</td>
           <td class="tdnone" width="30%">Nama Tempat Usaha </td>
-          <td class="tdnone" width="30%">Toko Obat “SEHAT PUTRA“ </td>
+          <td class="tdnone" width="30%">{{pengajuan.nama_toko_obat}}</td>
         </tr>
         <tr>
           <td class="tdnone"></td>
           <td class="tdnone"></td>
           <td class="tdnone">Alamat Tempat Usaha</td>
-          <td class="tdnone">Jl. Joyoboyo No. 113 Ds. Kweden Kec. Ngasem Kab. Kediri</td>
+          <td class="tdnone">{{ pengajuan.alamat_ttk }}</td>
         </tr>
         <tr>
           <td class="tdnone"></td>
           <td class="tdnone"></td>
           <td class="tdnone">Nama TTK Penanggung Jawab</td>
-          <td class="tdnone">HELMI YULIANTI, AMd. Farm</td>
+          <td class="tdnone">{{ pengajuan.nama_ttk_penanggung_jawab }}</td>
         </tr>
         <tr>
           <td class="tdnone"></td>
           <td class="tdnone"></td>
           <td class="tdnone">Nomor SIPTTK</td>
-          <td class="tdnone">19810108/SIPTTK-35.06/2017/2016</td>
+          <td class="tdnone">{{ pengajuan.no_sipttk }}</td>
         </tr>
         <tr>
           <td class="tdnone"></td>
           <td class="tdnone"></td>
           <td class="tdnone">Alamat TTK Penanggung Jawab</td>
-          <td class="tdnone"> Ds. Kepuhrejo RT 002 RW 001 Kec. Gampengrejo Kab. Kediri</td>
+          <td class="tdnone"> {{ pengajuan.no_sipttk }}</td>
         </tr>
         <tr>
           <td class="tdnone"></td>
           <td class="tdnone"></td>
           <td class="tdnone">Nama Pemilik</td>
-          <td class="tdnone"> PUTRI HANDAYANI  </td>
+          <td class="tdnone"> {{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}}) </td>
         </tr>
         <tr>
           <td class="tdnone"></td>
           <td class="tdnone"></td>
           <td class="tdnone">Alamat Pemilik</td>
-          <td class="tdnone"> Perum Tugurejo Indah Gg. Parkit F 22 RT 002 RW 007 Ds. Tugurejo Kec. Ngasem Kab. Kediri  </td>
+          <td class="tdnone"> {{ pengajuan.pemohon.alamat }}, {{pengajuan.pemohon.desa.lokasi_lengkap}}  </td>
         </tr>
 
       </table>
@@ -274,28 +274,12 @@
       <p>Dengan Ketentuan sebagai Berikut :</p>
         <ul>
         	<li>Penyelenggaraan Toko Obat harus selalu mematuhi ketentuan peraturan perundang-undangan yang berlaku;</li>
-        	<li>Izin Toko Obat ini berlaku sampai dengan tanggal 8 Januari 2021 berdasarkan masa berlaku SIPTTK Nomor 19810108/SIPTTK-35.06/2017/2016 dan 1 (satu) bulan sebelum masa berlaku berakhir segera mengajukan kembali ke DPMPTSP Kabupaten Kediri;</li>
+        	<li>Izin Toko Obat ini berlaku sampai dengan tanggal --- berdasarkan masa berlaku SIPTTK Nomor {{ pengajuan.no_sipttk }} dan 1 (satu) bulan sebelum masa berlaku berakhir segera mengajukan kembali ke DPMPTSP Kabupaten Kediri;</li>
         	<li>Surat Izin Toko Obat ini dapat dicabut apabila selama penyelenggaraan terdapat pelanggaran terhadap peraturan perundang-undangan yang berlaku dan akan ditinjau kembali apabila dikemudian hari ternyata terdapat kekeliruan.</li>
         </ul>
       <br>
       <br>
-      <br>
-      <div style="float: right; width: 50%">
-          <p style="font-size:17px; padding-left: 0%;" align="center">
-                Kediri,&nbsp;&nbsp;10 - 01 - 2018
-                
-                    <br>Kepala DPMPTSP
-                    <br>KABUPATEN KEDIRI
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <u><b>Drs. INDRA TARUNA</b></u><br>
-                    <span>Pembina Tk. I</span><br>
-                    <span> NIP. 19581129 198912 1 002 </span>
-            </p>
-        </div><!-- 
+      <br> 
         <div style="float: right; width: 50%">
           <p style="font-size:17px; padding-left: 0%;" align="center">
                 {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
@@ -313,7 +297,7 @@
                     <span>NIP: {{skizin.nip_pejabat}}</span>
                 {% endif %}
             </p>
-        </div> -->
+        </div>
   </page>
   <script src="{% static 'scripts/js/QRCode/jquery-qrcode-0.14.0.js' %}"></script>
   <script type="text/javascript">

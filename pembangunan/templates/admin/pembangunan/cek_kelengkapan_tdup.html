@@ -1,4 +1,4 @@
-{% extends "admin/base_site.html" %}
+{% extends "admin/base_site.html" %}  
 {% load i18n admin_urls widgets access admin_static %}
 
 {% block title %}Cek Kelengkapan{% endblock %}
@@ -103,6 +103,7 @@
 {% endblock %}
 
 {% block content %}
+{% csrf_token %}
 <div class="row">
   <div class="col-md-12">
     <!-- tile -->
@@ -692,4 +693,80 @@
   <script src="{% static "scripts/js/vendor/jquery/jquery.form.js" %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
   <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+      {% with total=qs.survey_iujk.all.count%}
+      {% if total > 0 %}
+      {% else %}
+      $('.simpan').attr('data-loading-text', 'Menuggu...')
+      $('.simpan').button('loading');
+      {% endif %}
+      {% endwith %}
+    })
+
+    function tambah_tim(btn_) {
+      // body...
+      var $btn = $(btn_)
+      $btn.attr('data-loading-text', 'Loading...')
+      $btn.button('loading');
+      $('.bs-sinkron-modal-lg').modal();
+      $('#myModalSinkronLabel').html($btn.html());
+      $('.bs-sinkron-modal-lg').on('hidden.bs.modal', function () {
+        $btn.button('reset')
+        location.href = window.location
+      })
+    }
+
+    var options = { 
+        success:   showResponse,
+        url     :  '{% url 'admin:simpan_ajax' %}',     // override for form's 'action' attribute 
+        type    :  'post',        // 'get' or 'post', override for form's 'method' attribute 
+    };
+
+    function save_anggota(){
+        $('#anggotatim').ajaxSubmit(options); 
+    }
+
+    function showResponse(responseText, statusText, xhr, $form)  { 
+        response = $.parseJSON(responseText)
+        // console.log(response)
+        if(response.success){
+          toastr["success"](response.pesan)
+          $('#id_koordinator').prop('checked', false)
+        }else{
+          var key = Object.keys(response); // Mencari key json
+          var str = key[0]
+          
+          toastr["error"](key[0]+' '+response[key[0]][0]['message'])
+        }
+    }
+        function lakukan_survey(btn_){
+
+          var $btn = $(btn_)
+          $btn.attr('data-loading-text', '<i class="fa fa-spinner fa-spin"></i> Proses...')
+          $btn.button('loading')
+          $.ajax({
+            method: 'POST',
+            data: {csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val()},
+            url: "{% url 'admin:lakukan_survey' qs.id %}",
+            success: function(response){
+              respon = $.parseJSON(response)
+              if(respon.success){
+                toastr["success"](respon.pesan)
+                location.reload();
+                // console.log($('#'+respon.id).remove());
+              }else if(respon.sending){
+                toastr["info"](respon.pesan)
+              }else if(respon.delivered){
+                toastr["success"](respon.pesan)
+              }else{
+                toastr["error"](respon.pesan)
+              }
+            },error: function(response){
+              toast_server_error()
+            }
+          });
+        }
+  </script>
+
 {% endblock %}

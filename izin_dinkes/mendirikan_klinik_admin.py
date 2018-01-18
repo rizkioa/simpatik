@@ -69,7 +69,7 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			'skizin' : skizin_obj,
 			'title' : "Cetak SK Izin Mendirikan Klinik "+pengajuan_obj.get_no_skizin()
 			})
-		return render(request, "front-end/include/formulir_izin_toko_obat/cetak_skizin.html", extra_context)
+		return render(request, "front-end/include/formulir_izin_mendirikan_klinik/cetak_skizin_klinik.html", extra_context)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url

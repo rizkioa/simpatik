@@ -8,6 +8,20 @@
 	</div>
 
 	<div class="form-group">
+		<label for="jenis_klinik" class="col-sm-2 control-label"><strong>Jenis Klinik</strong></label>
+		<div class="col-sm-6">
+			<select class="form-control chosen-select mb-10" name="jenis_klinik" id="id_jenis_klinik">
+			<option value>-- Pilih Jenis Klinik --</option>
+	        {% if jenis_klinik %}
+	        {% for j in jenis_klinik %}
+	        <option value="{{ j.id }}">{{ j.jenis_klinik }}</option>
+	        {% endfor %}
+	        {% endif %}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
 		<label for="toko_obat" class="col-sm-2 control-label"><strong>Nama Klinik</strong></label>
 		<div class="col-sm-6">
 			<input type="text" name="nama_klinik" class="form-control" required="" id="id_nama_klinik">
