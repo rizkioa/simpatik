@@ -187,7 +187,7 @@
               <span style="font-size: 23px;">Surat Izin Apotek (SIA)</span><br>
               <span style="font-size: 18px;">Nomor : {% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}TIDAK ADA{% endif %}</span><br>
               </b>
-              <p>Yang bertanda tangan di bawah ini, Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri berdasarkan rekomendasi Izin Apotek dari Kepala Dinas Kesehatan Kabupaten Kediri Nomor 442/15901/418.25/2017 tanggal 17 November 2017 memberikan Izin Apotek : </p>
+              <p>Yang bertanda tangan di bawah ini, Kepala Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri berdasarkan rekomendasi Izin Apotek dari Kepala Dinas Kesehatan Kabupaten Kediri Nomor <span id="no_surat_dinkes"></span> tanggal {{pengajuan.created_at|date:"d F Y"}} memberikan Izin Apotek : </p>
       </div>
             </center>
           </div>
@@ -289,6 +289,12 @@
     </script>
 
   <script type="text/javascript">
+    pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
+    if (pengajuan_dinkes.success == true){
+      $('#no_surat_dinkes').text(pengajuan_dinkes.data[0].no_surat)
+    }else{
+      $('#no_surat_dinkes').text('Belum Diterbitkan')
+    }
     function Exit() {
         var x=confirm('Are You sure want to exit:');
         if(x) window.close();

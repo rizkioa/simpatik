@@ -409,6 +409,11 @@
 										<h1 class="custom-font"><strong>Survey Izin </strong></h1>
 									</div>
 									<div class="tile-body">
+										<div class="form-group">
+											<label class="col-sm-2 control-label">Deadline Survey</label>
+											<div class="col-sm-4"> {{ survey.deadline_survey }}
+										</div>
+										</div>
 										<table id="" class="table table-striped table-bordered table-hover table-condensed">
 											<thead>
 											  <tr>
@@ -427,26 +432,6 @@
 											  {% endfor %}
 											</tbody>
 										</table>
-									</div>
-								</section>
-								<section class="tile">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="col-sm-2 control-label">Deadline Survey</label>
-											<div class="col-sm-4"> {{ survey.deadline_survey }}
-											</div>
-										</div>
-									</div>
-									<div class="tile-header">
-										<h1 class="custom-font"><strong>Laporan Survey </strong></h1>
-									</div>
-									<div class="tile-body">
-										<div class="row">
-										<div class="col-md-12">
-											<a type="button" onclick="" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Lihat Survey <i class="fa fa-arrow-right"></i></a>
-										</div>
-											
-										</div>
 									</div>
 								</section>
 								<section class="tile">
@@ -474,6 +459,35 @@
 											  {% endfor %}
 											</tbody>
 										</table>
+									</div>
+								</section>
+
+								<section class="tile">
+									<div class="tile-header">
+										<center>
+											<h1 class="custom-font"><strong>Laporan Survey </strong></h1>
+										</center>
+										
+									</div>
+									<div class="tile-body">
+										<div class="row">
+											<div class="col-md-12">
+												<center>
+													<a onclick="openPopupCenter('{{ url_view_survey }}','Preview Survey Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-arrow-right"></i> <span>Lihat Laporan Survey</span></a><br>
+												</center>
+												<div class="panel panel-darkgray" style="background-color: #525348  !important;color: white;border: 0;border-radius: 6px; padding-bottom: 10px;">
+													<div class="panel-body">
+														<center>
+															<h3>
+																No. Rekomendasi Dinkes : <span id="no_rekom_dinkes"></span>
+															</h3>
+														</center>
+													</div>
+												</div>
+												
+											</div>
+											
+										</div>
 									</div>
 								</section>
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
@@ -776,6 +790,14 @@
 					FormatCurrency(this)
 				});
 			});
+			pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
+			console.log(pengajuan_dinkes)
+			if (pengajuan_dinkes.success == true){
+				$('#no_rekom_dinkes').text(pengajuan_dinkes.data[0].no_surat)
+			}else{
+				$('#no_rekom_dinkes').text('Belum Diterbitkan')
+			}
+			
 		});
 
     function send_rekomendasi_dinas(){

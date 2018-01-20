@@ -225,7 +225,7 @@
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;"></td>
 	        		<td style="vertical-align: top;padding-top: 1px;">b.</td>
-	        		<td>bahwa berdasarkan Rekomendasi dari Kepala Dinas Kesehatan Nomor 445/4677/418.25/2017 tanggal 31 Oktober 2017 tentang Izin Mendirikan Klinik {{ pengajuan.jenis_klinik.jenis_klinik.upper }} yang menyatakan bahwa berdasarkan peraturan perundang-undangan yang berlaku permohonan izin dapat ditindaklanjuti dan diterbitkan izinnya;</td>
+	        		<td>bahwa berdasarkan Rekomendasi dari Kepala Dinas Kesehatan Nomor <span id="no_surat_dinkes"></span> tanggal <span id="tgl_surat_dinkes"></span> tentang Izin Mendirikan Klinik {{ pengajuan.jenis_klinik.jenis_klinik.upper }} yang menyatakan bahwa berdasarkan peraturan perundang-undangan yang berlaku permohonan izin dapat ditindaklanjuti dan diterbitkan izinnya;</td>
 	        	</tr>
 	        	<tr>
 	        		<td></td>
@@ -599,6 +599,13 @@
 	<script src="{% static 'scripts/js/QRCode/jquery.qrcode.js' %}"></script>
 	<script src="{% static 'scripts/js/QRCode/qrcode.js' %}"></script>
 	<script type="text/javascript">
+		if (pengajuan_dinkes.success == true){
+	      $('#tgl_surat_dinkes').text(pengajuan_dinkes.data[0].tanggal_surat)
+	      $('#no_surat_dinkes').text(pengajuan_dinkes.data[0].no_surat)
+	    }else{
+	      $('#no_surat_dinkes').text('Belum Diterbitkan')
+	      $('#tgl_surat_dinkes').text('Belum Diterbitkan')
+	    }
 		function Exit() {
 		    var x=confirm('Are You sure want to exit:');
 		    if(x) window.close();

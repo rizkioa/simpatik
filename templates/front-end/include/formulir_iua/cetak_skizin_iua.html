@@ -184,102 +184,66 @@
           <div class="col-8">
             <center>
               <b>
-              <span style="font-size: 23px;">SURAT IZIN TOKO OBAT</span><br>
+              <span style="font-size: 23px;">Surat Izin Usaha Angkutan (IUA)</span><br>
               <span style="font-size: 18px;">Nomor : {% if pengajuan.no_izin %}{{pengajuan.no_izin}}{% else %}TIDAK ADA{% endif %}</span><br>
               </b>
-              <h3><b>KEPALA DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU, </b></h3>
-      </div>
+           </div>
             </center>
           </div>
+          <p style="text-align: justify;">Berdasarkan Undang Undang No 22 Tahun 2009 tentang lalu lintas dan Angkutan Jalan Pasal 138 ayat (3), Peraturan Pemerintah Nomor 74 Tahun 2014 tentang Angkutan Jalan Pasal 79 ayat (2) dan berdasarkan Permohnan Izin Usaha Angkutan Barang dan Orang Dengan endaraan Bermotor Umum dari Direktur {{ pengajuan.perusahaan.nama_perusahaan.upper }} Sdr. {{pengajuan.pemohon.nama_lengkap.upper}} tanggal {{pengajuan.created_at|date:"d F Y"}}</p>
           
       <br>
-       <table width="100%" class="skizin" border="2">
+      <table width="100%" class="skizin">
         <tr>
-          <td class="tdnone" width="40%"><b>Dasar  </b></td>
+          <td class="tdnone" width="40%"><b>Nama Perusahaan</b></td>
           <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="55%"><b>Undang – Undang Nomor 36 Tahun 2009 tentang Kesehatan;</b></td>
+          <td class="tdnone" width="55%">{{ pengajuan.perusahaan.nama_perusahaan.upper }}</td>
         </tr>
         <tr>
-          <td class="tdnone" width="40%"><b></b></td>
-          <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="55%"><b>Keputusan Menteri Kesehatan Republik Indonesia Nomor 1331/ MENKES/ SK/ X/ 2002 tentang Perubahan atas Peraturan Menteri Kesehatan Nomor 167/ KAB/ B.VIII/1972 tentang Pedagang Eceran Obat;</b></td>
+          <td class="tdnone"><b>Alamat Perusahaan</b></td>
+          <td class="tdnone">:</td>
+          <td class="tdnone">{{ pengajuan.perusahaan.alamat_perusahaan }}, {{pengajuan.perusahaan.desa.lokasi_lengkap}}</td>
         </tr>
         <tr>
-          <td class="tdnone" width="40%"><b></b></td>
-          <td class="tdnone" width="5%"></td>
-          <td class="tdnone" width="55%"><b>Peraturan Bupati Kediri Nomor 1 Tahun 2017 tentang Penyelenggaraan Pelayanan Terpadu Satu Pintu pada Dinas Penanaman Modal dan Pelayanan Terpadu Satu Pintu Kabupaten Kediri;</b></td>
+          <td class="tdnone"><b>Direktur PT</b></td>
+          <td class="tdnone">:</td>
+          <td class="tdnone">{{pengajuan.pemohon.nama_lengkap.upper}}</td>
         </tr>
         <tr>
-          <td class="tdnone" width="40%"><b></b></td>
-          <td class="tdnone" width="5%"></td>
-          <td class="tdnone" width="55%"><b>Surat permohonan lengkap dari saudara {{pengajuan.pemohon.nama_lengkap.upper}} tanggal {{pengajuan.created_at|date:"d F Y"}} perihal Permohonan Izin Toko Obat;</b></td>
+          <td class="tdnone"><b>Alamat Direktur</b></td>
+          <td class="tdnone">:</td>
+          <td class="tdnone">{{pengajuan.pemohon.alamat.upper}}, {{pengajuan.pemohon.desa.lokasi_lengkap}}</td>
         </tr>
         <tr>
-          <td class="tdnone" width="40%"><b></b></td>
-          <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="55%"><b>surat rekomendasi dari Kepala Dinas Kesehatan Kabupaten Kediri Nomor <span id="no_surat_dinkes"></span> tanggal <span id="tgl_surat_dinkes"></span> tentang Izin Toko Obat.</b></td>
+          <td class="tdnone"><b>NPWP Perusahaan</b></td>
+          <td class="tdnone">:</td>
+          <td class="tdnone">{{pengajuan.perusahaan.npwp}}</td>
+        </tr>
+        <tr>
+          <td class="tdnone"><b>DATA KENDARAAN</b></td>
+          <td class="tdnone">:</td>
+          <td class="tdnone"><b>TERLAMPIR</b></td>
         </tr>
         
-       </table>
-       <center>
-         <h5>MENGIZINKAN  :</h5>
-       </center>
-       
-      <table width="100%" class="skizin" border="2">
-        <tr>
-          <td class="tdnone" width="35%"><b>Kepada </b></td>
-          <td class="tdnone" width="5%">:</td>
-          <td class="tdnone" width="30%">Nama Tempat Usaha </td>
-          <td class="tdnone" width="30%">{{pengajuan.nama_toko_obat}}</td>
+          <td colspan="3" align="justify">
+            <b>Kewajiban Pemegang Izin Usaha Angkutan ---BARANG--- adalah sebagai berikut :</b>
+            <ol>
+              <li>Usaha harus dimulai selambat-lambatnya dalam jangka waktu 6 bulan sejak Izin Usaha diterbitkan</li>
+              <li>Pemegang Izin Usaha harus menyediakan tempat penyimpanan kendaraan (pool kendaraan)</li>
+              <li>Letak garasi tersebut dalam ad 1 batas garis depan</li>
+              <li>Pemegang Izin Usaha harus ment=yidiakan alat pemadam kebakaran yg setiap waktu bisa digunakan jika timbul kebakaran</li>
+              <li>Pemegang Izin Usaha harus selalu memelihara kebersihan dalam garasi kendaraan</li>
+              <li>Mematuhi Peraturan Perundang Udangan yg berlaku yang berkaitan dengan bidang usaha angkutan</li>
+              <li>Melakukan Uji kendaraan secara berkala</li>
+              <li>Surat Keputusan ini berlaku 2 tahun sejak tanggal ditetapkan</li>
+            </ol>
+            Pejabat yang memberikan izin berhak menijau kembali, mengubah atau mencabut izin sebelum waktunya berakhir, jika keterangan yang diberikan oleh pemohon kemudian ternyata tidak benar.
+          </td>
         </tr>
-        <tr>
-          <td class="tdnone"></td>
-          <td class="tdnone"></td>
-          <td class="tdnone">Alamat Tempat Usaha</td>
-          <td class="tdnone">{{ pengajuan.alamat_ttk }}</td>
-        </tr>
-        <tr>
-          <td class="tdnone"></td>
-          <td class="tdnone"></td>
-          <td class="tdnone">Nama TTK Penanggung Jawab</td>
-          <td class="tdnone">{{ pengajuan.nama_ttk_penanggung_jawab }}</td>
-        </tr>
-        <tr>
-          <td class="tdnone"></td>
-          <td class="tdnone"></td>
-          <td class="tdnone">Nomor SIPTTK</td>
-          <td class="tdnone">{{ pengajuan.no_sipttk }}</td>
-        </tr>
-        <tr>
-          <td class="tdnone"></td>
-          <td class="tdnone"></td>
-          <td class="tdnone">Alamat TTK Penanggung Jawab</td>
-          <td class="tdnone"> {{ pengajuan.no_sipttk }}</td>
-        </tr>
-        <tr>
-          <td class="tdnone"></td>
-          <td class="tdnone"></td>
-          <td class="tdnone">Nama Pemilik</td>
-          <td class="tdnone"> {{pengajuan.pemohon.nama_lengkap.upper}} ({{pengajuan.pemohon.jenis_pemohon.jenis_pemohon.upper|default_if_none:'-'}}) </td>
-        </tr>
-        <tr>
-          <td class="tdnone"></td>
-          <td class="tdnone"></td>
-          <td class="tdnone">Alamat Pemilik</td>
-          <td class="tdnone"> {{ pengajuan.pemohon.alamat }}, {{pengajuan.pemohon.desa.lokasi_lengkap}}  </td>
-        </tr>
-
       </table>
       <br>
-      <p>Dengan Ketentuan sebagai Berikut :</p>
-        <ul>
-        	<li>Penyelenggaraan Toko Obat harus selalu mematuhi ketentuan peraturan perundang-undangan yang berlaku;</li>
-        	<li>Izin Toko Obat ini berlaku sampai dengan tanggal --- berdasarkan masa berlaku SIPTTK Nomor {{ pengajuan.no_sipttk }} dan 1 (satu) bulan sebelum masa berlaku berakhir segera mengajukan kembali ke DPMPTSP Kabupaten Kediri;</li>
-        	<li>Surat Izin Toko Obat ini dapat dicabut apabila selama penyelenggaraan terdapat pelanggaran terhadap peraturan perundang-undangan yang berlaku dan akan ditinjau kembali apabila dikemudian hari ternyata terdapat kekeliruan.</li>
-        </ul>
       <br>
       <br>
-      <br> 
         <div style="float: right; width: 50%">
           <p style="font-size:17px; padding-left: 0%;" align="center">
                 {% if skizin %}Kediri,&nbsp;&nbsp;{{ pengajuan.verified_at|date:"d-m-Y" }}{% endif %}
@@ -307,13 +271,6 @@
     </script>
 
   <script type="text/javascript">
-  if (pengajuan_dinkes.success == true){
-      $('#tgl_surat_dinkes').text(pengajuan_dinkes.data[0].tanggal_surat)
-      $('#no_surat_dinkes').text(pengajuan_dinkes.data[0].no_surat)
-    }else{
-      $('#no_surat_dinkes').text('Belum Diterbitkan')
-      $('#tgl_surat_dinkes').text('Belum Diterbitkan')
-    }
     function Exit() {
         var x=confirm('Are You sure want to exit:');
         if(x) window.close();
