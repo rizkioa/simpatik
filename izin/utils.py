@@ -15,6 +15,8 @@ STATUS_HAK_TANAH = (
 	('Hak Guna', 'Hak Guna'),
 	('Milik', 'Milik'),
 	('Yang dikuasai', 'Yang dikuasai'),
+	('Tanah Wakaf', 'Tanah Wakaf'),
+	('Hak Pakai', 'Hak Pakai'),
 )
 
 KEPEMILIKAN_TANAH = (
