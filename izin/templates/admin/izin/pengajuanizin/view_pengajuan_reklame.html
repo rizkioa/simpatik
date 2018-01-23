@@ -266,7 +266,7 @@
 		<div class="col-lg-12">
 			<section class="tile">
 				<div class="tile-header dvd dvd-btm">
-					<h1 class="custom-font" align="center"> Validasi Persyaratan & Pembayaran Retribusi</h1>
+					<h1 class="custom-font" align="center"> Validasi Persyaratan</h1>
 					<ul class="controls">
 						<li>
 							<a role="button" tabindex="0" class="tile-toggle">
@@ -292,46 +292,6 @@
 						{% endif %}
 						<br>
 						{% if status == 6 %}
-							<div class="panel panel-darkgray" style="background-color: #d9534f !important;border: 0;border-radius: 6px;">
-								<div class="panel-body">
-									<form method="POST" id="id_form_pembayaran" name="form_pembayaran" role="form" class="form-horizontal" action="{% url 'detil_pembayaran_save' %}" data-parsley-validate novalidate>
-									{% csrf_token %}
-											<input type="hidden" id="id_pengajuan_izin" name="pengajuan_izin" value="{{ pengajuan.id }}">
-
-											<div class="form-group">
-											<label for="input01" class="col-sm-2 label-color">Tanggal Bayar</label>
-												<div class="col-sm-2">
-													<div class="input-group datepicker w-360 tanggal-awal"> 
-														<input type="text" class="form-control" required="" data-date-format="DD-MM-YYYY" id="id_tanggal_bayar" name="tanggal_bayar" style="width: 170px;">
-														<span class="input-group-btn" style="padding-right: 195px; vertical-align: top;">
-														<a class="btn btn-default" style="height:34px;" type="button"><i class="fa fa-calendar"></i></a>
-														</span>
-													</div>
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label for="input01" class="col-sm-2 label-color">Nomor Kwitansi </label>
-												<div class="col-sm-5">
-													<input type="text" class="form-control" id="id_nomor_kwitansi" name="nomor_kwitansi" style="width: 246px;">
-												</div>
-											</div>
-
-											<div class="form-group">
-												<label for="input01" class="col-sm-2 label-color">Jumlah Dibayar </label>
-												<div class="col-sm-6">
-													<div class="input-group">
-														<span class="input-group-addon" style="width:34px;">Rp.</span>
-														{% if pengajuan.jenis_bangunan.kode == 'BK1' or pengajuan.jenis_bangunan.kode == 'BK23' %}
-															<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran" value="{{pengajuan.total_biaya|floatformat:-2|formatrupiah}}">
-														{% else %}
-															<input type="text" class="form-control total-bayar" id="id_jumlah_pembayaran" name="jumlah_pembayaran">
-														{% endif %}
-													</div>
-												</div>
-											</div>
-									</form>
-								</div>
 								<section class="tile bg-greensea">
 									<div class="tile-body">
 									  <label class="checkbox checkbox-custom-alt">
@@ -350,7 +310,6 @@
 										</div>
 									</div>
 								{% endif %}
-							</div>
 	
 						{% endif %}
 					</div>
@@ -359,8 +318,8 @@
 						<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 							<div class="row">
 								<div class="col-md-12" align="right">
-									<a type="button" class="btn btn-darkgray mb-10">Tidak Dibayar</a>
-									<button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></button>
+									<!-- <button onclick="pembayaran_add(this)" type="button" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></button> -->
+									<a type="button" onclick="verifikasi_operator({{ pengajuan.id }}, '_submit_operator')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 								</div>
 							</div>
 						</div>
