@@ -207,7 +207,7 @@
         <tr>
           <td class="tdnone" width="40%"><b></b></td>
           <td class="tdnone" width="5%"></td>
-          <td class="tdnone" width="55%"><b>Rekomendasi dari Kepala Dinas Kesehatan Kabupaten Kediri Nomor 445/13792/418.25/2017 tanggal 14 Oktober 2017 tentang Izin Penyelenggaraan Optikal;</b></td>
+          <td class="tdnone" width="55%"><b>Rekomendasi dari Kepala Dinas Kesehatan Kabupaten Kediri Nomor <span id="no_surat_dinkes"></span> tanggal <span id="tgl_surat_dinkes"></span> tentang Izin Penyelenggaraan Optikal;</b></td>
         </tr>
         <tr>
           <td class="tdnone" width="40%"><b></b></td>
@@ -326,6 +326,14 @@
     </script>
 
   <script type="text/javascript">
+    pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
+    if (pengajuan_dinkes.success == true){
+      $('#no_surat_dinkes').text(pengajuan_dinkes.data[0].no_surat)
+      $('#tgl_surat_dinkes').text(pengajuan_dinkes.data[0].tanggal_surat)
+    }else{
+      $('#no_surat_dinkes').text('Belum Diterbitkan')
+      $('#tgl_surat_dinkes').text('Belum Diterbitkan')
+    }
     function Exit() {
         var x=confirm('Are You sure want to exit:');
         if(x) window.close();

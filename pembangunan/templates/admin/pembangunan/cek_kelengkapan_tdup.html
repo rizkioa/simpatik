@@ -187,7 +187,7 @@
                     </div>
                 </div>
             </div>
-            {% if pengajuan.perusahaan %}
+            {% if pengajuan.kelompok_jenis_izin.kode != "IMK" and pengajuan.kelompok_jenis_izin.kode != "IOK" and pengajuan.perusahaan %}
             <div class="panel panel-default">
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
@@ -200,7 +200,7 @@
                     <div class="panel-body">
                         <p>NPWP Perusahaan : {{perusahaan.npwp}}</p>
                         <p>Nama Perusahaan : {{perusahaan.nama_perusahaan}}</p>
-                        <p>Alamat Perusahaan : {{perusahaan|get_alamat_lengkap:"perusahaan"}}</p>
+                        <p>Alamat Perusahaan : {{perusahaan|default_if_none:""|get_alamat_lengkap:"perusahaan"}}</p>
                         <p>Kode POS : {{perusahaan.kode_pos}}</p>
                         <p>No. Telp : {{perusahaan.telepon}}</p>
                         <p>No. Fax : {{perusahaan.fax}}</p>
@@ -284,7 +284,7 @@
                 <div class="panel-heading" role="tab" id="headingThree">
                     <h4 class="panel-title">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            KLinik (klik untuk melihat)
+                            Klinik (klik untuk melihat)
                         </a>
                     </h4>
                 </div>

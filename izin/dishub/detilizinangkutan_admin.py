@@ -1,6 +1,6 @@
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse, resolve
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.contrib import admin, messages
 from django.http import HttpResponse
@@ -37,6 +37,7 @@ class DetilIUAAdmin(admin.ModelAdmin):
 		extra_context.update({'has_permission': True })
 		extra_context.update({'title': 'Proses Pengajuan Izin Usaha Angkutan (IUA)'})
 		pengajuan_ = get_object_or_404(DetilIUA, id=id_pengajuan)
+		# skizin_obj = pengajuan_.skizin_set.last()
 		if pengajuan_:
 			kendaraan_list = pengajuan_.kendaraan_set.all()
 			kendaraan_count = kendaraan_list.count()
@@ -44,7 +45,7 @@ class DetilIUAAdmin(admin.ModelAdmin):
 			if riwayat_:
 				extra_context.update({'riwayat': riwayat_ })
 			skizin_ = pengajuan_.skizin_set.last()
-			extra_context.update({'pengajuan':pengajuan_, 'pemohon': pengajuan_.pemohon, 'perusahaan':pengajuan_.perusahaan, 'status': pengajuan_.status, 'kendaraan_list': kendaraan_list, 'kendaraan_count':kendaraan_count, 'skizin':skizin_})
+			extra_context.update({'pengajuan':pengajuan_, 'pemohon': pengajuan_.pemohon, 'perusahaan':pengajuan_.perusahaan, 'status': pengajuan_.status, 'kendaraan_list': kendaraan_list, 'kendaraan_count':kendaraan_count, 'skizin':skizin_, 'url_cetak': reverse("admin:iua__cetak_skizin", kwargs={'id_pengajuan': pengajuan_.id}),})
 		template = loader.get_template("admin/izin/pengajuanizin/dishub/view_izin_angkutan.html")
 		ec = RequestContext(request, extra_context)
 		return HttpResponse(template.render(ec))
@@ -52,7 +53,6 @@ class DetilIUAAdmin(admin.ModelAdmin):
 	def cetak_surat_pertimbangan(self, request, id_pengajuan):
 		extra_context = {}
 		response = holder()
-		print "coba"
 		if id_pengajuan:
 			try:
 				try:
@@ -163,6 +163,17 @@ class DetilIUAAdmin(admin.ModelAdmin):
 			raise Http404
 		return response
 
+	def cetak_skizin(self, request, id_pengajuan):
+		extra_context = {}
+		pengajuan_obj = get_object_or_404(DetilIUA, id=id_pengajuan)
+		skizin_obj = pengajuan_obj.skizin_set.last()
+		extra_context.update({
+			'pengajuan' : pengajuan_obj,
+			'skizin' : skizin_obj,
+			'title' : "Cetak SK Izin IUA "+pengajuan_obj.get_no_skizin()
+			})
+		return render(request, "front-end/include/formulir_iua/cetak_skizin_iua.html", extra_context)
+
 	def get_urls(self):
 		from django.conf.urls import patterns, url
 		urls = super(DetilIUAAdmin, self).get_urls()
@@ -170,7 +181,9 @@ class DetilIUAAdmin(admin.ModelAdmin):
 			url(r'^view-pengajuan-iua/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_iua), name='view_pangajuan_iua'),
 			url(r'^cetak-surat-pertimbangan-iua/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_surat_pertimbangan), name='cetak_surat_pertimbangan_iua'),
 			url(r'^cetak-surat-pertimbangan-iua-pdf/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_surat_pertimbangan_pdf), name='cetak_surat_pertimbangan_iua_pdf'),
+			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='iua__cetak_skizin'),
 			)
+			
 		return my_urls + urls
 
 admin.site.register(DetilIUA, DetilIUAAdmin)

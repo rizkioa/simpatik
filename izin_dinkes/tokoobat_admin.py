@@ -55,7 +55,9 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
-			'perusahaan': perusahaan_obj
+			'perusahaan': perusahaan_obj,
+			'url_view_survey': reverse("admin:tokoobat__view_survey", kwargs={'id_pengajuan': pengajuan_obj.id}),
+			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			})
 		return render(request, "admin/izin_dinkes/tokoobat/view_verifikasi.html", extra_context)
 
@@ -63,12 +65,38 @@ class TokoObatAdmin(admin.ModelAdmin):
 		extra_context = {}
 		pengajuan_obj = get_object_or_404(TokoObat, id=id_pengajuan)
 		skizin_obj = pengajuan_obj.skizin_set.last()
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+id_pengajuan+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+
 		extra_context.update({
 			'pengajuan' : pengajuan_obj,
 			'skizin' : skizin_obj,
+			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			'title' : "Cetak SK Izin Toko Obat "+pengajuan_obj.get_no_skizin()
 			})
 		return render(request, "front-end/include/formulir_izin_toko_obat/cetak_skizin.html", extra_context)
+
+	def view_survey(self, request, id_pengajuan):
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/ITO/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
+			extra_context = {
+				'is_popup': 'popup',
+				'id_pengajuan': id_pengajuan,
+				'title': 'View Hasil Survey Optikal',
+				'url_server_dinkes': url_get_dinkes,
+				'key': key_get,
+				'data': perincian_json.text,
+				}
+
+		return render(request, "admin/izin_dinkes/view_survey.html", extra_context)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -76,5 +104,6 @@ class TokoObatAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tokoobat), name='tokoobat__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='tokoobat__cetak_skizin'),
+			url(r'^view-rekomendasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
 			)
 		return my_urls + urls

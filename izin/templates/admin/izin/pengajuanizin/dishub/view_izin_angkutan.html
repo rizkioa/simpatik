@@ -260,12 +260,12 @@
 
 					{% endif %}
 
-					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+					{% if skizin.status == 6 or skizin.status == 4 or skizin.status == 9 or skizin.status == 10 %}
+						<a onclick="openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 
-					{% if skizin_status == 1  or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+					{% if skizin.status == 1  or skizin.status == 2 %}
+						<a onclick="openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
 					{% endif %}
 
 				</center>
@@ -519,14 +519,14 @@
 								{% if skizin == None %}
 									<a onclick="generate_skizin({{ pengajuan.id }}, '_submit_buat_skizin')" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Buat Draft SK</span></a><br>
 								{% endif %}
-								{% if skizin and skizin.status == 11 or skizin_status == 13 %}
+								{% if skizin and skizin.status == 11 or skizin.status == 13 %}
 									<a onclick="openPopupCenter('{% url 'admin:cetak_tdp_pt_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 									<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 									<a onclick="generate_skizin({{ pengajuan.id }}, '_submit_generate_skizin')" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
 								{% endif %}
 							</center>
 						</div>
-						{% if skizin_status == 6 %}
+						{% if skizin.status == 6 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
@@ -562,7 +562,7 @@
 					</div>
 					<div id="minimize_5">
 						<div class="tile-body">
-							{% if skizin_status == 6 %}
+							{% if skizin.status == 6 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
@@ -591,7 +591,7 @@
 								</div>
 							{% endif %}
 
-							{% if skizin_status == 4 %}
+							{% if skizin.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -603,7 +603,7 @@
 								</div>
 							{% endif %}
 
-							{% if skizin_status == 6 %}
+							{% if skizin.status == 6 %}
 
 								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
 									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST">
@@ -656,7 +656,7 @@
 					</div>
 					<div id="minimize_6">
 						<div class="tile-body">
-							{% if skizin_status == 12 %}
+							{% if skizin.status == 12 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -667,7 +667,7 @@
 									</div>
 								</div>
 							{% endif %}
-							{% if skizin_status == 13 %}
+							{% if skizin.status == 13 %}
 								<div class="panel panel-darkgray" style="background-color: #ec971f !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -678,7 +678,7 @@
 									</div>
 								</div>
 							{% endif %}
-							{% if skizin_status == 4 %}
+							{% if skizin.status == 4 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<h4>MEMVERIFIKASI DRAF IZIN</h4>
@@ -689,7 +689,7 @@
 									</div>
 									<div class="panel-footer">
 										<center>
-											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_kadin_to_bupati')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
+											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_kadin')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
 										</center>
 									</div>
 								</div>
@@ -753,84 +753,6 @@
 	{% endif %}
 {% endif %}
 
-{% if request.user|has_group:'Bupati' or request.user.is_superuser %}
-	{% if skizin != None and pengajuan.status == 12 %}
-		<div class="row">
-			<div class="col-lg-12">
-				<section class="tile">
-					<div class="tile-header dvd dvd-btm">
-						<h1 class="custom-font" align="center"> Verifikasi Draf Izin Bupati</h1>
-						<ul class="controls">
-							<li>
-								<a role="button" tabindex="0" class="tile-toggle">
-									<span class="minimize"><i class="fa fa-angle-down"></i></span>
-									<span class="expand"><i class="fa fa-angle-up"></i></span>
-								</a>
-							</li>
-						</ul>
-					</div>
-					<div id="minimize_6">
-						<div class="tile-body">
-							{% if skizin_status == 9 %}
-								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
-									<div class="panel-body">
-										<center>
-											<h3>
-												TERVERIFIKASI
-											</h3>
-										</center>
-									</div>
-								</div>
-							{% endif %}
-							{% if skizin_status == 12 %}
-								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
-									<div class="panel-body">
-										<h4>MEMVERIFIKASI DRAF IZIN</h4>
-										<br>
-										<label class="checkbox checkbox-custom-alt">
-											<input id="centang_skizin_kadin" type="checkbox" ><i></i> Anda telah memeriksa dan setuju bahwa izin bisa diteruskan untuk dicetak.
-										</label>
-									</div>
-									<div class="panel-footer">
-										<center>
-											<a onclick="verifikasi_skizin_kadin({{ pengajuan.id }}, '_submit_skizin_bupati')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
-										</center>
-									</div>
-								</div>
-
-								<div class="panel panel-darkgray" style="background-color: #d9534f !important;color: white;border: 0;border-radius: 6px;">
-									<form enctype="multipart/form-data" action="{% url 'admin:penolakanizin' %}" data-parsley-validate novalidate id="form_penolakan_verifikasi_kabid" method="POST">
-									{% csrf_token %}
-										<input type="hidden" name="id_pengajuan" value="{{ pengajuan.id }}">
-										<div class="panel-body">
-											<h4>MENOLAK PENGAJUAN</h4>
-											<br>
-											<div class="form-group">
-												<label for="input01">Alasan </label>
-												<textarea name="keterangan" class="form-control alasan" rows="5" required="" data-parsley-trigger="change"></textarea>
-											</div>
-											<div class="form-group">
-												<label for="input01">Lampiran </label>
-												<input name="berkas" type="file" class="filestyle" data-buttonText="Browse" data-iconName="fa fa-inbox" data-parsley-trigger="change">
-											</div>
-										</div>
-
-										<div class="panel-footer">
-											<center>
-												<button type="submit" class="btn btn-success mb-10 button-tolak"><i class="icon-close"></i> Tolak</button>
-											</center>
-										</div>
-									</form>
-								</div>
-							{% endif %}
-						</div>
-					</div>
-				</section>
-			</div>
-		</div>
-	{% endif %}
-{% endif %}
-
 {% if request.user|has_group:'Penomoran' or request.user.is_superuser %}
 	<div class="row">
 		<div class="col-lg-12">
@@ -848,7 +770,7 @@
 				</div>
 				<div id="minimize_7">
 					<div class="tile-body">
-						{% if skizin_status == 9 %}
+						{% if skizin.status == 9 %}
 						<form class="form-inline">
 							<center>
 								<br>
@@ -859,7 +781,7 @@
 							</center>
 						</form>
 						{% endif %}
-						{% if skizin_status == 10 %}
+						{% if skizin.status == 10 %}
 							<!-- <a role="button" class="btn btn-lightred">
 							<span><h3>No. Izin : {{ pengajuan.no_izin }}</h3></span>
 							</a> -->
@@ -884,7 +806,7 @@
 							</div>
 						{% endif %}
 					</div>
-					{% if skizin_status == 9 %}
+					{% if skizin.status == 9 %}
 					<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 						<center>
 							<a onclick="penomoran_izin_tdp({{ pengajuan.id }}, '_submit_penomoran_tdp')" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c mb-10">Teruskan <i class="fa fa-arrow-right"></i></a>
@@ -914,12 +836,12 @@
 				</div>
 				<div id="minimize_8">
 					<div class="tile-body">
-						{% if skizin_status == 10 %}
+						{% if skizin.status == 10 %}
 							<center>
 								<a onclick="cetak_izin({{ pengajuan.id }}, '_submit_cetak_izin')" style="width: 30%" class="btn btn-orange btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Cetak Izin</span></a><br>
 							</center>
 						{% endif %}
-						{% if skizin_status == 2 %}
+						{% if skizin.status == 2 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<center>
@@ -955,7 +877,7 @@
 				<div id="minimize_8">
 					<form class="form-inline">
 						<div class="tile-body">
-							{% if skizin_status == 2 %}
+							{% if skizin.status == 2 %}
 							<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 								<div class="panel-body">
 									<br>
@@ -965,7 +887,7 @@
 								</div>
 							</div>
 							{% endif %}
-							{% if skizin_status == 1 %}
+							{% if skizin.status == 1 %}
 								<div class="panel panel-darkgray" style="background-color: #16a085 !important;color: white;border: 0;border-radius: 6px;">
 									<div class="panel-body">
 										<center>
@@ -977,7 +899,7 @@
 								</div>
 							{% endif %}
 						</div>
-						{% if skizin_status == 2 %}
+						{% if skizin.status == 2 %}
 						<div class="tile-footer text-right bg-tr-black lter dvd dvd-top" style="padding-bottom: 0px;">
 							<div class="row">
 								<div class="col-md-12" align="center">
@@ -1052,7 +974,7 @@
 				success: function(response) { // on success..
 					respon = $.parseJSON(response)
 					if(respon.success){
-						openPopupCenter('/admin/izin/detiltdp/cetak-tdp-pt-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+						openPopupCenter('{{ url_cetak }}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
 						toastr["success"](respon.pesan);
 						window.location.href= "";
 

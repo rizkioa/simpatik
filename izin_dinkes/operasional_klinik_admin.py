@@ -56,7 +56,9 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 			'url_cetak': reverse("admin:operasional_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_iok"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
-			'perusahaan': perusahaan_obj
+			'perusahaan': perusahaan_obj,
+			'url_view_survey': reverse("admin:operasional_klinik__view_survey", kwargs={'id_pengajuan': pengajuan_obj.id}),
+			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			})
 		return render(request, "admin/izin_dinkes/operasional_klinik/view_verifikasi.html", extra_context)
 
@@ -64,12 +66,38 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 		extra_context = {}
 		pengajuan_obj = get_object_or_404(OperasionalKlinik, id=id_pengajuan)
 		skizin_obj = pengajuan_obj.skizin_set.last()
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+id_pengajuan+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+
 		extra_context.update({
 			'pengajuan' : pengajuan_obj,
 			'skizin' : skizin_obj,
+			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			'title' : "Cetak SK Izin Operasional Klinik "+pengajuan_obj.get_no_skizin()
 			})
 		return render(request, "front-end/include/formulir_izin_oprasional_klinik/cetak_skizin_operasional_klinik.html", extra_context)
+
+	def view_survey(self, request, id_pengajuan):
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IOK/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
+			extra_context = {
+				'is_popup': 'popup',
+				'id_pengajuan': id_pengajuan,
+				'title': 'View Hasil Survey Operasional Klinik',
+				'url_server_dinkes': url_get_dinkes,
+				'key': key_get,
+				'data': perincian_json.text,
+				}
+
+		return render(request, "admin/izin_dinkes/view_survey.html", extra_context)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -77,5 +105,7 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_operasional_klinik), name='operasional_klinik__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='operasional_klinik__cetak_skizin'),
+			url(r'^view-rekomendasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='operasional_klinik__view_survey'),
+			
 			)
 		return my_urls + urls

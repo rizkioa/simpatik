@@ -40,6 +40,12 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 		except Survey.DoesNotExist:
 			s = ""
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+id_pengajuan+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
 			
 		extra_context.update({
 			'has_permission': True,
@@ -55,8 +61,10 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
 			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_imk"),
+			'url_view_survey': reverse("admin:mendirikan_klinik__view_survey", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
-			'perusahaan': perusahaan_obj
+			'perusahaan': perusahaan_obj,
+			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			})
 		return render(request, "admin/izin_dinkes/mendirikan_klinik/view_verifikasi.html", extra_context)
 
@@ -64,12 +72,38 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 		extra_context = {}
 		pengajuan_obj = get_object_or_404(MendirikanKlinik, id=id_pengajuan)
 		skizin_obj = pengajuan_obj.skizin_set.last()
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+id_pengajuan+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+
 		extra_context.update({
 			'pengajuan' : pengajuan_obj,
 			'skizin' : skizin_obj,
+			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			'title' : "Cetak SK Izin Mendirikan Klinik "+pengajuan_obj.get_no_skizin()
 			})
 		return render(request, "front-end/include/formulir_izin_mendirikan_klinik/cetak_skizin_klinik.html", extra_context)
+
+	def view_survey(self, request, id_pengajuan):
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IMK/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
+			extra_context = {
+				'is_popup': 'popup',
+				'id_pengajuan': id_pengajuan,
+				'title': 'View Hasil Survey Mendirikan Klinik',
+				'url_server_dinkes': url_get_dinkes,
+				'key': key_get,
+				'data': perincian_json.text,
+				}
+
+		return render(request, "admin/izin_dinkes/view_survey.html", extra_context)
 
 	def get_urls(self):
 		from django.conf.urls import patterns, url
@@ -77,5 +111,6 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_mendirikan_klinik), name='mendirikan_klinik__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='mendirikan_klinik__cetak_skizin'),
+			url(r'^view-rekomendasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='mendirikan_klinik__view_survey'),
 			)
 		return my_urls + urls
