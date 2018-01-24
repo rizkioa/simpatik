@@ -41,11 +41,14 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 		except Survey.DoesNotExist:
 			s = ""
 
+		no_pengajuan_encode = pengajuan_obj.no_pengajuan.encode('base64')
+		no_pengajuan_encode = no_pengajuan_encode[:-1]
+
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+id_pengajuan+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
 			
 		extra_context.update({
 			'has_permission': True,
@@ -59,25 +62,27 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			'survey': s,
 			'banyak': len(MendirikanKlinik.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
-			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
+			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, , 'no_pengajuan': no_pengajuan_encodes}),
 			'url_form': reverse("admin:izin_proses_imk"),
-			'url_view_survey': reverse("admin:mendirikan_klinik__view_survey", kwargs={'id_pengajuan': pengajuan_obj.id}),
+			'url_view_survey': reverse("admin:mendirikan_klinik__view_survey", kwargs={'id_pengajuan': no_pengajuan_encode}),
 			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
 			'perusahaan': perusahaan_obj,
 			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			})
 		return render(request, "admin/izin_dinkes/mendirikan_klinik/view_verifikasi.html", extra_context)
 
-	def cetak_skizin(self, request, id_pengajuan):
+	def cetak_skizin(self, request, id_pengajuan, no_pengajuan):
 		extra_context = {}
 		pengajuan_obj = get_object_or_404(MendirikanKlinik, id=id_pengajuan)
 		skizin_obj = pengajuan_obj.skizin_set.last()
+
+		no_pengajuan_ = (no_pengajuan).decode('base64')
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+id_pengajuan+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
 
 		extra_context.update({
 			'pengajuan' : pengajuan_obj,
@@ -87,7 +92,7 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			})
 		return render(request, "front-end/include/formulir_izin_mendirikan_klinik/cetak_skizin_klinik.html", extra_context)
 
-	def view_survey(self, request, id_pengajuan):
+	def view_survey(self, request, no_pengajuan):
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
@@ -96,7 +101,7 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IMK/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
 			extra_context = {
 				'is_popup': 'popup',
-				'id_pengajuan': id_pengajuan,
+				'no_pengajuan_': no_pengajuan_,
 				'title': 'View Hasil Survey Mendirikan Klinik',
 				'url_server_dinkes': url_get_dinkes,
 				'key': key_get,
@@ -111,6 +116,6 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_mendirikan_klinik), name='mendirikan_klinik__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='mendirikan_klinik__cetak_skizin'),
-			url(r'^view-rekomendasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='mendirikan_klinik__view_survey'),
+			url(r'^view-rekomendasi/(?P<no_pengajuan_>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='mendirikan_klinik__view_survey'),
 			)
 		return my_urls + urls

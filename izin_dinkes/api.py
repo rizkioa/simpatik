@@ -41,11 +41,12 @@ class ApotekResource(CORSModelResource):
 	sarana = fields.CharField(attribute="sarana__nama_sarana", null=True, blank=True)
 	class Meta:
 		queryset = Apotek.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 class SaranaResource(CORSModelResource):

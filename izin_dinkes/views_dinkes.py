@@ -31,8 +31,7 @@ def post_pengajuanizin_dinkes(obj_id):
 			elif kelompok_izin == 'IMK' or kelompok_izin == 'IOK':
 				perusahaan = detilizin_obj.nama_klinik
 
-			data = {'id_pengajuan_simpatik':pengajuan_obj.id,
-					'no_pengajuan': pengajuan_obj.no_pengajuan,
+			data = {'no_pengajuan': pengajuan_obj.no_pengajuan,
 					'perusahaan':perusahaan,
 					'pemohon':pengajuan_obj.pemohon.nama_lengkap,
 					'jenis_pengajuan':pengajuan_obj.kelompok_jenis_izin.kode,

@@ -39,6 +39,16 @@ class TokoObatAdmin(admin.ModelAdmin):
 			extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 		except Survey.DoesNotExist:
 			s = ""
+
+		no_pengajuan_encode = pengajuan_obj.no_pengajuan.encode('base64')
+		no_pengajuan_encode = no_pengajuan_encode[:-1]
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+			
 		# print API_URL_DINKES
 		extra_context.update({
 			'has_permission': True,
@@ -52,19 +62,21 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'survey': s,
 			'banyak': len(TokoObat.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
-			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
+			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encode}),
 			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
 			'perusahaan': perusahaan_obj,
-			'url_view_survey': reverse("admin:tokoobat__view_survey", kwargs={'id_pengajuan': pengajuan_obj.id}),
+			'url_view_survey': reverse("admin:tokoobat__view_survey", kwargs={'id_pengajuan': no_pengajuan_encode}),
 			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			})
 		return render(request, "admin/izin_dinkes/tokoobat/view_verifikasi.html", extra_context)
 
-	def cetak_skizin(self, request, id_pengajuan):
+	def cetak_skizin(self, request, id_pengajuan, no_pengajuan):
 		extra_context = {}
 		pengajuan_obj = get_object_or_404(TokoObat, id=id_pengajuan)
 		skizin_obj = pengajuan_obj.skizin_set.last()
+
+		no_pengajuan_ = (no_pengajuan).decode('base64')s
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
@@ -80,7 +92,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 			})
 		return render(request, "front-end/include/formulir_izin_toko_obat/cetak_skizin.html", extra_context)
 
-	def view_survey(self, request, id_pengajuan):
+	def view_survey(self, request, no_pengajuan):
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
@@ -89,7 +101,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/ITO/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
 			extra_context = {
 				'is_popup': 'popup',
-				'id_pengajuan': id_pengajuan,
+				'no_pengajuan': no_pengajuan,
 				'title': 'View Hasil Survey Optikal',
 				'url_server_dinkes': url_get_dinkes,
 				'key': key_get,
@@ -104,6 +116,6 @@ class TokoObatAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tokoobat), name='tokoobat__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='tokoobat__cetak_skizin'),
-			url(r'^view-rekomendasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
+			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
 			)
 		return my_urls + urls
