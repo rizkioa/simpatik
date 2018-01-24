@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+import requests
 
 class OptikalAdmin(admin.ModelAdmin):
 
@@ -66,7 +67,7 @@ class OptikalAdmin(admin.ModelAdmin):
 			'url_form': reverse("admin:izin_proses_izin_optikal"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
 			'perusahaan': perusahaan_obj,
-			'url_view_survey': reverse("admin:optikal__view_survey", kwargs={'id_pengajuan': no_pengajuan_encode}),
+			'url_view_survey': reverse("admin:optikal__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
 			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
 			})
 		return render(request, "admin/izin_dinkes/optikal/view_verifikasi.html", extra_context)
@@ -115,7 +116,7 @@ class OptikalAdmin(admin.ModelAdmin):
 		urls = super(OptikalAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_optikal), name='optikal__view_verifikasi'),
-			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='optikal__cetak_skizin'),
+			url(r'^cetak/(?P<id_pengajuan>[0-9]+)/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.cetak_skizin), name='optikal__cetak_skizin'),
 			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='optikal__view_survey'),
 			
 			)

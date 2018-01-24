@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+import requests
 
 class MendirikanKlinikAdmin(admin.ModelAdmin):
 
@@ -42,6 +43,7 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			s = ""
 
 		no_pengajuan_encode = pengajuan_obj.no_pengajuan.encode('base64')
+		print no_pengajuan_encode.decode('base64')
 		no_pengajuan_encode = no_pengajuan_encode[:-1]
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
@@ -62,9 +64,9 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			'survey': s,
 			'banyak': len(MendirikanKlinik.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
-			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encodes}),
+			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encode	}),
 			'url_form': reverse("admin:izin_proses_imk"),
-			'url_view_survey': reverse("admin:mendirikan_klinik__view_survey", kwargs={'id_pengajuan': no_pengajuan_encode}),
+			'url_view_survey': reverse("admin:mendirikan_klinik__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
 			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,
 			'perusahaan': perusahaan_obj,
 			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
@@ -115,7 +117,7 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 		urls = super(MendirikanKlinikAdmin, self).get_urls()
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_mendirikan_klinik), name='mendirikan_klinik__view_verifikasi'),
-			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='mendirikan_klinik__cetak_skizin'),
-			url(r'^view-rekomendasi/(?P<no_pengajuan_>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='mendirikan_klinik__view_survey'),
+			url(r'^cetak/(?P<id_pengajuan>[0-9]+)/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.cetak_skizin), name='mendirikan_klinik__cetak_skizin'),
+			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.view_survey), name='mendirikan_klinik__view_survey'),
 			)
 		return my_urls + urls

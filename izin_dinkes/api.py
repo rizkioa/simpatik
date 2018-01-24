@@ -62,11 +62,12 @@ class TokoObatResource(CORSModelResource):
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = TokoObat.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 class LaboratoriumResource(CORSModelResource):
@@ -75,11 +76,12 @@ class LaboratoriumResource(CORSModelResource):
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = Laboratorium.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 class OptikalResource(CORSModelResource):
@@ -88,11 +90,12 @@ class OptikalResource(CORSModelResource):
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = Optikal.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 class MendirikanKlinikResource(CORSModelResource):
@@ -102,11 +105,12 @@ class MendirikanKlinikResource(CORSModelResource):
 	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
 	class Meta:
 		queryset = MendirikanKlinik.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 class OperasionalKlinikResource(CORSModelResource):
@@ -116,11 +120,12 @@ class OperasionalKlinikResource(CORSModelResource):
 	lokasi_lengkap = fields.CharField(attribute="desa__lokasi_lengkap", null=True, blank=True)
 	class Meta:
 		queryset = OperasionalKlinik.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 class PenutupanApotekResource(CORSModelResource):
@@ -129,11 +134,12 @@ class PenutupanApotekResource(CORSModelResource):
 	jenis_permohonan = fields.CharField(attribute="jenis_permohonan__jenis_permohonan_izin", null=True, blank=True)
 	class Meta:
 		queryset = PenutupanApotek.objects.all()
-		authentication = ApiKeyAuthentication()
-		authorization = Authorization()
+		# authentication = ApiKeyAuthentication()
+		# authorization = Authorization()
 		allowed_methods = ['get', 'put']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL,
 		}
 
 
