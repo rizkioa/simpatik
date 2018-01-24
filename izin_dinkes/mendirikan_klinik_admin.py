@@ -62,7 +62,7 @@ class MendirikanKlinikAdmin(admin.ModelAdmin):
 			'survey': s,
 			'banyak': len(MendirikanKlinik.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
-			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, , 'no_pengajuan': no_pengajuan_encodes}),
+			'url_cetak': reverse("admin:mendirikan_klinik__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encodes}),
 			'url_form': reverse("admin:izin_proses_imk"),
 			'url_view_survey': reverse("admin:mendirikan_klinik__view_survey", kwargs={'id_pengajuan': no_pengajuan_encode}),
 			'API_URL_PENGAJUAN_DINKES': API_URL_PENGAJUAN_DINKES,

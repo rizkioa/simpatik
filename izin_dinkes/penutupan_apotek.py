@@ -40,6 +40,15 @@ class PenutupanApotekAdmin(admin.ModelAdmin):
 			extra_context.update({'detilbap': s.survey_reklame_ho.all().last() })
 		except Survey.DoesNotExist:
 			s = ""
+
+		no_pengajuan_encode = pengajuan_obj.no_pengajuan.encode('base64')
+		no_pengajuan_encode = no_pengajuan_encode[:-1]
+
+		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
+		if api_url_obj:
+			url_get_dinkes = api_url_obj.url
+			key_get = api_url_obj.value
+			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
 			
 		extra_context.update({
 			'has_permission': True,

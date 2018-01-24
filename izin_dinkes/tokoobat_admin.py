@@ -76,7 +76,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 		pengajuan_obj = get_object_or_404(TokoObat, id=id_pengajuan)
 		skizin_obj = pengajuan_obj.skizin_set.last()
 
-		no_pengajuan_ = (no_pengajuan).decode('base64')s
+		no_pengajuan_ = (no_pengajuan).decode('base64')
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
