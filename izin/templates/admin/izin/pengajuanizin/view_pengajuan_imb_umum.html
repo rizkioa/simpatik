@@ -241,23 +241,22 @@
 		<section class="tile">
 			<div class="tile-body">
 				<center>
-					<a onclick="openPopupCenter('{% url 'cetak_bukti_pendaftaran_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
+					<a href="{% url 'cetak_bukti_pendaftaran_imb_umum' pengajuan.id  %}" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</a>
 
 					{% if request.user|has_group:'Kasir' or request.user.is_superuser %}
 						{% if pengajuan.status == 2 and detil_pembayaran or pengajuan.status == 5 and detil_pembayaran %}
-							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
-							<a onclick="openPopupCenter('{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
+							<a target="_blank" href="{% url 'admin:detil_pembayaran__cetak_skrd' detil_pembayaran.id %}" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak SKRD</a>
+							<a target="_blank" href="{% url 'admin:detil_pembayaran__cetak_pembayaran' detil_pembayaran.kode %}" class="btn btn-success btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Pembayaran</a>
 						{% endif %}
 					{% endif %}
 
 					{% if skizin_status == 6 or skizin_status == 4 or skizin_status == 9 or skizin_status == 10 or pengajuan.status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
+						<a target="_blank" href="{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}" class="btn btn-blue btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-eye"></i> Preview Draf</a>
 					{% endif %}
 					{% if skizin_status == 1 or skizin_status == 2 %}
-						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
-						<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan.id True %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
+						<a target="_blank" href="{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}" class="btn btn-orange btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Izin</a>
+						<a target="_blank" href="{% url 'admin:cetak_sk_imb_umum' pengajuan.id True %}" class="btn btn-info btn-ef btn-ef-3 btn-ef-3a mb-10"><i class="fa fa-print"></i> Cetak Salinan</a>
 					{% endif %}
-
 				</center>
 			</div>
 		</section>
@@ -689,7 +688,7 @@
 						<div class="panel-body">
 						{% if skizin == None and status == 2%}
 						    <center>
-						    	<a onclick="openPopupCenter('{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
+						    	<a target="_blank" href="{% url 'admin:cetak_sk_imb_umum' pengajuan.id  %}" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Preview Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br>
 						    	<a data-toggle="modal" data-target="#edit_klasifikasi_jalan" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Klasifikasi Jalan</span></a><br>
 						    	<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog"></i> <span>Generate Draf</span></a>
@@ -1172,94 +1171,77 @@
 {% block extrajs_site %}
 	{{ block.super }}
 	<script src="{% static 'scripts/js/vendor/jquery/jquery.form.js' %}"></script>
-	<script language="javascript" type="text/javascript">
-        function openPopupCenter(url, title, w, h) {
-		    var left = Math.round((screen.width/2)-(w/2));
-		    var top = Math.round((screen.height/2)-(h/2));
-		    return window.open(url, title, 'location=no, addressbar=no, toolbar=no, directories=no, status=no, ' + 'menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-		}
-    </script>
 	<!-- +++++++++++++++++++ ajax verfikasi ++++++++++++++++ -->
 	<script src="{% static 'scripts/js/verifikasi.js' %}"></script>
 	<!-- +++++++++++++++++++ end ajax verfikasi ++++++++++++++++ -->
 	<script>
-		$(document).ready(function() {
-			
-		// 	$('#minimize').hide()
-		// 	$('#minimize_2').hide()
-		// 	$('#minimize_3').hide()
-		// 	$('#minimize_4').hide()
-		// 	$('#minimize_5').hide()
-		// 	$('#minimize_6').hide()
-		// 	$('#minimize_7').hide()
-		// 	$('#minimize_8').hide()
-		})
+		function openPopupCenter(url, title, w, h) {
+		    var left = Math.round((screen.width/2)-(w/2));
+		    var top = Math.round((screen.height/2)-(h/2));
+		    return window.open(url, title, 'location=no, addressbar=no, toolbar=no, directories=no, status=no, ' + 'menubar=no, scrollbars=yes, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+		}
+
 		$('.button-tolak').prop( "disabled", true );
 		$('.alasan').keyup(function() {
-            if ($(this).val() !== "") {
-              $('.button-tolak').prop( "disabled", false );
-            }
-            else{
-              $('.button-tolak').prop( "disabled", true );
-            }
-          });
+			if ($(this).val() !== "") {
+				$('.button-tolak').prop( "disabled", false );
+			}
+			else{
+				$('.button-tolak').prop( "disabled", true );
+			}
+		});
 
 		function cetak_izin(id_pengajuan_izin, aksi){
-			
-		  	csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+			csrf_token = $("input[name='csrfmiddlewaretoken']").val();
 			$.ajax({ // create an AJAX call...
 			    data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_pengajuan_izin, aksi: aksi }, // get the form data
 			    type: 'POST', // GET or POST
 			    url: '/admin/izin/pengajuanizin/aksi/', // the file to call
 			    success: function(response) { // on success..
-			        respon = $.parseJSON(response)
-			        if(respon.success){
-			        	openPopupCenter('/admin/izin/pengajuanizin/cetak-reklame-asli/'+{{ pengajuan.id }},'Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
-			          	toastr["success"](respon.pesan);
-			          	window.location.href= "";
-			      	}
-			      	else{
-		              	toastr["error"](respon.pesan)
-		            }
+			    	respon = $.parseJSON(response)
+			    	if(respon.success){
+			    		// openPopupCenter('','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600);
+			    		window.open(__base_url__+"/admin/izin/pengajuanizin/cetak-reklame-asli/{{ pengajuan.id }}");
+			    		toastr["success"](respon.pesan);
+			    		window.location.href= "";
+			    	}
+			    	else{
+			    		toastr["error"](respon.pesan)
+			    	}
 			    },
 			    error: function(data) {                
-			      	toast_server_error()
+			    	toast_server_error()
 			    }
 			});
 		}
 
 		function change_edit_pengajuan(){
-        	$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
-        	$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
-        }
+			$.cookie('id_pengajuan', "{{ pengajuan.id }}", {path:"/"});
+			$.cookie('id_kelompok_izin', "{{ pengajuan.kelompok_jenis_izin.id }}", {path:"/"});
+		}
 
-        function tambah_skpd_survey(){
-        	$('#button-survey').html('<i class="fa fa-arrow-right"></i> Simpan')
-  			$('#button-survey').attr('disabled',false)
-        	$("#tambah_skpd_survey").modal('show');
-        }
-        $(document).ready(function(){
-        	$(".total-bayar").each(
-        		function(){
-        			$(this).keyup(
-        				function(){
-        					FormatCurrency(this)
-        				});
-        		});
-        });
+		function tambah_skpd_survey(){
+			$('#button-survey').html('<i class="fa fa-arrow-right"></i> Simpan')
+				$('#button-survey').attr('disabled',false)
+			$("#tambah_skpd_survey").modal('show');
+		}
 
-        function pembayaran_add(btn){
+		$(document).ready(function(){
+			$(".total-bayar").each(function(){ $(this).keyup(function(){ FormatCurrency(this)});});
+		});
+
+		function pembayaran_add(btn){
 			var frm = $('#id_form_pembayaran');
 			$('.teruskan-pembayaran').button("loading")
 			$('.panel-pembayaran').mLoading()
 			toastr["info"]("Mohon untuk menunggu, karena memerlukan waktu untuk memproses")
-		 	if (frm.parsley().validate()){
+			if (frm.parsley().validate()){
 				frm.ajaxSubmit({
-			 		success: function(response) {
+					success: function(response) {
 						var respon = $.parseJSON(response);  
 						if(respon.success){
-						  toastr["success"](respon.pesan)
-						  window.location.href= "";
+							toastr["success"](respon.pesan)
+							window.location.href= "";
 						}
 						else{
 							toastr["error"](respon.pesan)
@@ -1267,12 +1249,12 @@
 							$('.panel-pembayaran').mLoading("hide")
 						}
 					},
-					error: function(data) {       
-					  toast_server_error()
-					  $('.teruskan-pembayaran').button("reset")
-					  $('.panel-pembayaran').mLoading("hide")
+					error: function(data) {
+						toast_server_error()
+						$('.teruskan-pembayaran').button("reset")
+						$('.panel-pembayaran').mLoading("hide")
 					}
-			  	});
+				});
 			}
 		}
 	</script>

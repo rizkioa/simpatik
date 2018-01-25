@@ -153,7 +153,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_perusahaan': alamat_perusahaan_})
 				extra_context.update({'perusahaan': pengajuan_.perusahaan })
 			letak_ = pengajuan_.lokasi_pasang +", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
-			ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
+			ukuran_ = "Lebar = "+str(pengajuan_.lebar)+" M, Tinggi = "+str(pengajuan_.tinggi)+" M"  
 			jumlah_ = str(int(pengajuan_.jumlah))
 			klasifikasi_ = pengajuan_.klasifikasi_jalan
 
