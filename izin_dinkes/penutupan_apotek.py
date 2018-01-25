@@ -9,6 +9,8 @@ from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
 
+import requests
+
 class PenutupanApotekAdmin(admin.ModelAdmin):
 
 	def view_pengajuan_izin_penutupan_apotek(self, request, id_pengajuan):

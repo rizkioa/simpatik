@@ -444,56 +444,61 @@ class IzinAdmin(admin.ModelAdmin):
 	def button_cetak_pendaftaran(self, obj):
 		link_ = '#'
 		jenis_izin_ = obj.kelompok_jenis_izin.kode
-		if jenis_izin_ == "503.08":
-			link_ = reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
-			link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "IUJK":
-			link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "503.01.06/":
-			link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "503.01.04/":
-			link_ = reverse('admin:view_pengajuan_imb_perumahan', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "503.01.05/":
-			link_ = reverse('admin:view_pengajuan_imb_umum', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "503.06.01/":
-			link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
-		elif jenis_izin_ == "503.02/":
-			link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
-		elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.kode == "IPPT-Rumah":
-			link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "HULLER":
-			link_ = reverse('admin:view_pengajuan_huller', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
-			link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})		
-		elif obj.kelompok_jenis_izin.kode == "TDP-PT":
-			link_ = reverse('admin:view_pengajuan_tdp_pt', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "TDP-CV":
-			link_ = reverse('admin:view_pengajuan_tdp_cv', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "TDP-FIRMA":
-			link_ = reverse('admin:view_pengajuan_tdp_firma', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "TDP-PERORANGAN":
-			link_ = reverse('admin:view_pengajuan_tdp_perorangan', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "TDP-BUL":
-			link_ = reverse('admin:view_pengajuan_tdp_bul', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "TDP-KOPERASI":
-			link_ = reverse('admin:view_pengajuan_tdp_koperasi', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "TDUP":
-			link_ = reverse('admin:view_pengajuan_izin_tdup', kwargs={'id_pengajuan_izin_': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IZINPARKIR":
-			link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IUA":
-			link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "ITO":
-			link_ = reverse('admin:tokoobat__view_verifikasi', kwargs={'id_pengajuan': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IAP":
-			link_ = reverse('admin:apotek__view_verifikasi', kwargs={'id_pengajuan': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IOP":
-			link_ = reverse('admin:optikal__view_verifikasi', kwargs={'id_pengajuan': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IMK":
-			link_ = reverse('admin:mendirikan_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
-		elif obj.kelompok_jenis_izin.kode == "IOK":
-			link_ = reverse('admin:operasional_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+		if obj.id:
+			if jenis_izin_ == "503.08":
+				link_ = reverse('admin:view_pengajuan_siup', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "503.03.01/" or jenis_izin_ == "503.03.02/":
+				link_ = reverse('admin:view_pengajuan_reklame', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "IUJK":
+				link_ = reverse('admin:view_pengajuan_iujk', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "503.01.06/":
+				link_ = reverse('admin:view_pengajuan_imb_reklame', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "503.01.04/":
+				link_ = reverse('admin:view_pengajuan_imb_perumahan', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "503.01.05/":
+				link_ = reverse('admin:view_pengajuan_imb_umum', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "503.06.01/":
+				link_ = reverse('admin:view_pemakaian_kekayaan_daerah', kwargs={'id_pengajuan_izin_': obj.id})	
+			elif jenis_izin_ == "503.02/":
+				link_ = reverse('admin:view_pengajuan_izin_gangguan', kwargs={'id_pengajuan_izin_': obj.id})
+			elif jenis_izin_ == "503.07/" or obj.kelompok_jenis_izin.kode == "IPPT-Rumah":
+				link_ = reverse('admin:view_pengajuan_izin_lokasi', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "HULLER":
+				link_ = reverse('admin:view_pengajuan_huller', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IPPT-Usaha":
+				link_ = reverse('admin:view_pengajuan_ippt_usaha', kwargs={'id_pengajuan_izin_': obj.id})		
+			elif obj.kelompok_jenis_izin.kode == "TDP-PT":
+				link_ = reverse('admin:view_pengajuan_tdp_pt', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "TDP-CV":
+				link_ = reverse('admin:view_pengajuan_tdp_cv', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "TDP-FIRMA":
+				link_ = reverse('admin:view_pengajuan_tdp_firma', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "TDP-PERORANGAN":
+				link_ = reverse('admin:view_pengajuan_tdp_perorangan', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "TDP-BUL":
+				link_ = reverse('admin:view_pengajuan_tdp_bul', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "TDP-KOPERASI":
+				link_ = reverse('admin:view_pengajuan_tdp_koperasi', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "TDUP":
+				link_ = reverse('admin:view_pengajuan_izin_tdup', kwargs={'id_pengajuan_izin_': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IZINPARKIR":
+				link_ = reverse('admin:view_pengajuan_izin_parkir', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IUA":
+				link_ = reverse('admin:view_pangajuan_iua', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "ITO":
+				link_ = reverse('admin:tokoobat__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IAP":
+				link_ = reverse('admin:apotek__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IOP":
+				link_ = reverse('admin:optikal__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IMK":
+				link_ = reverse('admin:mendirikan_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "IOK":
+				link_ = reverse('admin:operasional_klinik__view_verifikasi', kwargs={'id_pengajuan': obj.id})
+			elif obj.kelompok_jenis_izin.kode == "ILB":
+				link_ = reverse('admin:izinlaboratorium__view_verifikasi', kwargs={'id_pengajuan': 451})
+			elif obj.kelompok_jenis_izin.kode == "IPA":
+				link_ = reverse('admin:penutupan_apotek__view_verifikasi', kwargs={'id_pengajuan': obj.id})
 		btn = mark_safe("""
 				<a href="%s" class="btn btn-success btn-rounded btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-cog fa-spin"></i> <span>Proses</span> </a>
 				""" % link_ )

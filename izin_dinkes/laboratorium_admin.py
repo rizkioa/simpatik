@@ -9,10 +9,13 @@ from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
 
+import requests
+
 class LaboratoriumAdmin(admin.ModelAdmin):
 
 	def view_pengajuan_izin_laboratorium(self, request, id_pengajuan):
 		extra_context = {}
+		print id_pengajuan
 		pengajuan_obj = get_object_or_404(Laboratorium, id=id_pengajuan)
 		riwayat_list = pengajuan_obj.riwayat_set.all().order_by('created_at')
 		skizin_obj = pengajuan_obj.skizin_set.last()
@@ -80,7 +83,7 @@ class LaboratoriumAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(LaboratoriumAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_laboratorium), name='laboratorium__view_verifikasi'),
+			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_laboratorium), name='izinlaboratorium__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='laboratorium__cetak_skizin'),
 			)
 		return my_urls + urls

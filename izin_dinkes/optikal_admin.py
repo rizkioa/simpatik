@@ -49,8 +49,13 @@ class OptikalAdmin(admin.ModelAdmin):
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
-			
+			try:
+				get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+				extra_context.update({
+					'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+					})
+			except ConnectionError as e:
+				messages.add_message(request, messages.ERROR, "Koneksi pada URL Request gagal, Tidak Bisa Mengambil data dinkes, Cek kembali Url Request server ("+url_get_dinkes+")")
 		extra_context.update({
 			'has_permission': True,
 			'title': 'Proses Verifikasi Pengajuan Izin Optikal',
@@ -68,7 +73,7 @@ class OptikalAdmin(admin.ModelAdmin):
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
 			'perusahaan': perusahaan_obj,
 			'url_view_survey': reverse("admin:optikal__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
-			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+			
 			})
 		return render(request, "admin/izin_dinkes/optikal/view_verifikasi.html", extra_context)
 
@@ -99,15 +104,18 @@ class OptikalAdmin(admin.ModelAdmin):
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IOP/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
-			extra_context = {
-				'is_popup': 'popup',
-				'no_pengajuan': no_pengajuan,
-				'title': 'View Hasil Survey Optikal',
-				'url_server_dinkes': url_get_dinkes,
-				'key': key_get,
-				'data': perincian_json.text,
-				}
+			try:
+			 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IOP/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
+				extra_context = {
+					'is_popup': 'popup',
+					'no_pengajuan': no_pengajuan,
+					'title': 'View Hasil Survey Optikal',
+					'url_server_dinkes': url_get_dinkes,
+					'key': key_get,
+					'data': perincian_json.text,
+					}
+			except ConnectionError as e:
+				messages.add_message(request, messages.ERROR, "Koneksi pada URL Request gagal, Tidak Bisa Mengambil data dinkes, Cek kembali Url Request server ("+url_get_dinkes+")")
 
 		return render(request, "admin/izin_dinkes/view_survey.html", extra_context)
 

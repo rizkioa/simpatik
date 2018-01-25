@@ -192,43 +192,47 @@
 <script src="{% static 'scripts/js/mloading/jquery.mloading.js' %}"></script>
 <script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
 <script type="text/javascript">
-	perincian_list = JSON.parse('{{data|safe}}')
-	console.log(perincian_list) 
-	len = perincian_list.data.length
-	if (perincian_list.success == true){
-		row = '<tr>'
-		if(len > 0){
-			for(var i=0; i<len; i++){
-				if(perincian_list.data[i].nama_perincian == null){
-					row += '<td></td>'
-				}else{
-					if(perincian_list.data[i].level == 0){
-						row += '<td>'+perincian_list.data[i].nama_perincian+'</td>'
-					}else if(perincian_list.data[i].level == 1){
-						row += '<td style="padding-left:30px">'+perincian_list.data[i].nama_perincian+'</td>'
-					}else if(perincian_list.data[i].level == 2){
-						row += '<td style="padding-left:40px">'+perincian_list.data[i].nama_perincian+'</td>'
-					}else if(perincian_list.data[i].level == 3){
-						row += '<td style="padding-left:50px">'+perincian_list.data[i].nama_perincian+'</td>'
-					}else if(perincian_list.data[i].level == 4){
-						row += '<td style="padding-left:60px">'+perincian_list.data[i].nama_perincian+'</td>'
-					}
+	{% if data %}
+		perincian_list = JSON.parse('{{data|safe}}')
+		console.log(perincian_list) 
+		len = perincian_list.data.length
+		if (perincian_list.success == true){
+			row = '<tr>'
+			if(len > 0){
+				for(var i=0; i<len; i++){
+					if(perincian_list.data[i].nama_perincian == null){
+						row += '<td></td>'
+					}else{
+						if(perincian_list.data[i].level == 0){
+							row += '<td>'+perincian_list.data[i].nama_perincian+'</td>'
+						}else if(perincian_list.data[i].level == 1){
+							row += '<td style="padding-left:30px">'+perincian_list.data[i].nama_perincian+'</td>'
+						}else if(perincian_list.data[i].level == 2){
+							row += '<td style="padding-left:40px">'+perincian_list.data[i].nama_perincian+'</td>'
+						}else if(perincian_list.data[i].level == 3){
+							row += '<td style="padding-left:50px">'+perincian_list.data[i].nama_perincian+'</td>'
+						}else if(perincian_list.data[i].level == 4){
+							row += '<td style="padding-left:60px">'+perincian_list.data[i].nama_perincian+'</td>'
+						}
 
-				}
-				row += '<td style="padding-left=10px">'+perincian_list.data[i].persyaratan+'</td>'
-				row += '<td class="kenyataan__'+perincian_list.data[i].id+'"></td>'
-				if(perincian_list.data[i].perlu_diisi == true){
-					row += '<td data-url-load="{{url_server_dinkes}}admin/izin/pemeriksaanizin/{{ no_pengajuan }}/'+perincian_list.data[i].id+'/get-pemeriksaan-json/?key={{key}}" data-status="unload" data-row="'+perincian_list.data[i].id+'"></td>'
+					}
+					row += '<td style="padding-left=10px">'+perincian_list.data[i].persyaratan+'</td>'
+					row += '<td class="kenyataan__'+perincian_list.data[i].id+'"></td>'
+					if(perincian_list.data[i].perlu_diisi == true){
+						row += '<td data-url-load="{{url_server_dinkes}}admin/izin/pemeriksaanizin/{{ no_pengajuan }}/'+perincian_list.data[i].id+'/get-pemeriksaan-json/?key={{key}}" data-status="unload" data-row="'+perincian_list.data[i].id+'"></td>'
+					}
+					
+					row += '</tr>'
 				}
 				
-				row += '</tr>'
+			}else{
+				row = '<td align=center colspan=4>Kosong</td>'
 			}
-			
-		}else{
-			row = '<td align=center colspan=4>Kosong</td>'
+			$('.table-perincian > tbody').html(row)
 		}
-		$('.table-perincian > tbody').html(row)
-	}
+	{% else %}
+		$('.table-perincian > tbody').html('<td align=center colspan=4>Gagal Mengambil Data, Cek Url Server</td>')
+	{% endif %}
 
 	function load_penilaian(elemen_){
         $.ajax({

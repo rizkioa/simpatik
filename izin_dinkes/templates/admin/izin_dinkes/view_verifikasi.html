@@ -708,7 +708,7 @@
 									<div class="panel-body">
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-											<input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala DPMPTSP dan menyatakan proses pengajuan ini selsai.
+											<input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala DPMPTSP dan menyatakan proses pengajuan ini selesai.
 										</label>
 									</div>
 									<div class="panel-footer">
@@ -790,13 +790,17 @@
 					FormatCurrency(this)
 				});
 			});
-			pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
-			console.log(pengajuan_dinkes)
-			if (pengajuan_dinkes.success == true){
-				$('#no_rekom_dinkes').text(pengajuan_dinkes.data[0].no_surat)
-			}else{
-				$('#no_rekom_dinkes').text('Belum Diterbitkan')
-			}
+			{% if data_get_pengajuan_dinkes %}
+				pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
+				console.log(pengajuan_dinkes)
+				if (pengajuan_dinkes.success == true){
+					$('#no_rekom_dinkes').text(pengajuan_dinkes.data[0].no_surat)
+				}else{
+					$('#no_rekom_dinkes').text('Belum Diterbitkan')
+				}
+			{% else %}
+				$('#no_rekom_dinkes').text('Gagal Mengambil Data')
+			{% endif %}
 			
 		});
 
