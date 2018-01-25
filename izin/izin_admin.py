@@ -500,22 +500,6 @@ class IzinAdmin(admin.ModelAdmin):
 		return btn
 	button_cetak_pendaftaran.short_description = "Aksi"
 
-	def pendaftaran_selesai(self, request, id_pengajuan_izin_):
-		extra_context = {}
-		if id_pengajuan_izin_:
-			extra_context.update({'title': 'Pengajuan Selesai'})
-			pengajuan_ = PengajuanIzin.objects.get(id=id_pengajuan_izin_)
-			extra_context.update({'pemohon': pengajuan_.pemohon})
-			extra_context.update({'id_pengajuan': pengajuan_.id})
-			extra_context.update({'jenis_pemohon': pengajuan_.pemohon.jenis_pemohon})
-			extra_context.update({'alamat_pemohon': str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)})
-			extra_context.update({'jenis_permohonan': pengajuan_.jenis_permohonan})
-			extra_context.update({'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin})
-			extra_context.update({'created_at': pengajuan_.created_at})
-		template = loader.get_template("admin/izin/izin/pengajuan_baru_selesai.html")
-		ec = RequestContext(request, extra_context)
-		return HttpResponse(template.render(ec))
-
 	def cetak_siup_asli(self, request, id_pengajuan_izin_):
 		extra_context = {}
 		if id_pengajuan_izin_:
@@ -655,20 +639,6 @@ class IzinAdmin(admin.ModelAdmin):
 		}
 
 		return HttpResponse(json.dumps(response))
-
-	# def option_kelompokjenisizin(self, request):
-	# 	kode_jenis_izin = request.POST.get('param', None)
-	# 	if kode_jenis_izin:
-	# 		kelompokjenisizin_list = KelompokJenisIzin.objects.filter(jenis_izin__kode=kode_jenis_izin, aktif=True)
-	# 	else:
-	# 		kelompokjenisizin_list = KelompokJenisIzin.objects.none()
-	# 	pilihan = "<option></option>"
-	# 	response = {
-	# 		"count": len(kelompokjenisizin_list),
-	# 		"data": pilihan+"".join(x.as_option() for x in kelompokjenisizin_list)
-	# 	}
-
-	# 	return HttpResponse(json.dumps(response))
 		
 	def create_skizin(self, request):
 		id_detil_siup = request.POST.get('id_detil_siup', None)
@@ -1420,7 +1390,6 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^wizard/add/proses/izin-mendirikan-klinik/$', self.admin_site.admin_view(formulir_izin_mendirikan_klinik), name='izin_proses_imk'),
 			url(r'^wizard/add/proses/izin-operasional-klinik/$', self.admin_site.admin_view(formulir_izin_operasional_klinik), name='izin_proses_iok'),
 
-			url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/$', self.admin_site.admin_view(cetak), name='pendaftaran_selesai'),
 			# url(r'^pendaftaran/(?P<id_pengajuan_izin_>[0-9]+)/cetak$', self.admin_site.admin_view(self.print_out_pendaftaran), name='print_out_pendaftaran'),
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),
 			url(r'^aksi-tolak/$', self.admin_site.admin_view(self.penolakanizin), name='penolakanizin'),

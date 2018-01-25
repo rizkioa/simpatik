@@ -106,11 +106,10 @@ class DetilSIUPAdmin(admin.ModelAdmin):
 	def ajax_dashboard(self, request):
 		from izin.utils import get_model_detil
 		tahun_sekarang = date.today().year
-		pemohon = len(Pemohon.objects.all())
-		perusahaan = len(Perusahaan.objects.all())
+		pemohon = Pemohon.objects.count()
+		perusahaan = Perusahaan.objects.count()
 		pengajuan_selesai = len(PengajuanIzin.objects.filter(status=1))
 		pengajuan_proses = len(PengajuanIzin.objects.filter(~Q(status=1) and ~Q(status=6) and ~Q(status=11)))
-		# pengajuan_proses = len(PengajuanIzin.objects.filter(status=1))
 
 		pengajuan_siup = get_model_detil("503.08").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
 		pengajuan_iujk = get_model_detil("IUJK").objects.filter(Q(created_at__year=tahun_sekarang) and ~Q(status=11)).count()
