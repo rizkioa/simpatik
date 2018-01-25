@@ -193,6 +193,7 @@
 <script src="{% static 'scripts/js/vendor/lightbox/js/lightbox.js' %}"></script>
 <script type="text/javascript">
 	perincian_list = JSON.parse('{{data|safe}}')
+	console.log(perincian_list) 
 	len = perincian_list.data.length
 	if (perincian_list.success == true){
 		row = '<tr>'
@@ -217,7 +218,7 @@
 				row += '<td style="padding-left=10px">'+perincian_list.data[i].persyaratan+'</td>'
 				row += '<td class="kenyataan__'+perincian_list.data[i].id+'"></td>'
 				if(perincian_list.data[i].perlu_diisi == true){
-					row += '<td data-url-load="{{url_server_dinkes}}admin/izin/pemeriksaanizin/{{ id_pengajuan }}/'+perincian_list.data[i].id+'/get-pemeriksaan-json/?key={{key}}" data-status="unload" data-row="'+perincian_list.data[i].id+'"></td>'
+					row += '<td data-url-load="{{url_server_dinkes}}admin/izin/pemeriksaanizin/{{ no_pengajuan }}/'+perincian_list.data[i].id+'/get-pemeriksaan-json/?key={{key}}" data-status="unload" data-row="'+perincian_list.data[i].id+'"></td>'
 				}
 				
 				row += '</tr>'

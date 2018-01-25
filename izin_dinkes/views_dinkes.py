@@ -17,6 +17,8 @@ def post_pengajuanizin_dinkes(obj_id):
 			detilizin_obj = get_model_detil(kelompok_izin).objects.get(id=pengajuan_obj.id)
 			url_api_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
 			url_api_simpatik_dinkes = str(url_api_obj.url)+'pengajuan-izin-list/'
+
+			jenis_klinik = None
 			# print url_api_simpatik_dinkes
 			if kelompok_izin == 'IAP':
 				perusahaan = detilizin_obj.nama_apotek
@@ -29,14 +31,16 @@ def post_pengajuanizin_dinkes(obj_id):
 			elif kelompok_izin == 'ITO':
 				perusahaan = detilizin_obj.nama_toko_obat
 			elif kelompok_izin == 'IMK' or kelompok_izin == 'IOK':
+				jenis_klinik = detilizin_obj.jenis_klinik.kode_jenis_klinik
 				perusahaan = detilizin_obj.nama_klinik
+				print jenis_klinik
 
-			data = {'id_pengajuan_simpatik':pengajuan_obj.id,
-					'no_pengajuan': pengajuan_obj.no_pengajuan,
+			data = {'no_pengajuan': pengajuan_obj.no_pengajuan,
 					'perusahaan':perusahaan,
 					'pemohon':pengajuan_obj.pemohon.nama_lengkap,
 					'jenis_pengajuan':pengajuan_obj.kelompok_jenis_izin.kode,
-					'tgl_pengajuan':pengajuan_obj.created_at.strftime('%Y-%m-%d')
+					'tgl_pengajuan':pengajuan_obj.created_at.strftime('%Y-%m-%d'),
+					'jenis_klinik':jenis_klinik
 				}
 
 			headers = {'content-type': 'application/json'}

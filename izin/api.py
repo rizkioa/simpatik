@@ -13,11 +13,13 @@ from izin.utils import cek_apikey
 
 class BerkasTerkalitIzin(CORSModelResource):
 	berkas_terkait_izin = fields.OneToManyField(BerkasResource, 'berkas_terkait_izin', full=True, null=True, blank=True)
+	no_pengajuan = fields.CharField(attribute="no_pengajuan", null=True, blank=True)
 	class Meta:
 		queryset = PengajuanIzin.objects.all()
-		fields = ['id', 'berkas_terkait_izin']
+		fields = ['id', 'berkas_terkait_izin', 'no_pengajuan']
 		filtering = {
 			'id': ALL,
+			'no_pengajuan': ALL
 		}
 
 class SKIzinResource(CORSModelResource):
