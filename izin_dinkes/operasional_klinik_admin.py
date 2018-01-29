@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import OperasionalKlinik
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
@@ -126,7 +126,7 @@ class OperasionalKlinikAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_operasional_klinik), name='operasional_klinik__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.cetak_skizin), name='operasional_klinik__cetak_skizin'),
-			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='operasional_klinik__view_survey'),
+			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.view_survey), name='operasional_klinik__view_survey'),
 			
 			)
 		return my_urls + urls

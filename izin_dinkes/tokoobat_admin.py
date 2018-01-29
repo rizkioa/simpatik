@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import TokoObat
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
@@ -125,6 +125,6 @@ class TokoObatAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tokoobat), name='tokoobat__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.cetak_skizin), name='tokoobat__cetak_skizin'),
-			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
+			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
 			)
 		return my_urls + urls

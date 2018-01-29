@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import Laboratorium
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
