@@ -263,6 +263,9 @@ class OperasionalKlinik(PengajuanIzin):
 		desa = ''
 		if self.desa:
 			desa = self.desa.as_json()
+		jenis_klinik = ''
+		if self.jenis_klinik:
+			jenis_klinik = self.jenis_klinik.as_json__jenis_klinik()
 		return dict(id=self.id, jenis_klinik=jenis_klinik, nama_klinik=self.nama_klinik, alamat_klinik=self.alamat_klinik, alamat_lengkap=alamat_lengkap, desa=desa, no_telepon=self.no_telepon)
 
 	def __unicode__(self):
