@@ -2331,6 +2331,8 @@ def save_izin_operasional_klinik(request):
 						if form_operasional_klinik.is_valid():
 							p = form_operasional_klinik.save(commit=False)
 							p.save()
+							pengajuan_obj.jenis_klinik_id = jenis_klinik
+							pengajuan_obj.save()
 							data = {'success': True, 'pesan': 'Data Izin Operasional Klinik berhasil tersimpan.'}
 						else:
 							data = form_operasional_klinik.errors.as_json__operasional_klinik()
