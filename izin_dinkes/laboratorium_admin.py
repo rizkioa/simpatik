@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+from requests.exceptions import ConnectionError
 
 import requests
 
