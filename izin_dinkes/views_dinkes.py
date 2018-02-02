@@ -47,14 +47,17 @@ def post_pengajuanizin_dinkes(obj_id):
 
 			r = requests.post(url_api_simpatik_dinkes, data=json.dumps(data), headers=headers)
 			# print r.json()
-			respon = r.json()
-			if respon.get('success'):
-				if respon.get('success') == True:
-					respon_data = 200
+			if r:
+				respon = r.json()
+				if respon.get('success'):
+					if respon.get('success') == True:
+						respon_data = 200
+					else:
+						respon_data = False
 				else:
-					respon_data = False
+					respon_data = 201
 			else:
-				respon_data = 201
+				respon_data = False
 		except ObjectDoesNotExist:
 			respon_data = False
 	except PengajuanIzin.DoesNotExist:

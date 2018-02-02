@@ -793,6 +793,14 @@
 							<center>
 								<a onclick="openPopupCenter('{% url 'admin:cetak_iujk_asli' pengajuan.id  %}','Preview Draft Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-eyeglasses"></i> <span>Preview Draf</span></a><br>
 								<!-- <a data-toggle="modal" data-target="#edit_skizin" style="width: 30%" class="btn btn-danger btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-edit"></i> <span>Edit Draf</span></a><br> -->
+								{% if pengajuan.jenis_permohonan.id == 3 %}
+									<div class="input-group datepicker" data-format="L" style="width: 30%">
+								        <input  type="text" class="form-control" id="id_tanggal_pendirian" name="masa_berlaku" required="" data-parsley-trigger="change" placeholder="Masa Berlaku" {% if pengajuan.jenis_permohonan.id == 1 %}disabled="True"{% endif %} value="{% if pengajuan.jenis_permohonan.id == 1 %}{{masa_berlaku}}{% else %}{% if skizin.masa_berlaku_izin %}{{skizin.masa_berlaku_izin|date:'d-m-Y'}}{% else %}{% endif %}{% endif %}">
+								        <span class="input-group-addon">
+								          <span class="fa fa-calendar"></span>
+								        </span>
+							      	</div> <br>
+							    {% endif %}
 								<a onclick="create_skizin({{ pengajuan.id }})" style="width: 30%" class="btn btn-warning btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="icon-settings"></i> <span>Generate Draf</span></a>
 							</center>
 						</div>

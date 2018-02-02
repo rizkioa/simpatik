@@ -428,10 +428,11 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'salinan':salinan_})
 
 		
-		li = ''
+		li = '<ol style="padding-left: 30px;">'
 		for x in list(set(kla)):
 			k =  "<li>"+str(x)+"</li>"
 			li += k
+		li += '</ol>'
 		# for x in paket:
 		# 	if x.subklasifikasi.klasifikasi in kla:
 
@@ -456,7 +457,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			if skizin_.masa_berlaku_izin:
 				# print "asdsfd"
 				masa_berlaku = skizin_.masa_berlaku_izin.strftime('%d-%m-%Y')
-				tanggal_ = skizin_.masa_berlaku_izin-relativedelta(years=3)
+				tanggal_ = skizin_.created_at-relativedelta(years=3)
 				tanggal_ = tanggal_.strftime('%d-%m-%Y')
 
 		extra_context.update({'masa_berlaku': masa_berlaku})
@@ -470,6 +471,23 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		template = Template(subject_template).render(Context(extra_context))
 		return HttpResponse(template)
+
+	# def cetak_iujk_asli(self, request, id_pengajuan_izin_, salinan_=None):
+	# 	extra_context = {}
+
+	# 	from django.template import Context, Template
+	# 	from master.models import Template as tpls
+	# 	from dateutil.relativedelta import relativedelta
+
+	# 	pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
+	# 	unit_kerja = get_object_or_404(UnitKerja, id=72)
+	# 	# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
+
+	# 	skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
+
+
+	# 	tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
+	# 	return render(request, "front-end/include/formulir_iujk/cetak_iujk.html", extra_context)
 
 	def cetak_iujk_asli_hal_2(self, request, id_pengajuan_izin_):
 		extra_context = {}

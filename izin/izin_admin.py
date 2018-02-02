@@ -690,6 +690,30 @@ class IzinAdmin(admin.ModelAdmin):
 				"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
 			}
 		return HttpResponse(json.dumps(response))
+
+	def save_perubahan_masaberlaku_iujk(self, request):
+		id_detil_siup = request.POST.get('id_detil_siup', None)
+		tgl_masa_berlaku = datetime.datetime.strptime(request.POST.get('tgl_masa_berlaku'), '%d-%m-%Y').strftime('%Y-%m-%d')
+		print tgl_masa_berlaku
+		if request.user.has_perm('izin.add_skizin') or request.user.is_superuser or request.user.groups.filter(name='Admin Sistem'):
+			pengajuan_ = PengajuanIzin.objects.filter(id=id_detil_siup).last()
+
+			skizin_ = SKIzin.objects.filter(pengajuan_izin_id=pengajuan_.id).last()
+			print skizin_
+			skizin_.masa_berlaku_izin = tgl_masa_berlaku
+			skizin_.save()
+
+			response = {
+						"success": True,
+						"pesan": "Draft SKIzin berhasil tersimpan.",
+						"redirect": '',
+					}
+		else:
+			response = {
+				"success": False,
+				"pesan": "Anda tidak memiliki hak akses untuk memverifikasi izin.",
+			}
+		return HttpResponse(json.dumps(response))
 	
 	def aksi_detil_siup(self, request):
 		id_pengajuan_izin = request.POST.get('id_detil_siup')
@@ -1399,6 +1423,7 @@ class IzinAdmin(admin.ModelAdmin):
 			url(r'^aksi/$', self.admin_site.admin_view(self.aksi_detil_siup), name='aksi_detil_siup'),
 			url(r'^aksi-tolak/$', self.admin_site.admin_view(self.penolakanizin), name='penolakanizin'),
 			url(r'^create-skizin/$', self.admin_site.admin_view(self.create_skizin), name='create_skizin'),
+			url(r'^perpanjangan-skizin/$', self.admin_site.admin_view(self.save_perubahan_masaberlaku_iujk), name='save_perubahan_masaberlaku_iujk'),
 			url(r'^cetak-siup-asli/(?P<id_pengajuan_izin_>[0-9 A-Za-z_\-=]+)$', self.admin_site.admin_view(self.cetak_siup_asli), name='cetak_siup_asli'),
 			# url(r'^verifikasi/$', self.admin_site.admin_view(self.verifikasi), name='verifikasi'),
 			url(r'^verifikasi-operator/$', self.admin_site.admin_view(self.verifikasi_operator), name='verifikasi_operator'),

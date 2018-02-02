@@ -97,12 +97,33 @@ function create_skizin(id_detil_siup){
 				success: function(response) { // on success..
 					respon = $.parseJSON(response)
 					if(respon.success){
-								toastr["success"](respon.pesan)
-								window.location.href= "";
+						if($('#id_tanggal_pendirian').val() != ""){
+							tgl_masa_berlaku = $('#id_tanggal_pendirian').val()
+							$.ajax({ // create an AJAX call...
+								data: { csrfmiddlewaretoken: csrf_token, id_detil_siup: id_detil_siup, tgl_masa_berlaku: tgl_masa_berlaku }, // get the form data
+								type: 'POST', // GET or POST
+								url: '/admin/izin/pengajuanizin/perpanjangan-skizin/', // the file to call
+								success: function(response) { 
+									if(respon.success){
+										toastr["success"](respon.pesan)
+										// window.location.href= "";
+									}else{
+										toastr["error"](respon.pesan)
+									}
+									
+								},
+								error: function(data) {                
+										toast_server_error()
+								}
+							});
+						}else{
+							toastr["success"](respon.pesan)
+							// window.location.href= "";
 						}
-						else{
-								toastr["error"](respon.pesan)
-						}
+						
+					}else{
+						toastr["error"](respon.pesan)
+					}
 				},
 				error: function(data) {                
 						toast_server_error()
