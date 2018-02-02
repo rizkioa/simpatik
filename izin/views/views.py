@@ -1307,7 +1307,7 @@ def ajax_cek_pengajuan(request):
 	# print no_pengajuan_
 	if no_pengajuan_:
 		no_pengajuan_ = no_pengajuan_.upper()
-		pengajuan_list = PengajuanIzin.objects.filter(no_pengajuan=no_pengajuan_).last()
+		pengajuan_list = PengajuanIzin.objects.filter(no_pengajuan__icontains=no_pengajuan_).last()
 		if pengajuan_list:
 			url = reverse('list_track_pengajuan', kwargs={'id_pengajuan': pengajuan_list.id} )
 			data = {'success': True, 'pesan': 'Pencarian pengajuan sukses.', 'url': url}
