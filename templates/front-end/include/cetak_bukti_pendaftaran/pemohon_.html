@@ -43,6 +43,6 @@
     <tr>
         <td width="25%">Pekerjaan</td>
         <td width="5%">:</td>
-        <td width="65%">{{pengajuan.pemohon.pekerjaan}}</td>
+        <td width="65%">{% if pengajuan.pemohon.pekerjaan %}{{pengajuan.pemohon.pekerjaan}}{% else %}{{pengajuan.pemohon.keterangan_pekerjaan}}{% endif %}</td>
     </tr>
 </table>
