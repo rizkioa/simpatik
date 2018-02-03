@@ -27,6 +27,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
 		if api_url_obj:
 			api_url_dinkes = api_url_obj.url
+			api_berkas_dinkes = api_url_obj_.url[:-1]
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -72,6 +73,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encode}),
 			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'API_BERKAS_DINKES': api_berkas_dinkes,
 			'perusahaan': perusahaan_obj,
 			'url_view_survey': reverse("admin:tokoobat__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
 		

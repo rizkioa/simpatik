@@ -24,9 +24,11 @@ class ApotekAdmin(admin.ModelAdmin):
 
 		perusahaan_obj = pengajuan_obj.nama_apotek
 
-		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
-		if api_url_obj:
-			api_url_dinkes = api_url_obj.url
+		api_url_obj_ = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
+		if api_url_obj_:
+			api_url_dinkes = api_url_obj_.url
+			api_berkas_dinkes = api_url_obj_.url[:-1]
+			print api_url_dinkes
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -75,6 +77,7 @@ class ApotekAdmin(admin.ModelAdmin):
 			'url_view_survey': reverse("admin:apotek__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
 			'url_form': reverse("admin:izin_proses_izin_apotik"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'API_BERKAS_DINKES': api_berkas_dinkes,
 			'perusahaan': perusahaan_obj,
 			
 			})
