@@ -9,7 +9,9 @@ from django.core.urlresolvers import reverse, resolve
 from django.utils.safestring import mark_safe
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
-	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar', 'created_at')
+	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar',  'piutang', 'created_at')
+	search_fields = ('nomor_kwitansi', 'kode', 'pengajuan_izin__pemohon__nama_lengkap')
+
 
 	def get_fieldsets(self, request, obj=None):
 		fields = ('kode', 'nomor_kwitansi', 'jumlah_pembayaran', 'peruntukan', 'bank_pembayaran', 'nama_pemohon', 'nama_perusahaan', 'alamat_usaha' , 'tanggal_dibuat', 'piutang', 'terbayar')
@@ -136,7 +138,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 
 	def suit_cell_attributes(self, obj, column):
 		class_attr = ''
-		if column in ['terbayar',]:
+		if column in ['terbayar', 'piutang']:
 			class_attr += 'text-center'
 		return {'class': class_attr }
 
@@ -154,7 +156,7 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 			return ('kode', 'nomor_kwitansi', 'nama_pemohon', 'nama_perusahaan', 'jumlah_pembayaran', 'terbayar')
 		# if request.user.groups.filter(name='Kasir'):
 		else:
-			return ('kode', 'nomor_kwitansi', 'get_pemohon', 'jumlah_pembayaran', 'tanggal_dibuat', 'terbayar', 'get_cetak')
+			return ('kode', 'nomor_kwitansi', 'get_pemohon', 'jumlah_pembayaran', 'tanggal_dibuat', 'terbayar', 'piutang', 'get_cetak')
 
 	def get_queryset(self, request):
 		func_view, func_view_args, func_view_kwargs = resolve(request.path)
