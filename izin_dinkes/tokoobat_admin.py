@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import TokoObat
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+from requests.exceptions import ConnectionError
 import requests
 
 class TokoObatAdmin(admin.ModelAdmin):
@@ -26,6 +27,7 @@ class TokoObatAdmin(admin.ModelAdmin):
 		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
 		if api_url_obj:
 			api_url_dinkes = api_url_obj.url
+			api_berkas_dinkes = api_url_obj_.url[:-1]
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -42,15 +44,19 @@ class TokoObatAdmin(admin.ModelAdmin):
 			s = ""
 
 		no_pengajuan_encode = pengajuan_obj.no_pengajuan.encode('base64')
-		print no_pengajuan_encode
 		no_pengajuan_encode = no_pengajuan_encode[:-1]
 
 		api_url_obj = Settings.objects.filter(parameter='URL GET SURVEY DINKES').last()
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
-			
+			try:
+				get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+				extra_context.update({
+					'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+					})
+			except ConnectionError as e:
+				messages.add_message(request, messages.ERROR, "Koneksi pada URL Request gagal, Tidak Bisa Mengambil data dinkes, Cek kembali Url Request server ("+url_get_dinkes+")")
 		# print API_URL_DINKES
 		extra_context.update({
 			'has_permission': True,
@@ -67,9 +73,10 @@ class TokoObatAdmin(admin.ModelAdmin):
 			'url_cetak': reverse("admin:tokoobat__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encode}),
 			'url_form': reverse("admin:izin_proses_izin_toko_obat"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'API_BERKAS_DINKES': api_berkas_dinkes,
 			'perusahaan': perusahaan_obj,
 			'url_view_survey': reverse("admin:tokoobat__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
-			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+		
 			})
 		return render(request, "admin/izin_dinkes/tokoobat/view_verifikasi.html", extra_context)
 
@@ -100,16 +107,18 @@ class TokoObatAdmin(admin.ModelAdmin):
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/ITO/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
-			extra_context = {
-				'is_popup': 'popup',
-				'no_pengajuan': no_pengajuan,
-				'title': 'View Hasil Survey Optikal',
-				'url_server_dinkes': url_get_dinkes,
-				'key': key_get,
-				'data': perincian_json.text,
-				}
-
+			try:
+			 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/ITO/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
+				extra_context = {
+					'is_popup': 'popup',
+					'no_pengajuan': no_pengajuan,
+					'title': 'View Hasil Survey Optikal',
+					'url_server_dinkes': url_get_dinkes,
+					'key': key_get,
+					'data': perincian_json.text,
+					}
+			except ConnectionError as e:
+				messages.add_message(request, messages.ERROR, "Koneksi pada URL Request gagal, Tidak Bisa Mengambil data dinkes, Cek kembali Url Request server ("+url_get_dinkes+")")
 		return render(request, "admin/izin_dinkes/view_survey.html", extra_context)
 
 	def get_urls(self):
@@ -118,6 +127,6 @@ class TokoObatAdmin(admin.ModelAdmin):
 		my_urls = patterns('',
 			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_tokoobat), name='tokoobat__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.cetak_skizin), name='tokoobat__cetak_skizin'),
-			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
+			url(r'^view-rekomendasi/(?P<no_pengajuan>[0-9A-Za-z_\-/]+)$', self.admin_site.admin_view(self.view_survey), name='	'),
 			)
 		return my_urls + urls

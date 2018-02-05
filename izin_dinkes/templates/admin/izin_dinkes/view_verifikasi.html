@@ -465,7 +465,7 @@
 								<section class="tile">
 									<div class="tile-header">
 										<center>
-											<h1 class="custom-font"><strong>Laporan Survey </strong></h1>
+											<h1 class="custom-font"><strong>Laporan Survey Dinas Kesehatan</strong></h1>
 										</center>
 										
 									</div>
@@ -473,7 +473,10 @@
 										<div class="row">
 											<div class="col-md-12">
 												<center>
-													<a onclick="openPopupCenter('{{ url_view_survey }}','Preview Survey Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10"><i class="fa fa-arrow-right"></i> <span>Lihat Laporan Survey</span></a><br>
+													<div class="laporan-survey">
+														<a onclick="openPopupCenter('{{ url_view_survey }}','Preview Survey Surat {{pengajuan.pemohon.nama_lengkap}}', 1200, 600)" style="width: 30%" class="btn btn-info btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10 "><i class="fa fa-arrow-right"></i> <span>Lihat Laporan Survey</span></a><br>
+													</div>
+													
 												</center>
 												<div class="panel panel-darkgray" style="background-color: #525348  !important;color: white;border: 0;border-radius: 6px; padding-bottom: 10px;">
 													<div class="panel-body">
@@ -708,7 +711,7 @@
 									<div class="panel-body">
 										<br>
 										<label class="checkbox checkbox-custom-alt">
-											<input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala DPMPTSP dan menyatakan proses pengajuan ini selsai.
+											<input id="centang_selsai_izin" type="checkbox" ><i></i> Anda telah membubuhkan cap pada izin yang telah ditandatangani Kepala DPMPTSP dan menyatakan proses pengajuan ini selesai.
 										</label>
 									</div>
 									<div class="panel-footer">
@@ -790,13 +793,23 @@
 					FormatCurrency(this)
 				});
 			});
-			pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
-			console.log(pengajuan_dinkes)
-			if (pengajuan_dinkes.success == true){
-				$('#no_rekom_dinkes').text(pengajuan_dinkes.data[0].no_surat)
-			}else{
-				$('#no_rekom_dinkes').text('Belum Diterbitkan')
-			}
+			{% if data_get_pengajuan_dinkes %}
+				pengajuan_dinkes = JSON.parse('{{data_get_pengajuan_dinkes|safe}}')
+				console.log(pengajuan_dinkes)
+				if (pengajuan_dinkes.success == true){
+					$('#no_rekom_dinkes').text(pengajuan_dinkes.data[0].no_surat)
+					if(pengajuan_dinkes.data[0].beras != ""){
+						$('.laporan-survey').after("<a href='{{ API_BERKAS_DINKES }}"+pengajuan_dinkes.data[0].berkas+"' target='blank_' style='width: 30%' class='btn btn-success btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10'><i class='fa fa-arrow-right'></i> <span>Lihat Berkas Rekomendasi</span></a><br>")
+					}else{
+						$('.laporan-survey').after("<a href='#' style='width: 30%' class='btn btn-success btn-rounded-20 btn-ef btn-ef-5 btn-ef-5a mb-10' disabled><i class='fa fa-arrow-right'></i> <span>Lihat Berkas Rekomendasi</span></a><br>")
+					}
+					
+				}else{
+					$('#no_rekom_dinkes').text('Belum Diterbitkan')
+				}
+			{% else %}
+				$('#no_rekom_dinkes').text('Gagal Mengambil Data')
+			{% endif %}
 			
 		});
 

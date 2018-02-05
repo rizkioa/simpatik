@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import Laboratorium
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
@@ -8,6 +8,9 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+from requests.exceptions import ConnectionError
+
+import requests
 
 class LaboratoriumAdmin(admin.ModelAdmin):
 
@@ -22,6 +25,7 @@ class LaboratoriumAdmin(admin.ModelAdmin):
 		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
 		if api_url_obj:
 			api_url_dinkes = api_url_obj.url
+			api_berkas_dinkes = api_url_obj_.url[:-1]
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -61,6 +65,7 @@ class LaboratoriumAdmin(admin.ModelAdmin):
 			'url_cetak': reverse("admin:laboratorium__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_izin_laboratorium"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'API_BERKAS_DINKES': api_berkas_dinkes,
 			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/laboratorium/view_verifikasi.html", extra_context)
@@ -80,7 +85,7 @@ class LaboratoriumAdmin(admin.ModelAdmin):
 		from django.conf.urls import patterns, url
 		urls = super(LaboratoriumAdmin, self).get_urls()
 		my_urls = patterns('',
-			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_laboratorium), name='laboratorium__view_verifikasi'),
+			url(r'^view-verfikasi/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.view_pengajuan_izin_laboratorium), name='izinlaboratorium__view_verifikasi'),
 			url(r'^cetak/(?P<id_pengajuan>[0-9]+)$', self.admin_site.admin_view(self.cetak_skizin), name='laboratorium__cetak_skizin'),
 			)
 		return my_urls + urls

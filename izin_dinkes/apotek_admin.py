@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import Apotek
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
@@ -9,6 +9,7 @@ from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
 from izin.utils import send_email_html
+from requests.exceptions import ConnectionError
 
 import requests
 
@@ -23,9 +24,11 @@ class ApotekAdmin(admin.ModelAdmin):
 
 		perusahaan_obj = pengajuan_obj.nama_apotek
 
-		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
-		if api_url_obj:
-			api_url_dinkes = api_url_obj.url
+		api_url_obj_ = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
+		if api_url_obj_:
+			api_url_dinkes = api_url_obj_.url
+			api_berkas_dinkes = api_url_obj_.url[:-1]
+			print api_url_dinkes
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -49,8 +52,15 @@ class ApotekAdmin(admin.ModelAdmin):
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
-			# print get_pengajuan_dinkes.text
+			try:
+				get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_encode+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+				extra_context.update({
+					'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+					})
+			except ConnectionError as e:
+				messages.add_message(request, messages.ERROR, "Koneksi pada URL Request gagal, Tidak Bisa Mengambil data dinkes, Cek kembali Url Request server ("+url_get_dinkes+")")
+				# print e
+
 		extra_context.update({
 			'has_permission': True,
 			'title': 'Proses Verifikasi Pengajuan Izin Apotek',
@@ -63,12 +73,13 @@ class ApotekAdmin(admin.ModelAdmin):
 			'survey': s,
 			'banyak': len(Apotek.objects.filter(no_izin__isnull=False))+1,
 			'title_verifikasi': get_title_verifikasi(request, pengajuan_obj, skizin_obj),
-			'url_cetak': reverse("admin:apotek__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id, 'no_pengajuan': no_pengajuan_encode}),
+			'url_cetak': reverse("admin:apotek__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id	, 'no_pengajuan': no_pengajuan_encode}),
 			'url_view_survey': reverse("admin:apotek__view_survey", kwargs={'no_pengajuan': no_pengajuan_encode}),
 			'url_form': reverse("admin:izin_proses_izin_apotik"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'API_BERKAS_DINKES': api_berkas_dinkes,
 			'perusahaan': perusahaan_obj,
-			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+			
 			})
 		return render(request, "admin/izin_dinkes/apotek/view_verifikasi.html", extra_context)
 
@@ -83,15 +94,18 @@ class ApotekAdmin(admin.ModelAdmin):
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-			get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+			try:
+				get_pengajuan_dinkes = requests.get(url_get_dinkes+'admin/izin/pengajuanizin/'+no_pengajuan_+'/get-pengajuanizin-json/?key='+key_get, headers={'content-type': 'application/json'})
+				extra_context.update({
+					'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
+					})
+			except ConnectionError as e:
+				extra_context.update({
+					'pengajuan' : pengajuan_obj,
+					'skizin' : skizin_obj,
+					'title' : "Cetak SK Izin Apotek "+pengajuan_obj.get_no_skizin()
+					})
 
-
-		extra_context.update({
-			'pengajuan' : pengajuan_obj,
-			'skizin' : skizin_obj,
-			'data_get_pengajuan_dinkes': get_pengajuan_dinkes.text,
-			'title' : "Cetak SK Izin Apotek "+pengajuan_obj.get_no_skizin()
-			})
 		return render(request, "front-end/include/formulir_izin_apotik/cetak_skizin_apotek.html", extra_context)
 
 	def view_survey(self, request, no_pengajuan):
@@ -100,17 +114,19 @@ class ApotekAdmin(admin.ModelAdmin):
 		if api_url_obj:
 			url_get_dinkes = api_url_obj.url
 			key_get = api_url_obj.value
-		 	perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IAP/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
-		 	# no_pengajuan_ = (no_pengajuan).decode('base64')
-		 	# print type(no_pengajuan)
-			extra_context = {
-				'is_popup': 'popup',
-				'no_pengajuan': no_pengajuan,
-				'title': 'View Hasil Survey Apotek',
-				'url_server_dinkes': url_get_dinkes,
-				'key': key_get,
-				'data': perincian_json.text,
-				}
+			try:
+		 		perincian_json = requests.get(url_get_dinkes+'admin/izin/perincian/IAP/get-perincian-json/?key='+key_get, headers={'content-type': 'application/json'})
+
+				extra_context = {
+					'is_popup': 'popup',
+					'no_pengajuan': no_pengajuan,
+					'title': 'View Hasil Survey Apotek',
+					'url_server_dinkes': url_get_dinkes,
+					'key': key_get,
+					'data': perincian_json.text,
+					}
+			except ConnectionError as e:
+				messages.add_message(request, messages.ERROR, "Koneksi pada URL Request gagal, Tidak Bisa Mengambil data dinkes, Cek kembali Url Request server ("+url_get_dinkes+")")
 
 		return render(request, "admin/izin_dinkes/view_survey.html", extra_context)
 

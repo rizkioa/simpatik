@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from models import PenutupanApotek
 from django.shortcuts import get_object_or_404, render
 from kepegawaian.models import UnitKerja
@@ -8,6 +8,9 @@ from django.core.urlresolvers import reverse
 from utils import get_title_verifikasi
 from simpdu.api_settings import API_URL_PENGAJUAN_DINKES
 from master.models import Settings
+from requests.exceptions import ConnectionError
+
+import requests
 
 class PenutupanApotekAdmin(admin.ModelAdmin):
 
@@ -26,6 +29,7 @@ class PenutupanApotekAdmin(admin.ModelAdmin):
 		api_url_obj = Settings.objects.filter(parameter='API URL PENGAJUAN DINKES').last()
 		if api_url_obj:
 			api_url_dinkes = api_url_obj.url
+			api_berkas_dinkes = api_url_obj_.url[:-1]
 
 		h = Group.objects.filter(name="Cek Lokasi")
 		if h.exists():
@@ -65,6 +69,7 @@ class PenutupanApotekAdmin(admin.ModelAdmin):
 			'url_cetak': reverse("admin:penutupan_apotek__cetak_skizin", kwargs={'id_pengajuan': pengajuan_obj.id}),
 			'url_form': reverse("admin:izin_proses_izin_penutupan_apotek"),
 			'API_URL_PENGAJUAN_DINKES': api_url_dinkes,
+			'API_BERKAS_DINKES': api_berkas_dinkes,
 			'perusahaan': perusahaan_obj
 			})
 		return render(request, "admin/izin_dinkes/penutupan_apotek/view_verifikasi.html", extra_context)

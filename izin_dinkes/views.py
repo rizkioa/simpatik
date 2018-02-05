@@ -662,8 +662,8 @@ def upload_berkas(request):
 										berkas.nama_berkas = "Surat Rekomendasi IAI "+p.no_pengajuan
 										berkas.keterangan = "Surat Rekomendasi IAI "+p.no_pengajuan
 									elif kode == 'KTP':
-										berkas.nama_berkas = "KTP "+p.no_pengajuan
-										berkas.keterangan = "KTP "+p.no_pengajuan
+										berkas.nama_berkas = "KTP "+p.pemohon.get_ktp()
+										berkas.keterangan = "KTP "+p.pemohon.get_ktp()
 									elif kode == 'Denah Lokasi':
 										berkas.nama_berkas = "Denah Lokasi "+p.no_pengajuan
 										berkas.keterangan = "Denah Lokasi "+p.no_pengajuan
@@ -861,7 +861,7 @@ def ajax_load_berkas_apotek(request, id_pengajuan):
 					id_berkas.append(rekom_iai.id)
 					apotek.berkas_terkait_izin.add(rekom_iai)
 
-				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				ktp = berkas_.filter(keterangan="KTP "+pengajuan_obj.pemohon.get_ktp()).last()
 				if ktp:
 					url_berkas.append(ktp.berkas.url)
 					id_elemen.append('ktp')
@@ -1098,8 +1098,8 @@ def upload_berkas_laboratorium(request):
 									berkas = form.save(commit=False)
 									kode = request.POST.get('kode')
 									if kode == 'KTP':
-										berkas.nama_berkas = "NO KTP "+p.nama_laboratorium
-										berkas.keterangan = "NO KTP "+p.no_pengajuan
+										berkas.nama_berkas = "KTP "+p.pemohon.get_ktp()
+										berkas.keterangan = "KTP "+p.pemohon.get_ktp()
 									elif kode == 'IMB dan Izin Gangguan':
 										berkas.nama_berkas = "IMB dan Izin Gangguan "+p.nama_laboratorium
 										berkas.keterangan = "IMB dan Izin Gangguan "+p.no_pengajuan
@@ -1176,7 +1176,7 @@ def ajax_load_berkas_laboratorium(request, id_pengajuan):
 			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
 
 			if berkas_:
-				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				ktp = berkas_.filter(keterangan="KTP "+pengajuan_obj.pemohon.get_ktp()).last()
 				if ktp:
 					url_berkas.append(ktp.berkas.url)
 					id_elemen.append('ktp')
@@ -2100,8 +2100,8 @@ def upload_berkas_mendirikan_klinik(request):
 									berkas = form.save(commit=False)
 									kode = request.POST.get('kode')
 									if kode == 'KTP':
-										berkas.nama_berkas = "KTP "+p.no_pengajuan
-										berkas.keterangan = "KTP "+p.no_pengajuan
+										berkas.nama_berkas = "KTP "+p.pemohon.get_ktp()
+										berkas.keterangan = "KTP "+p.pemohon.get_ktp()
 									elif kode == 'NPWP':
 										berkas.nama_berkas = "NPWP "+p.no_pengajuan
 										berkas.keterangan = "NPWP "+p.no_pengajuan
@@ -2180,7 +2180,7 @@ def ajax_load_berkas_mendirikan_klinik(request, id_pengajuan):
 			berkas_ = pengajuan_obj.berkas_terkait_izin.all()
 
 			if berkas_:
-				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				ktp = berkas_.filter(keterangan="KTP "+pengajuan_obj.pemohon.get_ktp()).last()
 				if ktp:
 					url_berkas.append(ktp.berkas.url)
 					id_elemen.append('ktp')
@@ -2331,6 +2331,8 @@ def save_izin_operasional_klinik(request):
 						if form_operasional_klinik.is_valid():
 							p = form_operasional_klinik.save(commit=False)
 							p.save()
+							pengajuan_obj.jenis_klinik_id = jenis_klinik
+							pengajuan_obj.save()
 							data = {'success': True, 'pesan': 'Data Izin Operasional Klinik berhasil tersimpan.'}
 						else:
 							data = form_operasional_klinik.errors.as_json__operasional_klinik()
@@ -2388,9 +2390,9 @@ def upload_berkas_operasional_klinik(request):
 									elif kode == 'Surat Pernyataan':
 										berkas.nama_berkas = "Surat Pernyataan "+p.no_pengajuan
 										berkas.keterangan = "Surat Pernyataan "+p.no_pengajuan
-									elif kode == 'KTP':
-										berkas.nama_berkas = "KTP "+p.no_pengajuan
-										berkas.keterangan = "KTP "+p.no_pengajuan
+									if kode == 'KTP':
+										berkas.nama_berkas = "KTP "+p.pemohon.get_ktp()
+										berkas.keterangan = "KTP "+p.pemohon.get_ktp()
 									elif kode == 'NPWP':
 										berkas.nama_berkas = "NPWP "+p.no_pengajuan
 										berkas.keterangan = "NPWP "+p.no_pengajuan
@@ -2499,7 +2501,7 @@ def ajax_load_berkas_operasional_klinik(request, id_pengajuan):
 					id_berkas.append(surat_pernyataan.id)
 					pengajuan_obj.berkas_terkait_izin.add(surat_pernyataan)
 
-				ktp = berkas_.filter(keterangan='KTP '+pengajuan_obj.no_pengajuan).last()
+				ktp = berkas_.filter(keterangan="KTP "+pengajuan_obj.pemohon.get_ktp()).last()
 				if ktp:
 					url_berkas.append(ktp.berkas.url)
 					id_elemen.append('ktp')
