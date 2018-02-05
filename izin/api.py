@@ -387,7 +387,7 @@ class DetilPembayaranResource(CORSModelResource):
 						bank = retribusi_obj.bank_pembayaran.nama_bank
 					total_bayar = None
 					if retribusi_obj.jumlah_pembayaran:
-						total_bayar = int(retribusi_obj.jumlah_pembayaran.replace(".", ""))
+						total_bayar = int(retribusi_obj.jumlah_pembayaran.replace(".", "").split(",")[0])
 					data = {'success': True, 'pesan': 'Sukses. Retribusi berhasil diload.', 'kode': int(retribusi_obj.kode), 'nomor_kwitansi': retribusi_obj.nomor_kwitansi, 'pemohon': nama_pemohon, "peruntukan": retribusi_obj.peruntukan, 'tanggal_bayar': tanggal_bayar, 'total_bayar': total_bayar ,'bank': bank, 'terbayar': retribusi_obj.terbayar, 'piutang': retribusi_obj.piutang}
 					# else:
 					# 	data = {'success': False, 'pesan': 'Terjadi Kesalahan, Retribusi telah melewati batas pembayaran.'}
