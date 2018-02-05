@@ -374,12 +374,14 @@ class DetilPembayaranResource(CORSModelResource):
 					nama_pemohon = ""
 					tanggal_bayar = None
 					bank = ""
+					pengajuan_izin = None
 					if retribusi_obj.piutang == True:
 						nama_pemohon = retribusi_obj.nama_pemohon
 					else:
 						if retribusi_obj.pengajuan_izin:
 							if retribusi_obj.pengajuan_izin.pemohon:
 								nama_pemohon = retribusi_obj.pengajuan_izin.pemohon.nama_lengkap
+								pengajuan_izin = retribusi_obj.pengajuan_izin.kelompok_jenis_izin.kelompok_jenis_izin
 					
 					if retribusi_obj.tanggal_bayar:
 						tanggal_bayar = retribusi_obj.tanggal_bayar.strftime("%d-%m-%Y")
@@ -388,7 +390,8 @@ class DetilPembayaranResource(CORSModelResource):
 					total_bayar = None
 					if retribusi_obj.jumlah_pembayaran:
 						total_bayar = int(retribusi_obj.jumlah_pembayaran.replace(".", "").split(",")[0])
-					data = {'success': True, 'pesan': 'Sukses. Retribusi berhasil diload.', 'kode': int(retribusi_obj.kode), 'nomor_kwitansi': retribusi_obj.nomor_kwitansi, 'pemohon': nama_pemohon, "peruntukan": retribusi_obj.peruntukan, 'tanggal_bayar': tanggal_bayar, 'total_bayar': total_bayar ,'bank': bank, 'terbayar': retribusi_obj.terbayar, 'piutang': retribusi_obj.piutang}
+
+					data = {'success': True, 'pesan': 'Sukses. Retribusi berhasil diload.', 'kode': int(retribusi_obj.kode), 'nomor_kwitansi': retribusi_obj.nomor_kwitansi, 'pemohon': nama_pemohon, "peruntukan": retribusi_obj.peruntukan, 'tanggal_bayar': tanggal_bayar, 'total_bayar': total_bayar ,'bank': bank, 'terbayar': retribusi_obj.terbayar, 'piutang': retribusi_obj.piutang, 'pengajuan_izin': pengajuan_izin}
 					# else:
 					# 	data = {'success': False, 'pesan': 'Terjadi Kesalahan, Retribusi telah melewati batas pembayaran.'}
 				except DetilPembayaran.DoesNotExist:

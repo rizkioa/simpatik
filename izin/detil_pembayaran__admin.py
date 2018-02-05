@@ -10,6 +10,8 @@ from django.utils.safestring import mark_safe
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar',  'piutang', 'created_at')
+	search_fields = ('nomor_kwitansi', 'kode', 'pengajuan_izin__pemohon__nama_lengkap')
+
 
 	def get_fieldsets(self, request, obj=None):
 		fields = ('kode', 'nomor_kwitansi', 'jumlah_pembayaran', 'peruntukan', 'bank_pembayaran', 'nama_pemohon', 'nama_perusahaan', 'alamat_usaha' , 'tanggal_dibuat', 'piutang', 'terbayar')
