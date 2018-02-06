@@ -298,7 +298,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			  	extra_context.update({'pemilik_tanah': ", ".join(k for k,v in C.items())})
 
 		  	else:
-		  		extra_context.update({'sertifikat_tanah_list': pengajuan_.no_surat_tanah +" Tanggal "+ pengajuan_.tanggal_surat_tanah.strftime('%d %B %Y')})
+		  		if pengajuan_.tanggal_surat_tanah:
+		  			extra_context.update({'sertifikat_tanah_list': pengajuan_.no_surat_tanah +" Tanggal "+ pengajuan_.tanggal_surat_tanah.strftime('%d %B %Y')})
+		  		else:
+		  			extra_context.update({'sertifikat_tanah_list': pengajuan_.no_surat_tanah})
 		  		extra_context.update({'luas_sertifikat_tanah_list': str(pengajuan_.luas_tanah)+" "+mark_safe("M&sup2;")})
 		  		extra_context.update({'pemilik_tanah': pengajuan_.atas_nama_sertifikat_petak })
 
