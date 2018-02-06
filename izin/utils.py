@@ -122,7 +122,7 @@ def generate_kode_bank_jatim(no_urut):
 	nomor = ""
 	panjang_ = len(str(no_urut))
 	if no_urut:
-		nomor = str(now.strftime("%d"))+str(now.strftime("%m"))+str(now.strftime("%Y"))
+		nomor = str(now.strftime("%-d"))+str(now.strftime("%-m"))+str(now.strftime("%Y"))
 		if panjang_ == 1:
 			nomor += "0000000"
 		elif panjang_ == 2:
