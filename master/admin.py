@@ -162,7 +162,18 @@ admin.site.register(JenisKontruksi)
 admin.site.register(JenisTipeReklame)
 admin.site.register(JenisKualifikasi)
 admin.site.register(Template)
-admin.site.register(NotificationSMS)
+
+class NotificationSMSAdmin(admin.ModelAdmin):
+	list_display = ('nomor_tujuan', 'pesan', 'keterangan', 'get_status')
+
+	def get_status(self, obj):
+		if obj.status == 1:
+			return True
+		else:
+			return False
+	get_status.short_description = "No. Pengajuan"
+
+admin.site.register(NotificationSMS, NotificationSMSAdmin)
 
 def get_jenis_bangunan(request):
 	bangunan_list = BangunanJenisKontruksi.objects.all()
