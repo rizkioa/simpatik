@@ -967,7 +967,7 @@ def cetak_reklame(request,id_pengajuan_):
 	extra_context = {}
 	url_ = reverse('formulir_reklame')
 	if id_pengajuan_:
-		pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_)
+		pengajuan_ = get_object_or_404(DetilReklame, id=id_pengajuan_)
 		if pengajuan_.perusahaan != '':
 			alamat_ = ""
 			alamat_perusahaan_ = ""
@@ -1007,13 +1007,13 @@ def cetak_reklame(request,id_pengajuan_):
 def cetak_bukti_pendaftaran_reklame(request, id_pengajuan_):
 	extra_context = {}
 	if id_pengajuan_:
-		pengajuan_ = get_object_or_404(DetilTDP, id=id_pengajuan_)
+		pengajuan_ = get_object_or_404(DetilReklame, id=id_pengajuan_)
 		if pengajuan_.perusahaan != '':
 			alamat_ = ""
 			alamat_perusahaan_ = ""
 			if pengajuan_.pemohon:
 				if pengajuan_.pemohon.desa:
-					alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+					alamat_ = pengajuan_.pemohon.desa.lokasi_lengkap()
 					extra_context.update({ 'alamat_pemohon': alamat_ })
 				extra_context.update({ 'pemohon': pengajuan_.pemohon })
 				paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
@@ -1026,7 +1026,8 @@ def cetak_bukti_pendaftaran_reklame(request, id_pengajuan_):
 					extra_context.update({ 'alamat_perusahaan': alamat_perusahaan_ })
 				extra_context.update({ 'perusahaan': pengajuan_.perusahaan })
 				syarat = Syarat.objects.filter(jenis_izin__jenis_izin__id="3")
-			letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			# letak_ = pengajuan_.letak_pemasangan + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			letak_ = pengajuan_.letak_pemasangan
 			ukuran_ = str(int(pengajuan_.panjang))+"x"+str(int(pengajuan_.lebar))+"x"+str(int(pengajuan_.sisi))
 			if pengajuan_.tanggal_mulai:
 				awal = pengajuan_.tanggal_mulai

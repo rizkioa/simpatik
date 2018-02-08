@@ -136,3 +136,61 @@ def formulir_reklame(request):
 	else:
 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
 		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
+
+# def formulir_reklame(request):
+# 	extra_context={}
+# 	if 'id_kelompok_izin' in request.COOKIES.keys():
+# 		jenispermohonanizin_list = JenisPermohonanIzin.objects.filter(jenis_izin__id=request.COOKIES['id_kelompok_izin'])
+# 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+# 		extra_context.update({'title': 'Reklame Baru'})
+# 		negara = Negara.objects.all()
+# 		kecamatan = Kecamatan.objects.filter(kabupaten__kode='06', kabupaten__provinsi__kode='35')
+# 		jenis_pemohon = JenisPemohon.objects.all()
+# 		bentuk_kegiatan_usaha_list = BentukKegiatanUsaha.objects.all()
+# 		jenis_penanaman_modal_list = JenisPenanamanModal.objects.all()
+# 		kelembagaan_list = Kelembagaan.objects.all()
+# 		kbli_list = KBLI.objects.all()
+# 		# produk_utama_list = ProdukUtama.objects.all()
+# 		jenis_legalitas_list = JenisLegalitas.objects.all()
+# 		reklame_jenis_list = JenisReklame.objects.all()
+# 		tipe_reklame_list = JenisTipeReklame.objects.all()
+# 		extra_context.update({'negara': negara})
+# 		extra_context.update({'kecamatan': kecamatan})
+# 		extra_context.update({'jenis_pemohon':jenis_pemohon})
+		
+# 		# print request.COOKIES
+# 		extra_context.update({'tipe_reklame_list': tipe_reklame_list})
+# 		extra_context.update({'jenispermohonanizin_list': jenispermohonanizin_list})
+# 		extra_context.update({'bentuk_kegiatan_usaha_list': bentuk_kegiatan_usaha_list})
+# 		extra_context.update({'jenis_penanaman_modal_list': jenis_penanaman_modal_list})
+# 		extra_context.update({'kelembagaan_list': kelembagaan_list})
+# 		extra_context.update({'kbli_list': kbli_list})
+# 		# extra_context.update({'produk_utama_list': produk_utama_list})
+# 		extra_context.update({'jenis_legalitas_list': jenis_legalitas_list})
+# 		extra_context.update({'reklame_jenis_list': reklame_jenis_list})
+# 		extra_context.update({'has_permission': True })
+# 		extra_context.update({'keterangan_pekerjaan': KETERANGAN_PEKERJAAN })
+# 		# +++++++++++++++++++ jika cookie pengajuan ada dan di refrash +++++++++++++++++
+
+# 		if 'id_pengajuan' in request.COOKIES.keys():
+# 			if request.COOKIES.get('id_pengajuan', None) is not None and request.COOKIES.get('id_pengajuan') != '0':
+# 				try:
+# 					pengajuan_obj = DetilReklame.objects.get(id=request.COOKIES.get('id_pengajuan'))
+# 					extra_context.update({'pengajuan_': pengajuan_obj})
+# 					extra_context.update({'pengajuan_id': pengajuan_obj.id})
+
+# 					if pengajuan_.pemohon:
+# 						response.set_cookie(key='id_pemohon', value=pengajuan_.pemohon.id)
+# 					if pengajuan_.perusahaan:
+# 						response.set_cookie(key='id_perusahaan', value=pengajuan_.perusahaan.id)
+# 					if ktp_:
+# 						response.set_cookie(key='nomor_ktp', value=ktp_)
+# 				except ObjectDoesNotExist:
+# 					pass
+# 		template = loader.get_template("admin/izin/izin/form_wizard_reklame.html")
+# 		ec = RequestContext(request, extra_context)
+# 		response = HttpResponse(template.render(ec))
+# 		return res
+# 	else:
+# 		messages.warning(request, 'Anda belum memasukkan pilihan. Silahkan ulangi kembali.')
+# 		return HttpResponseRedirect(reverse('admin:add_wizard_izin'))
