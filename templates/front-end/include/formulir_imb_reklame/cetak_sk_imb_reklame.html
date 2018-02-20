@@ -389,7 +389,7 @@
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 121px;" align="left" width="150">a. Ukuran</td>
 	        			<td width="10">:</td>
-	        			<td>{{ukuran}}</td>
+	        			<td>{{ pengajuan.lebar|default_if_none:"-" }} M, Tinggi = {{ pengajuan.tinggi|default_if_none:"-" }} M</td>
 	        		</tr>
 	        		<tr>
 	        			<td colspan="3" style="padding-left: 121px;" align="left" width="120">b. Jumlah</td>

@@ -221,7 +221,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					letak_ = pengajuan_.lokasi+", "
 				if pengajuan_.desa:
 					letak_ = pengajuan_.desa.lokasi_lengkap()
-				ukuran_ = "Lebar = "+str(int(pengajuan_.lebar))+" M, Tinggi = "+str(int(pengajuan_.tinggi))+" M"  
+				ukuran_ = "Lebar = "+str(pengajuan_.lebar)+" M, Tinggi = "+str(pengajuan_.tinggi)+" M"  
 				jumlah_ = pengajuan_.jumlah
 				klasifikasi_ = pengajuan_.klasifikasi_jalan
 
