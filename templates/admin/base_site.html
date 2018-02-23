@@ -187,156 +187,10 @@
                     <a href="{% url 'admin:index' %}" class="offcanvas-toggle visible-xs-inline"><i class="fa fa-bars"></i></a>
                 {% endblock %}
             </div>
-            <!-- Branding end -->
-            <!-- Left-side navigation -->
-            <ul class="nav-left pull-left list-unstyled list-inline">
-                <li class="sidebar-collapse divided-right">
-                    <a href="#" class="collapse-sidebar">
-                        <i class="fa fa-outdent"></i>
-                    </a>
-                </li>
-                <li class="dropdown divided-right settings">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-cog"></i>
-                    </a>
-                    <ul class="dropdown-menu with-arrow animated littleFadeInUp" role="menu">
-                        <li>
-                            <ul class="color-schemes list-inline">
-                                <li class="title">Header Color:</li>
-                                <li><a href="#" class="scheme-drank header-scheme" data-scheme="scheme-default"></a></li>
-                                <li><a href="#" class="scheme-black header-scheme" data-scheme="scheme-black"></a></li>
-                                <li><a href="#" class="scheme-greensea header-scheme" data-scheme="scheme-greensea"></a></li>
-                                <li><a href="#" class="scheme-cyan header-scheme" data-scheme="scheme-cyan"></a></li>
-                                <li><a href="#" class="scheme-lightred header-scheme" data-scheme="scheme-lightred"></a></li>
-                                <li><a href="#" class="scheme-light header-scheme" data-scheme="scheme-light"></a></li>
-                                <li class="title">Branding Color:</li>
-                                <li><a href="#" class="scheme-drank branding-scheme" data-scheme="scheme-default"></a></li>
-                                <li><a href="#" class="scheme-black branding-scheme" data-scheme="scheme-black"></a></li>
-                                <li><a href="#" class="scheme-greensea branding-scheme" data-scheme="scheme-greensea"></a></li>
-                                <li><a href="#" class="scheme-cyan branding-scheme" data-scheme="scheme-cyan"></a></li>
-                                <li><a href="#" class="scheme-lightred branding-scheme" data-scheme="scheme-lightred"></a></li>
-                                <li><a href="#" class="scheme-light branding-scheme" data-scheme="scheme-light"></a></li>
-                                <li class="title">Sidebar Color:</li>
-                                <li><a href="#" class="scheme-drank sidebar-scheme" data-scheme="scheme-default"></a></li>
-                                <li><a href="#" class="scheme-black sidebar-scheme" data-scheme="scheme-black"></a></li>
-                                <li><a href="#" class="scheme-greensea sidebar-scheme" data-scheme="scheme-greensea"></a></li>
-                                <li><a href="#" class="scheme-cyan sidebar-scheme" data-scheme="scheme-cyan"></a></li>
-                                <li><a href="#" class="scheme-lightred sidebar-scheme" data-scheme="scheme-lightred"></a></li>
-                                <li><a href="#" class="scheme-light sidebar-scheme" data-scheme="scheme-light"></a></li>
-                                <li class="title">Active Color:</li>
-                                <li><a href="#" class="scheme-drank color-scheme" data-scheme="drank-scheme-color"></a></li>
-                                <li><a href="#" class="scheme-black color-scheme" data-scheme="black-scheme-color"></a></li>
-                                <li><a href="#" class="scheme-greensea color-scheme" data-scheme="greensea-scheme-color"></a></li>
-                                <li><a href="#" class="scheme-cyan color-scheme" data-scheme="cyan-scheme-color"></a></li>
-                                <li><a href="#" class="scheme-lightred color-scheme" data-scheme="lightred-scheme-color"></a></li>
-                                <li><a href="#" class="scheme-light color-scheme" data-scheme="light-scheme-color"></a></li>
-                            </ul>
 
-                        </li>
-
-                        <li>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label class="col-xs-8 control-label">Fixed header</label>
-                                    <div class="col-xs-4 control-label">
-                                        <div class="onoffswitch lightred small">
-                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="fixed-header" checked="">
-                                            <label class="onoffswitch-label" for="fixed-header">
-                                                <span class="onoffswitch-inner"></span>
-                                                <span class="onoffswitch-switch"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="form-group">
-                                <div class="row">
-                                    <label class="col-xs-8 control-label">Fixed aside</label>
-                                    <div class="col-xs-4 control-label">
-                                        <div class="onoffswitch lightred small">
-                                            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="fixed-aside" checked="">
-                                            <label class="onoffswitch-label" for="fixed-aside">
-                                                <span class="onoffswitch-inner"></span>
-                                                <span class="onoffswitch-switch"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <!-- Left-side navigation end -->
-            <!-- Search -->
-            <div class="search" id="main-search">
-                <input type="text" class="form-control underline-input" placeholder="Search...">
-            </div>
-            <!-- Search end -->
-            <!-- Right-side navigation -->
             {% block usertools %}
             <ul class="nav-right pull-right list-inline">
                 {% if has_permission %}
-                <li class="dropdown">
-                    <!-- <a href="#" class="hasnotifications dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><span class="icon-bg"><i class="fa fa-envelope"></i></span><span class="badge badge-info"></span><div class="ripple-container"></div></a> -->
-                    <ul class="dropdown-menu animated littleFadeInRight" role="menu">
-                        <li class="media notification-message">
-                            <a href="#">
-                                <div class="media-left">
-                                    <!-- <img class="img-circle avatar" src="assets/demo/avatar/avatar_01.png" alt=""> -->
-                                </div>
-                                <div class="media-body">
-                                    <h5 class="notification-heading"><strong></strong></h5>
-                                    <p><span class="text-gray">‒ Integer vitae libero ac risus egestas placerat.</span></p>
-                                    <span class="notification-time">2 mins ago</span>
-                                </div>
-                            <div class="ripple-container"></div></a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown messages">
-                    {% load logs %}
-                    {% get_logs user 4 as admin_log %}
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="" aria-expanded="false">
-                        <i class="fa fa-history"></i>
-                    </a>
-                    <div role="menu" class="dropdown-menu pull-right with-arrow panel panel-default animated littleFadeInDown">
-                        <div class="panel-heading">
-                            You have <strong>{{admin_log.1}}</strong> aktivitas
-                        </div>
-                        <ul class="list-group">                            
-                            
-                            {% for entry in admin_log.0 %}
-                                <li class="list-group-item">
-                                    <a class="media" href="{% if entry.is_deletion or not entry.get_admin_url %}{{ entry.get_admin_url }}{% else %}#{% endif %}">
-                                        <span class="pull-left media-object" style="margin-top: 20px;">
-                                            <div class="fa fa-{% if entry.is_addition %}plus-circle{% endif %}{% if entry.is_change %}edit{% endif %}{% if entry.is_deletion %}times{% endif %} fa-fw" style="color: #{% if entry.is_addition %}5cb85c{% endif %}{% if entry.is_change %}f0ad4e{% endif %}{% if entry.is_deletion %}d9534f{% endif %};">
-                                            </div>
-                                        </span>
-                                        <div class="media-body">
-                                            <span class="block">
-                                                <span class="contacts-title">{{ entry.object_repr|truncatechars:18 }}</span>&nbsp;<span class="mini quiet">{% if entry.content_type %}{% filter capfirst %}({% trans entry.content_type.name %}){% endfilter %}{% else %}{% trans '(Konten Tidak diketahui)' %}{% endif %}</span>
-                                            </span>
-                                            {% if entry.change_message %}
-                                                <small class="text-muted">{{ entry.change_message|truncatechars:40 }}</small>
-                                                <br />
-                                            {% endif %}
-                                            <small class="text-muted text-success">{{ entry.action_time|timesince }} {% trans "ago" %}</small>
-                                        </div>
-                                    </a>
-                                </li>
-                                
-                            {% endfor %}
-                            
-                        </ul>
-                        <div class="panel-footer">
-                            <a href="{% url 'admin:admin_logentry_changelist' %}">Lihat semua aktivitas <i class="pull-right fa fa-angle-right"></i></a>
-                        </div>
-                    </div>
-                </li>
                 <li class="dropdown nav-profile">
                     <a href class="dropdown-toggle" data-toggle="dropdown">
                         <img src="{{ user.get_foto }}" alt="" class="img-circle size-30x30">
@@ -395,14 +249,8 @@
 {% endblock %}
 
 {% block control_content %}
-    <!-- =================================================
-    ================= CONTROLS Content ===================
-    ================================================== -->
     <div id="controls">
         {% block sidebar_content %}
-            <!-- ================================================
-            ================= SIDEBAR Content ===================
-            ================================================= -->
             <aside id="sidebar">
                 <div id="sidebar-wrap">
                     <div class="panel-group slim-scroll" role="tablist">
@@ -411,74 +259,20 @@
                                 {% admin_tools_render_menu %}
                             {% endif %}
                         {% endif %}
-                        <div class="panel charts panel-default">
-                            <div class="panel-heading" role="tab">
-                                <h4 class="panel-title">
-                                    <a data-toggle="collapse" href="#sidebarCharts">
-                                        Ringkasan <i class="fa fa-angle-up"></i>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="sidebarCharts" class="panel-collapse collapse in" role="tabpanel">
-                                <div class="panel-body">
-                                    <div class="summary">
-
-                                        <div class="media">
-                                            <a class="pull-right" href="#">
-                                                <span class="sparklineChart"
-                                                      values="5, 8, 3, 4, 6, 2, 1, 9, 7"
-                                                      sparkType="bar"
-                                                      sparkBarColor="#92424e"
-                                                      sparkBarWidth="6px"
-                                                      sparkHeight="36px">
-                                                Loading...</span>
-                                            </a>
-                                            <div class="media-body">
-                                                Ijin Masuk Minggu Ini
-                                                <h4 class="media-heading">26, 149</h4>
-                                            </div>
-                                        </div>
-
-                                        <div class="media">
-                                            <a class="pull-right" href="#">
-                                                <span class="sparklineChart"
-                                                      values="2, 4, 5, 3, 8, 9, 7, 3, 5"
-                                                      sparkType="bar"
-                                                      sparkBarColor="#397193"
-                                                      sparkBarWidth="6px"
-                                                      sparkHeight="36px">
-                                                Loading...</span>
-                                            </a>
-                                            <div class="media-body">
-                                                Saldo Masuk Minggu Ini
-                                                <h4 class="media-heading">318, 651</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div style="width: 100%; height: 200px;">
+                            
                         </div>
                     </div>
                 </div>
             </aside>
-            <!--/ SIDEBAR Content -->
         {% endblock %}
 
         {% block rightbar_content %}
-            <!-- =================================================
-            ================= RIGHTBAR Content ===================
-            ================================================== -->
-            
-            <!--/ RIGHTBAR Content -->
         {% endblock %}
     </div>
-    <!--/ CONTROLS Content -->
 {% endblock %}
 
 {% block page_content %}
-    <!-- ====================================================
-    ================= CONTENT ===============================
-    ===================================================== -->
     <section id="content">
         <div class="page page-fullwidth-layout">
             <div class="pageheader">
@@ -500,7 +294,6 @@
                 {% endblock %}
             </div>
             <p class="lead">
-                <!-- MESSAGE -->
                 {% block messages %}
                     {% if messages %}
                     <div class="row">
@@ -515,7 +308,6 @@
                     </div>
                     {% endif %}
                 {% endblock messages %}
-                <!-- END MESSAGE -->
             </p>
             {% block content %}
             {% block object-tools %}{% endblock %}
@@ -525,7 +317,6 @@
         </div>
         {% block footer %}{{ block.super }}{% endblock %}
     </section>
-    <!--/ CONTENT -->
 {% endblock %}
 
 {% block extracontent %}

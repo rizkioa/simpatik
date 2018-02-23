@@ -117,15 +117,6 @@ class CustomMenu(Menu):
                     ]
                 )
 
-        # if request.user.is_superuser:
-        #     menu_utama.children += [
-        #         items.MenuItem(
-        #             title='Semua Pengajuan',
-        #             icon='fa fa-file-text', 
-        #             url=reverse('admin:semua_pengajuan'),                        
-        #         ),
-        #     ]
-
         if request.user.groups.filter(name="Operator").exists():
             menu_utama.children += [
                 items.MenuItem(
@@ -139,12 +130,6 @@ class CustomMenu(Menu):
                     css_classes='operator',
                     url=reverse('admin:verifikasi_operator'),  
                 ),
-                # items.MenuItem(
-                #     title='Pengaduan Izin',
-                #     icon='icon-microphone',
-                #     css_classes='pengaduanizin',
-                #     url=reverse('admin:verifikasi_operator'),  
-                # )
                 items.MenuItem(
                     title='Pengaduan Izin',
                     icon='fa fa-file-text',
@@ -573,6 +558,7 @@ class CustomMenu(Menu):
                 menu_pengaturan,
                 
             ]
+
         if request.user.groups.filter(Q(name="Cek Lokasi")).exists():
             self.children += [
             items.MenuItem(
