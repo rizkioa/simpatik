@@ -164,7 +164,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					'kode': kode,
 					'bank_pembayaran': bank_list,
 					'nomor_kwitansi': nomor_kwitansi,
-					'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) UMUM",
+					'peruntukan': "IZIN MENDIRIKAN BANGUNAN UNTUK "+bangunan.upper(),
 					'total_biaya': total_biaya
 					})
 			extra_context.update({
