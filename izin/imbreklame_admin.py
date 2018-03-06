@@ -121,7 +121,7 @@ class DetilIMBPapanReklameAdmin(admin.ModelAdmin):
 					'kode': kode,
 					'bank_pembayaran': bank_list,
 					'nomor_kwitansi': nomor_kwitansi,
-					'peruntukan': "IZIN MENDIRIKAN BANGUNAN (IMB) REKLAME",
+					'peruntukan': "IZIN MENDIRIKAN BANGUNAN UNTUK "+pengajuan_.jenis_papan_reklame.upper(),
 					'total_biaya': total_biaya
 					})
 			extra_context.update({
