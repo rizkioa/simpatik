@@ -298,7 +298,7 @@ class PengajuanIzin(MetaAtribut):
 	berkas_terkait_izin = models.ManyToManyField(Berkas, related_name='berkas_terkait_izin', verbose_name="Berkas Tambahan", blank=True)
 
 	def __unicode__(self):
-		return u'%s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
+		return u'%s - %s' % (str(self.no_pengajuan), str(self.pemohon))
 
 	def get_no_skizin(self):
 		no_izin = "-"
@@ -1572,8 +1572,8 @@ class DetilPembayaran(MetaAtribut):
 	bank_pembayaran = models.ForeignKey(BankPembayaran, null=True, blank=True, verbose_name="Bank Pembayaran")
 	terbayar = models.BooleanField(default=False, verbose_name="Apakah pembayaran sudah terbayar ?")
 	# pembayaran piutang
-	nama_pemohon = models.CharField(max_length=255, verbose_name="Nama Pemohon", null=True, blank=True)
-	nama_perusahaan = models.CharField(max_length=255, verbose_name="Nama Perusahaan", null=True, blank=True)
+	nama_pemohon = models.CharField(max_length=255, verbose_name="Nama Pemohon", null=True, blank=True, help_text="Jika retribusi piutang isi nama pemohon.")
+	nama_perusahaan = models.CharField(max_length=255, verbose_name="Nama Perusahaan", null=True, blank=True, help_text="Jika retribusi piutang isi nama perusahaan.")
 	alamat_usaha = models.CharField(max_length=255, verbose_name="Alamat Usaha", null=True, blank=True)
 	piutang = models.BooleanField(verbose_name="Apakah pembayaran piutang ?", default=False)
 
