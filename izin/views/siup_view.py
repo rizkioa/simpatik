@@ -1265,7 +1265,8 @@ def load_perusahaan(request, npwp_):
 			legalitas_perubahan_no_akta = legalitas_perubahan.nomor_akta
 			legalitas_perubahan_tanggal_akta = legalitas_perubahan.tanggal_akta.strftime('%d-%m-%Y')
 			legalitas_perubahan_no_pengesahan = legalitas_perubahan.nomor_pengesahan
-			legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
+			if legalitas_perubahan.tanggal_pengesahan:
+				legalitas_perubahan_tanggal_pengesahan = legalitas_perubahan.tanggal_pengesahan.strftime('%d-%m-%Y')
 		# Legalitas Pengesahan Menteri Hukum dan HAM
 		legalitas_3 = perusahaan.legalitas_set.filter(jenis_legalitas_id=3).last()
 		legalitas_3_no_pengesahan = ""
