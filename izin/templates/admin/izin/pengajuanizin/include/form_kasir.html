@@ -60,9 +60,9 @@
 									<div class="form-group">
 										<label class="col-sm-2">Bank Pembayaran</label>
 										<div class="col-sm-4">
-											<select class="form-control chosen-select mb-10" name="bank_pembayaran">
+											<select class="form-control chosen-select" name="bank_pembayaran">
 												{% for b in bank_pembayaran %}
-												<option {{b.id}}>{{b.nama_bank}}</option>
+												<option value="{{b.id}}">{{b.nama_bank}}</option>
 												{% endfor %}
 											</select>
 										</div>
@@ -70,7 +70,7 @@
 
 									<div class="form-group">
 										<label for="input01" class="col-sm-2">Jumlah Dibayar </label>
-										<div class="col-sm-5">
+										<div class="col-sm-4">
 											<!-- <div class="input-group">
 												<span class="input-group-addon">Rp.</span>
 												<input type="text" class="form-control total-bayar input-sm" id="id_jumlah_pembayaran" name="jumlah_pembayaran" value="{{total_biaya}}">
@@ -79,8 +79,8 @@
 											<div class="input-group">
 											  <span class="input-group-addon">Rp.</span>
 											  <input type="text" class="form-control total-bayar" name="jumlah_pembayaran_depan" value="{{total_biaya}}" />
-											  <span class="input-group-addon" style="border-left: 0; border-right: 0;">,</span>
-											  <input style="width: 50%;" type="text" class="form-control" placeholder="00" name="jumlah_pembayaran_belakang" value="00" />
+											  <!-- <span class="input-group-addon" style="border-left: 0; border-right: 0;">,</span> -->
+											  <!-- <input style="width: 50%;" type="text" class="form-control" placeholder="00" name="jumlah_pembayaran_belakang" value="00" /> -->
 											</div>
 										</div>
 									</div>

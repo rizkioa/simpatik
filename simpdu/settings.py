@@ -222,7 +222,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'simpatik.kedirikab@gmail.com'
 EMAIL_HOST_PASSWORD = 'fgtcTff62pN36ZXT'
-DEFAULT_FROM_EMAIL = 'noreply@simpatik.kedirikab.go.id'
+DEFAULT_FROM_EMAIL = 'SIMPATIK KABUPATEN KEDIRI'
 
 CKEDITOR_CONFIGS = {
     'default': {

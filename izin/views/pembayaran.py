@@ -21,8 +21,8 @@ def detil_pembayaran_save(request):
 	if request.POST:
 		pengajuan_izin_id = request.POST.get('pengajuan_izin', None)
 		jumlah_pembayaran_depan = request.POST.get('jumlah_pembayaran_depan')
-		jumlah_pembayaran_belakang = request.POST.get('jumlah_pembayaran_belakang', "00")
-		jumlah_pembayaran = jumlah_pembayaran_depan+","+jumlah_pembayaran_belakang
+		# jumlah_pembayaran_belakang = request.POST.get('jumlah_pembayaran_belakang', "00")
+		jumlah_pembayaran = jumlah_pembayaran_depan
 		try:
 			detilpembayaran_obj = DetilPembayaran.objects.filter(pengajuan_izin__id=pengajuan_izin_id).last()
 			sk_izin_ = SKIzin.objects.get(pengajuan_izin__id=pengajuan_izin_id)
@@ -37,6 +37,7 @@ def detil_pembayaran_save(request):
 				p.pengajuan_izin_id = pengajuan_izin_id
 				p.jumlah_pembayaran = jumlah_pembayaran
 				p.tanggal_dibuat = datetime.date.today()
+				p.bank_pembayaran_id = request.POST.get('bank_pembayaran')
 				p.save()
 				sk_izin_.status = 9
 				sk_izin_.save()
@@ -60,7 +61,7 @@ def detil_pembayaran_save(request):
 
 						html_content = render_to_string('cetak/notifikasi_send_email.html', {
 							'obj': p,
-							'total_bayar': int(p.jumlah_pembayaran.split(",")[0].replace(".", "")),
+							'total_bayar': int(p.jumlah_pembayaran.replace(".", "")),
 							'terbilang_jumlah': terbilang_jumlah,
 							})
 						
