@@ -157,6 +157,12 @@ class Perusahaan(AtributTambahan):
 	def as_option(self):
 		return "<option value='"+str(self.id)+"'>"+str(self.nama_perusahaan)+"</option>"
 
+	def get_alamat_lengkap(self):
+		alamat_perusahaan = ""
+		if self.alamat_perusahaan and self.desa:
+			alamat_perusahaan = self.alamat_perusahaan+self.desa.lokasi_lengkap()
+		return alamat_perusahaan
+
 	# def get_berkas(self):
 	# 	berkas_npwp = ''
 	# 	if self.berkas_npwp:

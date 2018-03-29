@@ -3,9 +3,9 @@ import base64
 import datetime
 from izin.utils import terbilang_, terbilang, formatrupiah, push_api_dishub
 from django.db.models import Q
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.core.urlresolvers import reverse, resolve
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.utils.safestring import mark_safe
 from django.db import IntegrityError
@@ -44,7 +44,7 @@ from izin.controllers.dinkes.izin_operasional_klinik import formulir_izin_operas
 
 from izin.controllers.iujk import IUJKWizard
 from izin_forms import UploadBerkasPenolakanIzinForm, PemohonForm, PerusahaanForm
-from mobile.utils import get_model_detil
+from izin.utils import get_model_detil
 
 class IzinAdmin(admin.ModelAdmin):
 	# list_display = ('get_no_pengajuan', 'get_tanggal_pengajuan', 'get_kelompok_jenis_izin', 'pemohon','jenis_permohonan', 'get_status_proses','status', 'button_cetak_pendaftaran')
@@ -1377,13 +1377,57 @@ class IzinAdmin(admin.ModelAdmin):
 
 	def export_pengajuan(self, request):
 		extra_context = {}
+		kelompokjenisizin_list = KelompokJenisIzin.objects.filter(aktif=True)
 		extra_context.update({
-			'title':'Export Data Pengajuan Izin'
+			'title':'Export Data Pengajuan Izin',
+			'kelompokjenisizin_list': kelompokjenisizin_list
 			})
+		if request.POST:
+			jenis_izin = request.POST.get('jenis_izin', None)
+			tanggal_ = request.POST.get('tanggal', None)
+			if jenis_izin and tanggal_:
+				tanggal = tanggal_.split(" - ")
+				tanggal_mulai = datetime.datetime.strptime(tanggal[0], '%d/%m/%Y').strftime('%Y-%m-%d')
+				tanggal_akhir = datetime.datetime.strptime(tanggal[1], '%d/%m/%Y').strftime('%Y-%m-%d')
+				try:
+					jenisizin_obj = KelompokJenisIzin.objects.get(id=jenis_izin)
+					objects_ = get_model_detil(jenisizin_obj.kode)
+					pengajuan_list = objects_.objects.filter(created_at__gte=tanggal_mulai, created_at__lte=tanggal_akhir, status=1)
+					filename = str(jenisizin_obj.keterangan.lower())+" "+tanggal_.replace('/', '').replace(' ', '')
+					import xlwt
+					response = HttpResponse(content_type='application/ms-excel')
+					response['Content-Disposition'] = 'attachment; filename="'+filename+'.xls"'
+					wb = xlwt.Workbook(encoding='utf-8')
+					ws = wb.add_sheet(filename)
+					row_num = 0
+
+					font_style = xlwt.XFStyle()
+					font_style.font.bold = True
+					columns = []
+					rows = []
+					if jenisizin_obj.kode == "503.08":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					else:
+						messages.warning(request, "Jenis izin belum bisa melakukan proses export.")
+						return HttpResponseRedirect(reverse('admin:export_pengajuan'))
+					for col_num in range(len(columns)):
+						ws.write(row_num, col_num, columns[col_num], font_style)
+					font_style = xlwt.XFStyle()
+					
+					for row in rows:
+						row_num += 1
+						for col_num in range(len(row)):
+							ws.write(row_num, col_num, row[col_num], font_style)
+					wb.save(response)
+					return response
+				except KelompokJenisIzin.DoesNotExist:
+					messages.warning(request, "Jenis izin tidak ditemukan didalam sistem.")
+			else:
+				messages.warning(request, "Jenis izin dan tanggal tidak boleh kosong.")
 		return render(request, "admin/izin/export_pengajuan.html", extra_context)
 
 	def get_urls(self):
-		
 		from django.conf.urls import patterns, url
 		urls = super(IzinAdmin, self).get_urls()
 		my_urls = patterns('',

@@ -4,7 +4,7 @@
 {% block title %}{{ cl.opts.verbose_name_plural|capfirst }}{% endblock %}
 {% block icotitle %}<i class="fa fa-list-alt"></i>&nbsp;{% endblock %}
 {% block content_title %}
-    Daftar {{ cl.opts.verbose_name_plural|capfirst }}
+	Daftar {{ cl.opts.verbose_name_plural|capfirst }}
 {% endblock %}
 
 {% block extrastyle %}
@@ -17,88 +17,88 @@
 	<style type="text/css">
 
 		.pagination > li.active > a, .pagination > li.active > span {
-		    color: rgba(255, 255, 255, 0.7) !important;
+			color: rgba(255, 255, 255, 0.7) !important;
 		}
 
 		.pagination > li > a, .pagination > li > span {
-		    color: #337ab7 !important;
+			color: #337ab7 !important;
 		}
 
 		#result_list th.action-checkbox-column, #result_list td.action-checkbox {
-		    text-align: center;
-		    width: 1.5em;
-		    padding: 5px !important;
+			text-align: center;
+			width: 1.5em;
+			padding: 5px !important;
 		}
 		th.action-checkbox-column, td.action-checkbox, td.field-aksi {
-		    text-align: center;
-		    width: 1.5em;
+			text-align: center;
+			width: 1.5em;
 		}
 		.table-condensed > tbody > tr > td, .table-condensed > tbody > tr > th, .table-condensed > tfoot > tr > td, .table-condensed > tfoot > tr > th, .table-condensed > thead > tr > td, .table-condensed > thead > tr > th {
-		    padding: 5px;
+			padding: 5px;
 		}
 		thead th, tfoot td {
-		    background: url("{% static 'images/nav-bg.gif' %}") repeat-x scroll left top #e1e1e1 !important;
-		    border-top: 0 none !important;
-		    color: #666 !important;
-		    font-size: 11px !important;
-		    line-height: 1.42857 !important;
-    		padding: 8px !important;
-    		font-weight: bold !important;
-    		border-bottom-width: 1px !important;
-    		text-align: center !important;
-    		vertical-align: middle !important;
+			background: url("{% static 'images/nav-bg.gif' %}") repeat-x scroll left top #e1e1e1 !important;
+			border-top: 0 none !important;
+			color: #666 !important;
+			font-size: 11px !important;
+			line-height: 1.42857 !important;
+			padding: 8px !important;
+			font-weight: bold !important;
+			border-bottom-width: 1px !important;
+			text-align: center !important;
+			vertical-align: middle !important;
 		}
 		table thead th.sorted .sortoptions {
-		    float: none;
-		    padding: 0;
-		    text-align: center;
-		    display: block;
+			float: none;
+			padding: 0;
+			text-align: center;
+			display: block;
 		}
 		table thead th.sorted .sortoptions a {
-		    display: inline-block;
-		    height: 12px;
-		    width: 14px;
+			display: inline-block;
+			height: 12px;
+			width: 14px;
 		}
 		thead th.sorted a.sortremove {
-		    visibility: visible;
+			visibility: visible;
 		}
 		thead th a:link, thead th a:visited {
-		    color: #666;
+			color: #666;
 		}
 		table thead th.sorted .sortpriority {
-		    font-size: 0.8em;
-		    min-width: 12px;
-		    text-align: center;
-		    vertical-align: top;
+			font-size: 0.8em;
+			min-width: 12px;
+			text-align: center;
+			vertical-align: top;
 		}
 		.table > tbody > tr.inactive > td, .table > tbody > tr.inactive > th, .table > tbody > tr > td.inactive, .table > tbody > tr > th.inactive, .table > tfoot > tr.inactive > td, .table > tfoot > tr.inactive > th, .table > tfoot > tr > td.inactive, .table > tfoot > tr > th.inactive, .table > thead > tr.inactive > td, .table > thead > tr.inactive > th, .table > thead > tr > td.inactive, .table > thead > tr > th.inactive {
-            background-color: #aaaaaa;
-            color: #fff;
-        }
-        .table-hover tbody tr:hover td.inactive, .table-hover tbody tr:hover th.inactive {
-            background-color: #ebcccc;
-            color: #000;
-        }
-        .table > tbody > tr.danger > td, .table > tbody > tr.danger > th, .table > tbody > tr > td.danger, .table > tbody > tr > th.danger, .table > tfoot > tr.danger > td, .table > tfoot > tr.danger > th, .table > tfoot > tr > td.danger, .table > tfoot > tr > th.danger, .table > thead > tr.danger > td, .table > thead > tr.danger > th, .table > thead > tr > td.danger, .table > thead > tr > th.danger {
-            background-color: #f2dede;
-        }
-        .table > thead > tr > th.danger, .table > tbody > tr > th.danger, .table > tfoot > tr > th, .table > thead > tr > td.danger, .table > tbody > tr > td.danger, .table > tfoot > tr > td.danger {
-		    border-color: #f5f5f5;
-		    border-width: 1px;
-		    color: #666;
+			background-color: #aaaaaa;
+			color: #fff;
 		}
-        .table>tbody>tr.warning>td, .table>tbody>tr.warning>th, .table>tbody>tr>td.warning, .table>tbody>tr>th.warning, .table>tfoot>tr.warning>td, .table>tfoot>tr.warning>th, .table>tfoot>tr>td.warning, .table>tfoot>tr>th.warning, .table>thead>tr.warning>td, .table>thead>tr.warning>th, .table>thead>tr>td.warning, .table>thead>tr>th.warning {
-            background-color: #fcf8e3;
-        }
-        .table > tbody > tr.info > td, .table > tbody > tr.info > th, .table > tbody > tr > td.info, .table > tbody > tr > th.info, .table > tfoot > tr.info > td, .table > tfoot > tr.info > th, .table > tfoot > tr > td.info, .table > tfoot > tr > th.info, .table > thead > tr.info > td, .table > thead > tr.info > th, .table > thead > tr > td.info, .table > thead > tr > th.info {
-                background-color: #d9edf7;
-        }
-        .table > tbody > tr.success > td, .table > tbody > tr.success > th, .table > tbody > tr > td.success, .table > tbody > tr > th.success, .table > tfoot > tr.success > td, .table > tfoot > tr.success > th, .table > tfoot > tr > td.success, .table > tfoot > tr > th.success, .table > thead > tr.success > td, .table > thead > tr.success > th, .table > thead > tr > td.success, .table > thead > tr > th.success {
-            background-color: #dff0d8;
-        }
-        .table > tbody > tr.libur > td, .table > tbody > tr.libur > th, .table > tbody > tr > td.libur, .table > tbody > tr > th.libur, .table > tfoot > tr.libur > td, .table > tfoot > tr.libur > th, .table > tfoot > tr > td.libur, .table > tfoot > tr > th.libur, .table > thead > tr.libur > td, .table > thead > tr.libur > th, .table > thead > tr > td.libur, .table > thead > tr > th.libur {
-            background-color: silver;
-        }
+		.table-hover tbody tr:hover td.inactive, .table-hover tbody tr:hover th.inactive {
+			background-color: #ebcccc;
+			color: #000;
+		}
+		.table > tbody > tr.danger > td, .table > tbody > tr.danger > th, .table > tbody > tr > td.danger, .table > tbody > tr > th.danger, .table > tfoot > tr.danger > td, .table > tfoot > tr.danger > th, .table > tfoot > tr > td.danger, .table > tfoot > tr > th.danger, .table > thead > tr.danger > td, .table > thead > tr.danger > th, .table > thead > tr > td.danger, .table > thead > tr > th.danger {
+			background-color: #f2dede;
+		}
+		.table > thead > tr > th.danger, .table > tbody > tr > th.danger, .table > tfoot > tr > th, .table > thead > tr > td.danger, .table > tbody > tr > td.danger, .table > tfoot > tr > td.danger {
+			border-color: #f5f5f5;
+			border-width: 1px;
+			color: #666;
+		}
+		.table>tbody>tr.warning>td, .table>tbody>tr.warning>th, .table>tbody>tr>td.warning, .table>tbody>tr>th.warning, .table>tfoot>tr.warning>td, .table>tfoot>tr.warning>th, .table>tfoot>tr>td.warning, .table>tfoot>tr>th.warning, .table>thead>tr.warning>td, .table>thead>tr.warning>th, .table>thead>tr>td.warning, .table>thead>tr>th.warning {
+			background-color: #fcf8e3;
+		}
+		.table > tbody > tr.info > td, .table > tbody > tr.info > th, .table > tbody > tr > td.info, .table > tbody > tr > th.info, .table > tfoot > tr.info > td, .table > tfoot > tr.info > th, .table > tfoot > tr > td.info, .table > tfoot > tr > th.info, .table > thead > tr.info > td, .table > thead > tr.info > th, .table > thead > tr > td.info, .table > thead > tr > th.info {
+				background-color: #d9edf7;
+		}
+		.table > tbody > tr.success > td, .table > tbody > tr.success > th, .table > tbody > tr > td.success, .table > tbody > tr > th.success, .table > tfoot > tr.success > td, .table > tfoot > tr.success > th, .table > tfoot > tr > td.success, .table > tfoot > tr > th.success, .table > thead > tr.success > td, .table > thead > tr.success > th, .table > thead > tr > td.success, .table > thead > tr > th.success {
+			background-color: #dff0d8;
+		}
+		.table > tbody > tr.libur > td, .table > tbody > tr.libur > th, .table > tbody > tr > td.libur, .table > tbody > tr > th.libur, .table > tfoot > tr.libur > td, .table > tfoot > tr.libur > th, .table > tfoot > tr > td.libur, .table > tfoot > tr > th.libur, .table > thead > tr.libur > td, .table > thead > tr.libur > th, .table > thead > tr > td.libur, .table > thead > tr > th.libur {
+			background-color: silver;
+		}
 	</style>
 {% endblock %}
 
@@ -109,38 +109,34 @@
 		<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
 		<script type="text/javascript">
 		(function($) {
-		    $(document).ready(function($) {
-		        $("tr input.action-select").actions();
-		    });
+			$(document).ready(function($) {
+				$("tr input.action-select").actions();
+			});
 		})(django.jQuery);
 		</script>
 		{% endif %}
 	{% endif %}
 	<script src="{% static 'scripts/js/vendor/screenfull/screenfull.min.js' %}"></script>
 	<script src="{% static 'scripts/js/vendor/chosen/chosen.jquery.min.js' %}"></script>
-	<!-- ============================================
-    ============== Custom JavaScripts ===============
-    ============================================= -->
-    <script src="{% static "scripts/js/main.js" %}"></script>
-    <!--/ custom javascripts -->
+	<script src="{% static "scripts/js/main.js" %}"></script>
 {% endblock %}
 
 {% block breadcrumbs %}
 	{% if not is_popup %}
 	<div class="page-bar">
-	    <ul class="page-breadcrumb">
-	        <li>
-	            <a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
-	        </li>
-	        <li>
-	        	<a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}" class="link-effect link-effect-21">{{ cl.opts.app_config.verbose_name }}</a>
-	        </li>
-	        <li>
-	        	<a href="#" class="link-effect">
-	            {{ cl.opts.verbose_name_plural|capfirst }}
-	            </a>
-	        </li>
-	    </ul>
+		<ul class="page-breadcrumb">
+			<li>
+				<a href="{% url 'admin:index' %}" class="link-effect link-effect-21"><i class="fa fa-home"></i> {% trans 'Home' %}</a>
+			</li>
+			<li>
+				<a href="{% url 'admin:app_list' app_label=cl.opts.app_label %}" class="link-effect link-effect-21">{{ cl.opts.app_config.verbose_name }}</a>
+			</li>
+			<li>
+				<a href="#" class="link-effect">
+				{{ cl.opts.verbose_name_plural|capfirst }}
+				</a>
+			</li>
+		</ul>
 	</div>
 	{% endif %}
 {% endblock %}
@@ -149,119 +145,111 @@
 
 {% block content %}
 <div id="content-main">
-    {% block extra-tools %}{% endblock %}
-    <div class="row">
-        <div class="col-lg-12">
-            {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
-            {% block search %}{% search_form cl %}{% endblock %}
-        </div>
-    </div>
-    <br />
-	<!-- /.row -->
-    <div class="row">
-        <div class="col-lg-12">
-        	{% if cl.formset.errors %}
-		        <div class="alert alert-danger alert-dismissable">
-                    <button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
-                    {% if cl.formset.total_error_count == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
-                    {{ cl.formset.non_form_errors }}
-                </div>
-		    {% endif %}
-		    <section class="tile">
-		    	<div class="tile-header dvd dvd-btm">
-                    <h1 class="custom-font">
-                    	{% block header-extra-object-tools %}
-	                        Daftar <strong>{{ cl.opts.verbose_name_plural|capfirst }}</strong>
-	                    {% endblock %}
-		            </h1>
-                    <ul class="controls">                    	
-                    	{% block object-tools %}
-                    		{% block object-tools-items %}
-                    		{% if has_add_permission %}
-		                    	<li class="add" title="Tambah">
-		                    		{% url cl.opts|admin_urlname:'add' as add_url %}
-		                    		<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
-		                    	</li>
-	                    	{% endif %}
-	                    	{% endblock %}
-	                    {% endblock %}
-	                    {% block extra-object-tools %}
-                    		{% block filters %}
-                    			{% if cl.has_filters %}
-                    				<li class="btn-group" title="Filter Data">
-                    					<a class="dropdown-toggle" data-toggle="dropdown" tabindex="0" role="button"><i class="fa fa-filter"></i></a>
-                    					<ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-			                            	{% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
-			                            </ul>
-                    				</li>
-                    			{% endif %}
-                    		{% endblock %}
-                    	{% endblock %}
-                        <li class="dropdown" title="Atur Jendela">
-                            <a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button">
-                                <i class="fa fa-cog"></i>
-                                <i class="fa fa-spinner fa-spin"></i>
-                            </a>
-                            <ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
-                                <li>
-                                    <a class="tile-toggle" tabindex="0" role="button">
-                                        <span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
-                                        <span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="tile-refresh" tabindex="0" role="button">
-                                        <i class="fa fa-refresh"></i> Refresh
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="tile-fullscreen" tabindex="0" role="button">
-                                        <i class="fa fa-expand"></i> Fullscreen
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div class="tile-body p-0">
-	                <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
-			            <div class="panel panel-default">
-			                <div class="panel-heading">
-			                    {% block custom_action %}
-	                                {% if action_form and cl.full_result_count %}
-	                                    <div style="margin-bottom: 0px;">{% admin_actions %}</div>
-	                                {% endif %}
-	                            {% endblock %}
-			                </div>
-			                <!-- /.panel-heading -->
-			                <div class="panel-body">
-			                    <div class="table-responsive" style="overflow: auto;">
-			                            
-			                                {% if cl.formset %}
-			                                    <div>{{ cl.formset.management_form }}</div>
-			                                {% endif %}
-			                                {% block result_list %}		                                    
-			                                    {% block custom_result_list %}
-			                                        {% result_list cl %}
-			                                    {% endblock %}
-			                                {% endblock %}		                                
-			                            
-			                    </div>
-			                    <!-- /.table-responsive -->
-			                </div>
-			                <!-- /.panel-body -->
-			            </div>
-			            <!-- /.panel -->
-			        </form>
-	            </div>
-	            <div class="tile-footer text-center bg-tr-black lter dvd dvd-top">
-	            	<div class="text-center">
-                        {% block pagination %}{% pagination cl %}{% endblock %}
-                    </div>
-	            </div>	            
-            </section>
-        </div>
-        <!-- /.col-lg-12 -->
-    </div>
+	{% block extra-tools %}{% endblock %}
+	<div class="row">
+		<div class="col-lg-12">
+			{% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
+			{% block search %}{% search_form cl %}{% endblock %}
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="col-lg-12">
+			{% if cl.formset.errors %}
+				<div class="alert alert-danger alert-dismissable">
+					<button class="close" type="button" data-dismiss="alert" aria-hidden="true">×</button>
+					{% if cl.formset.total_error_count == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+					{{ cl.formset.non_form_errors }}
+				</div>
+			{% endif %}
+			<section class="tile">
+				<div class="tile-header dvd dvd-btm">
+					<h1 class="custom-font">
+						{% block header-extra-object-tools %}
+							Daftar <strong>{{ cl.opts.verbose_name_plural|capfirst }}</strong>
+						{% endblock %}
+					</h1>
+					<ul class="controls">                    	
+						{% block object-tools %}
+							{% block object-tools-items %}
+							{% if has_add_permission %}
+								<li class="add" title="Tambah">
+									{% url cl.opts|admin_urlname:'add' as add_url %}
+									<a class="tile-add" tabindex="0" role="button" href="{% add_preserved_filters add_url is_popup %}"><i class="fa fa-plus-circle"></i></a>
+								</li>
+							{% endif %}
+							{% endblock %}
+						{% endblock %}
+						{% block extra-object-tools %}
+							{% block filters %}
+								{% if cl.has_filters %}
+									<li class="btn-group" title="Filter Data">
+										<a class="dropdown-toggle" data-toggle="dropdown" tabindex="0" role="button"><i class="fa fa-filter"></i></a>
+										<ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+											{% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+										</ul>
+									</li>
+								{% endif %}
+							{% endblock %}
+						{% endblock %}
+						<li class="dropdown" title="Atur Jendela">
+							<a data-toggle="dropdown" class="dropdown-toggle settings" tabindex="0" role="button">
+								<i class="fa fa-cog"></i>
+								<i class="fa fa-spinner fa-spin"></i>
+							</a>
+							<ul class="dropdown-menu pull-right with-arrow animated littleFadeInUp">
+								<li>
+									<a class="tile-toggle" tabindex="0" role="button">
+										<span class="minimize"><i class="fa fa-angle-down"></i>&nbsp;&nbsp;&nbsp;Minimize</span>
+										<span class="expand"><i class="fa fa-angle-up"></i>&nbsp;&nbsp;&nbsp;Expand</span>
+									</a>
+								</li>
+								<li>
+									<a class="tile-refresh" tabindex="0" role="button">
+										<i class="fa fa-refresh"></i> Refresh
+									</a>
+								</li>
+								<li>
+									<a class="tile-fullscreen" tabindex="0" role="button">
+										<i class="fa fa-expand"></i> Fullscreen
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="tile-body p-0">
+					<form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								{% block custom_action %}
+									{% if action_form and cl.full_result_count %}
+										<div style="margin-bottom: 0px;">{% admin_actions %}</div>
+									{% endif %}
+								{% endblock %}
+							</div>
+							<div class="panel-body">
+								<div class="table-responsive" style="overflow: auto;">
+									{% if cl.formset %}
+										<div>{{ cl.formset.management_form }}</div>
+									{% endif %}
+									{% block result_list %}
+										{% block custom_result_list %}
+											{% result_list cl %}
+										{% endblock %}
+									{% endblock %}
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="tile-footer text-center bg-tr-black lter dvd dvd-top">
+					<div class="text-center">
+						{% block pagination %}{% pagination cl %}{% endblock %}
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
 </div>
 {% endblock %}
