@@ -21,37 +21,37 @@
 	<span style="font-size: 17px"><strong>Nomor Pembayaran : {{detil.kode}}</strong></span><br>
 	<hr>
 </center>
-{% if detil.piutang %}
-<table style="font-size: 11px;">
-	<tr>
-		<td>Nama Pemohon</td>
-		<td>:</td>
-		<td>{{detil.nama_pemohon}}</td>
-	</tr>
-	<tr>
-		<td>Peruntukan</td>
-		<td>:</td>
-		<td>{{detil.peruntukan}}</td>
-	</tr>
-</table>
+{% if detil.piutang or not detil.pengajuan_izin %}
+	<table style="font-size: 11px;">
+		<tr>
+			<td>Nama Pemohon</td>
+			<td>:</td>
+			<td>{{detil.nama_pemohon}}</td>
+		</tr>
+		<tr>
+			<td>Peruntukan</td>
+			<td>:</td>
+			<td>{{detil.peruntukan}}</td>
+		</tr>
+	</table>
 {% else %}
-<table style="font-size: 11px;">
-	<tr>
-		<td>Nama Pemohon</td>
-		<td>:</td>
-		<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
-	</tr>
-	<tr>
-		<td>Peruntukan</td>
-		<td>:</td>
-		<td>{{detil.peruntukan}}</td>
-	</tr>
-	<tr>
-		<td>Jenis Izin</td>
-		<td>:</td>
-		<td>{{detil.pengajuan_izin.kelompok_jenis_izin}}</td>
-	</tr>
-</table>
+	<table style="font-size: 11px;">
+		<tr>
+			<td>Nama Pemohon</td>
+			<td>:</td>
+			<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
+		</tr>
+		<tr>
+			<td>Peruntukan</td>
+			<td>:</td>
+			<td>{{detil.peruntukan}}</td>
+		</tr>
+		<tr>
+			<td>Jenis Izin</td>
+			<td>:</td>
+			<td>{{detil.pengajuan_izin.kelompok_jenis_izin}}</td>
+		</tr>
+	</table>
 {% endif %}
 <p style="line-height: 15px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;">
     Terima kasih telah menggunakan layanan SIMPATIK, Segera lakukan pembayaran agar proses segera ditindaklanjuti.</p>
