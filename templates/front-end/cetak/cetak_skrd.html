@@ -49,23 +49,41 @@
 		</tr>
 	</table>
 	<table class="table" width="100%">
-		<tr>
-			<td>Nama</td>
-			<td>:</td>
-			<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
-		</tr>
-		{% if detilpengajuan_obj.perusahaan.nama_perusahaan %}
-		<tr>
-			<td>Nama Perusahaan</td>
-			<td>:</td>
-			<td>{{detilpengajuan_obj.perusahaan.nama_perusahaan.upper}}</td>
-		</tr>
+		{% if detil.piutang or not detil.pengajuan_izin %}
+			<tr>
+				<td>Nama</td>
+				<td>:</td>
+				<td>{{detil.nama_pemohon}}</td>
+			</tr>
+			<tr>
+				<td>Nama Perusahaan</td>
+				<td>:</td>
+				<td>{{detil.nama_perusahaan}}</td>
+			</tr>
+			<tr>
+				<td>Alamat Usaha/Perusahaan</td>
+				<td>:</td>
+				<td>{{detil.alamat_usaha}}</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td>Nama</td>
+				<td>:</td>
+				<td>{{detil.pengajuan_izin.pemohon.nama_lengkap}}</td>
+			</tr>
+			{% if detilpengajuan_obj.perusahaan.nama_perusahaan %}
+			<tr>
+				<td>Nama Perusahaan</td>
+				<td>:</td>
+				<td>{{detilpengajuan_obj.perusahaan.nama_perusahaan.upper}}</td>
+			</tr>
+			{% endif %}
+			<tr>
+				<td>Alamat Usaha/Perusahaan</td>
+				<td>:</td>
+				<td>{% if detilpengajuan_obj.lokasi %}{{detilpengajuan_obj.lokasi}}{% else %}{{ detilpengajuan_obj.lokasi_pasang.title }}{% endif %}, {{ detilpengajuan_obj.desa.lokasi_lengkap}}</td>
+			</tr>
 		{% endif %}
-		<tr>
-			<td>Alamat Usaha/Perusahaan</td>
-			<td>:</td>
-			<td>{% if detilpengajuan_obj.lokasi %}{{detilpengajuan_obj.lokasi}}{% else %}{{ detilpengajuan_obj.lokasi_pasang.title }}{% endif %}, {{ detilpengajuan_obj.desa.lokasi_lengkap}}</td>
-		</tr>
 	</table>
 	<table width="100%" border="1" style="border-collapse: collapse;" class="table">
 		<thead>
