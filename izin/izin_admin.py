@@ -1405,7 +1405,35 @@ class IzinAdmin(admin.ModelAdmin):
 					font_style.font.bold = True
 					columns = []
 					rows = []
+					#SIUP
 					if jenisizin_obj.kode == "503.08":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDP-PT":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDP-FIRMA":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDP-CV":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDP-PERORANGAN":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDP-KOPERASI":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDP-BUL":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "503.01.06/":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "503.01.05/":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "503.01.04/":
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
 					else:
