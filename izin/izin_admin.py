@@ -276,14 +276,16 @@ class IzinAdmin(admin.ModelAdmin):
 		keterangan = '-'
 		dibuat_oleh = '-'
 		dibuat_tanggal = '-'
+		status = None
 		if pengajuan:
 			riwayat_ = Riwayat.objects.filter(pengajuan_izin_id=pengajuan).last()
-			keterangan = riwayat_.keterangan
-			dibuat_oleh = str(riwayat_.created_by.nama_lengkap)
-			dibuat_tanggal = str(riwayat_.created_at.strftime("%d-%m-%Y"))
-			status = mark_safe("""
-				<button type="button" class="btn btn-blue btn-xs mb-10" title="" data-toggle="popover" data-content="Diverifikasi terakhir oleh %s pada tanggal %s" data-original-title="Detil Status" data-trigger="hover" data-placement="left">%s</button>
-				""" % (dibuat_oleh, dibuat_tanggal, keterangan))
+			if riwayat_:
+				keterangan = riwayat_.keterangan
+				dibuat_oleh = str(riwayat_.created_by.nama_lengkap)
+				dibuat_tanggal = str(riwayat_.created_at.strftime("%d-%m-%Y"))
+				status = mark_safe("""
+					<button type="button" class="btn btn-blue btn-xs mb-10" title="" data-toggle="popover" data-content="Diverifikasi terakhir oleh %s pada tanggal %s" data-original-title="Detil Status" data-trigger="hover" data-placement="left">%s</button>
+					""" % (dibuat_oleh, dibuat_tanggal, keterangan))
 		return status
 	get_status_pengajuan.short_description = "Status Data"
 
