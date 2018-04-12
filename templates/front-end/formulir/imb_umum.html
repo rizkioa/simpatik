@@ -57,6 +57,17 @@
 </div>
 {% endblock %}
 
+{% block tambahan %}  
+<div class="panel">
+  <div class="panel-body" style="margin-top: -20px;">
+    <center>
+      <p style="margin: 10px">Klik tombol dibawah jika ingin melanjutkan upload dokumen sebelumnya yg disertai tanda tangan camat </p><button href="#" onclick="modal_input_nopengajuan()" class="btn btn-success btn-ef btn-ef-3 btn-ef-3c simpan center"><i class="fa fa-upload"></i>Lanjutkan</button>
+    </center>
+    
+  </div>
+</div>
+{% endblock %}
+
 {% block rootwizard %}  
 <div id="rootwizard" class="tab-container tab-wizard">
   <ul class="nav nav-tabs nav-justified">
@@ -380,6 +391,33 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="input_no_pengajuan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title custom-font">Masukan Nomor Pengajuan</h3>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal form-search-nopengajuan" method="POST" action="{% url 'imb_umum__search_pengajuan_set_cookie' %}">
+              {% csrf_token %}
+              <div class="form-group" >
+                <label class="col-sm-3 control-label text-left"><strong>Nomor Pengajuan</strong></label>
+                <div class="col-sm-7">
+                  <input type="text" class="form-control" name="no_pengajuan" required="" data-parsley-trigger="change">
+                </div>
+              </div>
+
+              
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button onclick="ajax_set_cookie_pengajuan()" type="button" class="btn btn-success btn-ef btn-ef-4 btn-ef-4c">Search</button>
+            <button type="button" class="btn btn-lightred btn-ef btn-ef-4 btn-ef-4c" data-dismiss="modal"><i class="fa fa-arrow-left"></i> Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
 
 {% block extratools %}
@@ -398,6 +436,7 @@
   <script src="{% static 'scripts/js/vendor/touchspin/jquery.bootstrap-touchspin.min.js' %}"></script>
   <script src="{% static 'scripts/js/jquery.mask.js' %}"></script>
   <script type="text/javascript">
+
       $(window).load(function(){
         $('#rootwizard').bootstrapWizard({
           onTabShow: function(tab, navigation, index) {
@@ -464,6 +503,7 @@
           }
         });
       });
+      
 
       $(document).ready(function() {
 
@@ -1597,7 +1637,7 @@
       });
   }
 
-$("#id_kontruksi").change(function(){
+  $("#id_kontruksi").change(function(){
     $this = $(this)
     id_kontruksi = $(this).val()
     if(id_kontruksi.length > 0){
@@ -1618,8 +1658,32 @@ $("#id_kontruksi").change(function(){
       })
 
 
+     function modal_input_nopengajuan(){
+      $('#input_no_pengajuan').modal('show')
+    }
+    function ajax_set_cookie_pengajuan(){
+      var frm = $('.form-search-nopengajuan')
+      $.ajax({
+        method: 'POST',
+        data: frm.serialize(),
+        url: frm.attr('action'),
+        success: function (response){
+          response = $.parseJSON(response);
+          if(response.success){
+            location.reload();
+          }else{
+            toastr["error"](response.pesan)
+          }
+        },
+        error: function (response){
+          toastr["error"]("Terjadi kesalahan pada koneksi server.")
+        }
+      })
+    }
 
-
+      </script>
+      <script type="text/javascript">
+        
       </script>
 
 {% endblock %}

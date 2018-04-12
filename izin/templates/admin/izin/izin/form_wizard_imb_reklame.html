@@ -69,6 +69,16 @@
                 // alert("OK")
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_imb_reklame(id_pengajuan)
+                if(id_pengajuan != 0){
+                  $('.btn-cetak_sementara').on('click', function(){
+                    url = __base_url__+'/layanan/imb-reklame/formulir/cetak-bukti-pendaftaran/'+id_pengajuan
+                    // openPopupCenter(url,'Preview Draft Surat', 1200, 600)
+                    window.open(url, 'new_window', 'width=1200,height=600').focus(); return false;
+
+                })
+                }
+                
+
               }
                 $('#rootwizard').find('.pager .next').show();
                 $('#rootwizard').find('.pager .finish').hide();
@@ -94,6 +104,10 @@
           }
         });
       });
+
+      function cetak_bukti_pendaftaran_sementara(id_pengajuan){
+        
+      }
 
       $(document).ready(function() {
 

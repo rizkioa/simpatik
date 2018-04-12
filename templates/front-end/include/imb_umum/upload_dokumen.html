@@ -22,6 +22,7 @@
 		    <span class="col-sm-6" id="load-surat_kepemilikan_tanah"></span>
 		</div>
 	</form> -->
+	<button href="#" id="btn-cetak_sementara" class="btn btn-success mb-10 btn-cetak_sementara"><i class="fa fa-print"></i> Cetak Bukti Pendaftaran</button>
 
     <form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-ktp_paspor" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
       {% csrf_token %}
@@ -164,5 +165,23 @@
 			    </div>
 		    </span>
 		    <span class="col-sm-6" id="load-surat_ahli_waris"></span>
+		</div>
+	</form>
+
+	<form role="form" class="form-horizontal" method="POST" enctype="multipart/form-data" id="form-surat_ahli_waris" action="{% url 'reklame_imbumum_berkaspendukung' %}" data-parsley-validate novalidate>
+	{% csrf_token %}
+	 <input type="hidden" name="aksi" value="9">
+	  	<div class="form-group">
+		    <label class="col-sm-3 control-label"><strong>Surat Tanda Tangan Camat</strong></label>
+		    <span id="field-tanda_tangan_camat">
+			    <div class="col-sm-5">
+           			<input name="berkas" type="file" class="filestyle id_berkas" data-buttonText="Browse" data-iconName="fa fa-inbox" required="">   
+			    </div>
+			    <div class="col-sm-4">
+		            <button href="#" id="btn-tanda_tangan_camat" onclick="form_upload_dokumen($(this)); return false;" class="btn btn-success mb-10"><i class="fa fa-upload"></i>Upload</button>
+		            <a id="percent-tanda_tangan_camat" type="button" class="btn btn-success btn-border mb-10 animated littleFadeInUp">0%</a>
+			    </div>
+		    </span>
+		    <span class="col-sm-6" id="load-tanda_tangan_camat"></span>
 		</div>
 	</form>

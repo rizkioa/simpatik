@@ -1407,8 +1407,8 @@ class IzinAdmin(admin.ModelAdmin):
 					rows = []
 					#SIUP
 					if jenisizin_obj.kode == "503.08":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Bentuk Kegiatan Usaha', 'Status Penanaman Modal' , 'Kekayaan Bersih Perusahaan', 'Total Nilai Saham']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan', 'pengajuan__bentuk_kegiatan_usaha__kegiatan_usahs', 'pengajuan__jenis_penanaman_modal__jenis_penanaman_modal', 'pengajuan__kekayaan_bersih', 'pengajuan__total_nilai_saham')
 					elif jenisizin_obj.kode == "TDP-PT":
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')

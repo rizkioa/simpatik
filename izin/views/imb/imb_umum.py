@@ -208,6 +208,86 @@ def cetak_bukti_pendaftaran_imb_umum(request,id_pengajuan_):
 	ec = RequestContext(request, extra_context)
 	return HttpResponse(template.render(ec))
 
+def cetak_bukti_pendaftaran_imb_umum_sementara(request,id_pengajuan_):
+	extra_context = {}
+	if id_pengajuan_:
+		pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_)
+		if pengajuan_.pemohon:
+			if pengajuan_.pemohon.desa:
+			  alamat_ = str(pengajuan_.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			  extra_context.update({ 'alamat_pemohon': alamat_ })
+			extra_context.update({ 'pemohon': pengajuan_.pemohon })
+			paspor_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=2).last()
+			ktp_ = NomorIdentitasPengguna.objects.filter(user_id=pengajuan_.pemohon.id, jenis_identitas_id=1).last()
+			extra_context.update({ 'paspor': paspor_ })
+			extra_context.update({ 'ktp': ktp_ })
+			syarat = Syarat.objects.filter(jenis_izin__jenis_izin__kode="IMB")
+			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.desa.kecamatan.kabupaten.nama_kabupaten.title())
+			detil_bangunan_list = DetilBangunanIMB.objects.filter(detil_izin_imb=pengajuan_)
+			sertifikat_tanah_list = SertifikatTanah.objects.filter(pengajuan_izin=pengajuan_)
+			# kegiatan_pembangunan = pengajuan_.parameter_bangunan.get(parameter="Kegiatan Pembangunan Gedung")
+			# nilai_kegiatan_pembangunan = str(kegiatan_pembangunan.nilai)
+			
+			# fungsi_bangunan = pengajuan_.parameter_bangunan.get(parameter="Fungsi Bangunan")
+			# nilai_fungsi_bangunan = str(fungsi_bangunan.nilai)
+
+			# kompleksitas_bangunan = pengajuan_.parameter_bangunan.get(parameter="Tingkat Kompleksitas")
+			# nilai_kompleksitas_bangunan = str(kompleksitas_bangunan.nilai)
+
+			# permanensi_bangunan = pengajuan_.parameter_bangunan.get(parameter="Tingkat Permanensi")
+			# nilai_permanensi_bangunan = str(permanensi_bangunan.nilai)
+
+			# ketinggian_bangunan = pengajuan_.parameter_bangunan.get(parameter="Ketinggian Bangunan")
+			# nilai_ketinggian_bangunan = str(ketinggian_bangunan.nilai)
+
+			# letak_bangunan = pengajuan_.parameter_bangunan.get(parameter="Lokasi Bangunan")
+			# nilai_letak_bangunan = str(letak_bangunan.nilai)
+
+			# kepemilikan_bangunan = pengajuan_.parameter_bangunan.get(parameter="Kepemilikan Bangunan")
+			# nilai_kepemilikan_bangunan = str(kepemilikan_bangunan.nilai)
+
+			# lama_penggunaan_bangunan = pengajuan_.parameter_bangunan.get(parameter="Lama Penggunaan Bangunan")
+			# nilai_lama_penggunaan_bangunan = str(lama_penggunaan_bangunan.nilai)
+			total_biaya = str(pengajuan_.total_biaya) 
+
+			# extra_context.update({'nama_fungsi_bangunan': fungsi_bangunan.detil_parameter})
+			# extra_context.update({'nilai_fungsi_bangunan': nilai_fungsi_bangunan})
+			# extra_context.update({'kegiatan_pembangunan': kegiatan_pembangunan.detil_parameter})
+			# extra_context.update({'nilai_kegiatan_pembangunan': nilai_kegiatan_pembangunan})
+			# extra_context.update({'kompleksitas_bangunan': kompleksitas_bangunan.detil_parameter})
+			# extra_context.update({'nilai_kompleksitas_bangunan': nilai_kompleksitas_bangunan})
+			# extra_context.update({'permanensi_bangunan': permanensi_bangunan.detil_parameter})
+			# extra_context.update({'nilai_permanensi_bangunan': nilai_permanensi_bangunan})
+			# extra_context.update({'ketinggian_bangunan': ketinggian_bangunan.detil_parameter})
+			# extra_context.update({'nilai_ketinggian_bangunan': nilai_ketinggian_bangunan})
+			# extra_context.update({'letak_bangunan': letak_bangunan.detil_parameter})
+			# extra_context.update({'nilai_letak_bangunan': nilai_letak_bangunan})
+			# extra_context.update({'kepemilikan_bangunan': kepemilikan_bangunan.detil_parameter})
+			# extra_context.update({'nilai_kepemilikan_bangunan': nilai_kepemilikan_bangunan})
+			# extra_context.update({'lama_penggunaan_bangunan': lama_penggunaan_bangunan.detil_parameter})
+			# extra_context.update({'nilai_lama_penggunaan_bangunan': nilai_lama_penggunaan_bangunan})
+
+			extra_context.update({'detil_bangunan_list': detil_bangunan_list})
+			extra_context.update({'sertifikat_tanah_list': sertifikat_tanah_list})
+
+			extra_context.update({'letak_pembangunan': letak_})
+			extra_context.update({ 'pengajuan': pengajuan_ })
+			extra_context.update({ 'syarat': syarat })
+			extra_context.update({ 'total_biaya': total_biaya })
+			extra_context.update({ 'kelompok_jenis_izin': pengajuan_.kelompok_jenis_izin })
+			extra_context.update({ 'created_at': pengajuan_.created_at })
+			response = loader.get_template("front-end/cetak_bukti_pendaftaran.html")
+		else:
+			response = HttpResponseRedirect(url_)
+			return response
+	else:
+		response = HttpResponseRedirect(url_)
+		return response 
+
+	template = loader.get_template("front-end/include/imb_umum/cetak_bukti_pendaftaran_sementara.html")
+	ec = RequestContext(request, extra_context)
+	return HttpResponse(template.render(ec))
+
 def imb_save_cookie(request):
 	if 'id_pengajuan' in request.COOKIES.keys():
 		if request.COOKIES['id_pengajuan'] != '':
@@ -1034,6 +1114,9 @@ def imbumum_upload_berkas_pendukung(request):
 						elif request.POST.get('aksi') == "8":
 							berkas.nama_berkas = "Surat Kematian jika status hak tanah milik orang tua"+p.no_pengajuan
 							berkas.keterangan = "Surat Kematian jika status hak tanah milik orang tua"
+						elif request.POST.get('aksi') == "10":
+							berkas.nama_berkas = "Surat Tanda Tangan Camat"+p.no_pengajuan
+							berkas.keterangan = "Surat Tanda Tangan Camat"
 						else:
 							berkas.nama_berkas = "Surat Ahli waris  jika status hak tanah milik orang tua"+p.no_pengajuan
 							berkas.keterangan = "Surat Ahli waris  jika status hak tanah milik orang tua"
@@ -1164,6 +1247,15 @@ def ajax_load_berkas_imbumum(request, id_pengajuan):
 			  id_berkas.append(surat_ahli_waris.id)
 			  p.berkas_terkait_izin.add(surat_ahli_waris)
 
+		  surat_tanda_tangan_camat = Berkas.objects.filter(nama_berkas="Surat Tanda Tangan Camat"+p.no_pengajuan)
+		  if surat_tanda_tangan_camat.exists():
+			  surat_tanda_tangan_camat = surat_ahli_waris.last()
+			  url_berkas.append(surat_tanda_tangan_camat.berkas.url)
+			  id_elemen.append('surat_tanda_tangan_camat')
+			  nm_berkas.append("Surat Tanda Tangan Camat"+p.no_pengajuan)
+			  id_berkas.append(surat_tanda_tangan_camat.id)
+			  p.berkas_terkait_izin.add(surat_tanda_tangan_camat)
+
 		  data = {'success': True, 'pesan': 'berkas pendukung Sudah Ada.', 'berkas': url_berkas, 'elemen':id_elemen, 'nm_berkas': nm_berkas, 'id_berkas': id_berkas }
 	  except ObjectDoesNotExist:
 		  data = {'success': False, 'pesan': '' }
@@ -1201,3 +1293,17 @@ def ajax_delete_berkas_imbumum(request, id_berkas):
 			data = {'success': False, 'pesan': 'Pengajuan Izin tidak ditemukan.' } 
 	response = HttpResponse(json.dumps(data))
 	return response
+
+def search_pengajuan_set_cookie(request):
+	data = {'success': False, 'pesan': 'Nomor Pengajuan Izin tidak ditemukan.' }
+	no_pengajuan = request.POST.get('no_pengajuan', None)
+	if no_pengajuan and no_pengajuan is not None:
+		pengajuan_obj = PengajuanIzin.objects.filter(no_pengajuan=no_pengajuan).last()
+		if pengajuan_obj:
+			data = {'success': True}
+			response = HttpResponse(json.dumps(data))
+			response.set_cookie(key='id_pengajuan', value=pengajuan_obj.id)
+			return response
+		else:
+			data = {'success': False, 'pesan': 'Pengajuan Izin tidak ditemukan, Cek kembali No Pengajuan.' }
+	return HttpResponse(json.dumps(data))
