@@ -503,6 +503,12 @@ class CustomMenu(Menu):
                     icon='fa fa-cog fa-fw',
                     url=reverse('admin:master_settings_changelist'),
                 ),
+                items.MenuItem(
+                    title=_('Export Izin'),
+                    description='Export izin',
+                    icon='fa fa-export fa-fw',
+                    url=reverse('admin:export_pengajuan'),
+                ),
             ]
         )
 
