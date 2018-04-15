@@ -1412,7 +1412,7 @@ class IzinAdmin(admin.ModelAdmin):
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Bentuk Kegiatan Usaha', 'Status Penanaman Modal' , 'Kekayaan Bersih Perusahaan', 'Total Nilai Saham']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan', 'bentuk_kegiatan_usaha__kegiatan_usaha', 'jenis_penanaman_modal__jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham')
 					elif jenisizin_obj.kode == "TDP-PT":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Jumlah Karyawan WNI, Jumlah Karyawan WNA']
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
 						for i in pengajuan_list:
 							tanggal_pendirian = ""
 							tanggal_mulai_kegiatan = ""
@@ -1435,7 +1435,7 @@ class IzinAdmin(admin.ModelAdmin):
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
 					elif jenisizin_obj.kode == "TDP-CV":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Total Aset', 'Jumlah Karyawan WNI, Jumlah Karyawan WNA']
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Total Aset', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
 						for i in pengajuan_list:
 							tanggal_pendirian = ""
 							tanggal_mulai_kegiatan = ""
@@ -1455,7 +1455,7 @@ class IzinAdmin(admin.ModelAdmin):
 							isi_pengajuan = (i.no_pengajuan, i.no_izin, i.pemohon.nama_lengkap, i.pemohon.username, i.perusahaan.npwp, i.perusahaan.nama_perusahaan, i.perusahaan.alamat_perusahaan, jenis_perusahaan, status_perusahaan, jenis_penanaman_modal, tanggal_pendirian, tanggal_mulai_kegiatan, i.produk_utama, i.omset_per_tahun, i.modal_dasar, i.modal_ditempatkan, i.modal_disetor, i.total_aset, i.jumlah_karyawan_wni, i.jumlah_karyawan_wna)
 							rows.append(isi_pengajuan)
 					elif jenisizin_obj.kode == "TDP-PERORANGAN":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Total Aset', 'Jumlah Karyawan WNI, Jumlah Karyawan WNA']
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Total Aset', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
 						for i in pengajuan_list:
 							tanggal_pendirian = ""
 							tanggal_mulai_kegiatan = ""
@@ -1475,7 +1475,7 @@ class IzinAdmin(admin.ModelAdmin):
 							isi_pengajuan = (i.no_pengajuan, i.no_izin, i.pemohon.nama_lengkap, i.pemohon.username, i.perusahaan.npwp, i.perusahaan.nama_perusahaan, i.perusahaan.alamat_perusahaan, jenis_perusahaan, status_perusahaan, jenis_penanaman_modal, tanggal_pendirian, tanggal_mulai_kegiatan, i.produk_utama, i.omset_per_tahun, i.modal_dasar, i.modal_ditempatkan, i.modal_disetor, i.total_aset, i.jumlah_karyawan_wni, i.jumlah_karyawan_wna)
 							rows.append(isi_pengajuan)
 					elif jenisizin_obj.kode == "TDP-KOPERASI":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Simpanan Pokok', 'Simpanan Wajib', 'Dana Cadangan', 'Hibah', 'Total Aset', 'Jumlah Karyawan WNI, Jumlah Karyawan WNA']
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Simpanan Pokok', 'Simpanan Wajib', 'Dana Cadangan', 'Hibah', 'Total Aset', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
 						for i in pengajuan_list:
 							tanggal_pendirian = ""
 							tanggal_mulai_kegiatan = ""
