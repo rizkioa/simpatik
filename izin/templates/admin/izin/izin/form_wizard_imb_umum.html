@@ -80,6 +80,14 @@
               else if($current == 5){
                 id_pengajuan = parseInt($.cookie('id_pengajuan'))
                 load_berkas_imb_umum(id_pengajuan)
+                if(id_pengajuan != 0){
+                  $('.btn-cetak_sementara').on('click', function(){
+                    url = __base_url__+'/layanan/imb-umum/formulir/cetak-bukti-pendaftaran-sementara/'+id_pengajuan
+                    // openPopupCenter(url,'Preview Draft Surat', 1200, 600)
+                    window.open(url, 'Preview Bukti Pendaftaran', 'width=1200,height=600').focus(); return   false;
+
+                  })
+                }
                
               }
               

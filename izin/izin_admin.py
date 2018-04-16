@@ -1409,35 +1409,115 @@ class IzinAdmin(admin.ModelAdmin):
 					rows = []
 					#SIUP
 					if jenisizin_obj.kode == "503.08":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Bentuk Kegiatan Usaha', 'Status Penanaman Modal' , 'Kekayaan Bersih Perusahaan', 'Total Nilai Saham']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan', 'bentuk_kegiatan_usaha__kegiatan_usaha', 'jenis_penanaman_modal__jenis_penanaman_modal', 'kekayaan_bersih', 'total_nilai_saham')
 					elif jenisizin_obj.kode == "TDP-PT":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
+						for i in pengajuan_list:
+							tanggal_pendirian = ""
+							tanggal_mulai_kegiatan = ""
+							jenis_perusahaan = ""
+							status_perusahaan = ""
+							if i.tanggal_pendirian:
+								tanggal_pendirian = i.tanggal_pendirian.strftime('%Y-%m-%d')
+							if i.tanggal_mulai_kegiatan:
+								tanggal_mulai_kegiatan = i.tanggal_mulai_kegiatan.strftime('%Y-%m-%d')
+							if i.jenis_perusahaan:
+								jenis_perusahaan = i.jenis_perusahaan.jenis_perusahaan
+							if i.status_perusahaan:
+								status_perusahaan = i.status_perusahaan.status_perusahaan
+							if i.jenis_penanaman_modal:
+								jenis_penanaman_modal = i.jenis_penanaman_modal.jenis_penanaman_modal
+
+							isi_pengajuan = (i.no_pengajuan, i.no_izin, i.pemohon.nama_lengkap, i.pemohon.username, i.perusahaan.npwp, i.perusahaan.nama_perusahaan, i.perusahaan.alamat_perusahaan, jenis_perusahaan, status_perusahaan, jenis_penanaman_modal, tanggal_pendirian, tanggal_mulai_kegiatan, i.produk_utama, i.omset_per_tahun, i.modal_dasar, i.modal_ditempatkan, i.modal_disetor, i.jumlah_karyawan_wni, i.jumlah_karyawan_wna)
+							rows.append(isi_pengajuan)
 					elif jenisizin_obj.kode == "TDP-FIRMA":
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
 					elif jenisizin_obj.kode == "TDP-CV":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Total Aset', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
+						for i in pengajuan_list:
+							tanggal_pendirian = ""
+							tanggal_mulai_kegiatan = ""
+							jenis_perusahaan = ""
+							status_perusahaan = ""
+							if i.tanggal_pendirian:
+								tanggal_pendirian = i.tanggal_pendirian.strftime('%Y-%m-%d')
+							if i.tanggal_mulai_kegiatan:
+								tanggal_mulai_kegiatan = i.tanggal_mulai_kegiatan.strftime('%Y-%m-%d')
+							if i.jenis_perusahaan:
+								jenis_perusahaan = i.jenis_perusahaan.jenis_perusahaan
+							if i.status_perusahaan:
+								status_perusahaan = i.status_perusahaan.status_perusahaan
+							if i.jenis_penanaman_modal:
+								jenis_penanaman_modal = i.jenis_penanaman_modal.jenis_penanaman_modal
+
+							isi_pengajuan = (i.no_pengajuan, i.no_izin, i.pemohon.nama_lengkap, i.pemohon.username, i.perusahaan.npwp, i.perusahaan.nama_perusahaan, i.perusahaan.alamat_perusahaan, jenis_perusahaan, status_perusahaan, jenis_penanaman_modal, tanggal_pendirian, tanggal_mulai_kegiatan, i.produk_utama, i.omset_per_tahun, i.modal_dasar, i.modal_ditempatkan, i.modal_disetor, i.total_aset, i.jumlah_karyawan_wni, i.jumlah_karyawan_wna)
+							rows.append(isi_pengajuan)
 					elif jenisizin_obj.kode == "TDP-PERORANGAN":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Modal Dasar', 'Modal ditempatkan', 'Modal disetor Rp.', 'Total Aset', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
+						for i in pengajuan_list:
+							tanggal_pendirian = ""
+							tanggal_mulai_kegiatan = ""
+							jenis_perusahaan = ""
+							status_perusahaan = ""
+							if i.tanggal_pendirian:
+								tanggal_pendirian = i.tanggal_pendirian.strftime('%Y-%m-%d')
+							if i.tanggal_mulai_kegiatan:
+								tanggal_mulai_kegiatan = i.tanggal_mulai_kegiatan.strftime('%Y-%m-%d')
+							if i.jenis_perusahaan:
+								jenis_perusahaan = i.jenis_perusahaan.jenis_perusahaan
+							if i.status_perusahaan:
+								status_perusahaan = i.status_perusahaan.status_perusahaan
+							if i.jenis_penanaman_modal:
+								jenis_penanaman_modal = i.jenis_penanaman_modal.jenis_penanaman_modal
+
+							isi_pengajuan = (i.no_pengajuan, i.no_izin, i.pemohon.nama_lengkap, i.pemohon.username, i.perusahaan.npwp, i.perusahaan.nama_perusahaan, i.perusahaan.alamat_perusahaan, jenis_perusahaan, status_perusahaan, jenis_penanaman_modal, tanggal_pendirian, tanggal_mulai_kegiatan, i.produk_utama, i.omset_per_tahun, i.modal_dasar, i.modal_ditempatkan, i.modal_disetor, i.total_aset, i.jumlah_karyawan_wni, i.jumlah_karyawan_wna)
+							rows.append(isi_pengajuan)
 					elif jenisizin_obj.kode == "TDP-KOPERASI":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Badan Usaha', 'Status Perusahaan', 'Status Penanaman Modal', 'Tanggal Pendirian', 'Tanggal mulai kegiatan', 'Kegiatan Usaha Pokok', 'Omset Per Tahun', 'Simpanan Pokok', 'Simpanan Wajib', 'Dana Cadangan', 'Hibah', 'Total Aset', 'Jumlah Karyawan WNI', 'Jumlah Karyawan WNA']
+						for i in pengajuan_list:
+							tanggal_pendirian = ""
+							tanggal_mulai_kegiatan = ""
+							jenis_perusahaan = ""
+							status_perusahaan = ""
+							if i.tanggal_pendirian:
+								tanggal_pendirian = i.tanggal_pendirian.strftime('%Y-%m-%d')
+							if i.tanggal_mulai_kegiatan:
+								tanggal_mulai_kegiatan = i.tanggal_mulai_kegiatan.strftime('%Y-%m-%d')
+							if i.jenis_perusahaan:
+								jenis_perusahaan = i.jenis_perusahaan.jenis_perusahaan
+							if i.status_perusahaan:
+								status_perusahaan = i.status_perusahaan.status_perusahaan
+							if i.jenis_penanaman_modal:
+								jenis_penanaman_modal = i.jenis_penanaman_modal.jenis_penanaman_modal
+
+							isi_pengajuan = (i.no_pengajuan, i.no_izin, i.pemohon.nama_lengkap, i.pemohon.username, i.perusahaan.npwp, i.perusahaan.nama_perusahaan, i.perusahaan.alamat_perusahaan, jenis_perusahaan, status_perusahaan, jenis_penanaman_modal, tanggal_pendirian, tanggal_mulai_kegiatan, i.produk_utama, i.omset_per_tahun, i.modal_sendiri_simpanan_pokok, i.modal_sendiri_simpanan_wajib, i.modal_sendiri_dana_cadangan, i.modal_sendiri_hibah, i.total_aset, i.jumlah_karyawan_wni, i.jumlah_karyawan_wna)
+							rows.append(isi_pengajuan)
 					elif jenisizin_obj.kode == "TDP-BUL":
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
 					elif jenisizin_obj.kode == "503.01.06/":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Jenis Papan Reklame', 'Ukuran, Panjang x Lebar', 'Letak Pemasangan', 'Batas Utara', 'Batas Timur', 'Batas Selatan', 'Batas Barat']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan', 'jenis_papan_reklame', 'lebar', 'lokasi_pasang', 'batas_utara', 'batas_timur', 'batas_selatan', 'batas_barat')
 					elif jenisizin_obj.kode == "503.01.05/":
-						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
-						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Nama Bangunan', 'Luas Bangunan', 'Lokasi Pembangunan', 'Luas Tanah', 'Status Hak Tanah', 'No. Surat Tanah', 'Tgl. Surat Tanah']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan', 'bangunan', 'luas_bangunan', 'lokasi', 'luas_tanah', 'status_hak_tanah', 'tanggal_surat_tanah')
 					elif jenisizin_obj.kode == "503.01.04/":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Nama Bangunan', 'Luas Bangunan', 'Lokasi Pembangunan', 'Luas Tanah', 'Status Hak Tanah', 'No. Surat Tanah', 'Tgl. Surat Tanah', 'Klasifikasi Jalan', 'Ruang Milik Jalan (RUMIJA)', 'Ruang Pengawasan Jalan (RUWASJA)']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'bangunan', 'luas_bangunan', 'lokasi', 'luas_tanah', 'status_hak_tanah', 'tanggal_surat_tanah', 'klasifikasi_jalan', 'ruang_milik_jalan', 'ruang_pengawasan_jalan')
+					elif jenisizin_obj.kode == "503.03.01/":
 						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
 						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "503.03.02/":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "IUJK":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan')
+					elif jenisizin_obj.kode == "TDUP":
+						columns = ['Nomor Pengajuan', 'Nomor Izin', 'Nama Pemohon', 'Nomor Identitas Pemohon', 'NPWP Perusahaan', 'Nama Perusahaan', 'Alamat Perusahaan', 'Bidang Usaha Pariwisata', 'Nama Usaha', 'Lokasi Usaha Pariwisata', 'Telephone']
+						rows = pengajuan_list.values_list('no_pengajuan', 'no_izin', 'pemohon__nama_lengkap', 'pemohon__username', 'perusahaan__npwp', 'perusahaan__nama_perusahaan', 'perusahaan__alamat_perusahaan', 'bidang_usaha_pariwisata', 'nama_usaha', 'lokasi_usaha_pariwisata', 'telephone')
 					else:
 						messages.warning(request, "Jenis izin belum bisa melakukan proses export.")
 						return HttpResponseRedirect(reverse('admin:export_pengajuan'))

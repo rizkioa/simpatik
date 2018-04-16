@@ -155,6 +155,8 @@ urlpatterns = [
     #cetak IMB Umum
     url(r'^layanan/imb-umum/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_umum.cetak_imb_umum, name='cetak_imb_umum'),
     url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran/(?P<id_pengajuan_>[0-9]+)/$', imb_umum.cetak_bukti_pendaftaran_imb_umum, name='cetak_bukti_pendaftaran_imb_umum'),
+    url(r'^layanan/imb-umum/formulir/cetak-bukti-pendaftaran-sementara/(?P<id_pengajuan_>[0-9]+)/$', imb_umum.cetak_bukti_pendaftaran_imb_umum_sementara, name='cetak_bukti_pendaftaran_imb_umum_sementara'),
+    url(r'^layanan/imb-umum/formulir/search-pengajuan-set-cookie/$', imb_umum.search_pengajuan_set_cookie, name='imb_umum__search_pengajuan_set_cookie'),
 
     #cetak IMB Perumahan
     url(r'^layanan/imb-perumahan/formulir/cetak/(?P<id_pengajuan_>[0-9]+)/$', imb_perumahan.cetak_imb_perumahan, name='cetak_imb_perumahan'),
