@@ -11,7 +11,7 @@ from izin.models import KelompokJenisIzin, BankPembayaran
 
 class DetilPembayaranAdmin(admin.ModelAdmin):
 	list_display = ('kode', 'nomor_kwitansi', 'pengajuan_izin', 'peruntukan', 'jumlah_pembayaran', 'get_bank', 'terbayar',  'piutang', 'created_at')
-	search_fields = ('nomor_kwitansi', 'kode', 'pengajuan_izin__pemohon__nama_lengkap', 'pengajuan_izin__no_pengajuan')
+	search_fields = ('nomor_kwitansi', 'kode', 'pengajuan_izin__pemohon__nama_lengkap', 'pengajuan_izin__no_pengajuan', 'nama_pemohon', 'nama_perusahaan')
 	list_filter = ('terbayar', 'piutang', 'bank_pembayaran')
 	ordering = ('-tanggal_dibuat',)
 
