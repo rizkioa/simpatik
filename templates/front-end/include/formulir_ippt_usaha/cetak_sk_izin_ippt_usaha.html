@@ -340,7 +340,13 @@
                 <td></td>
                 <td align="left" style="padding-left: 27px;width: 121px;">a. Desa/Kelurahan</td>
                 <td width="10">:</td>
-                <td>{{pengajuan.desa|title}}</td>
+                <td>
+                  {% if pengajuan.desa %}
+                    {{pengajuan.desa|title}}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
               </tr>
               <tr>
                 <td></td>
@@ -520,7 +526,7 @@
                     <td width="30%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
                       <p style="font-size:14px; padding-left: 10%;">
                               <font size="3pt">Ditetapkan di Kediri <br> 
-                      pada tanggal</font><br></p>
+                      pada tanggal {{ pengajuan.verified_at|date:"d-m-Y" }}</font><br></p>
                               <p style="font-size:15px;" align="center">KEPALA DPMPTSP <br>ttd.</p>
                               <p align="center" style="font-size:15px;margin-top: -17px;">{{ nama_kepala_dinas }}
                               </p>
@@ -570,7 +576,7 @@
                     </td>
                     <td width="45%" rowspan="2" style="vertical-align: top;padding-top: 50px;">
                       <p style="font-size:14px; padding-left: 20%;">
-                        <font size="3pt">Ditetapkan di Kab. Kediri <br> pada tanggal</font><br></p>
+                        <font size="3pt">Ditetapkan di Kab. Kediri <br> pada tanggal {{ pengajuan.verified_at|date:"d-m-Y" }}</font><br></p>
                           <p style="font-size:15px;" align="center"> KEPALA DPMPTSP</p><br>
                           <br>
                           <br>
