@@ -328,7 +328,6 @@ class PengajuanIzinResource(CORSModelResource):
 				data = {'success':True, 'pemohon': pemohon_obj, 'perusahaan':perusahaan_obj, 'legalitas': legalitas_list, 'pengajuan_obj':pengajuan_obj, 'skizin_obj':skizin_obj, 'detil_tdp_obj':detil_tdp_obj}
 				return CORSHttpResponse(json.dumps(data))
 
-
 	def get_tdp_po(self, request, **kwargs):
 		data = {'success':False}
 		id_pengajuan = request.GET['id_pengajuan']

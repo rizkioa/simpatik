@@ -80,7 +80,10 @@ class DetilPembayaranAdmin(admin.ModelAdmin):
 		return response
 
 	def cetak_pembayaran(self, request, nomor):
-		detil_pembayaran_obj = get_object_or_404(DetilPembayaran, kode=nomor)
+		try:
+			detil_pembayaran_obj = get_object_or_404(DetilPembayaran, kode=nomor)
+		except DetilPembayaran.MultipleObjectsReturned:
+			detilpengajuan_obj = DetilPembayaran.objects.filter(kode=nomor).last()
 		terbilang_jumlah = ""
 		if detil_pembayaran_obj.jumlah_pembayaran:
 			terbilang_jumlah = terbilang(int(detil_pembayaran_obj.jumlah_pembayaran.split(",")[0].replace(".", "")))
