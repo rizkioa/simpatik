@@ -541,7 +541,8 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 
 		# print tr
 		extra_context.update({'klasifikasi_tr': mark_safe(tr) , 'pengajuan_':pengajuan_})
-
+		no_izin = pengajuan_.no_izin.replace('/PERUBAHAN', '')
+		extra_context.update({'no_izin': no_izin})
 		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman2.html")
 		ec = RequestContext(request, extra_context)
 		subject_template = template.render(ec)
