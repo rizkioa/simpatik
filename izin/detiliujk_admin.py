@@ -406,9 +406,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		else:
 			teknis = ''
 			no_pjt_bu = ''
-
-
-
 		
 		extra_context.update({'desa': pengajuan_.perusahaan.desa.nama_desa.title()})
 		extra_context.update({'kecamatan': pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title()})
@@ -453,7 +450,10 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				tanggal_ = skizin_.created_at-relativedelta(years=3)
 				tanggal_ = tanggal_.strftime('%d-%m-%Y')
 
+		no_izin = pengajuan_.no_izin.replace('/PERUBAHAN', '')
+
 		extra_context.update({'masa_berlaku': masa_berlaku})
+		extra_context.update({'no_izin': no_izin})
 		# extra_context.update({'tanggal': skizin_.created_at.strftime('%d-%m-%Y')})
 		extra_context.update({'tanggal': tanggal_})
 		extra_context.update({'satker': unit_kerja})
@@ -616,6 +616,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		output_file_name = 'files/media/'+str(attachment_file_name)
 		pdfkit.from_string(html, output_file_name, options=options)
 		pdf = open(output_file_name)
+
 		response = HttpResponse(pdf.read(), content_type='application/pdf')
 		response['Content-Disposition'] = 'filename='+str(attachment_file_name)
 		pdf.close()
