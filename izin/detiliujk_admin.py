@@ -167,10 +167,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
 
 			skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
-
-
 			tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
-
 			extra_context.update({'html':tpl.body_html})
 			extra_context.update({'pengajuan': pengajuan_})
 			if pengajuan_.no_izin:
@@ -228,9 +225,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			template = loader.get_template("front-end/include/formulir_iujk/cetak_skizin_iujk_pdf_depan.html")
 			ec = RequestContext(request, extra_context)
 			# print template.render(ec)
-
-			
-
 			direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
 			if direktur.exists():
 				direktur_bu = direktur.last()
@@ -326,14 +320,27 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		pengajuan_ = get_object_or_404(DetilIUJK, id=id_pengajuan_izin_)
 		unit_kerja = get_object_or_404(UnitKerja, id=72)
 		# skizin_ = get_object_or_404(SKIzin, pengajuan_izin_id=id_pengajuan_izin_)
-
 		skizin_ = SKIzin.objects.filter(pengajuan_izin_id=id_pengajuan_izin_).last()
-
-
 		tpl = tpls.objects.get(kelompok_jenis_izin__kode="IUJK")
-
 		extra_context.update({'html':tpl.body_html})
 		extra_context.update({'pengajuan': pengajuan_})
+		rt = None
+		rw = None
+		if pengajuan_.perusahaan:
+			if pengajuan_.perusahaan.alamat_perusahaan.find("RT") >= 1:
+				ap = pengajuan_.perusahaan.alamat_perusahaan
+				pisah_ap = ap.split("RT")
+				rt_rw = pisah_ap[1].split("RW")
+				rt = rt_rw[0].replace(' ', '')
+				rw = rt_rw[1].replace(' ', '')
+				alamat_perusahaan_ = str(pisah_ap[0])
+				# print str(alamat_perusahaan_)
+		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
+		extra_context.update({
+			'alamat': alamat_perusahaan_,
+			'rt': rt,
+			'rw': rw
+			})
 		if pengajuan_.no_izin:
 			no_izin = pengajuan_.no_izin.split("/")
 			extra_context.update({'nomor': no_izin[0]})
@@ -380,22 +387,12 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				keterangan = p.keterangan	
 			tr += '<td style="border: 1px solid black;">'+str(keterangan)+'</td>'
 			tr += '</tr>'
-
-
 		# print tr
 		extra_context.update({'klasifikasi_tr': mark_safe(tr) })
-
-		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk.html")
-		ec = RequestContext(request, extra_context)
-		# print template.render(ec)
-
-		
-
 		direktur = pengajuan_.anggota_badan_iujk.filter(jenis_anggota_badan="Direktur / Penanggung Jawab Badan Usaha")
 		if direktur.exists():
 			direktur_bu = direktur.last()
 			direktur = direktur_bu.nama
-			
 		else:
 			direktur = ''
 			
@@ -410,15 +407,13 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			teknis = ''
 			no_pjt_bu = ''
 
-				
 
-		subject_template = template.render(ec)
-		extra_context.update({'nama_badan_usaha': pengajuan_.perusahaan})
-		extra_context.update({'alamat': pengajuan_.perusahaan.alamat_perusahaan})
-		extra_context.update({'desa': pengajuan_.perusahaan.desa})
-		extra_context.update({'kecamatan': pengajuan_.perusahaan.desa.kecamatan})
-		extra_context.update({'kabupaten': pengajuan_.perusahaan.desa.kecamatan.kabupaten})
-		extra_context.update({'provinsi': pengajuan_.perusahaan.desa.kecamatan.kabupaten.provinsi})
+
+		
+		extra_context.update({'desa': pengajuan_.perusahaan.desa.nama_desa.title()})
+		extra_context.update({'kecamatan': pengajuan_.perusahaan.desa.kecamatan.nama_kecamatan.title()})
+		extra_context.update({'kabupaten': pengajuan_.perusahaan.desa.kecamatan.kabupaten.nama_kabupaten.title()})
+		extra_context.update({'provinsi': pengajuan_.perusahaan.desa.kecamatan.kabupaten.provinsi.nama_provinsi.title()})
 		extra_context.update({'telp': pengajuan_.perusahaan.telepon})
 		extra_context.update({'direktur': direktur})
 		extra_context.update({'npwp': pengajuan_.perusahaan.npwp})
@@ -426,8 +421,6 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'penanggung_jawab_teknis': teknis})
 		extra_context.update({'no_pjt_bu': no_pjt_bu})
 		extra_context.update({'salinan':salinan_})
-
-		
 		li = '<ol style="padding-left: 30px;">'
 		for x in list(set(kla)):
 			k =  "<li>"+str(x)+"</li>"
@@ -467,8 +460,10 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		extra_context.update({'kepala': unit_kerja.kepala.get_full_name})
 		extra_context.update({'jabatan': "Pembina Tingkat I"})
 		extra_context.update({'nip': "NIP. "+str(unit_kerja.kepala.username)})
-		extra_context.update({'pengajuan': pengajuan_ })
-
+		# extra_context.update({'pengajuan': pengajuan_ })
+		template = loader.get_template("front-end/include/formulir_iujk/cetak_iujk_halaman1.html")
+		ec = RequestContext(request, extra_context)
+		subject_template = template.render(ec)
 		template = Template(subject_template).render(Context(extra_context))
 		return HttpResponse(template)
 
