@@ -102,6 +102,10 @@ def cetak_imb_umum(request, id_pengajuan_):
 	url_ = reverse('formulir_reklame')
 	if id_pengajuan_:
 		pengajuan_ = DetilIMB.objects.get(id=id_pengajuan_)
+		if pengajuan_:
+			pengajuan_.tanggal_sk = datetime.datetime.now()
+			pengajuan_.save()
+			extra_context.update({ 'tanggal_sk': pengajuan_.tanggal_sk })
 		if pengajuan_.pemohon:
 			if pengajuan_.pemohon.desa:
 				alamat_ = str(pengajuan_.pemohon.pemohon.alamat)+", Desa "+str(pengajuan_.pemohon.desa.nama_desa.title()) + ", Kec. "+str(pengajuan_.pemohon.desa.kecamatan.nama_kecamatan.title())+", "+ str(pengajuan_.pemohon.desa.kecamatan.kabupaten.nama_kabupaten.title())

@@ -931,6 +931,8 @@ class DetilIMB(PengajuanIzin):
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
 	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
 
+	tanggal_sk = models.DateField(verbose_name='Tanggal SK Diterbitkan', null=True, blank=True)
+
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))
 
