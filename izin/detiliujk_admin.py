@@ -561,6 +561,7 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		kla = []
 		tr = ''
 		no = 0
+		no_sub = 0
 		total_ = len(paket)
 		css = 'hidden-border-tr'
 		for p in paket:
@@ -581,8 +582,14 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 			tahun = '0'
 			if p.tahun:
 				tahun = str(p.tahun)
-			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.subklasifikasi)+'</td>'
-			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.nama_paket_pekerjaan)+'</td>'
+
+			no_sub = no_sub+1
+			# tr += '<td style="border: 1px solid black;" valign="top"><span style="padding-right: 10px">'+str(no_sub)+'</span> '+str(p.subklasifikasi)+'</td>'
+			tr += '<td style="border: 1px solid black;" valign="top"><span style="padding-right: 10px">'+str(no_sub)+'</span> <dd style="margin-top: -22px">'+str(p.subklasifikasi)+'</dd></td>'
+			nama_paket_pekerjaan = 0
+			if str(p.nama_paket_pekerjaan) and str(p.nama_paket_pekerjaan) != "--":
+				nama_paket_pekerjaan = str(p.nama_paket_pekerjaan)
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(nama_paket_pekerjaan)+'</td>'
 			tr += '<td style="border: 1px solid black;" valign="top">'+tahun+'</td>'
 			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
 				nilai_paket = 0
