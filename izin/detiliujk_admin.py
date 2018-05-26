@@ -580,12 +580,14 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				tr += '<td style="border: 1px solid black;" valign="top">'+str(no)+'.</td>'
 				tr += '<td style="border: 1px solid black;" valign="top">'+str(k)+'</td>'			
 				kla.append(p.subklasifikasi.klasifikasi)
+				no_sub = 0
+			
+			no_sub = no_sub+1
+
 			tahun = '0'
 			if p.tahun:
 				tahun = str(p.tahun)
-
-			no_sub = no_sub+1
-			# tr += '<td style="border: 1px solid black;" valign="top"><span style="padding-right: 10px">'+str(no_sub)+'</span> '+str(p.subklasifikasi)+'</td>'
+				
 			tr += '<td style="border: 1px solid black;" valign="top"><span style="padding-right: 10px">'+str(no_sub)+'</span> <dd style="margin-top: -23px">'+str(p.subklasifikasi)+'</dd></td>'
 
 			nama_paket_pekerjaan = 0
