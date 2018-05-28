@@ -1117,7 +1117,7 @@ class IzinAdmin(admin.ModelAdmin):
 					# 		"redirect": '',
 					# 	}
 					elif request.POST.get('aksi') == '_submit_penomoran':
-						obj_skizin.status = 10:
+						obj_skizin.status = 10
 						obj_skizin.tanggal_diterbitkan = datetime.datetime.now()
 						obj_skizin.save()
 						obj.verified_by_id = request.user.id
