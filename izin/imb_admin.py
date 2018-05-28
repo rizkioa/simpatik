@@ -196,15 +196,6 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
 
-			if pengajuan_:
-				pengajuan_.tanggal_sk = datetime.datetime.now()
-				pengajuan_.save()
-
-			if pengajuan_.tanggal_sk:
-				extra_context.update({ 'tanggal_sk': pengajuan_.tanggal_sk })
-			else:
-				extra_context.update({ 'tanggal_sk': '' })
-
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
