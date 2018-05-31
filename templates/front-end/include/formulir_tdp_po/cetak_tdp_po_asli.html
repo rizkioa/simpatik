@@ -244,7 +244,7 @@
     	</div>
     	<div style="float: right; width: 50%">
         	<p style="font-size:17px; padding-left: 0%;" align="center">
-                {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.created_at|date:"d-m-Y" }}{% endif %}
+                {% if skizin %}Kediri,&nbsp;&nbsp;{{ skizin.tanggal_diterbitkan|date:"d-m-Y" }}{% endif %}
                 
                 {% if skizin.nama_pejabat %}
                     <br>Kepala DPMPTSP
