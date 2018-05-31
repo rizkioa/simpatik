@@ -221,10 +221,6 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			sk_imb_ = pengajuan_.detilsk_set.last()
 			if sk_imb_:
 				extra_context.update({'sk_imb': sk_imb_ })
-				# if sk_imb_.tanggal_diterbitkan:
-				# 	extra_context.update({'tanggal_diterbitkan': sk_imb_.tanggal_diterbitkan })
-				# else:
-				# 	extra_context.update({'tanggal_diterbitkan': "" })
 
 			retribusi_ = pengajuan_.detilpembayaran_set.last()
 			if retribusi_:
