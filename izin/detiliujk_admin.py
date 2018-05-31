@@ -561,6 +561,8 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 		kla = []
 		tr = ''
 		no = 0
+		no_sub = 0
+		nomer = 0
 		total_ = len(paket)
 		css = 'hidden-border-tr'
 		for p in paket:
@@ -578,11 +580,20 @@ class DetilIUJKAdmin(admin.ModelAdmin):
 				tr += '<td style="border: 1px solid black;" valign="top">'+str(no)+'.</td>'
 				tr += '<td style="border: 1px solid black;" valign="top">'+str(k)+'</td>'			
 				kla.append(p.subklasifikasi.klasifikasi)
+				no_sub = 0
+			
+			no_sub = no_sub+1
+
 			tahun = '0'
 			if p.tahun:
 				tahun = str(p.tahun)
-			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.subklasifikasi)+'</td>'
-			tr += '<td style="border: 1px solid black;" valign="top">'+str(p.nama_paket_pekerjaan)+'</td>'
+				
+			tr += '<td style="border: 1px solid black;" valign="top"><span style="padding-right: 10px">'+str(no_sub)+'</span> <dd style="margin-top: -23px">'+str(p.subklasifikasi)+'</dd></td>'
+
+			nama_paket_pekerjaan = 0
+			if str(p.nama_paket_pekerjaan) and str(p.nama_paket_pekerjaan) != "--":
+				nama_paket_pekerjaan = str(p.nama_paket_pekerjaan)
+			tr += '<td style="border: 1px solid black;" valign="top">'+str(nama_paket_pekerjaan)+'</td>'
 			tr += '<td style="border: 1px solid black;" valign="top">'+tahun+'</td>'
 			if p.nilai_paket_pekerjaan is None or p.nilai_paket_pekerjaan == 0:
 				nilai_paket = 0

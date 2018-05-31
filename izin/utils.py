@@ -142,7 +142,7 @@ def generate_kode_bank_jatim(no_urut):
 
 JENIS_IUJK = (
 	('IUJK Perencanaan Konstruksi', 'IUJK Perencanaan Konstruksi'),
-	('IUJK Pelaksana Konstruksi', 'IUJK Pelaksana Konstruksi'),
+	('Pelaksana', 'Pelaksana'),
 	('IUJK Pengawasan Konstruksi', 'IUJK Pengawasan Konstruksi'),
 	('IUJK Perencanaan dan Pengawasan Konstruksi', 'IUJK Perencanaan dan Pengawasan Konstruksi'),
 )

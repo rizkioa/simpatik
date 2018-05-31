@@ -1118,6 +1118,7 @@ class IzinAdmin(admin.ModelAdmin):
 					# 	}
 					elif request.POST.get('aksi') == '_submit_penomoran':
 						obj_skizin.status = 10
+						obj_skizin.tanggal_diterbitkan = datetime.datetime.now()
 						obj_skizin.save()
 						obj.verified_by_id = request.user.id
 						obj.verified_at = datetime.datetime.now()
@@ -1151,6 +1152,7 @@ class IzinAdmin(admin.ModelAdmin):
 					elif request.POST.get('aksi') == '_submit_penomoran_tdp':
 						obj_skizin.status = 10
 						obj_skizin.created_at = datetime.datetime.now()
+						obj_skizin.tanggal_diterbitkan = datetime.datetime.now()
 						obj_skizin.save()
 						obj.verified_by_id = request.user.id
 						obj.verified_at = datetime.datetime.now()

@@ -496,6 +496,8 @@ class SKIzin(MetaAtribut):
 	status_perusahaan = models.CharField(max_length=255, verbose_name="Status Perusahaan", null=True, blank=True)
 	body_html = RichTextField(null=True, blank=True)
 	keterangan = models.CharField(max_length=255, null=True, blank=True, verbose_name='Keterangan')
+	tanggal_diterbitkan = models.DateField(verbose_name='Tanggal SK Izin Diterbitkan', null=True, blank=True)
+
 
 	def get_masa_berlaku_izin(self):
 		masa_berlaku_izin = ''
@@ -930,6 +932,8 @@ class DetilIMB(PengajuanIzin):
 	batas_timur = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Timur')
 	batas_selatan = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Selatan')
 	batas_barat = models.CharField(max_length=255, blank=True, null=True, verbose_name='Batas Barat')
+
+	
 
 	def __unicode__(self):
 		return u'Detil IMB %s - %s' % (str(self.kelompok_jenis_izin), str(self.jenis_permohonan))

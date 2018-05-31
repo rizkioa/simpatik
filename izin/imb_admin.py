@@ -195,7 +195,7 @@ class DetilIMBAdmin(admin.ModelAdmin):
 					alamat_ = str(pengajuan_.pemohon.alamat)+", "+str(pengajuan_.pemohon.desa)+", Kec. "+str(pengajuan_.pemohon.desa.kecamatan)+", Kab./Kota "+str(pengajuan_.pemohon.desa.kecamatan.kabupaten)
 					extra_context.update({'alamat_pemohon': alamat_})
 				extra_context.update({'pemohon': pengajuan_.pemohon})
-				
+
 			letak_ = pengajuan_.lokasi + ", Desa "+str(pengajuan_.desa) + ", Kec. "+str(pengajuan_.desa.kecamatan)+", "+ str(pengajuan_.desa.kecamatan.kabupaten)
 			ukuran_ = "Lebar = "+str(int(pengajuan_.luas_bangunan))+" M, Tinggi = "+str(int(pengajuan_.luas_tanah))+" M"  
 
@@ -221,6 +221,10 @@ class DetilIMBAdmin(admin.ModelAdmin):
 			sk_imb_ = pengajuan_.detilsk_set.last()
 			if sk_imb_:
 				extra_context.update({'sk_imb': sk_imb_ })
+				if sk_imb_.tanggal_diterbitkan:
+					extra_context.update({'tanggal_diterbitkan': sk_imb_.tanggal_diterbitkan })
+				else:
+					extra_context.update({'tanggal_diterbitkan': "" })
 
 			retribusi_ = pengajuan_.detilpembayaran_set.last()
 			if retribusi_:
